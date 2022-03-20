@@ -663,7 +663,7 @@ Spreadsheet.my_alias_name ნაცვლად Spreadsheet.B1</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;სტრიქონებს გამომყოფი სიმბოლო. ჩვეულებრივ ერთმაგი (') ან ორმაგი (&amp;quot;) ბრჭყალი. უნდა იყოს ერთი სიმბოლო.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>"</source>
@@ -675,7 +675,7 @@ Spreadsheet.my_alias_name ნაცვლად Spreadsheet.B1</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;"მხსნელი" სიმბოლო, ჩვეულებრივ მარცხნივ სლეში (\) გამოიყენება სპეციალური არაბეჭდვადი სიმბოლოების მოსანიშნად. მაგ. \t = tab ღილაკს. უნდა იყოს 1 სიმბოლო.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>\</source>
@@ -687,7 +687,7 @@ Spreadsheet.my_alias_name ნაცვლად Spreadsheet.B1</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;სიმბოლო, რომელიც ველების დელიმიტერად გამოიყენება. ჩვეულებრივ ეს არის tab, მაგრამ იყენებენ მძიმესაც(,) და წერტილმძიმესაც (;). აირჩიეთ სიიდან ან შეიყვანეთ თქვენი საკუთარი. უნდა იყოს 1 სიმბოლო ან ერთერთი სიტყვებიდან &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;,&lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;ან&lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>tab</source>

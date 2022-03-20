@@ -322,11 +322,13 @@ SET(Gui_UIC_SRCS
     DlgOnlineHelp.ui
     DlgParameter.ui
     DlgParameterFind.ui
+    DlgPreferencePackManagement.ui
     DlgPreferences.ui
     DlgProjectInformation.ui
     DlgProjectUtility.ui
     DlgPropertyLink.ui
     DlgReportView.ui
+    DlgRevertToBackupConfig.ui
     DlgSettings3DView.ui
     DlgSettingsCacheDirectory.ui
     DlgSettingsNavigation.ui
@@ -338,6 +340,7 @@ SET(Gui_UIC_SRCS
     DlgSettingsImage.ui
     DlgSettingsLazyLoaded.ui
     DlgSettingsMacro.ui
+    DlgSettingsPythonConsole.ui
     DlgCheckableMessageBox.ui
     DlgToolbars.ui
     DlgWorkbenches.ui
@@ -364,7 +367,6 @@ SET(Gui_UIC_SRCS
 SET(Gui_RES_SRCS
     Icons/resource.qrc
     Language/translation.qrc
-    iisTaskPanel/src/iisTaskPanel.qrc
     QSint/actionpanel/schemes.qrc
 )
 
@@ -418,9 +420,11 @@ SET(Dialog_CPP_SRCS
     DlgMaterialPropertiesImp.cpp
     DlgParameterImp.cpp
     DlgParameterFind.cpp
+    DlgPreferencePackManagementImp.cpp
     DlgProjectInformationImp.cpp
     DlgProjectUtility.cpp
     DlgPropertyLink.cpp
+    DlgRevertToBackupConfigImp.cpp
     DlgExpressionInput.cpp
     TaskDlgRelocation.cpp
     DlgCheckableMessageBox.cpp
@@ -456,9 +460,11 @@ SET(Dialog_HPP_SRCS
     DlgMaterialPropertiesImp.h
     DlgParameterImp.h
     DlgParameterFind.h
+    DlgPreferencePackManagementImp.h
     DlgProjectInformationImp.h
     DlgProjectUtility.h
     DlgPropertyLink.h
+    DlgRevertToBackupConfigImp.h
     DlgCheckableMessageBox.h
     DlgExpressionInput.h
     TaskDlgRelocation.h
@@ -499,9 +505,11 @@ SET(Dialog_SRCS
     DlgMaterialProperties.ui
     DlgParameter.ui
     DlgParameterFind.ui
+    DlgPreferencePackManagement.ui
     DlgProjectInformation.ui
     DlgProjectUtility.ui
     DlgPropertyLink.ui
+    DlgRevertToBackupConfig.ui
     DlgCheckableMessageBox.ui
     DlgTreeWidget.ui
     DlgExpressionInput.ui
@@ -574,6 +582,7 @@ SET(Dialog_Settings_CPP_SRCS
     DlgSettingsImageImp.cpp
     DlgSettingsLazyLoadedImp.cpp
     DlgSettingsMacroImp.cpp
+    DlgSettingsPythonConsole.cpp
 )
 SET(Dialog_Settings_HPP_SRCS
     DlgEditorImp.h
@@ -592,6 +601,7 @@ SET(Dialog_Settings_HPP_SRCS
     DlgSettingsImageImp.h
     DlgSettingsLazyLoadedImp.h
     DlgSettingsMacroImp.h
+    DlgSettingsPythonConsole.h
 )
 SET(Dialog_Settings_SRCS
     ${Dialog_Settings_CPP_SRCS}
@@ -612,6 +622,7 @@ SET(Dialog_Settings_SRCS
     DlgSettingsImage.ui
     DlgSettingsLazyLoaded.ui
     DlgSettingsMacro.ui
+    DlgSettingsPythonConsole.ui
 )
 SOURCE_GROUP("Dialog\\Settings" FILES ${Dialog_Settings_SRCS})
 
@@ -741,40 +752,6 @@ SET(Task_View_SRCS
     TaskView/TaskWatcher.h
 )
 SOURCE_GROUP("Task View" FILES ${Task_View_SRCS})
-
-SET(iisTaskPanel_SRCS
-    iisTaskPanel/src/iisfreecadscheme.cpp
-    iisTaskPanel/src/iisfreecadscheme.h
-    iisTaskPanel/src/iisiconlabel.cpp
-    iisTaskPanel/src/iisiconlabel.h
-    iisTaskPanel/src/iistaskbox.cpp
-    iisTaskPanel/src/iistaskbox.h
-    iisTaskPanel/src/iistaskgroup.cpp
-    iisTaskPanel/src/iistaskgroup.h
-    iisTaskPanel/src/iistaskheader.cpp
-    iisTaskPanel/src/iistaskheader.h
-    iisTaskPanel/src/iistaskpanel.cpp
-    iisTaskPanel/src/iistaskpanel.h
-    iisTaskPanel/src/iistaskpanelscheme.cpp
-    iisTaskPanel/src/iistaskpanelscheme.h
-    iisTaskPanel/src/iiswinxptaskpanelscheme.cpp
-    iisTaskPanel/src/iiswinxptaskpanelscheme.h
-    iisTaskPanel/src/iistaskpanel_global.h
-)
-SOURCE_GROUP("Widget\\iisTaskPanel" FILES ${iisTaskPanel_SRCS})
-set(iis_MOC_HDRS
-    iisTaskPanel/src/iisiconlabel.h
-    iisTaskPanel/src/iistaskbox.h
-    iisTaskPanel/src/iistaskgroup.h
-    iisTaskPanel/src/iistaskheader.h
-)
-
-if (BUILD_QT5)
-    qt5_wrap_cpp(iis_MOC_SRCS ${iis_MOC_HDRS})
-else()
-    qt4_wrap_cpp(iis_MOC_SRCS ${iis_MOC_HDRS})
-endif()
-SOURCE_GROUP("Widget\\iisTaskPanel\\Mocs" FILES ${iis_MOC_SRCS})
 
 SET(qsintActionPanel_SRCS
     QSint/actionpanel/actionbox.cpp
@@ -1187,7 +1164,7 @@ SET(FreeCADGui_SRCS
     MetaTypes.h
     PreCompiled.cpp
     PreCompiled.h
-    Qt4All.h
+    QtAll.h
     Control.h
     SpaceballEvent.h
     PreferencePackManager.h

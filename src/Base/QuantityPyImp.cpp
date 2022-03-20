@@ -22,13 +22,11 @@
 
 #include "PreCompiled.h"
 
-#include "Base/Quantity.h"
-#include "Base/Vector3D.h"
-
 // inclusion of the generated files (generated out of QuantityPy.xml)
 #include "QuantityPy.h"
 #include "UnitPy.h"
 #include "QuantityPy.cpp"
+
 
 using namespace Base;
 
@@ -117,8 +115,15 @@ int QuantityPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     int i8=0;
     PyErr_Clear(); // set by PyArg_ParseTuple()
     if (PyArg_ParseTuple(args, "|diiiiiiii", &f,&i1,&i2,&i3,&i4,&i5,&i6,&i7,&i8)) {
-        if (f != DOUBLE_MAX) {
-            *self = Quantity(f,Unit(i1,i2,i3,i4,i5,i6,i7,i8));
+        if (f < DOUBLE_MAX) {
+            *self = Quantity(f,Unit{static_cast<int8_t>(i1),
+                                    static_cast<int8_t>(i2),
+                                    static_cast<int8_t>(i3),
+                                    static_cast<int8_t>(i4),
+                                    static_cast<int8_t>(i5),
+                                    static_cast<int8_t>(i6),
+                                    static_cast<int8_t>(i7),
+                                    static_cast<int8_t>(i8)});
         }
         return 0;
     }
@@ -220,8 +225,15 @@ PyObject* QuantityPy::getValueAs(PyObject *args)
         int i8=0;
         PyErr_Clear();
         if (PyArg_ParseTuple(args, "d|iiiiiiii", &f,&i1,&i2,&i3,&i4,&i5,&i6,&i7,&i8)) {
-            if (f!=DOUBLE_MAX) {
-                quant = Quantity(f,Unit(i1,i2,i3,i4,i5,i6,i7,i8));
+            if (f < DOUBLE_MAX) {
+                quant = Quantity(f,Unit{static_cast<int8_t>(i1),
+                                        static_cast<int8_t>(i2),
+                                        static_cast<int8_t>(i3),
+                                        static_cast<int8_t>(i4),
+                                        static_cast<int8_t>(i5),
+                                        static_cast<int8_t>(i6),
+                                        static_cast<int8_t>(i7),
+                                        static_cast<int8_t>(i8)});
             }
         }
     }
@@ -280,7 +292,7 @@ PyObject * QuantityPy::number_int_handler (PyObject *self)
     }
 
     QuantityPy* q = static_cast<QuantityPy*>(self);
-    return PyLong_FromLong((long)q->getValue());
+    return PyLong_FromLong(long(q->getValue()));
 }
 
 PyObject * QuantityPy::number_negative_handler (PyObject *self)

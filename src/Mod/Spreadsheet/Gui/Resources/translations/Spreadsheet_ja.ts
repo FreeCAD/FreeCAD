@@ -21,7 +21,7 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="753"/>
       <source>Apply the changes to the current cell</source>
-      <translation type="unfinished">Apply the changes to the current cell</translation>
+      <translation>現在のセルに変更を適用</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="755"/>
@@ -31,7 +31,7 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="757"/>
       <source>Deletes the contents of the current cell</source>
-      <translation type="unfinished">Deletes the contents of the current cell</translation>
+      <translation>現在のセルの内容を削除</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="759"/>
@@ -51,12 +51,12 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="933"/>
       <source>Add controller</source>
-      <translation type="unfinished">Add controller</translation>
+      <translation>コントローラを追加</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="973"/>
       <source>Add property controller</source>
-      <translation type="unfinished">Add property controller</translation>
+      <translation>プロパティコントローラを追加</translation>
     </message>
   </context>
   <context>
@@ -64,7 +64,7 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="919"/>
       <source>Add controller</source>
-      <translation type="unfinished">Add controller</translation>
+      <translation>コントローラを追加</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="922"/>
@@ -90,7 +90,7 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="944"/>
       <source>Add property controller</source>
-      <translation type="unfinished">Add property controller</translation>
+      <translation>プロパティコントローラを追加</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="947"/>
@@ -659,7 +659,7 @@ Spreadsheet.my_alias_name のように、エイリアスでセルを参照して
     </message>
     <message>
       <source>Import/Export Settings</source>
-      <translation type="unfinished">Import/Export Settings</translation>
+      <translation>設定のインポート/エクスポート</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -671,7 +671,7 @@ Spreadsheet.my_alias_name のように、エイリアスでセルを参照して
     </message>
     <message>
       <source>Delimiter Character: </source>
-      <translation type="unfinished">Delimiter Character: </translation>
+      <translation>区切り文字: </translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -679,7 +679,7 @@ Spreadsheet.my_alias_name のように、エイリアスでセルを参照して
     </message>
     <message>
       <source>\</source>
-      <translation type="unfinished">\</translation>
+      <translation>\</translation>
     </message>
     <message>
       <source>Escape Character: </source>
@@ -687,11 +687,11 @@ Spreadsheet.my_alias_name のように、エイリアスでセルを参照して
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;フィールドの区切りとして記号がつがわれています。デフォルトでは「タブ」ですが、「カンマ (,)」や「セミコロン (;)」もよく使われます。リストから選ぶか、フィールドに入力してください。一つの記号か、単語でなければなりません。&lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>tab</source>
-      <translation type="unfinished">tab</translation>
+      <translation>タブ</translation>
     </message>
     <message>
       <source>;</source>
@@ -703,7 +703,7 @@ Spreadsheet.my_alias_name のように、エイリアスでセルを参照して
     </message>
     <message>
       <source>Quote Character: </source>
-      <translation type="unfinished">Quote Character: </translation>
+      <translation>文字列の引用: </translation>
     </message>
   </context>
   <context>
@@ -721,14 +721,14 @@ Spreadsheet.my_alias_name のように、エイリアスでセルを参照して
     </message>
     <message numerus="yes">
       <source>Insert %n row(s) above</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n row(s) above</numerusform>
+      <translation>
+        <numerusform>上に%n行挿入</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n row(s) below</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n row(s) below</numerusform>
+      <translation>
+        <numerusform>下に%n行挿入</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -739,20 +739,20 @@ Spreadsheet.my_alias_name のように、エイリアスでセルを参照して
     </message>
     <message numerus="yes">
       <source>Remove row(s)</source>
-      <translation type="unfinished">
-        <numerusform>Remove row(s)</numerusform>
+      <translation>
+        <numerusform>行を削除</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n column(s) left</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n column(s) left</numerusform>
+      <translation>
+        <numerusform>左に%n列挿入</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n column(s) right</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n column(s) right</numerusform>
+      <translation>
+        <numerusform>右に%n列挿入</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -763,8 +763,8 @@ Spreadsheet.my_alias_name のように、エイリアスでセルを参照して
     </message>
     <message numerus="yes">
       <source>Remove column(s)</source>
-      <translation type="unfinished">
-        <numerusform>Remove column(s)</numerusform>
+      <translation>
+        <numerusform>列を削除</numerusform>
       </translation>
     </message>
   </context>

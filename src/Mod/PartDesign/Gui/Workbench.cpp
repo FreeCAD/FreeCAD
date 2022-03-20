@@ -23,26 +23,17 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <boost_bind_bind.hpp>
-# include <QMessageBox>
-#endif
-
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/MDIView.h>
-#include <Gui/MenuManager.h>
-
 #include <Mod/Sketcher/Gui/Workbench.h>
 #include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/Feature.h>
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
 
 #include "Utils.h"
-
 #include "Workbench.h"
-
 #include "WorkflowManager.h"
 
 using namespace PartDesignGui;
@@ -580,6 +571,15 @@ Gui::MenuItem* Workbench::setupMenuBar() const
              << "Part_Measure_Toggle_All"
              << "Part_Measure_Toggle_3D"
              << "Part_Measure_Toggle_Delta";
+
+    Gui::MenuItem* view = root->findItem("&View");
+    if (view) {
+        Gui::MenuItem* appr = view->findItem("Std_RandomColor");
+        appr = view->afterItem(appr);
+        Gui::MenuItem* face = new Gui::MenuItem();
+        face->setCommand("Part_ColorPerFace");
+        view->insertItem(appr, face);
+    }
 
     // For 0.13 a couple of python packages like numpy, matplotlib and others
     // are not deployed with the installer on Windows. Thus, the WizardShaft is

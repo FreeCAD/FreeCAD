@@ -7,3 +7,7 @@ import AddonManager
 
 FreeCADGui.addLanguagePath(":/translations")
 FreeCADGui.addCommand("Std_AddonMgr", AddonManager.CommandAddonManager())
+
+import FreeCAD
+
+FreeCAD.__unit_test__ += ["TestAddonManagerGui"]

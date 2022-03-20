@@ -403,6 +403,11 @@ class Component(ArchIFC.IfcProduct):
             if hasattr(parent,"Group"):
                 if obj in parent.Group:
                     return self.getParentHeight(parent)
+        # still not found? check if we are embedded
+        for parent in obj.InList:
+            if hasattr(parent,"Additions"):
+                if obj in parent.Additions:
+                    return self.getParentHeight(parent)
         return 0
 
     def clone(self,obj):
@@ -972,7 +977,7 @@ class Component(ArchIFC.IfcProduct):
             obj.PerimeterLength = 0
             return
 
-        import Drawing,Part
+        import TechDraw, Part
         fmax = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("MaxComputeAreas",20)
         if len(obj.Shape.Faces) > fmax:
             obj.VerticalArea = 0
@@ -1008,7 +1013,7 @@ class Component(ArchIFC.IfcProduct):
                     pset.append(f)
                 else:
                     try:
-                        pf = Part.Face(Part.Wire(Drawing.project(f,FreeCAD.Vector(0,0,1))[0].Edges))
+                        pf = Part.Face(Part.Wire(TechDraw.project(f,FreeCAD.Vector(0,0,1))[0].Edges))
                     except Part.OCCError:
                         # error in computing the areas. Better set them to zero than show a wrong value
                         if obj.HorizontalArea.Value != 0:

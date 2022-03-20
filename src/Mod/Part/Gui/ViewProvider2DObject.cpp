@@ -24,30 +24,29 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Standard_math.hxx>
+# include <cfloat>
 # include <Python.h>
+
+# include <Standard_math.hxx>
+
+# include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoDepthBuffer.h>
 # include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoLineSet.h>
+# include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoVertexProperty.h>
-# include <Inventor/nodes/SoAnnotation.h>
-# include <cfloat>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
+#include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Base/Reader.h>
-#include <Base/ViewProj.h>
-#include <App/Application.h>
 #include <Gui/SoFCBoundingBox.h>
 
 #include "ViewProvider2DObject.h"
-#include <Mod/Part/App/PartFeature.h>
 
 
 using namespace PartGui;

@@ -82,6 +82,13 @@ def debugEdge(label, e):
         )
 
 
+def makeWires(inEdges):
+    """makeWires ... function to make non-forking wires from a collection of edges"""
+    edgelists = Part.sortEdges(inEdges)
+    result = [Part.Wire(e) for e in edgelists]
+    return result
+
+
 def debugWire(label, w):
     """debugWire(label, w) ... prints python statements for all edges of w to be added to the object tree in a group."""
     if not PrintWireDebug:
@@ -160,7 +167,7 @@ def orientWire(w, forward=True):
     If forward = True (the default) the wire is oriented clockwise, looking down the negative Z axis.
     If forward = False the wire is oriented counter clockwise.
     If forward = None the orientation is determined by the order in which the edges appear in the wire."""
-    PathLog.debug("orienting forward: {}".format(forward))
+    PathLog.debug("orienting forward: {}: {} edges".format(forward, len(w.Edges)))
     wire = Part.Wire(_orientEdges(w.Edges))
     if forward is not None:
         if forward != _isWireClockwise(wire):
@@ -284,7 +291,7 @@ def offsetWire(wire, base, offset, forward, Side=None):
             return Part.Wire([edge])
 
         # if we get to this point the assumption is that makeOffset2D can deal with the edge
-        pass  # pylint: disable=unnecessary-pass
+        pass
 
     owire = orientWire(wire.makeOffset2D(offset), True)
     debugWire("makeOffset2D_%d" % len(wire.Edges), owire)
@@ -300,7 +307,7 @@ def offsetWire(wire, base, offset, forward, Side=None):
             Side[0] = "Inside"
         try:
             owire = wire.makeOffset2D(-offset)
-        except Exception:  # pylint: disable=broad-except
+        except Exception:
             # most likely offsetting didn't work because the wire is a hole
             # and the offset is too big - making the hole vanish
             return None

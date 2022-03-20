@@ -23,29 +23,26 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <QContextMenuEvent>
-#include <QStandardItem>
-#include <QStandardItemModel>
-#include <QLineEdit>
-#include <QAbstractItemView>
-#include <QMenu>
-#include <QTextBlock>
+# include <boost/algorithm/string/predicate.hpp>
+# include <QAbstractItemView>
+# include <QContextMenuEvent>
+# include <QLineEdit>
+# include <QMenu>
+# include <QTextBlock>
 #endif
 
-#include <boost/algorithm/string/predicate.hpp>
-
-#include <Base/Tools.h>
-#include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/DocumentObserver.h>
-#include <App/ObjectIdentifier.h>
-#include "ExpressionCompleter.h"
 #include <App/ExpressionParser.h>
-#include <App/PropertyLinks.h>
+#include <App/ObjectIdentifier.h>
+#include <Base/Tools.h>
+#include <CXX/Extensions.hxx>
 
-FC_LOG_LEVEL_INIT("Completer",true,true)
+#include "ExpressionCompleter.h"
+
+
+FC_LOG_LEVEL_INIT("Completer", true, true)
 
 Q_DECLARE_METATYPE(App::ObjectIdentifier)
 

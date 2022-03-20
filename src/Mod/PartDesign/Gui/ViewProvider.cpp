@@ -28,22 +28,18 @@
 # include <QAction>
 # include <QApplication>
 # include <QMenu>
-#include <Inventor/nodes/SoSwitch.h>
 #endif
 
-#include <Gui/ActionFunction.h>
-#include <Gui/Command.h>
-#include <Gui/MDIView.h>
-#include <Gui/Control.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
 #include <Base/Exception.h>
+#include <App/Document.h>
+#include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
+#include <Gui/Control.h>
+#include <Gui/Document.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/Feature.h>
-#include <Mod/Sketcher/App/SketchObject.h>
 
-#include "Utils.h"
 #include "TaskFeatureParameters.h"
 
 #include "ViewProvider.h"
@@ -78,7 +74,8 @@ bool ViewProvider::doubleClicked(void)
 
 void ViewProvider::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    QAction* act = menu->addAction(QObject::tr("Set colors..."), receiver, member);
+    QIcon iconObject = mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap("Part_ColorFace.svg"));
+    QAction* act = menu->addAction(iconObject, QObject::tr("Set colors..."), receiver, member);
     act->setData(QVariant((int)ViewProvider::Color));
     // Call the extensions
     Gui::ViewProvider::setupContextMenu(menu, receiver, member);

@@ -688,7 +688,7 @@ with respect to a line or a third point</source>
     </message>
   </context>
   <context>
-    <name>CmdSketcherConvertToNURB</name>
+    <name>CmdSketcherConvertToNURBS</name>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="385"/>
       <source>Convert geometry to B-spline</source>
@@ -2499,7 +2499,7 @@ bozulmuş geometriye vb. bakarak bir eskizi doğrulayın.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="700"/>
       <source>Sketcher Constraint Substitution</source>
-      <translation>Taslakçı Kısıtlama Yer Değişimi</translation>
+      <translation>Sketcher Kısıtlaması Değişimi</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="706"/>
@@ -3687,13 +3687,13 @@ reflected on copies</source>
     <message>
       <location filename="../../SketcherSettings.ui" line="27"/>
       <source>Sketcher solver</source>
-      <translation>Eskiz çözücü</translation>
+      <translation>Sketcher çözücü</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="33"/>
       <source>Sketcher dialog will have additional section
 'Advanced solver control' to adjust solver settings</source>
-      <translation>Taslakçı ileti penceresinin ek bölümü olacak
+      <translation>Sketcher ileti penceresinin ek bölüme sahip olacak
 Çözücü ayarlarını ayarlamak için 'Gelişmiş çözücü denetimi'</translation>
     </message>
     <message>
@@ -3957,7 +3957,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="723"/>
       <source>Colors outside Sketcher</source>
-      <translation>Taslakçının dışındaki renkler</translation>
+      <translation>Sketcher'ın dışındaki renkler</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="731"/>
@@ -4772,7 +4772,7 @@ Noktalar ızgara çizgisine, ızgara ölçüsünün beşte birinden yakın ayarl
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="107"/>
       <source>Sketcher proposes automatically sensible constraints.</source>
-      <translation>Taslakçı, mantıklı sınırlamaları otomatik önerir.</translation>
+      <translation>Sketcher, otomatik olarak mantıklı kısıtlamalar önerir.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="110"/>
@@ -4782,7 +4782,7 @@ Noktalar ızgara çizgisine, ızgara ölçüsünün beşte birinden yakın ayarl
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="126"/>
       <source>Sketcher tries not to propose redundant auto constraints</source>
-      <translation>Taslakçı, gereksiz oto sınırlamaları önermemeyi dener</translation>
+      <translation>Sketcher, gereksiz otomatik kısıtlamalar önermemeye çalışıyor</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherGeneral.ui" line="129"/>

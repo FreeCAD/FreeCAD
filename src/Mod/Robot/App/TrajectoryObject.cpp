@@ -39,8 +39,8 @@ PROPERTY_SOURCE(Robot::TrajectoryObject, App::GeoFeature)
 TrajectoryObject::TrajectoryObject()
 {
 
-    ADD_PROPERTY_TYPE( Base,      (Base::Placement())  , "Trajectory",Prop_None,"Actuall base frame of the trajectory");
-    ADD_PROPERTY_TYPE( Trajectory,(Robot::Trajectory()), "Trajectory",Prop_None,"Trajectory object");
+    ADD_PROPERTY_TYPE(Base,       (Base::Placement()), "Trajectory", Prop_None, "Base frame of the trajectory");
+    ADD_PROPERTY_TYPE(Trajectory, (Robot::Trajectory()), "Trajectory", Prop_None, "Trajectory object");
 
 }
 
@@ -64,6 +64,5 @@ PyObject *TrajectoryObject::getPyObject()
 
 void TrajectoryObject::onChanged(const Property* prop)
 {
- 
     App::GeoFeature::onChanged(prop);
 }

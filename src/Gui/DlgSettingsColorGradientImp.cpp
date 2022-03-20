@@ -20,21 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <cmath>
+# include <QDoubleValidator>
 # include <QLocale>
 # include <QMessageBox>
-# include <QDoubleValidator>
-#endif
-
-#ifndef _PreComp_
-#include <cmath>
 #endif
 
 #include "DlgSettingsColorGradientImp.h"
 #include "ui_DlgSettingsColorGradient.h"
 #include "SpinBox.h"
+
 
 using namespace Gui::Dialog;
 

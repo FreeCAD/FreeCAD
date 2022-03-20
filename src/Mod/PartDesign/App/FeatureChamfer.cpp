@@ -26,19 +26,15 @@
 # include <BRepAlgo.hxx>
 # include <BRepFilletAPI_MakeChamfer.hxx>
 # include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
 # include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 # include <TopTools_ListOfShape.hxx>
-# include <BRep_Tool.hxx>
 # include <ShapeFix_Shape.hxx>
 # include <ShapeFix_ShapeTolerance.hxx>
 # include <Standard_Version.hxx>
 #endif
 
-#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
@@ -76,6 +72,9 @@ Chamfer::Chamfer()
     Angle.setConstraints(&floatAngle);
 
     ADD_PROPERTY_TYPE(FlipDirection, (false), "Chamfer", App::Prop_None, "Flip direction");
+    ADD_PROPERTY_TYPE(UseAllEdges, (false), "Chamfer", App::Prop_None,
+             "Chamfer all edges if true, else use only those edges in Base property.\n"
+             "If true, then this overrides any edge changes made to the Base property or in the dialog.\n");
 
     updateProperties();
 }
@@ -115,8 +114,20 @@ App::DocumentObjectExecReturn *Chamfer::execute(void)
     }
 
     std::vector<std::string> SubNames = std::vector<std::string>(Base.getSubValues());
+
+    if (UseAllEdges.getValue()){
+        SubNames.clear();
+        std::string edgeTypeName = Part::TopoShape::shapeName(TopAbs_EDGE); //"Edge"
+        int count = TopShape.countSubElements(edgeTypeName.c_str());
+        for (int ii = 0; ii < count; ii++){
+            std::ostringstream edgeName;
+            edgeName << edgeTypeName << ii+1;
+            SubNames.push_back(edgeName.str());
+        }
+    }
+
     std::vector<std::string> FaceNames;
-  
+
     getContinuousEdges(TopShape, SubNames, FaceNames);
 
     if (SubNames.size() == 0)

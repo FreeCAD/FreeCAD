@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -29,18 +28,17 @@
 # include <QPointer>
 #endif
 
-#include "TaskDialogPython.h"
-#include "TaskView.h"
-
+#include <Base/Interpreter.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/UiLoader.h>
 #include <Gui/PythonWrapper.h>
-#include <Base/Interpreter.h>
-#include <Base/Console.h>
-#include <CXX/Objects.hxx>
+
+#include "TaskDialogPython.h"
+#include "TaskView.h"
+
 
 using namespace Gui;
 using namespace Gui::TaskView;
@@ -369,19 +367,28 @@ TaskDialogPython::~TaskDialogPython()
     Content.clear();
 
     Base::PyGILStateLocker lock;
-
-    // The widgets stored in the 'form' attribute will be deleted.
-    // Thus, set this attribute to None to make sure that when using
-    // the same dialog instance for a task panel won't segfault.
-    if (this->dlg.hasAttr(std::string("form"))) {
-        this->dlg.setAttr(std::string("form"), Py::None());
-    }
-    this->dlg = Py::None();
+    clearForm();
 
     // Assigning None to 'dlg' may destroy some of the stored widgets.
     // By guarding them with QPointer their pointers will be set to null
     // so that the destructor of the base class can reliably call 'delete'.
     Content.insert(Content.begin(), guarded.begin(), guarded.end());
+}
+
+void TaskDialogPython::clearForm()
+{
+    try {
+        // The widgets stored in the 'form' attribute will be deleted.
+        // Thus, set this attribute to None to make sure that when using
+        // the same dialog instance for a task panel won't segfault.
+        if (this->dlg.hasAttr(std::string("form"))) {
+            this->dlg.setAttr(std::string("form"), Py::None());
+        }
+        this->dlg = Py::None();
+    }
+    catch (Py::AttributeError& e) {
+        e.clear();
+    }
 }
 
 void TaskDialogPython::open()

@@ -26,15 +26,14 @@
 # include <sstream>
 #endif
 
-
-#include <Base/Console.h>
+#include <App/DocumentObjectPy.h>
 #include <Base/Interpreter.h>
-#include <Base/Reader.h>
 #include <Base/MatrixPy.h>
 #include <Base/Tools.h>
-#include <App/DocumentObjectPy.h>
+
 #include "FeaturePython.h"
 #include "FeaturePythonPyImp.h"
+
 
 using namespace App;
 
@@ -49,7 +48,12 @@ FeaturePythonImp::~FeaturePythonImp()
 #undef FC_PY_ELEMENT
 #define FC_PY_ELEMENT(_name) py_##_name = Py::None();
 
-    FC_PY_FEATURE_PYTHON
+    try {
+        FC_PY_FEATURE_PYTHON
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+    }
 }
 
 void FeaturePythonImp::init(PyObject *pyobj) {
@@ -552,6 +556,28 @@ FeaturePythonImp::redirectSubName(std::ostringstream &ss,
         e.ReportException();
         return Rejected;
     }
+}
+
+bool FeaturePythonImp::editProperty(const char *name)
+{
+    _FC_PY_CALL_CHECK(editProperty,return false);
+    Base::PyGILStateLocker lock;
+    try {
+        Py::Tuple args(1);
+        args.setItem(0, Py::String(name));
+        Py::Object ret(Base::pyCall(py_editProperty.ptr(),args.ptr()));
+        return ret.isTrue();
+    }
+    catch (Py::Exception&) {
+        if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
+            PyErr_Clear();
+            return false;
+        }
+
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+    return false;
 }
 
 // ---------------------------------------------------------

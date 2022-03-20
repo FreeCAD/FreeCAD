@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_SOFCVECTORIZESVGACTION_H
 #define GUI_SOFCVECTORIZESVGACTION_H
 
-#ifndef __InventorAll__
-# include "InventorAll.h"
-#endif
+#include <Inventor/annex/HardCopy/SoVectorizeAction.h>
+#include <Inventor/annex/HardCopy/SoVectorOutput.h>
 
 #include <fstream>
 

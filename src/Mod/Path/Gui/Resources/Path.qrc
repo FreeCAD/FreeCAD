@@ -85,7 +85,6 @@
         <file>icons/edge-join-round.svg</file>
         <file>icons/preferences-path.svg</file>
         <file>panels/AxisMapEdit.ui</file>
-        <file>panels/DlgJobChooser.ui</file>
         <file>panels/DlgJobCreate.ui</file>
         <file>panels/DlgJobModelSelect.ui</file>
         <file>panels/DlgJobTemplateExport.ui</file>

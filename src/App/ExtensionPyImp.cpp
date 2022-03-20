@@ -23,10 +23,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
-
 #include "Application.h"
 
 // inclution of the generated files (generated out of PropertyContainerPy.xml)

@@ -43,7 +43,7 @@
     </message>
     <message>
       <source>Create a new empty trajectory</source>
-      <translation type="unfinished">Create a new empty trajectory</translation>
+      <translation>建立新的空白軌跡</translation>
     </message>
   </context>
   <context>
@@ -275,7 +275,7 @@
     </message>
     <message>
       <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-      <translation>建立一個由修改一個軌跡的部份設定之物件</translation>
+      <translation>建立覆蓋軌跡部分設定的修改物件</translation>
     </message>
   </context>
   <context>

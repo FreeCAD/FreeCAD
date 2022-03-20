@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
@@ -30,8 +29,9 @@
 
 #include "MenuManager.h"
 #include "Application.h"
-#include "MainWindow.h"
 #include "Command.h"
+#include "MainWindow.h"
+
 
 using namespace Gui;
 
@@ -82,6 +82,23 @@ MenuItem* MenuItem::findItem(const std::string& name)
     }
 
     return 0;
+}
+
+MenuItem* MenuItem::findParentOf(const std::string& name)
+{
+    for (QList<MenuItem*>::Iterator it = _items.begin(); it != _items.end(); ++it)
+    {
+        if ((*it)->_name == name)
+            return this;
+    }
+
+    for (QList<MenuItem*>::Iterator it = _items.begin(); it != _items.end(); ++it)
+    {
+        if ((*it)->findParentOf(name))
+            return *it;
+    }
+
+    return nullptr;
 }
 
 MenuItem* MenuItem::copy() const

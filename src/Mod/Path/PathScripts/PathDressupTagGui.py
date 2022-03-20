@@ -445,7 +445,6 @@ class PathDressupTagViewProvider:
 
     def onDelete(self, arg1=None, arg2=None):
         """this makes sure that the base operation is added back to the job and visible"""
-        # pylint: disable=unused-argument
         PathLog.track()
         if self.obj.Base and self.obj.Base.ViewObject:
             self.obj.Base.ViewObject.Visibility = True
@@ -491,13 +490,11 @@ class PathDressupTagViewProvider:
         #    tag.purgeTouched()
 
     def setEdit(self, vobj, mode=0):
-        # pylint: disable=unused-argument
         panel = PathDressupTagTaskPanel(vobj.Object, self)
         self.setupTaskPanel(panel)
         return True
 
     def unsetEdit(self, vobj, mode):
-        # pylint: disable=unused-argument
         if hasattr(self, "panel") and self.panel:
             self.panel.abort()
 
@@ -537,13 +534,11 @@ class PathDressupTagViewProvider:
         return -1
 
     def allow(self, doc, obj, sub):
-        # pylint: disable=unused-argument
         if obj == self.obj:
             return True
         return False
 
     def addSelection(self, doc, obj, sub, point):
-        # pylint: disable=unused-argument
         PathLog.track(doc, obj, sub, point)
         if self.panel:
             i = self.tagAtPoint(point, sub is None)
@@ -565,8 +560,6 @@ def Create(baseObject, name="DressupTag"):
 
 
 class CommandPathDressupTag:
-    # pylint: disable=no-init
-
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",
@@ -600,7 +593,7 @@ class CommandPathDressupTag:
             "PathScripts.PathDressupTagGui.Create(App.ActiveDocument.%s)"
             % baseObject.Name
         )
-        FreeCAD.ActiveDocument.commitTransaction()
+        # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()
 
 

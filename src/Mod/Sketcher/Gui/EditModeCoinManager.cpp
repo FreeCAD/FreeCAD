@@ -66,6 +66,7 @@
 #include <Base/Exception.h>
 #include <Base/Tools2D.h>
 #include <Base/UnitsApi.h>
+#include <Gui/Tree.h>
 #include <Gui/Utilities.h>
 #include <Base/Converter.h>
 #include <Base/Tools.h>
@@ -312,27 +313,36 @@ void EditModeCoinManager::ParameterObserver::updateColor(SbColor &sbcolor, const
 
 void EditModeCoinManager::ParameterObserver::subscribeToParameters()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    hGrp->Attach(this);
+    try {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+        hGrp->Attach(this);
 
-    ParameterGrp::handle hGrpsk = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    hGrpsk->Attach(this);
+        ParameterGrp::handle hGrpsk = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+        hGrpsk->Attach(this);
 
-    ParameterGrp::handle hGrpskg = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    hGrpskg->Attach(this);
-
+        ParameterGrp::handle hGrpskg = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        hGrpskg->Attach(this);
+    }
+    catch(const Base::ValueError & e) { // ensure that if parameter strings are not well-formed, the exception is not propagated
+        Base::Console().Error("EditModeCoinManager: Malformed parameter string: %s\n", e.what());
+    }
 }
 
 void EditModeCoinManager::ParameterObserver::unsubscribeToParameters()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    hGrp->Detach(this);
+    try {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+        hGrp->Detach(this);
 
-    ParameterGrp::handle hGrpsk = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    hGrpsk->Detach(this);
+        ParameterGrp::handle hGrpsk = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+        hGrpsk->Detach(this);
 
-    ParameterGrp::handle hGrpskg = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    hGrpskg->Detach(this);
+        ParameterGrp::handle hGrpskg = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        hGrpskg->Detach(this);
+    }
+    catch(const Base::ValueError & e) {// ensure that if parameter strings are not well-formed, the program is not terminated when calling the noexcept destructor.
+        Base::Console().Error("EditModeCoinManager: Malformed parameter string: %s\n", e.what());
+    }
 }
 
 void EditModeCoinManager::ParameterObserver::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
@@ -440,6 +450,38 @@ void EditModeCoinManager::drawEdit(const std::vector<Base::Vector2d> &EditCurve)
     editModeScenegraphNodes.EditCurvesCoordinate->point.finishEditing();
     editModeScenegraphNodes.EditCurveSet->numVertices.finishEditing();
     editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.finishEditing();
+}
+
+void EditModeCoinManager::drawEdit(const std::list<std::vector<Base::Vector2d>> &list)
+{
+    int ncoords = 0;
+
+    for(const auto & v : list)
+        ncoords += v.size();
+
+    editModeScenegraphNodes.EditCurveSet->numVertices.setNum(list.size());
+    editModeScenegraphNodes.EditCurvesCoordinate->point.setNum(ncoords);
+    editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.setNum(ncoords);
+    SbVec3f *verts = editModeScenegraphNodes.EditCurvesCoordinate->point.startEditing();
+    int32_t *index = editModeScenegraphNodes.EditCurveSet->numVertices.startEditing();
+    SbColor *color = editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.startEditing();
+
+    int coordindex=0;
+    int indexindex=0;
+    for(const auto & v : list) {
+        for (const auto & p : v) {
+            verts[coordindex].setValue(p.x, p.y, drawingParameters.zEdit);
+            color[coordindex] = drawingParameters.CreateCurveColor;
+            coordindex++;
+        }
+        index[indexindex] = v.size();
+        indexindex++;
+    }
+
+    editModeScenegraphNodes.EditCurvesCoordinate->point.finishEditing();
+    editModeScenegraphNodes.EditCurveSet->numVertices.finishEditing();
+    editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.finishEditing();
+
 }
 
 void EditModeCoinManager::setPositionText(const Base::Vector2d &Pos, const SbString &text)
@@ -625,6 +667,11 @@ void EditModeCoinManager::updateColor(const GeoListFacade & geolistfacade)
         return;
 
     pEditModeConstraintCoinManager->updateConstraintColor(constraints);
+}
+
+void EditModeCoinManager::setConstraintSelectability(bool enabled /* = true */)
+{
+    pEditModeConstraintCoinManager->setConstraintSelectability(enabled);
 }
 
 void EditModeCoinManager::createEditModeInventorNodes()

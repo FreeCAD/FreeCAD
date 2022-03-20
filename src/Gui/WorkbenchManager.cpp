@@ -22,19 +22,14 @@
 
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <sstream>
-#endif
 
 #include <Base/Console.h>
-#include <Base/Exception.h>
+
 #include "WorkbenchManager.h"
 #include "Workbench.h"
+#include "DockWindowManager.h"
 #include "MenuManager.h"
 #include "ToolBarManager.h"
-#include "ToolBoxManager.h"
-#include "DockWindowManager.h"
-#include "MainWindow.h"
 
 using namespace Gui;
 

@@ -24,7 +24,6 @@
 #define PART_FACEMAKER_BULLSEYE_H
 
 #include "FaceMaker.h"
-#include <list>
 
 #include <Geom_Surface.hxx>
 #include <gp_Pln.hxx>

@@ -21,11 +21,11 @@
 #define DCM_CORE_H
 
 #ifdef _WIN32
-	//warning about to long decoraded names, won't affect the code correctness
+	//warning about excessively long decorated names, won't affect the code correctness
 	#pragma warning( disable : 4503 )
-	//warning about changed pod initalising behaviour (boost blank in variant)
+	//warning about changed pod initialising behaviour (boost blank in variant)
 	#pragma warning( disable : 4345 )
-	//warning about multiple assignemnt operators in Equation
+	//warning about multiple assignment operators in Equation
 	#pragma warning( disable : 4522 )
 
 	//disable boost concept checks, as some of them have alignment problems which bring msvc to an error

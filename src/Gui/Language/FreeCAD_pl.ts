@@ -148,7 +148,7 @@
     </message>
     <message>
       <source>Make sub-link</source>
-      <translation>Stwórz łącze podrzędne</translation>
+      <translation>Utwórz łącze względne</translation>
     </message>
     <message>
       <source>Import links</source>
@@ -4509,7 +4509,7 @@ Kolumna "Aktualny status" pokazuje, czy dokument może być odzyskany.</translat
     </message>
     <message>
       <source>Pitch (around y-axis):</source>
-      <translation>Skok (względem osi y):</translation>
+      <translation>Pochylenie (względem osi y):</translation>
     </message>
     <message>
       <source>Roll (around x-axis):</source>
@@ -4525,7 +4525,7 @@ Kolumna "Aktualny status" pokazuje, czy dokument może być odzyskany.</translat
     </message>
     <message>
       <source>Pitch (around y-axis)</source>
-      <translation>Skok (względem osi y)</translation>
+      <translation>Pochylenie (względem osi y)</translation>
     </message>
     <message>
       <source>Roll (around the x-axis)</source>
@@ -7797,7 +7797,7 @@ Czy chcesz zapisać plik pod inną nazwą?</translation>
     </message>
     <message>
       <source>Make sub-link</source>
-      <translation>Stwórz łącze podrzędne</translation>
+      <translation>Utwórz łącze względne</translation>
     </message>
     <message>
       <source>Create a sub-object or sub-element link</source>

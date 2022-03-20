@@ -73,6 +73,8 @@ class Workbench:
         self.__Workbench__.appendContextMenu(name, cmds)
     def removeContextMenu(self,name):
         self.__Workbench__.removeContextMenu(name)
+    def reloadActive(self):
+        self.__Workbench__.reloadActive()
     def name(self):
         return self.__Workbench__.name()
     def GetClassName(self):
@@ -119,7 +121,7 @@ def InitApplications():
     #print ModDirs
     Log('Init:   Searching modules...\n')
 
-    def RunInitGuiPy(Dir):
+    def RunInitGuiPy(Dir) -> bool:
         InstallFile = os.path.join(Dir,"InitGui.py")
         if (os.path.exists(InstallFile)):
             try:
@@ -134,32 +136,44 @@ def InitApplications():
                 Err('Please look into the log file for further information\n')
             else:
                 Log('Init:      Initializing ' + Dir + '... done\n')
+                return True
         else:
             Log('Init:      Initializing ' + Dir + '(InitGui.py not found)... ignore\n')
+        return False
 
     for Dir in ModDirs:
         if ((Dir != '') & (Dir != 'CVS') & (Dir != '__init__.py')):
+            stopFile = os.path.join(Dir, "ADDON_DISABLED")
+            if os.path.exists(stopFile):
+                Msg(f'NOTICE: Addon "{Dir}" disabled by presence of ADDON_DISABLED stopfile\n')
+                continue
             MetadataFile = os.path.join(Dir, "package.xml")
             if os.path.exists(MetadataFile):
                 meta = FreeCAD.Metadata(MetadataFile)
+                if not meta.supportsCurrentFreeCAD():
+                    continue
                 content = meta.Content
                 if "workbench" in content:
                     FreeCAD.Gui.addIconPath(Dir)
                     workbenches = content["workbench"]
                     for workbench_metadata in workbenches:
+                        if not workbench_metadata.supportsCurrentFreeCAD():
+                            continue
                         subdirectory = workbench_metadata.Name if not workbench_metadata.Subdirectory else workbench_metadata.Subdirectory
                         subdirectory = subdirectory.replace("/",os.path.sep)
                         subdirectory = os.path.join(Dir, subdirectory)
-                        RunInitGuiPy(subdirectory)
+                        ran_init = RunInitGuiPy(subdirectory)
 
-                        # Try to generate a new icon from the metadata-specified information
-                        classname = workbench_metadata.Classname
-                        if classname:
-                            try:
-                                wb_handle = FreeCAD.Gui.getWorkbench(classname)
-                                GeneratePackageIcon(dir, subdirectory, workbench_metadata, wb_handle)
-                            except Exception:
-                                Log(f"Failed to get handle to {classname} -- no icon can be generated, check classname in package.xml\n")
+                        if ran_init:
+                            # Try to generate a new icon from the metadata-specified information
+                            classname = workbench_metadata.Classname
+                            if classname:
+                                try:
+                                    wb_handle = FreeCAD.Gui.getWorkbench(classname)
+                                except Exception:
+                                    Log(f"Failed to get handle to {classname} -- no icon can be generated, check classname in package.xml\n")
+                                else:
+                                    GeneratePackageIcon(dir, subdirectory, workbench_metadata, wb_handle)
                 else:
                     continue # The package content says there are no workbenches here, so just skip
             else:
@@ -173,6 +187,18 @@ def InitApplications():
         import freecad
         freecad.gui = FreeCADGui
         for _, freecad_module_name, freecad_module_ispkg in pkgutil.iter_modules(freecad.__path__, "freecad."):
+            # Check for a stopfile
+            stopFile = os.path.join(FreeCAD.getUserAppDataDir(), "Mod", freecad_module_name[8:], "ADDON_DISABLED")
+            if os.path.exists(stopFile):
+                continue
+
+            # Make sure that package.xml (if present) does not exclude this version of FreeCAD
+            MetadataFile = os.path.join(FreeCAD.getUserAppDataDir(), "Mod", freecad_module_name[8:], "package.xml")
+            if os.path.exists(MetadataFile):
+                meta = FreeCAD.Metadata(MetadataFile)
+                if not meta.supportsCurrentFreeCAD():
+                    continue
+
             if freecad_module_ispkg:
                 Log('Init: Initializing ' + freecad_module_name + '\n')
                 try:
@@ -202,10 +228,10 @@ def GeneratePackageIcon(dir:str, subdirectory:str, workbench_metadata:FreeCAD.Me
         # Although a required element, this content item does not have an icon. Just bail out
         return
     absolute_filename = os.path.join(subdirectory, relative_filename)
-    if wb_handle.Icon:
-        Log(f"Packaged workbench {workbench_metadata.Name} specified icon in class {workbench_metadata.Classname}:\n") 
-        Log(f" ... Overwriting that specification with package.xml data.\n")
-    wb_handle.Icon = absolute_filename
+    if hasattr(wb_handle, "Icon") and wb_handle.Icon:
+        Log(f"Init:      Packaged workbench {workbench_metadata.Name} specified icon in class {workbench_metadata.Classname}") 
+        Log(f" ... replacing with icon from package.xml data.\n")
+    wb_handle.__dict__["Icon"] = absolute_filename
 
 
 Log ('Init: Running FreeCADGuiInit.py start script...\n')

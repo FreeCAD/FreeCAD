@@ -9,11 +9,11 @@
     </message>
     <message>
       <source>Convert to points...</source>
-      <translation>Zu Punkten konvertieren...</translation>
+      <translation>In Punkte umwandeln...</translation>
     </message>
     <message>
       <source>Convert to points</source>
-      <translation>Zu Punkten konvertieren</translation>
+      <translation>In Punkte umwandeln</translation>
     </message>
   </context>
   <context>
@@ -84,11 +84,11 @@
     </message>
     <message>
       <source>Structured point cloud</source>
-      <translation>Geordnete Punktwolke</translation>
+      <translation>Strukturierte Punktwolke</translation>
     </message>
     <message>
       <source>Convert points to structured point cloud</source>
-      <translation>Punkte in geordnete Punktwolke umwandeln</translation>
+      <translation>Punkte in eine strukturierte Punktwolke umwandeln</translation>
     </message>
   </context>
   <context>
@@ -118,7 +118,7 @@
     </message>
     <message>
       <source>Convert to points</source>
-      <translation>Zu Punkten konvertieren</translation>
+      <translation>In Punkte umwandeln</translation>
     </message>
     <message>
       <source>Cut points</source>

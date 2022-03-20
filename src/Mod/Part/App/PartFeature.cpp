@@ -449,9 +449,9 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
                     continue;
             }else{
                 if(link && !link->getShowElementValue())
-                    shape = baseShape.makETransform(mat,(TopoShape::indexPostfix()+childName).c_str());
+                    shape = baseShape.makeTransform(mat,(TopoShape::indexPostfix()+childName).c_str());
                 else {
-                    shape = baseShape.makETransform(mat);
+                    shape = baseShape.makeTransform(mat);
                 //     shape.reTagElementMap(subObj->getID(),subObj->getDocument()->getStringHasher());
                 }
             }
@@ -466,7 +466,7 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
 
         // shape.Tag = tag;
         // shape.Hasher = hasher;
-        shape.makECompound(shapes);
+        shape.makeCompound(shapes);
     }
 
     _ShapeCache.setShape(owner,shape);

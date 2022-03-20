@@ -24,24 +24,16 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
 # include <QMenu>
-# include <TopExp.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
-#include "Utils.h"
-#include "ViewProviderPipe.h"
-#include "TaskPipeParameters.h"
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/FeaturePipe.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/Part/Gui/ReferenceHighlighter.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Mod/PartDesign/App/FeaturePipe.h>
+#include <Mod/Part/Gui/ReferenceHighlighter.h>
 
+#include "ViewProviderPipe.h"
+#include "TaskPipeParameters.h"
 
 using namespace PartDesignGui;
 
@@ -153,11 +145,14 @@ void ViewProviderPipe::highlightReferences(ViewProviderPipe::Reference mode, boo
     }
 }
 
-void ViewProviderPipe::highlightReferences(Part::Feature* base, const std::vector<std::string>& edges, bool on) {
+void ViewProviderPipe::highlightReferences(Part::Feature* base, const std::vector<std::string>& edges, bool on)
+{
+    if (!base)
+        return;
 
     PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
                 Gui::Application::Instance->getViewProvider(base));
-    if (svp == nullptr)
+    if (!svp)
         return;
 
     std::vector<App::Color>& edgeColors = originalLineColors[base->getID()];

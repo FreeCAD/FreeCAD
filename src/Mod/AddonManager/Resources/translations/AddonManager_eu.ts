@@ -4,19 +4,35 @@
   <context>
     <name>AddonsInstaller</name>
     <message>
+      <location filename="install_to_toolbar.py" line="76"/>
+      <source>Create new toolbar</source>
+      <translation>Sortu tresna-barra berria</translation>
+    </message>
+    <message>
+      <location filename="install_to_toolbar.py" line="219"/>
+      <source>A macro installed with the FreeCAD Addon Manager</source>
+      <translation>FreeCADen gehigarri-kudeatzailearekin instalatutako makroa</translation>
+    </message>
+    <message>
+      <location filename="install_to_toolbar.py" line="221"/>
+      <source>Run</source>
+      <comment>Indicates a macro that can be &apos;run&apos;</comment>
+      <translation>Exekutatu</translation>
+    </message>
+    <message>
       <location filename="package_details.py" line="112"/>
       <source>Version {version} installed on {date}</source>
-      <translation type="unfinished">Version {version} installed on {date}</translation>
+      <translation>{version} bertsioa instalatu zen {date} egunean</translation>
     </message>
     <message>
       <location filename="package_details.py" line="117"/>
       <source>Version {version} installed</source>
-      <translation type="unfinished">Version {version} installed</translation>
+      <translation>{version} bertsioa instalatu da</translation>
     </message>
     <message>
       <location filename="package_details.py" line="121"/>
       <source>Installed on {date}</source>
-      <translation type="unfinished">Installed on {date}</translation>
+      <translation>Instalazio-data: {date}</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="567"/>
@@ -31,7 +47,7 @@
     <message>
       <location filename="package_details.py" line="103"/>
       <source>Unknown version (no package.xml file found)</source>
-      <translation type="unfinished">Unknown version (no package.xml file found)</translation>
+      <translation>Bertsio ezezaguna (ez da package.xml fitxategia aurkitu)</translation>
     </message>
     <message>
       <location filename="package_details.py" line="108"/>
@@ -61,12 +77,12 @@
     <message>
       <location filename="package_details.py" line="159"/>
       <source>Update check in progress</source>
-      <translation type="unfinished">Update check in progress</translation>
+      <translation>Eguneratzearen egiaztatzea abian</translation>
     </message>
     <message>
       <location filename="package_details.py" line="163"/>
       <source>Automatic update checks disabled</source>
-      <translation type="unfinished">Automatic update checks disabled</translation>
+      <translation>Eguneratze automatikoen egiaztatzeak desgaituta</translation>
     </message>
     <message>
       <location filename="package_details.py" line="172"/>
@@ -76,17 +92,50 @@
     <message>
       <location filename="package_details.py" line="240"/>
       <source>WARNING: This addon is obsolete</source>
-      <translation type="unfinished">WARNING: This addon is obsolete</translation>
+      <translation>ABISUA: Gehigarri hau zaharkituta dago</translation>
     </message>
     <message>
       <location filename="package_details.py" line="250"/>
       <source>WARNING: This addon is Python 2 Only</source>
-      <translation type="unfinished">WARNING: This addon is Python 2 Only</translation>
+      <translation>ABISUA: Gehigarri hau Python 2 bertsiokoa da</translation>
     </message>
     <message>
       <location filename="package_details.py" line="312"/>
       <source>Fetching README.md from package repository</source>
-      <translation type="unfinished">Fetching README.md from package repository</translation>
+      <translation>README.md fitxategia paketeen biltegitik eskuratzen</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="354"/>
+      <source>WARNING: This addon requires FreeCAD </source>
+      <translation>ABISUA: Gehigarri honek honakoa behar du: FreeCAD </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="package_details.py" line="431"/>
+      <source>Delete cached version of this README and re-download</source>
+      <translation>
+        <numerusform>Ezabatu README fitxategi honek cachean duen bertsioa eta deskargatu berriro</numerusform>
+        <numerusform>Ezabatu IRAKURRI hauen cacheko bertsioak eta deskargatu berriro</numerusform>
+      </translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="563"/>
+      <source>Could not load README data from URL {}</source>
+      <translation>Ezin dira README datuak irakurri {} URLtik</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="577"/>
+      <source>Success</source>
+      <translation>Eginda</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="600"/>
+      <source>Changed to git ref &apos;{}&apos; -- please restart to use Addon.</source>
+      <translation>'{}' git ref-ra aldatu da -- mesedez berrabiarazi gehigarria erabiltzeko.</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="636"/>
+      <source>Page JavaScript reported</source>
+      <translation>JavaScript orriaren berri eman da</translation>
     </message>
     <message>
       <location filename="package_details.py" line="407"/>
@@ -114,16 +163,31 @@
       <translation>Exekutatu makroa</translation>
     </message>
     <message>
+      <location filename="package_details.py" line="786"/>
+      <source>Change Branch</source>
+      <translation>Aldatu adarra</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="867"/>
+      <source>Enable</source>
+      <translation>Gaitu</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="870"/>
+      <source>Disable</source>
+      <translation>Desgaitu</translation>
+    </message>
+    <message>
       <location filename="package_details.py" line="424"/>
       <source>Return to package list</source>
       <translation>Itzuli pakete-zerrendara</translation>
     </message>
     <message numerus="yes">
-      <location filename="package_details.py" line="431"/>
-      <source>Delete cached version of this README and re-download</source>
-      <translation type="unfinished">
-        <numerusform>Ezabatu README fitxategi honek cachean duen bertsioa eta deskargatu berriro</numerusform>
-        <numerusform>Delete cached version of this README and re-download</numerusform>
+      <location filename="package_details.py" line="800"/>
+      <source>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</source>
+      <translation>
+        <numerusform>QtWebEngine Python lotura ez dago instalatuta -- IRAKURRI pantailaren ordezko pantaila erabiliz. Ikusi Txostenaren ikuspegia xehetasunak eta instalazio-argibideak lortzeko.</numerusform>
+        <numerusform>QtWebEngine Python loturak ez daude instalatuta -- IRAKURRI pantailaren ordezko pantaila erabiliz. Ikusi Txostenaren ikuspegia xehetasunak eta instalazio-argibideak lortzeko.</numerusform>
       </translation>
     </message>
     <message>
@@ -139,17 +203,17 @@
     <message>
       <location filename="package_list.py" line="207"/>
       <source>Click for details about package {}</source>
-      <translation type="unfinished">Click for details about package {}</translation>
+      <translation>Egin klik {} paketearen xehetasunak eskuratzeko</translation>
     </message>
     <message>
       <location filename="package_list.py" line="211"/>
       <source>Click for details about workbench {}</source>
-      <translation type="unfinished">Click for details about workbench {}</translation>
+      <translation>Egin klik {} lan-mahaiaren xehetasunak eskuratzeko</translation>
     </message>
     <message>
       <location filename="package_list.py" line="215"/>
       <source>Click for details about macro {}</source>
-      <translation type="unfinished">Click for details about macro {}</translation>
+      <translation>Egin klik {} makroaren xehetasunak eskuratzeko</translation>
     </message>
     <message>
       <location filename="package_list.py" line="326"/>
@@ -164,17 +228,12 @@
     <message>
       <location filename="package_list.py" line="364"/>
       <source>Tags</source>
-      <translation type="unfinished">Tags</translation>
+      <translation>Etiketak</translation>
     </message>
     <message>
       <location filename="package_list.py" line="371"/>
       <source>updated</source>
-      <translation type="unfinished">updated</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="376"/>
-      <source>Updated</source>
-      <translation type="unfinished">Updated</translation>
+      <translation>eguneratuta</translation>
     </message>
     <message>
       <location filename="package_list.py" line="382"/>
@@ -197,6 +256,16 @@
       <translation>Berrabioaren zain</translation>
     </message>
     <message>
+      <location filename="package_list.py" line="498"/>
+      <source>DISABLED</source>
+      <translation>DESGAITUTA</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="372"/>
+      <source>Installed version</source>
+      <translation>Instalatutako bertsioa</translation>
+    </message>
+    <message>
       <location filename="package_list.py" line="180"/>
       <source>Click for details about package</source>
       <translation>Egin klik paketearen xehetasunak eskuratzeko</translation>
@@ -212,9 +281,9 @@
       <translation>Egin klik makroaren xehetasunak eskuratzeko</translation>
     </message>
     <message>
-      <location filename="package_list.py" line="372"/>
-      <source>Installed version</source>
-      <translation>Instalatutako bertsioa</translation>
+      <location filename="package_list.py" line="376"/>
+      <source>Updated</source>
+      <translation>Eguneratuta</translation>
     </message>
     <message>
       <location filename="package_list.py" line="380"/>
@@ -269,7 +338,7 @@
     <message>
       <location filename="package_list.py" line="702"/>
       <source>Not installed</source>
-      <translation type="unfinished">Not installed</translation>
+      <translation>Instalatu gabea</translation>
     </message>
     <message>
       <location filename="package_list.py" line="582"/>
@@ -285,7 +354,7 @@
       <location filename="addonmanager_workers.py" line="115"/>
       <source>Checking network connection...
 </source>
-      <translation type="unfinished">Checking network connection...
+      <translation>Egiaztatu sareko konexioa...
 </translation>
     </message>
     <message>
@@ -341,17 +410,27 @@
     <message>
       <location filename="addonmanager_workers.py" line="426"/>
       <source>git fetch failed for {}</source>
-      <translation type="unfinished">git fetch failed for {}</translation>
+      <translation>git fetch eragiketak huts egin du {} kasuan</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="429"/>
       <source>git fetch failed for {wb.name}</source>
-      <translation type="unfinished">git fetch failed for {wb.name}</translation>
+      <translation>git fetch eragiketak huts egin du {wb.name} kasuan</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="433"/>
+      <source>Raw markdown displayed</source>
+      <translation>Markdown gordina bistaratzen ari da.</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="435"/>
+      <source>Python Markdown library is missing.</source>
+      <translation>Python Markdown liburutegia falta da.</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="439"/>
       <source>git pull failed for {wb.name}</source>
-      <translation type="unfinished">git pull failed for {wb.name}</translation>
+      <translation>git pull eragiketak huts egin du {wb.name} kasuan</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="514"/>
@@ -391,7 +470,17 @@
     <message>
       <location filename="addonmanager_workers.py" line="608"/>
       <source>An error occurred fetching macros from GitHub</source>
-      <translation type="unfinished">An error occurred fetching macros from GitHub</translation>
+      <translation>Errorea gertatu da GitHub biltegitik makroak eskuratzean</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="646"/>
+      <source>An error occurred updating macros from GitHub</source>
+      <translation>Errorea gertatu da GitHub biltegitik makroak eguneratzean</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="651"/>
+      <source>Retrieving description...</source>
+      <translation>Deskribapena atzitzen...</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="665"/>
@@ -401,27 +490,7 @@
     <message>
       <location filename="addonmanager_workers.py" line="697"/>
       <source>Caching macro code...</source>
-      <translation type="unfinished">Caching macro code...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="651"/>
-      <source>Retrieving description...</source>
-      <translation>Deskribapena atzitzen...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="824"/>
-      <source>Retrieving info from {}</source>
-      <translation type="unfinished">Retrieving info from {}</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="433"/>
-      <source>Raw markdown displayed</source>
-      <translation>Markdown gordina bistaratzen ari da.</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="435"/>
-      <source>Python Markdown library is missing.</source>
-      <translation>Python Markdown liburutegia falta da.</translation>
+      <translation>Makro-kodea cachean gordetzen...</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="700"/>
@@ -462,6 +531,11 @@
       <location filename="addonmanager_workers.py" line="799"/>
       <source>A macro has been installed and is available under Macro -&gt; Macros menu</source>
       <translation>Makro bat instalatu da eta 'Makroa -&gt; Makroak' menuan erabilgarri dago</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="824"/>
+      <source>Retrieving info from {}</source>
+      <translation>{}-tik informazioa lortzen</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="835"/>
@@ -519,6 +593,11 @@
       <translation>Informazioa atzitzen wikitik</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="1013"/>
+      <source>Error updating module</source>
+      <translation>Errorea modulua eguneratzean</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="1075"/>
       <source>Error updating module </source>
       <translation>Errorea modulua eguneratzan </translation>
@@ -531,7 +610,7 @@
     <message>
       <location filename="addonmanager_workers.py" line="1220"/>
       <source>Error: Unable to locate ZIP from</source>
-      <translation type="unfinished">Error: Unable to locate ZIP from</translation>
+      <translation>Errorea: ezin da aurkitu ZIP-a</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1403"/>
@@ -541,42 +620,42 @@
     <message>
       <location filename="addonmanager_workers.py" line="1405"/>
       <source>Failed to execute pip. Returned error was:</source>
-      <translation type="unfinished">Failed to execute pip. Returned error was:</translation>
+      <translation>Ezin izan da pip exekutatu. Itzulitako errorea hau izan da:</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1611"/>
       <source>Downloaded package.xml for {}</source>
-      <translation type="unfinished">Downloaded package.xml for {}</translation>
+      <translation>{}-rako pakete.xml deskargatu da</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1641"/>
       <source>Downloaded metadata.txt for {}</source>
-      <translation type="unfinished">Downloaded metadata.txt for {}</translation>
+      <translation>{}-rako metadata.txt deskargatu da</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1715"/>
       <source>Downloaded icon for {}</source>
-      <translation type="unfinished">Downloaded icon for {}</translation>
+      <translation>{}-rako ikonoa deskargatu da</translation>
     </message>
     <message>
       <location filename="addonmanager_utilities.py" line="332"/>
       <source>Failed to repair missing .git directory</source>
-      <translation type="unfinished">Failed to repair missing .git directory</translation>
+      <translation>Ezin izan da konpondu .git direktorioa</translation>
     </message>
     <message>
       <location filename="addonmanager_utilities.py" line="335"/>
       <source>Repository URL</source>
-      <translation type="unfinished">Repository URL</translation>
+      <translation>Biltegiaren URLa</translation>
     </message>
     <message>
       <location filename="addonmanager_utilities.py" line="338"/>
       <source>Clone directory</source>
-      <translation type="unfinished">Clone directory</translation>
+      <translation>Klonatu biltegia</translation>
     </message>
     <message>
       <location filename="addonmanager_metadata.py" line="72"/>
       <source>Error with encrypted connection</source>
-      <translation type="unfinished">Error with encrypted connection</translation>
+      <translation>Errorea zifratutako konexioan</translation>
     </message>
     <message>
       <location filename="addonmanager_metadata.py" line="135"/>
@@ -586,32 +665,96 @@
     <message>
       <location filename="addonmanager_metadata.py" line="220"/>
       <source>Failed to connect to URL</source>
-      <translation type="unfinished">Failed to connect to URL</translation>
+      <translation>Huts egin du URLarekin konektatzeak</translation>
+    </message>
+    <message>
+      <location filename="change_branch.py" line="101"/>
+      <source>DANGER: Developer feature</source>
+      <translation>ARRISKUA: Garatzaile-eginbidea</translation>
+    </message>
+    <message>
+      <location filename="change_branch.py" line="114"/>
+      <source>There are local changes</source>
+      <translation>Aldaketa lokalak daude</translation>
+    </message>
+    <message>
+      <location filename="change_branch.py" line="192"/>
+      <source>Branch</source>
+      <comment>git terminology</comment>
+      <translation>Adarra</translation>
+    </message>
+    <message>
+      <location filename="change_branch.py" line="178"/>
+      <source>Tag</source>
+      <comment>git terminology</comment>
+      <translation>Etiketa</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="change_branch.py" line="261"/>
+      <source>Kind</source>
+      <comment>Table header for git ref type (e.g. either Tag or Branch)</comment>
+      <translation>
+        <numerusform>Mota</numerusform>
+        <numerusform>Mota</numerusform>
+      </translation>
+    </message>
+    <message>
+      <location filename="change_branch.py" line="265"/>
+      <source>Local name</source>
+      <comment>Table header for git ref name</comment>
+      <translation>Izen lokala</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="change_branch.py" line="271"/>
+      <source>Tracking</source>
+      <comment>Table header for git remote tracking branch name name</comment>
+      <translation>
+        <numerusform>Jarraipena</numerusform>
+        <numerusform>Lokala eguneratu da</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="change_branch.py" line="277"/>
+      <source>Local updated</source>
+      <comment>Table header for git update time of local branch</comment>
+      <translation>
+        <numerusform>Lokalean eguneratua</numerusform>
+        <numerusform>Lokalean eguneratuak</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="change_branch.py" line="283"/>
+      <source>Remote updated</source>
+      <comment>Table header for git update time of remote branch</comment>
+      <translation>
+        <numerusform>Urrunean eguneratua</numerusform>
+        <numerusform>Urrunean eguneratuak</numerusform>
+      </translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="191"/>
       <source>Checking connection</source>
-      <translation type="unfinished">Checking connection</translation>
+      <translation>Konexioa egiaztatzen</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="192"/>
       <source>Checking for connection to GitHub...</source>
-      <translation type="unfinished">Checking for connection to GitHub...</translation>
+      <translation>GitHub-erako konexioa egiaztatzen...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="213"/>
       <source>Connection failed</source>
-      <translation type="unfinished">Connection failed</translation>
+      <translation>Konexioak huts egin du</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="240"/>
       <source>Missing dependency</source>
-      <translation type="unfinished">Missing dependency</translation>
+      <translation>Mendekotasuna falta da</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="324"/>
       <source>Starting up...</source>
-      <translation type="unfinished">Starting up...</translation>
+      <translation>Abiarazten...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="258"/>
@@ -636,22 +779,12 @@
     <message>
       <location filename="AddonManager.py" line="1248"/>
       <source>Refresh local cache</source>
-      <translation type="unfinished">Refresh local cache</translation>
+      <translation>Freskatu cache lokala</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="659"/>
       <source>Updating cache...</source>
-      <translation type="unfinished">Updating cache...</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="243"/>
-      <source>Checking for updates...</source>
-      <translation>Eguneraketak bilatzen...</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation type="unfinished">Apply {} update(s)</translation>
+      <translation>Cachea eguneratzen...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="86"/>
@@ -671,7 +804,12 @@
     <message>
       <location filename="AddonManager.py" line="241"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
-      <translation type="unfinished">Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</translation>
+      <translation>Ezin izan da QtNetwork inportatu -- ikusi Txosten ikuspegia xehetasunetarako. Gehigarrien kudeatzailea ez dago erabilgarri.</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="243"/>
+      <source>Checking for updates...</source>
+      <translation>Eguneraketak bilatzen...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="262"/>
@@ -714,6 +852,11 @@
       <translation>Makroa ongi kendu da.</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="504"/>
+      <source>Macro could not be removed.</source>
+      <translation>Makroa ezin izan da kendu.</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="534"/>
       <source>Addon Manager: Skipping update check because AutoCheck user preference is False</source>
       <translation>Gehigarrien kudeatzailea: Eguneraketaren egiaztapena saltatu da 'AutoCheck' erabiltzaile-hobespena faltsua delako</translation>
@@ -722,6 +865,11 @@
       <location filename="AddonManager.py" line="542"/>
       <source>Restart required</source>
       <translation>Berrabiaraztea beharrezkoa da</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation>Aplikatu {} eguneratze</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="577"/>
@@ -741,37 +889,37 @@
     <message>
       <location filename="AddonManager.py" line="915"/>
       <source>Too many to list</source>
-      <translation type="unfinished">Too many to list</translation>
+      <translation>Gehiegi zerrendatzeko</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="893"/>
       <source>Missing Requirement</source>
-      <translation type="unfinished">Missing Requirement</translation>
+      <translation>Falta den eskakizuna</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="964"/>
       <source>Installing dependencies</source>
-      <translation type="unfinished">Installing dependencies</translation>
+      <translation>Mendekotasunak instalatzen</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1061"/>
       <source>Cannot execute Python</source>
-      <translation type="unfinished">Cannot execute Python</translation>
+      <translation>Ezin da Python exekutatu</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1081"/>
       <source>Cannot execute pip</source>
-      <translation type="unfinished">Cannot execute pip</translation>
+      <translation>Ezin da pip exekutatu</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1102"/>
       <source>Package installation failed</source>
-      <translation type="unfinished">Package installation failed</translation>
+      <translation>Paketearen instalazioak huts egin du</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1105"/>
       <source>See Report View for detailed failure log.</source>
-      <translation type="unfinished">See Report View for detailed failure log.</translation>
+      <translation>Ikusi txostena huts egitearen erregistro xehea kontsultatzeko.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="703"/>
@@ -782,25 +930,25 @@
       <location filename="AddonManager.py" line="1280"/>
       <source>{} total, see Report view for list</source>
       <comment>Describes the number of updates that were completed (&apos;{}&apos; is replaced by the number of updates)</comment>
-      <translation type="unfinished">
-        <numerusform>{} total, see Report view for list</numerusform>
-        <numerusform>{} total, see Report view for list</numerusform>
+      <translation>
+        <numerusform>{} guztira, Txosten ikuspegira jo zerrenda ikusteko</numerusform>
+        <numerusform>{} guztira, Txosten ikuspegira jo zerrenda ikusteko</numerusform>
       </translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1178"/>
       <source>Succeeded</source>
-      <translation type="unfinished">Succeeded</translation>
+      <translation>Ongi egin da</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1159"/>
       <source>All packages updates failed:</source>
-      <translation type="unfinished">All packages updates failed:</translation>
+      <translation>Pakete guztien eguneratzeak huts egin du:</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1183"/>
       <source>Failed</source>
-      <translation type="unfinished">Failed</translation>
+      <translation>Huts egin du</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="800"/>
@@ -820,22 +968,22 @@
     <message>
       <location filename="AddonManager.py" line="1457"/>
       <source>Confirm remove</source>
-      <translation type="unfinished">Confirm remove</translation>
+      <translation>Baieztatu kentzea</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1460"/>
       <source>Are you sure you want to uninstall this Addon?</source>
-      <translation type="unfinished">Are you sure you want to uninstall this Addon?</translation>
+      <translation>Ziur al zaude gehigarri hau desinstalatu nahi duzula?</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1513"/>
       <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
-      <translation type="unfinished">Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</translation>
+      <translation>Huts egin du Addon-en uninstall.py script-a exekutatu. Desinstalatzen jarraitzen...</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="504"/>
-      <source>Macro could not be removed.</source>
-      <translation>Makroa ezin izan da kendu.</translation>
+      <location filename="AddonManager.py" line="1558"/>
+      <source>Successfully uninstalled {}</source>
+      <translation>{} ongi desinstalatu da</translation>
     </message>
     <message>
       <location filename="addonmanager_macro.py" line="157"/>

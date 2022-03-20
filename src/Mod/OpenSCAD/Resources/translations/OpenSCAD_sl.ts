@@ -4,6 +4,11 @@
   <context>
     <name>OpenSCAD</name>
     <message>
+      <location filename="OpenSCADUtils.py" line="710"/>
+      <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
+      <translation>OpenSCADova dototeka vsebuje tako 2D, kot 3D oblike. Ta uvozilnik tega ne podpira. Vse oblike morajo imeti enako število razsežnosti.</translation>
+    </message>
+    <message>
       <location filename="OpenSCADUtils.py" line="622"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
       <translation>Napaka, vse oblike morajo biti 2D ali pa obe 3D</translation>

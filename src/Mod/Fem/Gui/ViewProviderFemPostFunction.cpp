@@ -63,6 +63,7 @@
 #include <Gui/Macro.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/Control.h>
+#include <App/Document.h>
 #include <App/PropertyUnits.h>
 
 #include "ui_PlaneWidget.h"

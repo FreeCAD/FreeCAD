@@ -28,7 +28,6 @@ if(MSVC)
         importlib_umfpackamd.lib
         ${SMSH_LIBRARIES}
         ${SMESH_LIBRARIES}
-        #OCCAdaptMesh
     )
 else(MSVC)
     set(CamGui_LIBS
@@ -47,7 +46,7 @@ SOURCE_GROUP("Moc" FILES ${CamGui_MOC_SRCS})
 set(CamGui_UIC_SRCS
     Cutting.ui
 )
-qt4_wrap_ui(CamGui_UIC_HDRS ${CamGui_UIC_SRCS})
+qt5_wrap_ui(CamGui_UIC_HDRS ${CamGui_UIC_SRCS})
 
 SET(CamGui_SRCS
     ${CamGui_UIC_HDRS}

@@ -26,28 +26,20 @@
 #ifndef _PreComp_
 # include <QAction>
 # include <QFontMetrics>
-# include <QKeyEvent>
 # include <QListWidget>
 # include <QMessageBox>
 #endif
 
+#include <Base/Interpreter.h>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <Gui/Selection.h>
+#include <Gui/Tools.h>
+#include <Gui/ViewProvider.h>
+#include <Mod/PartDesign/App/FeatureChamfer.h>
+
 #include "ui_TaskChamferParameters.h"
 #include "TaskChamferParameters.h"
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Base/UnitsApi.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
-#include <Gui/Tools.h>
-#include <Mod/PartDesign/App/FeatureChamfer.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/Sketcher/App/SketchObject.h>
 
 
 using namespace PartDesignGui;
@@ -67,6 +59,12 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView, Q
     PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
 
     setUpUI(pcChamfer);
+
+    bool useAllEdges = pcChamfer->UseAllEdges.getValue();
+    ui->checkBoxUseAllEdges->setChecked(useAllEdges);
+    ui->buttonRefAdd->setEnabled(!useAllEdges);
+    ui->buttonRefRemove->setEnabled(!useAllEdges);
+    ui->listWidgetReferences->setEnabled(!useAllEdges);
     QMetaObject::invokeMethod(ui->chamferSize, "setFocus", Qt::QueuedConnection);
 
     std::vector<std::string> strings = pcChamfer->Base.getSubValues();
@@ -91,6 +89,8 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView, Q
         this, SLOT(onButtonRefAdd(bool)));
     connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
         this, SLOT(onButtonRefRemove(bool)));
+    connect(ui->checkBoxUseAllEdges, SIGNAL(toggled(bool)),
+            this, SLOT(onCheckBoxUseAllEdgesToggled(bool)));
 
     // Create context menu
     createDeleteAction(ui->listWidgetReferences, ui->buttonRefRemove);
@@ -147,6 +147,7 @@ void TaskChamferParameters::setUpUI(PartDesign::Chamfer* pcChamfer)
     ui->sizeLabel->setMinimumWidth(minWidth);
     ui->size2Label->setMinimumWidth(minWidth);
     ui->angleLabel->setMinimumWidth(minWidth);
+
 }
 
 void TaskChamferParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -188,6 +189,16 @@ void TaskChamferParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             DressUpView->highlightReferences(true);
         }
     }
+}
+
+void TaskChamferParameters::onCheckBoxUseAllEdgesToggled(bool checked)
+{
+    PartDesign::Chamfer* pcChamfer = static_cast<PartDesign::Chamfer*>(DressUpView->getObject());
+    ui->buttonRefRemove->setEnabled(!checked);
+    ui->buttonRefAdd->setEnabled(!checked);
+    ui->listWidgetReferences->setEnabled(!checked);
+    pcChamfer->UseAllEdges.setValue(checked);
+    pcChamfer->getDocument()->recomputeFeature(pcChamfer);
 }
 
 void TaskChamferParameters::clearButtons(const selectionModes notThis)

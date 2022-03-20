@@ -48,7 +48,6 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
     """Controller for the drilling operation's page"""
 
     def initPage(self, obj):
-        # pylint: disable=attribute-defined-outside-init
         self.peckDepthSpinBox = PathGui.QuantitySpinBox(
             self.form.peckDepth, obj, "PeckDepth"
         )
@@ -89,23 +88,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
         return form
 
-    def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
-        """fillComboboxes(form, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
-        ** comboBoxesPropertyMap will be unnecessary if UI files use strict combobox naming protocol.
-        Args:
-            form = UI form
-            enumTups = list of (translated_text, data_string) tuples
-            comboBoxesPropertyMap = list of (translated_text, data_string) tuples
-        """
-        # Load appropriate enumerations in each combobox
-        for cb, prop in comboBoxesPropertyMap:
-            box = getattr(form, cb)  # Get the combobox
-            box.clear()  # clear the combobox
-            for text, data in enumTups[prop]:  #  load enumerations
-                box.addItem(text, data)
-
     def updateQuantitySpinBoxes(self, index=None):
-        # pylint: disable=unused-argument
         self.peckDepthSpinBox.updateSpinBox()
         self.peckRetractSpinBox.updateSpinBox()
         self.dwellTimeSpinBox.updateSpinBox()

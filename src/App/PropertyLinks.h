@@ -24,15 +24,10 @@
 #ifndef APP_PROPERTYLINKS_H
 #define APP_PROPERTYLINKS_H
 
-// Std. configurations
-#include <boost_signals2.hpp>
-
-#include <vector>
-#include <map>
 #include <list>
+#include <map>
 #include <string>
-#include <memory>
-#include <cinttypes>
+#include <vector>
 #include "Property.h"
 
 namespace Base {

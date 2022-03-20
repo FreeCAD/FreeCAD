@@ -722,6 +722,11 @@ Tę właściwość można tylko przeglądać, ponieważ liczba jest zależna od 
       <translation>Powierzchnia tego obiektu</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Kształt tego obiektu</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>Obiekt podstawowy używany przez ten obiekt</translation>
@@ -730,11 +735,6 @@ Tę właściwość można tylko przeglądać, ponieważ liczba jest zależna od 
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
       <translation>Plik wzoru używany przez ten obiekt</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Kształt tego obiektu</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>
@@ -759,12 +759,12 @@ Tę właściwość można tylko przeglądać, ponieważ liczba jest zależna od 
     <message>
       <location filename="bezcurve.py" line="46"/>
       <source>The points of the Bezier curve</source>
-      <translation>Punkty krzywej Beziera</translation>
+      <translation>Punkty krzywej Béziera</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="50"/>
       <source>The degree of the Bezier function</source>
-      <translation>Stopień funkcji Beziera</translation>
+      <translation>Stopień funkcji Béziera</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="54"/>
@@ -774,7 +774,7 @@ Tę właściwość można tylko przeglądać, ponieważ liczba jest zależna od 
     <message>
       <location filename="bezcurve.py" line="58"/>
       <source>If the Bezier curve should be closed or not</source>
-      <translation>Czy krzywa Beziera ma być zamknięta czy nie</translation>
+      <translation>Czy krzywa Béziera ma być zamknięta, czy nie</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="62"/>
@@ -1146,12 +1146,12 @@ beyond the dimension line</source>
     <message>
       <location filename="view_base.py" line="106"/>
       <source>Defines an SVG pattern.</source>
-      <translation type="unfinished">Defines an SVG pattern.</translation>
+      <translation>Definiuje wzór kreskowania w formacie SVG.</translation>
     </message>
     <message>
       <location filename="view_base.py" line="116"/>
       <source>Defines the size of the SVG pattern.</source>
-      <translation type="unfinished">Defines the size of the SVG pattern.</translation>
+      <translation>Ustawia rozmiar wzoru SVG.</translation>
     </message>
     <message>
       <location filename="view_label.py" line="73"/>
@@ -1229,7 +1229,7 @@ beyond the dimension line</source>
     <message>
       <location filename="InitGui.py" line="107"/>
       <source>Draft utility tools</source>
-      <translation>Przybory do rysowania</translation>
+      <translation>Rysunek Roboczy - przybory</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="122"/>
@@ -1408,22 +1408,22 @@ z menu Przybory -&gt; Menedżer dodatków</translation>
     <message>
       <location filename="init_tools.py" line="56"/>
       <source>Bezier tools</source>
-      <translation>Narzędzia Beziera</translation>
+      <translation>Narzędzia Béziera</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="145"/>
       <source>Draft creation tools</source>
-      <translation>Narzędzia kreślarskie</translation>
+      <translation>Rysunek Roboczy — kreślenie</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="148"/>
       <source>Draft annotation tools</source>
-      <translation>Narzędzia opisów kreślarskich</translation>
+      <translation>Rysunek Roboczy — opisy</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="151"/>
       <source>Draft modification tools</source>
-      <translation>Narzędzia do modyfikacji kreślarskich</translation>
+      <translation>Rysunek Roboczy — narzędzia modyfikujące</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="166"/>
@@ -1587,7 +1587,7 @@ Utwórz najpierw grupę, aby użyć tego narzędzia.</translation>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="80"/>
       <source>Annotation styles...</source>
-      <translation>Styl adnotacji ...</translation>
+      <translation>Styl opisu ...</translation>
     </message>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="82"/>
@@ -1648,7 +1648,7 @@ CTRL, aby przyciągnąć, SHIFT, aby utworzyć wiązanie.</translation>
       <source>Creates a circular arc by picking 3 points.
 CTRL to snap, SHIFT to constrain.</source>
       <translation>Tworzy łuk kołowy przez wskazane trzech punktów. 
-CTRL, aby przyciągnąć, SHIFT, aby utworzyc wiązanie.</translation>
+CTRL, aby przyciągnąć, SHIFT, aby utworzyć wiązanie.</translation>
     </message>
   </context>
   <context>
@@ -1718,7 +1718,7 @@ Tablicę można przekształcić w tablicę polarną lub okrągłą, zmieniając 
       <location filename="gui_splines.py" line="63"/>
       <source>Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain.</source>
       <translation>Tworzy wielopunktową krzywą złożoną. 
-CTRL aby przyciągnąć, SHIFT aby związać.</translation>
+CTRL, aby przyciągnąć, SHIFT, aby utworzyć wiązanie.</translation>
     </message>
   </context>
   <context>
@@ -1726,7 +1726,7 @@ CTRL aby przyciągnąć, SHIFT aby związać.</translation>
     <message>
       <location filename="gui_beziers.py" line="64"/>
       <source>BÃ©zier curve</source>
-      <translation type="unfinished">BÃ©zier curve</translation>
+      <translation>Krzywa Béziera</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="64"/>
@@ -1737,15 +1737,15 @@ CTRL aby przyciągnąć, SHIFT aby związać.</translation>
       <location filename="gui_beziers.py" line="67"/>
       <source>Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Tworzy N-stopniową krzywą Béziera. Im więcej punktów wybierzesz, tym osiągniesz wyższy stopień krzywej.
+CTRL, aby przyciągnąć, SHIFT, aby utworzyć wiązanie.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="67"/>
       <source>Creates an N-degree Bezier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation>Tworzy krzywą Beziera N-stopniowego. Im więcej punktów wybierzesz, tym wyższy stopień.
-CTRL, aby przyciągnąć, SHIFT, aby ograniczyć.</translation>
+      <translation>Tworzy N-stopniową krzywą Béziera. Im więcej punktów wybierzesz, tym osiągniesz wyższy stopień krzywej.
+CTRL, aby przyciągnąć, SHIFT, aby utworzyć wiązanie.</translation>
     </message>
   </context>
   <context>
@@ -1753,22 +1753,22 @@ CTRL, aby przyciągnąć, SHIFT, aby ograniczyć.</translation>
     <message>
       <location filename="gui_beziers.py" line="475"/>
       <source>BÃ©zier tools</source>
-      <translation type="unfinished">BÃ©zier tools</translation>
+      <translation>Krzywe Béziera</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="475"/>
       <source>Bezier tools</source>
-      <translation>Narzędzia Beziera</translation>
+      <translation>Narzędzia Béziera</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="478"/>
       <source>Create various types of BÃ©zier curves.</source>
-      <translation type="unfinished">Create various types of BÃ©zier curves.</translation>
+      <translation>Tworzy różne typy krzywych Béziera.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="478"/>
       <source>Create various types of Bezier curves.</source>
-      <translation>Tworzy różne typy krzywych Beziera.</translation>
+      <translation>Tworzy różne typy krzywych Béziera.</translation>
     </message>
   </context>
   <context>
@@ -1825,28 +1825,28 @@ Uzyskany klon może być skalowany w każdym z trzech kierunków.</translation>
     <message>
       <location filename="gui_beziers.py" line="242"/>
       <source>Cubic BÃ©zier curve</source>
-      <translation type="unfinished">Cubic BÃ©zier curve</translation>
+      <translation>Sześcienna krzywa Béziera</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="242"/>
       <source>Cubic bezier curve</source>
-      <translation>Sześcienna krzywa Beziera</translation>
+      <translation>Sześcienna krzywa Béziera</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="245"/>
       <source>Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
-After the curve is created you can go back to edit each control point and set the properties of each knot.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Tworzy krzywą Béziera wykonaną z segmentów drugiego stopnia (kwadratowa) i trzeciego stopnia (sześcienna). Kliknij i przeciągnij, aby zdefiniować każdy segment.
+Po utworzeniu krzywej możesz wrócić do edycji każdego punktu kontrolnego i ustawić właściwości każdego węzła.
+CTRL aby przyciągnąć, SHIFT aby utworzyć wiązanie.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="245"/>
       <source>Creates a Bezier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation>Tworzy krzywą Beziera wykonaną z segmentów drugiego stopnia (kwadrat) i trzeciego stopnia (sześciokąt). Kliknij i przeciągnij, aby zdefiniować każdy segment.
+      <translation>Tworzy krzywą Béziera wykonaną z segmentów drugiego stopnia (kwadrat) i trzeciego stopnia (sześciokąt). Kliknij i przeciągnij, aby zdefiniować każdy segment.
 Po utworzeniu krzywej możesz wrócić do edycji każdego punktu kontrolnego i ustawić właściwości każdego węzła.
 CTRL aby przyciągnąć, SHIFT aby utworzyć wiązanie.</translation>
     </message>
@@ -1891,7 +1891,7 @@ to turn it into a 'Draft Dimension' object.</source>
 - Wybierz prostą, aby utworzyć wymiar liniowy powiązany z tą prostą.
 - Wybierz łuk lub okrąg, aby utworzyć wymiar promienia lub średnicy powiązany z tym łukiem.
 - Zaznacz dwie linie proste, aby utworzyć między nimi wymiar kątowy.
-CTRL - aby przyciągnąć, SHIFT - aby związać, ALT - aby wybrać krawędź lub łuk.
+CTRL - aby przyciągnąć, SHIFT - aby utworzyć wiązanie, ALT - aby wybrać krawędź lub łuk.
 
 Można wybrać pojedynczą linię lub pojedynczy łuk kołowy przed uruchomieniem tego polecenia
 aby utworzyć odpowiedni połączony wymiar.
@@ -2125,8 +2125,8 @@ Obiekty dodane do tej warstwy mogą mieć te same właściwości wizualne, takie
     <message>
       <location filename="gui_lines.py" line="67"/>
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
-      <translation>Tworzy linię 2-punktową. 
-CTRL do przyciągania, SHIFT aby związać.</translation>
+      <translation>Tworzy linię dwupunktową. 
+CTRL, aby przyciągnąć, SHIFT, aby utworzyć wiązanie.</translation>
     </message>
   </context>
   <context>
@@ -2171,7 +2171,7 @@ If the "copy" option is active, it will create displaced copies.
 CTRL to snap, SHIFT to constrain.</source>
       <translation>Przenosi zaznaczone obiekty z jednego punktu bazowego do innego punktu.
 Jeśli opcja "kopiuj" jest aktywna, to stworzy kopię przeniesionych.
-CTRL do przyciągania, SHIFT do ograniczenia.</translation>
+CTRL, aby przyciągnąć, SHIFT, aby utworzyć wiązanie.</translation>
     </message>
   </context>
   <context>
@@ -2188,7 +2188,7 @@ It can also create an offset copy of the original object.
 CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</source>
       <translation>Odsuwa od wybranego obiektu.
 Może również tworzyć odsuniętą kopię oryginalnego obiektu.
-CTRL, aby przyciągnąć, SHIFT, aby ograniczyć. Przytrzymaj ALT i kliknij, aby utworzyć kopię przy każdym kliknięciu.</translation>
+CTRL, aby przyciągnąć, SHIFT, aby utworzyć wiązanie. Przytrzymaj ALT i kliknij, aby utworzyć kopię przy każdym kliknięciu.</translation>
     </message>
   </context>
   <context>
@@ -2224,7 +2224,7 @@ First select the object, and then select the path.
 The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</source>
       <translation>Tworzy kopie wybranego obiektu wzdłuż wybranej ścieżki.
 Najpierw wybierz obiekt, a następnie wybierz ścieżkę.
-Ścieżka może być polilinią, krzywą złożoną, krzywą Beziera lub nawet krawędziami innych obiektów.</translation>
+Ścieżka może być poliginia, krzywą złożoną, krzywą Béziera lub nawet krawędziami innych obiektów.</translation>
     </message>
   </context>
   <context>
@@ -2256,7 +2256,7 @@ First select the object, and then select the path.
 The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</source>
       <translation>Tworzy kopie wybranego obiektu wzdłuż wybranej ścieżki i dokonuje obrotu tych kopii.
 Najpierw wybierz obiekt, a następnie wybierz ścieżkę.
-Ścieżka może być polilinią, B-spline, krzywą Beziera lub nawet krawędziami innych obiektów.</translation>
+Ścieżka może być polilinią, krzywą złożoną, krzywą Béziera lub nawet krawędziami innych obiektów.</translation>
     </message>
   </context>
   <context>
@@ -2389,7 +2389,7 @@ If the "copy" option is active, it will create rotated copies.
 CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</source>
       <translation>Obraca wybrane obiekty. Wybierz środek obrotu, następnie kąt początkowy, a następnie kąt końcowy.
 Jeśli opcja "kopiuj" jest aktywna, to stworzy kopie obracane.
-CTRL, aby przyciągnąć, SHIFT, aby ograniczyć. Przytrzymaj ALT i kliknij aby utworzyć kopię za każdym kliknięciem.</translation>
+CTRL, aby przyciągnąć, SHIFT, aby utworzyć wiązanie. Przytrzymaj ALT i kliknij, aby utworzyć kopię za każdym kliknięciem.</translation>
     </message>
   </context>
   <context>
@@ -2783,7 +2783,7 @@ aby można je było edytować za pomocą narzędzi przesuwania, obracania i skal
     <message>
       <location filename="gui_texts.py" line="63"/>
       <source>Creates a multi-line annotation. CTRL to snap.</source>
-      <translation>Tworzy adnotację wieloliniową. CTRL do przyciągnięcia.</translation>
+      <translation>Tworzy opis wieloliniowy. CTRL do przyciągnięcia.</translation>
     </message>
   </context>
   <context>
@@ -2845,7 +2845,7 @@ Jest przeznaczona do użytku z zamkniętymi kształtami i bryłami i nie ma wpł
     <message>
       <location filename="gui_grid.py" line="59"/>
       <source>Toggles the Draft grid on and off.</source>
-      <translation>Włącza/Wyłącza siatkę projektu.</translation>
+      <translation>Włącza / wyłącza siatkę projektu.</translation>
     </message>
   </context>
   <context>
@@ -2893,7 +2893,7 @@ przekształcać zamknięte krawędzie w wypełnione ściany i parametryczne wiel
       <location filename="gui_lines.py" line="313"/>
       <source>Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</source>
       <translation>Tworzy wielopunktową linię (polilinię). 
-CTRL do przyciągania, SHIFT aby związać.</translation>
+CTRL, aby przyciągnąć, SHIFT, aby utworzyć wiązanie.</translation>
     </message>
   </context>
   <context>
@@ -2952,22 +2952,22 @@ Następnie można go użyć do zapisania innej pozycji ujęcia widoku i stanów 
     <message>
       <location filename="InitGui.py" line="104"/>
       <source>Draft creation tools</source>
-      <translation>Narzędzia kreślarskie</translation>
+      <translation>Rysunek Roboczy — kreślenie</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="107"/>
       <source>Draft annotation tools</source>
-      <translation>Narzędzia opisów kreślarskich</translation>
+      <translation>Rysunek Roboczy — opisy</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="110"/>
       <source>Draft modification tools</source>
-      <translation>Narzędzia do modyfikacji rysunku</translation>
+      <translation>Rysunek Roboczy — narzędzia modyfikujące</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="113"/>
       <source>Draft utility tools</source>
-      <translation>Przybory do rysowania</translation>
+      <translation>Rysunek Roboczy — przybory</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="118"/>
@@ -2997,12 +2997,12 @@ Następnie można go użyć do zapisania innej pozycji ujęcia widoku i stanów 
     <message>
       <location filename="init_tools.py" line="58"/>
       <source>BÃ©zier tools</source>
-      <translation type="unfinished">BÃ©zier tools</translation>
+      <translation>Krzywe Béziera</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="58"/>
       <source>Bezier tools</source>
-      <translation>Narzędzia Beziera</translation>
+      <translation>Narzędzia Béziera</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="89"/>
@@ -3012,7 +3012,7 @@ Następnie można go użyć do zapisania innej pozycji ujęcia widoku i stanów 
     <message>
       <location filename="gui_snapper.py" line="1470"/>
       <source>Draft Snap</source>
-      <translation>Rysunek Roboczy - przyciąganie</translation>
+      <translation>Rysunek Roboczy — przyciąganie</translation>
     </message>
   </context>
   <context>
@@ -3110,7 +3110,7 @@ Następnie można go użyć do zapisania innej pozycji ujęcia widoku i stanów 
     <message>
       <location filename="DraftGui.py" line="146"/>
       <source>Set Working Plane</source>
-      <translation>Ustaw Płaszczyznę Roboczą</translation>
+      <translation>Ustaw płaszczyznę roboczą</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="151"/>
@@ -3125,7 +3125,7 @@ Następnie można go użyć do zapisania innej pozycji ujęcia widoku i stanów 
     <message>
       <location filename="DraftGui.py" line="330"/>
       <source>Draft Command Bar</source>
-      <translation>Pasek komend projektu</translation>
+      <translation>Pasek poleceń kreślarskich</translation>
     </message>
     <message>
       <location filename="gui_selectplane.py" line="369"/>
@@ -3215,7 +3215,7 @@ Następnie można go użyć do zapisania innej pozycji ujęcia widoku i stanów 
     <message>
       <location filename="DraftGui.py" line="736"/>
       <source>Length of current segment</source>
-      <translation>Długość odcinka bieżącego</translation>
+      <translation>Długość aktualnego odcinka</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="737"/>
@@ -3351,7 +3351,7 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
     <message>
       <location filename="DraftGui.py" line="799"/>
       <source>Text string to draw</source>
-      <translation>Krzywe tekstu do rysowania</translation>
+      <translation>Ciąg tekstu do nakreślenia</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="800"/>
@@ -3426,7 +3426,7 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
     <message>
       <location filename="DraftGui.py" line="953"/>
       <source>DWire</source>
-      <translation>DWire</translation>
+      <translation>Polilinia</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="971"/>
@@ -3546,12 +3546,12 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
     <message>
       <location filename="DraftGui.py" line="1496"/>
       <source>Invalid Size value. Using 200.0.</source>
-      <translation>Nieprawidłowa wartość rozmiaru. Użyj 200.0.</translation>
+      <translation>Nieprawidłowa wartość rozmiaru. Przyjęto 200.0.</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1504"/>
       <source>Invalid Tracking value. Using 0.</source>
-      <translation>Nieprawidłowa wartość śledzenia. Użyj 0.</translation>
+      <translation>Nieprawidłowa wartość śledzenia. Przyjęto 0.</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1518"/>
@@ -3566,7 +3566,7 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
     <message>
       <location filename="DraftGui.py" line="1560"/>
       <source>Please enter a font file.</source>
-      <translation>Wprowadź plik czcionki.</translation>
+      <translation>Proszę wprowadzić plik czcionki.</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="2047"/>
@@ -3711,6 +3711,11 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
       <translation>Znaleziono kilka linii łamanych lub krawędzi: łączenie ich</translation>
     </message>
     <message>
+      <location filename="upgrade.py" line="541"/>
+      <source>Found several non-treatable objects: creating compound</source>
+      <translation>Znaleziono kilka nieobsługiwanych obiektów: utwórz obiekt złożony</translation>
+    </message>
+    <message>
       <location filename="upgrade.py" line="512"/>
       <source>trying: closing it</source>
       <translation>próba: zamknięcia</translation>
@@ -3729,11 +3734,6 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
       <location filename="upgrade.py" line="536"/>
       <source>Found points: creating compound</source>
       <translation>Znalezione punkty: tworzenie złożenia</translation>
-    </message>
-    <message>
-      <location filename="upgrade.py" line="541"/>
-      <source>Found several non-treatable objects: creating compound</source>
-      <translation>Znaleziono kilka nieobsługiwanych obiektów: utwórz obiekt złożony</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="544"/>
@@ -3878,7 +3878,7 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
     <message>
       <location filename="make_arc_3points.py" line="198"/>
       <source>Map mode:</source>
-      <translation>Tryb dołaczenia:</translation>
+      <translation>Tryb odłączenia:</translation>
     </message>
     <message>
       <location filename="make_fillet.py" line="145"/>
@@ -4254,7 +4254,7 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
     <message>
       <location filename="view_base.py" line="402"/>
       <source>Please load the Draft Workbench to enable editing this object</source>
-      <translation type="unfinished">Please load the Draft Workbench to enable editing this object</translation>
+      <translation>Proszę załadować środowisko pracy Rysunek Roboczy, aby włączyć edycję tego obiektu</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="46"/>
@@ -4269,7 +4269,7 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
     <message>
       <location filename="init_draft_statusbar.py" line="140"/>
       <source>Unable to convert input into a  scale factor</source>
-      <translation>Nie można przekonwertować danych wejściowych według współczynnika skali</translation>
+      <translation>Nie można przekonwertować danych wejściowych na współczynnik skali</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="141"/>
@@ -4379,7 +4379,7 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
     <message>
       <location filename="init_tools.py" line="169"/>
       <source>Snap Lock</source>
-      <translation>Przełącz przyciąganie</translation>
+      <translation>Zablokuj przyciąganie</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="170"/>
@@ -4494,7 +4494,7 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
     <message>
       <location filename="gui_utils.py" line="738"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
-      <translation>Nie ma 'ViewObject.RootNode'.</translation>
+      <translation>Nie ma "ViewObject.RootNode".</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="83"/>
@@ -5102,7 +5102,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_beziers.py" line="332"/>
       <source>BÃ©zier curve has been closed</source>
-      <translation type="unfinished">BÃ©zier curve has been closed</translation>
+      <translation>Krzywa Béziera została zamknięta</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="131"/>
@@ -5117,7 +5117,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_beziers.py" line="451"/>
       <source>Create BezCurve</source>
-      <translation>Utwórz krzywą Beziera</translation>
+      <translation>Utwórz krzywą Béziera</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="376"/>
@@ -5127,7 +5127,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_beziers.py" line="332"/>
       <source>Bezier curve has been closed</source>
-      <translation>Krzywa Beziera została zamknięta</translation>
+      <translation>Krzywa Béziera została zamknięta</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="382"/>
@@ -5492,7 +5492,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_offset.py" line="123"/>
       <source>Offset of Bezier curves is currently not supported</source>
-      <translation>Przesunięcie krzywych Beziera nie jest obecnie obsługiwane</translation>
+      <translation>Odsunięcie krzywych Béziera nie jest obecnie obsługiwane</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="448"/>
@@ -5713,7 +5713,7 @@ Kąt końcowy będzie równy kątowi podstawowemu plus ta wartość.</translatio
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
       <source>Annotation Styles Editor</source>
-      <translation>Edytor stylów adnotacji</translation>
+      <translation>Edytor stylów opisów</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
@@ -7074,7 +7074,7 @@ Zauważ, że nie jest to w pełni obsługiwane, a wiele obiektów nie będzie ed
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="54"/>
       <source>Draft classic style</source>
-      <translation>Styl klasyczny szkicu</translation>
+      <translation>Styl klasyczny rysunku</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="59"/>

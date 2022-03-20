@@ -2,49 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="uk" sourcelanguage="en">
   <context>
-    <name>CopyView</name>
-    <message>
-      <location filename="CommandCopyView.py" line="47"/>
-      <source>Copy View</source>
-      <translation>Копіювати Вигляд</translation>
-    </message>
-    <message>
-      <location filename="CommandCopyView.py" line="50"/>
-      <source>Copy a View to a second Page</source>
-      <translation>Скопіювати Вигляд на другу сторінку</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="46"/>
-      <source>Copy View to a second Page</source>
-      <translation>Скопіювати Вигляд на другу сторінку</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="73"/>
-      <source>Select View to copy from list.</source>
-      <translation>Виберіть Вигляд для копіювання зі списку.</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="74"/>
-      <source>Select View</source>
-      <translation>Виберіть вид</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="92"/>
-      <source>Select From Page.</source>
-      <translation>Оберіть із Сторінки.</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="112"/>
-      <source>Select Page</source>
-      <translation>Вибрати сторінку</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="111"/>
-      <source>Select To Page.</source>
-      <translation>Оберіть із Сторінки.</translation>
-    </message>
-  </context>
-  <context>
     <name>MoveView</name>
     <message>
       <location filename="CommandMoveView.py" line="47"/>
@@ -85,6 +42,97 @@
       <location filename="TaskMoveView.py" line="112"/>
       <source>Select To Page.</source>
       <translation>Оберіть із Сторінки.</translation>
+    </message>
+  </context>
+  <context>
+    <name>ShareView</name>
+    <message>
+      <location filename="CommandShareView.py" line="47"/>
+      <source>Share View</source>
+      <translation>Поділитися Виглядом</translation>
+    </message>
+    <message>
+      <location filename="CommandShareView.py" line="50"/>
+      <source>Share a View on a second Page</source>
+      <translation>Поділитися Виглядом на другій сторінці</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="46"/>
+      <source>Share View with another Page</source>
+      <translation>Поділитися Виглядом з іншою сторінкою</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="47"/>
+      <source>View to share</source>
+      <translation>Переглянути щоб поділитися</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="74"/>
+      <source>Select View to share from list.</source>
+      <translation>Виберіть Перегляд, щоб поділитись зі списку.</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="75"/>
+      <source>Select View</source>
+      <translation>Виберіть вид</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="93"/>
+      <source>Select From Page.</source>
+      <translation>Оберіть із Сторінки.</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="113"/>
+      <source>Select Page</source>
+      <translation>Вибрати сторінку</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="112"/>
+      <source>Select To Page.</source>
+      <translation>Оберіть із Сторінки.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CopyView</name>
+    <message>
+      <location filename="CommandCopyView.py" line="47"/>
+      <source>Copy View</source>
+      <translation>Копіювати Вигляд</translation>
+    </message>
+    <message>
+      <location filename="CommandCopyView.py" line="50"/>
+      <source>Copy a View to a second Page</source>
+      <translation>Скопіювати Вигляд на другу сторінку</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="46"/>
+      <source>Copy View to a second Page</source>
+      <translation>Скопіювати Вигляд на другу сторінку</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="73"/>
+      <source>Select View to copy from list.</source>
+      <translation>Виберіть Вигляд для копіювання зі списку.</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="74"/>
+      <source>Select View</source>
+      <translation>Виберіть вид</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="92"/>
+      <source>Select From Page.</source>
+      <translation>Оберіть із Сторінки.</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="111"/>
+      <source>Select To Page.</source>
+      <translation>Оберіть із Сторінки.</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="112"/>
+      <source>Select Page</source>
+      <translation>Вибрати сторінку</translation>
     </message>
   </context>
   <context>

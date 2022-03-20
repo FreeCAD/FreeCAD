@@ -69,11 +69,11 @@
     </message>
     <message>
       <source>Approximate B-spline surface...</source>
-      <translation>Approximation de la surface de la courbe B-Spline...</translation>
+      <translation>Approximation de la surface de la courbe B-spline...</translation>
     </message>
     <message>
       <source>Approximate a B-spline surface</source>
-      <translation>Approximer la surface d’une courbe B-Spline</translation>
+      <translation>Approximer la surface d’une courbe B-spline</translation>
     </message>
   </context>
   <context>
@@ -194,7 +194,7 @@
     </message>
     <message>
       <source>Fit B-Spline</source>
-      <translation>Ajuster la B-Spline</translation>
+      <translation>Ajuster la courbe B-spline</translation>
     </message>
     <message>
       <source>Poisson reconstruction</source>
@@ -209,7 +209,7 @@
     <name>ReenGui::FitBSplineSurface</name>
     <message>
       <source>Fit B-spline surface</source>
-      <translation>Adapter la surface de la courbe B-Spline</translation>
+      <translation>Adapter la surface de la courbe B-spline</translation>
     </message>
     <message>
       <source>u-Direction</source>

@@ -27,9 +27,7 @@
 #include <Gui/SelectionObject.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Base/Placement.h>
 
-#include <boost_signals2.hpp>
 
 class QSignalMapper;
 

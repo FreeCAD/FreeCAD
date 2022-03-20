@@ -26,7 +26,7 @@
 
 #include <QAbstractItemModel>
 #include <vector>
-#include <map>
+
 
 namespace App {
 class Property;

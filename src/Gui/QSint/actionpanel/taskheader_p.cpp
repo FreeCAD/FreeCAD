@@ -6,18 +6,14 @@
  ***************************************************************************/
 
 #include "taskheader_p.h"
-#include "actionpanelscheme.h"
-#include "actionlabel.h"
 
-#include <QtCore/QVariant>
-#include <QtCore/QEvent>
-#include <QtCore/QTimer>
-
-#include <QHBoxLayout>
-#include <QPainter>
-#include <QMouseEvent>
 #include <QApplication>
+#include <QEvent>
+#include <QHBoxLayout>
+#include <QMouseEvent>
+#include <QPainter>
 #include <QStyle>
+#include <QTimer>
 
 
 namespace QSint

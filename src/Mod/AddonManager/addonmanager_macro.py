@@ -27,14 +27,16 @@ import io
 import codecs
 import shutil
 import time
+from urllib.parse import urlparse
 from typing import Dict, Tuple, List, Union
 
 import FreeCAD
 import NetworkManager
+from PySide2 import QtCore
 
 translate = FreeCAD.Qt.translate
 
-from addonmanager_utilities import remove_directory_if_empty
+from addonmanager_utilities import remove_directory_if_empty, is_float
 
 try:
     from HTMLParser import HTMLParser
@@ -65,6 +67,8 @@ class Macro(object):
         self.date = ""
         self.src_filename = ""
         self.author = ""
+        self.icon = ""
+        self.xpm = ""  # Possible alternate icon data
         self.other_files = []
         self.parsed = False
 
@@ -112,52 +116,113 @@ class Macro(object):
         # __Files__
         # __Author__
         # __Date__
-        max_lines_to_search = 50
+        # __Icon__
+        max_lines_to_search = 200
         line_counter = 0
-        number_of_fields = 5
-        ic = re.IGNORECASE  # Shorten the line for Black
-        re_comment = re.compile(r"^__Comment__\s*=\s*(['\"])(.*)\1", flags=ic)
-        re_url = re.compile(r"^__Web__\s*=\s*(['\"])(.*)\1", flags=ic)
-        re_version = re.compile(r"^__Version__\s*=\s*(['\"])(.*)\1", flags=ic)
-        re_files = re.compile(r"^__Files__\s*=\s*(['\"])(.*)\1", flags=ic)
-        re_author = re.compile(r"^__Author__\s*=\s*(['\"])(.*)\1", flags=ic)
-        re_date = re.compile(r"^__Date__\s*=\s*(['\"])(.*)\1", flags=ic)
 
+        string_search_mapping = {
+            "__comment__": "comment",
+            "__web__": "url",
+            "__version__": "version",
+            "__files__": "other_files",
+            "__author__": "author",
+            "__date__": "date",
+            "__icon__": "icon",
+            "__xpm__": "xpm",
+        }
+
+        string_search_regex = re.compile(r"\s*(['\"])(.*)\1")
         f = io.StringIO(code)
         while f and line_counter < max_lines_to_search:
             line = f.readline()
-            line_counter += 1
-            if not line.startswith(
-                "__"
-            ):  # Speed things up a bit... this comparison is very cheap
-                continue
-            match = re.match(re_comment, line)
-            if match:
-                self.comment = match.group(2)
-                self.comment = re.sub("<.*?>", "", self.comment)  # Strip any HTML tags
-                number_of_fields -= 1
-            match = re.match(re_author, line)
-            if match:
-                self.author = match.group(2)
-                number_of_fields -= 1
-            match = re.match(re_url, line)
-            if match:
-                self.url = match.group(2)
-                number_of_fields -= 1
-            match = re.match(re_version, line)
-            if match:
-                self.version = match.group(2)
-                number_of_fields -= 1
-            match = re.match(re_date, line)
-            if match:
-                self.date = match.group(2)
-                number_of_fields -= 1
-            match = re.match(re_files, line)
-            if match:
-                self.other_files = [of.strip() for of in match.group(2).split(",")]
-                number_of_fields -= 1
-            if number_of_fields <= 0:
+            if not line:
                 break
+            if QtCore.QThread.currentThread().isInterruptionRequested():
+                return
+            line_counter += 1
+            if not line.startswith("__"):
+                # Speed things up a bit... this comparison is very cheap
+                continue
+
+            lowercase_line = line.lower()
+            for key, value in string_search_mapping.items():
+                if lowercase_line.startswith(key):
+                    _, _, after_equals = line.partition("=")
+                    match = re.match(string_search_regex, after_equals)
+                    # We do NOT support triple-quoted strings, except for the icon XPM data
+                    if match and '"""' not in after_equals:
+                        if type(self.__dict__[value]) == str:
+                            self.__dict__[value] = match.group(2)
+                        elif type(self.__dict__[value]) == list:
+                            self.__dict__[value] = [
+                                of.strip() for of in match.group(2).split(",")
+                            ]
+                        string_search_mapping.pop(key)
+                        break
+                    else:
+                        # Macro authors are supposed to be providing strings here, but in some
+                        # cases they are not doing so. If this is the "__version__" tag, try
+                        # to apply some special handling to accepts numbers, and "__date__"
+                        if key == "__version__":
+                            if "__date__" in after_equals.lower():
+                                FreeCAD.Console.PrintLog(
+                                    translate(
+                                        "AddonsInstaller",
+                                        "In macro {}, string literal not found for {} element. Guessing at intent and using string from date element.",
+                                    ).format(self.name, key)
+                                    + "\n"
+                                )
+                                self.version = self.date
+                                break
+                            elif is_float(after_equals):
+                                FreeCAD.Console.PrintLog(
+                                    translate(
+                                        "AddonsInstaller",
+                                        "In macro {}, string literal not found for {} element. Guessing at intent and using string representation of contents.",
+                                    ).format(self.name, key)
+                                    + "\n"
+                                )
+                                self.version = str(after_equals).strip()
+                                break
+                        elif key == "__icon__" or key == "__xpm__":
+                            # If this is an icon, it's possible that the icon was actually directly specified
+                            # in the file as XPM data. This data **must** be between triple double quotes in
+                            # order for the Addon Manager to recognize it.
+                            if '"""' in after_equals:
+                                _, _, xpm_data = after_equals.partition('"""')
+                                while True:
+                                    line = f.readline()
+                                    if not line:
+                                        FreeCAD.Console.PrintError(
+                                            translate(
+                                                "AddonsInstaller",
+                                                "Syntax error while reading {} from macro {}",
+                                            ).format(key, self.name)
+                                            + "\n"
+                                        )
+                                        break
+                                    if '"""' in line:
+                                        last_line, _, _ = line.partition('"""')
+                                        xpm_data += last_line
+                                        break
+                                    else:
+                                        xpm_data += line
+                                self.xpm = xpm_data
+                                break
+
+                        FreeCAD.Console.PrintError(
+                            translate(
+                                "AddonsInstaller",
+                                "Syntax error while reading {} from macro {}",
+                            ).format(key, self.name)
+                            + "\n"
+                        )
+                        FreeCAD.Console.PrintError(line + "\n")
+                        continue
+
+        # Do some cleanup of the values:
+        if self.comment:
+            self.comment = re.sub("<.*?>", "", self.comment)  # Strip any HTML tags
 
         # Truncate long comments to speed up searches, and clean up display
         if len(self.comment) > 512:
@@ -237,10 +302,35 @@ class Macro(object):
             code = flat_code
         self.code = code
         self.fill_details_from_code(self.code)
+        if not self.icon and not self.xpm:
+            self.parse_wiki_page_for_icon(p)
+
         if not self.author:
             self.author = self.parse_desc("Author: ")
         if not self.date:
             self.date = self.parse_desc("Last modified: ")
+        if self.icon.startswith("http://") or self.icon.startswith("https://"):
+            FreeCAD.Console.PrintLog(
+                f"Attempting to fetch macro icon from {self.icon}\n"
+            )
+            p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(self.icon)
+            if p:
+                cache_path = FreeCAD.getUserCachePath()
+                am_path = os.path.join(cache_path, "AddonManager", "MacroIcons")
+                os.makedirs(am_path, exist_ok=True)
+                _, _, filename = self.icon.rpartition("/")
+                base, _, extension = filename.rpartition(".")
+                if base.lower().startswith("file:"):
+                    FreeCAD.Console.PrintMessage(
+                        f"Cannot use specified icon for {self.name}, {self.icon} is not a direct download link\n"
+                    )
+                    self.icon = ""
+                else:
+                    constructed_name = os.path.join(am_path, base + "." + extension)
+                    with open(constructed_name, "wb") as f:
+                        f.write(p.data())
+                    self.icon_source = self.icon
+                    self.icon = constructed_name
 
     def parse_desc(self, line_start: str) -> Union[str, None]:
         components = self.desc.split(">")
@@ -251,9 +341,7 @@ class Macro(object):
 
     def install(self, macro_dir: str) -> Tuple[bool, List[str]]:
         """Install a macro and all its related files
-
         Returns True if the macro was installed correctly.
-
         Parameters
         ----------
         - macro_dir: the directory to install into
@@ -276,15 +364,51 @@ class Macro(object):
         # self.src_filename.
         base_dir = os.path.dirname(self.src_filename)
         warnings = []
+
+        if self.xpm:
+            xpm_file = os.path.join(base_dir, self.name + "_icon.xpm")
+            with open(xpm_file, "w") as f:
+                f.write(self.xpm)
+        if self.icon:
+            if os.path.isabs(self.icon):
+                dst_file = os.path.normpath(
+                    os.path.join(macro_dir, os.path.basename(self.icon))
+                )
+                try:
+                    shutil.copy(self.icon, dst_file)
+                except IOError:
+                    warnings.append(f"Failed to copy icon to {dst_file}")
+            elif self.icon not in self.other_files:
+                self.other_files.append(self.icon)
+
         for other_file in self.other_files:
-            dst_dir = os.path.join(macro_dir, os.path.dirname(other_file))
+            if not other_file:
+                continue
+            if os.path.isabs(other_file):
+                dst_dir = macro_dir
+            else:
+                dst_dir = os.path.join(macro_dir, os.path.dirname(other_file))
             if not os.path.isdir(dst_dir):
                 try:
                     os.makedirs(dst_dir)
                 except OSError:
                     return False, [f"Failed to create {dst_dir}"]
-            src_file = os.path.join(base_dir, other_file)
-            dst_file = os.path.join(macro_dir, other_file)
+            if os.path.isabs(other_file):
+                src_file = other_file
+                dst_file = os.path.normpath(
+                    os.path.join(macro_dir, os.path.basename(other_file))
+                )
+            else:
+                src_file = os.path.normpath(os.path.join(base_dir, other_file))
+                dst_file = os.path.normpath(os.path.join(macro_dir, other_file))
+            if not os.path.isfile(src_file):
+                warnings.append(
+                    translate(
+                        "AddonsInstaller",
+                        "Could not locate macro-specified file {} (should have been at {})",
+                    ).format(other_file, src_file)
+                )
+                continue
             try:
                 shutil.copy(src_file, dst_file)
             except IOError:
@@ -313,20 +437,86 @@ class Macro(object):
             os.remove(macro_path_with_macro_prefix)
         # Remove related files, which are supposed to be given relative to
         # self.src_filename.
+        if self.xpm:
+            xpm_file = os.path.join(macro_dir, self.name + "_icon.xpm")
+            if os.path.exists(xpm_file):
+                os.remove(xpm_file)
         for other_file in self.other_files:
+            if not other_file:
+                continue
+            FreeCAD.Console.PrintMessage(f"{other_file}...")
             dst_file = os.path.join(macro_dir, other_file)
+            if not dst_file or not os.path.exists(dst_file):
+                FreeCAD.Console.PrintMessage(f"X\n")
+                continue
             try:
                 os.remove(dst_file)
                 remove_directory_if_empty(os.path.dirname(dst_file))
+                FreeCAD.Console.PrintMessage("✓\n")
             except Exception:
-                FreeCAD.Console.PrintWarning(
-                    translate(
-                        "AddonsInstaller",
-                        "Failed to remove macro file '{}': it might not exist, or its permissions changed",
-                    ).format(dst_file)
-                    + "\n"
-                )
+                FreeCAD.Console.PrintMessage(f"?\n")
+        if os.path.isabs(self.icon):
+            dst_file = os.path.normpath(
+                os.path.join(macro_dir, os.path.basename(self.icon))
+            )
+            if os.path.exists(dst_file):
+                try:
+                    FreeCAD.Console.PrintMessage(f"{os.path.basename(self.icon)}...")
+                    os.remove(dst_file)
+                    FreeCAD.Console.PrintMessage("✓\n")
+                except Exception:
+                    FreeCAD.Console.PrintMessage(f"?\n")
         return True
+
+    def parse_wiki_page_for_icon(self, page_data: str) -> None:
+        """Attempt to find a url for the icon in the wiki page. Sets self.icon if found."""
+
+        # Method 1: the text "toolbar icon" appears on the page, and provides a direct lin to an icon
+
+        # Try to get an icon from the wiki page itself:
+        # <a rel="nofollow" class="external text" href="https://www.freecadweb.org/wiki/images/f/f5/Macro_3D_Parametric_Curve.png">ToolBar Icon</a>
+        icon_regex = re.compile(r'.*href="(.*?)">ToolBar Icon', re.IGNORECASE)
+        wiki_icon = ""
+        if "ToolBar Icon" in page_data:
+            f = io.StringIO(page_data)
+            lines = f.readlines()
+            for line in lines:
+                if ">ToolBar Icon<" in line:
+                    match = icon_regex.match(line)
+                    if match:
+                        wiki_icon = match.group(1)
+                        if "file:" not in wiki_icon.lower():
+                            self.icon = wiki_icon
+                            return
+                        break
+
+        # See if we found an icon, but it wasn't a direct link:
+        icon_regex = re.compile(r'.*img.*?src="(.*?)"', re.IGNORECASE)
+        if wiki_icon.startswith("http"):
+            # It's a File: wiki link. We can load THAT page and get the image from it...
+            FreeCAD.Console.PrintLog(
+                f"Found a File: link for macro {self.name} -- {wiki_icon}"
+            )
+            p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(wiki_icon)
+            if p:
+                p = p.data().decode("utf8")
+                f = io.StringIO(p)
+                lines = f.readlines()
+                trigger = False
+                for line in lines:
+                    if trigger:
+                        match = icon_regex.match(line)
+                        if match:
+                            wiki_icon = match.group(1)
+                            self.icon = "https://www.freecadweb.org/wiki" + wiki_icon
+                            return
+                    elif "fullImageLink" in line:
+                        trigger = True
+
+            #    <div class="fullImageLink" id="file">
+            #        <a href="/images/a/a2/Bevel.svg">
+            #            <img alt="File:Bevel.svg" src="/images/a/a2/Bevel.svg" width="64" height="64"/>
+            #        </a>
 
 
 #  @}

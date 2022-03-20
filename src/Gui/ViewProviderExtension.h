@@ -24,11 +24,23 @@
 #ifndef GUI_VIEWPROVIDEREXTENSION_H
 #define GUI_VIEWPROVIDEREXTENSION_H
 
-#include "App/Extension.h"
-#include "ViewProvider.h"
-#include "ViewProviderDocumentObject.h"
+#include <QIcon>
+#include <App/Extension.h>
+
+
+class SoDetail;
+class SoFullPath;
+class SoGroup;
+class SoPickedPoint;
+class SoSeparator;
+
+class QMenu;
+class QObject;
 
 namespace Gui {
+
+class ViewProvider;
+class ViewProviderDocumentObject;
 
 /**
  * @brief Extension with special viewprovider calls
@@ -114,28 +126,6 @@ private:
     bool m_ignoreOverlayIcon = false;
   //Gui::ViewProviderDocumentObject* m_viewBase = nullptr;
 };
-
-/**
- * Generic Python extension class which allows to behave every extension
- * derived class as Python extension -- simply by subclassing.
- */
-template <class ExtensionT>
-class ViewProviderExtensionPythonT : public ExtensionT
-{
-    EXTENSION_PROPERTY_HEADER(Gui::ViewProviderExtensionPythonT<ExtensionT>);
-
-public:
-    typedef ExtensionT Inherited;
-
-    ViewProviderExtensionPythonT() {
-        ExtensionT::m_isPythonExtension = true;
-        ExtensionT::initExtensionType(ViewProviderExtensionPythonT::getExtensionClassTypeId());
-    }
-    virtual ~ViewProviderExtensionPythonT() {
-    }
-};
-
-typedef ViewProviderExtensionPythonT<Gui::ViewProviderExtension> ViewProviderExtensionPython;
 
 } //Gui
 

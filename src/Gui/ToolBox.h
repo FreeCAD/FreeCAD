@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_DOCKWND_TOOLBOX_H
 #define GUI_DOCKWND_TOOLBOX_H
-
-#include "DockWindow.h"
 
 class QToolBox;
 

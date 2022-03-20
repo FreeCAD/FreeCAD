@@ -24,37 +24,29 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <xercesc/sax/SAXParseException.hpp>
-# include <xercesc/sax/SAXException.hpp>
 # include <xercesc/sax2/XMLReaderFactory.hpp>
-# include <xercesc/sax2/SAX2XMLReader.hpp>
 #endif
 
 #include <locale>
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "Reader.h"
 #include "Base64.h"
-#include "Exception.h"
-#include "Persistence.h"
-#include "InputSource.h"
 #include "Console.h"
+#include "InputSource.h"
+#include "Persistence.h"
 #include "Sequencer.h"
+#include "Stream.h"
+#include "XMLTools.h"
 
 #ifdef _MSC_VER
 #include <zipios++/zipios-config.h>
 #endif
-#include <zipios++/zipfile.h>
 #include <zipios++/zipinputstream.h>
-#include <zipios++/zipoutputstream.h>
-#include <zipios++/meta-iostreams.h>
 
-#include "XMLTools.h"
 
 XERCES_CPP_NAMESPACE_USE
 
 using namespace std;
-
 
 
 // ---------------------------------------------------------------------------
@@ -122,7 +114,7 @@ const char* Base::XMLReader::localName() const
 
 unsigned int Base::XMLReader::getAttributeCount() const
 {
-    return (unsigned int)AttrMap.size();
+    return static_cast<unsigned int>(AttrMap.size());
 }
 
 long Base::XMLReader::getAttributeAsInteger(const char* AttrName) const
@@ -145,7 +137,7 @@ unsigned long Base::XMLReader::getAttributeAsUnsigned(const char* AttrName) cons
     AttrMapType::const_iterator pos = AttrMap.find(AttrName);
 
     if (pos != AttrMap.end()) {
-        return strtoul(pos->second.c_str(),0,10);
+        return strtoul(pos->second.c_str(),nullptr,10);
     }
     else {
         // wrong name, use hasAttribute if not sure!
@@ -527,12 +519,12 @@ void Base::XMLReader::resetErrors()
 
 bool Base::XMLReader::testStatus(ReaderStatus pos) const
 {
-    return StatusBits.test((size_t)pos);
+    return StatusBits.test(static_cast<size_t>(pos));
 }
 
 void Base::XMLReader::setStatus(ReaderStatus pos, bool on)
 {
-    StatusBits.set((size_t)pos, on);
+    StatusBits.set(static_cast<size_t>(pos), on);
 }
 
 void Base::XMLReader::setPartialRestore(bool on)
@@ -565,10 +557,6 @@ void Base::XMLReader::clearPartialRestoreObject()
 
 Base::Reader::Reader(std::istream& str, const std::string& name, int version)
   : std::istream(str.rdbuf()), _str(str), _name(name), fileVersion(version)
-{
-}
-
-Base::Reader::~Reader()
 {
 }
 

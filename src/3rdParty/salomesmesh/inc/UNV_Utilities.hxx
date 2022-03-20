@@ -48,7 +48,7 @@ namespace UNV{
   };
 
   /**
-   * @returns \p false when error occured, \p true otherwise.
+   * @returns \p false when error occurred, \p true otherwise.
    * Adjusts the \p in_stream to the beginning of the
    * dataset \p ds_name.
    */

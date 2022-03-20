@@ -27,11 +27,11 @@
 #endif
 
 #include "TreeView.h"
-#include "DocumentModel.h"
 #include "Application.h"
 #include "Document.h"
-#include "MDIView.h"
+#include "DocumentModel.h"
 #include "MainWindow.h"
+#include "MDIView.h"
 #include "ViewProvider.h"
 
 using namespace Gui;

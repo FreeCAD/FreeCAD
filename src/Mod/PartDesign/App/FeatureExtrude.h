@@ -24,11 +24,13 @@
 #ifndef PARTDESIGN_FEATURE_EXTRUDE_H
 #define PARTDESIGN_FEATURE_EXTRUDE_H
 
-#include <App/PropertyGeo.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
-#include <Base/Tools.h>
 #include "FeatureSketchBased.h"
+
+class gp_Dir;
+class TopoDS_Face;
+class TopoDS_Shape;
 
 namespace PartDesign
 {
@@ -62,6 +64,53 @@ public:
 
 protected:
     Base::Vector3d computeDirection(const Base::Vector3d& sketchVector);
+    bool hasTaperedAngle() const;
+
+    /**
+      * Generates an extrusion of the input sketchshape and stores it in the given \a prism
+      */
+    void generatePrism(TopoDS_Shape& prism,
+                       const TopoDS_Shape& sketchshape,
+                       const std::string& method,
+                       const gp_Dir& direction,
+                       const double L,
+                       const double L2,
+                       const bool midplane,
+                       const bool reversed);
+
+    // See BRepFeat_MakePrism
+    enum PrismMode {
+        CutFromBase = 0,
+        FuseWithBase = 1,
+        None = 2
+    };
+
+    /**
+      * Generates an extrusion of the input profileshape
+      * It will be a stand-alone solid created with BRepFeat_MakePrism
+      */
+    static void generatePrism(TopoDS_Shape& prism,
+                              const std::string& method,
+                              const TopoDS_Shape& baseshape,
+                              const TopoDS_Shape& profileshape,
+                              const TopoDS_Face& sketchface,
+                              const TopoDS_Face& uptoface,
+                              const gp_Dir& direction,
+                              PrismMode Mode,
+                              Standard_Boolean Modify);
+
+    /**
+      * Generates a tapered prism of the input sketchshape and stores it in the given \a prism
+      */
+    void generateTaperedPrism(TopoDS_Shape& prism,
+                              const TopoDS_Shape& sketchshape,
+                              const std::string& method,
+                              const gp_Dir& direction,
+                              const double L,
+                              const double L2,
+                              const double angle,
+                              const double angle2,
+                              const bool midplane);
 };
 
 } //namespace PartDesign

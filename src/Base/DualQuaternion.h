@@ -24,7 +24,8 @@
 #define FREECAD_BASE_DUAL_QUATERNION_H
 
 #include "DualNumber.h"
-//#include <Console.h> //DEBUG
+#include <FCGlobal.h>
+
 
 namespace Base {
 

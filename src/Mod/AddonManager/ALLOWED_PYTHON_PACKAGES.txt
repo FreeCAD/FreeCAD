@@ -6,17 +6,22 @@
 # no version information may be specified, and no wildcards are supported.
 
 # Allow these packages to be installed:
+aiofiles
+autobahn
 ezdxf
 gmsh
 lxml
 markdown
 matplotlib
+msgpack
 numpy
+ocp
 olefile
 openpyxl
 pandas
 pillow
 ply
+py-slvs
 pycollada
 pygit2
 pynastran

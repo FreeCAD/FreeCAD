@@ -200,12 +200,12 @@ struct Kernel : public PropertyOwner< mpl::vector2<precision, iterations> > {
 
     //static comparison versions
     template <typename DerivedA,typename DerivedB>
-    static bool isSame(const E::MatrixBase<DerivedA>& p1,const E::MatrixBase<DerivedB>& p2, number_type precission);
-    static bool isSame(number_type t1, number_type t2, number_type precission);
+    static bool isSame(const E::MatrixBase<DerivedA>& p1,const E::MatrixBase<DerivedB>& p2, number_type precision);
+    static bool isSame(number_type t1, number_type t2, number_type precision);
     template <typename DerivedA,typename DerivedB>
-    static bool isOpposite(const E::MatrixBase<DerivedA>& p1,const E::MatrixBase<DerivedB>& p2, number_type precission);
+    static bool isOpposite(const E::MatrixBase<DerivedA>& p1,const E::MatrixBase<DerivedB>& p2, number_type precision);
 
-    //runtime comparison versions (which use user settings for precission)
+    //runtime comparison versions (which use user settings for precision)
     template <typename DerivedA,typename DerivedB>
     bool isSame(const E::MatrixBase<DerivedA>& p1,const E::MatrixBase<DerivedB>& p2);
     bool isSame(number_type t1, number_type t2);

@@ -28,8 +28,8 @@
 #endif
 
 #include "WhatsThis.h"
-#include "MainWindow.h"
 #include "Action.h"
+#include "MainWindow.h"
 
 
 using namespace Gui;

@@ -24,20 +24,15 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include <App/Document.h>
-
-#include "Link.h"
-#include "GeoFeatureGroupExtension.h"
-#include "OriginFeature.h"
-#include "Origin.h"
-#include "OriginGroupExtension.h"
-#include <Base/Console.h>
 #include <Base/Tools.h>
-//#include "GeoFeatureGroupPy.h"
-//#include "FeaturePythonPyImp.h"
+
+#include "GeoFeatureGroupExtension.h"
+#include "Link.h"
+#include "Origin.h"
+#include "OriginFeature.h"
+#include "OriginGroupExtension.h"
+
 
 using namespace App;
 

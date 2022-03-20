@@ -39,6 +39,33 @@ namespace SketcherGui {
 
 class ViewProviderSketch;
 
+
+
+/**
+ * Class to convert Part::Geometry to Vector2d based collections
+ */
+class CurveConverter final : public ParameterGrp::ObserverType {
+
+public:
+    CurveConverter();
+
+    ~CurveConverter();
+
+    std::vector<Base::Vector2d> toVector2D(const Part::Geometry * geometry);
+
+    std::list<std::vector<Base::Vector2d>> toVector2DList(const std::vector<Part::Geometry *> &geometries);
+
+private:
+    void updateCurvedEdgeCountSegmentsParameter();
+
+    /** Observer for parameter group. */
+    virtual void OnChange(Base::Subject<const char*> &rCaller, const char * sReason) override;
+
+private:
+    int curvedEdgeCountSegments;
+};
+
+
 /**
  * In order to enforce a certain degree of encapsulation and promote a not
  * too tight coupling, while still allowing well defined collaboration,
@@ -46,10 +73,12 @@ class ViewProviderSketch;
  */
 class ViewProviderSketchDrawSketchHandlerAttorney {
 private:
+    static inline void setConstraintSelectability(ViewProviderSketch &vp, bool enabled = true);
     static inline void setPositionText(ViewProviderSketch &vp, const Base::Vector2d &Pos, const SbString &txt);
     static inline void setPositionText(ViewProviderSketch &vp, const Base::Vector2d &Pos);
     static inline void resetPositionText(ViewProviderSketch &vp);
     static inline void drawEdit(ViewProviderSketch &vp, const std::vector<Base::Vector2d> &EditCurve);
+    static inline void drawEdit(ViewProviderSketch &vp, const std::list<std::vector<Base::Vector2d>> &list);
     static inline void drawEditMarkers(ViewProviderSketch &vp, const std::vector<Base::Vector2d> &EditMarkers, unsigned int augmentationlevel = 0);
     static inline void setAxisPickStyle(ViewProviderSketch &vp, bool on);
 
@@ -59,7 +88,6 @@ private:
 
     friend class DrawSketchHandler;
 };
-
 
 // A Simple data type to hold basic information for suggested constraints
 struct AutoConstraint
@@ -96,8 +124,9 @@ public:
     DrawSketchHandler();
     virtual ~DrawSketchHandler();
 
-    virtual void activated(ViewProviderSketch *){}
-    virtual void deactivated(ViewProviderSketch *){}
+    void activate(ViewProviderSketch *);
+    void deactivate();
+
     virtual void mouseMove(Base::Vector2d onSketchPos)=0;
     virtual bool pressButton(Base::Vector2d onSketchPos)=0;
     virtual bool releaseButton(Base::Vector2d onSketchPos)=0;
@@ -126,6 +155,12 @@ public:
     void resetPositionText(void);
     void renderSuggestConstraintsCursor(std::vector<AutoConstraint> &suggestedConstraints);
 
+private:
+    virtual void preActivated();
+    virtual void activated(){}
+    virtual void deactivated(){}
+    virtual void postDeactivated(){}
+
 protected:
     // helpers
     /**
@@ -141,12 +176,13 @@ protected:
     void unsetCursor(void);
     void applyCursor(void);
     void applyCursor(QCursor &newCursor);
-    void setCrosshairColor();
     unsigned long getCrosshairColor();
     qreal devicePixelRatio();
     void setCrosshairCursor(const char* svgName);
 
     void drawEdit(const std::vector<Base::Vector2d> &EditCurve);
+    void drawEdit(const std::list<std::vector<Base::Vector2d>> &list);
+    void drawEdit(const std::vector<Part::Geometry *> &geometries);
     void drawEditMarkers(const std::vector<Base::Vector2d> &EditMarkers, unsigned int augmentationlevel = 0);
     void setAxisPickStyle(bool on);
 

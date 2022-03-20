@@ -305,8 +305,8 @@ it will be a point that lies on the arc.</source>
       <location filename="dimension.py" line="259"/>
       <source>The direction of the dimension line.
 If this remains '(0,0,0)', the direction will be calculated automatically.</source>
-      <translation type="unfinished">The direction of the dimension line.
-If this remains '(0,0,0)', the direction will be calculated automatically.</translation>
+      <translation>尺寸线的方向。
+如果它保持'(0,0,0)'，方向将自动计算。</translation>
     </message>
     <message>
       <location filename="dimension.py" line="276"/>
@@ -317,20 +317,17 @@ from the 'Start' and 'End' properties.
 
 If the 'Linked Geometry' is an arc or circle, this 'Distance'
 is the radius or diameter, depending on the 'Diameter' property.</source>
-      <translation type="unfinished">The value of the measurement.
+      <translation>测量值。
 
-This property is read-only because the value is calculated
-from the 'Start' and 'End' properties.
+此属性只读，因为值是由“开始”和“结束”属性计算的。
 
-If the 'Linked Geometry' is an arc or circle, this 'Distance'
-is the radius or diameter, depending on the 'Diameter' property.</translation>
+如果“链接的几何图形”是弧或圆，那么“距离”是半径或直径，取决于“直径”属性。</translation>
     </message>
     <message>
       <location filename="dimension.py" line="287"/>
       <source>When measuring circular arcs, it determines whether to display
 the radius or the diameter value</source>
-      <translation type="unfinished">When measuring circular arcs, it determines whether to display
-the radius or the diameter value</translation>
+      <translation>测量圆弧时，决定是否显示半径或直径值</translation>
     </message>
     <message>
       <location filename="dimension.py" line="507"/>
@@ -719,6 +716,11 @@ This property is read-only, as the number depends on the points contained within
       <translation>该物体的面积</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>此对象的形状</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation type="unfinished">The base object used by this object</translation>
@@ -727,11 +729,6 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
       <translation type="unfinished">The PAT file used by this object</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>此对象的形状</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>
@@ -2680,7 +2677,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="193"/>
       <source>Perpendicular</source>
-      <translation type="unfinished">Perpendicular</translation>
+      <translation>垂直</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="196"/>
@@ -3702,6 +3699,11 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation type="unfinished">Found several wires or edges: wiring them</translation>
     </message>
     <message>
+      <location filename="upgrade.py" line="541"/>
+      <source>Found several non-treatable objects: creating compound</source>
+      <translation type="unfinished">Found several non-treatable objects: creating compound</translation>
+    </message>
+    <message>
       <location filename="upgrade.py" line="512"/>
       <source>trying: closing it</source>
       <translation type="unfinished">trying: closing it</translation>
@@ -3720,11 +3722,6 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="upgrade.py" line="536"/>
       <source>Found points: creating compound</source>
       <translation type="unfinished">Found points: creating compound</translation>
-    </message>
-    <message>
-      <location filename="upgrade.py" line="541"/>
-      <source>Found several non-treatable objects: creating compound</source>
-      <translation type="unfinished">Found several non-treatable objects: creating compound</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="544"/>

@@ -479,7 +479,7 @@ namespace Py
         return Object( Py::_True() );
     }
 
-    // TMM: 31May'01 - Added the #ifndef so I can exlude iostreams.
+    // TMM: 31May'01 - Added the #ifndef so I can exclude iostreams.
 #ifndef CXX_NO_IOSTREAMS
     PYCXX_EXPORT std::ostream &operator<<( std::ostream &os, const Object &ob );
 #endif
@@ -1075,7 +1075,7 @@ namespace Py
 
     // seqref<T> is what you get if you get elements from a non-const SeqBase<T>.
     // Note: seqref<T> could probably be a nested class in SeqBase<T> but that might stress
-    // some compilers needlessly. Simlarly for mapref later.
+    // some compilers needlessly. Similarly for mapref later.
 
     // While this class is not intended for enduser use, it needs some public
     // constructors for the benefit of the STL.
@@ -1403,7 +1403,7 @@ namespace Py
             return SeqBase<T>( PySequence_Concat( ptr(), *other ), true );
         }
 
-        // more STL compatability
+        // more STL compatibility
         const T front() const
         {
             return getItem( 0 );
@@ -1442,8 +1442,14 @@ namespace Py
         }
 
         class PYCXX_EXPORT iterator
-        : public random_access_iterator_parent( seqref<T> )
         {
+        public:
+            using iterator_category = std::random_access_iterator_tag;
+            using value_type = seqref<T>;
+            using difference_type = int;
+            using pointer = value_type*;
+            using reference = value_type&;
+
         protected:
             friend class SeqBase<T>;
             SeqBase<T> *seq;
@@ -1595,8 +1601,14 @@ namespace Py
         }
 
         class PYCXX_EXPORT const_iterator
-        : public random_access_iterator_parent( const Object )
         {
+        public:
+            using iterator_category = std::random_access_iterator_tag;
+            using value_type = const Object;
+            using difference_type = int;
+            using pointer = value_type*;
+            using reference = value_type&;
+
         protected:
             friend class SeqBase<T>;
             const SeqBase<T> *seq;

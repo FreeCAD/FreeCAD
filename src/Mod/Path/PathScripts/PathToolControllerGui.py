@@ -31,7 +31,6 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathToolBitGui as PathToolBitGui
 import PathScripts.PathToolEdit as PathToolEdit
 import PathScripts.PathUtil as PathUtil
-import PathScripts.PathToolController as PathToolController
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -76,7 +75,6 @@ class ViewProvider:
         return ":/icons/Path_ToolController.svg"
 
     def onChanged(self, vobj, prop):
-        # pylint: disable=unused-argument
         mode = 2
         vobj.setEditorMode("LineWidth", mode)
         vobj.setEditorMode("MarkerColor", mode)
@@ -86,14 +84,12 @@ class ViewProvider:
         vobj.setEditorMode("Selectable", mode)
 
     def onDelete(self, vobj, args=None):
-        # pylint: disable=unused-argument
         PathUtil.clearExpressionEngine(vobj.Object)
         self.vobj.Object.Proxy.onDelete(vobj.Object, args)
         return True
 
     def updateData(self, vobj, prop):
         # this is executed when a property of the APP OBJECT changes
-        # pylint: disable=unused-argument
         pass
 
     def setEdit(self, vobj=None, mode=0):
@@ -112,11 +108,9 @@ class ViewProvider:
 
     def unsetEdit(self, vobj, mode):
         # this is executed when the user cancels or terminates edit mode
-        # pylint: disable=unused-argument
         return False
 
     def setupContextMenu(self, vobj, menu):
-        # pylint: disable=unused-argument
         PathLog.track()
         for action in menu.actions():
             menu.removeAction(action)
@@ -144,8 +138,6 @@ def Create(name="Default Tool", tool=None, toolNumber=1):
 
 
 class CommandPathToolController(object):
-    # pylint: disable=no-init
-
     def GetResources(self):
         return {
             "Pixmap": "Path_LengthOffset",
@@ -194,11 +186,11 @@ class ToolControllerEditor(object):
         self.obj = obj
 
         comboToPropertyMap = [("spindleDirection", "SpindleDir")]
-        enumTups = PathToolController.ToolController.propertyEnumerations(
+        enumTups = PathScripts.PathToolController.ToolController.propertyEnumerations(
             dataType="raw"
         )
 
-        self.populateCombobox(self.form, enumTups, comboToPropertyMap)
+        PathGui.populateCombobox(self.form, enumTups, comboToPropertyMap)
         self.vertFeed = PathGui.QuantitySpinBox(self.form.vertFeed, obj, "VertFeed")
         self.horizFeed = PathGui.QuantitySpinBox(self.form.horizFeed, obj, "HorizFeed")
         self.vertRapid = PathGui.QuantitySpinBox(self.form.vertRapid, obj, "VertRapid")
@@ -234,21 +226,6 @@ class ToolControllerEditor(object):
         # not found, return unchanged
         combo.setCurrentIndex(index)
         return
-
-    def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
-        """fillComboboxes(form, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
-        ** comboBoxesPropertyMap will be unnecessary if UI files use strict combobox naming protocol.
-        Args:
-            form = UI form
-            enumTups = list of (translated_text, data_string) tuples
-            comboBoxesPropertyMap = list of (translated_text, data_string) tuples
-        """
-        # Load appropriate enumerations in each combobox
-        for cb, prop in comboBoxesPropertyMap:
-            box = getattr(form, cb)  # Get the combobox
-            box.clear()  # clear the combobox
-            for text, data in enumTups[prop]:  #  load enumerations
-                box.addItem(text, data)
 
     def updateUi(self):
         tc = self.obj
@@ -347,12 +324,10 @@ class TaskPanel:
             self.toolrep.Shape = t
 
     def edit(self, item, column):
-        # pylint: disable=unused-argument
         if not self.updating:
             self.resetObject()
 
     def resetObject(self, remove=None):
-        # pylint: disable=unused-argument
         "transfers the values from the widget to the object"
         FreeCAD.ActiveDocument.recompute()
 

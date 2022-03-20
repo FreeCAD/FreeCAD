@@ -24,13 +24,13 @@
 #ifndef BASE_UNITSAPI_H
 #define BASE_UNITSAPI_H
 
-#include <CXX/WrapPython.h>
 #include <memory>
-#include <string>
 #include <QString>
 #include "UnitsSchema.h"
 #include "Quantity.h"
 
+typedef struct _object PyObject;
+typedef struct PyMethodDef PyMethodDef;
 
 namespace Base {
 typedef std::unique_ptr<UnitsSchema> UnitsSchemaPtr;
@@ -112,6 +112,7 @@ protected:
     static PyObject *sGetSchema       (PyObject *self,PyObject *args);
     static PyObject *sSetSchema       (PyObject *self,PyObject *args);
     static PyObject *sSchemaTranslate (PyObject *self,PyObject *args);
+    static PyObject *sToNumber        (PyObject *self,PyObject *args);
 };
 
 } // namespace Base

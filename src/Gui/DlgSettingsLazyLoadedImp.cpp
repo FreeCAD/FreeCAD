@@ -20,21 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <QCheckBox>
+#include <QPushButton>
+#include <sstream>
+#endif
 
 #include "DlgSettingsLazyLoadedImp.h"
 #include "ui_DlgSettingsLazyLoaded.h"
-#include "PrefWidgets.h"
-#include "AutoSaver.h"
-
 #include "Application.h"
-#include "WorkbenchManager.h"
 #include "Workbench.h"
+#include "WorkbenchManager.h"
 
-#include <QCheckBox>
-
-#include <sstream>
 
 using namespace Gui::Dialog;
 

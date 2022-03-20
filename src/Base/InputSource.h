@@ -23,13 +23,9 @@
 #ifndef BASE_IINPUTSOURCE_H
 #define BASE_IINPUTSOURCE_H
 
-
 #include <iosfwd>
 
-#include <xercesc/sax2/Attributes.hpp>
 #include <xercesc/util/BinInputStream.hpp>
-#include <xercesc/util/PlatformUtils.hpp>
-#include <xercesc/util/XercesVersion.hpp>
 #include <xercesc/sax/InputSource.hpp>
 #include <QTextCodec>
 #ifndef FC_GLOBAL_H

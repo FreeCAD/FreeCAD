@@ -20,30 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QGridLayout>
 # include <QApplication>
-# include <QMenu>
 # include <QContextMenuEvent>
+# include <QGridLayout>
+# include <QMenu>
 # include <QTextCursor>
 # include <QTextStream>
 # include <QTime>
-# include <QDockWidget>
-# include <QPointer>
 #endif
 
 #include <Base/Interpreter.h>
+
 #include "ReportView.h"
+#include "Application.h"
+#include "BitmapFactory.h"
 #include "DockWindowManager.h"
 #include "FileDialog.h"
 #include "PythonConsole.h"
 #include "PythonConsolePy.h"
-#include "BitmapFactory.h"
-#include "MainWindow.h"
-#include "Application.h"
 #include "Tools.h"
+
 
 using namespace Gui;
 using namespace Gui::DockWnd;
@@ -380,15 +378,20 @@ public:
     static bool redirected_stderr;
     static PyObject* default_stderr;
     static PyObject* replace_stderr;
+#ifdef FC_DEBUG
+    long logMessageSize = 0;
+#else
+    long logMessageSize = 2048;
+#endif
 };
 
 bool ReportOutput::Data::redirected_stdout = false;
-PyObject* ReportOutput::Data::default_stdout = 0;
-PyObject* ReportOutput::Data::replace_stdout = 0;
+PyObject* ReportOutput::Data::default_stdout = nullptr;
+PyObject* ReportOutput::Data::replace_stdout = nullptr;
 
 bool ReportOutput::Data::redirected_stderr = false;
-PyObject* ReportOutput::Data::default_stderr = 0;
-PyObject* ReportOutput::Data::replace_stderr = 0;
+PyObject* ReportOutput::Data::default_stderr = nullptr;
+PyObject* ReportOutput::Data::replace_stderr = nullptr;
 
 /* TRANSLATOR Gui::DockWnd::ReportOutput */
 
@@ -413,17 +416,16 @@ ReportOutput::ReportOutput(QWidget* parent)
 
     Base::Console().AttachObserver(this);
     getWindowParameter()->Attach(this);
-
     getWindowParameter()->NotifyAll();
+    // do this explicitly because the keys below might not yet be part of a group
+    getWindowParameter()->Notify("RedirectPythonOutput");
+    getWindowParameter()->Notify("RedirectPythonErrors");
+
     _prefs = WindowParameter::getDefaultParameter()->GetGroup("Editor");
     _prefs->Attach(this);
     _prefs->Notify("FontSize");
 
-#ifdef FC_DEBUG
-    messageSize = _prefs->GetInt("LogMessageSize",0);
-#else
-    messageSize = _prefs->GetInt("LogMessageSize",2048);
-#endif
+    messageSize = _prefs->GetInt("LogMessageSize", d->logMessageSize);
 
     // scroll to bottom at startup to make sure that last appended text is visible
     ensureCursorVisible();
@@ -797,12 +799,9 @@ void ReportOutput::OnChange(Base::Subject<const char*> &rCaller, const char * sR
         bool checked = rclGrp.GetBool(sReason, true);
         if (checked != d->redirected_stderr)
             onToggleRedirectPythonStderr();
-    }else if(strcmp(sReason, "LogMessageSize") == 0) {
-#ifdef FC_DEBUG
-        messageSize = rclGrp.GetInt(sReason,0);
-#else
-        messageSize = rclGrp.GetInt(sReason,2048);
-#endif
+    }
+    else if (strcmp(sReason, "LogMessageSize") == 0) {
+        messageSize = rclGrp.GetInt(sReason, d->logMessageSize);
     }
 }
 

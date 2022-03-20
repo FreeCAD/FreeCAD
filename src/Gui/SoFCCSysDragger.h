@@ -34,6 +34,7 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/sensors/SoIdleSensor.h>
 
+
 class SoCamera;
 
 namespace Gui

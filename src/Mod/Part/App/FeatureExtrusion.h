@@ -26,9 +26,9 @@
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
+
 #include "PartFeature.h"
 #include "FaceMakerCheese.h"
-#include <TopoDS_Face.hxx>
 
 namespace Part
 {

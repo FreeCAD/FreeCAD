@@ -35,6 +35,7 @@ printverbose = False
 import FreeCAD
 import io
 import os
+import tempfile
 
 import ply.lex as lex
 import ply.yacc as yacc
@@ -178,7 +179,8 @@ def processcsg(filename):
     # Build the parser
     if printverbose: print('Load Parser')
     # No debug out otherwise Linux has protection exception
-    parser = yacc.yacc(debug=False)
+    temp = tempfile.gettempdir()
+    parser = yacc.yacc(debug=False,outputdir=temp)
     if printverbose: print('Parser Loaded')
     # Give the lexer some input
     #f=open('test.scad', 'r')
@@ -193,7 +195,8 @@ def processcsg(filename):
     if printverbose:
         print('End Parser')
         print(result)
-    fixVisibility()
+    if gui:
+        fixVisibility()
     hassetcolor.clear()
     alreadyhidden.clear()
     FreeCAD.Console.PrintMessage('End processing CSG file\n')
@@ -227,6 +230,9 @@ def p_group_action1(p):
     'group_action1 : group LPAREN RPAREN OBRACE block_list EBRACE'
     if printverbose: print("Group")
 # Test if need for implicit fuse
+    if p[5] is None:
+        p[0] = []
+        return
     if (len(p[5]) > 1):
         p[0] = [fuse(p[5], "Group")]
     else:
@@ -479,6 +485,12 @@ def p_offset_action(p):
 #            newobj.ViewObject.Proxy = 0
     p[0] = [newobj]
 
+def checkObjShape(obj) :
+    if printverbose: print('Check Object Shape')
+    if obj.Shape.isNull() == True :
+       if printverbose: print('Shape is Null - recompute')
+       obj.recompute()
+
 def p_hull_action(p):
     'hull_action : hull LPAREN RPAREN OBRACE block_list EBRACE'
     p[0] = [ CGALFeatureObj(p[1],p[5]) ]
@@ -609,6 +621,9 @@ def fuse(lst,name):
        myfuse = doc.addObject('Part::Fuse',name)
        myfuse.Base = lst[0]
        myfuse.Tool = lst[1]
+       checkObjShape(myfuse.Base)
+       checkObjShape(myfuse.Tool)
+       myfuse.Shape = myfuse.Base.Shape.fuse(myfuse.Tool.Shape)
        if gui:
            myfuse.Base.ViewObject.hide()
            myfuse.Tool.ViewObject.hide()
@@ -640,8 +655,14 @@ def p_difference_action(p):
         if (len(p[5]) > 2 ):
            if printverbose: print("Need to Fuse Extra First")
            mycut.Tool = fuse(p[5][1:],'union')
+           checkObjShape(myfuse.Base)
+           checkObjShape(myfuse.Tool)
+           for o in p[5][1:]: 
+               checkObjShape(o)
+               mycut.Tool.Shape = mycut.Tool.cut(o.Shape)
         else :
            mycut.Tool = p[5][1]
+        mycut.Shape = mycut.Base.Shape.cut(mycut.Tool.Shape)
         if gui:
             mycut.Base.ViewObject.hide()
             mycut.Tool.ViewObject.hide()
@@ -667,6 +688,8 @@ def p_intersection_action(p):
        mycommon = doc.addObject('Part::Common',p[1])
        mycommon.Base = p[5][0]
        mycommon.Tool = p[5][1]
+       checkObjShape(mycommon.Base)
+       checkObjShape(mycommon.Tool)
        if gui:
            mycommon.Base.ViewObject.hide()
            mycommon.Tool.ViewObject.hide()
@@ -811,6 +834,7 @@ def p_linear_extrude_with_transform(p):
         obj = fuse(p[6],"Linear Extrude Union")
     else :
         obj = p[6][0]
+    checkObjShape(obj)
     if t != 0.0 or s[0] != 1.0 or s[1] != 1.0:
         newobj = process_linear_extrude_with_transform(obj,h,t,s)
     else:
@@ -926,7 +950,7 @@ def p_multmatrix_action(p):
     transform_matrix = FreeCAD.Matrix()
     if printverbose: print("Multmatrix")
     if printverbose: print(p[3])
-    if gui:
+    if gui and p[6]:
         parentcolor=p[6][0].ViewObject.ShapeColor
         parenttransparency=p[6][0].ViewObject.Transparency
 
@@ -1009,7 +1033,7 @@ def p_multmatrix_action(p):
         p[0] = [newobj]
     else :
         p[0] = [new_part]
-    if gui:
+    if gui and p[6]:
         new_part.ViewObject.ShapeColor=parentcolor
         new_part.ViewObject.Transparency = parenttransparency
     if printverbose: print("Multmatrix applied")

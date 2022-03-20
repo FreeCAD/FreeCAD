@@ -21,41 +21,35 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <assert.h>
-# include <string>
-# include <boost_bind_bind.hpp>
+# include <boost/algorithm/string/predicate.hpp>
 # include <QApplication>
-# include <QString>
-# include <QStatusBar>
 #endif
 
-#include <boost/algorithm/string/predicate.hpp>
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include "Application.h"
-#include "Document.h"
-#include "Selection.h"
-#include "SelectionFilter.h"
-#include "View3DInventor.h"
-#include <Base/Exception.h>
-#include <Base/Console.h>
-#include <Base/Tools.h>
-#include <Base/Interpreter.h>
-#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
 #include <App/GeoFeature.h>
-#include <Gui/SelectionObjectPy.h>
+#include <Base/Console.h>
+#include <Base/Exception.h>
+#include <Base/Interpreter.h>
+#include <Base/Tools.h>
+#include <Base/UnitsApi.h>
+
+#include "Selection.h"
+#include "SelectionObject.h"
+#include "Application.h"
+#include "Document.h"
+#include "Macro.h"
 #include "MainWindow.h"
+#include "MDIView.h"
+#include "SelectionFilter.h"
 #include "Tree.h"
 #include "ViewProviderDocumentObject.h"
-#include "Macro.h"
+
 
 FC_LOG_LEVEL_INIT("Selection",false,true,true)
 
@@ -2056,7 +2050,7 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args)
         App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
         App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
         if (!docObj || !docObj->getNameInDocument()) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot check invalid object");
+            PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot check invalid object");
             return nullptr;
         }
 
@@ -2074,7 +2068,7 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args)
         App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
         App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
         if (!docObj || !docObj->getNameInDocument()) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot check invalid object");
+            PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot check invalid object");
             return nullptr;
         }
 
@@ -2113,7 +2107,7 @@ PyObject *SelectionSingleton::sUpdateSelection(PyObject * /*self*/, PyObject *ar
     App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
     App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
     if (!docObj || !docObj->getNameInDocument()) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot check invalid object");
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot check invalid object");
         return nullptr;
     }
 
@@ -2143,7 +2137,7 @@ PyObject *SelectionSingleton::sRemoveSelection(PyObject * /*self*/, PyObject *ar
     App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
     App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
     if (!docObj || !docObj->getNameInDocument()) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot check invalid object");
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot check invalid object");
         return nullptr;
     }
 
@@ -2250,7 +2244,7 @@ PyObject *SelectionSingleton::sSetPreselection(PyObject * /*self*/, PyObject *ar
         App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
         App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
         if (!docObj || !docObj->getNameInDocument()) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot check invalid object");
+            PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot check invalid object");
             return nullptr;
         }
 
@@ -2381,7 +2375,7 @@ PyObject *SelectionSingleton::sGetSelectionObject(PyObject * /*self*/, PyObject 
         return nullptr;
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        e.setPyException();
         return nullptr;
     }
 }

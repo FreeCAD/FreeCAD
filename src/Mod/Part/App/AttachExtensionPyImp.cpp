@@ -29,7 +29,7 @@ PyObject* AttachExtensionPy::positionBySupport(PyObject *args)
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return NULL;
     } catch (Base::Exception &e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        e.setPyException();
         return NULL;
     }
     return Py::new_reference_to(Py::Boolean(bAttached));
@@ -47,7 +47,7 @@ PyObject* AttachExtensionPy::changeAttacherType(PyObject *args)
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return NULL;
     } catch (Base::Exception &e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        e.setPyException();
         return NULL;
     }
     return Py::new_reference_to(Py::Boolean(ret));
@@ -66,7 +66,8 @@ Py::Object AttachExtensionPy::getAttacher(void) const
     } catch (Standard_Failure& e) {
         throw Py::Exception(Part::PartExceptionOCCError, e.GetMessageString());
     } catch (Base::Exception &e) {
-        throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+        e.setPyException();
+        throw Py::Exception();
     }
 
 }

@@ -84,9 +84,7 @@ def selectOffsetWire(feature, wires):
     closest = None
     for w in wires:
         dist = feature.distToShape(w)[0]
-        if (
-            closest is None or dist > closest[0]
-        ):  # pylint: disable=unsubscriptable-object
+        if closest is None or dist > closest[0]:
             closest = (dist, w)
 
     if closest is not None:
@@ -281,26 +279,7 @@ class Extension(object):
         and sub element provided at class instantiation, as a closed wire.  If no closed wire
         is possible, a `None` value is returned."""
 
-        if self.sub[:6] == "Avoid_":
-            feature = self.obj.Shape.getElement(self.feature)
-            self.extFaces = [Part.Face(feature.Wires[0])]
-            return feature.Wires[0]
-        if self.sub[:7] == "Extend_":
-            rtn = self._getOutlineWire()
-            if rtn:
-                return rtn
-            else:
-                PathLog.debug("no Outline Wire")
-                return None
-        if self.sub[:10] == "Waterline_":
-            rtn = self._getWaterlineWire()
-            if rtn:
-                return rtn
-            else:
-                PathLog.debug("no Waterline Wire")
-                return None
-        else:
-            return self._getRegularWire()
+        return self._getRegularWire()
 
     def _getRegularWire(self):
         """_getRegularWire()... Private method to retrieve the extension area, pertaining to the feature
@@ -402,88 +381,6 @@ class Extension(object):
 
         PathLog.debug("Extending multi-edge open wire")
         return extendWire(feature, sub, length)
-
-    def _getOutlineWire(self):
-        """_getOutlineWire()... Private method to retrieve an extended outline extension area,
-        pertaining to the feature and sub element provided at class instantiation, as a closed wire.
-        If no closed wire is possible, a `None` value is returned."""
-        PathLog.track()
-
-        baseShape = self.obj.Shape
-        face = baseShape.getElement(self.feature)
-        useOutline = False
-        msg = translate("PathAdaptive", "Extend Outline error")
-
-        if hasattr(self.op, "UseOutline"):
-            useOutline = self.op.UseOutline
-
-        if useOutline:
-            outFace = Part.Face(face.Wires[0])
-            rawFace = getExtendOutlineFace(baseShape, outFace, self.length)
-
-            if rawFace:
-                extFace = rawFace.cut(outFace)
-            else:
-                PathLog.error(msg + " 1")
-                extFace = outFace
-        else:
-            rawFace = getExtendOutlineFace(baseShape, face, self.length)
-
-            if rawFace:
-                extFace = rawFace.cut(face)
-            else:
-                PathLog.error(msg + " 2")
-                extFace = face
-
-        # Debug
-        # Part.show(extFace)
-        # FreeCAD.ActiveDocument.ActiveObject.Label = "outline_wire"
-
-        if len(extFace.Wires) > 0:
-            self.extFaces = [f for f in extFace.Faces]
-            return extFace.Wires[0]
-
-        return None
-
-    def _getWaterlineWire(self):
-        """_getWaterlineWire()... Private method to retrieve a waterline extension area,
-        pertaining to the feature and sub element provided at class instantiation, as a closed wire.
-        Only waterline faces touching source face are returned as part of the waterline extension area.
-        If no closed wire is possible, a `None` value is returned."""
-        PathLog.track()
-
-        msg = translate("PathFeatureExtensions", "Waterline error")
-        useOutline = False
-        if hasattr(self.op, "UseOutline"):
-            useOutline = self.op.UseOutline
-
-        baseShape = self.obj.Shape
-        if useOutline:
-            face = Part.Face(baseShape.getElement(self.feature).Wire1)
-        else:
-            face = baseShape.getElement(self.feature)
-
-        rawFace = getWaterlineFace(baseShape, face)
-
-        if not rawFace:
-            PathLog.error(msg + " 1")
-            return None
-
-        if rawFace:
-            extFace = rawFace.cut(face)
-        else:
-            PathLog.error(msg + " 2")
-            extFace = face
-
-        # Debug
-        # Part.show(extFace)
-        # FreeCAD.ActiveDocument.ActiveObject.Label = "waterline_face"
-
-        if len(extFace.Wires) > 0:
-            self.extFaces = [f for f in extFace.Faces]
-            return extFace.Wires[0]
-
-        return None
 
     def _makeCircularExtFace(self, edge, extWire):
         """_makeCircularExtensionFace(edge, extWire)...

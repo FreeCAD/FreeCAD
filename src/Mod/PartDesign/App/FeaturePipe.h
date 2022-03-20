@@ -24,7 +24,6 @@
 #ifndef PARTDESIGN_Pipe_H
 #define PARTDESIGN_Pipe_H
 
-#include <App/PropertyStandard.h>
 #include "FeatureSketchBased.h"
 #include <BRepOffsetAPI_MakePipeShell.hxx>
 

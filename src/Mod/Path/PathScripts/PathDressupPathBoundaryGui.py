@@ -257,8 +257,6 @@ def Create(base, name="DressupPathBoundary"):
 
 
 class CommandPathDressupPathBoundary:
-    # pylint: disable=no-init
-
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",
@@ -296,7 +294,7 @@ class CommandPathDressupPathBoundary:
             "PathScripts.PathDressupPathBoundaryGui.Create(App.ActiveDocument.%s)"
             % baseObject.Name
         )
-        FreeCAD.ActiveDocument.commitTransaction()
+        # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()
 
 

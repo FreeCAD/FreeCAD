@@ -56,7 +56,7 @@
     <message>
       <location filename="ArchBuildingPart.py" line="355"/>
       <source>A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</source>
-      <translation type="unfinished">A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</translation>
+      <translation>MaterialName:SolidIndexesList რუკა, რომელიც აკავშირებს მასალის სახელებს მყარ ინდექსებთან, რომლებიც გამოყენებული იქნება ამ ობიექტზე სხვა ფაილებიდან მიბმისას</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1015"/>
@@ -136,12 +136,12 @@
     <message>
       <location filename="ArchBuildingPart.py" line="561"/>
       <source>If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
-      <translation type="unfinished">If this is enabled, the inventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</translation>
+      <translation>თუ ჩართულია, ამ ობიექტის გამომგონებლის წარმოდგენა შეინახება FreeCAD ფაილში, რაც საშუალებას მისცემს მას მიმართოს სხვა ფაილებში მსუბუქი რეჟიმით.</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="563"/>
       <source>A slot to save the inventor representation of this object, if enabled</source>
-      <translation type="unfinished">A slot to save the inventor representation of this object, if enabled</translation>
+      <translation>ობიექტის ინვენტარის გამოსახვის შესანახი სლოტი, თუ ჩართულია</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="568"/>
@@ -176,7 +176,7 @@
     <message>
       <location filename="ArchBuildingPart.py" line="587"/>
       <source>The distance between the level plane and the cut line</source>
-      <translation type="unfinished">The distance between the level plane and the cut line</translation>
+      <translation>მანძილი სართულის სიბრტყესა და კვეთის ხაზს შორის</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="590"/>
@@ -226,7 +226,7 @@
     <message>
       <location filename="ArchComponent.py" line="204"/>
       <source>An optional standard (OmniClass, etc...) code for this component</source>
-      <translation type="unfinished">An optional standard (OmniClass, etc...) code for this component</translation>
+      <translation>ამ კომპონენტის არასავალდებული სტანდარტული (OniClass, და სხვ) კოდი</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="206"/>
@@ -261,17 +261,17 @@
     <message>
       <location filename="ArchComponent.py" line="227"/>
       <source>An optional higher-resolution mesh or shape for this object</source>
-      <translation type="unfinished">An optional higher-resolution mesh or shape for this object</translation>
+      <translation>ამ ობიექტის არასავალდებულო უფრო მაღალი გარჩევადობის ბადე ან მოხაზულობა</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="229"/>
       <source>An optional axis or axis system on which this object should be duplicated</source>
-      <translation type="unfinished">An optional axis or axis system on which this object should be duplicated</translation>
+      <translation>არასავალდებულო ღერძი ან ღერძების სისტემა რომელზეც ეს ობიექტი დადუბლირდება</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="1158"/>
       <source>Use the material color as this object's shape color, if available</source>
-      <translation type="unfinished">Use the material color as this object's shape color, if available</translation>
+      <translation>ხელმისაწვდომობის შემთხვევაში ობიექტის მონახაზის ფერად მასალის ფერის გამოყენება</translation>
     </message>
     <message>
       <location filename="ArchIFC.py" line="66"/>
@@ -291,7 +291,7 @@
     <message>
       <location filename="ArchIFC.py" line="297"/>
       <source>Description of IFC attributes are not yet implemented</source>
-      <translation type="unfinished">Description of IFC attributes are not yet implemented</translation>
+      <translation>IFC ატრიბუტების აღწერების ჩამატება ჯერ მხარდაჭერილი არაა</translation>
     </message>
     <message>
       <location filename="ArchFence.py" line="62"/>
@@ -341,7 +341,7 @@
     <message>
       <location filename="ArchEquipment.py" line="293"/>
       <source>A standard code (MasterFormat, OmniClass,...)</source>
-      <translation type="unfinished">A standard code (MasterFormat, OmniClass,...)</translation>
+      <translation>სტანდარტული კოდი (MasterFormat, OmniClass,...)</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="290"/>
@@ -406,7 +406,7 @@
     <message>
       <location filename="ArchSchedule.py" line="106"/>
       <source>If True, a spreadsheet containing the results is recreated when needed</source>
-      <translation type="unfinished">If True, a spreadsheet containing the results is recreated when needed</translation>
+      <translation>თუ ჩართულია, საჭიროების შემთხვევაში, შედეგებს შემცველი ელცხრილი თავიდან შეიქმნება</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="108"/>
@@ -416,12 +416,12 @@
     <message>
       <location filename="ArchSchedule.py" line="110"/>
       <source>If True, additional lines with each individual object are added to the results</source>
-      <translation type="unfinished">If True, additional lines with each individual object are added to the results</translation>
+      <translation>თუ ჩართულია, შედეგებს თითოეულ ცალკეულ ობიექტთან ერთად დამატებითი ხაზები ემატება</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="270"/>
       <source>The objects that make the boundaries of this space object</source>
-      <translation type="unfinished">The objects that make the boundaries of this space object</translation>
+      <translation>ობიექტები, რომლებიც ქმნიან ამ სივრცული ობიექტის საზღვრებს</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="272"/>
@@ -446,7 +446,7 @@
     <message>
       <location filename="ArchSpace.py" line="280"/>
       <source>Objects that are included inside this space, such as furniture</source>
-      <translation type="unfinished">Objects that are included inside this space, such as furniture</translation>
+      <translation>ობიექტები, რომლებიც შედის ამ სივრცეში, მაგ. ავეჯი</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="282"/>
@@ -471,12 +471,12 @@
     <message>
       <location filename="ArchSpace.py" line="291"/>
       <source>The electric power needed by the equipment of this space in Watts</source>
-      <translation type="unfinished">The electric power needed by the equipment of this space in Watts</translation>
+      <translation>ამ ადგილზე არსებული აღჭურვილობისთვის საჭირო ელექტროენერგია ვატებში</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="293"/>
       <source>If True, Equipment Power will be automatically filled by the equipment included in this space</source>
-      <translation type="unfinished">If True, Equipment Power will be automatically filled by the equipment included in this space</translation>
+      <translation>თუ ჩართულია, აპარატურის სიმძლავრე ავტომატურად შეივსება ამ სივრცეში შემავალი აღჭურვილობის მიერ</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="295"/>
@@ -491,7 +491,7 @@
     <message>
       <location filename="ArchSpace.py" line="506"/>
       <source>The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data</source>
-      <translation type="unfinished">The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data</translation>
+      <translation>საჩვენებელი ტექსტი. გამოიყენეთ ცვლადები $area, $label, $tag, $floor, $walls და $ceiling შესაბამისი მონაცემების ჩასასმელად</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1030"/>
@@ -546,12 +546,12 @@
     <message>
       <location filename="ArchSectionPlane.py" line="923"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
-      <translation type="unfinished">The objects that must be considered by this section plane. Empty means the whole document.</translation>
+      <translation>ობიექტები, რომლებიც უნდა ჩანდეს ამ სიბრტყით კვეთაში. ცარიელი ნიშნავს მთელ დოკუმენტს.</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="925"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
-      <translation type="unfinished">If false, non-solids will be cut too, with possible wrong results.</translation>
+      <translation>თუ გამორთულია, არა-მყარი სხეულებიც გაიკვეთება, შესაძლო არასწორი შედეგებით.</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="928"/>
@@ -561,12 +561,12 @@
     <message>
       <location filename="ArchSectionPlane.py" line="930"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
-      <translation type="unfinished">If true, the color of the objects material will be used to fill cut areas.</translation>
+      <translation>თუ ჩართულია, ობიექტის მასალის ფერი გამოყენებული იქნება კვეთების შესავსებად.</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="933"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
-      <translation type="unfinished">Geometry further than this value will be cut off. Keep zero for unlimited.</translation>
+      <translation>ამ წერტილის შემდეგ არსებული გეომეტრია მოიჭრება. ულიმიტო ჭრისთვის დატოვეთ ნულოვანი.</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="997"/>
@@ -601,7 +601,7 @@
     <message>
       <location filename="ArchSectionPlane.py" line="1025"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
-      <translation type="unfinished">The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</translation>
+      <translation>მანძილი სიბრტყის კვეთასა და ნამდვილ სიბრტყის კვეთას შორის (გქონდეთ ძალიან მცირე მნიშვნელობა, მაგრამ არა ნული)</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1028"/>
@@ -641,7 +641,7 @@
     <message>
       <location filename="ArchSectionPlane.py" line="1284"/>
       <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
-      <translation type="unfinished">If checked, source objects are displayed regardless of being visible in the 3D model</translation>
+      <translation>თუ ჩართულია, საწყისი ობიექტები, მათი 3D მოდელში ხილულობის მიუხედევად, გამოჩნდება</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1286"/>
@@ -666,7 +666,7 @@
     <message>
       <location filename="ArchPipe.py" line="201"/>
       <source>An optional closed profile to base this pipe on</source>
-      <translation type="unfinished">An optional closed profile to base this pipe on</translation>
+      <translation>ამ მილის ბაზირების არასავალდებულო დახურული პროფილი</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="203"/>
@@ -726,12 +726,12 @@
     <message>
       <location filename="ArchTruss.py" line="170"/>
       <source>An optional start offset for the top strut</source>
-      <translation type="unfinished">An optional start offset for the top strut</translation>
+      <translation>ზედა ფერმის არააუცილებელი საწყისი წანაცვლება</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="173"/>
       <source>An optional end offset for the top strut</source>
-      <translation>არჩევითი დასასრულის ოფსეტი ზედა სამაგრისთვის</translation>
+      <translation>ზედა ფერმის არააუცილებელი საბოლოო წანაცვლება</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="176"/>
@@ -841,7 +841,7 @@
     <message>
       <location filename="ArchWindow.py" line="566"/>
       <source>Opens the subcomponents that have a hinge defined</source>
-      <translation type="unfinished">Opens the subcomponents that have a hinge defined</translation>
+      <translation>ანჯამებიან ქვეკომპონენტების გახსნა</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="568"/>
@@ -871,12 +871,12 @@
     <message>
       <location filename="ArchFrame.py" line="113"/>
       <source>Specifies if the profile must be aligned with the extrusion wires</source>
-      <translation type="unfinished">Specifies if the profile must be aligned with the extrusion wires</translation>
+      <translation>მიუთითებს, უნდა მოხდეს პოლიხაზებთან პროფილის სწორება, თუ არა</translation>
     </message>
     <message>
       <location filename="ArchFrame.py" line="116"/>
       <source>An offset vector between the base sketch and the frame</source>
-      <translation type="unfinished">An offset vector between the base sketch and the frame</translation>
+      <translation>საბაზისო ესკიზსა და ჩარჩოს შორის ვექტორის წანაცვლება</translation>
     </message>
     <message>
       <location filename="ArchFrame.py" line="118"/>
@@ -886,7 +886,7 @@
     <message>
       <location filename="ArchFrame.py" line="120"/>
       <source>An optional additional placement to add to the profile before extruding it</source>
-      <translation type="unfinished">An optional additional placement to add to the profile before extruding it</translation>
+      <translation>სურვილისამებრ დამატებითი ადგილი პროფილში დასამატებლად მის გამოწნევამდე</translation>
     </message>
     <message>
       <location filename="ArchFrame.py" line="122"/>
@@ -901,7 +901,7 @@
     <message>
       <location filename="ArchFrame.py" line="127"/>
       <source>If true, geometry is fused, otherwise a compound</source>
-      <translation type="unfinished">If true, geometry is fused, otherwise a compound</translation>
+      <translation>თუ ჩართულია, გეომეტრია გაერთიანებულია. თუ არა, გადაბმული</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="274"/>
@@ -926,7 +926,7 @@
     <message>
       <location filename="ArchStairs.py" line="285"/>
       <source>The width of a Landing (Second edge and after - First edge follows Width property)</source>
-      <translation type="unfinished">The width of a Landing (Second edge and after - First edge follows Width property)</translation>
+      <translation>ბაქანის სიგანზე (მეორე წიბო და შემდეგ - პირველი წიბოს შემდეგ არის სიგანის თვისება)</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="290"/>
@@ -956,7 +956,7 @@
     <message>
       <location filename="ArchStairs.py" line="302"/>
       <source>The Blondel ratio indicates comfortable stairs and should be between 62 and 64cm or 24.5 and 25.5in</source>
-      <translation type="unfinished">The Blondel ratio indicates comfortable stairs and should be between 62 and 64cm or 24.5 and 25.5in</translation>
+      <translation>ბლონელის ფარდობა ნიშნავს კომფორტულ კიბეებზე და უნდა იყოს 62-დან 64 სმ-მდე ან 24,5-დან 25,5 დიუმამდე</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="306"/>
@@ -976,7 +976,7 @@
     <message>
       <location filename="ArchStairs.py" line="314"/>
       <source>The height of the risers of these stairs - Enforced regardless of Height or edge's Height</source>
-      <translation type="unfinished">The height of the risers of these stairs - Enforced regardless of Height or edge's Height</translation>
+      <translation>ამ კივის საფეხურების ფენილის სიმაღლე - მითითება სიმაღლის ან წიბოს სიმაღლის მიუხედავად</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="317"/>
@@ -1111,12 +1111,12 @@
     <message>
       <location filename="ArchRebar.py" line="185"/>
       <source>The direction to use to spread the bars. Keep (0,0,0) for automatic direction.</source>
-      <translation type="unfinished">The direction to use to spread the bars. Keep (0,0,0) for automatic direction.</translation>
+      <translation>ღეროების გაგრძელების მიმართულება. ავტომატური მიმართულებისთვის დატოვეთ (0,0,0).</translation>
     </message>
     <message>
       <location filename="ArchRebar.py" line="187"/>
       <source>The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.</source>
-      <translation type="unfinished">The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.</translation>
+      <translation>საბაზისო პროფილის კუთხეზე გადასატარებელი ნაწიბური. მოცემული მნიშვნელობა მრავლდება ღეროს დიამეტრზე.</translation>
     </message>
     <message>
       <location filename="ArchRebar.py" line="189"/>
@@ -1156,12 +1156,12 @@
     <message>
       <location filename="ArchCurtainWall.py" line="172"/>
       <source>An optional host object for this curtain wall</source>
-      <translation type="unfinished">An optional host object for this curtain wall</translation>
+      <translation>ამ გამჭვირვალე ფასადის არასავალდებულო ჰოსტი ობიექტი</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="175"/>
       <source>The height of the curtain wall, if based on an edge</source>
-      <translation type="unfinished">The height of the curtain wall, if based on an edge</translation>
+      <translation>გამჭვირვალე ფასადის სიმაღლე, თუ ის დაფუძნებულია წიბოზე</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="179"/>
@@ -1266,7 +1266,7 @@
     <message>
       <location filename="ArchCurtainWall.py" line="260"/>
       <source>The vertical direction reference to be used by this object to deduce vertical/horizontal directions. Keep it close to the actual vertical direction of your curtain wall</source>
-      <translation type="unfinished">The vertical direction reference to be used by this object to deduce vertical/horizontal directions. Keep it close to the actual vertical direction of your curtain wall</translation>
+      <translation>ვერტიკალური მიმართულების მითითება, რომელიც გამოიყენება ამ ობიექტის მიერ ვერტიკალური/ჰორიზონტალური მიმართულებების გამოსატანად. შეინახეთ იგი გამჭვირვალე ფასადს რეალურ ვერტიკალურ მიმართულებასთან ახლოს</translation>
     </message>
     <message>
       <location filename="ArchReference.py" line="94"/>
@@ -1357,7 +1357,7 @@
     <message>
       <location filename="ArchSite.py" line="591"/>
       <source>The street and house number of this site, with postal box or apartment number if needed</source>
-      <translation type="unfinished">The street and house number of this site, with postal box or apartment number if needed</translation>
+      <translation>ამ ადგილის ქუჩა და ბინის ნომერი. საჭიროების შემთხვევაში დაურთეთ საფოსტო კოდი და ბინის ნომერი</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="593"/>
@@ -1387,7 +1387,7 @@
     <message>
       <location filename="ArchSite.py" line="605"/>
       <source>Angle between the true North and the North direction in this document</source>
-      <translation type="unfinished">Angle between the true North and the North direction in this document</translation>
+      <translation>კუთხე ნამდვილ ჩრდილოეთსა და ამ დოკუმენტში ჩრდილო მიმართულებას შორის</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="610"/>
@@ -1397,7 +1397,7 @@
     <message>
       <location filename="ArchSite.py" line="612"/>
       <source>A url that shows this site in a mapping website</source>
-      <translation type="unfinished">A url that shows this site in a mapping website</translation>
+      <translation>Url, რომელიც ამ ადგილს რუკის ვებგვერდზე აჩვენებს</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="620"/>
@@ -1417,7 +1417,7 @@
     <message>
       <location filename="ArchSite.py" line="626"/>
       <source>An extrusion vector to use when performing boolean operations</source>
-      <translation type="unfinished">An extrusion vector to use when performing boolean operations</translation>
+      <translation>ბულევური ოპერაციების შესრულებისას გამოყენებული გამოწნევის ვექტორი</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="629"/>
@@ -1427,7 +1427,7 @@
     <message>
       <location filename="ArchSite.py" line="631"/>
       <source>An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates</source>
-      <translation type="unfinished">An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates</translation>
+      <translation>არასავალდებულო წანაცვლება მოდელის (0,0,0) საწყისსა და გეოკოორდინატებით მითითებულ წერტილს შორის</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="639"/>
@@ -1437,7 +1437,7 @@
     <message>
       <location filename="ArchSite.py" line="641"/>
       <source>An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one</source>
-      <translation type="unfinished">An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one</translation>
+      <translation>ამ ადგილის მდებარეობის არასავალდებული EPW ფაილი. მიმართეთ დოკუმენტაციას, რომ გაიგოთ, როგორ მიიღოთ იგი</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="835"/>
@@ -1467,7 +1467,7 @@
     <message>
       <location filename="ArchSite.py" line="848"/>
       <source>When set to 'True North' the whole geometry will be rotated to match the true north of this site</source>
-      <translation type="unfinished">When set to 'True North' the whole geometry will be rotated to match the true north of this site</translation>
+      <translation>როდესაც დაყენებულია „ჭეშმარიტ ჩრდილოეთზე“, მთელი გეომეტრია შემობრუნდება ამ ადგილის ნამდვილი ჩრდილოეთის შესატყვისად</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="852"/>
@@ -1492,22 +1492,22 @@
     <message>
       <location filename="ArchWall.py" line="717"/>
       <source>The length of this wall. Not used if this wall is based on an underlying object</source>
-      <translation type="unfinished">The length of this wall. Not used if this wall is based on an underlying object</translation>
+      <translation>ამ კედლის სიგრძე. არ გამოიყენება, თუ ეს კედელი დაფუძნებულია ქვემდებარე ობიექტზე</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="719"/>
       <source>The width of this wall. Not used if this wall is based on a face</source>
-      <translation type="unfinished">The width of this wall. Not used if this wall is based on a face</translation>
+      <translation>ამ კედლის სიგანე. არ გამოიყენება, თუ ეს კედელი ეყრდნობა ზედაპირს</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="723"/>
       <source>This overrides Width attribute to set width of each segment of wall.  Ignored if Base object provides Widths information, with getWidths() method.  (The 1st value override 'Width' attribute for 1st segment of wall; if a value is zero, 1st value of 'OverrideWidth' will be followed)</source>
-      <translation type="unfinished">This overrides Width attribute to set width of each segment of wall.  Ignored if Base object provides Widths information, with getWidths() method.  (The 1st value override 'Width' attribute for 1st segment of wall; if a value is zero, 1st value of 'OverrideWidth' will be followed)</translation>
+      <translation>ეს უგულებელყოფს Width ატრიბუტს კედლის თითოეული სეგმენტის სიგანის დასაყენებლად. იგნორირებულია, თუ საბაზისო ობიექტი უზრუნველყოფს Width-ის ინფორმაციას, getWidths() მეთოდით. (1-ლი მნიშვნელობის უგულებელყოფა "სიგანე" ატრიბუტი კედლის 1-ლი სეგმენტისთვის; თუ მნიშვნელობა ნულია, მოჰყვება "OverrideWidth" 1-ლი მნიშვნელობა)</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="726"/>
       <source>This overrides Align attribute to set Align of each segment of wall.  Ignored if Base object provides Aligns information, with getAligns() method.  (The 1st value override 'Align' attribute for 1st segment of wall; if a value is not 'Left, Right, Center', 1st value of 'OverrideAlign' will be followed)</source>
-      <translation type="unfinished">This overrides Align attribute to set Align of each segment of wall.  Ignored if Base object provides Aligns information, with getAligns() method.  (The 1st value override 'Align' attribute for 1st segment of wall; if a value is not 'Left, Right, Center', 1st value of 'OverrideAlign' will be followed)</translation>
+      <translation>ეს უგულებელყოფს Align ატრიბუტს კედლის თითოეული სეგმენტის Align დასაყენებლად. იგნორირებულია, თუ Base ობიექტი უზრუნველყოფს Aligns ინფორმაციას, getAligns() მეთოდით. (1-ლი მნიშვნელობის უგულებელყოფა "Align" ატრიბუტი კედლის 1-ლი სეგმენტისთვის; თუ მნიშვნელობა არ არის "მარცხნივ, მარჯვნივ, ცენტრი", მოჰყვება "OverrideAlign" 1-ლი მნიშვნელობა)</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="729"/>
@@ -1517,7 +1517,7 @@
     <message>
       <location filename="ArchWall.py" line="731"/>
       <source>The area of this wall as a simple Height * Length calculation</source>
-      <translation type="unfinished">The area of this wall as a simple Height * Length calculation</translation>
+      <translation>ამ კედლის ფართობი, როგორც მარტივად (სიმაღლე * სიგრძე) იანგარიშება</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="734"/>
@@ -1527,17 +1527,17 @@
     <message>
       <location filename="ArchPanel.py" line="433"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
-      <translation type="unfinished">The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</translation>
+      <translation>ამ ობიექტის ნორმალის გამოწნეხვის მიმართულება (ავტომატური ნორმალისთვის დატოვეთ (0,0,0))</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="739"/>
       <source>The face number of the base object used to build this wall</source>
-      <translation type="unfinished">The face number of the base object used to build this wall</translation>
+      <translation>ამ კედლის ასაშენებლად გამოყენებული საბაზისო ობიექტის ზედაპირის ნომერი</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="741"/>
       <source>The offset between this wall and its baseline (only for left and right alignments)</source>
-      <translation type="unfinished">The offset between this wall and its baseline (only for left and right alignments)</translation>
+      <translation>ამ კედელსა და მის საბაზისო ხაზს შორის წანაცვლება (მხოლოდ მარჯვენა და მარცხენა სწორებებისთვის)</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="750"/>
@@ -1557,12 +1557,12 @@
     <message>
       <location filename="ArchWall.py" line="756"/>
       <source>The horizontal offset of the first line of blocks</source>
-      <translation type="unfinished">The horizontal offset of the first line of blocks</translation>
+      <translation>ბლოკების პირველი ხაზის ჰორიზონტალური წანაცვლება</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="758"/>
       <source>The horizontal offset of the second line of blocks</source>
-      <translation type="unfinished">The horizontal offset of the second line of blocks</translation>
+      <translation>ბლოკების მეორე ხაზის ჰორიზონტალური წანაცვლება</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="760"/>
@@ -1592,7 +1592,7 @@
     <message>
       <location filename="ArchRoof.py" line="273"/>
       <source>The list of IDs of the relative profiles of the roof segments</source>
-      <translation type="unfinished">The list of IDs of the relative profiles of the roof segments</translation>
+      <translation>სახურავის სეგმენტების ფარდობითი პროფილების ID-ების სია</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="278"/>
@@ -1612,12 +1612,12 @@
     <message>
       <location filename="ArchRoof.py" line="293"/>
       <source>The face number of the base object used to build the roof</source>
-      <translation type="unfinished">The face number of the base object used to build the roof</translation>
+      <translation>სახურავის ასაშენებლად გამოყენებული საბაზისო ობიექტის ზედაპირის ნომერი</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="298"/>
       <source>The total length of the ridges and hips of the roof</source>
-      <translation type="unfinished">The total length of the ridges and hips of the roof</translation>
+      <translation>სახურავის კეხისა და ფერდების ჯამური სიგრძე</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="304"/>
@@ -1627,12 +1627,12 @@
     <message>
       <location filename="ArchRoof.py" line="310"/>
       <source>Specifies if the direction of the roof should be flipped</source>
-      <translation type="unfinished">Specifies if the direction of the roof should be flipped</translation>
+      <translation>განსაზღვრავს, სახურავის მიმართულება უნდა გადაბრუნეს თუ არა</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1321"/>
       <source>An optional extrusion path for this element</source>
-      <translation type="unfinished">An optional extrusion path for this element</translation>
+      <translation>ამ ელემენტის არასავალდებულო გამოწნევის გზა</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="678"/>
@@ -1642,47 +1642,47 @@
     <message>
       <location filename="ArchStructure.py" line="680"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">Start offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>გამოწნევის ტრაექტორიის გასწვრივ მანძილის საწყისი წანაცვლება (დადებითი: გაგრძელება, უარყოფითი: მოჭრა)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="680"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim</source>
-      <translation type="unfinished">Start offset distance along the extrusion path (positive: extend, negative: trim</translation>
+      <translation>გამოწნევის ტრაექტორიის გასწვრივ მანძილის საწყისი წანაცვლება (დადებითი: გაგრძელება, უარყოფითი: მოჭრა</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="682"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>გამოწნევის ტრაექტორიის გასწვრივ მანძილის საბოლოო წანაცვლება (დადებითი: გაგრძელება, უარყოფითი: მოჭრა)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="682"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim</source>
-      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim</translation>
+      <translation>გამოწნევის ტრაექტორიის გასწვრივ მანძილის საბოლოო წანაცვლება (დადებითი: გაგრძელება, უარყოფითი: მოჭრა</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="684"/>
       <source>Automatically align the Base of the Structure perpendicular to the Tool axis</source>
-      <translation type="unfinished">Automatically align the Base of the Structure perpendicular to the Tool axis</translation>
+      <translation>სტრუქტურის ფუძის ხელსაწყოს ღერძთან პერპენდიკულურობის ავტომატური სწორება</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="686"/>
       <source>X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">X offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>X წანაცვლება საბაზისო საწყისსა და ხელსაწყოს ღერძს შორის (გამოიყენება მხოლოდ იმ შემთხვევაში, თუ BasePerpendicularToTool არის True)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="688"/>
       <source>Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Y offset between the Base origin and the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>Y წანაცვლება საბაზისო საწყისსა და ხელსაწყოს ღერძს შორის (გამოიყენება მხოლოდ იმ შემთხვევაში, თუ BasePerpendicularToTool არის True)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="690"/>
       <source>Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Mirror the Base along its Y axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>ბაზის ასლი მისი Y ღერძის გასწვრივ (გამოიყენება მხოლოდ იმ შემთხვევაში, თუ BasePerpendicularTool დაყენებულია "True"-ზე)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="692"/>
       <source>Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</source>
-      <translation type="unfinished">Base rotation around the Tool axis (only used if BasePerpendicularToTool is True)</translation>
+      <translation>ბაზის მოტრიალება ხელსაწყოს ღერძის გარშემო (გამოიყენება მხოლოდ თუ BasePerpendicularToTool დაყენებულია "True"-ზე)</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="404"/>
@@ -1697,7 +1697,7 @@
     <message>
       <location filename="ArchStructure.py" line="698"/>
       <source>The height or extrusion depth of this element. Keep 0 for automatic</source>
-      <translation type="unfinished">The height or extrusion depth of this element. Keep 0 for automatic</translation>
+      <translation>ამ ელემენტის სიმაღლე ან გამოწნევის სიღრმე. ავტომატური მნიშვნელობისთვის დატოვეთ 0</translation>
     </message>
     <message>
       <location filename="ArchPrecast.py" line="68"/>
@@ -1707,7 +1707,7 @@
     <message>
       <location filename="ArchStructure.py" line="704"/>
       <source>A description of the standard profile this element is based upon</source>
-      <translation type="unfinished">A description of the standard profile this element is based upon</translation>
+      <translation>ელემენტის სტანდარტული პროფილის აღწერის წყარო</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="706"/>
@@ -1717,7 +1717,7 @@
     <message>
       <location filename="ArchPanel.py" line="430"/>
       <source>The facemaker type to use to build the profile of this object</source>
-      <translation type="unfinished">The facemaker type to use to build the profile of this object</translation>
+      <translation>ობიექტის პროფილის შესაქმნელად გამოსაყენებელი facemaker-ის ტიპი</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1012"/>
@@ -1752,7 +1752,7 @@
     <message>
       <location filename="ArchStructure.py" line="1357"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
-      <translation type="unfinished">The element numbers to exclude when this structure is based on axes</translation>
+      <translation>გამოსარიცხი ელემენტის ნომრები, როცა ეს სტრუქტურა დაფუძნებულია ღერძებზე</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1358"/>
@@ -1787,7 +1787,7 @@
     <message>
       <location filename="ArchAxis.py" line="221"/>
       <source>If not zero, the axes are not represented as one full line but as two lines of the given length</source>
-      <translation type="unfinished">If not zero, the axes are not represented as one full line but as two lines of the given length</translation>
+      <translation>თუ არ უდრის ნულს, ღერძები არ არის წარმოდგენილი როგორც ერთი სრული ხაზი, არამედ როგორც მოცემული სიგრძის ორი ხაზი</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="314"/>
@@ -1807,7 +1807,7 @@
     <message>
       <location filename="ArchAxis.py" line="325"/>
       <source>Where to add bubbles to this axis: Start, end, both or none</source>
-      <translation type="unfinished">Where to add bubbles to this axis: Start, end, both or none</translation>
+      <translation>სად დავამატო ღერძის სანიშნები: თავში, ბოლოში, ორივეგან თუ არცერთგან</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="328"/>
@@ -1977,7 +1977,7 @@
     <message>
       <location filename="ArchPanel.py" line="413"/>
       <source>The offset between this panel and its baseline</source>
-      <translation type="unfinished">The offset between this panel and its baseline</translation>
+      <translation>ამ პანელსა და მის საბაზისო ხაზს შორის წანაცვლება</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="415"/>
@@ -2007,7 +2007,7 @@
     <message>
       <location filename="ArchPanel.py" line="426"/>
       <source>If the wave also affects the bottom side or not</source>
-      <translation type="unfinished">If the wave also affects the bottom side or not</translation>
+      <translation>ახდენს თუ არა ტალღა გავლენას ქვედა მხარეზე</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="428"/>
@@ -2047,12 +2047,12 @@
     <message>
       <location filename="ArchPanel.py" line="943"/>
       <source>The text to display. Can be %tag%, %label% or %description% to display the panel tag or label</source>
-      <translation type="unfinished">The text to display. Can be %tag%, %label% or %description% to display the panel tag or label</translation>
+      <translation>საჩვენებელი ტექსტი. შეიძლება შეიცავდეს %tag%-ს, %label%-ს ან %description%-ს შესაბამისი მნიშვნელობების გამოსაყენებლად</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="1224"/>
       <source>The position of the tag text. Keep (0,0,0) for center position</source>
-      <translation type="unfinished">The position of the tag text. Keep (0,0,0) for center position</translation>
+      <translation>ჭდის ტექსტის პოზიცია. ცენტრში დასატოვებლად დატოვეთ (0,0,0)</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="1226"/>
@@ -2062,22 +2062,22 @@
     <message>
       <location filename="ArchPanel.py" line="1240"/>
       <source>If True, the object is rendered as a face, if possible.</source>
-      <translation type="unfinished">If True, the object is rendered as a face, if possible.</translation>
+      <translation>თუ ჩართულია, შესაძლებლობის შემთხვევაში ობიექტი დარენდერდება, როგორც ზედაპირი.</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="958"/>
       <source>The allowed angles this object can be rotated to when placed on sheets</source>
-      <translation type="unfinished">The allowed angles this object can be rotated to when placed on sheets</translation>
+      <translation>დაშვებული კუთხეები, რომლითაც ეს ობიექტი შეიძლება შებრუნდეს, როცა ფურცლებზე დევს</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="961"/>
       <source>An offset value to move the cut plane from the center point</source>
-      <translation type="unfinished">An offset value to move the cut plane from the center point</translation>
+      <translation>ცენტრალური წერტილიდან სიბრტყის კვეთის წანაცვლების მნიშვნელობა</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="1392"/>
       <source>A margin inside the boundary</source>
-      <translation type="unfinished">A margin inside the boundary</translation>
+      <translation>მანძილი ფურცლის კიდესა და მის შემცველობას შორის</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="1394"/>
@@ -2117,7 +2117,7 @@
     <message>
       <location filename="ArchPanel.py" line="1242"/>
       <source>Specifies an angle for the wood grain (Clockwise, 0 is North)</source>
-      <translation type="unfinished">Specifies an angle for the wood grain (Clockwise, 0 is North)</translation>
+      <translation>ხის ტექსტურის კუთხის მითითება (საათის ისრის მიმართულებით, 0 ჩრდილოეთია)</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="1244"/>
@@ -2127,7 +2127,7 @@
     <message>
       <location filename="ArchPanel.py" line="1247"/>
       <source>A list of possible rotations for the nester</source>
-      <translation type="unfinished">A list of possible rotations for the nester</translation>
+      <translation>შესაძლო ბრუნვათა სია ნესტინგისათვის</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="1396"/>
@@ -2324,9 +2324,9 @@ You can change that in the preferences.</source>
       <source>There is no valid object in the selection.
 
 Building creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>მონიშნულში არ არის სწორი ობიექტები.
 
-Building creation aborted.</translation>
+შენობის შექმნა შეჩერებულია.</translation>
     </message>
     <message>
       <location filename="ArchBuilding.py" line="253"/>
@@ -2491,7 +2491,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchCommands.py" line="723"/>
       <source>contains faces that are not part of any solid</source>
-      <translation type="unfinished">contains faces that are not part of any solid</translation>
+      <translation>შეიცავს ზედაპირებს, რომელიც არცერთი მყარი სხეულის ნაწილი არაა</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="1018"/>
@@ -2606,7 +2606,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchCommands.py" line="1661"/>
       <source>The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
-      <translation type="unfinished">The object doesn't have an IfcProperties attribute. Cancel spreadsheet creation for object:</translation>
+      <translation>ობიექტს არ აქვს IfcProperties ატრიბუტი. ობიექტისთვის ელცხრილის შექმნის გაუქმება:</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="1679"/>
@@ -2641,7 +2641,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchSectionPlane.py" line="1509"/>
       <source>Add selected object(s) to the scope of this section plane</source>
-      <translation type="unfinished">Add selected object(s) to the scope of this section plane</translation>
+      <translation>მონიშნული ობიექტ(ებ)-ის ამ სექციის სიბრტყის კვეთის საზღვრებში ჩამატება</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1510"/>
@@ -2691,7 +2691,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchSectionPlane.py" line="1519"/>
       <source>Resizes the plane to fit the objects in the list above</source>
-      <translation type="unfinished">Resizes the plane to fit the objects in the list above</translation>
+      <translation>სიბრტყის ზომის შეცვლა ზემოთ ჩამოთვლილ ობიექტებში ჩასატევად</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="511"/>
@@ -2701,7 +2701,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchSectionPlane.py" line="1521"/>
       <source>Centers the plane on the objects in the list above</source>
-      <translation type="unfinished">Centers the plane on the objects in the list above</translation>
+      <translation>სიბრტყის ზემოთ მოცემულ სიაში არსებულ ობიექტებზე დაცენტრება</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="151"/>
@@ -2891,7 +2891,22 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchWindow.py" line="236"/>
       <source>Choose a face on an existing object or select a preset</source>
-      <translation type="unfinished">Choose a face on an existing object or select a preset</translation>
+      <translation>აირჩიეთ ზედაპირი არსებულ ობიექტზე ან აირჩიეთ პრესეტი</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="290"/>
+      <source>Window not based on sketch. Window not aligned or resized.</source>
+      <translation>ფანჯარა არ ეყრდნობა ესკიზს. ფანჯარა არ სწორდება და არ შეიცვლის ზომებს.</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="300"/>
+      <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
+      <translation>ფანჯრის ესკიზსში სიგრძისა და სიმაღლის შეზღუდვები არ არსებობს. ფანჯრის ზომა არ შეიცვლება.</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="303"/>
+      <source>No window found. Cannot continue.</source>
+      <translation>ფანჯარა ნაპოვნი არაა. გაგრძელება შეუძლებელია.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="327"/>
@@ -2996,7 +3011,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchWindow.py" line="1657"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
-      <translation type="unfinished">If this is checked, the default Frame value of this window will be added to the value entered here</translation>
+      <translation>თუ ჩართულია, ამ ფანჯრის ნაგულისხმევი ჩარჩოს მნიშვნელობას დაემატება აქ მითითებული მნიშვნელობა</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="1659"/>
@@ -3036,7 +3051,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="importGBXML.py" line="49"/>
       <source>This exporter can currently only export one site object</source>
-      <translation type="unfinished">This exporter can currently only export one site object</translation>
+      <translation>გამტანს ახლა მხოლოდ ერთი ადგილის ობიექტის გატანა შეუძლია</translation>
     </message>
     <message>
       <location filename="importGBXML.py" line="91"/>
@@ -3051,7 +3066,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchEquipment.py" line="180"/>
       <source>You must select a base shape object and optionally a mesh object</source>
-      <translation type="unfinished">You must select a base shape object and optionally a mesh object</translation>
+      <translation>თქვენ უნდა აირჩიოთ ფუძის ფორმის ობიექტი და სურვილისამებრ ბადის ობიექტი</translation>
     </message>
     <message>
       <location filename="ArchEquipment.py" line="200"/>
@@ -3101,7 +3116,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchRebar.py" line="151"/>
       <source>Please select a base face on a structural object</source>
-      <translation type="unfinished">Please select a base face on a structural object</translation>
+      <translation>გთხოვთ, აირჩიეთ ბაზისური ზედაპირი ან სტრუქტურული ობიექტი</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="71"/>
@@ -3292,13 +3307,13 @@ Site is not allowed to accept any other object besides Building.
 Other objects will be removed from the selection.
 
 Note: You can change that in the preferences.</source>
-      <translation type="unfinished">Please either select only Building objects or nothing at all!
+      <translation>გთხოვთ ან აირჩიოთ მხოლოდ სამშენებლო ობიექტები ან საერთოდ არაფერი!
 
-Site is not allowed to accept any other object besides Building.
+ადგილს არ შეუძლია შენობის გარდა სხვა ობიექტის მიღება.
 
-Other objects will be removed from the selection.
+სხვა ობიექტები წაიშლება მონიშნულების სიიდან.
 
-Note: You can change that in the preferences.</translation>
+შენიშვნა: ეს ქცევა პარამეტრებში შეგიძლიათ შეცვალოთ.</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="535"/>
@@ -3322,7 +3337,7 @@ Site creation aborted.</source>
     <message>
       <location filename="ArchWall.py" line="118"/>
       <source>Walls can only be based on Part or Mesh objects</source>
-      <translation type="unfinished">Walls can only be based on Part or Mesh objects</translation>
+      <translation>კედლები შეიძლება დაფუძნებული იყოს ნაწილის ან ბადის ობიექტებზე</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="605"/>
@@ -3352,7 +3367,7 @@ Site creation aborted.</source>
     <message>
       <location filename="ArchWall.py" line="477"/>
       <source>This list shows all the MultiMaterials objects of this document. Create some to define wall types.</source>
-      <translation type="unfinished">This list shows all the MultiMaterials objects of this document. Create some to define wall types.</translation>
+      <translation>ეს სია აჩვენებს ამ დოკუმენტის ყველა რთული მასალის ობიექტს. კედლის ტიპების დასადგენად შექმენით რამდენიმე.</translation>
     </message>
     <message>
       <location filename="ArchPrecast.py" line="1395"/>
@@ -3446,9 +3461,9 @@ You can change that in the preferences.</source>
       <source>There is no valid object in the selection.
 
 Floor creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>მონიშნულში არ არის სწორი ობიექტები.
 
-Floor creation aborted.</translation>
+სართულის შექმნა შეჩერებულია.</translation>
     </message>
     <message>
       <location filename="ArchFloor.py" line="161"/>
@@ -3463,7 +3478,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="importIFClegacy.py" line="390"/>
       <source>IfcOpenShell not found or disabled, falling back on internal parser.</source>
-      <translation type="unfinished">IfcOpenShell not found or disabled, falling back on internal parser.</translation>
+      <translation>IfcOpenShell ვერ ვიპოვე ან გამორთულია. გამოვიყენებ შიდა ანალიზატორს.</translation>
     </message>
     <message>
       <location filename="importIFClegacy.py" line="396"/>
@@ -3578,7 +3593,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="222"/>
       <source>Please select the base object first and then the edges to use as extrusion paths</source>
-      <translation type="unfinished">Please select the base object first and then the edges to use as extrusion paths</translation>
+      <translation>ჯერ აირჩიეთ საბაზისო ობიექტი, შემდეგ კი წიბოები მათი გამოწნევის ტრაექტორიებად გამოსაყენებლად</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="245"/>
@@ -3628,7 +3643,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="764"/>
       <source>Error: The base shape couldn't be extruded along this tool object</source>
-      <translation type="unfinished">Error: The base shape couldn't be extruded along this tool object</translation>
+      <translation>შეცდომა: საბაზისო მონახაზი ვერ გამოიწნევება ხელსაწყოს ობიექტის გაწვრივ</translation>
     </message>
     <message>
       <location filename="ArchPanel.py" line="538"/>
@@ -3693,7 +3708,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="1192"/>
       <source>Select object or edges to be used as a Tool (extrusion path)</source>
-      <translation type="unfinished">Select object or edges to be used as a Tool (extrusion path)</translation>
+      <translation>მონიშნეთ ობიექტი ან წიბოები მათი ხელსაწყოდ გამოსაყენებლად (გამოწნევის ტრაექტორია)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1247"/>
@@ -3963,7 +3978,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchEquipment.py" line="227"/>
       <source>Creates 3 views (top, front, side) from a mesh-based object</source>
-      <translation type="unfinished">Creates 3 views (top, front, side) from a mesh-based object</translation>
+      <translation>ბადეზე დაფუძნებული ობიექტის 3 ხედის (ზედა, წინა, გვერდითა) შექმნა</translation>
     </message>
   </context>
   <context>
@@ -4046,7 +4061,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchBuildingPart.py" line="295"/>
       <source>Creates a BuildingPart object including selected objects</source>
-      <translation type="unfinished">Creates a BuildingPart object including selected objects</translation>
+      <translation>მონიშნული ობიექტებისგან სამშენებლო დეტალის შექმნა</translation>
     </message>
   </context>
   <context>
@@ -4072,7 +4087,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchCommands.py" line="1624"/>
       <source>Clones an object as an undefined architectural component</source>
-      <translation type="unfinished">Clones an object as an undefined architectural component</translation>
+      <translation>ობიექტის, როგორც განუსაზღვრელი არქიტექტურული კომპონენტის დაკლონვა</translation>
     </message>
   </context>
   <context>
@@ -4111,7 +4126,20 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchCurtainWall.py" line="105"/>
       <source>Creates a curtain wall object from selected line or from scratch</source>
-      <translation type="unfinished">Creates a curtain wall object from selected line or from scratch</translation>
+      <translation>მონიშნული ხაზიდან ან ნულიდან გამჭვირვალე ფასადის შექმნა</translation>
+    </message>
+  </context>
+  <context>
+    <name>Arch_CutLine</name>
+    <message>
+      <location filename="ArchCutPlane.py" line="80"/>
+      <source>Cut with line</source>
+      <translation>ხაზით გაჭრა</translation>
+    </message>
+    <message>
+      <location filename="ArchCutPlane.py" line="83"/>
+      <source>Cut an object with a line</source>
+      <translation>ობიექტის ხაზით კვეთა</translation>
     </message>
   </context>
   <context>
@@ -4147,7 +4175,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchEquipment.py" line="172"/>
       <source>Creates an equipment object from a selected object (Part or Mesh)</source>
-      <translation type="unfinished">Creates an equipment object from a selected object (Part or Mesh)</translation>
+      <translation>მონიშნული ობიექტისგან (ნაწილი ან ბადე) აპარატურის ობიექტის შექმნა</translation>
     </message>
   </context>
   <context>
@@ -4173,7 +4201,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchFloor.py" line="116"/>
       <source>Creates a Building Part object that represents a level, including selected objects</source>
-      <translation type="unfinished">Creates a Building Part object that represents a level, including selected objects</translation>
+      <translation>ქმნის შენობის ნაწილის ობიექტს, რომელიც წარმოადგენს დონეს, მონიშნული ობიექტების ჩათვლით</translation>
     </message>
   </context>
   <context>
@@ -4186,7 +4214,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchFrame.py" line="81"/>
       <source>Creates a frame object from a planar 2D object (the extrusion path(s)) and a profile. Make sure objects are selected in that order.</source>
-      <translation type="unfinished">Creates a frame object from a planar 2D object (the extrusion path(s)) and a profile. Make sure objects are selected in that order.</translation>
+      <translation>ქმნის ჩარჩოს ობიექტს ბრტყელი 2D ობიექტისგან (გამოწნეხვის ტრაექტორი(ა/ები)) და პროფილიდან. დარწმუნდით, რომ ობიექტები შერჩეულია ამ თანმიმდევრობით.</translation>
     </message>
   </context>
   <context>
@@ -4224,7 +4252,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchAxis.py" line="1143"/>
       <source>The span ranges of cells that are merged together</source>
-      <translation type="unfinished">The span ranges of cells that are merged together</translation>
+      <translation>გაერთიანებადი უჯრედების დიაპაზონის ინტერვალი</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="1145"/>
@@ -4244,17 +4272,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchAxis.py" line="1152"/>
       <source>Creates automatic column divisions (set to 0 to disable)</source>
-      <translation type="unfinished">Creates automatic column divisions (set to 0 to disable)</translation>
+      <translation>სვეტების ავტომატური დაყოფის შექმნა (გამოსართავად დააყენეთ 0)</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="1154"/>
       <source>Creates automatic row divisions (set to 0 to disable)</source>
-      <translation type="unfinished">Creates automatic row divisions (set to 0 to disable)</translation>
+      <translation>მწკრივების ავტომატური დაყოფის შექმნა (გამოსართავად დააყენეთ 0)</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="1156"/>
       <source>When in edge midpoint mode, if this grid must reorient its children along edge normals or not</source>
-      <translation type="unfinished">When in edge midpoint mode, if this grid must reorient its children along edge normals or not</translation>
+      <translation>როცა ჩართულია წიბოს შუაწერტილის რეჟიმი, უნდა მოახდინოს ამ ბადემ მისი შვილების რეორიენტაცია წიბოს ნორმალების გასწვრივ თუ არა</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="1158"/>
@@ -4285,7 +4313,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchMaterial.py" line="119"/>
       <source>Creates or edits the material definition of a selected object.</source>
-      <translation type="unfinished">Creates or edits the material definition of a selected object.</translation>
+      <translation>მონიშნული ობიექტის მასალის განმარტების შექმნა ან ჩასწორება.</translation>
     </message>
   </context>
   <context>
@@ -4319,7 +4347,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchCommands.py" line="1451"/>
       <source>Turns selected meshes into Part Shape objects</source>
-      <translation type="unfinished">Turns selected meshes into Part Shape objects</translation>
+      <translation>მონიშნული ბადეების ნაწილის მონახაზის ობიექტებად გადაქცევა</translation>
     </message>
   </context>
   <context>
@@ -4345,7 +4373,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchPanel.py" line="1522"/>
       <source>Nests a series of selected shapes in a container</source>
-      <translation type="unfinished">Nests a series of selected shapes in a container</translation>
+      <translation>აკეთებს მონიშნულ ფორმათა მწკრივის ნესტინგს კონტეინერში</translation>
     </message>
   </context>
   <context>
@@ -4397,7 +4425,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchPanel.py" line="366"/>
       <source>Creates a 2D sheet which can contain panel cuts</source>
-      <translation type="unfinished">Creates a 2D sheet which can contain panel cuts</translation>
+      <translation>ქმნის 2D ფურცელს, რომელიც შეიძლება პანელის ჭრილებს შეიცავდეს</translation>
     </message>
   </context>
   <context>
@@ -4462,7 +4490,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchProject.py" line="100"/>
       <source>Creates a project entity aggregating the selected sites.</source>
-      <translation type="unfinished">Creates a project entity aggregating the selected sites.</translation>
+      <translation>ქმნის პროექტის ერთეულს, რომელიც აერთიანებს მონიშნულ ადგილებს.</translation>
     </message>
   </context>
   <context>
@@ -4475,7 +4503,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchRebar.py" line="108"/>
       <source>Creates a Reinforcement bar from the selected face of a structural object</source>
-      <translation type="unfinished">Creates a Reinforcement bar from the selected face of a structural object</translation>
+      <translation>არმატურის ღეროს შექმნა არქიტექტურული ობიექტის მონიშნული ზედაპირიდან</translation>
     </message>
   </context>
   <context>
@@ -4488,7 +4516,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="142"/>
       <source>Create various types of rebars, including U-shaped, L-shaped, and stirrup</source>
-      <translation type="unfinished">Create various types of rebars, including U-shaped, L-shaped, and stirrup</translation>
+      <translation>შექმენით სხვადასხვა ტიპის არმატურა, მათ შორის U, L და უზანგის ფორმის</translation>
     </message>
   </context>
   <context>
@@ -4514,7 +4542,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchCommands.py" line="1391"/>
       <source>Remove the selected components from their parents, or create a hole in a component</source>
-      <translation type="unfinished">Remove the selected components from their parents, or create a hole in a component</translation>
+      <translation>მონიშნული კომპონენტების მშობლებისგან მოცილება, ან კომპონენტში ნახვრეტის გაკეთება</translation>
     </message>
   </context>
   <context>
@@ -4527,7 +4555,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchCommands.py" line="1515"/>
       <source>Removes cubic shapes from Arch components</source>
-      <translation>არქიტექტურული კომპონენტებიდან კუბის ფორმის ფიგურების წაშლა</translation>
+      <translation>არქ. კომპონენტებიდან კუბის ფორმის ფიგურების წაშლა</translation>
     </message>
   </context>
   <context>
@@ -4553,7 +4581,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchSchedule.py" line="65"/>
       <source>Creates a schedule to collect data from the model</source>
-      <translation type="unfinished">Creates a schedule to collect data from the model</translation>
+      <translation>მოდელიდან მონაცემების შეგროვების განრიგის შექმნა</translation>
     </message>
   </context>
   <context>
@@ -4566,7 +4594,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchSectionPlane.py" line="885"/>
       <source>Creates a section plane object, including the selected objects</source>
-      <translation type="unfinished">Creates a section plane object, including the selected objects</translation>
+      <translation>ქმნის სიბრტყით კვეთის ობიექტს მონიშნული ობიექტების ჩათვლით</translation>
     </message>
   </context>
   <context>
@@ -4592,7 +4620,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchSite.py" line="508"/>
       <source>Creates a site object including selected objects.</source>
-      <translation type="unfinished">Creates a site object including selected objects.</translation>
+      <translation>ქმნის ადგილის ობიექტს მონიშნული ობიექტების ჩათვლით.</translation>
     </message>
   </context>
   <context>
@@ -4644,7 +4672,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="236"/>
       <source>Create a structural system object from a selected structure and axis</source>
-      <translation type="unfinished">Create a structural system object from a selected structure and axis</translation>
+      <translation>მონიშნული სტრუქტურისა და ღერძისაგან სტრუქტურული სისტემური ობიექტის შექმნა</translation>
     </message>
   </context>
   <context>
@@ -4657,7 +4685,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="199"/>
       <source>Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</source>
-      <translation type="unfinished">Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</translation>
+      <translation>შექმენით მრავალი Arch სტრუქტურული ობიექტი არჩეული ბაზიდან, თითოეული არჩეული წიბოს, როგორც გამოწნეხვის ტრაექტორიის, გამოყენებით</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="233"/>
@@ -4667,7 +4695,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="236"/>
       <source>Create a structural system object from a selected structure and axis</source>
-      <translation type="unfinished">Create a structural system object from a selected structure and axis</translation>
+      <translation>მონიშნული სტრუქტურისა და ღერძისაგან სტრუქტურული სისტემური ობიექტის შექმნა</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="270"/>
@@ -4703,7 +4731,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="199"/>
       <source>Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</source>
-      <translation type="unfinished">Create multiple Arch Structure objects from a selected base, using each selected edge as an extrusion path</translation>
+      <translation>შექმენით მრავალი Arch სტრუქტურული ობიექტი არჩეული ბაზიდან, თითოეული არჩეული წიბოს, როგორც გამოწნეხვის ტრაექტორიის, გამოყენებით</translation>
     </message>
   </context>
   <context>
@@ -4729,7 +4757,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchCommands.py" line="1583"/>
       <source>Force an object to be exported as Brep or not</source>
-      <translation type="unfinished">Force an object to be exported as Brep or not</translation>
+      <translation>მოხდება თუ არა ობიექტის Brep-ად გატანა</translation>
     </message>
   </context>
   <context>
@@ -4953,7 +4981,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../ui/ArchMaterial.ui" line="44"/>
       <source>Copy values from an existing material in the document</source>
-      <translation type="unfinished">Copy values from an existing material in the document</translation>
+      <translation>დააკოპირეთ მნიშვნელობები დოკუმენტში არსებული მასალისგან</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="48"/>
@@ -5013,12 +5041,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../ui/ArchMaterial.ui" line="191"/>
       <source>A standard (MasterFormat, Omniclass...) code for this material</source>
-      <translation type="unfinished">A standard (MasterFormat, Omniclass...) code for this material</translation>
+      <translation>ამ მასალის (MasterFormat, Omniclass...) სტანდარტული კოდი</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="204"/>
       <source>Opens a browser dialog to choose a class from a BIM standard</source>
-      <translation type="unfinished">Opens a browser dialog to choose a class from a BIM standard</translation>
+      <translation>BIM სტანდარტიდან კლასის ასარჩევი ბრაუზერის ფანჯრის გახსნა</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="223"/>
@@ -5056,7 +5084,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="28"/>
       <source>The name of the BimServer you are currently connecting to. Change settings in Arch Preferences</source>
-      <translation type="unfinished">The name of the BimServer you are currently connecting to. Change settings in Arch Preferences</translation>
+      <translation>Bim სერვერის-ის სახელი, რომელსაც უკავშირდებით. შეცვალეთ პარამეტრები Arch-ის პარამეტრებში</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="31"/>
@@ -5158,10 +5186,9 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
 Can be "Count" to count the objects, or property names
 like "Length" or "Shape.Volume" to retrieve
 a certain property.</source>
-      <translation type="unfinished">The property to retrieve from each object.
-Can be "Count" to count the objects, or property names
-like "Length" or "Shape.Volume" to retrieve
-a certain property.</translation>
+      <translation>თითოეული ობიექტიდან ასაღები თვისება.
+შეიძლება იყოს "Count" ობიექტების დასათვლელად, ან ისეთი თვისების 
+სახელები, როგორიცაა "Length" ან "Shape.Volume".</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="79"/>
@@ -5171,7 +5198,7 @@ a certain property.</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="82"/>
       <source>An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</source>
-      <translation type="unfinished">An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</translation>
+      <translation>შედეგის მნიშვნელობის არასავალდებულო საზომი ერთეული მაგ: მ^3 (ასევე შეგიძლიათ გამოიყენოთ მ³ და მ3)</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="87"/>
@@ -5196,12 +5223,12 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="101"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Description:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DO NOT have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filer (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive):&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Name:Wall&lt;/span&gt; - Will only consider objects with &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Name:Wall&lt;/span&gt; - Will only consider objects which DON'T have &amp;quot;wall&amp;quot; in their name (internal name)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Description:Win&lt;/span&gt; - Will only consider objects with &amp;quot;win&amp;quot; in their description&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Label:Win&lt;/span&gt; - Will only consider objects which DO NOT have &amp;quot;win&amp;quot; in their label&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;IfcType:Wall&lt;/span&gt; - Will only consider objects which Ifc Type is &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!Tag:Wall&lt;/span&gt; - Will only consider objects which tag is NOT &amp;quot;Wall&amp;quot;&lt;/p&gt;&lt;p&gt;If you leave this field empty, no filtering is applied&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;არასავალდებულო წერტილმძიმით (;) გამოყოფილი თვისებების მნიშვნელობის ფილტრების სია. საკუთრების სახელზე შემავსებლის ეფექტის ინვერსიისთვის (გამორიცხეთ ობიექტები, რომლებიც ემთხვევა ფილტრს). ობიექტები, რომელთა თვისება შეიცავს მნიშვნელობას, დაემთხვევა. მოქმედი ფილტრების მაგალითები (დიდი და პატარა ასოები სხვადასხვაა): &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;სახელი: კედელი&lt;/span&gt; - განიხილავს მხოლოდ ობიექტებს, რომლებსაც აქვთ &amp;quot;კედელი&amp;quot; სახელში (შიდა სახელი) &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;!სახელი:კედელი&lt;/span&gt; - განიხილავს მხოლოდ ობიექტებს, რომლებსაც არ აქვთ &amp;quot;კედელი&amp;quot; სახელში (შიდა სახელი)&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt; აღწერა: Win&lt;/span&gt; - განიხილავს მხოლოდ ობიექტებს, რომლებსაც აქვთ &amp;quot;გამარჯვება&amp;quot; აღწერილობაში&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt; !ჭდე:Win&lt;/span&gt; - განიხილავს მხოლოდ ობიექტებს, რომლებიც არ განიხილება. აქვთ &amp;quot;win&amp;quot; ჭდეში&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt; IfcType: Wall&lt;/span&gt; - განიხილავს მხოლოდ იმ ობიექტებს, რომელთა Ifc ტიპი არის &amp;quot;კედელი&amp;quot;&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt; !Tag: Wall&lt;/span&gt; - განიხილავს მხოლოდ ობიექტებს, რომლებიც არ არის &amp;quot;კედელი&amp;quot;&lt;/p&gt;&lt;p&gt;. თუ ამ ველს ცარიელი დატოვებთ, ფილტრაცია არ იქნება გამოყენებული.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="111"/>
       <source>If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</source>
-      <translation type="unfinished">If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</translation>
+      <translation>თუ ეს ჩართულია, ასოცირებული ცხრილი, რომელიც შეიცავს შედეგებს, შენარჩუნდება განრიგის ობიექტთან ერთად</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="114"/>
@@ -5211,7 +5238,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="121"/>
       <source>If this is turned on, additional lines will be filled with each object considered. If not, only the totals.</source>
-      <translation type="unfinished">If this is turned on, additional lines will be filled with each object considered. If not, only the totals.</translation>
+      <translation>თუ ჩართულია, დამატებითი ხაზები შეივსება თითოეული განხილული ობიექტით. თუ არა, მხოლოდ ჯამები.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="124"/>
@@ -5251,7 +5278,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="180"/>
       <source>Put selected objects into the "Objects" column of the selected row</source>
-      <translation type="unfinished">Put selected objects into the "Objects" column of the selected row</translation>
+      <translation>მონიშნული ობიექტების არჩეული მწკრივის 'ობიექტები'-ის სვეტში ჩალაგება</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="183"/>
@@ -5271,7 +5298,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="205"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This exports the results to a CSV or Markdown file. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note for CSV export:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar -&amp;gt; New sheet -&amp;gt; From file -&amp;gt; Link (Note: as of LibreOffice v6.x the correct path now is: Sheet -&amp;gt; Insert Sheet... -&amp;gt; From file -&amp;gt; Browse...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This exports the results to a CSV or Markdown file. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note for CSV export:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar -&amp;gt; New sheet -&amp;gt; From file -&amp;gt; Link (Note: as of LibreOffice v6.x the correct path now is: Sheet -&amp;gt; Insert Sheet... -&amp;gt; From file -&amp;gt; Browse...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ეს ახდენს შედეგების ექსპორტს CSV ან Markdown ფაილში. &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;CSVგატანის შენიშვნა:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Libreoffice-ში ეს CSV შეგიძლიათ შეინახოთ ფაილი მარჯვენა ღილაკით Sheets ჩანართების ზოლზე -&amp;gt; ახალი ფურცელი -&amp;gt; ფაილიდან -&amp;gt; ბმული (შენიშვნა: LibreOffice v6.x-ს შემდეგ სწორი გზაა: Sheet -&amp;gt; ჩასმა ფურცელი... -&amp;gt; ფაილიდან -&amp;gt; დათვალიერება...)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="208"/>
@@ -5515,17 +5542,17 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchNest.ui" line="103"/>
       <source>Closer than this, two points are considered equal</source>
-      <translation type="unfinished">Closer than this, two points are considered equal</translation>
+      <translation>ამაზე უფრო ახლოს მყოფი ორი წერტილი განიხილება, როგორც ერთიდაიგივე</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="116"/>
       <source>The number of segments to divide non-linear edges into, for calculations. If curved shapes overlap, try raising this value</source>
-      <translation type="unfinished">The number of segments to divide non-linear edges into, for calculations. If curved shapes overlap, try raising this value</translation>
+      <translation>არაწრფივი კიდეების გასაყოფად სეგმენტების რაოდენობა გამოთვლებისთვის. თუ მრუდი ფორმები იკვეთებიან, სცადეთ ამ მნიშვნელობის გაზრდა</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="132"/>
       <source>A comma-separated list of angles to try and rotate the shapes</source>
-      <translation type="unfinished">A comma-separated list of angles to try and rotate the shapes</translation>
+      <translation>მძიმეებით გამოყოფილი კუთხეების სია მონახაზების საცდელად და დასატრიალებლად</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="135"/>
@@ -5588,22 +5615,22 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="64"/>
       <source>Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</source>
-      <translation type="unfinished">Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</translation>
+      <translation>წრიული დამოკიდებულებების თავიდან ასაცილებელი ორი სტრატეგია: შექმენით კიდევ ერთი ობიექტი (მოუნიშნავი) ან წაშალეთ საბაზისო ესკიზის გარე გეომეტრია (შემოწმებული)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="67"/>
       <source>Remove external geometry of base sketches when needed</source>
-      <translation type="unfinished">Remove external geometry of base sketches when needed</translation>
+      <translation>საჭიროების შემთხვევაში საბაზისო ესკიზებიდან გარე გეომეტრიის მოცილება</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="80"/>
       <source>If this is checked, when an object becomes Subtraction or Addition of an Arch object, it will receive the Draft Construction color.</source>
-      <translation type="unfinished">If this is checked, when an object becomes Subtraction or Addition of an Arch object, it will receive the Draft Construction color.</translation>
+      <translation>თუ ეს მონიშნულია, როდესაც ობიექტი ხდება სუბტრაქტული ან ემატება Arch ობიექტი, ის მიიღებს კონსტრუქციის მონახაზის ფერს.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="83"/>
       <source>Apply Draft construction style to subcomponents</source>
-      <translation type="unfinished">Apply Draft construction style to subcomponents</translation>
+      <translation>მონახაზის კონსტრუქციული სტილის ქვეკომპონენტებზე გადატარება</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="114"/>
@@ -5628,22 +5655,22 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="188"/>
       <source>By default, new objects will have their "Move with host" property set to False, which means they won't move when their host object is moved.</source>
-      <translation type="unfinished">By default, new objects will have their "Move with host" property set to False, which means they won't move when their host object is moved.</translation>
+      <translation>ნაგულისხმევად ახალ ობიექტებს თვისება "ჰოსტთან ერთად წაღება" დაყენებული იქნება "არა-ზე. რაც ნიშნავს, რომ ისინი არ გაინძრევიან, როცა თქვენ ჰოსტს გადააადგილებთ.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="191"/>
       <source>Set "Move with host" property to True by default</source>
-      <translation type="unfinished">Set "Move with host" property to True by default</translation>
+      <translation>თვისების "ჰოსტთან ერთად წაღება" ნაგულისხმევად ჩართვა</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="207"/>
       <source>Set "Move base" property to True by default</source>
-      <translation type="unfinished">Set "Move base" property to True by default</translation>
+      <translation>თვისება "ბაზის წაღება"-ის ნაგულისხმევად ჩართვა</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="223"/>
       <source>If this is checked, when an Arch object has a material, the object will take the color of the material. This can be overridden for each object.</source>
-      <translation type="unfinished">If this is checked, when an Arch object has a material, the object will take the color of the material. This can be overridden for each object.</translation>
+      <translation>თუ ჩართულია, როდესაც Arch ობიექტს აქვს მასალა, ობიექტი მიიღებს მასალის ფერს. ეს შეიძლება შეიცვალოს ცალცალკე ობიექტებისთვის.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="226"/>
@@ -5693,12 +5720,13 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="345"/>
       <source>Tolerance value to use when checking if 2 adjacent faces as planar</source>
-      <translation type="unfinished">Tolerance value to use when checking if 2 adjacent faces as planar</translation>
+      <translation>2 მიმდებარე სიბრტყის კომპლანარულობის შემოწმებისას გამოსაყენებელი დაშვების მნიშვნელობა</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="368"/>
       <source>If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</source>
-      <translation type="unfinished">If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</translation>
+      <translation>თუ ეს ჩართულია, ზედაპირების ბრტყელი ჯგუფები ძალით გაბრტყელდება, რაც გამოიწვევს 
+სავარაუდო ღრიჭოებსდა არამყარ შედეგებს</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="371"/>
@@ -5723,12 +5751,12 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="420"/>
       <source>Show debug information during 2D rendering</source>
-      <translation type="unfinished">Show debug information during 2D rendering</translation>
+      <translation>2D რენდერის დროს გამართვის ინფორმაციის ჩვენება</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="423"/>
       <source>Show renderer debug messages</source>
-      <translation>რენდერერის შეცდომების შეტყობინებების ჩვენება</translation>
+      <translation>რენდერერის გამართვის შეტყობინებების ჩვენება</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="456"/>
@@ -5738,7 +5766,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/preferences-arch.ui" line="476"/>
       <source>Specifies how many times the viewed line thickness must be applied to cut lines</source>
-      <translation type="unfinished">Specifies how many times the viewed line thickness must be applied to cut lines</translation>
+      <translation>განსაზღვრავს, რამდენჯერ უნდა იქნას გამოყენებული ხილული ხაზის სისქე ჭრის ხაზებისთვის</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="512"/>
@@ -5754,8 +5782,8 @@ Leave blank to use all objects from the document</source>
       <location filename="../ui/preferences-arch.ui" line="585"/>
       <source>This is the SVG stroke-dasharray property to apply
 to projections of hidden objects.</source>
-      <translation type="unfinished">This is the SVG stroke-dasharray property to apply
-to projections of hidden objects.</translation>
+      <translation>ეს არის დამალულ ობიექტების პროექციებზე გადასატარებელი 
+SVG წყვეტილ-წერტილოვანი მასივი-თვისება.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="589"/>
@@ -5771,8 +5799,7 @@ to projections of hidden objects.</translation>
       <location filename="../ui/preferences-arch.ui" line="645"/>
       <source>Scaling factor for patterns used by object that have
 a Footprint display mode</source>
-      <translation type="unfinished">Scaling factor for patterns used by object that have
-a Footprint display mode</translation>
+      <translation>ობიექტის მიერ გამოყენებული ანაბეჭდის ასახვის რეჟიმის მქონე შაბლონების მასშტაბირების კოეფიციენტი</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="673"/>
@@ -5787,7 +5814,7 @@ a Footprint display mode</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="688"/>
       <source>The URL of a bim server instance (www.bimserver.org) to connect to.</source>
-      <translation type="unfinished">The URL of a bim server instance (www.bimserver.org) to connect to.</translation>
+      <translation>ბიმ სერვერის (www.bimserver.org) მისამართი დასაკავშირებლად.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="691"/>
@@ -5799,9 +5826,9 @@ a Footprint display mode</translation>
       <source>If this is selected, the "Open BimServer in browser"
 button will open the Bim Server interface in an external browser
 instead of the FreeCAD web workbench</source>
-      <translation type="unfinished">If this is selected, the "Open BimServer in browser"
-button will open the Bim Server interface in an external browser
-instead of the FreeCAD web workbench</translation>
+      <translation>თუ ჩართულია, ღილაკი "გახსენით BimServer ბრაუზერში" 
+FreeCAD-ის ვებ სამუშაო მაგიდის ნაცვლად 
+Bim სერვერის ინტერფეისს გარე ბრაუზერში გახსნის</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="713"/>
@@ -6051,25 +6078,24 @@ instead of the FreeCAD web workbench</translation>
       <location filename="../ui/preferences-ifc.ui" line="54"/>
       <source>Shows verbose debug messages during import and export
 of IFC files in the Report view panel</source>
-      <translation type="unfinished">Shows verbose debug messages during import and export
-of IFC files in the Report view panel</translation>
+      <translation>ანგარიშის ხედვის პანელში IFC ფაილების შემოტანისა და გატანისას მეტი გამართვის შეტყობინების ჩვენება</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="58"/>
       <source>Show debug messages</source>
-      <translation>პროგრამის შიდა შეტყობინებების ჩვენება</translation>
+      <translation>პროგრამის გამართვის შეტყობინებების ჩვენება</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="71"/>
       <source>Clones are used when objects have shared geometry
 One object is the base object, the others are clones.</source>
-      <translation type="unfinished">Clones are used when objects have shared geometry
-One object is the base object, the others are clones.</translation>
+      <translation>კლონები გამოიყენება, როდესაც ობიექტებს აქვთ საერთო გეომეტრია
+ერთი ობიექტი არის საბაზისო ობიექტი, დანარჩენები კლონები.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="75"/>
       <source>Create clones when objects have shared geometry</source>
-      <translation type="unfinished">Create clones when objects have shared geometry</translation>
+      <translation>კლონების შექმნა, როცა ობიექტებს საერთო გეომეტრია აქვთ</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="99"/>
@@ -6108,12 +6134,12 @@ if you start getting crashes when you set multiple cores.</source>
       <location filename="../ui/preferences-ifc.ui" line="172"/>
       <location filename="../ui/preferences-ifc.ui" line="221"/>
       <source>Specifies what kind of objects will be created in FreeCAD</source>
-      <translation type="unfinished">Specifies what kind of objects will be created in FreeCAD</translation>
+      <translation>განსაზღვრავს რა სახის ობიექტები შეიქმნება FreeCAD-ში</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="182"/>
       <source>Parametric Arch objects</source>
-      <translation>პარამეტრული თაღოვანი ობიექტები</translation>
+      <translation>პარამეტრული არქიტექტურული ობიექტები</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="187"/>
@@ -6179,8 +6205,8 @@ will already have their openings subtracted</source>
       <location filename="../ui/preferences-ifc.ui" line="301"/>
       <source>The importer will try to detect extrusions.
 Note that this might slow things down.</source>
-      <translation type="unfinished">The importer will try to detect extrusions.
-Note that this might slow things down.</translation>
+      <translation>შემომტანი შეეცდება გამოწნევების პოვნას.
+ეს ოპერაცია საკმაოდ ნელია.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="305"/>
@@ -6200,7 +6226,7 @@ Note that this might slow things down.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="334"/>
       <source>Object names will be prefixed with the IFC ID number</source>
-      <translation type="unfinished">Object names will be prefixed with the IFC ID number</translation>
+      <translation>ობიექტის სახელებს პრეფიქსად IFC ID მიეწერებათ</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="337"/>
@@ -6211,8 +6237,7 @@ Note that this might slow things down.</translation>
       <location filename="../ui/preferences-ifc.ui" line="350"/>
       <source>If several materials with the same name and color are found in the IFC file,
 they will be treated as one.</source>
-      <translation type="unfinished">If several materials with the same name and color are found in the IFC file,
-they will be treated as one.</translation>
+      <translation>თუ IFC ფაილში ერთი და იგივე სახელისა და ფერის რამდენიმე მასალა არსებობს, ისინი როგორც ერთი ისე განიხილება.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="354"/>
@@ -6222,7 +6247,7 @@ they will be treated as one.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="367"/>
       <source>Each object will have their IFC properties stored in a spreadsheet object</source>
-      <translation type="unfinished">Each object will have their IFC properties stored in a spreadsheet object</translation>
+      <translation>თითოეულ ობიექტს ექნება თავისი IFC თვისებები შენახული ელცხრილის ობიექტში</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="370"/>
@@ -6232,7 +6257,7 @@ they will be treated as one.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="383"/>
       <source>IFC files can contain unclean or non-solid geometry. If this option is checked, all the geometry is imported, regardless of their validity.</source>
-      <translation type="unfinished">IFC files can contain unclean or non-solid geometry. If this option is checked, all the geometry is imported, regardless of their validity.</translation>
+      <translation>IFC ფაილები შეიძლება შეიცავდეს არასრულ ან არამყარ გეომეტრიებს. თუ ეს ჩართულია, ჩაიტვირთება ყველა გეომეტრია, მათი სისწორის მიუხედევად.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="386"/>
@@ -6247,14 +6272,14 @@ they will be treated as one.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="408"/>
       <source>Comma-separated list of IFC entities to be excluded from imports</source>
-      <translation type="unfinished">Comma-separated list of IFC entities to be excluded from imports</translation>
+      <translation>მძიმით გამოყოფილი შემოტანისას იგნორირებული IFC ობიექტების სია</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="429"/>
       <source>Fit view during import on the imported objects.
 This will slow down the import, but one can watch the import.</source>
-      <translation type="unfinished">Fit view during import on the imported objects.
-This will slow down the import, but one can watch the import.</translation>
+      <translation>შემოტანის დროს ობიექტების ხედში ჩატევა.
+ეს შეანელებს შემოტანას, მაგრამ საშუალებას გაძლევთ პროცესს უყუროთ.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="433"/>
@@ -6265,8 +6290,8 @@ This will slow down the import, but one can watch the import.</translation>
       <location filename="../ui/preferences-ifc.ui" line="446"/>
       <source>Creates a full parametric model on import using stored
 FreeCAD object properties</source>
-      <translation type="unfinished">Creates a full parametric model on import using stored
-FreeCAD object properties</translation>
+      <translation>სრულ პარამეტრულ მოდელის შექმნა შემოტანისისას
+FreeCAD-ის ობიექტის შენახული თვისებების გამოყენებით</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="450"/>
@@ -6285,7 +6310,7 @@ are placed in a 'Group' instead.
     <message>
       <location filename="../ui/preferences-ifc.ui" line="469"/>
       <source>Replace 'Project', 'Site', 'Building', and 'Storey' with 'Group'</source>
-      <translation type="unfinished">Replace 'Project', 'Site', 'Building', and 'Storey' with 'Group'</translation>
+      <translation>ჩაანაცვლეთ 'პროექტი', 'ადგილი', 'შენობა' და 'სართული' 'ჯგუფი'-ით</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="14"/>
@@ -6317,8 +6342,8 @@ are placed in a 'Group' instead.
       <location filename="../ui/preferences-dae.ui" line="74"/>
       <source>Meshing program that should be used.
 If using Netgen, make sure that it is available.</source>
-      <translation type="unfinished">Meshing program that should be used.
-If using Netgen, make sure that it is available.</translation>
+      <translation>მეშინგის პროგრამა, რომელიც უნდა იქნას გამოყენებული.
+თუ იყენებთ Netgen-ს, დარწმუნდით, რომ ის ხელმისაწვდომია.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="85"/>
@@ -6348,7 +6373,7 @@ If using Netgen, make sure that it is available.</translation>
     <message>
       <location filename="../ui/preferences-dae.ui" line="123"/>
       <source>Tessellation value to use with the Builtin and the Mefisto meshing program.</source>
-      <translation type="unfinished">Tessellation value to use with the Builtin and the Mefisto meshing program.</translation>
+      <translation>ჩაშენებული და მეფისტო ბადის პროგრამის ტესელაციის მნიშვნელობა.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="147"/>
@@ -6365,9 +6390,9 @@ If using Netgen, make sure that it is available.</translation>
       <source>Grading value to use for meshing using Netgen.
 This value describes how fast the mesh size decreases.
 The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</source>
-      <translation type="unfinished">Grading value to use for meshing using Netgen.
-This value describes how fast the mesh size decreases.
-The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</translation>
+      <translation>შეფასების მნიშვნელობა მეშინგისთვის Netgen-ის გამოყენებით.
+ეს მნიშვნელობა აღწერს რამდენად სწრაფად მცირდება ბადის ზომა.
+ლოკალური ბადის ზომის h(x) გრადიენტი შემოიფარგლება |Δh(x)|-ით ≤ 1/მნიშვნელობით.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="187"/>
@@ -6471,8 +6496,8 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
       <location filename="../ui/preferences-ifc-export.ui" line="111"/>
       <source>Some IFC viewers don't like objects exported as extrusions.
 Use this to force all objects to be exported as BREP geometry.</source>
-      <translation type="unfinished">Some IFC viewers don't like objects exported as extrusions.
-Use this to force all objects to be exported as BREP geometry.</translation>
+      <translation>IFC-ის ზოგიერთ მაყურებელს არ მოსწონს გამოწნევის სახით გატანილი ობიექტები.
+გამოიყენეთ, რათა აიძულოთ ყველა ობიექტი გატანილი იყოს, როგორც BREP გეომეტრია.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="115"/>
@@ -6532,7 +6557,7 @@ Note: The serializer is still an experimental feature!</source>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="202"/>
       <source>2D objects will be exported as IfcAnnotation</source>
-      <translation type="unfinished">2D objects will be exported as IfcAnnotation</translation>
+      <translation>2D ობიექტები გატანილი იქნება, როგორც IfcAnnotation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="205"/>
@@ -6543,20 +6568,20 @@ Note: The serializer is still an experimental feature!</source>
       <location filename="../ui/preferences-ifc-export.ui" line="221"/>
       <source>All FreeCAD object properties will be stored inside the exported objects,
 allowing to recreate a full parametric model on reimport.</source>
-      <translation>FreeCAD ობიექტის ყველა თვისება შეინახება ექსპორტირებული ობიექტების შიგნით, 
+      <translation>FreeCAD ობიექტის ყველა თვისება შეინახება გატანილი ობიექტების შიგნით, 
 რაც ხელახლა შემოტანისას საშუალებას მოგცემთ ხელახლა შექმნათ სრული პარამეტრული მოდელი.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="225"/>
       <source>Export full FreeCAD parametric model</source>
-      <translation>FreeCAD-ის სრული არამეტრული მოდელის გატანა</translation>
+      <translation>FreeCAD-ის სრული პარამეტრული მოდელის გატანა</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="238"/>
       <source>When possible, similar entities will be used only once in the file if possible.
 This can reduce the file size a lot, but will make it less easily readable.</source>
-      <translation type="unfinished">When possible, similar entities will be used only once in the file if possible.
-This can reduce the file size a lot, but will make it less easily readable.</translation>
+      <translation>შესაძლებელია შემთხვევაში მსგავსი ელემენტები ფაილში გამოყენებული იქნება მხოლოდ ერთხელ, თუ ეს შესაძლებელია.
+ამან შეიძლება მნიშვნელოვნად შეამციროს ფაილის ზომა, მაგრამ ნაკლებად ადვილად იკითხება.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="242"/>
@@ -6590,19 +6615,19 @@ as standard cases when the necessary conditions are met.</source>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="283"/>
       <source>Auto-detect and export as standard cases when applicable</source>
-      <translation type="unfinished">Auto-detect and export as standard cases when applicable</translation>
+      <translation>როცა შესაძლებელია, სტანდარტული შემთხვევების ავტომატური პოვნა და გატანა</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="296"/>
       <source>If no site is found in the FreeCAD document, a default one will be added.
 A site is not mandatory but a common practice is to have at least one in the file.</source>
-      <translation type="unfinished">If no site is found in the FreeCAD document, a default one will be added.
-A site is not mandatory but a common practice is to have at least one in the file.</translation>
+      <translation>თუ FreeCAD დოკუმენტში ადგილი ნაპოვნი არაა, ის ნაგულისხმევად დაემატება.
+ადგილის მითითება არასავალდებულოა, მაგრამ გავრცელებული პრაქტიკაა, რომ ფაილში მინიმუმ ერთი მაინც იყოს.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="300"/>
       <source>Add default site if one is not found in the document</source>
-      <translation type="unfinished">Add default site if one is not found in the document</translation>
+      <translation>დოკუმენტში ვერ პოვნის შემთხვევაში ნაგულისხმევი ადგილის დამატება</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="313"/>
@@ -6616,19 +6641,19 @@ However, at FreeCAD, we believe having a building should not be mandatory, and t
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="318"/>
       <source>Add default building if one is not found in the document (no standard)</source>
-      <translation type="unfinished">Add default building if one is not found in the document (no standard)</translation>
+      <translation>დოკუმენტში ვერ პოვნის შემთხვევაში ნაგულისხმევი შენობის დამატება (სტანდარტის გარეშე)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="334"/>
       <source>If no building storey is found in the FreeCAD document, a default one will be added.
 A building storey is not mandatory but a common practice to have at least one in the file.</source>
-      <translation type="unfinished">If no building storey is found in the FreeCAD document, a default one will be added.
-A building storey is not mandatory but a common practice to have at least one in the file.</translation>
+      <translation>თუ FreeCAD დოკუმენტში შენობის სართული არაა ნაპოვნი, ის ნაგულისხმევად დაემატება.
+შენობის სართული არ არის სავალდებულო, მაგრამ ჩვეულებრივი პრაქტიკაა, რომ ფაილში მინიმუმ ერთი იყოს.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="338"/>
       <source>Add default building storey if one is not found in the document</source>
-      <translation type="unfinished">Add default building storey if one is not found in the document</translation>
+      <translation>დოკუმენტში ვერ პოვნის შემთხვევაში ნაგულისხმევი სართულის დამატება</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="353"/>

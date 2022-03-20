@@ -24,13 +24,9 @@
 import os
 import re
 import ctypes
-from typing import Union, Optional
+from typing import Union, Optional, Any
 
-import urllib
-from urllib.request import Request
-from urllib.error import URLError
 from urllib.parse import urlparse
-from http.client import HTTPResponse
 
 from PySide2 import QtCore, QtWidgets
 
@@ -70,12 +66,6 @@ def symlink(source, link_name):
                 raise ctypes.WinError()
 
 
-def getserver(url):
-    """returns the server part of an url"""
-
-    return "{uri.scheme}://{uri.netloc}/".format(uri=urlparse(url))
-
-
 def update_macro_details(old_macro, new_macro):
     """Update a macro with information from another one
 
@@ -112,7 +102,7 @@ def remove_directory_if_empty(dir):
 
 
 def restart_freecad():
-    "Shuts down and restarts FreeCAD"
+    """Shuts down and restarts FreeCAD"""
 
     args = QtWidgets.QApplication.arguments()[1:]
     if FreeCADGui.getMainWindow().close():
@@ -122,18 +112,12 @@ def restart_freecad():
 
 
 def get_zip_url(repo):
-    "Returns the location of a zip file from a repo, if available"
+    """Returns the location of a zip file from a repo, if available"""
 
     parsedUrl = urlparse(repo.url)
     if parsedUrl.netloc == "github.com":
         return f"{repo.url}/archive/{repo.branch}.zip"
-    elif (
-        parsedUrl.netloc == "framagit.org"
-        or parsedUrl.netloc == "gitlab.com"
-        or parsedUrl.netloc == "salsa.debian.org"
-    ):
-        # https://framagit.org/freecad-france/mooc-workbench/-/archive/master/mooc-workbench-master.zip
-        # https://salsa.debian.org/mess42/pyrate/-/archive/master/pyrate-master.zip
+    elif parsed_url.netloc in ["gitlab.com", "framagit.org", "salsa.debian.org"]:
         return f"{repo.url}/-/archive/{repo.branch}/{repo.name}-{repo.branch}.zip"
     else:
         FreeCAD.Console.PrintLog(
@@ -141,15 +125,17 @@ def get_zip_url(repo):
             parsedUrl.netloc,
             "\n",
         )
-        return None
+        return f"{repo.url}/-/archive/{repo.branch}/{repo.name}-{repo.branch}.zip"
 
 
 def recognized_git_location(repo) -> bool:
+    """Returns whether this repo is based at a known git repo location: works with github, gitlab, framagit, and salsa.debian.org"""
+
     parsed_url = urlparse(repo.url)
     if parsed_url.netloc in [
         "github.com",
-        "framagit.org",
         "gitlab.com",
+        "framagit.org",
         "salsa.debian.org",
     ]:
         return True
@@ -158,7 +144,7 @@ def recognized_git_location(repo) -> bool:
 
 
 def construct_git_url(repo, filename):
-    "Returns a direct download link to a file in an online Git repo: works with github, gitlab, framagit, and salsa.debian.org"
+    """Returns a direct download link to a file in an online Git repo"""
 
     parsed_url = urlparse(repo.url)
     if parsed_url.netloc == "github.com":
@@ -171,17 +157,18 @@ def construct_git_url(repo, filename):
             + parsed_url.netloc
             + f" for file {filename}\n"
         )
-    return None
+        # Assume it's some kind of local GitLab instance...
+        return f"{repo.url}/-/raw/{repo.branch}/{filename}"
 
 
 def get_readme_url(repo):
-    "Returns the location of a readme file"
+    """Returns the location of a readme file"""
 
     return construct_git_url(repo, "README.md")
 
 
 def get_metadata_url(url):
-    "Returns the location of a package.xml metadata file"
+    """Returns the location of a package.xml metadata file"""
 
     return construct_git_url(url, "package.xml")
 
@@ -193,18 +180,15 @@ def get_desc_regex(repo):
     parsedUrl = urlparse(repo.url)
     if parsedUrl.netloc == "github.com":
         return r'<meta property="og:description" content="(.*?)"'
-    elif (
-        parsedUrl.netloc == "framagit.org"
-        or parsedUrl.netloc == "gitlab.com"
-        or parsedUrl.netloc == "salsa.debian.org"
-    ):
+    elif parsedUrl.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
         return r'<meta.*?content="(.*?)".*?og:description.*?>'
-    FreeCAD.Console.PrintLog(
-        "Debug: addonmanager_utilities.get_desc_regex: Unknown git host:",
-        repo.url,
-        "\n",
-    )
-    return None
+    else:
+        FreeCAD.Console.PrintLog(
+            "Debug: addonmanager_utilities.get_desc_regex: Unknown git host:",
+            repo.url,
+            "\n",
+        )
+        return r'<meta.*?content="(.*?)".*?og:description.*?>'
 
 
 def get_readme_html_url(repo):
@@ -216,7 +200,10 @@ def get_readme_html_url(repo):
     elif parsedUrl.netloc in ["gitlab.com", "salsa.debian.org", "framagit.org"]:
         return f"{repo.url}/-/blob/{repo.branch}/README.md"
     else:
-        return None
+        FreeCAD.Console.PrintLog(
+            "Unrecognized git repo location '' -- guessing it is a GitLab instance..."
+        )
+        return f"{repo.url}/-/blob/{repo.branch}/README.md"
 
 
 def repair_git_repo(repo_url: str, clone_dir: str) -> None:
@@ -268,57 +255,66 @@ def repair_git_repo(repo_url: str, clone_dir: str) -> None:
     repo.head.reset("--hard")
 
 
+def is_darkmode() -> bool:
+    """Heuristics to determine if we are in a darkmode stylesheet"""
+    pl = FreeCADGui.getMainWindow().palette()
+    return pl.color(pl.Background).lightness() < 128
+
+
 def warning_color_string() -> str:
     """A shade of red, adapted to darkmode if possible. Targets a minimum 7:1 contrast ratio."""
-
-    warningColorString = "rgb(255,0,0)"
-    if hasattr(QtWidgets.QApplication.instance(), "styleSheet"):
-        # Qt 5.9 doesn't give a QApplication instance, so can't give the stylesheet info
-        if "dark" in QtWidgets.QApplication.instance().styleSheet().lower():
-            warningColorString = "rgb(255,105,97)"
-        else:
-            warningColorString = "rgb(215,0,21)"
-    return warningColorString
+    return "rgb(255,105,97)" if is_darkmode() else "rgb(215,0,21)"
 
 
 def bright_color_string() -> str:
     """A shade of green, adapted to darkmode if possible. Targets a minimum 7:1 contrast ratio."""
-
-    brightColorString = "rgb(0,255,0)"
-    if hasattr(QtWidgets.QApplication.instance(), "styleSheet"):
-        # Qt 5.9 doesn't give a QApplication instance, so can't give the stylesheet info
-        if "dark" in QtWidgets.QApplication.instance().styleSheet().lower():
-            brightColorString = "rgb(48,219,91)"
-        else:
-            brightColorString = "rgb(36,138,61)"
-    return brightColorString
+    return "rgb(48,219,91)" if is_darkmode() else "rgb(36,138,61)"
 
 
 def attention_color_string() -> str:
     """A shade of orange, adapted to darkmode if possible. Targets a minimum 7:1 contrast ratio."""
+    return "rgb(255,179,64)" if is_darkmode() else "rgb(255,149,0)"
 
-    attentionColorString = "rgb(255,149,0)"
-    if hasattr(QtWidgets.QApplication.instance(), "styleSheet"):
-        # Qt 5.9 doesn't give a QApplication instance, so can't give the stylesheet info
-        if "dark" in QtWidgets.QApplication.instance().styleSheet().lower():
-            attentionColorString = "rgb(255,179,64)"
-        else:
-            attentionColorString = "rgb(255,149,0)"
-    return attentionColorString
+
+def get_assigned_string_literal(line: str) -> Optional[str]:
+    """Look for a line of the form my_var = "A string literal" and return the string literal.
+    If the assignment is of a floating point value, that value is converted to a string
+    and returned. If neither is true, returns None."""
+
+    string_search_regex = re.compile(r"\s*(['\"])(.*)\1")
+    _, _, after_equals = line.partition("=")
+    match = re.match(string_search_regex, after_equals)
+    if match:
+        return str(match.group(2))
+    if is_float(after_equals):
+        return str(after_equals).strip()
+    return None
 
 
 def get_macro_version_from_file(filename: str) -> str:
-    re_version = re.compile(r"^__Version__\s*=\s*(['\"])(.*)\1", flags=re.IGNORECASE)
+    """Get the version of the macro from a local macro file. Supports strings, ints, and floats, as
+    well as a reference to __date__"""
+
+    date = ""
     with open(filename, "r", errors="ignore") as f:
         line_counter = 0
-        max_lines_to_scan = 50
+        max_lines_to_scan = 200
         while line_counter < max_lines_to_scan:
             line_counter += 1
             line = f.readline()
-            if line.startswith("__"):
-                match = re.match(re_version, line)
+            if not line:  # EOF
+                break
+            if line.lower().startswith("__version__"):
+                match = get_assigned_string_literal(line)
                 if match:
-                    return match.group(2)
+                    return match
+                elif "__date__" in line.lower():
+                    # Don't do any real syntax checking, just assume the line is something like __version__ = __date__
+                    return date
+            elif line.lower().startswith("__date__"):
+                match = get_assigned_string_literal(line)
+                if match:
+                    date = match
     return ""
 
 
@@ -338,6 +334,15 @@ def update_macro_installation_details(repo) -> None:
         repo.installed_version = get_macro_version_from_file(test_file_two)
     else:
         return
+
+
+# Borrowed from Stack Overflow: https://stackoverflow.com/questions/736043/checking-if-a-string-can-be-converted-to-float-in-python
+def is_float(element: Any) -> bool:
+    try:
+        float(element)
+        return True
+    except ValueError:
+        return False
 
 
 #  @}

@@ -54,7 +54,7 @@ template<class T> inline T Max (const T &a,const T & b,const T & c,const T & d)
 template<class T> inline T Min (const T &a,const T & b,const T & c,const T & d)
  {return Min(Min(a,b),Min(c,d));}
 
-//le type Nom des entites geometriques P L S V O
+//le type Nom des entities geometriques P L S V O
 //===========
 typedef char Nom[1+24];
 

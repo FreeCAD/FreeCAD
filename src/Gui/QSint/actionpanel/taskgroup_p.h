@@ -8,11 +8,11 @@
 #ifndef TASKGROUP_P_H
 #define TASKGROUP_P_H
 
-#include "actionpanelscheme.h"
 #include "actionlabel.h"
+#include "actionpanelscheme.h"
 
-#include <QFrame>
 #include <QBoxLayout>
+#include <QFrame>
 
 
 namespace QSint

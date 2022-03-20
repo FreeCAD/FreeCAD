@@ -23,8 +23,6 @@
 
 #include "PreCompiled.h"
 
-#include "Base/BoundBox.h"
-
 // inclusion of the generated files (generated out of BoundBoxPy.xml)
 #include "MatrixPy.h"
 #include "VectorPy.h"
@@ -326,7 +324,7 @@ PyObject*  BoundBoxPy::getIntersectionPoint(PyObject *args)
             return new VectorPy(point);
         }
         else {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, "No intersection");
+            PyErr_SetString(Base::PyExc_FC_GeneralError, "No intersection");
             return nullptr;
         }
     }

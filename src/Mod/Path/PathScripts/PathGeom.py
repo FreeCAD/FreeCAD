@@ -675,7 +675,7 @@ def flipEdge(edge):
     elif type(edge.Curve) == Part.OffsetCurve:
         return edge.reversed()
 
-    global OddsAndEnds  # pylint: disable=global-statement
+    global OddsAndEnds
     OddsAndEnds.append(edge)
     PathLog.warning(
         translate("PathGeom", "%s not supported for flipping") % type(edge.Curve)

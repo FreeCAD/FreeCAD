@@ -114,7 +114,7 @@ void Geometry<Kernel, Dim, TagList>::init() {
 
 template< typename Kernel, int Dim, typename TagList>
 void Geometry<Kernel, Dim, TagList>::normalize() {
-    //directions are not nessessarily normalized, but we need to ensure this in cluster mode
+    //directions are not necessarily normalized, but we need to ensure this in cluster mode
     for(int i=m_translations; i!=m_rotations; i++)
         m_global.template segment<Dim>(i*Dim).normalize();
 };

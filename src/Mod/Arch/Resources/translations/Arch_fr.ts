@@ -331,7 +331,7 @@
     <message>
       <location filename="ArchAxis.py" line="873"/>
       <source>The placement of this axis system</source>
-      <translation>La mise en place de ce système d'axe</translation>
+      <translation>L'emplacement de ce système d'axes</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="718"/>
@@ -686,17 +686,17 @@
     <message>
       <location filename="ArchPipe.py" line="356"/>
       <source>The curvature radius of this connector</source>
-      <translation>Le rayon de courbure de ce connecteur</translation>
+      <translation>Le rayon de courbure de ce raccord</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="358"/>
       <source>The pipes linked by this connector</source>
-      <translation>Les tubes reliés par ce connecteur</translation>
+      <translation>Les tubes reliés par ce raccord</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="360"/>
       <source>The type of this connector</source>
-      <translation>Le type de ce connecteur</translation>
+      <translation>Le type de ce raccord</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="150"/>
@@ -2164,7 +2164,7 @@
     <message>
       <location filename="ArchComponent.py" line="1506"/>
       <source>Toggle subcomponents</source>
-      <translation>Activer/désactiver sous-composants</translation>
+      <translation>Activer/désactiver les sous-composants</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="1629"/>
@@ -2337,7 +2337,7 @@ Création du bâtiment abandonnée.</translation>
     <message>
       <location filename="ArchAxis.py" line="156"/>
       <source>Create Axis System</source>
-      <translation>Créer le système d’axe</translation>
+      <translation>Créer un système d’axes</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="161"/>
@@ -2742,7 +2742,7 @@ Création du bâtiment abandonnée.</translation>
     <message>
       <location filename="ArchPipe.py" line="167"/>
       <source>Create Connector</source>
-      <translation>Créez le connecteur</translation>
+      <translation>Créer un raccord</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="221"/>
@@ -2883,6 +2883,21 @@ Création du bâtiment abandonnée.</translation>
       <location filename="ArchWindow.py" line="236"/>
       <source>Choose a face on an existing object or select a preset</source>
       <translation>Choisissez une face sur un objet existant, ou sélectionnez un paramètre prédéfini</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="290"/>
+      <source>Window not based on sketch. Window not aligned or resized.</source>
+      <translation>La fenêtre n'est pas basée sur l'esquisse. La fenêtre n'est pas alignée ni redimensionnée.</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="300"/>
+      <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
+      <translation>Aucune contrainte de largeur et/ou de hauteur dans l'esquisse de fenêtre. La fenêtre n'a pas été redimensionnée.</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="303"/>
+      <source>No window found. Cannot continue.</source>
+      <translation>Aucune fenêtre trouvée. Impossible de continuer.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="327"/>
@@ -3097,7 +3112,7 @@ Création du bâtiment abandonnée.</translation>
     <message>
       <location filename="InitGui.py" line="71"/>
       <source>Structure tools</source>
-      <translation>Outils de structure</translation>
+      <translation>Outils pour les structures</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="85"/>
@@ -3107,7 +3122,7 @@ Création du bâtiment abandonnée.</translation>
     <message>
       <location filename="InitGui.py" line="91"/>
       <source>Panel tools</source>
-      <translation>Outils pour panneaux</translation>
+      <translation>Outils pour les panneaux</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="94"/>
@@ -3991,12 +4006,12 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="ArchAxis.py" line="141"/>
       <source>Axis System</source>
-      <translation>Système d’axe</translation>
+      <translation>Système d’axes</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="145"/>
       <source>Creates an axis system from a set of axes</source>
-      <translation>Crée un système d’axe à partir d’un ensemble d’axes</translation>
+      <translation>Crée un système d’axes à partir d’un ensemble d’axes</translation>
     </message>
   </context>
   <context>
@@ -4096,6 +4111,19 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
       <location filename="ArchCurtainWall.py" line="105"/>
       <source>Creates a curtain wall object from selected line or from scratch</source>
       <translation>Crée un objet mur-rideau à partir de la ligne sélectionnée ou à partir de zéro</translation>
+    </message>
+  </context>
+  <context>
+    <name>Arch_CutLine</name>
+    <message>
+      <location filename="ArchCutPlane.py" line="80"/>
+      <source>Cut with line</source>
+      <translation>Couper avec une ligne</translation>
+    </message>
+    <message>
+      <location filename="ArchCutPlane.py" line="83"/>
+      <source>Cut an object with a line</source>
+      <translation>Couper un objet avec une ligne</translation>
     </message>
   </context>
   <context>
@@ -4350,7 +4378,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="ArchPanel.py" line="1689"/>
       <source>Panel tools</source>
-      <translation>Outils pour panneaux</translation>
+      <translation>Outils pour les panneaux</translation>
     </message>
   </context>
   <context>
@@ -4399,7 +4427,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="ArchPipe.py" line="149"/>
       <source>Creates a connector between 2 or 3 selected pipes</source>
-      <translation>Crée un connecteur entre 2 ou 3 tuyaux sélectionnés</translation>
+      <translation>Crée un raccord entre 2 ou 3 tuyaux sélectionnés</translation>
     </message>
   </context>
   <context>
@@ -4407,12 +4435,12 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="ArchPipe.py" line="145"/>
       <source>Connector</source>
-      <translation>Connecteur</translation>
+      <translation>Raccord</translation>
     </message>
     <message>
       <location filename="ArchPipe.py" line="149"/>
       <source>Creates a connector between 2 or 3 selected pipes</source>
-      <translation>Crée un connecteur entre 2 ou 3 tuyaux sélectionnés</translation>
+      <translation>Crée un raccord entre 2 ou 3 tuyaux sélectionnés</translation>
     </message>
   </context>
   <context>
@@ -4472,7 +4500,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="InitGui.py" line="142"/>
       <source>Create various types of rebars, including U-shaped, L-shaped, and stirrup</source>
-      <translation type="unfinished">Create various types of rebars, including U-shaped, L-shaped, and stirrup</translation>
+      <translation>Créer différents types d'armatures, en forme de U, en forme de L et des étriers</translation>
     </message>
   </context>
   <context>
@@ -4666,7 +4694,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="ArchStructure.py" line="1472"/>
       <source>Structure tools</source>
-      <translation>Outils de structure</translation>
+      <translation>Outils pour les structures</translation>
     </message>
   </context>
   <context>
@@ -4674,7 +4702,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="ArchStructure.py" line="1472"/>
       <source>Structure tools</source>
-      <translation>Outils de structure</translation>
+      <translation>Outils pour les structures</translation>
     </message>
   </context>
   <context>
@@ -4721,7 +4749,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="ArchCommands.py" line="1696"/>
       <source>Toggle subcomponents</source>
-      <translation>Activer/désactiver sous-composants</translation>
+      <translation>Activer/désactiver les sous-composants</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="1699"/>
@@ -4806,7 +4834,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="InitGui.py" line="71"/>
       <source>Structure tools</source>
-      <translation>Outils de structure</translation>
+      <translation>Outils pour les structures</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="85"/>
@@ -4816,7 +4844,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="InitGui.py" line="91"/>
       <source>Panel tools</source>
-      <translation>Outils pour panneaux</translation>
+      <translation>Outils pour les panneaux</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="99"/>

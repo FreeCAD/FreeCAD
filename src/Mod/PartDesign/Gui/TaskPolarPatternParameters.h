@@ -24,9 +24,7 @@
 #ifndef GUI_TASKVIEW_TaskPolarPatternParameters_H
 #define GUI_TASKVIEW_TaskPolarPatternParameters_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
 
 #include "TaskTransformedParameters.h"
 #include "ViewProviderPolarPattern.h"

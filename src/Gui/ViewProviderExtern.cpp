@@ -20,24 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Inventor/nodes/SoMaterial.h>
+# include <cstring>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Exception.h>
-#include <Base/FileInfo.h>
 #include <Base/Stream.h>
-#include "SoFCSelection.h"
-#include "ViewProviderExtern.h"
 
-#include <cstring>
-#include <algorithm>
+#include "ViewProviderExtern.h"
+#include "SoFCSelection.h"
+
 
 using std::vector;
 using std::string;

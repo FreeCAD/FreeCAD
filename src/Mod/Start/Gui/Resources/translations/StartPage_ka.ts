@@ -36,7 +36,7 @@
     <message>
       <location filename="TranslationTexts.py" line="48"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
-      <translation type="unfinished">Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</translation>
+      <translation>დაარეგულირეთ ბოლო ფაილების რაოდენობა, რომლებიც აქ გამოჩნდება. მენიუ ჩასწორება -&gt; მორგება -&gt; ზოგადი -&gt; ბოლო ფაილების სიის ზომა</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="49"/>
@@ -56,7 +56,7 @@
     <message>
       <location filename="TranslationTexts.py" line="52"/>
       <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
-      <translation type="unfinished">This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</translation>
+      <translation>ეს განყოფილება შეიცავს ზოგადად FreeCAD-ის მომხმარებლებისთვის სასარგებლო დოკუმენტაციას: ყველა სამუშაო მაგიდის სიას, დეტალურ ინსტრუქციებს FreeCAD აპლიკაციის დაყენებისა და გამოყენების შესახებ, გაკვეთილებს და ყველაფერს, რაც გჭირდებათ დასაწყებად.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="53"/>
@@ -66,7 +66,7 @@
     <message>
       <location filename="TranslationTexts.py" line="54"/>
       <source>This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</source>
-      <translation type="unfinished">This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</translation>
+      <translation>ეს განყოფილება აგროვებს დოკუმენტაციას მოწინავე მომხმარებლებისთვის და პითონის სკრიპტების დაწერით დაინტერესებული პირებისთვის. თქვენ ასევე ნახავთ მაკროების საცავს, ინსტრუქციებს მათი დაყენებისა და გამოყენების შესახებ და მეტი ინფორმაცია FreeCAD-ის თქვენს კონკრეტულ საჭიროებებზე მორგების შესახებ.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="55"/>
@@ -76,7 +76,7 @@
     <message>
       <location filename="TranslationTexts.py" line="56"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
-      <translation type="unfinished">This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</translation>
+      <translation>ეს განყოფილება შეიცავს მასალას დეველოპერებისთვის: როგორ დააკომპილიროთ FreeCAD თავად, როგორ არის სტრუქტურირებული FreeCAD-ის კოდი + როგორ იქონიოთ ნავიგაცია, როგორ შექმნათ ახალი სამუშაო მაგიდა და/ან ჩააშენოთ FreeCAD თქვენს აპლიკაციაში.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="57"/>
@@ -86,17 +86,17 @@
     <message>
       <location filename="TranslationTexts.py" line="58"/>
       <source>The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</source>
-      <translation type="unfinished">The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</translation>
+      <translation>FreeCAD სახელმძღვანელო არის კიდევ ერთი, უფრო წრფივი გზა ამ ვიკიში მოცემული ინფორმაციის წარმოსაჩენად. ის შექმნილია წიგნის წასაკითხად და ნაზად გაგაცნობთ ბევრ სხვა გვერდს ზემოთ მოყვანილი ჰაბებიდან. ასევე ხელმისაწვდომია &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;ელექტრონული წიგნების ვერსიები&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="59"/>
       <source>Workbenches documentation</source>
-      <translation>დაზგის დოკუმენტაცია</translation>
+      <translation>სამუშაო მაგიდების დოკუმენტაცია</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="60"/>
       <source>These are the help pages of all the workbenches currently installed on this computer.</source>
-      <translation type="unfinished">These are the help pages of all the workbenches currently installed on this computer.</translation>
+      <translation>ამ კომპიუტერში დაყენებულია ყველა სამუშაო მაგიდის დახმარების გვერდები.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="61"/>
@@ -106,17 +106,17 @@
     <message>
       <location filename="TranslationTexts.py" line="62"/>
       <source>The &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation type="unfinished">The &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
+      <translation>FreeCAD-ის&lt;a href="http://forum.freecadweb.org"&gt; ფორუმი&lt;/a&gt; შესანიშნავი ადგილია FreeCAD-ის სხვა მომხმარებლებისა და დეველოპერებისგან დახმარების მისაღებად. ფორუმს აქვს მრავალი სექცია სხვადასხვა ტიპის საკითხებისა და სადისკუსიო თემებისთვის. თუ ეჭვი გეპარებათ, გამოაქვეყნეთ უფრო ზოგადი&lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt; დახმარება FreeCAD&lt;/a&gt; განყოფილების გამოყენების შესახებ.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="63"/>
       <source>If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</source>
-      <translation type="unfinished">If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</translation>
+      <translation>თუ ფორუმზე პოსტ სპირველად აქვეყნებთ, აუცილებლად &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264"&gt;წაიკითხეთ სახელმძღვანელო &lt;/a&gt;მითითებები!</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="64"/>
       <source>FreeCAD also maintains a public &lt;a href="https://www.freecadweb.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</source>
-      <translation type="unfinished">FreeCAD also maintains a public &lt;a href="https://www.freecadweb.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</translation>
+      <translation>FreeCAD ასევე ინახავს შეცდომების საჯარო&lt;a href="https://www.freecadweb.org/tracker"&gt; ტრეკერს&lt;/a&gt;, სადაც ნებისმიერს შეუძლია წარადგინოს შეცდომები და შესთავაზოს ახალი ფუნქციები. იმისათვის, რომ თავიდან აიცილოთ ზედმეტი სამუშაოს გამოწვევა და საუკეთესო შანსები მისცეთ, რომ ნახოთ თქვენი ხარვეზი მოგვარებული, დარწმუნდით, რომ წაიკითხეთ&lt;a href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=5236"&gt; შეცდომების წარდგენის სახელმძღვანელო&lt;/a&gt; გამოქვეყნებამდე.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="65"/>
@@ -126,17 +126,17 @@
     <message>
       <location filename="TranslationTexts.py" line="66"/>
       <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
-      <translation type="unfinished">Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</translation>
+      <translation>ქვემოთ მოცემულია ხელმისაწვდომი დამატებითი სამუშაო მაგიდების სია, რომლებიც შეიძლება დაემატოს თქვენს FreeCAD-ს. დაათვალიერეთ და დააყენეთ ისინი მენიუდან ხელსაწყო -&gt; დამატებების მმართველი. თქვენ შეგიძლიათ გაიგოთ მეტი რომელიმე მათგანის შესახებ ქვემოთ მოცემულ ბმულებზე დაწკაპუნებით.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="67"/>
       <source>If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</source>
-      <translation type="unfinished">If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</translation>
+      <translation>თუ არ მიიღეთ თქვენს FreeCAD ვერსიასთან ერთად, დააინსტალირეთ FreeCAD დოკუმენტაციის პაკეტი, რათა მიიღოთ დოკუმენტაციის ჰაბები, სამუშაო მაგიდაზე დახმარება და ინდივიდუალური ბრძანების დოკუმენტაცია ინტერნეტის გარეშე.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="68"/>
       <source>Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</source>
-      <translation type="unfinished">Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</translation>
+      <translation>GitHub-იდან ინფორმაციის გამოთხოვნის შეცდომა.&lt;a href="EnableDownload.py"&gt;მიეცით FreeCAD-ს ინტერნეტთან წვდომა&lt;/a&gt; და თავიდან ჩატვირთეთ საწყისი გვერდი.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="69"/>
@@ -146,7 +146,7 @@
     <message>
       <location filename="TranslationTexts.py" line="70"/>
       <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
-      <translation type="unfinished">Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</translation>
+      <translation>ქვემოთ მოცემულია უახლესი ცვლილებები, რომლებიც დამატებულია &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD-ის კოდში&lt;/a&gt;. ეს ცვლილებები შესაძლოა ჯერ არ აისახოს FreeCAD-ის ვერსიაში, რომელსაც ამჟამად გაქვთ გაშვებული. შეამოწმეთ &lt;a href="https://www.freecadweb.org/wiki/Downloads"&gt;ხელმისაწვდომი ვარიანტები&lt;/a&gt; თუ გსურთ მიიღოთ უახლესი ბეტა ვერსია.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="71"/>
@@ -156,7 +156,7 @@
     <message>
       <location filename="TranslationTexts.py" line="72"/>
       <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
-      <translation type="unfinished">You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</translation>
+      <translation>აქ საჩვენებლად საქაღალდე შეგიძლიათ ხელით მიუთითოთ. ამისათვის გადადით ჩასწორება -&gt;მორგება -&gt; საწყისი -&gt; დამატებითი საქაღალდის ჩვენება</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="73"/>
@@ -186,12 +186,12 @@
     <message>
       <location filename="TranslationTexts.py" line="78"/>
       <source>The latest posts on the &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt;:</source>
-      <translation type="unfinished">The latest posts on the &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt;:</translation>
+      <translation>ბოლო პოსტები &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD-ის ფორუმზე&lt;/a&gt;:</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="79"/>
       <source>To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</source>
-      <translation type="unfinished">To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</translation>
+      <translation>ზემოთ მოცემული რომელიმე ბმულის თქვენი დესკტოპის ბრაუზერში გასახსნელად დააწკაპუნეთ მაუსის მარჯვენა ღილაკით -&gt; გახსენით გარე ბრაუზერში</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="80"/>
@@ -255,7 +255,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
       <source>An optional HTML template that will be used instead of the default start page.</source>
-      <translation type="unfinished">An optional HTML template that will be used instead of the default start page.</translation>
+      <translation>არასავალდებულო HTML შაბლონი, რომელიც გაშვების ნაგულისხმევი გვერდის მაგიერ იქნება ნაჩვენები.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="42"/>
@@ -285,14 +285,14 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="91"/>
       <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
-      <translation type="unfinished">If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</translation>
+      <translation>თუ ჩართლია, აქტივობის ჩანართზე FreeCAD-ის ფორუმიდან უახლესი პოსტები გამოჩნდება</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="110"/>
       <source>An optional custom folder to be displayed at the bottom of the first page.
 By using ";;" to separate paths, you can add several folders here</source>
-      <translation type="unfinished">An optional custom folder to be displayed at the bottom of the first page.
-By using ";;" to separate paths, you can add several folders here</translation>
+      <translation>არასავალდებულო ხელით მითითებული საქაღალდე პირველი გვერდის ქვედა ნაწილში საჩვენებლად.
+ბილიკების ";;"-ით დაყოფით შეგიძლიათ რამდენიმე საქაღალდე მიუთითოთ</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="127"/>
@@ -302,7 +302,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="134"/>
       <source>Shows a notepad next to the file thumbnails, where you can keep notes across sessions</source>
-      <translation type="unfinished">Shows a notepad next to the file thumbnails, where you can keep notes across sessions</translation>
+      <translation>ფაილის მინიატურების გასწვრივ წიგნაკის, სადაც თქვენი შენიშვნების შენახვა შეგიძლიათ სესიებს შუა, ჩვენება</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="153"/>
@@ -312,7 +312,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="163"/>
       <source>Displays help tips in the Start workbench Documents tab</source>
-      <translation type="unfinished">Displays help tips in the Start workbench Documents tab</translation>
+      <translation>"Start" სამუშაო მაგიდის დოკუმენტების ჩანართში დახმარების ჩვენება</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="185"/>
@@ -342,7 +342,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="266"/>
       <source>Background color down gradient</source>
-      <translation type="unfinished">Background color down gradient</translation>
+      <translation>ფონის ფენის გრადიენტი ქვემოთ</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="279"/>
@@ -362,7 +362,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="319"/>
       <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation type="unfinished">If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</translation>
+      <translation>თუ ეს ჩართულია და საერთო მორგების ფანჯარაში მითითებულია გვერდის სტილი, ის გამოყენებული იქნება ქვემო ფერების გადასაღებად</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="338"/>
@@ -392,7 +392,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="417"/>
       <source>The background color of the boxes inside the pages</source>
-      <translation type="unfinished">The background color of the boxes inside the pages</translation>
+      <translation>გვერდების შიგნით ყუთების ფონის ფერი</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="437"/>
@@ -407,7 +407,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="479"/>
       <source>The down gradient for the background color (currently unsupported)</source>
-      <translation type="unfinished">The down gradient for the background color (currently unsupported)</translation>
+      <translation>ქვედა გრადიენტი ფონის ფერისთვის (ჯერ მხარდაუჭერელია)</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="502"/>
@@ -432,7 +432,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="532"/>
       <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
-      <translation type="unfinished">The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</translation>
+      <translation>საწყის გვერდზე გამოსაყენებელი ფონტის ოჯახი. შეიძლება იყოს ფონტის სახელი ან მძიმით გამოყოფილი სარეზერვო ფონტის სია</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="538"/>
@@ -442,7 +442,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="551"/>
       <source>The base font size to use for all texts of the Start page</source>
-      <translation type="unfinished">The base font size to use for all texts of the Start page</translation>
+      <translation>საწყის გვერდის ყველა ტექსტის ბაზისური ფონტის ზომა</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="554"/>
@@ -457,7 +457,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="579"/>
       <source>If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</source>
-      <translation type="unfinished">If this is selected, the 'New File' icon shows a gradient icon instead of the normal icon</translation>
+      <translation>თუ ჩართულია, 'ახალი ფაილი'-ის ხატულა ნორმალურის მაგიერ გრადიენტულ ხატულის ჩვენება</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="601"/>
@@ -467,17 +467,17 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="607"/>
       <source>Choose which workbench to switch to after the program launches</source>
-      <translation type="unfinished">Choose which workbench to switch to after the program launches</translation>
+      <translation>აირჩიეთ, რომელ სამუშაო მაგიდაზე გადახვიდეთ პროგრამის გაშვების შემდეგ</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="614"/>
       <source>If checked, will automatically close the Start page when FreeCAD launches</source>
-      <translation type="unfinished">If checked, will automatically close the Start page when FreeCAD launches</translation>
+      <translation>თუ ჩართულია, საწყისი გვერდი FreeCAD-ის გაშვებისას ავტომატურად დაიხურება</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="633"/>
       <source>Switch workbench after loading</source>
-      <translation>ჩატვირთვის შემდეგ დაზგის გადართვა</translation>
+      <translation>ჩატვირთვის შემდეგ სამუშაო მაგიდის გადართვა</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="640"/>
@@ -492,7 +492,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="654"/>
       <source>If application is started by opening a file, apply the two settings above</source>
-      <translation type="unfinished">If application is started by opening a file, apply the two settings above</translation>
+      <translation>თუ აპლიკაცია გაშვებულია ფაილის გახსნით, ქვემორე ორი პარამეტრის გადატარება</translation>
     </message>
   </context>
 </TS>

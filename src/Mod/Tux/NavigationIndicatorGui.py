@@ -24,7 +24,6 @@ import FreeCADGui as Gui
 from PySide import QtGui
 from PySide import QtCore
 
-timer = QtCore.QTimer()
 mw = Gui.getMainWindow()
 statusBar = mw.statusBar()
 p = App.ParamGet("User parameter:Tux/NavigationIndicator")
@@ -55,6 +54,10 @@ class IndicatorButton(QtGui.QPushButton):
             onTooltip()
             self.adjustSize()
         return super(IndicatorButton, self).changeEvent(event)
+
+    def onChange(self, paramGrp, param):
+        if(param == "NavigationStyle"):
+            setCurrent()
 
 
 def retranslateUi():
@@ -448,6 +451,8 @@ menu.addAction(a8)
 menu.addAction(a9)
 menu.addAction(a10)
 
+pView.Attach(indicator)
+
 
 def onCompact():
     """Enable or disable compact mode."""
@@ -516,28 +521,7 @@ def onOrbitShow():
 
 def onMenu(action):
     """Set navigation style on selection."""
-
-    s = False
-
-    if action and action.data() != "Undefined":
-        s = True
-        setCompact(action)
-        menu.setDefaultAction(action)
-        indicator.setIcon(action.icon())
-        indicator.setToolTip(action.toolTip())
-        pView.SetString("NavigationStyle", action.data())
-    else:
-        pass
-
-    if s:
-        a0.setVisible(False)
-    else:
-        a0.setVisible(True)
-        a0.setEnabled(True)
-        setCompact(a0)
-        menu.setDefaultAction(a0)
-        indicator.setIcon(a0.icon())
-        indicator.setToolTip(a0.toolTip())
+    pView.SetString("NavigationStyle", action.data())
 
 
 def setCurrent():
@@ -548,7 +532,7 @@ def setCurrent():
     actions = gStyle.actions()
     current = pView.GetString("NavigationStyle")
 
-    if current:
+    if current and current != "Undefined":
         for i in actions:
             if i.data() == current:
                 s = True
@@ -560,10 +544,6 @@ def setCurrent():
                 pass
     else:
         s = True
-        setCompact(a2) # set to style CAD
-        menu.setDefaultAction(a2)
-        indicator.setIcon(a2.icon())
-        indicator.setToolTip(a2.toolTip())
         pView.SetString("NavigationStyle", a2.data())
 
     if s:
@@ -604,7 +584,3 @@ aCompact.triggered.connect(onCompact)
 aTooltip.triggered.connect(onTooltip)
 menuOrbit.aboutToShow.connect(onOrbitShow)
 menu.aboutToHide.connect(indicator.clearFocus)
-
-timer.setParent(indicator)
-timer.timeout.connect(setCurrent)
-timer.start(10000)

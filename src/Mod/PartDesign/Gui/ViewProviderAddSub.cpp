@@ -31,26 +31,21 @@
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Bnd_Box.hxx>
+# include <BRep_Tool.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepMesh_IncrementalMesh.hxx>
-# include <BRep_Tool.hxx>
+# include <Standard_Version.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
-# include <Standard_Version.hxx>
 #endif
 
-#include "ViewProviderAddSub.h"
-#include <Mod/Part/Gui/SoBrepFaceSet.h>
-#include <Mod/Part/App/Tools.h>
-#include <Mod/PartDesign/App/FeatureAddSub.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/Document.h>
 #include <Base/Console.h>
+#include <Gui/Application.h>
+#include <Mod/Part/App/Tools.h>
+#include <Mod/Part/Gui/SoBrepFaceSet.h>
+#include <Mod/PartDesign/App/FeatureAddSub.h>
 
+#include "ViewProviderAddSub.h"
 
 
 using namespace PartDesignGui;

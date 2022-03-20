@@ -24,7 +24,6 @@
 #ifndef _PreComp_
 # include <cassert>
 # include <cstring>
-# include <cstdlib>
 #endif
 
 #include <Base/Exception.h>
@@ -161,7 +160,7 @@ void Enumeration::setEnums(const std::vector<std::string> &values)
     _EnumArray[i] = 0; // null termination
 
     // Other state variables
-    _maxVal = values.size() - 1;
+    _maxVal = static_cast<int>(values.size() - 1);
     _ownEnumArray = true;
     if (_index < 0)
         _index = 0;

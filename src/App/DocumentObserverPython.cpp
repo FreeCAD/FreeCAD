@@ -23,16 +23,13 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <boost_bind_bind.hpp>
-#endif
-
+#include <CXX/Objects.hxx>
 #include "Application.h"
 #include "Document.h"
 #include "DocumentObject.h"
 #include "DocumentObserverPython.h"
 #include <Base/Interpreter.h>
-#include <Base/Console.h>
+
 
 using namespace App;
 namespace bp = boost::placeholders;

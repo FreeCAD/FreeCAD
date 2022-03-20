@@ -28,30 +28,28 @@
 # include <QFileDialog>
 # include <QMutex>
 # include <QMutexLocker>
-# include <QThread>
-# include <QTimer>
 # include <QMdiArea>
 # include <QMdiSubWindow>
-# include <QWaitCondition>
-# include <QTranslator>
 # include <QRunnable>
+# include <QThread>
 # include <QThreadPool>
+# include <QTimer>
+# include <QTranslator>
+# include <QWaitCondition>
 #endif
 
 #include <Base/Console.h>
+#include <Base/Sequencer.h>
+
+#include "CommandT.h"
 #include "Application.h"
+#include "Command.h"
 #include "MainWindow.h"
 #include "MDIView.h"
-#include "Command.h"
-#include "CommandT.h"
 #include "Language/Translator.h"
-
-#include "ProgressBar.h"
 
 
 using namespace Gui;
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 //===========================================================================
 // Std_TestQM

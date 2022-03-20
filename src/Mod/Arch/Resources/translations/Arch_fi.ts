@@ -2179,7 +2179,7 @@
     <message>
       <location filename="ArchComponent.py" line="1936"/>
       <source>Component</source>
-      <translation type="unfinished">Component</translation>
+      <translation>Komponentti</translation>
     </message>
     <message>
       <location filename="ArchAxis.py" line="1117"/>
@@ -2244,7 +2244,7 @@
     <message>
       <location filename="ArchComponent.py" line="1949"/>
       <source>Edit IFC properties</source>
-      <translation type="unfinished">Edit IFC properties</translation>
+      <translation>Muokkaa IFC-ominaisuuksia</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="1950"/>
@@ -2269,7 +2269,7 @@
     <message>
       <location filename="ArchComponent.py" line="2001"/>
       <source>Add property...</source>
-      <translation type="unfinished">Add property...</translation>
+      <translation>Lisää ominaisuus...</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="2002"/>
@@ -2284,7 +2284,7 @@
     <message>
       <location filename="ArchComponent.py" line="2145"/>
       <source>New property</source>
-      <translation type="unfinished">New property</translation>
+      <translation>Uusi ominaisuus</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="2180"/>
@@ -2580,12 +2580,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchCommands.py" line="1553"/>
       <source>All good! No problems found</source>
-      <translation type="unfinished">All good! No problems found</translation>
+      <translation>Kaikki hyvin! Ongelmia ei löytynyt</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="1630"/>
       <source>Create Component</source>
-      <translation type="unfinished">Create Component</translation>
+      <translation>Luo komponentti</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="444"/>
@@ -2680,7 +2680,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchSectionPlane.py" line="1518"/>
       <source>Resize</source>
-      <translation type="unfinished">Resize</translation>
+      <translation>Muuta kokoa</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1519"/>
@@ -2886,6 +2886,21 @@ Building creation aborted.</translation>
       <location filename="ArchWindow.py" line="236"/>
       <source>Choose a face on an existing object or select a preset</source>
       <translation type="unfinished">Choose a face on an existing object or select a preset</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="290"/>
+      <source>Window not based on sketch. Window not aligned or resized.</source>
+      <translation>Ikkuna ei perustu luonnokseen. Ikkunaa ei ole kohdistettu tai sen kokoa muutettu.</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="300"/>
+      <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
+      <translation>Ikkunan luonnoksessa ei ole leveyttä ja/tai korkeusrajoitusta. Ikkunan kokoa ei ole muutettu.</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="303"/>
+      <source>No window found. Cannot continue.</source>
+      <translation>Ikkunaa ei löytynyt. Ei voida jatkaa.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="327"/>
@@ -3260,12 +3275,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchProfile.py" line="134"/>
       <source>Create profile</source>
-      <translation type="unfinished">Create profile</translation>
+      <translation>Luo profiili</translation>
     </message>
     <message>
       <location filename="ArchProfile.py" line="142"/>
       <source>Profile settings</source>
-      <translation type="unfinished">Profile settings</translation>
+      <translation>Profiilin asetukset</translation>
     </message>
     <message>
       <location filename="ArchProfile.py" line="188"/>
@@ -3376,7 +3391,7 @@ Site creation aborted.</translation>
     <message>
       <location filename="ArchStructure.py" line="493"/>
       <source>Con&amp;tinue</source>
-      <translation type="unfinished">Con&amp;tinue</translation>
+      <translation>&amp;Jatka</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="528"/>
@@ -3682,7 +3697,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="1325"/>
       <source>Select tool...</source>
-      <translation type="unfinished">Select tool...</translation>
+      <translation>Valitse työkalu...</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1192"/>
@@ -4061,7 +4076,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchCommands.py" line="1620"/>
       <source>Clone component</source>
-      <translation type="unfinished">Clone component</translation>
+      <translation>Kloonaa komponentti</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="1624"/>
@@ -4087,7 +4102,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchCommands.py" line="1595"/>
       <source>Component</source>
-      <translation type="unfinished">Component</translation>
+      <translation>Komponentti</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="1599"/>
@@ -4106,6 +4121,19 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="ArchCurtainWall.py" line="105"/>
       <source>Creates a curtain wall object from selected line or from scratch</source>
       <translation type="unfinished">Creates a curtain wall object from selected line or from scratch</translation>
+    </message>
+  </context>
+  <context>
+    <name>Arch_CutLine</name>
+    <message>
+      <location filename="ArchCutPlane.py" line="80"/>
+      <source>Cut with line</source>
+      <translation>Leikkaa viivalla</translation>
+    </message>
+    <message>
+      <location filename="ArchCutPlane.py" line="83"/>
+      <source>Cut an object with a line</source>
+      <translation>Kohteen leikkaaminen viivalla</translation>
     </message>
   </context>
   <context>
@@ -5256,7 +5284,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="190"/>
       <source>Imports the contents of a CSV file</source>
-      <translation type="unfinished">Imports the contents of a CSV file</translation>
+      <translation>Tuo CSV-tiedoston sisällön</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="193"/>
@@ -5276,17 +5304,17 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="14"/>
       <source>BimServer Login</source>
-      <translation type="unfinished">BimServer Login</translation>
+      <translation>BimServer-kirjautuminen</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="22"/>
       <source>BimServer URL:</source>
-      <translation type="unfinished">BimServer URL:</translation>
+      <translation>BimServerin URL-osoite:</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="36"/>
       <source>Login (email):</source>
-      <translation type="unfinished">Login (email):</translation>
+      <translation>Kirjautuminen (sähköposti):</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="50"/>
@@ -5306,7 +5334,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="14"/>
       <source>IFC properties editor</source>
-      <translation type="unfinished">IFC properties editor</translation>
+      <translation>IFC-ominaisuuksien muokkain</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="22"/>

@@ -20,17 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_ProjectView_H
 #define GUI_ProjectView_H
 
 #include <QTreeView>
 
-#include <App/Document.h>
-#include <App/Application.h>
-
-#include <Gui/DockWindow.h>
-#include <Gui/Selection.h>
 
 class QFileSystemModel;
 
@@ -52,7 +46,6 @@ private:
     QFileSystemModel *fileModel;
 
 };
-
 
 
 }

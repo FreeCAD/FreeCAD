@@ -84,7 +84,6 @@ class _ViewProviderComment:
         return ":/icons/Path_Comment.svg"
 
     def onChanged(self, vobj, prop):  # optional
-        # pylint: disable=unused-argument
         mode = 2
         vobj.setEditorMode("LineWidth", mode)
         vobj.setEditorMode("MarkerColor", mode)

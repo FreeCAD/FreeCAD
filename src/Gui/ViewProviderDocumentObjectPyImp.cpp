@@ -20,20 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <sstream>
 #endif
 
-#include <Gui/ViewProviderDocumentObject.h>
-#include <Gui/Document.h>
 #include <App/DocumentObjectPy.h>
+#include "Document.h"
 
 // inclusion of the generated files (generated out of ViewProviderDocumentObjectPy.xml)
 #include "ViewProviderDocumentObjectPy.h"
 #include "ViewProviderDocumentObjectPy.cpp"
+
 
 using namespace Gui;
 
@@ -48,8 +47,8 @@ std::string ViewProviderDocumentObjectPy::representation(void) const
 
 PyObject* ViewProviderDocumentObjectPy::update(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
-        return NULL;                       // NULL triggers exception
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
     PY_TRY {
         getViewProviderDocumentObjectPtr()->updateView();
         Py_Return;
@@ -91,7 +90,7 @@ Py::Object ViewProviderDocumentObjectPy::getDocument(void) const
 
 PyObject *ViewProviderDocumentObjectPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ViewProviderDocumentObjectPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

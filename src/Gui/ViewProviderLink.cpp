@@ -23,57 +23,52 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <atomic>
+# include <cctype>
+# include <boost/algorithm/string/predicate.hpp>
+# include <Inventor/SoPickedPoint.h>
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <Inventor/details/SoDetail.h>
+# include <Inventor/draggers/SoCenterballDragger.h>
+# include <Inventor/misc/SoChildList.h>
+# include <Inventor/nodes/SoAnnotation.h>
+# include <Inventor/nodes/SoCube.h>
+# include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoShapeHints.h>
+# include <Inventor/nodes/SoSurroundScale.h>
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoTransform.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/details/SoDetail.h>
-# include <Inventor/misc/SoChildList.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <Inventor/nodes/SoAnnotation.h>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/draggers/SoCenterballDragger.h>
-# include <Inventor/nodes/SoSurroundScale.h>
-# include <Inventor/nodes/SoCube.h>
 # include <Inventor/sensors/SoNodeSensor.h>
-#endif
-#include <cctype>
-#include <atomic>
 #include <QApplication>
-#include <QFileInfo>
 #include <QMenu>
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost_bind_bind.hpp>
-#include <Base/Console.h>
-#include <Base/PlacementPy.h>
-#include <Base/MatrixPy.h>
-#include <Base/BoundBoxPy.h>
-#include <Base/Tools.h>
+#endif
+
 #include <App/ComplexGeoData.h>
-#include <App/GeoFeature.h>
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Document.h"
-#include "Selection.h"
-#include "MainWindow.h"
+#include <App/Document.h>
+#include <Base/BoundBoxPy.h>
+#include <Base/MatrixPy.h>
+#include <Base/PlacementPy.h>
+#include <Base/Tools.h>
+
 #include "ViewProviderLink.h"
 #include "ViewProviderLinkPy.h"
-#include "LinkViewPy.h"
-#include "ViewProviderGeometryObject.h"
-#include "ViewProviderGroupExtension.h"
-#include "View3DInventor.h"
-#include "SoFCUnifiedSelection.h"
-#include "SoFCCSysDragger.h"
+#include "Application.h"
+#include "BitmapFactory.h"
 #include "Control.h"
+#include "LinkViewPy.h"
+#include "Selection.h"
+#include "SoFCCSysDragger.h"
+#include "SoFCUnifiedSelection.h"
 #include "TaskCSysDragger.h"
 #include "TaskElementColors.h"
+#include "View3DInventor.h"
 #include "ViewParams.h"
+#include "ViewProviderGeometryObject.h"
 
-FC_LOG_LEVEL_INIT("App::Link",true,true)
+
+FC_LOG_LEVEL_INIT("App::Link", true, true)
 
 using namespace Gui;
 using namespace Base;
@@ -2342,7 +2337,8 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     if(linkEdit(ext)) {
         linkView->getLinkedView()->setupContextMenu(menu,receiver,member);
     } else if(ext->getPlacementProperty() || ext->getLinkPlacementProperty()) {
-        QAction* act = menu->addAction(QObject::tr("Transform"), receiver, member);
+        QIcon iconObject = mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap("Std_TransformManip.svg"));
+        QAction* act = menu->addAction(iconObject, QObject::tr("Transform"), receiver, member);
         act->setData(QVariant((int)ViewProvider::Transform));
     }
 
@@ -2745,6 +2741,9 @@ void ViewProviderLink::updateLinks(ViewProvider *vp) {
             ext->linkInfo->update();
     }
     catch (const Base::TypeError &e) {
+        e.ReportException();
+    }
+    catch (const Base::ValueError &e) {
         e.ReportException();
     }
 }

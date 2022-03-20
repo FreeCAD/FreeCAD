@@ -25,27 +25,20 @@
 
 #ifndef _PreComp_
 # include <QAction>
-# include <QKeyEvent>
 # include <QListWidget>
 # include <QMessageBox>
 #endif
 
-#include "ui_TaskThicknessParameters.h"
-#include "TaskThicknessParameters.h"
-#include <Base/UnitsApi.h>
-#include <App/Application.h>
+#include <Base/Interpreter.h>
 #include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
+#include <App/DocumentObject.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
-#include <Gui/MainWindow.h>
+#include <Gui/ViewProvider.h>
 #include <Mod/PartDesign/App/FeatureThickness.h>
-#include <Mod/PartDesign/Gui/ReferenceSelection.h>
+
+#include "ui_TaskThicknessParameters.h"
+#include "TaskThicknessParameters.h"
 
 using namespace PartDesignGui;
 using namespace Gui;

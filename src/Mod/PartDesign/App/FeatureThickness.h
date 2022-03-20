@@ -25,7 +25,6 @@
 #define PARTDESIGN_FEATURETHICKNESS_H
 
 #include <App/PropertyStandard.h>
-#include <App/PropertyLinks.h>
 #include <App/PropertyUnits.h>
 #include "FeatureDressUp.h"
 

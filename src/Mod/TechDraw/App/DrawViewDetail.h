@@ -77,6 +77,8 @@ public:
     double getFudgeRadius(void);
     TopoDS_Shape projectEdgesOntoFace(TopoDS_Shape edgeShape, TopoDS_Face projFace, gp_Dir projDir);
 
+    virtual std::vector<DrawViewDetail*> getDetailRefs() const override;
+
 protected:
     Base::Vector3d toR3(const gp_Ax2 fromSystem, const Base::Vector3d fromPoint);
     void getParameters(void);

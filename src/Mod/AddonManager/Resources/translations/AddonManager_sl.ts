@@ -4,19 +4,35 @@
   <context>
     <name>AddonsInstaller</name>
     <message>
+      <location filename="install_to_toolbar.py" line="76"/>
+      <source>Create new toolbar</source>
+      <translation>Ustvari nove orodno vrstico</translation>
+    </message>
+    <message>
+      <location filename="install_to_toolbar.py" line="219"/>
+      <source>A macro installed with the FreeCAD Addon Manager</source>
+      <translation>Makro nameščen s FreeCAD-ovim Upravljalnikom dodatkov</translation>
+    </message>
+    <message>
+      <location filename="install_to_toolbar.py" line="221"/>
+      <source>Run</source>
+      <comment>Indicates a macro that can be &apos;run&apos;</comment>
+      <translation>Zaženi</translation>
+    </message>
+    <message>
       <location filename="package_details.py" line="112"/>
       <source>Version {version} installed on {date}</source>
-      <translation type="unfinished">Version {version} installed on {date}</translation>
+      <translation>Različica {version} nameščena na {date}</translation>
     </message>
     <message>
       <location filename="package_details.py" line="117"/>
       <source>Version {version} installed</source>
-      <translation type="unfinished">Version {version} installed</translation>
+      <translation>Različica {version} nameščena</translation>
     </message>
     <message>
       <location filename="package_details.py" line="121"/>
       <source>Installed on {date}</source>
-      <translation type="unfinished">Installed on {date}</translation>
+      <translation>Nameščeno {date}</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="567"/>
@@ -89,6 +105,41 @@
       <translation>Pridobivanje datoteke README.md s skladišča paketa</translation>
     </message>
     <message>
+      <location filename="package_details.py" line="354"/>
+      <source>WARNING: This addon requires FreeCAD </source>
+      <translation>POZOR: Ta dodatek potrebuje FreeCAD </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="package_details.py" line="431"/>
+      <source>Delete cached version of this README and re-download</source>
+      <translation type="unfinished">
+        <numerusform>Izbriši predpomnjeno različico te README in jo ponovno prenesi</numerusform>
+        <numerusform>Delete cached version of this README and re-download</numerusform>
+        <numerusform>Delete cached version of this README and re-download</numerusform>
+        <numerusform>Delete cached version of this README and re-download</numerusform>
+      </translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="563"/>
+      <source>Could not load README data from URL {}</source>
+      <translation>S spletnega naslova {} ni bilo mogoče naložiti podatkov README</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="577"/>
+      <source>Success</source>
+      <translation>Uspešno</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="600"/>
+      <source>Changed to git ref &apos;{}&apos; -- please restart to use Addon.</source>
+      <translation>Spremenjeno v git-ov sklic &apos;{}&apos; -- za uporabo dodatka je potreben ponovni zagon.</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="636"/>
+      <source>Page JavaScript reported</source>
+      <translation type="unfinished">Page JavaScript reported</translation>
+    </message>
+    <message>
       <location filename="package_details.py" line="407"/>
       <source>Install</source>
       <translation>Namesti</translation>
@@ -114,18 +165,33 @@
       <translation>Zaženi makro</translation>
     </message>
     <message>
+      <location filename="package_details.py" line="786"/>
+      <source>Change Branch</source>
+      <translation>Spremeni vejo</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="867"/>
+      <source>Enable</source>
+      <translation>Omogoči</translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="870"/>
+      <source>Disable</source>
+      <translation>Onemogoči</translation>
+    </message>
+    <message>
       <location filename="package_details.py" line="424"/>
       <source>Return to package list</source>
       <translation>Vrnitev na seznam paketov</translation>
     </message>
     <message numerus="yes">
-      <location filename="package_details.py" line="431"/>
-      <source>Delete cached version of this README and re-download</source>
+      <location filename="package_details.py" line="800"/>
+      <source>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</source>
       <translation type="unfinished">
-        <numerusform>Izbriši predpomnjeno različico te README in jo ponovno prenesi</numerusform>
-        <numerusform>Delete cached version of this README and re-download</numerusform>
-        <numerusform>Delete cached version of this README and re-download</numerusform>
-        <numerusform>Delete cached version of this README and re-download</numerusform>
+        <numerusform>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</numerusform>
+        <numerusform>Pythonovi vezavi QtWebEngine nista nameščeni -- uporabljanje nadomestnega README prikaza. Za več podrobnosti in namestitvena navodila poglejte poročevalni pogled.</numerusform>
+        <numerusform>Pythonove vezave QtWebEngine niso nameščene -- uporabljanje nadomestnega README prikaza. Za več podrobnosti in namestitvena navodila poglejte poročevalni pogled.</numerusform>
+        <numerusform>Pythonove vezave QtWebEngine niso nameščene -- uporabljanje nadomestnega README prikaza. Za več podrobnosti in namestitvena navodila poglejte poročevalni pogled.</numerusform>
       </translation>
     </message>
     <message>
@@ -141,17 +207,17 @@
     <message>
       <location filename="package_list.py" line="207"/>
       <source>Click for details about package {}</source>
-      <translation type="unfinished">Click for details about package {}</translation>
+      <translation>Kliknite za podrobnosti o paketu {}</translation>
     </message>
     <message>
       <location filename="package_list.py" line="211"/>
       <source>Click for details about workbench {}</source>
-      <translation type="unfinished">Click for details about workbench {}</translation>
+      <translation>Kliknite za podrobnosti o delovnem okolju {}</translation>
     </message>
     <message>
       <location filename="package_list.py" line="215"/>
       <source>Click for details about macro {}</source>
-      <translation type="unfinished">Click for details about macro {}</translation>
+      <translation>Kliknite za podrobnosti o makru {}</translation>
     </message>
     <message>
       <location filename="package_list.py" line="326"/>
@@ -166,17 +232,12 @@
     <message>
       <location filename="package_list.py" line="364"/>
       <source>Tags</source>
-      <translation type="unfinished">Tags</translation>
+      <translation>Značke</translation>
     </message>
     <message>
       <location filename="package_list.py" line="371"/>
       <source>updated</source>
       <translation>posodobljeno</translation>
-    </message>
-    <message>
-      <location filename="package_list.py" line="376"/>
-      <source>Updated</source>
-      <translation>Posodobljeno</translation>
     </message>
     <message>
       <location filename="package_list.py" line="382"/>
@@ -199,6 +260,16 @@
       <translation>Čakanje na ponovni zagon</translation>
     </message>
     <message>
+      <location filename="package_list.py" line="498"/>
+      <source>DISABLED</source>
+      <translation>ONEMOGOČENO</translation>
+    </message>
+    <message>
+      <location filename="package_list.py" line="372"/>
+      <source>Installed version</source>
+      <translation>Nameščena različica</translation>
+    </message>
+    <message>
       <location filename="package_list.py" line="180"/>
       <source>Click for details about package</source>
       <translation>Kliknite za podrobnosti o paketu</translation>
@@ -214,9 +285,9 @@
       <translation>Kliknite za podrobnosti o makru</translation>
     </message>
     <message>
-      <location filename="package_list.py" line="372"/>
-      <source>Installed version</source>
-      <translation>Nameščena različica</translation>
+      <location filename="package_list.py" line="376"/>
+      <source>Updated</source>
+      <translation>Posodobljeno</translation>
     </message>
     <message>
       <location filename="package_list.py" line="380"/>
@@ -343,12 +414,22 @@
     <message>
       <location filename="addonmanager_workers.py" line="426"/>
       <source>git fetch failed for {}</source>
-      <translation type="unfinished">git fetch failed for {}</translation>
+      <translation>spodletelo pridobivanje git-a za {}</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="429"/>
       <source>git fetch failed for {wb.name}</source>
       <translation>spodletelo pridobivanje git-a za {wb.name}</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="433"/>
+      <source>Raw markdown displayed</source>
+      <translation>Prikazan surov Markdown</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="435"/>
+      <source>Python Markdown library is missing.</source>
+      <translation>Knjižnica Python Markdowna manjka.</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="439"/>
@@ -396,6 +477,16 @@
       <translation>Pri pridobivanju makrov z GitHub-a je prišlo do napake</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="646"/>
+      <source>An error occurred updating macros from GitHub</source>
+      <translation>Pri posodabljanju makrov z GitHub-a je prišlo do napake</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="651"/>
+      <source>Retrieving description...</source>
+      <translation>Pridobivanje opisov ...</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="665"/>
       <source>This macro is already installed.</source>
       <translation>Ta makro je že nameščen.</translation>
@@ -404,26 +495,6 @@
       <location filename="addonmanager_workers.py" line="697"/>
       <source>Caching macro code...</source>
       <translation>Pridobivanje kode makra ...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="651"/>
-      <source>Retrieving description...</source>
-      <translation>Pridobivanje opisov ...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="824"/>
-      <source>Retrieving info from {}</source>
-      <translation type="unfinished">Retrieving info from {}</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="433"/>
-      <source>Raw markdown displayed</source>
-      <translation>Prikazan surov Markdown</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="435"/>
-      <source>Python Markdown library is missing.</source>
-      <translation>Knjižnica Python Markdowna manjka.</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="700"/>
@@ -464,6 +535,11 @@
       <location filename="addonmanager_workers.py" line="799"/>
       <source>A macro has been installed and is available under Macro -&gt; Macros menu</source>
       <translation>Makro je bil namščen in je dosegljiv preko menija Makro -&gt; Makri</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="824"/>
+      <source>Retrieving info from {}</source>
+      <translation>Pridobivanje podatkov iz {}</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="835"/>
@@ -521,6 +597,11 @@
       <translation>Pridobivanje podatkov iz wiki strani</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="1013"/>
+      <source>Error updating module</source>
+      <translation>Napaka med posodabljanjem modula</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="1075"/>
       <source>Error updating module </source>
       <translation>Napaka med posodabljanjem modula </translation>
@@ -548,17 +629,17 @@
     <message>
       <location filename="addonmanager_workers.py" line="1611"/>
       <source>Downloaded package.xml for {}</source>
-      <translation type="unfinished">Downloaded package.xml for {}</translation>
+      <translation>Prejet paket.xml za {}</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1641"/>
       <source>Downloaded metadata.txt for {}</source>
-      <translation type="unfinished">Downloaded metadata.txt for {}</translation>
+      <translation>Prejeti metapodatki.xml za {}</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1715"/>
       <source>Downloaded icon for {}</source>
-      <translation type="unfinished">Downloaded icon for {}</translation>
+      <translation>Prejeta ikona za {}</translation>
     </message>
     <message>
       <location filename="addonmanager_utilities.py" line="332"/>
@@ -589,6 +670,78 @@
       <location filename="addonmanager_metadata.py" line="220"/>
       <source>Failed to connect to URL</source>
       <translation>Spodletelo povezovanje s spletnim naslovom</translation>
+    </message>
+    <message>
+      <location filename="change_branch.py" line="101"/>
+      <source>DANGER: Developer feature</source>
+      <translation>NEVARNOST: Zmožnost v razvoju</translation>
+    </message>
+    <message>
+      <location filename="change_branch.py" line="114"/>
+      <source>There are local changes</source>
+      <translation>Je nekaj krajevnih sprememb</translation>
+    </message>
+    <message>
+      <location filename="change_branch.py" line="192"/>
+      <source>Branch</source>
+      <comment>git terminology</comment>
+      <translation>Veja</translation>
+    </message>
+    <message>
+      <location filename="change_branch.py" line="178"/>
+      <source>Tag</source>
+      <comment>git terminology</comment>
+      <translation>značka, mostiček (povezovalni ostanke pri CNC izrezovanju)</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="change_branch.py" line="261"/>
+      <source>Kind</source>
+      <comment>Table header for git ref type (e.g. either Tag or Branch)</comment>
+      <translation>
+        <numerusform>Vrsta</numerusform>
+        <numerusform>Vrsti</numerusform>
+        <numerusform>Vrste</numerusform>
+        <numerusform>Vrst</numerusform>
+      </translation>
+    </message>
+    <message>
+      <location filename="change_branch.py" line="265"/>
+      <source>Local name</source>
+      <comment>Table header for git ref name</comment>
+      <translation>Krajevno ime</translation>
+    </message>
+    <message numerus="yes">
+      <location filename="change_branch.py" line="271"/>
+      <source>Tracking</source>
+      <comment>Table header for git remote tracking branch name name</comment>
+      <translation>
+        <numerusform>Sledenje</numerusform>
+        <numerusform>Sledenji</numerusform>
+        <numerusform>Sledenja</numerusform>
+        <numerusform>Sledenj</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="change_branch.py" line="277"/>
+      <source>Local updated</source>
+      <comment>Table header for git update time of local branch</comment>
+      <translation>
+        <numerusform>Krajevna posodobitev</numerusform>
+        <numerusform>Krajevni posodobitvi</numerusform>
+        <numerusform>Krajevne posodobitve</numerusform>
+        <numerusform>Krajevnih posodobitev</numerusform>
+      </translation>
+    </message>
+    <message numerus="yes">
+      <location filename="change_branch.py" line="283"/>
+      <source>Remote updated</source>
+      <comment>Table header for git update time of remote branch</comment>
+      <translation type="unfinished">
+        <numerusform>Remote updated</numerusform>
+        <numerusform>Daljinski posodobitvi</numerusform>
+        <numerusform>Daljinske posodobitve</numerusform>
+        <numerusform>Daljinskih posodobitev</numerusform>
+      </translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="191"/>
@@ -646,16 +799,6 @@
       <translation>Posodabljanje krajevnega predpomnilnika ...</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="243"/>
-      <source>Checking for updates...</source>
-      <translation>Preverjam za posodobitve...</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation type="unfinished">Apply {} update(s)</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>Dodatki, ki jih je tukaj mogoče namestiti, niso uradno del FreeCADA in jih osebje FreeCADA ni pregledalo. Zato poskrbite, da pred namestitivijo izdelek poznate!</translation>
@@ -674,6 +817,11 @@
       <location filename="AddonManager.py" line="241"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
       <translation>QtNetwork-a ni mogoče uvoziti - za več podrobnosti preberite Poročevalni pogled. Upravljalnik dodatkov ni na voljo.</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="243"/>
+      <source>Checking for updates...</source>
+      <translation>Preverjam za posodobitve...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="262"/>
@@ -716,6 +864,11 @@
       <translation>Makro uspešno odstranjen.</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="504"/>
+      <source>Macro could not be removed.</source>
+      <translation>Makra ni bilo mogoče odstraniti.</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="534"/>
       <source>Addon Manager: Skipping update check because AutoCheck user preference is False</source>
       <translation>Upravljalnik dodatkov: Preskakovanje preverjanja posodobitev, ker je v prednastavitvah samodejno preverjanje neokljukano</translation>
@@ -724,6 +877,11 @@
       <location filename="AddonManager.py" line="542"/>
       <source>Restart required</source>
       <translation>Potreben ponovni zagon</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation>Uporabi {} posodobitve</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="577"/>
@@ -784,11 +942,11 @@
       <location filename="AddonManager.py" line="1280"/>
       <source>{} total, see Report view for list</source>
       <comment>Describes the number of updates that were completed (&apos;{}&apos; is replaced by the number of updates)</comment>
-      <translation type="unfinished">
-        <numerusform>{} total, see Report view for list</numerusform>
-        <numerusform>{} total, see Report view for list</numerusform>
-        <numerusform>{} total, see Report view for list</numerusform>
-        <numerusform>{} total, see Report view for list</numerusform>
+      <translation>
+        <numerusform>Skupaj {}, seznam poglejte v Poročevalnem pogledu</numerusform>
+        <numerusform>Skupaj {}, seznam poglejte v Poročevalnem pogledu</numerusform>
+        <numerusform>Skupaj {}, seznam poglejte v Poročevalnem pogledu</numerusform>
+        <numerusform>Skupaj {}, seznam poglejte v Poročevalnem pogledu</numerusform>
       </translation>
     </message>
     <message>
@@ -834,12 +992,12 @@
     <message>
       <location filename="AddonManager.py" line="1513"/>
       <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
-      <translation type="unfinished">Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</translation>
+      <translation>Izvedba dodatkovega skripta uninstall.py je spodletela. Nadaljevanje z odmeščanjem ...</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="504"/>
-      <source>Macro could not be removed.</source>
-      <translation>Makra ni bilo mogoče odstraniti.</translation>
+      <location filename="AddonManager.py" line="1558"/>
+      <source>Successfully uninstalled {}</source>
+      <translation>Uspešno odmeščen {}</translation>
     </message>
     <message>
       <location filename="addonmanager_macro.py" line="157"/>

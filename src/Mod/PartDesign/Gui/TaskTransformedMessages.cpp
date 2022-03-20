@@ -23,16 +23,10 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <boost_bind_bind.hpp>
-#endif
+#include <Gui/BitmapFactory.h>
 
 #include "ui_TaskTransformedMessages.h"
 #include "TaskTransformedMessages.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-
 #include "ViewProviderTransformed.h"
 
 using namespace PartDesignGui;

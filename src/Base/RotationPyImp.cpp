@@ -23,14 +23,14 @@
 
 #include "PreCompiled.h"
 
-#include <Base/Rotation.h>
-#include <Base/Tools.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/Tools.h>
 
 // inclusion of the generated files (generated out of RotationPy.xml)
-#include "VectorPy.h"
 #include "RotationPy.h"
 #include "RotationPy.cpp"
+#include "VectorPy.h"
+
 
 using namespace Base;
 
@@ -187,7 +187,7 @@ int RotationPy::PyInit(PyObject* args, PyObject* kwds)
             str += "FreeCAD exception thrown (";
             str += e.what();
             str += ")";
-            PyErr_SetString(Base::BaseExceptionFreeCADError,str.c_str());
+            PyErr_SetString(Base::PyExc_FC_GeneralError,str.c_str());
             return -1;
         }
 

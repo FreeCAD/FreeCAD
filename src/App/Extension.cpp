@@ -25,15 +25,15 @@
 
 #ifndef _PreComp_
 # include <cassert>
-# include <algorithm>
 #endif
 
-#include "Extension.h"
-#include "DocumentObject.h"
-#include "Base/Exception.h"
-#include <Base/Console.h>
 #include <Base/PyObjectBase.h>
+
+#include "Extension.h"
+#include "ExtensionContainer.h"
+#include "ExtensionPython.h"
 #include <ExtensionPy.h>
+
 
 /* We do not use a standard property macro for type initiation. The reason is that we have the first
  * PropertyData in the extension chain, there is no parent property data.

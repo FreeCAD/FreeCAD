@@ -274,7 +274,7 @@ private:
         } else {
             std::string exStr("Can't determine mesh format from file name: '");
             exStr += outputFileName + "'";
-            throw Py::Exception(Base::BaseExceptionFreeCADError, exStr.c_str());
+            throw Py::ValueError(exStr.c_str());
         }
 
         for (auto it : objectList) {
@@ -335,7 +335,7 @@ private:
         }
         while (false);
         if (!mesh) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, "Creation of box failed");
+            throw Py::RuntimeError("Creation of box failed");
         }
         return Py::asObject(new MeshPy(mesh));
     }
@@ -368,7 +368,7 @@ private:
 
         MeshObject* mesh = MeshObject::createSphere(radius, sampling);
         if (!mesh) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, "Creation of sphere failed");
+            throw Py::RuntimeError("Creation of sphere failed");
         }
         return Py::asObject(new MeshPy(mesh));
     }
@@ -382,7 +382,7 @@ private:
 
         MeshObject* mesh = MeshObject::createEllipsoid(radius1, radius2, sampling);
         if (!mesh) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, "Creation of ellipsoid failed");
+            throw Py::RuntimeError("Creation of ellipsoid failed");
         }
         return Py::asObject(new MeshPy(mesh));
     }
@@ -398,7 +398,7 @@ private:
 
         MeshObject* mesh = MeshObject::createCylinder(radius, length, closed, edgelen, sampling);
         if (!mesh) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, "Creation of cylinder failed");
+            throw Py::RuntimeError("Creation of cylinder failed");
         }
         return Py::asObject(new MeshPy(mesh));
     }
@@ -415,7 +415,7 @@ private:
 
         MeshObject* mesh = MeshObject::createCone(radius1, radius2, len, closed, edgelen, sampling);
         if (!mesh) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, "Creation of cone failed");
+            throw Py::RuntimeError("Creation of cone failed");
         }
         return Py::asObject(new MeshPy(mesh));
     }
@@ -429,7 +429,7 @@ private:
 
         MeshObject* mesh = MeshObject::createTorus(radius1, radius2, sampling);
         if (!mesh) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, "Creation of torus failed");
+            throw Py::RuntimeError("Creation of torus failed");
         }
         return Py::asObject(new MeshPy(mesh));
     }
@@ -592,7 +592,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace Mesh

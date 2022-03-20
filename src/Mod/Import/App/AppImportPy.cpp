@@ -234,7 +234,7 @@ private:
                 }
             }
             else {
-                throw Py::Exception(Base::BaseExceptionFreeCADError, "no supported file format");
+                throw Py::Exception(PyExc_IOError, "no supported file format");
             }
 
 #if 1
@@ -275,10 +275,11 @@ private:
             }
         }
         catch (Standard_Failure& e) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.GetMessageString());
+            throw Py::Exception(Base::PyExc_FC_GeneralError, e.GetMessageString());
         }
         catch (const Base::Exception& e) {
-            throw Py::RuntimeError(e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
 
         return Py::None();
@@ -395,10 +396,11 @@ private:
             hApp->Close(hDoc);
         }
         catch (Standard_Failure& e) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.GetMessageString());
+            throw Py::Exception(Base::PyExc_FC_GeneralError, e.GetMessageString());
         }
         catch (const Base::Exception& e) {
-            throw Py::RuntimeError(e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
 
         return Py::None();
@@ -780,7 +782,7 @@ static PyObject * importAssembly(PyObject *self, PyObject *args)
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace Import

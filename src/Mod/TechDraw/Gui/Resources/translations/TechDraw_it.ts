@@ -2,49 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="it" sourcelanguage="en">
   <context>
-    <name>CopyView</name>
-    <message>
-      <location filename="CommandCopyView.py" line="47"/>
-      <source>Copy View</source>
-      <translation>Copia vista</translation>
-    </message>
-    <message>
-      <location filename="CommandCopyView.py" line="50"/>
-      <source>Copy a View to a second Page</source>
-      <translation>Copia una vista in una seconda pagina</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="46"/>
-      <source>Copy View to a second Page</source>
-      <translation>Copia vista in una seconda pagina</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="73"/>
-      <source>Select View to copy from list.</source>
-      <translation>Selezionare la vista da copiare dall'elenco.</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="74"/>
-      <source>Select View</source>
-      <translation>Seleziona vista</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="92"/>
-      <source>Select From Page.</source>
-      <translation>Seleziona dalla pagina.</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="112"/>
-      <source>Select Page</source>
-      <translation>Seleziona pagina</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="111"/>
-      <source>Select To Page.</source>
-      <translation>Selezione alla pagina.</translation>
-    </message>
-  </context>
-  <context>
     <name>MoveView</name>
     <message>
       <location filename="CommandMoveView.py" line="47"/>
@@ -85,6 +42,97 @@
       <location filename="TaskMoveView.py" line="112"/>
       <source>Select To Page.</source>
       <translation>Selezione alla pagina.</translation>
+    </message>
+  </context>
+  <context>
+    <name>ShareView</name>
+    <message>
+      <location filename="CommandShareView.py" line="47"/>
+      <source>Share View</source>
+      <translation>Condividi vista</translation>
+    </message>
+    <message>
+      <location filename="CommandShareView.py" line="50"/>
+      <source>Share a View on a second Page</source>
+      <translation>Condividi una vista su una seconda pagina</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="46"/>
+      <source>Share View with another Page</source>
+      <translation>Condividi la vista con un'altra pagina</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="47"/>
+      <source>View to share</source>
+      <translation>Visualizza per condividere</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="74"/>
+      <source>Select View to share from list.</source>
+      <translation>Selezionare la vista da condividere dall'elenco.</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="75"/>
+      <source>Select View</source>
+      <translation>Seleziona vista</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="93"/>
+      <source>Select From Page.</source>
+      <translation>Seleziona dalla pagina.</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="113"/>
+      <source>Select Page</source>
+      <translation>Seleziona pagina</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="112"/>
+      <source>Select To Page.</source>
+      <translation>Selezione alla pagina.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CopyView</name>
+    <message>
+      <location filename="CommandCopyView.py" line="47"/>
+      <source>Copy View</source>
+      <translation>Copia vista</translation>
+    </message>
+    <message>
+      <location filename="CommandCopyView.py" line="50"/>
+      <source>Copy a View to a second Page</source>
+      <translation>Copia una vista in una seconda pagina</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="46"/>
+      <source>Copy View to a second Page</source>
+      <translation>Copia vista in una seconda pagina</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="73"/>
+      <source>Select View to copy from list.</source>
+      <translation>Selezionare la vista da copiare dall'elenco.</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="74"/>
+      <source>Select View</source>
+      <translation>Seleziona vista</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="92"/>
+      <source>Select From Page.</source>
+      <translation>Seleziona dalla pagina.</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="111"/>
+      <source>Select To Page.</source>
+      <translation>Selezione alla pagina.</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="112"/>
+      <source>Select Page</source>
+      <translation>Seleziona pagina</translation>
     </message>
   </context>
   <context>

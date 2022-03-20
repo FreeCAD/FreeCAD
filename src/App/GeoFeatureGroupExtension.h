@@ -25,10 +25,10 @@
 #ifndef APP_GeoFeatureGroup_H
 #define APP_GeoFeatureGroup_H
 
-#include <App/FeaturePython.h>
-
-#include "DocumentObjectGroup.h"
+#include "DocumentObject.h"
+#include "GroupExtension.h"
 #include "PropertyGeo.h"
+
 
 namespace App
 {

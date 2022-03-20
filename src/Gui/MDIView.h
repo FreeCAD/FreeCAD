@@ -20,13 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_MDIVIEW_H
 #define GUI_MDIVIEW_H
 
-#include "View.h"
+#include <boost_signals2.hpp>
 #include <QMainWindow>
-#include "ActiveObjectList.h"
+#include <Gui/ActiveObjectList.h>
+#include <Gui/View.h>
+
 
 QT_BEGIN_NAMESPACE
 class QPrinter;

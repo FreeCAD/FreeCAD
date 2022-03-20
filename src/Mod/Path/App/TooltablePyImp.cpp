@@ -171,7 +171,7 @@ PyObject* TooltablePy::addTools(PyObject * args)
         Py_INCREF(Py_None);
         return Py_None;
     }
-    Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters - tool or list of tools expected");
+    Py_Error(PyExc_TypeError, "Wrong parameters - tool or list of tools expected");
 }
 
 PyObject* TooltablePy::setTool(PyObject * args)
@@ -185,7 +185,7 @@ PyObject* TooltablePy::setTool(PyObject * args)
         Py_INCREF(Py_None);
         return Py_None;
     }
-    Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters - expected tool and optional integer");
+    Py_Error(PyExc_TypeError, "Wrong parameters - expected tool and optional integer");
 }
 
 PyObject* TooltablePy::getTool(PyObject * args)
@@ -203,7 +203,7 @@ PyObject* TooltablePy::getTool(PyObject * args)
             return Py_None;
         }
     }
-    Py_Error(Base::BaseExceptionFreeCADError, "Argument must be integer");
+    Py_Error(PyExc_TypeError, "Argument must be integer");
 }
 
 PyObject* TooltablePy::deleteTool(PyObject * args)
@@ -215,7 +215,7 @@ PyObject* TooltablePy::deleteTool(PyObject * args)
         Py_INCREF(Py_None);
         return Py_None;
     }
-    Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters - expected an integer (optional)");
+    Py_Error(PyExc_TypeError, "Wrong parameters - expected an integer (optional)");
 }
 
 // custom attributes get/set

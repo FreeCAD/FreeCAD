@@ -80,8 +80,8 @@ PyObject *FemMeshPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Py
 int FemMeshPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     PyObject *pcObj=0;
-    if (!PyArg_ParseTuple(args, "|O", &pcObj))     // convert args: Python->C
-        return -1;                             // NULL triggers exception
+    if (!PyArg_ParseTuple(args, "|O", &pcObj))
+        return -1;
 
     try {
         // if no mesh is given
@@ -96,11 +96,11 @@ int FemMeshPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
     }
     catch (const Base::Exception &e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError,e.what());
+        e.setPyException();
         return -1;
     }
     catch (const std::exception &e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError,e.what());
+        PyErr_SetString(Base::PyExc_FC_GeneralError,e.what());
         return -1;
     }
     catch (const Py::Exception&) {
@@ -124,7 +124,7 @@ PyObject* FemMeshPy::setShape(PyObject *args)
         getFemMeshPtr()->getSMesh()->ShapeToMesh(shape);
     }
     catch (const std::exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
         return 0;
     }
     Py_Return;
@@ -155,7 +155,7 @@ PyObject* FemMeshPy::addHypothesis(PyObject *args)
         return 0;
     }
     catch (const std::exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
         return 0;
     }
     Py_Return;
@@ -170,7 +170,7 @@ PyObject* FemMeshPy::setStandardHypotheses(PyObject *args)
         getFemMeshPtr()->setStandardHypotheses();
     }
     catch (const std::exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
         return 0;
     }
     Py_Return;
@@ -185,7 +185,7 @@ PyObject* FemMeshPy::compute(PyObject *args)
         getFemMeshPtr()->compute();
     }
     catch (const std::exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
         return 0;
     }
     Py_Return;
@@ -205,7 +205,7 @@ PyObject* FemMeshPy::addNode(PyObject *args)
             return Py::new_reference_to(Py::Long(node->GetID()));
         }
         catch (const std::exception& e) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+            PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
             return 0;
         }
     }
@@ -221,7 +221,7 @@ PyObject* FemMeshPy::addNode(PyObject *args)
             return Py::new_reference_to(Py::Long(node->GetID()));
         }
         catch (const std::exception& e) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+            PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
             return 0;
         }
     }
@@ -249,7 +249,7 @@ PyObject* FemMeshPy::addEdge(PyObject *args)
             return Py::new_reference_to(Py::Long(edge->GetID()));
         }
         catch (const std::exception& e) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+            PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
             return 0;
         }
     }
@@ -331,7 +331,7 @@ PyObject* FemMeshPy::addFace(PyObject *args)
             return Py::new_reference_to(Py::Long(face->GetID()));
         }
         catch (const std::exception& e) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+            PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
             return 0;
         }
     }
@@ -434,7 +434,7 @@ PyObject* FemMeshPy::addQuad(PyObject *args)
         return Py::new_reference_to(Py::Long(face->GetID()));
     }
     catch (const std::exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
         return 0;
     }
 }
@@ -460,7 +460,7 @@ PyObject* FemMeshPy::addVolume(PyObject *args)
             return Py::new_reference_to(Py::Long(vol->GetID()));
         }
         catch (const std::exception& e) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+            PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
             return 0;
         }
     }
@@ -601,7 +601,7 @@ PyObject* FemMeshPy::read(PyObject *args)
         getFemMeshPtr()->read(EncodedName.c_str());
     }
     catch (const std::exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
         return 0;
     }
     Py_Return;
@@ -619,7 +619,7 @@ PyObject* FemMeshPy::write(PyObject *args)
         getFemMeshPtr()->write(EncodedName.c_str());
     }
     catch (const std::exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
         return 0;
     }
     Py_Return;
@@ -640,7 +640,7 @@ PyObject* FemMeshPy::writeABAQUS(PyObject *args)
         getFemMeshPtr()->writeABAQUS(EncodedName.c_str(), elemParam, grpParam);
     }
     catch (const std::exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());
         return 0;
     }
     Py_Return;
@@ -652,15 +652,9 @@ PyObject* FemMeshPy::setTransform(PyObject *args)
     if (!PyArg_ParseTuple(args, "O!", &(Base::PlacementPy::Type), &ptr))
         return 0;
 
-    try {
-        Base::Placement* placement = static_cast<Base::PlacementPy*>(ptr)->getPlacementPtr();
-        Base::Matrix4D mat = placement->toMatrix();
-        getFemMeshPtr()->transformGeometry(mat);
-    }
-    catch (const std::exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
-        return 0;
-    }
+    Base::Placement* placement = static_cast<Base::PlacementPy*>(ptr)->getPlacementPtr();
+    Base::Matrix4D mat = placement->toMatrix();
+    getFemMeshPtr()->transformGeometry(mat);
     Py_Return;
 }
 
@@ -674,7 +668,7 @@ PyObject* FemMeshPy::getFacesByFace(PyObject *args)
     try {
         const TopoDS_Shape& sh = static_cast<Part::TopoShapeFacePy*>(pW)->getTopoShapePtr()->getShape();
         if (sh.IsNull()) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, "Face is empty");
+            PyErr_SetString(PyExc_ValueError, "Face is empty");
             return 0;
         }
 
@@ -689,7 +683,7 @@ PyObject* FemMeshPy::getFacesByFace(PyObject *args)
         return Py::new_reference_to(ret);
     }
     catch (Standard_Failure& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.GetMessageString());
+        PyErr_SetString(Base::PyExc_FC_CADKernelError, e.GetMessageString());
         return 0;
     }
 }
@@ -704,7 +698,7 @@ PyObject* FemMeshPy::getEdgesByEdge(PyObject *args)
     try {
         const TopoDS_Shape& sh = static_cast<Part::TopoShapeEdgePy*>(pW)->getTopoShapePtr()->getShape();
         if (sh.IsNull()) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, "Edge is empty");
+            PyErr_SetString(PyExc_ValueError, "Edge is empty");
             return 0;
         }
 
@@ -719,7 +713,7 @@ PyObject* FemMeshPy::getEdgesByEdge(PyObject *args)
         return Py::new_reference_to(ret);
     }
     catch (Standard_Failure& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.GetMessageString());
+        PyErr_SetString(Base::PyExc_FC_CADKernelError, e.GetMessageString());
         return 0;
     }
 }
@@ -733,7 +727,7 @@ PyObject* FemMeshPy::getVolumesByFace(PyObject *args)
     try {
         const TopoDS_Shape& sh = static_cast<Part::TopoShapeFacePy*>(pW)->getTopoShapePtr()->getShape();
         if (sh.IsNull()) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, "Face is empty");
+            PyErr_SetString(PyExc_ValueError, "Face is empty");
             return 0;
         }
 
@@ -751,7 +745,7 @@ PyObject* FemMeshPy::getVolumesByFace(PyObject *args)
         return Py::new_reference_to(ret);
     }
     catch (Standard_Failure& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.GetMessageString());
+        PyErr_SetString(Base::PyExc_FC_CADKernelError, e.GetMessageString());
         return 0;
     }
 }
@@ -765,7 +759,7 @@ PyObject* FemMeshPy::getccxVolumesByFace(PyObject *args)
     try {
         const TopoDS_Shape& sh = static_cast<Part::TopoShapeFacePy*>(pW)->getTopoShapePtr()->getShape();
         if (sh.IsNull()) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, "Face is empty");
+            PyErr_SetString(PyExc_ValueError, "Face is empty");
             return 0;
         }
 
@@ -783,7 +777,7 @@ PyObject* FemMeshPy::getccxVolumesByFace(PyObject *args)
         return Py::new_reference_to(ret);
     }
     catch (Standard_Failure& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.GetMessageString());
+        PyErr_SetString(Base::PyExc_FC_CADKernelError, e.GetMessageString());
         return 0;
     }
 }
@@ -817,7 +811,7 @@ PyObject* FemMeshPy::getNodesBySolid(PyObject *args)
         const TopoDS_Shape& sh = static_cast<Part::TopoShapeSolidPy*>(pW)->getTopoShapePtr()->getShape();
         const TopoDS_Solid& fc = TopoDS::Solid(sh);
         if (sh.IsNull()) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, "Solid is empty");
+            PyErr_SetString(PyExc_ValueError, "Solid is empty");
             return 0;
         }
         Py::List ret;
@@ -829,7 +823,7 @@ PyObject* FemMeshPy::getNodesBySolid(PyObject *args)
 
     }
     catch (Standard_Failure& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.GetMessageString());
+        PyErr_SetString(Base::PyExc_FC_CADKernelError, e.GetMessageString());
         return 0;
     }
 }
@@ -844,7 +838,7 @@ PyObject* FemMeshPy::getNodesByFace(PyObject *args)
         const TopoDS_Shape& sh = static_cast<Part::TopoShapeFacePy*>(pW)->getTopoShapePtr()->getShape();
         const TopoDS_Face& fc = TopoDS::Face(sh);
         if (sh.IsNull()) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, "Face is empty");
+            PyErr_SetString(PyExc_ValueError, "Face is empty");
             return 0;
         }
         Py::List ret;
@@ -856,7 +850,7 @@ PyObject* FemMeshPy::getNodesByFace(PyObject *args)
 
     }
     catch (Standard_Failure& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.GetMessageString());
+        PyErr_SetString(Base::PyExc_FC_CADKernelError, e.GetMessageString());
         return 0;
     }
 }
@@ -871,7 +865,7 @@ PyObject* FemMeshPy::getNodesByEdge(PyObject *args)
         const TopoDS_Shape& sh = static_cast<Part::TopoShapeEdgePy*>(pW)->getTopoShapePtr()->getShape();
         const TopoDS_Edge& fc = TopoDS::Edge(sh);
         if (sh.IsNull()) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, "Edge is empty");
+            PyErr_SetString(PyExc_ValueError, "Edge is empty");
             return 0;
         }
         Py::List ret;
@@ -883,7 +877,7 @@ PyObject* FemMeshPy::getNodesByEdge(PyObject *args)
 
     }
     catch (Standard_Failure& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.GetMessageString());
+        PyErr_SetString(Base::PyExc_FC_CADKernelError, e.GetMessageString());
         return 0;
     }
 }
@@ -898,7 +892,7 @@ PyObject* FemMeshPy::getNodesByVertex(PyObject *args)
         const TopoDS_Shape& sh = static_cast<Part::TopoShapeVertexPy*>(pW)->getTopoShapePtr()->getShape();
         const TopoDS_Vertex& fc = TopoDS::Vertex(sh);
         if (sh.IsNull()) {
-            PyErr_SetString(Base::BaseExceptionFreeCADError, "Vertex is empty");
+            PyErr_SetString(PyExc_ValueError, "Vertex is empty");
             return 0;
         }
         Py::List ret;
@@ -910,7 +904,7 @@ PyObject* FemMeshPy::getNodesByVertex(PyObject *args)
 
     }
     catch (Standard_Failure& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.GetMessageString());
+        PyErr_SetString(Base::PyExc_FC_CADKernelError, e.GetMessageString());
         return 0;
     }
 }
@@ -931,7 +925,7 @@ PyObject* FemMeshPy::getElementNodes(PyObject *args)
         return Py::new_reference_to(ret);
     }
     catch (Standard_Failure& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.GetMessageString());
+        PyErr_SetString(Base::PyExc_FC_CADKernelError, e.GetMessageString());
         return 0;
     }
 }
@@ -1016,8 +1010,11 @@ PyObject* FemMeshPy::addGroup(PyObject *args)
     int theId = -1;
     if (!PyArg_ParseTuple(args, "etet|i","utf-8", &Name, "utf-8", &typeString, &theId))
         return 0;
+
     std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
     std::string EncodedTypeString = std::string(typeString);
+    PyMem_Free(typeString);
 
     int retId = -1;
 
@@ -1026,7 +1023,7 @@ PyObject* FemMeshPy::addGroup(PyObject *args)
         retId = getFemMeshPtr()->addGroup(EncodedTypeString, EncodedName, theId);
     }
     catch (Standard_Failure& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.GetMessageString());
+        PyErr_SetString(Base::PyExc_FC_CADKernelError, e.GetMessageString());
         return 0;
     }
     std::cout << "Added Group: Name: \'" << EncodedName << "\' Type: \'" << EncodedTypeString << "\' id: " << retId << std::endl;
@@ -1073,7 +1070,7 @@ PyObject* FemMeshPy::addGroupElements(PyObject *args)
         getFemMeshPtr()->addGroupElements(id, int_ids);
     }
     catch (Standard_Failure& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.GetMessageString());
+        PyErr_SetString(Base::PyExc_FC_CADKernelError, e.GetMessageString());
         return 0;
     }
 

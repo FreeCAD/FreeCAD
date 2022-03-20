@@ -23,21 +23,12 @@
 #ifndef APP_DOCUMENT_H
 #define APP_DOCUMENT_H
 
-#include <CXX/Objects.hxx>
-#include <Base/Observer.h>
-#include <Base/Persistence.h>
-#include <Base/Type.h>
-
 #include "PropertyContainer.h"
-#include "PropertyStandard.h"
 #include "PropertyLinks.h"
+#include "PropertyStandard.h"
 
 #include <map>
 #include <vector>
-#include <stack>
-#include <functional>
-
-#include <boost_signals2.hpp>
 
 namespace Base {
     class Writer;
@@ -76,6 +67,7 @@ public:
         TempDoc = 9, // Mark as temporary document without prompt for save
         RestoreError = 10,
         LinkStampChanged = 11, // Indicates during restore time if any linked document's time stamp has changed
+        IgnoreErrorOnRecompute = 12, // Don't report errors if the recompute failed
     };
 
     /** @name Properties */
@@ -569,8 +561,6 @@ private:
     std::list<Transaction*> mRedoTransactions;
     std::map<int,Transaction*> mRedoMap;
 
-    // pointer to the python class
-    Py::Object DocumentPythonObject;
     struct DocumentP* d;
 
     std::string oldLabel;

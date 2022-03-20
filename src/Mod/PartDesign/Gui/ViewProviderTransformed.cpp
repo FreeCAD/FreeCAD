@@ -28,10 +28,10 @@
 # include <BRep_Tool.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepMesh_IncrementalMesh.hxx>
+# include <Poly_Triangulation.hxx>
 # include <Standard_Version.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
-# include <Poly_Triangulation.hxx>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoIndexedFaceSet.h>
@@ -44,21 +44,16 @@
 # include <Inventor/nodes/SoTransparencyType.h>
 # include <QAction>
 # include <QMenu>
-# include <QMessageBox>
 #endif
+
+#include <App/Document.h>
+#include <Base/Console.h>
+#include <Gui/Application.h>
+#include <Mod/Part/App/Tools.h>
+#include <Mod/PartDesign/App/FeatureMultiTransform.h>
 
 #include "ViewProviderTransformed.h"
 #include "TaskTransformedParameters.h"
-#include <Base/Console.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Mod/Part/App/TopoShape.h>
-#include <Mod/Part/App/Tools.h>
-#include <Mod/PartDesign/App/FeatureTransformed.h>
-#include <Mod/PartDesign/App/FeatureAddSub.h>
-#include <Mod/PartDesign/App/FeatureMultiTransform.h>
 
 using namespace PartDesignGui;
 

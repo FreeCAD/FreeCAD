@@ -20,24 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
+# include <cmath>
+# include <limits>
 # include <QApplication>
-# include <QRegExp>
 #endif
 
-#include <limits>
+#include <App/Application.h>
+#include <Base/Parameter.h>
+#include <Base/UnitsApi.h>
 
 #include "ui_DlgSettingsUnits.h"
 #include "DlgSettingsUnitsImp.h"
-#include "NavigationStyle.h"
-#include "PrefWidgets.h"
-#include <App/Application.h>
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/UnitsApi.h>
+
 
 using namespace Gui::Dialog;
 using namespace Base;

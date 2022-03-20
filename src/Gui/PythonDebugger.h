@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_PYTHONDEBUG_H
 #define GUI_PYTHONDEBUG_H
 
 #include <CXX/Extensions.hxx>
 #include <frameobject.h>
-#include <string>
 #include <set>
+
 
 namespace Gui {
 

@@ -406,8 +406,8 @@ public:
 
     App::PropertyLength MajorRadius;
     App::PropertyLength MinorRadius;
-    App::PropertyAngle Angle0;
     App::PropertyAngle Angle1;
+    App::PropertyAngle Angle2;
 
     /** @name methods override feature */
     //@{
@@ -420,6 +420,10 @@ public:
         return "PartGui::ViewProviderEllipseParametric";
     }
     //@}
+
+protected:
+    void Restore(Base::XMLReader &reader);
+    void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
 
 private:
     static App::PropertyQuantityConstraint::Constraints angleRange;

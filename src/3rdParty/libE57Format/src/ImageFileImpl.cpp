@@ -392,7 +392,7 @@ namespace e57
    ImageFileImpl::~ImageFileImpl()
    {
       /// Try to cancel if not already closed, but don't allow any exceptions to
-      /// propogate to caller (because in dtor). If writing, this will unlink the
+      /// propagate to caller (because in dtor). If writing, this will unlink the
       /// file, so make sure call ImageFileImpl::close explicitly before dtor runs.
       try
       {

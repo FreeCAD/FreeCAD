@@ -49,17 +49,23 @@ else:
 translate = FreeCAD.Qt.translate
 
 
-def fillThreads(combo, dataFile):
-    combo.blockSignals(True)
-    combo.clear()
+def fillThreads(form, dataFile, defaultSelect):
+    form.threadName.blockSignals(True)
+    select = form.threadName.currentText()
+    PathLog.debug("select = '{}'".format(select))
+    form.threadName.clear()
     with open(
-        "{}Mod/Path/Data/Threads/{}.csv".format(FreeCAD.getHomePath(), dataFile)
+        "{}Mod/Path/Data/Threads/{}".format(FreeCAD.getHomePath(), dataFile)
     ) as fp:
         reader = csv.DictReader(fp)
         for row in reader:
-            combo.addItem(row["name"], row)
-    combo.setEnabled(True)
-    combo.blockSignals(False)
+            form.threadName.addItem(row["name"], row)
+    if select:
+        form.threadName.setCurrentText(select)
+    elif defaultSelect:
+        form.threadName.setCurrentText(defaultSelect)
+    form.threadName.setEnabled(True)
+    form.threadName.blockSignals(False)
 
 
 class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
@@ -68,17 +74,11 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
     def initPage(self, obj):
         self.majorDia = PathGui.QuantitySpinBox(
             self.form.threadMajor, obj, "MajorDiameter"
-        )  # pylint: disable=attribute-defined-outside-init
+        )
         self.minorDia = PathGui.QuantitySpinBox(
             self.form.threadMinor, obj, "MinorDiameter"
-        )  # pylint: disable=attribute-defined-outside-init
-        self.pitch = PathGui.QuantitySpinBox(
-            self.form.threadPitch, obj, "Pitch"
-        )  # pylint: disable=attribute-defined-outside-init
-
-        # setupCombo(self.form.threadOrientation, obj.Proxy.ThreadOrientations)
-        # setupCombo(self.form.threadType, obj.Proxy.ThreadTypes)
-        # setupCombo(self.form.opDirection, obj.Proxy.Directions)
+        )
+        self.pitch = PathGui.QuantitySpinBox(self.form.threadPitch, obj, "Pitch")
 
     def getForm(self):
         """getForm() ... return UI"""
@@ -94,21 +94,6 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.populateCombobox(form, enumTups, comboToPropertyMap)
 
         return form
-
-    def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
-        """fillComboboxes(form, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
-        ** comboBoxesPropertyMap will be unnecessary if UI files use strict combobox naming protocol.
-        Args:
-            form = UI form
-            enumTups = list of (translated_text, data_string) tuples
-            comboBoxesPropertyMap = list of (translated_text, data_string) tuples
-        """
-        # Load appropriate enumerations in each combobox
-        for cb, prop in comboBoxesPropertyMap:
-            box = getattr(form, cb)  # Get the combobox
-            box.clear()  # clear the combobox
-            for text, data in enumTups[prop]:  #  load enumerations
-                box.addItem(text, data)
 
     def getFields(self, obj):
         """getFields(obj) ... update obj's properties with values from the UI"""
@@ -151,25 +136,41 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.pitch.updateSpinBox()
 
         self.setupToolController(obj, self.form.toolController)
+        self._updateFromThreadType()
 
-    def _isThreadMetric(self):
-        return (
-            self.form.threadType.currentData()
-            == PathThreadMilling.ObjectThreadMilling.ThreadTypeMetricInternal
-        )
+    def _isThreadCustom(self):
+        return self.form.threadType.currentData() in [
+            PathThreadMilling.ObjectThreadMilling.ThreadTypeCustomInternal,
+            PathThreadMilling.ObjectThreadMilling.ThreadTypeCustomExternal,
+        ]
 
     def _isThreadImperial(self):
         return (
             self.form.threadType.currentData()
-            == PathThreadMilling.ObjectThreadMilling.ThreadTypeImperialInternal
+            in PathThreadMilling.ObjectThreadMilling.ThreadTypesImperial
+        )
+
+    def _isThreadMetric(self):
+        return (
+            self.form.threadType.currentData()
+            in PathThreadMilling.ObjectThreadMilling.ThreadTypesMetric
+        )
+
+    def _isThreadInternal(self):
+        return (
+            self.form.threadType.currentData()
+            in PathThreadMilling.ObjectThreadMilling.ThreadTypesInternal
+        )
+
+    def _isThreadExternal(self):
+        return (
+            self.form.threadType.currentData()
+            in PathThreadMilling.ObjectThreadMilling.ThreadTypesExternal
         )
 
     def _updateFromThreadType(self):
 
-        if (
-            self.form.threadType.currentData()
-            == PathThreadMilling.ObjectThreadMilling.ThreadTypeCustom
-        ):
+        if self._isThreadCustom():
             self.form.threadName.setEnabled(False)
             self.form.threadFit.setEnabled(False)
             self.form.threadFitLabel.setEnabled(False)
@@ -177,49 +178,53 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             self.form.threadPitchLabel.setEnabled(True)
             self.form.threadTPI.setEnabled(True)
             self.form.threadTPILabel.setEnabled(True)
-
-        if self._isThreadMetric():
+        else:
             self.form.threadFit.setEnabled(True)
             self.form.threadFitLabel.setEnabled(True)
-            self.form.threadPitch.setEnabled(True)
-            self.form.threadPitchLabel.setEnabled(True)
-            self.form.threadTPI.setEnabled(False)
-            self.form.threadTPILabel.setEnabled(False)
-            self.form.threadTPI.setValue(0)
-            fillThreads(self.form.threadName, "metric-internal")
-
-        if self._isThreadImperial():
-            self.form.threadFit.setEnabled(True)
-            self.form.threadFitLabel.setEnabled(True)
-            self.form.threadPitch.setEnabled(False)
-            self.form.threadPitchLabel.setEnabled(False)
-            self.form.threadTPI.setEnabled(True)
-            self.form.threadTPILabel.setEnabled(True)
-            self.pitch.updateSpinBox(0)
-            fillThreads(self.form.threadName, "imperial-internal")
+            if self._isThreadMetric():
+                self.form.threadPitch.setEnabled(True)
+                self.form.threadPitchLabel.setEnabled(True)
+                self.form.threadTPI.setEnabled(False)
+                self.form.threadTPILabel.setEnabled(False)
+                self.form.threadTPI.setValue(0)
+            else:
+                self.form.threadPitch.setEnabled(False)
+                self.form.threadPitchLabel.setEnabled(False)
+                self.form.threadTPI.setEnabled(True)
+                self.form.threadTPILabel.setEnabled(True)
+                self.pitch.updateSpinBox(0)
+            fillThreads(
+                self.form,
+                PathThreadMilling.ObjectThreadMilling.ThreadTypeData[
+                    self.form.threadType.currentData()
+                ],
+                self.obj.ThreadName,
+            )
+        self._updateFromThreadName()
 
     def _updateFromThreadName(self):
-        thread = self.form.threadName.currentData()
-        fit = float(self.form.threadFit.value()) / 100
-        mamin = float(thread["dMajorMin"])
-        mamax = float(thread["dMajorMax"])
-        major = mamin + (mamax - mamin) * fit
-        mimin = float(thread["dMinorMin"])
-        mimax = float(thread["dMinorMax"])
-        minor = mimin + (mimax - mimin) * fit
+        if not self._isThreadCustom():
+            thread = self.form.threadName.currentData()
+            fit = float(self.form.threadFit.value()) / 100
+            maxmin = float(thread["dMajorMin"])
+            maxmax = float(thread["dMajorMax"])
+            major = maxmin + (maxmax - maxmin) * fit
+            minmin = float(thread["dMinorMin"])
+            minmax = float(thread["dMinorMax"])
+            minor = minmin + (minmax - minmin) * fit
 
-        if self._isThreadMetric():
-            pitch = float(thread["pitch"])
-            self.pitch.updateSpinBox(pitch)
+            if self._isThreadMetric():
+                pitch = float(thread["pitch"])
+                self.pitch.updateSpinBox(pitch)
 
-        if self._isThreadImperial():
-            tpi = int(thread["tpi"])
-            self.form.threadTPI.setValue(tpi)
-            minor = minor * 25.4
-            major = major * 25.4
+            if self._isThreadImperial():
+                tpi = int(thread["tpi"])
+                self.form.threadTPI.setValue(tpi)
+                minor = minor * 25.4
+                major = major * 25.4
 
-        self.majorDia.updateSpinBox(major)
-        self.minorDia.updateSpinBox(minor)
+            self.majorDia.updateSpinBox(major)
+            self.minorDia.updateSpinBox(minor)
 
         self.setDirty()
 

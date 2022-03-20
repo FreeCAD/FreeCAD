@@ -1,5 +1,8 @@
 // geo file for meshing with Gmsh meshing software created by FreeCAD
 
+// enable multi-core processing
+General.NumThreads = X;
+
 // open brep geometry
 Merge "/tmp/tmp0TVZbM.brep";
 

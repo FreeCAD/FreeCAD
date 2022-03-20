@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <cmath>
 # include <sstream>
 #endif
 #ifdef __GNUC__
@@ -30,12 +31,8 @@
 #endif
 
 #include <QString>
-#include "Console.h"
-#include "Exception.h"
-#include "UnitsApi.h"
+
 #include "UnitsSchemaImperial1.h"
-#include <cmath>
-#include <iomanip>
 
 
 using namespace Base;
@@ -238,18 +235,18 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
         minden = quant.getFormat().getDenominator();
 
         // Compute and round the total number of fractional units
-        ntot = (int)std::round(totalInches * (double)minden);
+        ntot = static_cast<int>(std::round(totalInches * static_cast<double>(minden)));
 
         // If this is zero, nothing to do but return
         if( ntot==0 )
             return QString::fromLatin1("0");
 
         // Compute the whole number of feet and remaining units
-        feet = (int)std::floor(ntot / (12*minden));
+        feet = static_cast<int>(std::floor(ntot / (12*minden)));
         ntot = ntot - 12*minden*feet;
 
         // Compute the remaining number of whole inches
-        inches = (int)std::floor(ntot/minden);
+        inches = static_cast<int>(std::floor(ntot/minden));
 
         // Lastly the fractional quantities
         num = ntot - inches*minden;
@@ -390,9 +387,9 @@ QString UnitsSchemaImperialCivil::schemaTranslate(const Base::Quantity& quant, d
 //        double wholeSeconds = std::floor(rawSeconds);
 //        double remainSeconds = rawSeconds - wholeSeconds;
 
-        int outDeg = (int) wholeDegrees;
-        int outMin = (int) wholeMinutes;
-        int outSec = (int) std::round(rawSeconds);
+        int outDeg = static_cast<int>(wholeDegrees);
+        int outMin = static_cast<int>(wholeMinutes);
+        int outSec = static_cast<int>(std::round(rawSeconds));
 
         std::stringstream output;
         output << outDeg << degreeString.toUtf8().constData();

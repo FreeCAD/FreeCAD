@@ -20,35 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_Plane.hxx>
-# include <Precision.hxx>
-
-# include <QAction>
-# include <QKeyEvent>
-# include <QMessageBox>
-# include <QRegExp>
-# include <QTextStream>
-
-# include <TopoDS.hxx>
-# include <gp_Ax1.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Pln.hxx>
-# include <sstream>
-#endif
-
 #include "TaskFemConstraintOnBoundary.h"
-#include <App/Application.h>
-#include <Base/Tools.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
 
 
 using namespace FemGui;
@@ -56,15 +30,17 @@ using namespace Gui;
 
 /* TRANSLATOR FemGui::TaskFemConstraintOnBoundary */
 
-TaskFemConstraintOnBoundary::TaskFemConstraintOnBoundary(ViewProviderFemConstraint *ConstraintView, QWidget *parent, const char* pixmapname)
+TaskFemConstraintOnBoundary::TaskFemConstraintOnBoundary(ViewProviderFemConstraint* ConstraintView, QWidget* parent, const char* pixmapname)
     : TaskFemConstraint(ConstraintView, parent, pixmapname)
+    , selChangeMode(SelectionChangeModes::none)
 {
     ConstraintView->highlightReferences(true);
 }
 
 TaskFemConstraintOnBoundary::~TaskFemConstraintOnBoundary()
 {
-    ConstraintView->highlightReferences(false);
+    if (!ConstraintView.expired())
+        ConstraintView->highlightReferences(false);
 }
 
 void TaskFemConstraintOnBoundary::_addToSelection(bool checked)
@@ -73,14 +49,16 @@ void TaskFemConstraintOnBoundary::_addToSelection(bool checked)
     {
         const auto& selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
         if (selection.empty()) {
-            this->clearButtons(refAdd);
-            selChangeMode = refAdd;
+            this->clearButtons(SelectionChangeModes::refAdd);
+            selChangeMode = SelectionChangeModes::refAdd;
             ConstraintView->highlightReferences(true);
-        } else {
-            this->addToSelection();
-            clearButtons(none);
         }
-    } else {
+        else {
+            this->addToSelection();
+            clearButtons(SelectionChangeModes::none);
+        }
+    }
+    else {
         exitSelectionChangeMode();
     }
 }
@@ -91,31 +69,33 @@ void TaskFemConstraintOnBoundary::_removeFromSelection(bool checked)
     {
         const auto& selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
         if (selection.empty()) {
-            this->clearButtons(refRemove);
-            selChangeMode = refRemove;
+            this->clearButtons(SelectionChangeModes::refRemove);
+            selChangeMode = SelectionChangeModes::refRemove;
             ConstraintView->highlightReferences(true);
-        } else {
-            this->removeFromSelection();
-            clearButtons(none);
         }
-    } else {
+        else {
+            this->removeFromSelection();
+            clearButtons(SelectionChangeModes::none);
+        }
+    }
+    else {
         exitSelectionChangeMode();
     }
 }
 
-void TaskFemConstraintOnBoundary::onSelectionChanged(const Gui::SelectionChanges&msg)
+void TaskFemConstraintOnBoundary::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         switch (selChangeMode) {
-        case refAdd:
+        case SelectionChangeModes::refAdd:
             // TODO: Optimize to just perform actions on the newly selected item. Suggestion from PartDesign:
             // ui->lw_references->addItem(makeRefText(msg.pObjectName, msg.pSubName));
             this->addToSelection();
             break;
-        case refRemove:
+        case SelectionChangeModes::refRemove:
             this->removeFromSelection();
             break;
-        case none:
+        case SelectionChangeModes::none:
             return;
         default:
             return;
@@ -126,7 +106,7 @@ void TaskFemConstraintOnBoundary::onSelectionChanged(const Gui::SelectionChanges
 
 void TaskFemConstraintOnBoundary::exitSelectionChangeMode()
 {
-    selChangeMode = none;
+    selChangeMode = SelectionChangeModes::none;
     Gui::Selection().clearSelection();
 }
 

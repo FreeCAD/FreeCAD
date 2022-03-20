@@ -4,6 +4,11 @@
   <context>
     <name>OpenSCAD</name>
     <message>
+      <location filename="OpenSCADUtils.py" line="710"/>
+      <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
+      <translation>OpenSCAD-Datei enthält sowohl 2D- als auch 3D-Formen. Dies wird beim Import nicht unterstützt, alle Formen müssen die gleiche Dimensionalität haben.</translation>
+    </message>
+    <message>
       <location filename="OpenSCADUtils.py" line="622"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
       <translation>Fehler. Alle Formen müssen entweder 2D oder 3D sein</translation>

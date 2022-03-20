@@ -76,6 +76,7 @@
         <!-- gui command icons: solver -->
         <file>icons/FEM_SolverControl.svg</file>
         <file>icons/FEM_SolverElmer.svg</file>
+        <file>icons/FEM_SolverMystran.svg</file>
         <file>icons/FEM_SolverRun.svg</file>
         <file>icons/FEM_SolverStandard.svg</file>
         <file>icons/FEM_SolverZ88.svg</file>
@@ -93,6 +94,8 @@
 
         <!-- main wb icon and preferences icons -->
         <file>icons/FemWorkbench.svg</file>
+        <file>icons/fem-solver-analysis-buckling.svg</file>
+        <file>icons/fem-solver-analysis-checkmesh.svg</file>
         <file>icons/fem-solver-analysis-frequency.svg</file>
         <file>icons/fem-solver-analysis-static.svg</file>
         <file>icons/fem-solver-analysis-thermomechanical.svg</file>

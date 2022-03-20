@@ -33,6 +33,8 @@ namespace Gui {
 namespace Dialog {
 class Ui_DlgGeneral;
 class DlgCreateNewPreferencePackImp;
+class DlgPreferencePackManagementImp;
+class DlgRevertToBackupConfigImp;
 
 /** This class implements the settings for the application.
  *  You can change window style, size of pixmaps, size of recent file list and so on
@@ -56,14 +58,18 @@ protected Q_SLOTS:
     void onLoadPreferencePackClicked(const std::string &packName);
     void recreatePreferencePackMenu();
     void newPreferencePackDialogAccepted();
+    void onManagePreferencePacksClicked();
 
 private:
     void setRecentFileSize();
     void saveAsNewPreferencePack();
+    void revertToSavedConfig();
 
 private:
     std::unique_ptr<Ui_DlgGeneral> ui;
     std::unique_ptr<DlgCreateNewPreferencePackImp> newPreferencePackDialog;
+    std::unique_ptr<DlgPreferencePackManagementImp> preferencePackManagementDialog;
+    std::unique_ptr<DlgRevertToBackupConfigImp> revertToBackupConfigDialog;
 };
 
 } // namespace Dialog

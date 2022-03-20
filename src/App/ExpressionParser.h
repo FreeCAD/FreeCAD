@@ -25,8 +25,8 @@
 #ifndef EXPRESSION_PARSER_H
 #define EXPRESSION_PARSER_H
 
-#include <Base/Interpreter.h>
 #include "Expression.h"
+#include <Base/Quantity.h>
 
 namespace App {
 

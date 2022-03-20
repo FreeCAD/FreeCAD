@@ -2888,6 +2888,21 @@ Yapı oluşturma iptal edildi.</translation>
       <translation>Varolan bir nesne üzerinde bir yüzey seçin veya bir ön ayar seçin</translation>
     </message>
     <message>
+      <location filename="ArchWindow.py" line="290"/>
+      <source>Window not based on sketch. Window not aligned or resized.</source>
+      <translation>Pencere Eskize dayalı değil. Pencere hizalanmamış veya yeniden boyutlandırılmamış.</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="300"/>
+      <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
+      <translation>Pencere eskizinde Genişlik ve/veya Yükseklik kısıtlaması yok. Pencere yeniden boyutlandırılmadı.</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="303"/>
+      <source>No window found. Cannot continue.</source>
+      <translation>Pencere bulunamadı. Devam edilemez.</translation>
+    </message>
+    <message>
       <location filename="ArchWindow.py" line="327"/>
       <source>Window options</source>
       <translation>Pencere seçenekleri</translation>
@@ -4109,6 +4124,19 @@ Run=0 ise run hesaplanır ve yükseklik ilgili profille özdeştir.</translation
     </message>
   </context>
   <context>
+    <name>Arch_CutLine</name>
+    <message>
+      <location filename="ArchCutPlane.py" line="80"/>
+      <source>Cut with line</source>
+      <translation>Çizgi ile kes</translation>
+    </message>
+    <message>
+      <location filename="ArchCutPlane.py" line="83"/>
+      <source>Cut an object with a line</source>
+      <translation>Bir nesneyi bir çizgi ile kes</translation>
+    </message>
+  </context>
+  <context>
     <name>Arch_CutPlane</name>
     <message>
       <location filename="ArchCutPlane.py" line="79"/>
@@ -4482,7 +4510,7 @@ Run=0 ise run hesaplanır ve yükseklik ilgili profille özdeştir.</translation
     <message>
       <location filename="InitGui.py" line="142"/>
       <source>Create various types of rebars, including U-shaped, L-shaped, and stirrup</source>
-      <translation type="unfinished">Create various types of rebars, including U-shaped, L-shaped, and stirrup</translation>
+      <translation>U-şekilli, L-şekilli ve etriye dahil olmak üzere çeşitli inşaat demiri türleri oluşturun</translation>
     </message>
   </context>
   <context>
@@ -5961,7 +5989,7 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="812"/>
       <source>Panels</source>
-      <translation>Panels</translation>
+      <translation>Paneller</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="827"/>

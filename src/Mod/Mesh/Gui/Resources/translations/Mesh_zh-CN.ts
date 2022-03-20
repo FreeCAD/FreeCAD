@@ -589,7 +589,7 @@
     <name>Command</name>
     <message>
       <source>Mesh Create</source>
-      <translation type="unfinished">Mesh Create</translation>
+      <translation>网格创建</translation>
     </message>
     <message>
       <source>Segment by tool mesh</source>
@@ -1698,7 +1698,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
       <source>Inventor V2.1 ASCII</source>
-      <translation type="unfinished">Inventor V2.1 ASCII</translation>
+      <translation>Inventor V2.1 ascii</translation>
     </message>
     <message>
       <source>Stanford Polygon</source>
@@ -1706,7 +1706,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
       <source>NASTRAN</source>
-      <translation type="unfinished">NASTRAN</translation>
+      <translation>NASTRAN</translation>
     </message>
     <message>
       <source>All Files</source>

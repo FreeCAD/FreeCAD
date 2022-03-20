@@ -64,6 +64,7 @@
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 
@@ -1441,9 +1442,9 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
 //WF? allow more than one TD Page per Dxf file??  1 TD page = 1 DXF file = 1 drawing?
     QString defaultDir;
     QString fileName = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
-                                                   QString::fromUtf8(QT_TR_NOOP("Save Dxf File")),
+                                                   QString::fromUtf8(QT_TR_NOOP("Save DXF file")),
                                                    defaultDir,
-                                                   QString::fromUtf8(QT_TR_NOOP("Dxf (*.dxf)")));
+                                                   QString::fromUtf8(QT_TR_NOOP("DXF (*.dxf)")));
 
     if (fileName.isEmpty()) {
         return;

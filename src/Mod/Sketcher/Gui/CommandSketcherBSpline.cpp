@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Inventor/SbString.h>
 # include <cfloat>
 # include <QMessageBox>
 # include <Precision.hxx>
@@ -32,10 +33,12 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Gui/DlgEditFileIncludePropertyExternal.h>
@@ -73,11 +76,12 @@ bool isSketcherBSplineActive(Gui::Document *doc, bool actsOnSelection)
 
 void ActivateBSplineHandler(Gui::Document *doc,DrawSketchHandler *handler)
 {
+    std::unique_ptr<DrawSketchHandler> ptr(handler);
     if (doc) {
         if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
             SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*> (doc->getInEdit());
             vp->purgeHandler();
-            vp->activateHandler(handler);
+            vp->activateHandler(ptr.release());
         }
     }
 }
@@ -87,6 +91,47 @@ void ShowRestoreInformationLayer(const char * visibleelementname)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
     bool status = hGrp->GetBool(visibleelementname, true);
     hGrp->SetBool(visibleelementname, !status);
+}
+
+/// For a knot given by (GeoId, PosId) finds the B-Spline and the knot's
+/// index within it (by OCC numbering).
+/// Returns true if the entities are found, false otherwise.
+/// If returns false, `splineGeoId` and `knotIndexOCC` have garbage values.
+bool findBSplineAndKnotIndex(Sketcher::SketchObject* Obj,
+                             int knotGeoId, Sketcher::PointPos knotPosId,
+                             int& splineGeoId, int& knotIndexOCC)
+{
+    for (auto const constraint : Obj->Constraints.getValues()) {
+        if (constraint->Type == Sketcher::InternalAlignment
+            && constraint->First == knotGeoId
+            && constraint->AlignmentType == Sketcher::BSplineKnotPoint)
+        {
+            splineGeoId = constraint->Second;
+            knotIndexOCC = constraint->InternalAlignmentIndex + 1;
+            return true;  // we have already found our knot.
+        }
+    }
+
+    // TODO: what to do if multiple splines have the same first/last point?
+    const Part::Geometry *geo = Obj->getGeometry(knotGeoId);
+    if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+        splineGeoId = knotGeoId;
+        switch (knotPosId) {
+        case Sketcher::PointPos::start:
+            knotIndexOCC = 1;
+            return true;
+        case Sketcher::PointPos::end:
+            knotIndexOCC = static_cast<const Part::GeomBSplineCurve *>(geo)->countKnots();
+            return true;
+        default:
+            // If we reach here something went wrong.
+            // isBsplineKnotOrEndPoint (that we expect is run before) will
+            // only accept spline knotGeoID if knotPosId is start or end.
+            return false;
+        }
+    }
+
+    return false;
 }
 
 // Show/Hide B-spline degree
@@ -364,23 +409,23 @@ bool CmdSketcherCompBSplineShowHideGeometryInformation::isActive(void)
 }
 
 // Convert to NURBS
-DEF_STD_CMD_A(CmdSketcherConvertToNURB)
+DEF_STD_CMD_A(CmdSketcherConvertToNURBS)
 
-CmdSketcherConvertToNURB::CmdSketcherConvertToNURB()
-    : Command("Sketcher_BSplineConvertToNURB")
+CmdSketcherConvertToNURBS::CmdSketcherConvertToNURBS()
+    : Command("Sketcher_BSplineConvertToNURBS")
 {
     sAppModule      = "Sketcher";
     sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Convert geometry to B-spline");
     sToolTipText    = QT_TR_NOOP("Converts the selected geometry to a B-spline");
-    sWhatsThis      = "Sketcher_BSplineConvertToNURB";
+    sWhatsThis      = "Sketcher_BSplineConvertToNURBS";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_BSplineApproximate";
     sAccel          = "";
     eType           = ForEdit;
 }
 
-void CmdSketcherConvertToNURB::activated(int iMsg)
+void CmdSketcherConvertToNURBS::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
@@ -397,25 +442,31 @@ void CmdSketcherConvertToNURB::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    bool nurbsized = false;
-
     openCommand(QT_TRANSLATE_NOOP("Command", "Convert to NURBS"));
 
-    for (size_t i=0; i < SubNames.size(); i++) {
+    std::vector<int> GeoIdList;
+
+    for (const auto& subName : SubNames) {
         // only handle edges
-        if (SubNames[i].size() > 4 && SubNames[i].substr(0,4) == "Edge") {
-            int GeoId = std::atoi(SubNames[i].substr(4,4000).c_str()) - 1;
-            Gui::cmdAppObjectArgs(selection[0].getObject(), "convertToNURBS(%d) ", GeoId);
-            nurbsized = true;
+        if (subName.size() > 4 && subName.substr(0,4) == "Edge") {
+            int GeoId = std::atoi(subName.substr(4,4000).c_str()) - 1;
+            GeoIdList.push_back(GeoId);
         }
-        else if (SubNames[i].size() > 12 && SubNames[i].substr(0,12) == "ExternalEdge") {
-            int GeoId = - (std::atoi(SubNames[i].substr(12,4000).c_str()) + 2);
-            Gui::cmdAppObjectArgs(selection[0].getObject(), "convertToNURBS(%d) ", GeoId);
-            nurbsized = true;
+        else if (subName.size() > 12 && subName.substr(0,12) == "ExternalEdge") {
+            int GeoId = - (std::atoi(subName.substr(12,4000).c_str()) + 2);
+            GeoIdList.push_back(GeoId);
         }
     }
 
-    if (!nurbsized) {
+    // for creating the poles and knots
+    for (auto GeoId : GeoIdList) {
+        Gui::cmdAppObjectArgs(selection[0].getObject(), "convertToNURBS(%d) ", GeoId);
+    }
+    for (auto GeoId : GeoIdList) {
+        Gui::cmdAppObjectArgs(selection[0].getObject(), "exposeInternalGeometry(%d)", GeoId);
+    }
+
+    if (GeoIdList.empty()) {
         abortCommand();
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                              QObject::tr("None of the selected elements is an edge."));
@@ -426,7 +477,7 @@ void CmdSketcherConvertToNURB::activated(int iMsg)
     tryAutoRecomputeIfNotSolve(Obj);
 }
 
-bool CmdSketcherConvertToNURB::isActive(void)
+bool CmdSketcherConvertToNURBS::isActive(void)
 {
     return isSketcherBSplineActive(getActiveGuiDocument(), true);
 }
@@ -635,55 +686,48 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Increase knot multiplicity"));
 
-    bool applied = false;
-    bool notaknot = true;
-    boost::uuids::uuid bsplinetag;
-
     int GeoId;
     Sketcher::PointPos PosId;
     getIdsFromName(SubNames[0], Obj, GeoId, PosId);
 
-    if (isSimpleVertex(Obj, GeoId, PosId)) {
-        const std::vector<Sketcher::Constraint *> &vals = Obj->Constraints.getValues();
+    int splineGeoId;
+    int knotIndexOCC;
 
-        for (std::vector<Sketcher::Constraint *>::const_iterator it= vals.begin(); it != vals.end(); ++it) {
-            if ((*it)->Type == Sketcher::InternalAlignment
-                && (*it)->First == GeoId
-                && (*it)->AlignmentType == Sketcher::BSplineKnotPoint)
-            {
-                bsplinetag = Obj->getGeometry((*it)->Second)->getTag();
-                notaknot = false;
+    bool applied = false;
+    bool notaknot = !(isBsplineKnotOrEndPoint(Obj, GeoId, PosId) &&
+                      findBSplineAndKnotIndex(Obj, GeoId, PosId, splineGeoId, knotIndexOCC));
+    boost::uuids::uuid bsplinetag;
 
-                try {
-                    Gui::cmdAppObjectArgs(selection[0].getObject(),
-                                          "modifyBSplineKnotMultiplicity(%d, %d, %d) ",
-                                          (*it)->Second, (*it)->InternalAlignmentIndex + 1, 1);
-                    applied = true;
+    if (!notaknot) {
+        bsplinetag = Obj->getGeometry(splineGeoId)->getTag();
 
-                    // Warning: GeoId list might have changed
-                    // as the consequence of deleting pole circles and
-                    // particularly B-spline GeoID might have changed.
-                }
-                catch (const Base::CADKernelError& e) {
-                    e.ReportException();
-                    if (e.getTranslatable()) {
-                        QMessageBox::warning(Gui::getMainWindow(),
-                                             QObject::tr("CAD Kernel Error"),
-                                             QObject::tr(e.getMessage().c_str()));
-                    }
-                    getSelection().clearSelection();
-                }
-                catch (const Base::Exception& e) {
-                    e.ReportException();
-                    if (e.getTranslatable()) {
-                        QMessageBox::warning(Gui::getMainWindow(),
-                                             QObject::tr("Input Error"),
-                                             QObject::tr(e.getMessage().c_str()));
-                    }
-                    getSelection().clearSelection();
-                }
-                break;  // we have already found our knot.
+        try {
+            Gui::cmdAppObjectArgs(selection[0].getObject(),
+                                  "modifyBSplineKnotMultiplicity(%d, %d, %d) ",
+                                  splineGeoId, knotIndexOCC, 1);
+            applied = true;
+
+            // Warning: GeoId list might have changed
+            // as the consequence of deleting pole circles and
+            // particularly B-spline GeoID might have changed.
+        }
+        catch (const Base::CADKernelError& e) {
+            e.ReportException();
+            if (e.getTranslatable()) {
+                QMessageBox::warning(Gui::getMainWindow(),
+                                     QObject::tr("CAD Kernel Error"),
+                                     QObject::tr(e.getMessage().c_str()));
             }
+            getSelection().clearSelection();
+        }
+        catch (const Base::Exception& e) {
+            e.ReportException();
+            if (e.getTranslatable()) {
+                QMessageBox::warning(Gui::getMainWindow(),
+                                     QObject::tr("Input Error"),
+                                     QObject::tr(e.getMessage().c_str()));
+            }
+            getSelection().clearSelection();
         }
     }
 
@@ -789,42 +833,34 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Decrease knot multiplicity"));
 
-    bool applied = false;
-    bool notaknot = true;
-    boost::uuids::uuid bsplinetag;
-
     int GeoId;
     Sketcher::PointPos PosId;
     getIdsFromName(SubNames[0], Obj, GeoId, PosId);
 
-    if (isSimpleVertex(Obj, GeoId, PosId))
-    {
-        const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
+    int splineGeoId;
+    int knotIndexOCC;
 
-        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin(); it != vals.end(); ++it) {
-            if ((*it)->Type == Sketcher::InternalAlignment
-                && (*it)->First == GeoId
-                && (*it)->AlignmentType == Sketcher::BSplineKnotPoint)
-            {
-                bsplinetag = Obj->getGeometry((*it)->Second)->getTag();
-                notaknot = false;
+    bool applied = false;
+    bool notaknot = !(isBsplineKnotOrEndPoint(Obj, GeoId, PosId) &&
+                      findBSplineAndKnotIndex(Obj, GeoId, PosId, splineGeoId, knotIndexOCC));
+    boost::uuids::uuid bsplinetag;
 
-                try {
-                    Gui::cmdAppObjectArgs(selection[0].getObject(),
-                                          "modifyBSplineKnotMultiplicity(%d, %d, %d) ",
-                                          (*it)->Second, (*it)->InternalAlignmentIndex + 1, -1);
-                    applied = true;
+    if (!notaknot) {
+        bsplinetag = Obj->getGeometry(splineGeoId)->getTag();
 
-                    // Warning: GeoId list might have changed as the consequence of deleting pole circles and
-                    // particularly B-spline GeoID might have changed.
-                }
-                catch (const Base::Exception& e) {
-                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Error"),
-                                         QObject::tr(getStrippedPythonExceptionString(e).c_str()));
-                    getSelection().clearSelection();
-                }
-                break;  // we have already found our knot.
-            }
+        try {
+            Gui::cmdAppObjectArgs(selection[0].getObject(),
+                                  "modifyBSplineKnotMultiplicity(%d, %d, %d) ",
+                                  splineGeoId, knotIndexOCC, -1);
+            applied = true;
+
+            // Warning: GeoId list might have changed as the consequence of deleting pole circles and
+            // particularly B-spline GeoID might have changed.
+        }
+        catch (const Base::Exception& e) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Error"),
+                                 QObject::tr(getStrippedPythonExceptionString(e).c_str()));
+            getSelection().clearSelection();
         }
     }
 
@@ -971,6 +1007,154 @@ bool CmdSketcherCompModifyKnotMultiplicity::isActive(void)
     return isSketcherBSplineActive(getActiveGuiDocument(), false);
 }
 
+class DrawSketchHandlerBSplineInsertKnot: public DrawSketchHandler
+{
+public:
+    DrawSketchHandlerBSplineInsertKnot(Sketcher::SketchObject* _Obj, int _GeoId)
+        : Obj(_Obj)
+        , GeoId(_GeoId)
+        , EditMarkers(1)
+    {
+        auto bsp = static_cast<const Part::GeomBSplineCurve *>(Obj->getGeometry(GeoId));
+        guessParam = bsp->getFirstParameter();
+    }
+
+    ~DrawSketchHandlerBSplineInsertKnot() override {}
+
+    void mouseMove(Base::Vector2d onSketchPos) override
+    {
+        auto bsp = static_cast<const Part::GeomBSplineCurve *>(Obj->getGeometry(GeoId));
+
+        // get closest parameter using OCC
+        // TODO: This is called every time we move the cursor. Can get overwhelming.
+        Base::Vector3d onSketchPos3d(onSketchPos.x, onSketchPos.y, 0.0);
+        SbString text;
+        text.sprintf(" %.3f", guessParam);
+        // FIXME: Sometimes the "closest" point is on the other end of the B-Spline.
+        // Find when it happens and fix it?
+        bsp->closestParameter(onSketchPos3d, guessParam);
+
+        Base::Vector3d pointOnCurve3d = bsp->value(guessParam);
+
+        // TODO: Also draw a point at our position instead of just text
+        Base::Vector2d pointOnCurve(pointOnCurve3d.x, pointOnCurve3d.y);
+        setPositionText(pointOnCurve, text);
+
+        EditMarkers[0] = pointOnCurve;
+        drawEditMarkers(EditMarkers);
+
+        applyCursor();
+    }
+
+    bool pressButton(Base::Vector2d /*onSketchPos*/) override
+    {
+        // just here to consume the button press
+        return true;
+    }
+
+    bool releaseButton(Base::Vector2d onSketchPos) override
+    {
+        Q_UNUSED(onSketchPos);
+
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert knot"));
+
+        bool applied = false;
+        boost::uuids::uuid bsplinetag = Obj->getGeometry(GeoId)->getTag();
+
+        try {
+            Gui::cmdAppObjectArgs(Obj, "insertBSplineKnot(%d, %lf, %d) ",
+                                  GeoId, guessParam, 1);
+            applied = true;
+
+            // Warning: GeoId list might have changed
+            // as the consequence of deleting pole circles and
+            // particularly B-spline GeoID might have changed.
+        }
+        catch (const Base::CADKernelError& e) {
+            e.ReportException();
+            if (e.getTranslatable()) {
+                QMessageBox::warning(Gui::getMainWindow(),
+                                     QObject::tr("CAD Kernel Error"),
+                                     QObject::tr(e.getMessage().c_str()));
+            }
+        }
+        catch (const Base::Exception& e) {
+            e.ReportException();
+            if (e.getTranslatable()) {
+                QMessageBox::warning(Gui::getMainWindow(),
+                                     QObject::tr("Input Error"),
+                                     QObject::tr(e.getMessage().c_str()));
+            }
+        }
+
+        int newGeoId = 0;
+        bool newGeoIdFound = false;
+
+        if (applied)
+        {
+            // find new geoid for B-spline as GeoId might have changed
+            const std::vector< Part::Geometry * > &gvals = Obj->getInternalGeometry();
+
+            for (std::vector<Part::Geometry *>::const_iterator geo = gvals.begin(); geo != gvals.end(); geo++, newGeoId++) {
+                if ((*geo) && (*geo)->getTag() == bsplinetag) {
+                    newGeoIdFound = true;
+                    break;
+                }
+            }
+
+            if (newGeoIdFound) {
+                try {
+                    // add internalalignment for new pole
+                    Gui::cmdAppObjectArgs(Obj, "exposeInternalGeometry(%d)", newGeoId);
+                }
+                catch (const Base::Exception& e) {
+                    Base::Console().Error("%s\n", e.what());
+                }
+            }
+        }
+
+        if (applied)
+            Gui::Command::commitCommand();
+        else
+            Gui::Command::abortCommand();
+
+        tryAutoRecomputeIfNotSolve(Obj);
+
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
+        if (continuousMode && newGeoIdFound) {
+            // This code enables the continuous creation mode.
+
+            // The new entities created changed the B-Spline's GeoId
+            GeoId = newGeoId;
+
+            applyCursor();
+            /* It is ok not to call to purgeHandler
+             * in continuous creation mode because the
+             * handler is destroyed by the quit() method on pressing the
+             * right button of the mouse */
+        }
+        else {
+            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+        }
+
+        return true;
+    }
+
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_InsertKnot");
+    }
+
+
+protected:
+    Sketcher::SketchObject* Obj;
+    int GeoId;
+    double guessParam;
+    std::vector<Base::Vector2d> EditMarkers;
+};
+
 DEF_STD_CMD_A(CmdSketcherInsertKnot)
 
 CmdSketcherInsertKnot::CmdSketcherInsertKnot()
@@ -979,7 +1163,7 @@ CmdSketcherInsertKnot::CmdSketcherInsertKnot()
     sAppModule      = "Sketcher";
     sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Insert knot");
-    sToolTipText    = QT_TR_NOOP("Inserts knot at given parameter with the given multiplicity. If a knot already exists at that parameter, it's multiplicity is increased by the value.");
+    sToolTipText    = QT_TR_NOOP("Inserts knot at given parameter. If a knot already exists at that parameter, it's multiplicity is increased by one.");
     sWhatsThis      = "Sketcher_BSplineInsertKnot";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_BSplineInsertKnot";
@@ -1021,87 +1205,19 @@ void CmdSketcherInsertKnot::activated(int iMsg)
     }
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Insert knot (incomplete)"));
-
-    bool applied = false;
-
     // TODO: Ensure GeoId is for the BSpline and not for it's internal geometry
     int GeoId = std::atoi(SubNames[0].substr(4,4000).c_str()) - 1;
+    const Part::Geometry * geo = Obj->getGeometry(GeoId);
 
-    boost::uuids::uuid bsplinetag = Obj->getGeometry(GeoId)->getTag();
-
-    try {
-        // TODO: Get param from user input by clicking on desired spot
-        // Get param from user input into a box
-        bool paramPicked;
-        // TODO: get min/max values from the BSpline
-        double param = QInputDialog::getDouble(
-            Gui::getMainWindow(), QObject::tr("Knot parameter"),
-            QObject::tr("Please provide the parameter where the knot is to be inserted."),
-            0.5, -DBL_MAX, DBL_MAX, 8, &paramPicked);
-        if (paramPicked) {
-            Gui::cmdAppObjectArgs(selection[0].getObject(),
-                                  "insertBSplineKnot(%d, %lf, %d) ",
-                                  GeoId, param, 1);
-            applied = true;
-
-            // Warning: GeoId list might have changed
-            // as the consequence of deleting pole circles and
-            // particularly B-spline GeoID might have changed.
-        }
-    }
-    catch (const Base::CADKernelError& e) {
-      e.ReportException();
-      if (e.getTranslatable()) {
+    if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId())
+        ActivateBSplineHandler(getActiveGuiDocument(), new DrawSketchHandlerBSplineInsertKnot(Obj, GeoId));
+    else {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("CAD Kernel Error"),
-                             QObject::tr(e.getMessage().c_str()));
-      }
-      getSelection().clearSelection();
-    }
-    catch (const Base::Exception& e) {
-      e.ReportException();
-      if (e.getTranslatable()) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Input Error"),
-                             QObject::tr(e.getMessage().c_str()));
-      }
-      getSelection().clearSelection();
+                             QObject::tr("Wrong selection"),
+                             QObject::tr("Please select a b-spline curve to insert a knot (not a knot on it). "
+                                         "If the curve is not a b-spline, please convert it into one first."));
     }
 
-    if (applied)
-    {
-        // find new geoid for B-spline as GeoId might have changed
-        const std::vector< Part::Geometry * > &gvals = Obj->getInternalGeometry();
-
-        int ngeoid = 0;
-        bool ngfound = false;
-
-        for (std::vector<Part::Geometry *>::const_iterator geo = gvals.begin(); geo != gvals.end(); geo++, ngeoid++) {
-            if ((*geo) && (*geo)->getTag() == bsplinetag) {
-                ngfound = true;
-                break;
-            }
-        }
-
-        if (ngfound) {
-            try {
-                // add internalalignment for new pole
-                Gui::cmdAppObjectArgs(selection[0].getObject(), "exposeInternalGeometry(%d)", ngeoid);
-            }
-            catch (const Base::Exception& e) {
-                Base::Console().Error("%s\n", e.what());
-                getSelection().clearSelection();
-            }
-        }
-    }
-
-    if (applied)
-      commitCommand();
-    else
-      abortCommand();
-
-    tryAutoRecomputeIfNotSolve(Obj);
     getSelection().clearSelection();
 }
 
@@ -1120,7 +1236,7 @@ void CreateSketcherCommandsBSpline(void)
     rcCmdMgr.addCommand(new CmdSketcherBSplineKnotMultiplicity());
     rcCmdMgr.addCommand(new CmdSketcherBSplinePoleWeight());
     rcCmdMgr.addCommand(new CmdSketcherCompBSplineShowHideGeometryInformation());
-    rcCmdMgr.addCommand(new CmdSketcherConvertToNURB());
+    rcCmdMgr.addCommand(new CmdSketcherConvertToNURBS());
     rcCmdMgr.addCommand(new CmdSketcherIncreaseDegree());
     rcCmdMgr.addCommand(new CmdSketcherDecreaseDegree());
     rcCmdMgr.addCommand(new CmdSketcherIncreaseKnotMultiplicity());

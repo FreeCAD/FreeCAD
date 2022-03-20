@@ -577,22 +577,22 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDimension.cpp" line="1481"/>
       <source>Reset selection</source>
-      <translation type="unfinished">Reset selection</translation>
+      <translation>重設選取區域</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1485"/>
       <source>Toggle direct dimensions</source>
-      <translation type="unfinished">Toggle direct dimensions</translation>
+      <translation>切換直接尺寸</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1490"/>
       <source>Toggle orthogonal dimensions</source>
-      <translation type="unfinished">Toggle orthogonal dimensions</translation>
+      <translation>切換正交尺寸</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1495"/>
       <source>Clear all dimensions</source>
-      <translation type="unfinished">Clear all dimensions</translation>
+      <translation>清除所有尺寸</translation>
     </message>
     <message>
       <location filename="../../ViewProviderExt.cpp" line="977"/>
@@ -1866,7 +1866,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="2292"/>
       <source>Clear all dimensions from the screen.</source>
-      <translation type="unfinished">Clear all dimensions from the screen.</translation>
+      <translation>從畫面上清除所有尺寸</translation>
     </message>
   </context>
   <context>
@@ -4457,7 +4457,7 @@ the size of the resulting STEP file.</translation>
       <location filename="../../DlgPrimitives.cpp" line="1107"/>
       <location filename="../../DlgPrimitives.cpp" line="1115"/>
       <source>Create %1</source>
-      <translation>創建%1</translation>
+      <translation>建立 %1</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="1038"/>
@@ -4945,7 +4945,7 @@ will be used or black.</translation>
     <message>
       <location filename="../../Location.ui" line="90"/>
       <source>3D view</source>
-      <translation type="unfinished">3D view</translation>
+      <translation>3D 視圖</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="106"/>

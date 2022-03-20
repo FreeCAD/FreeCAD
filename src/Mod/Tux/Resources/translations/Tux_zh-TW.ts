@@ -11,7 +11,7 @@
     <message>
       <location filename="NavigationIndicatorGui.py" line="64"/>
       <source>Zoom</source>
-      <translation type="unfinished">Zoom</translation>
+      <translation>縮放</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="65"/>
@@ -21,42 +21,42 @@
     <message>
       <location filename="NavigationIndicatorGui.py" line="66"/>
       <source>Pan</source>
-      <translation type="unfinished">Pan</translation>
+      <translation>平移</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="67"/>
       <source>Tilt</source>
-      <translation type="unfinished">Tilt</translation>
+      <translation>傾斜</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="68"/>
       <source>Navigation style</source>
-      <translation type="unfinished">Navigation style</translation>
+      <translation>導覽列樣式</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="69"/>
       <source>Page Up or Page Down key.</source>
-      <translation type="unfinished">Page Up or Page Down key.</translation>
+      <translation>Page Up 或 Page Down 按鍵。</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="70"/>
       <source>Rotation focus</source>
-      <translation type="unfinished">Rotation focus</translation>
+      <translation>旋轉中心</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="71"/>
       <source>Middle mouse button or H key.</source>
-      <translation type="unfinished">Middle mouse button or H key.</translation>
+      <translation>滑鼠中鍵或 H 鍵</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="73"/>
       <source>Middle mouse button.</source>
-      <translation type="unfinished">Middle mouse button.</translation>
+      <translation>滑鼠中鍵。</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="76"/>
       <source>Navigation style not recognized.</source>
-      <translation type="unfinished">Navigation style not recognized.</translation>
+      <translation>無法辨識導覽列樣式</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="291"/>
@@ -71,12 +71,12 @@
     <message>
       <location filename="NavigationIndicatorGui.py" line="293"/>
       <source>Compact</source>
-      <translation type="unfinished">Compact</translation>
+      <translation>緊湊</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="294"/>
       <source>Tooltip</source>
-      <translation type="unfinished">Tooltip</translation>
+      <translation>工具提示</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="295"/>

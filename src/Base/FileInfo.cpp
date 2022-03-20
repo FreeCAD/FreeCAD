@@ -27,31 +27,24 @@
 #ifndef _PreComp_
 # include <algorithm>
 # include <cassert>
-# include <cstdio>
-# include <cstdlib>
-# include <fstream>
-# include <climits>
+# include <codecvt>
 # include <cstring>
+# include <locale>
 # if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
 # include <dirent.h>
 # include <unistd.h>
-# include <sys/stat.h>
 # elif defined (FC_OS_WIN32)
-# include <direct.h>
 # include <io.h>
 # include <Windows.h>
 # endif
+#include <sys/stat.h>
+#include <sys/types.h>
 #endif
-
 
 #include "FileInfo.h"
 #include "Exception.h"
 #include "Stream.h"
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <cstdio>
-#include <cerrno>
-#include <cstring>
+
 
 using namespace Base;
 
@@ -75,9 +68,9 @@ using namespace Base;
 std::string ConvertFromWideString(const std::wstring& string)
 {
     int neededSize = WideCharToMultiByte(CP_UTF8, 0, string.c_str(), -1, 0, 0,0,0);
-    char * CharString = new char[neededSize];
+    char * CharString = new char[static_cast<size_t>(neededSize)];
     WideCharToMultiByte(CP_UTF8, 0, string.c_str(), -1, CharString, neededSize,0,0);
-    std::string String((char*)CharString);
+    std::string String(CharString);
     delete [] CharString;
     CharString = NULL;
     return String;
@@ -86,7 +79,7 @@ std::string ConvertFromWideString(const std::wstring& string)
 std::wstring ConvertToWideString(const std::string& string)
 {
     int neededSize = MultiByteToWideChar(CP_UTF8, 0, string.c_str(), -1, 0, 0);
-    wchar_t* wideCharString = new wchar_t[neededSize];
+    wchar_t* wideCharString = new wchar_t[static_cast<size_t>(neededSize)];
     MultiByteToWideChar(CP_UTF8, 0, string.c_str(), -1, wideCharString, neededSize);
     std::wstring wideString(wideCharString);
     delete [] wideCharString;
@@ -119,7 +112,7 @@ const std::string &FileInfo::getTempPath()
         wchar_t buf[MAX_PATH + 2];
         GetTempPathW(MAX_PATH + 1,buf);
         int neededSize = WideCharToMultiByte(CP_UTF8, 0, buf, -1, 0, 0, 0, 0);
-        char* dest = new char[neededSize];
+        char* dest = new char[static_cast<size_t>(neededSize)];
         WideCharToMultiByte(CP_UTF8, 0, buf, -1,dest, neededSize, 0, 0);
         tempPath = dest;
         delete [] dest;
@@ -196,6 +189,27 @@ std::string FileInfo::getTempFileName(const char* FileName, const char* Path)
         unlink(buf.c_str());
     }
     return buf;
+#endif
+}
+
+boost::filesystem::path FileInfo::stringToPath(const std::string& str)
+{
+#if defined(FC_OS_WIN32)
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    boost::filesystem::path path(converter.from_bytes(str));
+#else
+    boost::filesystem::path path(str);
+#endif
+    return path;
+}
+
+std::string FileInfo::pathToString(const boost::filesystem::path& p)
+{
+#if defined(FC_OS_WIN32)
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    return converter.to_bytes(p.wstring());
+#else
+    return p.string();
 #endif
 }
 
@@ -392,14 +406,15 @@ bool FileInfo::isDir () const
             return false;
         }
         return S_ISDIR(st.st_mode);
-#endif
+#else
         return false;
+#endif
     }
     else
         return false;
 
     // TODO: Check for valid path name
-    return true;
+    //return true;
 }
 
 unsigned int FileInfo::size () const
@@ -518,6 +533,20 @@ bool FileInfo::createDirectory() const
 #else
 #   error "FileInfo::createDirectory() not implemented for this platform!"
 #endif
+}
+
+bool FileInfo::createDirectories() const
+{
+    try {
+        boost::filesystem::path path(stringToPath(FileName));
+        if (boost::filesystem::exists(path))
+            return true;
+        boost::filesystem::create_directories(path);
+        return true;
+    }
+    catch (const boost::filesystem::filesystem_error&) {
+        return false;
+    }
 }
 
 bool FileInfo::deleteDirectory() const

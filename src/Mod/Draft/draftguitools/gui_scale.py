@@ -237,7 +237,7 @@ class Scale(gui_base_original.Modifier):
         str_delta = DraftVecUtils.toString(self.delta)
         str_delta_corr = DraftVecUtils.toString(App.Vector(1,1,1) - self.delta)
 
-        _cmd = 'Draft.clone'
+        _cmd = 'Draft.make_clone'
         _cmd += '('
         _cmd += objects + ', '
         _cmd += 'forcedraft=True'

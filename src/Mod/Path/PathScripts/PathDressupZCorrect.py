@@ -396,7 +396,7 @@ class CommandPathDressup:
             "Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False"
         )
         FreeCADGui.doCommand("obj.ViewObject.Document.setEdit(obj.ViewObject, 0)")
-        FreeCAD.ActiveDocument.commitTransaction()
+        # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()
 
 

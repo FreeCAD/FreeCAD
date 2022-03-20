@@ -20,54 +20,53 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QApplication>
-# include <qfileinfo.h>
-# include <qdir.h>
+# include <QDir>
 # include <QPrinter>
 # include <QFileInfo>
 # include <Inventor/SoInput.h>
 # include <Inventor/actions/SoGetPrimitiveCountAction.h>
 # include <Inventor/nodes/SoSeparator.h>
+# include <xercesc/util/TranscodingException.hpp>
+# include <xercesc/util/XMLString.hpp>
 #endif
 
-#include <xercesc/util/XMLString.hpp>
-#include <xercesc/util/TranscodingException.hpp>
 #include <boost/regex.hpp>
 
-#include "Action.h"
-#include "Application.h"
-#include "BitmapFactory.h"
-#include "Command.h"
-#include "Document.h"
-#include "MainWindow.h"
-#include "MainWindowPy.h"
-#include "Macro.h"
-#include "EditorView.h"
-#include "PythonEditor.h"
-#include "SoFCDB.h"
-#include "View3DInventor.h"
-#include "SplitView3DInventor.h"
-#include "ViewProvider.h"
-#include "WaitCursor.h"
-#include "PythonWrapper.h"
-#include "WidgetFactory.h"
-#include "Workbench.h"
-#include "WorkbenchManager.h"
-#include "Language/Translator.h"
-#include "DownloadManager.h"
-#include "DlgPreferencesImp.h"
-#include "DocumentObserverPython.h"
 #include <App/DocumentObjectPy.h>
 #include <App/DocumentPy.h>
 #include <App/PropertyFile.h>
 #include <Base/Interpreter.h>
 #include <Base/Console.h>
 #include <CXX/Objects.hxx>
-#include <Inventor/MarkerBitmaps.h>
+
+#include "Application.h"
+#include "BitmapFactory.h"
+#include "Command.h"
+#include "DlgPreferencesImp.h"
+#include "Document.h"
+#include "DocumentObserverPython.h"
+#include "DownloadManager.h"
+#include "EditorView.h"
+#include "Macro.h"
+#include "MainWindow.h"
+#include "MainWindowPy.h"
+#include "PythonEditor.h"
+#include "PythonWrapper.h"
+#include "SoFCDB.h"
+#include "SplitView3DInventor.h"
+#include "View3DInventor.h"
+#include "ViewProvider.h"
+#include "WaitCursor.h"
+#include "WidgetFactory.h"
+#include "Workbench.h"
+#include "WorkbenchManager.h"
+#include "Inventor/MarkerBitmaps.h"
+#include "Language/Translator.h"
+
 
 using namespace Gui;
 
@@ -1008,7 +1007,7 @@ PyObject* Application::sActivateWorkbenchHandler(PyObject * /*self*/, PyObject *
     catch (const Base::Exception& e) {
         std::stringstream err;
         err << psKey << ": " << e.what();
-        PyErr_SetString(Base::BaseExceptionFreeCADError, err.str().c_str());
+        PyErr_SetString(Base::PyExc_FC_GeneralError, err.str().c_str());
         return nullptr;
     }
     catch (const XERCES_CPP_NAMESPACE_QUALIFIER TranscodingException& e) {
@@ -1026,7 +1025,7 @@ PyObject* Application::sActivateWorkbenchHandler(PyObject * /*self*/, PyObject *
     catch (...) {
         std::stringstream err;
         err << "Unknown C++ exception raised in activateWorkbench('" << psKey << "')";
-        PyErr_SetString(Base::BaseExceptionFreeCADError, err.str().c_str());
+        PyErr_SetString(Base::PyExc_FC_GeneralError, err.str().c_str());
         return nullptr;
     }
 }
@@ -1217,28 +1216,31 @@ PyObject* Application::sAddIconPath(PyObject * /*self*/, PyObject *args)
 PyObject* Application::sAddIcon(PyObject * /*self*/, PyObject *args)
 {
     const char *iconName;
-    const char *content;
-    Py_ssize_t size = 0;
+    Py_buffer content;
     const char *format = "XPM";
-    if (!PyArg_ParseTuple(args, "ss#|s", &iconName,&content,&size,&format))
+    if (!PyArg_ParseTuple(args, "ss*|s", &iconName, &content, &format))
         return nullptr;
 
     QPixmap icon;
     if (BitmapFactory().findPixmapInCache(iconName, icon)) {
         PyErr_SetString(PyExc_AssertionError, "Icon with this name already registered");
+        PyBuffer_Release(&content);
         return nullptr;
     }
 
-    QByteArray ary(content,size);
+    const char* contentStr = static_cast<const char*>(content.buf);
+    QByteArray ary(contentStr, content.len);
     icon.loadFromData(ary, format);
 
     if (icon.isNull()){
-        QString file = QString::fromUtf8(content);
+        QString file = QString::fromUtf8(contentStr, content.len);
         icon.load(file);
     }
 
+    PyBuffer_Release(&content);
+
     if (icon.isNull()) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Invalid icon added to application");
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Invalid icon added to application");
         return nullptr;
     }
 
@@ -1351,11 +1353,11 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args)
         }
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        e.setPyException();
         return nullptr;
     }
     catch (...) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Unknown C++ exception raised in Application::sAddCommand()");
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Unknown C++ exception raised in Application::sAddCommand()");
         return nullptr;
     }
 
@@ -1378,7 +1380,7 @@ PyObject* Application::sRunCommand(PyObject * /*self*/, PyObject *args)
         Py_Return;
     }
     else {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command '%s'", pName);
+        PyErr_Format(Base::PyExc_FC_GeneralError, "No such command '%s'", pName);
         return nullptr;
     }
 }

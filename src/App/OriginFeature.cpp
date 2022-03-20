@@ -22,13 +22,10 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
+#include "OriginFeature.h"
 #include "Document.h"
 #include "Origin.h"
 
-#include "OriginFeature.h"
 
 using namespace App;
 

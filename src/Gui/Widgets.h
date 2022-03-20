@@ -24,23 +24,23 @@
 #ifndef GUI_WIDGETS_H
 #define GUI_WIDGETS_H
 
-#include <QButtonGroup>
-#include <QDialog>
-#include <QListWidget>
-#include <QLabel>
-#include <QLineEdit>
-#include <QPointer>
-#include <QPushButton>
-#include <QPlainTextEdit>
-#include <QBasicTimer>
-#include <QElapsedTimer>
-#include <QToolButton>
-#include <QModelIndex>
-#include "ExpressionBinding.h"
-#include <Base/Parameter.h>
 #include <memory>
 #include <FCGlobal.h>
 
+#include <QBasicTimer>
+#include <QButtonGroup>
+#include <QDialog>
+#include <QElapsedTimer>
+#include <QLabel>
+#include <QLineEdit>
+#include <QListWidget>
+#include <QPlainTextEdit>
+#include <QPointer>
+#include <QPushButton>
+#include <QToolButton>
+
+#include <Base/Parameter.h>
+#include "ExpressionBinding.h"
 
 class QGridLayout;
 class QVBoxLayout;

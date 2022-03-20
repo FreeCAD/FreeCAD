@@ -30,6 +30,7 @@
 // inclution of the generated files (generated out of PropertyContainerPy.xml)
 #include "ViewProviderExtensionPy.h"
 #include "ViewProviderExtensionPy.cpp"
+#include "ViewProviderDocumentObject.h"
 
 using namespace Gui;
 

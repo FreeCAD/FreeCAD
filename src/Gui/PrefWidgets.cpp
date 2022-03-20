@@ -20,21 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QContextMenuEvent>
 # include <QMenu>
 #endif
 
+#include <cstring>
+
 #include <Base/Console.h>
-#include <Base/Exception.h>
 #include <Base/Tools.h>
-#include <App/Application.h>
 
 #include "PrefWidgets.h"
-#include "FileDialog.h"
-#include <cstring>
+
 
 using Base::Console;
 using namespace Gui;

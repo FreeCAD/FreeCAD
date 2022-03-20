@@ -32,6 +32,7 @@
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
 #include <Gui/WorkbenchManager.h>
@@ -151,7 +152,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module())->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace WebGui

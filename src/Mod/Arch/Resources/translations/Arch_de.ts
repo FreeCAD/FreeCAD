@@ -56,7 +56,7 @@
     <message>
       <location filename="ArchBuildingPart.py" line="355"/>
       <source>A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</source>
-      <translation type="unfinished">A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</translation>
+      <translation>Eine MaterialName:SolidIndexesListen-Karte, die materielle Namen mit festen Indizes enthält, die verwendet werden sollen, wenn dieses Objekt von anderen Dateien referenziert wird</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1015"/>
@@ -2888,6 +2888,21 @@ Gebäudeerstellung abgebrochen.</translation>
       <translation>Wählen Sie die Oberfläche eines vorhandenen Objekts oder wählen Sie eine Vorgabe</translation>
     </message>
     <message>
+      <location filename="ArchWindow.py" line="290"/>
+      <source>Window not based on sketch. Window not aligned or resized.</source>
+      <translation>Fenster basiert auf keiner Skizze. Fenster nicht ausgerichtet oder in der Größe angepasst.</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="300"/>
+      <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
+      <translation>Keine Breiten- und/oder Höhenbegrenzung in Fensterskizze. Fenster wird nicht verändert.</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="303"/>
+      <source>No window found. Cannot continue.</source>
+      <translation>Kein Fenster gefunden. Kann nicht fortfahren.</translation>
+    </message>
+    <message>
       <location filename="ArchWindow.py" line="327"/>
       <source>Window options</source>
       <translation>Fensteroptionen</translation>
@@ -4109,6 +4124,19 @@ Wenn Länge = 0 dann wird der Länge so berechnet, dass die Höhe gleich dem rel
     </message>
   </context>
   <context>
+    <name>Arch_CutLine</name>
+    <message>
+      <location filename="ArchCutPlane.py" line="80"/>
+      <source>Cut with line</source>
+      <translation>Mit einer Linie beschneiden</translation>
+    </message>
+    <message>
+      <location filename="ArchCutPlane.py" line="83"/>
+      <source>Cut an object with a line</source>
+      <translation>Beschneidet ein Objekt mit einer Linie</translation>
+    </message>
+  </context>
+  <context>
     <name>Arch_CutPlane</name>
     <message>
       <location filename="ArchCutPlane.py" line="79"/>
@@ -4123,12 +4151,12 @@ Wenn Länge = 0 dann wird der Länge so berechnet, dass die Höhe gleich dem rel
     <message>
       <location filename="ArchCutPlane.py" line="100"/>
       <source>Cut with plane</source>
-      <translation>Schneiden in einer Ebene</translation>
+      <translation>Mit einer Ebene beschneiden</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="103"/>
       <source>Cut an object with a plane</source>
-      <translation>Schneiden eines Objekts in einer Ebene</translation>
+      <translation>Beschneidet ein Objekt mit einer Ebene</translation>
     </message>
   </context>
   <context>

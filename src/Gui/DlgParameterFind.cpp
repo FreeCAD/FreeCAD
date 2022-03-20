@@ -20,15 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QMessageBox>
 # include <QPushButton>
 #endif
 
-#include "ui_DlgParameterFind.h"
 #include "DlgParameterFind.h"
+#include "ui_DlgParameterFind.h"
 #include "DlgParameterImp.h"
 
 

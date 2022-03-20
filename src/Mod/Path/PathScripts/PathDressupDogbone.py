@@ -147,7 +147,6 @@ def edgesForCommands(cmds, startPt):
 
 
 class Style(object):
-    # pylint: disable=no-init
 
     Dogbone = "Dogbone"
     Tbone_H = "T-bone horizontal"
@@ -158,7 +157,6 @@ class Style(object):
 
 
 class Side(object):
-    # pylint: disable=no-init
 
     Left = "Left"
     Right = "Right"
@@ -174,7 +172,6 @@ class Side(object):
 
 
 class Incision(object):
-    # pylint: disable=no-init
 
     Fixed = "fixed"
     Adaptive = "adaptive"
@@ -183,7 +180,6 @@ class Incision(object):
 
 
 class Smooth(object):
-    # pylint: disable=no-init
 
     Neither = 0
     In = 1
@@ -395,9 +391,7 @@ class Bone(object):
         # c = distance
         # b = self.toolRadius
         # beta = fabs(boneAngle - theta)
-        beta = math.fabs(
-            addAngle(boneAngle, -theta)
-        )  # pylint: disable=invalid-unary-operand-type
+        beta = math.fabs(addAngle(boneAngle, -theta))
         D = (distance / toolRadius) * math.sin(beta)
         if D > 1:  # no intersection
             PathLog.debug("adaptive - no intersection - no bone")
@@ -436,9 +430,7 @@ class ObjectDressup(object):
             "App::PropertyEnumeration",
             "Side",
             "Dressup",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "The side of path to insert bones"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "The side of path to insert bones"),
         )
         obj.Side = [Side.Left, Side.Right]
         obj.Side = Side.Right
@@ -454,9 +446,7 @@ class ObjectDressup(object):
             "App::PropertyIntegerList",
             "BoneBlacklist",
             "Dressup",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Bones that aren't dressed up"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Bones that aren't dressed up"),
         )
         obj.BoneBlacklist = []
         obj.setEditorMode("BoneBlacklist", 2)  # hide this one
@@ -474,9 +464,7 @@ class ObjectDressup(object):
             "App::PropertyFloat",
             "Custom",
             "Dressup",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Dressup length if Incision == custom"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Dressup length if Incision == custom"),
         )
         obj.Custom = 0.0
         obj.Proxy = self
@@ -517,7 +505,6 @@ class ObjectDressup(object):
         return outChord.foldsBackOrTurns(inChord, self.theOtherSideOf(obj.Side))
 
     def findPivotIntersection(self, pivot, pivotEdge, edge, refPt, d, color):
-        # pylint: disable=unused-argument
         PathLog.track(
             "(%.2f, %.2f)^%.2f  - [(%.2f, %.2f), (%.2f, %.2f)]"
             % (
@@ -1298,7 +1285,6 @@ class SelObserver(object):
         PST.clear()
 
     def addSelection(self, doc, obj, sub, pnt):
-        # pylint: disable=unused-argument
         FreeCADGui.doCommand(
             "Gui.Selection.addSelection(FreeCAD.ActiveDocument." + obj + ")"
         )
@@ -1332,7 +1318,6 @@ class ViewProviderDressup(object):
         return [self.obj.Base]
 
     def setEdit(self, vobj, mode=0):
-        # pylint: disable=unused-argument
         FreeCADGui.Control.closeDialog()
         panel = TaskPanel(self, vobj.Object)
         FreeCADGui.Control.showDialog(panel)
@@ -1347,7 +1332,6 @@ class ViewProviderDressup(object):
 
     def onDelete(self, arg1=None, arg2=None):
         """this makes sure that the base operation is added back to the project and visible"""
-        # pylint: disable=unused-argument
         if arg1.Object and arg1.Object.Base:
             FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
             job = PathUtils.findParentJob(arg1.Object)
@@ -1375,14 +1359,10 @@ def Create(base, name="DogboneDressup"):
 
 
 class CommandDressupDogbone(object):
-    # pylint: disable=no-init
-
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",
-            "MenuText": QT_TRANSLATE_NOOP(
-                "Path_DressupDogbone", "Dogbone Dress-up"
-            ),
+            "MenuText": QT_TRANSLATE_NOOP("Path_DressupDogbone", "Dogbone Dress-up"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Path_DressupDogbone",
                 "Creates a Dogbone Dress-up object from a selected path",
@@ -1420,7 +1400,7 @@ class CommandDressupDogbone(object):
             "PathScripts.PathDressupDogbone.Create(FreeCAD.ActiveDocument.%s)"
             % baseObject.Name
         )
-        FreeCAD.ActiveDocument.commitTransaction()
+        # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()
 
 

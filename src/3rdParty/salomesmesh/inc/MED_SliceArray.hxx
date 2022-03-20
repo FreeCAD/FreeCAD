@@ -37,7 +37,7 @@
 namespace MED
 {
   //---------------------------------------------------------------
-  //! This class intends to provide an uniform way to handle multy-dimention data (const version)
+  //! This class intends to provide an uniform way to handle multy-dimension data (const version)
   /*! 
     It just contains pointer to real sequence and implement proper calcultion of its indexes.
     This class deal with constant pointer to the sources data and provide const method to

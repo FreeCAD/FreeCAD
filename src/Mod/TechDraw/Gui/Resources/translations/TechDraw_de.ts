@@ -2,49 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="de" sourcelanguage="en">
   <context>
-    <name>CopyView</name>
-    <message>
-      <location filename="CommandCopyView.py" line="47"/>
-      <source>Copy View</source>
-      <translation>Ansicht kopieren</translation>
-    </message>
-    <message>
-      <location filename="CommandCopyView.py" line="50"/>
-      <source>Copy a View to a second Page</source>
-      <translation>Eine Ansicht auf eine zweite Seite kopieren</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="46"/>
-      <source>Copy View to a second Page</source>
-      <translation>Ansicht auf eine zweite Seite kopieren</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="73"/>
-      <source>Select View to copy from list.</source>
-      <translation>Zu kopierende Ansicht von der Liste auswählen.</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="74"/>
-      <source>Select View</source>
-      <translation>Ansicht auswählen</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="92"/>
-      <source>Select From Page.</source>
-      <translation>Von Seite auswählen.</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="112"/>
-      <source>Select Page</source>
-      <translation>Seite auswählen</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="111"/>
-      <source>Select To Page.</source>
-      <translation>Zur Seite auswählen.</translation>
-    </message>
-  </context>
-  <context>
     <name>MoveView</name>
     <message>
       <location filename="CommandMoveView.py" line="47"/>
@@ -85,6 +42,97 @@
       <location filename="TaskMoveView.py" line="112"/>
       <source>Select To Page.</source>
       <translation>Zur Seite auswählen.</translation>
+    </message>
+  </context>
+  <context>
+    <name>ShareView</name>
+    <message>
+      <location filename="CommandShareView.py" line="47"/>
+      <source>Share View</source>
+      <translation>Ansicht teilen</translation>
+    </message>
+    <message>
+      <location filename="CommandShareView.py" line="50"/>
+      <source>Share a View on a second Page</source>
+      <translation>Ansicht auf einer zweiten Seite teilen</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="46"/>
+      <source>Share View with another Page</source>
+      <translation>Ansicht mit einer weiteren Seite teilen</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="47"/>
+      <source>View to share</source>
+      <translation>Ansicht zum Teilen</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="74"/>
+      <source>Select View to share from list.</source>
+      <translation>Wähle die Ansicht zum Teilen aus einer Liste.</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="75"/>
+      <source>Select View</source>
+      <translation>Ansicht auswählen</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="93"/>
+      <source>Select From Page.</source>
+      <translation>Von Seite auswählen.</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="113"/>
+      <source>Select Page</source>
+      <translation>Seite auswählen</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="112"/>
+      <source>Select To Page.</source>
+      <translation>Zur Seite auswählen.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CopyView</name>
+    <message>
+      <location filename="CommandCopyView.py" line="47"/>
+      <source>Copy View</source>
+      <translation>Ansicht kopieren</translation>
+    </message>
+    <message>
+      <location filename="CommandCopyView.py" line="50"/>
+      <source>Copy a View to a second Page</source>
+      <translation>Eine Ansicht auf eine zweite Seite kopieren</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="46"/>
+      <source>Copy View to a second Page</source>
+      <translation>Ansicht auf eine zweite Seite kopieren</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="73"/>
+      <source>Select View to copy from list.</source>
+      <translation>Zu kopierende Ansicht von der Liste auswählen.</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="74"/>
+      <source>Select View</source>
+      <translation>Ansicht auswählen</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="92"/>
+      <source>Select From Page.</source>
+      <translation>Von Seite auswählen.</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="111"/>
+      <source>Select To Page.</source>
+      <translation>Zur Seite auswählen.</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="112"/>
+      <source>Select Page</source>
+      <translation>Seite auswählen</translation>
     </message>
   </context>
   <context>
@@ -378,7 +426,7 @@
     </message>
     <message>
       <source>Save Dxf File</source>
-      <translation>Speichern als Dxf Datei</translation>
+      <translation>Speichern als DXF-Datei</translation>
     </message>
     <message>
       <source>Dxf (*.dxf)</source>
@@ -2889,7 +2937,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Save Dxf File</source>
-      <translation>Speichern als Dxf Datei</translation>
+      <translation>Speichern als DXF-Datei</translation>
     </message>
     <message>
       <source>Dxf (*.dxf)</source>

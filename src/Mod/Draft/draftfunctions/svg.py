@@ -22,11 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to return the SVG representation of various shapes.
-
-Warning: this still uses the `Drawing.projectToSVG` method to provide
-the SVG representation of certain objects.
-Therefore, even if the Drawing Workbench is obsolete, the `Drawing` module
-may not be removed completely yet. This must be checked.
 """
 ## @package svg
 # \ingroup draftfunctions
@@ -48,7 +43,6 @@ from draftutils.messages import _wrn, _err
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
 DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
-# Drawing = lz.LazyLoader("Drawing", globals(), "Drawing")
 
 
 ## \addtogroup draftfunctions
@@ -759,7 +753,7 @@ def get_svg(obj,
                     obj.Proxy.getArea(obj, notouch=True)
                 if hasattr(obj.Proxy, "face"):
                     # setting fill
-                    if App.GuiUp:
+                    if App.GuiUp and hasattr(vobj,"ShapeColor"):
                         fill = utils.get_rgb(vobj.ShapeColor,
                                              testbw=False)
                         fill_opacity = 1 - vobj.Transparency / 100.0
@@ -828,7 +822,7 @@ def get_svg(obj,
 
                 vobj = obj.ViewObject
                 if m != "Wireframe":
-                    if fillstyle == "shape color":
+                    if (fillstyle == "shape color") and hasattr(vobj,"ShapeColor"):
                         fill = utils.get_rgb(vobj.ShapeColor,
                                              testbw=False)
                         fill_opacity = 1 - vobj.Transparency / 100.0

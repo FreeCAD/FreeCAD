@@ -61,6 +61,8 @@ class PathWorkbench(Workbench):
         # Add preferences pages - before loading PathGui to properly order pages of Path group
         from PathScripts import PathPreferencesPathJob, PathPreferencesPathDressup
 
+        translate = FreeCAD.Qt.translate
+
         FreeCADGui.addPreferencePage(PathPreferencesPathJob.JobPreferencesPage, "Path")
         FreeCADGui.addPreferencePage(
             PathPreferencesPathDressup.DressupPreferencesPage, "Path"
@@ -141,7 +143,8 @@ class PathWorkbench(Workbench):
         FreeCADGui.addCommand(
             "Path_EngraveTools",
             PathCommandGroup(
-                engravecmdlist, QT_TRANSLATE_NOOP("Path_EngraveTools", "Engraving Operations")
+                engravecmdlist,
+                QT_TRANSLATE_NOOP("Path_EngraveTools", "Engraving Operations"),
             ),
         )
 
@@ -155,7 +158,7 @@ class PathWorkbench(Workbench):
 
         if PathPreferences.advancedOCLFeaturesEnabled():
             try:
-                import ocl  # pylint: disable=unused-variable
+                import ocl
                 from PathScripts import PathSurfaceGui
                 from PathScripts import PathWaterlineGui
 
@@ -172,26 +175,22 @@ class PathWorkbench(Workbench):
                 if not PathPreferences.suppressOpenCamLibWarning():
                     FreeCAD.Console.PrintError("OpenCamLib is not working!\n")
 
+        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Project Setup"), projcmdlist)
+        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Tool Commands"), toolcmdlist)
         self.appendToolbar(
-            QT_TRANSLATE_NOOP("Path", "Project Setup"), projcmdlist
-        )
-        self.appendToolbar(
-            QT_TRANSLATE_NOOP("Path", "Tool Commands"), toolcmdlist
-        )
-        self.appendToolbar(
-            QT_TRANSLATE_NOOP("Path", "New Operations"),
+            QT_TRANSLATE_NOOP("Workbench", "New Operations"),
             twodopcmdlist + engravecmdgroup + threedcmdgroup,
         )
         self.appendToolbar(
-            QT_TRANSLATE_NOOP("Path", "Path Modification"), modcmdlist
+            QT_TRANSLATE_NOOP("Workbench", "Path Modification"), modcmdlist
         )
         if extracmdlist:
             self.appendToolbar(
-                QT_TRANSLATE_NOOP("Path", "Helpful Tools"), extracmdlist
+                QT_TRANSLATE_NOOP("Workbench", "Helpful Tools"), extracmdlist
             )
 
         self.appendMenu(
-            [QT_TRANSLATE_NOOP("Path", "&Path")],
+            [QT_TRANSLATE_NOOP("Workbench", "&Path")],
             projcmdlist
             + ["Path_ExportTemplate", "Separator"]
             + toolcmdlist
@@ -205,41 +204,41 @@ class PathWorkbench(Workbench):
         )
         self.appendMenu(
             [
-                QT_TRANSLATE_NOOP("Path", "&Path"),
-                QT_TRANSLATE_NOOP("Path", "Path Dressup"),
+                QT_TRANSLATE_NOOP("Workbench", "&Path"),
+                QT_TRANSLATE_NOOP("Workbench", "Path Dressup"),
             ],
             dressupcmdlist,
         )
         self.appendMenu(
             [
-                QT_TRANSLATE_NOOP("Path", "&Path"),
-                QT_TRANSLATE_NOOP("Path", "Supplemental Commands"),
+                QT_TRANSLATE_NOOP("Workbench", "&Path"),
+                QT_TRANSLATE_NOOP("Workbench", "Supplemental Commands"),
             ],
             prepcmdlist,
         )
         self.appendMenu(
             [
-                QT_TRANSLATE_NOOP("Path", "&Path"),
-                QT_TRANSLATE_NOOP("Path", "Path Modification"),
+                QT_TRANSLATE_NOOP("Workbench", "&Path"),
+                QT_TRANSLATE_NOOP("Workbench", "Path Modification"),
             ],
             modcmdlist,
         )
         if specialcmdlist:
             self.appendMenu(
                 [
-                    QT_TRANSLATE_NOOP("Path", "&Path"),
-                    QT_TRANSLATE_NOOP("Path", "Specialty Operations"),
+                    QT_TRANSLATE_NOOP("Workbench", "&Path"),
+                    QT_TRANSLATE_NOOP("Workbench", "Specialty Operations"),
                 ],
                 specialcmdlist,
             )
         if extracmdlist:
-            self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path")], extracmdlist)
+            self.appendMenu([QT_TRANSLATE_NOOP("Workbench", "&Path")], extracmdlist)
 
-        self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path")], ["Separator"])
+        self.appendMenu([QT_TRANSLATE_NOOP("Workbench", "&Path")], ["Separator"])
         self.appendMenu(
             [
-                QT_TRANSLATE_NOOP("Path", "&Path"),
-                QT_TRANSLATE_NOOP("Path", "Utils"),
+                QT_TRANSLATE_NOOP("Workbench", "&Path"),
+                QT_TRANSLATE_NOOP("Workbench", "Utils"),
             ],
             ["Path_PropertyBag"],
         )
@@ -252,11 +251,33 @@ class PathWorkbench(Workbench):
 
         # keep this one the last entry in the preferences
         import PathScripts.PathPreferencesAdvanced as PathPreferencesAdvanced
+        from PathScripts.PathPreferences import preferences
 
         FreeCADGui.addPreferencePage(
             PathPreferencesAdvanced.AdvancedPreferencesPage, "Path"
         )
         Log("Loading Path workbench... done\n")
+
+        # Warn user if current schema doesn't use minute for time in velocity
+        if not PathPreferences.suppressVelocity():
+            velString = FreeCAD.Units.Quantity(
+                1, FreeCAD.Units.Velocity
+            ).getUserPreferred()[2][3:]
+
+            if velString != "min":
+                current_schema = FreeCAD.Units.listSchemas(FreeCAD.Units.getSchema())
+
+                msg = translate(
+                    "Path",
+                    f"The currently selected unit schema: \n     '{current_schema}'\n Does not use 'minutes' for velocity values. \n \nCNC machines require feed rate to be expressed in \nunit/minute. To ensure correct gcode: \nSelect a minute-based schema in preferences.\nFor example:\n    'Metric, Small Parts & CNC'\n    'US Customary'\n    'Imperial Decimal'",
+                )
+                header = translate("Path", "Warning")
+                msgbox = QtGui.QMessageBox(QtGui.QMessageBox.Warning, header, msg)
+
+                msgbox.addButton(translate("Path", "Ok"), QtGui.QMessageBox.AcceptRole)
+                msgbox.addButton(translate("Path", "Don't Show This Anymore"), QtGui.QMessageBox.ActionRole)
+                if msgbox.exec_() == 1:
+                    preferences().SetBool("WarningSuppressVelocity", True)
 
     def GetClassName(self):
         return "Gui::PythonWorkbench"

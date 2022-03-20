@@ -24,10 +24,9 @@
 #ifndef GUI_DIALOG_DLGMACRORECORDIMP_H
 #define GUI_DIALOG_DLGMACRORECORDIMP_H
 
-#include "Window.h"
 #include <QDialog>
 #include <memory>
-
+#include "Window.h"
 
 namespace Gui {
 class MacroManager;

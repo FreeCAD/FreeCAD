@@ -26,18 +26,20 @@
 
 #include <boost_signals2.hpp>
 
-#include <vector>
 #include <deque>
+#include <vector>
 
-#include <Base/PyObjectBase.h>
-#include <Base/Parameter.h>
 #include <Base/Observer.h>
+#include <Base/Parameter.h>
 
+// forward declarations
+typedef struct _object PyObject;
+typedef struct PyMethodDef PyMethodDef;
 
 namespace Base
 {
-    class ConsoleObserverStd;
-    class ConsoleObserverFile;
+class ConsoleObserverStd;
+class ConsoleObserverFile;
 }
 
 namespace App
@@ -500,6 +502,8 @@ private:
     //---------------------------------------------------------------------
     // python exports goes here +++++++++++++++++++++++++++++++++++++++++++
     //---------------------------------------------------------------------
+    static void setupPythonTypes();
+    static void setupPythonException(PyObject*);
 
     // static python wrapper of the exported functions
     static PyObject* sGetParam          (PyObject *self,PyObject *args);

@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH SMESH : implementaion of SMESH idl descriptions
+//  SMESH SMESH : implementation of SMESH idl descriptions
 //  File   : StdMeshers_Regular_1D.hxx
 //           Moved here from SMESH_Regular_1D.hxx
 //  Author : Paul RASCLE, EDF

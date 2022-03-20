@@ -21,46 +21,27 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <sstream>
-
 # include <QAction>
-# include <QKeyEvent>
 # include <QMessageBox>
-# include <QRegExp>
-# include <QTextStream>
-
-# include <Precision.hxx>
 # include <TopoDS.hxx>
 # include <BRepAdaptor_Surface.hxx>
-# include <Geom_Plane.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Ax1.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <Geom_Line.hxx>
-# include <gp_Lin.hxx>
 #endif
 
-#include "ui_TaskFemConstraintBearing.h"
-#include "TaskFemConstraintBearing.h"
 #include <App/Application.h>
 #include <App/Document.h>
-#include <App/PropertyGeo.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 #include <Mod/Fem/App/FemConstraintBearing.h>
 #include <Mod/Fem/App/FemTools.h>
 #include <Mod/Part/App/PartFeature.h>
 
-#include <Base/Console.h>
+#include "ui_TaskFemConstraintBearing.h"
+#include "TaskFemConstraintBearing.h"
+
 
 using namespace FemGui;
 using namespace Gui;
@@ -81,27 +62,25 @@ TaskFemConstraintBearing::TaskFemConstraintBearing(ViewProviderFemConstraint *Co
     createDeleteAction(ui->listReferences);
     deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
 
-    connect(ui->spinDistance, SIGNAL(valueChanged(double)),
-            this, SLOT(onDistanceChanged(double)));
-    connect(ui->buttonReference, SIGNAL(pressed()),
-            this, SLOT(onButtonReference()));
-    connect(ui->buttonLocation, SIGNAL(pressed()),
-            this, SLOT(onButtonLocation()));
-    connect(ui->checkAxial, SIGNAL(toggled(bool)),
-            this, SLOT(onCheckAxial(bool)));
-
     this->groupLayout()->addWidget(proxy);
 
-    // Temporarily prevent unnecessary feature recomputes
-    ui->spinDistance->blockSignals(true);
-    ui->listReferences->blockSignals(true);
-    ui->buttonReference->blockSignals(true);
-    ui->buttonLocation->blockSignals(true);
-    ui->checkAxial->blockSignals(true);
+    // setup ranges
+    ui->spinDiameter->setMinimum(-FLOAT_MAX);
+    ui->spinDiameter->setMaximum(FLOAT_MAX);
+    ui->spinOtherDiameter->setMinimum(-FLOAT_MAX);
+    ui->spinOtherDiameter->setMaximum(FLOAT_MAX);
+    ui->spinCenterDistance->setMinimum(-FLOAT_MAX);
+    ui->spinCenterDistance->setMaximum(FLOAT_MAX);
+    ui->spinForce->setMinimum(-FLOAT_MAX);
+    ui->spinForce->setMaximum(FLOAT_MAX);
+    ui->spinTensionForce->setMinimum(-FLOAT_MAX);
+    ui->spinTensionForce->setMaximum(FLOAT_MAX);
+    ui->spinDistance->setMinimum(-FLOAT_MAX);
+    ui->spinDistance->setMaximum(FLOAT_MAX);
 
     // Get the feature data
     Fem::ConstraintBearing* pcConstraint = static_cast<Fem::ConstraintBearing*>(ConstraintView->getObject());
-    double d = pcConstraint->Dist.getValue();
+    double distance = pcConstraint->Dist.getValue();
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<std::string> locStrings = pcConstraint->Location.getSubValues();
@@ -111,9 +90,7 @@ TaskFemConstraintBearing::TaskFemConstraintBearing(ViewProviderFemConstraint *Co
     bool axialfree = pcConstraint->AxialFree.getValue();
 
     // Fill data into dialog elements
-    ui->spinDistance->setMinimum(-FLOAT_MAX);
-    ui->spinDistance->setMaximum(FLOAT_MAX);
-    ui->spinDistance->setValue(d);
+    ui->spinDistance->setValue(distance);
     ui->listReferences->clear();
     for (std::size_t i = 0; i < Objects.size(); i++)
         ui->listReferences->addItem(makeRefText(Objects[i], SubElements[i]));
@@ -121,6 +98,15 @@ TaskFemConstraintBearing::TaskFemConstraintBearing(ViewProviderFemConstraint *Co
         ui->listReferences->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
     ui->lineLocation->setText(loc);
     ui->checkAxial->setChecked(axialfree);
+
+    connect(ui->spinDistance, SIGNAL(valueChanged(double)),
+        this, SLOT(onDistanceChanged(double)));
+    connect(ui->buttonReference, SIGNAL(pressed()),
+        this, SLOT(onButtonReference()));
+    connect(ui->buttonLocation, SIGNAL(pressed()),
+        this, SLOT(onButtonLocation()));
+    connect(ui->checkAxial, SIGNAL(toggled(bool)),
+        this, SLOT(onCheckAxial(bool)));
 
     // Hide unwanted ui elements
     ui->labelDiameter->setVisible(false);
@@ -139,12 +125,6 @@ TaskFemConstraintBearing::TaskFemConstraintBearing(ViewProviderFemConstraint *Co
     ui->buttonDirection->setVisible(false);
     ui->lineDirection->setVisible(false);
     ui->checkReversed->setVisible(false);
-
-    ui->spinDistance->blockSignals(false);
-    ui->listReferences->blockSignals(false);
-    ui->buttonReference->blockSignals(false);
-    ui->buttonLocation->blockSignals(false);
-    ui->checkAxial->blockSignals(false);
 
     onButtonReference(true);
 }

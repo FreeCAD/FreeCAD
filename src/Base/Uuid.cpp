@@ -29,12 +29,7 @@
 
 #include <stdexcept>
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "Uuid.h"
-#include "Exception.h"
-#include "Interpreter.h"
-#include <stdexcept>
-#include <CXX/Objects.hxx>
 
 
 using namespace Base;
@@ -70,7 +65,7 @@ std::string Uuid::createUuid()
     QString uuid = QUuid::createUuid().toString();
     uuid = uuid.mid(1);
     uuid.chop(1);
-    Uuid = (const char*)uuid.toLatin1();
+    Uuid = uuid.toLatin1().constData();
     return Uuid;
 }
 
@@ -84,7 +79,7 @@ void Uuid::setValue(const char* sString)
         QString id = uuid.toString();
         id = id.mid(1);
         id.chop(1);
-        _uuid = (const char*)id.toLatin1();
+        _uuid = id.toLatin1().constData();
     }
 }
 

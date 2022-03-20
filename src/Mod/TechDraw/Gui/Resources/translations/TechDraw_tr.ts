@@ -2,89 +2,137 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="tr" sourcelanguage="en">
   <context>
-    <name>CopyView</name>
-    <message>
-      <location filename="CommandCopyView.py" line="47"/>
-      <source>Copy View</source>
-      <translation type="unfinished">Copy View</translation>
-    </message>
-    <message>
-      <location filename="CommandCopyView.py" line="50"/>
-      <source>Copy a View to a second Page</source>
-      <translation type="unfinished">Copy a View to a second Page</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="46"/>
-      <source>Copy View to a second Page</source>
-      <translation type="unfinished">Copy View to a second Page</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="73"/>
-      <source>Select View to copy from list.</source>
-      <translation type="unfinished">Select View to copy from list.</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="74"/>
-      <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="92"/>
-      <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="112"/>
-      <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="111"/>
-      <source>Select To Page.</source>
-      <translation type="unfinished">Select To Page.</translation>
-    </message>
-  </context>
-  <context>
     <name>MoveView</name>
     <message>
       <location filename="CommandMoveView.py" line="47"/>
       <source>Move View</source>
-      <translation type="unfinished">Move View</translation>
+      <translation>Görünümü Taşı</translation>
     </message>
     <message>
       <location filename="CommandMoveView.py" line="50"/>
       <source>Move a View to a new Page</source>
-      <translation type="unfinished">Move a View to a new Page</translation>
+      <translation>Bir Görünümü yeni bir Sayfaya Taşı</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="47"/>
       <source>Move View to a different Page</source>
-      <translation type="unfinished">Move View to a different Page</translation>
+      <translation>Görünümü Farklı Bir Sayfaya Taşı</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="74"/>
       <source>Select View to move from list.</source>
-      <translation type="unfinished">Select View to move from list.</translation>
+      <translation>Listeden taşımak için Görünüm'ü seçin.</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="75"/>
       <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
+      <translation>Görünüm Seçin</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="93"/>
       <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
+      <translation>Sayfadan Seçin.</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="113"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>Sayfa Seç</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="112"/>
       <source>Select To Page.</source>
-      <translation type="unfinished">Select To Page.</translation>
+      <translation>Sayfayı Seçin.</translation>
+    </message>
+  </context>
+  <context>
+    <name>ShareView</name>
+    <message>
+      <location filename="CommandShareView.py" line="47"/>
+      <source>Share View</source>
+      <translation>Görünümü Paylaş</translation>
+    </message>
+    <message>
+      <location filename="CommandShareView.py" line="50"/>
+      <source>Share a View on a second Page</source>
+      <translation>İkinci bir Sayfada Bir Görünümü Paylaşın</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="46"/>
+      <source>Share View with another Page</source>
+      <translation>Görünümü başka bir Sayfayla Paylaşın</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="47"/>
+      <source>View to share</source>
+      <translation>Paylaşmak için görüntüle</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="74"/>
+      <source>Select View to share from list.</source>
+      <translation>Paylaşmak için Listeden Görünümü seçin.</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="75"/>
+      <source>Select View</source>
+      <translation>Görünüm Seçin</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="93"/>
+      <source>Select From Page.</source>
+      <translation>Sayfadan Seçin.</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="113"/>
+      <source>Select Page</source>
+      <translation>Sayfa Seç</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="112"/>
+      <source>Select To Page.</source>
+      <translation>Sayfayı Seçin.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CopyView</name>
+    <message>
+      <location filename="CommandCopyView.py" line="47"/>
+      <source>Copy View</source>
+      <translation>Görünümü Kopyala</translation>
+    </message>
+    <message>
+      <location filename="CommandCopyView.py" line="50"/>
+      <source>Copy a View to a second Page</source>
+      <translation>Bir Görünümü ikinci bir Sayfaya Kopyalayın</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="46"/>
+      <source>Copy View to a second Page</source>
+      <translation>Görünümü ikinci bir Sayfaya Kopyala</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="73"/>
+      <source>Select View to copy from list.</source>
+      <translation>Kopyalamak için listeden Görünüm seçin.</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="74"/>
+      <source>Select View</source>
+      <translation>Görünüm Seçin</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="92"/>
+      <source>Select From Page.</source>
+      <translation>Sayfadan Seçin.</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="111"/>
+      <source>Select To Page.</source>
+      <translation>Sayfayı Seçin.</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="112"/>
+      <source>Select Page</source>
+      <translation>Sayfa Seç</translation>
     </message>
   </context>
   <context>

@@ -33,6 +33,8 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 
+#include <App/Document.h>
+
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -226,7 +228,6 @@ void TaskRichAnno::setUiPrimary()
     MRichTextEdit mre;
     ui->teAnnoText->setFontPointSize(mre.getDefFontSizeNum());
     // set a placeholder text to inform the user
-    // (QTextEdit has no placeholderText property in Qt4)
     ui->teAnnoText->setPlaceholderText(tr("Input the annotation text directly or start the rich text editor"));
 }
 

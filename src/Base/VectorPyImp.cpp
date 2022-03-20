@@ -47,7 +47,9 @@ std::string VectorPy::representation() const
     Py::Float z(ptr->z);
     std::stringstream str;
     str << "Vector (";
-    str << (std::string)x.repr() << ", "<< (std::string)y.repr() << ", "<< (std::string)z.repr();
+    str << static_cast<std::string>(x.repr()) << ", "
+        << static_cast<std::string>(y.repr()) << ", "
+        << static_cast<std::string>(z.repr());
     str << ")";
 
     return str.str();
@@ -192,8 +194,10 @@ PyObject * VectorPy::sequence_item (PyObject *self, Py_ssize_t index)
         return nullptr;
     }
 
+    unsigned short pos = index % 3;
+
     Base::Vector3d a = static_cast<VectorPy*>(self)->value();
-    return Py_BuildValue("d", a[index]);
+    return Py_BuildValue("d", a[pos]);
 }
 
 int VectorPy::sequence_ass_item(PyObject *self, Py_ssize_t index, PyObject *value)
@@ -207,9 +211,11 @@ int VectorPy::sequence_ass_item(PyObject *self, Py_ssize_t index, PyObject *valu
         return -1;
     }
 
+    unsigned short pos = index % 3;
+
     if (PyNumber_Check(value)) {
         VectorPy::PointerType ptr = static_cast<VectorPy*>(self)->getVectorPtr();
-        (*ptr)[index] = PyFloat_AsDouble(value);
+        (*ptr)[pos] = PyFloat_AsDouble(value);
     }
     else {
         PyErr_SetString(PyExc_ValueError, "value must be float");
@@ -255,11 +261,11 @@ PyObject * VectorPy::mapping_subscript(PyObject *self, PyObject *item)
         }
         else if (PyObject_TypeCheck(self, &(VectorPy::Type))) {
             Base::Vector3d v = static_cast<VectorPy*>(self) ->value();
-            Py::Tuple xyz(slicelength);
+            Py::Tuple xyz(static_cast<size_t>(slicelength));
 
-            for (cur = start, i = 0; i < slicelength;
-                 cur += step, i++) {
-                xyz.setItem(i, Py::Float(v[cur]));
+            for (cur = start, i = 0; i < slicelength; cur += step, i++) {
+                unsigned short pos = cur % 3;
+                xyz.setItem(static_cast<Py::sequence_index_type>(i), Py::Float(v[pos]));
             }
 
             return Py::new_reference_to(xyz);
@@ -458,7 +464,7 @@ PyObject*  VectorPy::normalize(PyObject *args)
         return nullptr;
     VectorPy::PointerType ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
     if (ptr->Length() < Vector3d::epsilon()) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot normalize null vector");
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot normalize null vector");
         return nullptr;
     }
 
@@ -622,7 +628,7 @@ void  VectorPy::setLength(Py::Float arg)
         throw Py::RuntimeError(std::string("Cannot set length of null vector"));
     }
 
-    double val = (double)arg/len;
+    double val = static_cast<double>(arg)/len;
     ptr->x *= val;
     ptr->y *= val;
     ptr->z *= val;
@@ -637,7 +643,7 @@ Py::Float VectorPy::getx() const
 void  VectorPy::setx(Py::Float arg)
 {
     VectorPy::PointerType ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
-    ptr->x = (double)arg;
+    ptr->x = static_cast<double>(arg);
 }
 
 Py::Float VectorPy::gety() const
@@ -649,7 +655,7 @@ Py::Float VectorPy::gety() const
 void  VectorPy::sety(Py::Float arg)
 {
     VectorPy::PointerType ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
-    ptr->y = (double)arg;
+    ptr->y = static_cast<double>(arg);
 }
 
 Py::Float VectorPy::getz() const
@@ -661,7 +667,7 @@ Py::Float VectorPy::getz() const
 void  VectorPy::setz(Py::Float arg)
 {
     VectorPy::PointerType ptr = reinterpret_cast<VectorPy::PointerType>(_pcTwinPointer);
-    ptr->z = (double)arg;
+    ptr->z = static_cast<double>(arg);
 }
 
 PyObject *VectorPy::getCustomAttributes(const char* /*attr*/) const
@@ -693,7 +699,7 @@ PyObject * VectorPy::number_divide_handler (PyObject* self, PyObject* other)
 
         Base::Vector3d vec = static_cast<VectorPy*>(self) ->value();
         double div = PyFloat_AsDouble(other);
-        if (div == 0) {
+        if (div == 0.0) {
             PyErr_Format(PyExc_ZeroDivisionError, "'%s' division by zero",
                          Py_TYPE(self)->tp_name);
             return nullptr;

@@ -28,6 +28,7 @@
 #include "Window.h"
 
 QT_BEGIN_NAMESPACE
+class QLineEdit;
 class QPlainTextEdit;
 class QPrinter;
 class QHBoxLayout;

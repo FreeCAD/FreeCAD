@@ -31,6 +31,7 @@
 
 #include <Gui/Language/Translator.h>
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 
 namespace TestGui {
 class Module : public Py::ExtensionModule<Module>
@@ -85,7 +86,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module())->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 }

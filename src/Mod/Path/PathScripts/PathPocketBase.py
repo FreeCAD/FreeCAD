@@ -46,8 +46,8 @@ class ObjectPocket(PathAreaOp.ObjectOp):
     """Base class for proxy objects of all pocket operations."""
 
     @classmethod
-    def pocketPropertyEnumerations(self, dataType="data"):
-        """helixOpPropertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
+    def pocketPropertyEnumerations(cls, dataType="data"):
+        """pocketPropertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
         Args:
             dataType = 'data', 'raw', 'translated'
         Notes:
@@ -99,13 +99,12 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         )
 
     def pocketOpFeatures(self, obj):
-        # pylint: disable=unused-argument
         return 0
 
     def initPocketOp(self, obj):
         """initPocketOp(obj) ... overwrite to initialize subclass.
         Can safely be overwritten by subclass."""
-        pass  # pylint: disable=unnecessary-pass
+        pass
 
     def pocketInvertExtraOffset(self):
         """pocketInvertExtraOffset() ... return True if ExtraOffset's direction is inward.

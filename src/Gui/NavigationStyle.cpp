@@ -20,30 +20,34 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <algorithm>
-# include <cfloat>
-# include "InventorAll.h"
+# include <Inventor/SbViewportRegion.h>
+# include <Inventor/SoPickedPoint.h>
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <Inventor/errors/SoDebugError.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoCamera.h>
+# include <Inventor/nodes/SoOrthographicCamera.h>
+# include <Inventor/nodes/SoPerspectiveCamera.h>
+# include <Inventor/projectors/SbSphereSheetProjector.h>
 # include <QAction>
 # include <QActionGroup>
 # include <QApplication>
 # include <QByteArray>
 # include <QCursor>
-# include <QList>
 # include <QMenu>
-# include <QMetaObject>
-# include <QRegExp>
 #endif
 
 #include <App/Application.h>
+
 #include "NavigationStyle.h"
-#include "View3DInventorViewer.h"
 #include "Application.h"
 #include "MenuManager.h"
 #include "MouseSelection.h"
 #include "SoMouseWheelEvent.h"
+#include "View3DInventorViewer.h"
+
 
 using namespace Gui;
 
@@ -1496,14 +1500,17 @@ SbBool NavigationStyle::processEvent(const SoEvent * const ev)
 SbBool NavigationStyle::processSoEvent(const SoEvent * const ev)
 {
     bool processed = false;
+    bool offeredtoViewerEventBase = false;
 
     //handle mouse wheel zoom
     if (ev->isOfType(SoMouseWheelEvent::getClassTypeId())) {
         const SoMouseWheelEvent * const event = static_cast<const SoMouseWheelEvent *>(ev);
         processed = processWheelEvent(event);
+        viewer->processSoEventBase(ev);
+        offeredtoViewerEventBase = true;
     }
 
-    if (!processed) {
+    if (!processed && !offeredtoViewerEventBase) {
         processed = viewer->processSoEventBase(ev);
     }
 

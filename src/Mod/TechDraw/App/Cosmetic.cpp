@@ -899,7 +899,7 @@ std::pair<Base::Vector3d, Base::Vector3d> CenterLine::calcEndPoints(DrawViewPart
         if (!faceEdges.empty()) {
             for (auto& fe: faceEdges) {
                 if (!fe->cosmetic) {
-                    BRepBndLib::Add(fe->occEdge, faceBox);
+                    BRepBndLib::AddOptimal(fe->occEdge, faceBox);
                 }
             }
         }

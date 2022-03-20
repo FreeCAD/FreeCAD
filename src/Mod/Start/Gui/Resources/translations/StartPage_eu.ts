@@ -151,7 +151,7 @@
     <message>
       <location filename="TranslationTexts.py" line="71"/>
       <source>See all commits on github</source>
-      <translation>Ikusi aldaketa guztiak github-en</translation>
+      <translation>Ikusi aldaketa guztiak GitHub biltegian</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="72"/>

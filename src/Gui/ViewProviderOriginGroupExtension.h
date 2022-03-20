@@ -21,12 +21,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_VIEWPROVIDERORIGINGROUPEXTENSION_H
 #define GUI_VIEWPROVIDERORIGINGROUPEXTENSION_H
 
-#include <App/Extension.h>
 #include "ViewProviderGeoFeatureGroup.h"
+
 
 namespace Gui
 {

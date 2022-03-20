@@ -24,14 +24,11 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include "stdio.h"
 # ifdef FC_OS_WIN32
 #   include "io.h"
-# endif
-# ifdef FC_OS_WIN32
 #   include <windows.h>
 # endif
-# include "fcntl.h"
+# include <fcntl.h>
 # include <iostream>
 #endif
 

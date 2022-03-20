@@ -67,8 +67,10 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <Base/UnitsApi.h>
 #include "../App/PartFeature.h"
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Selection.h>
 #include <Gui/Document.h>

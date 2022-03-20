@@ -39,11 +39,11 @@
     </message>
     <message>
       <source>Polynomial surface</source>
-      <translation type="unfinished">Polynomial surface</translation>
+      <translation>Polinominis paviršius</translation>
     </message>
     <message>
       <source>Approximate a polynomial surface</source>
-      <translation type="unfinished">Approximate a polynomial surface</translation>
+      <translation>Gauti apytikslį polinominį paviršių</translation>
     </message>
   </context>
   <context>
@@ -170,23 +170,23 @@
     <name>Command</name>
     <message>
       <source>Fit plane</source>
-      <translation type="unfinished">Fit plane</translation>
+      <translation>Priderinti plokštumą</translation>
     </message>
     <message>
       <source>Fit cylinder</source>
-      <translation type="unfinished">Fit cylinder</translation>
+      <translation>Priderinti ritinį</translation>
     </message>
     <message>
       <source>Fit sphere</source>
-      <translation type="unfinished">Fit sphere</translation>
+      <translation>Priderinti rutulį</translation>
     </message>
     <message>
       <source>Fit polynomial surface</source>
-      <translation type="unfinished">Fit polynomial surface</translation>
+      <translation>Priderinti polinominį paviršių</translation>
     </message>
     <message>
       <source>View triangulation</source>
-      <translation type="unfinished">View triangulation</translation>
+      <translation>Rodyti trianguliaciją</translation>
     </message>
     <message>
       <source>Placement</source>
@@ -194,15 +194,15 @@
     </message>
     <message>
       <source>Fit B-Spline</source>
-      <translation type="unfinished">Fit B-Spline</translation>
+      <translation>Priderinti B-splainą</translation>
     </message>
     <message>
       <source>Poisson reconstruction</source>
-      <translation type="unfinished">Poisson reconstruction</translation>
+      <translation>Puasono atkūrimas</translation>
     </message>
     <message>
       <source>Segmentation</source>
-      <translation type="unfinished">Segmentation</translation>
+      <translation>Segmentacija</translation>
     </message>
   </context>
   <context>
@@ -318,7 +318,7 @@
     </message>
     <message>
       <source>Please select a point cloud or mesh.</source>
-      <translation type="unfinished">Please select a point cloud or mesh.</translation>
+      <translation>Pasirinkite taškų debesį arba tinklą.</translation>
     </message>
     <message>
       <source>Please select a single point cloud.</source>
@@ -419,7 +419,7 @@
     </message>
     <message>
       <source>Detect</source>
-      <translation type="unfinished">Detect</translation>
+      <translation>Aptikti</translation>
     </message>
     <message>
       <source>Cylinder</source>
@@ -443,15 +443,15 @@
     </message>
     <message>
       <source>Segmentation</source>
-      <translation type="unfinished">Segmentation</translation>
+      <translation>Segmentacija</translation>
     </message>
     <message>
       <source>Cut segment from mesh</source>
-      <translation type="unfinished">Cut segment from mesh</translation>
+      <translation>Iškirpti tinklo dalį</translation>
     </message>
     <message>
       <source>Hide segment</source>
-      <translation type="unfinished">Hide segment</translation>
+      <translation>Slėpti atkarpą</translation>
     </message>
   </context>
   <context>

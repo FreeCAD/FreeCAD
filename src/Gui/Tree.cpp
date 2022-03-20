@@ -28,44 +28,42 @@
 # include <QAction>
 # include <QActionGroup>
 # include <QApplication>
-# include <qcursor.h>
-# include <QVBoxLayout>
-# include <qlayout.h>
-# include <qstatusbar.h>
 # include <QContextMenuEvent>
+# include <QCursor>
+# include <QHeaderView>
 # include <QMenu>
+# include <QMessageBox>
 # include <QPixmap>
 # include <QTimer>
 # include <QToolTip>
-# include <QHeaderView>
-# include <qmessagebox.h>
+# include <QVBoxLayout>
 #endif
 
 #include <Base/Console.h>
+#include <Base/Reader.h>
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
+#include <Base/Writer.h>
 
 #include <App/Document.h>
-#include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/AutoTransaction.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/Link.h>
 
 #include "Tree.h"
+#include "BitmapFactory.h"
 #include "Command.h"
 #include "Document.h"
-#include "BitmapFactory.h"
-#include "ViewProviderDocumentObject.h"
-#include "MenuManager.h"
-#include "Application.h"
-#include "MainWindow.h"
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
-#include "Macro.h"
-#include "Workbench.h"
-#include "Widgets.h"
 #include "ExpressionCompleter.h"
+#include "Macro.h"
+#include "MainWindow.h"
+#include "MenuManager.h"
+#include "View3DInventor.h"
+#include "ViewProviderDocumentObject.h"
+#include "Widgets.h"
+#include "Workbench.h"
+
 
 FC_LOG_LEVEL_INIT("Tree", false, true, true)
 
@@ -531,7 +529,7 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     this->rootItem->setFlags(Qt::ItemIsEnabled);
     this->expandItem(this->rootItem);
     this->setSelectionMode(QAbstractItemView::ExtendedSelection);
-    // causes unexpected drop events (possibly only with Qt4.1.x)
+
     this->setMouseTracking(true); // needed for itemEntered() to work
 
 

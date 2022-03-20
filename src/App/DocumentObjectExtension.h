@@ -25,9 +25,13 @@
 #define APP_DOCUMENTOBJECTEXTENSION_H
 
 #include "Extension.h"
-#include "DocumentObject.h"
 
+namespace Base {
+class Matrix4D;
+}
 namespace App {
+class DocumentObject;
+class DocumentObjectExecReturn;
 
 /**
  * @brief Extension with special document object calls
@@ -38,7 +42,7 @@ class AppExport DocumentObjectExtension : public App::Extension
 
     //The cass does not have properties itself, but it is important to provide the property access
     //functions. see cpp file for details
-    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::DocumentObjectExtension );
+    EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::DocumentObjectExtension);
 
 public:
 
@@ -49,8 +53,8 @@ public:
     const App::DocumentObject* getExtendedObject() const;
 
     //override if execution is necessary
-    virtual short extensionMustExecute(void);
-    virtual App::DocumentObjectExecReturn *extensionExecute(void);
+    virtual short extensionMustExecute();
+    virtual App::DocumentObjectExecReturn *extensionExecute();
 
 
     /// get called after setting the document
@@ -62,18 +66,18 @@ public:
     /// get called when object is going to be removed from the document
     virtual void onExtendedUnsetupObject();
 
-    virtual PyObject* getExtensionPyObject(void) override;
+    virtual PyObject* getExtensionPyObject() override;
 
     /// returns the type name of the ViewProviderExtension which is automatically attached
     /// to the viewprovider object when it is initiated
-    virtual const char* getViewProviderExtensionName(void) const {return "";}
+    virtual const char* getViewProviderExtensionName() const {return "";}
 
     /** Get the sub object by name
      * @sa DocumentObject::getSubObject()
      *
      * @return Return turn if handled, the sub object is returned in \c ret
      */
-    virtual bool extensionGetSubObject( DocumentObject *&ret, const char *subname,
+    virtual bool extensionGetSubObject(DocumentObject *&ret, const char *subname,
         PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const;
 
     /** Get name references of all sub objects

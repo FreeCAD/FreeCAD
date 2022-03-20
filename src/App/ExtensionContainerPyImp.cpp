@@ -28,11 +28,10 @@
 #endif
 
 #include "Application.h"
-#include "DocumentObject.h"
 
-// inclution of the generated files (generated out of PropertyContainerPy.xml)
 #include <App/ExtensionContainerPy.h>
 #include <App/ExtensionContainerPy.cpp>
+#include <App/Extension.h>
 
 using namespace App;
 
@@ -176,7 +175,7 @@ PyObject* ExtensionContainerPy::hasExtension(PyObject *args) {
     char *type;
     PyObject *deriv = Py_True;
     if (!PyArg_ParseTuple(args, "s|O", &type, &deriv))
-        return NULL;                                         // NULL triggers exception 
+        return nullptr;
 
     //get the extension type asked for
     bool derived = PyObject_IsTrue(deriv);
@@ -184,7 +183,7 @@ PyObject* ExtensionContainerPy::hasExtension(PyObject *args) {
     if (extension.isBad() || !extension.isDerivedFrom(App::Extension::getExtensionClassTypeId())) {
         std::stringstream str;
         str << "No extension found of type '" << type << "'" << std::ends;
-        throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
+        throw Py::TypeError(str.str());
     }
 
     bool val = false;
@@ -213,7 +212,7 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
     if (extension.isBad() || !extension.isDerivedFrom(App::Extension::getExtensionClassTypeId())) {
         std::stringstream str;
         str << "No extension found of type '" << typeId << "'" << std::ends;
-        throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
+        throw Py::TypeError(str.str());
     }
     
     //register the extension
@@ -223,7 +222,7 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
         delete ext;
         std::stringstream str;
         str << "Extension is not a python addable version: '" << typeId << "'" << std::ends;
-        throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
+        throw Py::TypeError(str.str());
     }
     
     GetApplication().signalBeforeAddingDynamicExtension(*getExtensionContainerPtr(), typeId);

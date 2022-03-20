@@ -20,19 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
+# include <qglobal.h>
 # include <iomanip>
 # include <ios>
+# include <Inventor/SbBSPTree.h>
 #endif
-#include <Inventor/SbBasic.h>
-#include <Inventor/SbBSPTree.h>
 
-#include <qglobal.h>
 #include <Base/FileInfo.h>
-#include <Base/Console.h>
+
 #include "SoFCVectorizeSVGAction.h"
+
 
 using namespace Gui;
 

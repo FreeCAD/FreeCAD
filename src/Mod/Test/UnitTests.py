@@ -121,14 +121,13 @@ class UnitBasicCases(unittest.TestCase):
             q1 = FreeCAD.Units.Quantity(q1)
             q1.Format = {'Precision': 16}
             for idx, val in enumerate(schemes):
-                t = FreeCAD.Units.schemaTranslate(q1, idx)
+                [t, amountPerUnit, unit] = FreeCAD.Units.schemaTranslate(q1, idx)
                 try:
-                    q2 = FreeCAD.Units.Quantity(t[0])
+                    q2 = FreeCAD.Units.Quantity(t)
                     if math.fabs(q1.Value - q2.Value) > 0.01:
                         print (" {} : {} : {} : {} : {}".format(q1, q2, t, i, val).encode("utf-8").strip())
                 except Exception as e:
-                    s = "{}: {}".format(e, t[0])
-                    print (" ".join(str(e)).encode("utf-8").strip())
+                    print ("{} : {} : {} : {}".format(q1, i, val, e).encode("utf-8").strip())
 
     def testVoltage(self):
         q1 = FreeCAD.Units.Quantity("1e20 V")
@@ -152,3 +151,33 @@ class UnitBasicCases(unittest.TestCase):
         length = FreeCAD.Units.Quantity(1, "m")
         self.assertEqual(length.Value, 1000)
         self.assertEqual(length.Unit, FreeCAD.Units.Length)
+
+    def testToString(self):
+        value = FreeCAD.Units.toNumber(1023, 'g', 2)
+        self.assertEqual(float(value), 1000)
+
+        value = FreeCAD.Units.toNumber(1023, 'g', 3)
+        self.assertEqual(float(value), 1020)
+
+        value = FreeCAD.Units.toNumber(1023, 'f', 2)
+        self.assertEqual(float(value), 1023)
+
+        value = FreeCAD.Units.toNumber(1023, 'e', 1)
+        self.assertEqual(float(value), 1000)
+
+        value = FreeCAD.Units.toNumber(1023, 'e', 2)
+        self.assertEqual(float(value), 1020)
+
+        value = FreeCAD.Units.toNumber(1023, 'e', 3)
+        self.assertEqual(float(value), 1023)
+
+        q = FreeCAD.Units.Quantity("1023")
+        value = FreeCAD.Units.toNumber(q, 'f', 2)
+        self.assertEqual(float(value), 1023)
+
+        with self.assertRaises(TypeError):
+            FreeCAD.Units.toNumber("1023", 'g', 2)
+        with self.assertRaises(ValueError):
+            FreeCAD.Units.toNumber(1023, 'gg', 2)
+        with self.assertRaises(ValueError):
+            FreeCAD.Units.toNumber(1023, 's', 2)

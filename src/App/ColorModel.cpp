@@ -26,8 +26,10 @@
 # include <cstdlib>
 #endif
 
-#include "ColorModel.h"
 #include <Base/Exception.h>
+
+#include "ColorModel.h"
+
 
 using namespace App;
 
@@ -106,14 +108,13 @@ ColorField& ColorField::operator = (const ColorField &rclCF)
 
 void ColorField::set (const ColorModel &rclModel, float fMin, float fMax, std::size_t usCt)
 {
-    fMin = std::min<float>(fMin, fMax);
-    fMax = std::max<float>(fMin, fMax);
-    if (fMax <= fMin) {
+    auto bounds = std::minmax(fMin, fMax);
+    if (bounds.second <= bounds.first) {
         throw Base::ValueError("Maximum must be higher than minimum");
     }
 
-    this->fMin = fMin;
-    this->fMax = fMax;
+    this->fMin = bounds.first;
+    this->fMax = bounds.second;
     colorModel = rclModel;
     ctColors = std::max<std::size_t>(usCt, colorModel.getCountColors());
     rebuild();
@@ -212,14 +213,13 @@ std::vector<std::string> ColorGradient::getColorModelNames() const
 
 void ColorGradient::set (float fMin, float fMax, std::size_t usCt, TStyle tS, bool bOG)
 {
-    fMin = std::min<float>(fMin, fMax);
-    fMax = std::max<float>(fMin, fMax);
-    if (fMax <= fMin) {
+    auto bounds = std::minmax(fMin, fMax);
+    if (bounds.second <= bounds.first) {
         throw Base::ValueError("Maximum must be higher than minimum");
     }
 
-    _fMin = fMin;
-    _fMax = fMax;
+    _fMin = bounds.first;
+    _fMax = bounds.second;
     ctColors = std::max<std::size_t>(usCt, getMinColors());
     tStyle = tS;
     outsideGrayed = bOG;
@@ -300,15 +300,18 @@ void ColorGradient::setColorModel ()
 ColorLegend::ColorLegend ()
 : outsideGrayed(false)
 {
-    // default  green, red
+    // default  blue, green, red
+    colorFields.emplace_back(0, 0, 1);
     colorFields.emplace_back(0, 1, 0);
     colorFields.emplace_back(1, 0, 0);
 
     names.push_back("Min");
+    names.push_back("Mid");
     names.push_back("Max");
 
     values.push_back(-1.0f);
-    values.push_back(0.0f);
+    values.push_back(-0.333f);
+    values.push_back(0.333f);
     values.push_back(1.0f);
 }
 

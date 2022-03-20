@@ -26,17 +26,18 @@
 #define APP_DOCUMENTOBJECT_H
 
 #include <App/TransactionalObject.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyLinks.h>
 #include <App/PropertyExpressionEngine.h>
+#include <App/PropertyLinks.h>
+#include <App/PropertyStandard.h>
+#include <Base/SmartPtrPy.h>
 
-#include <Base/TimeInfo.h>
-#include <Base/Matrix.h>
-#include <CXX/Objects.hxx>
-
-#include <unordered_map>
 #include <bitset>
-#include <boost_signals2.hpp>
+#include <unordered_map>
+
+namespace Base
+{
+class Matrix4D;
+}
 
 namespace App
 {
@@ -174,8 +175,8 @@ public:
     bool isRemoving() const {return StatusBits.test(ObjectStatus::Remove);}
     /// return the status bits
     unsigned long getStatus() const {return StatusBits.to_ulong();}
-    bool testStatus(ObjectStatus pos) const {return StatusBits.test((size_t)pos);}
-    void setStatus(ObjectStatus pos, bool on) {StatusBits.set((size_t)pos, on);}
+    bool testStatus(ObjectStatus pos) const {return StatusBits.test(size_t(pos));}
+    void setStatus(ObjectStatus pos, bool on) {StatusBits.set(size_t(pos), on);}
     //@}
 
     int isExporting() const;
@@ -424,6 +425,8 @@ public:
 
     virtual void setExpression(const ObjectIdentifier & path, std::shared_ptr<App::Expression> expr);
 
+    void clearExpression(const ObjectIdentifier & path);
+
     virtual const PropertyExpressionEngine::ExpressionInfo getExpression(const ObjectIdentifier &path) const;
 
     virtual void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
@@ -613,7 +616,7 @@ protected:
 
      /// python object of this class and all descendent
 protected: // attributes
-    Py::Object PythonObject;
+    Py::SmartPtr PythonObject;
     /// pointer to the document this object belongs to
     App::Document* _pDoc;
 

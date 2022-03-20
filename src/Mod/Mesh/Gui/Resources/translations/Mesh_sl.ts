@@ -1264,7 +1264,7 @@ s Phongovim senčenjem doseže gladkejši videz.
     </message>
     <message>
       <source>Iterations:</source>
-      <translation>Ponovitve:</translation>
+      <translation>Približevalne ponovitve:</translation>
     </message>
     <message>
       <source>Lambda:</source>

@@ -24,9 +24,7 @@
 #ifndef GUI_WINDOW_H
 #define GUI_WINDOW_H
 
-
 #include <Base/Parameter.h>
-#include "View.h"
 
 namespace Gui {
 

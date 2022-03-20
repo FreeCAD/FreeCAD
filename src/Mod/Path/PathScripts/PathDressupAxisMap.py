@@ -230,11 +230,9 @@ class ViewProviderDressup:
         return
 
     def unsetEdit(self, vobj, mode=0):
-        # pylint: disable=unused-argument
         return False
 
     def setEdit(self, vobj, mode=0):
-        # pylint: disable=unused-argument
         FreeCADGui.Control.closeDialog()
         panel = TaskPanel(vobj.Object)
         FreeCADGui.Control.showDialog(panel)
@@ -252,7 +250,6 @@ class ViewProviderDressup:
 
     def onDelete(self, arg1=None, arg2=None):
         """this makes sure that the base operation is added back to the project and visible"""
-        # pylint: disable=unused-argument
         if arg1.Object and arg1.Object.Base:
             FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
             job = PathUtils.findParentJob(arg1.Object)
@@ -263,8 +260,6 @@ class ViewProviderDressup:
 
 
 class CommandPathDressup:
-    # pylint: disable=no-init
-
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",
@@ -322,7 +317,7 @@ class CommandPathDressup:
             "Gui.ActiveDocument.getObject(base.Name).Visibility = False"
         )
         FreeCADGui.doCommand("obj.ViewObject.Document.setEdit(obj.ViewObject, 0)")
-        FreeCAD.ActiveDocument.commitTransaction()
+        # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()
 
 

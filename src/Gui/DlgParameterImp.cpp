@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <sstream>
@@ -33,18 +32,17 @@
 # include <QTreeWidget>
 #endif
 
-#include "ui_DlgParameter.h"
+#include <App/Application.h>
+#include <Base/Exception.h>
+#include <Base/Parameter.h>
+
 #include "DlgParameterImp.h"
+#include "ui_DlgParameter.h"
+#include "BitmapFactory.h"
 #include "DlgParameterFind.h"
 #include "DlgInputDialogImp.h"
-#include "BitmapFactory.h"
 #include "FileDialog.h"
 #include "SpinBox.h"
-
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <App/Application.h>
-
 
 
 using namespace Gui::Dialog;
@@ -120,8 +118,6 @@ DlgParameterImp::DlgParameterImp( QWidget* parent,  Qt::WindowFlags fl )
     boldFont.setBold(true);
     defaultColor = paramGroup->topLevelItem(0)->foreground(0);
 
-    // set a placeholder text to inform the user
-    // (QLineEdit has no placeholderText property in Qt4)
     ui->findGroupLE->setPlaceholderText(tr("Search Group"));
 }
 

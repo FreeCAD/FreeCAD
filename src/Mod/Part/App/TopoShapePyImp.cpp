@@ -74,6 +74,7 @@
 #include <Base/Matrix.h>
 #include <Base/Rotation.h>
 #include <Base/MatrixPy.h>
+#include <Base/Stream.h>
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
 #include <App/PropertyStandard.h>
@@ -571,7 +572,7 @@ PyObject*  TopoShapePy::__getstate__(PyObject *args) {
 
 PyObject*  TopoShapePy::__setstate__(PyObject *args) {
     if (! getTopoShapePtr()) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError,"no c++ object");
+        PyErr_SetString(Base::PyExc_FC_GeneralError,"no c++ object");
         return 0;
     }
     else {
@@ -2171,7 +2172,7 @@ PyObject* TopoShapePy::makeWires(PyObject *args) {
     if (!PyArg_ParseTuple(args, "s", &op))
         return NULL;
     PY_TRY {
-        return Py::new_reference_to(shape2pyshape(getTopoShapePtr()->makEWires(op)));
+        return Py::new_reference_to(shape2pyshape(getTopoShapePtr()->makeWires(op)));
     }PY_CATCH_OCC
 }
 
@@ -2925,7 +2926,7 @@ Py::String TopoShapePy::getShapeType(void) const
 {
     TopoDS_Shape sh = getTopoShapePtr()->getShape();
     if (sh.IsNull())
-        throw Py::Exception(Base::BaseExceptionFreeCADError, "cannot determine type of null shape");
+        throw Py::Exception(Base::PyExc_FC_GeneralError, "cannot determine type of null shape");
     TopAbs_ShapeEnum type = sh.ShapeType();
     std::string name;
     switch (type)
@@ -2966,7 +2967,7 @@ Py::String TopoShapePy::getOrientation(void) const
 {
     TopoDS_Shape sh = getTopoShapePtr()->getShape();
     if (sh.IsNull())
-        throw Py::Exception(Base::BaseExceptionFreeCADError, "cannot determine orientation of null shape");
+        throw Py::Exception(Base::PyExc_FC_GeneralError, "cannot determine orientation of null shape");
     TopAbs_Orientation type = sh.Orientation();
     std::string name;
     switch (type)
@@ -2992,7 +2993,7 @@ void TopoShapePy::setOrientation(Py::String arg)
 {
     TopoDS_Shape sh = getTopoShapePtr()->getShape();
     if (sh.IsNull())
-        throw Py::Exception(Base::BaseExceptionFreeCADError, "cannot determine orientation of null shape");
+        throw Py::Exception(Base::PyExc_FC_GeneralError, "cannot determine orientation of null shape");
     std::string name = (std::string)arg;
     TopAbs_Orientation type;
     if (name == "Forward") {

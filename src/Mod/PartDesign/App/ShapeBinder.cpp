@@ -23,8 +23,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cfloat>
-# include <boost_bind_bind.hpp>
 # include <gp_Lin.hxx>
 # include <gp_Pln.hxx>
 # include <BRep_Builder.hxx>
@@ -36,15 +34,14 @@
 #include <unordered_set>
 #include <boost/algorithm/string/predicate.hpp>
 
-#include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
-#include "ShapeBinder.h"
-#include <App/Document.h>
 #include <App/GroupExtension.h>
-#include <App/OriginFeature.h>
 #include <App/Link.h>
+#include <App/OriginFeature.h>
 #include <Mod/Part/App/TopoShape.h>
+
+#include "ShapeBinder.h"
 
 FC_LOG_LEVEL_INIT("PartDesign",true,true)
 
@@ -310,6 +307,13 @@ SubShapeBinder::SubShapeBinder()
     Support.setStatus(App::Property::ReadOnly, true);
     ADD_PROPERTY_TYPE(Fuse, (false), "Base",App::Prop_None,"Fuse solids from bound shapes");
     ADD_PROPERTY_TYPE(MakeFace, (true), "Base",App::Prop_None,"Create face using wires from bound shapes");
+    ADD_PROPERTY_TYPE(Offset, (0.0), "Offsetting", App::Prop_None, "2D offset face or wires, 0.0 = no offset");
+    ADD_PROPERTY_TYPE(OffsetJoinType, ((long)0), "Offsetting", App::Prop_None, "Arcs, Tangent, Intersection");
+    static const char*JoinTypeEnum[] = {"Arcs", "Tangent", "Intersection", 0};
+    OffsetJoinType.setEnums(JoinTypeEnum);
+    ADD_PROPERTY_TYPE(OffsetFill, (false),"Offsetting", App::Prop_None, "True = make face between original wire and offset.");
+    ADD_PROPERTY_TYPE(OffsetOpenResult, (false), "Offsetting", App::Prop_None, "False = make closed offset from open wire.");
+    ADD_PROPERTY_TYPE(OffsetIntersection, (false), "Offsetting", App::Prop_None, "False = offset child wires independently.");
     ADD_PROPERTY_TYPE(ClaimChildren, (false), "Base",App::Prop_Output,"Claim linked object as children");
     ADD_PROPERTY_TYPE(Relative, (true), "Base",App::Prop_None,"Enable relative sub-object binding");
     ADD_PROPERTY_TYPE(BindMode, ((long)0), "Base", App::Prop_None, 
@@ -338,6 +342,9 @@ SubShapeBinder::SubShapeBinder()
             "         'CopyOnChange'. Those properties will not longer be kept in sync between the\n"
             "         binder and the binding object");
 
+    ADD_PROPERTY_TYPE(Refine,(true),"Base",(App::PropertyType)(App::Prop_None),
+            "Refine shape (clean up redundant edges) after adding/subtracting");
+
     Context.setScope(App::LinkScope::Hidden);
 
     ADD_PROPERTY_TYPE(_Version,(0),"Base",(App::PropertyType)(
@@ -349,12 +356,21 @@ SubShapeBinder::SubShapeBinder()
 }
 
 SubShapeBinder::~SubShapeBinder() {
-    clearCopiedObjects();
+    try {
+        clearCopiedObjects();
+    }
+    catch (const Base::ValueError& e) {
+        e.ReportException();
+    }
 }
 
 void SubShapeBinder::setupObject() {
     _Version.setValue(2);
     checkPropertyStatus();
+
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
+    this->Refine.setValue(hGrp->GetBool("RefineModel", false));
 }
 
 App::DocumentObject *SubShapeBinder::getSubObject(const char *subname, PyObject **pyObj,
@@ -660,7 +676,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         else {
             for(size_t i=0;i<shapes.size();++i) {
                 auto &shape = shapes[i];
-                shape = shape.makETransform(*shapeMats[i]);
+                shape = shape.makeTransform(*shapeMats[i]);
                 // if(shape.Hasher
                 //         && shape.getElementMapSize()
                 //         && shape.Hasher != getDocument()->getStringHasher())
@@ -676,7 +692,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             return;
         }
 
-        result.makECompound(shapes);
+        result.makeCompound(shapes);
 
         bool fused = false;
         if(Fuse.getValue()) {
@@ -691,25 +707,42 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                     solids.push_back(s.getShape());
             }
             if(solids.size()) {
-                solid.fuse(solids);
-                result = solid.makERefine();
+                result = solid.fuse(solids);
                 fused = true;
             } else if (!solid.isNull()) {
                 // wrap the single solid in compound to keep its placement
-                result.makECompound({solid});
+                result.makeCompound({solid});
                 fused = true;
             }
         } 
         
+        if (!fused && result.hasSubShape(TopAbs_EDGE)
+                && Offset.getValue() != 0.0){
+            try {
+                result = result.makeOffset2D(Offset.getValue(),
+                                             OffsetJoinType.getValue(),
+                                             OffsetFill.getValue(),
+                                             OffsetOpenResult.getValue(),
+                                             OffsetIntersection.getValue());
+            }catch(...){
+                std::ostringstream msg;
+                msg << Label.getValue() << ": failed to make 2D offset" << std::endl;
+                Base::Console().Error(msg.str().c_str());
+            }
+        }
+
         if(!fused && MakeFace.getValue()
                 && !result.hasSubShape(TopAbs_FACE)
                 && result.hasSubShape(TopAbs_EDGE))
         {
-            result = result.makEWires();
+            result = result.makeWires();
             try {
-                result = result.makEFace(0);
+                result = result.makeFace(0);
             }catch(...){}
         }
+
+        if (Refine.getValue())
+            result = result.makeRefine();
 
         result.setPlacement(Placement.getValue());
         Shape.setValue(result);

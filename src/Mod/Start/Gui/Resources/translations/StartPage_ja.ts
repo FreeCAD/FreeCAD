@@ -307,7 +307,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="153"/>
       <source>Show tips</source>
-      <translation type="unfinished">Show tips</translation>
+      <translation>ヒントを表示</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="163"/>
@@ -487,7 +487,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="647"/>
       <source>Close and switch on opening file</source>
-      <translation type="unfinished">Close and switch on opening file</translation>
+      <translation>閉じてファイルを開く</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="654"/>

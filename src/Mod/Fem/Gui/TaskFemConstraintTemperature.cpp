@@ -26,33 +26,18 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <Geom_Line.hxx>
-# include <Geom_Plane.hxx>
-# include <Precision.hxx>
-# include <TopoDS.hxx>
-# include <gp_Ax1.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Pln.hxx>
-
 # include <sstream>
 # include <QAction>
 # include <QMessageBox>
-# include <QKeyEvent>
-# include <QRegExp>
-# include <QTextStream>
 #endif
 
-#include "Mod/Fem/App/FemConstraintTemperature.h"
+#include <App/Document.h>
+#include <Gui/Command.h>
+#include <Gui/SelectionObject.h>
+#include <Mod/Fem/App/FemConstraintTemperature.h>
+
 #include "TaskFemConstraintTemperature.h"
 #include "ui_TaskFemConstraintTemperature.h"
-#include <App/Application.h>
-#include <Base/Tools.h>
-#include <Gui/Command.h>
-#include <Gui/Selection.h>
-#include <Gui/SelectionFilter.h>
-#include <Mod/Part/App/PartFeature.h>
 
 
 using namespace FemGui;
@@ -60,8 +45,8 @@ using namespace Gui;
 
 /* TRANSLATOR FemGui::TaskFemConstraintTemperature */
 
-TaskFemConstraintTemperature::TaskFemConstraintTemperature(ViewProviderFemConstraintTemperature *ConstraintView,QWidget *parent)
-  : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintTemperature")
+TaskFemConstraintTemperature::TaskFemConstraintTemperature(ViewProviderFemConstraintTemperature* ConstraintView, QWidget* parent)
+    : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintTemperature")
 {
     proxy = new QWidget(this);
     ui = new Ui_TaskFemConstraintTemperature();
@@ -72,12 +57,12 @@ TaskFemConstraintTemperature::TaskFemConstraintTemperature(ViewProviderFemConstr
     createDeleteAction(ui->lw_references);
     deleteAction->connect(deleteAction, SIGNAL(triggered()), this, SLOT(onReferenceDeleted()));
 
-    connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+    connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
     connect(ui->lw_references, SIGNAL(itemClicked(QListWidgetItem*)),
         this, SLOT(setSelection(QListWidgetItem*)));
-    connect(ui->rb_temperature, SIGNAL(clicked(bool)),  this, SLOT(Temp()));
-    connect(ui->rb_cflux, SIGNAL(clicked(bool)),  this, SLOT(Flux()));
+    connect(ui->rb_temperature, SIGNAL(clicked(bool)), this, SLOT(Temp()));
+    connect(ui->rb_cflux, SIGNAL(clicked(bool)), this, SLOT(Flux()));
 
     connect(ui->if_temperature, SIGNAL(valueChanged(double)),
             this, SLOT(onTempCfluxChanged(double)));
@@ -102,7 +87,8 @@ TaskFemConstraintTemperature::TaskFemConstraintTemperature(ViewProviderFemConstr
         ui->lbl_type->setText(qstr);
         Base::Quantity t = Base::Quantity(pcConstraint->Temperature.getValue(), Base::Unit::Temperature);
         ui->if_temperature->setValue(t);
-    } else if (constraint_type == "CFlux") {
+    }
+    else if (constraint_type == "CFlux") {
         ui->rb_cflux->setChecked(1);
         std::string str = "Concentrated heat flux";
         QString qstr = QString::fromStdString(str);
@@ -147,7 +133,8 @@ void TaskFemConstraintTemperature::onTempCfluxChanged(double val)
     Fem::ConstraintTemperature* pcConstraint = static_cast<Fem::ConstraintTemperature*>(ConstraintView->getObject());
     if (ui->rb_temperature->isChecked()) {
         pcConstraint->Temperature.setValue(val);
-    } else {
+    }
+    else {
         pcConstraint->CFlux.setValue(val);
     }
 }
@@ -156,7 +143,7 @@ void TaskFemConstraintTemperature::Temp()
 {
     Fem::ConstraintTemperature* pcConstraint = static_cast<Fem::ConstraintTemperature*>(ConstraintView->getObject());
     std::string name = ConstraintView->getObject()->getNameInDocument();
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ConstraintType = %s",name.c_str(), get_constraint_type().c_str());
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.ConstraintType = %s", name.c_str(), get_constraint_type().c_str());
     std::string str = "Temperature";
     QString qstr = QString::fromStdString(str);
     ui->lbl_type->setText(qstr);
@@ -169,7 +156,7 @@ void TaskFemConstraintTemperature::Flux()
 {
     Fem::ConstraintTemperature* pcConstraint = static_cast<Fem::ConstraintTemperature*>(ConstraintView->getObject());
     std::string name = ConstraintView->getObject()->getNameInDocument();
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ConstraintType = %s",name.c_str(), get_constraint_type().c_str());
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.ConstraintType = %s", name.c_str(), get_constraint_type().c_str());
     std::string str = "Concentrated heat flux";
     QString qstr = QString::fromStdString(str);
     ui->lbl_type->setText(qstr);
@@ -181,7 +168,7 @@ void TaskFemConstraintTemperature::Flux()
 void TaskFemConstraintTemperature::addToSelection()
 {
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
-    if (selection.size() == 0){
+    if (selection.size() == 0) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
@@ -189,24 +176,24 @@ void TaskFemConstraintTemperature::addToSelection()
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
-    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end(); ++it){//for every selected object
+    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end(); ++it) {//for every selected object
         if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
             QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        std::vector<std::string> subNames=it->getSubNames();
+        std::vector<std::string> subNames = it->getSubNames();
         App::DocumentObject* obj = ConstraintView->getObject()->getDocument()->getObject(it->getFeatName());
-        for (size_t subIt = 0; subIt < (subNames.size()); ++subIt){// for every selected sub element
+        for (size_t subIt = 0; subIt < (subNames.size()); ++subIt) {// for every selected sub element
             bool addMe = true;
             for (std::vector<std::string>::iterator itr = std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
-                   itr != SubElements.end();
-                   itr = std::find(++itr,SubElements.end(), subNames[subIt]))
+                itr != SubElements.end();
+                itr = std::find(++itr, SubElements.end(), subNames[subIt]))
             {// for every sub element in selection that matches one in old list
-                if (obj == Objects[std::distance(SubElements.begin(), itr)]){//if selected sub element's object equals the one in old list then it was added before so don't add
+                if (obj == Objects[std::distance(SubElements.begin(), itr)]) {//if selected sub element's object equals the one in old list then it was added before so don't add
                     addMe = false;
                 }
             }
-            if (addMe){
+            if (addMe) {
                 QSignalBlocker block(ui->lw_references);
                 Objects.push_back(obj);
                 SubElements.push_back(subNames[subIt]);
@@ -222,7 +209,7 @@ void TaskFemConstraintTemperature::addToSelection()
 void TaskFemConstraintTemperature::removeFromSelection()
 {
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
-    if (selection.size() == 0){
+    if (selection.size() == 0) {
         QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
         return;
     }
@@ -230,27 +217,27 @@ void TaskFemConstraintTemperature::removeFromSelection()
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
     std::vector<size_t> itemsToDel;
-    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end(); ++it){//for every selected object
+    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin(); it != selection.end(); ++it) {//for every selected object
         if (!it->isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"),tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
             return;
         }
-        const std::vector<std::string>& subNames=it->getSubNames();
+        const std::vector<std::string>& subNames = it->getSubNames();
         App::DocumentObject* obj = it->getObject();
 
-        for (size_t subIt = 0; subIt < (subNames.size()); ++subIt){// for every selected sub element
+        for (size_t subIt = 0; subIt < (subNames.size()); ++subIt) {// for every selected sub element
             for (std::vector<std::string>::iterator itr = std::find(SubElements.begin(), SubElements.end(), subNames[subIt]);
                 itr != SubElements.end();
                 itr = std::find(++itr, SubElements.end(), subNames[subIt]))
             {// for every sub element in selection that matches one in old list
-                if (obj == Objects[std::distance(SubElements.begin(), itr)]){//if selected sub element's object equals the one in old list then it was added before so mark for deletion
+                if (obj == Objects[std::distance(SubElements.begin(), itr)]) {//if selected sub element's object equals the one in old list then it was added before so mark for deletion
                     itemsToDel.push_back(std::distance(SubElements.begin(), itr));
                 }
             }
         }
     }
     std::sort(itemsToDel.begin(), itemsToDel.end());
-    while (itemsToDel.size() > 0){
+    while (itemsToDel.size() > 0) {
         Objects.erase(Objects.begin() + itemsToDel.back());
         SubElements.erase(SubElements.begin() + itemsToDel.back());
         itemsToDel.pop_back();
@@ -281,14 +268,14 @@ const std::string TaskFemConstraintTemperature::getReferences() const
     return TaskFemConstraint::getReferences(items);
 }
 
-double TaskFemConstraintTemperature::get_temperature() const{
-    Base::Quantity temperature =  ui->if_temperature->getQuantity();
+double TaskFemConstraintTemperature::get_temperature() const {
+    Base::Quantity temperature = ui->if_temperature->getQuantity();
     double temperature_in_kelvin = temperature.getValueAs(Base::Quantity::Kelvin);
     return temperature_in_kelvin;
 }
 
-double TaskFemConstraintTemperature::get_cflux() const{
-    Base::Quantity cflux =  ui->if_temperature->getQuantity();
+double TaskFemConstraintTemperature::get_cflux() const {
+    Base::Quantity cflux = ui->if_temperature->getQuantity();
     double cflux_in_watt = cflux.getValueAs(Base::Quantity::Watt);
     return cflux_in_watt;
 }
@@ -297,38 +284,41 @@ std::string TaskFemConstraintTemperature::get_constraint_type(void) const {
     std::string type;
     if (ui->rb_temperature->isChecked()) {
         type = "\"Temperature\"";
-    } else if (ui->rb_cflux->isChecked()) {
+    }
+    else if (ui->rb_cflux->isChecked()) {
         type = "\"CFlux\"";
     }
     return type;
 }
 
-bool TaskFemConstraintTemperature::event(QEvent *e)
+bool TaskFemConstraintTemperature::event(QEvent* e)
 {
     return TaskFemConstraint::KeyEvent(e);
 }
 
-void TaskFemConstraintTemperature::changeEvent(QEvent *)
+void TaskFemConstraintTemperature::changeEvent(QEvent*)
 {
-//    TaskBox::changeEvent(e);
-//    if (e->type() == QEvent::LanguageChange) {
-//        ui->if_pressure->blockSignals(true);
-//        ui->retranslateUi(proxy);
-//        ui->if_pressure->blockSignals(false);
-//    }
+    //    TaskBox::changeEvent(e);
+    //    if (e->type() == QEvent::LanguageChange) {
+    //        ui->if_pressure->blockSignals(true);
+    //        ui->retranslateUi(proxy);
+    //        ui->if_pressure->blockSignals(false);
+    //    }
 }
 
 void TaskFemConstraintTemperature::clearButtons(const SelectionChangeModes notThis)
 {
-    if (notThis != refAdd) ui->btnAdd->setChecked(false);
-    if (notThis != refRemove) ui->btnRemove->setChecked(false);
+    if (notThis != SelectionChangeModes::refAdd)
+        ui->btnAdd->setChecked(false);
+    if (notThis != SelectionChangeModes::refRemove)
+        ui->btnRemove->setChecked(false);
 }
 
 //**************************************************************************
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgFemConstraintTemperature::TaskDlgFemConstraintTemperature(ViewProviderFemConstraintTemperature *ConstraintView)
+TaskDlgFemConstraintTemperature::TaskDlgFemConstraintTemperature(ViewProviderFemConstraintTemperature* ConstraintView)
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
@@ -346,7 +336,7 @@ void TaskDlgFemConstraintTemperature::open()
         QString msg = QObject::tr("Constraint temperature");
         Gui::Command::openCommand((const char*)msg.toUtf8());
         ConstraintView->setVisible(true);
-        Gui::Command::doCommand(Gui::Command::Doc,ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
+        Gui::Command::doCommand(Gui::Command::Doc, ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
     }
 }
 
@@ -357,7 +347,7 @@ bool TaskDlgFemConstraintTemperature::accept()
 
     try {
         std::string scale = parameterTemperature->getScale();  //OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
@@ -370,7 +360,7 @@ bool TaskDlgFemConstraintTemperature::accept()
 bool TaskDlgFemConstraintTemperature::reject()
 {
     Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
     Gui::Command::updateActive();
 
     return true;

@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
 #include "DlgSettingsMacroImp.h"
 #include "ui_DlgSettingsMacro.h"
 #include "Action.h"

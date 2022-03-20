@@ -20,22 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QEventLoop>
 # include <QCoreApplication>
-# include <QFileInfo>
-# include <QTimer>
+# include <QEventLoop>
 #endif
 
-#include "PythonDebugger.h"
-#include "MainWindow.h"
-#include "EditorView.h"
-#include "PythonEditor.h"
-#include "BitmapFactory.h"
-#include <Base/Interpreter.h>
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
+
+#include "PythonDebugger.h"
+#include "BitmapFactory.h"
+#include "EditorView.h"
+#include "MainWindow.h"
+#include "PythonEditor.h"
+
 
 using namespace Gui;
 
@@ -104,8 +103,7 @@ void PythonDebugModule::init_module(void)
     PythonDebugStdout::init_type();
     PythonDebugStderr::init_type();
     PythonDebugExcept::init_type();
-    static PythonDebugModule* mod = new PythonDebugModule();
-    Q_UNUSED(mod);
+    Base::Interpreter().addModule(new PythonDebugModule);
 }
 
 PythonDebugModule::PythonDebugModule()
@@ -131,6 +129,9 @@ PythonDebugModule::PythonDebugModule()
 
 PythonDebugModule::~PythonDebugModule()
 {
+    Py::Dict d(moduleDictionary());
+    d["StdOut"] = Py::None();
+    d["StdErr"] = Py::None();
 }
 
 Py::Object PythonDebugModule::getFunctionCallCount(const Py::Tuple &)

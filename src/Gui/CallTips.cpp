@@ -20,21 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QApplication>
 # include <QKeyEvent>
 # include <QLabel>
-# include <QTextCursor>
 # include <QPlainTextEdit>
+# include <QTextCursor>
 # include <QToolTip>
 #endif
 
-#include <CXX/Objects.hxx>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
 #include <App/Property.h>
 #include <App/PropertyContainer.h>
 #include <App/PropertyContainerPy.h>
@@ -42,10 +38,14 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentPy.h>
 #include <App/DocumentObjectPy.h>
+#include <Base/Console.h>
+#include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Document.h>
 #include <Gui/DocumentPy.h>
+
 #include "CallTips.h"
+
 
 Q_DECLARE_METATYPE( Gui::CallTip ) //< allows use of QVariant
 

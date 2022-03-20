@@ -24,7 +24,7 @@
 #define PARTGUI_VIEWPROVIDERPARTSPLINE_H
 
 #include <Mod/Part/Gui/ViewProviderExt.h>
-#include <Gui/ViewProviderExtension.h>
+#include <Gui/ViewProviderExtensionPython.h>
 
 namespace PartGui
 {

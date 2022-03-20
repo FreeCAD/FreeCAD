@@ -30,34 +30,32 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include "QuarterWidgetP.h"
-#include <Quarter/QuarterWidget.h>
-#include <Quarter/eventhandlers/EventFilter.h>
-
 #ifdef _MSC_VER
 #pragma warning(disable : 4267)
 #endif
 
-#include <QApplication>
-#include <QtGui/QCursor>
-#include <QMenu>
-#include <QtCore/QMap>
+#include "QuarterWidgetP.h"
+#include "QuarterWidget.h"
+#include "eventhandlers/EventFilter.h"
 
-#include <Inventor/nodes/SoCamera.h>
-#include <Inventor/nodes/SoNode.h>
+#include <QApplication>
+#include <QCursor>
+#include <QMenu>
+
+#include <Inventor/SoEventManager.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/lists/SbList.h>
-#include <Inventor/SoEventManager.h>
-#include <Inventor/scxml/SoScXMLStateMachine.h>
 #include <Inventor/misc/SoContextHandler.h>
+#include <Inventor/nodes/SoCamera.h>
+#include <Inventor/nodes/SoNode.h>
+#include <Inventor/scxml/SoScXMLStateMachine.h>
 #include <Inventor/C/glue/gl.h>
 
-#include "NativeEvent.h"
 #include "ContextMenu.h"
+#include "NativeEvent.h"
 #include "QuarterP.h"
 
-#include <cstdlib>
 
 using namespace SIM::Coin3D::Quarter;
 
@@ -86,7 +84,12 @@ QuarterWidgetP::QuarterWidgetP(QuarterWidget * masterptr, const QtGLWidget * sha
   clearzbuffer(true),
   clearwindow(true),
   addactions(true),
+  processdelayqueue(true),
+  currentStateMachine(nullptr),
   device_pixel_ratio(1.0),
+  transparencytypegroup(nullptr),
+  stereomodegroup(nullptr),
+  rendermodegroup(nullptr),
   contextmenu(nullptr)
 {
   this->cachecontext = findCacheContext(masterptr, sharewidget);

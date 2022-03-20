@@ -164,7 +164,7 @@ PyObject* PathPy::addCommands(PyObject * args)
         }
         return new PathPy(new Path::Toolpath(*getToolpathPtr()));
     }
-    Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters - command or list of commands expected");
+    Py_Error(PyExc_TypeError, "Wrong parameters - command or list of commands expected");
 }
 
 PyObject* PathPy::insertCommand(PyObject * args)
@@ -176,7 +176,7 @@ PyObject* PathPy::insertCommand(PyObject * args)
         getToolpathPtr()->insertCommand(cmd,pos);
         return new PathPy(new Path::Toolpath(*getToolpathPtr()));
     }
-    Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters - expected command and optional integer");
+    Py_Error(PyExc_TypeError, "Wrong parameters - expected command and optional integer");
 }
 
 PyObject* PathPy::deleteCommand(PyObject * args)
@@ -186,7 +186,7 @@ PyObject* PathPy::deleteCommand(PyObject * args)
         getToolpathPtr()->deleteCommand(pos);
         return new PathPy(new Path::Toolpath(*getToolpathPtr()));
     }
-    Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters - expected an integer (optional)");
+    Py_Error(PyExc_TypeError, "Wrong parameters - expected an integer (optional)");
 }
 
 PyObject* PathPy::getCycleTime(PyObject * args)

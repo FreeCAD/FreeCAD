@@ -4,6 +4,11 @@
   <context>
     <name>OpenSCAD</name>
     <message>
+      <location filename="OpenSCADUtils.py" line="710"/>
+      <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
+      <translation type="unfinished">OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</translation>
+    </message>
+    <message>
       <location filename="OpenSCADUtils.py" line="622"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
       <translation>Virhe: kaikki muodot on oltava joko 2D tai molemmat oltava 3D</translation>
@@ -46,12 +51,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="365"/>
       <source>Load</source>
-      <translation type="unfinished">Load</translation>
+      <translation>Lataa</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="366"/>
       <source>Save</source>
-      <translation type="unfinished">Save</translation>
+      <translation>Tallenna</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="367"/>
@@ -351,7 +356,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="177"/>
       <source>OpenSCAD export</source>
-      <translation>OpenSCAD vienti</translation>
+      <translation>OpenSCAD-vienti</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="185"/>

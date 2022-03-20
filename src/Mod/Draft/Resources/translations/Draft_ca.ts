@@ -717,6 +717,11 @@ Aquesta propietat és només de lectura, jau que el nombre depèn dels punts con
       <translation>Àrea d'aquest objecte</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>La forma d'aquest objecte</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation type="unfinished">The base object used by this object</translation>
@@ -725,11 +730,6 @@ Aquesta propietat és només de lectura, jau que el nombre depèn dels punts con
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
       <translation type="unfinished">The PAT file used by this object</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>La forma d'aquest objecte</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>
@@ -1349,7 +1349,7 @@ mitjançant l'opció Eines -&gt;Gestor de complements</translation>
     <message>
       <location filename="gui_setstyle.py" line="281"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>Avís</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="282"/>
@@ -3673,6 +3673,11 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>S'han trobat diversos filferros o arestes: s'uniran</translation>
     </message>
     <message>
+      <location filename="upgrade.py" line="541"/>
+      <source>Found several non-treatable objects: creating compound</source>
+      <translation>S'han trobat diversos objectes intractables: s'està creant un compost</translation>
+    </message>
+    <message>
       <location filename="upgrade.py" line="512"/>
       <source>trying: closing it</source>
       <translation>provant: s'està tancant</translation>
@@ -3691,11 +3696,6 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="upgrade.py" line="536"/>
       <source>Found points: creating compound</source>
       <translation>S'han trobat punts: s'està creant un compost</translation>
-    </message>
-    <message>
-      <location filename="upgrade.py" line="541"/>
-      <source>Found several non-treatable objects: creating compound</source>
-      <translation>S'han trobat diversos objectes intractables: s'està creant un compost</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="544"/>

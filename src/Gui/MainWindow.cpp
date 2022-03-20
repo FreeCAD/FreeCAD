@@ -23,92 +23,69 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <algorithm>
 # include <QApplication>
-# include <QThread>
-# include <QBuffer>
 # include <QByteArray>
 # include <QCheckBox>
 # include <QClipboard>
-# include <QMimeData>
 # include <QCloseEvent>
 # include <QContextMenuEvent>
 # include <QDesktopServices>
-# include <QDesktopWidget>
 # include <QDockWidget>
 # include <QFontMetrics>
 # include <QKeySequence>
 # include <QLabel>
 # include <QMdiSubWindow>
+# include <QMenu>
 # include <QMessageBox>
+# include <QMimeData>
 # include <QPainter>
+# include <QScreen>
 # include <QSettings>
 # include <QSignalMapper>
 # include <QStatusBar>
+# include <QThread>
 # include <QTimer>
 # include <QToolBar>
 # include <QUrlQuery>
 # include <QWhatsThis>
 #endif
 
-#include <QScreen>
-
-// FreeCAD Base header
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <App/DocumentObjectGroup.h>
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
-#include <Base/Persistence.h>
 #include <Base/Stream.h>
-#include <Base/Reader.h>
-#include <Base/Writer.h>
-#include <App/Application.h>
-#include <App/DocumentObject.h>
-#include <App/DocumentObjectGroup.h>
+#include <DAGView/DAGView.h>
+#include <TaskView/TaskView.h>
 
 #include "MainWindow.h"
-#include "Application.h"
-#include "Assistant.h"
-#include "DownloadManager.h"
-#include "WaitCursor.h"
-#include "FileDialog.h"
-
 #include "Action.h"
+#include "Assistant.h"
+#include "BitmapFactory.h"
+#include "ComboView.h"
 #include "Command.h"
-
-#include "ToolBoxManager.h"
 #include "DockWindowManager.h"
+#include "DownloadManager.h"
+#include "FileDialog.h"
+#include "MenuManager.h"
+#include "ProgressBar.h"
+#include "PropertyView.h"
+#include "PythonConsole.h"
+#include "ReportView.h"
+#include "SelectionView.h"
+#include "Splashscreen.h"
 #include "ToolBarManager.h"
+#include "ToolBoxManager.h"
+#include "Tree.h"
+#include "WaitCursor.h"
 #include "WorkbenchManager.h"
 #include "Workbench.h"
 
-#include "Window.h"
-#include "View.h"
-#include "Macro.h"
-#include "ProgressBar.h"
 
-#include "WidgetFactory.h"
-#include "BitmapFactory.h"
-#include "Splashscreen.h"
-
-#include "Tree.h"
-#include "PropertyView.h"
-#include "SelectionView.h"
-#include "MenuManager.h"
-//#include "ToolBox.h"
-#include "ReportView.h"
-#include "ComboView.h"
-#include "PythonConsole.h"
-#include "TaskView/TaskView.h"
-#include "DAGView/DAGView.h"
-
-#include "DlgUndoRedo.h"
-#include "DlgOnlineHelpImp.h"
-
-#include "Language/Translator.h"
-#include "GuiInitScript.h"
-
-#include "Document.h"
 #include "MergeDocuments.h"
 #include "ViewProviderExtern.h"
 
@@ -449,15 +426,6 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     // Python console
     if (hiddenDockWindows.find("Std_PythonView") == std::string::npos) {
         PythonConsole* pcPython = new PythonConsole(this);
-        ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
-            GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
-
-        if (hGrp->GetBool("PythonWordWrap", true)) {
-          pcPython->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
-        } else {
-          pcPython->setWordWrapMode(QTextOption::NoWrap);
-        }
-
         pcPython->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
         pcPython->setObjectName
             (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Python console")));
@@ -724,14 +692,22 @@ void MainWindow::whatsThis()
 
 void MainWindow::showDocumentation(const QString& help)
 {
-    QUrl url(help);
-    if (url.scheme().isEmpty()) {
-        QString page;
-        page = QString::fromUtf8("%1.html").arg(help);
-        d->assistant->showDocumentation(page);
-    }
-    else {
-        QDesktopServices::openUrl(url);
+    // temporary - allows to enable/disable the use of the Help module
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Help");
+    bool useHelpModule = hGrp->GetBool("UseHelpModule", false);
+    if (useHelpModule) {
+        Gui::Command::addModule(Gui::Command::Gui,"Help");
+        Gui::Command::doCommand(Gui::Command::Gui,"Help.show(\"%s\")", help.toStdString().c_str());
+    } else {
+        QUrl url(help);
+        if (url.scheme().isEmpty()) {
+            QString page;
+            page = QString::fromUtf8("%1.html").arg(help);
+            d->assistant->showDocumentation(page);
+        }
+        else {
+            QDesktopServices::openUrl(url);
+        }
     }
 }
 

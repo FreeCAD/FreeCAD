@@ -1530,7 +1530,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="119"/>
       <source>Size</source>
-      <translation>Taille</translation>
+      <translation>Dimension</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="158"/>
@@ -1997,7 +1997,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="54"/>
       <source>Cheesehead (deprecated)</source>
-      <translation>Tête de fromage (obsolète)</translation>
+      <translation>Vis à tête cylindrique (dépréciée)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="55"/>
@@ -2354,7 +2354,7 @@ ou sélectionnez une arête comme référence</translation>
     <message>
       <location filename="../../TaskPadParameters.ui" line="92"/>
       <source>Use custom direction</source>
-      <translation>Utilisez une direction personnalisée</translation>
+      <translation>Utilisez une direction spécifique</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="102"/>
@@ -4262,7 +4262,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../TaskHoleParameters.ui" line="87"/>
       <source>Model Thread</source>
-      <translation>Modèle de taraudage</translation>
+      <translation>Filetage représenté</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="97"/>
@@ -4279,23 +4279,23 @@ Notez que le calcul peut prendre un certain temps</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="114"/>
       <source>Customize thread clearance</source>
-      <translation>Personnaliser le dégagement du taraudage</translation>
+      <translation>Spécifier le dégagement du filetage</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="117"/>
       <source>Custom Thread Clearance</source>
-      <translation>Dégagement du Taraudage Personnaliser</translation>
+      <translation>Dégagement du filetage avec jeu</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="130"/>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
       <source>Clearance</source>
-      <translation>Dégagement</translation>
+      <translation>Jeu d'ajustement</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="149"/>
       <source>Custom Thread clearance value</source>
-      <translation>Valeur du dégagement du taraudage personnalisé</translation>
+      <translation>Valeur du dégagement du filetage avec jeu</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="171"/>
@@ -4315,7 +4315,7 @@ Notez que le calcul peut prendre un certain temps</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="222"/>
       <source>Size</source>
-      <translation>Taille</translation>
+      <translation>Dimension</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="270"/>
@@ -4350,7 +4350,7 @@ Only available for holes without thread</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="318"/>
       <source>Tolerance class for threaded holes according to hole profile</source>
-      <translation>Classe de tolérance pour les trous filetés selon le profil du trou</translation>
+      <translation>Tolérance d'ajustement pour les trous filetés selon le profil du trou</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="331"/>
@@ -4388,12 +4388,12 @@ Only available for holes without thread</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="441"/>
       <source>Hole depth</source>
-      <translation>Profondeur du trou</translation>
+      <translation>Profondeur de la cavité</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="451"/>
       <source>Tapped (DIN76)</source>
-      <translation>Tarraudé (DIN76)</translation>
+      <translation>DIN76</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="475"/>
@@ -4419,7 +4419,7 @@ Only available for holes without thread</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="523"/>
       <source>Custom values</source>
-      <translation>Valeurs personnalisées</translation>
+      <translation>Valeurs spécifiques</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="615"/>

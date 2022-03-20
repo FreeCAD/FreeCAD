@@ -4,6 +4,11 @@
   <context>
     <name>OpenSCAD</name>
     <message>
+      <location filename="OpenSCADUtils.py" line="710"/>
+      <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
+      <translation>OpenSCAD ფაილი შეიცავს ორივე, 2D და 3D მოხაზულობებს. შემომტანს ამის მხარდაჭერა არ გააჩნია. ყველა მოხაზულობა ერთ განზომილებაში უნდა იყოს.</translation>
+    </message>
+    <message>
       <location filename="OpenSCADUtils.py" line="622"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
       <translation>შეცდომა. ყველა კონტური ან 2 ან 3განზომილებიანი უნდა იყოს. შერევა აკრძალულია</translation>
@@ -102,7 +107,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="129"/>
       <source>Color Shapes by validity and type</source>
-      <translation type="unfinished">Color Shapes by validity and type</translation>
+      <translation>მონახაზების შეფერადება სისწორისა და ტიპის მიხედვით</translation>
     </message>
   </context>
   <context>
@@ -118,12 +123,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="291"/>
       <source>Expand Placements</source>
-      <translation type="unfinished">Expand Placements</translation>
+      <translation>მდებარეობების განშლა</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="294"/>
       <source>Expand all placements downwards the FeatureTree</source>
-      <translation type="unfinished">Expand all placements downwards the FeatureTree</translation>
+      <translation>ყველა განლაგება თვისებების ხის ქვემოთ გაფართოება</translation>
     </message>
   </context>
   <context>
@@ -136,7 +141,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="113"/>
       <source>Remove fusion, apply placement to children, and color randomly</source>
-      <translation type="unfinished">Remove fusion, apply placement to children, and color randomly</translation>
+      <translation>შერწყმის მოცილება და ბავშვებზე მდებარეობის და შემთხვევითი ფერების გადატარება</translation>
     </message>
   </context>
   <context>
@@ -162,7 +167,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="277"/>
       <source>Create Feature that allows to increase the tolerance</source>
-      <translation type="unfinished">Create Feature that allows to increase the tolerance</translation>
+      <translation>ისეთი თვისების შექმნა, რომელიც უფლებას გაძლევთ გაზარდოთ დაშვება</translation>
     </message>
   </context>
   <context>
@@ -175,7 +180,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="536"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
-      <translation type="unfinished">Export objects as meshes and use OpenSCAD to perform a boolean operation</translation>
+      <translation>ობიექტების, როგორც პოლიხაზური ბადეების გატანა და ბულევური ოპერაციებისთვის OpenSCAD-ის გამოყენება</translation>
     </message>
   </context>
   <context>
@@ -222,12 +227,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="324"/>
       <source>Remove Objects and their Children</source>
-      <translation type="unfinished">Remove Objects and their Children</translation>
+      <translation>ობიექტების და მათი ქვეობიექტების წაშლა</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="327"/>
       <source>Removes the selected objects and all children that are not referenced from other objects</source>
-      <translation type="unfinished">Removes the selected objects and all children that are not referenced from other objects</translation>
+      <translation>წაშლის მონიშნულ ობიექტებს და ყველა ქვეობიექტს, რომლებიც არ არის ბმული სხვა ობიექტებიდან</translation>
     </message>
   </context>
   <context>
@@ -240,7 +245,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="315"/>
       <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
-      <translation type="unfinished">Replace an object in the Feature Tree. Please select old, new, and parent object</translation>
+      <translation>ობიექტის ჩანაცვლება თვისებების ხეში. აირჩიეთ ძველი, ახალი და მშობელი ობიექტი</translation>
     </message>
   </context>
   <context>
@@ -315,22 +320,22 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="73"/>
       <source>Print debug information in the Console</source>
-      <translation type="unfinished">Print debug information in the Console</translation>
+      <translation>დებაგის ინფორმაციის კონსოლში გამოტანა</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="90"/>
       <source>If this is checked, Features will claim their children in the tree view</source>
-      <translation type="unfinished">If this is checked, Features will claim their children in the tree view</translation>
+      <translation>თუ ჩართულია, თვისებები თავიანთ შვილებს ხის ხედში გამოაჩენენ</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="93"/>
       <source>Use ViewProvider in Tree View</source>
-      <translation type="unfinished">Use ViewProvider in Tree View</translation>
+      <translation>ხის ხედში ViewProvider-ის გამოყენება</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="110"/>
       <source>If this is checked, Multmatrix Object will be Parametric</source>
-      <translation type="unfinished">If this is checked, Multmatrix Object will be Parametric</translation>
+      <translation>თუ ჩართულია, Multimatrix-ის ობიექტი პარამეტრული იქნება</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="113"/>
@@ -341,12 +346,12 @@
       <location filename="../ui/openscadprefs-base.ui" line="130"/>
       <location filename="../ui/openscadprefs-base.ui" line="153"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
-      <translation type="unfinished">The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</translation>
+      <translation>მრავალკუთხედის, პრიზმის ან წაკვეთილი ფიგურის ზედაპირების მაქსიმალური რაოდენობა. თუ fn უფრო დიდია, ვიდრე ეს მნიშვნელობა, ობიექტი მიჩნეული იქნება წრიულად. ლიმიტის მოსახსნელად მიუთითეთ 0</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="133"/>
       <source>Maximum number of faces for polygons (fn)</source>
-      <translation type="unfinished">Maximum number of faces for polygons (fn)</translation>
+      <translation>მრავალკუთხედების ზედაპირების უდიდესი რიცხვი (fn)</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="177"/>

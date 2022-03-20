@@ -72,7 +72,7 @@ struct DrawingParameters {
     const float zHighLines  = 0.007f; // Height used for on top rendered lines
     const float zHighLine   = 0.008f; // Height for highlighted lines (selected/preselected)
     const float zConstr     = 0.009f; // Height for rendering constraints
-    const float zRootPoint  = 0.010f; // Height used for bottom rendered points
+    const float zRootPoint  = 0.010f; // Height used for rendering the root point
     const float zLowPoints  = 0.011f; // Height used for bottom rendered points
     const float zHighPoints = 0.012f; // Height used for in-the-middle rendered points
     const float zHighlight  = 0.013f; // Height for highlighted points (selected/preselected)
@@ -345,6 +345,7 @@ struct EditModeScenegraphNodes {
     /** @name Constraint nodes*/
     //@{
     SmSwitchboard *constrGroup;
+    SoPickStyle *constrGrpSelect;
     SoDrawStyle   *ConstraintDrawStyle;
     //@}
 

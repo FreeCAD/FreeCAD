@@ -24,42 +24,33 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
 # include <QAction>
-# include <QRegExp>
-# include <QTextStream>
-# include <QMessageBox>
 # include <QGenericReturnArgument>
+# include <QMessageBox>
 # include <QMetaObject>
-# include <Precision.hxx>
 #endif
+
+#include <App/Application.h>
+#include <App/DocumentObject.h>
+#include <App/Origin.h>
+#include <Gui/CommandT.h>
+#include <Gui/Document.h>
+#include <Gui/MainWindow.h>
+#include <Gui/Selection.h>
+#include <Gui/ViewProvider.h>
+#include <Gui/Widgets.h>
+#include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/FeaturePipe.h>
 
 #include "ui_TaskPipeParameters.h"
 #include "ui_TaskPipeOrientation.h"
 #include "ui_TaskPipeScaling.h"
 #include <ui_DlgReference.h>
+
 #include "TaskPipeParameters.h"
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/Origin.h>
-#include <App/Part.h>
-#include <Base/Console.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Selection.h>
-#include <Gui/CommandT.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Widgets.h>
-#include <Mod/PartDesign/App/FeaturePipe.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/PartDesign/App/Body.h>
-#include "TaskSketchBasedParameters.h"
-#include "ReferenceSelection.h"
-#include "Utils.h"
 #include "TaskFeaturePick.h"
+#include "TaskSketchBasedParameters.h"
+#include "Utils.h"
 
 Q_DECLARE_METATYPE(App::PropertyLinkSubList::SubSet)
 
@@ -77,6 +68,7 @@ using namespace Gui;
 TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView, bool /*newObj*/, QWidget *parent)
     : TaskSketchBasedParameters(PipeView, parent, "PartDesign_AdditivePipe", tr("Pipe parameters"))
     , ui(new Ui_TaskPipeParameters)
+    , stateHandler(nullptr)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -159,6 +151,8 @@ TaskPipeParameters::~TaskPipeParameters()
             static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Spine, false);
             static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Profile, false);
         }
+    }
+    catch (const Standard_OutOfRange&) {
     }
     catch (const Base::Exception& e) {
         // getDocument() may raise an exception
@@ -544,8 +538,9 @@ bool TaskPipeParameters::accept()
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newObj*/, QWidget* parent)
-    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_AdditivePipe", tr("Section orientation")),
-    ui(new Ui_TaskPipeOrientation)
+    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_AdditivePipe", tr("Section orientation"))
+    , ui(new Ui_TaskPipeOrientation)
+    , stateHandler(nullptr)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -608,8 +603,12 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newO
 
 TaskPipeOrientation::~TaskPipeOrientation()
 {
-    if (vp) {
-        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, false);
+    try {
+        if (vp) {
+            static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::AuxiliarySpine, false);
+        }
+    }
+    catch (const Standard_OutOfRange&) {
     }
 }
 
@@ -807,8 +806,9 @@ void TaskPipeOrientation::updateUI(int idx)
 // Task Scaling
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QWidget* parent)
-    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_AdditivePipe", tr("Section transformation")),
-    ui(new Ui_TaskPipeScaling)
+    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_AdditivePipe", tr("Section transformation"))
+    , ui(new Ui_TaskPipeScaling)
+    , stateHandler(nullptr)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -858,8 +858,12 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
 
 TaskPipeScaling::~TaskPipeScaling()
 {
-    if (vp) {
-        static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Section, false);
+    try {
+        if (vp) {
+            static_cast<ViewProviderPipe*>(vp)->highlightReferences(ViewProviderPipe::Section, false);
+        }
+    }
+    catch (const Standard_OutOfRange&) {
     }
 }
 
@@ -1075,7 +1079,7 @@ TaskDlgPipeParameters::TaskDlgPipeParameters(ViewProviderPipe *PipeView,bool new
     buttonGroup->addButton(scaling->ui->buttonRefRemove,
                            StateHandlerTaskPipe::refSectionRemove);
 
-    connect(buttonGroup, QOverload<QAbstractButton *, bool>::of(&QButtonGroup::buttonToggled),
+    connect(buttonGroup, qOverload<QAbstractButton *, bool>(&QButtonGroup::buttonToggled),
             this, &TaskDlgPipeParameters::onButtonToggled);
 }
 

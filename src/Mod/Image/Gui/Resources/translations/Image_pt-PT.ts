@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="56"/>
       <source>Open image view</source>
-      <translation>Abrir visualização de imagens</translation>
+      <translation>Abrir a visualização da imagem</translation>
     </message>
   </context>
   <context>
@@ -73,7 +73,7 @@
     <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Create ImagePlane</source>
-      <translation type="unfinished">Create ImagePlane</translation>
+      <translation>Criar Plano</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
       <location filename="../../GLImageBox.cpp" line="335"/>
       <location filename="../../OpenGLImageBox.cpp" line="393"/>
       <source>Undefined type of colour space for image viewing</source>
-      <translation>Tipo indefinido do espaço de cor para visualização de imagens</translation>
+      <translation>Tipo indefinido de espaço de cor para visualização da imagem</translation>
     </message>
   </context>
   <context>
@@ -139,7 +139,7 @@
     <message>
       <location filename="../../ImageView.cpp" line="113"/>
       <source>Stretch the image to fit the view</source>
-      <translation>Esticar a imagem para ajustar à vista</translation>
+      <translation>Esticar a imagem para ajustar a exibição</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="117"/>

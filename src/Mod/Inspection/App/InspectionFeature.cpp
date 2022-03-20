@@ -43,6 +43,7 @@
 #include <Base/FutureWatcherProgress.h>
 #include <Base/Parameter.h>
 #include <Base/Sequencer.h>
+#include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <App/Application.h>
 #include <Mod/Mesh/App/Mesh.h>

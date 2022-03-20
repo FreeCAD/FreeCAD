@@ -135,7 +135,7 @@ class Point(gui_base_original.Creator):
                                        _cmd_list))
                 else:
                     # Insert a Draft point
-                    _cmd = 'Draft.makePoint'
+                    _cmd = 'Draft.make_point'
                     _cmd += '('
                     _cmd += str(self.stack[0][0]) + ', '
                     _cmd += str(self.stack[0][1]) + ', '

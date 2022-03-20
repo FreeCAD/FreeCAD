@@ -23,9 +23,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QAction>
 # include <QColorDialog>
-# include <QDesktopWidget>
+# include <QDebug>
 # include <QDesktopServices>
 # include <QDialogButtonBox>
 # include <QDrag>
@@ -39,7 +38,6 @@
 # include <QTextBlock>
 # include <QTimer>
 # include <QToolTip>
-# include <QDebug>
 #endif
 
 #include <Base/Tools.h>
@@ -47,13 +45,13 @@
 #include <Base/Interpreter.h>
 #include <App/ExpressionParser.h>
 
-#include "Command.h"
 #include "Widgets.h"
-#include "Application.h"
 #include "Action.h"
-#include "PrefWidgets.h"
+#include "Application.h"
 #include "BitmapFactory.h"
+#include "Command.h"
 #include "DlgExpressionInput.h"
+#include "PrefWidgets.h"
 #include "QuantitySpinBox_p.h"
 #include "Tools.h"
 #include "ui_DlgTreeWidget.h"
@@ -389,7 +387,7 @@ bool AccelLineEdit::isNone() const
 /**
  * Checks which keys are pressed and show it as text.
  */
-void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
+void AccelLineEdit::keyPressEvent (QKeyEvent * e)
 {
     QString txtLine = text();
 
@@ -470,7 +468,7 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
  * Constructs a line edit with no text.
  * The \a parent argument is sent to the QLineEdit constructor.
  */
-ModifierLineEdit::ModifierLineEdit ( QWidget * parent )
+ModifierLineEdit::ModifierLineEdit (QWidget * parent )
   : QLineEdit(parent)
 {
     setPlaceholderText(tr("Press modifier keys"));
@@ -479,7 +477,7 @@ ModifierLineEdit::ModifierLineEdit ( QWidget * parent )
 /**
  * Checks which modifiers are pressed and show it as text.
  */
-void ModifierLineEdit::keyPressEvent ( QKeyEvent * e)
+void ModifierLineEdit::keyPressEvent (QKeyEvent * e)
 {
     int key = e->key();
     Qt::KeyboardModifiers state = e->modifiers();
@@ -524,7 +522,6 @@ void ModifierLineEdit::keyPressEvent ( QKeyEvent * e)
 
 // ------------------------------------------------------------------------------
 
-#if QT_VERSION >= 0x050200
 ClearLineEdit::ClearLineEdit (QWidget * parent)
   : QLineEdit(parent)
 {
@@ -544,41 +541,6 @@ void ClearLineEdit::updateClearButton(const QString& text)
 {
     clearAction->setVisible(!text.isEmpty());
 }
-#else
-ClearLineEdit::ClearLineEdit (QWidget * parent)
-  : QLineEdit(parent)
-{
-    clearButton = new QToolButton(this);
-    QPixmap pixmap(BitmapFactory().pixmapFromSvg(":/icons/edit-cleartext.svg", QSize(18, 18)));
-    clearButton->setIcon(QIcon(pixmap));
-    clearButton->setIconSize(pixmap.size());
-    clearButton->setCursor(Qt::ArrowCursor);
-    clearButton->setStyleSheet(QString::fromLatin1("QToolButton { border: none; padding: 0px; }"));
-    clearButton->hide();
-    connect(clearButton, SIGNAL(clicked()), this, SLOT(clear()));
-    connect(this, SIGNAL(textChanged(const QString&)),
-            this, SLOT(updateClearButton(const QString&)));
-    int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
-    setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px; } ")
-                  .arg(clearButton->sizeHint().width() + frameWidth + 1));
-    QSize msz = minimumSizeHint();
-    setMinimumSize(qMax(msz.width(), clearButton->sizeHint().height() + frameWidth * 2 + 2),
-                   msz.height());
-}
-
-void ClearLineEdit::resizeEvent(QResizeEvent *)
-{
-    QSize sz = clearButton->sizeHint();
-    int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
-    clearButton->move(rect().right() - frameWidth - sz.width(),
-                      (rect().bottom() + 1 - sz.height())/2);
-}
-
-void ClearLineEdit::updateClearButton(const QString& text)
-{
-    clearButton->setVisible(!text.isEmpty());
-}
-#endif
 
 // ------------------------------------------------------------------------------
 
@@ -1740,7 +1702,7 @@ ButtonGroup::ButtonGroup(QObject *parent)
 {
     QButtonGroup::setExclusive(false);
 
-    connect(this, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked),
+    connect(this, qOverload<QAbstractButton *>(&QButtonGroup::buttonClicked),
             [=](QAbstractButton *button) {
         if (exclusive()) {
             for (auto btn : buttons()) {

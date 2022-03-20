@@ -23,33 +23,28 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cmath>
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepAdaptor_Curve.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
-# include <BRepClass3d_SolidClassifier.hxx>
 # include <BRepLib_FindSurface.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
 # include <gp_Pln.hxx>
 # include <gp_Trsf.hxx>
 # include <Precision.hxx>
-# include <ShapeAnalysis.hxx>
-# include <ShapeFix_Wire.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Iterator.hxx>
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
 #endif
 
-#include "FeatureExtrusion.h"
-#include <App/Application.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
+
+#include "FeatureExtrusion.h"
 #include "ExtrusionHelper.h"
 #include "Part2DObject.h"
+
 
 using namespace Part;
 

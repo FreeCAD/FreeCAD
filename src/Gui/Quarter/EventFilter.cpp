@@ -34,21 +34,15 @@
 
 */
 
-#include <Quarter/eventhandlers/EventFilter.h>
+#include <QEvent>
+#include <QMouseEvent>
 
-#include <QtCore/QEvent>
-#include <QtGui/QMouseEvent>
+#include "QuarterWidget.h"
+#include "devices/Keyboard.h"
+#include "devices/Mouse.h"
+#include "devices/SpaceNavigatorDevice.h"
+#include "eventhandlers/EventFilter.h"
 
-#include <Inventor/SoEventManager.h>
-#include <Inventor/events/SoLocation2Event.h>
-#include <Inventor/events/SoMouseButtonEvent.h>
-
-#include <Quarter/QuarterWidget.h>
-#include <Quarter/devices/Mouse.h>
-#include <Quarter/devices/Keyboard.h>
-#include <Quarter/devices/SpaceNavigatorDevice.h>
-
-#include <QGuiApplication>
 
 namespace SIM { namespace Coin3D { namespace Quarter {
 
@@ -153,10 +147,10 @@ EventFilter::eventFilter(QObject * obj, QEvent * qevent)
   case QEvent::MouseButtonPress:
   case QEvent::MouseButtonRelease:
   case QEvent::MouseButtonDblClick:
-    PRIVATE(this)->trackPointerPosition(dynamic_cast<QMouseEvent *>(qevent));
+    PRIVATE(this)->trackPointerPosition(static_cast<QMouseEvent *>(qevent));
     break;
   case QEvent::Resize:
-    PRIVATE(this)->trackWindowSize(dynamic_cast<QResizeEvent *>(qevent));
+    PRIVATE(this)->trackWindowSize(static_cast<QResizeEvent *>(qevent));
     break;
   default:
     break;

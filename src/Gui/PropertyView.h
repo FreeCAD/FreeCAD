@@ -20,15 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifndef GUI_DOCKWND_PROPERTYVIEW_H
 #define GUI_DOCKWND_PROPERTYVIEW_H
 
-
 #include "DockWindow.h"
 #include "Selection.h"
-#include <boost_signals2.hpp>
+
 
 class QPixmap;
 class QTabWidget;
@@ -81,7 +78,7 @@ protected:
 
 private:
     void onSelectionChanged(const SelectionChanges& msg) override;
-    void slotChangePropertyData(const App::DocumentObject&, const App::Property&);
+    void slotChangePropertyData(const App::Property&);
     void slotChangePropertyView(const Gui::ViewProvider&, const App::Property&);
     void slotAppendDynamicProperty(const App::Property&);
     void slotRemoveDynamicProperty(const App::Property&);
@@ -109,6 +106,7 @@ private:
     Connection connectDelDocument;
     Connection connectDelObject;
     Connection connectDelViewObject;
+    Connection connectChangedDocument;
     QTabWidget* tabs;
     QTimer* timer;
 };

@@ -24,20 +24,13 @@
 #define APP_LINK_H
 
 #include <unordered_set>
-#include <boost_signals2.hpp>
-#include <boost/preprocessor/facilities/expand.hpp>
-#include <boost/preprocessor/cat.hpp>
-#include <boost/preprocessor/seq/for_each.hpp>
-#include <boost/preprocessor/seq/elem.hpp>
-#include <boost/preprocessor/seq/cat.hpp>
-#include <boost/preprocessor/tuple/elem.hpp>
-#include <boost/preprocessor/tuple/enum.hpp>
+
 #include "DocumentObject.h"
-#include "FeaturePython.h"
-#include "PropertyLinks.h"
 #include "DocumentObjectExtension.h"
 #include "FeaturePython.h"
 #include "GroupExtension.h"
+#include "PropertyLinks.h"
+
 
 //FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
 #if defined(__clang__)

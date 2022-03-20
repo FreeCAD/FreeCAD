@@ -88,7 +88,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace Robot
@@ -106,7 +106,7 @@ PyMOD_INIT_FUNC(Robot)
         PyMOD_Return(0);
     }
 
-    PyObject* robotModule = (new Robot::Module())->module().ptr();
+    PyObject* robotModule = Robot::initModule();
     Base::Console().Log("Loading Robot module... done\n");
 
     // Add Types to module

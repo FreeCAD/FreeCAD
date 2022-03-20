@@ -121,7 +121,6 @@ def CalcHelixConePoint(height, cur_z, radius, angle):
 
 
 def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
-    # pylint: disable=unused-argument
     if len(adaptiveResults) == 0 or len(adaptiveResults[0]["AdaptivePaths"]) == 0:
         return
 
@@ -176,7 +175,6 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
 
     # ml: this is dangerous because it'll hide all unused variables hence forward
     #     however, I don't know what lx and ly signify so I'll leave them for now
-    # pylint: disable=unused-variable
     # lx = adaptiveResults[0]["HelixCenterPoint"][0]
     # ly = adaptiveResults[0]["HelixCenterPoint"][1]
     lz = passStartDepth
@@ -649,7 +647,6 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
 
 
 def Execute(op, obj):
-    # pylint: disable=global-statement
     global sceneGraph
     global topZ
 
@@ -863,7 +860,7 @@ def _get_working_edges(op, obj):
                     edge_list.append([discretize(e)])
 
     # Apply regular Extensions
-    op.exts = []  # pylint: disable=attribute-defined-outside-init
+    op.exts = []
     for ext in extensions:
         if not ext.avoid:
             wire = ext.getWire()

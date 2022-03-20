@@ -20,13 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_ViewProviderTextDocument_H
 #define GUI_ViewProviderTextDocument_H
 
-
-#include "ViewProviderDocumentObject.h"
 #include <QPointer>
+#include "ViewProviderDocumentObject.h"
+
 
 class QPlainTextEdit;
 

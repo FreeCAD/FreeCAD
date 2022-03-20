@@ -140,15 +140,15 @@
 //  \subpage examiner
 //*/
 
-#include <cstdio>
 #include <Inventor/SoDB.h>
-#include <Inventor/nodekits/SoNodeKit.h>
 #include <Inventor/SoInteraction.h>
+#include <Inventor/nodekits/SoNodeKit.h>
 
-#include <Quarter/Quarter.h>
 #include "SensorManager.h"
 
+#include "Quarter.h"
 #include "QuarterP.h"
+
 
 using namespace SIM::Coin3D::Quarter;
 

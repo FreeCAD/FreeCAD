@@ -24,8 +24,8 @@
 #define TASKFEATUREPARAMETERS_H_NAHKE2YZ
 
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
 #include <Gui/DocumentObserver.h>
 
 #include "ViewProvider.h"

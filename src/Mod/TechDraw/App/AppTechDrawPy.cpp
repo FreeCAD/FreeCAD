@@ -284,7 +284,8 @@ private:
             }
         }
         catch (Base::Exception &e) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
         return result;
     }
@@ -334,7 +335,8 @@ private:
             }
         }
         catch (Base::Exception &e) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
         if (!success) {
             return Py::None();
@@ -400,7 +402,8 @@ private:
             }
         }
         catch (Base::Exception &e) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
         if (!success) {
             return Py::None();
@@ -457,7 +460,8 @@ private:
            }
         }
         catch (Base::Exception &e) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
 
         return dxfReturn;
@@ -535,7 +539,8 @@ private:
            }
         }
         catch (Base::Exception &e) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
 
         return svgReturn;
@@ -709,7 +714,18 @@ private:
                         double parentX = dvp->X.getValue() + grandParentX;
                         double parentY = dvp->Y.getValue() + grandParentY;
                         Base::Vector3d parentPos(parentX,parentY,0.0);
-                        std::string sDimText = dvd->getFormattedDimensionValue();
+                        std::string sDimText;
+                        //this is the same code as in QGIViewDimension::updateDim
+                        if (dvd->isMultiValueSchema()) {
+                            sDimText = dvd->getFormattedDimensionValue(0); //don't format multis
+                        } else {
+                            sDimText = dvd->getFormattedDimensionValue(1); //just the number pref/spec/suf
+                            if (dvd->showUnits()) {
+                                std::string unitText = dvd->getFormattedDimensionValue(
+                                            2);
+                                sDimText += " " + unitText;
+                            }
+                        }
                         char* dimText = &sDimText[0u];                  //hack for const-ness
                         float gap = 5.0;                                //hack. don't know font size here.
                         layerName = dvd->getNameInDocument();
@@ -955,8 +971,12 @@ private:
         if (!PyArg_ParseTuple(args.ptr(), "O|detet", &pFace, &scale, "utf-8", &pPatName, "utf-8", &pPatFile)) {
             throw Py::TypeError("expected (face, [scale], [patName], [patFile])");
         }
+
         std::string patName = std::string(pPatName);
+        PyMem_Free(pPatName);
         std::string patFile = std::string(pPatFile);
+        PyMem_Free(pPatFile);
+
         if (PyObject_TypeCheck(pFace, &(TopoShapeFacePy::Type))) {
             const TopoDS_Shape& sh = static_cast<TopoShapePy*>(pFace)->getTopoShapePtr()->getShape();
             face = TopoDS::Face(sh);
@@ -996,7 +1016,8 @@ private:
                 }
             }
             catch (Base::Exception &e) {
-                throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+                e.setPyException();
+                throw Py::Exception();
             }
             return result;
             */
@@ -1014,7 +1035,8 @@ private:
                 }
             }
             catch (Base::Exception &e) {
-                throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+                e.setPyException();
+                throw Py::Exception();
             }
             PyObject* pycomp = new TopoShapeCompoundPy(new TopoShape(comp));
             return Py::asObject(pycomp);
@@ -1213,7 +1235,7 @@ private:
 
  PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace TechDraw

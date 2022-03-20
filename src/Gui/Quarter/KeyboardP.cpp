@@ -30,10 +30,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include "KeyboardP.h"
-#include <Quarter/devices/Keyboard.h>
-#include <QtCore/QMap>
 #include <Inventor/errors/SoDebugError.h>
+
+#include "KeyboardP.h"
+#include "devices/Keyboard.h"
+
 
 using namespace SIM::Coin3D::Quarter;
 

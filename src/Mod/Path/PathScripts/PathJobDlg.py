@@ -48,7 +48,6 @@ class _ItemDelegate(QtGui.QStyledItemDelegate):
         QtGui.QStyledItemDelegate.__init__(self, parent)
 
     def createEditor(self, parent, option, index):
-        # pylint: disable=unused-argument
         editor = QtGui.QSpinBox(parent)
         self.controller.setupColumnEditor(index, editor)
         return editor
@@ -58,7 +57,6 @@ class JobCreate:
     DataObject = QtCore.Qt.ItemDataRole.UserRole
 
     def __init__(self, parent=None, sel=None):
-        # pylint: disable=unused-argument
         self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobCreate.ui")
         self.itemsSolid = QtGui.QStandardItem(translate("Path_Job", "Solids"))
         self.items2D = QtGui.QStandardItem(translate("Path_Job", "2D"))
@@ -262,9 +260,7 @@ class JobCreate:
         models = []
 
         for i in range(self.itemsSolid.rowCount()):
-            for j in range(
-                self.itemsSolid.child(i, 1).data(QtCore.Qt.EditRole)
-            ):  # pylint: disable=unused-variable
+            for j in range(self.itemsSolid.child(i, 1).data(QtCore.Qt.EditRole)):
                 models.append(self.itemsSolid.child(i).data(self.DataObject))
 
         for i in range(self.items2D.rowCount()):
@@ -348,11 +344,14 @@ class JobTemplateExport:
                     job.Stock.Height,
                 )
             elif stockType == PathStock.StockType.CreateCylinder:
-                seHint = translate("Path_Job", "Cylinder: %.2f x %.2f") % (
+                seHint = translate("Path_Job:", "Cylinder: %.2f x %.2f") % (
                     job.Stock.Radius,
                     job.Stock.Height,
                 )
-            else:
+            elif stockType == PathStock.StockType.Unknown:
+                seHint = "-"
+
+            else:  # Existing Solid
                 seHint = "-"
                 PathLog.error(translate("Path_Job", "Unsupported stock type"))
             self.dialog.stockExtentHint.setText(seHint)

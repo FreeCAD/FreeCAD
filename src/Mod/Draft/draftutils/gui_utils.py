@@ -154,7 +154,7 @@ def autogroup(obj):
                 # do not autogroup if obj points to active_part to prevent cyclic references
                 return
             matrix = parent.getSubObject(sub, retType=4)
-            if matrix.hasScale() == 1:
+            if matrix.hasScale() == App.ScaleType.Uniform:
                 err = translate("draft",
                                 "Unable to insert new object into "
                                 "a scaled part")

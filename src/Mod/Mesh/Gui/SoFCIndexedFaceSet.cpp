@@ -42,8 +42,11 @@
 # include <GL/glext.h>
 # endif
 # include <Inventor/actions/SoGLRenderAction.h>
+# include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/bundles/SoMaterialBundle.h>
+# include <Inventor/bundles/SoTextureCoordinateBundle.h>
 # include <Inventor/elements/SoCoordinateElement.h>
+# include <Inventor/elements/SoGLCacheContextElement.h>
 # include <Inventor/elements/SoGLCoordinateElement.h>
 # include <Inventor/elements/SoGLLazyElement.h>
 # include <Inventor/elements/SoMaterialBindingElement.h>
@@ -51,6 +54,7 @@
 # include <Inventor/elements/SoProjectionMatrixElement.h>
 # include <Inventor/elements/SoViewingMatrixElement.h>
 # include <Inventor/errors/SoDebugError.h>
+# include <Inventor/nodes/SoCoordinate3.h>
 #endif
 
 #include <Inventor/C/glue/gl.h>

@@ -22,17 +22,14 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <sstream>
 # ifdef FC_OS_WIN32
 # define _USE_MATH_DEFINES
 # endif // FC_OS_WIN32
-# include <cmath>
 #endif
 
 #include "Quantity.h"
 #include "Exception.h"
 #include "UnitsApi.h"
-#include "Console.h"
 #include <boost/math/special_functions/fpclassify.hpp>
 
 /** \defgroup Units Units system
@@ -441,11 +438,20 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
     return ret_val;
 }
 
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wmissing-noreturn"
+#endif
+
 // error func
 void Quantity_yyerror(char *errorinfo)
 {
     throw Base::ParserError(errorinfo);
 }
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
 
 
 // for VC9 (isatty and fileno not supported anymore)

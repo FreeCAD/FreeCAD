@@ -65,15 +65,16 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/Expression.h>
 #include <App/FeaturePythonPyImp.h>
+#include <App/ObjectIdentifier.h>
+#include <App/OriginFeature.h>
 #include <App/Part.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
 #include <Base/Console.h>
 #include <Base/Vector3D.h>
-
-#include <App/OriginFeature.h>
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/DatumFeature.h>
@@ -2679,8 +2680,6 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             firstParam = bsp->getFirstParameter();
             lastParam = bsp->getLastParameter();
         }
-        else
-            return -1;
 
         double pointParam, point1Param, point2Param;
         if(!getIntersectionParameters(geo, point, pointParam, point1, point1Param, point2, point2Param))
@@ -3012,7 +3011,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d &point)
     std::vector<Constraint *> newConstraints;
 
     Base::Vector3d startPoint, endPoint, splitPoint;
-    double radius, startAngle, endAngle, splitAngle;
+    double radius, startAngle, endAngle, splitAngle=0.0;
     unsigned int longestPart = 0;
 
 
@@ -6066,6 +6065,13 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
     // Trigger update now
     // Update geometry indices and rebuild vertexindex now via onChanged, so that ViewProvider::UpdateData is triggered.
     if (!delGeoId.empty()) {
+        // NOTE: There have been a couple of instances when knot insertion has
+        // led to a segmentation fault: see https://forum.freecadweb.org/viewtopic.php?f=19&t=64962&sid=10272db50a635c633260517b14ecad37.
+        // If a segfault happens again and a `Geometry.touch()` here fixes it,
+        // it is possible that `delGeometriesExclusiveList` is causing an update
+        // in constraint GUI features during an intermediate step.
+        // See 247a9f0876a00e08c25b07d1f8802479d8623e87 for suggestions.
+        // Geometry.touch();
         delGeometriesExclusiveList(delGeoId);
     }
     else {

@@ -20,18 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
 # include <QEvent>
 # include <QGridLayout>
-# include <QSizePolicy>
 # include <QPushButton>
+# include <QSizePolicy>
 #endif
 
 #include "DlgCustomizeImp.h"
 #include "MainWindow.h"
 #include "WidgetFactory.h"
+
 
 using namespace Gui::Dialog;
 

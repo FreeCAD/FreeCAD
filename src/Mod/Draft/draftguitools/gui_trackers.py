@@ -1026,7 +1026,7 @@ class gridTracker(Tracker):
         mbind3.value = coin.SoMaterialBinding.PER_PART_INDEXED
 
         self.pts = []
-        s = coin.SoSeparator()
+        s = coin.SoType.fromName("SoSkipBoundingGroup").createInstance()
         s.addChild(pick)
         s.addChild(self.trans)
         s.addChild(mat1)
@@ -1043,6 +1043,7 @@ class gridTracker(Tracker):
         s.addChild(self.coords3)
         s.addChild(self.lines3)
         s.addChild(texts)
+
         super().__init__(children=[s], name="gridTracker")
         self.reset()
 

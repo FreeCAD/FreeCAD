@@ -940,7 +940,7 @@ out as root nodes. It is possible to temporarily create small trees that are
 unattached to any ImageFile. In these temporary trees, the top-most node will be
 a root node. After the tree is attached to the ImageFile tree, the only root
 node will be the pre-created one of the ImageTree (the one returned by
-ImageFile::root). The concept of @em attachement is slightly larger than that of
+ImageFile::root). The concept of @em attachment is slightly larger than that of
 the parent-child relationship (see Node::isAttached and
 CompressedVectorNode::CompressedVectorNode for more details).
 @pre     The destination ImageFile must be open (i.e. destImageFile().isOpen()).
@@ -968,7 +968,7 @@ types, but a parent node can only be one of the 3 container node types
 (E57_STRUCTURE, E57_VECTOR, and E57_COMPRESSED_VECTOR). Each parent-child link
 has a string name (the elementName) associated with it (See Node::elementName
 for more details). More than one tree can be formed at any given time. Typically
-small trees are temporarily constructed before attachement to an ImageFile so
+small trees are temporarily constructed before attachment to an ImageFile so
 that they will be written to the disk.
 
 @b Warning: user algorithms that use this function to walk the tree must take
@@ -1173,7 +1173,7 @@ before and after any operation on the object. An invariant is useful for testing
 correct operation of an implementation. Statements in an invariant can involve
 only externally visible state, or can refer to internal implementation-specific
 state that is not visible to the API user. The following C++ code checks
-externally visible state for consistancy and throws an exception if the
+externally visible state for consistency and throws an exception if the
 invariant is violated:
 @dontinclude E57Format.cpp
 @skip begin StructureNode::checkInvariant
@@ -3303,7 +3303,7 @@ before and after any operation on the object. An invariant is useful for testing
 correct operation of an implementation. Statements in an invariant can involve
 only externally visible state, or can refer to internal implementation-specific
 state that is not visible to the API user. The following C++ code checks
-externally visible state for consistancy and throws an exception if the
+externally visible state for consistency and throws an exception if the
 invariant is violated:
 @dontinclude E57Format.cpp
 @skip begin ScaledIntegerNode::checkInvariant

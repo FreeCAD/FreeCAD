@@ -31,6 +31,7 @@
 
 #include <Base/Interpreter.h>
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
@@ -117,7 +118,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace MeshGui

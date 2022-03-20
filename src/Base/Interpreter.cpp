@@ -29,16 +29,13 @@
 #   include <boost/regex.hpp>
 #endif
 
-#include "Console.h"
 #include "Interpreter.h"
-#include "FileInfo.h"
-#include "Stream.h"
-#include "PyTools.h"
-#include "Exception.h"
-#include "PyObjectBase.h"
-#include <CXX/Extensions.hxx>
-
+#include "Console.h"
 #include "ExceptionFactory.h"
+#include "FileInfo.h"
+#include "PyObjectBase.h"
+#include "PyTools.h"
+#include "Stream.h"
 
 
 char format2[1024];  //Warning! Can't go over 512 characters!!!
@@ -115,7 +112,7 @@ void PyException::raiseException() {
         PP_PyDict_Object = nullptr;
 
         std::string exceptionname;
-        if (_exceptionType == Base::BaseExceptionFreeCADAbort)
+        if (_exceptionType == Base::PyExc_FC_FreeCADAbort)
             edict.setItem("sclassname",
                     Py::String(typeid(Base::AbortException).name()));
         if (_isReported)
@@ -123,7 +120,7 @@ void PyException::raiseException() {
         Base::ExceptionFactory::Instance().raiseException(edict.ptr());
     }
 
-    if (_exceptionType == Base::BaseExceptionFreeCADAbort) {
+    if (_exceptionType == Base::PyExc_FC_FreeCADAbort) {
         Base::AbortException e(_sErrMsg.c_str());
         e.setReported(_isReported);
         throw e;
@@ -490,6 +487,19 @@ bool InterpreterSingleton::loadModule(const char* psModName)
     return true;
 }
 
+PyObject* InterpreterSingleton::addModule(Py::ExtensionModuleBase* mod)
+{
+    _modules.push_back(mod);
+    return mod->module().ptr();
+}
+
+void InterpreterSingleton::cleanupModules()
+{
+    for (auto it : _modules)
+        delete it;
+    _modules.clear();
+}
+
 void InterpreterSingleton::addType(PyTypeObject* Type,PyObject* Module, const char * Name)
 {
     // NOTE: To finish the initialization of our own type objects we must
@@ -567,6 +577,7 @@ void InterpreterSingleton::finalize()
 {
     try {
         PyEval_RestoreThread(this->_global);
+        cleanupModules();
         Py_Finalize();
     }
     catch (...) {
@@ -589,24 +600,24 @@ void InterpreterSingleton::runStringArg(const char * psCom,...)
 }
 
 
-// Singelton:
+// Singleton:
 
-InterpreterSingleton * InterpreterSingleton::_pcSingelton = nullptr;
+InterpreterSingleton * InterpreterSingleton::_pcSingleton = nullptr;
 
 InterpreterSingleton & InterpreterSingleton::Instance()
 {
     // not initialized!
-    if (!_pcSingelton)
-        _pcSingelton = new InterpreterSingleton();
-    return *_pcSingelton;
+    if (!_pcSingleton)
+        _pcSingleton = new InterpreterSingleton();
+    return *_pcSingleton;
 }
 
 void InterpreterSingleton::Destruct()
 {
     // not initialized or double destruct!
-    assert(_pcSingelton);
-    delete _pcSingelton;
-    _pcSingelton = nullptr;
+    assert(_pcSingleton);
+    delete _pcSingleton;
+    _pcSingleton = nullptr;
 }
 
 int InterpreterSingleton::runCommandLine(const char *prompt)

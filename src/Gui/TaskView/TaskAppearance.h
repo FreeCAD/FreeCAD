@@ -24,9 +24,8 @@
 #ifndef GUI_TASKVIEW_TASKAPPERANCE_H
 #define GUI_TASKVIEW_TASKAPPERANCE_H
 
-#include "TaskView.h"
 #include <Gui/Selection.h>
-#include <boost_signals2.hpp>
+#include "TaskView.h"
 
 
 namespace App {

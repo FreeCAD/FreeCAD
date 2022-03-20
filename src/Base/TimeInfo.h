@@ -59,17 +59,18 @@ class BaseExport TimeInfo
 public:
     /// Construction
     TimeInfo();
+    TimeInfo(const TimeInfo&) = default;
     /// Destruction
     virtual ~TimeInfo();
 
     /// sets the object to the actual system time
     void setCurrent();
-    void setTime_t (uint64_t seconds);
+    void setTime_t (int64_t seconds);
 
-    uint64_t getSeconds() const;
+    int64_t getSeconds() const;
     unsigned short  getMiliseconds() const;
 
-    //void operator =  (const TimeInfo &time);
+    void operator =  (const TimeInfo &time);
     bool operator == (const TimeInfo &time) const;
     bool operator != (const TimeInfo &time) const;
 
@@ -93,7 +94,7 @@ protected:
 };
 
 
- inline uint64_t TimeInfo::getSeconds() const
+ inline int64_t TimeInfo::getSeconds() const
  {
      return timebuffer.time;
  }
@@ -109,11 +110,11 @@ TimeInfo::operator != (const TimeInfo &time) const
     return (timebuffer.time != time.timebuffer.time || timebuffer.millitm != time.timebuffer.millitm);
 }
 
-//inline void
-//TimeInfo::operator = (const TimeInfo &time)
-//{
-    //timebuffer = time.timebuffer;
-//}
+inline void
+TimeInfo::operator = (const TimeInfo &time)
+{
+    timebuffer = time.timebuffer;
+}
 
 inline bool
 TimeInfo::operator == (const TimeInfo &time) const

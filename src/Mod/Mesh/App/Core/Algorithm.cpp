@@ -69,6 +69,12 @@ bool MeshAlgorithm::IsVertexVisible (const Base::Vector3f &rcVertex, const Base:
 bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, Base::Vector3f &rclRes,
                                        FacetIndex &rulFacet) const
 {
+    return NearestFacetOnRay(rclPt, rclDir, Mathf::PI, rclRes, rulFacet);
+}
+
+bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, float fMaxAngle,
+                                       Base::Vector3f &rclRes, FacetIndex &rulFacet) const
+{
     Base::Vector3f clProj, clRes;
     bool bSol = false;
     FacetIndex ulInd = 0;
@@ -76,13 +82,15 @@ bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::
     // slow execution with no grid
     MeshFacetIterator  clFIter(_rclMesh);
     for (clFIter.Init(); clFIter.More(); clFIter.Next()) {
-        if (clFIter->Foraminate( rclPt, rclDir, clRes ) == true) {
-            if (bSol == false) { // first solution
+        if (clFIter->Foraminate(rclPt, rclDir, clRes, fMaxAngle)) {
+            if (bSol == false) {
+                // first solution
                 bSol   = true;
                 clProj = clRes;
                 ulInd  = clFIter.Position();
             }
-            else {  // is closer to the point
+            else {
+                // is closer to the point
                 if ((clRes - rclPt).Length() < (clProj - rclPt).Length()) {
                     clProj = clRes;
                     ulInd  = clFIter.Position();
@@ -755,7 +763,7 @@ bool MeshAlgorithm::FillupHole(const std::vector<PointIndex>& boundary,
         // Now we have two adjacent triangles which we check for overlaps.
         // Therefore we build a separation plane that must separate the two diametrically opposed points.
         Base::Vector3f planeNormal = rTriangle.GetNormal() % (rTriangle._aclPoints[(ref_side+1)%3]-rTriangle._aclPoints[ref_side]);
-        Base::Vector3f planeBase = rTriangle._aclPoints[ref_side];
+        Base::Vector3f planeBase = rTriangle._aclPoints[ref_side%3];
         Base::Vector3f ref_point = rTriangle._aclPoints[(ref_side+2)%3];
         Base::Vector3f tri_point = triangle._aclPoints[(tri_side+2)%3];
 

@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGIMATTING_H
 #define DRAWINGGUI_QGIMATTING_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsItem>
 #include <QGraphicsItemGroup>
 #include <QGraphicsRectItem>

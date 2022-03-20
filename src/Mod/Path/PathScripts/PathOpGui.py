@@ -134,7 +134,6 @@ class ViewProvider(object):
             job.ViewObject.Proxy.resetEditVisibility(job)
 
     def unsetEdit(self, arg1, arg2):
-        # pylint: disable=unused-argument
         if self.panel:
             self.panel.reject(False)
 
@@ -182,12 +181,10 @@ class ViewProvider(object):
             self.panel.updateData(obj, prop)
 
     def onDelete(self, vobj, arg2=None):
-        # pylint: disable=unused-argument
         PathUtil.clearExpressionEngine(vobj.Object)
         return True
 
     def setupContextMenu(self, vobj, menu):
-        # pylint: disable=unused-argument
         PathLog.track()
         for action in menu.actions():
             menu.removeAction(action)
@@ -205,7 +202,7 @@ class TaskPanelPage(object):
         Do not overwrite, implement initPage(obj) instead."""
         self.obj = obj
         self.job = PathUtils.findParentJob(obj)
-        self.form = self.getForm()  # pylint: disable=assignment-from-no-return
+        self.form = self.getForm()
         self.signalDirtyChanged = None
         self.setClean()
         self.setTitle("-")
@@ -220,6 +217,11 @@ class TaskPanelPage(object):
 
     def _installTCUpdate(self):
         return hasattr(self.form, "toolController")
+
+    def setParent(self, parent):
+        '''setParent() ... used to transfer parent object link to child class.
+        Do not overwrite.'''
+        self.parent = parent
 
     def onDirtyChanged(self, callback):
         """onDirtyChanged(callback) ... set callback when dirty state changes."""
@@ -276,7 +278,6 @@ class TaskPanelPage(object):
         """getTitle(obj) ... return title to be used for the receiver page.
         The default implementation returns what was previously set with setTitle(title).
         Can safely be overwritten by subclasses."""
-        # pylint: disable=unused-argument
         return self.title
 
     def setIcon(self, icon):
@@ -286,7 +287,6 @@ class TaskPanelPage(object):
     def getIcon(self, obj):
         """getIcon(obj) ... return icon for page or None.
         Can safely be overwritten by subclasses."""
-        # pylint: disable=unused-argument
         return self.icon
 
     # subclass interface
@@ -294,39 +294,37 @@ class TaskPanelPage(object):
         """initPage(obj) ... overwrite to customize UI for specific model.
         Note that this function is invoked after all page controllers have been created.
         Should be overwritten by subclasses."""
-        # pylint: disable=unused-argument
-        pass  # pylint: disable=unnecessary-pass
+        pass
 
     def cleanupPage(self, obj):
         """cleanupPage(obj) ... overwrite to perform any cleanup tasks before page is destroyed.
         Can safely be overwritten by subclasses."""
-        pass  # pylint: disable=unnecessary-pass
+        pass
 
     def modifyStandardButtons(self, buttonBox):
         """modifyStandardButtons(buttonBox) ... overwrite if the task panel standard buttons need to be modified.
         Can safely be overwritten by subclasses."""
-        pass  # pylint: disable=unnecessary-pass
+        pass
 
     def getForm(self):
         """getForm() ... return UI form for this page.
         Must be overwritten by subclasses."""
-        pass  # pylint: disable=unnecessary-pass
+        pass
 
     def getFields(self, obj):
         """getFields(obj) ... overwrite to transfer values from UI to obj's properties.
         Can safely be overwritten by subclasses."""
-        pass  # pylint: disable=unnecessary-pass
+        pass
 
     def setFields(self, obj):
         """setFields(obj) ... overwrite to transfer obj's property values to UI.
         Can safely be overwritten by subclasses."""
-        pass  # pylint: disable=unnecessary-pass
+        pass
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return signals which, when triggered, cause the receiver to update the model.
         See also registerSignalHandlers(obj)
         Can safely be overwritten by subclasses."""
-        # pylint: disable=unused-argument
         return []
 
     def registerSignalHandlers(self, obj):
@@ -335,8 +333,7 @@ class TaskPanelPage(object):
         (see getSignalsForUpdate(obj)) this function can be used to register signal handlers
         manually.
         Can safely be overwritten by subclasses."""
-        # pylint: disable=unused-argument
-        pass  # pylint: disable=unnecessary-pass
+        pass
 
     def updateData(self, obj, prop):
         """updateData(obj, prop) ... overwrite if the receiver needs to react to property changes that might not have been caused by the receiver itself.
@@ -348,15 +345,13 @@ class TaskPanelPage(object):
         This can happen if a subclass unconditionally transfers all values in getFields(obj) to the model and just calls setFields(obj) in this callback.
         In such a scenario the first property assignment will cause all changes in the UI of the other fields to be overwritten by setFields(obj).
         You have been warned."""
-        # pylint: disable=unused-argument
-        pass  # pylint: disable=unnecessary-pass
+        pass
 
     def updateSelection(self, obj, sel):
         """updateSelection(obj, sel) ...
         overwrite to customize UI depending on current selection.
         Can safely be overwritten by subclasses."""
-        # pylint: disable=unused-argument
-        pass  # pylint: disable=unnecessary-pass
+        pass
 
     def selectInComboBox(self, name, combo):
         """selectInComboBox(name, combo) ...
@@ -381,19 +376,8 @@ class TaskPanelPage(object):
         return
 
     def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
-        """fillComboboxes(form, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
-        ** comboBoxesPropertyMap will be unnecessary if UI files use strict combobox naming protocol.
-        Args:
-            form = UI form
-            enumTups = list of (translated_text, data_string) tuples
-            comboBoxesPropertyMap = list of (translated_text, data_string) tuples
-        """
-        # Load appropriate enumerations in each combobox
-        for cb, prop in comboBoxesPropertyMap:
-            box = getattr(form, cb)  # Get the combobox
-            box.clear()  # clear the combobox
-            for text, data in enumTups[prop]:  #  load enumerations
-                box.addItem(text, data)
+        """populateCombobox(form, enumTups, comboBoxesPropertyMap) ... proxy for PathGui.populateCombobox()"""
+        PathGui.populateCombobox(form, enumTups, comboBoxesPropertyMap)
 
     def resetToolController(self, job, tc):
         if self.obj is not None:
@@ -777,7 +761,6 @@ class TaskPanelBaseLocationPage(TaskPanelPage):
         self.getPoint.getPoint(self.addLocationAt)
 
     def addLocationAt(self, point, obj):
-        # pylint: disable=unused-argument
         if point:
             locations = self.obj.Locations
             locations.append(point)
@@ -795,7 +778,6 @@ class TaskPanelBaseLocationPage(TaskPanelPage):
             self.getPoint.getPoint(self.editLocationAt, start)
 
     def editLocationAt(self, point, obj):
-        # pylint: disable=unused-argument
         if point:
             self.formLoc.baseList.item(self.editRow, 0).setData(
                 self.DataLocation, point.x
@@ -1189,6 +1171,7 @@ class TaskPanel(object):
             self.form = forms
 
         self.selectionFactory = selectionFactory
+        self.obj = obj
         self.isdirty = deleteOnReject
         self.visibility = obj.ViewObject.Visibility
         obj.ViewObject.Visibility = True
@@ -1249,7 +1232,6 @@ class TaskPanel(object):
 
     def pageDirtyChanged(self, page):
         """pageDirtyChanged(page) ... internal callback"""
-        # pylint: disable=unused-argument
         self.buttonBox.button(QtGui.QDialogButtonBox.Apply).setEnabled(self.isDirty())
 
     def clicked(self, button):
@@ -1343,26 +1325,20 @@ class TaskPanel(object):
 
     # SelectionObserver interface
     def addSelection(self, doc, obj, sub, pnt):
-        # pylint: disable=unused-argument
         self.updateSelection()
 
     def removeSelection(self, doc, obj, sub):
-        # pylint: disable=unused-argument
         self.updateSelection()
 
     def setSelection(self, doc):
-        # pylint: disable=unused-argument
         self.updateSelection()
 
     def clearSelection(self, doc):
-        # pylint: disable=unused-argument
         self.updateSelection()
 
 
 class CommandSetStartPoint:
     """Command to set the start point for an operation."""
-
-    # pylint: disable=no-init
 
     def GetResources(self):
         return {
@@ -1381,7 +1357,6 @@ class CommandSetStartPoint:
         return obj and hasattr(obj, "StartPoint")
 
     def setpoint(self, point, o):
-        # pylint: disable=unused-argument
         obj = FreeCADGui.Selection.getSelection()[0]
         obj.StartPoint.x = point.x
         obj.StartPoint.y = point.y
@@ -1399,15 +1374,27 @@ def Create(res):
     this function directly, but calls the Activated() function of the Command object
     that is created in each operations Gui implementation."""
     FreeCAD.ActiveDocument.openTransaction("Create %s" % res.name)
-    obj = res.objFactory(res.name, obj=None, parentJob=res.job)
-    if obj.Proxy:
-        obj.ViewObject.Proxy = ViewProvider(obj.ViewObject, res)
-        obj.ViewObject.Visibility = False
-        FreeCAD.ActiveDocument.commitTransaction()
+    try:
+        obj = res.objFactory(res.name, obj=None, parentJob=res.job)
+        if obj.Proxy:
+            obj.ViewObject.Proxy = ViewProvider(obj.ViewObject, res)
+            obj.ViewObject.Visibility = True
+            FreeCAD.ActiveDocument.commitTransaction()
 
-        obj.ViewObject.Document.setEdit(obj.ViewObject, 0)
-        return obj
+            obj.ViewObject.Document.setEdit(obj.ViewObject, 0)
+            return obj
+    except PathUtils.PathNoTCExistsException:
+        msg = translate(
+            "PathOp", "No suitable tool controller found.\nAborting op creation"
+        )
+        diag = QtGui.QMessageBox(QtGui.QMessageBox.Warning, "Error", msg)
+        diag.setWindowModality(QtCore.Qt.ApplicationModal)
+        diag.exec_()
+    except PathOp.PathNoTCException:
+        PathLog.warning(translate("PathOp", "No tool controller, aborting op creation"))
+
     FreeCAD.ActiveDocument.abortTransaction()
+    FreeCAD.ActiveDocument.recompute()
     return None
 
 

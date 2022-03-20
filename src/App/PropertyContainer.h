@@ -25,7 +25,6 @@
 #define APP_PROPERTYCONTAINER_H
 
 #include <map>
-#include <climits>
 #include <cstring>
 #include <Base/Persistence.h>
 
@@ -221,6 +220,8 @@ public:
 
   virtual void Save (Base::Writer &writer) const;
   virtual void Restore(Base::XMLReader &reader);
+
+  virtual void editProperty(const char * /*propName*/) {}
 
   const char *getPropertyPrefix() const {
       return _propertyPrefix.c_str();

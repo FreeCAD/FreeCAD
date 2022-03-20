@@ -132,6 +132,7 @@ protected:
 
     struct VertexIds;
     struct Vertex_Less;
+    struct VertexID_Less;
     struct Vertex_EqualTo;
     struct EdgeIds;
     struct Edge_Less;

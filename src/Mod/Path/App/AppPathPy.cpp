@@ -76,7 +76,7 @@
         str += e.what();                                            \
         str += ")";                                                 \
         e.ReportException();                                        \
-        PyErr_SetString(Base::BaseExceptionFreeCADError,str.c_str());\
+        PyErr_SetString(Base::PyExc_FC_GeneralError,str.c_str());\
     }                                                               \
     catch(std::exception &e)                                        \
     {                                                               \
@@ -85,11 +85,11 @@
         str += e.what();                                            \
         str += ")";                                                 \
         Base::Console().Error(str.c_str());                         \
-        PyErr_SetString(Base::BaseExceptionFreeCADError,str.c_str());\
+        PyErr_SetString(Base::PyExc_FC_GeneralError,str.c_str());\
     }                                                               \
     catch(const char *e)                                            \
     {                                                               \
-        PyErr_SetString(Base::BaseExceptionFreeCADError,e);         \
+        PyErr_SetString(Base::PyExc_FC_GeneralError,e);         \
     } throw Py::Exception();
 
 namespace Path {
@@ -430,7 +430,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace Path

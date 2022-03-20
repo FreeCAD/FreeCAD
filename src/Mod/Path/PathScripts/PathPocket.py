@@ -22,6 +22,7 @@
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
+import Part
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathPocketBase as PathPocketBase
@@ -30,16 +31,13 @@ import PathScripts.PathUtils as PathUtils
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
-Part = LazyLoader("Part", globals(), "Part")
+PathGeom = LazyLoader("PathScripts.PathGeom", globals(), "PathScripts.PathGeom")
 
 __title__ = "Path 3D Pocket Operation"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Class and implementation of the 3D Pocket operation."
-__contributors__ = "russ4262 (Russell Johnson)"
 __created__ = "2014"
-__scriptVersion__ = "2e"
-__lastModified__ = "2020-02-13 17:22 CST"
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -69,6 +67,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     "Choose how to process multiple Base Geometry features.",
                 ),
             )
+
         if not hasattr(obj, "AdaptivePocketStart"):
             obj.addProperty(
                 "App::PropertyBool",
@@ -143,6 +142,16 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
     def pocketInvertExtraOffset(self):
         return False
 
+    def opUpdateDepths(self, obj):
+        """opUpdateDepths(obj) ... Implement special depths calculation."""
+        # Set Final Depth to bottom of model if whole model is used
+        if not obj.Base or len(obj.Base) == 0:
+            if len(self.job.Model.Group) == 1:
+                finDep = self.job.Model.Group[0].Shape.BoundBox.ZMin
+            else:
+                finDep = min([m.Shape.BoundBox.ZMin for m in self.job.Model.Group])
+            obj.setExpression("OpFinalDepth", "{} mm".format(finDep))
+
     def areaOpShapes(self, obj):
         """areaOpShapes(obj) ... return shapes representing the solids to be removed."""
         PathLog.track()
@@ -196,8 +205,13 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         env = PathUtils.getEnvelope(
                             base[0].Shape, subshape=shape, depthparams=self.depthparams
                         )
-                        obj.removalshape = env.cut(base[0].Shape)
-                        # obj.removalshape.tessellate(0.1)
+                        rawRemovalShape = env.cut(base[0].Shape)
+                        faceExtrusions = [
+                            f.extrude(FreeCAD.Vector(0.0, 0.0, 1.0)) for f in Faces
+                        ]
+                        obj.removalshape = _identifyRemovalSolids(
+                            rawRemovalShape, faceExtrusions
+                        )
                         removalshapes.append(
                             (obj.removalshape, False, "3DPocket")
                         )  # (shape, isHole, detail)
@@ -212,8 +226,11 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         env = PathUtils.getEnvelope(
                             base[0].Shape, subshape=shape, depthparams=self.depthparams
                         )
-                        obj.removalshape = env.cut(base[0].Shape)
-                        # obj.removalshape.tessellate(0.1)
+                        rawRemovalShape = env.cut(base[0].Shape)
+                        faceExtrusions = [shape.extrude(FreeCAD.Vector(0.0, 0.0, 1.0))]
+                        obj.removalshape = _identifyRemovalSolids(
+                            rawRemovalShape, faceExtrusions
+                        )
                         removalshapes.append((obj.removalshape, False, "3DPocket"))
 
         else:  # process the job base object as a whole
@@ -226,15 +243,33 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                         job.Stock.Shape, subshape=None, depthparams=self.depthparams
                     )
 
-                    obj.removalshape = stockEnvShape.cut(base.Shape)
-                    # obj.removalshape.tessellate(0.1)
+                    rawRemovalShape = stockEnvShape.cut(base.Shape)
                 else:
                     env = PathUtils.getEnvelope(
                         base.Shape, subshape=None, depthparams=self.depthparams
                     )
-                    obj.removalshape = env.cut(base.Shape)
-                    # obj.removalshape.tessellate(0.1)
+                    rawRemovalShape = env.cut(base.Shape)
 
+                # Identify target removal shapes after cutting envelope with base shape
+                removalSolids = [
+                    s
+                    for s in rawRemovalShape.Solids
+                    if PathGeom.isRoughly(
+                        s.BoundBox.ZMax, rawRemovalShape.BoundBox.ZMax
+                    )
+                ]
+
+                # Fuse multiple solids
+                if len(removalSolids) > 1:
+                    seed = removalSolids[0]
+                    for tt in removalSolids[1:]:
+                        fusion = seed.fuse(tt)
+                        seed = fusion
+                    removalShape = seed
+                else:
+                    removalShape = removalSolids[0]
+
+                obj.removalshape = removalShape
                 removalshapes.append((obj.removalshape, False, "3DPocket"))
 
         return removalshapes
@@ -293,7 +328,10 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             except Exception as ee:
                 PathLog.warning(ee)
                 PathLog.error(
-                    "A planar adaptive start is unavailable. The non-planar will be attempted."
+                    translate(
+                        "Path",
+                        "A planar adaptive start is unavailable. The non-planar will be attempted.",
+                    )
                 )
                 tryNonPlanar = True
             else:
@@ -306,7 +344,12 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     )  # NON-planar face method
                 except Exception as eee:
                     PathLog.warning(eee)
-                    PathLog.error("The non-planar adaptive start is also unavailable.")
+                    PathLog.error(
+                        translate(
+                            "Path", "The non-planar adaptive start is also unavailable."
+                        )
+                        + "(1)"
+                    )
                     isHighFacePlanar = False
                 else:
                     makeHighFace = 2
@@ -331,7 +374,12 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             highFace.Shape.BoundBox.ZMin - mn,
                         )
                     )
-                    PathLog.error("The non-planar adaptive start is also unavailable.")
+                    PathLog.error(
+                        translate(
+                            "Path", "The non-planar adaptive start is also unavailable."
+                        )
+                        + "(2)"
+                    )
                     isHighFacePlanar = False
                     makeHighFace = 0
         else:
@@ -829,6 +877,44 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             if f.BoundBox.ZMax > zmax:
                 zmax = f.BoundBox.ZMax
         return (zmin, zmax)
+
+
+def _identifyRemovalSolids(sourceShape, commonShapes):
+    """_identifyRemovalSolids(sourceShape, commonShapes)
+    Loops through solids in sourceShape to identify commonality with solids in commonShapes.
+    The sourceShape solids with commonality are returned as Part.Compound shape."""
+    common = Part.makeCompound(commonShapes)
+    removalSolids = [s for s in sourceShape.Solids if s.common(common).Volume > 0.0]
+    return Part.makeCompound(removalSolids)
+
+
+def _extrudeBaseDown(base):
+    """_extrudeBaseDown(base)
+    Extrudes and fuses all non-vertical faces downward to a level 1.0 mm below base ZMin."""
+    allExtrusions = list()
+    zMin = base.Shape.BoundBox.ZMin
+    bbFace = PathGeom.makeBoundBoxFace(base.Shape.BoundBox, offset=5.0)
+    bbFace.translate(
+        FreeCAD.Vector(0.0, 0.0, float(int(base.Shape.BoundBox.ZMin - 5.0)))
+    )
+    direction = FreeCAD.Vector(0.0, 0.0, -1.0)
+
+    # Make projections of each non-vertical face and extrude it
+    for f in base.Shape.Faces:
+        fbb = f.BoundBox
+        if not PathGeom.isRoughly(f.normalAt(0, 0).z, 0.0):
+            pp = bbFace.makeParallelProjection(f.Wires[0], direction)
+            face = Part.Face(Part.Wire(pp.Edges))
+            face.translate(FreeCAD.Vector(0.0, 0.0, fbb.ZMin))
+            ext = face.extrude(FreeCAD.Vector(0.0, 0.0, zMin - fbb.ZMin - 1.0))
+            allExtrusions.append(ext)
+
+    # Fuse all extrusions together
+    seed = allExtrusions.pop()
+    fusion = seed.fuse(allExtrusions)
+    fusion.translate(FreeCAD.Vector(0.0, 0.0, zMin - fusion.BoundBox.ZMin - 1.0))
+
+    return fusion.cut(base.Shape)
 
 
 def SetupProperties():

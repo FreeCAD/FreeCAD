@@ -210,7 +210,7 @@ This property is read-only, as the number depends on the parameters of the array
     <message>
       <location filename="pathtwistedarray.py" line="100"/>
       <source>Number of copies to create.</source>
-      <translation type="unfinished">Number of copies to create.</translation>
+      <translation>作成するコピーの数。</translation>
     </message>
     <message>
       <location filename="pathtwistedarray.py" line="107"/>
@@ -709,6 +709,11 @@ This property is read-only, as the number depends on the points contained within
       <translation>このオブジェクトの面積</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>オブジェクトの形</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>このオブジェクトで使用されているベースオブジェクト</translation>
@@ -717,11 +722,6 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
       <translation>このオブジェクトで使用されるPATファイル</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>このオブジェクトの形</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>
@@ -1083,7 +1083,7 @@ beyond the dimension line</source>
     <message>
       <location filename="view_layer.py" line="77"/>
       <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
-      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape color of the layer</translation>
+      <translation>True の場合、このレイヤー内に含まれるオブジェクトはレイヤーの形状色を採用します</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="88"/>
@@ -1334,12 +1334,12 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="gui_setstyle.py" line="273"/>
       <source>Save style</source>
-      <translation type="unfinished">Save style</translation>
+      <translation>スタイルを保存</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="274"/>
       <source>Name of this new style:</source>
-      <translation type="unfinished">Name of this new style:</translation>
+      <translation>この新しいスタイルの名前:</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="281"/>
@@ -1349,12 +1349,12 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="gui_setstyle.py" line="282"/>
       <source>Name exists. Overwrite?</source>
-      <translation type="unfinished">Name exists. Overwrite?</translation>
+      <translation>名前が存在します。上書きしますか？</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="317"/>
       <source>Error: json module not found. Unable to save style</source>
-      <translation type="unfinished">Error: json module not found. Unable to save style</translation>
+      <translation>エラー：json モジュールが見つかりません。スタイルを保存できません。</translation>
     </message>
     <message>
       <location filename="gui_hatch.py" line="48"/>
@@ -1530,7 +1530,7 @@ It creates a construction group if it doesn't exist.</source>
     <message>
       <location filename="gui_groups.py" line="365"/>
       <source>Add a new group with a given name.</source>
-      <translation type="unfinished">Add a new group with a given name.</translation>
+      <translation>指定した名前で新しいグループを追加</translation>
     </message>
   </context>
   <context>
@@ -1576,7 +1576,7 @@ Create a group first to use this tool.</source>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="82"/>
       <source>Manage or create annotation styles</source>
-      <translation type="unfinished">Manage or create annotation styles</translation>
+      <translation>注釈スタイルの管理と作成</translation>
     </message>
   </context>
   <context>
@@ -3567,7 +3567,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="importDWG.py" line="295"/>
       <source>Converting:</source>
-      <translation type="unfinished">Converting:</translation>
+      <translation>変換中:</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="228"/>
@@ -3592,19 +3592,18 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_sketch.py" line="139"/>
       <source>All Shapes must be coplanar</source>
-      <translation type="unfinished">All Shapes must be coplanar</translation>
+      <translation>シェイプは全て同一平面上にある必要があります。</translation>
     </message>
     <message>
       <location filename="WorkingPlane.py" line="696"/>
       <source>Selected Shapes must define a plane
 </source>
-      <translation type="unfinished">Selected Shapes must define a plane
-</translation>
+      <translation>選択したシェイプは平面を定義する必要があります</translation>
     </message>
     <message>
       <location filename="WorkingPlane.py" line="704"/>
       <source>Selected Shapes must define a plane</source>
-      <translation type="unfinished">Selected Shapes must define a plane</translation>
+      <translation>選択したシェイプは平面を定義する必要があります</translation>
     </message>
     <message>
       <location filename="make_label.py" line="196"/>
@@ -3677,6 +3676,11 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>複数のワイヤー、エッジが見つかりました：ワイヤー化します</translation>
     </message>
     <message>
+      <location filename="upgrade.py" line="541"/>
+      <source>Found several non-treatable objects: creating compound</source>
+      <translation>複数の修復不能なオブジェクトが見つかりました：コンパウンドを作成します</translation>
+    </message>
+    <message>
       <location filename="upgrade.py" line="512"/>
       <source>trying: closing it</source>
       <translation>試行中：閉じています</translation>
@@ -3695,11 +3699,6 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="upgrade.py" line="536"/>
       <source>Found points: creating compound</source>
       <translation>点が見つかりました：コンパウドを作成します</translation>
-    </message>
-    <message>
-      <location filename="upgrade.py" line="541"/>
-      <source>Found several non-treatable objects: creating compound</source>
-      <translation>複数の修復不能なオブジェクトが見つかりました：コンパウンドを作成します</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="544"/>
@@ -5672,7 +5671,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="importDWG.py" line="277"/>
       <source>Converting:</source>
-      <translation type="unfinished">Converting:</translation>
+      <translation>変換中:</translation>
     </message>
   </context>
   <context>

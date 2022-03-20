@@ -92,7 +92,7 @@ namespace e57
          int64_t length;                  // used in E57_BLOB
          bool allowHeterogeneousChildren; // used in E57_VECTOR
          int64_t recordCount;             // used in E57_COMPRESSED_VECTOR
-         ustring childText;               // used by all types, accumlates all child text between tags
+         ustring childText;               // used by all types, accumulates all child text between tags
 
          /// Holds node for Structure, Vector, and CompressedVector so can append
          /// child elements

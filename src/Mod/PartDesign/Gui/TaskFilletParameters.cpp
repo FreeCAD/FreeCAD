@@ -25,26 +25,19 @@
 
 #ifndef _PreComp_
 # include <QAction>
-# include <QKeyEvent>
 # include <QListWidget>
 # include <QMessageBox>
 #endif
 
+#include <Base/Interpreter.h>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <Gui/Selection.h>
+#include <Gui/ViewProvider.h>
+#include <Mod/PartDesign/App/FeatureFillet.h>
+
 #include "ui_TaskFilletParameters.h"
 #include "TaskFilletParameters.h"
-#include <Base/UnitsApi.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
-#include <Mod/PartDesign/App/FeatureFillet.h>
-#include <Mod/Sketcher/App/SketchObject.h>
 
 
 using namespace PartDesignGui;
@@ -63,6 +56,11 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView, QWi
     this->groupLayout()->addWidget(proxy);
 
     PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
+    bool useAllEdges = pcFillet->UseAllEdges.getValue();
+    ui->checkBoxUseAllEdges->setChecked(useAllEdges);
+    ui->buttonRefAdd->setEnabled(!useAllEdges);
+    ui->buttonRefRemove->setEnabled(!useAllEdges);
+    ui->listWidgetReferences->setEnabled(!useAllEdges);
     double r = pcFillet->Radius.getValue();
 
     ui->filletRadius->setUnit(Base::Unit::Length);
@@ -85,6 +83,8 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp *DressUpView, QWi
         this, SLOT(onButtonRefAdd(bool)));
     connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
         this, SLOT(onButtonRefRemove(bool)));
+    connect(ui->checkBoxUseAllEdges, SIGNAL(toggled(bool)),
+            this, SLOT(onCheckBoxUseAllEdgesToggled(bool)));
 
     // Create context menu
     createDeleteAction(ui->listWidgetReferences, ui->buttonRefRemove);
@@ -143,6 +143,16 @@ void TaskFilletParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             DressUpView->highlightReferences(true);
         }
     }
+}
+
+void TaskFilletParameters::onCheckBoxUseAllEdgesToggled(bool checked)
+{
+    PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(DressUpView->getObject());
+    ui->buttonRefRemove->setEnabled(!checked);
+    ui->buttonRefAdd->setEnabled(!checked);
+    ui->listWidgetReferences->setEnabled(!checked);
+    pcFillet->UseAllEdges.setValue(checked);
+    pcFillet->getDocument()->recomputeFeature(pcFillet);
 }
 
 void TaskFilletParameters::clearButtons(const selectionModes notThis)

@@ -23,8 +23,8 @@
 
 // Based on DlgToolbars.cpp
 
-
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
 # include <QDebug>
 # include <QInputDialog>
@@ -33,13 +33,8 @@
 #include "DlgWorkbenchesImp.h"
 #include "ui_DlgWorkbenches.h"
 #include "Application.h"
-#include "BitmapFactory.h"
-#include "Command.h"
-#include "MainWindow.h"
-#include "Widgets.h"
-#include "Workbench.h"
-#include "WorkbenchManager.h"
 #include "QListWidgetCustom.h"
+
 
 using namespace Gui::Dialog;
 

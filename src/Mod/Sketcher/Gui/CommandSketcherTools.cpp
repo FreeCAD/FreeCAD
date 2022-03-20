@@ -38,6 +38,7 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Gui/DlgEditFileIncludePropertyExternal.h>
@@ -982,50 +983,67 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
 
     getSelection().clearSelection();
 
+    // Return GeoId of the SubName only if it is an edge
+    auto getEdgeGeoId = [&Obj](const std::string& SubName) {
+        int GeoId;
+        Sketcher::PointPos PosId;
+        getIdsFromName(SubName, Obj, GeoId, PosId);
+        if (PosId == Sketcher::PointPos::none)
+            return GeoId;
+        else
+            return (int)GeoEnum::GeoUndef;
+    };
+
+    // Tells if the geometry with given GeoId has internal geometry
+    auto noInternalGeo = [&Obj](const auto& GeoId) {
+        const Part::Geometry *geo = Obj->getGeometry(GeoId);
+        bool hasInternalGeo = geo &&
+            (geo->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
+             geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
+             geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
+             geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ||
+             geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId());
+        return !hasInternalGeo; // so it's removed
+    };
+
+    std::vector<int> SubGeoIds(SubNames.size());
+    std::transform(SubNames.begin(), SubNames.end(), SubGeoIds.begin(), getEdgeGeoId);
+
+    // Handle highest GeoIds first to minimize GeoIds changing
+    // TODO: this might not completely resolve GeoIds changing
+    std::sort(SubGeoIds.begin(), SubGeoIds.end(), std::greater<int>());
+    // Keep unique
+    SubGeoIds.erase(std::unique(SubGeoIds.begin(), SubGeoIds.end()), SubGeoIds.end());
+
+    // Only for supported types and keep unique
+    SubGeoIds.erase(std::remove_if(SubGeoIds.begin(), SubGeoIds.end(), noInternalGeo),
+                    SubGeoIds.end());
+
     // go through the selected subelements
-    for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
-        // only handle edges
-        if ((it->size() > 4 && it->substr(0,4) == "Edge") ||
-            (it->size() > 12 && it->substr(0,12) == "ExternalEdge")) {
-            int GeoId;
-            if (it->substr(0,4) == "Edge")
-               GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
-            else
-               GeoId = -std::atoi(it->substr(12,4000).c_str()) - 2;
+    for (const auto& GeoId : SubGeoIds) {
+        int currentgeoid = Obj->getHighestCurveIndex();
 
-            const Part::Geometry *geo = Obj->getGeometry(GeoId);
-            // Only for supported types
-            if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
-                geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
-                geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
-                geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ||
-                geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+        try {
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Exposing Internal Geometry"));
+            Gui::cmdAppObjectArgs(Obj, "exposeInternalGeometry(%d)", GeoId);
 
-                int currentgeoid = Obj->getHighestCurveIndex();
+            int aftergeoid = Obj->getHighestCurveIndex();
 
-                try {
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Exposing Internal Geometry"));
-                    Gui::cmdAppObjectArgs(Obj, "exposeInternalGeometry(%d)", GeoId);
-
-                    int aftergeoid = Obj->getHighestCurveIndex();
-
-                    if(aftergeoid == currentgeoid) { // if we did not expose anything, deleteunused
-                        Gui::cmdAppObjectArgs(Obj, "deleteUnusedInternalGeometry(%d)", GeoId);
-                    }
-                }
-                catch (const Base::Exception& e) {
-                    Base::Console().Error("%s\n", e.what());
-                    Gui::Command::abortCommand();
-
-                    tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(Obj));
-
-                    return;
-                }
-
-                Gui::Command::commitCommand();
-                tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(Obj));
+            if(aftergeoid == currentgeoid) { // if we did not expose anything, deleteunused
+                Gui::cmdAppObjectArgs(Obj, "deleteUnusedInternalGeometry(%d)", GeoId);
             }
         }
+        catch (const Base::Exception& e) {
+            Base::Console().Error("%s\n", e.what());
+            Gui::Command::abortCommand();
+
+            tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(Obj));
+
+            return;
+        }
+
+        Gui::Command::commitCommand();
+        tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(Obj));
     }
 }
 
@@ -1319,14 +1337,7 @@ public:
         Snap5Degree
     };
 
-    virtual void activated(ViewProviderSketch *sketchgui)
-    {
-        setCursor(QPixmap(cursor_createcopy), 7, 7);
-        Origin = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->getPoint(OriginGeoId, OriginPos);
-        EditCurve[0] = Base::Vector2d(Origin.x, Origin.y);
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode == STATUS_SEEK_First) {
 
@@ -1359,7 +1370,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d)
+    virtual bool pressButton(Base::Vector2d) override
     {
         if (Mode == STATUS_SEEK_First) {
             drawEdit(EditCurve);
@@ -1368,7 +1379,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode == STATUS_End)
@@ -1421,6 +1432,13 @@ public:
             sketchgui->purgeHandler();
         }
         return true;
+    }
+private:
+    virtual void activated() override
+    {
+        setCursor(QPixmap(cursor_createcopy), 7, 7);
+        Origin = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->getPoint(OriginGeoId, OriginPos);
+        EditCurve[0] = Base::Vector2d(Origin.x, Origin.y);
     }
 protected:
     SelectMode Mode;
@@ -1868,14 +1886,7 @@ public:
         Snap5Degree
     };
 
-    virtual void activated(ViewProviderSketch *sketchgui)
-    {
-        setCursor(QPixmap(cursor_createrectangulararray), 7, 7);
-        Origin = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->getPoint(OriginGeoId, OriginPos);
-        EditCurve[0] = Base::Vector2d(Origin.x, Origin.y);
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First) {
 
@@ -1910,7 +1921,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d)
+    virtual bool pressButton(Base::Vector2d) override
     {
         if (Mode == STATUS_SEEK_First) {
             drawEdit(EditCurve);
@@ -1919,7 +1930,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode == STATUS_End) {
@@ -1958,6 +1969,13 @@ public:
             sketchgui->purgeHandler();
         }
         return true;
+    }
+private:
+    virtual void activated() override
+    {
+        setCursor(QPixmap(cursor_createrectangulararray), 7, 7);
+        Origin = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->getPoint(OriginGeoId, OriginPos);
+        EditCurve[0] = Base::Vector2d(Origin.x, Origin.y);
     }
 protected:
     SelectMode Mode;

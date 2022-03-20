@@ -24,9 +24,6 @@
 #ifndef PARTDESIGN_FeaturePrimitive_H
 #define PARTDESIGN_FeaturePrimitive_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-
 #include "FeatureAddSub.h"
 #include <Mod/Part/App/AttachExtension.h>
 #include <Mod/Part/App/PrismExtension.h>

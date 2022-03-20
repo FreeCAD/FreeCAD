@@ -20,21 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef __InventorAll__
-# include "InventorAll.h"
+#ifndef _PreComp_
+# include <Inventor/nodes/SoCamera.h>
 #endif
 
+#include <Base/GeometryPyCXX.h>
+#include <Base/Interpreter.h>
+#include <Base/MatrixPy.h>
 
 #include "View3DViewerPy.h"
-#include <CXX/Objects.hxx>
-#include <Base/Interpreter.h>
-#include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
-#include <Base/MatrixPy.h>
-#include <Gui/View3DInventorViewer.h>
+#include "View3DInventorViewer.h"
+
 
 using namespace Gui;
 
@@ -398,7 +396,8 @@ Py::Object View3DInventorViewerPy::setupEditingRoot(const Py::Tuple& args)
         return Py::None();
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(Base::BaseExceptionFreeCADError,e.what());
+        e.setPyException();
+        throw Py::Exception();
     }
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
@@ -419,7 +418,8 @@ Py::Object View3DInventorViewerPy::resetEditingRoot(const Py::Tuple& args)
         return Py::None();
     }
     catch (const Base::Exception& e) {
-        throw Py::Exception(Base::BaseExceptionFreeCADError,e.what());
+        e.setPyException();
+        throw Py::Exception();
     }
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());

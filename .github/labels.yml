@@ -2,38 +2,62 @@
 # source:
 # - any: ['src/**/*', '!src/docs/*']
 
-
-🛤️ Path:
-- 'src/Mod/Path/**/*'
-
-🏛 Arch:
-- 'src/Mod/Arch/**/*'
-
-🚜 PartDesign:
-- 'src/Mod/PartDesign/**/*'
-
-':pencil2: Sketcher':
-- 'src/Mod/Sketcher/**/*'
-
-📐 Draft:
-- 'src/Mod/Draft/**/*'
-
-🧪 FEM:
-- 'src/Mod/Fem/**/*'
-
-⚙ TechDraw:
-- 'src/Mod/TechDraw/**/*'
-
-🧱 Part:  
-- 'src/Mod/Part/**/*'
-
-🥅Mesh:
-- 'src/Mod/Mesh/**/*'
-
-Spreadsheet:
-- 'src/Mod/Spreadsheet/**/*'
-
 Core:
 - 'src/App/**/*'
 - 'src/Base/**/*'
 - 'src/Gui/**/*'
+
+:octocat::
+- '.github/**/*'
+
+Addon Manager:
+- 'src/Mod/AddonManager/**/*'
+
+WB Arch:
+- 'src/Mod/Arch/**/*'
+
+WB Draft:
+- 'src/Mod/Draft/**/*'
+
+WB FEM:
+- 'src/Mod/Fem/**/*'
+
+WB Mesh:
+- 'src/Mod/Mesh/**/*'
+
+WB MeshPart:
+- 'src/Mod/MeshPart/**/*'
+
+WB OpenSCAD:
+- 'src/Mod/OpenSCAD/**/*'
+
+WB Part:  
+- 'src/Mod/Part/**/*'
+
+WB PartDesign:
+- 'src/Mod/PartDesign/**/*'
+
+WB Path:
+- 'src/Mod/Path/**/*'
+
+WB Points:
+- 'src/Mod/Points/**/*'
+
+WB ReverseEngineering:
+- 'src/Mod/ReverseEngineering/**/*'
+
+WB Sketcher:
+- 'src/Mod/Sketcher/**/*'
+
+WB Spreadsheet:
+- 'src/Mod/Spreadsheet/**/*'
+
+WB Surface:
+- 'src/Mod/Surface/**/*/'
+
+WB TechDraw:
+- 'src/Mod/TechDraw/**/*'
+
+WB Test:
+- 'src/Mod/Test/**/*'
+

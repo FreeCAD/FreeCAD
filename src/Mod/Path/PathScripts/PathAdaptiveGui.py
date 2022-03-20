@@ -40,21 +40,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.populateCombobox(form, enumTups, comboToPropertyMap)
         return form
 
-    def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
-        """fillComboboxes(form, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
-        ** comboBoxesPropertyMap will be unnecessary if UI files use strict combobox naming protocol.
-        Args:
-            form = UI form
-            enumTups = list of (translated_text, data_string) tuples
-            comboBoxesPropertyMap = list of (translated_text, data_string) tuples
-        """
-        # Load appropriate enumerations in each combobox
-        for cb, prop in comboBoxesPropertyMap:
-            box = getattr(form, cb)  # Get the combobox
-            box.clear()  # clear the combobox
-            for text, data in enumTups[prop]:  #  load enumerations
-                box.addItem(text, data)
-
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
@@ -145,7 +130,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if not hasattr(self, "extensionsPanel"):
             self.extensionsPanel = PathFeatureExtensionsGui.TaskPanelExtensionPage(
                 obj, features
-            )  # pylint: disable=attribute-defined-outside-init
+            )
         return self.extensionsPanel
 
 

@@ -24,9 +24,9 @@
 #ifndef APP_Part_H
 #define APP_Part_H
 
+#include "GeoFeature.h"
 #include "OriginGroupExtension.h"
 #include "PropertyLinks.h"
-
 
 
 namespace App
@@ -76,11 +76,11 @@ public:
     //@}
 
     /// Constructor
-    Part(void);
+    Part();
     virtual ~Part();
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const override {
+    virtual const char* getViewProviderName() const override {
         return "Gui::ViewProviderPart";
     }
 
@@ -95,7 +95,7 @@ public:
      */
     static App::Part* getPartOfObject (const DocumentObject* obj, bool recursive=true);
 
-    virtual PyObject *getPyObject(void) override;
+    virtual PyObject *getPyObject() override;
 };
 
 //typedef App::FeaturePythonT<Part> PartPython;

@@ -720,6 +720,11 @@ Denna egenskap är skrivskyddad, eftersom antalet beror på de punkter som ryms 
       <translation>Arean för detta objekt</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Formen på detta objekt</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation type="unfinished">The base object used by this object</translation>
@@ -728,11 +733,6 @@ Denna egenskap är skrivskyddad, eftersom antalet beror på de punkter som ryms 
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
       <translation type="unfinished">The PAT file used by this object</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Formen på detta objekt</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>
@@ -3696,6 +3696,11 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Hittade flera kanter: omvandlar till trådar</translation>
     </message>
     <message>
+      <location filename="upgrade.py" line="541"/>
+      <source>Found several non-treatable objects: creating compound</source>
+      <translation>Hittade flera ohanterbara objekt: skapar sammansättning</translation>
+    </message>
+    <message>
       <location filename="upgrade.py" line="512"/>
       <source>trying: closing it</source>
       <translation>försöker: stänga den</translation>
@@ -3714,11 +3719,6 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="upgrade.py" line="536"/>
       <source>Found points: creating compound</source>
       <translation>Hittade punkter: skapar sammansättning</translation>
-    </message>
-    <message>
-      <location filename="upgrade.py" line="541"/>
-      <source>Found several non-treatable objects: creating compound</source>
-      <translation>Hittade flera ohanterbara objekt: skapar sammansättning</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="544"/>

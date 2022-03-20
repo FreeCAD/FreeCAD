@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
-# include <QHeaderView>
 # include <QPushButton>
 #endif
 
@@ -32,6 +30,7 @@
 #include "ui_DlgActivateWindow.h"
 #include "MainWindow.h"
 #include "MDIView.h"
+
 
 using namespace Gui::Dialog;
 

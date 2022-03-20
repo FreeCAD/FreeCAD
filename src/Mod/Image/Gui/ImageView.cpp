@@ -30,6 +30,8 @@
 #include "ImageView.h"
 #include "../App/ImageBase.h"
 #include "XpmImages.h"
+#include <Base/Parameter.h>
+#include <App/Application.h>
 
 using namespace ImageGui;
 
@@ -480,11 +482,7 @@ void ImageView::wheelEvent(QWheelEvent * cEvent)
 #endif
 
        // Zoom around centrally displayed image point
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
        int numTicks = cEvent->angleDelta().y() / 120;
-#else
-       int numTicks = cEvent->delta() / 120;
-#endif
        if (_invertZoom)
            numTicks = -numTicks;
 

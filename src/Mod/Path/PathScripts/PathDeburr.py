@@ -226,8 +226,8 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
 
         PathLog.track(obj.Label, depth, offset)
 
-        self.basewires = []  # pylint: disable=attribute-defined-outside-init
-        self.adjusted_basewires = []  # pylint: disable=attribute-defined-outside-init
+        self.basewires = []
+        self.adjusted_basewires = []
         wires = []
 
         for base, subs in obj.Base:
@@ -399,7 +399,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
                 else:  # Flat face
                     basewires.append(Part.Wire(sub.Edges))
 
-            self.edges = edges  # pylint: disable=attribute-defined-outside-init
+            self.edges = edges
             for edgelist in Part.sortEdges(edges):
                 basewires.append(Part.Wire(edgelist))
 
@@ -436,7 +436,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         if obj.EntryPoint < 0:
             obj.EntryPoint = 0
 
-        self.wires = wires  # pylint: disable=attribute-defined-outside-init
+        self.wires = wires
         self.buildpathocc(obj, wires, zValues, True, forward, obj.EntryPoint)
 
     def opRejectAddBase(self, obj, base, sub):

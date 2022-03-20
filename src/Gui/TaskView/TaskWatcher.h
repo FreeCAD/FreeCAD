@@ -24,17 +24,11 @@
 #ifndef GUI_TASKVIEW_TASKWATCHER_H
 #define GUI_TASKVIEW_TASKWATCHER_H
 
-#include <map>
-#include <string>
 #include <vector>
 #include <QObject>
 
-#include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
 
-namespace App {
-
-}
 
 namespace Gui {
 namespace TaskView {

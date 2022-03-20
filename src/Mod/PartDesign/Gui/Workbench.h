@@ -24,7 +24,6 @@
 #ifndef PARTDESIGN_WORKBENCH_H
 #define PARTDESIGN_WORKBENCH_H
 
-#include <boost_signals2.hpp>
 #include <Gui/Workbench.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
 

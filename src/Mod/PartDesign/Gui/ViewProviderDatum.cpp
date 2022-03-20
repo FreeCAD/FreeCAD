@@ -25,57 +25,41 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QApplication>
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <Inventor/details/SoFaceDetail.h>
+# include <Inventor/details/SoLineDetail.h>
+# include <Inventor/details/SoPointDetail.h>
+# include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoMaterialBinding.h>
+# include <Inventor/nodes/SoPickStyle.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoShapeHints.h>
+# include <Precision.hxx>
 # include <QMessageBox>
 # include <QAction>
 # include <QMenu>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoTransparencyType.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoMarkerSet.h>
-# include <Inventor/nodes/SoVertexProperty.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoFaceSet.h>
-# include <Inventor/details/SoLineDetail.h>
-# include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/details/SoPointDetail.h>
-# include <TopoDS_Vertex.hxx>
-# include <TopoDS.hxx>
-# include <BRep_Tool.hxx>
-# include <gp_Pnt.hxx>
-# include <Precision.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom_Line.hxx>
-# include <GeomAPI_IntCS.hxx>
 #endif
 
+#include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
-#include <App/GeoFeatureGroupExtension.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
 #include <Gui/Application.h>
-#include <Gui/MDIView.h>
-#include <Gui/ViewProviderOrigin.h>
+#include <Gui/Command.h>
+#include <Gui/Control.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Gui/BitmapFactory.h>
-
-#include <Mod/PartDesign/App/DatumPoint.h>
-#include <Mod/PartDesign/App/DatumLine.h>
-#include <Mod/PartDesign/App/DatumPlane.h>
+#include <Gui/ViewProviderOrigin.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/DatumCS.h>
-
-#include "TaskDatumParameters.h"
-#include "ViewProviderBody.h"
-#include "Utils.h"
+#include <Mod/PartDesign/App/DatumLine.h>
+#include <Mod/PartDesign/App/DatumPlane.h>
+#include <Mod/PartDesign/App/DatumPoint.h>
 
 #include "ViewProviderDatum.h"
+#include "TaskDatumParameters.h"
+#include "Utils.h"
+#include "ViewProviderBody.h"
+
 
 using namespace PartDesignGui;
 
@@ -236,6 +220,8 @@ void ViewProviderDatum::setupContextMenu(QMenu* menu, QObject* receiver, const c
     QAction* act;
     act = menu->addAction(QObject::tr("Edit datum"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
+    // Call the extensions
+    Gui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderDatum::setEdit(int ModNum)

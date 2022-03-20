@@ -23,24 +23,15 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRep_Builder.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepPrimAPI_MakeRevol.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Wire.hxx>
-# include <TopExp_Explorer.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
-# include <Precision.hxx>
+# include <BRepPrimAPI_MakeRevol.hxx>
 # include <gp_Lin.hxx>
+# include <TopoDS.hxx>
+# include <TopExp_Explorer.hxx>
+# include <Precision.hxx>
 #endif
 
-#include <QCoreApplication>
-#include <Base/Axis.h>
-#include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Base/Placement.h>
 #include <Base/Tools.h>
 
 #include "FeatureGroove.h"

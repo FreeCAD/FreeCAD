@@ -25,16 +25,14 @@
 
 #ifndef _PreComp_
 # include <QApplication>
-# include <QDir>
-# include <QFileInfo>
-# include <QLineEdit>
 #endif
 
 #include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
-#include <Gui/MainWindow.h>
 #include <Gui/Document.h>
+#include <Gui/MDIView.h>
+
 
 //===========================================================================
 // Utils

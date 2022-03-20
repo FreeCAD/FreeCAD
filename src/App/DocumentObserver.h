@@ -26,8 +26,9 @@
 
 #include <Base/BaseClass.h>
 #include <boost_signals2.hpp>
-#include <set>
 #include <memory>
+#include <set>
+
 
 namespace App
 {
@@ -376,9 +377,9 @@ public:
     }
     /*!
      * \brief operator ->
-     * \return pointer to the document
+     * \return pointer to the document object
      */
-    T* operator->() {
+    T* operator->() const {
         return ptr.get<T>();
     }
     /*!

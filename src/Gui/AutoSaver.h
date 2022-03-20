@@ -25,11 +25,12 @@
 #define GUI_AUTOSAVER_H
 
 #include <QObject>
-#include <Base/Writer.h>
+
 #include <map>
 #include <set>
 #include <string>
 #include <boost_signals2.hpp>
+#include <Base/Writer.h>
 
 namespace App {
 class Document;

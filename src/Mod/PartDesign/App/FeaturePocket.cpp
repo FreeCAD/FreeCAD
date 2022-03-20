@@ -23,33 +23,17 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Bnd_Box.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Pln.hxx>
-# include <BRep_Builder.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepFeat_MakePrism.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom_Surface.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Wire.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopExp_Explorer.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
-# include <BRepPrimAPI_MakeHalfSpace.hxx>
-# include <BRepAlgoAPI_Common.hxx>
+# include <gp_Dir.hxx>
+# include <Precision.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS_Face.hxx>
 #endif
 
-#include <Base/Console.h>
+#include <App/DocumentObject.h>
 #include <Base/Exception.h>
-#include <Base/Placement.h>
-#include <App/Document.h>
 
 #include "FeaturePocket.h"
-
 
 using namespace PartDesign;
 
@@ -103,8 +87,6 @@ App::DocumentObjectExecReturn *Pocket::execute()
 
     TopoDS_Shape profileshape;
     try {
-        getVerifiedObject();
-
         profileshape = getVerifiedFace();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
@@ -200,7 +182,7 @@ App::DocumentObjectExecReturn *Pocket::execute()
                 supportface = TopoDS_Face();
             TopoDS_Shape prism;
             PrismMode mode = PrismMode::CutFromBase;
-            Extrude(prism, method, base, profileshape, supportface, upToFace, dir, mode, Standard_True);
+            generatePrism(prism, method, base, profileshape, supportface, upToFace, dir, mode, Standard_True);
 
             // And the really expensive way to get the SubShape...
             BRepAlgoAPI_Cut mkCut(base, prism);
@@ -219,8 +201,14 @@ App::DocumentObjectExecReturn *Pocket::execute()
         }
         else {
             TopoDS_Shape prism;
-            Extrude(prism, profileshape, method, dir, L, L2, TaperAngle.getValue(), TaperAngle2.getValue(),
-                    Midplane.getValue(), Reversed.getValue());
+            if (hasTaperedAngle()) {
+                if (Reversed.getValue())
+                    dir.Reverse();
+                generateTaperedPrism(prism, profileshape, method, dir, L, L2, TaperAngle.getValue(), TaperAngle2.getValue(), Midplane.getValue());
+            }
+            else {
+                generatePrism(prism, profileshape, method, dir, L, L2, Midplane.getValue(), Reversed.getValue());
+            }
 
             if (prism.IsNull())
                 return new App::DocumentObjectExecReturn("Pocket: Resulting shape is empty");

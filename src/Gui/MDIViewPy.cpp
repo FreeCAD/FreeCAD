@@ -20,27 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include "MDIViewPy.h"
-#include "Application.h"
-#include "Document.h"
-
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Interpreter.h>
-#include <Base/PlacementPy.h>
-#include <Base/Rotation.h>
-#include <Base/RotationPy.h>
-#include <Base/VectorPy.h>
-#include <Base/GeometryPyCXX.h>
-
-#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
-#include <App/GeoFeature.h>
-#include <CXX/Objects.hxx>
+#include <Base/Exception.h>
+
+#include "MDIViewPy.h"
+#include "MDIView.h"
+
 
 using namespace Gui;
 

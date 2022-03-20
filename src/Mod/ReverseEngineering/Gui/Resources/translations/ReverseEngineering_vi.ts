@@ -13,7 +13,7 @@
     </message>
     <message>
       <source>Approximate a cylinder</source>
-      <translation type="unfinished">Approximate a cylinder</translation>
+      <translation>Xấp xỉ một hình trụ</translation>
     </message>
   </context>
   <context>
@@ -24,7 +24,7 @@
     </message>
     <message>
       <source>Plane...</source>
-      <translation type="unfinished">Plane...</translation>
+      <translation>Mặt phẳng...</translation>
     </message>
     <message>
       <source>Approximate a plane</source>
@@ -39,11 +39,11 @@
     </message>
     <message>
       <source>Polynomial surface</source>
-      <translation type="unfinished">Polynomial surface</translation>
+      <translation>Bề mặt đa thức</translation>
     </message>
     <message>
       <source>Approximate a polynomial surface</source>
-      <translation type="unfinished">Approximate a polynomial surface</translation>
+      <translation>Xấp xỉ một bề mặt đa thức</translation>
     </message>
   </context>
   <context>
@@ -58,7 +58,7 @@
     </message>
     <message>
       <source>Approximate a sphere</source>
-      <translation type="unfinished">Approximate a sphere</translation>
+      <translation>Xấp xỉ một hình cầu</translation>
     </message>
   </context>
   <context>

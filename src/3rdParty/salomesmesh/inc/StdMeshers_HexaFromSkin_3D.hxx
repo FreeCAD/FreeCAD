@@ -28,7 +28,7 @@
 #include "SMESH_Algo.hxx"
 
 /*!
- * \brief Alorithm generating hexahedral mesh from 2D skin of block
+ * \brief algorithm generating hexahedral mesh from 2D skin of block
  */
 
 class STDMESHERS_EXPORT StdMeshers_HexaFromSkin_3D : public SMESH_3D_Algo

@@ -191,7 +191,7 @@ namespace e57
    {
       // don't checkImageFileOpen
 
-      /// Since only called for prototype nodes, should't be able to get here since
+      /// Since only called for prototype nodes, shouldn't be able to get here since
       /// CompressedVectors can't be in prototypes
       throw E57_EXCEPTION2( E57_ERROR_INTERNAL, "this->pathName=" + this->pathName() );
    }

@@ -637,9 +637,9 @@ void PlyReader::read(const std::string& filename)
                 if (alpha != max_size)
                     a = data(i, alpha);
                 colors.emplace_back(static_cast<float>(r)/255.0f,
-                                            static_cast<float>(g)/255.0f,
-                                            static_cast<float>(b)/255.0f,
-                                            static_cast<float>(a)/255.0f);
+                                    static_cast<float>(g)/255.0f,
+                                    static_cast<float>(b)/255.0f,
+                                    static_cast<float>(a)/255.0f);
             }
         }
         else if (types[red] == "float") {
@@ -1085,9 +1085,9 @@ void PcdReader::read(const std::string& filename)
                 uint32_t g = (packed >> 8) & 0xff;
                 uint32_t b = packed & 0xff;
                 colors.emplace_back(static_cast<float>(r)/255.0f,
-                                            static_cast<float>(g)/255.0f,
-                                            static_cast<float>(b)/255.0f,
-                                            static_cast<float>(a)/255.0f);
+                                    static_cast<float>(g)/255.0f,
+                                    static_cast<float>(b)/255.0f,
+                                    static_cast<float>(a)/255.0f);
             }
         }
         else if (types[rgba] == "F") {
@@ -1105,9 +1105,9 @@ void PcdReader::read(const std::string& filename)
                 uint32_t g = (packed >> 8) & 0xff;
                 uint32_t b = packed & 0xff;
                 colors.emplace_back(static_cast<float>(r)/255.0f,
-                                            static_cast<float>(g)/255.0f,
-                                            static_cast<float>(b)/255.0f,
-                                            static_cast<float>(a)/255.0f);
+                                    static_cast<float>(g)/255.0f,
+                                    static_cast<float>(b)/255.0f,
+                                    static_cast<float>(a)/255.0f);
             }
         }
     }
@@ -1330,15 +1330,15 @@ void E57Reader::read(const std::string& filename)
                 e57::StructureNode            prototype(cvn.prototype());
                 // create buffers for the compressed vector reader
                 const size_t buf_size = 1024;
-                double* xyz = new double[buf_size * 3];
-                double* intensity = new double[buf_size];
-                int64_t* state = new int64_t[buf_size];
-                unsigned* rgb = new unsigned[buf_size * 3];
-                int64_t* nil = new int64_t[buf_size];
+                double xyz[buf_size * 3];
+                double intensity[buf_size];
+                int64_t state[buf_size];
+                unsigned rgb[buf_size * 3];
+                int64_t nil[buf_size];
 
                 // check the channels which are needed
-                unsigned* ptr_xyz = new unsigned[3];
-                unsigned* ptr_rgb = new unsigned[3];
+                unsigned ptr_xyz[3];
+                unsigned ptr_rgb[3];
                 bool inty = false;
                 bool inv_state = false;
                 unsigned cnt_xyz = 0;

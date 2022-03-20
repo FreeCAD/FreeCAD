@@ -24,8 +24,8 @@
 
 #include "DlgCustomizeSpNavSettings.h"
 #include "ui_DlgCustomizeSpNavSettings.h"
-#include "GuiApplicationNativeEventAware.h"
 #include "Application.h"
+#include "GuiApplicationNativeEventAware.h"
 
 
 using namespace Gui::Dialog;

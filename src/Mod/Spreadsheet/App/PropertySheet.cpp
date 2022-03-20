@@ -34,6 +34,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Property.h>
+#include <Base/Interpreter.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
@@ -387,7 +388,7 @@ void PropertySheet::pasteCells(XMLReader &reader, Range dstRange) {
     int dstCols = dstRange.colCount();
     CellAddress dstFrom = dstRange.from();
 
-    int roffset,coffset;
+    int roffset=0,coffset=0;
 
     AtomicPropertyChange signaller(*this);
     for(int ri=0; ri < rangeCount; ++ri) {

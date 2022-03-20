@@ -23,12 +23,14 @@
 #ifndef GUI_TRANSFORM_H
 #define GUI_TRANSFORM_H
 
-#include <Gui/InputVector.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Base/Placement.h>
 #include <set>
+#include <Base/Placement.h>
+
+#include "InputVector.h"
+#include "Selection.h"
+#include "TaskView/TaskDialog.h"
+#include "TaskView/TaskView.h"
+
 
 namespace Gui {
 namespace Dialog {

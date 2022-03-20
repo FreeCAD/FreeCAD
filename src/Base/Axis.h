@@ -24,8 +24,8 @@
 #ifndef BASE_AXIS_H
 #define BASE_AXIS_H
 
-#include "Vector3D.h"
 #include "Placement.h"
+#include "Vector3D.h"
 
 namespace Base {
 

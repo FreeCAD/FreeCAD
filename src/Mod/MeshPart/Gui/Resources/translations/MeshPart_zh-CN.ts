@@ -6,17 +6,17 @@
     <message>
       <location filename="MeshFlatteningCommand.py" line="47"/>
       <source>Unwrap Mesh</source>
-      <translation type="unfinished">Unwrap Mesh</translation>
+      <translation>展开网格</translation>
     </message>
     <message>
       <location filename="MeshFlatteningCommand.py" line="82"/>
       <source>Find a flat representation of a mesh.</source>
-      <translation type="unfinished">Find a flat representation of a mesh.</translation>
+      <translation>找到网格的平面表示</translation>
     </message>
     <message>
       <location filename="MeshFlatteningCommand.py" line="79"/>
       <source>Unwrap Face</source>
-      <translation type="unfinished">Unwrap Face</translation>
+      <translation>展开面</translation>
     </message>
   </context>
   <context>
@@ -425,14 +425,14 @@ A value in the range of 0.2-10.</source>
     <message>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
-      <translation type="unfinished">You have selected a body without tip.
-Either set the tip of the body or select a different shape, please.</translation>
+      <translation>你选择了一个没有尖端的实体。
+请设置实体的尖端或选择一个不同的形状。</translation>
     </message>
     <message>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
-      <translation type="unfinished">You have selected a shape without faces.
-Select a different shape, please.</translation>
+      <translation>您选择了一个没有面的形状。
+请选择不同的形状。</translation>
     </message>
     <message>
       <source>Select a shape for meshing, first.</source>

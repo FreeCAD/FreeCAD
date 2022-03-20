@@ -24,18 +24,18 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QCoreApplication>
 # include <QDir>
 # include <QFileInfo>
 # include <QLibraryInfo>
 # include <QMessageBox>
 # include <QProcess>
 # include <QTextStream>
-# include <QCoreApplication>
 #endif
 
-#include "Assistant.h"
-#include <Base/Console.h>
 #include <App/Application.h>
+#include <Base/Console.h>
+#include "Assistant.h"
 
 using namespace Gui;
 
@@ -67,13 +67,6 @@ void Assistant::showDocumentation(const QString &page)
 
 bool Assistant::startAssistant()
 {
-#if QT_VERSION < 0x040400
-    QMessageBox::critical(0, QObject::tr("Help"),
-    QObject::tr("Unable to load documentation.\n"
-    "In order to load it Qt 4.4 or higher is required."));
-    return false;
-#endif
-
     if (!proc) {
         proc = new QProcess();
         connect(proc, SIGNAL(readyReadStandardOutput()),

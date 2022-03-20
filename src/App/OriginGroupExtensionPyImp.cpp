@@ -23,8 +23,6 @@
 
 #include "PreCompiled.h"
 
-#include "App/OriginGroupExtension.h"
-
 // inclusion of the generated files (generated out of OriginGroupPy.xml)
 #include "OriginGroupExtensionPy.h"
 #include "OriginGroupExtensionPy.cpp"
@@ -36,12 +34,6 @@ std::string OriginGroupExtensionPy::representation(void) const
 {
     return std::string("<OriginGroup object>");
 }
-
-
-
-
-
-
 
 PyObject *OriginGroupExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {

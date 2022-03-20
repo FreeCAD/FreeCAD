@@ -65,7 +65,7 @@ Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::OptionSetter::operat
 
 template<typename Sys, int Dim>
 template<typename ConstraintVector, typename tag1, typename tag2>
-Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::Calculater::Calculater(geom_ptr f, geom_ptr s, Scalar sc, AccessType a)
+Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::Calculator::Calculator(geom_ptr f, geom_ptr s, Scalar sc, AccessType a)
     : first(f), second(s), scale(sc), access(a) {
 
 };
@@ -73,7 +73,7 @@ Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::Calculater::Calculat
 template<typename Sys, int Dim>
 template<typename ConstraintVector, typename tag1, typename tag2>
 template< typename T >
-void Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::Calculater::operator()(T& val) const {
+void Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::Calculator::operator()(T& val) const {
 
     //if the equation is disabled we don't have anything mapped so avoid accessing it
     if(!val.enabled)
@@ -243,7 +243,7 @@ void Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::LGZ::operator()
 
     //to treat local gradient zeros we calculate a approximate second derivative of the equations
     //only do that if neseccary: residual is not zero
-    if(!Kernel::isSame(val.m_residual(0),0, 1e-7)) { //TODO: use exact precission and scale value
+    if(!Kernel::isSame(val.m_residual(0),0, 1e-7)) { //TODO: use exact precision and scale value
 
         //rotations exist only in cluster
         if(first->getClusterMode() && !first->isClusterFixed()) {
@@ -253,11 +253,11 @@ void Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::LGZ::operator()
                 //only treat if the gradient really is zero
                 if(Kernel::isSame(val.m_diff_first_rot(i), 0, 1e-7)) {
 
-                    //to get the approximated second derivative we need the slightly moved geometrie
+                    //to get the approximated second derivative we need the slightly moved geometry
                     const typename Kernel::Vector  p_old =  first->m_parameter;
                     first->m_parameter += first->m_diffparam.col(i)*1e-3;
                     first->normalize();
-                    //with this changed geometrie we test if a gradient exist now
+                    //with this changed geometry we test if a gradient exist now
                     typename Kernel::VectorMap block(&first->m_diffparam(0,i),first->m_parameterCount,1, DS(1,1));
                     typename Kernel::number_type res = val.m_eq.calculateGradientFirst(first->m_parameter,
                                                        second->m_parameter, block);
@@ -280,11 +280,11 @@ void Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::LGZ::operator()
                 //only treat if the gradient really is zero
                 if(Kernel::isSame(val.m_diff_second_rot(i), 0, 1e-7)) {
 
-                    //to get the approximated second derivative we need the slightly moved geometrie
+                    //to get the approximated second derivative we need the slightly moved geometry
                     const typename Kernel::Vector  p_old =  second->m_parameter;
                     second->m_parameter += second->m_diffparam.col(i)*1e-3;
                     second->normalize();
-                    //with this changed geometrie we test if a gradient exist now
+                    //with this changed geometry we test if a gradient exist now
                     typename Kernel::VectorMap block(&second->m_diffparam(0,i),second->m_parameterCount,1, DS(1,1));
                     typename Kernel::number_type res = val.m_eq.calculateGradientFirst(first->m_parameter,
                                                        second->m_parameter, block);
@@ -355,7 +355,7 @@ template<typename Sys, int Dim>
 template<typename ConstraintVector, typename tag1, typename tag2>
 void Constraint<Sys, Dim>::holder<ConstraintVector, tag1, tag2>::calculate(geom_ptr first, geom_ptr second,
         Scalar scale, AccessType access) {
-    fusion::for_each(m_sets, Calculater(first, second, scale, access));
+    fusion::for_each(m_sets, Calculator(first, second, scale, access));
 };
 
 template<typename Sys, int Dim>

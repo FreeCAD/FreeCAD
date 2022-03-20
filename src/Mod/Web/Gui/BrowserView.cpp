@@ -87,6 +87,7 @@ using QWebEnginePage = QWebPage;
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
+#include <App/Document.h>
 #include <CXX/Extensions.hxx>
 
 using namespace WebGui;
@@ -781,7 +782,10 @@ void BrowserView::onLoadFinished(bool ok)
     QProgressBar* bar = SequencerBar::instance()->getProgressBar();
     bar->setValue(100);
     bar->hide();
-    getMainWindow()->showMessage(QString());
+    Gui::MainWindow* win = Gui::getMainWindow();
+    if (win) {
+        win->showMessage(QString());
+    }
     isLoading = false;
 }
 

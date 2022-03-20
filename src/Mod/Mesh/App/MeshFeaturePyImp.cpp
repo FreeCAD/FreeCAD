@@ -180,7 +180,7 @@ PyObject*  MeshFeaturePy::fixSelfIntersections(PyObject *args)
         obj->Mesh.finishEditing();
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        e.setPyException();
         return nullptr;
     }
     Py_Return;
@@ -197,7 +197,7 @@ PyObject*  MeshFeaturePy::removeFoldsOnSurface(PyObject *args)
         obj->Mesh.finishEditing();
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        e.setPyException();
         return nullptr;
     }
     Py_Return;
@@ -214,7 +214,7 @@ PyObject*  MeshFeaturePy::removeInvalidPoints(PyObject *args)
         obj->Mesh.finishEditing();
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        e.setPyException();
         return nullptr;
     }
     Py_Return;

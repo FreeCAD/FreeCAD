@@ -24,35 +24,26 @@
 
 #ifndef _PreComp_
 #include <QMessageBox>
-# include <Precision.hxx>
 # include <gp_Pln.hxx>
+# include <Precision.hxx>
 #endif
 
-#include <Base/Console.h>
-#include <App/Part.h>
 #include <App/Origin.h>
 #include <App/OriginFeature.h>
-#include <App/DocumentObjectGroup.h>
+#include <App/Part.h>
 #include <Gui/Application.h>
-#include <Gui/Command.h>
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MDIView.h>
-#include <Gui/ViewProviderPart.h>
-
+#include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/Feature.h>
+#include <Mod/PartDesign/App/FeatureSketchBased.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
-#include <Mod/PartDesign/App/Feature.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/FeaturePrimitive.h>
-#include <Mod/PartDesign/App/FeatureSketchBased.h>
-#include <Mod/PartDesign/App/FeatureBoolean.h>
-#include <Mod/PartDesign/App/DatumCS.h>
-
-#include "ReferenceSelection.h"
 #include "Utils.h"
-#include "WorkflowManager.h"
 #include "DlgActiveBody.h"
+#include "ReferenceSelection.h"
+#include "WorkflowManager.h"
 
 
 FC_LOG_LEVEL_INIT("PartDesignGui",true,true)

@@ -38,10 +38,6 @@ import six
 
 Qtranslate = QtCore.QCoreApplication.translate
 
-# This property only exists in Qt4, which is normally paired
-# with Python 2.
-# But if Python 2 is used with Qt5 (rare),
-# this assignment will fail.
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
 except AttributeError:
@@ -113,36 +109,7 @@ def translate(context, text, utf8_decode=False):
     # Python 3 and Qt5
     # The text is a utf8 string, and since it is Qt5
     # the translate function doesn't use the 4th parameter
-    if six.PY3:
-        return Qtranslate(context, text, None)
-    # Python 2
-    elif QtCore.qVersion() > "4":
-        # Python 2 and Qt5
-        if utf8_decode:
-            # The text is a utf8 string, and since it is Qt5
-            # the translate function doesn't use the 4th parameter
-            return Qtranslate(context, text, None)
-        else:
-            # The text is not a unicode string, and since it is Qt5
-            # the translate function doesn't use the 4th parameter.
-            # Therefore the output string needs to be encoded manually
-            # as utf8 bytes before returning.
-            return Qtranslate(context, text, None).encode("utf8")
-    else:
-        # Python 2 and Qt4
-        if utf8_decode:
-            # The text is a utf8 string, and since it is Qt4
-            # the translate function uses the 4th parameter
-            # to handle the input encoding.
-            return Qtranslate(context, text, None, _encoding)
-        else:
-            # The text is not a unicode string, and since it is Qt4
-            # the translate function uses the 4th parameter
-            # to handle the encoding.
-            # In this case, the `encoding` is `None`, therefore
-            # the output string needs to be encoded manually
-            # as utf8 bytes before returning.
-            return Qtranslate(context, text, None, _encoding).encode("utf8")
+    return Qtranslate(context, text, None)
 
 
 # Original code no longer used. It is listed here for reference

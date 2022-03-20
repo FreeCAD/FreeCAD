@@ -32,91 +32,28 @@
 # else
 # include <GL/gl.h>
 # endif
-# include <Inventor/SbBox.h>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/actions/SoGetMatrixAction.h>
-# include <Inventor/actions/SoHandleEventAction.h>
-# include <Inventor/actions/SoToVRML2Action.h>
-# include <Inventor/actions/SoWriteAction.h>
-# include <Inventor/elements/SoViewportRegionElement.h>
-# include <Inventor/manips/SoClipPlaneManip.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCallback.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoCube.h>
-# include <Inventor/nodes/SoDirectionalLight.h>
-# include <Inventor/nodes/SoEventCallback.h>
-# include <Inventor/nodes/SoFaceSet.h>
-# include <Inventor/nodes/SoImage.h>
-# include <Inventor/nodes/SoIndexedFaceSet.h>
-# include <Inventor/nodes/SoLightModel.h>
-# include <Inventor/nodes/SoLocateHighlight.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
-# include <Inventor/nodes/SoPerspectiveCamera.h>
-# include <Inventor/nodes/SoRotationXYZ.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoTransform.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoSelection.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/actions/SoBoxHighlightRenderAction.h>
 # include <Inventor/events/SoEvent.h>
-# include <Inventor/events/SoKeyboardEvent.h>
 # include <Inventor/events/SoLocation2Event.h>
-# include <Inventor/events/SoMotion3Event.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/actions/SoRayPickAction.h>
-# include <Inventor/projectors/SbSphereSheetProjector.h>
-# include <Inventor/SoOffscreenRenderer.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/VRMLnodes/SoVRMLGroup.h>
-# include <QEventLoop>
-# include <QKeyEvent>
-# include <QWheelEvent>
-# include <QMessageBox>
-# include <QTimer>
-# include <QStatusBar>
-# include <QBitmap>
-# include <QMimeData>
+#include <QApplication>
+#include <QCursor>
+#include <QImage>
+#include <QMenu>
+#include <QOpenGLTexture>
+#include <QPainterPath>
 #endif
 
-#include <sstream>
-#include <Base/Console.h>
-#include <Base/Stream.h>
-#include <Base/FileInfo.h>
-#include <Base/Rotation.h>
-#include <Base/Sequencer.h>
 #include <Base/Tools.h>
-#include <Base/UnitsApi.h>
+#include <Eigen/Dense>
+
+#include "NaviCube.h"
+#include "Application.h"
+#include "Command.h"
+#include "MainWindow.h"
 
 #include "View3DInventorViewer.h"
 #include "View3DInventor.h"
-#include "Application.h"
-#include "MainWindow.h"
-#include "MDIView.h"
-#include "Command.h"
-
-#include "NaviCube.h"
-
-#include <QCursor>
-#include <QIcon>
-#include <QMenu>
-#include <QAction>
-#include <QImage>
-#include <QPainterPath>
-#include <QApplication>
-#include <QOpenGLTexture>
-
-//#include <OpenGL/glu.h>
-#include <Eigen/Dense>
-#include <vector>
-#include <map>
-#include <algorithm>
-#include <iostream>
 
 
 using namespace Eigen;
@@ -1259,7 +1196,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 	setHilite(0);
 	m_MouseDown = false;
 
-	// get the curent view
+	// get the current view
 	SbMatrix ViewRotMatrix;
 	SbRotation CurrentViewRot = m_View3DInventorViewer->getCameraOrientation();
 	CurrentViewRot.getValue(ViewRotMatrix);

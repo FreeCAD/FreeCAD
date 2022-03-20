@@ -24,15 +24,14 @@
 #ifndef PARTDESIGN_SketchBased_H
 #define PARTDESIGN_SketchBased_H
 
-#include <App/PropertyStandard.h>
 #include <Mod/Part/App/Part2DObject.h>
 #include "FeatureAddSub.h"
 
-class TopoDS_Shape;
-class TopoDS_Face;
-class TopoDS_Wire;
 class gp_Dir;
 class gp_Lin;
+class TopoDS_Face;
+class TopoDS_Shape;
+class TopoDS_Wire;
 
 namespace PartDesign
 {
@@ -142,54 +141,6 @@ protected:
                                 const gp_Dir& dir,
                                 double offset);
 
-    /**
-      * Generates an extrusion of the input sketchshape and stores it in the given &prism
-      */
-    void Extrude(TopoDS_Shape& prism,
-                 const TopoDS_Shape& sketchshape,
-                 const std::string& method,
-                 const gp_Dir& direction,
-                 const double L,
-                 const double L2,
-                 const double angle,
-                 const double angle2,
-                 const bool midplane,
-                 const bool reversed);
-
-    // See BRepFeat_MakePrism
-    enum PrismMode {
-        CutFromBase = 0,
-        FuseWithBase = 1,
-        None = 2
-    };
-
-    /**
-      * Generates an extrusion of the input profileshape
-      * It will be a stand-alone solid created with BRepFeat_MakePrism
-      */
-    static void Extrude(TopoDS_Shape& prism,
-                              const std::string& method,
-                              const TopoDS_Shape& baseshape,
-                              const TopoDS_Shape& profileshape,
-                              const TopoDS_Face& sketchface,
-                              const TopoDS_Face& uptoface,
-                              const gp_Dir& direction,
-                              PrismMode Mode,
-                              Standard_Boolean Modify);
-
-    /**
-      * Generates a tapered prism of the input sketchshape and stores it in the given &prism
-      */
-    void generateTaperedPrism(TopoDS_Shape& prism,
-                              const TopoDS_Shape& sketchshape,
-                              const std::string& method,
-                              const gp_Dir& direction,
-                              const double L,
-                              const double L2,
-                              const double angle,
-                              const double angle2,
-                              const bool midplane);
-
     /// Check whether the wire after projection on the face is inside the face
     static bool checkWireInsideFace(const TopoDS_Wire& wire,
                                     const TopoDS_Face& face,
@@ -200,10 +151,10 @@ protected:
 
 
     /// Used to suggest a value for Reversed flag so that material is always removed (Groove) or added (Revolution) from the support
-    double getReversedAngle(const Base::Vector3d& b, const Base::Vector3d& v);
+    double getReversedAngle(const Base::Vector3d& b, const Base::Vector3d& v) const;
     /// get Axis from ReferenceAxis
     void getAxis(const App::DocumentObject* pcReferenceAxis, const std::vector<std::string>& subReferenceAxis,
-                 Base::Vector3d& base, Base::Vector3d& dir, ForbiddenAxis checkAxis);
+                 Base::Vector3d& base, Base::Vector3d& dir, ForbiddenAxis checkAxis) const;
 
     void onChanged(const App::Property* prop);
 private:

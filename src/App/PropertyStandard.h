@@ -24,20 +24,18 @@
 #ifndef APP_PROPERTYSTANDARD_H
 #define APP_PROPERTYSTANDARD_H
 
-// Std. configurations
-
-
+#include <list>
 #include <memory>
 #include <string>
-#include <list>
 #include <vector>
 #include <boost/dynamic_bitset.hpp>
 #include <boost/filesystem/path.hpp>
-
 #include <Base/Uuid.h>
-#include "Enumeration.h"
+
 #include "Property.h"
+#include "Enumeration.h"
 #include "Material.h"
+
 
 namespace Base {
 class Writer;

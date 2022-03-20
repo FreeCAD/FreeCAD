@@ -23,12 +23,15 @@
 #ifndef GUI_SOFCSELECTIONCONTEXT_H
 #define GUI_SOFCSELECTIONCONTEXT_H
 
-#include <map>
-#include <vector>
-#include <set>
-#include <memory>
 #include <climits>
+#include <map>
+#include <memory>
+#include <set>
+#include <vector>
+#include <Inventor/SbColor.h>
+
 #include <App/Material.h>
+
 
 namespace Gui {
 

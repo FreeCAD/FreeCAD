@@ -204,7 +204,7 @@ public:
 
 
     // constructor for datapointer which resembles the fixed size derived type
-    // this works only if this is the only maped data!
+    // this works only if this is the only mapped data!
     inline MultiMapBase(PointerType data)
         : default_value(0), m_rows(RowsAtCompileTime), m_cols(ColsAtCompileTime) {
 

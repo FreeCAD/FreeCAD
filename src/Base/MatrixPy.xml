@@ -34,17 +34,34 @@ Scale the matrix with the vector
         </UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="hasScale">
+    <Methode Name="hasScale" Const="true">
       <Documentation>
         <UserDocu>
-hasScale(tol=None)
-Return 0 is no scale factor, 1 for uniform scaling, -1 for non-uniform scaling.
+hasScale(tol=0.0)
+Return an enum value of ScaleType. Possible values are:
+Uniform, NonUniformLeft, NonUniformRight, NoScaling or Other
+if it's not a scale matrix
         </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="nullify">
+      <Documentation>
+        <UserDocu>nullify() - make this the null matrix</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isNull" Const="true">
+      <Documentation>
+        <UserDocu>isNull() - check if this is the null matrix</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="unity">
       <Documentation>
         <UserDocu>unity() - make this matrix to unity</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isUnity" Const="true">
+      <Documentation>
+        <UserDocu>isUnity() - check if this is the unit matrix</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="transform">

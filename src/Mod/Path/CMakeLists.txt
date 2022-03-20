@@ -26,7 +26,6 @@ INSTALL(
 )
 
 SET(PathScripts_SRCS
-    PathCommands.py
     PathScripts/drillableLib.py
     PathScripts/PathAdaptive.py
     PathScripts/PathAdaptiveGui.py
@@ -147,8 +146,9 @@ SET(PathScripts_SRCS
 
 SET(Generator_SRCS
     Generators/drill_generator.py
-    Generators/rotation_generator.py
     Generators/helix_generator.py
+    Generators/rotation_generator.py
+    Generators/threadmilling_generator.py
     Generators/toolchange_generator.py
 )
 
@@ -243,6 +243,7 @@ SET(PathTests_SRCS
     PathTests/TestPathStock.py
     PathTests/TestPathToolChangeGenerator.py
     PathTests/TestPathThreadMilling.py
+    PathTests/TestPathThreadMillingGenerator.py
     PathTests/TestPathTool.py
     PathTests/TestPathToolBit.py
     PathTests/TestPathToolController.py
@@ -271,8 +272,13 @@ SET(Path_Images
 )
 
 SET(PathData_Threads
-    Data/Threads/metric-internal.csv
-    Data/Threads/imperial-internal.csv
+    Data/Threads/imperial-external-2A.csv
+    Data/Threads/imperial-external-3A.csv
+    Data/Threads/imperial-internal-2B.csv
+    Data/Threads/imperial-internal-3B.csv
+    Data/Threads/metric-external-4G6G.csv
+    Data/Threads/metric-external-6G.csv
+    Data/Threads/metric-internal-6H.csv
 )
 
 SET(Path_Data

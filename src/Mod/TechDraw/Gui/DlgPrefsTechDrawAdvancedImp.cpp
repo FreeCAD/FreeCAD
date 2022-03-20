@@ -54,7 +54,6 @@ void DlgPrefsTechDrawAdvancedImp::saveSettings()
     ui->cbShowLoose->onSave();
     ui->pdsbEdgeFuzz->onSave();
     ui->pdsbMarkFuzz->onSave();
-    ui->leFormatSpec->onSave();
     ui->cbEndCap->onSave();
     ui->sbMaxTiles->onSave();
     ui->sbMaxPat->onSave();
@@ -71,7 +70,6 @@ void DlgPrefsTechDrawAdvancedImp::loadSettings()
     ui->cbShowLoose->onRestore();
     ui->pdsbEdgeFuzz->onRestore();
     ui->pdsbMarkFuzz->onRestore();
-    ui->leFormatSpec->onRestore();
     ui->cbEndCap->onRestore();
     ui->sbMaxTiles->onRestore();
     ui->sbMaxPat->onRestore();

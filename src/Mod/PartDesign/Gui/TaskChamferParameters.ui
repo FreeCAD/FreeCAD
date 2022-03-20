@@ -133,6 +133,13 @@ click again to end selection</string>
     </layout>
    </item>
    <item>
+    <widget class="QCheckBox" name="checkBoxUseAllEdges">
+     <property name="text">
+      <string>Use All Edges</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
       <number>0</number>

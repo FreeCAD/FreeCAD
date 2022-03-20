@@ -24,9 +24,9 @@
 #ifndef GUI_WORKBENCHFACTORY_H
 #define GUI_WORKBENCHFACTORY_H
 
-#include <Base/Factory.h>
-#include <string>
 #include <list>
+#include <string>
+#include <Base/Factory.h>
 
 namespace Gui {
 class Workbench;

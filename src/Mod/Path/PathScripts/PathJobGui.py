@@ -241,6 +241,7 @@ class ViewProvider:
             self.obj.Stock.ViewObject.Proxy.onEdit(_OpenCloseResourceEditor)
 
     def rememberBaseVisibility(self, obj, base):
+        PathLog.track()
         if base.ViewObject:
             orig = PathUtil.getPublicObject(obj.Proxy.baseObject(obj, base))
             self.baseVisibility[base.Name] = (
@@ -253,6 +254,7 @@ class ViewProvider:
             base.ViewObject.Visibility = True
 
     def forgetBaseVisibility(self, obj, base):
+        PathLog.track()
         if self.baseVisibility.get(base.Name):
             visibility = self.baseVisibility[base.Name]
             visibility[0].ViewObject.Visibility = visibility[1]
@@ -260,6 +262,7 @@ class ViewProvider:
             del self.baseVisibility[base.Name]
 
     def setupEditVisibility(self, obj):
+        PathLog.track()
         self.baseVisibility = {}
         for base in obj.Model.Group:
             self.rememberBaseVisibility(obj, base)
@@ -270,6 +273,7 @@ class ViewProvider:
             self.obj.Stock.ViewObject.Visibility = True
 
     def resetEditVisibility(self, obj):
+        PathLog.track()
         for base in obj.Model.Group:
             self.forgetBaseVisibility(obj, base)
         if obj.Stock and obj.Stock.ViewObject:
@@ -619,8 +623,14 @@ class TaskPanel:
 
         vUnit = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity).getUserPreferred()[2]
         self.form.toolControllerList.horizontalHeaderItem(1).setText("#")
-        self.form.toolControllerList.horizontalHeaderItem(2).setText(vUnit)
-        self.form.toolControllerList.horizontalHeaderItem(3).setText(vUnit)
+        self.form.toolControllerList.horizontalHeaderItem(2).setText(
+            translate("Path", "Feed(H)")
+        )
+        self.form.toolControllerList.horizontalHeaderItem(2).setToolTip(vUnit)
+        self.form.toolControllerList.horizontalHeaderItem(3).setText(
+            translate("Path", "Feed(V)")
+        )
+        self.form.toolControllerList.horizontalHeaderItem(3).setToolTip(vUnit)
         self.form.toolControllerList.horizontalHeader().setResizeMode(
             0, QtGui.QHeaderView.Stretch
         )
@@ -662,7 +672,7 @@ class TaskPanel:
         )
 
     def populateCombobox(self, form, enumTups, comboBoxesPropertyMap):
-        """fillComboboxes(form, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
+        """populateCombobox(form, enumTups, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
         ** comboBoxesPropertyMap will be unnecessary if UI files use strict combobox naming protocol.
         Args:
             form = UI form
@@ -684,6 +694,7 @@ class TaskPanel:
 
     def accept(self, resetEdit=True):
         PathLog.track()
+        self._jobIntegrityCheck()  # Check existence of Model and Tools
         self.preCleanup()
         self.getFields()
         self.setupGlobal.accept()
@@ -1559,6 +1570,40 @@ class TaskPanel:
     def open(self):
         FreeCADGui.Selection.addObserver(self)
 
+    def _jobIntegrityCheck(self):
+        """_jobIntegrityCheck() ... Check Job object for existence of Model and Tools
+        If either Model or Tools is empty, change GUI tab, issue appropriate warning,
+        and offer chance to add appropriate item."""
+
+        def _displayWarningWindow(msg):
+            """Display window with warning message and Add action button.
+            Return action state."""
+            txtHeader = translate("Path_Job", "Warning")
+            txtPleaseAddOne = translate("Path_Job", "Please add one.")
+            txtOk = translate("Path_Job", "Ok")
+            txtAdd = translate("Path_Job", "Add")
+
+            msgbox = QtGui.QMessageBox(
+                QtGui.QMessageBox.Warning, txtHeader, msg + " " + txtPleaseAddOne
+            )
+            msgbox.addButton(txtOk, QtGui.QMessageBox.AcceptRole)  # Add 'Ok' button
+            msgbox.addButton(txtAdd, QtGui.QMessageBox.ActionRole)  # Add 'Add' button
+            return msgbox.exec_()
+
+        # Check if at least on base model is present
+        if len(self.obj.Model.Group) == 0:
+            self.form.setCurrentIndex(0)  # Change tab to General tab
+            no_model_txt = translate("Path_Job", "This job has no base model.")
+            if _displayWarningWindow(no_model_txt) == 1:
+                self.jobModelEdit()
+
+        # Check if at least one tool is present
+        if len(self.obj.Tools.Group) == 0:
+            self.form.setCurrentIndex(3)  # Change tab to Tools tab
+            no_tool_txt = translate("Path_Job", "This job has no tool.")
+            if _displayWarningWindow(no_tool_txt) == 1:
+                self.toolControllerAdd()
+
     # SelectionObserver interface
     def addSelection(self, doc, obj, sub, pnt):
         self.updateSelection()
@@ -1581,6 +1626,7 @@ def Create(base, template=None):
     try:
         obj = PathJob.Create("Job", base, template)
         obj.ViewObject.Proxy = ViewProvider(obj.ViewObject)
+        obj.ViewObject.addExtension("Gui::ViewProviderGroupExtensionPython")
         FreeCAD.ActiveDocument.commitTransaction()
         obj.Document.recompute()
         obj.ViewObject.Proxy.editObject(obj.Stock)

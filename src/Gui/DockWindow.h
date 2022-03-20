@@ -24,10 +24,9 @@
 #ifndef GUI_DOCKWINDOW_H
 #define GUI_DOCKWINDOW_H
 
-
-#include <Base/Parameter.h>
 #include <Gui/View.h>
 #include <QWidget>
+
 
 namespace Gui {
 class MDIView;

@@ -22,14 +22,15 @@
 
 #include "PreCompiled.h"
 
-#include <Base/Console.h>
 #include <Base/Interpreter.h>
-#include "Application.h"
-#include "Transactions.h"
-#include "Document.h"
-#include "AutoTransaction.h"
 
-FC_LOG_LEVEL_INIT("App",true,true)
+#include "AutoTransaction.h"
+#include "Application.h"
+#include "Document.h"
+#include "Transactions.h"
+
+
+FC_LOG_LEVEL_INIT("App", true, true)
 
 using namespace App;
 
@@ -238,5 +239,4 @@ void TransactionLocker::activate(bool enable)
 bool TransactionLocker::isLocked() {
     return _TransactionLock > 0;
 }
-
 

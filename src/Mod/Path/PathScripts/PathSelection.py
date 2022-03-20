@@ -35,17 +35,16 @@ PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 class PathBaseGate(object):
-    # pylint: disable=no-init
     pass
 
 
 class EGate(PathBaseGate):
-    def allow(self, doc, obj, sub):  # pylint: disable=unused-argument
+    def allow(self, doc, obj, sub):
         return sub and sub[0:4] == "Edge"
 
 
 class MESHGate(PathBaseGate):
-    def allow(self, doc, obj, sub):  # pylint: disable=unused-argument
+    def allow(self, doc, obj, sub):
         return obj.TypeId[0:4] == "Mesh"
 
 
@@ -53,7 +52,7 @@ class VCARVEGate:
     def allow(self, doc, obj, sub):
         try:
             shape = obj.Shape
-        except Exception:  # pylint: disable=broad-except
+        except Exception:
             return False
 
         if math.fabs(shape.Volume) < 1e-9 and len(shape.Wires) > 0:
@@ -79,10 +78,10 @@ class VCARVEGate:
 
 
 class ENGRAVEGate(PathBaseGate):
-    def allow(self, doc, obj, sub):  # pylint: disable=unused-argument
+    def allow(self, doc, obj, sub):
         try:
             shape = obj.Shape
-        except Exception:  # pylint: disable=broad-except
+        except Exception:
             return False
 
         if math.fabs(shape.Volume) < 1e-9 and len(shape.Wires) > 0:
@@ -100,10 +99,10 @@ class ENGRAVEGate(PathBaseGate):
 
 
 class CHAMFERGate(PathBaseGate):
-    def allow(self, doc, obj, sub):  # pylint: disable=unused-argument
+    def allow(self, doc, obj, sub):
         try:
             shape = obj.Shape
-        except Exception:  # pylint: disable=broad-except
+        except Exception:
             return False
 
         if math.fabs(shape.Volume) < 1e-9 and len(shape.Wires) > 0:
@@ -123,7 +122,7 @@ class CHAMFERGate(PathBaseGate):
 
 
 class DRILLGate(PathBaseGate):
-    def allow(self, doc, obj, sub):  # pylint: disable=unused-argument
+    def allow(self, doc, obj, sub):
         PathLog.debug("obj: {} sub: {}".format(obj, sub))
         if not hasattr(obj, "Shape") and sub:
             return False
@@ -137,12 +136,12 @@ class DRILLGate(PathBaseGate):
 class FACEGate(
     PathBaseGate
 ):  # formerly PROFILEGate class using allow_ORIG method as allow()
-    def allow(self, doc, obj, sub):  # pylint: disable=unused-argument
+    def allow(self, doc, obj, sub):
         profileable = False
 
         try:
             obj = obj.Shape
-        except Exception:  # pylint: disable=broad-except
+        except Exception:
             return False
 
         if obj.ShapeType == "Compound":
@@ -158,12 +157,12 @@ class FACEGate(
 
         return profileable
 
-    def allow_ORIG(self, doc, obj, sub):  # pylint: disable=unused-argument
+    def allow_ORIG(self, doc, obj, sub):
 
         profileable = False
         try:
             obj = obj.Shape
-        except Exception:  # pylint: disable=broad-except
+        except Exception:
             return False
 
         if obj.ShapeType == "Edge":
@@ -193,13 +192,13 @@ class FACEGate(
 
 
 class PROFILEGate(PathBaseGate):
-    def allow(self, doc, obj, sub):  # pylint: disable=unused-argument
+    def allow(self, doc, obj, sub):
         if sub and sub[0:4] == "Edge":
             return True
 
         try:
             obj = obj.Shape
-        except Exception:  # pylint: disable=broad-except
+        except Exception:
             return False
 
         if obj.ShapeType == "Compound":
@@ -220,12 +219,12 @@ class PROFILEGate(PathBaseGate):
 
 
 class POCKETGate(PathBaseGate):
-    def allow(self, doc, obj, sub):  # pylint: disable=unused-argument
+    def allow(self, doc, obj, sub):
 
         pocketable = False
         try:
             obj = obj.Shape
-        except Exception:  # pylint: disable=broad-except
+        except Exception:
             return False
 
         if obj.ShapeType == "Edge":
@@ -246,19 +245,19 @@ class POCKETGate(PathBaseGate):
 
 
 class ADAPTIVEGate(PathBaseGate):
-    def allow(self, doc, obj, sub):  # pylint: disable=unused-argument
+    def allow(self, doc, obj, sub):
 
         adaptive = True
         try:
             obj = obj.Shape
-        except Exception:  # pylint: disable=broad-except
+        except Exception:
             return False
 
         return adaptive
 
 
 class CONTOURGate(PathBaseGate):
-    def allow(self, doc, obj, sub):  # pylint: disable=unused-argument
+    def allow(self, doc, obj, sub):
         pass
 
 
@@ -268,7 +267,7 @@ class PROBEGate:
 
 
 class TURNGate(PathBaseGate):
-    def allow(self, doc, obj, sub):  # pylint: disable=unused-argument
+    def allow(self, doc, obj, sub):
         PathLog.debug("obj: {} sub: {}".format(obj, sub))
         if hasattr(obj, "Shape") and sub:
             shape = obj.Shape
@@ -279,7 +278,7 @@ class TURNGate(PathBaseGate):
 
 
 class ALLGate(PathBaseGate):
-    def allow(self, doc, obj, sub):  # pylint: disable=unused-argument
+    def allow(self, doc, obj, sub):
         if sub and sub[0:6] == "Vertex":
             return True
         if sub and sub[0:4] == "Edge":
@@ -383,17 +382,18 @@ def turnselect():
 
 def select(op):
     opsel = {}
-    opsel["Contour"] = contourselect  # (depreciated)
+    opsel["Contour"] = contourselect  # deprecated
     opsel["Deburr"] = chamferselect
     opsel["Drilling"] = drillselect
     opsel["Engrave"] = engraveselect
     opsel["Helix"] = drillselect
     opsel["MillFace"] = pocketselect
     opsel["Pocket"] = pocketselect
-    opsel["Pocket3D"] = pocketselect
+    opsel["Pocket 3D"] = pocketselect
+    opsel["Pocket3D"] = pocketselect  # deprecated
     opsel["Pocket Shape"] = pocketselect
-    opsel["Profile Edges"] = eselect  # (depreciated)
-    opsel["Profile Faces"] = fselect  # (depreciated)
+    opsel["Profile Edges"] = eselect  # deprecated
+    opsel["Profile Faces"] = fselect  # deprecated
     opsel["Profile"] = profileselect
     opsel["Slot"] = slotselect
     opsel["Surface"] = surfaceselect

@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Inventor/nodes/SoSeparator.h>
@@ -30,12 +29,12 @@
 
 #include "SceneInspector.h"
 #include "ui_SceneInspector.h"
+#include "Application.h"
+#include "Document.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "ViewProviderDocumentObject.h"
-#include "Document.h"
-#include "Application.h"
-#include <App/Document.h>
+
 
 using namespace Gui::Dialog;
 

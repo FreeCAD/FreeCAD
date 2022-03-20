@@ -20,16 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
-#include <QCoreApplication>
+#include <QAction>
+#include <QList>
 #endif
 
 #include "DlgUndoRedo.h"
 #include "Application.h"
 #include "MainWindow.h"
 #include "MDIView.h"
+
 
 using namespace Gui::Dialog;
 

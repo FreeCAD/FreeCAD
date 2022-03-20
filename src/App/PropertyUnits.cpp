@@ -24,24 +24,15 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost/version.hpp>
-# include <boost/filesystem/path.hpp>
 # include <cfloat>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-
-#include <Base/Exception.h>
-#include <Base/Reader.h>
-#include <Base/Writer.h>
-#include <Base/Stream.h>
-#include <Base/UnitsApi.h>
-
-#include "PropertyUnits.h"
-#include <Base/PyObjectBase.h>
 #include <Base/QuantityPy.h>
 #include <Base/UnitPy.h>
+
+#include "PropertyUnits.h"
 #include "Expression.h"
+
 
 using namespace App;
 using namespace Base;
@@ -83,7 +74,7 @@ Base::Quantity PropertyQuantity::createQuantityFromPy(PyObject *value)
     else if (PyFloat_Check(value))
         quant = Quantity(PyFloat_AsDouble(value),_Unit);
     else if (PyLong_Check(value))
-        quant = Quantity((double)PyLong_AsLong(value),_Unit);
+        quant = Quantity(double(PyLong_AsLong(value)),_Unit);
     else if (PyObject_TypeCheck(value, &(QuantityPy::Type))) {
         Base::QuantityPy  *pcObject = static_cast<Base::QuantityPy*>(value);
         quant = *(pcObject->getQuantityPtr());

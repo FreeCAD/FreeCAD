@@ -29,8 +29,6 @@
 
 #include "PropertyContainer.h"
 #include "Property.h"
-#include "PropertyLinks.h"
-#include "Application.h"
 #include "DocumentObject.h"
 
 #include <boost/iostreams/device/array.hpp>
@@ -54,8 +52,8 @@ PyObject*  PropertyContainerPy::getPropertyByName(PyObject *args)
 {
     char *pstr;
     int checkOwner=0;
-    if (!PyArg_ParseTuple(args, "s|i", &pstr, &checkOwner))     // convert args: Python->C
-        return nullptr;                             // nullptr triggers exception
+    if (!PyArg_ParseTuple(args, "s|i", &pstr, &checkOwner))
+        return nullptr;
     App::Property* prop = getPropertyContainerPtr()->getPropertyByName(pstr);
     if (prop) {
         if(!checkOwner || (checkOwner==1 && prop->getContainer()==getPropertyContainerPtr()))
@@ -71,8 +69,8 @@ PyObject*  PropertyContainerPy::getPropertyByName(PyObject *args)
 PyObject*  PropertyContainerPy::getPropertyTouchList(PyObject *args)
 {
     char *pstr;
-    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
-        return nullptr;                             // nullptr triggers exception
+    if (!PyArg_ParseTuple(args, "s", &pstr))
+        return nullptr;
     App::Property* prop = getPropertyContainerPtr()->getPropertyByName(pstr);
     if (prop && prop->isDerivedFrom(PropertyLists::getClassTypeId())) {
         const auto &touched = static_cast<PropertyLists*>(prop)->getTouchList();
@@ -93,8 +91,8 @@ PyObject*  PropertyContainerPy::getTypeOfProperty(PyObject *args)
 {
     Py::List ret;
     char *pstr;
-    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
-        return nullptr;                             // nullptr triggers exception
+    if (!PyArg_ParseTuple(args, "s", &pstr))
+        return nullptr;
 
     Property* prop =  getPropertyContainerPtr()->getPropertyByName(pstr);
     if (!prop) {
@@ -120,8 +118,8 @@ PyObject*  PropertyContainerPy::getTypeOfProperty(PyObject *args)
 PyObject*  PropertyContainerPy::getTypeIdOfProperty(PyObject *args)
 {
     char *pstr;
-    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
-        return nullptr;                             // nullptr triggers exception
+    if (!PyArg_ParseTuple(args, "s", &pstr))
+        return nullptr;
 
     Property* prop =  getPropertyContainerPtr()->getPropertyByName(pstr);
     if (!prop) {
@@ -199,6 +197,7 @@ static const std::map<std::string, int> &getStatusMap() {
         statusMap["PartialTrigger"] = Property::PartialTrigger;
         statusMap["NoRecompute"] = Property::NoRecompute;
         statusMap["CopyOnChange"] = Property::CopyOnChange;
+        statusMap["UserEdit"] = Property::UserEdit;
     }
     return statusMap;
 }
@@ -269,8 +268,8 @@ PyObject*  PropertyContainerPy::setPropertyStatus(PyObject *args)
 PyObject*  PropertyContainerPy::getPropertyStatus(PyObject *args)
 {
     char* name = "";
-    if (!PyArg_ParseTuple(args, "|s", &name))     // convert args: Python->C
-        return nullptr;                             // nullptr triggers exception
+    if (!PyArg_ParseTuple(args, "|s", &name))
+        return nullptr;
 
     Py::List ret;
     const auto &statusMap = getStatusMap();
@@ -307,8 +306,8 @@ PyObject*  PropertyContainerPy::getPropertyStatus(PyObject *args)
 PyObject*  PropertyContainerPy::getEditorMode(PyObject *args)
 {
     char* name;
-    if (!PyArg_ParseTuple(args, "s", &name))     // convert args: Python->C
-        return nullptr;                             // nullptr triggers exception
+    if (!PyArg_ParseTuple(args, "s", &name))
+        return nullptr;
 
     App::Property* prop = getPropertyContainerPtr()->getPropertyByName(name);
     Py::List ret;
@@ -325,8 +324,8 @@ PyObject*  PropertyContainerPy::getEditorMode(PyObject *args)
 PyObject*  PropertyContainerPy::getGroupOfProperty(PyObject *args)
 {
     char *pstr;
-    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
-        return nullptr;                             // nullptr triggers exception
+    if (!PyArg_ParseTuple(args, "s", &pstr))
+        return nullptr;
 
     Property* prop = getPropertyContainerPtr()->getPropertyByName(pstr);
     if (!prop) {
@@ -345,8 +344,8 @@ PyObject*  PropertyContainerPy::setGroupOfProperty(PyObject *args)
 {
     char *pstr;
     char *group;
-    if (!PyArg_ParseTuple(args, "ss", &pstr, &group))     // convert args: Python->C
-        return nullptr;                             // nullptr triggers exception
+    if (!PyArg_ParseTuple(args, "ss", &pstr, &group))
+        return nullptr;
 
     PY_TRY {
         Property* prop = getPropertyContainerPtr()->getDynamicPropertyByName(pstr);
@@ -363,8 +362,8 @@ PyObject*  PropertyContainerPy::setGroupOfProperty(PyObject *args)
 PyObject*  PropertyContainerPy::getDocumentationOfProperty(PyObject *args)
 {
     char *pstr;
-    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
-        return nullptr;                             // nullptr triggers exception
+    if (!PyArg_ParseTuple(args, "s", &pstr))
+        return nullptr;
 
     Property* prop = getPropertyContainerPtr()->getPropertyByName(pstr);
     if (!prop) {
@@ -383,8 +382,8 @@ PyObject*  PropertyContainerPy::setDocumentationOfProperty(PyObject *args)
 {
     char *pstr;
     char *doc;
-    if (!PyArg_ParseTuple(args, "ss", &pstr, &doc))     // convert args: Python->C
-        return nullptr;                             // nullptr triggers exception
+    if (!PyArg_ParseTuple(args, "ss", &pstr, &doc))
+        return nullptr;
 
     PY_TRY {
         Property* prop = getPropertyContainerPtr()->getDynamicPropertyByName(pstr);
@@ -400,8 +399,8 @@ PyObject*  PropertyContainerPy::setDocumentationOfProperty(PyObject *args)
 PyObject*  PropertyContainerPy::getEnumerationsOfProperty(PyObject *args)
 {
     char *pstr;
-    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
-        return nullptr;                             // nullptr triggers exception
+    if (!PyArg_ParseTuple(args, "s", &pstr))
+        return nullptr;
 
     Property* prop = getPropertyContainerPtr()->getPropertyByName(pstr);
     if (!prop) {

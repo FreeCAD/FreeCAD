@@ -25,17 +25,17 @@
 #define GUI_TREE_H
 
 #include <unordered_map>
-#include <QTreeWidget>
 #include <QElapsedTimer>
 #include <QStyledItemDelegate>
+#include <QTreeWidget>
 
+#include <App/Application.h>
+#include <App/DocumentObject.h>
 #include <Base/Parameter.h>
 #include <Base/Persistence.h>
-#include <App/Document.h>
-#include <App/Application.h>
-
 #include <Gui/DockWindow.h>
 #include <Gui/Selection.h>
+#include <Gui/TreeItemMode.h>
 
 class QLineEdit;
 
@@ -47,26 +47,6 @@ class DocumentObjectData;
 typedef std::shared_ptr<DocumentObjectData> DocumentObjectDataPtr;
 
 class DocumentItem;
-
-/// highlight modes for the tree items
-enum class HighlightMode {
-    Underlined,
-    Italic,
-    Overlined,
-    Bold,
-    Blue,
-    LightBlue,
-    UserDefined
-};
-
-/// highlight modes for the tree items
-enum class TreeItemMode {
-    ExpandItem,
-    ExpandPath,
-    CollapseItem,
-    ToggleItem
-};
-
 
 /** Tree view that allows drag & drop of document objects.
  * @author Werner Mayer

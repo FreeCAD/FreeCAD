@@ -27,10 +27,8 @@
 #endif
 
 #include <QString>
-#include "Exception.h"
-#include "UnitsApi.h"
+
 #include "UnitsSchemaInternal.h"
-#include <cmath>
 
 
 using namespace Base;
@@ -353,7 +351,7 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
     }
     else if (unit == Unit::ElectricalConductance) {
         if (UnitValue < 1e-9) {
-            unitString = QString::fromLatin1("\xC2\xB5S");
+            unitString = QString::fromUtf8("\xC2\xB5S");
             factor = 1e-12;
         }
         else if (UnitValue < 1e-6) {

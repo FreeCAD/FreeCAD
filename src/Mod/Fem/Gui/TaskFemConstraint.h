@@ -25,9 +25,10 @@
 #ifndef GUI_TASKVIEW_TaskFemConstraint_H
 #define GUI_TASKVIEW_TaskFemConstraint_H
 
-#include <Gui/TaskView/TaskView.h>
+#include <Gui/DocumentObserver.h>
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
 
 #include "ViewProviderFemConstraint.h"
 
@@ -69,7 +70,7 @@ protected:
 protected:
     QWidget* proxy;
     QAction* deleteAction;
-    ViewProviderFemConstraint *ConstraintView;
+    Gui::WeakPtrT<ViewProviderFemConstraint> ConstraintView;
     enum {seldir, selref, selloc, selnone} selectionMode;
 
 private:

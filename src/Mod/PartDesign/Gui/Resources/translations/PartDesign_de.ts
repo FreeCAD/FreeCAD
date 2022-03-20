@@ -93,7 +93,7 @@
     <message>
       <location filename="../../Command.cpp" line="1700"/>
       <source>Additive helix</source>
-      <translation>+ Wendel</translation>
+      <translation>Wendel</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1701"/>
@@ -111,7 +111,7 @@
     <message>
       <location filename="../../Command.cpp" line="1601"/>
       <source>Additive loft</source>
-      <translation>+ Ausformung</translation>
+      <translation>Ausformung</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1602"/>
@@ -129,7 +129,7 @@
     <message>
       <location filename="../../Command.cpp" line="1501"/>
       <source>Additive pipe</source>
-      <translation>Zuzufügendes Rohr</translation>
+      <translation>Rohr</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1502"/>
@@ -579,7 +579,7 @@
     <message>
       <location filename="../../Command.cpp" line="1377"/>
       <source>Revolution</source>
-      <translation>Drehen</translation>
+      <translation>Drehteil</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1378"/>
@@ -683,7 +683,7 @@
     <message>
       <location filename="../../Command.cpp" line="1551"/>
       <source>Subtractive pipe</source>
-      <translation>Abziehbares Rohr</translation>
+      <translation>Rohr</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1552"/>
@@ -725,17 +725,17 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="199"/>
       <source>Additive Box</source>
-      <translation>Zu addierender Quader</translation>
+      <translation>Quader</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="203"/>
       <source>Additive Cylinder</source>
-      <translation>Zu addierender Zylinder</translation>
+      <translation>Zylinder</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="207"/>
       <source>Additive Sphere</source>
-      <translation>Zu addierende Kugel</translation>
+      <translation>Kugel</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="211"/>
@@ -745,22 +745,22 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="215"/>
       <source>Additive Ellipsoid</source>
-      <translation>Zu addierendes Ellipsoid</translation>
+      <translation>Ellipsoid</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="219"/>
       <source>Additive Torus</source>
-      <translation>Zu addierender Torus</translation>
+      <translation>Torus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="223"/>
       <source>Additive Prism</source>
-      <translation>+ Prisma</translation>
+      <translation>Prisma</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="227"/>
       <source>Additive Wedge</source>
-      <translation>Zu addierender Keil</translation>
+      <translation>Keil</translation>
     </message>
   </context>
   <context>
@@ -779,37 +779,37 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="355"/>
       <source>Subtractive Box</source>
-      <translation>Abzuziehender Quader</translation>
+      <translation>Quader</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="359"/>
       <source>Subtractive Cylinder</source>
-      <translation>Abzuziehender Zylinder</translation>
+      <translation>Zylinder</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="363"/>
       <source>Subtractive Sphere</source>
-      <translation>Abzuziehende Kugel</translation>
+      <translation>Kugel</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="367"/>
       <source>Subtractive Cone</source>
-      <translation>Abzuziehender Kegel</translation>
+      <translation>Kegel</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="371"/>
       <source>Subtractive Ellipsoid</source>
-      <translation>Abzuziehendes Ellipsoid</translation>
+      <translation>Ellipsoid</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="375"/>
       <source>Subtractive Torus</source>
-      <translation>Abzuziehender Torus</translation>
+      <translation>Torus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="379"/>
       <source>Subtractive Prism</source>
-      <translation>Abzuziehendes Prisma</translation>
+      <translation>Prisma</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="383"/>
@@ -1061,7 +1061,7 @@
     <message>
       <location filename="../../DlgActiveBody.ui" line="14"/>
       <source>Active Body Required</source>
-      <translation>Aktiver Körper benötigt</translation>
+      <translation>Aktiver Körper erforderlich</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.ui" line="20"/>
@@ -1444,7 +1444,7 @@ Wenn Null, ist er gleich Radius2</translation>
       <location filename="../../TaskPrimitiveParameters.cpp" line="806"/>
       <location filename="../../TaskPrimitiveParameters.cpp" line="811"/>
       <source>Invalid wedge parameters</source>
-      <translation>Ungültige Keilparameter</translation>
+      <translation>Ungültige Keil-Parameter</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="802"/>
@@ -1979,7 +1979,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="65"/>
       <source>Helix parameters</source>
-      <translation>Wendelparameter</translation>
+      <translation>Wendel-Parameter</translation>
     </message>
   </context>
   <context>
@@ -2360,7 +2360,7 @@ oder in Richtung einer als Referenz auszuwählenden Kante</translation>
       <location filename="../../TaskPadParameters.ui" line="102"/>
       <source>Use custom vector for pad direction, otherwise
 the sketch plane's normal vector will be used</source>
-      <translation>Benutzerdefinierten Vektor für die Richtung der Extrusion verwenden, andernfalls wird
+      <translation>Benutzerdefinierten Vektor für die Richtung der Aufpolsterung verwenden, andernfalls wird
 der Normalenvektor der Skizze verwendet</translation>
     </message>
     <message>
@@ -2428,7 +2428,7 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskPadParameters.ui" line="259"/>
       <source>Reverses pad direction</source>
-      <translation>Kehrt die Extrusionsrichtung um</translation>
+      <translation>Richtung der Aufpolsterung umdrehen</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="262"/>
@@ -2637,7 +2637,7 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="75"/>
       <source>Pipe parameters</source>
-      <translation>Rohrparameter</translation>
+      <translation>Rohr-Parameter</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="95"/>
@@ -3192,17 +3192,17 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="200"/>
       <source>Create an additive box by its width, height, and length</source>
-      <translation>Erzeugen eines hinzuzufügenden Quaders mit Angabe von Breite, Höhe und Länge</translation>
+      <translation>Erzeuge einen hinzuzufügenden Quader mit Angabe von Breite, Höhe und Länge</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="204"/>
       <source>Create an additive cylinder by its radius, height, and angle</source>
-      <translation>Erzeugen eines hinzuzufügenden Zylinders mit Angabe von Radius, Höhe und Winkel</translation>
+      <translation>Erzeuge einen hinzuzufügenden Zylinder mit Angabe von Radius, Höhe und Winkel</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="208"/>
       <source>Create an additive sphere by its radius and various angles</source>
-      <translation>Erzeugen einer hinzuzufügenden Kugel durch Angabe des Radius und verschiedener Winkel</translation>
+      <translation>Erzeuge eine hinzuzufügende Kugel durch Angabe des Radius und verschiedener Winkel</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="212"/>
@@ -3212,22 +3212,22 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="216"/>
       <source>Create an additive ellipsoid</source>
-      <translation>Erzeugen eines hinzuzufügenden Ellipsoids</translation>
+      <translation>Erzeuge ein hinzuzufügendes Ellipsoid</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="220"/>
       <source>Create an additive torus</source>
-      <translation>Erzeugen eines hinzuzufügenden Torus</translation>
+      <translation>Erzeuge einen hinzuzufügenden Torus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="224"/>
       <source>Create an additive prism</source>
-      <translation>Erzeugen eines hinzuzufügenden Prismas</translation>
+      <translation>Erzeuge ein hinzuzufügendes Prisma</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="228"/>
       <source>Create an additive wedge</source>
-      <translation>Erzeugen eines hinzuzufügenden Keils</translation>
+      <translation>Erzeuge einen hinzuzufügenden Keil</translation>
     </message>
   </context>
   <context>
@@ -3235,17 +3235,17 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="356"/>
       <source>Create a subtractive box by its width, height and length</source>
-      <translation>Erzeugen eines abzuziehenden Quaders durch Angabe von Breite, Höhe und Länge</translation>
+      <translation>Erzeuge einen abzuziehenden Quader durch Angabe von Breite, Höhe und Länge</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="360"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation>Erzeugen eines abzuziehenden Zylinders durch Angabe von Radius, Höhe und Winkel</translation>
+      <translation>Erzeuge einen abzuziehenden Zylinder durch Angabe von Radius, Höhe und Winkel</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="364"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
-      <translation>Erzeugen einer abzuziehenden Kugel durch Angabe von Radius und verschiedenen Winkeln</translation>
+      <translation>Erzeuge eine abzuziehende Kugel durch Angabe des Radius und verschiedenen Winkeln</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="368"/>
@@ -3255,7 +3255,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="372"/>
       <source>Create a subtractive ellipsoid</source>
-      <translation>Erzeugen eines abzuziehenden Ellipsoids</translation>
+      <translation>Erzeuge ein abzuziehendes Ellipsoid</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="376"/>
@@ -3707,14 +3707,14 @@ This may lead to unexpected results.</source>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
-      <translation>Um PartDesign verwenden zu können, benötigen Sie einen aktiven Körper im Dokument. Bitte aktivieren (Doppelklick) Sie einen Körper oder erstellen Sie einen Neuen.
+      <translation>Um PartDesign verwenden zu können, ist ein aktiver Körper im Dokument erforderlich. Bitte einen Körper aktivieren (Doppelklick) oder einen neuen erstellen.
 
-Wenn Sie ein älteres Dokument mit PartDesign-Objekten ohne Körper haben, verwenden Sie die Migrationsfunktion in PartDesign, um sie in einen Körper umzuwandeln.</translation>
+Wenn ein älteres Dokument mit PartDesign-Objekten ohne Körper vorliegt, wird die PartDesign-Funktion Migrieren verwendet, um sie in einen Körper abzulegen.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="177"/>
       <source>Active Body Required</source>
-      <translation>Aktiver Körper benötigt</translation>
+      <translation>Aktiver Körper erforderlich</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="178"/>
@@ -3836,7 +3836,7 @@ Dieses Objekt ist beschädigt und kann nicht bearbeitet werden.</translation>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="51"/>
       <source>Edit revolution</source>
-      <translation>Rotation bearbeiten</translation>
+      <translation>Drehteil bearbeiten</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="192"/>
@@ -4053,37 +4053,37 @@ Du kannst die Teile später jederzeit mit 'Part Design -&gt; Migrieren...' migri
     <message>
       <location filename="../../../SprocketFeature.ui" line="163"/>
       <source>Motorcycle 420</source>
-      <translation>Motorrad 420</translation>
+      <translation>Motorcycle 420</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="168"/>
       <source>Motorcycle 425</source>
-      <translation>Motorrad 425</translation>
+      <translation>Motorcycle 425</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="173"/>
       <source>Motorcycle 428</source>
-      <translation>Motorrad 428</translation>
+      <translation>Motorcycle 428</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="178"/>
       <source>Motorcycle 520</source>
-      <translation>Motorrad 520</translation>
+      <translation>Motorcycle 520</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="183"/>
       <source>Motorcycle 525</source>
-      <translation>Motorrad 525</translation>
+      <translation>Motorcycle 525</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="188"/>
       <source>Motorcycle 530</source>
-      <translation>Motorrad 530</translation>
+      <translation>Motorcycle 530</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="193"/>
       <source>Motorcycle 630</source>
-      <translation>Motorrad 630</translation>
+      <translation>Motorcycle 630</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="201"/>
@@ -4526,7 +4526,7 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>&amp;Part Design</source>
-      <translation>&amp;Teile-Konstruktion</translation>
+      <translation>&amp;Part Design</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
@@ -4566,7 +4566,7 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Shaft design wizard</source>
-      <translation>Assistent für Drehteilentwurf</translation>
+      <translation>Entwurfsassistent für Wellen</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="67"/>

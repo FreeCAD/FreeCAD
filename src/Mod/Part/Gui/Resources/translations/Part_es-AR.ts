@@ -188,7 +188,7 @@ Se puede utilizar un 'Filtro Compuesto' para extraer las piezas restantes.</tran
       <location filename="../../AppPartGui.cpp" line="224"/>
       <location filename="../../AppPartGui.cpp" line="225"/>
       <source>Import-Export</source>
-      <translation>Importar/Exportar</translation>
+      <translation>Importar-Exportar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="286"/>

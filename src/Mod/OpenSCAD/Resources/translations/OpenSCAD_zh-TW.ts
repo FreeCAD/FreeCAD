@@ -4,14 +4,19 @@
   <context>
     <name>OpenSCAD</name>
     <message>
+      <location filename="OpenSCADUtils.py" line="710"/>
+      <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
+      <translation>OpenSCAD 檔案同時包含 2D 與 3D 形狀。目前不支援匯入這樣的格式，所有形狀必須為相同維度。</translation>
+    </message>
+    <message>
       <location filename="OpenSCADUtils.py" line="622"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
-      <translation>錯誤，所有造型必須是2D或都是3D</translation>
+      <translation>錯誤：所有形狀必須為 2D 或兩者均為 3D</translation>
     </message>
     <message>
       <location filename="importCSG.py" line="1341"/>
       <source>Unsupported Function</source>
-      <translation>此功能未支援</translation>
+      <translation>此功能尚未支援</translation>
     </message>
     <message>
       <location filename="importCSG.py" line="1341"/>
@@ -46,12 +51,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="365"/>
       <source>Load</source>
-      <translation type="unfinished">Load</translation>
+      <translation>載入</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="366"/>
       <source>Save</source>
-      <translation type="unfinished">Save</translation>
+      <translation>儲存</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="367"/>
@@ -136,7 +141,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="113"/>
       <source>Remove fusion, apply placement to children, and color randomly</source>
-      <translation type="unfinished">Remove fusion, apply placement to children, and color randomly</translation>
+      <translation>移除合併，套用至子項目位置並隨機著色</translation>
     </message>
   </context>
   <context>
@@ -175,7 +180,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="536"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
-      <translation type="unfinished">Export objects as meshes and use OpenSCAD to perform a boolean operation</translation>
+      <translation>將物件匯出為網格，並使用 OpenSCAD 執行布林運算</translation>
     </message>
   </context>
   <context>
@@ -196,12 +201,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="195"/>
       <source>Mirror Mesh Feature...</source>
-      <translation type="unfinished">Mirror Mesh Feature...</translation>
+      <translation>網格特徵的鏡像副本...</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="198"/>
       <source>Create Mirror Mesh Feature</source>
-      <translation type="unfinished">Create Mirror Mesh Feature</translation>
+      <translation>建立鏡像網格特徵</translation>
     </message>
   </context>
   <context>
@@ -240,7 +245,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="315"/>
       <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
-      <translation type="unfinished">Replace an object in the Feature Tree. Please select old, new, and parent object</translation>
+      <translation>替換特徵樹中的物件。 請選擇原始物件、新物件和父物件</translation>
     </message>
   </context>
   <context>
@@ -248,12 +253,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="254"/>
       <source>Resize Mesh Feature...</source>
-      <translation type="unfinished">Resize Mesh Feature...</translation>
+      <translation>網格尺寸特徵...</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="258"/>
       <source>Create Resize Mesh Feature</source>
-      <translation type="unfinished">Create Resize Mesh Feature</translation>
+      <translation>建立網格尺寸特徵</translation>
     </message>
   </context>
   <context>
@@ -261,12 +266,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="224"/>
       <source>Scale Mesh Feature...</source>
-      <translation type="unfinished">Scale Mesh Feature...</translation>
+      <translation>網格縮放特徵...</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="228"/>
       <source>Create Scale Mesh Feature</source>
-      <translation type="unfinished">Create Scale Mesh Feature</translation>
+      <translation>建立網格縮放特徵</translation>
     </message>
   </context>
   <context>
@@ -300,12 +305,12 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="34"/>
       <source>OpenSCAD executable</source>
-      <translation>OpenSCAD可執行</translation>
+      <translation>OpenSCAD 可執行</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="47"/>
       <source>The path to the OpenSCAD executable</source>
-      <translation>此路徑可以在OpenSCAD 上執行</translation>
+      <translation>此路徑可以在 OpenSCAD 上執行</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="65"/>
@@ -351,7 +356,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="177"/>
       <source>OpenSCAD export</source>
-      <translation>匯出OpenSCAD</translation>
+      <translation>匯出 OpenSCAD</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="185"/>

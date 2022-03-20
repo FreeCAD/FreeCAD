@@ -20,13 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_VIEW3DVIEWERPY_H
 #define GUI_VIEW3DVIEWERPY_H
 
-#include <Base/PyObjectBase.h>
 #include <CXX/Extensions.hxx>
 #include <list>
+
 
 namespace Gui {
 

@@ -20,19 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+#ifndef _PreComp_
 #include <sstream>
 #include <QDir>
 #include <QMessageBox>
+#endif
 
 #include <App/Document.h>
-#include <App/PropertyStandard.h>
 
 #include "DlgProjectUtility.h"
+#include "ui_DlgProjectUtility.h"
 #include "Application.h"
 #include "Command.h"
-#include "ui_DlgProjectUtility.h"
 
 
 using namespace Gui::Dialog;

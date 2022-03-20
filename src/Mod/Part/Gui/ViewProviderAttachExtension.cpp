@@ -111,12 +111,15 @@ void ViewProviderAttachExtension::extensionUpdateData(const App::Property* prop)
 
 void ViewProviderAttachExtension::extensionSetupContextMenu(QMenu* menu, QObject*, const char*)
 {
-    // toggle command to display components
-    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-    QAction* act = menu->addAction(QObject::tr("Attachment editor"));
-    if (Gui::Control().activeDialog())
-        act->setDisabled(true);
-    func->trigger(act, boost::bind(&ViewProviderAttachExtension::showAttachmentEditor, this));
+    bool attach = getExtendedViewProvider()->getObject()->hasExtension(Part::AttachExtension::getExtensionClassTypeId());
+    if (attach) {
+        // toggle command to display components
+        Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+        QAction* act = menu->addAction(QObject::tr("Attachment editor"));
+        if (Gui::Control().activeDialog())
+            act->setDisabled(true);
+        func->trigger(act, boost::bind(&ViewProviderAttachExtension::showAttachmentEditor, this));
+    }
 }
 
 void ViewProviderAttachExtension::showAttachmentEditor()

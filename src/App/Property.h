@@ -24,14 +24,12 @@
 #ifndef APP_PROPERTY_H
 #define APP_PROPERTY_H
 
-// Std. configurations
-
 #include <Base/Exception.h>
 #include <Base/Persistence.h>
 #include <boost/any.hpp>
-#include <string>
-#include <bitset>
 #include <boost/signals2.hpp>
+#include <bitset>
+#include <string>
 #include <FCGlobal.h>
 
 namespace Py {
@@ -79,6 +77,7 @@ public:
                             // expression on restore and touch the object on value change.
         Busy = 15, // internal use to avoid recursive signaling
         CopyOnChange = 16, // for Link to copy the linked object on change of the property with this flag
+        UserEdit = 17, // cause property editor to create button for user defined editing
 
         // The following bits are corresponding to PropertyType set when the
         // property added. These types are meant to be static, and cannot be
@@ -252,6 +251,16 @@ public:
     /// Compare if this property has the same content as the given one
     virtual bool isSame(const Property &other) const;
 
+    /** Return a unique ID for the property
+     *
+     * The ID of a property is generated from a monotonically increasing
+     * internal counter. The intention of the ID is to be used as a key for
+     * mapping, instead of using the raw pointer. Because, it is possible for
+     * the runtime memory allocator to reuse just deleted memory, which will
+     * cause hard to debug problem if use pointer as key. 
+     */
+    int64_t getID() const {return _id;}
+
     friend class PropertyContainer;
     friend struct PropertyData;
     friend class DynamicProperty;
@@ -288,6 +297,7 @@ private:
 private:
     PropertyContainer *father;
     const char *myName;
+    int64_t _id;
 
 public:
     boost::signals2::signal<void (const App::Property&)> signalChanged;

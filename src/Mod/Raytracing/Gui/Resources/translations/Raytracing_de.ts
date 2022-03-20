@@ -159,7 +159,7 @@ Möchten Sie fortfahren?</translation>
     </message>
     <message>
       <source>Write the active 3D view with camera and all its content to a POV-Ray file</source>
-      <translation>Speichern Sie die aktive 3D Ansicht mit Kamera und allen seinen Inhalten in eine POV-Ray-Datei</translation>
+      <translation>Speichern Sie die aktive 3D-Ansicht mit Kamera und allen ihren Inhalten in eine POV-Ray-Datei</translation>
     </message>
     <message>
       <source>No template</source>

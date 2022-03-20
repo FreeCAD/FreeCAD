@@ -689,7 +689,7 @@
     </message>
     <message>
       <source>Cut</source>
-      <translation>Przetnij</translation>
+      <translation>Wytnij</translation>
     </message>
     <message>
       <source>Trim</source>
@@ -1564,7 +1564,7 @@ do gładszego wyglądu.
     </message>
     <message>
       <source>Parameters...</source>
-      <translation>Parametry...</translation>
+      <translation>Parametry ...</translation>
     </message>
     <message>
       <source>Plane</source>

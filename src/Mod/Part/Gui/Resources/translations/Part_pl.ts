@@ -2238,7 +2238,7 @@ na jego składowe X, Y i Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="273"/>
       <source>Cut</source>
-      <translation>Przetnij</translation>
+      <translation>Wytnij</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="274"/>
@@ -2420,7 +2420,7 @@ na jego składowe X, Y i Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1583"/>
       <source>Loft...</source>
-      <translation>Wyciągnięcie po profilach ...</translation>
+      <translation>Wyciągnięcie przez profile ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1584"/>
@@ -2564,7 +2564,7 @@ na jego składowe X, Y i Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="219"/>
       <source>Create primitives...</source>
-      <translation>Utwórz bryły pierwotne ...</translation>
+      <translation>Utwórz geometrie pierwotne ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="220"/>
@@ -2870,7 +2870,7 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
     <message>
       <location filename="../../Command.cpp" line="508"/>
       <source>Fusion</source>
-      <translation>Połączenie</translation>
+      <translation>Łączenie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="921"/>
@@ -2960,7 +2960,7 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="202"/>
       <source>Loft</source>
-      <translation>Wyciągnięcie po profilach</translation>
+      <translation>Wyciągnięcie przez profile</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="240"/>
@@ -3066,17 +3066,17 @@ Ujęcie widoku określa kierunek rzutowania.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="216"/>
       <source>Around x-axis:</source>
-      <translation>W okolicy osi X:</translation>
+      <translation>Wokół osi X:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="229"/>
       <source>Around y-axis:</source>
-      <translation>W okolicy osi Y:</translation>
+      <translation>Wokół osi Y:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="242"/>
       <source>Around z-axis:</source>
-      <translation>W okolicy osi Z:</translation>
+      <translation>Wokół osi Z:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="280"/>
@@ -3637,7 +3637,7 @@ Wybierz najpierw prawidłowy kształt w polu rozwijanym.</translation>
       <source>No edge entity is checked to fillet.
 Please check one or more edge entities first.</source>
       <translation>Nie zaznaczono krawędzi do sfazowania. 
-Zaznacz wcześniej jedną lub więcej krawędzi.</translation>
+Zaznacz najpierw jedną lub więcej krawędzi.</translation>
     </message>
   </context>
   <context>
@@ -3846,7 +3846,7 @@ wewnątrz właściwości Umiejscowienie.</translation>
       <source>If checked, no Compound merge will be done
 during file reading (slower but higher details).</source>
       <translation>Jeśli opcja jest zaznaczona, żadne złożone połączenie nie zostanie wykonane
-podczas odczytu pliku (wolniejsze, ale bardziej dokładne).</translation>
+podczas odczytu pliku (wolniejsze, ale dokładniejsze).</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="226"/>
@@ -4919,7 +4919,7 @@ Jeżeli opcja nie jest zaznaczona, to jest to zależne od opcji "Kolor podświet
     <message>
       <location filename="../../Location.ui" line="14"/>
       <source>Location</source>
-      <translation>Położenie</translation>
+      <translation>Umiejscowienie</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="29"/>
@@ -5029,7 +5029,7 @@ zostanie użyty wektor normalnej płaszczyzny szkicu</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="244"/>
       <source>Loft</source>
-      <translation>Wyciągnięcie po profilach</translation>
+      <translation>Wyciągnięcie przez profile</translation>
     </message>
   </context>
   <context>
@@ -5337,17 +5337,17 @@ of object being attached.</source>
     <message>
       <location filename="../../TaskAttacher.ui" line="224"/>
       <source>Around x-axis:</source>
-      <translation>W okolicy osi X:</translation>
+      <translation>Wokół osi X:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="237"/>
       <source>Around y-axis:</source>
-      <translation>W okolicy osi Y:</translation>
+      <translation>Wokół osi Y:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="250"/>
       <source>Around z-axis:</source>
-      <translation>W okolicy osi Z:</translation>
+      <translation>Wokół osi Z:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="286"/>
@@ -5727,7 +5727,7 @@ przez przeciągnięcie prostokąta zaznaczenia w oknie widoku 3D</translation>
     <message>
       <location filename="../../TaskLoft.ui" line="14"/>
       <source>Loft</source>
-      <translation>Wyciągnięcie po profilach</translation>
+      <translation>Wyciągnięcie przez profile</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="23"/>

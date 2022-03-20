@@ -171,7 +171,7 @@ class ObjectDressup:
 
     def arcExtension(self, obj, queue):
         """returns gcode for arc extension"""
-        global currLocation  # pylint: disable=global-statement
+        global currLocation
         results = []
 
         offset = obj.offset
@@ -212,7 +212,7 @@ class ObjectDressup:
         """returns gcode to do an arc move toward an arc to perform
         a corner action twist. Includes lifting and plungeing the knife"""
 
-        global currLocation  # pylint: disable=global-statement
+        global currLocation
         pivotheight = obj.pivotheight
         offset = obj.offset
         results = []
@@ -292,7 +292,7 @@ class ObjectDressup:
 
     def lineExtension(self, obj, queue):
         """returns gcode for line extension"""
-        global currLocation  # pylint: disable=global-statement
+        global currLocation
 
         offset = float(obj.offset)
         results = []
@@ -320,7 +320,7 @@ class ObjectDressup:
     def lineTwist(self, obj, queue, lastXY, twistCW=False):
         """returns gcode to do an arc move toward a line to perform
         a corner action twist. Includes lifting and plungeing the knife"""
-        global currLocation  # pylint: disable=global-statement
+        global currLocation
         pivotheight = obj.pivotheight
         offset = obj.offset
 
@@ -374,7 +374,7 @@ class ObjectDressup:
 
     def execute(self, obj):
         newpath = []
-        global currLocation  # pylint: disable=global-statement
+        global currLocation
 
         if not obj.Base:
             return
@@ -567,11 +567,9 @@ class ViewProviderDressup:
             # FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
 
     def unsetEdit(self, vobj, mode=0):
-        # pylint: disable=unused-argument
         return False
 
     def setEdit(self, vobj, mode=0):
-        # pylint: disable=unused-argument
         FreeCADGui.Control.closeDialog()
         panel = TaskPanel(vobj.Object)
         FreeCADGui.Control.showDialog(panel)
@@ -585,11 +583,9 @@ class ViewProviderDressup:
         return None
 
     def __setstate__(self, state):
-        # pylint: disable=unused-argument
         return None
 
     def onDelete(self, arg1=None, arg2=None):
-        # pylint: disable=unused-argument
         if arg1.Object and arg1.Object.Base:
             FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
             job = PathUtils.findParentJob(arg1.Object.Base)
@@ -600,8 +596,6 @@ class ViewProviderDressup:
 
 
 class CommandDressupDragknife:
-    # pylint: disable=no-init
-
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",
@@ -666,7 +660,7 @@ class CommandDressupDragknife:
         FreeCADGui.doCommand("obj.pivotheight = 4")
         FreeCADGui.doCommand("obj.ViewObject.Document.setEdit(obj.ViewObject, 0)")
 
-        FreeCAD.ActiveDocument.commitTransaction()
+        # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()
 
 

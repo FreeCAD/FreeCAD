@@ -721,6 +721,11 @@ Esta propriedade é apenas-de-leitura, já que o número depende dos pontos cont
       <translation>Área deste objeto</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>A forma deste objeto</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation type="unfinished">The base object used by this object</translation>
@@ -729,11 +734,6 @@ Esta propriedade é apenas-de-leitura, já que o número depende dos pontos cont
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
       <translation type="unfinished">The PAT file used by this object</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>A forma deste objeto</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>
@@ -2956,7 +2956,7 @@ Então você pode usá-la para salvar uma posição diferente de câmara e estad
     <message>
       <location filename="InitGui.py" line="110"/>
       <source>Draft modification tools</source>
-      <translation type="unfinished">Draft modification tools</translation>
+      <translation>Ferramentas de modificação Rascunho</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="113"/>
@@ -3705,6 +3705,11 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Várias arestas encontradas: irão ser criados traços</translation>
     </message>
     <message>
+      <location filename="upgrade.py" line="541"/>
+      <source>Found several non-treatable objects: creating compound</source>
+      <translation type="unfinished">Found several non-treatable objects: creating compound</translation>
+    </message>
+    <message>
       <location filename="upgrade.py" line="512"/>
       <source>trying: closing it</source>
       <translation type="unfinished">trying: closing it</translation>
@@ -3723,11 +3728,6 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="upgrade.py" line="536"/>
       <source>Found points: creating compound</source>
       <translation type="unfinished">Found points: creating compound</translation>
-    </message>
-    <message>
-      <location filename="upgrade.py" line="541"/>
-      <source>Found several non-treatable objects: creating compound</source>
-      <translation type="unfinished">Found several non-treatable objects: creating compound</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="544"/>

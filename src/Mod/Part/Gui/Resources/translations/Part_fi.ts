@@ -5519,7 +5519,7 @@ but more stable.  Default: false</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
       <source>Log errors</source>
-      <translation type="unfinished">Log errors</translation>
+      <translation>Kirjaa virheet</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1112"/>
@@ -5655,7 +5655,7 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1275"/>
       <source>Results</source>
-      <translation type="unfinished">Results</translation>
+      <translation>Tulokset</translation>
     </message>
   </context>
   <context>

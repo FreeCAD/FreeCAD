@@ -32,7 +32,7 @@
 #include "opendcm/core/object.hpp"
 #include "opendcm/core/geometry.hpp"
 #include "opendcm/core/clustergraph.hpp"
-#include "opendcm/core/sheduler.hpp"
+#include "opendcm/core/scheduler.hpp"
 #include "opendcm/core/traits.hpp"
 #include "geometry.hpp"
 #include "distance.hpp"
@@ -276,16 +276,16 @@ struct Module3D {
         typedef mpl::map0<> signals;
 
         static void system_init(Sys& sys) {
-            sys.m_sheduler.addProcessJob(new SystemSolver());
+            sys.m_scheduler.addProcessJob(new SystemSolver());
         };
         static void system_copy(const Sys& from, Sys& into) {
-            //nothing to to as all objects and properties are copyed with the clustergraph
+            //nothing to to as all objects and properties are copied with the clustergraph
         };
     };
 };
 
 namespace details {
-//allow direct access to the stored geometry in a Geometry3D, copyed from boost variant get
+//allow direct access to the stored geometry in a Geometry3D, copied from boost variant get
 template <typename T>
 struct get_visitor {
 private:

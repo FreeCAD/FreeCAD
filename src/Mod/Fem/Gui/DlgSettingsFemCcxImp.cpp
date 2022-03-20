@@ -23,21 +23,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
+#include <Gui/Application.h>
 
 #include "DlgSettingsFemCcxImp.h"
 #include "ui_DlgSettingsFemCcx.h"
-#include <Gui/Application.h>
-#include <Gui/PrefWidgets.h>
+
 
 using namespace FemGui;
 
-DlgSettingsFemCcxImp::DlgSettingsFemCcxImp( QWidget* parent )
-  : PreferencePage( parent )
-  , ui(new Ui_DlgSettingsFemCcxImp)
+DlgSettingsFemCcxImp::DlgSettingsFemCcxImp(QWidget* parent)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgSettingsFemCcxImp)
 {
     ui->setupUi(this);
+    // set ranges
+    ui->dsb_ccx_analysis_time->setMaximum(FLOAT_MAX);
+    ui->dsb_ccx_initial_time_step->setMaximum(FLOAT_MAX);
 }
 
 DlgSettingsFemCcxImp::~DlgSettingsFemCcxImp()
@@ -101,16 +104,16 @@ void DlgSettingsFemCcxImp::loadSettings()
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Mod/Fem/Ccx");
-    int index =  hGrp->GetInt("Solver", 0);
+    int index = hGrp->GetInt("Solver", 0);
     if (index > -1) ui->cmb_solver->setCurrentIndex(index);
-    index =  hGrp->GetInt("AnalysisType", 0);
+    index = hGrp->GetInt("AnalysisType", 0);
     if (index > -1) ui->cb_analysis_type->setCurrentIndex(index);
 }
 
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsFemCcxImp::changeEvent(QEvent *e)
+void DlgSettingsFemCcxImp::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         int c_index = ui->cb_analysis_type->currentIndex();

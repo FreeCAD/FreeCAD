@@ -29,6 +29,7 @@
 #include <Base/BoundBox.h>
 
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
+#include <Mod/PartDesign/PartDesignGlobal.h>
 
 class SoPickStyle;
 class SbBox3f;

@@ -23,33 +23,27 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cmath>
 # include <BRepAlgoAPI_Cut.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
-# include <BRepBuilderAPI_MakeSolid.hxx>
-# include <BRepClass3d_SolidClassifier.hxx>
 # include <BRepGProp.hxx>
 # include <BRepOffsetAPI_MakeOffset.hxx>
 # include <BRepOffsetAPI_ThruSections.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
+# include <gp_Ax1.hxx>
 # include <gp_Dir.hxx>
 # include <gp_Trsf.hxx>
 # include <GProp_GProps.hxx>
 # include <Precision.hxx>
-# include <ShapeAnalysis.hxx>
-# include <ShapeFix_Wire.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Iterator.hxx>
-# include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
 #endif
 
 #include "ExtrusionHelper.h"
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Base/Tools.h>
+
 #include "FeatureExtrusion.h"
 
 using namespace Part;
@@ -412,7 +406,7 @@ void ExtrusionHelper::checkInnerWires(std::vector<bool>& isInnerWire, const gp_D
     // recursively call the function until all wires are checked
     if (numCheckWires > 1)
         checkInnerWires(isInnerWire, direction, checklist, !forInner, prisms);
-};
+}
 
 void ExtrusionHelper::createTaperedPrismOffset(TopoDS_Wire sourceWire,
                                                const gp_Vec& translation,
@@ -435,7 +429,7 @@ void ExtrusionHelper::createTaperedPrismOffset(TopoDS_Wire sourceWire,
         TopLoc_Location edgeLocation;
         if (numEdges == 1) {
             // create a new wire from the input wire to determine its location
-            // to reset the location after the offet operation
+            // to reset the location after the offset operation
             BRepBuilderAPI_MakeWire mkWire;
             TopExp_Explorer xp(sourceWire, TopAbs_EDGE);
             while (xp.More()) {
@@ -458,11 +452,9 @@ void ExtrusionHelper::createTaperedPrismOffset(TopoDS_Wire sourceWire,
         }
         catch (const Base::Exception& e) {
             throw Base::RuntimeError(e.what());
-            result = TopoDS_Wire();
         }
         if (!mkOffset.IsDone()) {
             Standard_Failure::Raise("Extrusion: Offset could not be created");
-            result = TopoDS_Wire();
         }
         if (numEdges == 1) {
             // we need to move the offset wire first back to its original position

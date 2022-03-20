@@ -24,47 +24,40 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <algorithm>
+# include <QApplication>
 # include <QComboBox>
 # include <QFontDatabase>
-# include <QLayout>
 # include <QLocale>
+# include <QPalette>
 # include <QPixmap>
 # include <QTextStream>
 # include <QTimer>
-# include <QApplication>
-# include <QPalette>
-# include <QtGlobal>
 #endif
-
-#include <boost/algorithm/string/predicate.hpp>
-
-#include <Base/Tools.h>
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/PropertyGeo.h>
-#include <App/PropertyFile.h>
-#include <App/PropertyUnits.h>
-#include <Gui/Application.h>
-#include <Gui/Control.h>
-#include <Gui/Widgets.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/MainWindow.h>
-#include <Gui/ViewProviderDocumentObject.h>
-#include <Gui/Placement.h>
-#include <Gui/FileDialog.h>
-#include <Gui/DlgPropertyLink.h>
-#include <Gui/QuantitySpinBox.h>
-#include <Gui/VectorListEditor.h>
 
 #include "PropertyItem.h"
 #include "PropertyView.h"
+
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <App/Expression.h>
+#include <App/PropertyGeo.h>
+#include <App/PropertyFile.h>
+#include <App/PropertyUnits.h>
+#include <Base/Console.h>
+#include <Base/Interpreter.h>
+#include <Base/Tools.h>
+#include <Gui/Command.h>
+#include <Gui/Control.h>
+#include <Gui/DlgPropertyLink.h>
+#include <Gui/FileDialog.h>
+#include <Gui/MainWindow.h>
+#include <Gui/Placement.h>
+#include <Gui/QuantitySpinBox.h>
+#include <Gui/Selection.h>
 #include <Gui/SpinBox.h>
+#include <Gui/VectorListEditor.h>
+#include <Gui/ViewProviderDocumentObject.h>
+
 
 using namespace Gui::PropertyEditor;
 using namespace Gui::Dialog;
@@ -91,11 +84,19 @@ PropertyItem* PropertyItemFactory::createPropertyItem (const char* sName) const
 }
 
 // ----------------------------------------------------
+
+QVariant PropertyItemAttorney::toString(PropertyItem* item, const QVariant& v)
+{
+    return item->toString(v);
+}
+
+// ----------------------------------------------------
+
 Q_DECLARE_METATYPE(Py::Object)
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyItem)
 
-PropertyItem::PropertyItem() : parentItem(0), readonly(false), cleared(false), linked(false)
+PropertyItem::PropertyItem() : parentItem(0), readonly(false), linked(false), expanded(false)
 {
     precision = Base::UnitsApi::getDecimals();
     setAutoApply(true);
@@ -255,6 +256,11 @@ void PropertyItem::removeChildren(int from, int to)
     }
 }
 
+void PropertyItem::moveChild(int from, int to)
+{
+    childItems.move(from, to);
+}
+
 /*!
  * \brief PropertyItem::takeChild
  * Removes the child at index row but doesn't delete it
@@ -303,6 +309,16 @@ void PropertyItem::setLinked(bool l)
 bool PropertyItem::isLinked() const
 {
     return linked;
+}
+
+void PropertyItem::setExpanded(bool enable)
+{
+    expanded = enable;
+}
+
+bool PropertyItem::isExpanded() const
+{
+    return expanded;
 }
 
 bool PropertyItem::testStatus(App::Property::Status pos) const
@@ -461,6 +477,22 @@ QVariant PropertyItem::expressionEditorData(QWidget *editor) const
     return QVariant();
 }
 
+PropertyEditorWidget* PropertyItem::createPropertyEditorWidget(QWidget* parent) const
+{
+    PropertyEditorWidget* editor = new PropertyEditorWidget(parent);
+    connect(editor, &PropertyEditorWidget::buttonClick, this, [this]() {
+        const auto &props = this->getPropertyData();
+        if (!props.empty()
+                && props[0]->getName()
+                && props[0]->testStatus(App::Property::UserEdit)
+                && props[0]->getContainer())
+        {
+            props[0]->getContainer()->editProperty(props[0]->getName());
+        }
+    });
+    return editor;
+}
+
 QString PropertyItem::propertyName() const
 {
     if (propName.isEmpty())
@@ -468,9 +500,15 @@ QString PropertyItem::propertyName() const
     return propName;
 }
 
-void PropertyItem::setPropertyName(const QString& name)
+void PropertyItem::setPropertyName(QString name, QString realName)
 {
-    setObjectName(name);
+    if(realName.size())
+        propName = realName;
+    else
+        propName = name;
+
+    setObjectName(propName);
+
     QString display;
     bool upper = false;
     for (int i=0; i<name.length(); i++) {
@@ -575,11 +613,12 @@ QVariant PropertyItem::data(int column, int role) const
             return QVariant();
         }
         else if (role == Qt::ToolTipRole) {
-            if(!PropertyView::showAll())
-                return toolTip(propertyItems[0]);
-            QString type = QString::fromLatin1("Type: %1").arg(
-                    QString::fromLatin1(propertyItems[0]->getTypeId().getName()));
-            QString doc = toolTip(propertyItems[0]).toString();
+            QString type = QString::fromLatin1("Type: %1\nName: %2").arg(
+                    QString::fromLatin1(propertyItems[0]->getTypeId().getName()), objectName());
+
+            QString doc = PropertyItem::toolTip(propertyItems[0]).toString();
+            if(doc.isEmpty())
+                doc = toolTip(propertyItems[0]).toString();
             if(doc.size())
                 return type + QLatin1String("\n\n") + doc;
             return type;
@@ -637,8 +676,6 @@ QVariant PropertyItem::data(int column, int role) const
 
 bool PropertyItem::setData (const QVariant& value)
 {
-    cleared = false;
-
     // This is the basic mechanism to set the value to
     // a property and if no property is set for this item
     // it delegates it to its parent which sets then the
@@ -1461,9 +1498,8 @@ void PropertyVectorItem::propertyBound()
 
 // ---------------------------------------------------------------
 
-VectorListWidget::VectorListWidget (int decimals, QWidget * parent)
+PropertyEditorWidget::PropertyEditorWidget (QWidget * parent)
   : QWidget(parent)
-  , decimals(decimals)
 {
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setMargin(0);
@@ -1479,23 +1515,57 @@ VectorListWidget::VectorListWidget (int decimals, QWidget * parent)
 #endif
     layout->addWidget(button);
 
-    connect(button, SIGNAL(clicked()), this, SLOT(buttonClicked()));
-    setFocusProxy(lineEdit);
+    connect(button, SIGNAL(clicked()), this, SIGNAL(buttonClick()));
+
+    // QAbstractItemView will call selectAll() if a QLineEdit is the focus
+    // proxy. Since the QLineEdit here is read-only and not meant for editing,
+    // do not set it as focus proxy. Otherwise, the text won't even shown for
+    // most stylesheets (which contain a trick to hide the content of a selected
+    // read-only/disabled editor widgets).
+    //
+    // setFocusProxy(lineEdit);
 }
 
-VectorListWidget::~VectorListWidget()
+PropertyEditorWidget::~PropertyEditorWidget()
 {
 }
 
-void VectorListWidget::resizeEvent(QResizeEvent* e)
+void PropertyEditorWidget::resizeEvent(QResizeEvent* e)
 {
     button->setFixedWidth(e->size().height());
     button->setFixedHeight(e->size().height());
 }
 
+void PropertyEditorWidget::showValue(const QVariant &d)
+{
+    lineEdit->setText(d.toString());
+}
+
+
+QVariant PropertyEditorWidget::value() const
+{
+    return variant;
+}
+
+void PropertyEditorWidget::setValue(const QVariant& val)
+{
+    variant = val;
+    showValue(variant);
+    valueChanged(variant);
+}
+
+// ---------------------------------------------------------------
+
+VectorListWidget::VectorListWidget(int decimals, QWidget *parent)
+  : PropertyEditorWidget(parent)
+  , decimals(decimals)
+{
+    connect(button, SIGNAL(clicked()), this, SLOT(buttonClicked()));
+}
+
 void VectorListWidget::buttonClicked()
 {
-    VectorListEditor dlg(decimals, Gui::getMainWindow());
+    VectorListEditor dlg(decimals, this);
     dlg.setValues(value().value<QList<Base::Vector3d>>());
     QPoint p(0, 0);
     p = this->mapToGlobal(p);
@@ -1522,19 +1592,6 @@ void VectorListWidget::showValue(const QVariant& d)
     }
     lineEdit->setText(data);
 }
-
-QVariant VectorListWidget::value() const
-{
-    return variant;
-}
-
-void VectorListWidget::setValue(const QVariant& val)
-{
-    variant = val;
-    showValue(variant);
-    valueChanged(variant);
-}
-
 // ---------------------------------------------------------------
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyVectorListItem)
@@ -3971,13 +4028,15 @@ QWidget* PropertyFileItem::createEditor(QWidget* parent, const QObject* receiver
 void PropertyFileItem::setEditorData(QWidget *editor, const QVariant& data) const
 {
     const App::Property* prop = getFirstProperty();
-    const App::PropertyFile* propFile = static_cast<const App::PropertyFile*>(prop);
-    std::string filter = propFile->getFilter();
-    Gui::FileChooser *fc = qobject_cast<Gui::FileChooser*>(editor);
-    if (!filter.empty()) {
-        fc->setFilter(Base::Tools::fromStdString(filter));
+    if (prop) {
+        const App::PropertyFile* propFile = static_cast<const App::PropertyFile*>(prop);
+        std::string filter = propFile->getFilter();
+        Gui::FileChooser *fc = qobject_cast<Gui::FileChooser*>(editor);
+        if (!filter.empty()) {
+            fc->setFilter(Base::Tools::fromStdString(filter));
+        }
+        fc->setFileName(data.toString());
     }
-    fc->setFileName(data.toString());
 }
 
 QVariant PropertyFileItem::editorData(QWidget *editor) const
@@ -4136,6 +4195,9 @@ LinkLabel::LinkLabel (QWidget * parent, const App::Property *prop)
 #endif
     editButton->setToolTip(tr("Change the linked object"));
     layout->addWidget(editButton);
+
+    this->setFocusPolicy(Qt::StrongFocus);
+    this->setFocusProxy(label);
     
     // setLayout(layout);
     
@@ -4201,7 +4263,7 @@ void LinkLabel::onEditClicked ()
     if(!dlg) {
         dlg = new DlgPropertyLink(this);
         dlg->init(objProp,true);
-        connect(dlg, SIGNAL(accepted()), this, SLOT(onLinkChanged()));
+        connect(dlg, SIGNAL(finished(int)), this, SLOT(onLinkChanged()));
     } else
         dlg->init(objProp,false);
     dlg->show();

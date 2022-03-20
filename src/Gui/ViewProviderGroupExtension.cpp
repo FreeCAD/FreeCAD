@@ -20,26 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QMessageBox>
 #endif
 
-//#include "ViewProviderGroupExtensionPy.h"
-#include "ViewProviderGroupExtension.h"
-
-#include "Command.h"
-#include "Application.h"
-#include "Document.h"
-#include "MainWindow.h"
-#include <Base/Tools.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/GroupExtension.h>
-#include <App/Expression.h>
 #include <Base/Console.h>
-#include <QMessageBox>
+#include <Base/Tools.h>
+
+#include "ViewProviderGroupExtension.h"
+#include "ViewProviderDocumentObject.h"
+#include "Command.h"
+#include "Document.h"
+#include "MainWindow.h"
+
 
 using namespace Gui;
 

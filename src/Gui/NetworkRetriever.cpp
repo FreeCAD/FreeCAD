@@ -24,23 +24,23 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <qapplication.h>
-# include <qdir.h>
-# include <qfileinfo.h>
-# include <qlineedit.h>
-# include <qmessagebox.h>
-# include <qtimer.h>
+# include <QApplication>
+# include <QDir>
+# include <QFileInfo>
+# include <QMessageBox>
+# include <QTimer>
 #endif
+
+#include <App/Application.h>
+#include <Base/Console.h>
 
 #include "NetworkRetriever.h"
 #include "Action.h"
 #include "BitmapFactory.h"
+#include "FileDialog.h"
 #include "MainWindow.h"
 #include "ui_DlgAuthorization.h"
-#include "FileDialog.h"
 
-#include <App/Application.h>
-#include <Base/Console.h>
 
 using namespace Gui;
 using namespace Gui::Dialog;

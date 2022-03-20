@@ -2,89 +2,137 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="eu" sourcelanguage="en">
   <context>
-    <name>CopyView</name>
-    <message>
-      <location filename="CommandCopyView.py" line="47"/>
-      <source>Copy View</source>
-      <translation type="unfinished">Copy View</translation>
-    </message>
-    <message>
-      <location filename="CommandCopyView.py" line="50"/>
-      <source>Copy a View to a second Page</source>
-      <translation type="unfinished">Copy a View to a second Page</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="46"/>
-      <source>Copy View to a second Page</source>
-      <translation type="unfinished">Copy View to a second Page</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="73"/>
-      <source>Select View to copy from list.</source>
-      <translation type="unfinished">Select View to copy from list.</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="74"/>
-      <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="92"/>
-      <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="112"/>
-      <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="111"/>
-      <source>Select To Page.</source>
-      <translation type="unfinished">Select To Page.</translation>
-    </message>
-  </context>
-  <context>
     <name>MoveView</name>
     <message>
       <location filename="CommandMoveView.py" line="47"/>
       <source>Move View</source>
-      <translation type="unfinished">Move View</translation>
+      <translation>Mugitu bista</translation>
     </message>
     <message>
       <location filename="CommandMoveView.py" line="50"/>
       <source>Move a View to a new Page</source>
-      <translation type="unfinished">Move a View to a new Page</translation>
+      <translation>Eraman bista bat orrialde berri batera</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="47"/>
       <source>Move View to a different Page</source>
-      <translation type="unfinished">Move View to a different Page</translation>
+      <translation>Eraman bista beste orrialde batera</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="74"/>
       <source>Select View to move from list.</source>
-      <translation type="unfinished">Select View to move from list.</translation>
+      <translation>Hautatu lekuz aldatuko den bista zerrendan.</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="75"/>
       <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
+      <translation>Hautatu bista</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="93"/>
       <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
+      <translation>Hautatu jatorrizko orrialdea.</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="113"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>Hautatu orrialdea</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="112"/>
       <source>Select To Page.</source>
-      <translation type="unfinished">Select To Page.</translation>
+      <translation>Hautatu helburuko orrialdea.</translation>
+    </message>
+  </context>
+  <context>
+    <name>ShareView</name>
+    <message>
+      <location filename="CommandShareView.py" line="47"/>
+      <source>Share View</source>
+      <translation>Partekatu bista</translation>
+    </message>
+    <message>
+      <location filename="CommandShareView.py" line="50"/>
+      <source>Share a View on a second Page</source>
+      <translation>Partekatu bista bat bigarren orrialde batean</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="46"/>
+      <source>Share View with another Page</source>
+      <translation>Partekatu bista beste orrialde batekin</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="47"/>
+      <source>View to share</source>
+      <translation>Partekatuko den bista</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="74"/>
+      <source>Select View to share from list.</source>
+      <translation>Hautatu partekatuko den bista zerrendan.</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="75"/>
+      <source>Select View</source>
+      <translation>Hautatu bista</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="93"/>
+      <source>Select From Page.</source>
+      <translation>Hautatu jatorrizko orrialdea.</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="113"/>
+      <source>Select Page</source>
+      <translation>Hautatu orrialdea</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="112"/>
+      <source>Select To Page.</source>
+      <translation>Hautatu helburuko orrialdea.</translation>
+    </message>
+  </context>
+  <context>
+    <name>CopyView</name>
+    <message>
+      <location filename="CommandCopyView.py" line="47"/>
+      <source>Copy View</source>
+      <translation>Kopiatu bista</translation>
+    </message>
+    <message>
+      <location filename="CommandCopyView.py" line="50"/>
+      <source>Copy a View to a second Page</source>
+      <translation>Kopiatu bista bat bigarren orrialde batean</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="46"/>
+      <source>Copy View to a second Page</source>
+      <translation>Kopiatu bista bat bigarren orrialde batean</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="73"/>
+      <source>Select View to copy from list.</source>
+      <translation>Hautatu kopiatuko den bista zerrendan.</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="74"/>
+      <source>Select View</source>
+      <translation>Hautatu bista</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="92"/>
+      <source>Select From Page.</source>
+      <translation>Hautatu jatorrizko orrialdea.</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="111"/>
+      <source>Select To Page.</source>
+      <translation>Hautatu helburuko orrialdea.</translation>
+    </message>
+    <message>
+      <location filename="TaskCopyView.py" line="112"/>
+      <source>Select Page</source>
+      <translation>Hautatu orrialdea</translation>
     </message>
   </context>
   <context>
@@ -410,9 +458,9 @@
       <source>Draw circle centerline cross at circles
     - select many circles or arcs
     - click this button</source>
-      <translation type="unfinished">Draw circle centerline cross at circles
-    - select many circles or arcs
-    - click this button</translation>
+      <translation>Marraztu zirkuluaren erdiko gurutzea zirkuluetan
+    - Aukeratu zirkulu edo arku asko
+    - egin klik botoi honetan</translation>
     </message>
   </context>
   <context>
@@ -423,15 +471,15 @@
     </message>
     <message>
       <source>Cosmetic thread bolt bottom view</source>
-      <translation type="unfinished">Cosmetic thread bolt bottom view</translation>
+      <translation>Haridun buloi kosmetikoaren beheko bista</translation>
     </message>
     <message>
       <source>Draw cosmetic screw thread ground view
     - select many circles
     - click this button</source>
-      <translation type="unfinished">Draw cosmetic screw thread ground view
-    - select many circles
-    - click this button</translation>
+      <translation>Marraztu torloju-hari kosmetikoaren lurreko bista
+- hautatu zirkulu anitz
+- egin klik botoi honetan</translation>
     </message>
   </context>
   <context>
@@ -442,15 +490,15 @@
     </message>
     <message>
       <source>Cosmetic thread bolt side view</source>
-      <translation type="unfinished">Cosmetic thread bolt side view</translation>
+      <translation>Haridun buloi kosmetikoaren alboko bista</translation>
     </message>
     <message>
       <source>Draw cosmetic screw thread side view
     - select two parallel lines
     - click this button</source>
-      <translation type="unfinished">Draw cosmetic screw thread side view
-    - select two parallel lines
-    - click this button</translation>
+      <translation>MarraztuMarraztu torloju-hari kosmetikoaren alboko bista
+- hautatu bi lerro paralelo
+- egin klik botoi honetan</translation>
     </message>
   </context>
   <context>
@@ -461,15 +509,15 @@
     </message>
     <message>
       <source>Cosmetic thread hole bottom view</source>
-      <translation type="unfinished">Cosmetic thread hole bottom view</translation>
+      <translation>Hari-zulo kosmetikoaren beheko bista</translation>
     </message>
     <message>
       <source>Draw cosmetic hole thread ground view
     - select many circles
     - click this button</source>
-      <translation type="unfinished">Draw cosmetic hole thread ground view
-    - select many circles
-    - click this button</translation>
+      <translation>Marraztu zulo-hari kosmetikoaren lurreko bista
+- hautatu zirkulu anitz
+- egin klik botoi honetan</translation>
     </message>
   </context>
   <context>
@@ -480,15 +528,15 @@
     </message>
     <message>
       <source>Cosmetic thread hole side view</source>
-      <translation type="unfinished">Cosmetic thread hole side view</translation>
+      <translation>Hari-zulo kosmetikoaren alboko bista</translation>
     </message>
     <message>
       <source>Draw cosmetic thread hole side view
     - select two parallel lines
     - click this button</source>
-      <translation type="unfinished">Draw cosmetic thread hole side view
-    - select two parallel lines
-    - click this button</translation>
+      <translation>MarraztuMarraztu zulo-hari kosmetikoaren alboko bista
+- hautatu bi lerro paralelo
+- egin klik botoi honetan</translation>
     </message>
   </context>
   <context>
@@ -1621,7 +1669,7 @@
     </message>
     <message>
       <source>TechDraw Circle Centerlines</source>
-      <translation type="unfinished">TechDraw Circle Centerlines</translation>
+      <translation>TechDraw zirkuluaren erdiko lerroak</translation>
     </message>
     <message>
       <source>Selection is empty</source>
@@ -1633,19 +1681,19 @@
     </message>
     <message>
       <source>TechDraw Thread Hole Side</source>
-      <translation type="unfinished">TechDraw Thread Hole Side</translation>
+      <translation>TechDraw hari-zuloaren aldea</translation>
     </message>
     <message>
       <source>TechDraw Thread Bolt Side</source>
-      <translation type="unfinished">TechDraw Thread Bolt Side</translation>
+      <translation>TechDraw haridun buloiaren alboa</translation>
     </message>
     <message>
       <source>TechDraw Thread Hole Bottom</source>
-      <translation type="unfinished">TechDraw Thread Hole Bottom</translation>
+      <translation>TechDraw hari-zuloaren hondoa</translation>
     </message>
     <message>
       <source>TechDraw Tread Bolt Bottom</source>
-      <translation type="unfinished">TechDraw Tread Bolt Bottom</translation>
+      <translation>TechDraw haridun buloiaren hondoa</translation>
     </message>
     <message>
       <source>Please select two straight lines</source>

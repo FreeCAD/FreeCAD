@@ -120,6 +120,11 @@ def CreateSlotPlateInnerSet(SketchFeature):
     SketchFeature.addConstraint(Sketcher.Constraint('Coincident',7,2,8,1))
     SketchFeature.addConstraint(Sketcher.Constraint('Coincident',8,2,5,1))
 
+def CreateThreeLinesWithCommonPoint(SketchFeature):
+    SketchFeature.addGeometry(Part.LineSegment(App.Vector(-55.965607,-9.864289,0),App.Vector(-55.600571,-9.387639,0)),False)
+    SketchFeature.addGeometry(Part.LineSegment(App.Vector(-55.735817,-9.067246,0),App.Vector(-55.600571,-9.387639,0)),False)
+    SketchFeature.addGeometry(Part.LineSegment(App.Vector(-55.600571,-9.387639,0),App.Vector(-55.058266,-9.677831,0)),False)
+
 #---------------------------------------------------------------------------
 # define the test cases to test the FreeCAD Sketcher module
 #---------------------------------------------------------------------------
@@ -244,6 +249,23 @@ class TestSketcherSolver(unittest.TestCase):
         ActiveSketch.setDatum(11,App.Units.Quantity('-20.000000 mm'))
         ActiveSketch.solve()
         self.failUnless(status == 0) # no redundants/conflicts/convergence issues
+        FreeCAD.closeDocument(self.Doc3.Name)
+
+    def testThreeLinesWithCoincidences_1(self):
+        sketch = self.Doc.addObject('Sketcher::SketchObject','Sketch')
+        CreateThreeLinesWithCommonPoint(sketch)
+        sketch.addConstraint(Sketcher.Constraint('Coincident',1,2,0,2))
+        sketch.addConstraint(Sketcher.Constraint('Coincident',2,1,0,2))
+        self.assertEqual(sketch.detectMissingPointOnPointConstraints(0.0001), 0)
+
+    # Same as in testThreeLinesWithCoincidences_1 but set the constraints on
+    # different lines
+    def testThreeLinesWithCoincidences_2(self):
+        sketch = self.Doc.addObject('Sketcher::SketchObject','Sketch')
+        CreateThreeLinesWithCommonPoint(sketch)
+        sketch.addConstraint(Sketcher.Constraint('Coincident',1,2,0,2))
+        sketch.addConstraint(Sketcher.Constraint('Coincident',2,1,1,2))
+        self.assertEqual(sketch.detectMissingPointOnPointConstraints(0.0001), 0)
 
     def tearDown(self):
         #closing doc

@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include <FCConfig.h>
 
 #if HAVE_CONFIG_H
@@ -33,19 +32,19 @@
 
 #include <QApplication>
 #include <QIcon>
-#include <QThread>
 #if defined(Q_OS_WIN)
 #include <windows.h>
 #elif defined(Q_WS_X11)
 #include <QX11EmbedWidget>
 #endif
 #include <thread>
+
 // FreeCAD Base header
-#include <CXX/WrapPython.h>
+#include <App/Application.h>
 #include <Base/Exception.h>
 #include <Base/Factory.h>
 #include <Base/Interpreter.h>
-#include <App/Application.h>
+#include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/MainWindow.h>
@@ -54,6 +53,7 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInteraction.h>
 #include <Inventor/nodekits/SoNodeKit.h>
+
 
 static bool _isSetupWithoutGui = false;
 
@@ -222,7 +222,7 @@ FreeCADGui_embedToWindow(PyObject * /*self*/, PyObject *args)
 
     QWidget* widget = Gui::getMainWindow();
     if (!widget) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, "No main window");
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "No main window");
         return 0;
     }
 
@@ -320,7 +320,7 @@ QWidget* setupMainWindow()
                 Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADGuiInit"));
             }
             catch (const Base::Exception& e) {
-                PyErr_Format(Base::BaseExceptionFreeCADError, "Error in FreeCADGuiInit.py: %s\n", e.what());
+                PyErr_Format(Base::PyExc_FC_GeneralError, "Error in FreeCADGuiInit.py: %s\n", e.what());
                 return 0;
             }
             init = true;

@@ -217,12 +217,14 @@ class Wire(DraftObject):
                     obj.Points = pts
 
         elif prop == "Length":
-            if obj.Shape and not obj.Shape.isNull():
-                if obj.Length.Value != obj.Shape.Length:
-                    if len(obj.Points) == 2:
-                        v = obj.Points[-1].sub(obj.Points[0])
-                        v = DraftVecUtils.scaleTo(v,obj.Length.Value)
-                        obj.Points = [obj.Points[0],obj.Points[0].add(v)]
+            if (len(obj.Points) == 2
+                    and obj.Length.Value > 1e-7
+                    and obj.Shape
+                    and (not obj.Shape.isNull())
+                    and obj.Length.Value != obj.Shape.Length):
+                v = obj.Points[-1].sub(obj.Points[0])
+                v = DraftVecUtils.scaleTo(v, obj.Length.Value)
+                obj.Points = [obj.Points[0], obj.Points[0].add(v)]
 
         elif prop == "Placement":
             pl = App.Placement(obj.Placement)

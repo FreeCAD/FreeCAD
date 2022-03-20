@@ -20,10 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef VIEWPROVIDERORIGINGROUP_H_JIXBOPA7
-#define VIEWPROVIDERORIGINGROUP_H_JIXBOPA7
+#ifndef VIEWPROVIDERORIGINGROUP_H
+#define VIEWPROVIDERORIGINGROUP_H
 
-#include "ViewProviderGeoFeatureGroup.h"
 #include "ViewProviderOriginGroupExtension.h"
 
 namespace Gui {
@@ -40,4 +39,4 @@ public:
 } /* Gui  */
 
 
-#endif /* end of include guard: VIEWPROVIDERORIGINGROUP_H_JIXBOPA7 */
+#endif /* end of include guard: VIEWPROVIDERORIGINGROUP_H */

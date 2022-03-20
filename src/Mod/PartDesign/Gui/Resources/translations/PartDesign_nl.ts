@@ -3849,7 +3849,7 @@ Deze functie is defect en kan niet worden gewijzigd.</translation>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="259"/>
       <source>Synchronize</source>
-      <translation type="unfinished">Synchronize</translation>
+      <translation>Synchroniseer</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="261"/>
@@ -3908,7 +3908,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../ViewProviderHelix.cpp" line="57"/>
       <source>Edit helix</source>
-      <translation type="unfinished">Edit helix</translation>
+      <translation>Helix bewerken</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.cpp" line="55"/>

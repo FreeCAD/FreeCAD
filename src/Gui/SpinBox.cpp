@@ -20,28 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QDebug>
 # include <climits>
-# include <QStyle>
-# include <QLineEdit>
 # include <QKeyEvent>
+# include <QLineEdit>
 # include <QStyle>
 # include <QStyleOptionSpinBox>
 # include <QStylePainter>
 #endif
 
-#include "SpinBox.h"
-#include "DlgExpressionInput.h"
-#include "Command.h"
-#include <Base/Tools.h>
-#include <App/ExpressionParser.h>
 #include <boost/math/special_functions/round.hpp>
-#include "QuantitySpinBox_p.h"
+
+#include <App/ExpressionParser.h>
 #include <App/PropertyUnits.h>
+#include <Base/Tools.h>
+
+#include "SpinBox.h"
+#include "Command.h"
+#include "DlgExpressionInput.h"
+#include "QuantitySpinBox_p.h"
+
 
 using namespace Gui;
 using namespace App;

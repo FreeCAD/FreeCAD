@@ -48,13 +48,11 @@
 #define slots
 #include <bitset>
 
-#include <typeinfo>
 #include "Exception.h"
 #ifndef PYCXX_PYTHON_2TO3
 #define PYCXX_PYTHON_2TO3
 #endif
 #include <CXX/Objects.hxx>
-
 
 
 /** Python static class macro for definition
@@ -412,11 +410,20 @@ static PyObject * s##DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){
  */
 #define PYMETHODEDEF(FUNC)	{"" #FUNC "",(PyCFunction) s##FUNC,Py_NEWARGS},
 
-BaseExport extern PyObject* BaseExceptionFreeCADError;
-#define PY_FCERROR (Base::BaseExceptionFreeCADError ? \
- BaseExceptionFreeCADError : PyExc_RuntimeError)
+BaseExport extern PyObject* PyExc_FC_GeneralError;
+#define PY_FCERROR (Base::PyExc_FC_GeneralError ? \
+ PyExc_FC_GeneralError : PyExc_RuntimeError)
 
-BaseExport extern PyObject* BaseExceptionFreeCADAbort;
+BaseExport extern PyObject* PyExc_FC_FreeCADAbort;
+BaseExport extern PyObject* PyExc_FC_XMLBaseException;
+BaseExport extern PyObject* PyExc_FC_XMLParseException;
+BaseExport extern PyObject* PyExc_FC_XMLAttributeError;
+BaseExport extern PyObject* PyExc_FC_UnknownProgramOption;
+BaseExport extern PyObject* PyExc_FC_BadFormatError;
+BaseExport extern PyObject* PyExc_FC_BadGraphError;
+BaseExport extern PyObject* PyExc_FC_ExpressionError;
+BaseExport extern PyObject* PyExc_FC_ParserError;
+BaseExport extern PyObject* PyExc_FC_CADKernelError;
 
 /** Exception handling for python callback functions
  * Is a convenience macro to manage the exception handling of python callback
@@ -426,14 +433,14 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
  * PYFUNCIMP_D(DocTypeStdPy,AddFeature)
  * {
  *   char *pstr;
- *   if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
- *      return NULL;                             // NULL triggers exception
+ *   if (!PyArg_ParseTuple(args, "s", &pstr))
+ *      return nullptr;
  *
  *   try {
  *     Feature *pcFtr = _pcDocTypeStd->AddFeature(pstr);
  *   }catch(...)                                                        \
  *   {                                                                 \
- * 	 	Py_Error(Base::BaseExceptionFreeCADError,"Unknown C++ exception");          \
+ * 	 	Py_Error(Base::PyExc_FC_GeneralError,"Unknown C++ exception");          \
  *   }catch(FCException e) ..... // and so on....                                                               \
  * }
  * \endcode
@@ -442,8 +449,8 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
  * PYFUNCIMP_D(DocTypeStdPy,AddFeature)
  * {
  *   char *pstr;
- *   if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
- *      return NULL;                             // NULL triggers exception
+ *   if (!PyArg_ParseTuple(args, "s", &pstr))
+ *      return nullptr;
  *
  *  PY_TRY {
  *    Feature *pcFtr = _pcDocTypeStd->AddFeature(pstr);
@@ -462,12 +469,12 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
     {                                                               \
         auto pye = e.getPyExceptionType();                          \
         if(!pye)                                                    \
-            pye = Base::BaseExceptionFreeCADError;                  \
+            pye = Base::PyExc_FC_GeneralError;                      \
         _Py_ErrorObj(R,pye,e.getPyObject());                        \
     }                                                               \
     catch(const std::exception &e)                                  \
     {                                                               \
-        _Py_Error(R,Base::BaseExceptionFreeCADError,e.what());      \
+        _Py_Error(R,Base::PyExc_FC_GeneralError, e.what());         \
     }                                                               \
     catch(const Py::Exception&)                                     \
     {                                                               \
@@ -480,7 +487,7 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
     __PY_CATCH(R)                                                   \
     catch(...)                                                      \
     {                                                               \
-        _Py_Error(R,Base::BaseExceptionFreeCADError,"Unknown C++ exception"); \
+        _Py_Error(R,Base::PyExc_FC_GeneralError,"Unknown C++ exception"); \
     }
 
 #else

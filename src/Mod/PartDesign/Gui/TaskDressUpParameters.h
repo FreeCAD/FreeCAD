@@ -25,8 +25,8 @@
 #ifndef GUI_TASKVIEW_TaskDressUpParameters_H
 #define GUI_TASKVIEW_TaskDressUpParameters_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
+#include <Gui/TaskView/TaskView.h>
 
 #include "TaskFeatureParameters.h"
 #include "ViewProviderDressUp.h"
@@ -80,6 +80,7 @@ protected:
     bool KeyEvent(QEvent *e);
     void hideOnError();
     void addAllEdges(QListWidget* listWidget);
+
 protected:
     enum selectionModes { none, refAdd, refRemove, plane, line };
     virtual void clearButtons(const selectionModes notThis) = 0;

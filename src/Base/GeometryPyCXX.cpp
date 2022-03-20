@@ -27,7 +27,7 @@
 #endif
 
 #include "GeometryPyCXX.h"
-#include <Base/VectorPy.h>
+#include "VectorPy.h"
 
 
 int Py::Vector::Vector_TypeCheck(PyObject * obj)
@@ -127,7 +127,8 @@ Py::Object Vector2dPy::repr()
     Py::Float y(v.y);
     std::stringstream str;
     str << "Vector2 (";
-    str << (std::string)x.repr() << ", "<< (std::string)y.repr();
+    str << static_cast<std::string>(x.repr()) << ", "
+        << static_cast<std::string>(y.repr());
     str << ")";
 
     return Py::String(str.str());

@@ -20,20 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <boost_bind_bind.hpp>
-#endif
+#include <Base/Interpreter.h>
 
 #include "Application.h"
 #include "Document.h"
+#include "DocumentObserverPython.h"
 #include "ViewProvider.h"
 #include "ViewProviderDocumentObject.h"
-#include "DocumentObserverPython.h"
-#include <Base/Interpreter.h>
-#include <Base/Console.h>
+
 
 using namespace Gui;
 namespace bp = boost::placeholders;

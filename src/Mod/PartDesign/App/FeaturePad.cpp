@@ -23,34 +23,16 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRep_Builder.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepAlgoAPI_Common.hxx>
 # include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepFeat_MakePrism.hxx>
-# include <BRepLProp_SLProps.hxx>
-# include <BRepPrimAPI_MakeHalfSpace.hxx>
-# include <Geom_Surface.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <GeomLib_IsPlanarSurface.hxx>
-# include <gp_Pln.hxx>
 # include <Precision.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Compound.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopoDS_Wire.hxx>
 # include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Face.hxx>
 #endif
 
-#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Base/Placement.h>
-#include <Base/Reader.h>
 
 #include "FeaturePad.h"
 
@@ -103,8 +85,6 @@ App::DocumentObjectExecReturn *Pad::execute()
 
     TopoDS_Shape sketchshape;
     try {
-        getVerifiedObject();
-
         sketchshape = getVerifiedFace();
     }
     catch (const Base::Exception& e) {
@@ -190,7 +170,7 @@ App::DocumentObjectExecReturn *Pad::execute()
                     supportface = TopoDS_Face();
 
                 PrismMode mode = PrismMode::None;
-                Extrude(prism, method, base, sketchshape, supportface, upToFace, dir, mode, Standard_True);
+                generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, mode, Standard_True);
                 base.Nullify();
             }
             else {
@@ -207,12 +187,18 @@ App::DocumentObjectExecReturn *Pad::execute()
                 if (!Ex.More())
                     supportface = TopoDS_Face();
                 PrismMode mode = PrismMode::None;
-                Extrude(prism, method, base, sketchshape, supportface, upToFace, dir, mode, Standard_True);
+                generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, mode, Standard_True);
             }
         }
         else {
-            Extrude(prism, sketchshape, method, dir, L, L2,
-                    TaperAngle.getValue(), TaperAngle2.getValue(), hasMidplane, hasReversed);
+            if (hasTaperedAngle()) {
+                if (hasReversed)
+                    dir.Reverse();
+                generateTaperedPrism(prism, sketchshape, method, dir, L, L2, TaperAngle.getValue(), TaperAngle2.getValue(), hasMidplane);
+            }
+            else {
+                generatePrism(prism, sketchshape, method, dir, L, L2, hasMidplane, hasReversed);
+            }
         }
 
         if (prism.IsNull())

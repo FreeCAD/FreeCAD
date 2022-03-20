@@ -40,8 +40,8 @@ from draftutils.translate import translate
 
 def make_sketch(objects_list, autoconstraints=False, addTo=None,
                 delete=False, name="Sketch", radiusPrecision=-1, tol=1e-3):
-    """makeSketch(objects_list,[autoconstraints],[addTo],[delete],
-                  [name],[radiusPrecision],[tol])
+    """make_sketch(objects_list, [autoconstraints], [addTo], [delete],
+                   [name], [radiusPrecision], [tol])
 
     Makes a Sketch objects_list with the given Draft objects.
 

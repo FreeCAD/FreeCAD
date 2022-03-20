@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH SMESH : implementaion of SMESH idl descriptions
+//  SMESH SMESH : implementation of SMESH idl descriptions
 // File      : StdMeshers_Projection_2D.cxx
 // Module    : SMESH
 // Created   : Fri Oct 20 11:37:07 2006

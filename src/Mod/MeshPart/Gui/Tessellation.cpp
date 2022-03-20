@@ -31,6 +31,7 @@
 #include "ui_Tessellation.h"
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>

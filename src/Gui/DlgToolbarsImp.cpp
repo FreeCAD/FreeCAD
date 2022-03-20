@@ -20,11 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QInputDialog>
 # include <QHeaderView>
+# include <QInputDialog>
 # include <QMenu>
 # include <QMessageBox>
 # include <QToolBar>
@@ -36,11 +35,12 @@
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Command.h"
-#include "ToolBarManager.h"
 #include "MainWindow.h"
+#include "ToolBarManager.h"
 #include "Widgets.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"
+
 
 using namespace Gui::Dialog;
 

@@ -15,164 +15,171 @@
     </Documentation>
     <Methode Name="show">
       <Documentation>
-        <UserDocu>Show the object
-show() -> None
-</UserDocu>
+        <UserDocu>show(objName) -> None\n
+Show an object.\n
+objName : str\n    Name of the `Gui.ViewProvider` to show.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="hide">
       <Documentation>
-        <UserDocu>Hide the object
-hide() -> None
-</UserDocu>
+        <UserDocu>hide(objName) -> None\n
+Hide an object.\n
+objName : str\n    Name of the `Gui.ViewProvider` to hide.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="setPos">
       <Documentation>
-        <UserDocu>Set the position
-setPos(matrix) -> None</UserDocu>
+        <UserDocu>setPos(objName, matrix) -> None\n
+Set the position of an object.\n
+objName : str\n    Name of the `Gui.ViewProvider`.\n
+matrix : Base.Matrix\n    Transformation to apply on the object.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="setEdit">
       <Documentation>
-        <UserDocu>Set the given object in edit mode.
-setEdit([String:Name|ViewProvider|DocumentObject]|,mod,subname=None) -> Bool
-</UserDocu>
+        <UserDocu>setEdit(obj, mod=0, subName) -> bool\n
+Set an object in edit mode.\n
+obj : str, App.DocumentObject, Gui.ViewPrivider\n    Object to set in edit mode.
+mod : int\n    Edit mode.
+subName : str\n    Subelement name. Optional.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getInEdit">
       <Documentation>
-        <UserDocu>Returns the current object in edit mode or None if there is no such object
-getInEdit() -> Object or None
-</UserDocu>
+        <UserDocu>getInEdit() -> Gui.ViewProviderDocumentObject or None\n
+Returns the current object in edit mode or None if there is no such object.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="resetEdit">
       <Documentation>
-        <UserDocu>Reset (end) the current editing.
-resetEdit() -> None
-        </UserDocu>
+        <UserDocu>resetEdit() -> None\n
+End the current editing.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="addAnnotation">
       <Documentation>
-        <UserDocu>Add an Inventor object
-addAnnotation(AnnoName,FileName,[ModName]) -> None
-</UserDocu>
+        <UserDocu>addAnnotation(annoName, fileName, modName) -> None\n
+Add an Inventor object from a file.\n
+annoName : str\n    Annotation name.
+fileName : str\n    File name.
+modName : str\n    Display mode name. Optional.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="update">
       <Documentation>
-        <UserDocu>Update the view representations of all objects
-update() -> None
-</UserDocu>
+        <UserDocu>update() -> None\n
+Update the view representations of all objects.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getObject">
       <Documentation>
-        <UserDocu>Return the object with the given name
-getObject(Name) -> Object or None</UserDocu>
+        <UserDocu>getObject(objName) -> object or None\n
+Return the object with the given name. If no one exists, return None.\n
+ObjName : str\n    Object name.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="activeObject">
       <Documentation>
-        <UserDocu>deprecated -- use ActiveObject</UserDocu>
+        <UserDocu>activeObject() -> object or None\n
+The active object of the document. Deprecated, use ActiveObject.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="activeView">
       <Documentation>
-        <UserDocu>deprecated -- use ActiveView</UserDocu>
+        <UserDocu>activeView() -> object or None\n
+The active view of the document. Deprecated, use ActiveView.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="mdiViewsOfType" Const="true">
       <Documentation>
-      <UserDocu>Return a list if mdi views of a given type
-mdiViewsOfType(type) -> list of MDIView
-</UserDocu>
+      <UserDocu>mdiViewsOfType(type) -> list of MDIView\n
+Return a list of mdi views of a given type.\n
+type : str\n    Type name.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="sendMsgToViews">
       <Documentation>
-      <UserDocu>Send a message to all views of the document
-sendMsgToViews(msg) -> None
-</UserDocu>
+      <UserDocu>sendMsgToViews(msg) -> None\n
+Send a message to all views of the document.\n
+msg : str</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="mergeProject">
       <Documentation>
-        <UserDocu>Merges this document with another project file
-mergeProject(filename) -> None
-</UserDocu>
+        <UserDocu>mergeProject(fileName) -> None\n
+Merges this document with another project file.\n
+fileName : str\n    File name.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="toggleTreeItem">
       <Documentation>
-        <UserDocu>Change TreeItem of a document object.
-toggleTreeItem(DocObject,[flag=0]) -> None
---
-flag can be 0:Toggle, 1:Collapse, 2:Expand
-</UserDocu>
+        <UserDocu>toggleTreeItem(obj, mod=0, subName) -> None\n
+Change TreeItem of a document object.\n
+obj : App.DocumentObject
+mod : int\n    Item mode.
+    0: Toggle, 1: Collapse, 2: Expand, 3: Expand path.
+subName : str\n    Subelement name. Optional.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="scrollToTreeItem">
       <Documentation>
-        <UserDocu>scroll the tree view to the item of a view object
-scrollToTreeItem(ViewObject) -> None
-</UserDocu>
+        <UserDocu>scrollToTreeItem(obj) -> None\n
+Scroll the tree view to the item of a view object.\n
+obj : Gui.ViewProviderDocumentObject</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="toggleInSceneGraph">
       <Documentation>
-        <UserDocu>Add or remove view object from scene graph of all views depending on its canAddToSceneGraph()
-toggleInSceneGraph(ViewObject) -> None
-</UserDocu>
+        <UserDocu>toggleInSceneGraph(obj) -> None\n
+Add or remove view object from scene graph of all views depending\non its canAddToSceneGraph().\n
+obj : Gui.ViewProvider</UserDocu>
       </Documentation>
     </Methode>
     <Attribute Name="ActiveObject" ReadOnly="false">
       <Documentation>
-        <UserDocu>The active object of the document</UserDocu>
+        <UserDocu>The active object of the document.</UserDocu>
       </Documentation>
       <Parameter Name="ActiveObject" Type="Object" />
     </Attribute>
     <Attribute Name="ActiveView" ReadOnly="false">
       <Documentation>
-        <UserDocu>The active view of the document</UserDocu>
+        <UserDocu>The active view of the document.</UserDocu>
       </Documentation>
       <Parameter Name="ActiveView" Type="Object" />
     </Attribute>
     <Attribute Name="EditingTransform">
       <Documentation>
-        <UserDocu>The editing transformation matrix</UserDocu>
+        <UserDocu>The editing transformation matrix.</UserDocu>
       </Documentation>
       <Parameter Name="EditingTransform" Type="Object" />
     </Attribute>
     <Attribute Name="InEditInfo">
       <Documentation>
-        <UserDocu>A tuple(obj,subname,subElement,editMode) of editing object reference, or None if no object is in edit</UserDocu>
+        <UserDocu>A tuple(obj,subname,subElement,editMode) of editing object reference, or None if no object is in edit.</UserDocu>
       </Documentation>
     <Parameter Name="InEditInfo" Type="Object" />
     </Attribute>
     <Attribute Name="EditMode" ReadOnly="true">
       <Documentation>
-        <UserDocu>Current edit mode. Only meaningful when there is a current object in edit</UserDocu>
+        <UserDocu>Current edit mode. Only meaningful when there is a current object in edit.</UserDocu>
       </Documentation>
     <Parameter Name="EditMode" Type="Int" />
     </Attribute>
     <Attribute Name="Document" ReadOnly="true">
       <Documentation>
-        <UserDocu>The related App document to this Gui document</UserDocu>
+        <UserDocu>The related App document to this Gui document.</UserDocu>
       </Documentation>
       <Parameter Name="Document" Type="Object" />
     </Attribute>
     <Attribute Name="Transacting" ReadOnly="true">
       <Documentation>
-        <UserDocu>Indicate whether the document is undoing/redoing</UserDocu>
+        <UserDocu>Indicate whether the document is undoing/redoing.</UserDocu>
       </Documentation>
       <Parameter Name="Transacting" Type="Boolean" />
     </Attribute>
     <Attribute Name="Modified" ReadOnly="true">
       <Documentation>
-        <UserDocu>Returns True if the document is marked as modified, and False otherwise</UserDocu>
+        <UserDocu>Returns True if the document is marked as modified, and False otherwise.</UserDocu>
       </Documentation>
       <Parameter Name="Modified" Type="Boolean" />
     </Attribute>

@@ -40,7 +40,7 @@
 *              
 *              Array1 tab1(tab(tab.Lower()),1,tab.Length());
 *                          
-* Warning:     Programs client of such a class must be independant
+* Warning:     Programs client of such a class must be independent
 *              of the range of the first element. Then, a C++ for
 *              loop must be written like this
 *              

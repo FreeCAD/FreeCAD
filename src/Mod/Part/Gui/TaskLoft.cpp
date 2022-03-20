@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <QMessageBox>
 # include <QTextStream>
+# include <QTreeWidget>
 # include <Precision.hxx>
 # include <ShapeAnalysis_FreeBounds.hxx>
 # include <TopoDS_Iterator.hxx>

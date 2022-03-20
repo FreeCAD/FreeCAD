@@ -25,31 +25,22 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cassert>
-# include <fcntl.h>
-# include <sys/types.h>
-# include <sys/stat.h>
 # ifdef FC_OS_WIN32
-# include <io.h>
 # include <xercesc/sax/SAXParseException.hpp>
 # endif
-# include <cstdio>
-# include <sstream>
 # include <list>
+# include <sstream>
+# include <string>
+# include <utility>
 #endif
 
-
-#include <fcntl.h>
 #ifdef FC_OS_LINUX
 # include <unistd.h>
 #endif
 
 #include "Parameter.h"
 #include "Exception.h"
-#include "Console.h"
-#include "PyObjectBase.h"
 #include "Interpreter.h"
-#include <CXX/Extensions.hxx>
 
 
 namespace Base {

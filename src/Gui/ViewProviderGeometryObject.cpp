@@ -20,17 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cfloat>
-# include <QAction>
-# include <QMenu>
+# include <Inventor/SoPickedPoint.h>
+# include <Inventor/actions/SoRayPickAction.h>
 # include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/draggers/SoDragger.h>
-# include <Inventor/draggers/SoCenterballDragger.h>
-# include <Inventor/manips/SoCenterballManip.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/nodes/SoDrawStyle.h>
@@ -39,35 +34,20 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/nodes/SoDirectionalLight.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/sensors/SoNodeSensor.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/actions/SoRayPickAction.h>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
+#include <Inventor/nodes/SoResetTransform.h>
+
+#include <App/GeoFeature.h>
+#include <App/PropertyGeo.h>
+
 #include "ViewProviderGeometryObject.h"
-#include "View3DInventorViewer.h"
-#include "SoFCSelection.h"
-#include "SoFCBoundingBox.h"
 #include "Application.h"
 #include "Document.h"
-#include "Window.h"
+#include "SoFCBoundingBox.h"
+#include "SoFCSelection.h"
+#include "View3DInventorViewer.h"
 
-#include <Base/Console.h>
-#include <Base/Placement.h>
-#include <App/PropertyGeo.h>
-#include <App/GeoFeature.h>
-#include <Inventor/draggers/SoCenterballDragger.h>
-#include <Inventor/nodes/SoResetTransform.h>
-#if (COIN_MAJOR_VERSION > 2)
-#include <Inventor/nodes/SoDepthBuffer.h>
-#endif
-#include "SoFCUnifiedSelection.h"
-#include "SoFCCSysDragger.h"
-#include "Control.h"
-#include "TaskCSysDragger.h"
-#include <boost/math/special_functions/fpclassify.hpp>
 
 using namespace Gui;
 

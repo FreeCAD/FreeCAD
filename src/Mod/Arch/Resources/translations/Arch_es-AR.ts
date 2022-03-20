@@ -2888,6 +2888,21 @@ Creación de construcción cancelada.</translation>
       <translation>Elige una cara en un objeto existente o seleccione por defecto</translation>
     </message>
     <message>
+      <location filename="ArchWindow.py" line="290"/>
+      <source>Window not based on sketch. Window not aligned or resized.</source>
+      <translation>Ventana no basada en croquis. Ventana no alineada o redimensionada.</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="300"/>
+      <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
+      <translation>No hay restricciones de Ancho y/o Altura en el croquis de la ventana. Ventana no redimensionada.</translation>
+    </message>
+    <message>
+      <location filename="ArchWindow.py" line="303"/>
+      <source>No window found. Cannot continue.</source>
+      <translation>No se ha encontrado ninguna ventana. No se puede continuar.</translation>
+    </message>
+    <message>
       <location filename="ArchWindow.py" line="327"/>
       <source>Window options</source>
       <translation>Opciones de ventana</translation>
@@ -4109,6 +4124,19 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
     </message>
   </context>
   <context>
+    <name>Arch_CutLine</name>
+    <message>
+      <location filename="ArchCutPlane.py" line="80"/>
+      <source>Cut with line</source>
+      <translation>Cortar con una línea</translation>
+    </message>
+    <message>
+      <location filename="ArchCutPlane.py" line="83"/>
+      <source>Cut an object with a line</source>
+      <translation>Corta un objeto con una línea</translation>
+    </message>
+  </context>
+  <context>
     <name>Arch_CutPlane</name>
     <message>
       <location filename="ArchCutPlane.py" line="79"/>
@@ -4482,7 +4510,7 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
     <message>
       <location filename="InitGui.py" line="142"/>
       <source>Create various types of rebars, including U-shaped, L-shaped, and stirrup</source>
-      <translation type="unfinished">Create various types of rebars, including U-shaped, L-shaped, and stirrup</translation>
+      <translation>Crear varios tipos de refuerzo, incluyendo forma-U, forma-L, y estribo</translation>
     </message>
   </context>
   <context>
@@ -4808,7 +4836,7 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
     <message>
       <location filename="InitGui.py" line="187"/>
       <source>Import-Export</source>
-      <translation>Importar/Exportar</translation>
+      <translation>Importar-Exportar</translation>
     </message>
   </context>
   <context>
@@ -6043,14 +6071,14 @@ en lugar del banco de trabajo web FreeCAD</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="41"/>
       <source>Show this dialog when importing</source>
-      <translation>Mostrar este diálogo al importar</translation>
+      <translation>Mostrar este cuadro de diálogo al importar</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="54"/>
       <source>Shows verbose debug messages during import and export
 of IFC files in the Report view panel</source>
       <translation>Muestra mensajes de depuración detallados durante la importación y exportación de
-de archivos IFC en el panel de vista de Informe</translation>
+de archivos IFC en el panel de vista de informes</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="58"/>
@@ -6083,11 +6111,11 @@ if you start getting crashes when you set multiple cores.</source>
       <translation>EXPERIMENTAL
 El número de núcleos a usar en modo multinúcleo.
 Mantenga 0 para desactivar el modo multinúcleo.
-El máximo valor debería ser el número de sus núcleos menos 1,
-por ejemplo, 3 si tienes un CPU de 4 núcleos.
+El valor máximo debe ser el número de núcleos menos 1,
+por ejemplo, 3 si tiene una CPU de 4 núcleos.
 
-Establezca 1 para usar modo de único núcleo en el modo multinúcleos 
-esto es más seguro si comienzas a obtener fallos cuando estableces múltiples núcleos.</translation>
+Establecer en 1 para usar modo multicore en modo de un solo núcleo; esto es más seguro
+si comienzas a obtener fallos cuando estableces múltiples núcleos.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="129"/>
@@ -6102,50 +6130,50 @@ esto es más seguro si comienzas a obtener fallos cuando estableces múltiples n
     <message>
       <location filename="../ui/preferences-ifc.ui" line="165"/>
       <source>Import arch IFC objects as</source>
-      <translation>Importar arcos de objeto IFC como</translation>
+      <translation>Importar objetos de arquitectura IFC como</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="172"/>
       <location filename="../ui/preferences-ifc.ui" line="221"/>
       <source>Specifies what kind of objects will be created in FreeCAD</source>
-      <translation>Especifica qué objetos se crearán en FreeCAD</translation>
+      <translation>Especifica qué tipos de objetos serán creados en FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="182"/>
       <source>Parametric Arch objects</source>
-      <translation>Objetos Arch paramétricos</translation>
+      <translation>Objetos de arquitectura paramétricos</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="187"/>
       <location filename="../ui/preferences-ifc.ui" line="231"/>
       <source>Non-parametric Arch objects</source>
-      <translation>Objetos Arch no-paramétricos</translation>
+      <translation>Objetos de arquitectura no paramétricos</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="192"/>
       <location filename="../ui/preferences-ifc.ui" line="236"/>
       <source>Simple Part shapes</source>
-      <translation>Formas de piezas simples</translation>
+      <translation>Formas de pieza simples</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="197"/>
       <source>One compound per floor</source>
-      <translation>Uno compuesto por piso</translation>
+      <translation>Un compuesto por planta</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="202"/>
       <source>Do not import Arch objects</source>
-      <translation>No importar arcos de objetos</translation>
+      <translation>No importar objetos de arquitectura</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="214"/>
       <source>Import struct IFC objects as</source>
-      <translation>Importar estructura de objeto IFC como</translation>
+      <translation>Importar objetos de estructura IFC como</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="241"/>
       <source>One compound for all</source>
-      <translation>Uno compuesto por todos</translation>
+      <translation>Un compuesto para todos</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="246"/>
@@ -6168,7 +6196,7 @@ Mantenga el elemento IfcProduct para importar todos los elementos de construcci�
       <location filename="../ui/preferences-ifc.ui" line="284"/>
       <source>Openings will be imported as subtractions, otherwise wall shapes
 will already have their openings subtracted</source>
-      <translation>Las aperturas se importarán como restos, de lo contrario las formas de pared
+      <translation>Las aperturas se importarán como substracciones, de lo contrario las formas de muro
 ya tendrán sus aberturas restadas</translation>
     </message>
     <message>
@@ -6180,18 +6208,18 @@ ya tendrán sus aberturas restadas</translation>
       <location filename="../ui/preferences-ifc.ui" line="301"/>
       <source>The importer will try to detect extrusions.
 Note that this might slow things down.</source>
-      <translation>El importador intentará detectar extrusiones.
+      <translation>El importador tratará de detectar extrusiones.
 Tenga en cuenta que esto podría ralentizar las cosas.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="305"/>
       <source>Detect extrusions</source>
-      <translation>Detectar extruciones</translation>
+      <translation>Detectar extrusiones</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="318"/>
       <source>Split walls made of multiple layers</source>
-      <translation>Dividir las paredes hechas de multiples capas</translation>
+      <translation>Separar muros hechos de multiples capas</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="321"/>
@@ -6201,12 +6229,12 @@ Tenga en cuenta que esto podría ralentizar las cosas.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="334"/>
       <source>Object names will be prefixed with the IFC ID number</source>
-      <translation>Los nombres de objetos serán precedidos por el número ID de IFC</translation>
+      <translation>Los nombres de objetos serán precedidos por el número de IFC ID</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="337"/>
       <source>Prefix names with ID number</source>
-      <translation>Nombres con prefijo ID number</translation>
+      <translation>Nombres prefijados con numeración ID</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="350"/>
@@ -6218,7 +6246,7 @@ serán tratados como uno solo.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="354"/>
       <source>Merge materials with same name and same color</source>
-      <translation>Combina materiales con el mismo nombre y el mismo color</translation>
+      <translation>Fusiona materiales con el mismo nombre y el mismo color</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="367"/>
@@ -6233,7 +6261,7 @@ serán tratados como uno solo.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="383"/>
       <source>IFC files can contain unclean or non-solid geometry. If this option is checked, all the geometry is imported, regardless of their validity.</source>
-      <translation>Los archivos IFC pueden contener geometría sucia o no sólida. Si esta opción está marcada, toda la geometría es importada, independientemente de su validez.</translation>
+      <translation>Los archivos IFC pueden contener geometría inocua o no sólida. Si esta opción está marcada, toda la geometría es importada, independientemente de su validez.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="386"/>
@@ -6243,7 +6271,7 @@ serán tratados como uno solo.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="401"/>
       <source>Exclude list:</source>
-      <translation>Excluir lista:</translation>
+      <translation>Lista de exclusiones:</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="408"/>
@@ -6260,7 +6288,7 @@ Esto ralentizará la importación, pero uno puede ver la importación.</translat
     <message>
       <location filename="../ui/preferences-ifc.ui" line="433"/>
       <source>Fit view while importing</source>
-      <translation>Ajustar la vista durante la importación</translation>
+      <translation>Ajustar vista al importar</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="446"/>
@@ -6280,10 +6308,10 @@ propiedades de objeto FreeCAD almacenadas</translation>
 objects that are usually found in an IFC file are not imported, and all objects
 are placed in a 'Group' instead.
 'Buildings' and 'Storeys' are still imported if there is more than one.</source>
-      <translation>Si esta opción está marcada, el 'Project' por defecto, 'Site', 'Building', y los objetos 'Storeys'
- que habitualmente encontramos en un archivo IFC no son importados, y todos los objetos
-se colocan en 'Group' en su lugar.
- 'Building' y 'Storeys"' siguen siendo importados si hay más de uno.</translation>
+      <translation>Si esta opción está marcada, los objetos por defecto 'Project', 'Site', 'Building', y 'Storeys'
+ que generalmente se encuentran en un archivo IFC no son importados, y todos los objetos
+se colocan en un 'Group'.
+Los 'Buildings' y 'Storeys' siguen siendo importados si hay más de uno.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="469"/>
@@ -6436,7 +6464,7 @@ El gradiente del tamaño de la malla local h(x) está enlazado por |► h(x)| �
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="41"/>
       <source>Show this dialog when exporting</source>
-      <translation>Mostrar este diálogo al exportar</translation>
+      <translation>Mostrar este cuadro de diálogo al exportar</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="65"/>

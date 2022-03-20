@@ -721,6 +721,11 @@ Ez a tulajdonság csak olvasható, mert a szám a 'Pont tárgy' pontjaitól füg
       <translation>A tárgy területe</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Ennek a tárgynak az alakja</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>A tárgy által használt elsődleges tárgy</translation>
@@ -729,11 +734,6 @@ Ez a tulajdonság csak olvasható, mert a szám a 'Pont tárgy' pontjaitól füg
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
       <translation>A tárgy által használt PAT-fájl</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Ennek a tárgynak az alakja</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>
@@ -1148,12 +1148,12 @@ a méretvonalon túl</translation>
     <message>
       <location filename="view_base.py" line="106"/>
       <source>Defines an SVG pattern.</source>
-      <translation type="unfinished">Defines an SVG pattern.</translation>
+      <translation>SVG mintát határoz meg.</translation>
     </message>
     <message>
       <location filename="view_base.py" line="116"/>
       <source>Defines the size of the SVG pattern.</source>
-      <translation type="unfinished">Defines the size of the SVG pattern.</translation>
+      <translation>Beállítja az SVG minta méretet.</translation>
     </message>
     <message>
       <location filename="view_label.py" line="73"/>
@@ -1594,7 +1594,7 @@ Először hozzon létre egy csoportot az eszköz használatára.</translation>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="82"/>
       <source>Manage or create annotation styles</source>
-      <translation type="unfinished">Manage or create annotation styles</translation>
+      <translation>Jegyzetstílusok kezelése vagy létrehozása</translation>
     </message>
   </context>
   <context>
@@ -1649,8 +1649,8 @@ CTRL az illesztéshez, SHIFT a kényszerítéshez.</translation>
       <location filename="gui_arcs.py" line="490"/>
       <source>Creates a circular arc by picking 3 points.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a circular arc by picking 3 points.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Körkörös ívet hoz létre 3 pont kiválasztásával.
+CTRL illesztéshez, a SHIFT a kényszerítéshez.</translation>
     </message>
   </context>
   <context>
@@ -1727,7 +1727,7 @@ Az elrendezés merőleges vagy poláris elrendezésre alakítható a típus megv
     <message>
       <location filename="gui_beziers.py" line="64"/>
       <source>BÃ©zier curve</source>
-      <translation type="unfinished">BÃ©zier curve</translation>
+      <translation>Bezier -görbe</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="64"/>
@@ -1738,8 +1738,8 @@ Az elrendezés merőleges vagy poláris elrendezésre alakítható a típus megv
       <location filename="gui_beziers.py" line="67"/>
       <source>Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates an N-degree BÃ©zier curve. The more points you pick, the higher the degree.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>N-fokos Bezier görbét hoz létre. Minél több pontot választasz, annál magasabb a fok.
+CTRL illesztéshez, SHIFT a kényszerítéshez.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="67"/>
@@ -1754,7 +1754,7 @@ CTRL illesztéshez, SHIFT a kényszerítéshez.</translation>
     <message>
       <location filename="gui_beziers.py" line="475"/>
       <source>BÃ©zier tools</source>
-      <translation type="unfinished">BÃ©zier tools</translation>
+      <translation>Bezier-görbe eszközök</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="475"/>
@@ -1764,7 +1764,7 @@ CTRL illesztéshez, SHIFT a kényszerítéshez.</translation>
     <message>
       <location filename="gui_beziers.py" line="478"/>
       <source>Create various types of BÃ©zier curves.</source>
-      <translation type="unfinished">Create various types of BÃ©zier curves.</translation>
+      <translation>Hozzon létre különböző típusú Bazier görbéket.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="478"/>
@@ -1826,7 +1826,7 @@ Az eredményül kapott klón mindhárom irányban méretezhető.</translation>
     <message>
       <location filename="gui_beziers.py" line="242"/>
       <source>Cubic BÃ©zier curve</source>
-      <translation type="unfinished">Cubic BÃ©zier curve</translation>
+      <translation>Köbös bezier görbe</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="242"/>
@@ -1838,9 +1838,9 @@ Az eredményül kapott klón mindhárom irányban méretezhető.</translation>
       <source>Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
-After the curve is created you can go back to edit each control point and set the properties of each knot.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Bezier görbét hoz létre a 2. fokon (másodfokú) és 3. fokon (harmadfokú) szakaszokkal. Kattintson és húzza a billentyűt az egyes szakaszok meghatározásához.
+A görbe létrehozása után visszamehet, és szerkesztheti az egyes vezérlőpontokat, és beállíthatja az egyes csomópontok tulajdonságait.
+CTRL igazításhoz, SHIFT a kényszerítéshez.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="245"/>
@@ -2992,7 +2992,7 @@ Ezután használhatja különböző kamera helyzetek mentéséhez és a tárgyak
     <message>
       <location filename="init_tools.py" line="58"/>
       <source>BÃ©zier tools</source>
-      <translation type="unfinished">BÃ©zier tools</translation>
+      <translation>Bezier-görbe eszközök</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="58"/>
@@ -3706,6 +3706,11 @@ Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve
       <translation>Több élt vagy szakaszt talált: összeköti őket</translation>
     </message>
     <message>
+      <location filename="upgrade.py" line="541"/>
+      <source>Found several non-treatable objects: creating compound</source>
+      <translation>Találtam több nem kezelhető tárgyat: kapcsolat létrehozása</translation>
+    </message>
+    <message>
       <location filename="upgrade.py" line="512"/>
       <source>trying: closing it</source>
       <translation>próbálja: bezárni</translation>
@@ -3724,11 +3729,6 @@ Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve
       <location filename="upgrade.py" line="536"/>
       <source>Found points: creating compound</source>
       <translation>Pontokat talált: kapcsolat létrehozása</translation>
-    </message>
-    <message>
-      <location filename="upgrade.py" line="541"/>
-      <source>Found several non-treatable objects: creating compound</source>
-      <translation>Találtam több nem kezelhető tárgyat: kapcsolat létrehozása</translation>
     </message>
     <message>
       <location filename="upgrade.py" line="544"/>
@@ -4249,7 +4249,7 @@ Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve
     <message>
       <location filename="view_base.py" line="402"/>
       <source>Please load the Draft Workbench to enable editing this object</source>
-      <translation type="unfinished">Please load the Draft Workbench to enable editing this object</translation>
+      <translation>A tárgy szerkesztésének engedélyezéséhez töltse be a Munkafelület piszkozatát</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="46"/>
@@ -4264,7 +4264,7 @@ Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve
     <message>
       <location filename="init_draft_statusbar.py" line="140"/>
       <source>Unable to convert input into a  scale factor</source>
-      <translation type="unfinished">Unable to convert input into a  scale factor</translation>
+      <translation>Nem lehet a bemenetet méretezési léptéktényezővé alakítani</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="141"/>
@@ -4274,7 +4274,7 @@ Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve
     <message>
       <location filename="init_draft_statusbar.py" line="155"/>
       <source>Set custom scale</source>
-      <translation type="unfinished">Set custom scale</translation>
+      <translation>Egyedi lépték beállítása</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="159"/>
@@ -4284,7 +4284,7 @@ Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve
     <message>
       <location filename="init_draft_statusbar.py" line="214"/>
       <source>Set the scale used by draft annotation tools</source>
-      <translation type="unfinished">Set the scale used by draft annotation tools</translation>
+      <translation>A jegyzeteszközök által használt méretezés beállítása</translation>
     </message>
     <message>
       <location filename="utils.py" line="650"/>
@@ -4374,77 +4374,77 @@ Nem érhető el, ha a 'Rész-primitívek használata' beállítás engedélyezve
     <message>
       <location filename="init_tools.py" line="169"/>
       <source>Snap Lock</source>
-      <translation type="unfinished">Snap Lock</translation>
+      <translation>Illesztés zárolás</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="170"/>
       <source>Snap Endpoint</source>
-      <translation type="unfinished">Snap Endpoint</translation>
+      <translation>Végpont illesztés</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="171"/>
       <source>Snap Midpoint</source>
-      <translation type="unfinished">Snap Midpoint</translation>
+      <translation>Felezőpont illesztés</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="172"/>
       <source>Snap Center</source>
-      <translation type="unfinished">Snap Center</translation>
+      <translation>Középpont illesztés</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="173"/>
       <source>Snap Angle</source>
-      <translation type="unfinished">Snap Angle</translation>
+      <translation>Szög illesztés</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="174"/>
       <source>Snap Intersection</source>
-      <translation type="unfinished">Snap Intersection</translation>
+      <translation>Metszet illesztés</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="175"/>
       <source>Snap Perpendicular</source>
-      <translation type="unfinished">Snap Perpendicular</translation>
+      <translation>Merőleges illesztés</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="176"/>
       <source>Snap Extension</source>
-      <translation type="unfinished">Snap Extension</translation>
+      <translation>Meghosszabbítás illesztés</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="177"/>
       <source>Snap Parallel</source>
-      <translation type="unfinished">Snap Parallel</translation>
+      <translation>Párhuzamos illesztés</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="178"/>
       <source>Snap Special</source>
-      <translation type="unfinished">Snap Special</translation>
+      <translation>Speciális illesztés</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="179"/>
       <source>Snap Near</source>
-      <translation type="unfinished">Snap Near</translation>
+      <translation>Közeli illesztés</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="180"/>
       <source>Snap Ortho</source>
-      <translation type="unfinished">Snap Ortho</translation>
+      <translation>Ortogonális illesztés</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="181"/>
       <source>Snap Grid</source>
-      <translation type="unfinished">Snap Grid</translation>
+      <translation>Rácshoz illesztés</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="182"/>
       <source>Snap WorkingPlane</source>
-      <translation type="unfinished">Snap WorkingPlane</translation>
+      <translation>Munkasíkra illesztés</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="183"/>
       <source>Snap Dimensions</source>
-      <translation type="unfinished">Snap Dimensions</translation>
+      <translation>Dimenzió illesztés</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="187"/>
@@ -5083,12 +5083,12 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
     <message>
       <location filename="gui_snapper.py" line="1543"/>
       <source>(ON)</source>
-      <translation type="unfinished">(ON)</translation>
+      <translation>(BE)</translation>
     </message>
     <message>
       <location filename="gui_snapper.py" line="1546"/>
       <source>(OFF)</source>
-      <translation type="unfinished">(OFF)</translation>
+      <translation>(KI)</translation>
     </message>
     <message>
       <location filename="gui_shape2dview.py" line="109"/>
@@ -5098,7 +5098,7 @@ A FreeCAD letöltésének bekapcsolásához válassza az "Igen"-t.</translation>
     <message>
       <location filename="gui_beziers.py" line="332"/>
       <source>BÃ©zier curve has been closed</source>
-      <translation type="unfinished">BÃ©zier curve has been closed</translation>
+      <translation>Bezier-görbe lezárásra került</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="131"/>

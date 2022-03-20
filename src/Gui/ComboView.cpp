@@ -20,23 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QEvent>
 # include <QSplitter>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-
 #include "ComboView.h"
 #include "BitmapFactory.h"
-#include "PropertyView.h"
-#include "ProjectView.h"
-#include "Application.h"
 #include "Document.h"
+#include "PropertyView.h"
 #include "Tree.h"
 #include "TaskView/TaskView.h"
-#include "propertyeditor/PropertyEditor.h"
+
 
 using namespace Gui;
 using namespace Gui::DockWnd;

@@ -20,15 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMessageBox>
-#endif
 
-#include "Application.h"
-#include "MainWindow.h"
 #include "DlgEditFileIncludePropertyExternal.h"
+#include "Application.h"
 #include "FileDialog.h"
 
 

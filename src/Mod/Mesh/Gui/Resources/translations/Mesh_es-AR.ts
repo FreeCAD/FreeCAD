@@ -1668,7 +1668,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <name>QObject</name>
     <message>
       <source>Import-Export</source>
-      <translation>Importar/Exportar</translation>
+      <translation>Importar-Exportar</translation>
     </message>
     <message>
       <source>All Mesh Files</source>

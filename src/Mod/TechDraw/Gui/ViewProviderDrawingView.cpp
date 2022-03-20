@@ -21,39 +21,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <boost_bind_bind.hpp>
 #include <boost_signals2.hpp>
 #include <boost/signals2/connection.hpp>
-#include <boost_bind_bind.hpp>
-
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-#include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-
 #include <Gui/Application.h>
 #include <Gui/Control.h>
-#include <Gui/Document.h>
-#include <Gui/ViewProvider.h>
 
-#include <Mod/TechDraw/App/DrawViewClip.h>
-#include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawView.h>
 
-#include "ViewProviderPage.h"
+#include "ViewProviderDrawingView.h"
+#include "MDIViewPage.h"
 #include "QGIView.h"
 #include "QGVPage.h"
-#include "MDIViewPage.h"
-#include "ViewProviderDrawingView.h"
+#include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
 namespace bp = boost::placeholders;

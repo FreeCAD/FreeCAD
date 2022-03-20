@@ -25,18 +25,13 @@
 #ifndef _PreComp_
 # include <BRepAlgo.hxx>
 # include <BRepFilletAPI_MakeFillet.hxx>
-# include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
 # include <TopTools_ListOfShape.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopExp.hxx>
-# include <BRep_Tool.hxx>
 # include <ShapeFix_Shape.hxx>
 # include <ShapeFix_ShapeTolerance.hxx>
 #endif
 
-#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Mod/Part/App/TopoShape.h>
@@ -53,9 +48,12 @@ const App::PropertyQuantityConstraint::Constraints floatRadius = {0.0,FLT_MAX,0.
 
 Fillet::Fillet()
 {
-    ADD_PROPERTY(Radius,(1.0));
+    ADD_PROPERTY_TYPE(Radius, (1.0), "Fillet", App::Prop_None, "Fillet radius.");
     Radius.setUnit(Base::Unit::Length);
     Radius.setConstraints(&floatRadius);
+    ADD_PROPERTY_TYPE(UseAllEdges, (false), "Fillet", App::Prop_None,
+      "Fillet all edges if true, else use only those edges in Base property.\n"
+      "If true, then this overrides any edge changes made to the Base property or in the dialog.\n");
 }
 
 short Fillet::mustExecute() const
@@ -73,7 +71,19 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
     } catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
-    std::vector<std::string> SubNames = std::vector<std::string>(Base.getSubValues());
+    std::vector<std::string> SubNames = std::vector<std::string>(Base.getSubValues());  
+
+    if (UseAllEdges.getValue()){
+        SubNames.clear();
+        std::string edgeTypeName = Part::TopoShape::shapeName(TopAbs_EDGE); //"Edge"
+        int count = TopShape.countSubElements(edgeTypeName.c_str());
+        for (int ii = 0; ii < count; ii++){
+            std::ostringstream edgeName;
+            edgeName << edgeTypeName << ii+1;
+            SubNames.push_back(edgeName.str());
+        }
+    }
+
     getContinuousEdges(TopShape, SubNames);
 
     if (SubNames.size() == 0)

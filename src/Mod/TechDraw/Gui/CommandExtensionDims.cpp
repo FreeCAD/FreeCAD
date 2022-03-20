@@ -22,58 +22,36 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QApplication>
 # include <QMessageBox>
-# include <iostream>
 # include <string>
 # include <sstream>
-# include <cstdlib>
-# include <exception>
 #endif  //#ifndef _PreComp_
 
-#include <QGraphicsView>
-
+# include <App/Document.h>
 # include <App/DocumentObject.h>
-# include <Base/Exception.h>
-#include <Base/Console.h>
-#include <Base/Type.h>
+# include <Base/Console.h>
+# include <Base/Type.h>
 # include <Gui/Action.h>
 # include <Gui/Application.h>
 # include <Gui/BitmapFactory.h>
 # include <Gui/Command.h>
 # include <Gui/Control.h>
-# include <Gui/Document.h>
-# include <Gui/Selection.h>
 # include <Gui/MainWindow.h>
-# include <Gui/FileDialog.h>
-# include <Gui/ViewProvider.h>
+# include <Gui/Selection.h>
+# include <Gui/SelectionObject.h>
 
-# include <Mod/Part/App/PartFeature.h>
-
-# include <Mod/TechDraw/App/DrawViewPart.h>
-# include <Mod/TechDraw/App/DrawProjGroupItem.h>
-# include <Mod/TechDraw/App/DrawProjGroup.h>
+# include <Mod/TechDraw/App/DrawViewBalloon.h>
 # include <Mod/TechDraw/App/DrawViewDimension.h>
-# include <Mod/TechDraw/App/DrawDimHelper.h>
-# include <Mod/TechDraw/App/LandmarkDimension.h>
 # include <Mod/TechDraw/App/DrawPage.h>
+# include <Mod/TechDraw/App/DrawViewPart.h>
 # include <Mod/TechDraw/App/DrawUtil.h>
-# include <Mod/TechDraw/App/Geometry.h>
 # include <Mod/TechDraw/App/Preferences.h>
 
-#include <Mod/TechDraw/Gui/QGVPage.h> //needed ?
-
-
 #include "DrawGuiUtil.h"
-#include "MDIViewPage.h"
-#include "ViewProviderPage.h"
-#include "TaskLinkDim.h"
-
+#include "TaskCustomizeFormat.h"
 #include "TaskSelectLineAttributes.h"
 
-/////////////////////////////
-#include <Mod/TechDraw/App/DrawViewSection.h>  // needed
-#include <Mod/TechDraw/App/DrawProjGroupItem.h>
-/////////////////////////////
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -127,7 +105,7 @@ void execInsertPrefixChar(Gui::Command* cmd, std::string prefixChar) {
         for (auto selected : selection) {
             auto object = selected.getObject();
             if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
-                auto dim = dynamic_cast<TechDraw::DrawViewDimension*>(selected.getObject());
+                auto dim = static_cast<TechDraw::DrawViewDimension*>(selected.getObject());
                 std::string formatSpec = dim->FormatSpec.getStrValue();
                 formatSpec = prefixChar + formatSpec;
                 dim->FormatSpec.setValue(formatSpec);
@@ -156,7 +134,7 @@ CmdTechDrawExtensionInsertDiameter::CmdTechDrawExtensionInsertDiameter()
 void CmdTechDrawExtensionInsertDiameter::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    execInsertPrefixChar(this, "⌀");   
+    execInsertPrefixChar(this, "⌀");
 }
 
 bool CmdTechDrawExtensionInsertDiameter::isActive(void)
@@ -212,7 +190,7 @@ void execRemovePrefixChar(Gui::Command* cmd) {
         {
             auto object = selected.getObject();
             if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
-                auto dim = dynamic_cast<TechDraw::DrawViewDimension*>(selected.getObject());
+                auto dim = static_cast<TechDraw::DrawViewDimension*>(selected.getObject());
                 std::string formatSpec = dim->FormatSpec.getStrValue();
                 int pos = formatSpec.find("%.");
                 if (pos != 0)
@@ -382,7 +360,7 @@ void execIncreaseDecreaseDecimal(Gui::Command* cmd, int delta) {
         for (auto selected : selection) {
             auto object = selected.getObject();
             if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
-                auto dim = dynamic_cast<TechDraw::DrawViewDimension*>(selected.getObject());
+                auto dim = static_cast<TechDraw::DrawViewDimension*>(selected.getObject());
                 std::string formatSpec = dim->FormatSpec.getStrValue();
                 std::string searchStr("%.");
                 int numFound = formatSpec.find(searchStr) + 2;
@@ -2216,6 +2194,45 @@ bool CmdTechDrawExtensionCreateLengthArc::isActive(void)
     return (havePage && haveView);
 }
 
+//===========================================================================
+// TechDraw_ExtensionCustomizeFormat
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawExtensionCustomizeFormat)
+
+CmdTechDrawExtensionCustomizeFormat::CmdTechDrawExtensionCustomizeFormat()
+  : Command("TechDraw_ExtensionCustomizeFormat")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Customize Format Label");
+    sToolTipText    = QT_TR_NOOP("Select a dimension or a balloon<br>\
+    - click this tool<br>\
+    - edit the Format field, using the keyboard and/or the special buttons");
+    sWhatsThis      = "TechDraw_ExtensionCustomizeFormat";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "TechDraw_ExtensionCustomizeFormat";
+}
+
+void CmdTechDrawExtensionCustomizeFormat::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    std::vector<Gui::SelectionObject> selected;
+    if (!_checkSelection(this, selected, "TechDraw Customize Format"))
+        return;
+    auto object = selected[0].getObject();
+    if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId()) ||
+        object->isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId()))
+        Gui::Control().showDialog(new TaskDlgCustomizeFormat(object));
+}
+
+bool CmdTechDrawExtensionCustomizeFormat::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView);
+}
+
 namespace TechDrawGui {
     //===========================================================================
     // internal helper routines
@@ -2280,6 +2297,9 @@ namespace TechDrawGui {
         dim->References2D.setValues(objs, subs);
         cmd->doCommand(cmd->Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
         dim->recomputeFeature();
+        //Horrible hack to force Tree update
+        double x = objFeat->X.getValue();
+        objFeat->X.setValue(x);
         return dim;
     }
 
@@ -2323,7 +2343,7 @@ namespace TechDrawGui {
         for (auto selected : selection) {
             auto object = selected.getObject();
             if (object->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
-                auto dim = dynamic_cast<TechDraw::DrawViewDimension*>(selected.getObject());
+                auto dim = static_cast<TechDraw::DrawViewDimension*>(selected.getObject());
                 std::string dimType = dim->Type.getValueAsString();
                 if (dimType == needDimType)
                     validDimension.push_back(dim);
@@ -2365,4 +2385,5 @@ void CreateTechDrawCommandsExtensionDims(void)
     rcCmdMgr.addCommand(new CmdTechDrawExtensionCreateHorizChamferDimension());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionCreateVertChamferDimension());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionCreateLengthArc());
+    rcCmdMgr.addCommand(new CmdTechDrawExtensionCustomizeFormat());
 }

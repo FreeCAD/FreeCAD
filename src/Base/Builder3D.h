@@ -28,7 +28,6 @@
 
 #include <sstream>
 #include <vector>
-#include "Vector3D.h"
 #ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
 #endif
@@ -36,6 +35,9 @@
 namespace Base
 {
 class Matrix4D;
+template <class _Precision> class Vector3;
+typedef Vector3<float>  Vector3f;
+
 /** A Builder class for 3D representations on App level
  * On the application level nothing is known of the visual representation of data.
  * Nevertheless it's often needed to see some 3D information, e.g. points, directions,

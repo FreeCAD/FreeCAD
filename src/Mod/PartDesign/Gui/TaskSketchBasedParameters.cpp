@@ -25,35 +25,24 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
 # include <QRegExp>
 # include <QTextStream>
-# include <Precision.hxx>
 #endif
 
-#include <Base/Console.h>
-#include <App/Application.h>
 #include <App/Document.h>
 #include <App/Origin.h>
-#include <App/OriginFeature.h>
+#include <Base/Console.h>
 #include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
 #include <Gui/CommandT.h>
-
+#include <Gui/Document.h>
+#include <Gui/Selection.h>
+#include <Gui/ViewProvider.h>
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
 #include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/PartDesign/App/Body.h>
-
-#include "Utils.h"
-#include "ReferenceSelection.h"
 
 #include "TaskSketchBasedParameters.h"
+#include "ReferenceSelection.h"
 
 using namespace PartDesignGui;
 using namespace Gui;

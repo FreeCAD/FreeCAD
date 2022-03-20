@@ -66,6 +66,7 @@
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 
+#include <Mod/Part/PartGlobal.h>
 #include "GeometryExtension.h"
 
 namespace Part {
@@ -795,6 +796,11 @@ public:
     bool tangentU(double u, double v, gp_Dir& dirU) const;
     bool tangentV(double u, double v, gp_Dir& dirV) const;
     bool normal(double u, double v, gp_Dir& dir) const;
+    /*!
+      Computes the derivative of order Nu in the direction U and Nv
+      in the direction V at the point P(U, V).
+     */
+    virtual gp_Vec getDN(double u, double v, int Nu, int Nv) const;
 
     /** @name Curvature information */
     //@{
@@ -891,6 +897,9 @@ public:
 
     void setHandle(const Handle(Geom_ConicalSurface)&);
     const Handle(Geom_Geometry)& handle() const;
+
+    // Overloaded for Geom_ConicalSurface because of an OCC bug
+    virtual gp_Vec getDN(double u, double v, int Nu, int Nv) const;
 
 private:
     Handle(Geom_ConicalSurface) mySurface;

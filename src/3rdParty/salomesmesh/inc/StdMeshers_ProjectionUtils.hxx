@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH SMESH : idl implementation based on 'SMESH' unit's calsses
+//  SMESH SMESH : idl implementation based on 'SMESH' unit's classes
 // File      : StdMeshers_ProjectionUtils.hxx
 // Created   : Thu Oct 26 15:37:24 2006
 // Author    : Edward AGAPOV (eap)
@@ -92,7 +92,7 @@ namespace StdMeshers_ProjectionUtils
 
 
   /*!
-   * \brief Finds transformation beween two sets of 2D points using
+   * \brief Finds transformation between two sets of 2D points using
    *        a least square approximation
    */
   class TrsfFinder2D
@@ -112,7 +112,7 @@ namespace StdMeshers_ProjectionUtils
     bool IsIdentity() const { return ( _trsf.Form() == gp_Identity ); }
   };
   /*!
-   * \brief Finds transformation beween two sets of 3D points using
+   * \brief Finds transformation between two sets of 3D points using
    *        a least square approximation
    */
   class TrsfFinder3D

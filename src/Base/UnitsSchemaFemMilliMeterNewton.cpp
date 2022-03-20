@@ -28,10 +28,8 @@
 #endif
 
 #include <QString>
-#include "Exception.h"
-#include "UnitsApi.h"
+
 #include "UnitsSchemaFemMilliMeterNewton.h"
-#include <cmath>
 
 
 using namespace Base;

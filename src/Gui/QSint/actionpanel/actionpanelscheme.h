@@ -8,10 +8,9 @@
 #ifndef TASKPANELSCHEME_H
 #define TASKPANELSCHEME_H
 
-#include <QtCore/QString>
-#include <QtCore/QSize>
-
-#include <QtGui/QPixmap>
+#include <QPixmap>
+#include <QSize>
+#include <QString>
 #include "qsint_global.h"
 
 

@@ -311,81 +311,66 @@ def wiresIntersect(wire1, wire2):
 
 def connect(edges, closed=False):
     """Connect the edges in the given list by their intersections."""
-    nedges = []
-    v2 = None
 
-    for i in range(len(edges)):
-        curr = edges[i]
-        # print("debug: DraftGeomUtils.connect edge ", i, " : ",
-        #       curr.Vertexes[0].Point, curr.Vertexes[-1].Point)
+    inters_list = [] # List of intersections (with the previous edge).
+    for i, curr in enumerate(edges):
         if i > 0:
-            prev = edges[i-1]
+            prev = edges[i - 1]
+        elif closed:
+            prev = edges[-1]
         else:
-            if closed:
+            inters_list.append(None)
+            continue
+
+        curr_inters_list = (findIntersection(prev, curr, True, True))
+        if len(curr_inters_list) == 0:
+            inters_list.append(None)
+        elif len(curr_inters_list) == 1:
+            inters_list.append(curr_inters_list[0])
+        else:
+            inters = curr_inters_list[DraftVecUtils.closest(curr.Vertexes[0].Point,
+                                                            curr_inters_list)]
+            inters_list.append(inters)
+
+    new_edges = []
+    for i, curr in enumerate(edges):
+        curr_sta = inters_list[i]
+        if i < (len(edges) - 1):
+            curr_end = inters_list[i + 1]
+        elif closed:
+            curr_end = inters_list[0]
+        else:
+            curr_end = None
+
+        if curr_sta is None:
+            curr_sta = curr.Vertexes[0].Point
+            if i > 0:
+                prev = edges[i - 1]
+            elif closed:
                 prev = edges[-1]
             else:
                 prev = None
-        if i < (len(edges)-1):
-            _next = edges[i+1]
-        else:
-            if closed:
-                _next = edges[0]
-            else:
-                _next = None
-        if prev:
-            # print("debug: DraftGeomUtils.connect prev : ",
-            #       prev.Vertexes[0].Point, prev.Vertexes[-1].Point)
+            if prev is not None:
+                prev_end = prev.Vertexes[-1].Point
+                new_edges.append(Part.LineSegment(prev_end, curr_sta).toShape())
 
-            # If the edge pairs has intersection and if there is prev v2
-            # (prev v2 was calculated intersection), do not calculate
-            # again, just use it as current v1 - avoid chance of slight
-            # difference in result.  And, if edge pairs
-            # has no intersection (parallel edges, line
-            # - arc do no intersect, etc.), so just just current
-            # edge endpoints as v1 and connect these 2 non-intersecting
-            # edges
+        if curr_end is None:
+            curr_end = curr.Vertexes[-1].Point
 
-            # Seem have chance that 2 parallel edges offset same width,
-            # result in 2 colinear edges - Wall / DraftGeomUtils
-            # seem make them 1 edge and thus 1 vertical plane
-            i = findIntersection(curr, prev, True, True)
-            if i:
-                if v2:
-                    v1 = v2
-                else:
-                    v1 = i[DraftVecUtils.closest(curr.Vertexes[0].Point, i)]
-            else:
-                v1 = curr.Vertexes[0].Point
-                nedges.append(Part.LineSegment(v2, v1).toShape())
-        else:
-            v1 = curr.Vertexes[0].Point
+        if curr_sta != curr_end:
+            if geomType(curr) == "Line":
+                new_edges.append(Part.LineSegment(curr_sta, curr_end).toShape())
+            elif geomType(curr) == "Circle":
+                new_edges.append(Part.Arc(curr_sta, findMidpoint(curr), curr_end).toShape())
 
-        if _next:
-            # print("debug: DraftGeomUtils.connect _next : ",
-            #       _next.Vertexes[0].Point, _next.Vertexes[-1].Point)
-            i = findIntersection(curr, _next, True, True)
-            if i:
-                v2 = i[DraftVecUtils.closest(curr.Vertexes[-1].Point, i)]
-            else:
-                v2 = curr.Vertexes[-1].Point
-        else:
-            v2 = curr.Vertexes[-1].Point
-        if geomType(curr) == "Line":
-            if v1 != v2:
-                nedges.append(Part.LineSegment(v1, v2).toShape())
-        elif geomType(curr) == "Circle":
-            if v1 != v2:
-                nedges.append(Part.Arc(v1,
-                                       findMidpoint(curr),
-                                       v2).toShape())
     try:
-        return Part.Wire(nedges)
+        return Part.Wire(new_edges)
     except Part.OCCError:
         print("DraftGeomUtils.connect: unable to connect edges")
-        for e in nedges:
-            print(e.Curve, " ",
-                  e.Vertexes[0].Point, " ",
-                  e.Vertexes[-1].Point)
+        for edge in new_edges:
+            print(edge.Curve, " ",
+                  edge.Vertexes[0].Point, " ",
+                  edge.Vertexes[-1].Point)
         return None
 
 

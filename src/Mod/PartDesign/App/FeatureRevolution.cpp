@@ -23,28 +23,20 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRep_Builder.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepPrimAPI_MakeRevol.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Wire.hxx>
-# include <TopExp_Explorer.hxx>
 # include <BRepAlgoAPI_Fuse.hxx>
-# include <Precision.hxx>
+# include <BRepPrimAPI_MakeRevol.hxx>
 # include <gp_Lin.hxx>
+# include <Precision.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
 #endif
 
 #include <Base/Axis.h>
-#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Tools.h>
 
-#include <Mod/Part/App/TopoShape.h>
 #include "FeatureRevolution.h"
-
 
 using namespace PartDesign;
 

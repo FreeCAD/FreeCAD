@@ -2,21 +2,112 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ja" sourcelanguage="en">
   <context>
+    <name>MoveView</name>
+    <message>
+      <location filename="CommandMoveView.py" line="47"/>
+      <source>Move View</source>
+      <translation>ビューを移動</translation>
+    </message>
+    <message>
+      <location filename="CommandMoveView.py" line="50"/>
+      <source>Move a View to a new Page</source>
+      <translation>ビューを新しいページに移動</translation>
+    </message>
+    <message>
+      <location filename="TaskMoveView.py" line="47"/>
+      <source>Move View to a different Page</source>
+      <translation>ビューを別のページに移動</translation>
+    </message>
+    <message>
+      <location filename="TaskMoveView.py" line="74"/>
+      <source>Select View to move from list.</source>
+      <translation>リストから移動するビューを選択します。</translation>
+    </message>
+    <message>
+      <location filename="TaskMoveView.py" line="75"/>
+      <source>Select View</source>
+      <translation>ビューの選択</translation>
+    </message>
+    <message>
+      <location filename="TaskMoveView.py" line="93"/>
+      <source>Select From Page.</source>
+      <translation>ページから選択</translation>
+    </message>
+    <message>
+      <location filename="TaskMoveView.py" line="113"/>
+      <source>Select Page</source>
+      <translation>ページを選択</translation>
+    </message>
+    <message>
+      <location filename="TaskMoveView.py" line="112"/>
+      <source>Select To Page.</source>
+      <translation type="unfinished">Select To Page.</translation>
+    </message>
+  </context>
+  <context>
+    <name>ShareView</name>
+    <message>
+      <location filename="CommandShareView.py" line="47"/>
+      <source>Share View</source>
+      <translation>共有ビュー</translation>
+    </message>
+    <message>
+      <location filename="CommandShareView.py" line="50"/>
+      <source>Share a View on a second Page</source>
+      <translation>2ページ目にビューを共有</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="46"/>
+      <source>Share View with another Page</source>
+      <translation>別のページでビューを共有</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="47"/>
+      <source>View to share</source>
+      <translation type="unfinished">View to share</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="74"/>
+      <source>Select View to share from list.</source>
+      <translation type="unfinished">Select View to share from list.</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="75"/>
+      <source>Select View</source>
+      <translation>ビューの選択</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="93"/>
+      <source>Select From Page.</source>
+      <translation>ページから選択</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="113"/>
+      <source>Select Page</source>
+      <translation>ページを選択</translation>
+    </message>
+    <message>
+      <location filename="TaskShareView.py" line="112"/>
+      <source>Select To Page.</source>
+      <translation type="unfinished">Select To Page.</translation>
+    </message>
+  </context>
+  <context>
     <name>CopyView</name>
     <message>
       <location filename="CommandCopyView.py" line="47"/>
       <source>Copy View</source>
-      <translation type="unfinished">Copy View</translation>
+      <translation>ビューをコピー</translation>
     </message>
     <message>
       <location filename="CommandCopyView.py" line="50"/>
       <source>Copy a View to a second Page</source>
-      <translation type="unfinished">Copy a View to a second Page</translation>
+      <translation>ビューを2ページ目にコピー</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="46"/>
       <source>Copy View to a second Page</source>
-      <translation type="unfinished">Copy View to a second Page</translation>
+      <translation>ビューを2ページ目にコピー</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="73"/>
@@ -26,65 +117,22 @@
     <message>
       <location filename="TaskCopyView.py" line="74"/>
       <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
+      <translation>ビューの選択</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="92"/>
       <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
-    </message>
-    <message>
-      <location filename="TaskCopyView.py" line="112"/>
-      <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>ページから選択</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="111"/>
       <source>Select To Page.</source>
       <translation type="unfinished">Select To Page.</translation>
     </message>
-  </context>
-  <context>
-    <name>MoveView</name>
     <message>
-      <location filename="CommandMoveView.py" line="47"/>
-      <source>Move View</source>
-      <translation type="unfinished">Move View</translation>
-    </message>
-    <message>
-      <location filename="CommandMoveView.py" line="50"/>
-      <source>Move a View to a new Page</source>
-      <translation type="unfinished">Move a View to a new Page</translation>
-    </message>
-    <message>
-      <location filename="TaskMoveView.py" line="47"/>
-      <source>Move View to a different Page</source>
-      <translation type="unfinished">Move View to a different Page</translation>
-    </message>
-    <message>
-      <location filename="TaskMoveView.py" line="74"/>
-      <source>Select View to move from list.</source>
-      <translation type="unfinished">Select View to move from list.</translation>
-    </message>
-    <message>
-      <location filename="TaskMoveView.py" line="75"/>
-      <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
-    </message>
-    <message>
-      <location filename="TaskMoveView.py" line="93"/>
-      <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
-    </message>
-    <message>
-      <location filename="TaskMoveView.py" line="113"/>
+      <location filename="TaskCopyView.py" line="112"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
-    </message>
-    <message>
-      <location filename="TaskMoveView.py" line="112"/>
-      <source>Select To Page.</source>
-      <translation type="unfinished">Select To Page.</translation>
+      <translation>ページを選択</translation>
     </message>
   </context>
   <context>
@@ -404,15 +452,15 @@
     </message>
     <message>
       <source>Draw circle centerlines</source>
-      <translation type="unfinished">Draw circle centerlines</translation>
+      <translation>円の中心線を描く</translation>
     </message>
     <message>
       <source>Draw circle centerline cross at circles
     - select many circles or arcs
     - click this button</source>
-      <translation type="unfinished">Draw circle centerline cross at circles
-    - select many circles or arcs
-    - click this button</translation>
+      <translation>円の中心線を描く
+    - 多くの円または円弧を選択
+    - このボタンをクリックしてください</translation>
     </message>
   </context>
   <context>
@@ -1625,11 +1673,11 @@
     </message>
     <message>
       <source>Selection is empty</source>
-      <translation type="unfinished">Selection is empty</translation>
+      <translation>選択されていません</translation>
     </message>
     <message>
       <source>No object selected</source>
-      <translation type="unfinished">No object selected</translation>
+      <translation>オブジェクトが選択されていません</translation>
     </message>
     <message>
       <source>TechDraw Thread Hole Side</source>

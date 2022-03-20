@@ -303,14 +303,16 @@ void EditModeGeometryCoinManager::updateGeometryColor(const GeoListFacade & geol
         }
         else if (preselectpoint != -1) {
             preselectpointmfid = coinMapping.getIndexLayer(preselectpoint);
-            if (l == preselectpointmfid.layerId && preselectpointmfid.fieldIndex < PtNum)
+            if (MultiFieldId::Invalid != preselectpointmfid &&
+                preselectpointmfid.layerId == l &&
+                preselectpointmfid.fieldIndex < PtNum)
                 pcolor[preselectpointmfid.fieldIndex] = drawingParameters.PreselectColor;
         }
 
         ViewProviderSketchCoinAttorney::executeOnSelectionPointSet(viewProvider,
             [pcolor, PtNum, preselectpointmfid, layerId = l, &coinMapping = coinMapping, drawingParameters = this->drawingParameters](const int i) {
                 auto pointindex = coinMapping.getIndexLayer(i);
-                if (layerId == pointindex.layerId && pointindex.fieldIndex < PtNum) {
+                if (layerId == pointindex.layerId && pointindex.fieldIndex >= 0 && pointindex.fieldIndex < PtNum) {
                     pcolor[pointindex.fieldIndex] = (preselectpointmfid == pointindex)
                         ? drawingParameters.PreselectSelectedColor : drawingParameters.SelectColor;
                 }

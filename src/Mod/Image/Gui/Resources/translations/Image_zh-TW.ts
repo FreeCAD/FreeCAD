@@ -6,12 +6,12 @@
     <message>
       <location filename="_CommandImageScaling.py" line="62"/>
       <source>Scale image plane</source>
-      <translation>縮放圖像平面</translation>
+      <translation>縮放影像平面</translation>
     </message>
     <message>
       <location filename="_CommandImageScaling.py" line="66"/>
       <source>Scales an image plane by defining a distance between two points</source>
-      <translation>縮放圖像平面經由定義兩點間的距離</translation>
+      <translation>透過定義兩個點之間的距離來縮放影像平面</translation>
     </message>
   </context>
   <context>
@@ -19,7 +19,7 @@
     <message>
       <location filename="../../Command.cpp" line="99"/>
       <source>Image</source>
-      <translation>圖像</translation>
+      <translation>影像</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="100"/>
@@ -37,7 +37,7 @@
     <message>
       <location filename="../../Command.cpp" line="54"/>
       <source>Image</source>
-      <translation>圖像</translation>
+      <translation>影像</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="55"/>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="56"/>
       <source>Open image view</source>
-      <translation>打開影像檢視</translation>
+      <translation>開啟影像檢視</translation>
     </message>
   </context>
   <context>
@@ -55,17 +55,17 @@
     <message>
       <location filename="../../Command.cpp" line="173"/>
       <source>Image</source>
-      <translation>圖像</translation>
+      <translation>影像</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
       <source>Scale...</source>
-      <translation type="unfinished">Scale...</translation>
+      <translation>比例...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="175"/>
       <source>Image Scaling</source>
-      <translation>圖像縮放</translation>
+      <translation>影像縮放</translation>
     </message>
   </context>
   <context>
@@ -73,7 +73,7 @@
     <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Create ImagePlane</source>
-      <translation type="unfinished">Create ImagePlane</translation>
+      <translation>建立平面影像</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
       <location filename="../../GLImageBox.cpp" line="335"/>
       <location filename="../../OpenGLImageBox.cpp" line="393"/>
       <source>Undefined type of colour space for image viewing</source>
-      <translation>未定義色彩供圖片使用</translation>
+      <translation>未定義影像視圖的色彩模式</translation>
     </message>
   </context>
   <context>
@@ -134,12 +134,12 @@
     <message>
       <location filename="../../ImageView.cpp" line="111"/>
       <source>&amp;Fit image</source>
-      <translation>符合圖片尺寸(&amp;F)</translation>
+      <translation>&amp;符合影像尺寸</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="113"/>
       <source>Stretch the image to fit the view</source>
-      <translation>延伸影像符合頁面大小</translation>
+      <translation>延伸影像符合視圖大小</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="117"/>
@@ -226,7 +226,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>Image</source>
-      <translation>圖像</translation>
+      <translation>影像</translation>
     </message>
   </context>
 </TS>

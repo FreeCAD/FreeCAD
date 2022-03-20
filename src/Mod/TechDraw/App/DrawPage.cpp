@@ -321,12 +321,7 @@ void DrawPage::requestPaint(void)
 //this doesn't work right because there is no guaranteed of the restoration order
 void DrawPage::onDocumentRestored()
 {
-    if (GlobalUpdateDrawings() &&
-        KeepUpdated.getValue())  {
-        updateAllViews();
-    } else if (!GlobalUpdateDrawings() &&
-                AllowPageOverride()    &&
-                KeepUpdated.getValue()) {
+    if (canUpdate()) {
         updateAllViews();
     }
 
@@ -467,6 +462,20 @@ void DrawPage::handleChangedPropertyType(
             // no idea
         }
     }
+}
+
+bool DrawPage::canUpdate() const
+{
+    bool result = false;
+    if (GlobalUpdateDrawings() &&
+        KeepUpdated.getValue())  {
+        result = true;
+    } else if (!GlobalUpdateDrawings() &&
+                AllowPageOverride()    &&
+                KeepUpdated.getValue()) {
+        result = true;
+    }
+    return result;
 }
 
 //allow/prevent drawing updates for all Pages

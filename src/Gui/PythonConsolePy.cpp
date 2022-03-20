@@ -20,21 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QByteArray>
-# include <QInputDialog>
-# include <QEventLoop>
-# include <QTimer>
-#endif
 
 #include "PythonConsolePy.h"
 #include "PythonConsole.h"
-#include "MainWindow.h"
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
 
 using namespace Gui;
 

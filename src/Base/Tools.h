@@ -35,7 +35,6 @@
 #include <string>
 #include <boost_signals2.hpp>
 #include <QString>
-#include <QObject>
 
 // ----------------------------------------------------------------------------
 
@@ -263,14 +262,19 @@ struct BaseExport Tools
      * @param s String to convert.
      * @return A std::string encoded as UTF-8.
      */
-    static inline std::string toStdString(const QString& s) { QByteArray tmp = s.toUtf8(); return std::string(tmp.constData(), tmp.size()); }
+    static inline std::string toStdString(const QString& s) {
+        QByteArray tmp = s.toUtf8();
+        return std::string(tmp.constData(), static_cast<size_t>(tmp.size()));
+    }
 
     /**
      * @brief fromStdString Convert a std::string encoded as UTF-8 into a QString.
      * @param s std::string, expected to be UTF-8 encoded.
      * @return String represented as a QString.
      */
-    static inline QString fromStdString(const std::string & s) { return QString::fromUtf8(s.c_str(), s.size()); }
+    static inline QString fromStdString(const std::string & s) {
+        return QString::fromUtf8(s.c_str(), static_cast<int>(s.size()));
+    }
 };
 
 

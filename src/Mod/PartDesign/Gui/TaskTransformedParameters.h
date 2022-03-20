@@ -26,12 +26,11 @@
 
 #include <QComboBox>
 
+#include <Gui/DocumentObserver.h>
+#include <Gui/Selection.h>
+#include <Gui/TaskView/TaskView.h>
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/PartDesign/Gui/EnumFlags.h>
-
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/DocumentObserver.h>
 
 #include "TaskFeatureParameters.h"
 #include "TaskTransformedMessages.h"

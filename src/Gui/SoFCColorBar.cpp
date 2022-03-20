@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
-# include <Inventor/nodes/SoEventCallback.h>
 # include <Inventor/actions/SoGLRenderAction.h>
-# include <Inventor/nodes/SoSwitch.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
+# include <Inventor/nodes/SoEventCallback.h>
+# include <Inventor/nodes/SoSwitch.h>
 # include <QApplication>
 # include <QMenu>
 #endif
@@ -34,6 +34,7 @@
 #include "SoFCColorBar.h"
 #include "SoFCColorGradient.h"
 #include "SoFCColorLegend.h"
+
 
 using namespace Gui;
 
@@ -56,7 +57,7 @@ SoFCColorBarBase::~SoFCColorBarBase()
 }
 
 // doc from parent
-void SoFCColorBarBase::initClass(void)
+void SoFCColorBarBase::initClass()
 {
     SO_NODE_INIT_ABSTRACT_CLASS(SoFCColorBarBase,SoSeparator,"Separator");
 }
@@ -85,7 +86,7 @@ class SoFCColorBarProxyObject : public QObject
 {
 public:
     SoFCColorBarProxyObject(SoFCColorBar* b)
-        : QObject(0), bar(b) {}
+        : QObject(nullptr), bar(b) {}
     ~SoFCColorBarProxyObject() {}
     void customEvent(QEvent *)
     {
@@ -137,7 +138,7 @@ SoFCColorBar::~SoFCColorBar()
 }
 
 // doc from parent
-void SoFCColorBar::initClass(void)
+void SoFCColorBar::initClass()
 {
     SO_NODE_INIT_CLASS(SoFCColorBar,SoFCColorBarBase,"Separator");
 }
@@ -186,12 +187,12 @@ bool SoFCColorBar::isVisible (float fVal) const
     return this->getActiveBar()->isVisible(fVal);
 }
 
-float SoFCColorBar::getMinValue (void) const
+float SoFCColorBar::getMinValue () const
 {
     return this->getActiveBar()->getMinValue();
 }
 
-float SoFCColorBar::getMaxValue (void) const
+float SoFCColorBar::getMaxValue () const
 {
     return this->getActiveBar()->getMaxValue();
 }

@@ -24,13 +24,7 @@
 #ifndef APP_PROPERTFILE_H
 #define APP_PROPERTFILE_H
 
-// Std. configurations
-
-
 #include <string>
-#include <list>
-#include <vector>
-#include <boost/filesystem/path.hpp>
 
 #include "PropertyStandard.h"
 
@@ -50,10 +44,10 @@ class AppExport PropertyFile : public PropertyString
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyFile(void);
+    PropertyFile();
     virtual ~PropertyFile();
 
-    virtual const char* getEditorName(void) const
+    virtual const char* getEditorName() const
     { return "Gui::PropertyEditor::PropertyFileItem"; }
 
     virtual void setFilter(const std::string filter);
@@ -82,15 +76,15 @@ class AppExport PropertyFileIncluded : public Property
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyFileIncluded(void);
+    PropertyFileIncluded();
     virtual ~PropertyFileIncluded();
 
-    void setValue(const char* sFile, const char* sName=0);
-    const char* getValue(void) const;
+    void setValue(const char* sFile, const char* sName=nullptr);
+    const char* getValue() const;
 
-    virtual const char* getEditorName(void) const
+    virtual const char* getEditorName() const
     { return "Gui::PropertyEditor::PropertyTransientFileItem"; }
-    virtual PyObject *getPyObject(void);
+    virtual PyObject *getPyObject();
     virtual void setPyObject(PyObject *);
     
     virtual void Save (Base::Writer &writer) const;
@@ -99,9 +93,9 @@ public:
     virtual void SaveDocFile (Base::Writer &writer) const;
     virtual void RestoreDocFile(Base::Reader &reader);
 
-    virtual Property *Copy(void) const;
+    virtual Property *Copy() const;
     virtual void Paste(const Property &from);
-    virtual unsigned int getMemSize (void) const;
+    virtual unsigned int getMemSize () const;
 
     virtual bool isSame(const Property &other) const {
         if (&other == this)
@@ -117,16 +111,16 @@ public:
       * this file with setValue() is the fastest way to change
       * the File.
       */
-    std::string getExchangeTempFile(void) const;
-    std::string getOriginalFileName(void) const;
+    std::string getExchangeTempFile() const;
+    std::string getOriginalFileName() const;
 
     bool isEmpty(void) const {return _cValue.empty();}
 
 protected:
     // get the transient path if the property is in a DocumentObject
-    std::string getDocTransientPath(void) const;
+    std::string getDocTransientPath() const;
     std::string getUniqueFileName(const std::string&, const std::string&) const;
-    void aboutToSetValue(void);
+    void aboutToSetValue();
 
 protected:
     mutable std::string _cValue;

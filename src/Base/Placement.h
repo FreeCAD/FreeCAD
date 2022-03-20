@@ -23,14 +23,14 @@
 #ifndef BASE_PLACEMENT_H
 #define BASE_PLACEMENT_H
 
-#include "Vector3D.h"
 #include "Rotation.h"
-#include "Matrix.h"
+#include "Vector3D.h"
 
 
 namespace Base {
 
 class DualQuat;
+class Matrix4D;
 
 /**
  * The Placement class.

@@ -114,10 +114,14 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry * g
         controlPolygon.coordinates.clear();
         controlPolygon.indices.clear();
 
+        size_t nvertices;
+
         if (spline->isPeriodic())
-            controlPolygon.coordinates.reserve(poles.size()+1);
+            nvertices = poles.size()+1;
         else
-            controlPolygon.coordinates.reserve(poles.size());
+            nvertices = poles.size();
+
+        controlPolygon.coordinates.reserve(nvertices);
 
         for (auto & v : poles)
             controlPolygon.coordinates.emplace_back(v);
@@ -125,24 +129,23 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry * g
         if (spline->isPeriodic())
             controlPolygon.coordinates.emplace_back(poles[0]);
 
-        controlPolygon.indices.push_back(poles.size()); // single continuous polygon starting at index 0
+        controlPolygon.indices.push_back(nvertices); // single continuous polygon starting at index 0
     }
     else if constexpr (calculation == CalculationType::BSplineCurvatureComb ) {
 
         clearCalculation(curvatureComb);
         // curvature graph --------------------------------------------------------
 
-        // reimplementation of python source:
-        // https://github.com/tomate44/CurvesWB/blob/master/ParametricComb.py
+        // based on python source
+        // https://github.com/tomate44/CurvesWB/blob/master/freecad/Curves/ParametricComb.py
         // by FreeCAD user Chris_G
 
         std::vector<Base::Vector3d> poles = spline->getPoles();
+        auto knots = spline->getKnots();
+        auto mults = spline->getMultiplicities();
 
-        double firstparam = spline->getFirstParameter();
-        double lastparam =  spline->getLastParameter();
-
-        const int ndiv = poles.size()>4?poles.size()*16:64; // heuristic of number of division to fill in
-        double step = (lastparam - firstparam) / (ndiv-1);
+        const int ndivPerPiece = 64; // heuristic of number of division to fill in
+        const int ndiv = ndivPerPiece * (knots.size() - 1);
 
         std::vector<Base::Vector3d> pointatcurvelist;
         std::vector<double> curvaturelist;
@@ -152,29 +155,39 @@ void EditModeInformationOverlayCoinConverter::calculate(const Part::Geometry * g
         curvaturelist.reserve(ndiv);
         normallist.reserve(ndiv);
 
-        for(int i = 0; i < ndiv; i++) {
-            double param = firstparam + i * step;
-            pointatcurvelist.emplace_back(spline->value(param));
+        // go through the polynomial pieces (i.e. from one knot to next)
+        for (size_t k = 0; k < knots.size()-1; ++k) {
+            // first and last params are a little off to account for possible discontinuity at knots
+            double firstparam = knots[k] + Precision::Approximation()*(knots[k + 1] - knots[k]);
+            double lastparam = knots[k + 1] - Precision::Approximation()*(knots[k + 1] - knots[k]);
 
-            try {
-                curvaturelist.emplace_back(spline->curvatureAt(param));
-            }
-            catch(Base::CADKernelError &e) {
-                // it is "just" a visualisation matter OCC could not calculate the curvature
-                // terminating here would mean that the other shapes would not be drawn.
-                // Solution: Report the issue and set dummy curvature to 0
-                e.ReportException();
-                Base::Console().Error("Curvature graph for B-Spline with GeoId=%d could not be calculated.\n", geoid);
-                curvaturelist.emplace_back(0);
-            }
+            // TODO: Maybe this can be improved, specifically adapted for each piece
+            double step = (lastparam - firstparam) / (ndivPerPiece - 1);
 
-            Base::Vector3d normal;
-            try {
-                spline->normalAt(param, normal);
-                normallist.emplace_back(normal);
-            }
-            catch(Base::Exception&) {
-                normallist.emplace_back(0,0,0);
+            for (int i = 0; i < ndivPerPiece; ++i) {
+                double param = firstparam + i * step;
+                pointatcurvelist.emplace_back(spline->value(param));
+
+                try {
+                    curvaturelist.emplace_back(spline->curvatureAt(param));
+                }
+                catch(Base::CADKernelError &e) {
+                    // it is "just" a visualisation matter OCC could not calculate the curvature
+                    // terminating here would mean that the other shapes would not be drawn.
+                    // Solution: Report the issue and set dummy curvature to 0
+                    e.ReportException();
+                    Base::Console().Error("Curvature graph for B-Spline with GeoId=%d could not be calculated.\n", geoid);
+                    curvaturelist.emplace_back(0);
+                }
+
+                Base::Vector3d normal;
+                try {
+                    spline->normalAt(param, normal);
+                    normallist.emplace_back(normal);
+                }
+                catch(Base::Exception&) {
+                    normallist.emplace_back(0,0,0);
+                }
             }
         }
 

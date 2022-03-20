@@ -79,7 +79,7 @@ int AttachEnginePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         if (!pNewAttacher) {
             std::stringstream errMsg;
             errMsg << "Object if this type is not derived from AttachEngine: " << typeName;
-            PyErr_SetString(Base::BaseExceptionFreeCADError, errMsg.str().c_str());
+            PyErr_SetString(Base::PyExc_FC_GeneralError, errMsg.str().c_str());
             return -1;
         }
         AttachEngine* oldAttacher = this->getAttachEnginePtr();
@@ -88,7 +88,7 @@ int AttachEnginePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return 0;
     }
 
-    PyErr_SetString(Base::BaseExceptionFreeCADError, "Wrong set of constructor arguments. Can be: (), ('Attacher::AttachEngine3D'), ('Attacher::AttachEnginePlane'), ('Attacher::AttachEngineLine'), ('Attacher::AttachEnginePoint'), (other_attacher_instance).");
+    PyErr_SetString(PyExc_TypeError, "Wrong set of constructor arguments. Can be: (), ('Attacher::AttachEngine3D'), ('Attacher::AttachEnginePlane'), ('Attacher::AttachEngineLine'), ('Attacher::AttachEnginePoint'), (other_attacher_instance).");
     return -1;
 
 }
@@ -108,7 +108,8 @@ Py::String AttachEnginePy::getAttacherType(void) const
     catch (Standard_Failure& e) {\
         throw Py::Exception(Part::PartExceptionOCCError, e.GetMessageString());\
     } catch (Base::Exception &e) {\
-        throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());\
+        e.setPyException();\
+        throw Py::Exception();\
     }
 
 Py::String AttachEnginePy::getMode(void) const
@@ -249,7 +250,7 @@ Py::List AttachEnginePy::getImplementedModes(void) const
         PyErr_SetString(Part::PartExceptionOCCError, e.GetMessageString());\
         return NULL;\
     } catch (Base::Exception &e) {\
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());\
+        PyErr_SetString(Base::PyExc_FC_GeneralError, e.what());\
         return NULL;\
     } catch (const Py::Exception &){\
         return NULL;\
@@ -509,7 +510,7 @@ PyObject* AttachEnginePy::readParametersFromFeature(PyObject* args)
 {
     PyObject* obj;
     if (!PyArg_ParseTuple(args, "O!",&(App::DocumentObjectPy::Type),&obj))
-        return NULL;    // NULL triggers exception
+        return nullptr;
 
     try{
         App::DocumentObjectPy* dobjpy = static_cast<App::DocumentObjectPy*>(obj);
@@ -533,7 +534,7 @@ PyObject* AttachEnginePy::writeParametersToFeature(PyObject* args)
 {
     PyObject* obj;
     if (!PyArg_ParseTuple(args, "O!",&(App::DocumentObjectPy::Type),&obj))
-        return NULL;    // NULL triggers exception
+        return nullptr;
 
     try{
         App::DocumentObjectPy* dobjpy = static_cast<App::DocumentObjectPy*>(obj);

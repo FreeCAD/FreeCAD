@@ -94,12 +94,12 @@ namespace Gui {
         void rescan();
 
         /**
-         * Get an alphabetical list of names of all installed PreferencePacks
+         * Get an alphabetical list of names of all visible PreferencePacks
          */
         std::vector<std::string> preferencePackNames() const;
 
         /**
-         * Get a map of all installed PreferencePack names and their associated packs
+         * Get a map of all visible PreferencePack names and their associated packs
          */
         std::map<std::string, PreferencePack> preferencePacks() const;
 
@@ -108,6 +108,25 @@ namespace Gui {
          * \return True if the preferencePack was applied, or false if it was not
          */
         bool apply(const std::string& preferencePackName) const;
+
+        /**
+         * Check the visibility of the specified pack
+         * \return True if the preferencePack is visible, or false if not. All packs are visible by default,
+         * but can be marked as "invisible" (i.e. not returned by the manager in lists of packs) by using the
+         * toggleVisibility function.
+         */
+        bool isVisible(const std::string& addonName, const std::string& preferencePackName) const;
+
+        /**
+         * Toggle the visibility of the named preference pack in a named addon
+         */
+        void toggleVisibility(const std::string& addonName, const std::string& preferencePackName);
+
+        /**
+         * Deletes the user-saved pack specified by name
+         */
+        void deleteUserPack(const std::string& name);
+
 
         /**
          * \struct TemplateFile A file containing a set of preferences that can be saved into 
@@ -164,6 +183,11 @@ namespace Gui {
 
 
         std::vector<TemplateFile> templateFiles(bool rescan = false);
+
+        /**
+         * Get a list of all available config file backups. Backups are currently stored for one week.
+         */
+        std::vector<boost::filesystem::path> configBackups() const;
 
     private:
 

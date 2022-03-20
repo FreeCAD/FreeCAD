@@ -23,68 +23,45 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <sstream>
-# include <functional>
 # include <Bnd_Box.hxx>
 # include <BRep_Builder.hxx>
 # include <BRep_Tool.hxx>
-# include <BRepAdaptor_CompCurve.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <BRepCheck_Analyzer.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
 # include <BRepGProp.hxx>
 # include <BRepGProp_Face.hxx>
 # include <BRepLProp_SLProps.hxx>
-# include <BRepPrimAPI_MakePrism.hxx>
-# include <BRepFeat_MakePrism.hxx>
-# include <BRepOffsetAPI_MakeOffset.hxx>
-# include <BRepOffsetAPI_ThruSections.hxx>
 # include <BRepProj_Projection.hxx>
 # include <Extrema_ExtCC.hxx>
 # include <Extrema_POnCurv.hxx>
-# include <Geom_Plane.hxx>
-# include <gp_Ax1.hxx>
 # include <gp_Circ.hxx>
 # include <gp_Pln.hxx>
 # include <GProp_GProps.hxx>
-# include <IntTools_FClass2d.hxx>
 # include <ShapeAnalysis.hxx>
-# include <ShapeAnalysis_Surface.hxx>
-# include <ShapeFix_Face.hxx>
-# include <ShapeFix_Shape.hxx>
-# include <ShapeFix_Wire.hxx>
 # include <Standard_Version.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Compound.hxx>
+# include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Vertex.hxx>
 # include <TopoDS_Wire.hxx>
-# include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
 # include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
-
 #endif
 
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
-#include <Base/Reader.h>
-#include <Base/Console.h>
-#include <Base/Tools.h>
-#include <App/Application.h>
-#include <App/OriginFeature.h>
 #include <App/Document.h>
-#include <Mod/Part/App/ExtrusionHelper.h>
+#include <App/OriginFeature.h>
+#include <Base/Reader.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
+
 #include "FeatureSketchBased.h"
-#include "DatumPlane.h"
 #include "DatumLine.h"
+#include "DatumPlane.h"
+
 
 using namespace PartDesign;
 
@@ -194,7 +171,7 @@ Part::TopoShape ProfileBased::getProfileShape() const
         std::vector<Part::TopoShape> shapes;
         for (auto& sub : Profile.getSubValues(true))
             shapes.emplace_back(shape.getSubShape(sub.c_str()));
-        shape = Part::TopoShape().makECompound(shapes);
+        shape = Part::TopoShape().makeCompound(shapes);
     }
     return shape;
 }
@@ -217,16 +194,16 @@ TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
                 auto faces = shape.getSubTopoShapes(TopAbs_FACE);
                 if (faces.empty()) {
                     if (!shape.hasSubShape(TopAbs_WIRE))
-                        shape = shape.makEWires();
+                        shape = shape.makeWires();
                     if (shape.hasSubShape(TopAbs_WIRE))
-                        shape = shape.makEFace(0, "Part::FaceMakerCheese");
+                        shape = shape.makeFace(0, "Part::FaceMakerBullseye");
                     else
                         err = "Cannot make face from profile";
                 }
                 else if (faces.size() == 1)
                     shape = faces.front();
                 else
-                    shape = TopoShape().makECompound(faces);
+                    shape = TopoShape().makeCompound(faces);
             }
             if (!err)
                 return shape.getShape();
@@ -585,164 +562,6 @@ double ProfileBased::getThroughAllLength() const
     return 2.02 * sqrt(box.SquareExtent());
 }
 
-void ProfileBased::Extrude(TopoDS_Shape& prism,
-                           const TopoDS_Shape& sketchshape,
-                           const std::string& method,
-                           const gp_Dir& direction,
-                           const double L,
-                           const double L2,
-                           const double angle,
-                           const double angle2,
-                           const bool midplane,
-                           const bool reversed)
-{
-    if (method == "Length" || method == "TwoLengths" || method == "ThroughAll") {
-        double Ltotal = L;
-        double Loffset = 0.;
-        gp_Dir directionTaper = direction;
-        if (method == "ThroughAll")
-            Ltotal = getThroughAllLength();
-
-
-        if (method == "TwoLengths") {
-            // midplane makes no sense here
-            Ltotal += L2;
-            if (reversed)
-                Loffset = -L;
-            else if (midplane)
-                Loffset = -0.5 * (L2 + L);
-            else
-                Loffset = -L2;
-        }
-        else if (midplane) {
-            Loffset = -Ltotal / 2;
-        }
-
-        TopoDS_Shape from = sketchshape;
-        if (method == "TwoLengths" || midplane) {
-            gp_Trsf mov;
-            mov.SetTranslation(Loffset * gp_Vec(direction));
-            TopLoc_Location loc(mov);
-            from = sketchshape.Moved(loc);
-        }
-        else if (reversed) {
-            Ltotal *= -1.0;
-        }
-
-        if (fabs(Ltotal) < Precision::Confusion()) {
-            if (addSubType == Type::Additive)
-                throw Base::ValueError("Cannot create a pad with a height of zero.");
-            else
-                throw Base::ValueError("Cannot create a pocket with a depth of zero.");
-        }
-
-        // now we can create either a tapered or linear prism.
-        // If tapered, we create is using Part's draft extrusion method. If linear we create a prism.
-        if (fabs(angle) > Base::toRadians(Precision::Angular()) || fabs(angle2) > Base::toRadians(Precision::Angular())) {
-            // prism is tapered
-            if (reversed)
-                directionTaper.Reverse();
-            generateTaperedPrism(prism, sketchshape, method, directionTaper, L, L2, angle, angle2, midplane);
-        }
-        else {
-            // Without taper angle we create a prism because its shells are in every case no B-splines and can therefore
-            // be use as support for further features like Pads, Lofts etc. B-spline shells can break certain features,
-            // see e.g. https://forum.freecadweb.org/viewtopic.php?p=560785#p560785
-            // It is better not to use BRepFeat_MakePrism here even if we have a support because the
-            // resulting shape creates problems with Pocket
-            BRepPrimAPI_MakePrism PrismMaker(from, Ltotal * gp_Vec(direction), 0, 1); // finite prism
-            if (!PrismMaker.IsDone())
-                throw Base::RuntimeError("ProfileBased: Length: Could not extrude the sketch!");
-            prism = PrismMaker.Shape();
-        }
-    }
-    else {
-        std::stringstream str;
-        str << "ProfileBased: Internal error: Unknown method '"
-            << method << "' for generatePrism()";
-        throw Base::RuntimeError(str.str());
-    }
-}
-
-void ProfileBased::Extrude(TopoDS_Shape& prism,
-                           const std::string& method,
-                           const TopoDS_Shape& baseshape,
-                           const TopoDS_Shape& profileshape,
-                           const TopoDS_Face& supportface,
-                           const TopoDS_Face& uptoface,
-                           const gp_Dir& direction,
-                           PrismMode Mode,
-                           Standard_Boolean Modify)
-{
-    if (method == "UpToFirst" || method == "UpToFace" || method == "UpToLast") {
-        BRepFeat_MakePrism PrismMaker;
-        TopoDS_Shape base = baseshape;
-        for (TopExp_Explorer xp(profileshape, TopAbs_FACE); xp.More(); xp.Next()) {
-            PrismMaker.Init(base, xp.Current(), supportface, direction, Mode, Modify);
-            PrismMaker.Perform(uptoface);
-            if (!PrismMaker.IsDone())
-                throw Base::RuntimeError("ProfileBased: Up to face: Could not extrude the sketch!");
-
-            base = PrismMaker.Shape();
-            if (Mode == PrismMode::None)
-                Mode = PrismMode::FuseWithBase;
-        }
-
-        prism = base;
-    }
-    else {
-        std::stringstream str;
-        str << "ProfileBased: Internal error: Unknown method '"
-            << method << "' for generatePrism()";
-        throw Base::RuntimeError(str.str());
-    }
-}
-
-void ProfileBased::generateTaperedPrism(TopoDS_Shape& prism,
-                                        const TopoDS_Shape& sketchshape,
-                                        const std::string& method,
-                                        const gp_Dir& direction,
-                                        const double L,
-                                        const double L2,
-                                        const double angle,
-                                        const double angle2,
-                                        const bool midplane)
-{
-    std::list<TopoDS_Shape> drafts;
-    bool isSolid = true; // in PD we only generate solids, while Part Extrude can also create only shells
-    bool isPartDesign = true; // there is an OCC bug with single-edge wires (circles) we need to treat differently for PD and Part
-    if (method == "ThroughAll")
-        Part::ExtrusionHelper::makeDraft(sketchshape, direction, getThroughAllLength(),
-            0.0, Base::toRadians(angle), 0.0, isSolid, drafts, isPartDesign);
-    else if (method == "TwoLengths")
-        Part::ExtrusionHelper::makeDraft(sketchshape, direction, L, L2,
-            Base::toRadians(angle), Base::toRadians(angle2), isSolid, drafts, isPartDesign);
-    else if (method == "Length") {
-        if (midplane) {
-            Part::ExtrusionHelper::makeDraft(sketchshape, direction, L / 2, L / 2,
-                Base::toRadians(angle), Base::toRadians(angle), isSolid, drafts, isPartDesign);
-        }
-        else
-            Part::ExtrusionHelper::makeDraft(sketchshape, direction, L, 0.0,
-                Base::toRadians(angle), 0.0, isSolid, drafts, isPartDesign);
-    }
-
-    if (drafts.empty()) {
-        throw Base::RuntimeError("Creation of tapered object failed");
-    }
-    else if (drafts.size() == 1) {
-        prism = drafts.front();
-    }
-    else {
-        TopoDS_Compound comp;
-        BRep_Builder builder;
-        builder.MakeCompound(comp);
-        for (std::list<TopoDS_Shape>::iterator it = drafts.begin(); it != drafts.end(); ++it)
-            builder.Add(comp, *it);
-        prism = comp;
-    }
-}
-
 bool ProfileBased::checkWireInsideFace(const TopoDS_Wire& wire, const TopoDS_Face& face,
                                        const gp_Dir& dir) {
     // Project wire onto the face (face, not surface! So limits of face apply)
@@ -776,7 +595,7 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& f
                 BRepAdaptor_Curve adapt(edge);
                 // create a plane (pnt,dir) that goes through the intersection point and is built of
                 // the vectors of the sketch normal and the rotation axis
-                const gp_Dir& normal = BRepAdaptor_Surface(face).Plane().Axis().Direction();
+                gp_Dir normal = BRepAdaptor_Surface(face).Plane().Axis().Direction();
                 gp_Dir dir = line.Direction().Crossed(normal);
                 gp_Pnt pnt = distss.PointOnShape1(i);
 
@@ -803,7 +622,7 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& f
                     // create a plane (pnt,dir) that goes through the intersection point and is built of
                     // the vectors of the sketch normal and the rotation axis
                     BRepAdaptor_Surface adapt(face);
-                    const gp_Dir& normal = adapt.Plane().Axis().Direction();
+                    gp_Dir normal = adapt.Plane().Axis().Direction();
                     gp_Dir dir = line.Direction().Crossed(normal);
                     gp_Pnt pnt = distss.PointOnShape1(i);
 
@@ -1099,7 +918,7 @@ bool ProfileBased::isParallelPlane(const TopoDS_Shape & s1, const TopoDS_Shape &
     return false;
 }
 
-double ProfileBased::getReversedAngle(const Base::Vector3d & b, const Base::Vector3d & v)
+double ProfileBased::getReversedAngle(const Base::Vector3d & b, const Base::Vector3d & v) const
 {
     try {
         Part::Feature* obj = getVerifiedObject();
@@ -1128,7 +947,7 @@ double ProfileBased::getReversedAngle(const Base::Vector3d & b, const Base::Vect
 }
 
 void ProfileBased::getAxis(const App::DocumentObject * pcReferenceAxis, const std::vector<std::string> &subReferenceAxis,
-                           Base::Vector3d& base, Base::Vector3d& dir, ProfileBased::ForbiddenAxis checkAxis)
+                           Base::Vector3d& base, Base::Vector3d& dir, ProfileBased::ForbiddenAxis checkAxis) const
 {
     auto verifyAxisFunc = [](ProfileBased::ForbiddenAxis checkAxis, const gp_Pln& sketchplane, const gp_Dir& dir) {
         switch (checkAxis) {

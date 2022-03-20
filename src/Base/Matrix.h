@@ -24,10 +24,6 @@
 #ifndef BASE_MATRIX_H
 #define BASE_MATRIX_H
 
-#include <cassert>
-#include <cfloat>
-#include <cmath>
-#include <cstdio>
 #include <string>
 
 #include "Vector3D.h"
@@ -35,7 +31,16 @@
 #include <FCGlobal.h>
 #endif
 
+
 namespace Base {
+
+enum class ScaleType {
+    Other = -1,
+    NoScaling = 0,
+    NonUniformRight = 1,
+    NonUniformLeft = 2,
+    Uniform = 3
+};
 
 /**
  * The Matrix4D class.
@@ -88,6 +93,8 @@ public:
   inline Vector3d  operator *  (const Vector3d& rclVct) const;
   inline void multVec(const Vector3d & src, Vector3d & dst) const;
   inline void multVec(const Vector3f & src, Vector3f & dst) const;
+  inline Matrix4D  operator *  (double) const;
+  inline Matrix4D& operator *= (double);
   /// Comparison
   inline bool      operator != (const Matrix4D& rclMtrx) const;
   /// Comparison
@@ -110,6 +117,8 @@ public:
   inline void setTrace(const Vector3d&);
   /// Compute the determinant of the matrix
   double determinant() const;
+  /// Compute the determinant of the 3x3 sub-matrix
+  double determinant3() const;
   /// Analyse the transformation
   std::string analyse() const;
   /// Outer product (Dyadic product)
@@ -133,8 +142,12 @@ public:
   //@{
   /// Makes unity matrix
   void setToUnity();
+  /// Checks if this is the unit matrix
+  bool isUnity() const;
   /// Makes a null matrix
   void nullify();
+  /// Checks if this is the null matrix
+  bool isNull() const;
   /// moves the coordinatesystem for the x,y,z value
   void move         (float x, float y, float z)
   { move(Vector3f(x,y,z)); }
@@ -151,8 +164,13 @@ public:
   /// scale for the x,y,z value
   void scale        (const Vector3f& rclVct);
   void scale        (const Vector3d& rclVct);
-  /// Check for scaling factor, 0: not scale, 1: uniform scale, or else -1
-  int hasScale(double tol=0.0) const;
+  /// uniform scale
+  void scale        (float scalexyz)
+  { scale(Vector3f(scalexyz, scalexyz, scalexyz)); }
+  void scale        (double scalexyz)
+  { scale(Vector3d(scalexyz, scalexyz, scalexyz)); }
+  /// Check for scaling factor
+  ScaleType hasScale(double tol=0.0) const;
   /// Rotate around the X axis (in transformed space) for the given value in radians
   void rotX         (double fAngle);
   /// Rotate around the Y axis (in transformed space) for the given value in radians
@@ -344,6 +362,28 @@ inline void Matrix4D::multVec(const Vector3f & src, Vector3f & dst) const
   dst.Set(static_cast<float>(x),
           static_cast<float>(y),
           static_cast<float>(z));
+}
+
+inline Matrix4D  Matrix4D::operator *  (double scalar) const
+{
+    Matrix4D  matrix;
+    for (unsigned short i = 0; i < 4; i++) {
+        for (unsigned short j = 0; j < 4; j++) {
+            matrix.dMtrx4D[i][j] = dMtrx4D[i][j] * scalar;
+        }
+    }
+
+    return matrix;
+}
+
+inline Matrix4D& Matrix4D::operator *= (double scalar)
+{
+    for (unsigned short i = 0; i < 4; i++) {
+        for (unsigned short j = 0; j < 4; j++) {
+            dMtrx4D[i][j] *= scalar;
+        }
+    }
+    return *this;
 }
 
 inline bool Matrix4D::operator== (const Matrix4D& rclMtrx) const

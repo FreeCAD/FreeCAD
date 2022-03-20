@@ -33,7 +33,7 @@ __url__ = "https://www.freecadweb.org"
 import FreeCAD
 import FreeCADGui
 from FreeCAD import Units
-
+from PySide import QtCore
 from femguiutils import selection_widgets
 from femtools import femutils
 from femtools import membertools
@@ -94,9 +94,8 @@ class _TaskPanel(object):
     def _initParamWidget(self):
         unit = "V"
         q = Units.Quantity("{} {}".format(self._obj.Potential, unit))
-
-        self._paramWidget.potentialTxt.setText(
-            q.UserString)
+        self._paramWidget.potentialQSB.setProperty(
+            'rawValue', q.Value)
         self._paramWidget.potentialBox.setChecked(
             not self._obj.PotentialEnabled)
         self._paramWidget.potentialConstantBox.setChecked(
@@ -112,6 +111,8 @@ class _TaskPanel(object):
             not self._obj.CapacitanceBodyEnabled)
         self._paramWidget.capacitanceBody_spinBox.setValue(
             self._obj.CapacitanceBody)
+        self._paramWidget.capacitanceBody_spinBox.setEnabled(
+            not self._paramWidget.capacitanceBodyBox.isChecked())
 
     def _applyWidgetChanges(self):
         unit = "V"
@@ -119,10 +120,10 @@ class _TaskPanel(object):
             not self._paramWidget.potentialBox.isChecked()
         if self._obj.PotentialEnabled:
             # if the input widget shows not a green hook, but the user presses ok
-            # we could run into a syntax error on getting the quantity, try mV
-            quantity = None
+            # we could run into a syntax error on getting the quantity
+            potential = None
             try:
-                quantity = Units.Quantity(self._paramWidget.potentialTxt.text())
+                potential = Units.Quantity(self._paramWidget.potentialQSB.text())
             except ValueError:
                 FreeCAD.Console.PrintMessage(
                     "Wrong input. OK has been triggered without a green hook "
@@ -130,8 +131,8 @@ class _TaskPanel(object):
                     "Potential has not been set.\n"
                     .format(self._paramWidget.potentialTxt.text())
                 )
-            if quantity is not None:
-                self._obj.Potential = quantity.getValueAs(unit).Value
+            if potential is not None:
+                self._obj.Potential = potential.getValueAs(unit).Value
 
         self._obj.PotentialConstant = self._paramWidget.potentialConstantBox.isChecked()
 

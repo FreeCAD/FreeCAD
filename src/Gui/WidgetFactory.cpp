@@ -23,8 +23,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <algorithm>
-# include <limits>
 # include <QApplication>
 # include <QVBoxLayout>
 #endif
@@ -38,18 +36,15 @@
 #endif
 #endif
 
-#include <CXX/Objects.hxx>
 #include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
 
-
 #include "WidgetFactory.h"
-#include "UiLoader.h"
-#include "PythonWrapper.h"
 #include "PrefWidgets.h"
-#include "PropertyPage.h"
+#include "PythonWrapper.h"
+#include "UiLoader.h"
 
 
 using namespace Gui;

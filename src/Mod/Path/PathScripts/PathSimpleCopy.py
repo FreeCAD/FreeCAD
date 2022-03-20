@@ -46,7 +46,7 @@ class CommandPathSimpleCopy:
         try:
             obj = FreeCADGui.Selection.getSelectionEx()[0].Object
             return isinstance(obj.Proxy, PathScripts.PathOp.ObjectOp)
-        except Exception:  # pylint: disable=broad-except
+        except Exception:
             return False
 
     def Activated(self):

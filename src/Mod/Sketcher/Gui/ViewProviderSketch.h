@@ -30,6 +30,7 @@
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
 #include <Mod/Part/App/BodyBase.h>
 #include <Base/Tools2D.h>
+#include <Base/Parameter.h>
 #include <Base/Placement.h>
 #include <Gui/Selection.h>
 #include <Gui/GLPainter.h>
@@ -136,8 +137,8 @@ using GeoListFacade = Sketcher::GeoListFacade;
  *
  */
 class SketcherGuiExport ViewProviderSketch : public PartGui::ViewProvider2DObjectGrid
-                                            , public PartGui::ViewProviderAttachExtension
-                                            , public Gui::SelectionObserver
+                                           , public PartGui::ViewProviderAttachExtension
+                                           , public Gui::SelectionObserver
 {
     Q_DECLARE_TR_FUNCTIONS(SketcherGui::ViewProviderSketch)
 
@@ -436,7 +437,7 @@ public:
         STATUS_SKETCH_DragConstraint,  /**< enum value while dragging a compatible constraint. */
         STATUS_SKETCH_UseHandler, /**< enum value a DrawSketchHandler is in control. */
         STATUS_SKETCH_StartRubberBand, /**< enum value for initiating a rubber band selection */
-        STATUS_SKETCH_UseRubberBand /**< enum value when making a rubber band selection *//**< enum value a DrawSketchHandler is in control. */
+        STATUS_SKETCH_UseRubberBand /**< enum value when making a rubber band selection */
     };
 
     /// is called by GuiCommands to set the drawing mode
@@ -521,6 +522,7 @@ public:
     virtual bool keyPressed(bool pressed, int key) override;
     /// is called when the Provider is in edit and the mouse is clicked
     virtual bool mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos, const Gui::View3DInventorViewer* viewer) override;
+    virtual bool mouseWheelEvent(int delta, const SbVec2s &cursorPos, const Gui::View3DInventorViewer* viewer) override;
     //@}
 
     /// Control the overlays appearing on the Tree and reflecting different sketcher states
@@ -698,12 +700,14 @@ private:
     void deleteSelected();
 
     //********* ViewProviderSketchDrawSketchHandlerAttorney **********//
+    void setConstraintSelectability(bool enabled = true);
     void setPositionText(const Base::Vector2d &Pos, const SbString &txt);
     void setPositionText(const Base::Vector2d &Pos);
     void resetPositionText(void);
 
     /// draw the edit curve
     void drawEdit(const std::vector<Base::Vector2d> &EditCurve);
+    void drawEdit(const std::list<std::vector<Base::Vector2d>> &list);
     /// draw the edit markers
     void drawEditMarkers(const std::vector<Base::Vector2d> &EditMarkers, unsigned int augmentationlevel = 0);
     /// set the pick style of the sketch coordinate axes

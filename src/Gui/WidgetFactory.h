@@ -27,9 +27,8 @@
 #include <vector>
 
 #include <Base/Factory.h>
-#include <Base/PyObjectBase.h>
-#include "DlgPreferencesImp.h"
 #include "DlgCustomizeImp.h"
+#include "DlgPreferencesImp.h"
 #include "PropertyPage.h"
 #include <CXX/Extensions.hxx>
 

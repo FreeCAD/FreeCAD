@@ -25,42 +25,33 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepOffsetAPI_DraftAngle.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <TopExp.hxx>
-# include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
-# include <BRepAdaptor_Surface.hxx>
 # include <BRepAdaptor_Curve.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Ax1.hxx>
-//# include <BRepAdaptor_CompCurve.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Circ.hxx>
-# include <GeomAbs_SurfaceType.hxx>
-# include <GeomAPI_IntSS.hxx>
-# include <Geom_Plane.hxx>
+# include <BRepAdaptor_Surface.hxx>
 # include <Geom_Curve.hxx>
 # include <Geom_Line.hxx>
-# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <Geom_Plane.hxx>
+# include <GeomAPI_IntSS.hxx>
+# include <gp_Circ.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Lin.hxx>
+# include <gp_Pln.hxx>
 #endif
 
 #include <App/OriginFeature.h>
-#include <Base/Tools.h>
+#include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "FeatureDraft.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"
 
-
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Tools.h>
 
 using namespace PartDesign;
 

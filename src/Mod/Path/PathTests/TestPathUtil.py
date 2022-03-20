@@ -26,8 +26,8 @@ import TestSketcherApp
 
 from PathTests.PathTestUtils import PathTestBase
 
-class TestPathUtil(PathTestBase):
 
+class TestPathUtil(PathTestBase):
     def setUp(self):
         self.doc = FreeCAD.newDocument("TestPathUtils")
 
@@ -35,47 +35,50 @@ class TestPathUtil(PathTestBase):
         FreeCAD.closeDocument("TestPathUtils")
 
     def test00(self):
-        '''Check that isValidBaseObject detects solids.'''
-        box = self.doc.addObject('Part::Box', 'Box')
-        cylinder = self.doc.addObject('Part::Cylinder', 'Cylinder')
+        """Check that isValidBaseObject detects solids."""
+        box = self.doc.addObject("Part::Box", "Box")
+        cylinder = self.doc.addObject("Part::Cylinder", "Cylinder")
         self.doc.recompute()
         self.assertTrue(PathUtil.isValidBaseObject(box))
         self.assertTrue(PathUtil.isValidBaseObject(cylinder))
 
     def test01(self):
-        '''Check that isValidBaseObject detects PDs.'''
-        body = self.doc.addObject('PartDesign::Body', 'Body')
-        box  = self.doc.addObject('PartDesign::AdditiveBox', 'Box')
+        """Check that isValidBaseObject detects PDs."""
+        body = self.doc.addObject("PartDesign::Body", "Body")
+        box = self.doc.addObject("PartDesign::AdditiveBox", "Box")
         body.addObject(box)
         self.doc.recompute()
         self.assertTrue(PathUtil.isValidBaseObject(body))
 
     def test02(self):
-        '''Check that isValidBaseObject detects compounds.'''
-        box = self.doc.addObject('Part::Box', 'Box')
+        """Check that isValidBaseObject detects compounds."""
+        box = self.doc.addObject("Part::Box", "Box")
         box.Length = 10
         box.Width = 10
         box.Height = 1
-        box.Placement = FreeCAD.Placement(FreeCAD.Vector(-5,-5,0), FreeCAD.Rotation(FreeCAD.Vector(0,0,1), 0))
-        cyl = self.doc.addObject('Part::Cylinder', 'Cylinder')
+        box.Placement = FreeCAD.Placement(
+            FreeCAD.Vector(-5, -5, 0), FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 0)
+        )
+        cyl = self.doc.addObject("Part::Cylinder", "Cylinder")
         cyl.Radius = 1
         cyl.Height = 10
-        box.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,-5), FreeCAD.Rotation(FreeCAD.Vector(0,0,1), 0))
-        cut = self.doc.addObject('Part::Cut', 'Cut')
+        box.Placement = FreeCAD.Placement(
+            FreeCAD.Vector(0, 0, -5), FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 0)
+        )
+        cut = self.doc.addObject("Part::Cut", "Cut")
         cut.Base = box
         cut.Tool = cyl
         self.doc.recompute()
         self.assertTrue(PathUtil.isValidBaseObject(cut))
 
-
     def test03(self):
-        '''Check that isValidBaseObject ignores sketches.'''
-        body = self.doc.addObject('PartDesign::Body', 'Body')
-        sketch = self.doc.addObject('Sketcher::SketchObject', 'Sketch')
+        """Check that isValidBaseObject ignores sketches."""
+        body = self.doc.addObject("PartDesign::Body", "Body")
+        sketch = self.doc.addObject("Sketcher::SketchObject", "Sketch")
         body.addObject(sketch)
         TestSketcherApp.CreateSlotPlateSet(sketch)
         self.doc.recompute()
-        pad = self.doc.addObject('PartDesign::Pad', 'Pad')
+        pad = self.doc.addObject("PartDesign::Pad", "Pad")
         body.addObject(pad)
         pad.Profile = sketch
         self.doc.recompute()
@@ -90,19 +93,19 @@ class TestPathUtil(PathTestBase):
         self.assertFalse(PathUtil.isValidBaseObject(sketch))
 
     def test04(self):
-        '''Check that Part is handled correctly.'''
-        part = self.doc.addObject('App::Part', 'Part')
+        """Check that Part is handled correctly."""
+        part = self.doc.addObject("App::Part", "Part")
 
         # an empty part is not a valid base object
         self.assertFalse(PathUtil.isValidBaseObject(part))
 
         # a non-empty part where none of the objects have a shape, is no good either
-        fp = self.doc.addObject('App::FeaturePython', 'Feature')
+        fp = self.doc.addObject("App::FeaturePython", "Feature")
         part.addObject(fp)
         self.assertFalse(PathUtil.isValidBaseObject(part))
 
         # create a valid base object
-        box = self.doc.addObject("Part::Box","Box")
+        box = self.doc.addObject("Part::Box", "Box")
         self.doc.recompute()
         self.assertTrue(PathUtil.isValidBaseObject(box))
 
@@ -112,4 +115,3 @@ class TestPathUtil(PathTestBase):
 
         # however, the object itself is no longer valid
         self.assertFalse(PathUtil.isValidBaseObject(box))
-

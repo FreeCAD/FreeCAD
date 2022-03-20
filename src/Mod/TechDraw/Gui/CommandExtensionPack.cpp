@@ -30,9 +30,11 @@
 # include <exception>
 #endif  //#ifndef _PreComp_
 
+# include <App/Document.h>
 # include <App/DocumentObject.h>
 # include <Base/Exception.h>
 # include <Base/Console.h>
+# include <Base/Tools.h>
 # include <Base/Type.h>
 # include <Gui/Action.h>
 # include <Gui/Application.h>
@@ -41,6 +43,7 @@
 # include <Gui/Control.h>
 # include <Gui/Document.h>
 # include <Gui/Selection.h>
+# include <Gui/SelectionObject.h>
 # include <Gui/MainWindow.h>
 # include <Gui/FileDialog.h>
 # include <Gui/ViewProvider.h>
@@ -1400,7 +1403,6 @@ void CmdTechDrawExtensionLockUnlockView::activated(int iMsg) {
         return;
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Lock/Unlock View"));
     if (objFeat->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-        auto objFeat = dynamic_cast<TechDraw::DrawViewPart*>(selection[0].getObject());
         bool lockPosition = objFeat->LockPosition.getValue();
         lockPosition = !lockPosition;
         objFeat->LockPosition.setValue(lockPosition);
@@ -1446,21 +1448,24 @@ void CmdTechDrawExtensionPositionSectionView::activated(int iMsg) {
             QObject::tr("Selection is empty"));
         return;
     }
-    float xPos, yPos;
+
+    double xPos=0.0, yPos=0.0;
     TechDraw::DrawViewPart* baseView;
     auto objFeat = selection[0].getObject();
-    if (objFeat->isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId())) {
-        TechDraw::DrawViewSection* sectionView = dynamic_cast<TechDraw::DrawViewSection*>(objFeat);
+    if (objFeat && objFeat->isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId())) {
+        TechDraw::DrawViewSection* sectionView = static_cast<TechDraw::DrawViewSection*>(objFeat);
         baseView = sectionView->getBaseDVP();
-        if (baseView->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+        if (baseView && baseView->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
             std::vector<App::DocumentObject*> parentViews = baseView->getInList();
             if (!parentViews.empty()) {
                 TechDraw::DrawProjGroup* groupBase = dynamic_cast<TechDraw::DrawProjGroup*>(parentViews[0]);
-                xPos = groupBase->X.getValue();
-                yPos = groupBase->Y.getValue();
+                if (groupBase) {
+                    xPos = groupBase->X.getValue();
+                    yPos = groupBase->Y.getValue();
+                }
             }
         }
-        else {
+        else if (baseView) {
             xPos = baseView->X.getValue();
             yPos = baseView->Y.getValue();
         }
@@ -1640,7 +1645,7 @@ CmdTechDrawExtendShortenLineGroup::CmdTechDrawExtendShortenLineGroup()
 
 void CmdTechDrawExtendShortenLineGroup::activated(int iMsg)
 {
-    //    Base::Console().Message("CMD::ExtendShortenLineGroup - activated(%d)\n", iMsg);
+    // Base::Console().Message("CMD::ExtendShortenLineGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg != nullptr) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
@@ -1733,7 +1738,7 @@ CmdTechDrawExtensionAreaAnnotation::CmdTechDrawExtensionAreaAnnotation()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Calculate the area of selected faces");
-    sToolTipText    = QT_TR_NOOP("Select several faces\n\
+    sToolTipText    = QT_TR_NOOP("Select several faces<br>\
     - click this tool");
     sWhatsThis      = "TechDraw_ExtensionAreaAnnotation";
     sStatusTip      = sToolTipText;
@@ -1752,7 +1757,7 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     int totalPoints(0);
     const std::vector<std::string> subNames = selection[0].getSubNames();
     if (!subNames.empty()) {
-        for (std::string name : subNames) {
+        for (const std::string& name : subNames) {
             int idx = TechDraw::DrawUtil::getIndexFromName(name);
             std::vector<TechDraw::BaseGeomPtr> faceEdges = objFeat->getFaceEdgesByIndex(idx);
             // We filter arcs, circles etc. which are not allowed.
@@ -1772,7 +1777,7 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
                         std::static_pointer_cast<TechDraw::Generic>(faceEdges[n]);
                 if ((nextEdge->points.at(0)-facePoints.back()).Length() < 0.01)
                     facePoints.push_back(nextEdge->points.at(1));
-                else 
+                else
                     facePoints.push_back(nextEdge->points.at(0));
             }
             facePoints.push_back(facePoints.front());
@@ -1789,10 +1794,10 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
             }
             faceArea = abs(faceArea)/2.0;
             totalArea = totalArea + faceArea;
-            totalPoints = totalPoints + facePoints.size();      
+            totalPoints = totalPoints + facePoints.size();
         }
     }
-    // if area calculation was successfull, wie start the command
+    // if area calculation was successful, start the command
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Calculate Face Area"));
     // at first we create the balloon
     std::string balloonName  = _createBalloon(this, objFeat);
@@ -1800,15 +1805,25 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(this->getDocument()->getObject(balloonName.c_str()));
     if (!balloon)
         throw Base::TypeError("CmdTechDrawNewBalloon - balloon not found\n");
-    // the balloon has been created successfull
-    // we calculate needed variables
+    // the balloon has been created successfully
+    // calculate needed variables
     double scale = objFeat->getScale();
-    totalArea = totalArea*10*10; // Todo: get factor cm->mm if cm set
-    std::stringstream balloonText;
-    balloonText << " " << totalArea << " cm2 ";
-    xCenter = (xCenter/totalPoints)/scale;
-    yCenter = (yCenter/totalPoints)/scale;
-    // we set the attributes in the data tab's fields 
+    double scale2 = scale * scale;
+    totalArea = totalArea / scale2;    //convert from view scale to internal mm2
+
+    //make area unit-aware
+    Base::Quantity asQuantity;
+    asQuantity.setValue(totalArea);
+    asQuantity.setUnit(Base::Unit::Area);
+    QString qUserString = asQuantity.getUserString();
+    std::string sUserString = Base::Tools::toStdString(qUserString);
+
+    if (totalPoints != 0 && scale != 0.0) {
+        xCenter = (xCenter/totalPoints)/scale;
+        yCenter = (yCenter/totalPoints)/scale;
+    }
+
+    // set the attributes in the data tab's fields
     balloon->SourceView.setValue(objFeat);
     balloon->BubbleShape.setValue("Rectangle");
     balloon->EndType.setValue("None");
@@ -1817,17 +1832,16 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     balloon->Y.setValue(-yCenter);
     balloon->OriginX.setValue(xCenter);
     balloon->OriginY.setValue(-yCenter);
-    balloon->ShapeScale.setValue(0.75);
     balloon->ScaleType.setValue("Page");
-    balloon->Text.setValue(balloonText.str());
-    // we look for the ballons's view provider
+    balloon->Text.setValue(sUserString);
+    // look for the ballons's view provider
     TechDraw::DrawPage* page = objFeat->findParentPage();
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
     auto viewProvider = static_cast<ViewProviderBalloon*>(guiDoc->getViewProvider(balloon));
     if (viewProvider)
     {
-        // view provider successfull found,
-        // we set the attributes in the view tab's fields
+        // view provider successfully found,
+        // set the attributes in the view tab's fields
         viewProvider->Fontsize.setValue(2.0);
         viewProvider->LineWidth.setValue(0.75);
         viewProvider->LineVisible.setValue(false);
@@ -1859,17 +1873,20 @@ namespace TechDrawGui {
     std::string _createBalloon(Gui::Command* cmd, TechDraw::DrawViewPart* objFeat)
         // create a new balloon, return it's name as string
     {
+        std::string featName;
         TechDraw::DrawPage* page = objFeat->findParentPage();
         page->balloonParent = objFeat;
         Gui::Document* guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
         ViewProviderPage* pageVP = dynamic_cast<ViewProviderPage*>(guiDoc->getViewProvider(page));
-        QGVPage* viewPage = pageVP->getGraphicsView();
-        std::string featName = viewPage->getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
-        std::string pageName = viewPage->getDrawPage()->getNameInDocument();
-        cmd->doCommand(cmd->Doc, "App.activeDocument().addObject('TechDraw::DrawViewBalloon','%s')",
-                       featName.c_str());
-        cmd->doCommand(cmd->Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", 
-                       pageName.c_str(), featName.c_str());
+        if (pageVP) {
+            QGVPage* viewPage = pageVP->getGraphicsView();
+            featName = viewPage->getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
+            std::string pageName = viewPage->getDrawPage()->getNameInDocument();
+            cmd->doCommand(cmd->Doc, "App.activeDocument().addObject('TechDraw::DrawViewBalloon','%s')",
+                           featName.c_str());
+            cmd->doCommand(cmd->Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)",
+                           pageName.c_str(), featName.c_str());
+        }
         return featName;
     }
 

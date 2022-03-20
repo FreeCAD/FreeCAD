@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QContextMenuEvent>
@@ -30,17 +29,14 @@
 # include <QTextCursor>
 #endif
 
+#include <Base/Parameter.h>
+
 #include "PythonEditor.h"
-#include "PythonDebugger.h"
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Macro.h"
-#include "FileDialog.h"
-#include "DlgEditorImp.h"
+#include "PythonDebugger.h"
 
-#include <Base/Interpreter.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
 
 using namespace Gui;
 

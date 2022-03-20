@@ -31,6 +31,7 @@
 #include <CXX/Objects.hxx>
 
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include "PovTools.h"
 #include "LuxTools.h"
 // automatically generated.....
@@ -244,7 +245,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace Raytracing

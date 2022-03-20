@@ -6,21 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>330</width>
-    <height>320</height>
+    <width>300</width>
+    <height>236</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-    <horstretch>3</horstretch>
-    <verstretch>35</verstretch>
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
    </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>330</width>
-    <height>300</height>
-   </size>
   </property>
   <property name="baseSize">
    <size>
@@ -89,7 +83,7 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::QuantitySpinBox" name="spinForce">
+      <widget class="Gui::QuantitySpinBox" name="spinForce" native="true">
        <property name="value" stdset="0">
         <double>500.000000000000000</double>
        </property>

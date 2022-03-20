@@ -319,7 +319,7 @@ class Arc(gui_base_original.Creator):
                 else:
                     # Insert a Draft circle
                     _base = DraftVecUtils.toString(self.center)
-                    _cmd = 'Draft.makeCircle'
+                    _cmd = 'Draft.make_circle'
                     _cmd += '('
                     _cmd += 'radius=' + str(self.rad) + ', '
                     _cmd += 'placement=pl, '
@@ -358,8 +358,8 @@ class Arc(gui_base_original.Creator):
                     _cmd += 'addObject("Part::Circle", "Circle")'
                     _cmd_list = ['circle = ' + _cmd,
                                  'circle.Radius = ' + str(self.rad),
-                                 'circle.Angle0 = ' + str(sta),
-                                 'circle.Angle1 = ' + str(end),
+                                 'circle.Angle1 = ' + str(sta),
+                                 'circle.Angle2 = ' + str(end),
                                  'pl = FreeCAD.Placement()',
                                  'pl.Rotation.Q = ' + rot,
                                  'pl.Base = ' + _base,
@@ -371,7 +371,7 @@ class Arc(gui_base_original.Creator):
                 else:
                     # Insert a Draft circle
                     _base = DraftVecUtils.toString(self.center)
-                    _cmd = 'Draft.makeCircle'
+                    _cmd = 'Draft.make_circle'
                     _cmd += '('
                     _cmd += 'radius=' + str(self.rad) + ', '
                     _cmd += 'placement=pl, '
@@ -505,6 +505,7 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
 
         Gui.Snapper.getPoint(callback=self.getPoint,
                              movecallback=self.drawArc)
+        Gui.Snapper.ui.sourceCmd = self
         Gui.Snapper.ui.setTitle(title=translate("draft", "Arc by 3 points"),
                                 icon="Draft_Arc_3Points")
         Gui.Snapper.ui.continueCmd.show()
@@ -528,8 +529,7 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
         # If there is not point, the command was cancelled
         # so the command exits.
         if not point:
-            self.tracker.off()
-            return
+            return None
 
         # Avoid adding the same point twice
         if point not in self.points:
@@ -547,6 +547,7 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
             Gui.Snapper.getPoint(last=self.points[-1],
                                  callback=self.getPoint,
                                  movecallback=self.drawArc)
+            Gui.Snapper.ui.sourceCmd = self
             Gui.Snapper.ui.setTitle(title=translate("draft", "Arc by 3 points"),
                                     icon="Draft_Arc_3Points")
             Gui.Snapper.ui.continueCmd.show()
@@ -563,8 +564,8 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
                 Draft.make_arc_3points([self.points[0],
                                         self.points[1],
                                         self.points[2]], primitive=False)
-            self.tracker.off()
-            self.doc.recompute()
+
+            self.finish()
             if Gui.Snapper.ui.continueMode:
                 self.Activated()
 
@@ -587,6 +588,10 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
                 self.tracker.setBy3Points(self.points[0],
                                           self.points[1],
                                           point)
+
+    def finish(self, close=False):
+        self.tracker.finalize()
+        self.doc.recompute()
 
 
 Draft_Arc_3Points = Arc_3Points

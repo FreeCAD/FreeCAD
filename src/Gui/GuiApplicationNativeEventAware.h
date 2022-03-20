@@ -20,13 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifndef GUIAPPLICATIONNATIVEEVENTAWARE_H
 #define GUIAPPLICATIONNATIVEEVENTAWARE_H
 
 #include <QApplication>
 #include <vector>
+
 
 class QMainWindow;
 

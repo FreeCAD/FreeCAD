@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QApplication>
-#include <QPainter>
-#include <QDesktopWidget>
 #include <QMenu>
 #include <QMouseEvent>
+#endif
+
+#include <App/Application.h>
+#include <App/DocumentObject.h>
+#include <App/ExpressionParser.h>
+#include <Base/Tools.h>
 
 #include "DlgExpressionInput.h"
 #include "ui_DlgExpressionInput.h"
-#include "ExpressionCompleter.h"
 #include "Tools.h"
-#include <Base/Tools.h>
-#include <Base/Console.h>
-#include <App/Application.h>
-#include <App/ExpressionParser.h>
-#include <App/DocumentObject.h>
+
 
 using namespace App;
 using namespace Gui::Dialog;

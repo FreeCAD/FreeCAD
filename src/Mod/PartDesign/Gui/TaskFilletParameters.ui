@@ -75,6 +75,13 @@ click again to end selection</string>
      </item>
     </layout>
    </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxUseAllEdges">
+     <property name="text">
+      <string>Use All Edges</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>

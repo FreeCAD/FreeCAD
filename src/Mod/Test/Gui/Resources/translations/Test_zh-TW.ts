@@ -6,12 +6,12 @@
     <message>
       <location filename="../../UnitTest.ui" line="17"/>
       <source>FreeCAD UnitTest</source>
-      <translation>FreeCAD單元測試</translation>
+      <translation>FreeCAD 單位測試</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="32"/>
       <source>Failures and errors</source>
-      <translation>失敗和錯誤</translation>
+      <translation>失敗與錯誤</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="48"/>
@@ -66,7 +66,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="169"/>
       <source>Progress</source>
-      <translation>進展</translation>
+      <translation>進度</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="198"/>
@@ -112,24 +112,24 @@
 Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it, including the stack trace.</source>
-      <translation type="unfinished">Enter the name of a callable object which, when called, will return a TestCase.
-Click 'start', and the test thus produced will be run.
+      <translation>輸入可調用物件的名稱，調用該物件時將返回一個測試案例。
+點擊「開始」，將執行由此產生的測試。
 
-Double click on an error in the tree view to see more information about it, including the stack trace.</translation>
+點兩下樹狀檢視中的錯誤以查看有關它的更多資訊，包括堆棧跟踪。</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="164"/>
       <source>About FreeCAD UnitTest</source>
-      <translation>關於 FreeCAD 單元測試</translation>
+      <translation>關於 FreeCAD 單位測試</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="164"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
-      <translation type="unfinished">Copyright (c) Werner Mayer
+      <translation>版權所有 (c) Werner Mayer
 
-FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</translation>
+FreeCAD 單位測試為 FreeCAD 的一部分，支援測試自己的模組編寫單位。</translation>
     </message>
   </context>
 </TS>

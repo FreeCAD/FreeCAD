@@ -887,7 +887,7 @@ class _Structure(ArchComponent.Component):
                             pl.rotate(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(0, 0, 1), -obj.BaseRotation)
                         if hasattr(obj, "BaseOffsetX") and hasattr(obj, "BaseOffsetY"):
                             pl.translate(FreeCAD.Vector(obj.BaseOffsetX, obj.BaseOffsetY, 0))
-                        if hasattr(obj, "BaseMirror"):
+                        if hasattr(obj, "BaseMirror") and obj.BaseMirror:
                             pl.rotate(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(0, 1, 0), 180)
                         baseface.Placement = DraftGeomUtils.get_placement_perpendicular_to_wire(extrusion).multiply(pl)
             else:

@@ -67,6 +67,7 @@
 #include <Gui/Window.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawPage.h>
@@ -897,9 +898,9 @@ void MDIViewPage::saveDXF()
 {
     QString defaultDir;
     QString fileName = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
-                                                   QString::fromUtf8(QT_TR_NOOP("Save Dxf File")),
+                                                   QString::fromUtf8(QT_TR_NOOP("Save DXF file")),
                                                    defaultDir,
-                                                   QString::fromUtf8(QT_TR_NOOP("Dxf (*.dxf)")));
+                                                   QString::fromUtf8(QT_TR_NOOP("DXF (*.dxf)")));
     if (fileName.isEmpty()) {
         return;
     }

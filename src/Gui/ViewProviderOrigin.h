@@ -21,13 +21,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_VIEWPROVIDER_ViewProviderOrigin_H
 #define GUI_VIEWPROVIDER_ViewProviderOrigin_H
 
 #include <App/PropertyGeo.h>
 
 #include "ViewProviderDocumentObject.h"
+
 
 namespace Gui {
 

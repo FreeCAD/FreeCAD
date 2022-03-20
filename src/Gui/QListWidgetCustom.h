@@ -24,9 +24,9 @@
 #ifndef QLISTWIDGETCUSTOM_HPP
 #define QLISTWIDGETCUSTOM_HPP
 
-#include <QListWidget>
 #include <QDragMoveEvent>
-#include <QString>
+#include <QListWidget>
+
 
 class QListWidgetCustom : public QListWidget
 {

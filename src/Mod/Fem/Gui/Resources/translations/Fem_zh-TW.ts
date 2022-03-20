@@ -3646,7 +3646,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="37"/>
       <source>Element dimension:</source>
-      <translation type="unfinished">Element dimension:</translation>
+      <translation>物件尺寸：</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="47"/>

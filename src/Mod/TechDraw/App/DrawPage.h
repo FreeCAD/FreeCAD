@@ -105,6 +105,8 @@ public:
     bool forceRedraw(void)   { return m_forceRedraw; }
     void redrawCommand();
 
+    bool canUpdate() const;
+
 protected:
     void onBeforeChange(const App::Property* prop) override;
     void onChanged(const App::Property* prop) override;

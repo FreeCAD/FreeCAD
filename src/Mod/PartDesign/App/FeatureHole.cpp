@@ -23,53 +23,36 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Bnd_Box.hxx>
 # include <gp_Dir.hxx>
-# include <gp_Circ.hxx>
-# include <gp_Pln.hxx>
 # include <BRep_Builder.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepPrimAPI_MakePrism.hxx>
-# include <BRepFeat_MakePrism.hxx>
-# include <BRepBuilderAPI_Copy.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepAlgoAPI_Cut.hxx>
+# include <BRepAlgoAPI_Fuse.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
+# include <BRepBuilderAPI_Sewing.hxx>
 # include <BRepBuilderAPI_Transform.hxx>
+# include <BRepClass3d_SolidClassifier.hxx>
+# include <BRepOffsetAPI_MakePipeShell.hxx>
 # include <BRepPrimAPI_MakeRevol.hxx>
-# include <Geom_Plane.hxx>
 # include <Geom_Circle.hxx>
-# include <Geom2d_Curve.hxx>
+# include <Standard_Version.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Wire.hxx>
-# include <TopExp_Explorer.hxx>
 # include <TopExp.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <Standard_Version.hxx>
-# include <QCoreApplication>
-# include <BRepOffsetAPI_MakePipeShell.hxx>
-# include <BRepBuilderAPI_Sewing.hxx>
-# include <BRepClass3d_SolidClassifier.hxx>
-# include <BRepBuilderAPI_MakeSolid.hxx>
-# include <gp_Ax1.hxx>
 #endif
 
-
-#include <Base/Placement.h>
-#include <Base/Exception.h>
-#include <Base/Tools.h>
-#include <Base/FileInfo.h>
-#include <App/Document.h>
 #include <App/Application.h>
+#include <App/DocumentObject.h>
+#include <Base/Placement.h>
 #include <Base/Reader.h>
-#include <Mod/Part/App/TopoShape.h>
+#include <Base/Tools.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
 
-#include "json.hpp"
 #include "FeatureHole.h"
+#include "json.hpp"
 
 namespace PartDesign {
 
@@ -941,7 +924,7 @@ void Hole::updateHoleCutParams()
     }
 }
 
-double Hole::getThreadClassClearance()
+double Hole::getThreadClassClearance() const
 {
     double pitch = getThreadPitch();
 
@@ -963,7 +946,7 @@ double Hole::getThreadClassClearance()
 // mode=1 (default), For normal cases e1 is wanted.
 // mode=2, In cases where shorter thread runout is necessary
 // mode=3, In cases where longer thread runout is necessary
-double Hole::getThreadRunout(int mode)
+double Hole::getThreadRunout(int mode) const
 {
     double pitch = getThreadPitch();
 
@@ -992,10 +975,16 @@ double Hole::getThreadRunout(int mode)
     return 4 * pitch;
 }
 
-double Hole::getThreadPitch()
+double Hole::getThreadPitch() const
 {
     int threadType = ThreadType.getValue();
     int threadSize = ThreadSize.getValue();
+    if (threadType < 0) {
+        throw Base::IndexError("Thread type out of range");
+    }
+    if (threadSize < 0) {
+        throw Base::IndexError("Thread size out of range");
+    }
     return threadDescription[threadType][threadSize].pitch;
 }
 
@@ -1038,7 +1027,7 @@ void Hole::updateThreadDepthParam()
     }
 }
 
-void Hole::updateDiameterParam()
+std::optional<double> Hole::determineDiameter() const
 {
     // Diameter parameter depends on Threaded, ThreadType, ThreadSize, and ThreadFit
 
@@ -1048,14 +1037,14 @@ void Hole::updateDiameterParam()
         // When restoring the feature it might be in an inconsistent state.
         // So, just silently ignore it instead of throwing an exception.
         if (isRestoring())
-            return;
+            return std::nullopt;
         throw Base::IndexError("Thread type out of range");
     }
     if (threadSize < 0) {
         // When restoring the feature it might be in an inconsistent state.
         // So, just silently ignore it instead of throwing an exception.
         if (isRestoring())
-            return;
+            return std::nullopt;
         throw Base::IndexError("Thread size out of range");
     }
     double diameter = threadDescription[threadType][threadSize].diameter;
@@ -1063,7 +1052,7 @@ void Hole::updateDiameterParam()
     double clearance = 0.0;
 
     if (threadType == 0)
-        return;
+        return std::nullopt;
 
     if (Threaded.getValue()) {
 
@@ -1075,10 +1064,10 @@ void Hole::updateDiameterParam()
         }
 
         // use normed diameters if possible
-        std::string threadType = ThreadType.getValueAsString();
-        if (threadType == "ISOMetricProfile" || threadType == "UNC"
-            || threadType == "UNF" || threadType == "UNEF") {
-            diameter = threadDescription[ThreadType.getValue()][ThreadSize.getValue()].CoreHole + clearance;
+        std::string threadTypeStr = ThreadType.getValueAsString();
+        if (threadTypeStr == "ISOMetricProfile" || threadTypeStr == "UNC"
+            || threadTypeStr == "UNF" || threadTypeStr == "UNEF") {
+            diameter = threadDescription[threadType][threadSize].CoreHole + clearance;
         }
         // if nothing available, we must calculate
         else {
@@ -1088,9 +1077,9 @@ void Hole::updateDiameterParam()
     }
     else { // we have a clearance hole
         bool found = false;
-        std::string threadType = ThreadType.getValueAsString();
+        std::string threadTypeStr = ThreadType.getValueAsString();
         // UTS and metric have a different clearance hole set
-        if (threadType == "ISOMetricProfile" || threadType == "ISOMetricFineProfile") {
+        if (threadTypeStr == "ISOMetricProfile" || threadTypeStr == "ISOMetricFineProfile") {
             int MatrixRowSizeMetric = sizeof(metricHoleDiameters) / sizeof(metricHoleDiameters[0]);
             switch (ThreadFit.getValue()) {
             case 0: /* standard fit */
@@ -1140,7 +1129,7 @@ void Hole::updateDiameterParam()
                 throw Base::IndexError("Thread fit out of range");
             }
         }
-        else if (threadType == "UNC" || threadType == "UNF" || threadType == "UNEF") {
+        else if (threadTypeStr == "UNC" || threadTypeStr == "UNF" || threadTypeStr == "UNEF") {
             std::string ThreadSizeString = ThreadSize.getValueAsString();
             int MatrixRowSizeUTS = sizeof(UTSHoleDiameters) / sizeof(UTSHoleDiameters[0]);
             switch (ThreadFit.getValue()) {
@@ -1214,7 +1203,14 @@ void Hole::updateDiameterParam()
             }
         }
     }
-    Diameter.setValue(diameter);
+
+    return std::optional<double>{diameter};
+}
+
+void Hole::updateDiameterParam()
+{
+    if (auto opt = determineDiameter())
+        Diameter.setValue(opt.value());
 }
 
 void Hole::onChanged(const App::Property* prop)
@@ -1632,10 +1628,9 @@ static gp_Pnt toPnt(gp_Vec dir)
 
 App::DocumentObjectExecReturn* Hole::execute(void)
 {
-    Part::Feature* profile = 0;
-    TopoDS_Shape profileshape;
+     TopoDS_Shape profileshape;
     try {
-        profile = getVerifiedObject();
+
         profileshape = getVerifiedFace();
     }
     catch (const Base::Exception& e) {
@@ -1678,20 +1673,7 @@ App::DocumentObjectExecReturn* Hole::execute(void)
         // Define this as zDir
         gp_Vec zDir(SketchVector.x, SketchVector.y, SketchVector.z);
         zDir.Transform(invObjLoc.Transformation());
-
-        // Define xDir
-        gp_Vec xDir;
-
-        /* Compute xDir normal to zDir */
-        if (std::abs(zDir.Z() - zDir.X()) > Precision::Confusion())
-            xDir = gp_Vec(zDir.Z(), 0, -zDir.X());
-        else if (std::abs(zDir.Z() - zDir.Y()) > Precision::Confusion())
-            xDir = gp_Vec(zDir.Y(), -zDir.X(), 0);
-        else
-            xDir = gp_Vec(0, -zDir.Z(), zDir.Y());
-
-        // Normalize xDir; this is needed as the computation above does not necessarily give a unit-length vector.
-        xDir.Normalize();
+        gp_Vec xDir = computePerpendicular(zDir);
 
         if (method == "Dimension")
             length = Depth.getValue();
@@ -1861,151 +1843,17 @@ App::DocumentObjectExecReturn* Hole::execute(void)
 
         double angle = Base::toRadians<double>(360.0);
         BRepPrimAPI_MakeRevol RevolMaker(face, gp_Ax1(firstPoint, zDir), angle);
-
-        TopoDS_Shape protoHole;
-        if (RevolMaker.IsDone()) {
-            protoHole = RevolMaker.Shape();
-
-            if (protoHole.IsNull())
-                return new App::DocumentObjectExecReturn("Hole error: Resulting shape is empty");
-        }
-        else
+        if (!RevolMaker.IsDone())
             return new App::DocumentObjectExecReturn("Hole error: Could not revolve sketch");
+
+        TopoDS_Shape protoHole = RevolMaker.Shape();
+        if (protoHole.IsNull())
+            return new App::DocumentObjectExecReturn("Hole error: Resulting shape is empty");
 
 
         // Make thread
         if (Threaded.getValue() && ModelThread.getValue()) {
-            bool leftHanded = (bool)ThreadDirection.getValue();
-
-            // Nomenclature and formulae according to Figure 1 of ISO 68-1
-            // this is the same for all metric and UTS threads as stated here:
-            // https://en.wikipedia.org/wiki/File:ISO_and_UTS_Thread_Dimensions.svg
-            // Note that in the ISO standard, Dmaj is called D, which has been followed here.
-            double D = threadDescription[ThreadType.getValue()][ThreadSize.getValue()].diameter;  // Major diameter
-            double P = getThreadPitch();
-            double H = sqrt(3) / 2 * P;                                                           // Height of fundamental triangle
-
-            double clearance;                                                                     // clearance to be added on the diameter
-            if (UseCustomThreadClearance.getValue())
-                clearance = CustomThreadClearance.getValue();
-            else
-                clearance = getThreadClassClearance();
-
-            // construct the cross section going counter-clockwise
-            // for graphical explanation of geometrical construction of p1-p6 see:
-            // https://forum.freecadweb.org/viewtopic.php?f=19&t=54284#p466570
-            gp_Pnt p1 = toPnt((D / 2 - 5 * H / 8 + clearance / 2) * xDir + P / 8 * zDir);
-            gp_Pnt p2 = toPnt((D / 2 + clearance / 2) * xDir + 7 * P / 16 * zDir);
-            gp_Pnt p3 = toPnt((D / 2 + clearance / 2) * xDir + 9 * P / 16 * zDir);
-            gp_Pnt p4 = toPnt((D / 2 - 5 * H / 8 + clearance / 2) * xDir + 7 * P / 8 * zDir);
-            gp_Pnt p5 = toPnt(0.9 * (D / 2 - 5 * H / 8) * xDir + 7 * P / 8 * zDir);
-            gp_Pnt p6 = toPnt(0.9 * (D / 2 - 5 * H / 8) * xDir + P / 8 * zDir);
-
-            BRepBuilderAPI_MakeWire mkThreadWire;
-            mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p1, p2).Edge());
-            mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p2, p3).Edge());
-            mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p3, p4).Edge());
-            mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p4, p5).Edge());
-            mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p5, p6).Edge());
-            mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p6, p1).Edge());
-            mkThreadWire.Build();
-            TopoDS_Wire threadWire = mkThreadWire.Wire();
-
-            //create the helix path
-            double threadDepth = ThreadDepth.getValue();
-            double helixLength = threadDepth + P / 2;
-            double holeDepth = Depth.getValue();
-            std::string threadDepthMethod(ThreadDepthType.getValueAsString());
-            std::string depthMethod(DepthType.getValueAsString());
-            if (threadDepthMethod != "Dimension") {
-                if (depthMethod == "ThroughAll") {
-                    threadDepth = length;
-                    ThreadDepth.setValue(threadDepth);
-                    helixLength = threadDepth + 2 * P;
-                }
-                else if (threadDepthMethod == "Tapped (DIN76)") {
-                    threadDepth = holeDepth - getThreadRunout();
-                    ThreadDepth.setValue(threadDepth);
-                    helixLength = threadDepth + P / 2;
-                }
-                else { // Hole depth
-                    threadDepth = holeDepth;
-                    ThreadDepth.setValue(threadDepth);
-                    helixLength = threadDepth + P / 8;
-                }
-            }
-            else {
-                if (depthMethod == "Dimension") {
-                    // the thread must not be deeper than the hole
-                    // thus the max helixLength is holeDepth + P / 8;
-                    if (threadDepth > (holeDepth - P / 2))
-                        helixLength = holeDepth + P / 8;
-                }
-            }
-            TopoDS_Shape helix = TopoShape().makeLongHelix(P, helixLength, D / 2, 0.0, leftHanded);
-
-            gp_Pnt origo(0.0, 0.0, 0.0);
-            gp_Dir dir_axis1(0.0, 0.0, 1.0);  // pointing along the helix axis, as created.
-            gp_Dir dir_axis2(1.0, 0.0, 0.0);  // pointing towards the helix start point, as created.
-
-            // Reverse the direction of the helix. So that it goes into the material
-            gp_Trsf mov;
-            mov.SetRotation(gp_Ax1(origo, dir_axis2), M_PI);
-            TopLoc_Location loc1(mov);
-            helix.Move(loc1);
-
-            // rotate the helix so that it is pointing in the zdir.
-            double angle = acos(dir_axis1 * zDir);
-            if (abs(angle) > Precision::Confusion()) {
-                gp_Dir rotAxis = dir_axis1 ^ zDir;
-                mov.SetRotation(gp_Ax1(origo, rotAxis), angle);
-                TopLoc_Location loc2(mov);
-                helix.Move(loc2);
-            }
-
-            // create the pipe shell
-            BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(helix));
-            mkPS.SetTolerance(Precision::Confusion());
-            mkPS.SetTransitionMode(BRepBuilderAPI_Transformed);
-            mkPS.SetMode(true);  //This is for frenet
-            mkPS.Add(threadWire);
-            if (!mkPS.IsReady())
-                return new App::DocumentObjectExecReturn("Error: Thread could not be built");
-            TopoDS_Shape shell = mkPS.Shape();
-
-            // create faces at the ends of the pipe shell
-            TopTools_ListOfShape sim;
-            mkPS.Simulate(2, sim);
-            std::vector<TopoDS_Wire> frontwires, backwires;
-            frontwires.push_back(TopoDS::Wire(sim.First()));
-            backwires.push_back(TopoDS::Wire(sim.Last()));
-            // build the end faces
-            TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
-            TopoDS_Shape back = Part::FaceMakerCheese::makeFace(backwires);
-
-            // sew the shell and end faces
-            BRepBuilderAPI_Sewing sewer;
-            sewer.SetTolerance(Precision::Confusion());
-            sewer.Add(front);
-            sewer.Add(back);
-            sewer.Add(shell);
-            sewer.Perform();
-
-            // make the closed off shell into a solid
-            BRepBuilderAPI_MakeSolid mkSolid;
-            mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
-            if (!mkSolid.IsDone())
-                return new App::DocumentObjectExecReturn("Error: Result is not a solid");
-            TopoDS_Shape result = mkSolid.Shape();
-
-            // check if the algorithm has confused the inside and outside of the solid
-            BRepClass3d_SolidClassifier SC(result);
-            SC.PerformInfinitePoint(Precision::Confusion());
-            if (SC.State() == TopAbs_IN)
-                result.Reverse();
-
-            // we are done
-            TopoDS_Shape protoThread = result;
+            TopoDS_Shape protoThread = makeThread(xDir, zDir, length);
 
             // fuse the thread to the hole
             BRepAlgoAPI_Fuse mkFuse(protoHole, protoThread);
@@ -2016,45 +1864,17 @@ App::DocumentObjectExecReturn* Hole::execute(void)
             protoHole = mkFuse.Shape();
         }
 
-        BRep_Builder builder;
-        TopoDS_Compound holes;
-        builder.MakeCompound(holes);
-        TopTools_IndexedMapOfShape edgeMap;
-        TopExp::MapShapes(profileshape, TopAbs_EDGE, edgeMap);
-        Base::Placement SketchPos = profile->Placement.getValue();
-        for (int i = 1; i <= edgeMap.Extent(); i++) {
-            Standard_Real c_start;
-            Standard_Real c_end;
-            TopoDS_Edge edge = TopoDS::Edge(edgeMap(i));
-            Handle(Geom_Curve) c = BRep_Tool::Curve(edge, c_start, c_end);
-
-            // Circle?
-            if (c->DynamicType() != STANDARD_TYPE(Geom_Circle))
-                continue;
-
-            Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(c);
-            gp_Pnt loc = circle->Axis().Location();
-
-
-            gp_Trsf localSketchTransformation;
-            localSketchTransformation.SetTranslation(gp_Pnt(0, 0, 0),
-                gp_Pnt(loc.X(), loc.Y(), loc.Z()));
-
-            TopoDS_Shape copy = protoHole;
-            copy.Move(localSketchTransformation);
-            builder.Add(holes, copy);
-        }
-
+        TopoDS_Compound holes = findHoles(profileshape, protoHole);
         this->AddSubShape.setValue(holes);
 
         // For some reason it is faster to do the cut through a BooleanOperation.
-        std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(new BRepAlgoAPI_Cut(base, holes));
-        if (!mkBool->IsDone()) {
+        BRepAlgoAPI_Cut mkBool(base, holes);
+        if (!mkBool.IsDone()) {
             std::stringstream error;
             error << "Boolean operation failed";
             return new App::DocumentObjectExecReturn(error.str());
         }
-        TopoDS_Shape result = mkBool->Shape();
+        TopoDS_Shape result = mkBool.Shape();
 
 
         // We have to get the solids (fuse sometimes creates compounds)
@@ -2086,6 +1906,230 @@ App::DocumentObjectExecReturn* Hole::execute(void)
     catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
+}
+
+void Hole::rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, TopoDS_Shape& helixShape) const
+{
+    auto getRotationAxis = [](const gp_Dir& dir1, const gp_Dir& dir2, gp_Dir& dir3, double& angle) {
+        if (dir1.IsEqual(dir2, Precision::Angular()))
+            return false;
+
+        angle = acos(dir1 * dir2);
+        if (dir1.IsOpposite(dir2, Precision::Angular())) {
+            // Create a vector that is not parallel to dir1
+            gp_XYZ xyz(dir1.XYZ());
+            if (fabs(xyz.X()) <= fabs(xyz.Y()) && fabs(xyz.X()) <= fabs(xyz.Z()))
+                xyz.SetX(1.0);
+            else if (fabs(xyz.Y()) <= fabs(xyz.X()) && fabs(xyz.Y()) <= fabs(xyz.Z()))
+                xyz.SetY(1.0);
+            else
+                xyz.SetZ(1.0);
+            dir3 = dir1.Crossed(gp_Dir(xyz));
+        }
+        else {
+            dir3 = dir1.Crossed(dir2);
+        }
+        return true;
+    };
+    // rotate the helixAxis so that it is pointing in the normalAxis.
+    double angle;
+    gp_Dir rotAxis;
+    if (getRotationAxis(helixAxis, normalAxis, rotAxis, angle)) {
+        gp_Pnt origo(0.0, 0.0, 0.0);
+        gp_Trsf mov = helixShape.Location().Transformation();
+        mov.SetRotation(gp_Ax1(origo, rotAxis), angle);
+        TopLoc_Location loc2(mov);
+        helixShape.Move(loc2);
+    }
+}
+
+gp_Vec Hole::computePerpendicular(const gp_Vec& zDir) const
+{
+    // Define xDir
+    gp_Vec xDir;
+
+    /* Compute xDir normal to zDir */
+    if (std::abs(zDir.Z() - zDir.X()) > Precision::Confusion())
+        xDir = gp_Vec(zDir.Z(), 0, -zDir.X());
+    else if (std::abs(zDir.Z() - zDir.Y()) > Precision::Confusion())
+        xDir = gp_Vec(zDir.Y(), -zDir.X(), 0);
+    else
+        xDir = gp_Vec(0, -zDir.Z(), zDir.Y());
+
+    // Normalize xDir; this is needed as the computation above does not necessarily give a unit-length vector.
+    xDir.Normalize();
+    return xDir;
+}
+
+TopoDS_Compound Hole::findHoles(const TopoDS_Shape& profileshape, const TopoDS_Shape& protohole) const
+{
+    BRep_Builder builder;
+    TopoDS_Compound holes;
+    builder.MakeCompound(holes);
+    TopTools_IndexedMapOfShape edgeMap;
+    TopExp::MapShapes(profileshape, TopAbs_EDGE, edgeMap);
+    for (int i = 1; i <= edgeMap.Extent(); i++) {
+        Standard_Real c_start;
+        Standard_Real c_end;
+        TopoDS_Edge edge = TopoDS::Edge(edgeMap(i));
+        Handle(Geom_Curve) c = BRep_Tool::Curve(edge, c_start, c_end);
+
+        // Circle?
+        if (c->DynamicType() != STANDARD_TYPE(Geom_Circle))
+            continue;
+
+        Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(c);
+        gp_Pnt loc = circle->Axis().Location();
+
+
+        gp_Trsf localSketchTransformation;
+        localSketchTransformation.SetTranslation(gp_Pnt(0, 0, 0),
+            gp_Pnt(loc.X(), loc.Y(), loc.Z()));
+
+        TopoDS_Shape copy = protohole;
+        copy.Move(localSketchTransformation);
+        builder.Add(holes, copy);
+    }
+
+    return holes;
+}
+
+TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double length)
+{
+    int threadType = ThreadType.getValue();
+    int threadSize = ThreadSize.getValue();
+    if (threadType < 0) {
+        throw Base::IndexError("Thread type out of range");
+    }
+    if (threadSize < 0) {
+        throw Base::IndexError("Thread size out of range");
+    }
+
+    bool leftHanded = (bool)ThreadDirection.getValue();
+
+    // Nomenclature and formulae according to Figure 1 of ISO 68-1
+    // this is the same for all metric and UTS threads as stated here:
+    // https://en.wikipedia.org/wiki/File:ISO_and_UTS_Thread_Dimensions.svg
+    // Note that in the ISO standard, Dmaj is called D, which has been followed here.
+    double D = threadDescription[threadType][threadSize].diameter;  // Major diameter
+    double P = getThreadPitch();
+    double H = sqrt(3) / 2 * P;                                                           // Height of fundamental triangle
+
+    double clearance;                                                                     // clearance to be added on the diameter
+    if (UseCustomThreadClearance.getValue())
+        clearance = CustomThreadClearance.getValue();
+    else
+        clearance = getThreadClassClearance();
+
+    // construct the cross section going counter-clockwise
+    // for graphical explanation of geometrical construction of p1-p6 see:
+    // https://forum.freecadweb.org/viewtopic.php?f=19&t=54284#p466570
+    gp_Pnt p1 = toPnt((D / 2 - 5 * H / 8 + clearance / 2) * xDir + P / 8 * zDir);
+    gp_Pnt p2 = toPnt((D / 2 + clearance / 2) * xDir + 7 * P / 16 * zDir);
+    gp_Pnt p3 = toPnt((D / 2 + clearance / 2) * xDir + 9 * P / 16 * zDir);
+    gp_Pnt p4 = toPnt((D / 2 - 5 * H / 8 + clearance / 2) * xDir + 7 * P / 8 * zDir);
+    gp_Pnt p5 = toPnt(0.9 * (D / 2 - 5 * H / 8) * xDir + 7 * P / 8 * zDir);
+    gp_Pnt p6 = toPnt(0.9 * (D / 2 - 5 * H / 8) * xDir + P / 8 * zDir);
+
+    BRepBuilderAPI_MakeWire mkThreadWire;
+    mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p1, p2).Edge());
+    mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p2, p3).Edge());
+    mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p3, p4).Edge());
+    mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p4, p5).Edge());
+    mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p5, p6).Edge());
+    mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p6, p1).Edge());
+    mkThreadWire.Build();
+    TopoDS_Wire threadWire = mkThreadWire.Wire();
+
+    //create the helix path
+    double threadDepth = ThreadDepth.getValue();
+    double helixLength = threadDepth + P / 2;
+    double holeDepth = Depth.getValue();
+    std::string threadDepthMethod(ThreadDepthType.getValueAsString());
+    std::string depthMethod(DepthType.getValueAsString());
+    if (threadDepthMethod != "Dimension") {
+        if (depthMethod == "ThroughAll") {
+            threadDepth = length;
+            ThreadDepth.setValue(threadDepth);
+            helixLength = threadDepth + 2 * P;
+        }
+        else if (threadDepthMethod == "Tapped (DIN76)") {
+            threadDepth = holeDepth - getThreadRunout();
+            ThreadDepth.setValue(threadDepth);
+            helixLength = threadDepth + P / 2;
+        }
+        else { // Hole depth
+            threadDepth = holeDepth;
+            ThreadDepth.setValue(threadDepth);
+            helixLength = threadDepth + P / 8;
+        }
+    }
+    else {
+        if (depthMethod == "Dimension") {
+            // the thread must not be deeper than the hole
+            // thus the max helixLength is holeDepth + P / 8;
+            if (threadDepth > (holeDepth - P / 2))
+                helixLength = holeDepth + P / 8;
+        }
+    }
+    TopoDS_Shape helix = TopoShape().makeLongHelix(P, helixLength, D / 2, 0.0, leftHanded);
+
+    gp_Pnt origo(0.0, 0.0, 0.0);
+    gp_Dir dir_axis1(0.0, 0.0, 1.0);  // pointing along the helix axis, as created.
+    gp_Dir dir_axis2(1.0, 0.0, 0.0);  // pointing towards the helix start point, as created.
+
+    // Reverse the direction of the helix. So that it goes into the material
+    gp_Trsf mov;
+    mov.SetRotation(gp_Ax1(origo, dir_axis2), M_PI);
+    TopLoc_Location loc1(mov);
+    helix.Move(loc1);
+
+    // rotate the helix so that it is pointing in the zdir.
+    rotateToNormal(dir_axis1, zDir, helix);
+
+    // create the pipe shell
+    BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(helix));
+    mkPS.SetTolerance(Precision::Confusion());
+    mkPS.SetTransitionMode(BRepBuilderAPI_Transformed);
+    mkPS.SetMode(true);  //This is for frenet
+    mkPS.Add(threadWire);
+    if (!mkPS.IsReady())
+        throw Base::CADKernelError("Error: Thread could not be built");
+    TopoDS_Shape shell = mkPS.Shape();
+
+    // create faces at the ends of the pipe shell
+    TopTools_ListOfShape sim;
+    mkPS.Simulate(2, sim);
+    std::vector<TopoDS_Wire> frontwires, backwires;
+    frontwires.push_back(TopoDS::Wire(sim.First()));
+    backwires.push_back(TopoDS::Wire(sim.Last()));
+    // build the end faces
+    TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
+    TopoDS_Shape back = Part::FaceMakerCheese::makeFace(backwires);
+
+    // sew the shell and end faces
+    BRepBuilderAPI_Sewing sewer;
+    sewer.SetTolerance(Precision::Confusion());
+    sewer.Add(front);
+    sewer.Add(back);
+    sewer.Add(shell);
+    sewer.Perform();
+
+    // make the closed off shell into a solid
+    BRepBuilderAPI_MakeSolid mkSolid;
+    mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
+    if (!mkSolid.IsDone())
+        throw Base::CADKernelError("Error: Result is not a solid");
+    TopoDS_Shape result = mkSolid.Shape();
+
+    // check if the algorithm has confused the inside and outside of the solid
+    BRepClass3d_SolidClassifier SC(result);
+    SC.PerformInfinitePoint(Precision::Confusion());
+    if (SC.State() == TopAbs_IN)
+        result.Reverse();
+
+    // we are done
+    return result;
 }
 
 void Hole::addCutType(const CutDimensionSet& dimensions)

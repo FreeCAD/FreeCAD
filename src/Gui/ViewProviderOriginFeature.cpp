@@ -24,27 +24,22 @@
 
 #ifndef _PreComp_
 # include <Inventor/nodes/SoAsciiText.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
 # include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoIndexedLineSet.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoFontStyle.h>
+# include <Inventor/nodes/SoFont.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoMaterialBinding.h>
 # include <Inventor/nodes/SoScale.h>
-# include <Inventor/details/SoLineDetail.h>
+# include <Inventor/nodes/SoSeparator.h>
 #endif
 
 #include <App/Document.h>
 #include <App/OriginFeature.h>
 
+#include "ViewProviderOriginFeature.h"
 #include "SoFCSelection.h"
-#include "Window.h"
 #include "ViewProviderOrigin.h"
 
-#include "ViewProviderOriginFeature.h"
 
 using namespace Gui;
 

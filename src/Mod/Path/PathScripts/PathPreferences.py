@@ -24,44 +24,51 @@ import FreeCAD
 import glob
 import os
 import PathScripts.PathLog as PathLog
+from PySide.QtGui import QMessageBox
 
-# PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule()
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-DefaultFilePath                 = "DefaultFilePath"
-DefaultJobTemplate              = "DefaultJobTemplate"
-DefaultStockTemplate            = "DefaultStockTemplate"
-DefaultTaskPanelLayout          = "DefaultTaskPanelLayout"
+translate = FreeCAD.Qt.translate
 
-PostProcessorDefault            = "PostProcessorDefault"
-PostProcessorDefaultArgs        = "PostProcessorDefaultArgs"
-PostProcessorBlacklist          = "PostProcessorBlacklist"
-PostProcessorOutputFile         = "PostProcessorOutputFile"
-PostProcessorOutputPolicy       = "PostProcessorOutputPolicy"
+DefaultFilePath = "DefaultFilePath"
+DefaultJobTemplate = "DefaultJobTemplate"
+DefaultStockTemplate = "DefaultStockTemplate"
+DefaultTaskPanelLayout = "DefaultTaskPanelLayout"
 
-LastPathToolBit                 = "LastPathToolBit"
-LastPathToolLibrary             = "LastPathToolLibrary"
-LastPathToolShape               = "LastPathToolShape"
-LastPathToolTable               = "LastPathToolTable"
+PostProcessorDefault = "PostProcessorDefault"
+PostProcessorDefaultArgs = "PostProcessorDefaultArgs"
+PostProcessorBlacklist = "PostProcessorBlacklist"
+PostProcessorOutputFile = "PostProcessorOutputFile"
+PostProcessorOutputPolicy = "PostProcessorOutputPolicy"
 
-LastFileToolBit                 = "LastFileToolBit"
-LastFileToolLibrary             = "LastFileToolLibrary"
-LastFileToolShape               = "LastFileToolShape"
+LastPathToolBit = "LastPathToolBit"
+LastPathToolLibrary = "LastPathToolLibrary"
+LastPathToolShape = "LastPathToolShape"
+LastPathToolTable = "LastPathToolTable"
 
-UseLegacyTools                  = "UseLegacyTools"
-UseAbsoluteToolPaths            = "UseAbsoluteToolPaths"
+LastFileToolBit = "LastFileToolBit"
+LastFileToolLibrary = "LastFileToolLibrary"
+LastFileToolShape = "LastFileToolShape"
+
+UseLegacyTools = "UseLegacyTools"
+UseAbsoluteToolPaths = "UseAbsoluteToolPaths"
 # OpenLastLibrary                 = "OpenLastLibrary"
 
 # Linear tolerance to use when generating Paths, eg when tessellating geometry
-GeometryTolerance               = "GeometryTolerance"
-LibAreaCurveAccuracy            = "LibAreaCurveAccuracy"
+GeometryTolerance = "GeometryTolerance"
+LibAreaCurveAccuracy = "LibAreaCurveAccuracy"
 
-WarningSuppressRapidSpeeds      = "WarningSuppressRapidSpeeds"
-WarningSuppressAllSpeeds        = "WarningSuppressAllSpeeds"
-WarningSuppressSelectionMode    = "WarningSuppressSelectionMode"
-WarningSuppressOpenCamLib       = "WarningSuppressOpenCamLib"
-EnableExperimentalFeatures      = "EnableExperimentalFeatures"
-EnableAdvancedOCLFeatures      = "EnableAdvancedOCLFeatures"
+WarningSuppressRapidSpeeds = "WarningSuppressRapidSpeeds"
+WarningSuppressAllSpeeds = "WarningSuppressAllSpeeds"
+WarningSuppressSelectionMode = "WarningSuppressSelectionMode"
+WarningSuppressOpenCamLib = "WarningSuppressOpenCamLib"
+WarningSuppressVelocity = "WarningSuppressVelocity"
+EnableExperimentalFeatures = "EnableExperimentalFeatures"
+EnableAdvancedOCLFeatures = "EnableAdvancedOCLFeatures"
 
 
 def preferences():
@@ -81,7 +88,10 @@ def pathDefaultToolsPath(sub=None):
 def allAvailablePostProcessors():
     allposts = []
     for path in searchPathsPost():
-        posts = [str(os.path.split(os.path.splitext(p)[0])[1][:-5]) for p in glob.glob(path + '/*_post.py')]
+        posts = [
+            str(os.path.split(os.path.splitext(p)[0])[1][:-5])
+            for p in glob.glob(path + "/*_post.py")
+        ]
         allposts.extend(posts)
     allposts.sort()
     return allposts
@@ -89,7 +99,11 @@ def allAvailablePostProcessors():
 
 def allEnabledPostProcessors(include=None):
     blacklist = postProcessorBlacklist()
-    enabled = [processor for processor in allAvailablePostProcessors() if processor not in blacklist]
+    enabled = [
+        processor
+        for processor in allAvailablePostProcessors()
+        if processor not in blacklist
+    ]
     if include:
         postlist = list(set(include + enabled))
         postlist.sort()
@@ -153,7 +167,7 @@ def searchPathsPost():
 
 def searchPathsTool(sub):
     paths = []
-    paths.append(os.path.join(FreeCAD.getHomePath(), 'Mod', 'Path', 'Tools', sub))
+    paths.append(os.path.join(FreeCAD.getHomePath(), "Mod", "Path", "Tools", sub))
     return paths
 
 
@@ -171,6 +185,16 @@ def toolsStoreAbsolutePaths():
 
 def setToolsSettings(legacy, relative):
     pref = preferences()
+    if legacy:
+        msgBox = QMessageBox()
+        msgBox.setIcon(QMessageBox.Warning)
+        msgBox.setText(
+            translate(
+                "Path",
+                "Legacy tools are deprecated. They will be removed after version 0.20",
+            )
+        )
+        msgBox.exec_()
     pref.SetBool(UseLegacyTools, legacy)
     pref.SetBool(UseAbsoluteToolPaths, relative)
     # pref.SetBool(OpenLastLibrary, lastlibrary)
@@ -178,13 +202,16 @@ def setToolsSettings(legacy, relative):
 
 def defaultJobTemplate():
     template = preferences().GetString(DefaultJobTemplate)
-    if 'xml' not in template:
+    if "xml" not in template:
         return template
-    return ''
+    return ""
 
 
 def setJobDefaults(fileName, jobTemplate, geometryTolerance, curveAccuracy):
-    PathLog.track("(%s='%s', %s, %s, %s)" % (DefaultFilePath, fileName, jobTemplate, geometryTolerance, curveAccuracy))
+    PathLog.track(
+        "(%s='%s', %s, %s, %s)"
+        % (DefaultFilePath, fileName, jobTemplate, geometryTolerance, curveAccuracy)
+    )
     pref = preferences()
     pref.SetString(DefaultFilePath, fileName)
     pref.SetString(DefaultJobTemplate, jobTemplate)
@@ -197,7 +224,7 @@ def postProcessorBlacklist():
     blacklist = pref.GetString(PostProcessorBlacklist, "")
     if not blacklist:
         return []
-    return eval(blacklist)  # pylint: disable=eval-used
+    return eval(blacklist)
 
 
 def setPostProcessorDefaults(processor, args, blacklist):
@@ -252,7 +279,9 @@ def suppressAllSpeedsWarning():
 
 
 def suppressRapidSpeedsWarning(user=True):
-    return (user and suppressAllSpeedsWarning()) or preferences().GetBool(WarningSuppressRapidSpeeds, True)
+    return (user and suppressAllSpeedsWarning()) or preferences().GetBool(
+        WarningSuppressRapidSpeeds, True
+    )
 
 
 def suppressSelectionModeWarning():
@@ -262,20 +291,31 @@ def suppressSelectionModeWarning():
 def suppressOpenCamLibWarning():
     return preferences().GetBool(WarningSuppressOpenCamLib, True)
 
-def setPreferencesAdvanced(ocl, warnSpeeds, warnRapids, warnModes, warnOCL):
-    preferences().SetBool(EnableAdvancedOCLFeatures,    ocl)
-    preferences().SetBool(WarningSuppressAllSpeeds,     warnSpeeds)
-    preferences().SetBool(WarningSuppressRapidSpeeds,   warnRapids)
+
+def suppressVelocity():
+    return preferences().GetBool(WarningSuppressVelocity, False)
+
+
+def setPreferencesAdvanced(
+    ocl, warnSpeeds, warnRapids, warnModes, warnOCL, warnVelocity
+):
+    preferences().SetBool(EnableAdvancedOCLFeatures, ocl)
+    preferences().SetBool(WarningSuppressAllSpeeds, warnSpeeds)
+    preferences().SetBool(WarningSuppressRapidSpeeds, warnRapids)
     preferences().SetBool(WarningSuppressSelectionMode, warnModes)
-    preferences().SetBool(WarningSuppressOpenCamLib,    warnOCL)
+    preferences().SetBool(WarningSuppressOpenCamLib, warnOCL)
+    preferences().SetBool(WarningSuppressVelocity, warnVelocity)
+
 
 def lastFileToolLibrary():
     filename = preferences().GetString(LastFileToolLibrary)
-    if filename.endswith('.fctl') and os.path.isfile(filename):
+    if filename.endswith(".fctl") and os.path.isfile(filename):
         return filename
 
-    libpath = preferences().GetString(LastPathToolLibrary, pathDefaultToolsPath('Library'))
-    libFiles = [f for f in glob.glob(libpath + '/*.fctl')]
+    libpath = preferences().GetString(
+        LastPathToolLibrary, pathDefaultToolsPath("Library")
+    )
+    libFiles = [f for f in glob.glob(libpath + "/*.fctl")]
     libFiles.sort()
     if len(libFiles) >= 1:
         filename = libFiles[0]
@@ -294,7 +334,7 @@ def setLastFileToolLibrary(path):
 
 
 def lastPathToolBit():
-    return preferences().GetString(LastPathToolBit, pathDefaultToolsPath('Bit'))
+    return preferences().GetString(LastPathToolBit, pathDefaultToolsPath("Bit"))
 
 
 def setLastPathToolBit(path):
@@ -303,20 +343,20 @@ def setLastPathToolBit(path):
 
 def lastPathToolLibrary():
     PathLog.track()
-    return preferences().GetString(LastPathToolLibrary, pathDefaultToolsPath('Library'))
+    return preferences().GetString(LastPathToolLibrary, pathDefaultToolsPath("Library"))
 
 
 def setLastPathToolLibrary(path):
     PathLog.track(path)
     curLib = lastFileToolLibrary()
-    PathLog.debug('curLib: {}'.format(curLib))
+    PathLog.debug("curLib: {}".format(curLib))
     if curLib and os.path.split(curLib)[0] != path:
-        setLastFileToolLibrary('')  # a path is known but not specific file
+        setLastFileToolLibrary("")  # a path is known but not specific file
     return preferences().SetString(LastPathToolLibrary, path)
 
 
 def lastPathToolShape():
-    return preferences().GetString(LastPathToolShape, pathDefaultToolsPath('Shape'))
+    return preferences().GetString(LastPathToolShape, pathDefaultToolsPath("Shape"))
 
 
 def setLastPathToolShape(path):

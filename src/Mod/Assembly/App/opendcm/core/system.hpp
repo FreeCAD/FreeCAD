@@ -34,7 +34,7 @@
 
 #include "property.hpp"
 #include "clustergraph.hpp"
-#include "sheduler.hpp"
+#include "scheduler.hpp"
 #include "logging.hpp"
 #include "traits.hpp"
 #include "object.hpp"
@@ -199,7 +199,7 @@ public:
             mpl::vector2<changed_prop, type_prop>  >::type cluster_properties;
 	    
     //we hold our own PropertyOwner which we use for system settings. Don't inherit it as the user 
-    //should not access the settings via the proeprty getter and setter functions.
+    //should not access the settings via the property getter and setter functions.
     typedef PropertyOwner<typename details::properties_by_kind<properties, setting_property>::type> OptionOwner;
     std::shared_ptr<OptionOwner> m_options;
 
@@ -220,7 +220,7 @@ protected:
 
 public:
     typedef ClusterGraph<edge_properties, vertex_properties, cluster_properties, objects> Cluster;
-    typedef Sheduler< BaseType > Shedule;
+    typedef Scheduler< BaseType > Schedule;
     typedef KernelType Kernel;
 
 public:
@@ -280,7 +280,7 @@ public:
 
     std::shared_ptr<Cluster> m_cluster;
     std::shared_ptr<Storage> m_storage;
-    Shedule m_sheduler;
+    Schedule m_scheduler;
     Kernel  m_kernel;
     std::vector<std::shared_ptr<System> > m_subsystems;
 

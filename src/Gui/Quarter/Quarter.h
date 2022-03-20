@@ -33,7 +33,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <Gui/Quarter/Basic.h>
+#include "Basic.h"
 
 namespace SIM { namespace Coin3D { namespace Quarter {
 

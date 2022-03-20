@@ -54,7 +54,7 @@ End
 
 Material 1
   Poisson ratio = Real 0.3
-  Youngs Modulus = Real 210000000.0
+  Youngs Modulus = Real 210000000000.0
 End
 
 Equation 1
@@ -81,7 +81,7 @@ Boundary Condition 2
   Force 1 Normalize by Area = Logical True
   Force 2 = Real -0.0
   Force 2 Normalize by Area = Logical True
-  Force 3 = Real -9000000000.0
+  Force 3 = Real -9000000.0
   Force 3 Normalize by Area = Logical True
   Name = String "Vertex5"
 End
@@ -91,7 +91,7 @@ Boundary Condition 3
   Force 1 Normalize by Area = Logical True
   Force 2 = Real -0.0
   Force 2 Normalize by Area = Logical True
-  Force 3 = Real -9000000000.0
+  Force 3 = Real -9000000.0
   Force 3 Normalize by Area = Logical True
   Name = String "Vertex6"
 End
@@ -101,7 +101,7 @@ Boundary Condition 4
   Force 1 Normalize by Area = Logical True
   Force 2 = Real -0.0
   Force 2 Normalize by Area = Logical True
-  Force 3 = Real -9000000000.0
+  Force 3 = Real -9000000.0
   Force 3 Normalize by Area = Logical True
   Name = String "Vertex7"
 End
@@ -111,7 +111,7 @@ Boundary Condition 5
   Force 1 Normalize by Area = Logical True
   Force 2 = Real -0.0
   Force 2 Normalize by Area = Logical True
-  Force 3 = Real -9000000000.0
+  Force 3 = Real -9000000.0
   Force 3 Normalize by Area = Logical True
   Name = String "Vertex8"
 End

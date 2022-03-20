@@ -24,10 +24,10 @@
 #ifndef GUI_FILEDIALOG_H
 #define GUI_FILEDIALOG_H
 
+#include <QCompleter>
 #include <QFileDialog>
 #include <QFileIconProvider>
 #include <QFileSystemModel>
-#include <QCompleter>
 #include <QPointer>
 #include <FCGlobal.h>
 

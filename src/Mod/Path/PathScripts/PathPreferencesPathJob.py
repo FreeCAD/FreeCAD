@@ -37,24 +37,28 @@ PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 class JobPreferencesPage:
     def __init__(self, parent=None):
-        # pylint: disable=unused-argument
         import FreeCADGui
+
         self.form = FreeCADGui.PySideUic.loadUi(":preferences/PathJob.ui")
-        self.form.toolBox.setCurrentIndex(0) # Take that qt designer!
+        self.form.toolBox.setCurrentIndex(0)  # Take that qt designer!
 
         self.postProcessorDefaultTooltip = self.form.defaultPostProcessor.toolTip()
-        self.postProcessorArgsDefaultTooltip = self.form.defaultPostProcessorArgs.toolTip()
-        self.processor = { }
+        self.postProcessorArgsDefaultTooltip = (
+            self.form.defaultPostProcessorArgs.toolTip()
+        )
+        self.processor = {}
 
     def saveSettings(self):
         filePath = self.form.leDefaultFilePath.text()
         jobTemplate = self.form.leDefaultJobTemplate.text()
         geometryTolerance = Units.Quantity(self.form.geometryTolerance.text())
         curveAccuracy = Units.Quantity(self.form.curveAccuracy.text())
-        PathPreferences.setJobDefaults(filePath, jobTemplate, geometryTolerance, curveAccuracy)
+        PathPreferences.setJobDefaults(
+            filePath, jobTemplate, geometryTolerance, curveAccuracy
+        )
 
         if curveAccuracy:
-            Path.Area.setDefaultParams(Accuracy = curveAccuracy)
+            Path.Area.setDefaultParams(Accuracy=curveAccuracy)
 
         processor = str(self.form.defaultPostProcessor.currentText())
         args = str(self.form.defaultPostProcessorArgs.text())
@@ -74,41 +78,79 @@ class JobPreferencesPage:
     def saveStockSettings(self):
         if self.form.stockGroup.isChecked():
             attrs = {}
-            attrs['version'] = 1
-            typ = [PathStock.StockType.CreateBox, PathStock.StockType.CreateCylinder, PathStock.StockType.FromBase][self.form.stock.currentIndex()]
-            attrs['create'] = typ
+            attrs["version"] = 1
+            typ = [
+                PathStock.StockType.CreateBox,
+                PathStock.StockType.CreateCylinder,
+                PathStock.StockType.FromBase,
+            ][self.form.stock.currentIndex()]
+            attrs["create"] = typ
             if typ == PathStock.StockType.CreateBox:
-                attrs['length'] = FreeCAD.Units.Quantity(self.form.stockBoxLength.text()).UserString
-                attrs['width'] = FreeCAD.Units.Quantity(self.form.stockBoxWidth.text()).UserString
-                attrs['height'] = FreeCAD.Units.Quantity(self.form.stockBoxHeight.text()).UserString
+                attrs["length"] = FreeCAD.Units.Quantity(
+                    self.form.stockBoxLength.text()
+                ).UserString
+                attrs["width"] = FreeCAD.Units.Quantity(
+                    self.form.stockBoxWidth.text()
+                ).UserString
+                attrs["height"] = FreeCAD.Units.Quantity(
+                    self.form.stockBoxHeight.text()
+                ).UserString
             if typ == PathStock.StockType.CreateCylinder:
-                attrs['radius'] = FreeCAD.Units.Quantity(self.form.stockCylinderRadius.text()).UserString
-                attrs['height'] = FreeCAD.Units.Quantity(self.form.stockCylinderHeight.text()).UserString
+                attrs["radius"] = FreeCAD.Units.Quantity(
+                    self.form.stockCylinderRadius.text()
+                ).UserString
+                attrs["height"] = FreeCAD.Units.Quantity(
+                    self.form.stockCylinderHeight.text()
+                ).UserString
             if typ == PathStock.StockType.FromBase:
-                attrs['xneg'] = FreeCAD.Units.Quantity(self.form.stockExtXneg.text()).UserString
-                attrs['xpos'] = FreeCAD.Units.Quantity(self.form.stockExtXpos.text()).UserString
-                attrs['yneg'] = FreeCAD.Units.Quantity(self.form.stockExtYneg.text()).UserString
-                attrs['ypos'] = FreeCAD.Units.Quantity(self.form.stockExtYpos.text()).UserString
-                attrs['zneg'] = FreeCAD.Units.Quantity(self.form.stockExtZneg.text()).UserString
-                attrs['zpos'] = FreeCAD.Units.Quantity(self.form.stockExtZpos.text()).UserString
+                attrs["xneg"] = FreeCAD.Units.Quantity(
+                    self.form.stockExtXneg.text()
+                ).UserString
+                attrs["xpos"] = FreeCAD.Units.Quantity(
+                    self.form.stockExtXpos.text()
+                ).UserString
+                attrs["yneg"] = FreeCAD.Units.Quantity(
+                    self.form.stockExtYneg.text()
+                ).UserString
+                attrs["ypos"] = FreeCAD.Units.Quantity(
+                    self.form.stockExtYpos.text()
+                ).UserString
+                attrs["zneg"] = FreeCAD.Units.Quantity(
+                    self.form.stockExtZneg.text()
+                ).UserString
+                attrs["zpos"] = FreeCAD.Units.Quantity(
+                    self.form.stockExtZpos.text()
+                ).UserString
             if self.form.stockPlacementGroup.isChecked():
                 angle = FreeCAD.Units.Quantity(self.form.stockAngle.text()).Value
-                axis = FreeCAD.Vector(self.form.stockAxisX.value(), self.form.stockAxisY.value(), self.form.stockAxisZ.value())
+                axis = FreeCAD.Vector(
+                    self.form.stockAxisX.value(),
+                    self.form.stockAxisY.value(),
+                    self.form.stockAxisZ.value(),
+                )
                 rot = FreeCAD.Rotation(axis, angle)
-                attrs['rotX'] = rot.Q[0]
-                attrs['rotY'] = rot.Q[1]
-                attrs['rotZ'] = rot.Q[2]
-                attrs['rotW'] = rot.Q[3]
-                attrs['posX'] = FreeCAD.Units.Quantity(self.form.stockPositionX.text()).Value
-                attrs['posY'] = FreeCAD.Units.Quantity(self.form.stockPositionY.text()).Value
-                attrs['posZ'] = FreeCAD.Units.Quantity(self.form.stockPositionZ.text()).Value
+                attrs["rotX"] = rot.Q[0]
+                attrs["rotY"] = rot.Q[1]
+                attrs["rotZ"] = rot.Q[2]
+                attrs["rotW"] = rot.Q[3]
+                attrs["posX"] = FreeCAD.Units.Quantity(
+                    self.form.stockPositionX.text()
+                ).Value
+                attrs["posY"] = FreeCAD.Units.Quantity(
+                    self.form.stockPositionY.text()
+                ).Value
+                attrs["posZ"] = FreeCAD.Units.Quantity(
+                    self.form.stockPositionZ.text()
+                ).Value
             PathPreferences.setDefaultStockTemplate(json.dumps(attrs))
         else:
-            PathPreferences.setDefaultStockTemplate('')
+            PathPreferences.setDefaultStockTemplate("")
 
     def saveToolsSettings(self):
-        PathPreferences.setToolsSettings(self.form.toolsUseLegacy.isChecked(),
-                self.form.toolsAbsolutePaths.isChecked())
+        PathPreferences.setToolsSettings(
+            self.form.toolsUseLegacy.isChecked(),
+            self.form.toolsAbsolutePaths.isChecked(),
+        )
 
     def selectComboEntry(self, widget, text):
         index = widget.findText(text, QtCore.Qt.MatchFixedString)
@@ -126,17 +168,19 @@ class JobPreferencesPage:
             item = self.form.postProcessorList.item(i)
             if item.checkState() == QtCore.Qt.CheckState.Checked:
                 self.form.defaultPostProcessor.addItem(item.text())
-                if item.text() == processor :
+                if item.text() == processor:
                     defaultIsValid = True
         # if we get here the default processor was disabled
         if not defaultIsValid:
-            self.form.defaultPostProcessorArgs.setText('')
-            processor = ''
+            self.form.defaultPostProcessorArgs.setText("")
+            processor = ""
         self.selectComboEntry(self.form.defaultPostProcessor, processor)
         self.form.defaultPostProcessor.blockSignals(False)
 
     def verifyAndUpdateDefaultPostProcessor(self):
-        self.verifyAndUpdateDefaultPostProcessorWith(str(self.form.defaultPostProcessor.currentText()))
+        self.verifyAndUpdateDefaultPostProcessorWith(
+            str(self.form.defaultPostProcessor.currentText())
+        )
 
     def loadSettings(self):
         self.form.leDefaultFilePath.setText(PathPreferences.defaultFilePath())
@@ -149,24 +193,44 @@ class JobPreferencesPage:
                 item.setCheckState(QtCore.Qt.CheckState.Unchecked)
             else:
                 item.setCheckState(QtCore.Qt.CheckState.Checked)
-            item.setFlags( QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
+            item.setFlags(
+                QtCore.Qt.ItemFlag.ItemIsSelectable
+                | QtCore.Qt.ItemFlag.ItemIsEnabled
+                | QtCore.Qt.ItemFlag.ItemIsUserCheckable
+            )
             self.form.postProcessorList.addItem(item)
-        self.verifyAndUpdateDefaultPostProcessorWith(PathPreferences.defaultPostProcessor())
+        self.verifyAndUpdateDefaultPostProcessorWith(
+            PathPreferences.defaultPostProcessor()
+        )
 
-        self.form.defaultPostProcessorArgs.setText(PathPreferences.defaultPostProcessorArgs())
+        self.form.defaultPostProcessorArgs.setText(
+            PathPreferences.defaultPostProcessorArgs()
+        )
 
-        geomTol = Units.Quantity(PathPreferences.defaultGeometryTolerance(), Units.Length)
+        geomTol = Units.Quantity(
+            PathPreferences.defaultGeometryTolerance(), Units.Length
+        )
         self.form.geometryTolerance.setText(geomTol.UserString)
-        self.form.curveAccuracy.setText(Units.Quantity(PathPreferences.defaultLibAreaCurveAccuracy(), Units.Length).UserString)
+        self.form.curveAccuracy.setText(
+            Units.Quantity(
+                PathPreferences.defaultLibAreaCurveAccuracy(), Units.Length
+            ).UserString
+        )
 
         self.form.leOutputFile.setText(PathPreferences.defaultOutputFile())
-        self.selectComboEntry(self.form.cboOutputPolicy, PathPreferences.defaultOutputPolicy())
+        self.selectComboEntry(
+            self.form.cboOutputPolicy, PathPreferences.defaultOutputPolicy()
+        )
 
         self.form.tbDefaultFilePath.clicked.connect(self.browseDefaultFilePath)
         self.form.tbDefaultJobTemplate.clicked.connect(self.browseDefaultJobTemplate)
         self.form.postProcessorList.itemEntered.connect(self.setProcessorListTooltip)
-        self.form.postProcessorList.itemChanged.connect(self.verifyAndUpdateDefaultPostProcessor)
-        self.form.defaultPostProcessor.currentIndexChanged.connect(self.updateDefaultPostProcessorToolTip)
+        self.form.postProcessorList.itemChanged.connect(
+            self.verifyAndUpdateDefaultPostProcessor
+        )
+        self.form.defaultPostProcessor.currentIndexChanged.connect(
+            self.updateDefaultPostProcessorToolTip
+        )
         self.form.tbOutputFile.clicked.connect(self.browseOutputFile)
 
         self.loadStockSettings()
@@ -177,8 +241,8 @@ class JobPreferencesPage:
         index = -1
         if stock:
             attrs = json.loads(stock)
-            if attrs.get('version') and 1 == int(attrs['version']):
-                stockType = attrs.get('create')
+            if attrs.get("version") and 1 == int(attrs["version"]):
+                stockType = attrs.get("create")
                 if stockType == PathStock.StockType.FromBase:
                     index = 2
                 elif stockType == PathStock.StockType.CreateBox:
@@ -195,26 +259,34 @@ class JobPreferencesPage:
             self.form.stock.setCurrentIndex(index)
 
         # this either sets the default value or the value from the template for each field
-        self.form.stockExtXneg.setText(attrs.get('xneg', '1 mm'))
-        self.form.stockExtXpos.setText(attrs.get('xpos', '1 mm'))
-        self.form.stockExtYneg.setText(attrs.get('yneg', '1 mm'))
-        self.form.stockExtYpos.setText(attrs.get('ypos', '1 mm'))
-        self.form.stockExtZneg.setText(attrs.get('zneg', '1 mm'))
-        self.form.stockExtZpos.setText(attrs.get('zpos', '1 mm'))
-        self.form.stockBoxLength.setText(attrs.get('length', '10 mm'))
-        self.form.stockBoxWidth.setText(attrs.get('width', '10 mm'))
-        self.form.stockBoxHeight.setText(attrs.get('height', '10 mm'))
-        self.form.stockCylinderRadius.setText(attrs.get('radius', '5 mm'))
-        self.form.stockCylinderHeight.setText(attrs.get('height', '10 mm'))
+        self.form.stockExtXneg.setText(attrs.get("xneg", "1 mm"))
+        self.form.stockExtXpos.setText(attrs.get("xpos", "1 mm"))
+        self.form.stockExtYneg.setText(attrs.get("yneg", "1 mm"))
+        self.form.stockExtYpos.setText(attrs.get("ypos", "1 mm"))
+        self.form.stockExtZneg.setText(attrs.get("zneg", "1 mm"))
+        self.form.stockExtZpos.setText(attrs.get("zpos", "1 mm"))
+        self.form.stockBoxLength.setText(attrs.get("length", "10 mm"))
+        self.form.stockBoxWidth.setText(attrs.get("width", "10 mm"))
+        self.form.stockBoxHeight.setText(attrs.get("height", "10 mm"))
+        self.form.stockCylinderRadius.setText(attrs.get("radius", "5 mm"))
+        self.form.stockCylinderHeight.setText(attrs.get("height", "10 mm"))
 
-        posX = attrs.get('posX')
-        posY = attrs.get('posY')
-        posZ = attrs.get('posZ')
-        rotX = attrs.get('rotX')
-        rotY = attrs.get('rotY')
-        rotZ = attrs.get('rotZ')
-        rotW = attrs.get('rotW')
-        if posX is not None and posY is not None and posZ is not None and rotX is not None and rotY is not None and rotZ is not None and rotW is not None:
+        posX = attrs.get("posX")
+        posY = attrs.get("posY")
+        posZ = attrs.get("posZ")
+        rotX = attrs.get("rotX")
+        rotY = attrs.get("rotY")
+        rotZ = attrs.get("rotZ")
+        rotW = attrs.get("rotW")
+        if (
+            posX is not None
+            and posY is not None
+            and posZ is not None
+            and rotX is not None
+            and rotY is not None
+            and rotZ is not None
+            and rotW is not None
+        ):
             pos = FreeCAD.Vector(float(posX), float(posY), float(posZ))
             rot = FreeCAD.Rotation(float(rotX), float(rotY), float(rotZ), float(rotW))
             placement = FreeCAD.Placement(pos, rot)
@@ -223,13 +295,21 @@ class JobPreferencesPage:
             placement = FreeCAD.Placement()
             self.form.stockPlacementGroup.setChecked(False)
 
-        self.form.stockAngle.setText(FreeCAD.Units.Quantity("%f rad" % placement.Rotation.Angle).UserString)
+        self.form.stockAngle.setText(
+            FreeCAD.Units.Quantity("%f rad" % placement.Rotation.Angle).UserString
+        )
         self.form.stockAxisX.setValue(placement.Rotation.Axis.x)
         self.form.stockAxisY.setValue(placement.Rotation.Axis.y)
         self.form.stockAxisZ.setValue(placement.Rotation.Axis.z)
-        self.form.stockPositionX.setText(FreeCAD.Units.Quantity(placement.Base.x, FreeCAD.Units.Length).UserString)
-        self.form.stockPositionY.setText(FreeCAD.Units.Quantity(placement.Base.y, FreeCAD.Units.Length).UserString)
-        self.form.stockPositionZ.setText(FreeCAD.Units.Quantity(placement.Base.z, FreeCAD.Units.Length).UserString)
+        self.form.stockPositionX.setText(
+            FreeCAD.Units.Quantity(placement.Base.x, FreeCAD.Units.Length).UserString
+        )
+        self.form.stockPositionY.setText(
+            FreeCAD.Units.Quantity(placement.Base.y, FreeCAD.Units.Length).UserString
+        )
+        self.form.stockPositionZ.setText(
+            FreeCAD.Units.Quantity(placement.Base.z, FreeCAD.Units.Length).UserString
+        )
 
         self.setupStock(index)
         self.form.stock.currentIndexChanged.connect(self.setupStock)
@@ -250,7 +330,9 @@ class JobPreferencesPage:
 
     def loadToolSettings(self):
         self.form.toolsUseLegacy.setChecked(PathPreferences.toolsUseLegacyTools())
-        self.form.toolsAbsolutePaths.setChecked(PathPreferences.toolsStoreAbsolutePaths())
+        self.form.toolsAbsolutePaths.setChecked(
+            PathPreferences.toolsStoreAbsolutePaths()
+        )
 
     def getPostProcessor(self, name):
         if not name in self.processor.keys():
@@ -267,20 +349,26 @@ class JobPreferencesPage:
             widget.setToolTip(default)
 
     def setProcessorListTooltip(self, item):
-        self.setPostProcessorTooltip(self.form.postProcessorList, item.text(), '')
+        self.setPostProcessorTooltip(self.form.postProcessorList, item.text(), "")
 
     def updateDefaultPostProcessorToolTip(self):
         name = str(self.form.defaultPostProcessor.currentText())
         if name:
-            self.setPostProcessorTooltip(self.form.defaultPostProcessor, name, self.postProcessorDefaultTooltip)
+            self.setPostProcessorTooltip(
+                self.form.defaultPostProcessor, name, self.postProcessorDefaultTooltip
+            )
             processor = self.getPostProcessor(name)
             if processor.tooltipArgs:
                 self.form.defaultPostProcessorArgs.setToolTip(processor.tooltipArgs)
             else:
-                self.form.defaultPostProcessorArgs.setToolTip(self.postProcessorArgsDefaultTooltip)
+                self.form.defaultPostProcessorArgs.setToolTip(
+                    self.postProcessorArgsDefaultTooltip
+                )
         else:
             self.form.defaultPostProcessor.setToolTip(self.postProcessorDefaultTooltip)
-            self.form.defaultPostProcessorArgs.setToolTip(self.postProcessorArgsDefaultTooltip)
+            self.form.defaultPostProcessorArgs.setToolTip(
+                self.postProcessorArgsDefaultTooltip
+            )
 
     def bestGuessForFilePath(self):
         path = self.form.leDefaultFilePath.text()
@@ -292,25 +380,24 @@ class JobPreferencesPage:
         path = self.form.leDefaultJobTemplate.text()
         if not path:
             path = self.bestGuessForFilePath()
-        foo = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(),
-                "Path - Job Template",
-                path,
-                "job_*.json")[0]
+        foo = QtGui.QFileDialog.getOpenFileName(
+            QtGui.QApplication.activeWindow(), "Path - Job Template", path, "job_*.json"
+        )[0]
         if foo:
             self.form.leDefaultJobTemplate.setText(foo)
 
-
     def browseDefaultFilePath(self):
         path = self.bestGuessForFilePath()
-        foo = QtGui.QFileDialog.getExistingDirectory(QtGui.QApplication.activeWindow(), "Path - External File Directory", path)
+        foo = QtGui.QFileDialog.getExistingDirectory(
+            QtGui.QApplication.activeWindow(), "Path - External File Directory", path
+        )
         if foo:
             self.form.leDefaultFilePath.setText(foo)
 
     def browseOutputFile(self):
         path = self.form.leOutputFile.text()
-        foo = QtGui.QFileDialog.getExistingDirectory(QtGui.QApplication.activeWindow(), "Path - Output File/Directory", path)
+        foo = QtGui.QFileDialog.getExistingDirectory(
+            QtGui.QApplication.activeWindow(), "Path - Output File/Directory", path
+        )
         if foo:
             self.form.leOutputFile.setText(foo)
-
-
-

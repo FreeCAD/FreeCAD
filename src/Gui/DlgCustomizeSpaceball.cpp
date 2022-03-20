@@ -23,26 +23,28 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <QComboBox>
 #include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QLabel>
-#include <QSplitter>
-#include <QPushButton>
 #include <QHeaderView>
+#include <QLabel>
+#include <QPainter>
 #include <QPrintDialog>
 #include <QPrinter>
-#include <QPainter>
+#include <QPushButton>
+#include <QSplitter>
 #include <QTableView>
-#include <QComboBox>
+#include <QVBoxLayout>
 #endif
 
 #include "Base/Console.h"
+
+#include "Command.h"
+#include "DlgCustomizeSpaceball.h"
 #include "Application.h"
+#include "BitmapFactory.h"
 #include "GuiApplicationNativeEventAware.h"
 #include "SpaceballEvent.h"
-#include "Command.h"
-#include "BitmapFactory.h"
-#include "DlgCustomizeSpaceball.h"
+
 
 typedef std::vector<Base::Reference<ParameterGrp> > GroupVector;
 

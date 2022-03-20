@@ -110,7 +110,7 @@ class Writer(object):
         # instead of hard coding them here for a second once
         self.unit_schema = Units.Scheme.SI1
         self.unit_system = {  # standard FreeCAD Base units = unit schema 0
-            "L": "mm",
+            "L": "m",
             "M": "kg",
             "T": "s",
             "I": "A",
@@ -123,7 +123,7 @@ class Writer(object):
         if self.unit_schema == Units.Scheme.SI1:
             Console.PrintMessage(
                 "The FreeCAD standard unit schema mm/kg/s is used. "
-                "Elmer sif-file writing is done in Standard FreeCAD units.\n"
+                "Elmer sif-file writing is however done in SI units.\n"
             )
         elif self.unit_schema == Units.Scheme.SI2:
             Console.PrintMessage(
@@ -143,10 +143,10 @@ class Writer(object):
             # see also unit comment in calculix writer
             Console.PrintMessage(
                 "The FEM unit schema mm/N/s is used. "
-                "Elmer sif-file writing is done in FEM-units.\n"
+                "Elmer sif-file writing is however done in SI units.\n"
             )
             self.unit_system = {
-                "L": "mm",
+                "L": "m",
                 "M": "t",
                 "T": "s",
                 "I": "A",

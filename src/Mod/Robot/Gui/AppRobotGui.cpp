@@ -31,6 +31,7 @@
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
 #include "ViewProviderRobotObject.h"
@@ -69,7 +70,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace RobotGui
@@ -92,7 +93,7 @@ PyMOD_INIT_FUNC(RobotGui)
         // default Cintinuity is off
         Base::Interpreter().runString("_DefCont = False");
         // default Cintinuity is off
-        Base::Interpreter().runString("_DefAccelaration = '1 m/s^2'");
+        Base::Interpreter().runString("_DefAcceleration = '1 m/s^2'");
         // default orientation of a waypoint if no other constraint
         Base::Interpreter().runString("_DefOrientation = FreeCAD.Rotation()");
         // default displacement while e.g. picking

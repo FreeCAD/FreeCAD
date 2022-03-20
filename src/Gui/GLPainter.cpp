@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -28,7 +27,7 @@
 
 #include "GLPainter.h"
 #include "View3DInventorViewer.h"
-#include <Base/Console.h>
+
 
 using namespace Gui;
 

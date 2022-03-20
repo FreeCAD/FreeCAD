@@ -22,12 +22,8 @@
 
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
 
 #include "FeatureSolid.h"
-
 
 
 namespace PartDesign {

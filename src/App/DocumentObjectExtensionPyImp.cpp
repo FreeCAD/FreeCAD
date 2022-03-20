@@ -23,10 +23,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
-
 // inclution of the generated files (generated out of PropertyContainerPy.xml)
 #include "DocumentObjectExtensionPy.h"
 #include "DocumentObjectExtensionPy.cpp"

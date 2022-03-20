@@ -28,6 +28,7 @@
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyLinks.h>
+#include <Base/SmartPtrPy.h>
 #include "Cell.h"
 
 namespace Spreadsheet
@@ -283,7 +284,7 @@ private:
     std::map<std::string, App::CellAddress> revAliasProp;
 
     /*! The associated python object */
-    Py::Object PythonObject;
+    Py::SmartPtr PythonObject;
 
     std::map<const App::DocumentObject*, boost::signals2::scoped_connection> depConnections;
 

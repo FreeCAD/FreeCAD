@@ -23,15 +23,16 @@
 #ifndef GUI_UTILITIES_H
 #define GUI_UTILITIES_H
 
-#include <Base/ViewProj.h>
-#include <Base/Converter.h>
-#include <App/Material.h>
 #include <vector>
+#include <App/Material.h>
+#include <Base/Converter.h>
+#include <Base/ViewProj.h>
 #include <Inventor/SbColor.h>
-#include <Inventor/SbVec2f.h>
-#include <Inventor/SbViewVolume.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbRotation.h>
+#include <Inventor/SbVec2f.h>
+#include <Inventor/SbViewVolume.h>
+
 
 class SbViewVolume;
 class QAbstractItemView;

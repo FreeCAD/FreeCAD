@@ -25,20 +25,15 @@
 #include <boost_bind_bind.hpp>
 #include <QAbstractEventDispatcher>
 #include <QVBoxLayout>
+#include <memory>
 #endif
 
-#include <memory>
-
-#include <sstream>
-
-#include <Base/Console.h>
-
-#include <App/Document.h>
-#include <Gui/Document.h>
 #include <Gui/Application.h>
+#include <Gui/Document.h>
 
-#include "DAGModel.h"
 #include "DAGView.h"
+#include "DAGModel.h"
+
 
 using namespace Gui;
 using namespace DAG;

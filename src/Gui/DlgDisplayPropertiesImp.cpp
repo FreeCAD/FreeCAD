@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
@@ -29,25 +28,18 @@
 # include <QDockWidget>
 #endif
 
+#include <Base/Console.h>
+
 #include "DlgDisplayPropertiesImp.h"
 #include "ui_DlgDisplayProperties.h"
+#include "Application.h"
+#include "Document.h"
 #include "DlgMaterialPropertiesImp.h"
 #include "DockWindowManager.h"
-#include "View3DInventorViewer.h"
-#include "View3DInventor.h"
-#include "Command.h"
-#include "Application.h"
-#include "Widgets.h"
 #include "Selection.h"
-#include "Document.h"
 #include "ViewProvider.h"
 #include "WaitCursor.h"
-#include "SpinBox.h"
 
-#include <Base/Console.h>
-#include <App/Application.h>
-#include <App/DocumentObject.h>
-#include <App/Material.h>
 
 using namespace Gui::Dialog;
 using namespace std;

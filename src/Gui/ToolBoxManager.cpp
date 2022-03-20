@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
@@ -30,10 +29,11 @@
 #endif
 
 #include "ToolBoxManager.h"
-#include "ToolBarManager.h"
 #include "Application.h"
 #include "Command.h"
+#include "ToolBarManager.h"
 #include "ToolBox.h"
+
 
 using namespace Gui;
 using DockWnd::ToolBox;
