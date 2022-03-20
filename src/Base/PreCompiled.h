@@ -42,6 +42,7 @@
 #endif // FC_OS_WIN32
 #include <cmath>
 #include <climits>
+#include <codecvt>
 
 #ifdef FC_OS_WIN32
 #include <direct.h>
