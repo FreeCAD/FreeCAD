@@ -26,7 +26,6 @@
 # include <algorithm>
 # include <QFileInfo>
 # include <QInputDialog>
-# include <Python.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 #endif
 
