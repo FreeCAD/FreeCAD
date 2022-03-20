@@ -94,9 +94,6 @@
 #include <boost/program_options.hpp>
 #include <boost/utility.hpp>
 
-// Python
-#include <Python.h>
-
 // Xerces
 #include <xercesc/util/TranscodingException.hpp>
 #include <xercesc/util/XMLString.hpp>
