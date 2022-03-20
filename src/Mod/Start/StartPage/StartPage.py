@@ -106,7 +106,7 @@ def getInfo(filename):
             import gnomevfs
         except Exception:
             # alternative method
-            import hashlib,urllib.parse
+            import hashlib
             fhash = hashlib.md5(bytes(urllib.parse.quote("file://"+path,safe=":/"),"ascii")).hexdigest()
             thumb = os.path.join(os.path.expanduser("~"),".thumbnails","normal",fhash+".png")
         else:
