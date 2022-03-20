@@ -11,7 +11,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QAction>
 # include <QFileDialog>
 # include <QImage>
 # include <QImageReader>
@@ -24,15 +23,17 @@
 #include <sys/timeb.h>
 #endif
 
-#include <Base/Exception.h>
-#include <Base/Tools.h>
-#include <Base/Interpreter.h>
 #include <App/Document.h>
+#include <Base/Exception.h>
+#include <Base/Interpreter.h>
+#include <Base/Tools.h>
+
 #include <Gui/Application.h>
-#include <Gui/MainWindow.h>
 #include <Gui/Command.h>
-#include <Gui/BitmapFactory.h>
+#include <Gui/MainWindow.h>
+
 #include "ImageOrientationDialog.h"
+
 
 #if HAVE_OPENCV2
 #  include "opencv2/opencv.hpp"

@@ -21,19 +21,17 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <QPixmap>
 # include <QDialog>
 #endif
 
+#include <Base/Tools.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/MainWindow.h>
-#include <Base/Tools.h>
-#include <Base/UnitsApi.h>
 
-#include "ui_ImageOrientationDialog.h"
 #include "ImageOrientationDialog.h"
+#include "ui_ImageOrientationDialog.h"
+
 
 using namespace ImageGui;
 

@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef __PRECOMPILED__
 #define __PRECOMPILED__
 
@@ -51,8 +50,6 @@
 #include <vector>
 #include <set>
 #include <bitset>
-
-#include <Python.h>
 
 #endif // _PreComp_
 #endif

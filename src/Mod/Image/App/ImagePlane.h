@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef Image_ImagePlane_H
 #define Image_ImagePlane_H
 
 #include <App/GeoFeature.h>
 #include <App/PropertyFile.h>
 #include <App/PropertyUnits.h>
-#include <Mod/Image/ImageGlobal.h>
 
 namespace Image
 {

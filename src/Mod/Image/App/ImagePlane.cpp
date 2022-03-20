@@ -20,15 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "ImagePlane.h"
-#include <App/DocumentObjectPy.h>
-#include <Base/Placement.h>
+
 
 using namespace Image;
 using namespace App;

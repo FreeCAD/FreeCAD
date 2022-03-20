@@ -21,17 +21,16 @@
 # include <QApplication>
 # include <QMenu>
 # include <QMouseEvent>
-# include <QSlider>
 # include <QStatusBar>
 # include <QToolBar>
-# include <cmath>
 #endif
 
-#include "ImageView.h"
-#include "../App/ImageBase.h"
-#include "XpmImages.h"
-#include <Base/Parameter.h>
 #include <App/Application.h>
+#include <Base/Parameter.h>
+
+#include "ImageView.h"
+#include "XpmImages.h"
+
 
 using namespace ImageGui;
 

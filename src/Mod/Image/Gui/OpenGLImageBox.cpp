@@ -20,13 +20,13 @@
 #ifndef _PreComp_
 # include <cmath>
 # include <QDebug>
-# include <QOpenGLDebugMessage>
-# include <QOpenGLContext>
-# include <QOpenGLFunctions>
-# include <QSurfaceFormat>
 # include <QMessageBox>
+# include <QOpenGLContext>
+# include <QOpenGLDebugMessage>
+# include <QOpenGLFunctions>
 # include <QPainter>
 # include <QPainterPath>
+# include <QSurfaceFormat>
 #endif
 
 #if defined(__MINGW32__)
