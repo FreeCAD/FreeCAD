@@ -17,6 +17,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <cmath>
 # include <QAction>
 # include <QApplication>
 # include <QMenu>
