@@ -495,9 +495,15 @@ PyObject* InterpreterSingleton::addModule(Py::ExtensionModuleBase* mod)
 
 void InterpreterSingleton::cleanupModules()
 {
-    for (auto it : _modules)
+    // This is only needed to make the address sanitizer happy
+#if defined(__has_feature)
+#  if __has_feature(address_sanitizer)
+    for (auto it : _modules) {
         delete it;
+    }
     _modules.clear();
+#  endif
+#endif
 }
 
 void InterpreterSingleton::addType(PyTypeObject* Type,PyObject* Module, const char * Name)
