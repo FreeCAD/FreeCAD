@@ -654,7 +654,7 @@ class _Panel(ArchComponent.Component):
                     upsegment = Part.makePolygon([p1,p2,p3,p4,p5])
                     if not downsegment:
                         a = ((p1.sub(p2)).getAngle(p3.sub(p2)))/2
-                        tx = obj.Thickness.Value*math.tan(a)
+                        tx = obj.Thickness.Value/math.tan(a)
                         d1 = Vector(tx,0,-obj.Thickness.Value)
                         d2 = Vector(-tx,0,-obj.Thickness.Value)
                         p6 = p1.add(d1)
