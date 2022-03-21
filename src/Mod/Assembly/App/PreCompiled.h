@@ -50,9 +50,6 @@
 #include <set>
 #include <bitset>
 
-#include <Python.h>
-
-
 // OpenCasCade =====================================================================================
 // Base
 #include <Standard_Failure.hxx>

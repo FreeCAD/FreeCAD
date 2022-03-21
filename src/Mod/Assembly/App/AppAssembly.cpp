@@ -20,12 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-//# include <ode/ode.h>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>

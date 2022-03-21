@@ -15,7 +15,6 @@ include_directories(
     ${OCC_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
-    ${XercesC_INCLUDE_DIRS}
     #${ODE_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
 
