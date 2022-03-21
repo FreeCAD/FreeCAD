@@ -193,7 +193,7 @@ SbBool SoSFMeshFacetArray::read1Value(SoInput * in, unsigned long idx)
 {
   assert(idx < value->size());
   MeshCore::MeshFacet& v = (*value)[idx];
-  int32_t p0, p1, p2;
+  int32_t p0{}, p1{}, p2{};
   SbBool ret = (in->read(p0) && in->read(p1) && in->read(p2));
   if ( ret ) {
     v._aulPoints[0] = p0;
