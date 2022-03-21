@@ -24,7 +24,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <Python.h>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>

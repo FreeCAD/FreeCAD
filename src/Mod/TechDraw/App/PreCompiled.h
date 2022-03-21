@@ -64,9 +64,5 @@
 // OpenCasCade =====================================================================================
 #include <Mod/Part/App/OpenCascadeAll.h>
 
-// Python
-#include <Python.h>
-
-
 #endif // _PreComp_
 #endif
