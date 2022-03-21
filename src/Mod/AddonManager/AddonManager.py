@@ -992,8 +992,8 @@ class CommandAddonManager:
         if bad_packages:
             message = "<p>" + translate(
                 "AddonsInstaller",
-                "The Addon {} requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:",
-            ).format(repo.name) + "</p><ul>"
+                "This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:",
+            ) + "</p><ul>"
             if len(bad_packages) < 15:
                 for dep in bad_packages:
                     message += f"<li>{dep}</li>"
