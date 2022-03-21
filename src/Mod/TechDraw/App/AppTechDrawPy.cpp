@@ -718,12 +718,7 @@ private:
                         if (dvd->isMultiValueSchema()) {
                             sDimText = dvd->getFormattedDimensionValue(0); //don't format multis
                         } else {
-                            sDimText = dvd->getFormattedDimensionValue(1); //just the number pref/spec/suf
-                            if (dvd->showUnits()) {
-                                std::string unitText = dvd->getFormattedDimensionValue(
-                                            2);
-                                sDimText += " " + unitText;
-                            }
+                            sDimText = dvd->getFormattedDimensionValue(1);
                         }
                         char* dimText = &sDimText[0u];                  //hack for const-ness
                         float gap = 5.0;                                //hack. don't know font size here.
