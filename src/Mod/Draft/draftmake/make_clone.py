@@ -78,12 +78,13 @@ def make_clone(obj, delta=None, forcedraft=False):
         if utils.get_type(obj[0]) == "BuildingPart":
             cl = Arch.makeComponent()
         else:
-            try:
-                clonefunc = getattr(Arch, "make_" + obj[0].Proxy.Type.lower())
+            try: # new-style maek function
+                cl = getattr(Arch, "make_" + obj[0].Proxy.Type.lower())()
             except Exception:
-                pass # not a standard Arch object... Fall back to Draft mode
-            else:
-                cl = clonefunc()
+                try: # old-style make function
+                    cl = getattr(Arch, "make" + obj[0].Proxy.Type)()
+                except Exception:
+                    pass # not a standard Arch object... Fall back to Draft mode
         if cl:
             base = utils.get_clone_base(obj[0])
             cl.Label = prefix + base.Label
