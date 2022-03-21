@@ -214,7 +214,11 @@ ObjectIdentifier::ObjectIdentifier(const Property &prop, int index)
     , subObjectName("",true)
     , documentNameSet(false)
     , documentObjectNameSet(false)
-    , localProperty(true)
+    // Although this is obviously a case of local property, for backward
+    // compatibility (e.g. PropertyExpressionEngine use local property for
+    // key), We do not explicitly mark it as local property (i.e. print prefix
+    // '.').
+    , localProperty(false)
     , _hash(0)
 {
     DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(prop.getContainer());
@@ -1423,8 +1427,8 @@ void ObjectIdentifier::addComponent(ObjectIdentifier::Component &&c) {
     _cache.clear();
 
     if(!isLocalProperty() 
-            && documentNameSet
-            && !documentObjectNameSet
+            && !documentName.getString().empty()
+            && documentObjectName.getString().empty()
             && components.empty())
     {
         if(c.isSimple() || c.isLabel()) {
@@ -1439,7 +1443,7 @@ void ObjectIdentifier::addComponent(ObjectIdentifier::Component &&c) {
         return;
     }
 
-    if(!documentObjectNameSet && !isLocalProperty()) {
+    if(documentObjectName.getString().empty() && !isLocalProperty()) {
         if(components.empty()) {
             documentObjectNameSet = true;
             documentObjectName = std::move(c.name);
@@ -1774,23 +1778,25 @@ void ObjectIdentifier::setDocumentName(ObjectIdentifier::String &&name, bool for
 {
     if(name.getString().empty())
         force = false;
-    documentNameSet = force;
     _cache.clear();
     if(name.getString().size() && _DocumentMap) {
         if(name.isRealString()) {
             auto iter = _DocumentMap->find(name.toString());
-            if(iter!=_DocumentMap->end()) {
-                documentName = String(iter->second,true);
-                return;
-            }
+            if(iter!=_DocumentMap->end())
+                name = String(iter->second,true);
         }else{
             auto iter = _DocumentMap->find(name.getString());
-            if(iter!=_DocumentMap->end()) {
-                documentName = String(iter->second,false,true);
-                return;
-            }
+            if(iter!=_DocumentMap->end())
+                name = String(iter->second,false,true);
         }
     }
+    if (name.getString().size() && owner) {
+        if (name.isRealString())
+            force = name.getString() != owner->getDocument()->Label.getValue();
+        else
+            force = name.getString() != owner->getDocument()->getName();
+    }
+    documentNameSet = force;
     documentName = std::move(name);
 }
 
