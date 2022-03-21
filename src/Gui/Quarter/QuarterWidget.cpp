@@ -67,6 +67,7 @@
 #include <QResizeEvent>
 #include <QWindow>
 
+#include <Inventor/C/basic.h>
 #if COIN_MAJOR_VERSION >= 4
 #include <Inventor/SbByteBuffer.h>
 #endif
