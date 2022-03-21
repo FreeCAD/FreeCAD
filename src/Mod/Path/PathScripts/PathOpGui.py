@@ -219,8 +219,8 @@ class TaskPanelPage(object):
         return hasattr(self.form, "toolController")
 
     def setParent(self, parent):
-        '''setParent() ... used to transfer parent object link to child class.
-        Do not overwrite.'''
+        """setParent() ... used to transfer parent object link to child class.
+        Do not overwrite."""
         self.parent = parent
 
     def onDirtyChanged(self, callback):

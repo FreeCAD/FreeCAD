@@ -275,7 +275,10 @@ class PathWorkbench(Workbench):
                 msgbox = QtGui.QMessageBox(QtGui.QMessageBox.Warning, header, msg)
 
                 msgbox.addButton(translate("Path", "Ok"), QtGui.QMessageBox.AcceptRole)
-                msgbox.addButton(translate("Path", "Don't Show This Anymore"), QtGui.QMessageBox.ActionRole)
+                msgbox.addButton(
+                    translate("Path", "Don't Show This Anymore"),
+                    QtGui.QMessageBox.ActionRole,
+                )
                 if msgbox.exec_() == 1:
                     preferences().SetBool("WarningSuppressVelocity", True)
 

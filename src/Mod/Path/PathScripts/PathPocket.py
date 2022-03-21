@@ -544,7 +544,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 avgCom
             )  # effectively treats avgCom as origin for each face.
             mag = math.sqrt(
-                adjCom.x ** 2 + adjCom.y ** 2
+                adjCom.x**2 + adjCom.y**2
             )  # adjCom.Length without Z values
             drctn = 0.0
             # Determine direction of vector

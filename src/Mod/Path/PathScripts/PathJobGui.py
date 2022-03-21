@@ -1088,12 +1088,25 @@ class TaskPanel:
             PathLog.track(
                 "Vector(%.2f, %.2f, %.2f)" % (normal.x, normal.y, normal.z), flip
             )
-            vector = axis
+            v = axis
             if flip:
-                vector = axis.negative()
-            r = axis.cross(normal)  # rotation axis
-            a = DraftVecUtils.angle(normal, vector, r) * 180 / math.pi
-            PathLog.debug("oh boy: (%.2f, %.2f, %.2f) -> %.2f" % (r.x, r.y, r.z, a))
+                v = axis.negative()
+
+            if PathGeom.pointsCoincide(abs(v), abs(normal)):
+                # Selection is already aligned with the axis of rotation leading
+                # to a (0,0,0) cross product for rotation.
+                # --> Need to flip the object around one of the "other" axis.
+                # Simplest way to achieve that is to rotate the coordinate system
+                # of the axis and use that to rotate the object.
+                r = FreeCAD.Vector(v.y, v.z, v.x)
+                a = 180
+            else:
+                r = v.cross(normal)  # rotation axis
+                a = DraftVecUtils.angle(normal, v, r) * 180 / math.pi
+            PathLog.debug(
+                "oh boy: (%.2f, %.2f, %.2f) x (%.2f, %.2f, %.2f) -> (%.2f, %.2f, %.2f) -> %.2f"
+                % (v.x, v.y, v.z, normal.x, normal.y, normal.z, r.x, r.y, r.z, a)
+            )
             Draft.rotate(sel.Object, a, axis=r)
 
         selObject = None

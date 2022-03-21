@@ -25,6 +25,7 @@ import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtil as PathUtil
 
+from PySide import QtCore, QtGui
 
 __title__ = "Path UI helper and utility functions"
 __author__ = "sliptonic (Brad Collette)"
@@ -66,7 +67,6 @@ def updateInputField(obj, prop, widget, onBeforeChange=None):
     If onBeforeChange is specified it is called before a new value is assigned to the property.
     Returns True if a new value was assigned, False otherwise (new value is the same as the current).
     """
-    PathLog.track()
     value = widget.property("rawValue")
     PathLog.track("value: {}".format(value))
     attr = PathUtil.getProperty(obj, prop)
@@ -77,21 +77,21 @@ def updateInputField(obj, prop, widget, onBeforeChange=None):
         isDiff = True
     else:
         if hasattr(obj, "ExpressionEngine"):
-            noExpr = True
+            exprSet = False
             for (prp, expr) in obj.ExpressionEngine:
                 if prp == prop:
-                    noExpr = False
+                    exprSet = True
                     PathLog.debug('prop = "expression": {} = "{}"'.format(prp, expr))
                     value = FreeCAD.Units.Quantity(obj.evalExpression(expr)).Value
                     if not PathGeom.isRoughly(attrValue, value):
                         isDiff = True
                     break
-            if noExpr:
-                widget.setReadOnly(False)
-                widget.setStyleSheet("color: black")
-            else:
+            if exprSet:
                 widget.setReadOnly(True)
                 widget.setStyleSheet("color: gray")
+            else:
+                widget.setReadOnly(False)
+                widget.setStyleSheet("color: black")
             widget.update()
 
     if isDiff:
@@ -106,7 +106,7 @@ def updateInputField(obj, prop, widget, onBeforeChange=None):
     return False
 
 
-class QuantitySpinBox:
+class QuantitySpinBox(QtCore.QObject):
     """Controller class to interface a Gui::QuantitySpinBox.
     The spin box gets bound to a given property and supports update in both directions.
     QuatitySpinBox(widget, obj, prop, onBeforeChange=None)
@@ -117,12 +117,19 @@ class QuantitySpinBox:
     """
 
     def __init__(self, widget, obj, prop, onBeforeChange=None):
+        super().__init__()
         PathLog.track(widget)
         self.widget = widget
         self.onBeforeChange = onBeforeChange
         self.prop = None
         self.obj = obj
         self.attachTo(obj, prop)
+        self.widget.installEventFilter(self)
+
+    def eventFilter(self, obj, event):
+        if event.type() == QtCore.QEvent.Type.FocusIn:
+            self.updateSpinBox()
+        return False
 
     def attachTo(self, obj, prop=None):
         """attachTo(obj, prop=None) ... use an existing editor for the given object and property"""
@@ -160,7 +167,7 @@ class QuantitySpinBox:
         """updateSpinBox(quantity=None) ... update the display value of the spin box.
         If no value is provided the value of the bound property is used.
         quantity can be of type Quantity or Float."""
-        PathLog.track(self.prop, self.valid)
+        PathLog.track(self.prop, self.valid, quantity)
 
         if self.valid:
             expr = self._hasExpression()
@@ -171,6 +178,12 @@ class QuantitySpinBox:
                     quantity = PathUtil.getProperty(self.obj, self.prop)
             value = quantity.Value if hasattr(quantity, "Value") else quantity
             self.widget.setProperty("rawValue", value)
+            if expr:
+                self.widget.setReadOnly(True)
+                self.widget.setStyleSheet("color: gray")
+            else:
+                self.widget.setReadOnly(False)
+                self.widget.setStyleSheet("color: black")
 
     def updateProperty(self):
         """updateProperty() ... update the bound property with the value from the spin box"""

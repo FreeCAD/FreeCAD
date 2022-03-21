@@ -827,7 +827,7 @@ def RtoIJ(startpoint, command):
     perp = chord.cross(Vector(0, 0, 1))
 
     # use pythagoras to get the perp length
-    plength = math.sqrt(radius ** 2 - (chord.Length / 2) ** 2)
+    plength = math.sqrt(radius**2 - (chord.Length / 2) ** 2)
     perp.normalize()
     perp.scale(plength, plength, plength)
 
