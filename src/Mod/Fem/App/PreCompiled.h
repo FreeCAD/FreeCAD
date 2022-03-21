@@ -64,8 +64,6 @@
 
 #include <algorithm>
 #include <stdexcept>
-// Python
-#include <Python.h>
 
 // Boost
 #include <boost/assign/list_of.hpp>

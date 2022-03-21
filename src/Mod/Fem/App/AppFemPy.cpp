@@ -23,7 +23,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Python.h>
 # include <memory>
 # include <cstdlib>
 # include <SMESH_Gen.hxx>

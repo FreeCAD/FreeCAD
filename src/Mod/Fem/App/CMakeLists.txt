@@ -30,7 +30,6 @@ include_directories(
     ${OCC_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
-    ${XercesC_INCLUDE_DIRS}
     ${SMESH_INCLUDE_DIR}
     ${NETGEN_INCLUDE_DIRS}
     ${VTK_INCLUDE_DIRS}

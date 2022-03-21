@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Python.h>
 # include <SMESH_Mesh.hxx>
 # include <vtkDataSetReader.h>
 # include <vtkGeometryFilter.h>

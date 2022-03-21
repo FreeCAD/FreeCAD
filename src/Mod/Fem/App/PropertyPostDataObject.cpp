@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Python.h>
 # include <vtkPolyData.h>
 # include <vtkStructuredGrid.h>
 # include <vtkRectilinearGrid.h>
