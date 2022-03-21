@@ -237,7 +237,7 @@ public:
     //@{
     /* Loads a module
      */
-    bool loadModule(const char* psModName, bool nofail=false);
+    bool loadModule(const char* psModName);
     /// Add an additional python path
     void addPythonPath(const char* Path);
     static void addType(PyTypeObject* Type,PyObject* Module, const char * Name);
