@@ -164,7 +164,7 @@ bool SketcherToolDefaultWidget::eventFilter(QObject* object, QEvent* event)
         }
     }
     else
-    if (event->type() == QEvent::KeyPress) {
+    if (event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease) {
         /*If a key shortcut is required to work on sketcher when a tool using Tool Setting widget
         is being used, then you have to add this key to the below section such that the spinbox
         doesn't keep the keypress event for itself. Note if you want the event to be handled by
