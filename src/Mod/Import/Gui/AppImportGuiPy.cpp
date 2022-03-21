@@ -62,6 +62,7 @@
 # include <TDF_ChildIterator.hxx>
 # include <TDF_Label.hxx>
 # include <TDocStd_Document.hxx>
+# include <Transfer_TransientProcess.hxx>
 # include <XCAFApp_Application.hxx>
 # include <XCAFDoc_ColorTool.hxx>
 # include <XCAFDoc_DocumentTool.hxx>
