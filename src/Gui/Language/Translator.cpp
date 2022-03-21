@@ -258,6 +258,10 @@ bool Translator::setLocale(const std::string& language) const
     if (!bcp47.empty())
         loc  = QLocale(QString::fromStdString(bcp47));
     QLocale::setDefault(loc);
+    // Need to manually send the event so locale change is fully took into account on widgets
+    auto ev = QEvent(QEvent::LocaleChange);
+    qApp->sendEvent(qApp, &ev);
+
 #ifdef FC_DEBUG
     Base::Console().Log("Locale changed to %s => %s\n", qPrintable(loc.bcp47Name()), qPrintable(loc.name()));
 #endif
