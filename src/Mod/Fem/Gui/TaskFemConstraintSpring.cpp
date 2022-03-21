@@ -92,10 +92,8 @@ TaskFemConstraintSpring::TaskFemConstraintSpring(ViewProviderFemConstraintSpring
     }
 
     //Selection buttons
-    connect(ui->btnAdd, SIGNAL(toggled(bool)),
-            this, SLOT(_addToSelection(bool)));
-    connect(ui->btnRemove, SIGNAL(toggled(bool)),
-            this, SLOT(_removeFromSelection(bool)));
+    buttonGroup->addButton(ui->btnAdd, (int)SelectionChangeModes::refAdd);
+    buttonGroup->addButton(ui->btnRemove, (int)SelectionChangeModes::refRemove);
 
     updateUI();
 }

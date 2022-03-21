@@ -56,16 +56,14 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
     const auto& subSets = pcConstraint->References.getSubListValues();
 
     for (auto& subSet : subSets) {
-        // if somehow the subnames are empty, we have nothing to do
-        if (subSet.second.empty())
-            continue;
-
-        Part::Feature* base = static_cast<Part::Feature*>(subSet.first);
+        Part::Feature* base = dynamic_cast<Part::Feature*>(subSet.first);
+        if (!base) continue;
         PartGui::ViewProviderPart* vp = dynamic_cast<PartGui::ViewProviderPart*>(
             Gui::Application::Instance->getViewProvider(base));
-        if (vp == nullptr) continue;
+        if (!vp) continue;
 
-        if (on) {
+        // if somehow the subnames are empty, clear any existing colors
+        if (on && !subSet.second.empty()) {
             // identify the type of subelements
             // TODO: Assumed here the subelements are of the same type.
             // It is a requirement but we should keep safeguards.
@@ -107,21 +105,52 @@ void ViewProviderFemConstraintOnBoundary::highlightReferences(const bool on)
             }
         }
         else {
-            if (subSet.second[0].find("Vertex") != std::string::npos &&
-                !originalPointColors[base].empty()) {
+            if (!originalPointColors[base].empty()) {
                 vp->PointColorArray.setValues(originalPointColors[base]);
                 originalPointColors[base].clear();
             }
-            else if (subSet.second[0].find("Edge") != std::string::npos &&
-                     !originalLineColors[base].empty()) {
+            else if (!originalLineColors[base].empty()) {
                 vp->LineColorArray.setValues(originalLineColors[base]);
                 originalLineColors[base].clear();
             }
-            else if (subSet.second[0].find("Face") != std::string::npos &&
-                     !originalFaceColors[base].empty()) {
+            else if (!originalFaceColors[base].empty()) {
                 vp->DiffuseColor.setValues(originalFaceColors[base]);
                 originalFaceColors[base].clear();
             }
+        }
+    }
+
+    if (subSets.empty()) {
+        // there is nothing selected but previous selection may have highlighting
+        // reset that highlighting here
+        for (auto& ogPair : originalPointColors) {
+            if (ogPair.second.empty()) continue;
+            PartGui::ViewProviderPart* vp = dynamic_cast<PartGui::ViewProviderPart*>(
+                Gui::Application::Instance->getViewProvider(ogPair.first));
+            if (!vp) continue;
+
+            vp->PointColorArray.setValues(ogPair.second);
+            ogPair.second.clear();
+        }
+
+        for (auto& ogPair : originalLineColors) {
+            if (ogPair.second.empty()) continue;
+            PartGui::ViewProviderPart* vp = dynamic_cast<PartGui::ViewProviderPart*>(
+                Gui::Application::Instance->getViewProvider(ogPair.first));
+            if (!vp) continue;
+
+            vp->LineColorArray.setValues(ogPair.second);
+            ogPair.second.clear();
+        }
+
+        for (auto& ogPair : originalFaceColors) {
+            if (ogPair.second.empty()) continue;
+            PartGui::ViewProviderPart* vp = dynamic_cast<PartGui::ViewProviderPart*>(
+                Gui::Application::Instance->getViewProvider(ogPair.first));
+            if (!vp) continue;
+
+            vp->DiffuseColor.setValues(ogPair.second);
+            ogPair.second.clear();
         }
     }
 }

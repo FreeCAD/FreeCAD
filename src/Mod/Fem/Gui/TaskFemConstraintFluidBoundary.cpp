@@ -165,10 +165,8 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
     ui->checkReverse->blockSignals(true);
 
     //Selection buttons
-    connect(ui->btnAdd, SIGNAL(toggled(bool)),
-            this, SLOT(_addToSelection(bool)));
-    connect(ui->btnRemove, SIGNAL(toggled(bool)),
-            this, SLOT(_removeFromSelection(bool)));
+    buttonGroup->addButton(ui->btnAdd, (int)SelectionChangeModes::refAdd);
+    buttonGroup->addButton(ui->btnRemove, (int)SelectionChangeModes::refRemove);
 
     // Get the feature data
     Fem::ConstraintFluidBoundary* pcConstraint = static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());

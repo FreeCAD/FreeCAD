@@ -35,6 +35,12 @@ TaskFemConstraintOnBoundary::TaskFemConstraintOnBoundary(ViewProviderFemConstrai
     , selChangeMode(SelectionChangeModes::none)
 {
     ConstraintView->highlightReferences(true);
+
+    buttonGroup = new ButtonGroup(this);
+    buttonGroup->setExclusive(true);
+
+    connect(buttonGroup, qOverload<QAbstractButton *, bool>(&QButtonGroup::buttonToggled),
+            this, &TaskFemConstraintOnBoundary::onButtonToggled);
 }
 
 TaskFemConstraintOnBoundary::~TaskFemConstraintOnBoundary()
@@ -42,44 +48,20 @@ TaskFemConstraintOnBoundary::~TaskFemConstraintOnBoundary()
     if (!ConstraintView.expired())
         ConstraintView->highlightReferences(false);
 }
-
-void TaskFemConstraintOnBoundary::_addToSelection(bool checked)
+void TaskFemConstraintOnBoundary::onButtonToggled(QAbstractButton *button, bool checked)
 {
+    auto mode = static_cast<SelectionChangeModes>(buttonGroup->id(button));
+
+    Gui::Selection().clearSelection();
+
     if (checked)
     {
-        const auto& selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
-        if (selection.empty()) {
-            this->clearButtons(SelectionChangeModes::refAdd);
-            selChangeMode = SelectionChangeModes::refAdd;
-            ConstraintView->highlightReferences(true);
-        }
-        else {
-            this->addToSelection();
-            clearButtons(SelectionChangeModes::none);
-        }
+        selChangeMode = mode;
+        ConstraintView->highlightReferences(true);
     }
     else {
-        exitSelectionChangeMode();
-    }
-}
-
-void TaskFemConstraintOnBoundary::_removeFromSelection(bool checked)
-{
-    if (checked)
-    {
-        const auto& selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
-        if (selection.empty()) {
-            this->clearButtons(SelectionChangeModes::refRemove);
-            selChangeMode = SelectionChangeModes::refRemove;
-            ConstraintView->highlightReferences(true);
-        }
-        else {
-            this->removeFromSelection();
-            clearButtons(SelectionChangeModes::none);
-        }
-    }
-    else {
-        exitSelectionChangeMode();
+        if (selChangeMode == mode)
+            selChangeMode = SelectionChangeModes::none;
     }
 }
 
@@ -102,12 +84,6 @@ void TaskFemConstraintOnBoundary::onSelectionChanged(const Gui::SelectionChanges
         }
         ConstraintView->highlightReferences(true);
     }
-}
-
-void TaskFemConstraintOnBoundary::exitSelectionChangeMode()
-{
-    selChangeMode = SelectionChangeModes::none;
-    Gui::Selection().clearSelection();
 }
 
 #include "moc_TaskFemConstraintOnBoundary.cpp"
