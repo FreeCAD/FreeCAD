@@ -33,6 +33,7 @@
 # include <QMouseEvent>
 # include <QNetworkRequest>
 # include <QRegExp>
+# include <QScreen>
 # include <QSignalMapper>
 # include <QStatusBar>
 #endif
