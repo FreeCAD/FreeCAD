@@ -468,7 +468,7 @@ void InterpreterSingleton::runFile(const char*pxFileName, bool local)
     }
 }
 
-bool InterpreterSingleton::loadModule(const char* psModName, bool nofail)
+bool InterpreterSingleton::loadModule(const char* psModName)
 {
     // buffer acrobatics
     //PyBuf ModName(psModName);
@@ -478,14 +478,10 @@ bool InterpreterSingleton::loadModule(const char* psModName, bool nofail)
     module = PP_Load_Module(psModName);
 
     if (!module) {
-        if (nofail)
-            return false;
-        else {
-            if (PyErr_ExceptionMatches(PyExc_SystemExit))
-                throw SystemExitException();
-            else
-                throw PyException();
-        }
+        if (PyErr_ExceptionMatches(PyExc_SystemExit))
+            throw SystemExitException();
+        else
+            throw PyException();
     }
 
     return true;

@@ -692,18 +692,20 @@ void MainWindow::whatsThis()
 
 void MainWindow::showDocumentation(const QString& help)
 {
-    if (Base::Interpreter().loadModule("Help",true)) {
+    PyObject* module = PyImport_ImportModule("Help");
+    if (module) {
         Gui::Command::addModule(Gui::Command::Gui,"Help");
         Gui::Command::doCommand(Gui::Command::Gui,"Help.show(\"%s\")", help.toStdString().c_str());
-    } else {
+    }
+    else {
+        PyErr_Clear();
         QUrl url(help);
         if (url.scheme().isEmpty()) {
             //QString page;
             //page = QString::fromUtf8("%1.html").arg(help);
             //d->assistant->showDocumentation(page);
             QMessageBox::critical(getMainWindow(), tr("Help addon needed!"),
-            tr("The Help system of FreeCAD is now handled by the \"Help\" addon."
-                "Install it with menu Tools > Addons Manager"));
+            tr("The Help system of %s is now handled by the \"Help\" addon. Install it with menu Tools > Addons Manager"),qApp->applicationName());
         }
         else {
             QDesktopServices::openUrl(url);
