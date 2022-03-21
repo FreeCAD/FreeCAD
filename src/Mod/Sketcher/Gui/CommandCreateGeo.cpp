@@ -520,12 +520,11 @@ protected:
         continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
     }
 
-    // Default implementation is that on every mouse click the mode is changed to the next seek
+    // Default implementation is that on every mouse click it redraws and the mode is changed to the next seek
     // On the last seek, it changes to SelectMode::End
-    // If this behaviour is not acceptable, then the function must be specialised.
+    // If this behaviour is not acceptable, then the function must be specialised (or overloaded).
     virtual void onButtonPressed(Base::Vector2d onSketchPos) {
-        Q_UNUSED(onSketchPos)
-
+        this->updateDataAndDrawToPosition(onSketchPos);
         this->moveToNextMode();
     }
     //@}
@@ -1150,11 +1149,6 @@ template <> void DrawSketchHandlerLine::createAutoConstraints() {
         DrawSketchHandler::createAutoConstraints(sugConstraints[1], getHighestCurveIndex(), Sketcher::PointPos::end);
         sugConstraints[1].clear();
     }
-}
-
-// Widget configuration //TODO: CHECK TRANSLATION STRINGS AS THEY DO NOT LOOK GOOD
-template <> void DrawSketchHandlerLine::ToolWidgetManager::configureToolWidget() {
-
 }
 
 // Function responsible for updating the DrawSketchHandler data members when widget parameters change
