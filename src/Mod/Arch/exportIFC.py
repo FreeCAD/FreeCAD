@@ -341,6 +341,10 @@ def export(exportList, filename, colors=None, preferences=None):
 
     for obj in objectslist:
 
+        if obj.Name in products:
+            # never export same product twice
+            continue
+
         # structural analysis object
 
         structobj = None
@@ -413,31 +417,39 @@ def export(exportList, filename, colors=None, preferences=None):
             # the own Shape is ignored if representation is retrieved
             # this because we will build an assembly for the assemblyElements
             # from here and the assembly itself should not have a representation
-
-        elif ifctype == "IfcApp::Part":
-            for subobj in [FreeCAD.ActiveDocument.getObject(n[:-1]) for n in obj.getSubObjects()]:
-                representation,placement,shapetype = getRepresentation(
-                    ifcfile,
-                    context,
-                    subobj,
-                    forcebrep=(getBrepFlag(subobj,preferences)),
-                    colors=colors,
-                    preferences=preferences
-                )
-                subproduct = createProduct(
-                    ifcfile,
-                    subobj,
-                    getIfcTypeFromObj(subobj),
-                    getUID(subobj,preferences),
-                    history,
-                    getText("Name",subobj),
-                    getText("Description",subobj),
-                    placement,
-                    representation,
-                    preferences)
-
+        if ifctype in ["IfcApp::Part","IfcPart::Compound","IfcElementAssembly"]:
+            if hasattr(obj,"Group"):
+                group = obj.Group
+            elif hasattr(obj,"Links"):
+                group = obj.Links
+            else:
+                group = [FreeCAD.ActiveDocument.getObject(n[:-1]) for n in obj.getSubObjects()]
+            for subobj in group:
+                if subobj.Name in products:
+                    subproduct = products[subobj.Name]
+                else:
+                    representation,placement,shapetype = getRepresentation(
+                        ifcfile,
+                        context,
+                        subobj,
+                        forcebrep=(getBrepFlag(subobj,preferences)),
+                        colors=colors,
+                        preferences=preferences
+                    )
+                    subproduct = createProduct(
+                        ifcfile,
+                        subobj,
+                        getIfcTypeFromObj(subobj),
+                        getUID(subobj,preferences),
+                        history,
+                        getText("Name",subobj),
+                        getText("Description",subobj),
+                        placement,
+                        representation,
+                        preferences)
+                    products[obj.Name] = subproduct
                 assemblyElements.append(subproduct)
-                ifctype = "IfcElementAssembly"
+            ifctype = "IfcElementAssembly"
 
         # export grids
 
@@ -1679,21 +1691,23 @@ def isStandardCase(obj,ifctype):
 
 def getIfcTypeFromObj(obj):
 
-    if (Draft.getType(obj) == "BuildingPart") and hasattr(obj,"IfcType") and (obj.IfcType == "Undefined"):
+    dtype = Draft.getType(obj)
+    if (dtype == "BuildingPart") and hasattr(obj,"IfcType") and (obj.IfcType == "Undefined"):
         ifctype = "IfcBuildingStorey" # export BuildingParts as Storeys if their type wasn't explicitly set
     elif hasattr(obj,"IfcType"):
         ifctype = obj.IfcType.replace(" ","")
+    elif dtype in ["App::Part","Part::Compound"]:
+        ifctype = "IfcElementAssembly"
+    elif dtype in ["App::DocumentObjctGroup"]:
+        ifctype = "IfcGroup"
     else:
-        ifctype = Draft.getType(obj)
+        ifctype = dtype
 
     if ifctype in translationtable.keys():
         ifctype = translationtable[ifctype]
-
-    if "::" not in ifctype:
+    if not ifctype.startswith("Ifc"):
         ifctype = "Ifc" + ifctype
-    elif ifctype == "IfcApp::DocumentObjctGroup":
-        ifctype = "IfcGroup"
-    else:
+    if "::" in ifctype:
         # it makes no sense to return IfcPart::Cylinder for a Part::Cylinder
         # this is not a ifctype at all
         ifctype = None
