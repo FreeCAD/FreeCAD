@@ -718,7 +718,28 @@ class depth_params(object):
             )[1:]
 
         depths.reverse()
-        return depths
+
+        if len(depths) < 2:
+            return depths
+
+        return self.__filter_roughly_equal_depths(depths)
+
+    def __filter_roughly_equal_depths(self, depths):
+        """Depths arrive sorted from largest to smallest, positive to negative.
+        Return unique list of depths, using PathGeom.isRoughly() method to determine
+        if the two values are equal.  Only one of two consecutive equals are removed.
+
+        The assumption is that there are not enough consecutively roughly-equal depths
+        to be removed, so as to eliminate an effective step-down depth with the removal
+        of repetitive roughly-equal values."""
+
+        depthcopy = sorted(depths)  # make a copy and sort low to high
+        keep = [depthcopy[0]]
+        for depth in depthcopy[1:]:
+            if not PathGeom.isRoughly(depth, keep[-1]):
+                keep.append(depth)
+        keep.reverse()  # reverse results back high to low
+        return keep
 
     def __equal_steps(self, start, stop, max_size):
         """returns a list of depths beginning with the bottom (included), ending
