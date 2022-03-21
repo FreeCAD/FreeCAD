@@ -24,6 +24,7 @@
 
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
+#include <Base/PyObjectBase.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -96,17 +97,13 @@ open(PyObject * /*self*/, PyObject *args)
 
     // extract ending
     if(file.extension() == "")
-      Py_Error(Base::BaseExceptionFreeCADError,"no file ending");
+      Py_Error(Base::PyExc_FC_GeneralError, "no file ending");
 
     if(file.hasExtension("jt"))
     {
-
 		TestJtReader reader;
-
 		reader.setFile(EncodedName.c_str());
-
 		reader.read();
-
 
         // create new document and add Import feature
        // App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
@@ -143,7 +140,7 @@ open(PyObject * /*self*/, PyObject *args)
     }
     else
     {
-      Py_Error(Base::BaseExceptionFreeCADError,"unknown file ending");
+      Py_Error(Base::PyExc_FC_GeneralError, "unknown file ending");
     }
 
 
@@ -170,7 +167,7 @@ insert(PyObject * /*self*/, PyObject *args)
 
     // extract ending
     if(file.extension() == "")
-      Py_Error(Base::BaseExceptionFreeCADError,"no file ending");
+      Py_Error(Base::PyExc_FC_GeneralError, "no file ending");
 
     if(file.hasExtension("jt") )
     {
@@ -180,7 +177,7 @@ insert(PyObject * /*self*/, PyObject *args)
         {
             char szBuf[200];
             snprintf(szBuf, 200, "Import called to the non-existing document '%s'", DocName);
-            Py_Error(Base::BaseExceptionFreeCADError,szBuf);
+            Py_Error(Base::PyExc_FC_GeneralError, szBuf);
         }
 
         //readFile(EncodedName.c_str(),0);
@@ -222,7 +219,7 @@ insert(PyObject * /*self*/, PyObject *args)
      }
     else
     {
-      Py_Error(Base::BaseExceptionFreeCADError,"unknown file ending");
+      Py_Error(Base::PyExc_FC_GeneralError, "unknown file ending");
     }
 
   } PY_CATCH;
@@ -233,10 +230,8 @@ insert(PyObject * /*self*/, PyObject *args)
 
 /* registration table  */
 struct PyMethodDef JtReader_methods[] = {
-    {"open"       ,open ,       Py_NEWARGS, "open a jt file in a new Document"},				
+    {"open"       ,open ,       Py_NEWARGS, "open a jt file in a new Document"},
     {"insert"     ,insert,      Py_NEWARGS, "isert a jt file in a existing document"},
     {"read"       ,read,        Py_NEWARGS, "Read a Mesh from a jt file and returns a Mesh object."},
-    {NULL, NULL, 0, NULL}                   
+    {NULL, NULL, 0, NULL}
 };
-
-
