@@ -103,7 +103,7 @@ class _CommandRebar:
         return {'Pixmap'  : 'Arch_Rebar',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Rebar","Custom Rebar"),
                 'Accel': "R, B",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Rebar","Creates a Reinforcement bar from the selected face of a structural object")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Rebar","Creates a Reinforcement bar from the selected face of solid object and/or a sketch")}
 
     def IsActive(self):
 
@@ -114,7 +114,8 @@ class _CommandRebar:
         sel = FreeCADGui.Selection.getSelectionEx()
         if sel:
             obj = sel[0].Object
-            if Draft.getType(obj) == "Structure":
+            if hasattr(obj,"Shape") and obj.Shape.Solids:
+                # this is our host object
                 if len(sel) > 1:
                     sk = sel[1].Object
                     if hasattr(sk,'Shape'):
@@ -233,8 +234,8 @@ class _Rebar(ArchComponent.Component):
 
         if not obj.Host:
             return
-        if Draft.getType(obj.Host) != "Structure":
-            return
+        #if Draft.getType(obj.Host) != "Structure":
+        #    return
         if not obj.Host.Shape:
             return
         if not obj.Base:
