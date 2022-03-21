@@ -468,6 +468,8 @@ void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, std::shar
 {
     ObjectIdentifier usePath(canonicalPath(path));
     const Property * prop = usePath.getProperty();
+    if (!prop)
+        FC_THROWM(Base::RuntimeError, "Property not found in '" << path.toString() << "'");
 
     // Try to access value; it should trigger an exception if it is not supported, or if the path is invalid
     prop->getPathValue(usePath);
