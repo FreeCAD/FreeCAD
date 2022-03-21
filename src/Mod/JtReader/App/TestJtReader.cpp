@@ -22,11 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <vector>
 #endif
-
-
-#include <iostream>
-#include <fstream>
 
 #include <Base/Console.h>
 #include <Base/FileInfo.h>

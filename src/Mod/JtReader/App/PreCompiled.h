@@ -36,6 +36,7 @@
 
 // STL
 #include <algorithm>
+#include <bitset>
 #include <iostream>
 #include <list>
 #include <map>
@@ -44,8 +45,11 @@
 #include <sstream>
 #include <stack>
 #include <string>
+#include <strstream>
 #include <vector>
-#include <bitset>
+
+// sys
+#include <sys/types.h>
 
 #endif //_PreComp_
 
