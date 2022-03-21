@@ -68,7 +68,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             "OffsetPattern": [
                 (translate("Path_Pocket", "ZigZag"), "ZigZag"),
                 (translate("Path_Pocket", "Offset"), "Offset"),
-                (translate("Path_Pocket", "Spiral"), "Spiral"),
                 (translate("Path_Pocket", "ZigZagOffset"), "ZigZagOffset"),
                 (translate("Path_Pocket", "Line"), "Line"),
                 (translate("Path_Pocket", "Grid"), "Grid"),
@@ -208,11 +207,9 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         Pattern = [
             "ZigZag",
             "Offset",
-            "Spiral",
             "ZigZagOffset",
             "Line",
             "Grid",
-            "Triangle",
         ]
         params["PocketMode"] = Pattern.index(obj.OffsetPattern) + 1
 
