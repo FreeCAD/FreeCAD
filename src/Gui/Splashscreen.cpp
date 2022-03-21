@@ -495,7 +495,7 @@ void AboutDialog::showLibraryInformation()
     // Boost
     li.name = QLatin1String("Boost");
     li.href = baseurl + QLatin1String("#_TocBoost");
-    li.url = QLatin1String("http://www.boost.org");
+    li.url = QLatin1String("https://www.boost.org");
     li.version = QLatin1String(BOOST_LIB_VERSION);
     libInfo << li;
 
@@ -507,23 +507,23 @@ void AboutDialog::showLibraryInformation()
     libInfo << li;
 
     // Eigen3
-    li.name = QLatin1String("Eigen3");
-    li.href = baseurl + QLatin1String("#_TocEigen3");
-    li.url = QLatin1String("http://eigen.tuxfamily.org");
+    li.name = QLatin1String("Eigen");
+    li.href = baseurl + QLatin1String("#_TocEigen");
+    li.url = QLatin1String("https://eigen.tuxfamily.org");
     li.version = QString::fromLatin1(FC_EIGEN3_VERSION);
     libInfo << li;
 
     // FreeType
     li.name = QLatin1String("FreeType");
     li.href = baseurl + QLatin1String("#_TocFreeType");
-    li.url = QLatin1String("http://freetype.org");
+    li.url = QLatin1String("https://freetype.org");
     li.version = QString::fromLatin1(FC_FREETYPE_VERSION);
     libInfo << li;
 
     // KDL
     li.name = QLatin1String("KDL");
     li.href = baseurl + QLatin1String("#_TocKDL");
-    li.url = QLatin1String("http://www.orocos.org/kdl");
+    li.url = QLatin1String("https://www.orocos.org/kdl");
     li.version.clear();
     libInfo << li;
 
@@ -538,7 +538,7 @@ void AboutDialog::showLibraryInformation()
 #if defined(HAVE_OCC_VERSION)
     li.name = QLatin1String("Open CASCADE Technology");
     li.href = baseurl + QLatin1String("#_TocOCCT");
-    li.url = QLatin1String("http://www.opencascade.com");
+    li.url = QLatin1String("https://www.opencascade.com/open-cascade-technology/");
     li.version = QLatin1String(OCC_VERSION_STRING_EXT);
     libInfo << li;
 #endif
@@ -546,7 +546,7 @@ void AboutDialog::showLibraryInformation()
     // pcl
     li.name = QLatin1String("Point Cloud Library");
     li.href = baseurl + QLatin1String("#_TocPcl");
-    li.url = QLatin1String("http://www.pointclouds.org");
+    li.url = QLatin1String("https://www.pointclouds.org");
     li.version = QString::fromLatin1(FC_PCL_VERSION);
     libInfo << li;
 
@@ -560,35 +560,35 @@ void AboutDialog::showLibraryInformation()
     // Python
     li.name = QLatin1String("Python");
     li.href = baseurl + QLatin1String("#_TocPython");
-    li.url = QLatin1String("http://www.python.org");
+    li.url = QLatin1String("https://www.python.org");
     li.version = QLatin1String(PY_VERSION);
     libInfo << li;
 
     // PySide
-    li.name = QLatin1String("PySide");
+    li.name = QLatin1String("Qt for Python (PySide)");
     li.href = baseurl + QLatin1String("#_TocPySide");
-    li.url = QLatin1String("http://www.pyside.org");
+    li.url = QLatin1String("https://wiki.qt.io/Qt_for_Python");
     li.version = QString::fromLatin1(FC_PYSIDE_VERSION);
     libInfo << li;
 
     // Qt
     li.name = QLatin1String("Qt");
     li.href = baseurl + QLatin1String("#_TocQt");
-    li.url = QLatin1String("http://www.qt.io");
+    li.url = QLatin1String("https://www.qt.io");
     li.version = QLatin1String(QT_VERSION_STR);
     libInfo << li;
 
     // Salome SMESH
     li.name = QLatin1String("Salome SMESH");
     li.href = baseurl + QLatin1String("#_TocSalomeSMESH");
-    li.url = QLatin1String("http://salome-platform.org");
+    li.url = QLatin1String("https://salome-platform.org");
     li.version.clear();
     libInfo << li;
 
     // Shiboken
-    li.name = QLatin1String("Shiboken");
+    li.name = QLatin1String("Qt for Python (Shiboken)");
     li.href = baseurl + QLatin1String("#_TocPySide");
-    li.url = QLatin1String("http://www.pyside.org");
+    li.url = QLatin1String("https://wiki.qt.io/Qt_for_Python");
     li.version = QString::fromLatin1(FC_SHIBOKEN_VERSION);
     libInfo << li;
 
@@ -616,7 +616,7 @@ void AboutDialog::showLibraryInformation()
     // zlib
     li.name = QLatin1String("zlib");
     li.href = baseurl + QLatin1String("#_TocZlib");
-    li.url = QLatin1String("http://zlib.net");
+    li.url = QLatin1String("https://zlib.net");
     li.version = QLatin1String(ZLIB_VERSION);
     libInfo << li;
 
