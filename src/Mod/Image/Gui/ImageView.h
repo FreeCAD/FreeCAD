@@ -20,6 +20,7 @@
 
 #include <QMouseEvent>
 #include <Gui/MDIView.h>
+#include <Mod/Image/ImageGlobal.h>
 
 #include "OpenGLImageBox.h"
 
