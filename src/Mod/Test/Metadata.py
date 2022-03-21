@@ -84,12 +84,28 @@ class TestMetadata(unittest.TestCase):
 
     def test_default_constructor(self):
         try:
-            md = FreeCAD.Metadata()
+            _ = FreeCAD.Metadata()
         except Exception:
             self.fail("Metadata default constructor failed")
 
     def test_content_types(self):
-        pass
+        filename = os.path.join(self.test_dir, "content_items.xml")
+        md = FreeCAD.Metadata(filename)
+
+        content = md.Content
+        self.assertTrue("workbench" in content)
+        self.assertTrue("preferencepack" in content)
+        self.assertTrue("macro" in content)
+        self.assertTrue("other_content_item" in content)
+
+        workbenches = content["workbench"]
+        preferencepacks = content["preferencepack"]
+        macros = content["macro"]
+        other = content["other_content_item"]
+
+        self.assertEqual(len(workbenches), 3)
+        self.assertEqual(len(macros), 2)
+        self.assertEqual(len(preferencepacks), 1)
 
     def test_content_item_tags(self):
         pass

@@ -58,7 +58,7 @@ XERCES_CPP_NAMESPACE_USE
 
 namespace MetadataInternal {
     class XMLErrorHandler : public HandlerBase {
-        void warning(const SAXParseException& toCatch)
+        void warning(const SAXParseException&)
         {
             // Don't deal with warnings at all
             std::ignore = toCatch;
