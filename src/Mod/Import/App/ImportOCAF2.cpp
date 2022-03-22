@@ -305,22 +305,7 @@ App::DocumentObject *ImportOCAF2::expandShape(
     if(shape.IsNull() || !TopExp_Explorer(shape,TopAbs_VERTEX).More())
         return 0;
 
-    // When saved as compound, STEP file does not support instance sharing,
-    // meaning that even if the source compound may contain child shapes of
-    // shared instances, or multiple hierarchies, those information are lost
-    // when saved to STEP, everything become flat and duplicated. So the code
-    // below is not necessary.
-#if 0
-    auto baseShape = shape.Located(TopLoc_Location());
-    auto it = myShapes.find(baseShape);
-    if(it!=myShapes.end()) {
-        auto link = static_cast<App::Link*>(doc->addObject("App::Link","Link"));
-        link->Visibility.setValue(false);
-        link->setLink(-1,it->second.obj);
-        setPlacement(&link->Placement,shape);
-        return link;
-    }
-#endif
+
     std::vector<App::DocumentObject*> objs;
 
     if(shape.ShapeType() == TopAbs_COMPOUND) {
@@ -450,12 +435,24 @@ bool ImportOCAF2::createObject(App::Document *doc, TDF_Label label,
         feature->Shape.setValue(shape);
         // feature->Visibility.setValue(false);
     }
-    applyFaceColors(feature,{info.faceColor});
-    applyEdgeColors(feature,{info.edgeColor});
+    
     if(hasFaceColors)
+    {
         applyFaceColors(feature,faceColors);
+    }
+    else
+    {
+        applyFaceColors(feature,{info.faceColor});    
+    }
+    
     if(hasEdgeColors)
+    {
         applyEdgeColors(feature,edgeColors);
+    }
+    else
+    {
+        applyEdgeColors(feature,{info.edgeColor});    
+    }
 
     info.propPlacement = &feature->Placement;
     info.obj = feature;
