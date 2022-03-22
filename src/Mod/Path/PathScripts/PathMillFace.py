@@ -281,7 +281,7 @@ class ObjectFace(PathPocketBase.ObjectPocket):
                     partshape=planeshape, depthparams=self.depthparams
                 )
         elif obj.BoundaryShape == "Face Region":
-            baseShape = oneBase[0].Shape
+            baseShape = planeshape  # oneBase[0].Shape
             psZMin = planeshape.BoundBox.ZMin
             ofst = 0.0
             if obj.ClearEdges:
