@@ -147,7 +147,7 @@ class Writer(object):
             )
             self.unit_system = {
                 "L": "m",
-                "M": "t",
+                "M": "kg",
                 "T": "s",
                 "I": "A",
                 "O": "K",
