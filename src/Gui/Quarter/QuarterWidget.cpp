@@ -72,7 +72,6 @@
 #include <Inventor/SbByteBuffer.h>
 #endif
 
-#include <Inventor/SbByteBuffer.h>
 #include <Inventor/SbColor.h>
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/SoDB.h>
