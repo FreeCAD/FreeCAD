@@ -225,6 +225,7 @@ def export(exportList, filename, colors=None, preferences=None):
         preferences = getPreferences()
 
     # process template
+
     version = FreeCAD.Version()
     owner = FreeCAD.ActiveDocument.CreatedBy
     email = ''
@@ -260,12 +261,16 @@ def export(exportList, filename, colors=None, preferences=None):
     os.close(templatefilehandle)
 
     # create IFC file
+
     global ifcfile, surfstyles, clones, sharedobjects, profiledefs, shapedefs
     ifcfile = ifcopenshell.open(templatefile)
     ifcfile = exportIFCHelper.writeUnits(ifcfile,preferences["IFC_UNIT"])
     history = ifcfile.by_type("IfcOwnerHistory")[0]
     objectslist = Draft.get_group_contents(exportList, walls=True,
                                            addgroups=True)
+
+    # separate 2D objects
+
     annotations = []
     for obj in objectslist:
         if obj.isDerivedFrom("Part::Part2DObject"):
@@ -273,8 +278,10 @@ def export(exportList, filename, colors=None, preferences=None):
         elif obj.isDerivedFrom("App::Annotation") or (Draft.getType(obj) in ["DraftText","Text","Dimension","LinearDimension","AngularDimension"]):
             annotations.append(obj)
         elif obj.isDerivedFrom("Part::Feature"):
-            if obj.Shape:
-                if obj.Shape.Edges and (not obj.Shape.Faces):
+            if obj.Shape and (not obj.Shape.Solids) and obj.Shape.Edges:
+                if not obj.Shape.Faces:
+                    annotations.append(obj)
+                elif (obj.Shape.BoundBox.XLength < 0.0001) or (obj.Shape.BoundBox.YLength < 0.0001) or (obj.Shape.BoundBox.ZLength < 0.0001):
                     annotations.append(obj)
 
     # clean objects list of unwanted types
