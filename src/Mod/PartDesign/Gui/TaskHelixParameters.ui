@@ -219,7 +219,7 @@
         <double>89.000000000000000</double>
        </property>
        <property name="singleStep">
-        <double>5.000000000000000</double>
+        <double>1.000000000000000</double>
        </property>
       </widget>
      </item>
