@@ -232,12 +232,12 @@ class _Rebar(ArchComponent.Component):
 
     def getRebarData(self,obj):
 
-        if not obj.Host:
-            return
+        #if not obj.Host:
+        #    return
         #if Draft.getType(obj.Host) != "Structure":
         #    return
-        if not obj.Host.Shape:
-            return
+        #if not obj.Host.Shape:
+        #    return
         if not obj.Base:
             return
         if not obj.Base.Shape:
@@ -248,14 +248,19 @@ class _Rebar(ArchComponent.Component):
             return
         if not obj.Amount:
             return
-        father = obj.Host
+        father = None
+        if obj.Host:
+            father = obj.Host
         wire = obj.Base.Shape.Wires[0]
+        axis = None
         if Draft.getType(obj.Base) == "Wire": # Draft Wires can have "wrong" placement
             import DraftGeomUtils
             axis = DraftGeomUtils.getNormal(obj.Base.Shape)
-        else:
+        if not axis:
             axis = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,-1))
-        size = (ArchCommands.projectToVector(father.Shape.copy(),axis)).Length
+        size = 0
+        if father:
+            size = (ArchCommands.projectToVector(father.Shape.copy(),axis)).Length
         if hasattr(obj,"Direction"):
             if not DraftVecUtils.isNull(obj.Direction):
                 axis = FreeCAD.Vector(obj.Direction)
@@ -270,7 +275,10 @@ class _Rebar(ArchComponent.Component):
                 wire = DraftGeomUtils.filletWire(wire,radius)
         wires = []
         if obj.Amount == 1:
-            offset = DraftVecUtils.scaleTo(axis,size/2)
+            if size:
+                offset = DraftVecUtils.scaleTo(axis,size/2)
+            else:
+                offset = axis
             wire.translate(offset)
             wires.append(wire)
         else:
