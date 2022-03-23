@@ -5,6 +5,11 @@
  *                                                                         *
  ***************************************************************************/
 
+// this file contains the export macros for the App and Gui module
+// for Qt Designer, see e.g. 
+// https://forum.freecadweb.org/viewtopic.php?p=558050#p558050
+// why this is necessary
+
 #include <FCGlobal.h>
 
 #ifndef IMAGE_GLOBAL_H
