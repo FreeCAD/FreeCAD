@@ -33,51 +33,55 @@ PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
     0,                                                /*tp_itemsize*/
     /* methods */
     FeaturePyT::PyDestructor,                         /*tp_dealloc*/
-    0,                                                /*tp_print*/
-    nullptr,                                                /*tp_getattr*/
-    nullptr,                                                /*tp_setattr*/
-    nullptr,                                                /*tp_compare*/
-    nullptr,                                                /*tp_repr*/
-    nullptr,                                                /*tp_as_number*/
-    nullptr,                                                /*tp_as_sequence*/
-    nullptr,                                                /*tp_as_mapping*/
-    nullptr,                                                /*tp_hash*/
-    nullptr,                                                /*tp_call */
-    nullptr,                                                /*tp_str  */
+#if PY_VERSION_HEX >= 0x03080000
+    0,                                                /*tp_vectorcall_offset*/
+#else
+    nullptr,                                          /*tp_print*/
+#endif
+    nullptr,                                          /*tp_getattr*/
+    nullptr,                                          /*tp_setattr*/
+    nullptr,                                          /*tp_compare*/
+    nullptr,                                          /*tp_repr*/
+    nullptr,                                          /*tp_as_number*/
+    nullptr,                                          /*tp_as_sequence*/
+    nullptr,                                          /*tp_as_mapping*/
+    nullptr,                                          /*tp_hash*/
+    nullptr,                                          /*tp_call */
+    nullptr,                                          /*tp_str  */
     FeaturePyT::__getattro,                           /*tp_getattro*/
     __setattro,                                       /*tp_setattro*/
     /* --- Functions to access object as input/output buffer ---------*/
-    nullptr,                                                /* tp_as_buffer */
+    nullptr,                                          /* tp_as_buffer */
     /* --- Flags to define presence of optional/expanded features */
     Py_TPFLAGS_BASETYPE|Py_TPFLAGS_DEFAULT,           /*tp_flags */
     "This is the father of all Feature classes",      /*tp_doc */
-    nullptr,                                                /*tp_traverse */
-    nullptr,                                                /*tp_clear */
-    nullptr,                                                /*tp_richcompare */
+    nullptr,                                          /*tp_traverse */
+    nullptr,                                          /*tp_clear */
+    nullptr,                                          /*tp_richcompare */
     0,                                                /*tp_weaklistoffset */
-    nullptr,                                                /*tp_iter */
-    nullptr,                                                /*tp_iternext */
-    nullptr,                                                /*tp_methods */
-    nullptr,                                                /*tp_members */
-    nullptr,                                                /*tp_getset */
+    nullptr,                                          /*tp_iter */
+    nullptr,                                          /*tp_iternext */
+    nullptr,                                          /*tp_methods */
+    nullptr,                                          /*tp_members */
+    nullptr,                                          /*tp_getset */
     &FeaturePyT::Type,                                /*tp_base */
-    nullptr,                                                /*tp_dict */
-    nullptr,                                                /*tp_descr_get */
-    nullptr,                                                /*tp_descr_set */
+    nullptr,                                          /*tp_dict */
+    nullptr,                                          /*tp_descr_get */
+    nullptr,                                          /*tp_descr_set */
     0,                                                /*tp_dictoffset */
     FeaturePyT::__PyInit,                             /*tp_init */
-    nullptr,                                                /*tp_alloc */
-    nullptr,                                                /*tp_new */
-    nullptr,                                                /*tp_free   Low-level free-memory routine */
-    nullptr,                                                /*tp_is_gc  For PyObject_IS_GC */
-    nullptr,                                                /*tp_bases */
-    nullptr,                                                /*tp_mro    method resolution order */
-    nullptr,                                                /*tp_cache */
-    nullptr,                                                /*tp_subclasses */
-    nullptr,                                                /*tp_weaklist */
-    nullptr,                                                /*tp_del */
-    0                                                 /*tp_version_tag */
-    ,nullptr                                                /*tp_finalize */
+    nullptr,                                          /*tp_alloc */
+    nullptr,                                          /*tp_new */
+    nullptr,                                          /*tp_free   Low-level free-memory routine */
+    nullptr,                                          /*tp_is_gc  For PyObject_IS_GC */
+    nullptr,                                          /*tp_bases */
+    nullptr,                                          /*tp_mro    method resolution order */
+    nullptr,                                          /*tp_cache */
+    nullptr,                                          /*tp_subclasses */
+    nullptr,                                          /*tp_weaklist */
+    nullptr,                                          /*tp_del */
+    0,                                                /*tp_version_tag */
+    nullptr                                           /*tp_finalize */
 #if PY_VERSION_HEX >= 0x03080000
     ,0                                                /*tp_vectorcall */
 #endif
@@ -85,7 +89,7 @@ PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
 
 template<class FeaturePyT>
 FeaturePythonPyT<FeaturePyT>::FeaturePythonPyT(Base::BaseClass *pcObject, PyTypeObject *T)
-    : FeaturePyT(reinterpret_cast<typename FeaturePyT::PointerType>(pcObject), T)
+    : FeaturePyT(static_cast<typename FeaturePyT::PointerType>(pcObject), T)
 {
     Base::PyGILStateLocker lock;
     dict_methods = PyDict_New();
