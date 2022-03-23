@@ -52,7 +52,7 @@
 
 // standard
 #include <algorithm>
-#include <assert.h>
+#include <cassert>
 #include <cmath>
 #include <iostream>
 #include <sstream>

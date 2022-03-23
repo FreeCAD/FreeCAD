@@ -44,8 +44,8 @@
 #ifdef _PreComp_
 
 // standard
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 
 // STL
 #include <algorithm>

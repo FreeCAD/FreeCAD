@@ -53,8 +53,8 @@
 #include <list>
 #include <iostream>
 #include <sstream>
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 #include <io.h>
 #include <fcntl.h>
 #include <vector>

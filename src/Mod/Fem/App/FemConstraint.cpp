@@ -25,7 +25,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <math.h> //OvG: Required for log10
+# include <cmath> //OvG: Required for log10
 # include <TopoDS.hxx>
 # include <BRepGProp_Face.hxx>
 # include <gp_Vec.hxx>

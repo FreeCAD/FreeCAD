@@ -46,7 +46,7 @@
 #include <QDialog>
 
 
-# include <math.h>
+# include <cmath>
 #endif
 
 #include <App/Application.h>

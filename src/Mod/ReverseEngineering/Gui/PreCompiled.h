@@ -50,7 +50,7 @@
 #ifdef _PreComp_
 // standard
 #include <iostream>
-#include <assert.h>
+#include <cassert>
 #include <cmath>
 
 // STL

@@ -29,7 +29,7 @@
 # include <QInputDialog>
 # include <QMessageBox>
 # include <QString>
-# include <stdlib.h>
+# include <cstdlib>
 # include <qdebug.h>
 # include <GC_MakeEllipse.hxx>
 # include <boost/math/special_functions/fpclassify.hpp>

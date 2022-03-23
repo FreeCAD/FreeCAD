@@ -44,7 +44,7 @@
 
 #endif  // #ifndef _PreComp_
 
-#include <math.h>
+#include <cmath>
 
 #include "MDIViewPage.h"
 

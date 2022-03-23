@@ -45,22 +45,19 @@
 #ifdef _PreComp_
 
 // standard
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 #include <fcntl.h>
-#include <ctype.h>
+#include <cctype>
 #include <typeinfo>
-#include <float.h>
-#include <limits.h>
+#include <cfloat>
+#include <climits>
 
 #ifdef FC_OS_WIN32
 #include <Windows.h>
 #include <io.h>
 #include <shellapi.h>
 #endif
-
-// null-terminated byte string
-#include <cctype>
 
 // streams
 #include <iostream>

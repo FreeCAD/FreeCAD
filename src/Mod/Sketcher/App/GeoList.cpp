@@ -27,7 +27,7 @@
 
 #endif  // #ifndef _PreComp_
 
-#include <assert.h>
+#include <cassert>
 
 #include <Base/Vector3D.h>
 #include <Base/Exception.h>

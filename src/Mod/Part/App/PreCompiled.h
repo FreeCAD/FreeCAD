@@ -52,9 +52,9 @@
 #include <list>
 #include <iostream>
 #include <sstream>
-#include <stdio.h>
+#include <cstdio>
 #include <fcntl.h>
-#include <assert.h>
+#include <cassert>
 
 #include <array>
 #include <vector>

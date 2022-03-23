@@ -32,7 +32,7 @@
 # else
 #  include <GL/gl.h>
 # endif
-# include <float.h>
+# include <cfloat>
 # include <algorithm>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/SoPrimitiveVertex.h>

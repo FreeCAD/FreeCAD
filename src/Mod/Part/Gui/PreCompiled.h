@@ -57,12 +57,8 @@
 
 // standard
 #include <iostream>
-//#include <stdio.h>
 #include <cassert>
 #include <cfloat>
-//#include <io.h>
-//#include <fcntl.h>
-//#include <ctype.h>
 # include <cmath>
 #include <sstream>
 

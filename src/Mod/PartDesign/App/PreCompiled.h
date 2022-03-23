@@ -49,8 +49,8 @@
 // standard
 #include <iostream>
 #include <sstream>
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 #include <string>
 #include <map>
 #include <vector>
@@ -58,8 +58,7 @@
 #include <bitset>
 
 #include <cstring>
-
-# include <math.h>
+#include <cmath>
 
 // QT
 #include <QObject>

@@ -41,8 +41,8 @@
 // standard
 #include <iostream>
 #include <sstream>
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 #include <string>
 #include <map>
 #include <vector>

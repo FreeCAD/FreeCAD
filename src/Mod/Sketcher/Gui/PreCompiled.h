@@ -52,7 +52,7 @@
 #include <cassert>
 #include <cmath>
 
-#include <stdlib.h>
+#include <cstdlib>
 
 // STL
 #include <vector>

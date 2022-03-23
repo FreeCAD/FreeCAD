@@ -32,7 +32,7 @@
 # else
 #  include <GL/gl.h>
 # endif
-# include <float.h>
+# include <cfloat>
 # include <algorithm>
 # include <Inventor/actions/SoCallbackAction.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>

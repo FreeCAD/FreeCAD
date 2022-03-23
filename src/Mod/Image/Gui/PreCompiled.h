@@ -45,7 +45,7 @@
 #ifdef _PreComp_
 
 // standard
-#include <assert.h>
+#include <cassert>
 #include <cmath>
 #include <iostream>
 #include <sstream>

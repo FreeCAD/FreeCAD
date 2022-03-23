@@ -35,7 +35,7 @@
 # include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include <stdio.h>
+#include <cstdio>
 #include <sstream>
 
 // FreeCAD Base header

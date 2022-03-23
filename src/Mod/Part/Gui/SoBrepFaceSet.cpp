@@ -29,7 +29,7 @@
 #endif
 
 #ifndef _PreComp_
-# include <float.h>
+# include <cfloat>
 # include <algorithm>
 # include <map>
 # include <Inventor/SoPickedPoint.h>

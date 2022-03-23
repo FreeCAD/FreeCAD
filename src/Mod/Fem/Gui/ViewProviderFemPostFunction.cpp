@@ -49,7 +49,7 @@
 
 # include <boost_bind_bind.hpp>
 
-# include <math.h>
+# include <cmath>
 #endif
 
 #include "ViewProviderFemPostFunction.h"

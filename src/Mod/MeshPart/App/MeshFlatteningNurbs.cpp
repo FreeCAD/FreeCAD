@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 #include "MeshFlatteningNurbs.h"
 #include <iostream>
-#include "math.h"
+#include <cmath>
 
 
 namespace nurbs{

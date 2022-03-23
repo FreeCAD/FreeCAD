@@ -24,7 +24,7 @@
 
 #if defined(FC_OS_WIN32)
 #include <Windows.h>
-#include <stdint.h>
+#include <cstdint>
 #endif
 
 #include <openssl/hmac.h>

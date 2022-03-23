@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <assert.h>
+#include <cassert>
 #include <QPainter>
 #include <QPainterPath>
 #include <QStyleOptionGraphicsItem>

@@ -3177,8 +3177,8 @@ void Application::ExtractUserPath()
 }
 
 #if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_BSD)
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <sys/param.h>
 
 std::string Application::FindHomePath(const char* sCall)
@@ -3235,7 +3235,7 @@ std::string Application::FindHomePath(const char* sCall)
 #elif defined(FC_OS_MACOSX)
 #include <mach-o/dyld.h>
 #include <string>
-#include <stdlib.h>
+#include <cstdlib>
 #include <sys/param.h>
 
 std::string Application::FindHomePath(const char* call)

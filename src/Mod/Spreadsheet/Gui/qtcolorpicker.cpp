@@ -62,7 +62,7 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QShowEvent>
 #include <QtGui/QMouseEvent>
-#include <math.h>
+#include <cmath>
 
 #include <QScreen>
 #include <Gui/FileDialog.h>

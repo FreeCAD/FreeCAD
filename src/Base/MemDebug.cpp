@@ -41,7 +41,7 @@
 
 #ifndef _PreComp_
 # ifdef _MSC_VER
-#  include <time.h>
+#  include <ctime>
 #  include <crtdbg.h>
 # endif
 #endif

@@ -44,7 +44,7 @@
 # include <Inventor/nodes/SoMaterialBinding.h>
 # include <Inventor/nodes/SoScale.h>
 
-# include <math.h>
+# include <cmath>
 #endif
 
 #include <Gui/Command.h>

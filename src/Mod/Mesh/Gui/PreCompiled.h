@@ -52,8 +52,8 @@
 #  include <gts.h>
 #endif
 // standard
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 
 // STL
 #include <algorithm>

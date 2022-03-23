@@ -27,7 +27,7 @@
 #include <QImage>
 #include <QByteArray>
 #include <QBuffer>
-#include <stdlib.h>
+#include <cstdlib>
 
 
 MTextEdit::MTextEdit(QWidget *parent) : QTextEdit(parent) {

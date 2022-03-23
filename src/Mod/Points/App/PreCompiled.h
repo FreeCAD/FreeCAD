@@ -43,8 +43,8 @@
 #ifdef _PreComp_
 
 // standard
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 
 // STL
 #include <algorithm>
@@ -59,9 +59,9 @@
 #include <string>
 #include <vector>
 #include <bitset>
-#include <float.h>
+#include <cfloat>
 #include <cmath>
-#include <stdlib.h>
+#include <cstdlib>
 
 #endif //_PreComp_
 

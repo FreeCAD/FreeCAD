@@ -27,7 +27,7 @@
 
 #include "Utils.h"
 #include <sstream>
-#include <stdlib.h>
+#include <cstdlib>
 #include <boost/regex.hpp>
 #include <Base/Exception.h>
 #include "Sheet.h"

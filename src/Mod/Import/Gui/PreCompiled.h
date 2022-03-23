@@ -53,7 +53,7 @@
 // standard
 #include <list>
 #include <iostream>
-#include <assert.h>
+#include <cassert>
 
 // STL
 #include <vector>

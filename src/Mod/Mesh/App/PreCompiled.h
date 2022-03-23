@@ -47,10 +47,10 @@
 #ifdef _PreComp_
 
 // standard
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 #include <cmath>
-#include <float.h>
+#include <cfloat>
 #include <fcntl.h>
 #include <ios>
 

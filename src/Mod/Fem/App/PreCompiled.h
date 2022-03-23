@@ -49,8 +49,8 @@
 // standard
 #include <iostream>
 #include <sstream>
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 #include <string>
 #include <map>
 #include <vector>
@@ -59,8 +59,6 @@
 #include <cstdlib>
 #include <memory>
 #include <cmath>
-
-#include <math.h>
 
 #include <algorithm>
 #include <stdexcept>

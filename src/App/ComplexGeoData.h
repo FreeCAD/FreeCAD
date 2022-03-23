@@ -29,7 +29,7 @@
 #include <Base/Persistence.h>
 
 #ifdef __GNUC__
-# include <stdint.h>
+# include <cstdint>
 #endif
 
 

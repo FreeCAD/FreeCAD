@@ -30,7 +30,7 @@
 #include "kdl_cp/chain.hpp"
 #include "kdl_cp/frames_io.hpp"
 
-#include <stdio.h>
+#include <cstdio>
 #include <iostream>
 
 #include <Base/Console.h>

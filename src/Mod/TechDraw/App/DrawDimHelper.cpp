@@ -27,7 +27,7 @@
 # include <cstring>
 # include <cstdlib>
 #include <cmath>
-#include <float.h>
+#include <cfloat>
 #include <string>
 # include <exception>
 
