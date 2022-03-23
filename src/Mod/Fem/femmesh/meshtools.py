@@ -2227,7 +2227,7 @@ def get_femmesh_eletype(
     if not femmesh:
         FreeCAD.Console.PrintError("Error: No femmesh.\n")
     if not femelement_table:
-        FreeCAD.Console.PrintWarning("The femelement_table need to be calculated.\n")
+        FreeCAD.Console.PrintWarning("The femelement_table needs to be calculated.\n")
         femelement_table = get_femelement_table(femmesh)
     # in some cases lowest key in femelement_table is not [1]
     for elem in sorted(femelement_table):
