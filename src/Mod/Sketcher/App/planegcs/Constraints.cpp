@@ -553,7 +553,7 @@ void ConstraintPointOnPerpBisector::errorgrad(double *err, double *grad, double 
 double ConstraintPointOnPerpBisector::error()
 {
     double err;
-    errorgrad(&err,0,0);
+    errorgrad(&err,nullptr,nullptr);
     return scale * err;
 }
 
@@ -563,7 +563,7 @@ double ConstraintPointOnPerpBisector::grad(double *param)
     if ( findParamInPvec(param) == -1  ) return 0.0;
 
     double deriv;
-    errorgrad(0, &deriv, param);
+    errorgrad(nullptr, &deriv, param);
 
     return deriv*scale;
 }
@@ -1095,7 +1095,7 @@ void ConstraintEllipseTangentLine::errorgrad(double *err, double *grad, double *
 double ConstraintEllipseTangentLine::error()
 {
     double err;
-    errorgrad(&err,0,0);
+    errorgrad(&err,nullptr,nullptr);
     return scale * err;
 }
 
@@ -1105,7 +1105,7 @@ double ConstraintEllipseTangentLine::grad(double *param)
     if ( findParamInPvec(param) == -1 ) return 0.0;
 
     double deriv;
-    errorgrad(0, &deriv, param);
+    errorgrad(nullptr, &deriv, param);
 
     //use numeric for testing
     #if 0
@@ -1220,7 +1220,7 @@ void ConstraintInternalAlignmentPoint2Ellipse::errorgrad(double *err, double *gr
 double ConstraintInternalAlignmentPoint2Ellipse::error()
 {
     double err;
-    errorgrad(&err,0,0);
+    errorgrad(&err,nullptr,nullptr);
     return scale * err;
 
 }
@@ -1231,7 +1231,7 @@ double ConstraintInternalAlignmentPoint2Ellipse::grad(double *param)
     if ( findParamInPvec(param) == -1  ) return 0.0;
 
     double deriv;
-    errorgrad(0, &deriv, param);
+    errorgrad(nullptr, &deriv, param);
 
     //use numeric for testing
     #if 0
@@ -1353,7 +1353,7 @@ void ConstraintInternalAlignmentPoint2Hyperbola::errorgrad(double *err, double *
 double ConstraintInternalAlignmentPoint2Hyperbola::error()
 {
     double err;
-    errorgrad(&err,0,0);
+    errorgrad(&err,nullptr,nullptr);
     return scale * err;
 
 }
@@ -1364,7 +1364,7 @@ double ConstraintInternalAlignmentPoint2Hyperbola::grad(double *param)
     if ( findParamInPvec(param) == -1  ) return 0.0;
 
     double deriv;
-    errorgrad(0, &deriv, param);
+    errorgrad(nullptr, &deriv, param);
 
     return deriv*scale;
 
@@ -1416,7 +1416,7 @@ void ConstraintEqualMajorAxesConic::errorgrad(double *err, double *grad, double 
 double ConstraintEqualMajorAxesConic::error()
 {
     double err;
-    errorgrad(&err,0,0);
+    errorgrad(&err,nullptr,nullptr);
     return scale * err;
 }
 
@@ -1426,7 +1426,7 @@ double ConstraintEqualMajorAxesConic::grad(double *param)
     if ( findParamInPvec(param) == -1  ) return 0.0;
 
     double deriv;
-    errorgrad(0, &deriv, param);
+    errorgrad(nullptr, &deriv, param);
 
     return deriv * scale;
 }
@@ -1492,7 +1492,7 @@ void ConstraintEqualFocalDistance::errorgrad(double *err, double *grad, double *
 double ConstraintEqualFocalDistance::error()
 {
     double err;
-    errorgrad(&err,0,0);
+    errorgrad(&err,nullptr,nullptr);
     return scale * err;
 }
 
@@ -1502,7 +1502,7 @@ double ConstraintEqualFocalDistance::grad(double *param)
     if ( findParamInPvec(param) == -1  ) return 0.0;
 
     double deriv;
-    errorgrad(0, &deriv, param);
+    errorgrad(nullptr, &deriv, param);
 
     return deriv * scale;
 }
@@ -1523,7 +1523,7 @@ ConstraintCurveValue::ConstraintCurveValue(Point &p, double* pcoord, Curve& crv,
 
 ConstraintCurveValue::~ConstraintCurveValue()
 {
-    delete this->crv; this->crv = 0;
+    delete this->crv; this->crv = nullptr;
 }
 
 void ConstraintCurveValue::ReconstructGeomPointers()
@@ -1580,7 +1580,7 @@ void ConstraintCurveValue::errorgrad(double *err, double *grad, double *param)
 double ConstraintCurveValue::error()
 {
     double err;
-    errorgrad(&err,0,0);
+    errorgrad(&err,nullptr,nullptr);
     return scale * err;
 }
 
@@ -1590,7 +1590,7 @@ double ConstraintCurveValue::grad(double *param)
     if ( findParamInPvec(param) == -1  ) return 0.0;
 
     double deriv;
-    errorgrad(0, &deriv, param);
+    errorgrad(nullptr, &deriv, param);
 
     return deriv*scale;
 }
@@ -1748,7 +1748,7 @@ ConstraintPointOnParabola::ConstraintPointOnParabola(Point &p, ArcOfParabola &e)
 
 ConstraintPointOnParabola::~ConstraintPointOnParabola()
 {
-    delete this->parab; this->parab = 0;
+    delete this->parab; this->parab = nullptr;
 }
 
 void ConstraintPointOnParabola::ReconstructGeomPointers()
@@ -1807,7 +1807,7 @@ void ConstraintPointOnParabola::errorgrad(double *err, double *grad, double *par
 double ConstraintPointOnParabola::error()
 {
     double err;
-    errorgrad(&err,0,0);
+    errorgrad(&err,nullptr,nullptr);
     return scale * err;
 }
 
@@ -1817,7 +1817,7 @@ double ConstraintPointOnParabola::grad(double *param)
     if ( findParamInPvec(param) == -1  ) return 0.0;
 
     double deriv;
-    errorgrad(0, &deriv, param);
+    errorgrad(nullptr, &deriv, param);
 
     return deriv*scale;
 }
@@ -1838,8 +1838,8 @@ ConstraintAngleViaPoint::ConstraintAngleViaPoint(Curve &acrv1, Curve &acrv2, Poi
 }
 ConstraintAngleViaPoint::~ConstraintAngleViaPoint()
 {
-    delete crv1; crv1 = 0;
-    delete crv2; crv2 = 0;
+    delete crv1; crv1 = nullptr;
+    delete crv2; crv2 = nullptr;
 }
 
 void ConstraintAngleViaPoint::ReconstructGeomPointers()
@@ -1941,9 +1941,9 @@ ConstraintSnell::ConstraintSnell(Curve &ray1, Curve &ray2, Curve &boundary, Poin
 }
 ConstraintSnell::~ConstraintSnell()
 {
-    delete ray1; ray1 = 0;
-    delete ray2; ray2 = 0;
-    delete boundary; boundary = 0;
+    delete ray1; ray1 = nullptr;
+    delete ray2; ray2 = nullptr;
+    delete boundary; boundary = nullptr;
 }
 
 void ConstraintSnell::ReconstructGeomPointers()
@@ -1992,7 +1992,7 @@ void ConstraintSnell::errorgrad(double *err, double *grad, double* param)
 double ConstraintSnell::error()
 {
     double err;
-    errorgrad(&err, 0, 0);
+    errorgrad(&err, nullptr, nullptr);
     return scale * err;
 }
 
@@ -2003,7 +2003,7 @@ double ConstraintSnell::grad(double *param)
     if ( findParamInPvec(param) == -1 ) return 0.0;
 
     double deriv;
-    errorgrad(0, &deriv, param);
+    errorgrad(nullptr, &deriv, param);
 
 
 //use numeric for testing
@@ -2111,7 +2111,7 @@ void ConstraintEqualLineLength::errorgrad(double *err, double *grad, double *par
 double ConstraintEqualLineLength::error()
 {
     double err;
-    errorgrad(&err,0,0);
+    errorgrad(&err,nullptr,nullptr);
     return scale * err;
 }
 
@@ -2120,7 +2120,7 @@ double ConstraintEqualLineLength::grad(double *param)
     if ( findParamInPvec(param) == -1 ) return 0.0;
 
     double deriv;
-    errorgrad(0, &deriv, param);
+    errorgrad(nullptr, &deriv, param);
 
     return deriv*scale;
 }

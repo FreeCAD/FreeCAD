@@ -515,10 +515,10 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
         ,QKeySequence(Qt::Key_F2)
 #endif
         );
-    rename->setEnabled(item != 0);
+    rename->setEnabled(item != nullptr);
 
     QAction* center = menu.addAction(tr("Center sketch"), this, SLOT(centerSelectedItems()));
-    center->setEnabled(item != 0);
+    center->setEnabled(item != nullptr);
 
     QAction* remove = menu.addAction(tr("Delete"), this, SLOT(deleteSelectedItems()),
         QKeySequence(QKeySequence::Delete));
@@ -636,7 +636,7 @@ void ConstraintView::swapNamedOfSelectedItems()
 // ----------------------------------------------------------------------------
 
 TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch *sketchView) :
-    TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Constraints"), true, 0),
+    TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Constraints"), true, nullptr),
     sketchView(sketchView), inEditMode(false),
     ui(new Ui_TaskSketcherConstraints)
 {
@@ -763,7 +763,7 @@ void TaskSketcherConstraints::updateAssociatedConstraintsFilter()
     assert(sketchView);
 
     std::vector<Gui::SelectionObject> selection;
-    selection = Gui::Selection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+    selection = Gui::Selection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
@@ -1422,7 +1422,7 @@ void TaskSketcherConstraints::slotConstraintsChanged(void)
     for (int i = 0; i <  ui->listWidgetConstraints->count(); ++i) {
         ConstraintItem * it = dynamic_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
 
-        assert(it != 0);
+        assert(it != nullptr);
 
         it->ConstraintNbr = i;
         it->value = QVariant();

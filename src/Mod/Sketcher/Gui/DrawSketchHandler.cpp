@@ -217,7 +217,7 @@ void CurveConverter::OnChange(Base::Subject<const char*> &rCaller, const char * 
 //**************************************************************************
 // Construction/Destruction
 
-DrawSketchHandler::DrawSketchHandler() : sketchgui(0) {}
+DrawSketchHandler::DrawSketchHandler() : sketchgui(nullptr) {}
 
 DrawSketchHandler::~DrawSketchHandler() {}
 

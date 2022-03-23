@@ -1289,7 +1289,7 @@ void EditModeConstraintCoinManager::updateConstraintColor(const std::vector<Sket
         // Non DatumLabel Nodes will have a material excluding coincident
         bool hasMaterial = false;
 
-        SoMaterial *m = 0;
+        SoMaterial *m = nullptr;
         if (!hasDatumLabel && type != Sketcher::Coincident && type != Sketcher::InternalAlignment) {
             hasMaterial = true;
             m = static_cast<SoMaterial *>(s->getChild(static_cast<int>(ConstraintNodePosition::MaterialIndex)));
@@ -1727,7 +1727,7 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
         if (editModeScenegraphNodes.constrGroup->getChild(i) == tailFather) {
             SoSeparator *sep = static_cast<SoSeparator *>(tailFather);
             if (sep->getNumChildren() > static_cast<int>(ConstraintNodePosition::FirstConstraintIdIndex)) {
-                SoInfo *constrIds = NULL;
+                SoInfo *constrIds = nullptr;
                 if (tail == sep->getChild(static_cast<int>(ConstraintNodePosition::FirstIconIndex))) {
                     // First icon was hit
                     constrIds = static_cast<SoInfo *>(sep->getChild(static_cast<int>(ConstraintNodePosition::FirstConstraintIdIndex)));

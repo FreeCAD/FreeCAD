@@ -46,7 +46,7 @@ class SketcherGeneralWidget : public QWidget
     Q_OBJECT
 
 public:
-    SketcherGeneralWidget(QWidget *parent=0);
+    SketcherGeneralWidget(QWidget *parent=nullptr);
     ~SketcherGeneralWidget();
     
     bool eventFilter(QObject *object, QEvent *event);

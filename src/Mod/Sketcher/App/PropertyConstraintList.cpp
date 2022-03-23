@@ -256,7 +256,7 @@ bool PropertyConstraintList::getPyPathValue(const App::ObjectIdentifier &path, P
 
     const ObjectIdentifier::Component & c1 = path.getPropertyComponent(1);
 
-    const Constraint *cstr = 0;
+    const Constraint *cstr = nullptr;
 
     if (c1.isArray())
         cstr = _lValueList[c1.getIndex(_lValueList.size())];

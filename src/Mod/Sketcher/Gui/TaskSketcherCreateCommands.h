@@ -45,7 +45,7 @@ class TaskSketcherCreateCommands : public TaskBox, public Gui::SelectionSingleto
     Q_OBJECT
 
 public:
-    TaskSketcherCreateCommands(QWidget *parent = 0);
+    TaskSketcherCreateCommands(QWidget *parent = nullptr);
     ~TaskSketcherCreateCommands();
     /// Observer message from the Selection
     void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,

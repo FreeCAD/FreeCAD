@@ -41,7 +41,7 @@ class SketcherSettings : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    SketcherSettings(QWidget* parent = 0);
+    SketcherSettings(QWidget* parent = nullptr);
     ~SketcherSettings();
 
     void saveSettings();
@@ -64,7 +64,7 @@ class SketcherSettingsDisplay : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    SketcherSettingsDisplay(QWidget* parent = 0);
+    SketcherSettingsDisplay(QWidget* parent = nullptr);
     ~SketcherSettingsDisplay();
 
     void saveSettings();
@@ -89,7 +89,7 @@ class SketcherSettingsColors : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    SketcherSettingsColors(QWidget* parent = 0);
+    SketcherSettingsColors(QWidget* parent = nullptr);
     ~SketcherSettingsColors();
 
     void saveSettings();

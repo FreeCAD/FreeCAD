@@ -123,7 +123,7 @@ void CmdSketcherCloseShape::activated(int iMsg)
 
     // get the selection
     std::vector<Gui::SelectionObject> selection;
-    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+    selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
@@ -234,7 +234,7 @@ void CmdSketcherConnect::activated(int iMsg)
 
     // get the selection
     std::vector<Gui::SelectionObject> selection;
-    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+    selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
@@ -317,7 +317,7 @@ void CmdSketcherSelectConstraints::activated(int iMsg)
 
     // get the selection
     std::vector<Gui::SelectionObject> selection;
-    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+    selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
 
     // Cancel any in-progress operation
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
@@ -967,7 +967,7 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
 
     // get the selection
     std::vector<Gui::SelectionObject> selection;
-    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+    selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
@@ -1080,7 +1080,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
 
     // get the selection
     std::vector<Gui::SelectionObject> selection;
-    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+    selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
@@ -1484,7 +1484,7 @@ void SketcherCopy::activate(SketcherCopy::Op op)
 
     int LastGeoId = 0;
     Sketcher::PointPos LastPointPos = Sketcher::PointPos::none;
-    const Part::Geometry *LastGeo = 0;
+    const Part::Geometry *LastGeo = nullptr;
 
     // create python command with list of elements
     std::stringstream stream;
@@ -2015,7 +2015,7 @@ void CmdSketcherRectangularArray::activated(int iMsg)
     Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection;
-    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+    selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
@@ -2040,7 +2040,7 @@ void CmdSketcherRectangularArray::activated(int iMsg)
 
     int LastGeoId = 0;
     Sketcher::PointPos LastPointPos = Sketcher::PointPos::none;
-    const Part::Geometry *LastGeo = 0;
+    const Part::Geometry *LastGeo = nullptr;
 
     // create python command with list of elements
     std::stringstream stream;
@@ -2282,7 +2282,7 @@ void CmdSketcherRemoveAxesAlignment::activated(int iMsg)
     Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection;
-    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+    selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {

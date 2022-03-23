@@ -47,7 +47,7 @@ class ConstraintView : public QListWidget
     Q_OBJECT
 
 public:
-    explicit ConstraintView(QWidget *parent = 0);
+    explicit ConstraintView(QWidget *parent = nullptr);
     ~ConstraintView();
 
 protected:

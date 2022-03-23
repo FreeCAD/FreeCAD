@@ -63,7 +63,7 @@ int SketchPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 PyObject* SketchPy::solve(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
     getSketchPtr()->resetSolver();
     return Py::new_reference_to(Py::Long(getSketchPtr()->solve()));
 }
@@ -72,7 +72,7 @@ PyObject* SketchPy::addGeometry(PyObject *args)
 {
     PyObject *pcObj;
     if (!PyArg_ParseTuple(args, "O", &pcObj))
-        return 0;
+        return nullptr;
 
     if (PyObject_TypeCheck(pcObj, &(Part::GeometryPy::Type))) {
         Part::Geometry *geo = static_cast<Part::GeometryPy*>(pcObj)->getGeometryPtr();
@@ -108,7 +108,7 @@ PyObject* SketchPy::addConstraint(PyObject *args)
 {
     PyObject *pcObj;
     if (!PyArg_ParseTuple(args, "O", &pcObj))
-        return 0;
+        return nullptr;
 
     if (PyObject_TypeCheck(pcObj, &(PyList_Type)) || PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
         std::vector<Constraint*> values;
@@ -144,7 +144,7 @@ PyObject* SketchPy::addConstraint(PyObject *args)
 PyObject* SketchPy::clear(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
 
     getSketchPtr()->clear();
 
@@ -157,7 +157,7 @@ PyObject* SketchPy::movePoint(PyObject *args)
     PyObject *pcObj;
     int relative=0;
     if (!PyArg_ParseTuple(args, "iiO!|i", &index1,&index2,&(Base::VectorPy::Type),&pcObj,&relative))
-        return 0;
+        return nullptr;
     Base::Vector3d* toPoint = static_cast<Base::VectorPy*>(pcObj)->getVectorPtr();
 
     return Py::new_reference_to(Py::Long(getSketchPtr()->movePoint(index1,(Sketcher::PointPos)index2,*toPoint,(relative>0))));
@@ -209,7 +209,7 @@ Py::Object SketchPy::getShape(void) const
 
 PyObject *SketchPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int SketchPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

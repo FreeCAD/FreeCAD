@@ -105,13 +105,13 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->Type = Equal;
                 valid = true;
             }
-            else if (strstr(ConstraintType,"InternalAlignment") != NULL) {
+            else if (strstr(ConstraintType,"InternalAlignment") != nullptr) {
                 this->getConstraintPtr()->Type = InternalAlignment;
 
                 valid = true;
-                if(strstr(ConstraintType,"EllipseMajorDiameter") != NULL)
+                if(strstr(ConstraintType,"EllipseMajorDiameter") != nullptr)
                     this->getConstraintPtr()->AlignmentType=EllipseMajorDiameter;
-                else if(strstr(ConstraintType,"EllipseMinorDiameter") != NULL)
+                else if(strstr(ConstraintType,"EllipseMinorDiameter") != nullptr)
                     this->getConstraintPtr()->AlignmentType=EllipseMinorDiameter;
                 else {
                     this->getConstraintPtr()->AlignmentType=Undef;
@@ -198,14 +198,14 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->Type = PointOnObject;
                 valid = true;
             }
-            else if (strstr(ConstraintType,"InternalAlignment") != NULL) {
+            else if (strstr(ConstraintType,"InternalAlignment") != nullptr) {
                 this->getConstraintPtr()->Type = InternalAlignment;
 
                 valid = true;
 
-                if(strstr(ConstraintType,"EllipseFocus1") != NULL)
+                if(strstr(ConstraintType,"EllipseFocus1") != nullptr)
                     this->getConstraintPtr()->AlignmentType=EllipseFocus1;
-                else if(strstr(ConstraintType,"EllipseFocus2") != NULL)
+                else if(strstr(ConstraintType,"EllipseFocus2") != nullptr)
                     this->getConstraintPtr()->AlignmentType=EllipseFocus2;
                 else {
                     this->getConstraintPtr()->AlignmentType=Undef;
@@ -313,12 +313,12 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->ThirdPos  = (Sketcher::PointPos) intArg4;
                 return 0;
             }
-            else if (strstr(ConstraintType,"InternalAlignment") != NULL) { // InteralAlignment with InternalElementIndex argument
+            else if (strstr(ConstraintType,"InternalAlignment") != nullptr) { // InteralAlignment with InternalElementIndex argument
                 this->getConstraintPtr()->Type = InternalAlignment;
 
                 valid = true;
 
-                if(strstr(ConstraintType,"BSplineControlPoint") != NULL) {
+                if(strstr(ConstraintType,"BSplineControlPoint") != nullptr) {
                     this->getConstraintPtr()->AlignmentType=BSplineControlPoint;
                 }
                 else {
@@ -673,7 +673,7 @@ Py::Boolean ConstraintPy::getIsActive(void) const
 
 PyObject *ConstraintPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ConstraintPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

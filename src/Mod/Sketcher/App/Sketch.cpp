@@ -1526,7 +1526,7 @@ GCS::Curve* Sketch::getGCSCurveByGeoId(int geoId)
             return &BSplines[Geoms[geoId].index];
             break;
         default:
-            return 0;
+            return nullptr;
     };
 }
 
@@ -2429,7 +2429,7 @@ int Sketch::addAngleAtPointConstraint(
         return -1;
     }
     GCS::Point &p = Points[pointId];
-    GCS::Point* p2 = 0;
+    GCS::Point* p2 = nullptr;
     if(e2e){//we need second point
         int pointId = getPointId(geoId2, pos2);
         if (pointId < 0 || pointId >= int(Points.size())){
@@ -2631,7 +2631,7 @@ int Sketch::addAngleConstraint(int geoId1, PointPos pos1, int geoId2, PointPos p
         Geoms[geoId2].type != Line)
         return -1;
 
-    GCS::Point *l1p1=0, *l1p2=0;
+    GCS::Point *l1p1=nullptr, *l1p2=nullptr;
     if (pos1 == PointPos::start) {
         l1p1 = &Points[Geoms[geoId1].startPointId];
         l1p2 = &Points[Geoms[geoId1].endPointId];
@@ -2640,7 +2640,7 @@ int Sketch::addAngleConstraint(int geoId1, PointPos pos1, int geoId2, PointPos p
         l1p2 = &Points[Geoms[geoId1].startPointId];
     }
 
-    GCS::Point *l2p1=0, *l2p2=0;
+    GCS::Point *l2p1=nullptr, *l2p2=nullptr;
     if (pos2 == PointPos::start) {
         l2p1 = &Points[Geoms[geoId2].startPointId];
         l2p2 = &Points[Geoms[geoId2].endPointId];
@@ -2649,7 +2649,7 @@ int Sketch::addAngleConstraint(int geoId1, PointPos pos1, int geoId2, PointPos p
         l2p2 = &Points[Geoms[geoId2].startPointId];
     }
 
-    if (l1p1 == 0 || l2p1 == 0)
+    if (l1p1 == nullptr || l2p1 == nullptr)
         return -1;
 
     int tag = ++ConstraintsCounter;

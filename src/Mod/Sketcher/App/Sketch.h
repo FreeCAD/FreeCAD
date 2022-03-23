@@ -408,7 +408,7 @@ protected:
 protected:
     /// container element to store and work with the geometric elements of this sketch
     struct GeoDef {
-        GeoDef() : geo(0),type(None),external(false),index(-1),
+        GeoDef() : geo(nullptr),type(None),external(false),index(-1),
                    startPointId(-1),midPointId(-1),endPointId(-1) {}
         Part::Geometry  * geo;             // pointer to the geometry
         GeoType           type;            // type of the geometry
@@ -420,10 +420,10 @@ protected:
     };
     /// container element to store and work with the constraints of this sketch
     struct ConstrDef {
-        ConstrDef() : constr(0)
+        ConstrDef() : constr(nullptr)
                     , driving(true)
-                    , value(0)
-                    , secondvalue(0) {}
+                    , value(nullptr)
+                    , secondvalue(nullptr) {}
         Constraint *    constr;             // pointer to the constraint
         bool            driving;
         double *        value;
