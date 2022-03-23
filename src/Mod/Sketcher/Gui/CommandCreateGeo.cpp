@@ -732,6 +732,7 @@ private:
 
                             handler->setState(SelectMode::SeekSecond);
 
+                            doOverrideSketchPosition(prevCursorPosition); //Correct prevCursorPosition as it's modified by the parameters
                             handler->updateDataAndDrawToPosition(prevCursorPosition); // draw curve to cursor with suggested constraints
                         }
                     }
@@ -741,6 +742,7 @@ private:
                         if (toolWidget->isParameterSet(WParameter::Third) ||
                             toolWidget->isParameterSet(WParameter::Fourth)) {
 
+                            doOverrideSketchPosition(prevCursorPosition); //Correct prevCursorPosition as it's modified by the parameters
                             handler->updateDataAndDrawToPosition(prevCursorPosition); // draw curve to cursor with suggested constraints
 
                             if(toolWidget->isParameterSet(WParameter::Third) &&
