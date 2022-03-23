@@ -92,7 +92,7 @@ namespace Path
       segment_type  retrieveSegment(const cell_type *cell) const;
 
       typedef std::map<int, double> angle_map_t;
-      double angleOfSegment(int i, angle_map_t *angle = 0) const;
+      double angleOfSegment(int i, angle_map_t *angle = nullptr) const;
       bool segmentsAreConnected(int i, int j) const;
 
     private:

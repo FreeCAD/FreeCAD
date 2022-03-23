@@ -38,7 +38,7 @@ class PathExport VoronoiVertex
   TYPESYSTEM_HEADER();
 public:
 
-  VoronoiVertex(Voronoi::diagram_type *dia = 0, long index = Voronoi::InvalidIndex);
+  VoronoiVertex(Voronoi::diagram_type *dia = nullptr, long index = Voronoi::InvalidIndex);
   VoronoiVertex(Voronoi::diagram_type *dia, const Voronoi::diagram_type::vertex_type *v);
   ~VoronoiVertex();
 

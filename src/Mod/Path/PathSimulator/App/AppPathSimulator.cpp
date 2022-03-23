@@ -71,7 +71,7 @@ PyMOD_INIT_FUNC(PathSimulator)
 	}
 	catch (const Base::Exception& e) {
 		PyErr_SetString(PyExc_ImportError, e.what());
-		PyMOD_Return(NULL);
+		PyMOD_Return(nullptr);
 	}
 
 	//

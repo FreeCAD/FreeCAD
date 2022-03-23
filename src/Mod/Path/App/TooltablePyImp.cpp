@@ -222,7 +222,7 @@ PyObject* TooltablePy::deleteTool(PyObject * args)
 
 PyObject *TooltablePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int TooltablePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
@@ -252,7 +252,7 @@ void TooltablePy::setName(Py::String arg)
 
 PyObject* TooltablePy::setFromTemplate(PyObject * args)
 {
-    PyObject *dict = 0;
+    PyObject *dict = nullptr;
     if (PyArg_ParseTuple(args, "O!", &PyDict_Type, &dict)) {
       Py::Dict d(dict);
       setTools(d);
@@ -260,7 +260,7 @@ PyObject* TooltablePy::setFromTemplate(PyObject * args)
     }
 
     PyErr_SetString(PyExc_TypeError, "argument must be a dictionary returned from templateAttrs()");
-    return 0;
+    return nullptr;
 }
 
 PyObject* TooltablePy::templateAttrs(PyObject * args)
@@ -272,7 +272,7 @@ PyObject* TooltablePy::templateAttrs(PyObject * args)
         // will fail to properly track the reference counts and aborts
         // in debug mode.
         Path::ToolPy* tool = new Path::ToolPy(new Path::Tool(*i->second));
-        PyObject *attrs = tool->templateAttrs(0);
+        PyObject *attrs = tool->templateAttrs(nullptr);
         PyDict_SetItem(dict, PYINT_FROMLONG(i->first), attrs);
         Py_DECREF(tool);
     }

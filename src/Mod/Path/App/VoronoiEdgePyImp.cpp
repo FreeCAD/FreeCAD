@@ -245,10 +245,10 @@ const Voronoi::voronoi_diagram_type::edge_type* getEdgeFromPy(VoronoiEdgePy *e, 
   if (throwIfNotBound) {
     throw Py::TypeError("Edge not bound to voronoi diagram");
   }
-  return 0;
+  return nullptr;
 }
 
-VoronoiEdge* getVoronoiEdgeFromPy(const VoronoiEdgePy *e, PyObject *args = 0) {
+VoronoiEdge* getVoronoiEdgeFromPy(const VoronoiEdgePy *e, PyObject *args = nullptr) {
   VoronoiEdge *self = e->getVoronoiEdgePtr();
   if (!self->isBound()) {
     throw Py::TypeError("Edge not bound to voronoi diagram");
@@ -618,7 +618,7 @@ PyObject* VoronoiEdgePy::getSegmentAngle(PyObject *args)
 
 PyObject* VoronoiEdgePy::getCustomAttributes(const char* /*attr*/) const
 {
-  return 0;
+  return nullptr;
 }
 
 int VoronoiEdgePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

@@ -89,10 +89,10 @@ const Voronoi::voronoi_diagram_type::vertex_type* getVertexFromPy(VoronoiVertexP
   if (throwIfNotBound) {
     throw Py::TypeError("Vertex not bound to voronoi diagram");
   }
-  return 0;
+  return nullptr;
 }
 
-VoronoiVertex* getVoronoiVertexFromPy(const VoronoiVertexPy *v, PyObject *args = 0) {
+VoronoiVertex* getVoronoiVertexFromPy(const VoronoiVertexPy *v, PyObject *args = nullptr) {
   VoronoiVertex *self = v->getVoronoiVertexPtr();
   if (!self->isBound()) {
     throw Py::TypeError("Vertex not bound to voronoi diagram");
@@ -160,7 +160,7 @@ PyObject* VoronoiVertexPy::toPoint(PyObject *args)
 
 PyObject* VoronoiVertexPy::getCustomAttributes(const char* /*attr*/) const
 {
-  return 0;
+  return nullptr;
 }
 
 int VoronoiVertexPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

@@ -129,7 +129,7 @@ PyObject*  FeaturePathCompoundPy::removeObject(PyObject *args)
 
 PyObject *FeaturePathCompoundPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 

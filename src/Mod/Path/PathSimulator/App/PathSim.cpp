@@ -68,7 +68,7 @@ Base::Placement * PathSim::ApplyCommand(Base::Placement * pos, Command * cmd)
 	Point3D fromPos(*pos);
 	Point3D toPos(*pos);
 	toPos.UpdateCmd(*cmd);
-	if (m_tool != NULL)
+	if (m_tool != nullptr)
 	{
 		if (cmd->Name == "G0" || cmd->Name == "G1")
 		{

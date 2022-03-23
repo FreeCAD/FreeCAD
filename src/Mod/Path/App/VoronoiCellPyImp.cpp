@@ -89,10 +89,10 @@ const Voronoi::voronoi_diagram_type::cell_type* getCellFromPy(VoronoiCellPy *c, 
   if (throwIfNotBound) {
     throw Py::TypeError("Cell not bound to voronoi diagram");
   }
-  return 0;
+  return nullptr;
 }
 
-VoronoiCell* getVoronoiCellFromPy(const VoronoiCellPy *c, PyObject *args = 0) {
+VoronoiCell* getVoronoiCellFromPy(const VoronoiCellPy *c, PyObject *args = nullptr) {
   VoronoiCell *self = c->getVoronoiCellPtr();
   if (!self->isBound()) {
     throw Py::TypeError("Cell not bound to voronoi diagram");
@@ -193,7 +193,7 @@ PyObject* VoronoiCellPy::getSource(PyObject *args)
 
 PyObject* VoronoiCellPy::getCustomAttributes(const char* /*attr*/) const
 {
-  return 0;
+  return nullptr;
 }
 
 int VoronoiCellPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

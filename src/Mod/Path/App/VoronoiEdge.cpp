@@ -35,7 +35,7 @@ TYPESYSTEM_SOURCE(Path::VoronoiEdge , Base::Persistence)
 VoronoiEdge::VoronoiEdge(Voronoi::diagram_type *d, long index)
   : dia(d)
   , index(index)
-  , ptr(0)
+  , ptr(nullptr)
 {
   if (dia && long(dia->num_edges()) > index) {
     ptr = &(dia->edges()[index]);
@@ -56,11 +56,11 @@ VoronoiEdge::~VoronoiEdge() {
 }
 
 bool VoronoiEdge::isBound(void) const {
-  if (ptr != 0 && dia.isValid() && index != Voronoi::InvalidIndex) {
+  if (ptr != nullptr && dia.isValid() && index != Voronoi::InvalidIndex) {
     if (&(dia->edges()[index]) == ptr) {
       return true;
     }
   }
-  ptr = 0;
+  ptr = nullptr;
   return false;
 }

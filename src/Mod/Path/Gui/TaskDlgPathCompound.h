@@ -41,7 +41,7 @@ class TaskWidgetPathCompound : public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    TaskWidgetPathCompound(ViewProviderPathCompound *CompoundView, QWidget *parent=0);
+    TaskWidgetPathCompound(ViewProviderPathCompound *CompoundView, QWidget *parent=nullptr);
     ~TaskWidgetPathCompound();
 
     std::vector<std::string> getList(void) const;

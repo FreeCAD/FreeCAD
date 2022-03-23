@@ -44,7 +44,7 @@ PARAM_ENUM_STRING_DECLARE(static const char *Enums,AREA_PARAMS_ALL)
 FeatureArea::FeatureArea()
     :myInited(false)
 {
-    ADD_PROPERTY(Sources,(0));
+    ADD_PROPERTY(Sources,(nullptr));
     ADD_PROPERTY(WorkPlane,(TopoDS_Shape()));
 
     PARAM_PROP_ADD("Area",AREA_PARAMS_OPCODE);
@@ -166,7 +166,7 @@ PROPERTY_SOURCE(Path::FeatureAreaView, Part::Feature)
 
 FeatureAreaView::FeatureAreaView()
 {
-    ADD_PROPERTY(Source,(0));
+    ADD_PROPERTY(Source,(nullptr));
     ADD_PROPERTY_TYPE(SectionIndex,(0),"Section",App::Prop_None,"The start index of the section to show, negative value for reverse index from bottom");
     ADD_PROPERTY_TYPE(SectionCount,(1),"Section",App::Prop_None,"Number of sections to show, 0 to show all section starting from SectionIndex");
 }

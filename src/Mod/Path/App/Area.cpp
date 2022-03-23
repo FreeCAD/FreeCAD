@@ -530,7 +530,7 @@ void Area::addToBuild(CArea &area, const TopoDS_Shape &shape) {
     TopoDS_Shape plane = getPlane();
     CArea areaOpen;
     mySkippedShapes += addShape(area,shape,&myTrsf,myParams.Deflection,
-            myParams.Coplanar==CoplanarNone?NULL:&plane,
+            myParams.Coplanar==CoplanarNone?nullptr:&plane,
             myHaveSolid||myParams.Coplanar==CoplanarForce,&areaOpen,
             myParams.OpenMode==OpenModeEdges,myParams.Reorient);
 
@@ -1083,7 +1083,7 @@ void Area::showShape(const TopoDS_Shape &shape, const char *name, const char *fm
 }
 
 template<class T>
-static void showShapes(const T &shapes, const char *name, const char *fmt=0, ...) {
+static void showShapes(const T &shapes, const char *name, const char *fmt=nullptr, ...) {
     if(FC_LOG_INSTANCE.level()>FC_LOGLEVEL_TRACE) {
         BRep_Builder builder;
         TopoDS_Compound comp;
@@ -1492,11 +1492,11 @@ std::vector<shared_ptr<Area> > Area::makeSections(
                 builder.MakeCompound(comp);
 
                 for(TopExp_Explorer xp(s.shape.Moved(loc), TopAbs_SOLID); xp.More(); xp.Next()) {
-                    showShape(xp.Current(),0,"section_%u_shape",i);
+                    showShape(xp.Current(),nullptr,"section_%u_shape",i);
                     std::list<TopoDS_Wire> wires;
                     Part::CrossSection section(a,b,c,xp.Current());
                     wires = section.slice(-d);
-                    showShapes(wires,0,"section_%u_wire",i);
+                    showShapes(wires,nullptr,"section_%u_wire",i);
                     if(wires.empty()) {
                         AREA_LOG("Section returns no wires");
                         continue;
@@ -1515,7 +1515,7 @@ std::vector<shared_ptr<Area> > Area::makeSections(
                         if (shape.IsNull())
                             AREA_WARN("FaceMakerBullseye return null shape on section");
                         else {
-                            showShape(shape,0,"section_%u_face",i);
+                            showShape(shape,nullptr,"section_%u_face",i);
                             for(auto it=wires.begin(),itNext=it;it!=wires.end();it=itNext) {
                                 ++itNext;
                                 if(BRep_Tool::IsClosed(*it))
@@ -1537,7 +1537,7 @@ std::vector<shared_ptr<Area> > Area::makeSections(
                 // Make sure the compound has at least one edge
                 if(TopExp_Explorer(comp,TopAbs_EDGE).More()) {
                     const TopoDS_Shape &shape = comp.Moved(locInverse);
-                    showShape(shape,0,"section_%u_result",i);
+                    showShape(shape,nullptr,"section_%u_result",i);
                     area->add(shape,s.op);
                 }else if(area->myShapes.empty()){
                     auto itNext = it;
@@ -1552,7 +1552,7 @@ std::vector<shared_ptr<Area> > Area::makeSections(
             if(area->myShapes.size()){
                 sections.push_back(area);
                 FC_TIME_LOG(t1,"makeSection " << z);
-                showShape(area->getShape(),0,"section_%u_final",i);
+                showShape(area->getShape(),nullptr,"section_%u_final",i);
                 break;
             }
             if(retried) {
@@ -2961,7 +2961,7 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
     gp_Pnt pstart,pend;
     if(_pstart)
         pstart = *_pstart;
-    bool use_bound = !has_start || _pstart==NULL;
+    bool use_bound = !has_start || _pstart==nullptr;
 
     //Second stage, group shape by its plane, and find overall boundary
 
@@ -3227,7 +3227,7 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
     if(_pstart) pstart = *_pstart;
 
     double stepdown_hint = 1.0;
-    wires = sortWires(shapes,_pstart!=0,&pstart,pend,&stepdown_hint,
+    wires = sortWires(shapes,_pstart!=nullptr,&pstart,pend,&stepdown_hint,
             PARAM_REF(PARAM_FARG,AREA_PARAMS_ARC_PLANE),
             PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
 

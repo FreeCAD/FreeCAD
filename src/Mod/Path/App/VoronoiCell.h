@@ -36,7 +36,7 @@ class PathExport VoronoiCell
   TYPESYSTEM_HEADER();
 public:
 
-  VoronoiCell(Voronoi::diagram_type *dia = 0, long index = Voronoi::InvalidIndex);
+  VoronoiCell(Voronoi::diagram_type *dia = nullptr, long index = Voronoi::InvalidIndex);
   VoronoiCell(Voronoi::diagram_type *dia, const Voronoi::diagram_type::cell_type *cell);
   ~VoronoiCell();
 

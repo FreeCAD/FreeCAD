@@ -38,7 +38,7 @@ class PathExport VoronoiEdge
   TYPESYSTEM_HEADER();
 public:
 
-  VoronoiEdge(Voronoi::diagram_type *dia = 0, long index = Voronoi::InvalidIndex);
+  VoronoiEdge(Voronoi::diagram_type *dia = nullptr, long index = Voronoi::InvalidIndex);
   VoronoiEdge(Voronoi::diagram_type *dia, const Voronoi::diagram_type::edge_type *edge);
   ~VoronoiEdge();
 

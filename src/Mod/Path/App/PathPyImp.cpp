@@ -57,7 +57,7 @@ PyObject *PathPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Pytho
 // constructor method
 int PathPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
-    PyObject *pcObj=0;
+    PyObject *pcObj=nullptr;
     char *gcode;
     if (PyArg_ParseTuple(args, "|O!", &(PyList_Type), &pcObj)) {
         if (pcObj) {
@@ -195,7 +195,7 @@ PyObject* PathPy::getCycleTime(PyObject * args)
     if (PyArg_ParseTuple(args, "dddd", &hFeed, &vFeed, &hRapid, &vRapid)){
         return PyFloat_FromDouble(getToolpathPtr()->getCycleTime(hFeed, vFeed, hRapid, vRapid));
     }
-    return 0;
+    return nullptr;
 }
 
 // GCode methods
@@ -211,7 +211,7 @@ PyObject* PathPy::toGCode(PyObject * args)
 
 PyObject* PathPy::setFromGCode(PyObject * args)
 {
-    char *pstr=0;
+    char *pstr=nullptr;
     if (PyArg_ParseTuple(args, "s", &pstr)) {
         std::string gcode(pstr);
         getToolpathPtr()->setFromGCode(gcode);
@@ -225,7 +225,7 @@ PyObject* PathPy::setFromGCode(PyObject * args)
 
 PyObject *PathPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int PathPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
