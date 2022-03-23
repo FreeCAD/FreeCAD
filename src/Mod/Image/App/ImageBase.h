@@ -44,7 +44,7 @@ public:
     ImageBase(const ImageBase &rhs);
     ImageBase & operator=(const ImageBase &rhs);
 
-    bool hasValidData() const { return (_pPixelData != 0); }
+    bool hasValidData() const { return (_pPixelData != nullptr); }
     void* getPixelDataPtr() { return (void *)_pPixelData; }
     bool isOwner() const { return _owner; }
     unsigned long getWidth() const { return _width; }
