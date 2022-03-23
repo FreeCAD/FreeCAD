@@ -107,7 +107,7 @@ private:
             PyMem_Free(TabName);
         }
 
-        WebGui::BrowserView* pcBrowserView = 0;
+        WebGui::BrowserView* pcBrowserView = nullptr;
         pcBrowserView = new WebGui::BrowserView(Gui::getMainWindow());
         pcBrowserView->resize(400, 300);
         pcBrowserView->setHtml(QString::fromUtf8(HtmlCode),QUrl(QString::fromLatin1(BaseUrl)));
@@ -133,7 +133,7 @@ private:
             PyMem_Free(TabName);
         }
 
-        WebGui::BrowserView* pcBrowserView = 0;
+        WebGui::BrowserView* pcBrowserView = nullptr;
         pcBrowserView = new WebGui::BrowserView(Gui::getMainWindow());
         pcBrowserView->resize(400, 300);
         pcBrowserView->setWindowTitle(QString::fromUtf8(EncodedName.c_str()));
@@ -158,7 +158,7 @@ PyMOD_INIT_FUNC(WebGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
 
     PyObject* mod = WebGui::initModule();

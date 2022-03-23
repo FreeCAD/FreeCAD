@@ -36,7 +36,7 @@
 
 using namespace Web;
 
-Firewall* Firewall::instance = 0;
+Firewall* Firewall::instance = nullptr;
 
 Firewall* Firewall::getInstance()
 {

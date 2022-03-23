@@ -158,7 +158,7 @@ private:
 
         Py::Object pyobj(obj);
         if (pyobj.isNone())
-            Web::Firewall::setInstance(0);
+            Web::Firewall::setInstance(nullptr);
         else
             Web::Firewall::setInstance(new Web::FirewallPython(pyobj));
 

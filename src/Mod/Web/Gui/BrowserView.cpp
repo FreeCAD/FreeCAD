@@ -429,7 +429,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(WebGui::BrowserView, Gui::MDIView)
  *  name 'name'.
  */
 BrowserView::BrowserView(QWidget* parent)
-    : MDIView(0,parent,Qt::WindowFlags()),
+    : MDIView(nullptr,parent,Qt::WindowFlags()),
       WindowParameter( "Browser" ),
       isLoading(false)
 {

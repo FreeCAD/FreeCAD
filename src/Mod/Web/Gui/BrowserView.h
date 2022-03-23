@@ -54,7 +54,7 @@ class WebGuiExport WebView : public QWebView
     Q_OBJECT
 
 public:
-    WebView(QWidget *parent = 0);
+    WebView(QWidget *parent = nullptr);
 
 protected:
     void mousePressEvent(QMouseEvent *event);
