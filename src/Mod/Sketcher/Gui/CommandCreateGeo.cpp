@@ -608,9 +608,9 @@ class DSHandlerDefaultWidget: public DrawSketchGeometryHandler<PTool, SelectMode
 
 private:
     class ToolWidgetManager {
-        const int nParameter = PNumToolwidgetparameters;
-        const int nCheckbox = PNumToolwidgetCheckboxes;
-        const int nCombobox = PNumToolwidgetComboboxes;
+        int nParameter = PNumToolwidgetparameters;
+        int nCheckbox = PNumToolwidgetCheckboxes;
+        int nCombobox = PNumToolwidgetComboboxes;
 
         SketcherToolDefaultWidget* toolWidget;
         DSHandlerDefaultWidget * handler;
