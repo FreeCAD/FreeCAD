@@ -150,11 +150,7 @@ TaskSmoothing::TaskSmoothing()
     selection = new Selection();
     selection->setObjects(Gui::Selection().getSelectionEx(nullptr, Mesh::Feature::getClassTypeId()));
     Gui::Selection().clearSelection();
-#if !defined (QSINT_ACTIONPANEL)
-    Gui::TaskView::TaskGroup* tasksel = new Gui::TaskView::TaskGroup();
-#else
     Gui::TaskView::TaskBox* tasksel = new Gui::TaskView::TaskBox();
-#endif
     tasksel->groupLayout()->addWidget(selection);
     tasksel->hide();
     Content.push_back(tasksel);

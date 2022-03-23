@@ -4,7 +4,7 @@ add_subdirectory(PreferencePacks)
 add_subdirectory(PreferencePackTemplates)
 
 if(WIN32)
-add_definitions(-DFCGui -DQIIS_MAKEDLL -DQSINT_MAKEDLL -DOVR_OS_WIN32 -DQUARTER_INTERNAL -DQUARTER_MAKE_DLL -DCOIN_DLL)
+add_definitions(-DFCGui -DQSINT_MAKEDLL -DOVR_OS_WIN32 -DQUARTER_INTERNAL -DQUARTER_MAKE_DLL -DCOIN_DLL)
 endif(WIN32)
 
 IF(CMAKE_BUILD_TYPE)
@@ -1181,7 +1181,6 @@ SET(FreeCADGui_SRCS
     ${FreeCADGui_SDK_SRCS}
     ${FreeCADGui_CPP_SRCS}
     ${FreeCADGui_XML_SRCS}
-    ${iis_MOC_SRCS}
     ${qsint_MOC_SRCS}
     ${Gui_QRC_SRCS}
     ${Gui_UIC_HDRS}
@@ -1196,7 +1195,6 @@ SET(FreeCADGui_SRCS
     ${Language_SRCS}
     ${Propertyeditor_SRCS}
     ${Task_View_SRCS}
-    ${iisTaskPanel_SRCS}
     ${qsintActionPanel_SRCS}
     ${Resource_SRCS}
     ${Quarter_SRCS}
