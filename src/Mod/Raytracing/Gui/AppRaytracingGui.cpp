@@ -56,7 +56,7 @@ PyMOD_INIT_FUNC(RaytracingGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
 
     try {
@@ -64,7 +64,7 @@ PyMOD_INIT_FUNC(RaytracingGui)
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
     PyObject* mod = RaytracingGui::initModule();
     Base::Console().Log("Loading GUI of Raytracing module... done\n");

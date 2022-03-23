@@ -46,7 +46,7 @@ PROPERTY_SOURCE(Raytracing::RayProject, App::DocumentObjectGroup)
 
 RayProject::RayProject(void)
 {
-    ADD_PROPERTY_TYPE(PageResult, (0), 0, App::Prop_Output, "Resulting povray Project file");
+    ADD_PROPERTY_TYPE(PageResult, (nullptr), 0, App::Prop_Output, "Resulting povray Project file");
     ADD_PROPERTY_TYPE(Template, (""), 0, App::Prop_None, "Template for the Povray project");
     ADD_PROPERTY_TYPE(Camera, (""), 0, App::Prop_None, "Camera settings");
 }

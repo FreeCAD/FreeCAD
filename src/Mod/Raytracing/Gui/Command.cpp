@@ -92,7 +92,7 @@ CmdRaytracingWriteCamera::CmdRaytracingWriteCamera()
 
 void CmdRaytracingWriteCamera::activated(int)
 {
-    const char* ppReturn=0;
+    const char* ppReturn=nullptr;
     getGuiApplication()->sendMsgToActiveView("GetCamera",&ppReturn);
     if (ppReturn) {
         std::string str(ppReturn);
@@ -231,7 +231,7 @@ CmdRaytracingWriteView::CmdRaytracingWriteView()
 
 void CmdRaytracingWriteView::activated(int)
 {
-    const char* ppReturn=0;
+    const char* ppReturn=nullptr;
     Gui::Application::Instance->sendMsgToActiveView("GetCamera",&ppReturn);
     if (ppReturn) {
         std::string str(ppReturn);
@@ -328,7 +328,7 @@ CmdRaytracingNewPovrayProject::CmdRaytracingNewPovrayProject()
 
 void CmdRaytracingNewPovrayProject::activated(int iMsg)
 {
-    const char* ppReturn=0;
+    const char* ppReturn=nullptr;
     Gui::Application::Instance->sendMsgToActiveView("GetCamera",&ppReturn);
     if (ppReturn) {
         std::string str(ppReturn);
@@ -641,7 +641,7 @@ void CmdRaytracingRender::activated(int)
         }
     }
 
-    std::vector<Gui::SelectionObject> Sel = getSelection().getSelectionEx(0, renderType);
+    std::vector<Gui::SelectionObject> Sel = getSelection().getSelectionEx(nullptr, renderType);
 
     if (renderType == Raytracing::RayProject::getClassTypeId()) {
         Raytracing::RayProject* proj = static_cast<Raytracing::RayProject*>(Sel[0].getObject());
@@ -774,7 +774,7 @@ CmdRaytracingNewLuxProject::CmdRaytracingNewLuxProject()
 
 void CmdRaytracingNewLuxProject::activated(int iMsg)
 {
-    const char* ppReturn=0;
+    const char* ppReturn=nullptr;
     Gui::Application::Instance->sendMsgToActiveView("GetCamera",&ppReturn);
     if (ppReturn) {
         std::string str(ppReturn);

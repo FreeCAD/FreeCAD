@@ -116,7 +116,7 @@ private:
             throw Py::Exception();
         try {
             std::string out;
-            const char* ppReturn=0;
+            const char* ppReturn=nullptr;
 
             Gui::Document* doc = Gui::Application::Instance->activeDocument();
             if (doc) {
@@ -187,7 +187,7 @@ private:
             throw Py::Exception();
         try {
             std::string out;
-            const char* ppReturn=0;
+            const char* ppReturn=nullptr;
 
             Gui::Document* doc = Gui::Application::Instance->activeDocument();
             if (doc) {
