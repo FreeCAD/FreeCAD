@@ -1307,7 +1307,7 @@ using DrawSketchHandlerRectangleBase = DSHandlerDefaultWidget<  GeometryTools::R
                                                                 /*PAutoConstraintSize =*/ 2,
                                                                 /*PNumToolwidgetparameters =*/4,
                                                                 /*PNumToolwidgetCheckboxes =*/ 0,
-                                                                /*PNumToolwidgetComboboxes =*/ 0>;
+                                                                /*PNumToolwidgetComboboxes =*/ 1>;
 
 class DrawSketchHandlerRectangle: public DrawSketchHandlerRectangleBase
 {
@@ -1520,6 +1520,20 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::configureToo
     }
 }
 
+template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::setComboBoxesElements() {
+    auto dHandler = static_cast<DrawSketchHandlerRectangle*>(handler);
+    /*This if is because when the construction mode change by adaptDrawingToComboboxChange, we call reset to change nParameter.
+    But doing so also triggers this function which re-initialize the combo box. Meaning that it reset the combobox index to 0.
+    The following if enables to setComboBoxesElements only if combobox index is 0 (ie if tool starts for the first time (or if tool returns to mode 0 but that's not a problem then)) */
+    if (dHandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal) {
+        std::string str = "Diagonal corners";
+        std::string str2 = "Center and corner";
+        QStringList names;
+        names << QString::fromStdString(str) << QString::fromStdString(str2);
+        toolWidget->setComboboxElements(0, names);
+    }
+}
+
 template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
     auto boxhandler = static_cast<DrawSketchHandlerRectangle *>(handler);
     if(boxhandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal){
@@ -1542,6 +1556,20 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptDrawing
                 break;
         }
     }
+}
+
+template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
+    auto dHandler = static_cast<DrawSketchHandlerRectangle*>(handler);
+
+    if (value == 0) {
+        dHandler->constructionMethod = DrawSketchHandlerRectangle::ConstructionMethod::Diagonal;
+        //dHandler->setCrosshairCursor("Sketcher_Pointer_Create_Box");
+    }
+    else {
+        dHandler->constructionMethod = DrawSketchHandlerRectangle::ConstructionMethod::CenterAndCorner;
+        //dHandler->setCrosshairCursor("Sketcher_Pointer_Create_Box"); //No icon for center box
+    }
+    dHandler->reset(); //reset of handler to restart.
 }
 
 template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
@@ -5958,7 +5986,7 @@ bool CmdSketcherCompCreateConic::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
-// ======================================================================================
+// Comp for circle and ellipse ============================================================
 
 DEF_STD_CMD_ACLU(CmdSketcherCompCreateCircle)
 
