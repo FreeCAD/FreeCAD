@@ -645,7 +645,7 @@ private:
 
             connectionCheckboxCheckedChanged = toolWidget->registerCheckboxCheckedChanged(boost::bind(&ToolWidgetManager::checkboxCheckedChanged, this, bp::_1, bp::_2));
 
-            connectionComboboxSelectionChanged = toolWidget->registerComboboxValueChanged(boost::bind(&ToolWidgetManager::comboboxSelectionChanged, this, bp::_1, bp::_2));
+            connectionComboboxSelectionChanged = toolWidget->registerComboboxSelectionChanged(boost::bind(&ToolWidgetManager::comboboxSelectionChanged, this, bp::_1, bp::_2));
 
             reset();
         }
@@ -712,10 +712,11 @@ private:
         void adaptDrawingToCheckboxChange(int checkboxindex, bool value) {Q_UNUSED(checkboxindex);Q_UNUSED(value);}
 
         /// Change DSH to reflect a comboBox changed in the widget
-        void adaptDrawingToComboboxChange(int comboboxindex, int value) { Q_UNUSED(checkboxindex); Q_UNUSED(value); }
+        void adaptDrawingToComboboxChange(int comboboxindex, int value) { Q_UNUSED(comboboxindex); Q_UNUSED(value); }
 
         /// function to create constraints based on widget information.
         void addConstraints() {}
+        void setComboBoxesElements() {}
         //@}
 
         /** @name functions which MAY need to be specialised */
@@ -735,13 +736,6 @@ private:
                 toolWidget->setParameterLabel(WParameter::Fourth, QApplication::translate("ToolWidgetManager_p4", "y of 2nd point"));
                 toolWidget->setParameterLabel(WParameter::Fifth, QApplication::translate("ToolWidgetManager_p5", "x of 3rd point"));
                 toolWidget->setParameterLabel(WParameter::Sixth, QApplication::translate("ToolWidgetManager_p6", "y of 3rd point"));
-            }
-        }
-
-        void setComboBoxesElements() {
-            for (int i = 0; i < nCombobox; i++) {
-                const QStringList& names = {""};
-                toolWidget->setComboboxElements(i, names);
             }
         }
 
@@ -3560,7 +3554,7 @@ using DrawSketchHandlerCircleBase = DSHandlerDefaultWidget<  GeometryTools::Circ
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 3,
-    /*PNumToolwidgetparameters =*/6,
+    /*PNumToolwidgetparameters =*/3,
     /*PNumToolwidgetCheckboxes =*/ 0,
     /*PNumToolwidgetComboboxes =*/ 1>;
 
@@ -3706,20 +3700,7 @@ private:
     }
 
     virtual QString getCrosshairCursorString() const override {
-        if (constructionMethod == ConstructionMethod::Center)
-            return QString::fromLatin1("Sketcher_Pointer_Create_Circle");
-        else
-            return QString::fromLatin1("Sketcher_Pointer_Create_3PointCircle");
-    }
-
-    void onModeChange() {
-        if (constructionMethod == ConstructionMethod::Center) {
-            //toolWidgetManager.nParameter = 3;
-        }
-        else {
-            //toolWidgetManager.nParameter = 6;
-        }
-        reset();
+        return QString::fromLatin1("Sketcher_Pointer_Create_Circle");
     }
 
     //reimplement because circle is 2 steps while 3rims is 3 steps
@@ -3756,6 +3737,20 @@ template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::configureToolWi
     }
 }
 
+template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::setComboBoxesElements() {
+    auto dHandler = static_cast<DrawSketchHandlerCircle*>(handler);
+    /*This if is because when the construction mode change by adaptDrawingToComboboxChange, we call reset to change nParameter.
+    But doing so also triggers this function which re-initialize the combo box. Meaning that it reset the combobox index to 0.
+    The following if enables to setComboBoxesElements only if combobox index is 0 (ie if tool starts for the first time (or if tool returns to mode 0 but that's not a problem then)) */
+    if (dHandler->constructionMethod == DrawSketchHandlerCircle::ConstructionMethod::Center) {
+        std::string str = "Center";
+        std::string str2 = "3 rim points";
+        QStringList names;
+        names << QString::fromStdString(str) << QString::fromStdString(str2);
+        toolWidget->setComboboxElements(0, names);
+    }
+}
+
 template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
     auto dHandler = static_cast<DrawSketchHandlerCircle*>(handler);
     if (dHandler->constructionMethod == DrawSketchHandlerCircle::ConstructionMethod::Center) {
@@ -3784,6 +3779,23 @@ template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::adaptDrawingToP
             break;
         }
     }
+}
+
+template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
+    auto dHandler = static_cast<DrawSketchHandlerCircle*>(handler);
+
+    if (value == 0) {
+        dHandler->constructionMethod = DrawSketchHandlerCircle::ConstructionMethod::Center;
+        dHandler->setCrosshairCursor("Sketcher_Pointer_Create_Circle");
+        nParameter = 3;
+    }
+    else {
+        dHandler->constructionMethod = DrawSketchHandlerCircle::ConstructionMethod::ThreeRim;
+        dHandler->setCrosshairCursor("Sketcher_Pointer_Create_3PointCircle");
+        nParameter = 6;
+    }
+    reset(); //reset the widget to take into account the change of nparameter
+    dHandler->reset(); //reset of handler to restart.
 }
 
 template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
