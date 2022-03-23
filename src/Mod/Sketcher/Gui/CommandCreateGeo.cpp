@@ -600,7 +600,8 @@ template< GeometryTools PTool,          // The geometry tool for which the templ
           int PEditCurveSize,           // The initial size of the EditCurve
           int PAutoConstraintSize,      // The initial size of the AutoConstraint
           int PNumToolwidgetparameters, // The number of parameter spinboxes in the default widget
-          int PNumToolwidgetCheckboxes> // The number of checkboxes in the default widget
+          int PNumToolwidgetCheckboxes, // The number of checkboxes in the default widget
+          int PNumToolwidgetComboboxes > // The number of comboboxes in the default widget
 class DSHandlerDefaultWidget: public DrawSketchGeometryHandler<PTool, SelectModeT, PEditCurveSize, PAutoConstraintSize>
 {
     using DSGeometryHandler = DrawSketchGeometryHandler<PTool, SelectModeT, PEditCurveSize, PAutoConstraintSize>;
@@ -609,6 +610,7 @@ private:
     class ToolWidgetManager {
         const int nParameter = PNumToolwidgetparameters;
         const int nCheckbox = PNumToolwidgetCheckboxes;
+        const int nCombobox = PNumToolwidgetComboboxes;
 
         SketcherToolDefaultWidget* toolWidget;
         DSHandlerDefaultWidget * handler;
@@ -617,6 +619,7 @@ private:
 
         Connection connectionParameterValueChanged;
         Connection connectionCheckboxCheckedChanged;
+        Connection connectionComboboxSelectionChanged;
 
         Base::Vector2d prevCursorPosition;
 
@@ -630,6 +633,7 @@ private:
         ~ToolWidgetManager(){
             connectionParameterValueChanged.disconnect();
             connectionCheckboxCheckedChanged.disconnect();
+            connectionComboboxSelectionChanged.disconnect();
         }
 
         /** @name functions NOT intended for specialisation */
@@ -641,6 +645,8 @@ private:
 
             connectionCheckboxCheckedChanged = toolWidget->registerCheckboxCheckedChanged(boost::bind(&ToolWidgetManager::checkboxCheckedChanged, this, bp::_1, bp::_2));
 
+            connectionComboboxSelectionChanged = toolWidget->registerComboboxValueChanged(boost::bind(&ToolWidgetManager::comboboxSelectionChanged, this, bp::_1, bp::_2));
+
             reset();
         }
 
@@ -648,9 +654,13 @@ private:
 
             boost::signals2::shared_connection_block parameter_block(connectionParameterValueChanged);
             boost::signals2::shared_connection_block checkbox_block(connectionCheckboxCheckedChanged);
+            boost::signals2::shared_connection_block combobox_block(connectionComboboxSelectionChanged);
 
             toolWidget->initNParameters(nParameter);
             toolWidget->initNCheckboxes(nCheckbox);
+            toolWidget->initNComboboxes(nCombobox);
+
+            setComboBoxesElements();
 
             configureToolWidget();
         }
@@ -681,6 +691,16 @@ private:
 
             doChangeDrawSketchHandlerMode();
         }
+
+        /** boost slot triggering when a combobox has changed in the widget
+         * It is intended to remote control the DSHandlerDefaultWidget
+         */
+        void comboboxSelectionChanged(int comboboxindex, int value) {
+            adaptDrawingToComboboxChange(comboboxindex, value);
+
+            doChangeDrawSketchHandlerMode();
+        }
+
         //@}
 
         /** @name functions which MUST be specialised */
@@ -690,6 +710,9 @@ private:
 
         /// Change DSH to reflect a checkbox changed in the widget
         void adaptDrawingToCheckboxChange(int checkboxindex, bool value) {Q_UNUSED(checkboxindex);Q_UNUSED(value);}
+
+        /// Change DSH to reflect a comboBox changed in the widget
+        void adaptDrawingToComboboxChange(int comboboxindex, int value) { Q_UNUSED(checkboxindex); Q_UNUSED(value); }
 
         /// function to create constraints based on widget information.
         void addConstraints() {}
@@ -712,6 +735,13 @@ private:
                 toolWidget->setParameterLabel(WParameter::Fourth, QApplication::translate("ToolWidgetManager_p4", "y of 2nd point"));
                 toolWidget->setParameterLabel(WParameter::Fifth, QApplication::translate("ToolWidgetManager_p5", "x of 3rd point"));
                 toolWidget->setParameterLabel(WParameter::Sixth, QApplication::translate("ToolWidgetManager_p6", "y of 3rd point"));
+            }
+        }
+
+        void setComboBoxesElements() {
+            for (int i = 0; i < nCombobox; i++) {
+                const QStringList& names = {""};
+                toolWidget->setComboboxElements(i, names);
             }
         }
 
@@ -1072,7 +1102,8 @@ using DrawSketchHandlerLine = DSHandlerDefaultWidget< GeometryTools::Line,
                                                       /*PEditCurveSize =*/ 2,
                                                       /*PAutoConstraintSize =*/ 2,
                                                       /*PNumToolwidgetparameters =*/ 4,
-                                                      /*PNumToolwidgetCheckboxes =*/ 0>;
+                                                      /*PNumToolwidgetCheckboxes =*/ 0,
+                                                      /*PNumToolwidgetComboboxes =*/ 0>;
 
 // String representing the name of the tool
 template <> std::string DrawSketchHandlerLine::getToolName() const { return "DSH_Line";}
@@ -1281,7 +1312,8 @@ using DrawSketchHandlerRectangleBase = DSHandlerDefaultWidget<  GeometryTools::R
                                                                 /*PEditCurveSize =*/ 5,
                                                                 /*PAutoConstraintSize =*/ 2,
                                                                 /*PNumToolwidgetparameters =*/4,
-                                                                /*PNumToolwidgetCheckboxes =*/0>;
+                                                                /*PNumToolwidgetCheckboxes =*/ 0,
+                                                                /*PNumToolwidgetComboboxes =*/ 0>;
 
 class DrawSketchHandlerRectangle: public DrawSketchHandlerRectangleBase
 {
@@ -3529,7 +3561,8 @@ using DrawSketchHandlerCircleBase = DSHandlerDefaultWidget<  GeometryTools::Circ
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 3,
     /*PNumToolwidgetparameters =*/6,
-    /*PNumToolwidgetCheckboxes =*/0>;
+    /*PNumToolwidgetCheckboxes =*/ 0,
+    /*PNumToolwidgetComboboxes =*/ 1>;
 
 class DrawSketchHandlerCircle : public DrawSketchHandlerCircleBase
 {

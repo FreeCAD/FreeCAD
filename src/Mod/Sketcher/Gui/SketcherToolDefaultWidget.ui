@@ -15,6 +15,62 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
   
+  
+   <item>
+    <layout class="QHBoxLayout" name="comboLayout1">
+     <item>
+      <widget class="QLabel" name="comboLabel1">
+       <property name="text">
+        <string>Mode</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBox1">
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="comboLayout2">
+     <item>
+      <widget class="QLabel" name="comboLabel2">
+       <property name="text">
+        <string>Mode</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBox2">
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="comboLayout3">
+     <item>
+      <widget class="QLabel" name="comboLabel3">
+       <property name="text">
+        <string>Mode</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBox3">
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>

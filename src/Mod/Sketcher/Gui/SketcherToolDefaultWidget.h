@@ -111,6 +111,14 @@ public:
         nCheckbox // Must Always be the last one
     };
 
+    /// Combobox number/label
+    enum Combobox {
+        FirstCombo,
+        SecondCombo,
+        ThirdCombo,
+        nCombobox // Must Always be the last one
+    };
+
     SketcherToolDefaultWidget (QWidget *parent=nullptr, ViewProviderSketch* sketchView=nullptr);
     ~SketcherToolDefaultWidget();
 
@@ -143,6 +151,13 @@ public:
     bool getCheckboxChecked(int checkboxindex);
     void setCheckboxPrefEntry(int checkboxindex, const std::string & prefEntry);
 
+    void initNComboboxes(int ncombobox);
+    void setComboboxVisible(int comboboxindex, bool visible);
+    void setComboboxIndex(int comboboxindex, int value);
+    void setComboboxLabel(int comboboxindex, const QString& string);
+    int getComboboxIndex(int comboboxindex);
+    void setComboboxElements(int comboboxindex, const QStringList& names);
+
     template<typename F>
     boost::signals2::connection registerParameterValueChanged(F&& f) {
         return signalParameterValueChanged.connect(std::forward<F>(f));
@@ -152,6 +167,13 @@ public:
     boost::signals2::connection registerCheckboxCheckedChanged(F&& f) {
         return signalCheckboxCheckedChanged.connect(std::forward<F>(f));
     }
+
+    template<typename F>
+    boost::signals2::connection registerComboboxValueChanged(F&& f) {
+        return signalComboboxValueChanged.connect(std::forward<F>(f));
+    }
+
+    
 
 //Q_SIGNALS:
 protected Q_SLOTS:
@@ -165,6 +187,9 @@ protected Q_SLOTS:
     void checkBoxTS2_toggled(bool val);
     void checkBoxTS3_toggled(bool val);
     void checkBoxTS4_toggled(bool val);
+    void comboBox1_valueChanged(int val);
+    void comboBox2_valueChanged(int val);
+    void comboBox3_valueChanged(int val);
 
 protected:
     void changeEvent(QEvent *e);
@@ -173,6 +198,8 @@ private:
     QLabel * getParameterLabel(int parameterindex);
     Gui::PrefQuantitySpinBox * getParameterSpinBox(int parameterindex);
     Gui::PrefCheckBox* getCheckBox(int checkboxindex);
+    QComboBox* getComboBox(int comboboxindex);
+    QLabel* getComboBoxLabel(int comboboxindex);
 
     void setParameterFontStyle(int parameterindex, FontStyle fontStyle);
 
@@ -184,6 +211,7 @@ private:
 
     boost::signals2::signal<void (int parameterindex, double value)> signalParameterValueChanged;
     boost::signals2::signal<void(int checkboxindex, bool value)> signalCheckboxCheckedChanged;
+    boost::signals2::signal<void(int comboindex, int value)> signalComboboxValueChanged;
 
     /// lock to block QT slots
     bool blockParameterSlots;

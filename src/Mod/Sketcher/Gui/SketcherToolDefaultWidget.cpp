@@ -137,6 +137,12 @@ SketcherToolDefaultWidget::SketcherToolDefaultWidget (QWidget *parent, ViewProvi
         this, SLOT(checkBoxTS3_toggled(bool)));
     connect(ui->checkBoxTS4, SIGNAL(toggled(bool)),
         this, SLOT(checkBoxTS4_toggled(bool)));
+    connect(ui->comboBox1, SIGNAL(valueChanged(int)),
+        this, SLOT(comboBox1_valueChanged(int)));
+    connect(ui->comboBox2, SIGNAL(valueChanged(int)),
+        this, SLOT(comboBox2_valueChanged(int)));
+    connect(ui->comboBox3, SIGNAL(valueChanged(int)),
+        this, SLOT(comboBox3_valueChanged(int)));
 
     ui->parameterOne->installEventFilter(this);
     ui->parameterTwo->installEventFilter(this);
@@ -548,13 +554,110 @@ bool SketcherToolDefaultWidget::isCheckBoxPrefEntryEmpty(int checkboxindex)
     return getCheckBox(checkboxindex)->entryName().size() == 0;
 }
 
-void SketcherToolDefaultWidget::changeEvent(QEvent *e)
+//Combobox functions
+void SketcherToolDefaultWidget::comboBox1_valueChanged(int val) {
+    if (!blockParameterSlots) {
+        signalComboboxValueChanged(Combobox::FirstCombo, val);
+    }
+}
+void SketcherToolDefaultWidget::comboBox2_valueChanged(int val) {
+    if (!blockParameterSlots) {
+        signalComboboxValueChanged(Combobox::SecondCombo, val);
+    }
+}
+void SketcherToolDefaultWidget::comboBox3_valueChanged(int val) {
+    if (!blockParameterSlots) {
+        signalComboboxValueChanged(Combobox::ThirdCombo, val);
+    }
+}
+
+void SketcherToolDefaultWidget::initNComboboxes(int ncombobox)
+{
+    Base::StateLocker lock(blockParameterSlots, true);
+
+    for (int i = 0; i < nCombobox; i++) {
+        setComboboxVisible(i, (i < ncombobox) ? true : false);
+        setComboboxIndex(i, 0);
+    }
+}
+
+void SketcherToolDefaultWidget::setComboboxVisible(int comboboxindex, bool visible)
+{
+    if (comboboxindex < nCombobox) {
+        getComboBox(comboboxindex)->setVisible(visible);
+    }
+}
+
+void SketcherToolDefaultWidget::setComboboxIndex(int comboboxindex, int value)
+{
+    if (comboboxindex < nCombobox) {
+        getComboBox(comboboxindex)->setCurrentIndex(value);
+    }
+}
+
+void SketcherToolDefaultWidget::setComboboxLabel(int comboboxindex, const QString& string)
+{
+    if (comboboxindex < nCombobox)
+        getComboBoxLabel(comboboxindex)->setText(string);
+}
+
+void SketcherToolDefaultWidget::setComboboxElements(int comboboxindex, const QStringList& names)
+{
+    if (comboboxindex < nCombobox) {
+        getComboBox(comboboxindex)->clear();
+        getComboBox(comboboxindex)->addItems(names);
+    }
+}
+
+QComboBox* SketcherToolDefaultWidget::getComboBox(int comboboxindex)
+{
+    switch (comboboxindex) {
+    case Combobox::FirstCombo:
+        return ui->comboBox1;
+        break;
+    case Combobox::SecondCombo:
+        return ui->comboBox1;
+        break;
+    case Combobox::ThirdCombo:
+        return ui->comboBox1;
+        break;
+    default:
+        return nullptr;
+    }
+}
+QLabel* SketcherToolDefaultWidget::getComboBoxLabel(int comboboxindex)
+{
+    switch (comboboxindex) {
+    case Combobox::FirstCombo:
+        return ui->comboLabel1;
+        break;
+    case Combobox::SecondCombo:
+        return ui->comboLabel2;
+        break;
+    case Combobox::ThirdCombo:
+        return ui->comboLabel3;
+        break;
+    default:
+        return nullptr;
+    }
+}
+
+int SketcherToolDefaultWidget::getComboboxIndex(int comboboxindex)
+{
+    if (comboboxindex < nCombobox) {
+        return getComboBox(comboboxindex)->currentIndex();
+    }
+
+    THROWM(Base::IndexError, "ToolWidget combobox index out of range");
+}
+
+
+void SketcherToolDefaultWidget::changeEvent(QEvent* e)
 {
     QWidget::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
     }
 }
-
 
 #include "moc_SketcherToolDefaultWidget.cpp"
