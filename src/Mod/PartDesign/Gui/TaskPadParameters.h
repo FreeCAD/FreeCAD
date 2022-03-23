@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskPadParameters_H
 #define GUI_TASKVIEW_TaskPadParameters_H
 
-#include <Gui/TaskView/TaskView.h>
-
 #include "TaskExtrudeParameters.h"
 #include "ViewProviderPad.h"
+
 
 namespace App {
 class Property;

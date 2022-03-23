@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskExtrudeParameters_H
 #define GUI_TASKVIEW_TaskExtrudeParameters_H
 
-#include <Gui/Selection.h>
-
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderSketchBased.h"
+
 
 class Ui_TaskPadPocketParameters;
 

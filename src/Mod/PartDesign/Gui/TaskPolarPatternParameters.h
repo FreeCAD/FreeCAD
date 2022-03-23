@@ -20,14 +20,12 @@
  *                                                                            *
  ******************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskPolarPatternParameters_H
 #define GUI_TASKVIEW_TaskPolarPatternParameters_H
 
-#include <Gui/Selection.h>
-
 #include "TaskTransformedParameters.h"
 #include "ViewProviderPolarPattern.h"
+
 
 class QTimer;
 class Ui_TaskPolarPatternParameters;

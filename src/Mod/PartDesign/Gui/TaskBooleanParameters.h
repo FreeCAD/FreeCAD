@@ -21,15 +21,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskBooleanParameters_H
 #define GUI_TASKVIEW_TaskBooleanParameters_H
 
-#include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
 #include "ViewProviderBoolean.h"
+
 
 class Ui_TaskBooleanParameters;
 

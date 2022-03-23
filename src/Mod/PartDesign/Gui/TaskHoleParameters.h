@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskHoleParameters_H
 #define GUI_TASKVIEW_TaskHoleParameters_H
 
-#include <Gui/TaskView/TaskView.h>
-
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderHole.h"
+
 
 class Ui_TaskHoleParameters;
 
