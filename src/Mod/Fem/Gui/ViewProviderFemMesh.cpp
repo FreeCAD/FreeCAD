@@ -20,56 +20,40 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Standard_math.hxx>
-
-# include <Inventor/SoDB.h>
-# include <Inventor/SoInput.h>
 # include <Inventor/SbVec3f.h>
-# include <Inventor/actions/SoSearchAction.h>
+# include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoLightModel.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoTransform.h>
-# include <Inventor/nodes/SoRotation.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoIndexedFaceSet.h>
 # include <Inventor/nodes/SoIndexedLineSet.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <Inventor/nodes/SoAnnotation.h>
+# include <Inventor/nodes/SoLightModel.h>
+# include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoPointSet.h>
 # include <Inventor/nodes/SoPolygonOffset.h>
-# include <Inventor/SoPickedPoint.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoShapeHints.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
 # include <Inventor/details/SoPointDetail.h>
-
-# include <QFile>
 
 # include <sstream>
 
 # include <SMESH_Mesh.hxx>
 # include <SMESHDS_Mesh.hxx>
-# include <SMDSAbs_ElementType.hxx>
 #endif
+
+#include <App/Document.h>
+#include <Base/BoundBox.h>
+#include <Base/Console.h>
+#include <Base/TimeInfo.h>
+#include <Mod/Fem/App/FemMeshObject.h>
 
 #include "ViewProviderFemMesh.h"
 #include "ViewProviderFemMeshPy.h"
-
-#include <Mod/Fem/App/FemMeshObject.h>
-#include <Mod/Fem/App/FemMesh.h>
-#include <App/Document.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
-#include <Base/Console.h>
-#include <Base/TimeInfo.h>
-#include <Base/BoundBox.h>
-
 
 
 using namespace FemGui;

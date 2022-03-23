@@ -20,40 +20,37 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoIndexedPointSet.h>
-# include <Inventor/nodes/SoIndexedLineSet.h>
+# include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoIndexedFaceSet.h>
+# include <Inventor/nodes/SoIndexedLineSet.h>
+# include <Inventor/nodes/SoIndexedPointSet.h>
 # include <Inventor/nodes/SoIndexedTriangleStripSet.h>
-# include <Inventor/nodes/SoShapeHints.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoNormal.h>
 # include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoPointSet.h>
-# include <Inventor/nodes/SoPolygonOffset.h>
-# include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoShapeHints.h>
 
-# include <vtkPointData.h>
 # include <vtkCellArray.h>
 # include <vtkCellData.h>
-# include <vtkLookupTable.h>
+# include <vtkPointData.h>
 
 # include <QMessageBox>
 #endif
 
-#include "ViewProviderFemPostObject.h"
-#include "TaskPostBoxes.h"
-#include <Mod/Fem/App/FemPostObject.h>
 #include <Base/Console.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/Control.h>
 #include <Gui/Application.h>
+#include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/SoFCColorBar.h>
+#include <Gui/TaskView/TaskDialog.h>
+
+#include "ViewProviderFemPostObject.h"
+#include "TaskPostBoxes.h"
+
 
 using namespace FemGui;
 

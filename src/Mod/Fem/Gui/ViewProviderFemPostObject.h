@@ -20,23 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_VIEWPROVIDERFEMPOSTOBJECT_H
 #define FEM_VIEWPROVIDERFEMPOSTOBJECT_H
 
+#include <Base/Observer.h>
 #include <Gui/ViewProviderGeometryObject.h>
 
-#include <CXX/Objects.hxx>
-#include <Base/Observer.h>
-#include <Mod/Fem/FemGlobal.h>
-#include <vtkSmartPointer.h>
-#include <vtkPolyDataMapper.h>
-#include <vtkOutlineFilter.h>
-#include <vtkOutlineCornerFilter.h>
-#include <vtkLookupTable.h>
-#include <vtkExtractEdges.h>
 #include <vtkAppendPolyData.h>
+#include <vtkExtractEdges.h>
 #include <vtkGeometryFilter.h>
+#include <vtkSmartPointer.h>
+#include <vtkOutlineCornerFilter.h>
 #include <vtkVertexGlyphFilter.h>
 
 class SoIndexedPointSet;
