@@ -432,10 +432,12 @@ TopoDS_Shape Helix::generateHelixPath(double startOffset0)
 
     // The factor of 100 below ensures that profile size is small compared to the curvature of the helix.
     // This improves the issue reported in https://forum.freecadweb.org/viewtopic.php?f=10&t=65048
-    double axisOffset = 100 * (profileCenter * start - baseVector * start);
-    double startOffset = startOffset0 + profileCenter * axisVector - baseVector * axisVector;
+    double axisOffset = 100.0 * (profileCenter * start - baseVector * start);
     double radius = std::fabs(axisOffset);
     bool turned = axisOffset < 0;
+    // since the factor does not only change the radius but also the path position, we must shift its offset back
+    // using the square of the factor
+    double startOffset = 10000.0 * std::fabs(startOffset0 + profileCenter * axisVector - baseVector * axisVector);
 
     if (radius < Precision::Confusion()) {
         // in this case ensure that axis is not in the sketch plane
@@ -451,11 +453,9 @@ TopoDS_Shape Helix::generateHelixPath(double startOffset0)
     else
         radiusTop = radius + height * tan(Base::toRadians(angle));
 
-
     //build the helix path
     //TopoShape helix = TopoShape().makeLongHelix(pitch, height, radius, angle, leftHanded);
     TopoDS_Shape path = TopoShape().makeSpiralHelix(radius, radiusTop, height, turns, 1, leftHanded);
-
 
     /*
      * The helix wire is created with the axis coinciding with z-axis and the start point at (radius, 0, 0)
@@ -466,18 +466,18 @@ TopoDS_Shape Helix::generateHelixPath(double startOffset0)
     gp_Pnt origo(0.0, 0.0, 0.0);
     gp_Dir dir_axis1(0.0, 0.0, 1.0);  // pointing along the helix axis, as created.
     gp_Dir dir_axis2(1.0, 0.0, 0.0);  // pointing towards the helix start point, as created.
-
     gp_Trsf mov;
 
-
-    if (reversed) {
-        mov.SetRotation(gp_Ax1(origo, dir_axis2), M_PI);
+    if (abs(startOffset) > 0) {  // translate the helix so that the starting point aligns with the profile
+        mov.SetTranslation(startOffset * gp_Vec(dir_axis1));
         TopLoc_Location loc(mov);
         path.Move(loc);
     }
 
-    if (abs(startOffset) > 0) {  // translate the helix so that the starting point aligns with the profile
-        mov.SetTranslation(startOffset * gp_Vec(dir_axis1));
+    // because of the radius factor we used above, we must reverse after the
+    // startOffset movement (that brings the path back to the desired position)
+    if (reversed) {
+        mov.SetRotation(gp_Ax1(origo, dir_axis2), M_PI);
         TopLoc_Location loc(mov);
         path.Move(loc);
     }
