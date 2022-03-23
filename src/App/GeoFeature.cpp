@@ -99,20 +99,20 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
         const char **_element, GeoFeature **geoFeature)
 {
     if(!obj || !obj->getNameInDocument())
-        return 0;
+        return nullptr;
     if(!subname)
         subname = "";
     const char *element = Data::ComplexGeoData::findElementName(subname);
     if(_element) *_element = element;
     auto sobj = obj->getSubObject(subname);
     if(!sobj)
-        return 0;
+        return nullptr;
     obj = sobj->getLinkedObject(true);
     auto geo = dynamic_cast<GeoFeature*>(obj);
     if(geoFeature) 
         *geoFeature = geo;
     if(!obj || (filter && obj!=filter))
-        return 0;
+        return nullptr;
     if(!element || !element[0]) {
         if(append) 
             elementName.second = Data::ComplexGeoData::oldElementName(subname);

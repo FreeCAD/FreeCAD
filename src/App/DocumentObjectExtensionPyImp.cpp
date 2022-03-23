@@ -37,7 +37,7 @@ std::string DocumentObjectExtensionPy::representation(void) const
 
 PyObject *DocumentObjectExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DocumentObjectExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject * /*obj*/)

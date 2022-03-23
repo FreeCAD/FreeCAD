@@ -74,11 +74,11 @@ enum ObjectStatus {
 class AppExport DocumentObjectExecReturn
 {
 public:
-    DocumentObjectExecReturn(const std::string& sWhy, DocumentObject* WhichObject=0)
+    DocumentObjectExecReturn(const std::string& sWhy, DocumentObject* WhichObject=nullptr)
         : Why(sWhy), Which(WhichObject)
     {
     }
-    DocumentObjectExecReturn(const char* sWhy, DocumentObject* WhichObject=0)
+    DocumentObjectExecReturn(const char* sWhy, DocumentObject* WhichObject=nullptr)
         : Which(WhichObject)
     {
         if (sWhy)
@@ -249,7 +249,7 @@ public:
      * objects, with the furthest linking object ordered last.
      */
     void getInListEx(std::set<App::DocumentObject*> &inSet,
-            bool recursive, std::vector<App::DocumentObject*> *inList=0) const;
+            bool recursive, std::vector<App::DocumentObject*> *inList=nullptr) const;
     /** Return a set of all objects linking to this object, including possible external parent objects
      * @param recursive [in]: whether to obtain recursive in list
      */
@@ -347,8 +347,8 @@ public:
      * then it shall return itself. If subname is invalid, then it shall return
      * zero.
      */
-    virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj=0,
-            Base::Matrix4D *mat=0, bool transform=true, int depth=0) const;
+    virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj=nullptr,
+            Base::Matrix4D *mat=nullptr, bool transform=true, int depth=0) const;
 
     /// Return a list of objects referenced by a given subname including this object
     std::vector<DocumentObject*> getSubObjectList(const char *subname) const;
@@ -397,7 +397,7 @@ public:
      * it is not a link or the link is invalid.
      */
     virtual DocumentObject *getLinkedObject(bool recurse=true,
-            Base::Matrix4D *mat=0, bool transform=false, int depth=0) const;
+            Base::Matrix4D *mat=nullptr, bool transform=false, int depth=0) const;
 
     /* Return true to cause PropertyView to show linked object's property */
     virtual bool canLinkProperties() const {return true;}
@@ -440,8 +440,8 @@ public:
     virtual bool removeDynamicProperty(const char* prop) override;
 
     virtual App::Property* addDynamicProperty(
-            const char* type, const char* name=0,
-            const char* group=0, const char* doc=0,
+            const char* type, const char* name=nullptr,
+            const char* group=nullptr, const char* doc=nullptr,
             short attr=0, bool ro=false, bool hidden=false) override;
 
     /** Resolve the last document object referenced in the subname
@@ -456,9 +456,9 @@ public:
      * @return Returns the last referenced document object in the subname. If no
      * such object in subname, return pObject.
      */
-    App::DocumentObject *resolve(const char *subname, App::DocumentObject **parent=0,
-        std::string *childName=0, const char **subElement=0,
-        PyObject **pyObj=0, Base::Matrix4D *mat=0, bool transform=true, int depth=0) const;
+    App::DocumentObject *resolve(const char *subname, App::DocumentObject **parent=nullptr,
+        std::string *childName=nullptr, const char **subElement=nullptr,
+        PyObject **pyObj=nullptr, Base::Matrix4D *mat=nullptr, bool transform=true, int depth=0) const;
 
     /** Resolve a link reference that is relative to this object reference
      *
@@ -522,7 +522,7 @@ public:
      * future parent.
      */
     virtual bool adjustRelativeLinks(const std::set<App::DocumentObject*> &inList,
-            std::set<App::DocumentObject*> *visited=0);
+            std::set<App::DocumentObject*> *visited=nullptr);
 
     /** allow partial loading of dependent objects
      *

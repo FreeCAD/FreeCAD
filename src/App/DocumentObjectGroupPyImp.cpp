@@ -39,7 +39,7 @@ std::string DocumentObjectGroupPy::representation(void) const
 
 PyObject *DocumentObjectGroupPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DocumentObjectGroupPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

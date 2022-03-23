@@ -441,7 +441,7 @@ static Py::Object _pyObjectFromAny(const App::any &value, const Expression *e) {
 
 namespace App {
 Py::Object pyObjectFromAny(const App::any &value) {
-    return _pyObjectFromAny(value,0);
+    return _pyObjectFromAny(value,nullptr);
 }
 
 App::any pyObjectToAny(Py::Object value, bool check) {
@@ -489,7 +489,7 @@ bool pyToQuantity(Quantity &q, const Py::Object &pyobj) {
 }
 
 static inline Quantity pyToQuantity(const Py::Object &pyobj,
-        const Expression *e, const char *msg=0)
+        const Expression *e, const char *msg=nullptr)
 {
     Quantity q;
     if(!pyToQuantity(q,pyobj)) {
@@ -664,7 +664,7 @@ Expression* expressionFromPy(const DocumentObject *owner, const Py::Object &valu
 //
 Expression::Component::Component(const std::string &n)
     :comp(ObjectIdentifier::SimpleComponent(n))
-    ,e1(0) ,e2(0) ,e3(0)
+    ,e1(nullptr) ,e2(nullptr) ,e3(nullptr)
 {}
 
 Expression::Component::Component(Expression *_e1, Expression *_e2, Expression *_e3, bool isRange)
@@ -676,14 +676,14 @@ Expression::Component::Component(Expression *_e1, Expression *_e2, Expression *_
 
 Expression::Component::Component(const ObjectIdentifier::Component &comp)
     :comp(comp)
-    ,e1(0) ,e2(0) ,e3(0)
+    ,e1(nullptr) ,e2(nullptr) ,e3(nullptr)
 {}
 
 Expression::Component::Component(const Component &other)
     :comp(other.comp)
-    ,e1(other.e1?other.e1->copy():0)
-    ,e2(other.e2?other.e2->copy():0)
-    ,e3(other.e3?other.e3->copy():0)
+    ,e1(other.e1?other.e1->copy():nullptr)
+    ,e2(other.e2?other.e2->copy():nullptr)
+    ,e3(other.e3?other.e3->copy():nullptr)
 {}
 
 Expression::Component::~Component()
@@ -989,7 +989,7 @@ public:
 
 ExpressionPtr Expression::importSubNames(const std::map<std::string,std::string> &nameMap) const {
     if(!owner || !owner->getDocument())
-        return 0;
+        return nullptr;
     ObjectIdentifier::SubNameMap subNameMap;
     for(auto &dep : getDeps(DepAll)) {
         for(auto &info : dep.second) {
@@ -1011,7 +1011,7 @@ ExpressionPtr Expression::importSubNames(const std::map<std::string,std::string>
         }
     }
     if(subNameMap.empty())
-        return 0;
+        return nullptr;
     ImportSubNamesExpressionVisitor v(subNameMap);
     auto res = copy();
     res->visit(v);
@@ -1200,7 +1200,7 @@ void UnitExpression::setQuantity(const Quantity &_quantity)
     if(cache) {
         Base::PyGILStateLocker lock;
         Py::_XDECREF(cache);
-        cache = 0;
+        cache = nullptr;
     }
 }
 
@@ -1218,7 +1218,7 @@ void UnitExpression::setUnit(const Quantity &_quantity)
     if(cache) {
         Base::PyGILStateLocker lock;
         Py::_XDECREF(cache);
-        cache = 0;
+        cache = nullptr;
     }
 }
 
@@ -1967,11 +1967,11 @@ Py::Object FunctionExpression::evalAggregate(
                 if (!p)
                     continue;
 
-                if ((qp = freecad_dynamic_cast<PropertyQuantity>(p)) != 0)
+                if ((qp = freecad_dynamic_cast<PropertyQuantity>(p)) != nullptr)
                     c->collect(qp->getQuantityValue());
-                else if ((fp = freecad_dynamic_cast<PropertyFloat>(p)) != 0)
+                else if ((fp = freecad_dynamic_cast<PropertyFloat>(p)) != nullptr)
                     c->collect(Quantity(fp->getValue()));
-                else if ((ip = freecad_dynamic_cast<PropertyInteger>(p)) != 0)
+                else if ((ip = freecad_dynamic_cast<PropertyInteger>(p)) != nullptr)
                     c->collect(Quantity(ip->getValue()));
                 else
                     _EXPR_THROW("Invalid property type for aggregate.", owner);
@@ -2849,7 +2849,7 @@ Expression *ConditionalExpression::simplify() const
     std::unique_ptr<Expression> e(condition->simplify());
     NumberExpression * v = freecad_dynamic_cast<NumberExpression>(e.get());
 
-    if (v == 0)
+    if (v == nullptr)
         return new ConditionalExpression(owner, condition->simplify(), trueExpr->simplify(), falseExpr->simplify());
     else {
         if (fabs(v->getValue()) > 0.5)
@@ -3110,7 +3110,7 @@ void RangeExpression::_offsetCells(int rowOffset, int colOffset, ExpressionVisit
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-static Base::XMLReader *_Reader = 0;
+static Base::XMLReader *_Reader = nullptr;
 ExpressionParser::ExpressionImporter::ExpressionImporter(Base::XMLReader &reader) {
     assert(!_Reader);
     _Reader = &reader;
@@ -3118,7 +3118,7 @@ ExpressionParser::ExpressionImporter::ExpressionImporter(Base::XMLReader &reader
 
 ExpressionParser::ExpressionImporter::~ExpressionImporter() {
     assert(_Reader);
-    _Reader = 0;
+    _Reader = nullptr;
 }
 
 Base::XMLReader *ExpressionParser::ExpressionImporter::reader() {
@@ -3163,7 +3163,7 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
     temp[i] = '\0';
 
     errno = 0;
-    ret_val = strtod( temp, NULL );
+    ret_val = strtod( temp, nullptr );
     if (ret_val == 0 && errno == ERANGE)
         throw Base::UnderflowError("Number underflow.");
     if (ret_val == HUGE_VAL || ret_val == -HUGE_VAL)
@@ -3172,8 +3172,8 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
     return ret_val;
 }
 
-static Expression * ScanResult = 0;                    /**< The resulting expression after a successful parsing */
-static const App::DocumentObject * DocumentObject = 0; /**< The DocumentObject that will own the expression */
+static Expression * ScanResult = nullptr;                    /**< The resulting expression after a successful parsing */
+static const App::DocumentObject * DocumentObject = nullptr; /**< The DocumentObject that will own the expression */
 static bool unitExpression = false;                    /**< True if the parsed string is a unit only */
 static bool valueExpression = false;                   /**< True if the parsed string is a full expression */
 static std::stack<std::string> labels;                /**< Label string primitive */
@@ -3216,7 +3216,7 @@ static void initParser(const App::DocumentObject *owner)
 
     using namespace App::ExpressionParser;
 
-    ScanResult = 0;
+    ScanResult = nullptr;
     App::ExpressionParser::DocumentObject = owner;
     labels = std::stack<std::string>();
     column = 0;
@@ -3317,7 +3317,7 @@ Expression * App::ExpressionParser::parse(const App::DocumentObject *owner, cons
     if (result != 0)
         throw ParserError("Failed to parse expression.");
 
-    if (ScanResult == 0)
+    if (ScanResult == nullptr)
         throw ParserError("Unknown error in expression");
 
     if (valueExpression)
@@ -3325,7 +3325,7 @@ Expression * App::ExpressionParser::parse(const App::DocumentObject *owner, cons
     else {
         delete ScanResult;
         throw Expression::Exception("Expression can not evaluate to a value.");
-        return 0;
+        return nullptr;
     }
 }
 
@@ -3345,7 +3345,7 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
     if (result != 0)
         throw ParserError("Failed to parse expression.");
 
-    if (ScanResult == 0)
+    if (ScanResult == nullptr)
         throw ParserError("Unknown error in expression");
 
     // Simplify expression
@@ -3377,7 +3377,7 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
     else {
         delete simplified;
         throw Expression::Exception("Expression is not a unit.");
-        return 0;
+        return nullptr;
     }
 }
 

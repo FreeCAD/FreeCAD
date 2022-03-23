@@ -711,7 +711,7 @@ void PropertyExpressionEngine::getPathsToDocumentObject(DocumentObject* obj,
 {
     DocumentObject * owner = freecad_dynamic_cast<DocumentObject>(getContainer());
 
-    if (owner == 0 || owner==obj)
+    if (owner == nullptr || owner==obj)
         return;
 
     for(auto &v : expressions) {
@@ -965,7 +965,7 @@ Property *PropertyExpressionEngine::CopyOnImportExternal(
         engine->expressions[it->first] = ExpressionInfo(expr);
     }
     if(!engine)
-        return 0;
+        return nullptr;
     engine->validator = validator;
     return engine.release();
 }
@@ -995,7 +995,7 @@ Property *PropertyExpressionEngine::CopyOnLabelChange(App::DocumentObject *obj,
         engine->expressions[it->first] = ExpressionInfo(expr);
     }
     if(!engine)
-        return 0;
+        return nullptr;
     engine->validator = validator;
     return engine.release();
 }
@@ -1027,7 +1027,7 @@ Property *PropertyExpressionEngine::CopyOnLinkReplace(const App::DocumentObject 
         engine->expressions[it->first] = ExpressionInfo(expr);
     }
     if(!engine)
-        return 0;
+        return nullptr;
     engine->validator = validator;
     return engine.release();
 }

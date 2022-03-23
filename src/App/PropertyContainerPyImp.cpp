@@ -353,7 +353,7 @@ PyObject*  PropertyContainerPy::setGroupOfProperty(PyObject *args)
             PyErr_Format(PyExc_AttributeError, "Property container has no dynamic property '%s'", pstr);
             return nullptr;
         }
-        prop->getContainer()->changeDynamicProperty(prop,group,0);
+        prop->getContainer()->changeDynamicProperty(prop,group,nullptr);
         Py_Return;
     } PY_CATCH
 }
@@ -391,7 +391,7 @@ PyObject*  PropertyContainerPy::setDocumentationOfProperty(PyObject *args)
             PyErr_Format(PyExc_AttributeError, "Property container has no dynamic property '%s'", pstr);
             return nullptr;
         }
-        prop->getContainer()->changeDynamicProperty(prop,0,doc);
+        prop->getContainer()->changeDynamicProperty(prop,nullptr,doc);
         Py_Return;
     } PY_CATCH
 }
@@ -567,7 +567,7 @@ PyObject *PropertyContainerPy::getCustomAttributes(const char* attr) const
     ///FIXME: For v0.20: Do not use stuff from Part module here!
     else if(Base::streq(attr,"Shape") && getPropertyContainerPtr()->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         // Special treatment of Shape property
-        static PyObject *_getShape = 0;
+        static PyObject *_getShape = nullptr;
         if(!_getShape) {
             _getShape = Py_None;
             PyObject *mod = PyImport_ImportModule("Part");

@@ -37,7 +37,7 @@ std::string OriginGroupExtensionPy::representation(void) const
 
 PyObject *OriginGroupExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int OriginGroupExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

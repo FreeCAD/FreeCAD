@@ -194,8 +194,8 @@ struct DocumentP
         // copying shape from other document. It is probably better to randomize
         // on each object ID.
         lastObjectId = _RDIST(_RGEN);
-        activeObject = 0;
-        activeUndoTransaction = 0;
+        activeObject = nullptr;
+        activeUndoTransaction = nullptr;
         iTransactionMode = 0;
         rollback = false;
         undoing = false;
@@ -226,7 +226,7 @@ struct DocumentP
         returnCode->Which->setStatus(ObjectStatus::Error,true);
     }
 
-    void clearRecomputeLog(const App::DocumentObject *obj=0) {
+    void clearRecomputeLog(const App::DocumentObject *obj=nullptr) {
         if(!obj)
             _RecomputeLog.clear();
         else
@@ -236,7 +236,7 @@ struct DocumentP
     const char *findRecomputeLog(const App::DocumentObject *obj) {
         auto range = _RecomputeLog.equal_range(obj);
         if(range.first == range.second)
-            return 0;
+            return nullptr;
         return (--range.second)->second->Why.c_str();
     }
 
@@ -967,7 +967,7 @@ bool Document::undo(int id)
         // save the redo
         mRedoMap[d->activeUndoTransaction->getID()] = d->activeUndoTransaction;
         mRedoTransactions.push_back(d->activeUndoTransaction);
-        d->activeUndoTransaction = 0;
+        d->activeUndoTransaction = nullptr;
 
         mUndoMap.erase(mUndoTransactions.back()->getID());
         delete mUndoTransactions.back();
@@ -1017,7 +1017,7 @@ bool Document::redo(int id)
 
         mUndoMap[d->activeUndoTransaction->getID()] = d->activeUndoTransaction;
         mUndoTransactions.push_back(d->activeUndoTransaction);
-        d->activeUndoTransaction = 0;
+        d->activeUndoTransaction = nullptr;
 
         mRedoMap.erase(mRedoTransactions.back()->getID());
         delete mRedoTransactions.back();
@@ -1226,7 +1226,7 @@ void Document::_commitTransaction(bool notify)
         Application::TransactionSignaller signaller(false,true);
         int id = d->activeUndoTransaction->getID();
         mUndoTransactions.push_back(d->activeUndoTransaction);
-        d->activeUndoTransaction = 0;
+        d->activeUndoTransaction = nullptr;
         // check the stack for the limits
         if(mUndoTransactions.size() > d->UndoMaxStackSize){
             mUndoMap.erase(mUndoTransactions.front()->getID());
@@ -1268,7 +1268,7 @@ void Document::_abortTransaction()
         // destroy the undo
         mUndoMap.erase(d->activeUndoTransaction->getID());
         delete d->activeUndoTransaction;
-        d->activeUndoTransaction = 0;
+        d->activeUndoTransaction = nullptr;
         signalAbortTransaction(*this);
     }
 }
@@ -1319,7 +1319,7 @@ bool Document::isTransactionEmpty() const
 
 void Document::clearDocument()
 {
-    this->d->activeObject = 0;
+    this->d->activeObject = nullptr;
 
     if(this->d->objectArray.size()) {
         GetApplication().signalDeleteDocument(*this);
@@ -1503,7 +1503,7 @@ void Document::onBeforeChangeProperty(const TransactionalObject *Who, const Prop
     if(Who->isDerivedFrom(App::DocumentObject::getClassTypeId()))
         signalBeforeChangeObject(*static_cast<const App::DocumentObject*>(Who), *What);
     if(!d->rollback && !_IsRelabeling) {
-        _checkTransaction(0,What,__LINE__);
+        _checkTransaction(nullptr,What,__LINE__);
         if (d->activeUndoTransaction)
             d->activeUndoTransaction->addObjectChange(Who,What);
     }
@@ -1619,7 +1619,7 @@ Document::Document(const char *name)
     // this creates and sets 'TransientDir' in onChanged()
     ADD_PROPERTY_TYPE(TransientDir,(""),0,PropertyType(Prop_Transient|Prop_ReadOnly),
         "Transient directory, where the files live while the document is open");
-    ADD_PROPERTY_TYPE(Tip,(0),0,PropertyType(Prop_Transient),
+    ADD_PROPERTY_TYPE(Tip,(nullptr),0,PropertyType(Prop_Transient),
         "Link of the tip object of the document");
     ADD_PROPERTY_TYPE(TipName,(""),0,PropertyType(Prop_Hidden|Prop_ReadOnly),
         "Link of the tip object of the document");
@@ -1872,13 +1872,13 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
     // writing the features types
     writer.incInd(); // indentation for 'Objects count'
     writer.Stream() << writer.ind() << "<Objects Count=\"" << obj.size();
-    if(!isExporting(0))
+    if(!isExporting(nullptr))
         writer.Stream() << "\" " FC_ATTR_DEPENDENCIES "=\"1";
     writer.Stream() << "\">" << endl;
 
     writer.incInd(); // indentation for 'Object type'
 
-    if(!isExporting(0)) {
+    if(!isExporting(nullptr)) {
         for(auto o : obj) {
             const auto &outList = o->getOutList(DocumentObject::OutListNoHidden
                                                 | DocumentObject::OutListNoXLinked);
@@ -2705,7 +2705,7 @@ void Document::restore (const char *filename,
         bool delaySignal, const std::vector<std::string> &objNames)
 {
     clearUndos();
-    d->activeObject = 0;
+    d->activeObject = nullptr;
 
     bool signal = false;
     Document *activeDoc = GetApplication().getActiveDocument();
@@ -2992,7 +2992,7 @@ void Document::getLinksTo(std::set<DocumentObject*> &links,
         else {
             auto ext = o->getExtensionByType<LinkBaseExtension>(true);
             if(ext)
-                linked = ext->getTrueLinkedObject(false,0,0,true);
+                linked = ext->getTrueLinkedObject(false,nullptr,0,true);
             else
                 linked = o->getLinkedObject(false);
         }
@@ -3077,7 +3077,7 @@ std::vector<App::DocumentObject*> Document::getInList(const DocumentObject* me) 
 static void _buildDependencyList(const std::vector<App::DocumentObject*> &objectArray,
         int options, std::vector<App::DocumentObject*> *depObjs,
         DependencyList *depList, std::map<DocumentObject*,Vertex> *objectMap,
-        bool *touchCheck = 0)
+        bool *touchCheck = nullptr)
 {
     std::map<DocumentObject*, std::vector<DocumentObject*> > outLists;
     std::deque<DocumentObject*> objs;
@@ -3130,7 +3130,7 @@ std::vector<App::DocumentObject*> Document::getDependencyList(
 {
     std::vector<App::DocumentObject*> ret;
     if(!(options & DepSort)) {
-        _buildDependencyList(objectArray,options,&ret,0,0);
+        _buildDependencyList(objectArray,options,&ret,nullptr,nullptr);
         return ret;
     }
 
@@ -3138,7 +3138,7 @@ std::vector<App::DocumentObject*> Document::getDependencyList(
     std::map<DocumentObject*,Vertex> objectMap;
     std::map<Vertex,DocumentObject*> vertexMap;
 
-    _buildDependencyList(objectArray,options,0,&depList,&objectMap);
+    _buildDependencyList(objectArray,options,nullptr,&depList,&objectMap);
 
     for(auto &v : objectMap)
         vertexMap[v.second] = v.first;
@@ -3770,7 +3770,7 @@ int Document::_recomputeFeature(DocumentObject* Feat)
 {
     FC_LOG("Recomputing " << Feat->getFullName());
 
-    DocumentObjectExecReturn  *returnCode = 0;
+    DocumentObjectExecReturn  *returnCode = nullptr;
     try {
         returnCode = Feat->ExpressionEngine.execute(PropertyExpressionEngine::ExecuteNonOutput);
         if (returnCode == DocumentObject::StdReturn) {
@@ -3862,7 +3862,7 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName,
     // do no transactions if we do a rollback!
     if (!d->rollback) {
         // Undo stuff
-        _checkTransaction(0,0,__LINE__);
+        _checkTransaction(nullptr,nullptr,__LINE__);
         if (d->activeUndoTransaction)
             d->activeUndoTransaction->addObjectDel(pcObject);
     }
@@ -3958,7 +3958,7 @@ std::vector<DocumentObject *> Document::addObjects(const char* sType, const std:
         // do no transactions if we do a rollback!
         if (!d->rollback) {
             // Undo stuff
-            _checkTransaction(0,0,__LINE__);
+            _checkTransaction(nullptr,nullptr,__LINE__);
             if (d->activeUndoTransaction) {
                 d->activeUndoTransaction->addObjectDel(pcObject);
             }
@@ -4034,7 +4034,7 @@ void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
     // do no transactions if we do a rollback!
     if (!d->rollback) {
         // Undo stuff
-        _checkTransaction(0,0,__LINE__);
+        _checkTransaction(nullptr,nullptr,__LINE__);
         if (d->activeUndoTransaction)
             d->activeUndoTransaction->addObjectDel(pcObject);
     }
@@ -4090,7 +4090,7 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
     // do no transactions if we do a rollback!
     if (!d->rollback) {
         // Undo stuff
-        _checkTransaction(0,0,__LINE__);
+        _checkTransaction(nullptr,nullptr,__LINE__);
         if (d->activeUndoTransaction)
             d->activeUndoTransaction->addObjectDel(pcObject);
     }
@@ -4128,7 +4128,7 @@ void Document::removeObject(const char* sName)
 
     TransactionLocker tlock;
 
-    _checkTransaction(pos->second,0,__LINE__);
+    _checkTransaction(pos->second,nullptr,__LINE__);
 
 #if 0
     if(!d->rollback && d->activeUndoTransaction && pos->second->hasChildElement()) {
@@ -4152,7 +4152,7 @@ void Document::removeObject(const char* sName)
 #endif
 
     if (d->activeObject == pos->second)
-        d->activeObject = 0;
+        d->activeObject = nullptr;
 
     // Mark the object as about to be deleted
     pos->second->setStatus(ObjectStatus::Remove, true);
@@ -4235,7 +4235,7 @@ void Document::_removeObject(DocumentObject* pcObject)
     TransactionLocker tlock;
 
     // TODO Refactoring: share code with Document::removeObject() (2015-09-01, Fat-Zer)
-    _checkTransaction(pcObject,0,__LINE__);
+    _checkTransaction(pcObject,nullptr,__LINE__);
 
     auto pos = d->objectMap.find(pcObject->getNameInDocument());
 
@@ -4254,7 +4254,7 @@ void Document::_removeObject(DocumentObject* pcObject)
     }
 
     if (d->activeObject == pcObject)
-        d->activeObject = 0;
+        d->activeObject = nullptr;
 
     // Mark the object as about to be removed
     pcObject->setStatus(ObjectStatus::Remove, true);
@@ -4346,7 +4346,7 @@ std::vector<DocumentObject*> Document::copyObject(
         exportObjects(deps, ostr);
 
         Base::ByteArrayIStreambuf ibuf(res);
-        std::istream istr(0);
+        std::istream istr(nullptr);
         istr.rdbuf(&ibuf);
         imported = md.importObjects(istr);
     } else {
@@ -4377,7 +4377,7 @@ std::vector<App::DocumentObject*>
 Document::importLinks(const std::vector<App::DocumentObject*> &objArray)
 {
     std::set<App::DocumentObject*> links;
-    getLinksTo(links,0,GetLinkExternal,0,objArray);
+    getLinksTo(links,nullptr,GetLinkExternal,0,objArray);
 
     std::vector<App::DocumentObject*> objs;
     objs.insert(objs.end(),links.begin(),links.end());
@@ -4446,10 +4446,10 @@ Document::importLinks(const std::vector<App::DocumentObject*> &objArray)
 DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)
 {
     if(!obj)
-        return 0;
+        return nullptr;
     Document* that = obj->getDocument();
     if (that == this)
-        return 0; // nothing todo
+        return nullptr; // nothing todo
 
     // True object move without copy is only safe when undo is off on both
     // documents.
@@ -4471,7 +4471,7 @@ DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)
 
     auto objs = copyObject(deps,false);
     if(objs.empty())
-        return 0;
+        return nullptr;
     // Some object may delete its children if deleted, so we collect the IDs
     // or all depending objects for safety reason.
     std::vector<int> ids;
@@ -4504,7 +4504,7 @@ DocumentObject * Document::getObject(const char *Name) const
     if (pos != d->objectMap.end())
         return pos->second;
     else
-        return 0;
+        return nullptr;
 }
 
 DocumentObject * Document::getObjectByID(long id) const
@@ -4512,7 +4512,7 @@ DocumentObject * Document::getObjectByID(long id) const
     auto it = d->objectIdMap.find(id);
     if(it!=d->objectIdMap.end())
         return it->second;
-    return 0;
+    return nullptr;
 }
 
 
@@ -4534,7 +4534,7 @@ const char * Document::getObjectName(DocumentObject *pFeat) const
             return pos->first.c_str();
     }
 
-    return 0;
+    return nullptr;
 }
 
 std::string Document::getUniqueObjectName(const char *Name) const
@@ -4745,7 +4745,7 @@ bool Document::mustExecute() const
 {
     if(PropertyXLink::hasXLink(this)) {
         bool touched = false;
-        _buildDependencyList(d->objectArray,false,0,0,0,&touched);
+        _buildDependencyList(d->objectArray,false,nullptr,nullptr,nullptr,&touched);
         return touched;
     }
 

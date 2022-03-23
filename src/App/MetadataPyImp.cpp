@@ -396,7 +396,7 @@ PyObject* MetadataPy::supportsCurrentFreeCAD(PyObject* p)
 
 PyObject* MetadataPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int MetadataPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

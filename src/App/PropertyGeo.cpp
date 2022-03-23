@@ -911,7 +911,7 @@ App::Placement * PropertyPlacementLink::getPlacementObject(void) const
     if (_pcLink->getTypeId().isDerivedFrom(App::Placement::getClassTypeId()))
         return dynamic_cast<App::Placement*>(_pcLink);
     else
-        return 0;
+        return nullptr;
 
 }
 

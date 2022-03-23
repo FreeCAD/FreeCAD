@@ -49,7 +49,7 @@ const char* Origin::AxisRoles[3] = {"X_Axis", "Y_Axis", "Z_Axis"};
 const char* Origin::PlaneRoles[3] = {"XY_Plane", "XZ_Plane", "YZ_Plane"};
 
 Origin::Origin(void) : extension(this) {
-    ADD_PROPERTY_TYPE ( OriginFeatures, (0), 0, App::Prop_Hidden,
+    ADD_PROPERTY_TYPE ( OriginFeatures, (nullptr), 0, App::Prop_Hidden,
             "Axis and baseplanes controlled by the origin" );
 
     setStatus(App::NoAutoExpand,true);

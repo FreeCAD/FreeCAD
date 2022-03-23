@@ -206,7 +206,7 @@ public:
     /** Return the old style sub-element name
      * @param index: if given, then return the element type, and extract the index
      */
-    std::string getOldElementName(int *index=0) const;
+    std::string getOldElementName(int *index=nullptr) const;
 
     /// Return the sub-object
     DocumentObject *getSubObject() const;

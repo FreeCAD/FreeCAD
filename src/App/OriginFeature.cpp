@@ -53,7 +53,7 @@ Origin * OriginFeature::getOrigin () {
             return static_cast<App::Origin *> (origin)->hasObject (this);
         } );
     if (originIt == origins.end()) {
-        return 0;
+        return nullptr;
     } else {
         assert ( (*originIt)->isDerivedFrom ( App::Origin::getClassTypeId() ) );
         return static_cast<App::Origin *> (*originIt);

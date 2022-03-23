@@ -213,7 +213,7 @@ public:
     virtual App::DocumentObject *getSubObject(const char *subname, PyObject **pyObj, 
             Base::Matrix4D *mat, bool transform, int depth) const override 
     {
-        App::DocumentObject *ret = 0;
+        App::DocumentObject *ret = nullptr;
         if(imp->getSubObject(ret,subname,pyObj,mat,transform,depth))
             return ret;
         return FeatureT::getSubObject(subname,pyObj,mat,transform,depth);
@@ -229,7 +229,7 @@ public:
     virtual App::DocumentObject *getLinkedObject(bool recurse, 
             Base::Matrix4D *mat, bool transform, int depth) const override
     {
-        App::DocumentObject *ret = 0;
+        App::DocumentObject *ret = nullptr;
         if(imp->getLinkedObject(ret,recurse,mat,transform,depth))
             return ret;
         return FeatureT::getLinkedObject(recurse,mat,transform,depth);

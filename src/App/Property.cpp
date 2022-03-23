@@ -54,7 +54,7 @@ static std::atomic<int64_t> _PropID;
 
 // Here is the implementation! Description should take place in the header file!
 Property::Property()
-  :father(0), myName(0), _id(++_PropID)
+  :father(nullptr), myName(nullptr), _id(++_PropID)
 {
 }
 
@@ -252,7 +252,7 @@ Property *Property::Copy(void) const
 {
     // have to be reimplemented by a subclass!
     assert(0);
-    return 0;
+    return nullptr;
 }
 
 void Property::Paste(const Property& /*from*/)

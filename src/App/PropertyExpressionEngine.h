@@ -142,7 +142,7 @@ public:
      * 
      * @param option: execution option, see ExecuteOption.
      */
-    DocumentObjectExecReturn * execute(ExecuteOption option=ExecuteAll, bool *touched=0);
+    DocumentObjectExecReturn * execute(ExecuteOption option=ExecuteAll, bool *touched=nullptr);
 
     void getPathsToDocumentObject(DocumentObject*, std::vector<App::ObjectIdentifier> & paths) const;
 

@@ -56,14 +56,14 @@ using namespace App;
 
 PROPERTY_SOURCE(App::DocumentObject, App::TransactionalObject)
 
-DocumentObjectExecReturn *DocumentObject::StdReturn = 0;
+DocumentObjectExecReturn *DocumentObject::StdReturn = nullptr;
 
 //===========================================================================
 // DocumentObject
 //===========================================================================
 
 DocumentObject::DocumentObject(void)
-    : ExpressionEngine(),_pDoc(0),pcNameInDocument(0),_Id(0)
+    : ExpressionEngine(),_pDoc(nullptr),pcNameInDocument(nullptr),_Id(0)
 {
     // define Label of type 'Output' to avoid being marked as touched after relabeling
     ADD_PROPERTY_TYPE(Label,("Unnamed"),"Base",Prop_Output,"User name of the object (UTF8)");
@@ -275,7 +275,7 @@ const char *DocumentObject::getNameInDocument() const
     // to an object that has been removed from the document. In this case we should rather
     // return 0.
     //assert(pcNameInDocument);
-    if (!pcNameInDocument) return 0;
+    if (!pcNameInDocument) return nullptr;
     return pcNameInDocument->c_str();
 }
 
@@ -301,14 +301,14 @@ std::string DocumentObject::getExportName(bool forced) const {
 
 bool DocumentObject::isAttachedToDocument() const
 {
-    return (pcNameInDocument != 0);
+    return (pcNameInDocument != nullptr);
 }
 
 const char* DocumentObject::detachFromDocument()
 {
     const std::string* name = pcNameInDocument;
-    pcNameInDocument = 0;
-    return name ? name->c_str() : 0;
+    pcNameInDocument = nullptr;
+    return name ? name->c_str() : nullptr;
 }
 
 const std::vector<DocumentObject*> &DocumentObject::getOutList() const {
@@ -812,7 +812,7 @@ PyObject *DocumentObject::getPyObject(void)
 DocumentObject *DocumentObject::getSubObject(const char *subname,
         PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const
 {
-    DocumentObject *ret = 0;
+    DocumentObject *ret = nullptr;
     auto exts = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
     for(auto ext : exts) {
         if(ext->extensionGetSubObject(ret,subname,pyObj,mat,transform, depth))
@@ -820,7 +820,7 @@ DocumentObject *DocumentObject::getSubObject(const char *subname,
     }
 
     std::string name;
-    const char *dot=0;
+    const char *dot=nullptr;
     if(!subname || !(dot=strchr(subname,'.'))) {
         ret = const_cast<DocumentObject*>(this);
     }else if(subname[0]=='$') {
@@ -917,7 +917,7 @@ std::vector<std::pair<App::DocumentObject *,std::string> > DocumentObject::getPa
 DocumentObject *DocumentObject::getLinkedObject(
         bool recursive, Base::Matrix4D *mat, bool transform, int depth) const 
 {
-    DocumentObject *ret = 0;
+    DocumentObject *ret = nullptr;
     auto exts = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
     for(auto ext : exts) {
         if(ext->extensionGetLinkedObject(ret,recursive,mat,transform,depth))
@@ -1083,8 +1083,8 @@ DocumentObject *DocumentObject::resolve(const char *subname,
         PyObject **pyObj, Base::Matrix4D *pmat, bool transform, int depth) const
 {
     auto self = const_cast<DocumentObject*>(this);
-    if(parent) *parent = 0;
-    if(subElement) *subElement = 0;
+    if(parent) *parent = nullptr;
+    if(subElement) *subElement = nullptr;
 
     auto obj = getSubObject(subname,pyObj,pmat,transform,depth);
     if(!obj || !subname || *subname==0)
@@ -1097,7 +1097,7 @@ DocumentObject *DocumentObject::resolve(const char *subname,
     // '.' for each object name in SubName, even if there is no subelement
     // following it. So finding the last dot will give us the end of the last
     // object name.
-    const char *dot=0;
+    const char *dot=nullptr;
     if(Data::ComplexGeoData::isMappedElement(subname) ||
        !(dot=strrchr(subname,'.')) ||
        dot == subname) 
@@ -1169,7 +1169,7 @@ DocumentObject *DocumentObject::resolveRelativeLink(std::string &subname,
         DocumentObject *&link, std::string &linkSub) const
 {
     if(!link || !link->getNameInDocument() || !getNameInDocument())
-        return 0;
+        return nullptr;
     auto ret = const_cast<DocumentObject*>(this);
     if(link != ret) {
         auto sub = subname.c_str();
@@ -1181,7 +1181,7 @@ DocumentObject *DocumentObject::resolveRelativeLink(std::string &subname,
             if(getSubObject(subcheck.c_str())==link) {
                 ret = getSubObject(std::string(sub,dot+1-sub).c_str());
                 if(!ret) 
-                    return 0;
+                    return nullptr;
                 subname = std::string(dot+1);
                 break;
             }
@@ -1194,14 +1194,14 @@ DocumentObject *DocumentObject::resolveRelativeLink(std::string &subname,
     do {
         linkPos = linkSub.find('.',linkPos);
         if(linkPos == std::string::npos) {
-            link = 0;
-            return 0;
+            link = nullptr;
+            return nullptr;
         }
         ++linkPos;
         pos = subname.find('.',pos);
         if(pos == std::string::npos) {
             subname.clear();
-            ret = 0;
+            ret = nullptr;
             break;
         }
         ++pos;
@@ -1210,15 +1210,15 @@ DocumentObject *DocumentObject::resolveRelativeLink(std::string &subname,
     if(pos != std::string::npos) {
         ret = getSubObject(subname.substr(0,pos).c_str());
         if(!ret) {
-            link = 0;
-            return 0;
+            link = nullptr;
+            return nullptr;
         }
         subname = subname.substr(pos);
     }
     if(linkPos) {
         link = link->getSubObject(linkSub.substr(0,linkPos).c_str());
         if(!link)
-            return 0;
+            return nullptr;
         linkSub = linkSub.substr(linkPos);
     }
     return ret;
@@ -1256,13 +1256,13 @@ const std::string &DocumentObject::hiddenMarker() {
 }
 
 const char *DocumentObject::hasHiddenMarker(const char *subname) {
-    if(!subname) return 0;
+    if(!subname) return nullptr;
     const char *marker = strrchr(subname,'.');
     if(!marker)
         marker = subname;
     else
         ++marker;
-    return hiddenMarker()==marker?marker:0;
+    return hiddenMarker()==marker?marker:nullptr;
 }
 
 bool DocumentObject::redirectSubName(std::ostringstream &, DocumentObject *, DocumentObject *) const {

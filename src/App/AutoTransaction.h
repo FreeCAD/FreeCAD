@@ -50,7 +50,7 @@ public:
      * current active transaction until it reaches zero. It does not have any
      * effect on aborting transaction, though.
      */
-    AutoTransaction(const char *name=0, bool tmpName=false);
+    AutoTransaction(const char *name=nullptr, bool tmpName=false);
 
     /** Destructor
      *

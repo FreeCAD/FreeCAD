@@ -351,7 +351,7 @@ void GeoFeatureGroupExtension::recursiveCSRelevantLinks(const DocumentObject* ob
 bool GeoFeatureGroupExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname,
         PyObject **pyObj, Base::Matrix4D *mat, bool transform, int depth) const 
 {
-    ret = 0;
+    ret = nullptr;
     const char *dot;
     if(!subname || *subname==0) {
         auto obj = dynamic_cast<const DocumentObject*>(getExtendedContainer());
@@ -389,7 +389,7 @@ bool GeoFeatureGroupExtension::extensionGetSubObject(DocumentObject *&ret, const
                 //
                 const char *next = strchr(dot,'.');
                 if(next) {
-                    App::DocumentObject *nret=0;
+                    App::DocumentObject *nret=nullptr;
                     extensionGetSubObject(nret,dot,pyObj,mat,transform,depth+1);
                     if(nret) {
                         ret = nret;

@@ -181,7 +181,7 @@ PyMethodDef Application::Methods[] = {
      "There is an active sequencer during document restore and recomputation. User may\n"
      "abort the operation by pressing the ESC key. Once detected, this function will\n"
      "trigger a Base.FreeCADAbort exception."},
-    {NULL, NULL, 0, NULL}		/* Sentinel */
+    {nullptr, nullptr, 0, nullptr}		/* Sentinel */
 };
 
 
@@ -232,7 +232,7 @@ PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sIsRestoring(PyObject * /*self*/, PyObject *args) {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
     return Py::new_reference_to(Py::Boolean(GetApplication().isRestoring()));
 }
 
@@ -240,10 +240,10 @@ PyObject* Application::sOpenDocument(PyObject * /*self*/, PyObject *args, PyObje
 {
     char* Name;
     PyObject *hidden = Py_False;
-    static char *kwlist[] = {"name","hidden",0};
+    static char *kwlist[] = {"name","hidden",nullptr};
     if (!PyArg_ParseTupleAndKeywords(args, kwd, "et|O", kwlist,
                 "utf-8", &Name, &hidden))
-        return NULL;
+        return nullptr;
     std::string EncodedName = std::string(Name);
     PyMem_Free(Name);
     try {
@@ -252,25 +252,25 @@ PyObject* Application::sOpenDocument(PyObject * /*self*/, PyObject *args, PyObje
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_IOError, e.what());
-        return 0L;
+        return nullptr;
     }
     catch (const std::exception& e) {
         // might be subclass from zipios
         PyErr_Format(PyExc_IOError, "Invalid project file %s: %s\n", EncodedName.c_str(), e.what());
-        return 0L;
+        return nullptr;
     }
 }
 
 PyObject* Application::sNewDocument(PyObject * /*self*/, PyObject *args, PyObject *kwd)
 {
-    char *docName = 0;
-    char *usrName = 0;
+    char *docName = nullptr;
+    char *usrName = nullptr;
     PyObject *hidden = Py_False;
     PyObject *temp = Py_False;
-    static char *kwlist[] = {"name","label","hidden","temp",0};
+    static char *kwlist[] = {"name","label","hidden","temp",nullptr};
     if (!PyArg_ParseTupleAndKeywords(args, kwd, "|etetOO", kwlist,
                 "utf-8", &docName, "utf-8", &usrName, &hidden, &temp))
-        return NULL;
+        return nullptr;
 
     PY_TRY {
         App::Document* doc = GetApplication().newDocument(docName, usrName,
@@ -284,7 +284,7 @@ PyObject* Application::sNewDocument(PyObject * /*self*/, PyObject *args, PyObjec
 
 PyObject* Application::sSetActiveDocument(PyObject * /*self*/, PyObject *args)
 {
-    char *pstr = 0;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args, "s", &pstr))
         return nullptr;
 
@@ -301,7 +301,7 @@ PyObject* Application::sSetActiveDocument(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sCloseDocument(PyObject * /*self*/, PyObject *args)
 {
-    char *pstr = 0;
+    char *pstr = nullptr;
     if (!PyArg_ParseTuple(args, "s", &pstr))
         return nullptr;
 
@@ -379,7 +379,7 @@ PyObject* Application::sActiveDocument(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sGetDocument(PyObject * /*self*/, PyObject *args)
 {
-    char *pstr=0;
+    char *pstr=nullptr;
     if (!PyArg_ParseTuple(args, "s", &pstr))
         return nullptr;
 
@@ -394,7 +394,7 @@ PyObject* Application::sGetDocument(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sGetParam(PyObject * /*self*/, PyObject *args)
 {
-    char *pstr=0;
+    char *pstr=nullptr;
     if (!PyArg_ParseTuple(args, "s", &pstr))
         return nullptr;
 
@@ -536,7 +536,7 @@ PyObject* Application::sChangeImportModule(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sGetImportType(PyObject * /*self*/, PyObject *args)
 {
-    char*       psKey=0;
+    char*       psKey=nullptr;
 
     if (!PyArg_ParseTuple(args, "|s", &psKey))
         return nullptr;
@@ -600,7 +600,7 @@ PyObject* Application::sChangeExportModule(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sGetExportType(PyObject * /*self*/, PyObject *args)
 {
-    char*       psKey=0;
+    char*       psKey=nullptr;
 
     if (!PyArg_ParseTuple(args, "|s", &psKey))
         return nullptr;
@@ -872,11 +872,11 @@ PyObject *Application::sGetLinksTo(PyObject * /*self*/, PyObject *args)
         return nullptr;
 
     PY_TRY {
-        DocumentObject *obj = 0;
+        DocumentObject *obj = nullptr;
         if(pyobj!=Py_None) {
             if(!PyObject_TypeCheck(pyobj,&DocumentObjectPy::Type)) {
                 PyErr_SetString(PyExc_TypeError, "Expect the first argument of type document object");
-                return 0;
+                return nullptr;
             }
             obj = static_cast<DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
         }
@@ -902,7 +902,7 @@ PyObject *Application::sGetDependentObjects(PyObject * /*self*/, PyObject *args)
         for (Py_ssize_t i=0;i<seq.size();++i) {
             if(!PyObject_TypeCheck(seq[i].ptr(),&DocumentObjectPy::Type)) {
                 PyErr_SetString(PyExc_TypeError, "Expect element in sequence to be of type document object");
-                return 0;
+                return nullptr;
             }
             objs.push_back(static_cast<DocumentObjectPy*>(seq[i].ptr())->getDocumentObjectPtr());
         }

@@ -46,7 +46,7 @@ GroupExtension::GroupExtension()
 {
     initExtensionType(GroupExtension::getExtensionClassTypeId());
     
-    EXTENSION_ADD_PROPERTY_TYPE(Group,(0),"Base",(App::PropertyType)(Prop_None),"List of referenced objects");
+    EXTENSION_ADD_PROPERTY_TYPE(Group,(nullptr),"Base",(App::PropertyType)(Prop_None),"List of referenced objects");
 
     EXTENSION_ADD_PROPERTY_TYPE(_GroupTouched, (false), "Base", 
             PropertyType(Prop_Hidden|Prop_Transient),0);
@@ -189,7 +189,7 @@ DocumentObject *GroupExtension::getObject(const char *Name) const
     DocumentObject* obj = getExtendedObject()->getDocument()->getObject(Name);
     if (obj && hasObject(obj))
         return obj;
-    return 0;
+    return nullptr;
 }
 
 bool GroupExtension::hasObject(const DocumentObject* obj, bool recursive) const

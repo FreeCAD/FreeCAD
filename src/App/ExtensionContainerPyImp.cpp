@@ -43,7 +43,7 @@ std::string ExtensionContainerPy::representation(void) const
 
 int  ExtensionContainerPy::initialization() {
 
-    if (this->ob_type->tp_dict == NULL) {
+    if (this->ob_type->tp_dict == nullptr) {
         if (PyType_Ready(this->ob_type) < 0)
             return 0;
     }
@@ -61,7 +61,7 @@ int  ExtensionContainerPy::initialization() {
         // make sure to do the initialization only once
         if (meth->ml_name) {
             PyObject* item = PyDict_GetItemString(dict, meth->ml_name);
-            if (item == NULL) {
+            if (item == nullptr) {
                 // Note: this adds the methods to the type object to make sure
                 // it appears in the call tips. The function will not be bound
                 // to an instance
@@ -69,7 +69,7 @@ int  ExtensionContainerPy::initialization() {
                 while (meth->ml_name) {
                     PyObject *func;
                     func = PyCFunction_New(meth, 0);
-                    if (func == NULL)
+                    if (func == nullptr)
                         break;
                     if (PyDict_SetItemString(dict, meth->ml_name, func) < 0)
                         break;
@@ -100,7 +100,7 @@ int  ExtensionContainerPy::finalization() {
 PyObject* ExtensionContainerPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
     // create a new instance of @self.export.Name@ and the Twin object 
-    return 0;
+    return nullptr;
 }
 
 // constructor method
@@ -139,7 +139,7 @@ PyObject *ExtensionContainerPy::getCustomAttributes(const char* attr) const
     // Py_FindMethod is successful then a PyCFunction_New instance is returned
     // with the PyObject pointer of the extension to make sure the method will
     // be called for the correct instance.
-    PyObject *func = 0;
+    PyObject *func = nullptr;
     ExtensionContainer::ExtensionIterator it = this->getExtensionContainerPtr()->extensionBegin();
     for (; it != this->getExtensionContainerPtr()->extensionEnd(); ++it) {
         // The PyTypeObject is shared by all instances of this type and therefore
@@ -157,7 +157,7 @@ PyObject *ExtensionContainerPy::getCustomAttributes(const char* attr) const
                 break;
             // otherwise cleanup the result again
             Py_DECREF(func);
-            func = 0;
+            func = nullptr;
         }
         PyErr_Clear(); // clear the error set inside Py_FindMethod
     }
@@ -199,7 +199,7 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
     char *typeId;
     PyObject* proxy = nullptr;
     if (!PyArg_ParseTuple(args, "s|O", &typeId, &proxy))
-        return NULL;
+        return nullptr;
 
     if (proxy) {
         PyErr_SetString(PyExc_DeprecationWarning, "Second argument is deprecated. It is ignored and will be removed in future versions. "
@@ -238,7 +238,7 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
     // make sure to do the initialization only once
     if (meth->ml_name) {
         PyObject* item = PyDict_GetItemString(dict, meth->ml_name);
-        if (item == NULL) {
+        if (item == nullptr) {
             // Note: this adds the methods to the type object to make sure
             // it appears in the call tips. The function will not be bound
             // to an instance
@@ -246,7 +246,7 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
             while (meth->ml_name) {
                 PyObject *func;
                 func = PyCFunction_New(meth, 0);
-                if (func == NULL)
+                if (func == nullptr)
                     break;
                 if (PyDict_SetItemString(dict, meth->ml_name, func) < 0)
                     break;

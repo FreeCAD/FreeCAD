@@ -60,7 +60,7 @@ static bool getProperty(PropTmpMap &props, const LinkBaseExtension::PropInfoMap 
         return false;
     }
 
-    const char *valStr = 0;
+    const char *valStr = nullptr;
     if(key == value)
         valStr = keyStr;
     else if (value!=Py_None) {
@@ -71,7 +71,7 @@ static bool getProperty(PropTmpMap &props, const LinkBaseExtension::PropInfoMap 
         valStr = PyUnicode_AsUTF8(value);
     }
 
-    App::Property *prop = 0;
+    App::Property *prop = nullptr;
     auto &info = it->second;
     if(valStr) {
         auto pIt = propMap.find(valStr);
@@ -105,7 +105,7 @@ PyObject* LinkBaseExtensionPy::configLinkProperty(PyObject *args, PyObject *keyw
         for(Py_ssize_t pos=0;pos<PyTuple_GET_SIZE(args);++pos) {
             auto key = PyTuple_GET_ITEM(args,pos);
             if(!getProperty(props,info,propMap,key,key))
-                return 0;
+                return nullptr;
         }
     }
     if(keywds && PyDict_Check(keywds)) {
@@ -113,7 +113,7 @@ PyObject* LinkBaseExtensionPy::configLinkProperty(PyObject *args, PyObject *keyw
         Py_ssize_t pos = 0;
         while (PyDict_Next(keywds, &pos, &key, &value)) {
             if(!getProperty(props,info,propMap,key,value))
-                return 0;
+                return nullptr;
         }
     }
     for(auto &v : props)
@@ -125,11 +125,11 @@ PyObject* LinkBaseExtensionPy::getLinkExtProperty(PyObject *args)
 {
     const char *name;
     if(!PyArg_ParseTuple(args,"s",&name))
-        return 0;
+        return nullptr;
     auto prop = getLinkBaseExtensionPtr()->getProperty(name);
     if(!prop) {
         PyErr_SetString(PyExc_AttributeError, "unknown property name");
-        return 0;
+        return nullptr;
     }
     return prop->getPyObject();
 }
@@ -137,21 +137,21 @@ PyObject* LinkBaseExtensionPy::getLinkExtProperty(PyObject *args)
 PyObject* LinkBaseExtensionPy::getLinkExtPropertyName(PyObject *args) {
     const char *name;
     if(!PyArg_ParseTuple(args,"s",&name))
-        return 0;
+        return nullptr;
     auto prop = getLinkBaseExtensionPtr()->getProperty(name);
     if(!prop) {
         PyErr_SetString(PyExc_AttributeError, "unknown property name");
-        return 0;
+        return nullptr;
     }
     auto container = getLinkBaseExtensionPtr()->getExtendedContainer();
     if(!container) {
         PyErr_SetString(PyExc_RuntimeError, "no extended container");
-        return 0;
+        return nullptr;
     }
     name = container->getPropertyName(prop);
     if(!name) {
         PyErr_SetString(PyExc_RuntimeError, "cannot find property name");
-        return 0;
+        return nullptr;
     }
     return Py::new_reference_to(Py::String(name));
 }
@@ -176,7 +176,7 @@ PyObject* LinkBaseExtensionPy::getLinkPropertyInfo(PyObject *args)
     if(PyArg_ParseTuple(args,"h",&index)) {
         if(index<0 || index>=(int)infos.size()) {
             PyErr_SetString(PyExc_ValueError, "index out of range");
-            return 0;
+            return nullptr;
         }
         Py::TupleN ret(Py::String(infos[index].name),
                 Py::String(infos[index].type.getName()),Py::String(infos[index].doc));
@@ -193,15 +193,15 @@ PyObject* LinkBaseExtensionPy::getLinkPropertyInfo(PyObject *args)
             }
         }
         PyErr_SetString(PyExc_ValueError, "unknown property name");
-        return 0;
+        return nullptr;
     }
 
     PyErr_SetString(PyExc_ValueError, "invalid arguments");
-    return 0;
+    return nullptr;
 }
 
 void parseLink(LinkBaseExtension *ext, int index, PyObject *value) {
-    App::DocumentObject *obj = 0;
+    App::DocumentObject *obj = nullptr;
     PropertyStringList subs;
     PropertyString sub;
     if(value!=Py_None) {
@@ -233,14 +233,14 @@ PyObject* LinkBaseExtensionPy::setLink(PyObject *_args)
         auto ext = getLinkBaseExtensionPtr();
         PyObject *pcObj = args.size()?args[0].ptr():Py_None;
         if(pcObj == Py_None) {
-            ext->setLink(-1,0);
+            ext->setLink(-1,nullptr);
         }else if(PyDict_Check(pcObj)) {
             PyObject *key, *value;
             Py_ssize_t pos = 0;
             while(PyDict_Next(pcObj, &pos, &key, &value))
                 parseLink(ext,Py::Int(key),value);
         }else if(PySequence_Check(pcObj)) {
-            ext->setLink(-1,0);
+            ext->setLink(-1,nullptr);
             Py::Sequence seq(pcObj);
             for(Py_ssize_t i=0;i<seq.size();++i)
                 parseLink(ext,i,seq[i].ptr());
@@ -254,7 +254,7 @@ PyObject* LinkBaseExtensionPy::setLink(PyObject *_args)
 PyObject* LinkBaseExtensionPy::cacheChildLabel(PyObject *args) {
     PyObject *enable = Py_True;
     if(!PyArg_ParseTuple(args,"|O",&enable))
-        return 0;
+        return nullptr;
     PY_TRY {
         getLinkBaseExtensionPtr()->cacheChildLabel(PyObject_IsTrue(enable)?-1:0);
         Py_Return;
@@ -264,7 +264,7 @@ PyObject* LinkBaseExtensionPy::cacheChildLabel(PyObject *args) {
 PyObject* LinkBaseExtensionPy::flattenSubname(PyObject *args) {
     const char *subname;
     if(!PyArg_ParseTuple(args,"s",&subname))
-        return 0;
+        return nullptr;
     PY_TRY {
         return Py::new_reference_to(Py::String(
                     getLinkBaseExtensionPtr()->flattenSubname(subname)));
@@ -274,7 +274,7 @@ PyObject* LinkBaseExtensionPy::flattenSubname(PyObject *args) {
 PyObject* LinkBaseExtensionPy::expandSubname(PyObject *args) {
     const char *subname;
     if(!PyArg_ParseTuple(args,"s",&subname))
-        return 0;
+        return nullptr;
     PY_TRY {
         std::string sub(subname);
         getLinkBaseExtensionPtr()->expandSubname(sub);
@@ -291,7 +291,7 @@ Py::List LinkBaseExtensionPy::getLinkedChildren() const {
 
 PyObject *LinkBaseExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int LinkBaseExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject * /*obj*/)

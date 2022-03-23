@@ -116,7 +116,7 @@ void PropertyLinkBase::unregisterLabelReferences()
 
 void PropertyLinkBase::getLabelReferences(std::vector<std::string> &subs,const char *subname) {
     const char *dot;
-    for(;(subname=strchr(subname,'$'))!=0; subname=dot+1) {
+    for(;(subname=strchr(subname,'$'))!=nullptr; subname=dot+1) {
         ++subname;
         dot = strchr(subname,'.');
         if(!dot) break;
@@ -155,7 +155,7 @@ std::string PropertyLinkBase::updateLabelReference(const App::DocumentObject *pa
     // hierarchies, we have to search for all occurrences, and make sure the
     // referenced sub-object at the found hierarchy is actually the given
     // object.
-    for(const char *pos=subname; ((pos=strstr(pos,ref.c_str()))!=0); pos+=ref.size()) {
+    for(const char *pos=subname; ((pos=strstr(pos,ref.c_str()))!=nullptr); pos+=ref.size()) {
         auto sub = std::string(subname,pos+ref.size()-subname);
         auto sobj = parent->getSubObject(sub.c_str());
         if(sobj == obj) {
@@ -402,7 +402,7 @@ TYPESYSTEM_SOURCE(App::PropertyLinkHidden , App::PropertyLink)
 
 
 PropertyLink::PropertyLink()
-:_pcLink(0)
+:_pcLink(nullptr)
 {
 
 }
@@ -434,7 +434,7 @@ void PropertyLink::resetLink() {
         }
     }
 #endif
-    _pcLink = 0;
+    _pcLink = nullptr;
 }
 
 void PropertyLink::setValue(App::DocumentObject * lValue)
@@ -468,7 +468,7 @@ App::DocumentObject * PropertyLink::getValue(void) const
 
 App::DocumentObject * PropertyLink::getValue(Base::Type t) const
 {
-    return (_pcLink && _pcLink->getTypeId().isDerivedFrom(t)) ? _pcLink : 0;
+    return (_pcLink && _pcLink->getTypeId().isDerivedFrom(t)) ? _pcLink : nullptr;
 }
 
 PyObject *PropertyLink::getPyObject(void)
@@ -486,7 +486,7 @@ void PropertyLink::setPyObject(PyObject *value)
         setValue(pcObject->getDocumentObjectPtr());
     }
     else if (Py_None == value) {
-        setValue(0);
+        setValue(nullptr);
     }
     else {
         std::string error = std::string("type must be 'DocumentObject' or 'NoneType', not ");
@@ -514,7 +514,7 @@ void PropertyLink::Restore(Base::XMLReader &reader)
         DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
 
         App::Document* document = parent->getDocument();
-        DocumentObject* object = document ? document->getObject(name.c_str()) : 0;
+        DocumentObject* object = document ? document->getObject(name.c_str()) : nullptr;
         if (!object) {
             if (reader.isVerbose()) {
                 Base::Console().Warning("Lost link to '%s' while loading, maybe "
@@ -525,13 +525,13 @@ void PropertyLink::Restore(Base::XMLReader &reader)
             if (reader.isVerbose()) {
                 Base::Console().Warning("Object '%s' links to itself, nullify it\n",name.c_str());
             }
-            object = 0;
+            object = nullptr;
         }
 
         setValue(object);
     }
     else {
-        setValue(0);
+        setValue(nullptr);
     }
 }
 
@@ -561,7 +561,7 @@ void PropertyLink::getLinks(std::vector<App::DocumentObject *> &objs,
 
 void PropertyLink::breakLink(App::DocumentObject *obj, bool clear) {
     if(_pcLink == obj || (clear && getContainer()==obj))
-        setValue(0);
+        setValue(nullptr);
 }
 
 bool PropertyLink::adjustLink(const std::set<App::DocumentObject*> &inList) {
@@ -578,7 +578,7 @@ Property *PropertyLink::CopyOnLinkReplace(const App::DocumentObject *parent,
         p->_pcLink = res.first;
         return p;
     }
-    return 0;
+    return nullptr;
 }
 
 //**************************************************************************
@@ -646,7 +646,7 @@ void PropertyLinkList::setSize(int newSize, const_reference def) {
 }
 
 void PropertyLinkList::set1Value(int idx, DocumentObject* const &value) {
-    DocumentObject *obj = 0;
+    DocumentObject *obj = nullptr;
     if(idx>=0 && idx<(int)_lValueList.size()) {
         obj = _lValueList[idx];
         if(obj == value) return;
@@ -786,7 +786,7 @@ void PropertyLinkList::Restore(Base::XMLReader &reader)
         // Property not in an object!
         DocumentObject* father = static_cast<DocumentObject*>(getContainer());
         App::Document* document = father->getDocument();
-        DocumentObject* child = document ? document->getObject(name.c_str()) : 0;
+        DocumentObject* child = document ? document->getObject(name.c_str()) : nullptr;
         if (child)
             values.push_back(child);
         else if (reader.isVerbose())
@@ -826,7 +826,7 @@ Property *PropertyLinkList::CopyOnLinkReplace(const App::DocumentObject *parent,
             links.push_back(*it);
     }
     if(!found)
-        return 0;
+        return nullptr;
     auto p= new PropertyLinkList();
     p->_lValueList = std::move(links);
     return p;
@@ -863,7 +863,7 @@ DocumentObject *PropertyLinkList::find(const std::string &name, int *pindex) con
     }
     auto it = _nameMap.find(name);
     if(it == _nameMap.end())
-        return 0;
+        return nullptr;
     if(pindex) *pindex = it->second;
     return _lValueList[it->second];
 }
@@ -917,7 +917,7 @@ TYPESYSTEM_SOURCE(App::PropertyLinkSubHidden, App::PropertyLinkSub)
 
 
 PropertyLinkSub::PropertyLinkSub()
-  : _pcLinkSub(0), _restoreLabel(false)
+  : _pcLinkSub(nullptr), _restoreLabel(false)
 {
 
 }
@@ -972,7 +972,7 @@ void PropertyLinkSub::setValue(App::DocumentObject * lValue,
     if(shadows.size()==_cSubList.size())
         _ShadowSubList = std::move(shadows);
     else
-        updateElementReference(0);
+        updateElementReference(nullptr);
     checkLabelReferences(_cSubList);
     hasSetValue();
 }
@@ -1020,7 +1020,7 @@ std::vector<std::string> PropertyLinkSub::getSubValuesStartsWith(const char* sta
 
 App::DocumentObject * PropertyLinkSub::getValue(Base::Type t) const
 {
-    return (_pcLinkSub && _pcLinkSub->getTypeId().isDerivedFrom(t)) ? _pcLinkSub : 0;
+    return (_pcLinkSub && _pcLinkSub->getTypeId().isDerivedFrom(t)) ? _pcLinkSub : nullptr;
 }
 
 PyObject *PropertyLinkSub::getPyObject(void)
@@ -1049,7 +1049,7 @@ void PropertyLinkSub::setPyObject(PyObject *value)
     else if (PyTuple_Check(value) || PyList_Check(value)) {
         Py::Sequence seq(value);
         if(seq.size() == 0)
-            setValue(NULL);
+            setValue(nullptr);
         else if(seq.size()!=2)
             throw Base::ValueError("Expect input sequence of size 2");
         else if (PyObject_TypeCheck(seq[0].ptr(), &(DocumentObjectPy::Type))) {
@@ -1085,7 +1085,7 @@ void PropertyLinkSub::setPyObject(PyObject *value)
         }
     }
     else if(Py_None == value) {
-        setValue(0);
+        setValue(nullptr);
     }
     else {
         std::string error = std::string("type must be 'DocumentObject', 'NoneType' or ('DocumentObject',['String',]) not ");
@@ -1192,11 +1192,11 @@ const char *PropertyLinkBase::exportSubName(std::string &output,
             return res;
         const char *hash;
         for(hash=sub;hash<dot && *hash!='#';++hash);
-        App::Document *doc = 0;
+        App::Document *doc = nullptr;
         if(*hash == '#')
             doc = GetApplication().getDocument(std::string(sub,hash-sub).c_str());
         else {
-            hash = 0;
+            hash = nullptr;
             if(obj && obj->getNameInDocument())
                 doc = obj->getDocument();
         }
@@ -1370,9 +1370,9 @@ void PropertyLinkSub::Restore(Base::XMLReader &reader)
     assert(getContainer()->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId()) );
     App::Document* document = static_cast<DocumentObject*>(getContainer())->getDocument();
 
-    DocumentObject *pcObject = 0;
+    DocumentObject *pcObject = nullptr;
     if (!name.empty()) {
-        pcObject = document ? document->getObject(name.c_str()) : 0;
+        pcObject = document ? document->getObject(name.c_str()) : nullptr;
         if (!pcObject) {
             if (reader.isVerbose()) {
                 FC_WARN("Lost link to " << name
@@ -1409,7 +1409,7 @@ void PropertyLinkSub::Restore(Base::XMLReader &reader)
         _mapped = std::move(mapped);
     }
     else {
-       setValue(0);
+       setValue(nullptr);
     }
 }
 
@@ -1441,15 +1441,15 @@ Property *PropertyLinkSub::CopyOnImportExternal(
 {
     auto owner = dynamic_cast<const DocumentObject*>(getContainer());
     if(!owner || !owner->getDocument())
-        return 0;
+        return nullptr;
     if(!_pcLinkSub || !_pcLinkSub->getNameInDocument())
-        return 0;
+        return nullptr;
 
     auto subs = updateLinkSubs(_pcLinkSub,_cSubList,
             &tryImportSubName,owner->getDocument(),nameMap);
     auto linked = tryImport(owner->getDocument(),_pcLinkSub,nameMap);
     if(subs.empty() && linked==_pcLinkSub)
-        return 0;
+        return nullptr;
 
     PropertyLinkSub *p= new PropertyLinkSub();
     p->_pcLinkSub = linked;
@@ -1465,13 +1465,13 @@ Property *PropertyLinkSub::CopyOnLabelChange(App::DocumentObject *obj,
 {
     auto owner = dynamic_cast<const DocumentObject*>(getContainer());
     if(!owner || !owner->getDocument())
-        return 0;
+        return nullptr;
     if(!_pcLinkSub || !_pcLinkSub->getNameInDocument())
-        return 0;
+        return nullptr;
 
     auto subs = updateLinkSubs(_pcLinkSub,_cSubList,&updateLabelReference,obj,ref,newLabel);
     if(subs.empty())
-        return 0;
+        return nullptr;
 
     PropertyLinkSub *p= new PropertyLinkSub();
     p->_pcLinkSub = _pcLinkSub;
@@ -1489,7 +1489,7 @@ Property *PropertyLinkSub::CopyOnLinkReplace(const App::DocumentObject *parent,
         p->_cSubList = std::move(res.second);
         return p;
     }
-    return 0;
+    return nullptr;
 }
 
 Property *PropertyLinkSub::Copy(void) const
@@ -1522,15 +1522,15 @@ void PropertyLinkSub::getLinks(std::vector<App::DocumentObject *> &objs,
 
 void PropertyLinkSub::breakLink(App::DocumentObject *obj, bool clear) {
     if(obj == _pcLinkSub || (clear && getContainer()==obj))
-        setValue(0);
+        setValue(nullptr);
 }
 
 static App::DocumentObject *adjustLinkSubs(App::PropertyLinkBase *prop,
         const std::set<App::DocumentObject*> &inList,
         App::DocumentObject *link, std::vector<std::string> &subs,
-        std::map<App::DocumentObject *, std::vector<std::string> > *links=0)
+        std::map<App::DocumentObject *, std::vector<std::string> > *links=nullptr)
 {
-    App::DocumentObject *newLink = 0;
+    App::DocumentObject *newLink = nullptr;
     for(auto &sub : subs) {
         size_t pos = sub.find('.');
         for(;pos!=std::string::npos;pos=sub.find('.',pos+1)) {
@@ -1557,7 +1557,7 @@ static App::DocumentObject *adjustLinkSubs(App::PropertyLinkBase *prop,
             break;
         }
         if(pos == std::string::npos)
-            return 0;
+            return nullptr;
     }
     return newLink;
 }
@@ -1668,7 +1668,7 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue,const char* SubName)
         _lValueList.clear();
         _lSubList.clear();
     }
-    updateElementReference(0);
+    updateElementReference(nullptr);
     checkLabelReferences(_lSubList);
     hasSetValue();
 }
@@ -1714,7 +1714,7 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
         if (*it != nullptr)
             _lSubList[i] = *it;
     }
-    updateElementReference(0);
+    updateElementReference(nullptr);
     checkLabelReferences(_lSubList);
     hasSetValue();
 }
@@ -1765,7 +1765,7 @@ void PropertyLinkSubList::setValues(std::vector<DocumentObject*>&& lValue,
     if(ShadowSubList.size()==_lSubList.size())
         _ShadowSubList = std::move(ShadowSubList);
     else
-        updateElementReference(0);
+        updateElementReference(nullptr);
     checkLabelReferences(_lSubList);
     hasSetValue();
 }
@@ -1810,7 +1810,7 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<str
         this->_lSubList = SubList;
         this->_lValueList.insert(this->_lValueList.begin(), size, lValue);
     }
-    updateElementReference(0);
+    updateElementReference(nullptr);
     checkLabelReferences(_lSubList);
     hasSetValue();
 }
@@ -1910,13 +1910,13 @@ const string PropertyLinkSubList::getPyReprString() const
 
 DocumentObject *PropertyLinkSubList::getValue() const
 {
-    App::DocumentObject* ret = 0;
+    App::DocumentObject* ret = nullptr;
     //FIXME: cache this to avoid iterating each time, to improve speed
     for (std::size_t i = 0; i < this->_lValueList.size(); i++) {
-        if (ret == 0)
+        if (ret == nullptr)
             ret = this->_lValueList[i];
         if (ret != this->_lValueList[i])
-            return 0;
+            return nullptr;
     }
     return ret;
 }
@@ -2216,7 +2216,7 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
     std::vector<ShadowSub> shadows;
     shadows.reserve(count);
     DocumentObject* father = dynamic_cast<DocumentObject*>(getContainer());
-    App::Document* document = father ? father->getDocument() : 0;
+    App::Document* document = father ? father->getDocument() : nullptr;
     std::vector<int> mapped;
     bool restoreLabel=false;
     for (int i = 0; i < count; i++) {
@@ -2226,7 +2226,7 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
         // referenced objects in XML which do not exist anymore in the new
         // document. Thus, we should silently ignore this.
         // Property not in an object!
-        DocumentObject* child = document ? document->getObject(name.c_str()) : 0;
+        DocumentObject* child = document ? document->getObject(name.c_str()) : nullptr;
         if (child) {
             values.push_back(child);
             shadows.emplace_back();
@@ -2290,7 +2290,7 @@ Property *PropertyLinkSubList::CopyOnImportExternal(
 {
     auto owner = dynamic_cast<const DocumentObject*>(getContainer());
     if(!owner || !owner->getDocument() || _lValueList.size()!=_lSubList.size())
-        return 0;
+        return nullptr;
     std::vector<App::DocumentObject *> values;
     std::vector<std::string> subs;
     auto itSub = _lSubList.begin();
@@ -2321,7 +2321,7 @@ Property *PropertyLinkSubList::CopyOnImportExternal(
         }
     }
     if(values.empty())
-        return 0;
+        return nullptr;
     std::unique_ptr<PropertyLinkSubList> p(new PropertyLinkSubList);
     p->_lValueList = std::move(values);
     p->_lSubList = std::move(subs);
@@ -2333,7 +2333,7 @@ Property *PropertyLinkSubList::CopyOnLabelChange(App::DocumentObject *obj,
 {
     auto owner = dynamic_cast<const DocumentObject*>(getContainer());
     if(!owner || !owner->getDocument())
-        return 0;
+        return nullptr;
     std::vector<App::DocumentObject *> values;
     std::vector<std::string> subs;
     auto itSub = _lSubList.begin();
@@ -2363,7 +2363,7 @@ Property *PropertyLinkSubList::CopyOnLabelChange(App::DocumentObject *obj,
         }
     }
     if(values.empty())
-        return 0;
+        return nullptr;
     std::unique_ptr<PropertyLinkSubList> p(new PropertyLinkSubList);
     p->_lValueList = std::move(values);
     p->_lSubList = std::move(subs);
@@ -2428,7 +2428,7 @@ Property *PropertyLinkSubList::CopyOnLinkReplace(const App::DocumentObject *pare
         }
     }
     if(values.empty())
-        return 0;
+        return nullptr;
     std::unique_ptr<PropertyLinkSubList> p(new PropertyLinkSubList);
     p->_lValueList = std::move(values);
     p->_lSubList = std::move(subs);
@@ -2574,7 +2574,7 @@ public:
     std::set<PropertyXLink*> links;
 
     static std::string getDocPath(
-            const char *filename, App::Document *pDoc, bool relative, QString *fullPath = 0)
+            const char *filename, App::Document *pDoc, bool relative, QString *fullPath = nullptr)
     {
         bool absolute;
         // The path could be an URI, in that case
@@ -2685,7 +2685,7 @@ public:
     }
 
     DocInfo()
-        :pcDoc(0)
+        :pcDoc(nullptr)
     {}
 
     ~DocInfo() {
@@ -2704,7 +2704,7 @@ public:
         _DocInfoMap.erase(myPos);
         myPos = _DocInfoMap.end();
         myPath.clear();
-        pcDoc = 0;
+        pcDoc = nullptr;
     }
 
     void init(DocInfoMap::iterator pos, const char *objName, PropertyXLink *l) {
@@ -2886,7 +2886,7 @@ public:
             if(link->parentProp)
                 parentLinks[link->parentProp].push_back(link);
             else
-                parentLinks[0].push_back(link);
+                parentLinks[nullptr].push_back(link);
         }
         for(auto &v : parentLinks) {
             if(v.first) {
@@ -2900,7 +2900,7 @@ public:
                 v.first->setFlag(PropertyLinkBase::LinkDetached,false);
             }
         }
-        pcDoc = 0;
+        pcDoc = nullptr;
     }
 
     bool hasXLink(const App::Document *doc) const{
@@ -2985,7 +2985,7 @@ void PropertyXLink::detach() {
     if(docInfo && _pcLink) {
         aboutToSetValue();
         resetLink();
-        updateElementReference(0);
+        updateElementReference(nullptr);
         hasSetValue();
     }
 }
@@ -3022,12 +3022,12 @@ void PropertyXLink::setSubValues(std::vector<std::string> &&subs,
     if(shadows.size() == _SubList.size())
         _ShadowSubList = std::move(shadows);
     else
-        updateElementReference(0);
+        updateElementReference(nullptr);
     checkLabelReferences(_SubList);
 }
 
 void PropertyXLink::setValue(App::DocumentObject * lValue) {
-    setValue(lValue,0);
+    setValue(lValue,nullptr);
 }
 
 void PropertyXLink::setValue(App::DocumentObject * lValue, const char *subname)
@@ -3054,7 +3054,7 @@ void PropertyXLink::restoreLink(App::DocumentObject *lValue) {
         lValue->_addBackLink(owner);
 #endif
     _pcLink=lValue;
-    updateElementReference(0);
+    updateElementReference(nullptr);
     hasSetValue();
     setFlag(LinkRestoring,false);
 
@@ -3133,14 +3133,14 @@ void PropertyXLink::setValue(std::string &&filename, std::string &&name,
         std::vector<std::string> &&subs, std::vector<ShadowSub> &&shadows)
 {
     if(name.empty()) {
-        setValue(0,std::move(subs),std::move(shadows));
+        setValue(nullptr,std::move(subs),std::move(shadows));
         return;
     }
     auto owner = dynamic_cast<DocumentObject*>(getContainer());
     if(!owner || !owner->getNameInDocument())
         throw Base::RuntimeError("invalid container");
 
-    DocumentObject *pObject=0;
+    DocumentObject *pObject=nullptr;
     DocInfoPtr info;
     if(filename.size()) {
         owner->getDocument()->signalLinkXsetValue(filename);
@@ -3160,7 +3160,7 @@ void PropertyXLink::setValue(std::string &&filename, std::string &&name,
     if (_pcLink && !owner->testStatus(ObjectStatus::Destroy) && _pcScope!=LinkScope::Hidden)
         _pcLink->_removeBackLink(owner);
 #endif
-    _pcLink = 0;
+    _pcLink = nullptr;
     if(docInfo!=info) {
         unlink();
         docInfo = info;
@@ -3181,7 +3181,7 @@ void PropertyXLink::setValue(App::DocumentObject *link,
 }
 
 App::Document *PropertyXLink::getDocument() const {
-    return docInfo?docInfo->pcDoc:0;
+    return docInfo?docInfo->pcDoc:nullptr;
 }
 
 const char *PropertyXLink::getDocumentPath() const {
@@ -3394,11 +3394,11 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
         name = reader.getAttribute("name");
 
     assert(getContainer()->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId()));
-    DocumentObject *object = 0;
+    DocumentObject *object = nullptr;
     if(name.size() && file.empty()) {
         DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
         Document *document = parent->getDocument();
-        object = document ? document->getObject(name.c_str()) : 0;
+        object = document ? document->getObject(name.c_str()) : nullptr;
         if(!object) {
             if(reader.isVerbose()) {
                 FC_WARN("Lost link to '" << name << "' while loading, maybe "
@@ -3449,7 +3449,7 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
     setFlag(LinkRestoreLabel,restoreLabel);
 
     if (name.empty()) {
-        setValue(0);
+        setValue(nullptr);
         return;
     }
 
@@ -3466,13 +3466,13 @@ Property *PropertyXLink::CopyOnImportExternal(
 {
     auto owner = Base::freecad_dynamic_cast<const DocumentObject>(getContainer());
     if(!owner || !owner->getDocument() || !_pcLink || !_pcLink->getNameInDocument())
-        return 0;
+        return nullptr;
 
     auto subs = updateLinkSubs(_pcLink,_SubList,
                     &tryImportSubName,owner->getDocument(),nameMap);
     auto linked = tryImport(owner->getDocument(),_pcLink,nameMap);
     if(subs.empty() && linked==_pcLink)
-        return 0;
+        return nullptr;
 
     std::unique_ptr<PropertyXLink> p(new PropertyXLink);
     copyTo(*p,linked,&subs);
@@ -3484,7 +3484,7 @@ Property *PropertyXLink::CopyOnLinkReplace(const App::DocumentObject *parent,
 {
     auto res = tryReplaceLinkSubs(getContainer(),_pcLink,parent,oldObj,newObj,_SubList);
     if(!res.first)
-        return 0;
+        return nullptr;
     std::unique_ptr<PropertyXLink> p(new PropertyXLink);
     copyTo(*p,res.first,&res.second);
     return p.release();
@@ -3495,10 +3495,10 @@ Property *PropertyXLink::CopyOnLabelChange(App::DocumentObject *obj,
 {
     auto owner = dynamic_cast<const DocumentObject*>(getContainer());
     if(!owner || !owner->getDocument() || !_pcLink || !_pcLink->getNameInDocument())
-        return 0;
+        return nullptr;
     auto subs = updateLinkSubs(_pcLink,_SubList,&updateLabelReference,obj,ref,newLabel);
     if(subs.empty())
-        return 0;
+        return nullptr;
     std::unique_ptr<PropertyXLink> p(new PropertyXLink);
     copyTo(*p,_pcLink,&subs);
     return p.release();
@@ -3672,7 +3672,7 @@ void PropertyXLink::setPyObject(PyObject *value) {
         Py::Object pyObj(seq[0].ptr());
         Py::Object pySub(seq[1].ptr());
         if(pyObj.isNone()) {
-            setValue(0);
+            setValue(nullptr);
             return;
         } else if(!PyObject_TypeCheck(pyObj.ptr(), &DocumentObjectPy::Type))
             throw Base::TypeError("Expect the first element to be of 'DocumentObject'");
@@ -3696,7 +3696,7 @@ void PropertyXLink::setPyObject(PyObject *value) {
     } else if(PyObject_TypeCheck(value, &(DocumentObjectPy::Type))) {
         setValue(static_cast<DocumentObjectPy*>(value)->getDocumentObjectPtr());
     } else if (Py_None == value) {
-        setValue(0);
+        setValue(nullptr);
     } else {
         throw Base::TypeError("type must be 'DocumentObject', 'None', or '(DocumentObject, SubName)' or "
                 "'DocumentObject, [SubName..])");
@@ -4030,7 +4030,7 @@ DocumentObject *PropertyXLinkSubList::getValue() const
 {
     if(_Links.size())
         return _Links.begin()->getValue();
-    return 0;
+    return nullptr;
 }
 
 int PropertyXLinkSubList::removeValue(App::DocumentObject *lValue)
@@ -4167,7 +4167,7 @@ Property *PropertyXLinkSubList::CopyOnImportExternal(
         if(copy) break;
     }
     if(!copy)
-        return 0;
+        return nullptr;
     std::unique_ptr<PropertyXLinkSubList> p(new PropertyXLinkSubList);
     for(auto iter=_Links.begin();iter!=it;++iter) {
         p->_Links.emplace_back();
@@ -4196,7 +4196,7 @@ Property *PropertyXLinkSubList::CopyOnLabelChange(App::DocumentObject *obj,
         if(copy) break;
     }
     if(!copy)
-        return 0;
+        return nullptr;
     std::unique_ptr<PropertyXLinkSubList> p(new PropertyXLinkSubList);
     for(auto iter=_Links.begin();iter!=it;++iter) {
         p->_Links.emplace_back();
@@ -4219,7 +4219,7 @@ Property *PropertyXLinkSubList::CopyOnLinkReplace(const App::DocumentObject *par
         App::DocumentObject *oldObj, App::DocumentObject *newObj) const
 {
     std::unique_ptr<Property> copy;
-    PropertyXLinkSub *copied = 0;
+    PropertyXLinkSub *copied = nullptr;
     std::set<std::string> subs;
     auto it = _Links.begin();
     for(;it!=_Links.end();++it) {
@@ -4234,7 +4234,7 @@ Property *PropertyXLinkSubList::CopyOnLinkReplace(const App::DocumentObject *par
         }
     }
     if(!copy)
-        return 0;
+        return nullptr;
     std::unique_ptr<PropertyXLinkSubList> p(new PropertyXLinkSubList);
     for(auto iter=_Links.begin();iter!=it;++iter) {
         if(iter->getValue()==newObj && copied->getValue()==newObj) {
@@ -4365,14 +4365,14 @@ void PropertyXLinkSubList::getLinks(std::vector<App::DocumentObject *> &objs,
 
 void PropertyXLinkSubList::breakLink(App::DocumentObject *obj, bool clear) {
     if(clear && getContainer()==obj) {
-        setValue(0);
+        setValue(nullptr);
         return;
     }
     atomic_change guard(*this,false);
     for(auto &l : _Links) {
         if(l.getValue() == obj) {
             guard.aboutToChange();
-            l.setValue(0);
+            l.setValue(nullptr);
         }
     }
     guard.tryInvoke();

@@ -207,7 +207,7 @@ int App::validColumn(const std::string &colstr)
 
 App::CellAddress App::stringToAddress(const char * strAddress, bool silent)
 {
-    assert(strAddress != 0);
+    assert(strAddress != nullptr);
 
     static boost::regex e("(\\$?[A-Z]{1,2})(\\$?[0-9]{1,5})");
     boost::cmatch cm;

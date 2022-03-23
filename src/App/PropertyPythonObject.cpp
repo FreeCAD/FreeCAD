@@ -354,7 +354,7 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
                 Py::Module mod(PyImport_ImportModule(nam.c_str()),true);
                 if (mod.isNull())
                     throw Py::Exception();
-                this->object = PyObject_CallObject(mod.getAttr(cls).ptr(), NULL);
+                this->object = PyObject_CallObject(mod.getAttr(cls).ptr(), nullptr);
                 load_pickle = true;
                 buffer = std::string(what[2].second, end);
             }

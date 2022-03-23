@@ -39,7 +39,7 @@ PROPERTY_SOURCE(App::VRMLObject, App::GeoFeature)
 
 VRMLObject::VRMLObject() : index(0)
 {
-    ADD_PROPERTY_TYPE(VrmlFile,(0),"",Prop_None,"Included file with the VRML definition");
+    ADD_PROPERTY_TYPE(VrmlFile,(nullptr),"",Prop_None,"Included file with the VRML definition");
     ADD_PROPERTY_TYPE(Urls,(""),"",static_cast<PropertyType>(Prop_ReadOnly|Prop_Output|Prop_Transient),
         "Resource files loaded by the VRML file");
     ADD_PROPERTY_TYPE(Resources,(""),"",static_cast<PropertyType>(Prop_ReadOnly|Prop_Output),

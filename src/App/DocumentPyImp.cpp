@@ -75,7 +75,7 @@ PyObject*  DocumentPy::saveAs(PyObject * args)
 {
     char* fn;
     if (!PyArg_ParseTuple(args, "et", "utf-8", &fn))
-        return NULL;
+        return nullptr;
 
     std::string utf8Name = fn;
     PyMem_Free(fn);
@@ -100,25 +100,25 @@ PyObject*  DocumentPy::saveCopy(PyObject * args)
 
 PyObject*  DocumentPy::load(PyObject * args)
 {
-    char* filename=0;
+    char* filename=nullptr;
     if (!PyArg_ParseTuple(args, "s", &filename))
-        return NULL;
+        return nullptr;
     if (!filename || *filename == '\0') {
         PyErr_Format(PyExc_ValueError, "Path is empty");
-        return NULL;
+        return nullptr;
     }
 
     getDocumentPtr()->FileName.setValue(filename);
     Base::FileInfo fi(filename);
     if (!fi.isReadable()) {
         PyErr_Format(PyExc_IOError, "No such file or directory: '%s'", filename);
-        return NULL;
+        return nullptr;
     }
     try {
         getDocumentPtr()->restore();
     } catch (...) {
         PyErr_Format(PyExc_IOError, "Reading from file '%s' failed", filename);
-        return NULL;
+        return nullptr;
     }
     Py_Return;
 }
@@ -188,7 +188,7 @@ PyObject*  DocumentPy::mergeProject(PyObject * args)
 
 PyObject*  DocumentPy::exportGraphviz(PyObject * args)
 {
-    char* fn=0;
+    char* fn=nullptr;
     if (!PyArg_ParseTuple(args, "|s",&fn))
         return nullptr;
     if (fn) {
@@ -207,14 +207,14 @@ PyObject*  DocumentPy::exportGraphviz(PyObject * args)
 
 PyObject*  DocumentPy::addObject(PyObject *args, PyObject *kwd)
 {
-    char *sType,*sName=0,*sViewType=0;
-    PyObject* obj=0;
-    PyObject* view=0;
+    char *sType,*sName=nullptr,*sViewType=nullptr;
+    PyObject* obj=nullptr;
+    PyObject* view=nullptr;
     PyObject *attach=Py_False;
-    static char *kwlist[] = {"type","name","objProxy","viewProxy","attach","viewType",NULL};
+    static char *kwlist[] = {"type","name","objProxy","viewProxy","attach","viewType",nullptr};
     if (!PyArg_ParseTupleAndKeywords(args,kwd,"s|sOOOs",
                 kwlist, &sType,&sName,&obj,&view,&attach,&sViewType))
-        return NULL;
+        return nullptr;
 
     DocumentObject *pcFtr = nullptr;
 
@@ -528,7 +528,7 @@ PyObject*  DocumentPy::recompute(PyObject * args)
         if (PyObject_IsTrue(checkCycle))
             options = Document::DepNoCycle;
 
-        int objectCount = getDocumentPtr()->recompute(objs, PyObject_IsTrue(force), 0, options);
+        int objectCount = getDocumentPtr()->recompute(objs, PyObject_IsTrue(force), nullptr, options);
 
         // Document::recompute() hides possibly raised Python exceptions by its features
         // So, check if an error is set and return null if yes
@@ -632,7 +632,7 @@ PyObject*  DocumentPy::findObjects(PyObject *args, PyObject *kwds)
     }
     catch (const boost::regex_error& e) {
         PyErr_SetString(PyExc_RuntimeError, e.what());
-        return 0;
+        return nullptr;
     }
 
     Py_ssize_t index=0;
@@ -791,7 +791,7 @@ PyObject* DocumentPy::getTempFileName(PyObject *args)
     // delete the created file, we need only the name...
     fileName.deleteFile();
 
-    PyObject *p = PyUnicode_DecodeUTF8(fileName.filePath().c_str(),fileName.filePath().size(),0);
+    PyObject *p = PyUnicode_DecodeUTF8(fileName.filePath().c_str(),fileName.filePath().size(),nullptr);
     if (!p) {
         throw Base::UnicodeError("UTF8 conversion failure at PropertyString::getPyObject()");
     }
@@ -808,7 +808,7 @@ PyObject *DocumentPy::getCustomAttributes(const char* attr) const
     App::Property* prop = getPropertyContainerPtr()->getPropertyByName(attr);
     if (prop)
         return nullptr;
-    if (this->ob_type->tp_dict == NULL) {
+    if (this->ob_type->tp_dict == nullptr) {
         if (PyType_Ready(this->ob_type) < 0)
             return nullptr;
     }
@@ -817,7 +817,7 @@ PyObject *DocumentPy::getCustomAttributes(const char* attr) const
         return nullptr;
     // search for an object with this name
     DocumentObject* obj = getDocumentPtr()->getObject(attr);
-    return (obj ? obj->getPyObject() : 0);
+    return (obj ? obj->getPyObject() : nullptr);
 }
 
 int DocumentPy::setCustomAttributes(const char* attr, PyObject *)
@@ -830,7 +830,7 @@ int DocumentPy::setCustomAttributes(const char* attr, PyObject *)
     App::Property* prop = getPropertyContainerPtr()->getPropertyByName(attr);
     if (prop)
         return 0;
-    if (this->ob_type->tp_dict == NULL) {
+    if (this->ob_type->tp_dict == nullptr) {
         if (PyType_Ready(this->ob_type) < 0)
             return 0;
     }
@@ -858,11 +858,11 @@ PyObject* DocumentPy::getLinksTo(PyObject *args)
         return nullptr;
 
     PY_TRY {
-        DocumentObject *obj = 0;
+        DocumentObject *obj = nullptr;
         if (pyobj!=Py_None) {
             if (!PyObject_TypeCheck(pyobj,&DocumentObjectPy::Type)) {
                 PyErr_SetString(PyExc_TypeError, "Expect the first argument of type document object");
-                return 0;
+                return nullptr;
             }
             obj = static_cast<DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
         }
@@ -901,7 +901,7 @@ Py::List DocumentPy::getOutList(void) const
 PyObject *DocumentPy::getDependentDocuments(PyObject *args) {
     PyObject *sort = Py_True;
     if (!PyArg_ParseTuple(args, "|O", &sort))
-        return 0;
+        return nullptr;
     PY_TRY {
         auto docs = getDocumentPtr()->getDependentDocuments(PyObject_IsTrue(sort));
         Py::List ret;

@@ -41,7 +41,7 @@ std::string GroupExtensionPy::representation(void) const
 
 PyObject*  GroupExtensionPy::newObject(PyObject *args)
 {
-    char *sType,*sName=0;
+    char *sType,*sName=nullptr;
     if (!PyArg_ParseTuple(args, "s|s", &sType,&sName))
         return nullptr;
 
@@ -256,7 +256,7 @@ PyObject*  GroupExtensionPy::getObject(PyObject *args)
 PyObject*  GroupExtensionPy::hasObject(PyObject *args)
 {
     PyObject *object;
-    PyObject *recursivePy = 0;
+    PyObject *recursivePy = nullptr;
     int recursive = 0;
     if (!PyArg_ParseTuple(args, "O!|O", &(DocumentObjectPy::Type), &object, &recursivePy))
         return nullptr;
@@ -285,7 +285,7 @@ PyObject*  GroupExtensionPy::hasObject(PyObject *args)
 
 PyObject *GroupExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int GroupExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

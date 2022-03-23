@@ -161,7 +161,7 @@ public:
      * @return For external linked object, return 2 in case the link is
      * missing, and 1 if the time stamp has changed.
      */
-    virtual int checkRestore(std::string *msg=0) const {
+    virtual int checkRestore(std::string *msg=nullptr) const {
         (void)msg;
         return 0;
     }
@@ -176,7 +176,7 @@ public:
      * @param newStyle: whether to return new or old style subname reference
      */
     virtual void getLinks(std::vector<App::DocumentObject *> &objs,
-            bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const = 0;
+            bool all=false, std::vector<std::string> *subs=nullptr, bool newStyle=true) const = 0;
 
     /** Called to reset this link property
      *
@@ -224,7 +224,7 @@ public:
      */
     virtual Property *CopyOnImportExternal(const std::map<std::string,std::string> &nameMap) const {
         (void)nameMap;
-        return 0;
+        return nullptr;
     }
 
     /** Update object label reference in this property
@@ -242,7 +242,7 @@ public:
         (void)obj;
         (void)ref;
         (void)newLabel;
-        return 0;
+        return nullptr;
     }
 
     /// Helper function to return all linked objects of this property
@@ -319,7 +319,7 @@ public:
     static std::pair<App::DocumentObject*,std::string> tryReplaceLink(
             const App::PropertyContainer *owner, App::DocumentObject *obj,
             const App::DocumentObject *parent, App::DocumentObject *oldObj,
-            App::DocumentObject *newObj, const char *sub=0);
+            App::DocumentObject *newObj, const char *sub=nullptr);
 
     /** Helper function to check and replace a link with multiple subname references
      *
@@ -483,7 +483,7 @@ public:
      * afterRestore() function, which calls this function to do the string
      * parsing.
      */
-    static void restoreLabelReference(const App::DocumentObject *obj, std::string &sub, ShadowSub *shadow=0);
+    static void restoreLabelReference(const App::DocumentObject *obj, std::string &sub, ShadowSub *shadow=nullptr);
 
     /** Helper function to extract labels from a subname reference
      *
@@ -620,7 +620,7 @@ public:
     { return "Gui::PropertyEditor::PropertyLinkItem"; }
 
     virtual void getLinks(std::vector<App::DocumentObject *> &objs,
-            bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
+            bool all=false, std::vector<std::string> *subs=nullptr, bool newStyle=true) const override;
 
     virtual void breakLink(App::DocumentObject *obj, bool clear) override;
 
@@ -710,7 +710,7 @@ public:
     { return "Gui::PropertyEditor::PropertyLinkListItem"; }
 
     virtual void getLinks(std::vector<App::DocumentObject *> &objs,
-            bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
+            bool all=false, std::vector<std::string> *subs=nullptr, bool newStyle=true) const override;
 
     virtual void breakLink(App::DocumentObject *obj, bool clear) override;
 
@@ -719,9 +719,9 @@ public:
     virtual Property *CopyOnLinkReplace(const App::DocumentObject *parent,
             App::DocumentObject *oldObj, App::DocumentObject *newObj) const override;
 
-    DocumentObject *find(const std::string &, int *pindex=0) const;
-    DocumentObject *find(const char *sub, int *pindex=0) const {
-        if(!sub) return 0;
+    DocumentObject *find(const std::string &, int *pindex=nullptr) const;
+    DocumentObject *find(const char *sub, int *pindex=nullptr) const {
+        if(!sub) return nullptr;
         return find(std::string(sub),pindex);
     }
 
@@ -851,7 +851,7 @@ public:
     virtual bool referenceChanged() const override;
 
     virtual void getLinks(std::vector<App::DocumentObject *> &objs,
-            bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
+            bool all=false, std::vector<std::string> *subs=nullptr, bool newStyle=true) const override;
 
     virtual void breakLink(App::DocumentObject *obj, bool clear) override;
 
@@ -997,7 +997,7 @@ public:
     virtual bool referenceChanged() const override;
 
     virtual void getLinks(std::vector<App::DocumentObject *> &objs,
-            bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
+            bool all=false, std::vector<std::string> *subs=nullptr, bool newStyle=true) const override;
 
     virtual void breakLink(App::DocumentObject *obj, bool clear) override;
 
@@ -1050,7 +1050,7 @@ class AppExport PropertyXLink : public PropertyLinkGlobal
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    PropertyXLink(bool allowPartial=false, PropertyLinkBase *parent=0);
+    PropertyXLink(bool allowPartial=false, PropertyLinkBase *parent=nullptr);
 
     virtual ~PropertyXLink();
 
@@ -1083,7 +1083,7 @@ public:
     const char *getDocumentPath() const;
     const char *getObjectName() const;
 
-    virtual int checkRestore(std::string *msg=0) const override;
+    virtual int checkRestore(std::string *msg=nullptr) const override;
 
     virtual void Save (Base::Writer &writer) const override;
     virtual void Restore(Base::XMLReader &reader) override;
@@ -1107,9 +1107,9 @@ public:
 
     static bool supportXLink(const App::Property *prop);
     static bool hasXLink(const App::Document *doc);
-    static bool hasXLink(const std::vector<App::DocumentObject*> &objs, std::vector<App::Document*> *unsaved=0);
-    static std::map<App::Document*,std::set<App::Document*> > getDocumentOutList(App::Document *doc=0);
-    static std::map<App::Document*,std::set<App::Document*> > getDocumentInList(App::Document *doc=0);
+    static bool hasXLink(const std::vector<App::DocumentObject*> &objs, std::vector<App::Document*> *unsaved=nullptr);
+    static std::map<App::Document*,std::set<App::Document*> > getDocumentOutList(App::Document *doc=nullptr);
+    static std::map<App::Document*,std::set<App::Document*> > getDocumentInList(App::Document *doc=nullptr);
     static void restoreDocument(const App::Document &doc);
 
     virtual void updateElementReference(
@@ -1118,7 +1118,7 @@ public:
     virtual bool referenceChanged() const override;
 
     virtual void getLinks(std::vector<App::DocumentObject *> &objs,
-            bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
+            bool all=false, std::vector<std::string> *subs=nullptr, bool newStyle=true) const override;
 
     virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
 
@@ -1145,7 +1145,7 @@ protected:
 
     void restoreLink(App::DocumentObject *);
 
-    void copyTo(PropertyXLink &other, App::DocumentObject *linked=0, std::vector<std::string> *subs=0) const;
+    void copyTo(PropertyXLink &other, App::DocumentObject *linked=nullptr, std::vector<std::string> *subs=nullptr) const;
 
     virtual void aboutToSetValue() override;
 
@@ -1172,7 +1172,7 @@ class AppExport PropertyXLinkSub: public PropertyXLink {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    PropertyXLinkSub(bool allowPartial=false, PropertyLinkBase *parent=0);
+    PropertyXLinkSub(bool allowPartial=false, PropertyLinkBase *parent=nullptr);
 
     virtual ~PropertyXLinkSub();
 
@@ -1277,7 +1277,7 @@ public:
     virtual bool referenceChanged() const override;
 
     virtual void getLinks(std::vector<App::DocumentObject *> &objs,
-            bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
+            bool all=false, std::vector<std::string> *subs=nullptr, bool newStyle=true) const override;
 
     virtual void breakLink(App::DocumentObject *obj, bool clear) override;
 
@@ -1285,7 +1285,7 @@ public:
 
     bool upgrade(Base::XMLReader &reader, const char *typeName);
 
-    virtual int checkRestore(std::string *msg=0) const override;
+    virtual int checkRestore(std::string *msg=nullptr) const override;
 
     virtual void setAllowPartial(bool enable) override;
 
@@ -1326,12 +1326,12 @@ public:
     ~PropertyXLinkContainer();
 
     virtual void afterRestore() override;
-    virtual int checkRestore(std::string *msg=0) const override;
+    virtual int checkRestore(std::string *msg=nullptr) const override;
     virtual void Save (Base::Writer &writer) const override;
     virtual void Restore(Base::XMLReader &reader) override;
     virtual void breakLink(App::DocumentObject *obj, bool clear) override;
     virtual void getLinks(std::vector<App::DocumentObject *> &objs,
-            bool all=false, std::vector<std::string> *subs=0, bool newStyle=true) const override;
+            bool all=false, std::vector<std::string> *subs=nullptr, bool newStyle=true) const override;
 
     bool isLinkedToDocument(const App::Document &doc) const;
 

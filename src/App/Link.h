@@ -187,7 +187,7 @@ public:
             : index(index), name(name), type(type), doc(doc)
         {}
 
-        PropInfo() : index(0), name(0), doc(0) {}
+        PropInfo() : index(0), name(nullptr), doc(nullptr) {}
     };
 
 #define LINK_PROP_INFO(_1,_var,_param) \
@@ -244,7 +244,7 @@ public:
 
     const char *getSubName() const {
         parseSubName();
-        return mySubName.size()?mySubName.c_str():0;
+        return mySubName.size()?mySubName.c_str():nullptr;
     }
 
     const std::vector<std::string> &getSubElements() const {
@@ -253,7 +253,7 @@ public:
     }
 
     bool extensionGetSubObject(DocumentObject *&ret, const char *subname,
-            PyObject **pyObj=0, Base::Matrix4D *mat=0, bool transform=false, int depth=0) const override;
+            PyObject **pyObj=nullptr, Base::Matrix4D *mat=nullptr, bool transform=false, int depth=0) const override;
 
     bool extensionGetSubObjects(std::vector<std::string>&ret, int reason) const override;
 
@@ -274,18 +274,18 @@ public:
 
     virtual Property *extensionGetPropertyByName(const char* name) const override;
 
-    static int getArrayIndex(const char *subname, const char **psubname=0);
-    int getElementIndex(const char *subname, const char **psubname=0) const;
+    static int getArrayIndex(const char *subname, const char **psubname=nullptr);
+    int getElementIndex(const char *subname, const char **psubname=nullptr) const;
     void elementNameFromIndex(int idx, std::ostream &ss) const;
 
     DocumentObject *getContainer();
     const DocumentObject *getContainer() const;
 
-    void setLink(int index, DocumentObject *obj, const char *subname=0,
+    void setLink(int index, DocumentObject *obj, const char *subname=nullptr,
         const std::vector<std::string> &subs = std::vector<std::string>());
 
     DocumentObject *getTrueLinkedObject(bool recurse,
-            Base::Matrix4D *mat=0,int depth=0, bool noElement=false) const;
+            Base::Matrix4D *mat=nullptr,int depth=0, bool noElement=false) const;
 
     typedef std::map<const Property*,std::pair<LinkBaseExtension*,int> > LinkPropMap;
 

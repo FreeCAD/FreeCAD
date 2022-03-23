@@ -39,7 +39,7 @@ std::string GeoFeatureGroupExtensionPy::representation(void) const
 
 PyObject *GeoFeatureGroupExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int GeoFeatureGroupExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

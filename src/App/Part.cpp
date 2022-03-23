@@ -43,7 +43,7 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(App::Part, App::GeoFeature)
 Part::Part(void)
 {
     ADD_PROPERTY(Type,(""));
-    ADD_PROPERTY_TYPE(Material, (0), 0, App::Prop_None, "The Material for this Part");
+    ADD_PROPERTY_TYPE(Material, (nullptr), 0, App::Prop_None, "The Material for this Part");
     ADD_PROPERTY_TYPE(Meta, (), 0, App::Prop_None, "Map with additional meta information");
 
     // create the uuid for the document
