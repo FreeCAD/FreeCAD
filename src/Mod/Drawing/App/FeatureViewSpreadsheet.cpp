@@ -55,7 +55,7 @@ FeatureViewSpreadsheet::FeatureViewSpreadsheet(void)
     ADD_PROPERTY_TYPE(CellEnd ,("B2"),vgroup,App::Prop_None,"The bottom right cell of the range to display");
     ADD_PROPERTY_TYPE(Font ,("Sans"),vgroup,App::Prop_None,"The name of the font to use");
     ADD_PROPERTY_TYPE(Color,(0.0f,0.0f,0.0f),vgroup,App::Prop_None,"The default color of the text and lines");
-    ADD_PROPERTY_TYPE(Source ,(0),vgroup,App::Prop_None,"Spreadsheet to view");
+    ADD_PROPERTY_TYPE(Source ,(nullptr),vgroup,App::Prop_None,"Spreadsheet to view");
     ADD_PROPERTY_TYPE(LineWidth,(0.35),vgroup,App::Prop_None,"The thickness of the cell lines");
     ADD_PROPERTY_TYPE(FontSize,(12.0),vgroup,App::Prop_None,"The size of the text");
 }
@@ -168,7 +168,7 @@ App::DocumentObjectExecReturn *FeatureViewSpreadsheet::execute(void)
             // get the text
             App::Property* prop = sheet->getPropertyByName(address.toString().c_str());
             std::stringstream field;
-            if (prop != 0) {
+            if (prop != nullptr) {
                 if (prop->isDerivedFrom((App::PropertyQuantity::getClassTypeId())))
                     field << static_cast<App::PropertyQuantity*>(prop)->getValue();
                 else if (prop->isDerivedFrom((App::PropertyFloat::getClassTypeId())))

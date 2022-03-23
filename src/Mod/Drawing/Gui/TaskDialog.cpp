@@ -74,7 +74,7 @@ TaskProjection::TaskProjection()
     widget->setLayout(mainLayout);
 
     taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), tr("Project shapes"), false, 0);
+        QPixmap(), tr("Project shapes"), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

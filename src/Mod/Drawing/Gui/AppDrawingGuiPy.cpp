@@ -89,7 +89,7 @@ private:
         if (file.hasExtension("svg") || file.hasExtension("svgz")) {
             QString fileName = QString::fromUtf8(EncodedName.c_str());
             // Displaying the image in a view
-            DrawingView* view = new DrawingView(0, Gui::getMainWindow());
+            DrawingView* view = new DrawingView(nullptr, Gui::getMainWindow());
             view->load(fileName);
             view->setWindowIcon(Gui::BitmapFactory().pixmap("actions/drawing-landscape"));
             QFileInfo fi(fileName);
@@ -117,7 +117,7 @@ private:
         if (file.hasExtension("svg") || file.hasExtension("svgz")) {
             QString fileName = QString::fromUtf8(EncodedName.c_str());
             // Displaying the image in a view
-            DrawingView* view = new DrawingView(0, Gui::getMainWindow());
+            DrawingView* view = new DrawingView(nullptr, Gui::getMainWindow());
             view->load(fileName);
             view->setWindowIcon(Gui::BitmapFactory().pixmap("actions/drawing-landscape"));
             QFileInfo fi(fileName);

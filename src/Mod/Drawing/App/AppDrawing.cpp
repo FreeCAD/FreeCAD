@@ -40,7 +40,7 @@ PyMOD_INIT_FUNC(Drawing)
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
     PyObject* mod = Drawing::initModule();
     Base::Console().Log("Loading Drawing module... done\n");

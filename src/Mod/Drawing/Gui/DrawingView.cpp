@@ -70,9 +70,9 @@ using namespace DrawingGui;
 SvgView::SvgView(QWidget *parent)
     : QGraphicsView(parent)
     , m_renderer(Native)
-    , m_svgItem(0)
-    , m_backgroundItem(0)
-    , m_outlineItem(0)
+    , m_svgItem(nullptr)
+    , m_backgroundItem(nullptr)
+    , m_outlineItem(nullptr)
     , m_invertZoom(false)
 {
     setScene(new QGraphicsScene(this));
@@ -432,9 +432,9 @@ bool DrawingView::onHasMsg(const char* pMsg) const
     if (strcmp("ViewFit",pMsg) == 0)
         return true;
     else if (strcmp("Save",pMsg) == 0)
-        return getGuiDocument() != 0;
+        return getGuiDocument() != nullptr;
     else if (strcmp("SaveAs",pMsg) == 0)
-        return getGuiDocument() != 0;
+        return getGuiDocument() != nullptr;
     else if (strcmp("Undo",pMsg) == 0) {
         App::Document* doc = getAppDocument();
         return doc && doc->getAvailableUndos() > 0;

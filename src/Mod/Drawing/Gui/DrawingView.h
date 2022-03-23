@@ -50,7 +50,7 @@ class DrawingGuiExport SvgView : public QGraphicsView
 public:
     enum RendererType { Native, OpenGL, Image };
 
-    SvgView(QWidget *parent = 0);
+    SvgView(QWidget *parent = nullptr);
 
     void openFile(const QFile &file);
     void setRenderer(RendererType type = Native);
@@ -84,7 +84,7 @@ class DrawingGuiExport DrawingView : public Gui::MDIView
     Q_OBJECT
 
 public:
-    DrawingView(Gui::Document* doc, QWidget* parent = 0);
+    DrawingView(Gui::Document* doc, QWidget* parent = nullptr);
     virtual ~DrawingView();
 
 public Q_SLOTS:

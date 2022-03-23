@@ -51,7 +51,7 @@ PyMOD_INIT_FUNC(DrawingGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
 
     PyObject* mod = DrawingGui::initModule();
