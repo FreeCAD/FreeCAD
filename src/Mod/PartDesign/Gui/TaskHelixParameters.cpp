@@ -281,6 +281,9 @@ void TaskHelixParameters::updateStatus()
         else
             status = "";
     }
+    // if the helix touches itself along a single helical edge we get this error
+    else if (status.compare("NCollection_IndexedDataMap::FindFromKey") == 0)
+        status = "Error: helix touches itself";
     ui->labelMessage->setText(QString::fromUtf8(status.c_str()));
 }
 
