@@ -215,7 +215,7 @@ class Writer(object):
                     _ELMERGRID_OFORMAT,
                     unvPath,
                     "-scale", "0.001", "0.001", "0.001",
-                     "-out", self.directory]
+                    "-out", self.directory]
             subprocess.call(args, stdout=subprocess.DEVNULL)
 
     def _writeStartinfo(self):
