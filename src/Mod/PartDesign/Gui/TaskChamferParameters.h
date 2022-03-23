@@ -39,7 +39,7 @@ class TaskChamferParameters : public TaskDressUpParameters
     Q_OBJECT
 
 public:
-    TaskChamferParameters(ViewProviderDressUp *DressUpView, QWidget *parent=0);
+    TaskChamferParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
     ~TaskChamferParameters();
 
     virtual void apply();

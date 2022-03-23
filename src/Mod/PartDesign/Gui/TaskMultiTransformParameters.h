@@ -53,7 +53,7 @@ class TaskMultiTransformParameters : public TaskTransformedParameters
     Q_OBJECT
 
 public:
-    TaskMultiTransformParameters(ViewProviderTransformed *TransformedView,QWidget *parent = 0);
+    TaskMultiTransformParameters(ViewProviderTransformed *TransformedView,QWidget *parent = nullptr);
     virtual ~TaskMultiTransformParameters();
 
     const std::vector<App::DocumentObject*> getTransformFeatures(void) const;

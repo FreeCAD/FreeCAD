@@ -58,7 +58,7 @@ public:
     TaskFeaturePick(std::vector<App::DocumentObject*> &objects,
                     const std::vector<featureStatus> &status,
                     bool singleFeatureSelect,
-                    QWidget *parent = 0);
+                    QWidget *parent = nullptr);
 
     ~TaskFeaturePick();
 

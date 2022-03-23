@@ -73,7 +73,7 @@ bool ViewProviderHole::setEdit(int ModNum)
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         TaskDlgHoleParameters *holeDlg = qobject_cast<TaskDlgHoleParameters *>(dlg);
         if (holeDlg && holeDlg->getHoleView() != this)
-            holeDlg = 0; // another hole left open its task panel
+            holeDlg = nullptr; // another hole left open its task panel
         if (dlg && !holeDlg) {
             QMessageBox msgBox;
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
@@ -110,7 +110,7 @@ bool ViewProviderHole::onDelete(const std::vector<std::string> &s)
 {
     // get the Sketch
     PartDesign::Hole* pcHole = static_cast<PartDesign::Hole*>(getObject());
-    Sketcher::SketchObject *pcSketch = 0;
+    Sketcher::SketchObject *pcSketch = nullptr;
     if (pcHole->Profile.getValue())
         pcSketch = static_cast<Sketcher::SketchObject*>(pcHole->Profile.getValue());
 

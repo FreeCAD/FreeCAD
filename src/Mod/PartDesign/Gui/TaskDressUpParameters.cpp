@@ -59,7 +59,7 @@ TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, b
               QString::fromLatin1((DressUpView->featureName() + " parameters").c_str()),
               true,
               parent)
-    , proxy(0)
+    , proxy(nullptr)
     , DressUpView(DressUpView)
     , deleteAction(nullptr)
     , addAllEdgesAction(nullptr)
@@ -410,7 +410,7 @@ void TaskDressUpParameters::exitSelectionMode()
 
 TaskDlgDressUpParameters::TaskDlgDressUpParameters(ViewProviderDressUp *DressUpView)
     : TaskDlgFeatureParameters(DressUpView)
-    , parameter(0)
+    , parameter(nullptr)
 {
     assert(DressUpView);
 }

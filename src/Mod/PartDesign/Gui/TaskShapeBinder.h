@@ -49,7 +49,7 @@ class TaskShapeBinder : public Gui::TaskView::TaskBox, Gui::SelectionObserver
     Q_OBJECT
 
 public:
-    TaskShapeBinder(ViewProviderShapeBinder *view,bool newObj=false,QWidget *parent = 0);
+    TaskShapeBinder(ViewProviderShapeBinder *view,bool newObj=false,QWidget *parent = nullptr);
     ~TaskShapeBinder();
 
  

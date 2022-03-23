@@ -58,18 +58,18 @@ namespace PartDesign {
 
 /* TRANSLATOR PartDesign::Hole */
 
-const char* Hole::DepthTypeEnums[]                   = { "Dimension", "ThroughAll", /*, "UpToFirst", */ NULL };
-const char* Hole::ThreadDepthTypeEnums[]             = { "Hole Depth", "Dimension", "Tapped (DIN76)",  NULL };
-const char* Hole::ThreadTypeEnums[]                  = { "None", "ISOMetricProfile", "ISOMetricFineProfile", "UNC", "UNF", "UNEF", NULL};
-const char* Hole::ClearanceMetricEnums[]             = { "Standard", "Close", "Wide", NULL};
-const char* Hole::ClearanceUTSEnums[]                = { "Normal", "Close", "Loose", NULL };
-const char* Hole::DrillPointEnums[]                  = { "Flat", "Angled", NULL};
+const char* Hole::DepthTypeEnums[]                   = { "Dimension", "ThroughAll", /*, "UpToFirst", */ nullptr };
+const char* Hole::ThreadDepthTypeEnums[]             = { "Hole Depth", "Dimension", "Tapped (DIN76)",  nullptr };
+const char* Hole::ThreadTypeEnums[]                  = { "None", "ISOMetricProfile", "ISOMetricFineProfile", "UNC", "UNF", "UNEF", nullptr};
+const char* Hole::ClearanceMetricEnums[]             = { "Standard", "Close", "Wide", nullptr};
+const char* Hole::ClearanceUTSEnums[]                = { "Normal", "Close", "Loose", nullptr };
+const char* Hole::DrillPointEnums[]                  = { "Flat", "Angled", nullptr};
 
 /* "None" profile */
 
-const char* Hole::HoleCutType_None_Enums[]           = { "None", "Counterbore", "Countersink", NULL };
-const char* Hole::ThreadSize_None_Enums[]            = { "None", NULL };
-const char* Hole::ThreadClass_None_Enums[]           = { "None", NULL };
+const char* Hole::HoleCutType_None_Enums[]           = { "None", "Counterbore", "Countersink", nullptr };
+const char* Hole::ThreadSize_None_Enums[]            = { "None", nullptr };
+const char* Hole::ThreadClass_None_Enums[]           = { "None", nullptr };
 
 /* Sources:
   http://www.engineeringtoolbox.com/metric-threads-d_777.html
@@ -482,8 +482,8 @@ const char* Hole::ThreadSize_ISOmetric_Enums[]   = { "M1",   "M1.1", "M1.2", "M1
                                                      "M12",  "M14",  "M16",  "M18",  "M20",
                                                      "M22",  "M24",  "M27",  "M30",  "M33",
                                                      "M36",  "M39",  "M42",  "M45",  "M48",
-                                                     "M52",  "M56",  "M60",  "M64",  "M68",  NULL };
-const char* Hole::ThreadClass_ISOmetric_Enums[]  = { "4G", "4H", "5G", "5H", "6G", "6H", "7G", "7H","8G", "8H", NULL };
+                                                     "M52",  "M56",  "M60",  "M64",  "M68",  nullptr };
+const char* Hole::ThreadClass_ISOmetric_Enums[]  = { "4G", "4H", "5G", "5H", "6G", "6H", "7G", "7H","8G", "8H", nullptr };
 
 std::vector<std::string> Hole::HoleCutType_ISOmetricfine_Enums  = { "None", "Counterbore", "Countersink", "Cheesehead (deprecated)", "Countersink socket screw (deprecated)", "Cap screw (deprecated)" };
 const char* Hole::ThreadSize_ISOmetricfine_Enums[]   = {
@@ -529,8 +529,8 @@ const char* Hole::ThreadSize_ISOmetricfine_Enums[]   = {
     "M85x2.0",     "M85x3.0",     "M85x4.0",     "M85x6.0",
     "M90x2.0",     "M90x3.0",     "M90x4.0",     "M90x6.0",
     "M95x2.0",     "M95x3.0",     "M95x4.0",     "M95x6.0",
-    "M100x2.0",    "M100x3.0",    "M100x4.0",    "M100x6.0", NULL };
-const char* Hole::ThreadClass_ISOmetricfine_Enums[]  = { "4G", "4H", "5G", "5H", "6G", "6H", "7G", "7H","8G", "8H", NULL };
+    "M100x2.0",    "M100x3.0",    "M100x4.0",    "M100x6.0", nullptr };
+const char* Hole::ThreadClass_ISOmetricfine_Enums[]  = { "4G", "4H", "5G", "5H", "6G", "6H", "7G", "7H","8G", "8H", nullptr };
 
 // ISO 965-1:2013 ISO general purpose metric screw threads - Tolerances - Part 1
 // Table 1 - Fundamentral deviations for internal threads ...
@@ -596,35 +596,35 @@ const double Hole::ThreadRunout[ThreadRunout_size][2] = {
 /* Details from https://en.wikipedia.org/wiki/Unified_Thread_Standard */
 
 /* UTS coarse */
-const char* Hole::HoleCutType_UNC_Enums[]  = { "None", "Counterbore", "Countersink", NULL};
+const char* Hole::HoleCutType_UNC_Enums[]  = { "None", "Counterbore", "Countersink", nullptr};
 const char* Hole::ThreadSize_UNC_Enums[]   = { "#1", "#2", "#3", "#4", "#5", "#6",
                                                "#8",  "#10", "#12",
                                                "1/4", "5/16", "3/8", "7/16", "1/2", "9/16",
                                                "5/8", "3/4", "7/8", "1", "1 1/8", "1 1/4",
                                                "1 3/8", "1 1/2", "1 3/4", "2", "2 1/4",
                                                "2 1/2", "2 3/4", "3", "3 1/4", "3 1/2",
-                                               "3 3/4", "4", NULL };
-const char* Hole::ThreadClass_UNC_Enums[]  = { "1B", "2B", "3B", NULL };
+                                               "3 3/4", "4", nullptr };
+const char* Hole::ThreadClass_UNC_Enums[]  = { "1B", "2B", "3B", nullptr };
 
 /* UTS fine */
-const char* Hole::HoleCutType_UNF_Enums[]  = { "None", "Counterbore", "Countersink", NULL};
+const char* Hole::HoleCutType_UNF_Enums[]  = { "None", "Counterbore", "Countersink", nullptr};
 const char* Hole::ThreadSize_UNF_Enums[]   = { "#0", "#1", "#2", "#3", "#4", "#5", "#6",
                                                "#8", "#10", "#12",
                                                "1/4", "5/16", "3/8", "7/16", "1/2", "9/16",
                                                "5/8", "3/4", "7/8", "1", "1 1/8", "1 1/4",
-                                               "1 3/8", "1 1/2", NULL };
-const char* Hole::ThreadClass_UNF_Enums[]  = { "1B", "2B", "3B", NULL };
+                                               "1 3/8", "1 1/2", nullptr };
+const char* Hole::ThreadClass_UNF_Enums[]  = { "1B", "2B", "3B", nullptr };
 
 /* UTS extrafine */
-const char* Hole::HoleCutType_UNEF_Enums[] = { "None", "Counterbore", "Countersink", NULL};
+const char* Hole::HoleCutType_UNEF_Enums[] = { "None", "Counterbore", "Countersink", nullptr};
 const char* Hole::ThreadSize_UNEF_Enums[]  = { "#12", "1/4", "5/16", "3/8", "7/16", "1/2",
                                                "9/16", "5/8", "11/16", "3/4", "13/16", "7/8",
                                                "15/16", "1", "1 1/16", "1 1/8", "1 1/4",
                                                "1 5/16", "1 3/8", "1 7/16", "1 1/2", "1 9/16",
-                                               "1 5/8", "1 11/16", NULL };
-const char* Hole::ThreadClass_UNEF_Enums[] = { "1B", "2B", "3B", NULL };
+                                               "1 5/8", "1 11/16", nullptr };
+const char* Hole::ThreadClass_UNEF_Enums[] = { "1B", "2B", "3B", nullptr };
 
-const char* Hole::ThreadDirectionEnums[]  = { "Right", "Left", NULL};
+const char* Hole::ThreadDirectionEnums[]  = { "Right", "Left", nullptr};
 
 PROPERTY_SOURCE(PartDesign::Hole, PartDesign::ProfileBased)
 

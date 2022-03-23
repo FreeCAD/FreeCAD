@@ -64,8 +64,8 @@ Draft::Draft()
 {
     ADD_PROPERTY(Angle,(1.5));
     Angle.setConstraints(&floatAngle);
-    ADD_PROPERTY_TYPE(NeutralPlane,(0),"Draft",(App::PropertyType)(App::Prop_None),"NeutralPlane");
-    ADD_PROPERTY_TYPE(PullDirection,(0),"Draft",(App::PropertyType)(App::Prop_None),"PullDirection");
+    ADD_PROPERTY_TYPE(NeutralPlane,(nullptr),"Draft",(App::PropertyType)(App::Prop_None),"NeutralPlane");
+    ADD_PROPERTY_TYPE(PullDirection,(nullptr),"Draft",(App::PropertyType)(App::Prop_None),"PullDirection");
     ADD_PROPERTY(Reversed,(0));
 }
 
@@ -118,7 +118,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
     // Pull direction
     gp_Dir pullDirection;
     App::DocumentObject* refDirection = PullDirection.getValue();    
-    if (refDirection != NULL) {
+    if (refDirection != nullptr) {
         if (refDirection->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())) {
                     PartDesign::Line* line = static_cast<PartDesign::Line*>(refDirection);
                     Base::Vector3d d = line->getDirection();
@@ -155,7 +155,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
     // Neutral plane
     gp_Pln neutralPlane;
     App::DocumentObject* refPlane = NeutralPlane.getValue();
-    if (refPlane == NULL) {
+    if (refPlane == nullptr) {
         // Try to guess a neutral plane from the first selected face
         // Get edges of first selected face
         TopoDS_Shape face = TopShape.getSubShape(SubVals[0].c_str());
@@ -229,7 +229,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
 
                 neutralPlane = adapt.Plane();
             } else if (ref.ShapeType() == TopAbs_EDGE) {
-                if (refDirection != NULL) {
+                if (refDirection != nullptr) {
                     // Create neutral plane through edge normal to pull direction
                     TopoDS_Edge refEdge = TopoDS::Edge(ref);
                     if (refEdge.IsNull())
@@ -255,7 +255,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
         neutralPlane.Transform(invObjLoc.Transformation());
     }
 
-    if (refDirection == NULL) {
+    if (refDirection == nullptr) {
         // Choose pull direction normal to neutral plane
         pullDirection = neutralPlane.Axis().Direction();
     }

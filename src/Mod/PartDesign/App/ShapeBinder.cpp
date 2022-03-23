@@ -58,7 +58,7 @@ PROPERTY_SOURCE(PartDesign::ShapeBinder, Part::Feature)
 
 ShapeBinder::ShapeBinder()
 {
-    ADD_PROPERTY_TYPE(Support, (0,0), "",(App::PropertyType)(App::Prop_None),"Support of the geometry");
+    ADD_PROPERTY_TYPE(Support, (nullptr,nullptr), "",(App::PropertyType)(App::Prop_None),"Support of the geometry");
     Placement.setStatus(App::Property::Hidden, true);
     ADD_PROPERTY_TYPE(TraceSupport, (false), "", App::Prop_None, "Trace support shape");
 }
@@ -303,13 +303,13 @@ PROPERTY_SOURCE(PartDesign::SubShapeBinder, Part::Feature)
 
 SubShapeBinder::SubShapeBinder()
 {
-    ADD_PROPERTY_TYPE(Support, (0), "",(App::PropertyType)(App::Prop_None), "Support of the geometry");
+    ADD_PROPERTY_TYPE(Support, (nullptr), "",(App::PropertyType)(App::Prop_None), "Support of the geometry");
     Support.setStatus(App::Property::ReadOnly, true);
     ADD_PROPERTY_TYPE(Fuse, (false), "Base",App::Prop_None,"Fuse solids from bound shapes");
     ADD_PROPERTY_TYPE(MakeFace, (true), "Base",App::Prop_None,"Create face using wires from bound shapes");
     ADD_PROPERTY_TYPE(Offset, (0.0), "Offsetting", App::Prop_None, "2D offset face or wires, 0.0 = no offset");
     ADD_PROPERTY_TYPE(OffsetJoinType, ((long)0), "Offsetting", App::Prop_None, "Arcs, Tangent, Intersection");
-    static const char*JoinTypeEnum[] = {"Arcs", "Tangent", "Intersection", 0};
+    static const char*JoinTypeEnum[] = {"Arcs", "Tangent", "Intersection", nullptr};
     OffsetJoinType.setEnums(JoinTypeEnum);
     ADD_PROPERTY_TYPE(OffsetFill, (false),"Offsetting", App::Prop_None, "True = make face between original wire and offset.");
     ADD_PROPERTY_TYPE(OffsetOpenResult, (false), "Offsetting", App::Prop_None, "False = make closed offset from open wire.");
@@ -324,14 +324,14 @@ SubShapeBinder::SubShapeBinder()
             "Enable partial loading, which disables auto loading of external document for"
             "external bound object.");
     PartialLoad.setStatus(App::Property::PartialTrigger,true);
-    static const char *BindModeEnum[] = {"Synchronized", "Frozen", "Detached", 0};
+    static const char *BindModeEnum[] = {"Synchronized", "Frozen", "Detached", nullptr};
     BindMode.setEnums(BindModeEnum);
 
-    ADD_PROPERTY_TYPE(Context, (0), "Base", App::Prop_Hidden,
+    ADD_PROPERTY_TYPE(Context, (nullptr), "Base", App::Prop_Hidden,
             "Stores the context of this binder. It is used for monitoring and auto updating\n"
             "the relative placement of the bound shape");
 
-    static const char *BindCopyOnChangeEnum[] = {"Disabled", "Enabled", "Mutated", 0};
+    static const char *BindCopyOnChangeEnum[] = {"Disabled", "Enabled", "Mutated", nullptr};
     BindCopyOnChange.setEnums(BindCopyOnChangeEnum);
     ADD_PROPERTY_TYPE(BindCopyOnChange, ((long)0), "Base", App::Prop_None,
             "Disabled: disable copy on change.\n"
@@ -351,7 +351,7 @@ SubShapeBinder::SubShapeBinder()
                 App::Prop_Hidden|App::Prop_ReadOnly), "");
 
     _CopiedLink.setScope(App::LinkScope::Hidden);
-    ADD_PROPERTY_TYPE(_CopiedLink,(0),"Base",(App::PropertyType)(
+    ADD_PROPERTY_TYPE(_CopiedLink,(nullptr),"Base",(App::PropertyType)(
                 App::Prop_Hidden|App::Prop_ReadOnly|App::Prop_NoPersist), "");
 }
 
@@ -462,7 +462,7 @@ void SubShapeBinder::clearCopiedObjects() {
         if(obj)
             obj->getDocument()->removeObject(obj->getNameInDocument());
     }
-    _CopiedLink.setValue(0);
+    _CopiedLink.setValue(nullptr);
 }
 
 void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
@@ -477,7 +477,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
     auto parent = Context.getValue();
     std::string parentSub  = Context.getSubName(false);
     if(!Relative.getValue()) 
-        parent = 0;
+        parent = nullptr;
     else {
         if(parent && parent->getSubObject(parentSub.c_str())==this) {
             auto parents = parent->getParents();
@@ -486,7 +486,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 parentSub = parents.begin()->second + parentSub;
             }
         } else
-            parent = 0;
+            parent = nullptr;
         if(!parent && parentSub.empty()) {
             auto parents = getParents();
             if(parents.size()) {
@@ -518,7 +518,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 }
             }else{
                 Base::Matrix4D mat;
-                auto sobj = resolved->getSubObject(resolvedSub.c_str(),0,&mat);
+                auto sobj = resolved->getSubObject(resolvedSub.c_str(),nullptr,&mat);
                 if(sobj!=this) {
                     FC_LOG(getFullName() << " skip invalid parent " << resolved->getFullName() 
                             << '.' << resolvedSub);
@@ -546,7 +546,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         if(init)
             continue;
 
-        App::DocumentObject *copied = 0;
+        App::DocumentObject *copied = nullptr;
 
         if(BindCopyOnChange.getValue() == 2 && Support.getSubListValues().size()==1) {
             if(_CopiedObjs.size())
@@ -559,7 +559,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 clearCopiedObjects();
 
                 auto tmpDoc = App::GetApplication().newDocument(
-                                "_tmp_binder", 0, false, true);
+                                "_tmp_binder", nullptr, false, true);
                 auto objs = tmpDoc->copyObject({obj},true,true);
                 if(objs.size()) {
                     for(auto it=objs.rbegin(); it!=objs.rend(); ++it)
@@ -737,7 +737,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         {
             result = result.makeWires();
             try {
-                result = result.makeFace(0);
+                result = result.makeFace(nullptr);
             }catch(...){}
         }
 
@@ -762,7 +762,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         if(!prop || !prop->isDerivedFrom(App::PropertyMatrix::getClassTypeId())) {
             if(prop)
                 removeDynamicProperty(name);
-            prop = addDynamicProperty("App::PropertyMatrix",name,"Cache",0,0,false,true);
+            prop = addDynamicProperty("App::PropertyMatrix",name,"Cache",nullptr,0,false,true);
         }
         caches.erase(name);
         static_cast<App::PropertyMatrix*>(prop)->setValue(v.second);
@@ -822,13 +822,13 @@ void SubShapeBinder::onChanged(const App::Property *prop) {
             if(Support.getSubListValues().size()) {
                 update(); 
                 if(BindMode.getValue() == 2)
-                    Support.setValue(0);
+                    Support.setValue(nullptr);
             }
         }else if(prop == &BindCopyOnChange) {
             setupCopyOnChange();
         }else if(prop == &BindMode) {
            if(BindMode.getValue() == 2)
-               Support.setValue(0);
+               Support.setValue(nullptr);
            else if(BindMode.getValue() == 0)
                update();
            checkPropertyStatus();
@@ -869,7 +869,7 @@ void SubShapeBinder::setLinks(std::map<App::DocumentObject *, std::vector<std::s
 {
     if(values.empty()) {
         if(reset) {
-            Support.setValue(0);
+            Support.setValue(nullptr);
             Shape.setValue(Part::TopoShape());
         }
         return;

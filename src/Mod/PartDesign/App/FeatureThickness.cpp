@@ -33,8 +33,8 @@
 
 using namespace PartDesign;
 
-const char* PartDesign::Thickness::ModeEnums[] = {"Skin","Pipe", "RectoVerso",NULL};
-const char* PartDesign::Thickness::JoinEnums[] = {"Arc", "Intersection",NULL};
+const char* PartDesign::Thickness::ModeEnums[] = {"Skin","Pipe", "RectoVerso",nullptr};
+const char* PartDesign::Thickness::JoinEnums[] = {"Arc", "Intersection",nullptr};
 
 PROPERTY_SOURCE(PartDesign::Thickness, PartDesign::DressUp)
 

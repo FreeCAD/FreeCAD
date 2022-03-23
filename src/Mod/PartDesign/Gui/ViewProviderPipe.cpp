@@ -54,20 +54,20 @@ std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren(void)const
     PartDesign::Pipe* pcPipe = static_cast<PartDesign::Pipe*>(getObject());
 
     App::DocumentObject* sketch = pcPipe->getVerifiedSketch(true);
-    if (sketch != NULL)
+    if (sketch != nullptr)
         temp.push_back(sketch);
 
     for(App::DocumentObject* obj : pcPipe->Sections.getValues()) {
-        if (obj != NULL && obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+        if (obj != nullptr && obj->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
             temp.push_back(obj);
     }
 
     App::DocumentObject* spine = pcPipe->Spine.getValue();
-    if (spine != NULL && spine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+    if (spine != nullptr && spine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         temp.push_back(spine);
 
     App::DocumentObject* auxspine = pcPipe->AuxillerySpine.getValue();
-    if (auxspine != NULL && auxspine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+    if (auxspine != nullptr && auxspine->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         temp.push_back(auxspine);
 
     return temp;

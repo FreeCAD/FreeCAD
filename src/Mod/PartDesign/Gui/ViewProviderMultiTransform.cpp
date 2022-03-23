@@ -46,7 +46,7 @@ void ViewProviderMultiTransform::setupContextMenu(QMenu* menu, QObject* receiver
 std::vector<App::DocumentObject*> ViewProviderMultiTransform::claimChildren(void) const
 {
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(getObject());
-    if (pcMultiTransform == NULL)
+    if (pcMultiTransform == nullptr)
         return std::vector<App::DocumentObject*>(); // TODO: Show error?
 
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();

@@ -50,7 +50,7 @@ using namespace PartDesignGui;
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProvider, PartGui::ViewProviderPart)
 
 ViewProvider::ViewProvider()
-:oldWb(""), oldTip(NULL), isSetTipIcon(false)
+:oldWb(""), oldTip(nullptr), isSetTipIcon(false)
 {
     PartGui::ViewProviderAttachExtension::initExtension(this);
 }
@@ -91,7 +91,7 @@ bool ViewProvider::setEdit(int ModNum)
         TaskDlgFeatureParameters *featureDlg = qobject_cast<TaskDlgFeatureParameters *>(dlg);
         // NOTE: if the dialog is not partDesigan dialog the featureDlg will be NULL
         if (featureDlg && featureDlg->viewProvider() != this) {
-            featureDlg = 0; // another feature left open its task panel
+            featureDlg = nullptr; // another feature left open its task panel
         }
         if (dlg && !featureDlg) {
             QMessageBox msgBox;
@@ -153,11 +153,11 @@ void ViewProvider::unsetEdit(int ModNum)
             Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
         }
 #endif
-        oldTip = NULL;
+        oldTip = nullptr;
     }
     else {
         PartGui::ViewProviderPart::unsetEdit(ModNum);
-        oldTip = NULL;
+        oldTip = nullptr;
     }
 }
 
@@ -248,7 +248,7 @@ bool ViewProvider::onDelete(const std::vector<std::string> &)
     // find surrounding features in the tree
     Part::BodyBase* body = PartDesign::Body::findBodyOf(getObject());
 
-    if (body != NULL) {
+    if (body != nullptr) {
         // Deletion from the tree of a feature is handled by Document.removeObject, which has no clue
         // about what a body is. Therefore, Bodies, although an "activable" container, know nothing
         // about what happens at Document level with the features they contain.

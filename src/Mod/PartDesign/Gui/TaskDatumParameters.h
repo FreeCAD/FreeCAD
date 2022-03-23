@@ -50,7 +50,7 @@ class TaskDatumParameters : public PartGui::TaskAttacher
     Q_OBJECT
 
 public:
-    TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *parent = 0);
+    TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *parent = nullptr);
     ~TaskDatumParameters(); 
 };
 

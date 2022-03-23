@@ -57,21 +57,21 @@
 
 using namespace PartDesign;
 
-const char* Pipe::TypeEnums[] = {"FullPath", "UpToFace", NULL};
-const char* Pipe::TransitionEnums[] = {"Transformed", "Right corner", "Round corner", NULL};
-const char* Pipe::ModeEnums[] = {"Standard", "Fixed", "Frenet", "Auxiliary", "Binormal", NULL};
-const char* Pipe::TransformEnums[] = {"Constant", "Multisection", "Linear", "S-shape", "Interpolation", NULL};
+const char* Pipe::TypeEnums[] = {"FullPath", "UpToFace", nullptr};
+const char* Pipe::TransitionEnums[] = {"Transformed", "Right corner", "Round corner", nullptr};
+const char* Pipe::ModeEnums[] = {"Standard", "Fixed", "Frenet", "Auxiliary", "Binormal", nullptr};
+const char* Pipe::TransformEnums[] = {"Constant", "Multisection", "Linear", "S-shape", "Interpolation", nullptr};
 
 
 PROPERTY_SOURCE(PartDesign::Pipe, PartDesign::ProfileBased)
 
 Pipe::Pipe()
 {
-    ADD_PROPERTY_TYPE(Sections,(0),"Sweep",App::Prop_None,"List of sections");
-    Sections.setValue(0);
-    ADD_PROPERTY_TYPE(Spine,(0),"Sweep",App::Prop_None,"Path to sweep along");
+    ADD_PROPERTY_TYPE(Sections,(nullptr),"Sweep",App::Prop_None,"List of sections");
+    Sections.setValue(nullptr);
+    ADD_PROPERTY_TYPE(Spine,(nullptr),"Sweep",App::Prop_None,"Path to sweep along");
     ADD_PROPERTY_TYPE(SpineTangent,(false),"Sweep",App::Prop_None,"Include tangent edges into path");
-    ADD_PROPERTY_TYPE(AuxillerySpine,(0),"Sweep",App::Prop_None,"Secondary path to orient sweep");
+    ADD_PROPERTY_TYPE(AuxillerySpine,(nullptr),"Sweep",App::Prop_None,"Secondary path to orient sweep");
     ADD_PROPERTY_TYPE(AuxillerySpineTangent,(false),"Sweep",App::Prop_None,"Include tangent edges into secondary path");
     ADD_PROPERTY_TYPE(AuxilleryCurvelinear, (true), "Sweep", App::Prop_None,"Calculate normal between equidistant points on both spines");
     ADD_PROPERTY_TYPE(Mode,(long(0)),"Sweep",App::Prop_None,"Profile mode");

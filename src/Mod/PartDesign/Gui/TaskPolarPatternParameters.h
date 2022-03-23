@@ -50,7 +50,7 @@ class TaskPolarPatternParameters : public TaskTransformedParameters
 
 public:
     /// Constructor for task with ViewProvider
-    TaskPolarPatternParameters(ViewProviderTransformed *TransformedView, QWidget *parent = 0);
+    TaskPolarPatternParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
     TaskPolarPatternParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
     virtual ~TaskPolarPatternParameters();

@@ -50,7 +50,7 @@ class TaskLinearPatternParameters : public TaskTransformedParameters
 
 public:
     /// Constructor for task with ViewProvider
-    TaskLinearPatternParameters(ViewProviderTransformed *TransformedView, QWidget *parent = 0);
+    TaskLinearPatternParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
     TaskLinearPatternParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
     virtual ~TaskLinearPatternParameters();

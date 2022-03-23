@@ -68,7 +68,7 @@ bool ViewProviderDressUp::setEdit(int ModNum) {
         if (dressUp->getBaseObject (/*silent =*/ true)) {
             return ViewProvider::setEdit(ModNum);
         } else {
-            QMessageBox::warning ( 0, QObject::tr("Feature error"),
+            QMessageBox::warning ( nullptr, QObject::tr("Feature error"),
                     QObject::tr("%1 misses a base feature.\n"
                            "This feature is broken and can't be edited.")
                         .arg( QString::fromLatin1(dressUp->getNameInDocument()) )
@@ -86,10 +86,10 @@ void ViewProviderDressUp::highlightReferences(const bool on)
 {
     PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(getObject());
     Part::Feature* base = pcDressUp->getBaseObject (/*silent =*/ true);
-    if (base == NULL) return;
+    if (base == nullptr) return;
     PartGui::ViewProviderPart* vp = dynamic_cast<PartGui::ViewProviderPart*>(
                 Gui::Application::Instance->getViewProvider(base));
-    if (vp == NULL) return;
+    if (vp == nullptr) return;
 
     std::vector<std::string> faces = pcDressUp->Base.getSubValuesStartsWith("Face");
     std::vector<std::string> edges = pcDressUp->Base.getSubValuesStartsWith("Edge");

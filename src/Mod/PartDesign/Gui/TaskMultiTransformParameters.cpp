@@ -148,7 +148,7 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     // Fill data into dialog elements
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); i++) {
         const App::DocumentObject* obj = *i;
-        if (obj != NULL) {
+        if (obj != nullptr) {
             QListWidgetItem* item = new QListWidgetItem();
             item->setText(QString::fromUtf8(obj->Label.getValue()));
             item->setData(Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
@@ -215,9 +215,9 @@ void TaskMultiTransformParameters::closeSubTask()
 {
     if (subTask) {
         exitSelectionMode();
-        disconnect(ui->checkBoxUpdateView, 0, subTask, 0);
+        disconnect(ui->checkBoxUpdateView, nullptr, subTask, nullptr);
         delete subTask;
-        subTask = NULL;
+        subTask = nullptr;
     }
 }
 

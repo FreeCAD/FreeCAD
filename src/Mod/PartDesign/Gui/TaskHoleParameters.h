@@ -52,7 +52,7 @@ class TaskHoleParameters : public TaskSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskHoleParameters(ViewProviderHole *HoleView, QWidget *parent = 0);
+    TaskHoleParameters(ViewProviderHole *HoleView, QWidget *parent = nullptr);
     ~TaskHoleParameters();
 
     void apply() override;

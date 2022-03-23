@@ -362,7 +362,7 @@ void TaskExtrudeParameters::fillDirectionCombo()
             addAxisToCombo(pcFeat->Profile.getValue(), std::string(), tr("Face normal"), false);
 
         // add the other entries
-        addAxisToCombo(0, std::string(), tr("Select reference..."));
+        addAxisToCombo(nullptr, std::string(), tr("Select reference..."));
 
         // we start with the sketch normal as proposal for the custom direction
         if (pcSketch)

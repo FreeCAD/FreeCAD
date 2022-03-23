@@ -48,7 +48,7 @@ ViewProviderSketchBased::~ViewProviderSketchBased()
 std::vector<App::DocumentObject*> ViewProviderSketchBased::claimChildren(void) const {
     std::vector<App::DocumentObject*> temp;
     App::DocumentObject* sketch = static_cast<PartDesign::ProfileBased*>(getObject())->Profile.getValue();
-    if (sketch != NULL && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+    if (sketch != nullptr && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         temp.push_back(sketch);
 
     return temp;
@@ -59,7 +59,7 @@ bool ViewProviderSketchBased::onDelete(const std::vector<std::string> &s) {
     PartDesign::ProfileBased* feature = static_cast<PartDesign::ProfileBased*>(getObject());
 
     // get the Sketch
-    Sketcher::SketchObject *pcSketch = 0;
+    Sketcher::SketchObject *pcSketch = nullptr;
     if (feature->Profile.getValue())
         pcSketch = static_cast<Sketcher::SketchObject*>(feature->Profile.getValue());
 

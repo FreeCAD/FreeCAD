@@ -175,7 +175,7 @@ bool Body::isAfterInsertPoint(App::DocumentObject* feature) {
 
 bool Body::isMemberOfMultiTransform(const App::DocumentObject* f)
 {
-    if (f == NULL)
+    if (f == nullptr)
         return false;
 
     // ORIGINAL COMMENT:
@@ -195,7 +195,7 @@ bool Body::isMemberOfMultiTransform(const App::DocumentObject* f)
 
 bool Body::isSolidFeature(const App::DocumentObject* f)
 {
-    if (f == NULL)
+    if (f == nullptr)
         return false;
 
     if (f->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) &&
@@ -208,7 +208,7 @@ bool Body::isSolidFeature(const App::DocumentObject* f)
 
 bool Body::isAllowed(const App::DocumentObject* f)
 {
-    if (f == NULL)
+    if (f == nullptr)
         return false;
 
     // TODO: Should we introduce a PartDesign::FeaturePython class? This should then also return true for isSolidFeature()

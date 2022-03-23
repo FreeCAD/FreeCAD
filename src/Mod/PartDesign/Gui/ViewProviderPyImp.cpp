@@ -39,7 +39,7 @@ std::string ViewProviderPy::representation(void) const
 
 PyObject *ViewProviderPy::getCustomAttributes(const char* ) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ViewProviderPy::setCustomAttributes(const char* , PyObject *)

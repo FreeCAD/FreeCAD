@@ -42,7 +42,7 @@ PROPERTY_SOURCE(PartDesign::MultiTransform, PartDesign::Transformed)
 
 MultiTransform::MultiTransform()
 {
-    ADD_PROPERTY(Transformations,(0));
+    ADD_PROPERTY(Transformations,(nullptr));
     Transformations.setSize(0);
 }
 

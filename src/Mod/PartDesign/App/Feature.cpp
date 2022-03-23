@@ -52,8 +52,8 @@ PROPERTY_SOURCE(PartDesign::Feature,Part::Feature)
 
 Feature::Feature()
 {
-    ADD_PROPERTY(BaseFeature,(0));
-    ADD_PROPERTY_TYPE(_Body,(0),"Base",(App::PropertyType)(
+    ADD_PROPERTY(BaseFeature,(nullptr));
+    ADD_PROPERTY_TYPE(_Body,(nullptr),"Base",(App::PropertyType)(
                 App::Prop_ReadOnly|App::Prop_Hidden|App::Prop_Output|App::Prop_Transient),0);
     Placement.setStatus(App::Property::Hidden, true);
     BaseFeature.setStatus(App::Property::Hidden, true);
@@ -197,7 +197,7 @@ bool Feature::isDatum(const App::DocumentObject* feature)
 gp_Pln Feature::makePlnFromPlane(const App::DocumentObject* obj)
 {
     const App::GeoFeature* plane = static_cast<const App::GeoFeature*>(obj);
-    if (plane == NULL)
+    if (plane == nullptr)
         throw Base::ValueError("Feature: Null object");
 
     Base::Vector3d pos = plane->Placement.getValue().getPosition();

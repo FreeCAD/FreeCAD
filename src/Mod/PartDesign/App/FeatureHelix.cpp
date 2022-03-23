@@ -54,7 +54,7 @@
 
 using namespace PartDesign;
 
-const char* Helix::ModeEnums[] = { "pitch-height-angle", "pitch-turns-angle", "height-turns-angle", "height-turns-growth", NULL };
+const char* Helix::ModeEnums[] = { "pitch-height-angle", "pitch-turns-angle", "height-turns-angle", "height-turns-growth", nullptr };
 
 PROPERTY_SOURCE(PartDesign::Helix, PartDesign::ProfileBased)
 
@@ -72,7 +72,7 @@ Helix::Helix()
         QT_TRANSLATE_NOOP("App::Property", "The center point of the helix' start; derived from the reference axis."));
     ADD_PROPERTY_TYPE(Axis, (Base::Vector3d(0.0, 1.0, 0.0)), group, App::Prop_ReadOnly,
         QT_TRANSLATE_NOOP("App::Property", "The helix' direction; derived from the reference axis."));
-    ADD_PROPERTY_TYPE(ReferenceAxis, (0), group, App::Prop_None,
+    ADD_PROPERTY_TYPE(ReferenceAxis, (nullptr), group, App::Prop_None,
         QT_TRANSLATE_NOOP("App::Property", "The reference axis of the helix."));
     ADD_PROPERTY_TYPE(Mode, (long(initialMode)), group, App::Prop_None,
         QT_TRANSLATE_NOOP("App::Property", "The helix input mode specifies which properties are set by the user.\n"

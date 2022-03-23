@@ -75,7 +75,7 @@ Gui::ViewProvider *ViewProviderTransformed::startEditing(int ModNum) {
                 auto vp = Gui::Application::Instance->getViewProvider(obj);
                 if(vp)
                     return vp->startEditing(ModNum);
-                return 0;
+                return nullptr;
             }
         }
     }

@@ -53,7 +53,7 @@ const App::PropertyIntegerConstraint::Constraints LinearPattern::intOccurrences 
 
 LinearPattern::LinearPattern()
 {
-    ADD_PROPERTY_TYPE(Direction,(0),"LinearPattern",(App::PropertyType)(App::Prop_None),"Direction");
+    ADD_PROPERTY_TYPE(Direction,(nullptr),"LinearPattern",(App::PropertyType)(App::Prop_None),"Direction");
     ADD_PROPERTY(Reversed,(0));
     ADD_PROPERTY(Length,(100.0));
     ADD_PROPERTY(Occurrences,(3));
@@ -81,7 +81,7 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
     bool reversed = Reversed.getValue();
 
     App::DocumentObject* refObject = Direction.getValue();
-    if (refObject == NULL)
+    if (refObject == nullptr)
         throw Base::ValueError("No direction reference specified");
 
     std::vector<std::string> subStrings = Direction.getSubValues();

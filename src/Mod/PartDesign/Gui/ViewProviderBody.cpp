@@ -57,7 +57,7 @@
 using namespace PartDesignGui;
 namespace bp = boost::placeholders;
 
-const char* PartDesignGui::ViewProviderBody::BodyModeEnum[] = {"Through","Tip",NULL};
+const char* PartDesignGui::ViewProviderBody::BodyModeEnum[] = {"Through","Tip",nullptr};
 
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProviderBody,PartGui::ViewProviderPart)
 
@@ -318,8 +318,8 @@ void ViewProviderBody::updateOriginDatumSize () {
     SbVec3f min = bboxOrigins.getMin();
 
     // obtain an Origin and it's ViewProvider
-    App::Origin* origin = 0;
-    Gui::ViewProviderOrigin* vpOrigin = 0;
+    App::Origin* origin = nullptr;
+    Gui::ViewProviderOrigin* vpOrigin = nullptr;
     try {
         origin = body->getOrigin ();
         assert (origin);
@@ -466,7 +466,7 @@ bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
 
     App::Part *actPart = PartDesignGui::getActivePart();
     App::Part* partOfBaseFeature = App::Part::getPartOfObject(obj);
-    if (partOfBaseFeature != 0 && partOfBaseFeature != actPart)
+    if (partOfBaseFeature != nullptr && partOfBaseFeature != actPart)
         return false;
 
     return true;

@@ -44,7 +44,7 @@ PROPERTY_SOURCE(PartDesign::DressUp, PartDesign::FeatureAddSub)
 
 DressUp::DressUp()
 {
-    ADD_PROPERTY(Base,(0));
+    ADD_PROPERTY(Base,(nullptr));
     Placement.setStatus(App::Property::ReadOnly, true);
 
     ADD_PROPERTY_TYPE(SupportTransform,(false),"Base", App::Prop_None,

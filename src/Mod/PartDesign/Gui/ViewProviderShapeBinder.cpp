@@ -144,7 +144,7 @@ void ViewProviderShapeBinder::highlightReferences(const bool on, bool /*auxiliar
 
     PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
                 Gui::Application::Instance->getViewProvider(obj));
-    if (svp == NULL) return;
+    if (svp == nullptr) return;
 
     if (on) {
          if (!subs.empty() && originalLineColors.empty()) {
@@ -348,7 +348,7 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
 
     std::vector<Base::Matrix4D> mats;
     bool relative = self->Relative.getValue();
-    App::DocumentObject *parent = 0;
+    App::DocumentObject *parent = nullptr;
     std::string parentSub;
     if(relative && self->getParents().size()) {
         const auto &sel = Gui::Selection().getSelection("",0);

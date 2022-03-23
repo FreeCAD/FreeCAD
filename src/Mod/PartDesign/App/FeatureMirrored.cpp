@@ -47,7 +47,7 @@ PROPERTY_SOURCE(PartDesign::Mirrored, PartDesign::Transformed)
 
 Mirrored::Mirrored()
 {
-    ADD_PROPERTY_TYPE(MirrorPlane,(0),"Mirrored",(App::PropertyType)(App::Prop_None),"Mirror plane");
+    ADD_PROPERTY_TYPE(MirrorPlane,(nullptr),"Mirrored",(App::PropertyType)(App::Prop_None),"Mirror plane");
 }
 
 short Mirrored::mustExecute() const
@@ -60,7 +60,7 @@ short Mirrored::mustExecute() const
 const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::DocumentObject*>)
 {
     App::DocumentObject* refObject = MirrorPlane.getValue();
-    if (refObject == NULL)
+    if (refObject == nullptr)
         throw Base::ValueError("No mirror plane reference specified");
     std::vector<std::string> subStrings = MirrorPlane.getSubValues();
     if (subStrings.empty())

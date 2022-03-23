@@ -71,7 +71,7 @@ class NoDependentsSelection : public Gui::SelectionFilterGate
 
 public:
     NoDependentsSelection(const App::DocumentObject* support_)
-        : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), support(support_)
+        : Gui::SelectionFilterGate((Gui::SelectionFilter*)nullptr), support(support_)
     {
     }
     /**
@@ -87,7 +87,7 @@ class CombineSelectionFilterGates: public Gui::SelectionFilterGate
 
 public:
     CombineSelectionFilterGates(std::unique_ptr<Gui::SelectionFilterGate> &filter1_, std::unique_ptr<Gui::SelectionFilterGate> &filter2_)
-        : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), filter1(std::move(filter1_)), filter2(std::move(filter2_))
+        : Gui::SelectionFilterGate((Gui::SelectionFilter*)nullptr), filter1(std::move(filter1_)), filter2(std::move(filter2_))
     {
     }
     bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName) override;

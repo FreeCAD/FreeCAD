@@ -64,7 +64,7 @@ App::Part* assertActivePart () {
         rcCmdMgr.runCommandByName("Std_Part");
         rv = Gui::Application::Instance->activeView()->getActiveObject<App::Part *> ( PARTKEY );
         if ( !rv ) {
-            QMessageBox::critical ( 0, QObject::tr( "Part creation failed" ),
+            QMessageBox::critical ( nullptr, QObject::tr( "Part creation failed" ),
                     QObject::tr( "Failed to create a part object." ) );
         }
     }
@@ -128,7 +128,7 @@ void CmdPartDesignBody::activated(int iMsg)
             }
             else {
                 partOfBaseFeature = App::Part::getPartOfObject(baseFeature);
-                if (partOfBaseFeature != 0  &&  partOfBaseFeature != actPart){
+                if (partOfBaseFeature != nullptr  &&  partOfBaseFeature != actPart){
                     //prevent cross-part mess
                     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Bad base feature"),
                             QObject::tr("Base feature (%1) belongs to other part.")
@@ -336,7 +336,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
                     doc, PartDesignGui::Workflow::Modern );
         } else {
             // Huh? nothing to migrate?
-            QMessageBox::warning ( 0, QObject::tr ( "Nothing to migrate" ),
+            QMessageBox::warning ( nullptr, QObject::tr ( "Nothing to migrate" ),
                     QObject::tr ( "No PartDesign features found that don't belong to a body."
                         " Nothing to migrate." ) );
         }
@@ -548,16 +548,16 @@ void CmdPartDesignMoveTip::activated(int iMsg)
     }
 
     if (!selFeature) {
-        QMessageBox::warning (0, QObject::tr( "Selection error" ),
+        QMessageBox::warning (nullptr, QObject::tr( "Selection error" ),
                 QObject::tr( "Select exactly one PartDesign feature or a body." ) );
         return;
     } else if (!body) {
-        QMessageBox::warning (0, QObject::tr( "Selection error" ),
+        QMessageBox::warning (nullptr, QObject::tr( "Selection error" ),
                 QObject::tr( "Couldn't determine a body for the selected feature '%s'.", selFeature->Label.getValue() ) );
         return;
     } else if ( !selFeature->isDerivedFrom(PartDesign::Feature::getClassTypeId () ) &&
             selFeature != body && body->BaseFeature.getValue() != selFeature ) {
-        QMessageBox::warning (0, QObject::tr( "Selection error" ),
+        QMessageBox::warning (nullptr, QObject::tr( "Selection error" ),
                 QObject::tr( "Only a solid feature can be the tip of a body." ) );
         return;
     }
@@ -844,14 +844,14 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
                 break;
             }
             if ( bodyBase == feat) {
-                QMessageBox::warning (0, QObject::tr( "Selection error" ),
+                QMessageBox::warning (nullptr, QObject::tr( "Selection error" ),
                         QObject::tr( "Impossible to move the base feature of a body." ) );
                 return;
             }
         }
     }
     if (!body || ! allFeaturesFromSameBody) {
-        QMessageBox::warning (0, QObject::tr( "Selection error" ),
+        QMessageBox::warning (nullptr, QObject::tr( "Selection error" ),
                 QObject::tr( "Select one or more features from the same body." ) );
         return;
     }
@@ -929,7 +929,7 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
         }
     }
     if(failed) {
-        QMessageBox::critical (0, QObject::tr( "Dependency violation" ),
+        QMessageBox::critical (nullptr, QObject::tr( "Dependency violation" ),
                 QObject::tr( "Early feature must not depend on later feature.\n\n") 
                     + QString::fromUtf8(ss.str().c_str()));
         abortCommand();

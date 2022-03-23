@@ -60,7 +60,7 @@ bool setEdit(App::DocumentObject *obj, PartDesign::Body *body) {
         FC_ERR("invalid object");
         return false;
     }
-    if(body == 0) {
+    if(body == nullptr) {
         body = getBodyFor(obj, false);
         if(!body) {
             FC_ERR("no body found");
@@ -69,7 +69,7 @@ bool setEdit(App::DocumentObject *obj, PartDesign::Body *body) {
     }
     auto *activeView = Gui::Application::Instance->activeView();
     if(!activeView) return false;
-    App::DocumentObject *parent = 0;
+    App::DocumentObject *parent = nullptr;
     std::string subname;
     auto activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY,&parent,&subname);
     if(activeBody != body) {
@@ -108,7 +108,7 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
 
             if (!activeBody && singleBodyDocument && autoActivate) {
                 auto bodies = doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
-                App::DocumentObject *body = 0;
+                App::DocumentObject *body = nullptr;
                 if(bodies.size()==1) {
                     body = bodies[0];
                     activeBody = makeBodyActive(body, doc, topParent, subname);
@@ -136,14 +136,14 @@ PartDesign::Body * makeBodyActive(App::DocumentObject *body, App::Document *doc,
                                   App::DocumentObject **topParent,
                                   std::string *subname)
 {
-    App::DocumentObject *parent = 0;
+    App::DocumentObject *parent = nullptr;
     std::string sub;
 
     for(auto &v : body->getParents()) {
         if(v.first->getDocument()!=doc)
             continue;
         if(parent) {
-            body = 0;
+            body = nullptr;
             break;
         }
         parent = v.first;
@@ -213,7 +213,7 @@ App::Part* getActivePart() {
     if ( activeView ) {
         return activeView->getActiveObject<App::Part*> (PARTKEY);
     } else {
-        return 0;
+        return nullptr;
     }
 }
 
@@ -279,7 +279,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
     bool reverseSketch = (sketchVector.x + sketchVector.y + sketchVector.z) < 0.0 ;
     if (reverseSketch) sketchVector *= -1.0;
 
-    App::Plane *plane =0;
+    App::Plane *plane =nullptr;
 
     if (sketchVector == Base::Vector3d(0,0,1))
         plane = origin->getXY ();

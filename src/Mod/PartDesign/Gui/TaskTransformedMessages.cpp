@@ -34,7 +34,7 @@ using namespace Gui::TaskView;
 namespace bp = boost::placeholders;
 
 TaskTransformedMessages::TaskTransformedMessages(ViewProviderTransformed *transformedView_)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Transformed feature messages"), true, 0)
+    : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Transformed feature messages"), true, nullptr)
     , transformedView(transformedView_)
     , ui(new Ui_TaskTransformedMessages)
 {

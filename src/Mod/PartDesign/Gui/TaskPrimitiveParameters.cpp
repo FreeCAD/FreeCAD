@@ -334,7 +334,7 @@ TaskBoxPrimitives::~TaskBoxPrimitives()
 {
     //hide the parts coordinate system axis for selection
     try {
-        PartDesign::Body * body = vp ? PartDesign::Body::findBodyOf(vp->getObject()) : 0;
+        PartDesign::Body * body = vp ? PartDesign::Body::findBodyOf(vp->getObject()) : nullptr;
         if (body) {
             App::Origin *origin = body->getOrigin();
             Gui::ViewProviderOrigin* vpOrigin;

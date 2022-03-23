@@ -298,7 +298,7 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
         PartDesignGui::setEdit(support.getValue());
     } else {
         PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
-        if (pcActiveBody == 0)
+        if (pcActiveBody == nullptr)
             return;
 
         std::string FeatName = getUniqueObjectName("ShapeBinder",pcActiveBody);
@@ -350,7 +350,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    App::DocumentObject *parent = 0;
+    App::DocumentObject *parent = nullptr;
     std::string parentSub;
     std::map<App::DocumentObject *, std::vector<std::string> > values;
     for (auto &sel : Gui::Selection().getCompleteSelection(0)) {
@@ -383,7 +383,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         values = std::move(links);
     }
 
-    PartDesign::SubShapeBinder *binder = 0;
+    PartDesign::SubShapeBinder *binder = nullptr;
     try {
         openCommand(QT_TRANSLATE_NOOP("Command", "Create SubShapeBinder"));
         if (pcActiveBody) {
@@ -2537,14 +2537,14 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         PartDesign::Transformed* trFeat = static_cast<PartDesign::Transformed*>(features.front());
 
         // Move the insert point back one feature
-        App::DocumentObject* oldTip = 0;
-        App::DocumentObject* prevFeature = 0;
+        App::DocumentObject* oldTip = nullptr;
+        App::DocumentObject* prevFeature = nullptr;
         if (pcActiveBody){
             oldTip = pcActiveBody->Tip.getValue();
             prevFeature = pcActiveBody->getPrevSolidFeature(trFeat);
         }
         Gui::Selection().clearSelection();
-        if (prevFeature != NULL)
+        if (prevFeature != nullptr)
             Gui::Selection().addSelection(prevFeature->getDocument()->getName(), prevFeature->getNameInDocument());
 
         openCommand(QT_TRANSLATE_NOOP("Command", "Convert to MultiTransform feature"));
@@ -2594,7 +2594,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
 
             // Make sure the user isn't presented with an empty screen because no transformations are defined yet...
             App::DocumentObject* prevSolid = pcActiveBody->Tip.getValue();
-            if (prevSolid != NULL) {
+            if (prevSolid != nullptr) {
                 Part::Feature* feat = static_cast<Part::Feature*>(prevSolid);
                 FCMD_OBJ_CMD(Feat,"Shape = "<<getObjectCmd(feat)<<".Shape");
             }

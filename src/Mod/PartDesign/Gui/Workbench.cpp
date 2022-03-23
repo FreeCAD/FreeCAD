@@ -264,7 +264,7 @@ void Workbench::activated()
         "PartDesign_Line",
         "PartDesign_Plane",
         "PartDesign_CoordinateSystem",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Vertex COUNT 1..",
         Vertex,
@@ -279,7 +279,7 @@ void Workbench::activated()
         "PartDesign_Line",
         "PartDesign_Plane",
         "PartDesign_CoordinateSystem",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Edge COUNT 1..",
         Edge,
@@ -297,7 +297,7 @@ void Workbench::activated()
         "PartDesign_Line",
         "PartDesign_Plane",
         "PartDesign_CoordinateSystem",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Face COUNT 1",
         Face,
@@ -307,7 +307,7 @@ void Workbench::activated()
 
     const char* Body[] = {
         "PartDesign_NewSketch",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Body COUNT 1",
         Body,
@@ -317,7 +317,7 @@ void Workbench::activated()
 
     const char* Body2[] = {
         "PartDesign_Boolean",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Body COUNT 1..",
         Body2,
@@ -331,7 +331,7 @@ void Workbench::activated()
         "PartDesign_Line",
         "PartDesign_Point",
         "PartDesign_CoordinateSystem",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT App::Plane COUNT 1",
         Plane1,
@@ -344,7 +344,7 @@ void Workbench::activated()
         "PartDesign_Line",
         "PartDesign_Plane",
         "PartDesign_CoordinateSystem",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Plane COUNT 1",
         Plane2,
@@ -356,7 +356,7 @@ void Workbench::activated()
         "PartDesign_Point",
         "PartDesign_Line",
         "PartDesign_Plane",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Line COUNT 1",
         Line,
@@ -369,7 +369,7 @@ void Workbench::activated()
         "PartDesign_Line",
         "PartDesign_Plane",
         "PartDesign_CoordinateSystem",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::Point COUNT 1",
         Point,
@@ -379,7 +379,7 @@ void Workbench::activated()
 
     const char* NoSel[] = {
         "PartDesign_Body",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommandsEmptySelection(
         NoSel,
         "Start Part",
@@ -391,7 +391,7 @@ void Workbench::activated()
         "PartDesign_Chamfer",
         "PartDesign_Draft",
         "PartDesign_Thickness",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Part::Feature SUBELEMENT Face COUNT 2..",
         Faces,
@@ -412,7 +412,7 @@ void Workbench::activated()
         "PartDesign_SubtractiveLoft",
         "PartDesign_AdditiveHelix",
         "PartDesign_SubtractiveHelix",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Sketcher::SketchObject COUNT 1",
         Sketch,
@@ -426,7 +426,7 @@ void Workbench::activated()
         "PartDesign_PolarPattern",
 //        "PartDesign_Scaled",
         "PartDesign_MultiTransform",
-        0};
+        nullptr};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT PartDesign::SketchBased",
         Transformed,

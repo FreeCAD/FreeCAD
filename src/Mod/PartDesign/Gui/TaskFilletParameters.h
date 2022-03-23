@@ -36,7 +36,7 @@ class TaskFilletParameters : public TaskDressUpParameters
     Q_OBJECT
 
 public:
-    TaskFilletParameters(ViewProviderDressUp *DressUpView, QWidget *parent=0);
+    TaskFilletParameters(ViewProviderDressUp *DressUpView, QWidget *parent=nullptr);
     ~TaskFilletParameters();
 
     virtual void apply();

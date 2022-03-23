@@ -48,7 +48,7 @@ class TaskRevolutionParameters : public TaskSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskRevolutionParameters(ViewProvider* RevolutionView,QWidget *parent = 0);
+    TaskRevolutionParameters(ViewProvider* RevolutionView,QWidget *parent = nullptr);
     ~TaskRevolutionParameters();
 
     virtual void apply() override;

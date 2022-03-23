@@ -126,13 +126,13 @@ public:
       * Return the solid feature before the given feature, or before the Tip feature
       * That is, sketches and datum features are skipped
       */
-    App::DocumentObject *getPrevSolidFeature(App::DocumentObject *start = NULL);
+    App::DocumentObject *getPrevSolidFeature(App::DocumentObject *start = nullptr);
 
     /**
       * Return the next solid feature after the given feature, or after the Tip feature
       * That is, sketches and datum features are skipped
       */
-    App::DocumentObject *getNextSolidFeature(App::DocumentObject* start = NULL);
+    App::DocumentObject *getNextSolidFeature(App::DocumentObject* start = nullptr);
 
     // a body is solid if it has features that are solid according to member isSolidFeature.
     bool isSolid(void);
