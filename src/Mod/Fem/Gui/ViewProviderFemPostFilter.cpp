@@ -45,7 +45,7 @@ void ViewProviderFemPostClip::setupTaskDialog(TaskDlgPost* dlg) {
 
     //add the function box
     dlg->appendBox(new TaskPostClip(dlg->getView(),
-                                    &static_cast<Fem::FemPostClipFilter*>(dlg->getView()->getObject())->Function));
+        &static_cast<Fem::FemPostClipFilter*>(dlg->getView()->getObject())->Function));
 
     //add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
@@ -144,7 +144,7 @@ void ViewProviderFemPostCut::setupTaskDialog(TaskDlgPost* dlg) {
 
     //add the function box
     dlg->appendBox(new TaskPostCut(dlg->getView(),
-                                    &static_cast<Fem::FemPostCutFilter*>(dlg->getView()->getObject())->Function));
+        &static_cast<Fem::FemPostCutFilter*>(dlg->getView()->getObject())->Function));
 
     //add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);

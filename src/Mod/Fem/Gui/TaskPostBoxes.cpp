@@ -110,16 +110,16 @@ void PointMarker::customEvent(QEvent*)
     const SbVec3f& pt1 = vp->pCoords->point[0];
     const SbVec3f& pt2 = vp->pCoords->point[1];
 
-    if(m_name == "DataAlongLine"){
-       PointsChanged(pt1[0],pt1[1], pt1[2], pt2[0],pt2[1], pt2[2]);
-       Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Point1 = App.Vector(%f, %f, %f)", m_name.c_str(), pt1[0],pt1[1], pt1[2]);
-       Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Point2 = App.Vector(%f, %f, %f)", m_name.c_str(), pt2[0],pt2[1], pt2[2]);
+    if (m_name == "DataAlongLine") {
+        PointsChanged(pt1[0], pt1[1], pt1[2], pt2[0], pt2[1], pt2[2]);
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Point1 = App.Vector(%f, %f, %f)", m_name.c_str(), pt1[0], pt1[1], pt1[2]);
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Point2 = App.Vector(%f, %f, %f)", m_name.c_str(), pt2[0], pt2[1], pt2[2]);
     }
     Gui::Command::doCommand(Gui::Command::Doc, ObjectInvisible().c_str());
 }
 
-std::string PointMarker::ObjectInvisible(){
-return "for amesh in App.activeDocument().Objects:\n\
+std::string PointMarker::ObjectInvisible() {
+    return "for amesh in App.activeDocument().Objects:\n\
     if \"Mesh\" in amesh.TypeId:\n\
          aparttoshow = amesh.Name.replace(\"_Mesh\",\"\")\n\
          for apart in App.activeDocument().Objects:\n\
@@ -165,7 +165,7 @@ void DataMarker::addPoint(const SbVec3f& pt)
 {
     int ct = countPoints();
     vp->pCoords->point.set1Value(ct, pt);
-    vp->pMarker->numPoints=ct+1;
+    vp->pMarker->numPoints = ct + 1;
 
 }
 
@@ -178,15 +178,15 @@ void DataMarker::customEvent(QEvent*)
 {
     const SbVec3f& pt1 = vp->pCoords->point[0];
 
-    if(m_name == "DataAtPoint"){
-       PointsChanged(pt1[0],pt1[1], pt1[2]);
-       Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)", m_name.c_str(), pt1[0],pt1[1], pt1[2]);
+    if (m_name == "DataAtPoint") {
+        PointsChanged(pt1[0], pt1[1], pt1[2]);
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)", m_name.c_str(), pt1[0], pt1[1], pt1[2]);
     }
     Gui::Command::doCommand(Gui::Command::Doc, ObjectInvisible().c_str());
 }
 
-std::string DataMarker::ObjectInvisible(){
-return "for amesh in App.activeDocument().Objects:\n\
+std::string DataMarker::ObjectInvisible() {
+    return "for amesh in App.activeDocument().Objects:\n\
     if \"Mesh\" in amesh.TypeId:\n\
          aparttoshow = amesh.Name.replace(\"_Mesh\",\"\")\n\
          for apart in App.activeDocument().Objects:\n\
@@ -203,7 +203,7 @@ ViewProviderDataMarker::ViewProviderDataMarker()
     pCoords->point.setNum(0);
     pMarker = new SoMarkerSet();
     pMarker->markerIndex = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED", App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")->GetInt("MarkerSize", 9));
-    pMarker->numPoints=0;
+    pMarker->numPoints = 0;
     pMarker->ref();
 
     SoGroup* grp = new SoGroup();
@@ -224,7 +224,7 @@ ViewProviderDataMarker::~ViewProviderDataMarker()
 // TaskDialog
 // ***************************************************************************
 
-TaskDlgPost::TaskDlgPost(Gui::ViewProviderDocumentObject *view)
+TaskDlgPost::TaskDlgPost(Gui::ViewProviderDocumentObject* view)
     : TaskDialog(), m_view(view)
 {
     assert(view);
@@ -239,11 +239,11 @@ QDialogButtonBox::StandardButtons TaskDlgPost::getStandardButtons(void) const {
 
     //check if we only have gui task boxes
     bool guionly = true;
-    for(std::vector<TaskPostBox*>::const_iterator it = m_boxes.begin(); it != m_boxes.end(); ++it)
+    for (std::vector<TaskPostBox*>::const_iterator it = m_boxes.begin(); it != m_boxes.end(); ++it)
         guionly = guionly && (*it)->isGuiTaskOnly();
 
-    if(!guionly)
-        return QDialogButtonBox::Apply|QDialogButtonBox::Ok|QDialogButtonBox::Cancel;
+    if (!guionly)
+        return QDialogButtonBox::Apply | QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
     else
         return QDialogButtonBox::Ok;
 }
@@ -264,7 +264,7 @@ void TaskDlgPost::open()
 
 void TaskDlgPost::clicked(int button)
 {
-    if(button == QDialogButtonBox::Apply)
+    if (button == QDialogButtonBox::Apply)
         getView()->getObject()->getDocument()->recompute();
 }
 
@@ -273,7 +273,7 @@ bool TaskDlgPost::accept()
 
     try {
         std::vector<TaskPostBox*>::iterator it = m_boxes.begin();
-        for(;it != m_boxes.end(); ++it)
+        for (; it != m_boxes.end(); ++it)
             (*it)->applyPythonCode();
     }
     catch (const Base::Exception& e) {
@@ -281,7 +281,7 @@ bool TaskDlgPost::accept()
         return false;
     }
 
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
     return true;
 }
 
@@ -289,20 +289,20 @@ bool TaskDlgPost::reject()
 {
     // roll back the done things
     Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
 
     return true;
 }
 
 void TaskDlgPost::modifyStandardButtons(QDialogButtonBox* box) {
 
-    if(box->button(QDialogButtonBox::Apply))
+    if (box->button(QDialogButtonBox::Apply))
         box->button(QDialogButtonBox::Apply)->setDefault(true);
 }
 
 // ***************************************************************************
 // some task box methods
-TaskPostBox::TaskPostBox(Gui::ViewProviderDocumentObject* view, const QPixmap &icon, const QString &title, QWidget* parent)
+TaskPostBox::TaskPostBox(Gui::ViewProviderDocumentObject* view, const QPixmap& icon, const QString& title, QWidget* parent)
     : TaskBox(icon, title, true, parent) {
 
     m_view = view;
@@ -321,7 +321,7 @@ bool TaskPostBox::autoApply() {
 
 void TaskPostBox::recompute() {
 
-    if(autoApply())
+    if (autoApply())
         App::GetApplication().getActiveDocument()->recompute();
 }
 
@@ -329,7 +329,7 @@ void TaskPostBox::updateEnumerationList(App::PropertyEnumeration& prop, QComboBo
 
     QStringList list;
     std::vector<std::string> vec = prop.getEnumVector();
-    for(std::vector<std::string>::iterator it = vec.begin(); it != vec.end(); ++it ) {
+    for (std::vector<std::string>::iterator it = vec.begin(); it != vec.end(); ++it) {
         list.push_back(QString::fromStdString(*it));
     }
 
@@ -344,7 +344,7 @@ void TaskPostBox::updateEnumerationList(App::PropertyEnumeration& prop, QComboBo
 
 // ***************************************************************************
 // post pipeline results
-TaskPostDisplay::TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget *parent)
+TaskPostDisplay::TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget* parent)
     : TaskPostBox(view, Gui::BitmapFactory().pixmap("FEM_ResultShow"), tr("Result display options"), parent)
 {
     //we need a separate container widget to add all controls to
@@ -402,7 +402,7 @@ void TaskPostDisplay::applyPythonCode() {
 // ***************************************************************************
 // ?
 // the icon fem-post-geo-plane might be wrong but I do not know any better since the plane is one of the implicit functions
-TaskPostFunction::TaskPostFunction(ViewProviderDocumentObject* view, QWidget* parent): TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-post-geo-plane"), tr("Implicit function"), parent) {
+TaskPostFunction::TaskPostFunction(ViewProviderDocumentObject* view, QWidget* parent) : TaskPostBox(view, Gui::BitmapFactory().pixmap("fem-post-geo-plane"), tr("Implicit function"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostFunction::getClassTypeId()));
 
@@ -425,11 +425,11 @@ void TaskPostFunction::applyPythonCode() {
 // ***************************************************************************
 // region clip filter
 TaskPostClip::TaskPostClip(ViewProviderDocumentObject* view, App::PropertyLink* function, QWidget* parent)
-    : TaskPostBox(view,Gui::BitmapFactory().pixmap("FEM_PostFilterClipRegion"), tr("Clip region, choose implicit function"), parent) {
+    : TaskPostBox(view, Gui::BitmapFactory().pixmap("FEM_PostFilterClipRegion"), tr("Clip region, choose implicit function"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostClip::getClassTypeId()));
     assert(function);
-    Q_UNUSED(function)
+    Q_UNUSED(function);
 
     fwidget = nullptr;
 
@@ -441,14 +441,14 @@ TaskPostClip::TaskPostClip(ViewProviderDocumentObject* view, App::PropertyLink* 
     this->groupLayout()->addWidget(proxy);
 
     //the layout for the container widget
-    QVBoxLayout *layout = new QVBoxLayout();
+    QVBoxLayout* layout = new QVBoxLayout();
     ui->Container->setLayout(layout);
 
     //fill up the combo box with possible functions
     collectImplicitFunctions();
 
     //add the function creation command
-    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
     Gui::Command* cmd = rcCmdMgr.getCommandByName("FEM_PostCreateFunctions");
     if (cmd && cmd->getAction())
         cmd->getAction()->addTo(ui->CreateButton);
@@ -472,15 +472,15 @@ void TaskPostClip::collectImplicitFunctions() {
     std::vector<Fem::FemPostPipeline*> pipelines;
     pipelines = App::GetApplication().getActiveDocument()->getObjectsOfType<Fem::FemPostPipeline>();
     if (!pipelines.empty()) {
-        Fem::FemPostPipeline *pipeline = pipelines.front();
-        if(pipeline->Functions.getValue() &&
-           pipeline->Functions.getValue()->getTypeId() == Fem::FemPostFunctionProvider::getClassTypeId()) {
+        Fem::FemPostPipeline* pipeline = pipelines.front();
+        if (pipeline->Functions.getValue() &&
+            pipeline->Functions.getValue()->getTypeId() == Fem::FemPostFunctionProvider::getClassTypeId()) {
 
             ui->FunctionBox->clear();
             QStringList items;
             const std::vector<App::DocumentObject*>& funcs = static_cast<Fem::FemPostFunctionProvider*>(
-                                                            pipeline->Functions.getValue())->Functions.getValues();
-            for(std::size_t i=0; i<funcs.size(); ++i)
+                pipeline->Functions.getValue())->Functions.getValues();
+            for (std::size_t i = 0; i < funcs.size(); ++i)
                 items.push_back(QString::fromLatin1(funcs[i]->getNameInDocument()));
 
             ui->FunctionBox->addItems(items);
@@ -500,13 +500,13 @@ void TaskPostClip::on_FunctionBox_currentIndexChanged(int idx) {
     std::vector<Fem::FemPostPipeline*> pipelines;
     pipelines = App::GetApplication().getActiveDocument()->getObjectsOfType<Fem::FemPostPipeline>();
     if (!pipelines.empty()) {
-        Fem::FemPostPipeline *pipeline = pipelines.front();
-        if(pipeline->Functions.getValue() &&
-           pipeline->Functions.getValue()->getTypeId() == Fem::FemPostFunctionProvider::getClassTypeId()) {
+        Fem::FemPostPipeline* pipeline = pipelines.front();
+        if (pipeline->Functions.getValue() &&
+            pipeline->Functions.getValue()->getTypeId() == Fem::FemPostFunctionProvider::getClassTypeId()) {
 
             const std::vector<App::DocumentObject*>& funcs = static_cast<Fem::FemPostFunctionProvider*>(
-                                                            pipeline->Functions.getValue())->Functions.getValues();
-            if(idx>=0)
+                pipeline->Functions.getValue())->Functions.getValues();
+            if (idx >= 0)
                 static_cast<Fem::FemPostClipFilter*>(getObject())->Function.setValue(funcs[idx]);
             else
                 static_cast<Fem::FemPostClipFilter*>(getObject())->Function.setValue(nullptr);
@@ -515,15 +515,15 @@ void TaskPostClip::on_FunctionBox_currentIndexChanged(int idx) {
 
     //load the correct view
     Fem::FemPostFunction* fobj = static_cast<Fem::FemPostFunction*>(
-                                    static_cast<Fem::FemPostClipFilter*>(getObject())->Function.getValue());
+        static_cast<Fem::FemPostClipFilter*>(getObject())->Function.getValue());
     Gui::ViewProvider* view = nullptr;
-    if(fobj)
+    if (fobj)
         view = Gui::Application::Instance->activeDocument()->getViewProvider(fobj);
 
-    if(fwidget)
+    if (fwidget)
         fwidget->deleteLater();
 
-    if(view) {
+    if (view) {
         fwidget = static_cast<FemGui::ViewProviderFemPostFunction*>(view)->createControlWidget();
         fwidget->setParent(ui->Container);
         fwidget->setViewProvider(static_cast<FemGui::ViewProviderFemPostFunction*>(view));
@@ -547,7 +547,7 @@ void TaskPostClip::on_InsideOut_toggled(bool val) {
 // ***************************************************************************
 // data along a line
 TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderDocumentObject* view, QWidget* parent)
-    : TaskPostBox(view,Gui::BitmapFactory().pixmap("FEM_PostFilterDataAlongLine"), tr("Data along a line options"), parent) {
+    : TaskPostBox(view, Gui::BitmapFactory().pixmap("FEM_PostFilterDataAlongLine"), tr("Data along a line options"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostDataAlongLine::getClassTypeId()));
 
@@ -594,7 +594,7 @@ void TaskPostDataAlongLine::applyPythonCode() {
 
 }
 
-static const char * cursor_triangle[] = {
+static const char* cursor_triangle[] = {
 "32 32 3 1",
 "       c None",
 ".      c #FFFFFF",
@@ -615,7 +615,7 @@ static const char * cursor_triangle[] = {
 "            + ++++ +            ",
 "           +  ++ ++ +           ",
 "          + ++++++++ +          ",
-"         ++  ++  ++  ++         "};
+"         ++  ++  ++  ++         " };
 
 void TaskPostDataAlongLine::on_SelectPoints_clicked() {
 
@@ -635,12 +635,11 @@ void TaskPostDataAlongLine::on_SelectPoints_clicked() {
         viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
             FemGui::TaskPostDataAlongLine::pointCallback, marker);
         connect(marker, SIGNAL(PointsChanged(double, double, double, double, double, double)), this, SLOT(onChange(double, double, double, double, double, double)));
-     }
-
+    }
 }
 
-std::string TaskPostDataAlongLine::ObjectVisible(){
-return "for amesh in App.activeDocument().Objects:\n\
+std::string TaskPostDataAlongLine::ObjectVisible() {
+    return "for amesh in App.activeDocument().Objects:\n\
     if \"Mesh\" in amesh.TypeId:\n\
          aparttoshow = amesh.Name.replace(\"_Mesh\",\"\")\n\
          for apart in App.activeDocument().Objects:\n\
@@ -651,9 +650,9 @@ return "for amesh in App.activeDocument().Objects:\n\
 void TaskPostDataAlongLine::on_CreatePlot_clicked() {
 
     std::string ObjName = static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Label.getValue();
-    Gui::Command::doCommand(Gui::Command::Doc,"x = App.ActiveDocument.%s.XAxisData",ObjName.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,"y = App.ActiveDocument.%s.YAxisData",ObjName.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,"title = App.ActiveDocument.%s.PlotData",ObjName.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc, "x = App.ActiveDocument.%s.XAxisData", ObjName.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc, "y = App.ActiveDocument.%s.YAxisData", ObjName.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc, "title = App.ActiveDocument.%s.PlotData", ObjName.c_str());
     Gui::Command::doCommand(Gui::Command::Doc, Plot().c_str());
     recompute();
 }
@@ -667,43 +666,38 @@ void TaskPostDataAlongLine::onChange(double x1, double y1, double z1, double x2,
     ui->point1X->setValue(x1);
     ui->point1Y->setValue(y1);
     ui->point1Z->setValue(z1);
-
 }
 
 void TaskPostDataAlongLine::point1Changed(double) {
 
     Base::Vector3d vec(ui->point1X->value(), ui->point1Y->value(), ui->point1Z->value());
     std::string ObjName = static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Label.getValue();
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Point1 = App.Vector(%f, %f, %f)",ObjName.c_str(), ui->point1X->value(), ui->point1Y->value(), ui->point1Z->value());
-
-
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Point1 = App.Vector(%f, %f, %f)", ObjName.c_str(), ui->point1X->value(), ui->point1Y->value(), ui->point1Z->value());
 }
 
 void TaskPostDataAlongLine::point2Changed(double) {
 
     Base::Vector3d vec(ui->point2X->value(), ui->point2Y->value(), ui->point2Z->value());
     std::string ObjName = static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Label.getValue();
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Point2 = App.Vector(%f, %f, %f)", ObjName.c_str(), ui->point2X->value(), ui->point2Y->value(), ui->point2Z->value());
-
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Point2 = App.Vector(%f, %f, %f)", ObjName.c_str(), ui->point2X->value(), ui->point2Y->value(), ui->point2Z->value());
 }
 
 void TaskPostDataAlongLine::resolutionChanged(int val) {
 
     static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->Resolution.setValue(val);
-
 }
 
-void TaskPostDataAlongLine::pointCallback(void * ud, SoEventCallback * n)
+void TaskPostDataAlongLine::pointCallback(void* ud, SoEventCallback* n)
 {
-    const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent*>(n->getEvent());
-    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
-    PointMarker *pm = reinterpret_cast<PointMarker*>(ud);
+    const SoMouseButtonEvent* mbe = static_cast<const SoMouseButtonEvent*>(n->getEvent());
+    Gui::View3DInventorViewer* view = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    PointMarker* pm = reinterpret_cast<PointMarker*>(ud);
 
     // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
     n->getAction()->setHandled();
 
     if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
-        const SoPickedPoint * point = n->getPickedPoint();
+        const SoPickedPoint* point = n->getPickedPoint();
         if (point == nullptr) {
             Base::Console().Message("No point picked.\n");
             return;
@@ -712,7 +706,7 @@ void TaskPostDataAlongLine::pointCallback(void * ud, SoEventCallback * n)
         n->setHandled();
         pm->addPoint(point->getPoint());
         if (pm->countPoints() == 2) {
-            QEvent *e = new QEvent(QEvent::User);
+            QEvent* e = new QEvent(QEvent::User);
             QApplication::postEvent(pm, e);
             // leave mode
             view->setEditing(false);
@@ -758,13 +752,12 @@ plt.ylabel(title)\n\
 plt.title(title)\n\
 plt.grid()\n\
 plt.show()\n";
-
 }
 
 // ***************************************************************************
 // data at point
 TaskPostDataAtPoint::TaskPostDataAtPoint(ViewProviderDocumentObject* view, QWidget* parent)
-    : TaskPostBox(view,Gui::BitmapFactory().pixmap("FEM_PostFilterDataAtPoint"), tr("Data at point options"), parent) {
+    : TaskPostBox(view, Gui::BitmapFactory().pixmap("FEM_PostFilterDataAtPoint"), tr("Data at point options"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostDataAtPoint::getClassTypeId()));
 
@@ -797,7 +790,7 @@ void TaskPostDataAtPoint::applyPythonCode() {
 
 }
 
-static const char * cursor_star[] = {
+static const char* cursor_star[] = {
 "32 32 3 1",
 "       c None",
 ".      c #FFFFFF",
@@ -818,7 +811,7 @@ static const char * cursor_star[] = {
 "            + ++++ +            ",
 "           +  ++ ++ +           ",
 "          + ++++++++ +          ",
-"         ++  ++  ++  ++         "};
+"         ++  ++  ++  ++         " };
 
 void TaskPostDataAtPoint::on_SelectPoint_clicked() {
 
@@ -838,14 +831,13 @@ void TaskPostDataAtPoint::on_SelectPoint_clicked() {
         viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
             FemGui::TaskPostDataAtPoint::pointCallback, marker);
         connect(marker, SIGNAL(PointsChanged(double, double, double)), this, SLOT(onChange(double, double, double)));
-     }
-     getTypedView<ViewProviderFemPostObject>()->DisplayMode.setValue(1);
-     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
-
+    }
+    getTypedView<ViewProviderFemPostObject>()->DisplayMode.setValue(1);
+    updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
 }
 
-std::string TaskPostDataAtPoint::ObjectVisible(){
-return "for amesh in App.activeDocument().Objects:\n\
+std::string TaskPostDataAtPoint::ObjectVisible() {
+    return "for amesh in App.activeDocument().Objects:\n\
     if \"Mesh\" in amesh.TypeId:\n\
          aparttoshow = amesh.Name.replace(\"_Mesh\",\"\")\n\
          for apart in App.activeDocument().Objects:\n\
@@ -858,28 +850,26 @@ void TaskPostDataAtPoint::onChange(double x, double y, double z) {
     ui->centerX->setValue(x);
     ui->centerY->setValue(y);
     ui->centerZ->setValue(z);
-
 }
 
 void TaskPostDataAtPoint::centerChanged(double) {
 
     Base::Vector3d vec(ui->centerX->value(), ui->centerY->value(), ui->centerZ->value());
     std::string ObjName = static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Label.getValue();
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)",ObjName.c_str(), ui->centerX->value(), ui->centerY->value(), ui->centerZ->value());
-
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)", ObjName.c_str(), ui->centerX->value(), ui->centerY->value(), ui->centerZ->value());
 }
 
-void TaskPostDataAtPoint::pointCallback(void * ud, SoEventCallback * n)
+void TaskPostDataAtPoint::pointCallback(void* ud, SoEventCallback* n)
 {
-    const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent*>(n->getEvent());
-    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
-    DataMarker *pm = reinterpret_cast<DataMarker*>(ud);
+    const SoMouseButtonEvent* mbe = static_cast<const SoMouseButtonEvent*>(n->getEvent());
+    Gui::View3DInventorViewer* view = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    DataMarker* pm = reinterpret_cast<DataMarker*>(ud);
 
     // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
     n->getAction()->setHandled();
 
     if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
-        const SoPickedPoint * point = n->getPickedPoint();
+        const SoPickedPoint* point = n->getPickedPoint();
         if (point == nullptr) {
             Base::Console().Message("No point picked.\n");
             return;
@@ -888,7 +878,7 @@ void TaskPostDataAtPoint::pointCallback(void * ud, SoEventCallback * n)
         n->setHandled();
         pm->addPoint(point->getPoint());
         if (pm->countPoints() == 1) {
-            QEvent *e = new QEvent(QEvent::User);
+            QEvent* e = new QEvent(QEvent::User);
             QApplication::postEvent(pm, e);
             // leave mode
             view->setEditing(false);
@@ -908,20 +898,20 @@ void TaskPostDataAtPoint::on_Field_activated(int i) {
     getTypedView<ViewProviderFemPostObject>()->Field.setValue(i);
     std::string FieldName = ui->Field->currentText().toStdString();
     static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->FieldName.setValue(FieldName);
-    if ((FieldName == "Von Mises stress") || (FieldName == "Max shear stress (Tresca)") || (FieldName == "Maximum Principal stress") || (FieldName == "Minimum Principal stress") || (FieldName == "Median Principal stress") || (FieldName == "Stress vectors")){
-       static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("MPa");
+    if ((FieldName == "Von Mises stress") || (FieldName == "Max shear stress (Tresca)") || (FieldName == "Maximum Principal stress") || (FieldName == "Minimum Principal stress") || (FieldName == "Median Principal stress") || (FieldName == "Stress vectors")) {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("MPa");
     }
-    else if (FieldName == "Displacement"){
-       static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("mm");
+    else if (FieldName == "Displacement") {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("mm");
     }
-    else if (FieldName == "Temperature"){
-       static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("K");
+    else if (FieldName == "Temperature") {
+        static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.setValue("K");
     }
 
-    std::string PointData = " The value at that location is " + std::to_string(static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->PointData[0]) + " " +static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.getValue() + "\n";
+    std::string PointData = " The value at that location is " + std::to_string(static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->PointData[0]) + " " + static_cast<Fem::FemPostDataAtPointFilter*>(getObject())->Unit.getValue() + "\n";
     QMessageBox::information(Gui::getMainWindow(),
-    qApp->translate("CmdFemPostCreateDataAtPointFilter", "Data At Point"),
-    qApp->translate("CmdFemPostCreateDataAtPointFilter", PointData.c_str()));
+        qApp->translate("CmdFemPostCreateDataAtPointFilter", "Data At Point"),
+        qApp->translate("CmdFemPostCreateDataAtPointFilter", PointData.c_str()));
     Base::Console().Error(PointData.c_str());
 }
 
@@ -1002,14 +992,14 @@ void TaskPostScalarClip::on_Scalar_currentIndexChanged(int idx) {
 void TaskPostScalarClip::on_Slider_valueChanged(int v) {
 
     App::PropertyFloatConstraint& value = static_cast<Fem::FemPostScalarClipFilter*>(getObject())->Value;
-    double val = value.getConstraints()->LowerBound * (1-double(v)/100.) + double(v)/100.*value.getConstraints()->UpperBound;
+    double val = value.getConstraints()->LowerBound * (1 - double(v) / 100.) + double(v) / 100. * value.getConstraints()->UpperBound;
 
     value.setValue(val);
     recompute();
 
     //don't forget to sync the spinbox
     ui->Value->blockSignals(true);
-    ui->Value->setValue( val );
+    ui->Value->setValue(val);
     ui->Value->blockSignals(false);
 }
 
@@ -1021,7 +1011,7 @@ void TaskPostScalarClip::on_Value_valueChanged(double v) {
 
     //don't forget to sync the slider
     ui->Slider->blockSignals(true);
-    ui->Slider->setValue(int(((v- value.getConstraints()->LowerBound)/(value.getConstraints()->UpperBound - value.getConstraints()->LowerBound))*100.));
+    ui->Slider->setValue(int(((v - value.getConstraints()->LowerBound) / (value.getConstraints()->UpperBound - value.getConstraints()->LowerBound)) * 100.));
     ui->Slider->blockSignals(false);
 }
 
@@ -1060,10 +1050,10 @@ TaskPostWarpVector::TaskPostWarpVector(ViewProviderDocumentObject* view, QWidget
     // TODO if warp is set to standard 1.0, find a smarter way for standard min, max and warp_factor
     // may be depend on grid boundbox and min max vector values
     ui->Max->blockSignals(true);
-    ui->Max->setValue( warp_factor==0 ? 1 : warp_factor * 10.);
+    ui->Max->setValue(warp_factor == 0 ? 1 : warp_factor * 10.);
     ui->Max->blockSignals(false);
     ui->Min->blockSignals(true);
-    ui->Min->setValue( warp_factor==0 ? 0 : warp_factor / 10.);
+    ui->Min->setValue(warp_factor == 0 ? 0 : warp_factor / 10.);
     ui->Min->blockSignals(false);
 
     // sync slider
@@ -1103,7 +1093,7 @@ void TaskPostWarpVector::on_Slider_valueChanged(int slider_value) {
     // warp_factor = min + ( slider_value x --------------- )
     //                                            100
     //
-    double warp_factor = ui->Min->value() + (( ui->Max->value() - ui->Min->value()) / 100.) * slider_value;
+    double warp_factor = ui->Min->value() + ((ui->Max->value() - ui->Min->value()) / 100.) * slider_value;
     static_cast<Fem::FemPostWarpVectorFilter*>(getObject())->Factor.setValue(warp_factor);
     recompute();
 
@@ -1177,13 +1167,13 @@ void TaskPostWarpVector::on_Min_valueChanged(double) {
 // ***************************************************************************
 // function clip filter
 TaskPostCut::TaskPostCut(ViewProviderDocumentObject* view, App::PropertyLink* function, QWidget* parent)
-    : TaskPostBox(view,Gui::BitmapFactory().pixmap("FEM_PostFilterCutFunction"), tr("Function cut, choose implicit function"), parent) {
+    : TaskPostBox(view, Gui::BitmapFactory().pixmap("FEM_PostFilterCutFunction"), tr("Function cut, choose implicit function"), parent) {
 
     assert(view->isDerivedFrom(ViewProviderFemPostCut::getClassTypeId()));
     assert(function);
     Q_UNUSED(function)
 
-    fwidget = nullptr;
+        fwidget = nullptr;
 
     //we load the views widget
     proxy = new QWidget(this);
@@ -1193,14 +1183,14 @@ TaskPostCut::TaskPostCut(ViewProviderDocumentObject* view, App::PropertyLink* fu
     this->groupLayout()->addWidget(proxy);
 
     //the layout for the container widget
-    QVBoxLayout *layout = new QVBoxLayout();
+    QVBoxLayout* layout = new QVBoxLayout();
     ui->Container->setLayout(layout);
 
     //fill up the combo box with possible functions
     collectImplicitFunctions();
 
     //add the function creation command
-    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
     Gui::Command* cmd = rcCmdMgr.getCommandByName("FEM_PostCreateFunctions");
     if (cmd && cmd->getAction())
         cmd->getAction()->addTo(ui->CreateButton);
@@ -1220,15 +1210,15 @@ void TaskPostCut::collectImplicitFunctions() {
     std::vector<Fem::FemPostPipeline*> pipelines;
     pipelines = App::GetApplication().getActiveDocument()->getObjectsOfType<Fem::FemPostPipeline>();
     if (!pipelines.empty()) {
-        Fem::FemPostPipeline *pipeline = pipelines.front();
-        if(pipeline->Functions.getValue() &&
-           pipeline->Functions.getValue()->getTypeId() == Fem::FemPostFunctionProvider::getClassTypeId()) {
+        Fem::FemPostPipeline* pipeline = pipelines.front();
+        if (pipeline->Functions.getValue() &&
+            pipeline->Functions.getValue()->getTypeId() == Fem::FemPostFunctionProvider::getClassTypeId()) {
 
             ui->FunctionBox->clear();
             QStringList items;
             const std::vector<App::DocumentObject*>& funcs = static_cast<Fem::FemPostFunctionProvider*>(
-                                                            pipeline->Functions.getValue())->Functions.getValues();
-            for(std::size_t i=0; i<funcs.size(); ++i)
+                pipeline->Functions.getValue())->Functions.getValues();
+            for (std::size_t i = 0; i < funcs.size(); ++i)
                 items.push_back(QString::fromLatin1(funcs[i]->getNameInDocument()));
 
             ui->FunctionBox->addItems(items);
@@ -1248,13 +1238,13 @@ void TaskPostCut::on_FunctionBox_currentIndexChanged(int idx) {
     std::vector<Fem::FemPostPipeline*> pipelines;
     pipelines = App::GetApplication().getActiveDocument()->getObjectsOfType<Fem::FemPostPipeline>();
     if (!pipelines.empty()) {
-        Fem::FemPostPipeline *pipeline = pipelines.front();
-        if(pipeline->Functions.getValue() &&
-           pipeline->Functions.getValue()->getTypeId() == Fem::FemPostFunctionProvider::getClassTypeId()) {
+        Fem::FemPostPipeline* pipeline = pipelines.front();
+        if (pipeline->Functions.getValue() &&
+            pipeline->Functions.getValue()->getTypeId() == Fem::FemPostFunctionProvider::getClassTypeId()) {
 
             const std::vector<App::DocumentObject*>& funcs = static_cast<Fem::FemPostFunctionProvider*>(
-                                                            pipeline->Functions.getValue())->Functions.getValues();
-            if(idx>=0)
+                pipeline->Functions.getValue())->Functions.getValues();
+            if (idx >= 0)
                 static_cast<Fem::FemPostCutFilter*>(getObject())->Function.setValue(funcs[idx]);
             else
                 static_cast<Fem::FemPostCutFilter*>(getObject())->Function.setValue(nullptr);
@@ -1263,15 +1253,15 @@ void TaskPostCut::on_FunctionBox_currentIndexChanged(int idx) {
 
     //load the correct view
     Fem::FemPostFunction* fobj = static_cast<Fem::FemPostFunction*>(
-                                    static_cast<Fem::FemPostCutFilter*>(getObject())->Function.getValue());
+        static_cast<Fem::FemPostCutFilter*>(getObject())->Function.getValue());
     Gui::ViewProvider* view = nullptr;
-    if(fobj)
+    if (fobj)
         view = Gui::Application::Instance->activeDocument()->getViewProvider(fobj);
 
-    if(fwidget)
+    if (fwidget)
         fwidget->deleteLater();
 
-    if(view) {
+    if (view) {
         fwidget = static_cast<FemGui::ViewProviderFemPostFunction*>(view)->createControlWidget();
         fwidget->setParent(ui->Container);
         fwidget->setViewProvider(static_cast<FemGui::ViewProviderFemPostFunction*>(view));
