@@ -36,7 +36,7 @@ class VisualInspection : public QDialog
     Q_OBJECT
 
 public:
-    VisualInspection(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+    VisualInspection(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
   ~ VisualInspection();
 
     void accept();

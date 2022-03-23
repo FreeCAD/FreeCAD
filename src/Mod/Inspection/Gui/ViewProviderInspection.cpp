@@ -394,7 +394,7 @@ namespace InspectionGui {
 class ViewProviderProxyObject : public QObject
 {
 public:
-    ViewProviderProxyObject(QWidget* w) : QObject(0), widget(w) {}
+    ViewProviderProxyObject(QWidget* w) : QObject(nullptr), widget(w) {}
     ~ViewProviderProxyObject() {}
     void customEvent(QEvent *)
     {
@@ -424,7 +424,7 @@ public:
         flag->setPalette(p);
         flag->setText(text);
         flag->setOrigin(point->getPoint());
-        Gui::GLFlagWindow* flags = 0;
+        Gui::GLFlagWindow* flags = nullptr;
         std::list<Gui::GLGraphicsItem*> glItems = view->getGraphicsItemsOfType(Gui::GLFlagWindow::getClassTypeId());
         if (glItems.empty()) {
             flags = new Gui::GLFlagWindow(view);
@@ -479,7 +479,7 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
         }
         else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {
             const SoPickedPoint * point = n->getPickedPoint();
-            if (point == NULL) {
+            if (point == nullptr) {
                 Base::Console().Message("No point picked.\n");
                 return;
             }

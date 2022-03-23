@@ -45,12 +45,12 @@ class SingleSelectionItem : public QTreeWidgetItem
 {
 public:
     SingleSelectionItem (QTreeWidget* parent)
-        : QTreeWidgetItem(parent), _compItem(0)
+        : QTreeWidgetItem(parent), _compItem(nullptr)
     {
     }
 
     SingleSelectionItem (QTreeWidgetItem* parent)
-        : QTreeWidgetItem (parent), _compItem(0)
+        : QTreeWidgetItem (parent), _compItem(nullptr)
     {
     }
 
@@ -209,7 +209,7 @@ void VisualInspection::onActivateItem(QTreeWidgetItem* item)
 
 void VisualInspection::accept()
 {
-    onActivateItem(0);
+    onActivateItem(nullptr);
     if (buttonOk->isEnabled()) {
         QDialog::accept();
         saveSettings();
