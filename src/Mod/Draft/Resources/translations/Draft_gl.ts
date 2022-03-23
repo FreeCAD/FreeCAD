@@ -210,7 +210,7 @@ This property is read-only, as the number depends on the parameters of the array
     <message>
       <location filename="pathtwistedarray.py" line="100"/>
       <source>Number of copies to create.</source>
-      <translation type="unfinished">Number of copies to create.</translation>
+      <translation>Número de copias a facer.</translation>
     </message>
     <message>
       <location filename="pathtwistedarray.py" line="107"/>
@@ -723,11 +723,6 @@ This property is read-only, as the number depends on the points contained within
       <translation type="unfinished">Area of this object</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>A forma desde obxecto</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation type="unfinished">The base object used by this object</translation>
@@ -736,6 +731,11 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
       <translation type="unfinished">The PAT file used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>A forma desde obxecto</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>

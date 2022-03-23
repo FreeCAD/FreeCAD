@@ -722,11 +722,6 @@ This property is read-only, as the number depends on the points contained within
       <translation type="unfinished">Area of this object</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>La forma d'aquest objecte</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation type="unfinished">The base object used by this object</translation>
@@ -735,6 +730,11 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
       <translation type="unfinished">The PAT file used by this object</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>La forma d'aquest objecte</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>

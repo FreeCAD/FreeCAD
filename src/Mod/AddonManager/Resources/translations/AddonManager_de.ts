@@ -62,7 +62,7 @@
     <message>
       <location filename="package_details.py" line="126"/>
       <source>Update available to version</source>
-      <translation>Aktualisierung verfügbar auf Version</translation>
+      <translation>Update verfügbar für Version</translation>
     </message>
     <message>
       <location filename="package_details.py" line="144"/>
@@ -515,7 +515,8 @@
     <message>
       <location filename="addonmanager_workers.py" line="763"/>
       <source>Workbench successfully updated. Please restart FreeCAD to apply the changes.</source>
-      <translation>Arbeitsbreich erfolgreich aktualisiert. Bitte starten Sie FreeCAD neu, um die Änderungen zu übernehmen.</translation>
+      <translation>Arbeitsbereich erfolgreich aktualisiert.
+Bitte FreeCAD neu starten, um die Änderungen zu übernehmen.</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="771"/>
@@ -1109,7 +1110,9 @@
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates
 (this requires the GitPython package installed on your system)</source>
-      <translation>Wenn diese Option ausgewählt ist, werden installierte Addons beim Starten des Addon-Manager auf verfügbare Updates überprüft. (Das GitPython Paket muss dazu auf ihrem System installiert sein)</translation>
+      <translation>Wenn beim Starten des Addon-Managers diese Option ausgewählt ist,
+werden die installierten Addons auf verfügbare Updates überprüft.
+(Dazu muss das GitPython Paket auf dem System installiert sein)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="25"/>

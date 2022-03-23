@@ -714,16 +714,6 @@
       <translation>Выражение, используемое для StepDown (шага по глубине) новых операций.</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="71"/>
-      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
-      <translation>Направление движения инструмента по Часовой (CW) или Против часовой стрелки (CCW)</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="72"/>
-      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
-      <translation>Дополнительное смещение применяется к операции. Направление зависит от операции.</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="73"/>
       <source>Start pocketing at center or boundary</source>
       <translation>Начинать обработку кармана из центра или от границ</translation>
@@ -732,6 +722,16 @@
       <location filename="PathPocketBase.py" line="74"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>Процент диаметра фрезы для шага на каждом проходе</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="71"/>
+      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
+      <translation>Направление движения инструмента по Часовой (CW) или Против часовой стрелки (CCW)</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="72"/>
+      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
+      <translation>Дополнительное смещение применяется к операции. Направление зависит от операции.</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="75"/>
@@ -836,12 +836,12 @@
     <message>
       <location filename="PathArray.py" line="60"/>
       <source>Percent of copies to randomly offset</source>
-      <translation type="unfinished">Percent of copies to randomly offset</translation>
+      <translation>Процент копий для случайного смещения</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="62"/>
       <source>Maximum random offset of copies</source>
-      <translation type="unfinished">Maximum random offset of copies</translation>
+      <translation>Максимальное случайное смещение копий</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="169"/>
@@ -1284,12 +1284,12 @@
     <message>
       <location filename="PathJobGui.py" line="628"/>
       <source>Feed(H)</source>
-      <translation type="unfinished">Feed(H)</translation>
+      <translation>Подача (H)</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="632"/>
       <source>Feed(V)</source>
-      <translation type="unfinished">Feed(V)</translation>
+      <translation>Подача (V)</translation>
     </message>
     <message>
       <location filename="PathToolBitGui.py" line="204"/>
@@ -1495,7 +1495,7 @@
     <message>
       <location filename="PathDeburr.py" line="190"/>
       <source>Miter</source>
-      <translation type="unfinished">Miter</translation>
+      <translation>Срез</translation>
     </message>
     <message>
       <location filename="PathDeburrGui.py" line="125"/>
@@ -1570,6 +1570,16 @@
   <context>
     <name>PathJob</name>
     <message>
+      <location filename="PathJobGui.py" line="1258"/>
+      <source>Unsupported stock object %s</source>
+      <translation>Неподдерживаемый объект заготовки %s</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1274"/>
+      <source>Unsupported stock type %s (%d)</source>
+      <translation>Неподдерживаемый тип заготовки %s (%d)</translation>
+    </message>
+    <message>
       <location filename="PathJobGui.py" line="387"/>
       <source>Stock not from Base bound box!</source>
       <translation>Заготовка не из базового ограничивающего объёма!</translation>
@@ -1583,16 +1593,6 @@
       <location filename="PathJobGui.py" line="525"/>
       <source>Stock not a cylinder!</source>
       <translation>Заготовка не цилиндр!</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1258"/>
-      <source>Unsupported stock object %s</source>
-      <translation>Неподдерживаемый объект заготовки %s</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1274"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>Неподдерживаемый тип заготовки %s (%d)</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="112"/>
@@ -1738,15 +1738,15 @@
       <translation>Базовое Расположение</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>Высоты</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="848"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>ФинальнаяВысота не может быть изменена для этой операции. Если необходимо вручную установленная ФинальнаяВысота, пожалуйста, выберите другую операцию.</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="855"/>
-      <source>Heights</source>
-      <translation>Высоты</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="869"/>
@@ -2012,12 +2012,12 @@ Aborting op creation</source>
     <message>
       <location filename="PathProfile.py" line="200"/>
       <source>Collectively</source>
-      <translation type="unfinished">Collectively</translation>
+      <translation>Совместно</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="201"/>
       <source>Individually</source>
-      <translation type="unfinished">Individually</translation>
+      <translation>Индивидуально</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="204"/>
@@ -2032,7 +2032,7 @@ Aborting op creation</source>
     <message>
       <location filename="PathProfile.py" line="206"/>
       <source>Miter</source>
-      <translation type="unfinished">Miter</translation>
+      <translation>Срез</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="479"/>
@@ -2581,7 +2581,7 @@ Aborting op creation</source>
     <message>
       <location filename="PathAdaptive.py" line="923"/>
       <source>Profiling</source>
-      <translation type="unfinished">Profiling</translation>
+      <translation>Профилирование</translation>
     </message>
     <message>
       <location filename="PathAdaptiveGui.py" line="255"/>
@@ -2991,17 +2991,17 @@ Aborting op creation</source>
     <message>
       <location filename="PathDressupRampEntry.py" line="140"/>
       <source>Horizontal Feed Rate</source>
-      <translation type="unfinished">Horizontal Feed Rate</translation>
+      <translation>Скорость горизонтальной подачи</translation>
     </message>
     <message>
       <location filename="PathDressupRampEntry.py" line="144"/>
       <source>Vertical Feed Rate</source>
-      <translation type="unfinished">Vertical Feed Rate</translation>
+      <translation>Скорость вертикальной подачи</translation>
     </message>
     <message>
       <location filename="PathDressupRampEntry.py" line="148"/>
       <source>Ramp Feed Rate</source>
-      <translation type="unfinished">Ramp Feed Rate</translation>
+      <translation>Скорость линейной подачи</translation>
     </message>
     <message>
       <location filename="PathDressupRampEntry.py" line="151"/>
@@ -3394,6 +3394,36 @@ Aborting op creation</source>
       <translation>Создать Задание</translation>
     </message>
     <message>
+      <location filename="PathJobGui.py" line="1595"/>
+      <source>Warning</source>
+      <translation>Внимание</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1596"/>
+      <source>Please add one.</source>
+      <translation type="unfinished">Please add one.</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1597"/>
+      <source>Ok</source>
+      <translation>Да</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1599"/>
+      <source>Add</source>
+      <translation>Добавить</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1610"/>
+      <source>This job has no base model.</source>
+      <translation type="unfinished">This job has no base model.</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1617"/>
+      <source>This job has no tool.</source>
+      <translation type="unfinished">This job has no tool.</translation>
+    </message>
+    <message>
       <location filename="PathJob.py" line="257"/>
       <source>Fixture</source>
       <translation>Крепление</translation>
@@ -3421,12 +3451,12 @@ Aborting op creation</source>
     <message>
       <location filename="PathJob.py" line="264"/>
       <source>Lathe</source>
-      <translation type="unfinished">Lathe</translation>
+      <translation>Токарный станок</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="265"/>
       <source>Multiaxis</source>
-      <translation type="unfinished">Multiaxis</translation>
+      <translation>Многоосный</translation>
     </message>
     <message>
       <location filename="PathJobDlg.py" line="63"/>
@@ -3503,7 +3533,7 @@ Aborting op creation</source>
     <message>
       <location filename="PathOp.py" line="372"/>
       <source>Mist</source>
-      <translation type="unfinished">Mist</translation>
+      <translation>Туман</translation>
     </message>
   </context>
   <context>
@@ -3539,12 +3569,12 @@ Aborting op creation</source>
     <message>
       <location filename="PathPocket.py" line="120"/>
       <source>Collectively</source>
-      <translation type="unfinished">Collectively</translation>
+      <translation>Совместно</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="121"/>
       <source>Individually</source>
-      <translation type="unfinished">Individually</translation>
+      <translation>Индивидуально</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="61"/>
@@ -3763,12 +3793,12 @@ Aborting op creation</source>
     <message>
       <location filename="PathSanity.py" line="231"/>
       <source>Customer</source>
-      <translation type="unfinished">Customer</translation>
+      <translation>Клиент</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="233"/>
       <source>Designer</source>
-      <translation type="unfinished">Designer</translation>
+      <translation>Дизайнер</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="291"/>
@@ -4271,12 +4301,12 @@ Aborting op creation</source>
     <message>
       <location filename="PathSurface.py" line="482"/>
       <source>Collectively</source>
-      <translation type="unfinished">Collectively</translation>
+      <translation>Совместно</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="483"/>
       <source>Individually</source>
-      <translation type="unfinished">Individually</translation>
+      <translation>Индивидуально</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="486"/>
@@ -4773,12 +4803,12 @@ Aborting op creation</source>
     <message>
       <location filename="PathWaterline.py" line="134"/>
       <source>Collectively</source>
-      <translation type="unfinished">Collectively</translation>
+      <translation>Совместно</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="135"/>
       <source>Individually</source>
-      <translation type="unfinished">Individually</translation>
+      <translation>Индивидуально</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="138"/>

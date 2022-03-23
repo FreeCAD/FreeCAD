@@ -4496,6 +4496,11 @@ Wenn Länge = 0 dann wird der Länge so berechnet, dass die Höhe gleich dem rel
     </message>
     <message>
       <location filename="ArchRebar.py" line="108"/>
+      <source>Creates a Reinforcement bar from the selected face of solid object and/or a sketch</source>
+      <translation type="unfinished">Creates a Reinforcement bar from the selected face of solid object and/or a sketch</translation>
+    </message>
+    <message>
+      <location filename="ArchRebar.py" line="108"/>
       <source>Creates a Reinforcement bar from the selected face of a structural object</source>
       <translation>Erzeugt einen Bewehrungsstab basierend auf der markierten Fläche eines Strukturobjektes</translation>
     </message>

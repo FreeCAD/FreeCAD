@@ -716,11 +716,6 @@ This property is read-only, as the number depends on the points contained within
       <translation>ობიექტის ფართობი</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>ობიექტის ფორმა</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>ამ ობიექტის მიერ გამოყენებული საბაზისო ობიექტი</translation>
@@ -729,6 +724,11 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
       <translation>ამ ობიექტის მიერ გამოყენებული PAT ფაილი</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>ობიექტის ფორმა</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>
@@ -1206,7 +1206,7 @@ beyond the dimension line</source>
     <message>
       <location filename="pointarray.py" line="305"/>
       <source>Point object doesn't have a discrete point, it cannot be used for an array.</source>
-      <translation type="unfinished">Point object doesn't have a discrete point, it cannot be used for an array.</translation>
+      <translation>წერტილის ობიექტს არ გააჩნია წყვეტილი წერტილი. მისი გამოყენება მასივად შეუძლებელია.</translation>
     </message>
     <message>
       <location filename="bspline.py" line="106"/>
@@ -4338,7 +4338,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="utils.py" line="827"/>
       <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
-      <translation type="unfinished">%s shares a base with %d other objects. Please check if you want to modify this.</translation>
+      <translation>%s-ს აქვს ზიარი ბაზა %d სხვა ობიექტთან. ჩასასწორებლად ჩართეთ ეს.</translation>
     </message>
     <message>
       <location filename="utils.py" line="833"/>
@@ -7556,7 +7556,7 @@ from the Addon Manager.</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="101"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
-      <translation>FreeCAD-თვის DXF ბიბლიოთეკების ავტომატური გადმოწერის და განახლების უფლების მიცემა</translation>
+      <translation>FreeCAD-სთვის DXF ბიბლიოთეკების ავტომატური გადმოწერის და განახლების უფლების მიცემა</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="119"/>

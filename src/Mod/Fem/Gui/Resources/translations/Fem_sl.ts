@@ -1054,7 +1054,7 @@
     <message>
       <location filename="../../Command.cpp" line="1253"/>
       <source>Define/create a clip filter which uses functions to define the cliped region</source>
-      <translation>Določi/ustvari sito obrezave, ki uporablja zmožnosti za določanje obrezananega območja</translation>
+      <translation>Določi/ustvari izrezno sito, ki za določanje izreznega območja uporablja funkcije</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1534"/>
@@ -1090,7 +1090,7 @@
     <message>
       <location filename="../../Command.cpp" line="1279"/>
       <source>Cut the data along an implicit function</source>
-      <translation type="unfinished">Cut the data along an implicit function</translation>
+      <translation>Poreži podatke po implicitni (sovsebni) funkciji</translation>
     </message>
   </context>
   <context>
@@ -1108,7 +1108,7 @@
     <message>
       <location filename="../../Command.cpp" line="1305"/>
       <source>Define/create a clip filter which clips a field along a line</source>
-      <translation>Določi/ustvari porezavno sito, ki poreže polje vzdolž črte</translation>
+      <translation>Določi/ustvari izrezno sito, ki prereže polje vzdolž črte</translation>
     </message>
   </context>
   <context>
@@ -1126,7 +1126,7 @@
     <message>
       <location filename="../../Command.cpp" line="1331"/>
       <source>Define/create a clip filter which clips a field data at point</source>
-      <translation type="unfinished">Define/create a clip filter which clips a field data at point</translation>
+      <translation>Določi/ustvari izrezno sito, ki prereže podatke polja v točki</translation>
     </message>
   </context>
   <context>
@@ -1230,7 +1230,7 @@
     <message>
       <location filename="../../Command.cpp" line="1416"/>
       <source>Define/create a clip filter which clips a field with a scalar value</source>
-      <translation type="unfinished">Define/create a clip filter which clips a field with a scalar value</translation>
+      <translation>Določi/ustvari izrezno sito, ki prereže polje s skalarno vrednostjo</translation>
     </message>
   </context>
   <context>

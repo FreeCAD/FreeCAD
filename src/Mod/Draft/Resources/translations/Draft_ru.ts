@@ -719,11 +719,6 @@ This property is read-only, as the number depends on the points contained within
       <translation>Площадь объекта</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Форма этого объекта</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>Базовый объект, используется данным объектом</translation>
@@ -732,6 +727,11 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
       <translation>PAT-файл, используется данным объектом</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Форма этого объекта</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>
@@ -1044,9 +1044,9 @@ Write '$dim' so that it is replaced by the dimension length.</source>
       <source>A unit to express the measurement.
 Leave blank for system default.
 Use 'arch' to force US arch notation</source>
-      <translation type="unfinished">A unit to express the measurement.
-Leave blank for system default.
-Use 'arch' to force US arch notation</translation>
+      <translation>Единица измерения.
+Оставьте пустым для системы по умолчанию.
+Используйте 'arch' для обозначения архитектурной США</translation>
     </message>
     <message>
       <location filename="view_dimension.py" line="230"/>
@@ -1093,7 +1093,7 @@ beyond the dimension line</source>
     <message>
       <location filename="view_layer.py" line="77"/>
       <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
-      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape color of the layer</translation>
+      <translation>Если истина, объекты данного слоя будут иметь цвет фигур слоя</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="88"/>
@@ -1108,7 +1108,7 @@ beyond the dimension line</source>
     <message>
       <location filename="view_layer.py" line="116"/>
       <source>The shape color of the objects contained within this layer</source>
-      <translation type="unfinished">The shape color of the objects contained within this layer</translation>
+      <translation>Цвет фигур объектов этого слоя</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="130"/>
@@ -1148,7 +1148,7 @@ beyond the dimension line</source>
     <message>
       <location filename="view_base.py" line="116"/>
       <source>Defines the size of the SVG pattern.</source>
-      <translation type="unfinished">Defines the size of the SVG pattern.</translation>
+      <translation>Определяет размер SVG шаблона.</translation>
     </message>
     <message>
       <location filename="view_label.py" line="73"/>
@@ -1206,12 +1206,12 @@ beyond the dimension line</source>
     <message>
       <location filename="pointarray.py" line="305"/>
       <source>Point object doesn't have a discrete point, it cannot be used for an array.</source>
-      <translation type="unfinished">Point object doesn't have a discrete point, it cannot be used for an array.</translation>
+      <translation>Выбранный объект не имеет дискретной точки, он не может быть использован для массива.</translation>
     </message>
     <message>
       <location filename="bspline.py" line="106"/>
       <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</source>
-      <translation type="unfinished">_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</translation>
+      <translation>_BSpline.createGeometry: Замкнут с той же первой/последней точкой. Геометрия не обновлена.</translation>
     </message>
     <message>
       <location filename="view_wpproxy.py" line="102"/>
@@ -1221,7 +1221,7 @@ beyond the dimension line</source>
     <message>
       <location filename="view_wpproxy.py" line="119"/>
       <source>Writing objects shown/hidden state</source>
-      <translation type="unfinished">Writing objects shown/hidden state</translation>
+      <translation>Запись состояния объектов показан/скрыт</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="107"/>
@@ -1393,7 +1393,7 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="gui_offset.py" line="329"/>
       <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
-      <translation type="unfinished">Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</translation>
+      <translation>Направление смещения не определено. Пожалуйста, сначала переместите мышку в любую сторону от объекта, чтобы указать направление</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="48"/>
@@ -1448,7 +1448,7 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="gui_arrays.py" line="68"/>
       <source>Create various types of arrays, including rectangular, polar, circular, path, and point</source>
-      <translation type="unfinished">Create various types of arrays, including rectangular, polar, circular, path, and point</translation>
+      <translation>Создать различные типы массивов, включая прямоугольный, полярный, круговой, по пути и по точкам</translation>
     </message>
     <message>
       <location filename="gui_circulararray.py" line="66"/>
@@ -1461,10 +1461,10 @@ from menu Tools -&gt; Addon Manager</source>
 creating various circular layers.
 
 The array can be turned into an orthogonal or a polar array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in a radial pattern
-creating various circular layers.
+      <translation>Создает копии выбранного объекта, и размещает копии в радиальном шаблоне
+создавая различные круглые слои.
 
-The array can be turned into an orthogonal or a polar array by changing its type.</translation>
+Массив может быть преобразован в ортогональный или полярный массив, изменяя его тип.</translation>
     </message>
     <message>
       <location filename="gui_polararray.py" line="66"/>
@@ -1493,10 +1493,10 @@ The array can be turned into an orthogonal or a circular array by changing its t
 meaning the copies follow the specified direction in the X, Y, Z axes.
 
 The array can be turned into a polar or a circular array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in an orthogonal pattern,
-meaning the copies follow the specified direction in the X, Y, Z axes.
+      <translation>Создает копии выбранного объекта и размещает копии в ортогональном шаблоне,
+означает копии следуют указанному направлению в осях X, Y, Z.
 
-The array can be turned into a polar or a circular array by changing its type.</translation>
+Массив может быть преобразован в полярный или круговой массив путем изменения его типа.</translation>
     </message>
     <message>
       <location filename="gui_utils.py" line="154"/>
@@ -1600,7 +1600,7 @@ Create a group first to use this tool.</source>
     <message>
       <location filename="gui_styles.py" line="50"/>
       <source>Applies the current style defined in the toolbar (line width and colors) to the selected objects and groups.</source>
-      <translation type="unfinished">Applies the current style defined in the toolbar (line width and colors) to the selected objects and groups.</translation>
+      <translation>Применяет текущий стиль, определенный на панели инструментов (ширина и цвета) к выбранным объектам и группам.</translation>
     </message>
   </context>
   <context>
@@ -1658,10 +1658,10 @@ CTRL для привязки, SHIFT для ограничения.</translation>
 By default, it is a 2x2 orthogonal array.
 Once the array is created its type can be changed
 to polar or circular, and its properties can be modified.</source>
-      <translation type="unfinished">Creates an array from a selected object.
-By default, it is a 2x2 orthogonal array.
-Once the array is created its type can be changed
-to polar or circular, and its properties can be modified.</translation>
+      <translation>Создает массив из выбранного объекта.
+По умолчанию это ортогональный массив 2x2.
+После создания массива его тип может быть изменен
+на полярный или круговой, и его свойства могут быть изменены.</translation>
     </message>
     <message>
       <location filename="gui_orthoarray.py" line="68"/>
@@ -1669,10 +1669,10 @@ to polar or circular, and its properties can be modified.</translation>
 meaning the copies follow the specified direction in the X, Y, Z axes.
 
 The array can be turned into a polar or a circular array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in an orthogonal pattern,
-meaning the copies follow the specified direction in the X, Y, Z axes.
+      <translation>Создает копии выбранного объекта и размещает копии в ортогональном шаблоне,
+означает копии следуют указанному направлению в осях X, Y, Z.
 
-The array can be turned into a polar or a circular array by changing its type.</translation>
+Массив может быть преобразован в полярный или круговой массив путем изменения его типа.</translation>
     </message>
   </context>
   <context>
@@ -1685,7 +1685,7 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="gui_arrays.py" line="68"/>
       <source>Create various types of arrays, including rectangular, polar, circular, path, and point</source>
-      <translation type="unfinished">Create various types of arrays, including rectangular, polar, circular, path, and point</translation>
+      <translation>Создать различные типы массивов, включая прямоугольный, полярный, круговой, по пути и по точкам</translation>
     </message>
   </context>
   <context>
@@ -1698,7 +1698,7 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="gui_groups.py" line="266"/>
       <source>Select a group to add all Draft and Arch objects to.</source>
-      <translation type="unfinished">Select a group to add all Draft and Arch objects to.</translation>
+      <translation>Выберите группу к которой добавить все объекты типа Эскиз и Архитектурный.</translation>
     </message>
   </context>
   <context>
@@ -1711,7 +1711,7 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="gui_splines.py" line="63"/>
       <source>Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Создает многоточечный В-сплайн. CTRL - привязать, SHIFT - ограничить.</translation>
     </message>
   </context>
   <context>
@@ -1756,7 +1756,7 @@ CTRL для привязки, SHIFT для ограничения.</translation>
     <message>
       <location filename="gui_beziers.py" line="478"/>
       <source>Create various types of BÃ©zier curves.</source>
-      <translation type="unfinished">Create various types of BÃ©zier curves.</translation>
+      <translation>Создать различные типы кривых Безье.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="478"/>
@@ -1791,10 +1791,10 @@ CTRL to snap, ALT to select tangent objects.</source>
 creating various circular layers.
 
 The array can be turned into an orthogonal or a polar array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in a radial pattern
-creating various circular layers.
+      <translation>Создает копии выбранного объекта, и размещает копии в радиальном шаблоне
+создавая различные круглые слои.
 
-The array can be turned into an orthogonal or a polar array by changing its type.</translation>
+Массив может быть преобразован в ортогональный или полярный массив, изменяя его тип.</translation>
     </message>
   </context>
   <context>
@@ -1808,8 +1808,8 @@ The array can be turned into an orthogonal or a polar array by changing its type
       <location filename="gui_clone.py" line="73"/>
       <source>Creates a clone of the selected objects.
 The resulting clone can be scaled in each of its three directions.</source>
-      <translation type="unfinished">Creates a clone of the selected objects.
-The resulting clone can be scaled in each of its three directions.</translation>
+      <translation>Создаёт клон выбранных объектов.
+Результирующий клон можно масштабировать в каждом из трех направлений.</translation>
     </message>
   </context>
   <context>
@@ -1829,18 +1829,18 @@ The resulting clone can be scaled in each of its three directions.</translation>
       <source>Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a BÃ©zier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
-After the curve is created you can go back to edit each control point and set the properties of each knot.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Создает кривую Безье из 2-й степени (квадратичных) и 3-й степени (кубических) сегментов. Нажмите и перетащите для определения каждого сегмента.
+После создания кривой вы можете вернуться к редактированию каждой контрольной точки и задать свойства каждого узла.
+CTRL для привязки, SHIFT для ограничения.</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="245"/>
       <source>Creates a Bezier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a Bezier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
-After the curve is created you can go back to edit each control point and set the properties of each knot.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Создает кривую Безье из 2-й степени (квадратичных) и 3-й степени (кубических) сегментов. Нажмите и перетащите для определения каждого сегмента.
+После создания кривой вы можете вернуться к редактированию каждой контрольной точки и задать свойства каждого узла.
+CTRL для привязки, SHIFT для ограничения.</translation>
     </message>
   </context>
   <context>
@@ -1877,18 +1877,17 @@ You may select a single line or single circular arc before launching this comman
 to create the corresponding linked dimension.
 You may also select an 'App::MeasureDistance' object before launching this command
 to turn it into a 'Draft Dimension' object.</source>
-      <translation type="unfinished">Creates a dimension.
+      <translation>Создать размер.
 
-- Pick three points to create a simple linear dimension.
-- Select a straight line to create a linear dimension linked to that line.
-- Select an arc or circle to create a radius or diameter dimension linked to that arc.
-- Select two straight lines to create an angular dimension between them.
-CTRL to snap, SHIFT to constrain, ALT to select an edge or arc.
+- Выберите три точки, чтобы создать простой линейный размер.
+- Выберите прямую линию для создания линейного размера, связанного с этой линией.
+- Выберите дугу или круг, чтобы создать радиус или размер диаметра, связанный с этой дугой.
+- Выберите две прямые линии, чтобы создать угловой размер между ними.
+CTRL для привязки, SHIFT для ограничения, ALT для выбора ребра или дуги.
 
-You may select a single line or single circular arc before launching this command
-to create the corresponding linked dimension.
-You may also select an 'App::MeasureDistance' object before launching this command
-to turn it into a 'Draft Dimension' object.</translation>
+Вы можете выбрать одну линию или одну круговую дугу перед запуском этой команды
+для создания соответствующего связанного измерения.
+Вы также можете выбрать объект 'App::MeasureDistance' перед запуском этой команды чтобы превратить его в объект 'Эскизный размер'.</translation>
     </message>
   </context>
   <context>
@@ -2195,10 +2194,10 @@ CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each 
 meaning the copies follow the specified direction in the X, Y, Z axes.
 
 The array can be turned into a polar or a circular array by changing its type.</source>
-      <translation type="unfinished">Creates copies of the selected object, and places the copies in an orthogonal pattern,
-meaning the copies follow the specified direction in the X, Y, Z axes.
+      <translation>Создает копии выбранного объекта и размещает копии в ортогональном шаблоне,
+означает копии следуют указанному направлению в осях X, Y, Z.
 
-The array can be turned into a polar or a circular array by changing its type.</translation>
+Массив может быть преобразован в полярный или круговой массив путем изменения его типа.</translation>
     </message>
   </context>
   <context>

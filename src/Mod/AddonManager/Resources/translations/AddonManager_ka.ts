@@ -415,7 +415,7 @@
     <message>
       <location filename="addonmanager_workers.py" line="429"/>
       <source>git fetch failed for {wb.name}</source>
-      <translation>git fetch-ის შეცდომა {wb.name}-თვის</translation>
+      <translation>git fetch-ის შეცდომა {wb.name}-სთვის</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="433"/>
@@ -430,7 +430,7 @@
     <message>
       <location filename="addonmanager_workers.py" line="439"/>
       <source>git pull failed for {wb.name}</source>
-      <translation>git pull-ის შეცდომა {wb.name}-თვის</translation>
+      <translation>git pull-ის შეცდომა {wb.name}-სთვის</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="514"/>

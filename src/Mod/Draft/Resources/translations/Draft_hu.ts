@@ -721,11 +721,6 @@ Ez a tulajdonság csak olvasható, mert a szám a 'Pont tárgy' pontjaitól füg
       <translation>A tárgy területe</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Ennek a tárgynak az alakja</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>A tárgy által használt elsődleges tárgy</translation>
@@ -734,6 +729,11 @@ Ez a tulajdonság csak olvasható, mert a szám a 'Pont tárgy' pontjaitól füg
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
       <translation>A tárgy által használt PAT-fájl</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Ennek a tárgynak az alakja</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>

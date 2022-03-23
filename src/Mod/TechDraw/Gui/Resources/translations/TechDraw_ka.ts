@@ -252,7 +252,7 @@
     </message>
     <message>
       <source>Insert a View of a Section Plane from Arch Workbench</source>
-      <translation type="unfinished">Insert a View of a Section Plane from Arch Workbench</translation>
+      <translation>Arch სამუშაო მაგიდიდან სიბრტყის კვეთის ხედის ჩასმა</translation>
     </message>
   </context>
   <context>
@@ -733,7 +733,7 @@
     </message>
     <message>
       <source>Insert multiple linked views of drawable object(s)</source>
-      <translation type="unfinished">Insert multiple linked views of drawable object(s)</translation>
+      <translation>ნახაზის ობიექტების მიბმული ხედების ჩასმა</translation>
     </message>
   </context>
   <context>
@@ -2670,7 +2670,7 @@ for ProjectionGroups</translation>
     </message>
     <message>
       <source>Starting directory for menu &apos;Insert Page using Template&apos;</source>
-      <translation type="unfinished">Starting directory for menu &apos;Insert Page using Template&apos;</translation>
+      <translation>მენიუს საწყისი საქაღალდე &apos; გვერდის შაბლონით ჩასმა&apos;</translation>
     </message>
     <message>
       <source>Hatch Pattern File</source>
@@ -4243,14 +4243,14 @@ using the given X/Y Spacing</translation>
     <name>TechDraw_Midpoints</name>
     <message>
       <source>Inserts Cosmetic Vertices at Midpoint of selected Edges</source>
-      <translation type="unfinished">Inserts Cosmetic Vertices at Midpoint of selected Edges</translation>
+      <translation>მონიშნული წიბოების შუა წერტილებში კოსმეტიკური წვეროების ჩასმა</translation>
     </message>
   </context>
   <context>
     <name>TechDraw_Quadrants</name>
     <message>
       <source>Inserts Cosmetic Vertices at Quadrant Points of selected Circles</source>
-      <translation type="unfinished">Inserts Cosmetic Vertices at Quadrant Points of selected Circles</translation>
+      <translation>მონიშნული წრეწირების მაქსიმალურად დაშორებულ წერტილებში დამხმარე წვეროების ჩასმა</translation>
     </message>
   </context>
   <context>

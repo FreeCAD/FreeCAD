@@ -714,16 +714,6 @@
       <translation type="unfinished">Expression used for StepDown of new operations.</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="71"/>
-      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
-      <translation>工具路径应以顺时针或逆时针方向缠绕零件</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="72"/>
-      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
-      <translation>要应用于操作的额外偏移量。方向与操作相关。</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="73"/>
       <source>Start pocketing at center or boundary</source>
       <translation>在中心或边界开始隐藏</translation>
@@ -732,6 +722,16 @@
       <location filename="PathPocketBase.py" line="74"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>路径彼此相对于刀具直径重叠率</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="71"/>
+      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
+      <translation>工具路径应以顺时针或逆时针方向缠绕零件</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="72"/>
+      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
+      <translation>要应用于操作的额外偏移量。方向与操作相关。</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="75"/>
@@ -1570,6 +1570,16 @@
   <context>
     <name>PathJob</name>
     <message>
+      <location filename="PathJobGui.py" line="1258"/>
+      <source>Unsupported stock object %s</source>
+      <translation>不受支持的工件对象%s</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1274"/>
+      <source>Unsupported stock type %s (%d)</source>
+      <translation>不支持的工件类型 %s (%d)</translation>
+    </message>
+    <message>
       <location filename="PathJobGui.py" line="387"/>
       <source>Stock not from Base bound box!</source>
       <translation>工件不是来自于基础物件外框!</translation>
@@ -1583,16 +1593,6 @@
       <location filename="PathJobGui.py" line="525"/>
       <source>Stock not a cylinder!</source>
       <translation>工件不是一个圆柱体!</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1258"/>
-      <source>Unsupported stock object %s</source>
-      <translation>不受支持的工件对象%s</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1274"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>不支持的工件类型 %s (%d)</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="112"/>
@@ -1738,15 +1738,15 @@
       <translation>基位置</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>高度</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="848"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>无法为该操作修改终止深度。如果需要手动设置终止深度, 请选择其他操作。</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="855"/>
-      <source>Heights</source>
-      <translation>高度</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="869"/>
@@ -3392,6 +3392,36 @@ Aborting op creation</translation>
       <location filename="PathJobGui.py" line="1559"/>
       <source>Create Job</source>
       <translation>创建作业</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1595"/>
+      <source>Warning</source>
+      <translation type="unfinished">Warning</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1596"/>
+      <source>Please add one.</source>
+      <translation type="unfinished">Please add one.</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1597"/>
+      <source>Ok</source>
+      <translation>确认</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1599"/>
+      <source>Add</source>
+      <translation>添加</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1610"/>
+      <source>This job has no base model.</source>
+      <translation type="unfinished">This job has no base model.</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1617"/>
+      <source>This job has no tool.</source>
+      <translation type="unfinished">This job has no tool.</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="257"/>

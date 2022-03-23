@@ -4495,6 +4495,11 @@ Als uitvoering = 0 dan is de uitvoering zo berekend dat de hoogte hetzelfde is a
     </message>
     <message>
       <location filename="ArchRebar.py" line="108"/>
+      <source>Creates a Reinforcement bar from the selected face of solid object and/or a sketch</source>
+      <translation type="unfinished">Creates a Reinforcement bar from the selected face of solid object and/or a sketch</translation>
+    </message>
+    <message>
+      <location filename="ArchRebar.py" line="108"/>
       <source>Creates a Reinforcement bar from the selected face of a structural object</source>
       <translation>Maakt een Wapeningsstaaf van het geselecteerde vlak bij een constructief-object</translation>
     </message>

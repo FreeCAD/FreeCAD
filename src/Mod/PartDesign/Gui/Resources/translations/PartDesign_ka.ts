@@ -440,7 +440,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="529"/>
       <source>Move the tip of the body</source>
-      <translation type="unfinished">Move the tip of the body</translation>
+      <translation>სხეულის ბუნიკის გამოძრავება</translation>
     </message>
   </context>
   <context>
@@ -1198,7 +1198,7 @@ Please select a body from below, or create a new body.</source>
       <source>Radius in local y-direction
 If zero, it is equal to Radius2</source>
       <translation>რადუსი ლოკალურ y-მიმართულებაში
-თუ ნულია, გატოლდება Radius2-თან</translation>
+თუ ნულია, გატოლდება Radius2-სთან</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="916"/>
@@ -1973,7 +1973,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="296"/>
       <source>Remove outside of profile</source>
-      <translation type="unfinished">Remove outside of profile</translation>
+      <translation>გარე პროფილის წაშლა</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="315"/>
@@ -3094,7 +3094,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="150"/>
       <source>Make thickness inwards</source>
-      <translation type="unfinished">Make thickness inwards</translation>
+      <translation>შიგნითკენ გასქელება</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.cpp" line="153"/>
@@ -3360,7 +3360,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="604"/>
       <source>No support face selected</source>
-      <translation type="unfinished">No support face selected</translation>
+      <translation>საყრდენი ზედაპირი არჩეული არაა</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="605"/>
@@ -4483,10 +4483,10 @@ account for the depth of blind holes</translation>
 90 degree: straight hole
 under 90: smaller hole radius at the bottom
 over 90: larger hole radius at the bottom</source>
-      <translation type="unfinished">Taper angle for the hole
-90 degree: straight hole
-under 90: smaller hole radius at the bottom
-over 90: larger hole radius at the bottom</translation>
+      <translation>კონუსის კუთხე ნახვრეტისთვის
+90 გრადუსი: სწორი ნახრეტი
+90-ის ქვემოთ: ნახვრეტის რადიუსი ქვემოთ უფრო მცირე იქნება
+90-ის ზემოთ: ნახვრეტის რადიუს ზემოთ უფრო დიდი იქნება</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="789"/>

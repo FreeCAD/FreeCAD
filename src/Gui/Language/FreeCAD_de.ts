@@ -9185,7 +9185,7 @@ Möchten Sie die Datei mit einem anderen Namen speichern?</translation>
     </message>
     <message>
       <source>Rotate Right</source>
-      <translation>Rechtsherum rotieren</translation>
+      <translation>Nach Rechts drehen</translation>
     </message>
     <message>
       <source>Rotate the view by 90° clockwise</source>

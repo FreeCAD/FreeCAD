@@ -714,11 +714,6 @@ Cette propriété est en lecture seule, car le nombre dépend des points contenu
       <translation>Surface de cet élément</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>La forme de cet objet</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>L'objet de base utilisé par cet objet</translation>
@@ -727,6 +722,11 @@ Cette propriété est en lecture seule, car le nombre dépend des points contenu
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
       <translation>Le fichier PAT utilisé par cet objet</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>La forme de cet objet</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>
@@ -1893,14 +1893,14 @@ pour la transformer en un objet 'Draft Dimension'.</translation>
     <message>
       <location filename="gui_downgrade.py" line="58"/>
       <source>Downgrade</source>
-      <translation>Rétrograder</translation>
+      <translation>Désagréger</translation>
     </message>
     <message>
       <location filename="gui_downgrade.py" line="61"/>
       <source>Downgrades the selected objects into simpler shapes.
 The result of the operation depends on the types of objects, which may be able to be downgraded several times in a row.
 For example, it explodes the selected polylines into simpler faces, wires, and then edges. It can also subtract faces.</source>
-      <translation>Rétrograde les objets sélectionnés en formes plus simples.
+      <translation>Désagrège les objets sélectionnés en formes plus simples.
 Le résultat de l'opération dépend des types d'objets, qui peuvent être dégradés plusieurs fois de suite.
 Par exemple, il explose les polylignes sélectionnées en faces, fils et arêtes plus simples. Il peut aussi soustraire des faces.</translation>
     </message>
@@ -2863,8 +2863,8 @@ CTRL pour aimanter, MAJ pour contraindre au segment actuel ou à la normale, ALT
 The result of the operation depends on the types of objects, which may be able to be upgraded several times in a row.
 For example, it can join the selected objects into one, convert simple edges into parametric polylines,
 convert closed edges into filled faces and parametric polygons, and merge faces into a single face.</source>
-      <translation>Met à niveau les objets sélectionnés en formes plus complexes.
-Le résultat de l'opération dépend des types d'objets, qui peuvent être mis à jour plusieurs fois d'affilée.
+      <translation>Agrège les objets sélectionnés en formes plus complexes.
+Le résultat de l'opération dépend des types d'objets, qui peuvent être agrégés plusieurs fois d'affilée.
 Par exemple, cela peut joindre les objets sélectionnés en un seul, convertir des arêtes simples en polylignes paramétriques,
 convertir les bords fermés en faces remplies et en polygones paramétriques, et fusionner les faces en une seule face.</translation>
     </message>
@@ -4686,7 +4686,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     <message>
       <location filename="gui_downgrade.py" line="85"/>
       <source>Downgrade</source>
-      <translation>Rétrograder</translation>
+      <translation>Désagréger</translation>
     </message>
     <message>
       <location filename="gui_clone.py" line="79"/>

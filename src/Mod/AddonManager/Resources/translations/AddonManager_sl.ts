@@ -6,7 +6,7 @@
     <message>
       <location filename="install_to_toolbar.py" line="76"/>
       <source>Create new toolbar</source>
-      <translation>Ustvari nove orodno vrstico</translation>
+      <translation>Ustvari novo orodno vrstico</translation>
     </message>
     <message>
       <location filename="install_to_toolbar.py" line="219"/>
@@ -22,12 +22,12 @@
     <message>
       <location filename="package_details.py" line="112"/>
       <source>Version {version} installed on {date}</source>
-      <translation>Različica {version} nameščena na {date}</translation>
+      <translation>Različica {version} nameščena {date}</translation>
     </message>
     <message>
       <location filename="package_details.py" line="117"/>
       <source>Version {version} installed</source>
-      <translation>Različica {version} nameščena</translation>
+      <translation>Nameščena je različica {version}</translation>
     </message>
     <message>
       <location filename="package_details.py" line="121"/>
@@ -52,7 +52,7 @@
     <message>
       <location filename="package_details.py" line="108"/>
       <source>installed on</source>
-      <translation>nameščen na</translation>
+      <translation>nameščen</translation>
     </message>
     <message>
       <location filename="package_details.py" line="118"/>

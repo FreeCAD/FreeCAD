@@ -714,16 +714,6 @@
       <translation>Expresión que se utiliza para el Paso Descendente de nuevas operaciones.</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="71"/>
-      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
-      <translation>La dirección en la que la ruta de herramienta debe ir alrededor de la pieza Sentido horario (CW) o Sentido Antihorario (CCW)</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="72"/>
-      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
-      <translation>Desfase extra para aplicar a la operación. La dirección es dependiente de la operación.</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="73"/>
       <source>Start pocketing at center or boundary</source>
       <translation>Empezar vaciando el centro o el limite</translation>
@@ -732,6 +722,16 @@
       <location filename="PathPocketBase.py" line="74"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>Por ciento del diámetro de la herramienta de corte para el sobre paso en cada pasada</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="71"/>
+      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
+      <translation>La dirección en la que la ruta de herramienta debe ir alrededor de la pieza Sentido horario (CW) o Sentido Antihorario (CCW)</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="72"/>
+      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
+      <translation>Desfase extra para aplicar a la operación. La dirección es dependiente de la operación.</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="75"/>
@@ -1284,12 +1284,12 @@
     <message>
       <location filename="PathJobGui.py" line="628"/>
       <source>Feed(H)</source>
-      <translation type="unfinished">Feed(H)</translation>
+      <translation>Suministro(H)</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="632"/>
       <source>Feed(V)</source>
-      <translation type="unfinished">Feed(V)</translation>
+      <translation>Feed(V)</translation>
     </message>
     <message>
       <location filename="PathToolBitGui.py" line="204"/>
@@ -1570,6 +1570,16 @@
   <context>
     <name>PathJob</name>
     <message>
+      <location filename="PathJobGui.py" line="1258"/>
+      <source>Unsupported stock object %s</source>
+      <translation>Tipo de objeto stock no soportado %s</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1274"/>
+      <source>Unsupported stock type %s (%d)</source>
+      <translation>No soportado tipo stock %s (%d)</translation>
+    </message>
+    <message>
       <location filename="PathJobGui.py" line="387"/>
       <source>Stock not from Base bound box!</source>
       <translation>¡Stock no desde la Base de caja atada!</translation>
@@ -1583,16 +1593,6 @@
       <location filename="PathJobGui.py" line="525"/>
       <source>Stock not a cylinder!</source>
       <translation>No es un cilindro stock!</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1258"/>
-      <source>Unsupported stock object %s</source>
-      <translation>Tipo de objeto stock no soportado %s</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1274"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>No soportado tipo stock %s (%d)</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="112"/>
@@ -1738,15 +1738,15 @@
       <translation>Ubicación base</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>Alturas</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="848"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>FinalDepth no se puede modificar para esta operación. Si es necesario ajustar manualmente el FinalDepth por favor, seleccione una operación diferente.</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="855"/>
-      <source>Heights</source>
-      <translation>Alturas</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="869"/>
@@ -3392,6 +3392,36 @@ Abortando la creación de la op</translation>
       <location filename="PathJobGui.py" line="1559"/>
       <source>Create Job</source>
       <translation>Crear trabajo</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1595"/>
+      <source>Warning</source>
+      <translation>Aviso</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1596"/>
+      <source>Please add one.</source>
+      <translation type="unfinished">Please add one.</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1597"/>
+      <source>Ok</source>
+      <translation>Aceptar</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1599"/>
+      <source>Add</source>
+      <translation>Añadir</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1610"/>
+      <source>This job has no base model.</source>
+      <translation type="unfinished">This job has no base model.</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1617"/>
+      <source>This job has no tool.</source>
+      <translation type="unfinished">This job has no tool.</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="257"/>

@@ -715,16 +715,6 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
       <translation>Wyrażenie stosowane do zmniejszania głębokości nowych operacji.</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="71"/>
-      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
-      <translation>Kierunek w którym narzędzie porusza się po ścieżce wokół części, zgodnie (CW) lub przeciwnie (CCW) do ruchu wskazówek zegara</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="72"/>
-      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
-      <translation>Dodatkowy offset do operacji. Kierunek jest zależny od operacji.</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="73"/>
       <source>Start pocketing at center or boundary</source>
       <translation>Uruchom obróbke kieszeni w centrum lub obwiedni</translation>
@@ -733,6 +723,16 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
       <location filename="PathPocketBase.py" line="74"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>Procent średnicy freza do przesunięcia przy każdym przejściu</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="71"/>
+      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
+      <translation>Kierunek w którym narzędzie porusza się po ścieżce wokół części, zgodnie (CW) lub przeciwnie (CCW) do ruchu wskazówek zegara</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="72"/>
+      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
+      <translation>Dodatkowy offset do operacji. Kierunek jest zależny od operacji.</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="75"/>
@@ -1285,12 +1285,12 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
     <message>
       <location filename="PathJobGui.py" line="628"/>
       <source>Feed(H)</source>
-      <translation type="unfinished">Feed(H)</translation>
+      <translation>Posuw narzędzia (poziomo)</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="632"/>
       <source>Feed(V)</source>
-      <translation type="unfinished">Feed(V)</translation>
+      <translation>Posuw narzędzia (pionowo)</translation>
     </message>
     <message>
       <location filename="PathToolBitGui.py" line="204"/>
@@ -1570,6 +1570,16 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
   <context>
     <name>PathJob</name>
     <message>
+      <location filename="PathJobGui.py" line="1258"/>
+      <source>Unsupported stock object %s</source>
+      <translation>Nieobsługiwany obiekt zapasu %s</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1274"/>
+      <source>Unsupported stock type %s (%d)</source>
+      <translation>Nieobsługiwany typ zapasów %s (%d)</translation>
+    </message>
+    <message>
       <location filename="PathJobGui.py" line="387"/>
       <source>Stock not from Base bound box!</source>
       <translation>Zapas nie pochodzi z podstawowej bryły brzegowej!</translation>
@@ -1583,16 +1593,6 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
       <location filename="PathJobGui.py" line="525"/>
       <source>Stock not a cylinder!</source>
       <translation>Naddatek nie jest walcem!</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1258"/>
-      <source>Unsupported stock object %s</source>
-      <translation>Nieobsługiwany obiekt zapasu %s</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1274"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>Nieobsługiwany typ zapasów %s (%d)</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="112"/>
@@ -1738,15 +1738,15 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
       <translation>Podstawowa lokalizacja</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>Wysokości</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="848"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>Dla tej operacji nie można zmodyfikować głębokości końcowej. Jeśli konieczne jest ręczne ustawienie głębokości końcowej, wybierz inną operację.</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="855"/>
-      <source>Heights</source>
-      <translation>Wysokości</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="869"/>
@@ -3397,6 +3397,36 @@ Przerwanie procesu tworzenia</translation>
       <location filename="PathJobGui.py" line="1559"/>
       <source>Create Job</source>
       <translation>Utwórz zadanie</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1595"/>
+      <source>Warning</source>
+      <translation>Ostrzeżenie</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1596"/>
+      <source>Please add one.</source>
+      <translation type="unfinished">Please add one.</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1597"/>
+      <source>Ok</source>
+      <translation>OK</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1599"/>
+      <source>Add</source>
+      <translation>Dodaj</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1610"/>
+      <source>This job has no base model.</source>
+      <translation type="unfinished">This job has no base model.</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1617"/>
+      <source>This job has no tool.</source>
+      <translation type="unfinished">This job has no tool.</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="257"/>

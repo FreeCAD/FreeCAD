@@ -139,14 +139,14 @@
     <name>Cmd2LineCenterLine</name>
     <message>
       <source>Add Centerline between 2 Lines</source>
-      <translation>Добавить осевую линию между 2 линиями</translation>
+      <translation>Добавить Осевую линию между 2 Линиями</translation>
     </message>
   </context>
   <context>
     <name>Cmd2PointCenterLine</name>
     <message>
       <source>Add Centerline between 2 Points</source>
-      <translation>Добавить осевую линию между 2 точками</translation>
+      <translation>Добавить Осевую линию между 2 Точками</translation>
     </message>
   </context>
   <context>
@@ -171,7 +171,7 @@
     </message>
     <message>
       <source>Add Centerline between 2 Lines</source>
-      <translation>Добавить осевую линию между 2 линиями</translation>
+      <translation>Добавить Осевую линию между 2 Линиями</translation>
     </message>
   </context>
   <context>
@@ -182,7 +182,7 @@
     </message>
     <message>
       <source>Add Centerline between 2 Points</source>
-      <translation>Добавить осевую линию между 2 точками</translation>
+      <translation>Добавить Осевую линию между 2 Точками</translation>
     </message>
   </context>
   <context>
@@ -278,7 +278,7 @@
     </message>
     <message>
       <source>Add Centerline to Faces</source>
-      <translation>Добавить осевую линию к Граням</translation>
+      <translation>Добавить Осевую линию к Граням</translation>
     </message>
   </context>
   <context>
@@ -566,7 +566,7 @@
     </message>
     <message>
       <source>Add Centerline to Faces</source>
-      <translation>Добавить осевую линию к Граням</translation>
+      <translation>Добавить Осевую линию к Граням</translation>
     </message>
   </context>
   <context>
@@ -3274,7 +3274,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>2d Point</source>
-      <translation>2d точка</translation>
+      <translation>2d Точка</translation>
     </message>
     <message>
       <source>3d Point</source>

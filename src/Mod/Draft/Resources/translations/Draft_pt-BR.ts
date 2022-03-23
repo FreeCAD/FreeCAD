@@ -567,7 +567,7 @@ ou do subelemento 'VertexN', 'EdgeN', ou 'FaceN', respectivamente, se for especi
     <message>
       <location filename="draftlink.py" line="99"/>
       <source>Force sync pattern placements even when array elements are expanded</source>
-      <translation type="unfinished">Force sync pattern placements even when array elements are expanded</translation>
+      <translation>Forçar posicionamentos de padrões de sincronização mesmo quando os elementos da matriz são expandidos</translation>
     </message>
     <message>
       <location filename="draftlink.py" line="104"/>
@@ -719,11 +719,6 @@ Esta propriedade é somente leitura, já que o número depende dos outros parâm
       <translation>Área deste objeto</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>A forma deste objeto</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>O objeto de base usado por este objeto</translation>
@@ -732,6 +727,11 @@ Esta propriedade é somente leitura, já que o número depende dos outros parâm
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
       <translation>O arquivo PAT usado por este objeto</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>A forma deste objeto</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>
@@ -1543,7 +1543,7 @@ Cria um grupo de construção se não existir.</translation>
     <message>
       <location filename="gui_groups.py" line="365"/>
       <source>Add a new group with a given name.</source>
-      <translation type="unfinished">Add a new group with a given name.</translation>
+      <translation>Adicionar um novo grupo com um determinado nome.</translation>
     </message>
   </context>
   <context>
@@ -1644,8 +1644,8 @@ CTRL para snap, SHIFT para restringir.</translation>
       <location filename="gui_arcs.py" line="490"/>
       <source>Creates a circular arc by picking 3 points.
 CTRL to snap, SHIFT to constrain.</source>
-      <translation type="unfinished">Creates a circular arc by picking 3 points.
-CTRL to snap, SHIFT to constrain.</translation>
+      <translation>Cria um arco circular escolhendo 3 pontos.
+CTRL para encaixar, SHIFT para restringir.</translation>
     </message>
   </context>
   <context>
@@ -2030,7 +2030,7 @@ Se outros objetos forem selecionados, eles são ignorados.</translation>
     <message>
       <location filename="gui_hatch.py" line="42"/>
       <source>Creates hatches on the faces of a selected object</source>
-      <translation type="unfinished">Creates hatches on the faces of a selected object</translation>
+      <translation>Cria escotilas nas faces de um objeto selecionado</translation>
     </message>
   </context>
   <context>
@@ -2419,7 +2419,7 @@ aqueles que estão no mesmo nível que este objeto, incluindo o grupo superior q
     <message>
       <location filename="gui_groups.py" line="167"/>
       <source>Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in is selected.</source>
-      <translation type="unfinished">Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in is selected.</translation>
+      <translation>Seleciona o conteúdo dos grupos selecionados. Para objetos não pertencentes a grupos selecionados, o conteúdo do grupo em que estão é selecionado.</translation>
     </message>
   </context>
   <context>
@@ -3626,7 +3626,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="WorkingPlane.py" line="704"/>
       <source>Selected Shapes must define a plane</source>
-      <translation type="unfinished">Selected Shapes must define a plane</translation>
+      <translation>As formas selecionadas devem definir um plano</translation>
     </message>
     <message>
       <location filename="make_label.py" line="196"/>
@@ -4065,7 +4065,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="make_sketch.py" line="111"/>
       <source>All Shapes must be planar</source>
-      <translation type="unfinished">All Shapes must be planar</translation>
+      <translation>Todas as formas devem ser planas</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="135"/>
@@ -4232,7 +4232,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="view_layer.py" line="454"/>
       <source>Relabeling layer:</source>
-      <translation type="unfinished">Relabeling layer:</translation>
+      <translation>Camada de reetiquetagem:</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="458"/>
@@ -4277,7 +4277,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="init_draft_statusbar.py" line="214"/>
       <source>Set the scale used by draft annotation tools</source>
-      <translation type="unfinished">Set the scale used by draft annotation tools</translation>
+      <translation>Definir a escala usada pelas ferramentas de anotação de rascunho</translation>
     </message>
     <message>
       <location filename="utils.py" line="650"/>
@@ -4367,37 +4367,37 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="init_tools.py" line="169"/>
       <source>Snap Lock</source>
-      <translation type="unfinished">Snap Lock</translation>
+      <translation>Adquirir Bloqueio</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="170"/>
       <source>Snap Endpoint</source>
-      <translation type="unfinished">Snap Endpoint</translation>
+      <translation>Adquirir Ponto final</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="171"/>
       <source>Snap Midpoint</source>
-      <translation type="unfinished">Snap Midpoint</translation>
+      <translation>Adquirir Ponto Médio</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="172"/>
       <source>Snap Center</source>
-      <translation type="unfinished">Snap Center</translation>
+      <translation>Adquirir Centro</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="173"/>
       <source>Snap Angle</source>
-      <translation type="unfinished">Snap Angle</translation>
+      <translation>Adquirir Ângulo</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="174"/>
       <source>Snap Intersection</source>
-      <translation type="unfinished">Snap Intersection</translation>
+      <translation>Adquirir Interseção</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="175"/>
       <source>Snap Perpendicular</source>
-      <translation type="unfinished">Snap Perpendicular</translation>
+      <translation>Ajustar a Perpendicular</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="176"/>
@@ -5075,12 +5075,12 @@ Para habilitar o FreeCAD para fazer o download destas bibliotecas, responda Sim.
     <message>
       <location filename="gui_snapper.py" line="1543"/>
       <source>(ON)</source>
-      <translation type="unfinished">(ON)</translation>
+      <translation>(Ligado)</translation>
     </message>
     <message>
       <location filename="gui_snapper.py" line="1546"/>
       <source>(OFF)</source>
-      <translation type="unfinished">(OFF)</translation>
+      <translation>(Desligado)</translation>
     </message>
     <message>
       <location filename="gui_shape2dview.py" line="109"/>

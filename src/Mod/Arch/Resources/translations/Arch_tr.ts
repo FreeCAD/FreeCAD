@@ -4496,6 +4496,11 @@ Run=0 ise run hesaplanır ve yükseklik ilgili profille özdeştir.</translation
     </message>
     <message>
       <location filename="ArchRebar.py" line="108"/>
+      <source>Creates a Reinforcement bar from the selected face of solid object and/or a sketch</source>
+      <translation type="unfinished">Creates a Reinforcement bar from the selected face of solid object and/or a sketch</translation>
+    </message>
+    <message>
+      <location filename="ArchRebar.py" line="108"/>
       <source>Creates a Reinforcement bar from the selected face of a structural object</source>
       <translation>Yapısal bir nesne seçili yüzünden bir takviye çubuğu oluşturur</translation>
     </message>

@@ -696,32 +696,22 @@
     <message>
       <location filename="PathSetupSheet.py" line="156"/>
       <source>Expression set for the SafeHeight of new operations.</source>
-      <translation>ახალი ოპერაციების SafeHeight-თვის გამოყენებული გამოთქმების ნაკრები.</translation>
+      <translation>ახალი ოპერაციების SafeHeight-სთვის გამოყენებული გამოთქმების ნაკრები.</translation>
     </message>
     <message>
       <location filename="PathSetupSheet.py" line="182"/>
       <source>Expression used for StartDepth of new operations.</source>
-      <translation>ახალი ოპერაციების StepDepth-თვის გამოყენებული გამოთქმა.</translation>
+      <translation>ახალი ოპერაციების StepDepth-სთვის გამოყენებული გამოთქმა.</translation>
     </message>
     <message>
       <location filename="PathSetupSheet.py" line="190"/>
       <source>Expression used for FinalDepth of new operations.</source>
-      <translation>ახალი ოპერაციების FinalDepth-თვის გამოყენებული გამოთქმა.</translation>
+      <translation>ახალი ოპერაციების FinalDepth-სთვის გამოყენებული გამოთქმა.</translation>
     </message>
     <message>
       <location filename="PathSetupSheet.py" line="198"/>
       <source>Expression used for StepDown of new operations.</source>
-      <translation>ახალი ოპერაციების StepDown-თვის გამოყენებული გამოთქმა.</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="71"/>
-      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
-      <translation>ხელსაწყოს მჭრელი იარაღის მიმართულება საათის(ს. მ.) ან საათის საწინააღმდეგო (ს. ს. მ.) მიმართულებით მოძრაობა</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="72"/>
-      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
-      <translation>ოპერაციაზე გადასატარებელი დამატებითი წანაცვლება. მიმართულება დამოკიდებულია ოპერაციის ტიპზე.</translation>
+      <translation>ახალი ოპერაციების StepDown-სთვის გამოყენებული გამოთქმა.</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="73"/>
@@ -732,6 +722,16 @@
       <location filename="PathPocketBase.py" line="74"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation type="unfinished">Percent of cutter diameter to step over on each pass</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="71"/>
+      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
+      <translation>ხელსაწყოს მჭრელი იარაღის მიმართულება საათის(ს. მ.) ან საათის საწინააღმდეგო (ს. ს. მ.) მიმართულებით მოძრაობა</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="72"/>
+      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
+      <translation>ოპერაციაზე გადასატარებელი დამატებითი წანაცვლება. მიმართულება დამოკიდებულია ოპერაციის ტიპზე.</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="75"/>
@@ -1284,12 +1284,12 @@
     <message>
       <location filename="PathJobGui.py" line="628"/>
       <source>Feed(H)</source>
-      <translation type="unfinished">Feed(H)</translation>
+      <translation>მიწოდება(ჰ)</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="632"/>
       <source>Feed(V)</source>
-      <translation type="unfinished">Feed(V)</translation>
+      <translation>მიწოდება(ვ)</translation>
     </message>
     <message>
       <location filename="PathToolBitGui.py" line="204"/>
@@ -1570,6 +1570,16 @@
   <context>
     <name>PathJob</name>
     <message>
+      <location filename="PathJobGui.py" line="1258"/>
+      <source>Unsupported stock object %s</source>
+      <translation>ნედლეულის მხაარდაუჭერელი ობექტი %s</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1274"/>
+      <source>Unsupported stock type %s (%d)</source>
+      <translation>ნედლეულის მხარდაუჭერელი ტიპი %s (%d)</translation>
+    </message>
+    <message>
       <location filename="PathJobGui.py" line="387"/>
       <source>Stock not from Base bound box!</source>
       <translation>ნედლეული არაა საბაზისო შემომსაზღვრელი ჩარჩო!</translation>
@@ -1583,16 +1593,6 @@
       <location filename="PathJobGui.py" line="525"/>
       <source>Stock not a cylinder!</source>
       <translation>ნედლეული ცილინდი არაა!</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1258"/>
-      <source>Unsupported stock object %s</source>
-      <translation>ნედლეულის მხაარდაუჭერელი ობექტი %s</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1274"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>ნედლეულის მხარდაუჭერელი ტიპი %s (%d)</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="112"/>
@@ -1738,16 +1738,16 @@
       <translation>ბაზური მდებარეობა</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>სიმაღლეები</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="848"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation type="unfinished">FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="855"/>
-      <source>Heights</source>
-      <translation>სიმაღლეები</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="869"/>
@@ -3393,6 +3393,36 @@ Aborting op creation</source>
       <location filename="PathJobGui.py" line="1559"/>
       <source>Create Job</source>
       <translation>დავალების შექმნა</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1595"/>
+      <source>Warning</source>
+      <translation>გაფრთხილება</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1596"/>
+      <source>Please add one.</source>
+      <translation type="unfinished">Please add one.</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1597"/>
+      <source>Ok</source>
+      <translation>დიახ</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1599"/>
+      <source>Add</source>
+      <translation>დამატება</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1610"/>
+      <source>This job has no base model.</source>
+      <translation type="unfinished">This job has no base model.</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1617"/>
+      <source>This job has no tool.</source>
+      <translation type="unfinished">This job has no tool.</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="257"/>
@@ -5325,7 +5355,7 @@ Aborting op creation</source>
     <message>
       <location filename="PathSetupSheet.py" line="109"/>
       <source>Expression set for the SafeHeight of new operations.</source>
-      <translation>ახალი ოპერაციების SafeHeight-თვის გამოყენებული გამოთქმების ნაკრები.</translation>
+      <translation>ახალი ოპერაციების SafeHeight-სთვის გამოყენებული გამოთქმების ნაკრები.</translation>
     </message>
     <message>
       <location filename="PathSetupSheet.py" line="110"/>
@@ -5335,22 +5365,22 @@ Aborting op creation</source>
     <message>
       <location filename="PathSetupSheet.py" line="111"/>
       <source>Expression set for the ClearanceHeight of new operations.</source>
-      <translation>ახალი ოპერაციების ClearanceHeight-თვის გამოყენებული გამოთქმების ნაკრები.</translation>
+      <translation>ახალი ოპერაციების ClearanceHeight-სთვის გამოყენებული გამოთქმების ნაკრები.</translation>
     </message>
     <message>
       <location filename="PathSetupSheet.py" line="113"/>
       <source>Expression used for StartDepth of new operations.</source>
-      <translation>ახალი ოპერაციების StepDepth-თვის გამოყენებული გამოთქმა.</translation>
+      <translation>ახალი ოპერაციების StepDepth-სთვის გამოყენებული გამოთქმა.</translation>
     </message>
     <message>
       <location filename="PathSetupSheet.py" line="114"/>
       <source>Expression used for FinalDepth of new operations.</source>
-      <translation>ახალი ოპერაციების FinalDepth-თვის გამოყენებული გამოთქმა.</translation>
+      <translation>ახალი ოპერაციების FinalDepth-სთვის გამოყენებული გამოთქმა.</translation>
     </message>
     <message>
       <location filename="PathSetupSheet.py" line="115"/>
       <source>Expression used for StepDown of new operations.</source>
-      <translation>ახალი ოპერაციების StepDown-თვის გამოყენებული გამოთქმა.</translation>
+      <translation>ახალი ოპერაციების StepDown-სთვის გამოყენებული გამოთქმა.</translation>
     </message>
     <message>
       <location filename="PathSetupSheet.py" line="287"/>
@@ -7566,7 +7596,7 @@ Aborting op creation</source>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="191"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rapid horizontal speed assigned as HorizRapid to new ToolController.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ახალი ხელსაწყოს კონტროლიორის HorizRapid-თვის მინიჭებული უქმი ჰორიზონტალური სიჩქარე. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ახალი ხელსაწყოს კონტროლიორის HorizRapid-სთვის მინიჭებული უქმი ჰორიზონტალური სიჩქარე. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="198"/>
@@ -7576,7 +7606,7 @@ Aborting op creation</source>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="211"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rapid vertical speed assigned to VertRapid of new ToolController.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ახალი ხელსაწყოს კონტროლიორის VerTRapid-თვის მინიჭებული უქმი ვერტიკალური სიჩქარე. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ახალი ხელსაწყოს კონტროლიორის VerTRapid-სთვის მინიჭებული უქმი ვერტიკალური სიჩქარე. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="20"/>
@@ -8449,7 +8479,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="92"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angles less than filter angle will not receive corner actions&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angles less than filter angle will not receive corner actions&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;კუთხეები, რომლებიც ფილტრის კუთხეზე ნაკლები არიან, კუთხის ქმედებებს არ მიიღებენ&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="14"/>
@@ -9581,7 +9611,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1321"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rapid horizontal speed assigned as HorizRapid to new ToolController.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ახალი ხელსაწყოს კონტროლიორის HorizRapid-თვის მინიჭებული უქმი ჰორიზონტალური სიჩქარე. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ახალი ხელსაწყოს კონტროლიორის HorizRapid-სთვის მინიჭებული უქმი ჰორიზონტალური სიჩქარე. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1328"/>
@@ -9591,7 +9621,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1341"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rapid vertical speed assigned to VertRapid of new ToolController.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ახალი ხელსაწყოს კონტროლიორის VerTRapid-თვის მინიჭებული უქმი ვერტიკალური სიჩქარე. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ახალი ხელსაწყოს კონტროლიორის VerTRapid-სთვის მინიჭებული უქმი ვერტიკალური სიჩქარე. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1369"/>

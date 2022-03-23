@@ -332,7 +332,7 @@
     <message>
       <location filename="package_list.py" line="692"/>
       <source>Status:</source>
-      <translation type="unfinished">Status:</translation>
+      <translation>Стан:</translation>
     </message>
     <message>
       <location filename="package_list.py" line="695"/>

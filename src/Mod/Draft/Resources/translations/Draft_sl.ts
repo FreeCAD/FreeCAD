@@ -718,11 +718,6 @@ Ta lastnost je le za branje, saj je število odvisno od točk znotraj "Točkovne
       <translation>Površina tega predmeta</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Oblika tega objekta</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>Izhodiščni predmet tega predmeta</translation>
@@ -731,6 +726,11 @@ Ta lastnost je le za branje, saj je število odvisno od točk znotraj "Točkovne
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
       <translation>Datoteka PAT, ki jo uporablja ta predmet</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Oblika tega objekta</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>

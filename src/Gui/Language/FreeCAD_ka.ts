@@ -1737,7 +1737,7 @@ This file already exists.</source>
     <message>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
-      <translation>%1-თვის სახელის გადარქმევის შეცდომა.
+      <translation>%1-სთვის სახელის გადარქმევის შეცდომა.
 გთხოვთ, შეამოწმეთ წვდომები</translation>
     </message>
     <message>
@@ -6281,7 +6281,7 @@ Do you want to specify another directory?</source>
     <name>NetworkAccessManager</name>
     <message>
       <source>&lt;qt&gt;Enter username and password for "%1" at %2&lt;/qt&gt;</source>
-      <translation>&lt;qt&gt;შეიყვანეთ მომხმარებლის სახელი და პაროლი %1-თვის %2-დან&lt;/qt&gt;</translation>
+      <translation>&lt;qt&gt;შეიყვანეთ მომხმარებლის სახელი და პაროლი %1-სთვის %2-დან&lt;/qt&gt;</translation>
     </message>
     <message>
       <source>&lt;qt&gt;Connect to proxy "%1" using:&lt;/qt&gt;</source>
@@ -6908,7 +6908,7 @@ underscore, and must not start with a digit.</source>
     </message>
     <message>
       <source>Failed to add property to '%1': %2</source>
-      <translation>%1-თვის თვისების დამატება: %2</translation>
+      <translation>%1-სთვის თვისების დამატება: %2</translation>
     </message>
     <message>
       <source>Save dependent files</source>
@@ -9886,7 +9886,7 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-size:20pt; font-weight:600;"&gt;iisTaskPanel&lt;/span&gt;&lt;/p&gt;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;შექმნილია Qt 4.3.x-თვის&lt;/span&gt;&lt;/p&gt;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;შექმნილია Qt 4.3.x-სთვის&lt;/span&gt;&lt;/p&gt;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;&lt;/p&gt;
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>

@@ -66,12 +66,12 @@ It will create a 'Compound Filter' for each shape.</source>
     <message>
       <location filename="JoinFeatures.py" line="388"/>
       <source>Cutout for object</source>
-      <translation type="unfinished">Cutout for object</translation>
+      <translation>Виріз об'єкту</translation>
     </message>
     <message>
       <location filename="JoinFeatures.py" line="393"/>
       <source>Makes a cutout in one object to fit another object.</source>
-      <translation type="unfinished">Makes a cutout in one object to fit another object.</translation>
+      <translation>Робить виріз в одному об'єкті, що відповідає іншому об'єкту.</translation>
     </message>
   </context>
   <context>
@@ -92,7 +92,7 @@ It will create a 'Compound Filter' for each shape.</source>
     <message>
       <location filename="SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
-      <translation type="unfinished">Boolean fragments</translation>
+      <translation>Логічні фрагменти</translation>
     </message>
     <message>
       <location filename="SplitFeatures.py" line="197"/>
@@ -101,16 +101,16 @@ or from the shapes inside a compound.
 This is a boolean union which is then sliced at the intersections
 of the original shapes.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation type="unfinished">Create a 'Boolean Fragments' object from two or more selected objects,
-or from the shapes inside a compound.
-This is a boolean union which is then sliced at the intersections
-of the original shapes.
-A 'Compound Filter' can be used to extract the individual slices.</translation>
+      <translation>Створіть об'єкт 'Boolean Fragments' з двох або більше вибраних об'єктів
+або з фігур всередині сполуки.
+Це логічний об’єднання, яке потім розрізається на перетинах
+оригінальних форм.
+A 'Compound Filter' використовується для вилучення фрагментів.</translation>
     </message>
     <message>
       <location filename="SplitFeatures.py" line="347"/>
       <source>Slice to compound</source>
-      <translation type="unfinished">Slice to compound</translation>
+      <translation>Нарізка на складні форми</translation>
     </message>
     <message>
       <location filename="SplitFeatures.py" line="354"/>
@@ -130,8 +130,8 @@ A 'Compound Filter' can be used to extract the individual slices.</source>
       <location filename="SplitFeatures.py" line="385"/>
       <source>Slice a selected object by other objects, and split it apart.
 It will create a 'Compound Filter' for each slice.</source>
-      <translation type="unfinished">Slice a selected object by other objects, and split it apart.
-It will create a 'Compound Filter' for each slice.</translation>
+      <translation>Розрізати виділений об’єкт іншими об’єктами та розділити його на частини.
+Це створить «Compound Filter» для кожного фрагмента.</translation>
     </message>
     <message>
       <location filename="SplitFeatures.py" line="529"/>
@@ -144,10 +144,9 @@ It will create a 'Compound Filter' for each slice.</translation>
 or with the shapes inside a compound.
 This means the overlapping volumes of the shapes will be removed.
 A 'Compound Filter' can be used to extract the remaining pieces.</source>
-      <translation type="unfinished">Perform an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-This means the overlapping volumes of the shapes will be removed.
-A 'Compound Filter' can be used to extract the remaining pieces.</translation>
+      <translation>Виконає логічну операцію 'ексклюзивне OR' із двома або більше вибраними об'єктами або фігурами всередині з'єднання.
+Це означає, що об'єми накладених фігур будуть видалені.
+Для видалення елементів, що залишилися, можна використовувати 'Compound Filter'.</translation>
     </message>
   </context>
   <context>
@@ -224,17 +223,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="382"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
-      <translation type="unfinished">Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</translation>
+      <translation>Будь ласка, виберіть дві або більше фігур. Або виберіть з'єднання, яке також містить дві або більше фігур, для обчислення перетину між ними.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="482"/>
       <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation type="unfinished">Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</translation>
+      <translation>Будь ласка, виберіть дві або більше фігур. Або виберіть з'єднання, що містить дві або більше фігур, для операції злиття.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="901"/>
       <source>Select one shape or more, please.</source>
-      <translation type="unfinished">Select one shape or more, please.</translation>
+      <translation>Виберіть одну або більше фігур.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1113"/>
@@ -265,7 +264,7 @@ Do you want to continue?</source>
       <location filename="../../TaskAttacher.cpp" line="73"/>
       <location filename="../../TaskAttacher.cpp" line="109"/>
       <source>No reference selected</source>
-      <translation type="unfinished">No reference selected</translation>
+      <translation>Не вибрано жодного орієнтиру</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="82"/>
@@ -328,7 +327,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="107"/>
       <source>Invalid Point On Curve On Surface</source>
-      <translation type="unfinished">Invalid Point On Curve On Surface</translation>
+      <translation>Неприпустима точка на кривій поверхні</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="108"/>
@@ -363,22 +362,22 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="114"/>
       <source>Invalid Curve On Closed Surface</source>
-      <translation type="unfinished">Invalid Curve On Closed Surface</translation>
+      <translation>Відсутня крива на замкнутій поверхні</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="115"/>
       <source>Invalid Same Range Flag</source>
-      <translation type="unfinished">Invalid Same Range Flag</translation>
+      <translation>Неприпустимий діапазон розмітки</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="116"/>
       <source>Invalid Same Parameter Flag</source>
-      <translation type="unfinished">Invalid Same Parameter Flag</translation>
+      <translation>Неприпустимий параметр розмітки</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="117"/>
       <source>Invalid Degenerated Flag</source>
-      <translation type="unfinished">Invalid Degenerated Flag</translation>
+      <translation>Неприпустиме зменшення розмітки</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="118"/>
@@ -388,7 +387,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="119"/>
       <source>Invalid MultiConnexity</source>
-      <translation type="unfinished">Invalid MultiConnexity</translation>
+      <translation>Неприпустима багатозв'язність</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="120"/>
@@ -493,7 +492,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="152"/>
       <source>Out Of Enum Range:</source>
-      <translation type="unfinished">Out Of Enum Range:</translation>
+      <translation>Поза діапазоном значень:</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
@@ -576,17 +575,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDimension.cpp" line="1481"/>
       <source>Reset selection</source>
-      <translation type="unfinished">Reset selection</translation>
+      <translation>Скасувати вибір</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1485"/>
       <source>Toggle direct dimensions</source>
-      <translation type="unfinished">Toggle direct dimensions</translation>
+      <translation>Переключити прямі розміри</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1490"/>
       <source>Toggle orthogonal dimensions</source>
-      <translation type="unfinished">Toggle orthogonal dimensions</translation>
+      <translation>Переключити ортогональні розміри</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1495"/>
@@ -632,7 +631,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../ViewProviderAttachExtension.cpp" line="116"/>
       <source>Attachment editor</source>
-      <translation type="unfinished">Attachment editor</translation>
+      <translation>Редактор вкладень</translation>
     </message>
   </context>
   <context>
@@ -1008,7 +1007,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="227"/>
       <source>Line tangent to an edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line tangent to an edge. Optional vertex link defines where.</translation>
+      <translation>Лінія дотична до ребра. Додаткове посилання на вершину визначає точку дотику.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="229"/>
@@ -1020,7 +1019,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="230"/>
       <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>Вирівняти по вектору N координатної системи тригранника Френе цієї кривій. Додаткове посилання на вершину визначає точку дотику.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="232"/>
@@ -1032,7 +1031,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="233"/>
       <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>Вирівняти по вектору координатної системи тригранника Френе цієї кривої. Додаткове посилання на вершину визначає точку дотику.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="235"/>
@@ -1045,7 +1044,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="239"/>
       <source>Tangent to surface, along U parameter. Vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Tangent to surface, along U parameter. Vertex link defines where.</translation>
+      <translation>Дотична до поверхні, вздовж параметра U. Додаткове посилання на вершину визначає точку дотику.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="238"/>
@@ -1087,7 +1086,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="248"/>
       <source>Line that spans the shortest distance between shapes.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line that spans the shortest distance between shapes.</translation>
+      <translation>Лінія, що охоплює найкоротшу відстань між фігурами.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="250"/>
@@ -1099,7 +1098,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="251"/>
       <source>Line follows first principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line follows first principal axis of inertia.</translation>
+      <translation>Лінія відповідає першій основній осі інерції.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="253"/>
@@ -1111,7 +1110,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="254"/>
       <source>Line follows second principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line follows second principal axis of inertia.</translation>
+      <translation>Лінія відповідає другій основній осі інерції.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="256"/>
@@ -1123,7 +1122,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="257"/>
       <source>Line follows third principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line follows third principal axis of inertia.</translation>
+      <translation>Лінія відповідає третій основній осі інерції.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="259"/>
@@ -1150,7 +1149,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="125"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
+      <translation>Приєднання вимкнено. Об'єкт може бути переміщений редагуванням властивості Placement.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="127"/>
@@ -1162,7 +1161,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="128"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Origin is aligned to match Vertex. Orientation is controlled by Placement property.</translation>
+      <translation>Нульова координата вирівнюється відповідно до вершини. Орієнтація контролюється Placement властивістю.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="130"/>
@@ -1192,7 +1191,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="136"/>
       <source>Object's YZ</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Object's YZ</translation>
+      <translation>YZ об'єкта</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="137"/>
@@ -1210,7 +1209,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="140"/>
       <source>Plane is aligned to coincide planar face.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to coincide planar face.</translation>
+      <translation>Площина вирівнюється для збігу з плоскою гранню.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="142"/>
@@ -1222,7 +1221,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="143"/>
       <source>Plane is made tangent to surface at vertex.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is made tangent to surface at vertex.</translation>
+      <translation>Площина робиться дотичною до поверхні у вершині.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="145"/>
@@ -1234,7 +1233,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="146"/>
       <source>Plane is made tangent to edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is made tangent to edge. Optional vertex link defines where.</translation>
+      <translation>Площина робиться дотичною до кривої. Додаткове посилання на вершину визначає точку дотику.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="148"/>
@@ -1248,7 +1247,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="155"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>Вирівняти за координатною системою тригранника Френе цією кривою. Додаткове посилання на вершину визначає точку дотику.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="151"/>
@@ -1272,7 +1271,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="158"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</translation>
+      <translation>Вирівняти по площині заданим колом, що дотична з кривою. Нульова координата вирівнюється за точкою кривизни. Додаткове посилання на вершину визначає точку дотику.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="160"/>
@@ -1284,7 +1283,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="161"/>
       <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</translation>
+      <translation>Площина перпендикулярна кривій і вісь Y збігається з віссю дотичного кола. Додаткове посилання на вершину визначає точку дотику.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="163"/>
@@ -1296,7 +1295,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="164"/>
       <source>Align plane to pass through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Align plane to pass through three vertices.</translation>
+      <translation>Вирівняти площину за трьома вершинами.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="166"/>
@@ -1347,7 +1346,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="50"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
+      <translation>Приєднання вимкнено. Об'єкт може бути переміщений редагуванням властивості Placement.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="52"/>
@@ -1359,7 +1358,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="53"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Origin is aligned to match Vertex. Orientation is controlled by Placement property.</translation>
+      <translation>Нульова координата вирівнюється відповідно до вершини. Орієнтація контролюється Placement властивістю.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="55"/>
@@ -1445,7 +1444,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="80"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>Вирівняти за координатною системою тригранника Френе цією кривою. Додаткове посилання на вершину визначає точку дотику.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="76"/>
@@ -2866,7 +2865,7 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="408"/>
       <source>Common</source>
-      <translation type="unfinished">Common</translation>
+      <translation>Перетин</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="508"/>
@@ -4243,7 +4242,7 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="448"/>
       <source>Rotation angle:</source>
-      <translation type="unfinished">Rotation angle:</translation>
+      <translation>Кут обертання:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="513"/>
@@ -4258,25 +4257,25 @@ the size of the resulting STEP file.</translation>
       <location filename="../../DlgPrimitives.ui" line="553"/>
       <location filename="../../DlgPrimitives.ui" line="1439"/>
       <source>Angle in first direction:</source>
-      <translation type="unfinished">Angle in first direction:</translation>
+      <translation>Кут у першому напрямку:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="560"/>
       <location filename="../../DlgPrimitives.ui" line="1446"/>
       <source>Angle in first direction</source>
-      <translation type="unfinished">Angle in first direction</translation>
+      <translation>Кут у першому напрямку</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="579"/>
       <location filename="../../DlgPrimitives.ui" line="1465"/>
       <source>Angle in second direction:</source>
-      <translation type="unfinished">Angle in second direction:</translation>
+      <translation>Кут у другому напрямку:</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="586"/>
       <location filename="../../DlgPrimitives.ui" line="1472"/>
       <source>Angle in second direction</source>
-      <translation type="unfinished">Angle in second direction</translation>
+      <translation>Кут у другому напрямку</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="640"/>
@@ -4967,7 +4966,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Location.ui" line="125"/>
       <source>x-component of direction vector</source>
-      <translation type="unfinished">x-component of direction vector</translation>
+      <translation>х-компонент вектора напрямку</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="147"/>
@@ -4977,7 +4976,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Location.ui" line="154"/>
       <source>y-component of direction vector</source>
-      <translation type="unfinished">y-component of direction vector</translation>
+      <translation>y-компонент вектора напрямку</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="176"/>
@@ -4987,7 +4986,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Location.ui" line="183"/>
       <source>z-component of direction vector</source>
-      <translation type="unfinished">z-component of direction vector</translation>
+      <translation>z-компонент вектора напрямку</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="208"/>

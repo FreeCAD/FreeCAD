@@ -90,7 +90,7 @@ LEGACY_NAMING_MAP = {'Draft.ts': 'draft.ts'}
 
 locations = [["AddonManager","../Mod/AddonManager/Resources/translations","../Mod/AddonManager/Resources/AddonManager.qrc"],
              ["Arch","../Mod/Arch/Resources/translations","../Mod/Arch/Resources/Arch.qrc"],
-             ["Assembly","../Mod/Assembly/Gui/Resources/translations","../Mod/Assembly/Gui/Resources/Assembly.qrc"],
+             #["Assembly","../Mod/Assembly/Gui/Resources/translations","../Mod/Assembly/Gui/Resources/Assembly.qrc"],
              ["draft","../Mod/Draft/Resources/translations","../Mod/Draft/Resources/Draft.qrc"],
              ["Drawing","../Mod/Drawing/Gui/Resources/translations","../Mod/Drawing/Gui/Resources/Drawing.qrc"],
              ["Fem","../Mod/Fem/Gui/Resources/translations","../Mod/Fem/Gui/Resources/Fem.qrc"],

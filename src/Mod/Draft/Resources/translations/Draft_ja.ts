@@ -709,11 +709,6 @@ This property is read-only, as the number depends on the points contained within
       <translation>このオブジェクトの面積</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>オブジェクトの形</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>このオブジェクトで使用されているベースオブジェクト</translation>
@@ -722,6 +717,11 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="55"/>
       <source>The PAT file used by this object</source>
       <translation>このオブジェクトで使用されるPATファイル</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>オブジェクトの形</translation>
     </message>
     <message>
       <location filename="hatch.py" line="58"/>

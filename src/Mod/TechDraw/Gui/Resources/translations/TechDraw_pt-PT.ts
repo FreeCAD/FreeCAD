@@ -6,22 +6,22 @@
     <message>
       <location filename="CommandMoveView.py" line="47"/>
       <source>Move View</source>
-      <translation type="unfinished">Move View</translation>
+      <translation>Mover Vista</translation>
     </message>
     <message>
       <location filename="CommandMoveView.py" line="50"/>
       <source>Move a View to a new Page</source>
-      <translation type="unfinished">Move a View to a new Page</translation>
+      <translation>Mover uma vista para uma nova Folha</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="47"/>
       <source>Move View to a different Page</source>
-      <translation type="unfinished">Move View to a different Page</translation>
+      <translation>Mover vista para uma Folha diferente</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="74"/>
       <source>Select View to move from list.</source>
-      <translation type="unfinished">Select View to move from list.</translation>
+      <translation>Selecionar da lista Vista para mover.</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="75"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="TaskMoveView.py" line="113"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>Selecionar Folha</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="112"/>
@@ -84,7 +84,7 @@
     <message>
       <location filename="TaskShareView.py" line="113"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>Selecionar Folha</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="112"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="TaskCopyView.py" line="112"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>Selecionar Folha</translation>
     </message>
   </context>
   <context>
@@ -2438,11 +2438,11 @@ Each unit is approx. 0.1 mm wide</translation>
     <name>TechDrawGui::DlgPrefsTechDrawDimensionsImp</name>
     <message>
       <source>Dimensions</source>
-      <translation>Dimensões</translation>
+      <translation>Cotagens</translation>
     </message>
     <message>
       <source>Standard to be used for dimensional values</source>
-      <translation type="unfinished">Standard to be used for dimensional values</translation>
+      <translation>Predefinição a ser usada para valores de cotagem</translation>
     </message>
     <message>
       <source>ISO Oriented</source>
@@ -2478,7 +2478,7 @@ Each unit is approx. 0.1 mm wide</translation>
     </message>
     <message>
       <source>Character used to indicate diameter dimensions</source>
-      <translation>Carácter usado para indicar dimensões de diâmetro</translation>
+      <translation>Carácter usado para indicar cotagem de diâmetro</translation>
     </message>
     <message>
       <source>⌀</source>
@@ -4263,7 +4263,7 @@ using the given X/Y Spacing</translation>
     <name>Workbench</name>
     <message>
       <source>Dimensions</source>
-      <translation>Dimensões</translation>
+      <translation>Cotagens</translation>
     </message>
     <message>
       <source>Annotations</source>
@@ -4295,7 +4295,7 @@ using the given X/Y Spacing</translation>
     </message>
     <message>
       <source>TechDraw Dimensions</source>
-      <translation>Dimensões TechDraw</translation>
+      <translation>Cotagens TechDraw</translation>
     </message>
     <message>
       <source>TechDraw File Access</source>

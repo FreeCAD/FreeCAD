@@ -186,12 +186,12 @@
     <message>
       <location filename="ArchBuildingPart.py" line="621"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
-      <translation type="unfinished">The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
+      <translation>显示为 [XMin,YMin,ZMin,XMax,YMax,ZMax,ZMax,ZMax]的新创建对象的抓取框</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="623"/>
       <source>Turns auto group box on/off</source>
-      <translation type="unfinished">Turns auto group box on/off</translation>
+      <translation>打开/关闭自动群组框</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="625"/>
@@ -416,7 +416,7 @@
     <message>
       <location filename="ArchSchedule.py" line="110"/>
       <source>If True, additional lines with each individual object are added to the results</source>
-      <translation type="unfinished">If True, additional lines with each individual object are added to the results</translation>
+      <translation>如果为 True，每个对象的附加行(直线)将被添加到结果中</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="270"/>
@@ -726,27 +726,27 @@
     <message>
       <location filename="ArchTruss.py" line="170"/>
       <source>An optional start offset for the top strut</source>
-      <translation type="unfinished">An optional start offset for the top strut</translation>
+      <translation>可选的顶部结构开始偏移量</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="173"/>
       <source>An optional end offset for the top strut</source>
-      <translation type="unfinished">An optional end offset for the top strut</translation>
+      <translation>可选的顶部结构结束偏移量</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="176"/>
       <source>The height of the main top and bottom elements of the truss</source>
-      <translation type="unfinished">The height of the main top and bottom elements of the truss</translation>
+      <translation>桁架的主要顶部和底部元素的高度</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="180"/>
       <source>The width of the main top and bottom elements of the truss</source>
-      <translation type="unfinished">The width of the main top and bottom elements of the truss</translation>
+      <translation>桁架的主要顶部和底部元素的宽</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="184"/>
       <source>The type of the middle element of the truss</source>
-      <translation type="unfinished">The type of the middle element of the truss</translation>
+      <translation>桁架的中间元素的类型</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="188"/>
@@ -986,22 +986,22 @@
     <message>
       <location filename="ArchStairs.py" line="324"/>
       <source>The 'absolute' top level of a flight of stairs leads to</source>
-      <translation type="unfinished">The 'absolute' top level of a flight of stairs leads to</translation>
+      <translation>一阶楼梯的“绝对”顶级通向</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="330"/>
       <source>The 'left outline' of stairs</source>
-      <translation type="unfinished">The 'left outline' of stairs</translation>
+      <translation>楼梯左轮廓</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="367"/>
       <source>The 'left outline' of all segments of stairs</source>
-      <translation type="unfinished">The 'left outline' of all segments of stairs</translation>
+      <translation>楼梯所有部分的左轮廓</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="370"/>
       <source>The 'right outline' of all segments of stairs</source>
-      <translation type="unfinished">The 'right outline' of all segments of stairs</translation>
+      <translation>所有楼梯段的“右侧轮廓” </translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="396"/>
@@ -1051,12 +1051,12 @@
     <message>
       <location filename="ArchStairs.py" line="417"/>
       <source>The type of connection between the lower slab and the start of the stairs</source>
-      <translation type="unfinished">The type of connection between the lower slab and the start of the stairs</translation>
+      <translation>底板与楼梯起点之间的连接类型</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="420"/>
       <source>The type of connection between the end of the stairs and the upper floor slab</source>
-      <translation type="unfinished">The type of connection between the end of the stairs and the upper floor slab</translation>
+      <translation>楼梯末尾与上层地板块之间的连接类型</translation>
     </message>
     <message>
       <location filename="ArchEquipment.py" line="289"/>
@@ -1146,7 +1146,7 @@
     <message>
       <location filename="ArchRebar.py" line="205"/>
       <source>The rebar mark</source>
-      <translation type="unfinished">The rebar mark</translation>
+      <translation>钢筋标记</translation>
     </message>
     <message>
       <location filename="ArchRebar.py" line="500"/>
@@ -1156,87 +1156,87 @@
     <message>
       <location filename="ArchCurtainWall.py" line="172"/>
       <source>An optional host object for this curtain wall</source>
-      <translation type="unfinished">An optional host object for this curtain wall</translation>
+      <translation>此幕墙的可选主对象</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="175"/>
       <source>The height of the curtain wall, if based on an edge</source>
-      <translation type="unfinished">The height of the curtain wall, if based on an edge</translation>
+      <translation>基于边缘的帘墙高度</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="179"/>
       <source>The number of vertical mullions</source>
-      <translation type="unfinished">The number of vertical mullions</translation>
+      <translation>垂直竖框的数量</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="183"/>
       <source>If the profile of the vertical mullions get aligned with the surface or not</source>
-      <translation type="unfinished">If the profile of the vertical mullions get aligned with the surface or not</translation>
+      <translation>如果垂直竖框的配置文件与表面对齐或不对齐</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="186"/>
       <source>The number of vertical sections of this curtain wall</source>
-      <translation type="unfinished">The number of vertical sections of this curtain wall</translation>
+      <translation>此幕墙垂直区段数</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="194"/>
       <source>The height of the vertical mullions profile, if no profile is used</source>
-      <translation type="unfinished">The height of the vertical mullions profile, if no profile is used</translation>
+      <translation>如果没有使用配置文件，多个垂直竖框配置文件的高度</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="198"/>
       <source>The width of the vertical mullions profile, if no profile is used</source>
-      <translation type="unfinished">The width of the vertical mullions profile, if no profile is used</translation>
+      <translation>如果没有使用配置文件，多个垂直竖框配置文件的宽度</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="202"/>
       <source>A profile for vertical mullions (disables vertical mullion size)</source>
-      <translation type="unfinished">A profile for vertical mullions (disables vertical mullion size)</translation>
+      <translation>垂直窗框的配置文件 (禁用垂直窗框 大小)</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="205"/>
       <source>The number of horizontal mullions</source>
-      <translation type="unfinished">The number of horizontal mullions</translation>
+      <translation>水平窗框的数量</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="209"/>
       <source>If the profile of the horizontal mullions gets aligned with the surface or not</source>
-      <translation type="unfinished">If the profile of the horizontal mullions gets aligned with the surface or not</translation>
+      <translation>如果水平窗框的配置文件与表面对齐或不对齐</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="212"/>
       <source>The number of horizontal sections of this curtain wall</source>
-      <translation type="unfinished">The number of horizontal sections of this curtain wall</translation>
+      <translation>此幕墙水平区段数</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="220"/>
       <source>The height of the horizontal mullions profile, if no profile is used</source>
-      <translation type="unfinished">The height of the horizontal mullions profile, if no profile is used</translation>
+      <translation>如果没有使用配置文件，多个水平窗框配置文件的高度</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="224"/>
       <source>The width of the horizontal mullions profile, if no profile is used</source>
-      <translation type="unfinished">The width of the horizontal mullions profile, if no profile is used</translation>
+      <translation>如果没有使用配置文件，多个水平窗框配置文件的宽</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="228"/>
       <source>A profile for horizontal mullions (disables horizontal mullion size)</source>
-      <translation type="unfinished">A profile for horizontal mullions (disables horizontal mullion size)</translation>
+      <translation>水平窗框的配置文件 (禁用水平窗框 大小)</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="231"/>
       <source>The number of diagonal mullions</source>
-      <translation type="unfinished">The number of diagonal mullions</translation>
+      <translation>对角窗框的量</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="235"/>
       <source>The size of the diagonal mullions, if any, if no profile is used</source>
-      <translation type="unfinished">The size of the diagonal mullions, if any, if no profile is used</translation>
+      <translation>如果没使用配置文件，多个对角窗框配置文件的宽高</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="239"/>
       <source>A profile for diagonal mullions, if any (disables horizontal mullion size)</source>
-      <translation type="unfinished">A profile for diagonal mullions, if any (disables horizontal mullion size)</translation>
+      <translation>对角窗框的配置文件 (禁用对角窗框 大小)</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="242"/>
@@ -1256,17 +1256,17 @@
     <message>
       <location filename="ArchCurtainWall.py" line="253"/>
       <source>Perform subtractions between components so none overlap</source>
-      <translation type="unfinished">Perform subtractions between components so none overlap</translation>
+      <translation>在组件之间进行减法，所以不会重叠</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="256"/>
       <source>Centers the profile over the edges or not</source>
-      <translation type="unfinished">Centers the profile over the edges or not</translation>
+      <translation>将边缘线之上的设定置中或不置中</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="260"/>
       <source>The vertical direction reference to be used by this object to deduce vertical/horizontal directions. Keep it close to the actual vertical direction of your curtain wall</source>
-      <translation type="unfinished">The vertical direction reference to be used by this object to deduce vertical/horizontal directions. Keep it close to the actual vertical direction of your curtain wall</translation>
+      <translation>此对象用于推导出垂直方向/水平方向的垂直方向参考。 保持它靠近您的屏幕墙的实际垂直方向</translation>
     </message>
     <message>
       <location filename="ArchReference.py" line="94"/>
@@ -1511,7 +1511,7 @@
     <message>
       <location filename="ArchWall.py" line="731"/>
       <source>The area of this wall as a simple Height * Length calculation</source>
-      <translation type="unfinished">The area of this wall as a simple Height * Length calculation</translation>
+      <translation>墙壁的面积简单地通过高度*长度来计算</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="734"/>
@@ -1576,12 +1576,12 @@
     <message>
       <location filename="ArchRoof.py" line="263"/>
       <source>The list of angles of the roof segments</source>
-      <translation type="unfinished">The list of angles of the roof segments</translation>
+      <translation>屋顶段角度列表</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="268"/>
       <source>The list of horizontal length projections of the roof segments</source>
-      <translation type="unfinished">The list of horizontal length projections of the roof segments</translation>
+      <translation>每个屋顶窗格的水平长度投影目录</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="273"/>
@@ -4493,6 +4493,11 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="ArchRebar.py" line="104"/>
       <source>Custom Rebar</source>
       <translation>定制钢筋</translation>
+    </message>
+    <message>
+      <location filename="ArchRebar.py" line="108"/>
+      <source>Creates a Reinforcement bar from the selected face of solid object and/or a sketch</source>
+      <translation type="unfinished">Creates a Reinforcement bar from the selected face of solid object and/or a sketch</translation>
     </message>
     <message>
       <location filename="ArchRebar.py" line="108"/>

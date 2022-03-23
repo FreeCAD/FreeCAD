@@ -1137,12 +1137,12 @@ w odniesieniu do linii lub trzeciego punktu</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2085"/>
       <source>Delete all geometry</source>
-      <translation>Usuń całą geometrię</translation>
+      <translation>Usuń wszystkie geometrie</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2086"/>
       <source>Delete all geometry and constraints in the current sketch, with the exception of external geometry</source>
-      <translation>Usuń całą geometrię i wiązania z bieżącego rysunku, z wyjątkiem geometrii zewnętrznej</translation>
+      <translation>Usuń wszystkie geometrie i wiązania z bieżącego rysunku, z wyjątkiem geometrii zewnętrznej</translation>
     </message>
   </context>
   <context>
@@ -2101,7 +2101,7 @@ nieprawidłowych wiązań, zdegenerowanej geometrii itp.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2111"/>
       <source>Delete all geometry</source>
-      <translation>Usuń całą geometrię</translation>
+      <translation>Usuń wszystkie geometrie</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2173"/>
@@ -3235,7 +3235,7 @@ Akceptowane kombinacje: dwie krzywe; punkt końcowy i krzywa; dwa punkty końcow
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2099"/>
       <source>Delete All Geometry</source>
-      <translation>Usuń całą geometrie</translation>
+      <translation>Usuń wszystkie geometrie</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2100"/>

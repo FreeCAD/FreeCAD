@@ -671,7 +671,7 @@
     <message>
       <location filename="PathComment.py" line="41"/>
       <source>Comment or note for CNC program</source>
-      <translation type="unfinished">Comment or note for CNC program</translation>
+      <translation>Commento o nota per il programma CNC</translation>
     </message>
     <message>
       <location filename="PathSetupSheet.py" line="119"/>
@@ -714,16 +714,6 @@
       <translation>Espressione utilizzata per StepDown nelle nuove operazioni.</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="71"/>
-      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
-      <translation>La direzione del percorso utensile intorno alla parte, CW se in senso orario o CCW se in senso antiorario</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="72"/>
-      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
-      <translation>Scostamento extra da applicare all'operazione. La direzione è dipendente dall'operazione.</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="73"/>
       <source>Start pocketing at center or boundary</source>
       <translation>Inizia la lavorazione della cava dal centro oppure dal bordo</translation>
@@ -732,6 +722,16 @@
       <location filename="PathPocketBase.py" line="74"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>Percentuale del diametro dell'utensile da sovrapporre alla passata precedente</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="71"/>
+      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
+      <translation>La direzione del percorso utensile intorno alla parte, CW se in senso orario o CCW se in senso antiorario</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="72"/>
+      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
+      <translation>Scostamento extra da applicare all'operazione. La direzione è dipendente dall'operazione.</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="75"/>
@@ -846,7 +846,7 @@
     <message>
       <location filename="PathArray.py" line="169"/>
       <source>Seed value for jitter randomness</source>
-      <translation type="unfinished">Seed value for jitter randomness</translation>
+      <translation>Valore del seme per casualità del jitter</translation>
     </message>
     <message>
       <location filename="PathPropertyBag.py" line="77"/>
@@ -1284,12 +1284,12 @@
     <message>
       <location filename="PathJobGui.py" line="628"/>
       <source>Feed(H)</source>
-      <translation type="unfinished">Feed(H)</translation>
+      <translation>Velocità avanzamento verticale</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="632"/>
       <source>Feed(V)</source>
-      <translation type="unfinished">Feed(V)</translation>
+      <translation>Velocità avanzamento orizzontale</translation>
     </message>
     <message>
       <location filename="PathToolBitGui.py" line="204"/>
@@ -1379,7 +1379,7 @@
     <message>
       <location filename="InitGui.py" line="278"/>
       <source>Don't Show This Anymore</source>
-      <translation type="unfinished">Don't Show This Anymore</translation>
+      <translation>Non mostrare più</translation>
     </message>
     <message>
       <location filename="PathCircularHoleBase.py" line="80"/>
@@ -1570,6 +1570,16 @@
   <context>
     <name>PathJob</name>
     <message>
+      <location filename="PathJobGui.py" line="1258"/>
+      <source>Unsupported stock object %s</source>
+      <translation>Tipo di oggetto pezzo grezzo non supportato %s</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1274"/>
+      <source>Unsupported stock type %s (%d)</source>
+      <translation>Tipo di oggetto pezzo grezzo non supportato %s (%d)</translation>
+    </message>
+    <message>
       <location filename="PathJobGui.py" line="387"/>
       <source>Stock not from Base bound box!</source>
       <translation>L'oggetto pezzo grezzo non appartiene all'elenco predefinito!</translation>
@@ -1583,16 +1593,6 @@
       <location filename="PathJobGui.py" line="525"/>
       <source>Stock not a cylinder!</source>
       <translation>L'oggetto grezzo non è un cilindro!</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1258"/>
-      <source>Unsupported stock object %s</source>
-      <translation>Tipo di oggetto pezzo grezzo non supportato %s</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1274"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>Tipo di oggetto pezzo grezzo non supportato %s (%d)</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="112"/>
@@ -1738,15 +1738,15 @@
       <translation>Posizione Base</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>Altezze</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="848"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>FinalDepth per questa operazione non può essere modificato. Se è necessario impostare manualmente il FinalDepth si prega di selezionare una operazione diversa.</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="855"/>
-      <source>Heights</source>
-      <translation>Altezze</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="869"/>
@@ -1782,13 +1782,13 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <location filename="PathOpGui.py" line="1390"/>
       <source>No suitable tool controller found.
 Aborting op creation</source>
-      <translation type="unfinished">No suitable tool controller found.
-Aborting op creation</translation>
+      <translation>Nessun controller di utensile adatto trovato.
+Interruzione creazione op</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="1394"/>
       <source>No tool controller, aborting op creation</source>
-      <translation type="unfinished">No tool controller, aborting op creation</translation>
+      <translation>Nessun controller di utensile, interruzione della creazione dell'op</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="111"/>
@@ -2012,12 +2012,12 @@ Aborting op creation</translation>
     <message>
       <location filename="PathProfile.py" line="200"/>
       <source>Collectively</source>
-      <translation type="unfinished">Collectively</translation>
+      <translation>Collettivamente</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="201"/>
       <source>Individually</source>
-      <translation type="unfinished">Individually</translation>
+      <translation>Individualmente</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="204"/>
@@ -3394,6 +3394,36 @@ Aborting op creation</translation>
       <translation>Crea una lavorazione</translation>
     </message>
     <message>
+      <location filename="PathJobGui.py" line="1595"/>
+      <source>Warning</source>
+      <translation>Attenzione</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1596"/>
+      <source>Please add one.</source>
+      <translation type="unfinished">Please add one.</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1597"/>
+      <source>Ok</source>
+      <translation>Ok</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1599"/>
+      <source>Add</source>
+      <translation>Aggiungi</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1610"/>
+      <source>This job has no base model.</source>
+      <translation type="unfinished">This job has no base model.</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1617"/>
+      <source>This job has no tool.</source>
+      <translation type="unfinished">This job has no tool.</translation>
+    </message>
+    <message>
       <location filename="PathJob.py" line="257"/>
       <source>Fixture</source>
       <translation>Fissaggio</translation>
@@ -3534,17 +3564,17 @@ Aborting op creation</translation>
     <message>
       <location filename="PathMillFace.py" line="72"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>Grezzo</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="120"/>
       <source>Collectively</source>
-      <translation type="unfinished">Collectively</translation>
+      <translation>Collettivamente</translation>
     </message>
     <message>
       <location filename="PathPocket.py" line="121"/>
       <source>Individually</source>
-      <translation type="unfinished">Individually</translation>
+      <translation>Individualmente</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="61"/>
@@ -4196,7 +4226,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathSurface.py" line="457"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>Grezzo</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="460"/>
@@ -4271,12 +4301,12 @@ Aborting op creation</translation>
     <message>
       <location filename="PathSurface.py" line="482"/>
       <source>Collectively</source>
-      <translation type="unfinished">Collectively</translation>
+      <translation>Collettivamente</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="483"/>
       <source>Individually</source>
-      <translation type="unfinished">Individually</translation>
+      <translation>Individualmente</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="486"/>
@@ -4533,7 +4563,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathToolController.py" line="132"/>
       <source>Forward</source>
-      <translation type="unfinished">Forward</translation>
+      <translation>Avanti</translation>
     </message>
     <message>
       <location filename="PathToolController.py" line="133"/>
@@ -4698,7 +4728,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathWaterline.py" line="103"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>Grezzo</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="106"/>
@@ -4773,12 +4803,12 @@ Aborting op creation</translation>
     <message>
       <location filename="PathWaterline.py" line="134"/>
       <source>Collectively</source>
-      <translation type="unfinished">Collectively</translation>
+      <translation>Collettivamente</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="135"/>
       <source>Individually</source>
-      <translation type="unfinished">Individually</translation>
+      <translation>Individualmente</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="138"/>
@@ -5645,7 +5675,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="108"/>
       <source>Tool Rapid Speeds</source>
-      <translation type="unfinished">Tool Rapid Speeds</translation>
+      <translation>Velocità utensile in rapido</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="118"/>
@@ -5660,7 +5690,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="128"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>Modalità refrigerante</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="141"/>
@@ -5670,7 +5700,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="144"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>Grezzo</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="153"/>
@@ -5735,12 +5765,12 @@ Aborting op creation</translation>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="67"/>
       <source>Horiz. Feed</source>
-      <translation type="unfinished">Horiz. Feed</translation>
+      <translation>Velocità avanzamento orizzontale</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="96"/>
       <source>Vert. Feed</source>
-      <translation type="unfinished">Vert. Feed</translation>
+      <translation>Velocità avanzamento verticale</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="125"/>
@@ -5755,12 +5785,12 @@ Aborting op creation</translation>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="186"/>
       <source>Spindle</source>
-      <translation type="unfinished">Spindle</translation>
+      <translation>Mandrino</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="196"/>
       <source>Forward</source>
-      <translation type="unfinished">Forward</translation>
+      <translation>Avanti</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="201"/>
@@ -5780,12 +5810,12 @@ Aborting op creation</translation>
     <message>
       <location filename="../panels/DlgToolEdit.ui" line="14"/>
       <source>Tool Editor</source>
-      <translation type="unfinished">Tool Editor</translation>
+      <translation>Editor utensili</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="14"/>
       <source>Create Property</source>
-      <translation type="unfinished">Create Property</translation>
+      <translation>Crea Proprietà</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="20"/>
@@ -6406,7 +6436,7 @@ Aborting op creation</translation>
       <location filename="../panels/SetupGlobal.ui" line="241"/>
       <location filename="../panels/SetupGlobal.ui" line="247"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>Modalità refrigerante</translation>
     </message>
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="62"/>
@@ -6707,7 +6737,7 @@ Aborting op creation</translation>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="138"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="68"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>Grezzo</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="90"/>
@@ -7906,7 +7936,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="362"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>Grezzo</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="381"/>
@@ -8731,7 +8761,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="273"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>Modalità refrigerante</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="280"/>
@@ -9290,7 +9320,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="445"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>Grezzo</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="467"/>
@@ -9527,7 +9557,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1144"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>Modalità refrigerante</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1175"/>
@@ -9554,7 +9584,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1240"/>
       <source>Spindle</source>
-      <translation type="unfinished">Spindle</translation>
+      <translation>Mandrino</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1261"/>

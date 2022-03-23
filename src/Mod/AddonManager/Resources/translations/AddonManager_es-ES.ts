@@ -186,7 +186,7 @@
       <location filename="package_details.py" line="800"/>
       <source>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</source>
       <translation type="unfinished">
-        <numerusform>No se han instalado enlaces de Python QtWebEngine -- usando la pantalla README. Ver Reporte de Vistas para más detalles e instrucciones de instalación.</numerusform>
+        <numerusform>No se han instalado enlaces de Python QtWebEngine -- usando la pantalla README. Ver Reporte Visto para más detalles e instrucciones de instalación.</numerusform>
         <numerusform>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</numerusform>
       </translation>
     </message>
@@ -718,7 +718,7 @@
       <source>Local updated</source>
       <comment>Table header for git update time of local branch</comment>
       <translation type="unfinished">
-        <numerusform>Local actualizado</numerusform>
+        <numerusform>Actualizado localmente</numerusform>
         <numerusform>Local updated</numerusform>
       </translation>
     </message>
