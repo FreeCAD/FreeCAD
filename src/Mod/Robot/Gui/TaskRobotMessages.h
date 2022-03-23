@@ -50,7 +50,7 @@ class TaskRobotMessages : public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    TaskRobotMessages(Robot::RobotObject *pcRobotObject,QWidget *parent = 0);
+    TaskRobotMessages(Robot::RobotObject *pcRobotObject,QWidget *parent = nullptr);
     ~TaskRobotMessages();
 
 private Q_SLOTS:

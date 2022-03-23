@@ -48,7 +48,7 @@ TaskEdge2TracParameter::TaskEdge2TracParameter(Robot::Edge2TracObject *pcObject,
       true, 
       parent),
       pcObject(pcObject),
-      HideShowObj(0)
+      HideShowObj(nullptr)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);

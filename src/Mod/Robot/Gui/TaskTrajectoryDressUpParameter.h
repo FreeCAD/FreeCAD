@@ -44,7 +44,7 @@ class TaskTrajectoryDressUpParameter : public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    TaskTrajectoryDressUpParameter(Robot::TrajectoryDressUpObject *obj,QWidget *parent = 0);
+    TaskTrajectoryDressUpParameter(Robot::TrajectoryDressUpObject *obj,QWidget *parent = nullptr);
     ~TaskTrajectoryDressUpParameter();
 
     /// this methode write the values from the Gui to the object, usually in accept()

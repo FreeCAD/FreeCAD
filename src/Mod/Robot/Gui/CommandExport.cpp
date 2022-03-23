@@ -70,14 +70,14 @@ void CmdRobotExportKukaCompact::activated(int)
     std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
 
 
-    Robot::RobotObject *pcRobotObject=0;
+    Robot::RobotObject *pcRobotObject=nullptr;
     if(Sel[0].pObject->getTypeId() == Robot::RobotObject::getClassTypeId())
         pcRobotObject = static_cast<Robot::RobotObject*>(Sel[0].pObject);
     else if(Sel[1].pObject->getTypeId() == Robot::RobotObject::getClassTypeId())
         pcRobotObject = static_cast<Robot::RobotObject*>(Sel[1].pObject);
     std::string RoboName = pcRobotObject->getNameInDocument();
 
-    Robot::TrajectoryObject *pcTrajectoryObject=0;
+    Robot::TrajectoryObject *pcTrajectoryObject=nullptr;
     if(Sel[0].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
         pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(Sel[0].pObject);
     else if(Sel[1].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
@@ -132,14 +132,14 @@ void CmdRobotExportKukaFull::activated(int)
     std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
 
 
-    Robot::RobotObject *pcRobotObject=0;
+    Robot::RobotObject *pcRobotObject=nullptr;
     if(Sel[0].pObject->getTypeId() == Robot::RobotObject::getClassTypeId())
         pcRobotObject = static_cast<Robot::RobotObject*>(Sel[0].pObject);
     else if(Sel[1].pObject->getTypeId() == Robot::RobotObject::getClassTypeId())
         pcRobotObject = static_cast<Robot::RobotObject*>(Sel[1].pObject);
     //std::string RoboName = pcRobotObject->getNameInDocument();
 
-    Robot::TrajectoryObject *pcTrajectoryObject=0;
+    Robot::TrajectoryObject *pcTrajectoryObject=nullptr;
     if(Sel[0].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
         pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(Sel[0].pObject);
     else if(Sel[1].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())

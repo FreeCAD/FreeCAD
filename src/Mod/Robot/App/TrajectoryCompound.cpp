@@ -50,7 +50,7 @@ PROPERTY_SOURCE(Robot::TrajectoryCompound, Robot::TrajectoryObject)
 TrajectoryCompound::TrajectoryCompound()
 {
 
-    ADD_PROPERTY_TYPE( Source,      (0)   , "Compound",Prop_None,"list of trajectories to combine");
+    ADD_PROPERTY_TYPE( Source,      (nullptr)   , "Compound",Prop_None,"list of trajectories to combine");
 
 }
 

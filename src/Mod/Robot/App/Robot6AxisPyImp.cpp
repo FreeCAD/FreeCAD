@@ -73,7 +73,7 @@ int Robot6AxisPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 PyObject* Robot6AxisPy::check(PyObject * /*args*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    return nullptr;
 }
 
 
@@ -176,7 +176,7 @@ void Robot6AxisPy::setBase(Py::Object /*arg*/)
 
 PyObject *Robot6AxisPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int Robot6AxisPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

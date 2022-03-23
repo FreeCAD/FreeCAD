@@ -161,7 +161,7 @@ Path* Path::Read(istream& is) {
 	} else {
 		throw Error_MotionIO_Unexpected_Traj();
 	}
-	return NULL; // just to avoid the warning;
+	return nullptr; // just to avoid the warning;
 }
 
 

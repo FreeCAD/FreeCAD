@@ -46,13 +46,13 @@ using namespace App;
 
 PROPERTY_SOURCE(Robot::TrajectoryDressUpObject, Robot::TrajectoryObject)
 
-const char* TrajectoryDressUpObject::ContTypeEnums[]= {"DontChange","Continues","Discontinues",NULL};
-const char* TrajectoryDressUpObject::AddTypeEnums[] = {"DontChange","UseOrientation","AddPosition","AddOrintation","AddPositionAndOrientation",NULL};
+const char* TrajectoryDressUpObject::ContTypeEnums[]= {"DontChange","Continues","Discontinues",nullptr};
+const char* TrajectoryDressUpObject::AddTypeEnums[] = {"DontChange","UseOrientation","AddPosition","AddOrintation","AddPositionAndOrientation",nullptr};
 
 TrajectoryDressUpObject::TrajectoryDressUpObject()
 {
 
-    ADD_PROPERTY_TYPE( Source,          (0)                 , "TrajectoryDressUp",Prop_None,"Trajectory to dress up");
+    ADD_PROPERTY_TYPE( Source,          (nullptr)                 , "TrajectoryDressUp",Prop_None,"Trajectory to dress up");
     ADD_PROPERTY_TYPE( Speed,           (1000)              , "TrajectoryDressUp",Prop_None,"Speed to use");
     ADD_PROPERTY_TYPE( UseSpeed    ,    (0)                 , "TrajectoryDressUp",Prop_None,"Switch the speed usage on");
     ADD_PROPERTY_TYPE( Acceleration,    (1000)              , "TrajectoryDressUp",Prop_None,"Acceleration to use");

@@ -61,13 +61,13 @@ using namespace Base;
 TYPESYSTEM_SOURCE(Robot::Trajectory , Base::Persistence)
 
 Trajectory::Trajectory()
-:pcTrajectory(0)
+:pcTrajectory(nullptr)
 {
 
 }
 
 Trajectory::Trajectory(const Trajectory& Trac)
-:vpcWaypoints(Trac.vpcWaypoints.size()),pcTrajectory(0)
+:vpcWaypoints(Trac.vpcWaypoints.size()),pcTrajectory(nullptr)
 {
     operator=(Trac);
 }

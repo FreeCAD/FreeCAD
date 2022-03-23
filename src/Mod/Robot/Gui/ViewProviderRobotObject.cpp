@@ -56,7 +56,7 @@ using namespace RobotGui;
 PROPERTY_SOURCE(RobotGui::ViewProviderRobotObject, Gui::ViewProviderGeometryObject)
 
 ViewProviderRobotObject::ViewProviderRobotObject()
-  : pcDragger(0),toolShape(0)
+  : pcDragger(nullptr),toolShape(nullptr)
 {
     ADD_PROPERTY(Manipulator,(0));
 
@@ -79,7 +79,7 @@ ViewProviderRobotObject::ViewProviderRobotObject()
     pcTcpRoot->ref();
 
 
-    Axis1Node = Axis2Node = Axis3Node = Axis4Node = Axis5Node = Axis6Node = 0;
+    Axis1Node = Axis2Node = Axis3Node = Axis4Node = Axis5Node = Axis6Node = nullptr;
 }
 
 ViewProviderRobotObject::~ViewProviderRobotObject()
@@ -92,7 +92,7 @@ ViewProviderRobotObject::~ViewProviderRobotObject()
 
 void ViewProviderRobotObject::setDragger()
 {
-    assert(pcDragger==0);
+    assert(pcDragger==nullptr);
     pcDragger = new SoJackDragger();
     pcDragger->addMotionCallback(sDraggerMotionCallback,this);
     pcTcpRoot->addChild(pcDragger);
@@ -112,7 +112,7 @@ void ViewProviderRobotObject::resetDragger()
 {
     assert(pcDragger);
     Gui::coinRemoveAllChildren(pcTcpRoot);
-    pcDragger = 0;
+    pcDragger = nullptr;
 }
 
 void ViewProviderRobotObject::attach(App::DocumentObject *pcObj)
@@ -190,7 +190,7 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
             pcRobotRoot->addChild(pcTcpRoot);
         }
 		// search for the connection points +++++++++++++++++++++++++++++++++++++++++++++++++
-		Axis1Node = Axis2Node = Axis3Node = Axis4Node = Axis5Node = Axis6Node = 0;
+		Axis1Node = Axis2Node = Axis3Node = Axis4Node = Axis5Node = Axis6Node = nullptr;
 		SoSearchAction searchAction;
 		SoPath * path;
 
@@ -329,7 +329,7 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
             toolShape = Gui::Application::Instance->getViewProvider(o);
             toolShape->setTransformation((robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix());
         }else
-            toolShape = 0;
+            toolShape = nullptr;
  	}
 
 }

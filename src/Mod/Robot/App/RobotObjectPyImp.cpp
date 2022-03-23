@@ -42,14 +42,14 @@ std::string RobotObjectPy::representation(void) const
 PyObject* RobotObjectPy::getRobot(PyObject * /*args*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    return nullptr;
 }
 
 
 
 PyObject *RobotObjectPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int RobotObjectPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

@@ -68,18 +68,18 @@ RotationalInterpolation* RotationalInterpolation::Read(istream& is) {
 		EatEnd(is,']');
 		IOTracePop();
 		IOTracePop();
-		return NULL;
+		return nullptr;
 	} else if (strcmp(storage,"TWOAXIS")==0) {
 		IOTrace("TWOAXIS");
 		throw Error_Not_Implemented();
 		EatEnd(is,']');
 		IOTracePop();
 		IOTracePop();
-		return NULL;
+		return nullptr;
 	} else {
 		throw Error_MotionIO_Unexpected_Traj();
 	}
-	return NULL; // just to avoid the warning;
+	return nullptr; // just to avoid the warning;
 }
 
 }

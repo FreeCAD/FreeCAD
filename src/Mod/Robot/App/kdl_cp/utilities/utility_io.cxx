@@ -37,7 +37,7 @@ namespace KDL {
             }
     }
 // Eats until the end of the line
-	int _EatUntilEndOfLine( std::istream& is, int* countp=NULL) {
+	int _EatUntilEndOfLine( std::istream& is, int* countp=nullptr) {
     int ch;
     int count;
     count = 0;
@@ -46,12 +46,12 @@ namespace KDL {
         count++;
         _check_istream(is);
     } while (ch!='\n');
-    if (countp!=NULL) *countp = count;
+    if (countp!=nullptr) *countp = count;
     return ch;
 }
 
 // Eats until the end of the comment
-	int _EatUntilEndOfComment( std::istream& is, int* countp=NULL) {
+	int _EatUntilEndOfComment( std::istream& is, int* countp=nullptr) {
     int ch;
     int count;
     count = 0;
@@ -66,14 +66,14 @@ namespace KDL {
             break;
         }
     } while (true);
-    if (countp!=NULL) *countp = count;
+    if (countp!=nullptr) *countp = count;
     ch = is.get();
     return ch;
 }
 
 // Eats space-like characters and comments
 // possibly returns the number of space-like characters eaten.
-int _EatSpace( std::istream& is,int* countp=NULL) {
+int _EatSpace( std::istream& is,int* countp=nullptr) {
     int ch;
     int count;
     count=-1;
@@ -97,7 +97,7 @@ int _EatSpace( std::istream& is,int* countp=NULL) {
             }
         }
     } while ((ch==' ')||(ch=='\n')||(ch=='\t'));
-    if (countp!=NULL) *countp =  count;
+    if (countp!=nullptr) *countp =  count;
     return ch;
 }
 
@@ -189,7 +189,7 @@ void EatWord(std::istream& is,const char* delim,char* storage,int maxsize)
     p = storage;
     size=0;
     int count = 0;
-    while ((count==0)&&(strchr(delim,ch)==NULL)) {
+    while ((count==0)&&(strchr(delim,ch)==nullptr)) {
         *p = (char) toupper(ch);
         ++p;
         if (size==maxsize) {

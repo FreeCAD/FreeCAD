@@ -86,13 +86,13 @@ int WaypointPy::PyInit(PyObject* args, PyObject* kwd)
     PyObject* pos;
     char* name = "P";
     char* type = "PTP";
-    PyObject* vel = 0;
-    PyObject* acc = 0;
+    PyObject* vel = nullptr;
+    PyObject* acc = nullptr;
     int cont = 0;
     int tool = 0;
     int base = 0;
 
-    static char* kwlist[] = { "Pos", "type","name", "vel", "cont", "tool", "base", "acc" ,NULL };
+    static char* kwlist[] = { "Pos", "type","name", "vel", "cont", "tool", "base", "acc" ,nullptr };
 
     if (!PyArg_ParseTupleAndKeywords(args, kwd, "O!|ssOiiiO", kwlist,
         &(Base::PlacementPy::Type), &pos, // the placement object
@@ -114,7 +114,7 @@ int WaypointPy::PyInit(PyObject* args, PyObject* kwd)
     else
         getWaypointPtr()->Type = Waypoint::UNDEF;
 
-    if (vel == 0)
+    if (vel == nullptr)
         switch (getWaypointPtr()->Type) {
         case Waypoint::PTP:
             getWaypointPtr()->Velocity = 100;
@@ -133,7 +133,7 @@ int WaypointPy::PyInit(PyObject* args, PyObject* kwd)
     getWaypointPtr()->Cont = cont ? true : false;
     getWaypointPtr()->Tool = tool;
     getWaypointPtr()->Base = base;
-    if (acc == 0)
+    if (acc == nullptr)
         getWaypointPtr()->Acceleration = 100;
     else
         getWaypointPtr()->Acceleration = Base::UnitsApi::toDouble(acc, Base::Unit::Acceleration);
@@ -248,7 +248,7 @@ void WaypointPy::setBase(Py::Long arg)
 
 PyObject *WaypointPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int WaypointPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
