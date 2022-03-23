@@ -695,6 +695,7 @@ void MainWindow::showDocumentation(const QString& help)
     Base::PyGILStateLocker lock;
     PyObject* module = PyImport_ImportModule("Help");
     if (module) {
+        Py_DECREF(module);
         Gui::Command::addModule(Gui::Command::Gui,"Help");
         Gui::Command::doCommand(Gui::Command::Gui,"Help.show(\"%s\")", help.toStdString().c_str());
     }
