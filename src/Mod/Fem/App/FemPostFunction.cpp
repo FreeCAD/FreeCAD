@@ -36,7 +36,7 @@ PROPERTY_SOURCE(Fem::FemPostFunctionProvider, App::DocumentObject)
 
 FemPostFunctionProvider::FemPostFunctionProvider(void): DocumentObject() {
 
-    ADD_PROPERTY(Functions, (0));
+    ADD_PROPERTY(Functions, (nullptr));
 }
 
 FemPostFunctionProvider::~FemPostFunctionProvider() {

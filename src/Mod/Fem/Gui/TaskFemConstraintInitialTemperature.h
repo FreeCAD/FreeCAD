@@ -40,7 +40,7 @@ class TaskFemConstraintInitialTemperature : public TaskFemConstraint
     Q_OBJECT
 
 public:
-    TaskFemConstraintInitialTemperature(ViewProviderFemConstraintInitialTemperature *ConstraintView,QWidget *parent = 0);
+    TaskFemConstraintInitialTemperature(ViewProviderFemConstraintInitialTemperature *ConstraintView,QWidget *parent = nullptr);
     ~TaskFemConstraintInitialTemperature();
     double get_temperature()const;
 

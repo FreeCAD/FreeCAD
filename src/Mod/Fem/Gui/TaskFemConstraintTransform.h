@@ -41,7 +41,7 @@ class TaskFemConstraintTransform : public TaskFemConstraint
     Q_OBJECT
 
 public:
-    TaskFemConstraintTransform(ViewProviderFemConstraintTransform *ConstraintView,QWidget *parent = 0);
+    TaskFemConstraintTransform(ViewProviderFemConstraintTransform *ConstraintView,QWidget *parent = nullptr);
     ~TaskFemConstraintTransform();
     const std::string getReferences() const;
     double get_X_rot()const;

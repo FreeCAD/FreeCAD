@@ -527,7 +527,7 @@ App::DocumentObject* getObjectByType(const Base::Type type)
                 return static_cast<App::DocumentObject*>(*it); // return the first of that type
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 App::DocumentObject* createObjectByType(const Base::Type type)
@@ -583,7 +583,7 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
     App::DocumentObject* obj = pcDoc->getActiveObject();
 
     vtkSmartPointer<vtkDataSet> dataset = ds;
-    App::DocumentObject* result = NULL;
+    App::DocumentObject* result = nullptr;
 
     if (res)
     {
@@ -595,7 +595,7 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
         else
         {
             Base::Console().Message("the active object is not the correct type, do nothing\n");
-            return NULL;
+            return nullptr;
         }
     }
 

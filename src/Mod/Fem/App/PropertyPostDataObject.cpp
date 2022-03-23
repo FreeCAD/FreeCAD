@@ -75,7 +75,7 @@ void PropertyPostDataObject::setValue(const vtkSmartPointer<vtkDataObject>& ds)
         m_dataObject->DeepCopy(ds);
     }
     else
-        m_dataObject = NULL;
+        m_dataObject = nullptr;
 
     hasSetValue();
 }

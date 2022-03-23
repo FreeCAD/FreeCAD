@@ -38,7 +38,7 @@ PROPERTY_SOURCE(Fem::FemResultObject, App::DocumentObject)
 
 FemResultObject::FemResultObject()
 {
-    ADD_PROPERTY_TYPE(Mesh,(0), "General",Prop_None,"Link to the corresponding mesh");
+    ADD_PROPERTY_TYPE(Mesh,(nullptr), "General",Prop_None,"Link to the corresponding mesh");
     ADD_PROPERTY_TYPE(NodeNumbers,(0), "NodeData",Prop_None,"Numbers of the result nodes");
     ADD_PROPERTY_TYPE(Stats,(0), "Data",Prop_None,"Statistics of the results");
     ADD_PROPERTY_TYPE(Time,(0), "Data",Prop_None,"Time of analysis increment");

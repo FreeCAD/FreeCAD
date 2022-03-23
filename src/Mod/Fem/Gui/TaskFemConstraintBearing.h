@@ -47,7 +47,7 @@ class TaskFemConstraintBearing : public TaskFemConstraint
     Q_OBJECT
 
 public:
-    TaskFemConstraintBearing(ViewProviderFemConstraint *ConstraintView, QWidget *parent = 0,
+    TaskFemConstraintBearing(ViewProviderFemConstraint *ConstraintView, QWidget *parent = nullptr,
                              const char* pixmapname = "FEM_ConstraintBearing");
     virtual ~TaskFemConstraintBearing();
 

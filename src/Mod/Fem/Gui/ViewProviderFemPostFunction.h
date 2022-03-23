@@ -48,7 +48,7 @@ class FemGuiExport FunctionWidget : public QWidget {
 
     Q_OBJECT
 public:
-    FunctionWidget() : m_block(false), m_view(0), m_object(0) {}
+    FunctionWidget() : m_block(false), m_view(nullptr), m_object(nullptr) {}
     virtual ~FunctionWidget() {}
 
     virtual void applyPythonCode() = 0;
@@ -111,7 +111,7 @@ public:
 
     //creates the widget used in the task dalogs, either for the function itself or for
     //the filter using it
-    virtual FunctionWidget* createControlWidget() {return NULL;}
+    virtual FunctionWidget* createControlWidget() {return nullptr;}
 
 protected:
     virtual bool setEdit(int ModNum);

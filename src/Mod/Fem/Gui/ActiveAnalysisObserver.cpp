@@ -31,7 +31,7 @@
 using namespace FemGui;
 
 
-ActiveAnalysisObserver* ActiveAnalysisObserver::inst = 0;
+ActiveAnalysisObserver* ActiveAnalysisObserver::inst = nullptr;
 
 ActiveAnalysisObserver* ActiveAnalysisObserver::instance()
 {
@@ -41,7 +41,7 @@ ActiveAnalysisObserver* ActiveAnalysisObserver::instance()
 }
 
 ActiveAnalysisObserver::ActiveAnalysisObserver()
-    : activeObject(0), activeView(0), activeDocument(0)
+    : activeObject(nullptr), activeView(nullptr), activeDocument(nullptr)
 {
 }
 
@@ -59,8 +59,8 @@ void ActiveAnalysisObserver::setActiveObject(Fem::FemAnalysis* fem)
         attachDocument(doc);
     }
     else {
-        activeObject = 0;
-        activeView = 0;
+        activeObject = nullptr;
+        activeView = nullptr;
     }
 }
 
@@ -71,7 +71,7 @@ Fem::FemAnalysis* ActiveAnalysisObserver::getActiveObject() const
 
 bool ActiveAnalysisObserver::hasActiveObject() const
 {
-    return activeObject != 0;
+    return activeObject != nullptr;
 }
 
 void ActiveAnalysisObserver::highlightActiveObject(const Gui::HighlightMode& mode, bool on)
@@ -84,9 +84,9 @@ void ActiveAnalysisObserver::slotDeletedDocument(const App::Document& Doc)
 {
     App::Document* d = getDocument();
     if (d == &Doc) {
-        activeObject = 0;
-        activeDocument = 0;
-        activeView = 0;
+        activeObject = nullptr;
+        activeDocument = nullptr;
+        activeView = nullptr;
         detachDocument();
     }
 }
@@ -94,7 +94,7 @@ void ActiveAnalysisObserver::slotDeletedDocument(const App::Document& Doc)
 void ActiveAnalysisObserver::slotDeletedObject(const App::DocumentObject& Obj)
 {
     if (activeObject == &Obj) {
-        activeObject = 0;
-        activeView = 0;
+        activeObject = nullptr;
+        activeView = nullptr;
     }
 }

@@ -57,11 +57,11 @@ using namespace Fem;
 //also defined in FemConstrainFluidBoundary and foamcasebuilder/basicbuilder.py, please update simultaneously
 //the second (index 1) is the default enum, as index 0 causes compiling error
 //static const char* BoundaryTypes[] = {"inlet","wall","outlet","freestream", "interface", NULL};
-static const char* WallSubtypes[] = { "unspecific", "fixed", "slip", "partialSlip", "moving", "rough", NULL };
-static const char* InletSubtypes[] = { "unspecific","totalPressure","uniformVelocity","volumetricFlowRate","massFlowRate",NULL };
-static const char* OutletSubtypes[] = { "unspecific","totalPressure","staticPressure","uniformVelocity", "outFlow", NULL };
-static const char* InterfaceSubtypes[] = { "unspecific","symmetry","wedge","cyclic","empty", "coupled", NULL };
-static const char* FreestreamSubtypes[] = { "unspecific", "freestream",NULL };
+static const char* WallSubtypes[] = { "unspecific", "fixed", "slip", "partialSlip", "moving", "rough", nullptr };
+static const char* InletSubtypes[] = { "unspecific","totalPressure","uniformVelocity","volumetricFlowRate","massFlowRate",nullptr };
+static const char* OutletSubtypes[] = { "unspecific","totalPressure","staticPressure","uniformVelocity", "outFlow", nullptr };
+static const char* InterfaceSubtypes[] = { "unspecific","symmetry","wedge","cyclic","empty", "coupled", nullptr };
+static const char* FreestreamSubtypes[] = { "unspecific", "freestream",nullptr };
 
 static const char* InterfaceSubtypeHelpTexts[] = {
     "invalid,select other valid interface subtype",
@@ -69,7 +69,7 @@ static const char* InterfaceSubtypeHelpTexts[] = {
     "axis symmetric front and back surfaces",
     "periodic boundary in pair, treated as physical connected",
     "front and back for single layer 2D mesh, also axis-sym axis line",
-    "exchange boundary vale with external program, need extra manual setup like file name", NULL };
+    "exchange boundary vale with external program, need extra manual setup like file name", nullptr };
 
 // defined in file FemConstraintFluidBoundary:
 // see Ansys fluet manual: Turbulence Specification method
@@ -79,11 +79,11 @@ static const char* TurbulenceSpecificationHelpTexts[] = {
             "explicitly specific intensity k [SI unit] and dissipation rate epsilon [] / omega []",
             "intensity (0.05 ~ 0.15) and characteristic length scale of max eddy [m]",
             "intensity (0.05 ~ 0.15) and turbulent viscosity ratio",
-            "for fully developed internal flow, Turbulence intensity (0-1.0) 0.05 typical", NULL };
+            "for fully developed internal flow, Turbulence intensity (0-1.0) 0.05 typical", nullptr };
 
 //static const char* ThermalBoundaryTypes[] = {"fixedValue","zeroGradient", "fixedGradient", "mixed", "heatFlux", "HTC","coupled", NULL};
 static const char* ThermalBoundaryHelpTexts[] = { "fixed Temperature [K]", "no heat transfer on boundary", "fixed value gradient [K/m]",
-            "mixed fixedGradient and fixedValue", "fixed heat flux [W/m2]", "Heat transfer coeff [W/(M2)/K]", "conjugate heat transfer with solid", NULL };
+            "mixed fixedGradient and fixedValue", "fixed heat flux [W/m2]", "Heat transfer coeff [W/(M2)/K]", "conjugate heat transfer with solid", nullptr };
 // enable & disable quantityUI once valueType is selected
 
 // internal function not declared in header file
@@ -171,7 +171,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
     // Get the feature data
     Fem::ConstraintFluidBoundary* pcConstraint = static_cast<Fem::ConstraintFluidBoundary*>(ConstraintView->getObject());
 
-    Fem::FemAnalysis* pcAnalysis = NULL;
+    Fem::FemAnalysis* pcAnalysis = nullptr;
     if (FemGui::ActiveAnalysisObserver::instance()->hasActiveObject()) {
         pcAnalysis = FemGui::ActiveAnalysisObserver::instance()->getActiveObject();
     }
@@ -183,7 +183,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
         }
     }
 
-    Fem::FemMeshObject* pcMesh = NULL;
+    Fem::FemMeshObject* pcMesh = nullptr;
     if (pcAnalysis) {
         std::vector<App::DocumentObject*> fem = pcAnalysis->Group.getValues();
         for (std::vector<App::DocumentObject*>::iterator it = fem.begin(); it != fem.end(); ++it) {
@@ -195,7 +195,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
         Base::Console().Log("FemAnalysis object is not activated or no FemAnalysis in the active document, mesh dimension is unknown\n");
         dimension = -1;  // unknown dimension of mesh
     }
-    if (pcMesh != NULL) {
+    if (pcMesh != nullptr) {
         App::Property* prop = pcMesh->getPropertyByName("Shape");  // PropertyLink
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId())) {
             App::PropertyLink* pcLink = static_cast<App::PropertyLink*>(prop);
@@ -215,7 +215,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
         }
     }
 
-    pcSolver = NULL;  // this is an private object of type Fem::FemSolverObject*
+    pcSolver = nullptr;  // this is an private object of type Fem::FemSolverObject*
     if (pcAnalysis) {
         std::vector<App::DocumentObject*> fem = pcAnalysis->Group.getValues();
         for (std::vector<App::DocumentObject*>::iterator it = fem.begin(); it != fem.end(); ++it) {
@@ -224,9 +224,9 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(ViewProviderFemCo
         }
     }
 
-    pHeatTransferring = NULL;
-    pTurbulenceModel = NULL;
-    if (pcSolver != NULL) {
+    pHeatTransferring = nullptr;
+    pTurbulenceModel = nullptr;
+    if (pcSolver != nullptr) {
         //if only it is CFD solver, otherwise exit by SIGSEGV error, detect getPropertyByName() !=  NULL
         if (pcSolver->getPropertyByName("HeatTransferring")) {
             pHeatTransferring = static_cast<App::PropertyBool*>(pcSolver->getPropertyByName("HeatTransferring"));
@@ -925,8 +925,8 @@ bool TaskDlgFemConstraintFluidBoundary::accept()
         const Fem::FemSolverObject* pcSolver = boundary->getFemSolver();
 
         if (pcSolver) {
-            App::PropertyBool* pHeatTransferring = NULL;
-            App::PropertyEnumeration* pTurbulenceModel = NULL;
+            App::PropertyBool* pHeatTransferring = nullptr;
+            App::PropertyEnumeration* pTurbulenceModel = nullptr;
             pHeatTransferring = static_cast<App::PropertyBool*>(pcSolver->getPropertyByName("HeatTransferring"));
             pTurbulenceModel = static_cast<App::PropertyEnumeration*>(pcSolver->getPropertyByName("TurbulenceModel"));
 

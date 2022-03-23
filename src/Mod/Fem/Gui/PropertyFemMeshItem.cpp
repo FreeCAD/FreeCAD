@@ -123,7 +123,7 @@ QWidget* PropertyFemMeshItem::createEditor(QWidget* parent, const QObject* recei
     Q_UNUSED(parent);
     Q_UNUSED(receiver);
     Q_UNUSED(method);
-    return 0;
+    return nullptr;
 }
 
 void PropertyFemMeshItem::setEditorData(QWidget *editor, const QVariant& data) const

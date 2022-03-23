@@ -41,7 +41,7 @@ using namespace Fem;
 
 PROPERTY_SOURCE(Fem::ConstraintHeatflux, Fem::Constraint)
 
-static const char* ConstraintTypes[] = {"DFlux","Convection", NULL};
+static const char* ConstraintTypes[] = {"DFlux","Convection", nullptr};
 
 ConstraintHeatflux::ConstraintHeatflux()
 {

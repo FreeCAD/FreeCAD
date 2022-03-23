@@ -317,11 +317,11 @@ void ViewProviderFemPostObject::update3D() {
 
     vtkPointData *pntData;
     vtkPoints *points;
-    vtkDataArray *normals = NULL;
-    vtkDataArray *tcoords = NULL;
+    vtkDataArray *normals = nullptr;
+    vtkDataArray *tcoords = nullptr;
     vtkCellArray *cells;
     vtkIdType npts = 0;
-    vtkIdTypePtr indx = 0;
+    vtkIdTypePtr indx = nullptr;
 
     points = pd->GetPoints();
     pntData = pd->GetPointData();
@@ -581,7 +581,7 @@ bool ViewProviderFemPostObject::setEdit(int ModNum) {
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         TaskDlgPost *postDlg = qobject_cast<TaskDlgPost*>(dlg);
         if (postDlg && postDlg->getView() != this)
-            postDlg = 0; // another pad left open its task panel
+            postDlg = nullptr; // another pad left open its task panel
         if (dlg && !postDlg) {
             QMessageBox msgBox;
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));

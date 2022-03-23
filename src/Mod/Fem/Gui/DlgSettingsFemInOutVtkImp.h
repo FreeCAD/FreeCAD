@@ -36,7 +36,7 @@ class DlgSettingsFemInOutVtkImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsFemInOutVtkImp( QWidget* parent = 0 );
+    DlgSettingsFemInOutVtkImp( QWidget* parent = nullptr );
     ~DlgSettingsFemInOutVtkImp();
 
 protected:

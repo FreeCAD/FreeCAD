@@ -96,7 +96,7 @@ using namespace boost;
 static int StatCount = 0;
 #endif
 
-SMESH_Gen* FemMesh::_mesh_gen = 0;
+SMESH_Gen* FemMesh::_mesh_gen = nullptr;
 
 TYPESYSTEM_SOURCE(Fem::FemMesh , Base::Persistence)
 
@@ -2526,7 +2526,7 @@ Data::Segment* FemMesh::getSubElement(const char* /*Type*/, unsigned long /*n*/)
     //str << Type << n;
     //std::string temp = str.str();
     //return new ShapeSegment(getSubShape(temp.c_str()));
-    return 0;
+    return nullptr;
 }
 
 struct Fem::FemMesh::FemMeshInfo FemMesh::getInfo(void) const{

@@ -77,10 +77,10 @@ private:
     {
         if (FemGui::ActiveAnalysisObserver::instance()->hasActiveObject()) {
             FemGui::ActiveAnalysisObserver::instance()->highlightActiveObject(Gui::HighlightMode::Blue, false);
-            FemGui::ActiveAnalysisObserver::instance()->setActiveObject(0);
+            FemGui::ActiveAnalysisObserver::instance()->setActiveObject(nullptr);
         }
 
-        PyObject* object = 0;
+        PyObject* object = nullptr;
         if (PyArg_ParseTuple(args.ptr(), "|O!", &(App::DocumentObjectPy::Type), &object) && object) {
             App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
             if (!obj || !obj->getTypeId().isDerivedFrom(Fem::FemAnalysis::getClassTypeId())) {

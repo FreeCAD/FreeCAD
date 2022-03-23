@@ -90,9 +90,9 @@ ViewProviderFemConstraint::ViewProviderFemConstraint()
     FontSize.touch();
     FaceColor.touch();
 
-    wizardWidget = NULL;
-    wizardSubLayout = NULL;
-    constraintDialog = NULL;
+    wizardWidget = nullptr;
+    wizardSubLayout = nullptr;
+    constraintDialog = nullptr;
 }
 
 ViewProviderFemConstraint::~ViewProviderFemConstraint()
@@ -197,11 +197,11 @@ void ViewProviderFemConstraint::unsetEdit(int ModNum)
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
 
-    if ((wizardWidget != NULL) && (wizardSubLayout != NULL) && (constraintDialog != NULL)) {
-        wizardWidget = NULL;
-        wizardSubLayout = NULL;
+    if ((wizardWidget != nullptr) && (wizardSubLayout != nullptr) && (constraintDialog != nullptr)) {
+        wizardWidget = nullptr;
+        wizardSubLayout = nullptr;
         delete constraintDialog;
-        constraintDialog = NULL;
+        constraintDialog = nullptr;
 
         // Notify the Shaft Wizard that we have finished editing
         // See WizardShaft.py on why we do it this way
@@ -489,34 +489,34 @@ QObject* ViewProviderFemConstraint::findChildByName(const QObject* parent, const
             return *o;
         if (!(*o)->children().empty()) {
             QObject* result = findChildByName(*o, name);
-            if (result != NULL)
+            if (result != nullptr)
                 return result;
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void ViewProviderFemConstraint::checkForWizard()
 {
-    wizardWidget= NULL;
-    wizardSubLayout = NULL;
+    wizardWidget= nullptr;
+    wizardSubLayout = nullptr;
     Gui::MainWindow* mw = Gui::getMainWindow();
-    if (mw == NULL) return;
+    if (mw == nullptr) return;
     QDockWidget* dw = mw->findChild<QDockWidget*>(QString::fromLatin1("Combo View"));
-    if (dw == NULL) return;
+    if (dw == nullptr) return;
     QWidget* cw = dw->findChild<QWidget*>(QString::fromLatin1("Combo View"));
-    if (cw == NULL) return;
+    if (cw == nullptr) return;
     QTabWidget* tw = cw->findChild<QTabWidget*>(QString::fromLatin1("combiTab"));
-    if (tw == NULL) return;
+    if (tw == nullptr) return;
     QStackedWidget* sw = tw->findChild<QStackedWidget*>(QString::fromLatin1("qt_tabwidget_stackedwidget"));
-    if (sw == NULL) return;
+    if (sw == nullptr) return;
     QScrollArea* sa = sw->findChild<QScrollArea*>();
-    if (sa== NULL) return;
+    if (sa== nullptr) return;
     QWidget* wd = sa->widget(); // This is the reason why we cannot use findChildByName() right away!!!
-    if (wd == NULL) return;
+    if (wd == nullptr) return;
     QObject* wiz = findChildByName(wd, QString::fromLatin1("ShaftWizard"));
-    if (wiz != NULL) {
+    if (wiz != nullptr) {
         wizardWidget = static_cast<QVBoxLayout*>(wiz);
         wizardSubLayout = wiz->findChild<QVBoxLayout*>(QString::fromLatin1("ShaftWizardLayout"));
     }

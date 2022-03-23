@@ -72,8 +72,8 @@ struct FemFace
     }
 
     Base::Vector3d set(short size,const SMDS_MeshElement* element,unsigned short id, short faceNo,
-        const SMDS_MeshNode* n1,const SMDS_MeshNode* n2,const SMDS_MeshNode* n3,const SMDS_MeshNode* n4=0,
-        const SMDS_MeshNode* n5=0,const SMDS_MeshNode* n6=0,const SMDS_MeshNode* n7=0,const SMDS_MeshNode* n8=0);
+        const SMDS_MeshNode* n1,const SMDS_MeshNode* n2,const SMDS_MeshNode* n3,const SMDS_MeshNode* n4=nullptr,
+        const SMDS_MeshNode* n5=nullptr,const SMDS_MeshNode* n6=nullptr,const SMDS_MeshNode* n7=nullptr,const SMDS_MeshNode* n8=nullptr);
 
     bool isSameFace (FemFace &face);
 };
@@ -435,7 +435,7 @@ SoDetail* ViewProviderFemMesh::getDetail(const char* subelement) const
         element = element.substr(0,pos);
     }
 
-    SoDetail* detail = 0;
+    SoDetail* detail = nullptr;
     if (index < 0)
         return detail;
     if (element == "Elem") {
@@ -668,9 +668,9 @@ void ViewProviderFemMesh::resetColorByElementId(void)
 
 void ViewProviderFEMMeshBuilder::buildNodes(const App::Property* prop, std::vector<SoNode*>& nodes) const
 {
-    SoCoordinate3 *pcPointsCoord=0;
-    SoIndexedFaceSet *pcFaces=0;
-    SoIndexedLineSet *pcLines=0;
+    SoCoordinate3 *pcPointsCoord=nullptr;
+    SoIndexedFaceSet *pcFaces=nullptr;
+    SoIndexedLineSet *pcLines=nullptr;
 
     if (nodes.empty()) {
         pcPointsCoord = new SoCoordinate3();

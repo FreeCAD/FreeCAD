@@ -54,12 +54,12 @@ using namespace Fem;
 using namespace App;
 
 PROPERTY_SOURCE(Fem::FemPostPipeline, Fem::FemPostObject)
-const char* FemPostPipeline::ModeEnums[]= {"Serial","Parallel",NULL};
+const char* FemPostPipeline::ModeEnums[]= {"Serial","Parallel",nullptr};
 
 FemPostPipeline::FemPostPipeline()
 {
-    ADD_PROPERTY_TYPE(Filter, (0), "Pipeline", App::Prop_None, "The filter used in this pipeline");
-    ADD_PROPERTY_TYPE(Functions, (0), "Pipeline", App::Prop_Hidden, "The function provider which groups all pipeline functions");
+    ADD_PROPERTY_TYPE(Filter, (nullptr), "Pipeline", App::Prop_None, "The filter used in this pipeline");
+    ADD_PROPERTY_TYPE(Functions, (nullptr), "Pipeline", App::Prop_Hidden, "The function provider which groups all pipeline functions");
     ADD_PROPERTY_TYPE(Mode,(long(0)), "Pipeline", App::Prop_None, "Selects the pipeline data transition mode. In serial, every filter"
                                                               "gets the output of the previous one as input. In parallel, every"
                                                               "filter gets the pipeline source as input.");
@@ -200,8 +200,8 @@ void FemPostPipeline::onChanged(const Property* prop)
         //if we have no input the filters are responsible of grabbing the pipeline data themself
         else {
             //the first filter must always grab the data
-            if(filter->Input.getValue() != NULL)
-                filter->Input.setValue(NULL);
+            if(filter->Input.getValue() != nullptr)
+                filter->Input.setValue(nullptr);
 
             //all the others need to be connected to the previous filter or grab the data, dependent on mode
             ++it;
@@ -213,8 +213,8 @@ void FemPostPipeline::onChanged(const Property* prop)
                         nextFilter->Input.setValue(filter);
                 }
                 else { //Parallel mode
-                    if( nextFilter->Input.getValue() != NULL)
-                        nextFilter->Input.setValue(NULL);
+                    if( nextFilter->Input.getValue() != nullptr)
+                        nextFilter->Input.setValue(nullptr);
                 }
 
                 filter = nextFilter;

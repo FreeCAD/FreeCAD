@@ -30,7 +30,7 @@ PyObject* ViewProviderFemMeshPy::applyDisplacement(PyObject* args)
 {
     double factor;
     if (!PyArg_ParseTuple(args, "d", &factor))
-        return 0;
+        return nullptr;
 
     this->getViewProviderFemMeshPtr()->applyDisplacementToNodes(factor);
 
@@ -96,7 +96,7 @@ PyObject* ViewProviderFemMeshPy::setNodeColorByScalars(PyObject* args)
     }
     else {
         PyErr_SetString(PyExc_TypeError, "PyArg_ParseTuple failed. Invalid arguments used with setNodeByScalars");
-        return 0;
+        return nullptr;
     }
     Py_Return;
 }
@@ -105,7 +105,7 @@ PyObject* ViewProviderFemMeshPy::setNodeColorByScalars(PyObject* args)
 PyObject* ViewProviderFemMeshPy::resetNodeColor(PyObject* args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
     this->getViewProviderFemMeshPtr()->resetColorByNodeId();
     Py_Return;
 }
@@ -135,7 +135,7 @@ PyObject* ViewProviderFemMeshPy::setNodeDisplacementByVectors(PyObject* args)
     }
     else {
         PyErr_SetString(PyExc_TypeError, "PyArg_ParseTuple failed. Invalid arguments used with setNodeDisplacementByVectors");
-        return 0;
+        return nullptr;
     }
     Py_Return;
 }
@@ -144,7 +144,7 @@ PyObject* ViewProviderFemMeshPy::setNodeDisplacementByVectors(PyObject* args)
 PyObject* ViewProviderFemMeshPy::resetNodeDisplacement(PyObject* args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
     this->getViewProviderFemMeshPtr()->resetDisplacementByNodeId();
     Py_Return;
 }
@@ -276,7 +276,7 @@ void ViewProviderFemMeshPy::setHighlightedNodes(Py::List arg)
 PyObject* ViewProviderFemMeshPy::resetHighlightedNodes(PyObject* args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
     this->getViewProviderFemMeshPtr()->resetHighlightNodes();
     Py_Return;
 }
@@ -320,7 +320,7 @@ Py::List ViewProviderFemMeshPy::getVisibleElementFaces(void) const
 
 PyObject* ViewProviderFemMeshPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 

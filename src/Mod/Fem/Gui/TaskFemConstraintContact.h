@@ -40,7 +40,7 @@ class TaskFemConstraintContact : public TaskFemConstraint
     Q_OBJECT
 
 public:
-    TaskFemConstraintContact(ViewProviderFemConstraintContact *ConstraintView,QWidget *parent = 0);
+    TaskFemConstraintContact(ViewProviderFemConstraintContact *ConstraintView,QWidget *parent = nullptr);
     ~TaskFemConstraintContact();
     const std::string getReferences() const;
     double get_Slope()const;

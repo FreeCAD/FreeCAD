@@ -54,7 +54,7 @@ class TaskDriver : public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    TaskDriver(Fem::FemAnalysis *pcObject,QWidget *parent = 0);
+    TaskDriver(Fem::FemAnalysis *pcObject,QWidget *parent = nullptr);
     ~TaskDriver();
 
 

@@ -52,7 +52,7 @@ using namespace FemGui;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgMeshShapeNetgen::TaskDlgMeshShapeNetgen(FemGui::ViewProviderFemMeshShapeNetgen *obj)
-    : TaskDialog(), param(0), ViewProviderFemMeshShapeNetgen(obj)
+    : TaskDialog(), param(nullptr), ViewProviderFemMeshShapeNetgen(obj)
 {
     FemMeshShapeNetgenObject = dynamic_cast<Fem::FemMeshShapeNetgenObject *>(obj->getObject());
     if (FemMeshShapeNetgenObject) {

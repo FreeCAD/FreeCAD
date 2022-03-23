@@ -40,7 +40,7 @@ class TaskFemConstraintPlaneRotation : public TaskFemConstraint
     Q_OBJECT
 
 public:
-    TaskFemConstraintPlaneRotation(ViewProviderFemConstraintPlaneRotation *ConstraintView,QWidget *parent = 0);
+    TaskFemConstraintPlaneRotation(ViewProviderFemConstraintPlaneRotation *ConstraintView,QWidget *parent = nullptr);
     ~TaskFemConstraintPlaneRotation();
     const std::string getReferences() const;
 

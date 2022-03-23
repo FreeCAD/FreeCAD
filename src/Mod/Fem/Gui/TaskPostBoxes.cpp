@@ -277,7 +277,7 @@ bool TaskDlgPost::accept()
             (*it)->applyPythonCode();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(NULL, tr("Input error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(nullptr, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
 
@@ -431,7 +431,7 @@ TaskPostClip::TaskPostClip(ViewProviderDocumentObject* view, App::PropertyLink* 
     assert(function);
     Q_UNUSED(function)
 
-    fwidget = NULL;
+    fwidget = nullptr;
 
     //we load the views widget
     proxy = new QWidget(this);
@@ -509,14 +509,14 @@ void TaskPostClip::on_FunctionBox_currentIndexChanged(int idx) {
             if(idx>=0)
                 static_cast<Fem::FemPostClipFilter*>(getObject())->Function.setValue(funcs[idx]);
             else
-                static_cast<Fem::FemPostClipFilter*>(getObject())->Function.setValue(NULL);
+                static_cast<Fem::FemPostClipFilter*>(getObject())->Function.setValue(nullptr);
         }
     }
 
     //load the correct view
     Fem::FemPostFunction* fobj = static_cast<Fem::FemPostFunction*>(
                                     static_cast<Fem::FemPostClipFilter*>(getObject())->Function.getValue());
-    Gui::ViewProvider* view = NULL;
+    Gui::ViewProvider* view = nullptr;
     if(fobj)
         view = Gui::Application::Instance->activeDocument()->getViewProvider(fobj);
 
@@ -704,7 +704,7 @@ void TaskPostDataAlongLine::pointCallback(void * ud, SoEventCallback * n)
 
     if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
         const SoPickedPoint * point = n->getPickedPoint();
-        if (point == NULL) {
+        if (point == nullptr) {
             Base::Console().Message("No point picked.\n");
             return;
         }
@@ -880,7 +880,7 @@ void TaskPostDataAtPoint::pointCallback(void * ud, SoEventCallback * n)
 
     if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
         const SoPickedPoint * point = n->getPickedPoint();
-        if (point == NULL) {
+        if (point == nullptr) {
             Base::Console().Message("No point picked.\n");
             return;
         }
@@ -1183,7 +1183,7 @@ TaskPostCut::TaskPostCut(ViewProviderDocumentObject* view, App::PropertyLink* fu
     assert(function);
     Q_UNUSED(function)
 
-    fwidget = NULL;
+    fwidget = nullptr;
 
     //we load the views widget
     proxy = new QWidget(this);
@@ -1257,14 +1257,14 @@ void TaskPostCut::on_FunctionBox_currentIndexChanged(int idx) {
             if(idx>=0)
                 static_cast<Fem::FemPostCutFilter*>(getObject())->Function.setValue(funcs[idx]);
             else
-                static_cast<Fem::FemPostCutFilter*>(getObject())->Function.setValue(NULL);
+                static_cast<Fem::FemPostCutFilter*>(getObject())->Function.setValue(nullptr);
         }
     }
 
     //load the correct view
     Fem::FemPostFunction* fobj = static_cast<Fem::FemPostFunction*>(
                                     static_cast<Fem::FemPostCutFilter*>(getObject())->Function.getValue());
-    Gui::ViewProvider* view = NULL;
+    Gui::ViewProvider* view = nullptr;
     if(fobj)
         view = Gui::Application::Instance->activeDocument()->getViewProvider(fobj);
 

@@ -42,7 +42,7 @@ PROPERTY_SOURCE(Fem::FemPostFilter, Fem::FemPostObject)
 
 FemPostFilter::FemPostFilter()
 {
-    ADD_PROPERTY(Input,(0));
+    ADD_PROPERTY(Input,(nullptr));
 }
 
 FemPostFilter::~FemPostFilter()
@@ -105,7 +105,7 @@ vtkDataObject* FemPostFilter::getInputData() {
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 
@@ -113,7 +113,7 @@ PROPERTY_SOURCE(Fem::FemPostClipFilter, Fem::FemPostFilter)
 
 FemPostClipFilter::FemPostClipFilter(void) : FemPostFilter() {
 
-    ADD_PROPERTY_TYPE(Function, (0), "Clip", App::Prop_None, "The function object which defines the clip regions");
+    ADD_PROPERTY_TYPE(Function, (nullptr), "Clip", App::Prop_None, "The function object which defines the clip regions");
     ADD_PROPERTY_TYPE(InsideOut, (false), "Clip", App::Prop_None, "Invert the clip direction");
     ADD_PROPERTY_TYPE(CutCells, (false), "Clip", App::Prop_None, "Decides if cells are cuttet and interpolated or if the cells are kept as a whole");
 
@@ -579,7 +579,7 @@ PROPERTY_SOURCE(Fem::FemPostCutFilter, Fem::FemPostFilter)
 
 FemPostCutFilter::FemPostCutFilter(void) : FemPostFilter() {
 
-    ADD_PROPERTY_TYPE(Function, (0), "Cut", App::Prop_None, "The function object which defines the clip cut function");
+    ADD_PROPERTY_TYPE(Function, (nullptr), "Cut", App::Prop_None, "The function object which defines the clip cut function");
 
     FilterPipeline clip;
     m_cutter            = vtkSmartPointer<vtkCutter>::New();

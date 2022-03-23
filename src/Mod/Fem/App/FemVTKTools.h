@@ -63,10 +63,10 @@ namespace Fem
         static void writeVTKMesh(const char* Filename, const FemMesh* mesh);
 
         // FemResult (activeObject or created if res= NULL) read from vtkUnstructuredGrid dataset file
-        static App::DocumentObject* readResult(const char* Filename, App::DocumentObject* res = NULL);
+        static App::DocumentObject* readResult(const char* Filename, App::DocumentObject* res = nullptr);
 
         // write FemResult (activeObject if res= NULL) to vtkUnstructuredGrid dataset file
-        static void writeResult(const char* filename, const App::DocumentObject* res = NULL);
+        static void writeResult(const char* filename, const App::DocumentObject* res = nullptr);
 
     };
 }
