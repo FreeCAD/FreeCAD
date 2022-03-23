@@ -396,12 +396,12 @@ private:
     Py::Object insert(const Py::Tuple& args, const Py::Dict &kwds)
     {
         char* Name;
-        char* DocName=0;
+        char* DocName=nullptr;
         PyObject *importHidden = Py_None;
         PyObject *merge = Py_None;
         PyObject *useLinkGroup = Py_None;
         int mode = -1;
-        static char* kwd_list[] = {"name","docName","importHidden","merge","useLinkGroup","mode",0};
+        static char* kwd_list[] = {"name","docName","importHidden","merge","useLinkGroup","mode",nullptr};
         if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "et|sOOOi", 
                     kwd_list,"utf-8",&Name,&DocName,&importHidden,&merge,&useLinkGroup,&mode))
             throw Py::Exception();
@@ -414,7 +414,7 @@ private:
             //Base::Console().Log("Insert in Part with %s",Name);
             Base::FileInfo file(Utf8Name.c_str());
 
-            App::Document *pcDoc = 0;
+            App::Document *pcDoc = nullptr;
             if (DocName) {
                 pcDoc = App::GetApplication().getDocument(DocName);
             }
@@ -564,7 +564,7 @@ private:
         PyObject *exportHidden = Py_None;
         PyObject *legacy = Py_None;
         PyObject *keepPlacement = Py_None;
-        static char* kwd_list[] = {"obj", "name", "exportHidden", "legacy", "keepPlacement",0};
+        static char* kwd_list[] = {"obj", "name", "exportHidden", "legacy", "keepPlacement",nullptr};
         if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "Oet|OOO",
                     kwd_list,&object,"utf-8",&Name,&exportHidden,&legacy,&keepPlacement))
             throw Py::Exception();
@@ -774,7 +774,7 @@ private:
                 throw Py::Exception(PyExc_IOError, "no supported file format");
             }
 
-            static QPointer<QDialog> dlg = 0;
+            static QPointer<QDialog> dlg = nullptr;
             if (!dlg) {
                 dlg = new QDialog(Gui::getMainWindow());
                 QTreeWidget* tree = new QTreeWidget();

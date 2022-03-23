@@ -95,8 +95,8 @@ public:
 private:
     struct Info {
         std::string baseName;
-        App::DocumentObject *obj = 0;
-        App::PropertyPlacement *propPlacement = 0;
+        App::DocumentObject *obj = nullptr;
+        App::PropertyPlacement *propPlacement = nullptr;
         App::Color faceColor;
         App::Color edgeColor;
         bool hasFaceColor = false;
@@ -176,15 +176,15 @@ public:
 
     void setExportHiddenObject(bool enable) {exportHidden=enable;}
     void setKeepPlacement(bool enable) {keepPlacement=enable;}
-    void exportObjects(std::vector<App::DocumentObject*> &objs, const char *name=0);
+    void exportObjects(std::vector<App::DocumentObject*> &objs, const char *name=nullptr);
     bool canFallback(std::vector<App::DocumentObject*> objs);
 
 private:
-    TDF_Label exportObject(App::DocumentObject *obj, const char *sub, TDF_Label parent, const char *name=0);
+    TDF_Label exportObject(App::DocumentObject *obj, const char *sub, TDF_Label parent, const char *name=nullptr);
     void setupObject(TDF_Label label, App::DocumentObject *obj, 
             const Part::TopoShape &shape, const std::string &prefix, 
-            const char *name=0, bool force=false);
-    void setName(TDF_Label label, App::DocumentObject *obj, const char *name=0);
+            const char *name=nullptr, bool force=false);
+    void setName(TDF_Label label, App::DocumentObject *obj, const char *name=nullptr);
     TDF_Label findComponent(const char *subname, TDF_Label label, TDF_LabelSequence &labels);
 
 private:

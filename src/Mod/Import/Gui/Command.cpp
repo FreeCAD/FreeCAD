@@ -66,7 +66,7 @@ void FCCmdImportReadBREP::activated(int iMsg)
 
 bool FCCmdImportReadBREP::isActive(void)
 {
-    return getGuiApplication()->activeDocument() != 0;
+    return getGuiApplication()->activeDocument() != nullptr;
 }
 
 //===========================================================================
