@@ -280,7 +280,7 @@ PyObject* RotationPy::slerp(PyObject * args)
     PyObject *rot;
     double t;
     if (!PyArg_ParseTuple(args, "O!d", &(RotationPy::Type), &rot, &t))
-        return 0;
+        return nullptr;
     Rotation *rot0 = this->getRotationPtr();
     Rotation *rot1 = static_cast<RotationPy*>(rot)->getRotationPtr();
     Rotation sl = Rotation::slerp(*rot0, *rot1, t);
@@ -357,7 +357,7 @@ PyObject* RotationPy::toEulerAngles(PyObject * args)
 PyObject* RotationPy::toMatrix(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
     Base::Matrix4D mat;
     getRotationPtr()->getValue(mat);
     return new MatrixPy(new Matrix4D(mat));

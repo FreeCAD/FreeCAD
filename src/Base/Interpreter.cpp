@@ -80,7 +80,7 @@ PyException::PyException()
         // destroyed, so we don't keep reference here to save book-keeping in
         // our copy constructor and destructor
         Py_DECREF(PP_last_exception_type);
-        PP_last_exception_type = 0;
+        PP_last_exception_type = nullptr;
 
     }
 

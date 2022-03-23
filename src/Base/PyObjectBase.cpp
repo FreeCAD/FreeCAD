@@ -103,13 +103,13 @@ static void
 PyBaseProxy_dealloc(PyObject* self)
 {
     /* Clear weakrefs first before calling any destructors */
-    if (reinterpret_cast<PyBaseProxy*>(self)->weakreflist != NULL)
+    if (reinterpret_cast<PyBaseProxy*>(self)->weakreflist != nullptr)
         PyObject_ClearWeakRefs(self);
     Py_TYPE(self)->tp_free(self);
 }
 
 static PyTypeObject PyBaseProxyType = {
-    PyVarObject_HEAD_INIT(NULL, 0)
+    PyVarObject_HEAD_INIT(nullptr, 0)
     "PyBaseProxy",                                          /*tp_name*/
     sizeof(PyBaseProxy),                                    /*tp_basicsize*/
     0,                                                      /*tp_itemsize*/

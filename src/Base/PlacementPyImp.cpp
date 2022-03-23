@@ -167,7 +167,7 @@ PyObject* PlacementPy::rotate(PyObject *args) {
     PyObject *obj1, *obj2;
     double angle;
     if (!PyArg_ParseTuple(args, "OOd", &obj1, &obj2, &angle))
-        return NULL;
+        return nullptr;
 
     try {
         Py::Sequence p1(obj1), p2(obj2);
@@ -182,7 +182,7 @@ PyObject* PlacementPy::rotate(PyObject *args) {
         Py_Return;
     }
     catch (const Py::Exception&) {
-        return NULL;
+        return nullptr;
     }
 }
 

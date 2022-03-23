@@ -595,7 +595,7 @@ std::vector<std::pair<std::string,unsigned long> > ParameterGrp::GetUnsignedMap(
     while ( pcTemp ) {
         Name = StrX(static_cast<DOMElement*>(pcTemp)->getAttributes()->getNamedItem(XStr("Name").unicodeForm())->getNodeValue()).c_str();
         // check on filter condition
-        if (sFilter == NULL || Name.find(sFilter)!= std::string::npos) {
+        if (sFilter == nullptr || Name.find(sFilter)!= std::string::npos) {
             vrValues.emplace_back(Name,
                                ( strtoul (StrX(static_cast<DOMElement*>(pcTemp)->getAttribute(XStr("Value").unicodeForm())).c_str(),nullptr,10) ));
         }
@@ -940,7 +940,7 @@ void ParameterGrp::Clear(void)
     }
 
     // searching all non-group nodes
-    for (DOMNode *child = _pGroupNode->getFirstChild(); child != 0;  child = child->getNextSibling()) {
+    for (DOMNode *child = _pGroupNode->getFirstChild(); child != nullptr;  child = child->getNextSibling()) {
         if (XMLString::compareString(child->getNodeName(), XStr("FCParamGroup").unicodeForm()) != 0)
             vecNodes.push_back(child);
     }

@@ -849,7 +849,7 @@ const char *EulerSequenceNames[] = {
 const char * Rotation::eulerSequenceName(EulerSequence seq)
 {
     if (seq == Invalid || seq >= EulerSequenceLast)
-        return 0;
+        return nullptr;
     return EulerSequenceNames[seq-1];
 }
 
