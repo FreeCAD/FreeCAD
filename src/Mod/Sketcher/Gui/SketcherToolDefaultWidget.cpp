@@ -249,6 +249,7 @@ void SketcherToolDefaultWidget::parameterFive_valueChanged(double val)
     if(!blockParameterSlots) {
         isSet[Parameter::Fifth] = true;
         setParameterFontStyle(Parameter::Fifth, FontStyle::Bold);
+        setParameterFocus(Parameter::Sixth);
         signalParameterValueChanged(Parameter::Fifth, val);
     }
 }

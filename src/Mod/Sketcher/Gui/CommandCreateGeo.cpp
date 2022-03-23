@@ -781,9 +781,8 @@ private:
                             if(toolWidget->isParameterSet(WParameter::Third) &&
                                 toolWidget->isParameterSet(WParameter::Fourth)) {
 
-                                    handler->setState(SelectMode::End);
-                                    handler->finish();
-                                }
+                                    handler->setState(SelectMode::SeekThird);
+                            }
                         }
                     }
                     break;
@@ -799,7 +798,7 @@ private:
 
                                     handler->setState(SelectMode::End);
                                     handler->finish();
-                                }
+                            }
                         }
                     }
                     break;
