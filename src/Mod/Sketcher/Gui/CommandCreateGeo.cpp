@@ -4008,133 +4008,6 @@ bool CmdSketcherCreateCircle::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
-DEF_STD_CMD_A(CmdSketcherCreate3PointCircle)
-
-CmdSketcherCreate3PointCircle::CmdSketcherCreate3PointCircle()
-    : Command("Sketcher_Create3PointCircle")
-{
-    sAppModule = "Sketcher";
-    sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create circle by three points");
-    sToolTipText = QT_TR_NOOP("Create a circle by 3 perimeter points");
-    sWhatsThis = "Sketcher_Create3PointCircle";
-    sStatusTip = sToolTipText;
-    sPixmap = "Sketcher_Create3PointCircle";
-    sAccel = "G, 3, C";
-    eType = ForEdit;
-}
-
-void CmdSketcherCreate3PointCircle::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerCircle(DrawSketchHandlerCircle::ConstructionMethod::ThreeRim));
-}
-
-bool CmdSketcherCreate3PointCircle::isActive(void)
-{
-    return isCreateGeoActive(getActiveGuiDocument());
-}
-
-
-DEF_STD_CMD_ACLU(CmdSketcherCompCreateCircle)
-
-CmdSketcherCompCreateCircle::CmdSketcherCompCreateCircle()
-    : Command("Sketcher_CompCreateCircle")
-{
-    sAppModule = "Sketcher";
-    sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create circle");
-    sToolTipText = QT_TR_NOOP("Create a circle in the sketcher");
-    sWhatsThis = "Sketcher_CompCreateCircle";
-    sStatusTip = sToolTipText;
-    eType = ForEdit;
-}
-
-void CmdSketcherCompCreateCircle::activated(int iMsg)
-{
-    if (iMsg == 0)
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerCircle(DrawSketchHandlerCircle::ConstructionMethod::Center));
-    else if (iMsg == 1)
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerCircle(DrawSketchHandlerCircle::ConstructionMethod::ThreeRim));
-    else
-        return;
-
-    // Since the default icon is reset when enabling/disabling the command we have
-    // to explicitly set the icon of the used command.
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
-
-    assert(iMsg < a.size());
-    pcAction->setIcon(a[iMsg]->icon());
-}
-
-Gui::Action* CmdSketcherCompCreateCircle::createAction(void)
-{
-    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
-    pcAction->setDropDownMenu(true);
-    applyCommandData(this->className(), pcAction);
-
-    QAction* arc1 = pcAction->addAction(QString());
-    arc1->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateCircle"));
-    QAction* arc2 = pcAction->addAction(QString());
-    arc2->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointCircle"));
-
-    _pcAction = pcAction;
-    languageChange();
-
-    pcAction->setIcon(arc1->icon());
-    int defaultId = 0;
-    pcAction->setProperty("defaultAction", QVariant(defaultId));
-
-    return pcAction;
-}
-
-void CmdSketcherCompCreateCircle::updateAction(int mode)
-{
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
-    if (!pcAction)
-        return;
-
-    QList<QAction*> a = pcAction->actions();
-    int index = pcAction->property("defaultAction").toInt();
-    switch (mode) {
-    case Normal:
-        a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateCircle"));
-        a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointCircle"));
-        getAction()->setIcon(a[index]->icon());
-        break;
-    case Construction:
-        a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateCircle_Constr"));
-        a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointCircle_Constr"));
-        getAction()->setIcon(a[index]->icon());
-        break;
-    }
-}
-
-void CmdSketcherCompCreateCircle::languageChange()
-{
-    Command::languageChange();
-
-    if (!_pcAction)
-        return;
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
-
-    QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdSketcherCompCreateCircle", "Center and rim point"));
-    arc1->setToolTip(QApplication::translate("Sketcher_CreateCircle", "Create a circle by its center and by a rim point"));
-    arc1->setStatusTip(QApplication::translate("Sketcher_CreateCircle", "Create a circle by its center and by a rim point"));
-    QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("CmdSketcherCompCreateCircle", "3 rim points"));
-    arc2->setToolTip(QApplication::translate("Sketcher_Create3PointCircle", "Create a circle by 3 rim points"));
-    arc2->setStatusTip(QApplication::translate("Sketcher_Create3PointCircle", "Create a circle by 3 rim points"));
-}
-
-bool CmdSketcherCompCreateCircle::isActive(void)
-{
-    return isCreateGeoActive(getActiveGuiDocument());
-}
-
 // ======================================================================================
 
 
@@ -6081,6 +5954,107 @@ void CmdSketcherCompCreateConic::languageChange()
 }
 
 bool CmdSketcherCompCreateConic::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+// ======================================================================================
+
+DEF_STD_CMD_ACLU(CmdSketcherCompCreateCircle)
+
+CmdSketcherCompCreateCircle::CmdSketcherCompCreateCircle()
+    : Command("Sketcher_CompCreateCircle")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Create circle");
+    sToolTipText = QT_TR_NOOP("Create a circle in the sketcher");
+    sWhatsThis = "Sketcher_CompCreateCircle";
+    sStatusTip = sToolTipText;
+    eType = ForEdit;
+}
+
+void CmdSketcherCompCreateCircle::activated(int iMsg)
+{
+    if (iMsg == 0)
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerCircle(DrawSketchHandlerCircle::ConstructionMethod::Center));
+    else if (iMsg == 1)
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerEllipse(0));
+    else
+        return;
+
+    // Since the default icon is reset when enabling/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+}
+
+Gui::Action* CmdSketcherCompCreateCircle::createAction(void)
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* circle = pcAction->addAction(QString());
+    circle->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateCircle"));
+    QAction* ellipse = pcAction->addAction(QString());
+    ellipse->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse"));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(circle->icon());
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdSketcherCompCreateCircle::updateAction(int mode)
+{
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    if (!pcAction)
+        return;
+
+    QList<QAction*> a = pcAction->actions();
+    int index = pcAction->property("defaultAction").toInt();
+    switch (mode) {
+    case Normal:
+        a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateCircle"));
+        a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse"));
+        getAction()->setIcon(a[index]->icon());
+        break;
+    case Construction:
+        a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateCircle_Constr"));
+        a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_Constr"));
+        getAction()->setIcon(a[index]->icon());
+        break;
+    }
+}
+
+void CmdSketcherCompCreateCircle::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    QAction* circle = a[0];
+    circle->setText(QApplication::translate("CmdSketcherCompCreateCircle", "Circle"));
+    circle->setToolTip(QApplication::translate("Sketcher_CreateCircle", "Create a circle by its center or by rim points"));
+    circle->setStatusTip(QApplication::translate("Sketcher_CreateCircle", "Create a circle by its center or by rim points"));
+    QAction* ellipse = a[1];
+    ellipse->setText(QApplication::translate("CmdSketcherCompCreateCircle", "Ellipse"));
+    ellipse->setToolTip(QApplication::translate("Sketcher_CreateEllipse", "Create an ellipse by center or by rim points"));
+    ellipse->setStatusTip(QApplication::translate("Sketcher_CreateEllipse", "Create an ellipse by center or by rim points"));
+}
+
+bool CmdSketcherCompCreateCircle::isActive(void)
 {
     return isCreateGeoActive(getActiveGuiDocument());
 }
@@ -9059,7 +9033,6 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherCreate3PointArc());
     rcCmdMgr.addCommand(new CmdSketcherCompCreateArc());
     rcCmdMgr.addCommand(new CmdSketcherCreateCircle());
-    rcCmdMgr.addCommand(new CmdSketcherCreate3PointCircle());
     rcCmdMgr.addCommand(new CmdSketcherCompCreateCircle());
     rcCmdMgr.addCommand(new CmdSketcherCreateEllipseByCenter());
     rcCmdMgr.addCommand(new CmdSketcherCreateEllipseBy3Points());
