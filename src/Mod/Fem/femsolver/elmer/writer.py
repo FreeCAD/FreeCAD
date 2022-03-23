@@ -214,7 +214,8 @@ class Writer(object):
                     _ELMERGRID_IFORMAT,
                     _ELMERGRID_OFORMAT,
                     unvPath,
-                    "-out", self.directory]
+                    "-scale", "0.001", "0.001", "0.001",
+                     "-out", self.directory]
             subprocess.call(args, stdout=subprocess.DEVNULL)
 
     def _writeStartinfo(self):
@@ -280,11 +281,12 @@ class Writer(object):
     def _handleSimulation(self):
         self._simulation("Coordinate System", "Cartesian 3D")
         self._simulation("Coordinate Mapping", (1, 2, 3))
-        if self.unit_schema == Units.Scheme.SI2:
-            self._simulation("Coordinate Scaling", 0.001)
-            Console.PrintMessage(
-                "'Coordinate Scaling = Real 0.001' was inserted into the solver input file.\n"
-            )
+        # not necessary anymore since we use SI units
+        #if self.unit_schema == Units.Scheme.SI2:
+        #self._simulation("Coordinate Scaling", 0.001)
+        #    Console.PrintMessage(
+        #        "'Coordinate Scaling = Real 0.001' was inserted into the solver input file.\n"
+        #    )
         self._simulation("Simulation Type", "Steady state")
         self._simulation("Steady State Max Iterations", 1)
         self._simulation("Output Intervals", 1)

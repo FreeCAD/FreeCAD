@@ -71,6 +71,7 @@ ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(
     ADD_PROPERTY_TYPE(Field,((long)0), "Coloring", App::Prop_None, "Select the field used for calculating the color");
     ADD_PROPERTY_TYPE(VectorMode,((long)0), "Coloring", App::Prop_None, "Select what to show for a vector field");
     ADD_PROPERTY(Transparency, (0));
+    ADD_PROPERTY(Scale, (1.0));
 
     sPixmap = "fem-femmesh-from-shape";
 
@@ -425,11 +426,19 @@ void ViewProviderFemPostObject::WritePointData(vtkPoints* points, vtkDataArray* 
     if(!points)
         return;
 
+    // if the object contains "Elmer" but no scale has been set, we set it to 1000.0
+    // because for Elmer we work with SI units and thus get a scaled result we need to transform
+    auto Label = std::string(pcObject->Label.getValue());
+    auto found = Label.find(std::string("Elmer"));
+    if (found != std::string::npos && Scale.getValue() != 1000.0)
+        Scale.setValue(1000.0);
+
     m_coordinates->point.startEditing();
     m_coordinates->point.setNum(points->GetNumberOfPoints());
+    auto scale = Scale.getValue();
     for (i = 0; i < points->GetNumberOfPoints(); i++) {
         p = points->GetPoint(i);
-        m_coordinates->point.set1Value(i, p[0], p[1], p[2]);
+        m_coordinates->point.set1Value(i, p[0] * scale, p[1] * scale, p[2] * scale);
     }
     m_coordinates->point.finishEditing();
 
@@ -506,8 +515,6 @@ void ViewProviderFemPostObject::WriteTransparency() {
     m_material->transparency.setValue(trans);
 }
 
-
-
 void ViewProviderFemPostObject::updateData(const App::Property* p) {
 
     if( strcmp(p->getName(), "Data") == 0 ) {
@@ -534,21 +541,24 @@ bool ViewProviderFemPostObject::setupPipeline() {
 
 void ViewProviderFemPostObject::onChanged(const App::Property* prop) {
 
-    if(m_blockPropertyChanges)
+    if (m_blockPropertyChanges)
         return;
 
     bool ResetColorBarRange = true;
-    if(prop == &Field && setupPipeline()) {
+    if (prop == &Field && setupPipeline()) {
         updateProperties();
         WriteColorData(ResetColorBarRange);
         WriteTransparency();
     }
-    else if(prop == &VectorMode && setupPipeline()) {
+    else if (prop == &VectorMode && setupPipeline()) {
         WriteColorData(ResetColorBarRange);
         WriteTransparency();
     }
-    else if(prop == &Transparency) {
+    else if (prop == &Transparency) {
         WriteTransparency();
+    }
+    else if (prop == &Scale) {
+        update3D();
     }
 
     ViewProviderDocumentObject::onChanged(prop);

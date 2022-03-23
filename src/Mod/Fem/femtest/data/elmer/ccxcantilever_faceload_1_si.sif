@@ -34,7 +34,6 @@ End
 Simulation 
   BDF Order = Integer 1
   Coordinate Mapping(3) = Integer 1 2 3
-  Coordinate Scaling = Real 0.001
   Coordinate System = String "Cartesian 3D"
   Output Intervals = Integer 1
   Simulation Type = String "Steady state"

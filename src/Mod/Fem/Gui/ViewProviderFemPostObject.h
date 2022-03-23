@@ -82,6 +82,7 @@ public:
     App::PropertyEnumeration            Field;
     App::PropertyEnumeration            VectorMode;
     App::PropertyPercent                Transparency;
+    App::PropertyFloat                  Scale;
 
     void attach(App::DocumentObject *pcObject);
     void setDisplayMode(const char* ModeName);
