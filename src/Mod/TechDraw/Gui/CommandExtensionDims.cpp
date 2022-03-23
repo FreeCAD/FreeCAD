@@ -2281,7 +2281,7 @@ namespace TechDrawGui {
     {
         TechDraw::DrawPage* page = objFeat->findParentPage();
         std::string PageName = page->getNameInDocument();
-        TechDraw::DrawViewDimension* dim = 0;
+        TechDraw::DrawViewDimension* dim = nullptr;
         std::string FeatName = cmd->getUniqueObjectName("Dimension");
         std::vector<App::DocumentObject*> objs;
         std::vector<std::string> subs;

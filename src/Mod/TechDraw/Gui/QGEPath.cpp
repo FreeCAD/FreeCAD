@@ -208,7 +208,7 @@ void QGEPath::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 void QGEPath::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     QGIView *view = dynamic_cast<QGIView *> (parentItem());
-    assert(view != 0);
+    assert(view != nullptr);
     Q_UNUSED(view);
 
     Q_EMIT hover(false);

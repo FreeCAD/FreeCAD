@@ -123,7 +123,7 @@ double Grabber3d::copyActiveViewToSvgFile(App::Document* appDoc,
     pCam = nullptr;
 
     //make a view for rendering Svg
-    View3DInventor* view3DI = new View3DInventor(0, 0);         //essentially an undisplayed mdi
+    View3DInventor* view3DI = new View3DInventor(nullptr, nullptr);         //essentially an undisplayed mdi
 //    view3DI->setWindowTitle(QString::fromUtf8("SvgRenderViewer"));  //fluff
 //    Gui::getMainWindow()->addWindow(view3DI);                   //just for debugging.  comment for release.
 

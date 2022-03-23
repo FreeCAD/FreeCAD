@@ -44,7 +44,7 @@ PyObject *GeomFormatPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  //
     // never create such objects with the constructor
     PyErr_SetString(PyExc_RuntimeError,
         "You cannot create an instance of the abstract class 'GeomFormat'.");
-    return 0;
+    return nullptr;
 }
 
 // constructor method
@@ -56,17 +56,17 @@ int GeomFormatPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 PyObject* GeomFormatPy::clone(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     TechDraw::GeomFormat* geom = this->getGeomFormatPtr();
     PyTypeObject* type = this->GetType();
-    PyObject* cpy = 0;
+    PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, 0);
+        cpy = type->tp_new(type, this, nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_TypeError, "failed to create clone of GeomFormat");
-        return 0;
+        return nullptr;
     }
 
     TechDraw::GeomFormatPy* geompy = static_cast<TechDraw::GeomFormatPy*>(cpy);
@@ -83,17 +83,17 @@ PyObject* GeomFormatPy::clone(PyObject *args)
 PyObject* GeomFormatPy::copy(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     TechDraw::GeomFormat* geom = this->getGeomFormatPtr();
     PyTypeObject* type = this->GetType();
-    PyObject* cpy = 0;
+    PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, 0);
+        cpy = type->tp_new(type, this, nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_TypeError, "failed to create copy of GeomFormat");
-        return 0;
+        return nullptr;
     }
 
     TechDraw::GeomFormatPy* geompy = static_cast<TechDraw::GeomFormatPy*>(cpy);
@@ -115,7 +115,7 @@ Py::String GeomFormatPy::getTag(void) const
 
 PyObject *GeomFormatPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int GeomFormatPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

@@ -277,7 +277,7 @@ void TaskRichAnno::onEditorClicked(bool b)
 {
 //    Base::Console().Message("TL::onEditorClicked(%d)\n",b);
     Q_UNUSED(b);
-    m_textDialog = new QDialog(0);
+    m_textDialog = new QDialog(nullptr);
     QString leadText = ui->teAnnoText->toHtml();
     QString plainText = ui->teAnnoText->toPlainText();
 //    Base::Console().Message("TRA::onEditorClicked - leadText: %s**  plainText: %s**\n",
@@ -578,7 +578,7 @@ TaskDlgRichAnno::TaskDlgRichAnno(TechDraw::DrawView* baseFeat,
 {
     widget  = new TaskRichAnno(baseFeat,page);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_RichTextAnnotation"),
-                                              widget->windowTitle(), true, 0);
+                                              widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }
@@ -588,7 +588,7 @@ TaskDlgRichAnno::TaskDlgRichAnno(TechDrawGui::ViewProviderRichAnno* leadVP)
 {
     widget  = new TaskRichAnno(leadVP);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_RichTextAnnotation"),
-                                         widget->windowTitle(), true, 0);
+                                         widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

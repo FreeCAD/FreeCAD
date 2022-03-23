@@ -132,7 +132,7 @@ TaskDlgProjection::TaskDlgProjection() :
     TaskDialog()
 {
     widget  = new TaskProjection();
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_ProjectShape"), widget->windowTitle(), true, 0);
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_ProjectShape"), widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
     setAutoCloseOnTransactionChange(true);

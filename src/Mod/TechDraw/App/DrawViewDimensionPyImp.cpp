@@ -117,7 +117,7 @@ PyObject* DrawViewDimensionPy::getArrowPositions(PyObject* args)
 }
 PyObject *DrawViewDimensionPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DrawViewDimensionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

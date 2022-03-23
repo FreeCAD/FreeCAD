@@ -788,7 +788,7 @@ PyObject* DrawViewPartPy::getVertexBySelection(PyObject *args)
 //==============================================================================
 PyObject *DrawViewPartPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DrawViewPartPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

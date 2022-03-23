@@ -68,9 +68,9 @@ DrawViewDimExtent::DrawViewDimExtent(void)
                                                                  //Cosmetic End points are stored in DVD::References2d
     App::PropertyLinkSubList       Source3d;                     //Part::Feature & SubElements  TBI
 
-    ADD_PROPERTY_TYPE(Source,(0,0),"",(App::PropertyType)(App::Prop_Output),"View (Edges) to dimension");
+    ADD_PROPERTY_TYPE(Source,(nullptr,nullptr),"",(App::PropertyType)(App::Prop_Output),"View (Edges) to dimension");
     Source.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(Source3d,(0,0),"",(App::PropertyType)(App::Prop_Output),"View (Edges) to dimension");   //TBI
+    ADD_PROPERTY_TYPE(Source3d,(nullptr,nullptr),"",(App::PropertyType)(App::Prop_Output),"View (Edges) to dimension");   //TBI
     Source3d.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(DirExtent ,(0),"",App::Prop_Output,"Horizontal / Vertical");
 

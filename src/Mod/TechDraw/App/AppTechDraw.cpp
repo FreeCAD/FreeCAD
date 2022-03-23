@@ -77,7 +77,7 @@ PyMOD_INIT_FUNC(TechDraw)
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
     PyObject* mod = TechDraw::initModule();
     Base::Console().Log("Loading TechDraw module... done\n");

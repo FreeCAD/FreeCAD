@@ -183,7 +183,7 @@ void QGIBalloonLabel::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 void QGIBalloonLabel::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     QGIView *view = dynamic_cast<QGIView *> (parentItem());
-    assert(view != 0);
+    assert(view != nullptr);
     Q_UNUSED(view);
 
     Q_EMIT hover(false);
@@ -374,7 +374,7 @@ void QGIViewBalloon::hover(bool state)
 void QGIViewBalloon::setViewPartFeature(TechDraw::DrawViewBalloon *balloon)
 {
 //    Base::Console().Message("QGIVB::setViewPartFeature()\n");
-    if(balloon == 0)
+    if(balloon == nullptr)
         return;
 
     setViewFeature(static_cast<TechDraw::DrawView *>(balloon));

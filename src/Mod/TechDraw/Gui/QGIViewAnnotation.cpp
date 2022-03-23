@@ -204,7 +204,7 @@ void QGIViewAnnotation::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
         }
     }
 
-    QDialog dialog(0);
+    QDialog dialog(nullptr);
     dialog.setWindowTitle(tr("Text"));
 
     Gui::PropertyListEditor editor(&dialog);

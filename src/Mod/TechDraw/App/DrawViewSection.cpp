@@ -100,13 +100,13 @@ const char* DrawViewSection::SectionDirEnums[]= {"Right",
                                             "Left",
                                             "Up",
                                             "Down",
-                                             NULL};
+                                             nullptr};
 
 const char* DrawViewSection::CutSurfaceEnums[]= {"Hide",
                                             "Color",
                                             "SvgHatch",
                                             "PatHatch",
-                                             NULL};
+                                             nullptr};
 
 
 //===========================================================================
@@ -121,7 +121,7 @@ DrawViewSection::DrawViewSection()
     static const char *fgroup = "Cut Surface Format";
 
     ADD_PROPERTY_TYPE(SectionSymbol ,(""),sgroup,App::Prop_None,"The identifier for this section");
-    ADD_PROPERTY_TYPE(BaseView ,(0),sgroup,App::Prop_None,"2D View source for this Section");
+    ADD_PROPERTY_TYPE(BaseView ,(nullptr),sgroup,App::Prop_None,"2D View source for this Section");
     BaseView.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(SectionNormal ,(0,0,1.0) ,sgroup,App::Prop_None,
                         "Section Plane normal direction");  //direction of extrusion of cutting prism

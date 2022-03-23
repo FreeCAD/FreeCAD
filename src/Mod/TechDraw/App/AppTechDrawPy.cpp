@@ -419,8 +419,8 @@ private:
         Py::String dxfReturn;
 
         try {
-            App::DocumentObject* obj = 0;
-            TechDraw::DrawViewPart* dvp = 0;
+            App::DocumentObject* obj = nullptr;
+            TechDraw::DrawViewPart* dvp = nullptr;
             TechDraw::DXFOutput dxfOut;
             std::string dxfText;
             std::stringstream ss;
@@ -477,8 +477,8 @@ private:
         std::string grpHead2 = "\" stroke-linecap=\"butt\" stroke-linejoin=\"miter\" stroke-miterlimit=\"4\">\n";
         std::string grpTail  = "</g>\n";
         try {
-            App::DocumentObject* obj = 0;
-            TechDraw::DrawViewPart* dvp = 0;
+            App::DocumentObject* obj = nullptr;
+            TechDraw::DrawViewPart* dvp = nullptr;
             TechDraw::SVGOutput svgOut;
             std::string svgText;
             std::stringstream ss;
@@ -636,8 +636,8 @@ private:
         try {
             ImpExpDxfWrite writer(filePath);
             writer.init();
-            App::DocumentObject* obj = 0;
-            TechDraw::DrawViewPart* dvp = 0;
+            App::DocumentObject* obj = nullptr;
+            TechDraw::DrawViewPart* dvp = nullptr;
             if (PyObject_TypeCheck(viewObj, &(TechDraw::DrawViewPartPy::Type))) {
                 obj = static_cast<App::DocumentObjectPy*>(viewObj)->getDocumentObjectPtr();
                 dvp = static_cast<TechDraw::DrawViewPart*>(obj);
@@ -670,8 +670,8 @@ private:
         try {
             ImpExpDxfWrite writer(filePath);
             writer.init();
-            App::DocumentObject* obj = 0;
-            TechDraw::DrawPage* dp = 0;
+            App::DocumentObject* obj = nullptr;
+            TechDraw::DrawPage* dp = nullptr;
             if (PyObject_TypeCheck(pageObj, &(TechDraw::DrawPagePy::Type))) {
                 obj = static_cast<App::DocumentObjectPy*>(pageObj)->getDocumentObjectPtr();
                 dp = static_cast<TechDraw::DrawPage*>(obj);
@@ -1041,7 +1041,7 @@ private:
     Py::Object project(const Py::Tuple& args)
     {
         PyObject *pcObjShape;
-        PyObject *pcObjDir=0;
+        PyObject *pcObjDir=nullptr;
 
         if (!PyArg_ParseTuple(args.ptr(), "O!|O!",
             &(Part::TopoShapePy::Type), &pcObjShape,
@@ -1066,7 +1066,7 @@ private:
     Py::Object projectEx(const Py::Tuple& args)
     {
         PyObject *pcObjShape;
-        PyObject *pcObjDir=0;
+        PyObject *pcObjDir=nullptr;
 
         if (!PyArg_ParseTuple(args.ptr(), "O!|O!",
             &(TopoShapePy::Type), &pcObjShape,
@@ -1097,23 +1097,23 @@ private:
 
     Py::Object projectToSVG(const Py::Tuple& args, const Py::Dict& keys)
         {
-            static char* argNames[] = {"topoShape", "direction", "type", "tolerance", "vStyle", "v0Style", "v1Style", "hStyle", "h0Style", "h1Style", NULL};
-            PyObject *pcObjShape = 0;
-            PyObject *pcObjDir = 0;
-            const char *extractionTypePy = 0;
+            static char* argNames[] = {"topoShape", "direction", "type", "tolerance", "vStyle", "v0Style", "v1Style", "hStyle", "h0Style", "h1Style", nullptr};
+            PyObject *pcObjShape = nullptr;
+            PyObject *pcObjDir = nullptr;
+            const char *extractionTypePy = nullptr;
             ProjectionAlgos::ExtractionType extractionType = ProjectionAlgos::Plain;
             const float tol = 0.1f;
-            PyObject* vStylePy = 0;
+            PyObject* vStylePy = nullptr;
             ProjectionAlgos::XmlAttributes vStyle;
-            PyObject* v0StylePy = 0;
+            PyObject* v0StylePy = nullptr;
             ProjectionAlgos::XmlAttributes v0Style;
-            PyObject* v1StylePy = 0;
+            PyObject* v1StylePy = nullptr;
             ProjectionAlgos::XmlAttributes v1Style;
-            PyObject* hStylePy = 0;
+            PyObject* hStylePy = nullptr;
             ProjectionAlgos::XmlAttributes hStyle;
-            PyObject* h0StylePy = 0;
+            PyObject* h0StylePy = nullptr;
             ProjectionAlgos::XmlAttributes h0Style;
-            PyObject* h1StylePy = 0;
+            PyObject* h1StylePy = nullptr;
             ProjectionAlgos::XmlAttributes h1Style;
         
             // Get the arguments
@@ -1167,8 +1167,8 @@ private:
     Py::Object projectToDXF(const Py::Tuple& args)
     {
         PyObject *pcObjShape;
-        PyObject *pcObjDir=0;
-        const char *type=0;
+        PyObject *pcObjDir=nullptr;
+        const char *type=nullptr;
         float scale=1.0f;
         float tol=0.1f;
 

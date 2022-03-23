@@ -49,7 +49,7 @@ PyObject* DrawViewClipPy::addView(PyObject* args)
 
     if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &pcDocObj)) {
         Base::Console().Error("Error: DrawViewClipPy::addView - Bad Arg - not DocumentObject\n");
-        return NULL;
+        return nullptr;
         //TODO: sb PyErr??
         //PyErr_SetString(PyExc_TypeError,"addView expects a DrawView");
         //return -1;
@@ -73,7 +73,7 @@ PyObject* DrawViewClipPy::removeView(PyObject* args)
 
     if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &pcDocObj)) {
         Base::Console().Error("Error: DrawViewClipPy::removeView - Bad Arg - not DocumentObject\n");
-        return NULL;
+        return nullptr;
         //TODO: sb PyErr??
         //PyErr_SetString(PyExc_TypeError,"removeView expects a DrawView");
         //return -1;
@@ -111,7 +111,7 @@ PyObject* DrawViewClipPy::getChildViewNames(PyObject* args)
 
 PyObject *DrawViewClipPy::getCustomAttributes(const char* ) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DrawViewClipPy::setCustomAttributes(const char* , PyObject *)

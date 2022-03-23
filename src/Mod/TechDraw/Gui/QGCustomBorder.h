@@ -44,7 +44,7 @@ public:
     enum {Type = QGraphicsItem::UserType + 136};
     int type() const { return Type;}
 
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
     virtual void centerAt(QPointF centerPos);
     virtual void centerAt(double cX, double cY);
 

@@ -34,7 +34,7 @@ class TechDrawGuiExport DlgPageChooser : public QDialog
 public:
     DlgPageChooser(const std::vector<std::string> labels,
                    const std::vector<std::string> names,
-                   QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+                   QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgPageChooser();
 
     std::string getSelection() const;

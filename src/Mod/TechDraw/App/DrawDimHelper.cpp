@@ -343,7 +343,7 @@ DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
     TechDraw::DrawPage* page = dvp->findParentPage();
     std::string pageName = page->getNameInDocument();
 
-    TechDraw::DrawViewDimension *dim = 0;
+    TechDraw::DrawViewDimension *dim = nullptr;
     App::Document* doc = dvp->getDocument();
     std::string dimName = doc->getUniqueObjectName("Dimension");
     if (extent) {

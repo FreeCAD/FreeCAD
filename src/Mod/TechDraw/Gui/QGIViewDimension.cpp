@@ -551,7 +551,7 @@ void QGIViewDimension::hover(bool state)
 void QGIViewDimension::setViewPartFeature(TechDraw::DrawViewDimension *obj)
 {
 //    Base::Console().Message("QGIVD::setViewPartFeature()\n");
-    if(obj == 0)
+    if(obj == nullptr)
         return;
 
     setViewFeature(static_cast<TechDraw::DrawView *>(obj));

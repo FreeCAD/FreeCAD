@@ -62,7 +62,7 @@ using namespace TechDraw;
 
 MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) {
     setupUi(this);
-    m_lastBlockList = 0;
+    m_lastBlockList = nullptr;
 #if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
     f_textedit->setTabStopWidth(40);
 #else
@@ -536,7 +536,7 @@ void MRichTextEdit::slotCursorPositionChanged() {
 
     if (m_lastBlockList && 
         (l == m_lastBlockList || 
-        (l != 0 && m_lastBlockList != 0 && l->format().style() == m_lastBlockList->format().style()) ) ) {
+        (l != nullptr && m_lastBlockList != nullptr && l->format().style() == m_lastBlockList->format().style()) ) ) {
         return;
     }
     m_lastBlockList = l;

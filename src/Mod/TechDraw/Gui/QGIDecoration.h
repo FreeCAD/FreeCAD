@@ -48,7 +48,7 @@ public:
     int type() const { return Type;}
 
     virtual QRectF boundingRect() const;
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
     virtual void draw();
     void setWidth(double w);
     void setStyle(Qt::PenStyle s);

@@ -48,7 +48,7 @@ public:
 
     enum {Type = QGraphicsItem::UserType + 302};
     int type() const override { return Type;}
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 ) override;
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
 
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
@@ -87,7 +87,7 @@ public:
     int type() const override { return Type;}
     virtual QRectF boundingRect() const override;
     virtual QPainterPath shape() const override;
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 ) override;
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
 
     void inEdit(bool b) { m_inEdit = b; }
     bool inEdit(void)   { return m_inEdit; }

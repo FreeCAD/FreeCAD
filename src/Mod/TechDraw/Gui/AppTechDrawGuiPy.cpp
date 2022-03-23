@@ -174,9 +174,9 @@ private:
         PyMem_Free(name);
         
         try {
-           App::DocumentObject* obj = 0;
-           Gui::ViewProvider* vp = 0;
-           MDIViewPage* mdi = 0;
+           App::DocumentObject* obj = nullptr;
+           Gui::ViewProvider* vp = nullptr;
+           MDIViewPage* mdi = nullptr;
            if (PyObject_TypeCheck(pageObj, &(App::DocumentObjectPy::Type))) {
                obj = static_cast<App::DocumentObjectPy*>(pageObj)->getDocumentObjectPtr();
                vp = Gui::Application::Instance->getViewProvider(obj);
@@ -220,9 +220,9 @@ private:
         PyMem_Free(name);
         
         try {
-           App::DocumentObject* obj = 0;
-           Gui::ViewProvider* vp = 0;
-           MDIViewPage* mdi = 0;
+           App::DocumentObject* obj = nullptr;
+           Gui::ViewProvider* vp = nullptr;
+           MDIViewPage* mdi = nullptr;
            if (PyObject_TypeCheck(pageObj, &(App::DocumentObjectPy::Type))) {
                obj = static_cast<App::DocumentObjectPy*>(pageObj)->getDocumentObjectPtr();
                vp = Gui::Application::Instance->getViewProvider(obj);
@@ -326,8 +326,8 @@ private:
         } 
 
         try {
-           App::DocumentObject* obj = 0;
-           Gui::ViewProvider* vp = 0;
+           App::DocumentObject* obj = nullptr;
+           Gui::ViewProvider* vp = nullptr;
            QGIView* qgiv = nullptr;
            if (PyObject_TypeCheck(viewPy, &(TechDraw::DrawViewPy::Type))) {
                obj = static_cast<App::DocumentObjectPy*>(viewPy)->getDocumentObjectPtr();

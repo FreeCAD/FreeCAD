@@ -53,7 +53,7 @@ public:
     int type() const override { return Type;}
     virtual void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
-                        QWidget * widget = 0 ) override;
+                        QWidget * widget = nullptr ) override;
 
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void showBox(bool b) { m_showBox = b; }

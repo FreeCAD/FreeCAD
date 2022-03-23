@@ -50,7 +50,7 @@ const char* ViewProviderRichAnno::LineStyleEnums[] = { "NoLine",
                                                   "Dot",
                                                   "DashDot",
                                                   "DashDotDot",
-                                                  NULL };
+                                                  nullptr };
 
 //**************************************************************************
 // Construction/Destruction

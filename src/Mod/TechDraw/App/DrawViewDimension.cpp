@@ -92,11 +92,11 @@ const char* DrawViewDimension::TypeEnums[]= {"Distance",
                                              "Diameter",
                                              "Angle",
                                              "Angle3Pt",
-                                             NULL};
+                                             nullptr};
 
 const char* DrawViewDimension::MeasureTypeEnums[]= {"True",
                                                     "Projected",
-                                                    NULL};
+                                                    nullptr};
 
 // constraint to set the step size to 0.1
 static const App::PropertyQuantityConstraint::Constraints ToleranceConstraint = { -DBL_MAX, DBL_MAX, 0.1 };
@@ -105,9 +105,9 @@ static const App::PropertyQuantityConstraint::Constraints PositiveConstraint = {
 
 DrawViewDimension::DrawViewDimension(void)
 {
-    ADD_PROPERTY_TYPE(References2D, (0,0), "", (App::Prop_None), "Projected Geometry References");
+    ADD_PROPERTY_TYPE(References2D, (nullptr,nullptr), "", (App::Prop_None), "Projected Geometry References");
     References2D.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(References3D, (0,0), "", (App::Prop_None), "3D Geometry References");
+    ADD_PROPERTY_TYPE(References3D, (nullptr,nullptr), "", (App::Prop_None), "3D Geometry References");
     References3D.setScope(App::LinkScope::Global);
 
     ADD_PROPERTY_TYPE(FormatSpec, (getDefaultFormatSpec()), "Format", App::Prop_Output,"Dimension format");
@@ -175,7 +175,7 @@ DrawViewDimension::DrawViewDimension(void)
 DrawViewDimension::~DrawViewDimension()
 {
     delete measurement;
-    measurement = 0;
+    measurement = nullptr;
 }
 
 void DrawViewDimension::onChanged(const App::Property* prop)

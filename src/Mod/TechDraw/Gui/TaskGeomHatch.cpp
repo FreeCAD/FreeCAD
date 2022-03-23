@@ -218,7 +218,7 @@ TaskDlgGeomHatch::TaskDlgGeomHatch(TechDraw::DrawGeomHatch* inHatch, TechDrawGui
 {
     widget  = new TaskGeomHatch(inHatch,inVp, mode);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_TreeView"),
-                                         widget->windowTitle(), true, 0);
+                                         widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

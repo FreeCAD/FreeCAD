@@ -69,7 +69,7 @@ public:
     int type() const override { return Type;}
     virtual void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
-                        QWidget * widget = 0 ) override;
+                        QWidget * widget = nullptr ) override;
     virtual QRectF boundingRect() const override;
     virtual QPainterPath shape(void) const override;
     double getEdgeFuzz(void) const;

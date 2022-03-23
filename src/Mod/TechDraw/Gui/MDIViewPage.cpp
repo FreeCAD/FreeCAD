@@ -1157,7 +1157,7 @@ void MDIViewPage::setTreeToSceneSelect(void)
     QList<QGraphicsItem*> sceneSel = m_qgSceneSelected;
     for (QList<QGraphicsItem*>::iterator it = sceneSel.begin(); it != sceneSel.end(); ++it) {
         QGIView *itemView = dynamic_cast<QGIView *>(*it);
-        if(itemView == 0) {
+        if(itemView == nullptr) {
             QGIEdge *edge = dynamic_cast<QGIEdge *>(*it);
             if(edge) {
                 QGraphicsItem*parent = edge->parentItem();
@@ -1332,7 +1332,7 @@ bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel, Q
 
     for (auto sn:sceneSel){
         QGIView *itemView = dynamic_cast<QGIView *>(sn);
-        if(itemView == 0) {
+        if(itemView == nullptr) {
             QGIDatumLabel* dl = dynamic_cast<QGIDatumLabel*>(sn);
             QGIPrimPath* pp = dynamic_cast<QGIPrimPath*>(sn);   //count Vertex/Edge/Face
             if (pp != nullptr) {

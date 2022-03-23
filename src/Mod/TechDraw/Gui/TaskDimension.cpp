@@ -377,7 +377,7 @@ std::pair<double, bool> TaskDimension::getAngleFromSelection()
     result.first = 0.0;
     result.second = true;
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
-    TechDraw::DrawViewPart * objFeat = 0;
+    TechDraw::DrawViewPart * objFeat = nullptr;
     std::vector<std::string> SubNames;
     if (!selection.empty()) {
         objFeat = static_cast<TechDraw::DrawViewPart*> (selection.front().getObject());
@@ -419,7 +419,7 @@ TaskDlgDimension::TaskDlgDimension(QGIViewDimension *parent, ViewProviderDimensi
     TaskDialog()
 {
     widget  = new TaskDimension(parent, dimensionVP);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_Dimension"), widget->windowTitle(), true, 0);
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_Dimension"), widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
     setAutoCloseOnTransactionChange(true);

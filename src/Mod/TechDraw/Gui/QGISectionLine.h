@@ -47,7 +47,7 @@ public:
     enum {Type = QGraphicsItem::UserType + 172};
     int type() const { return Type;}
 
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
 
     void setEnds(Base::Vector3d l1, Base::Vector3d l2);
     void setBounds(double x1,double y1,double x2,double y2);

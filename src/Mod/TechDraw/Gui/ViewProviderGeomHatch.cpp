@@ -94,7 +94,7 @@ bool ViewProviderGeomHatch::setEdit(int ModNum)
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
     TaskDlgGeomHatch *projDlg = qobject_cast<TaskDlgGeomHatch *>(dlg);
     if (projDlg && (projDlg->getViewProvider() != this))
-        projDlg = 0; // somebody left task panel open
+        projDlg = nullptr; // somebody left task panel open
 
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
@@ -193,8 +193,8 @@ TechDraw::DrawGeomHatch* ViewProviderGeomHatch::getViewObject() const
 Gui::MDIView *ViewProviderGeomHatch::getMDIView() const
 {
     auto obj = getViewObject();
-    if(!obj) return 0;
+    if(!obj) return nullptr;
     auto vp = Gui::Application::Instance->getViewProvider(obj->getSourceView());
-    if(!vp) return 0;
+    if(!vp) return nullptr;
     return vp->getMDIView();
 }

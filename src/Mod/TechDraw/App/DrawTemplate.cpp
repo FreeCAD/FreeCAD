@@ -48,7 +48,7 @@ PROPERTY_SOURCE(TechDraw::DrawTemplate, App::DocumentObject)
 
 const char* DrawTemplate::OrientationEnums[]= {"Portrait",
                                                   "Landscape",
-                                                  NULL};
+                                                  nullptr};
 
 
 
@@ -111,7 +111,7 @@ void DrawTemplate::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawTemplate::execute(void)
 {
-    DrawPage *page = 0;
+    DrawPage *page = nullptr;
     std::vector<App::DocumentObject*> parent = getInList();
     for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
         if ((*it)->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {

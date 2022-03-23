@@ -138,7 +138,7 @@ public:
     virtual void updateView(bool update = false) override;
     virtual void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
-                        QWidget * widget = 0 ) override;
+                        QWidget * widget = nullptr ) override;
 
     QString getLabelText(void);
     void placeBalloon(QPointF pos);

@@ -381,7 +381,7 @@ TaskDlgSelectLineAttributes::TaskDlgSelectLineAttributes(lineAttributes * ptActi
 {
     widget  = new TaskSelectLineAttributes(ptActiveAttributes);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_ExtensionSelectLineAttributes"),
-                                             widget->windowTitle(), true, 0);
+                                             widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

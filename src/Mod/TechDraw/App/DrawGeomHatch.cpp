@@ -94,7 +94,7 @@ DrawGeomHatch::DrawGeomHatch(void)
 {
     static const char *vgroup = "GeomHatch";
 
-    ADD_PROPERTY_TYPE(Source,(0),vgroup,(App::PropertyType)(App::Prop_None),"The View + Face to be crosshatched");
+    ADD_PROPERTY_TYPE(Source,(nullptr),vgroup,(App::PropertyType)(App::Prop_None),"The View + Face to be crosshatched");
     Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(FilePattern ,(prefGeomHatchFile()),vgroup,App::Prop_None,"The crosshatch pattern file for this area");
     ADD_PROPERTY_TYPE(PatIncluded, (""), vgroup,App::Prop_None,

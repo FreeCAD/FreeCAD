@@ -521,7 +521,7 @@ TaskDlgCenterLine::TaskDlgCenterLine(TechDraw::DrawViewPart* partFeat,
 {
     widget  = new TaskCenterLine(partFeat,page,subNames, editMode);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_FaceCenterLine"),
-                                             widget->windowTitle(), true, 0);
+                                             widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
     setAutoCloseOnTransactionChange(true);
@@ -535,7 +535,7 @@ TaskDlgCenterLine::TaskDlgCenterLine(TechDraw::DrawViewPart* partFeat,
 {
     widget  = new TaskCenterLine(partFeat,page, edgeName, editMode);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_FaceCenterLine"),
-                                             widget->windowTitle(), true, 0);
+                                             widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
     setAutoCloseOnTransactionChange(true);

@@ -41,7 +41,7 @@ std::string DrawTemplatePy::representation(void) const
 
 PyObject *DrawTemplatePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DrawTemplatePy::setCustomAttributes(const char* attr, PyObject* obj)

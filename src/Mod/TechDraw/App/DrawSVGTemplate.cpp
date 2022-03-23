@@ -69,7 +69,7 @@ DrawSVGTemplate::DrawSVGTemplate()
     // PageResult points to a temporary file in tmp/FreeCAD-AB-CD-EF-.../myTemplate.svg
     // which is really copy of original Template with EditableFields replaced
     // When restoring saved document, Template is redundant/incorrect/not present - PageResult is the correct info.  -wf-
-    ADD_PROPERTY_TYPE(PageResult, (0),  group, App::Prop_Output,    "Current SVG code for template");
+    ADD_PROPERTY_TYPE(PageResult, (nullptr),  group, App::Prop_Output,    "Current SVG code for template");
     ADD_PROPERTY_TYPE(Template,   (""), group, App::Prop_Transient, "Template for the page");             //sb TemplateFileName???
 
     // Width and Height properties shouldn't be set by the user

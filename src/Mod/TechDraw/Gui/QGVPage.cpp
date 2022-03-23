@@ -126,10 +126,10 @@ using namespace TechDrawGui;
 
 QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
     : QGraphicsView(parent),
-      pageTemplate(0),
+      pageTemplate(nullptr),
       m_renderer(Native),
       drawBkg(true),
-      m_vpPage(0),
+      m_vpPage(nullptr),
       balloonPlacing(false),
       panningActive(false),
       m_showGrid(false)
@@ -276,7 +276,7 @@ int QGVPage::addQView(QGIView *view)
         ourScene->addItem(view);
 
         // Find if it belongs to a parent
-        QGIView *parent = 0;
+        QGIView *parent = nullptr;
         parent = findParent(view);
 
         QPointF viewPos(Rez::guiX(view->getViewObject()->X.getValue()),
@@ -461,7 +461,7 @@ QGIView * QGVPage::addViewBalloon(TechDraw::DrawViewBalloon *balloon)
     vBalloon->setViewPartFeature(balloon);
     vBalloon->dvBalloon = balloon;
 
-    QGIView *parent = 0;
+    QGIView *parent = nullptr;
     parent = findParent(vBalloon);
 
     if (parent) {
@@ -522,7 +522,7 @@ QGIView * QGVPage::addViewDimension(TechDraw::DrawViewDimension *dim)
     dimGroup->dvDimension = dim;
 
     // Find if it belongs to a parent
-    QGIView *parent = 0;
+    QGIView *parent = nullptr;
     parent = findParent(dimGroup);
 
     if(parent) {
@@ -554,7 +554,7 @@ QGIView * QGVPage::addViewLeader(TechDraw::DrawLeaderLine *leader)
 
     leaderGroup->setLeaderFeature(leader);
 
-    QGIView *parent = 0;
+    QGIView *parent = nullptr;
     parent = findParent(leaderGroup);
 
     if(parent) {
@@ -636,7 +636,7 @@ QGIView * QGVPage::findQViewForDocObj(App::DocumentObject *obj) const
               return *it;
       }
   }
-    return 0;
+    return nullptr;
 }
 
 //! find the graphic for DocumentObject with name
@@ -675,7 +675,7 @@ QGIView * QGVPage::findParent(QGIView *view) const
 //    }
 
     //If type is dimension we check references first
-    TechDraw::DrawViewDimension *dim = 0;
+    TechDraw::DrawViewDimension *dim = nullptr;
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(myFeat);
     if(dim) {
         std::vector<App::DocumentObject *> objs = dim->References2D.getValues();
@@ -692,7 +692,7 @@ QGIView * QGVPage::findParent(QGIView *view) const
     }
 
     //If type is balloon we check references first
-    TechDraw::DrawViewBalloon *balloon = 0;
+    TechDraw::DrawViewBalloon *balloon = nullptr;
     balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(myFeat);
 
     if(balloon) {
@@ -710,10 +710,10 @@ QGIView * QGVPage::findParent(QGIView *view) const
 
     // Check if part of view collection
     for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
-        QGIViewCollection *grp = 0;
+        QGIViewCollection *grp = nullptr;
         grp = dynamic_cast<QGIViewCollection *>(*it);
         if(grp) {
-            TechDraw::DrawViewCollection *collection = 0;
+            TechDraw::DrawViewCollection *collection = nullptr;
             collection = dynamic_cast<TechDraw::DrawViewCollection *>(grp->getViewObject());
             if(collection) {
                 std::vector<App::DocumentObject *> objs = collection->Views.getValues();
@@ -727,7 +727,7 @@ QGIView * QGVPage::findParent(QGIView *view) const
     }
 
      //If type is LeaderLine we check LeaderParent
-    TechDraw::DrawLeaderLine *lead = 0;
+    TechDraw::DrawLeaderLine *lead = nullptr;
     lead = dynamic_cast<TechDraw::DrawLeaderLine *>(myFeat);
 
     if(lead) {
@@ -768,7 +768,7 @@ void QGVPage::removeTemplate()
     if(pageTemplate) {
         scene()->removeItem(pageTemplate);
         pageTemplate->deleteLater();
-        pageTemplate = 0;
+        pageTemplate = nullptr;
     }
 }
 void QGVPage::setRenderer(RendererType type)

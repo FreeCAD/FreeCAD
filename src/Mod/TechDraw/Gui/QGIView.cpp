@@ -396,7 +396,7 @@ TechDraw::DrawView * QGIView::getViewObject() const
 
 void QGIView::setViewFeature(TechDraw::DrawView *obj)
 {
-    if(obj == 0)
+    if(obj == nullptr)
         return;
 
     viewObj = obj;
@@ -611,7 +611,7 @@ QGIView* QGIView::getQGIVByName(std::string name)
             }
         }
     }
-    return 0;
+    return nullptr;
 }
 
 /* static */

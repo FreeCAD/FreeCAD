@@ -601,7 +601,7 @@ TaskDlgSectionView::TaskDlgSectionView(TechDraw::DrawViewPart* base) :
 {
     widget  = new TaskSectionView(base);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_SectionView"),
-                                         widget->windowTitle(), true, 0);
+                                         widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }
@@ -611,7 +611,7 @@ TaskDlgSectionView::TaskDlgSectionView(TechDraw::DrawViewSection* section) :
 {
     widget  = new TaskSectionView(section);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_SectionView"),
-                                         widget->windowTitle(), true, 0);
+                                         widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

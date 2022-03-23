@@ -45,7 +45,7 @@ std::string DrawRichAnnoPy::representation(void) const
 
 PyObject *DrawRichAnnoPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DrawRichAnnoPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

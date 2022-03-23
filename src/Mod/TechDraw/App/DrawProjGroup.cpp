@@ -58,7 +58,7 @@ using namespace TechDraw;
 const char* DrawProjGroup::ProjectionTypeEnums[] = {"First Angle",
                                                     "Third Angle",
                                                     "Default",          //Use Page setting
-                                                    NULL};
+                                                    nullptr};
 
 PROPERTY_SOURCE(TechDraw::DrawProjGroup, TechDraw::DrawViewCollection)
 
@@ -72,12 +72,12 @@ DrawProjGroup::DrawProjGroup(void) :
                                                                GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     bool autoDist = hGrp->GetBool("AutoDist",true);
     
-    ADD_PROPERTY_TYPE(Source, (0), group, App::Prop_None, "Shape to view");
+    ADD_PROPERTY_TYPE(Source, (nullptr), group, App::Prop_None, "Shape to view");
     Source.setScope(App::LinkScope::Global);
     Source.setAllowExternal(true);
-    ADD_PROPERTY_TYPE(XSource, (0), group,App::Prop_None, "External 3D Shape to view");
+    ADD_PROPERTY_TYPE(XSource, (nullptr), group,App::Prop_None, "External 3D Shape to view");
 
-    ADD_PROPERTY_TYPE(Anchor, (0), group, App::Prop_None, "The root view to align projections with");
+    ADD_PROPERTY_TYPE(Anchor, (nullptr), group, App::Prop_None, "The root view to align projections with");
     Anchor.setScope(App::LinkScope::Global);
 
     ProjectionType.setEnums(ProjectionTypeEnums);
@@ -267,7 +267,7 @@ TechDraw::DrawPage * DrawProjGroup::getPage(void) const
 double DrawProjGroup::calculateAutomaticScale() const
 {
     TechDraw::DrawPage *page = getPage();
-    if (page == NULL)
+    if (page == nullptr)
       throw Base::RuntimeError("No page is assigned to this feature");
 
     DrawProjGroupItem *viewPtrs[10];
@@ -285,7 +285,7 @@ double DrawProjGroup::calculateAutomaticScale() const
     // C++ Standard says casting bool to int gives 0 or 1
     int numVertSpaces = (viewPtrs[0] || viewPtrs[3] || viewPtrs[7]) +
                         (viewPtrs[2] || viewPtrs[5] || viewPtrs[9]) +
-                        (viewPtrs[6] != NULL);
+                        (viewPtrs[6] != nullptr);
     int numHorizSpaces = (viewPtrs[0] || viewPtrs[1] || viewPtrs[2]) +
                          (viewPtrs[7] || viewPtrs[8] || viewPtrs[9]);
 
@@ -369,7 +369,7 @@ App::DocumentObject * DrawProjGroup::getProjObj(const char *viewProjType) const
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 DrawProjGroupItem* DrawProjGroup::getProjItem(const char *viewProjType) const
@@ -1093,7 +1093,7 @@ App::Enumeration DrawProjGroup::usedProjectionType(void)
     App::Enumeration ret(ProjectionTypeEnums, ProjectionType.getValueAsString());
     if (ret.isValue("Default")) {
         TechDraw::DrawPage * page = getPage();
-        if ( page != NULL ) {
+        if ( page != nullptr ) {
             ret.setValue(page->ProjectionType.getValueAsString());
         }
     }

@@ -50,13 +50,13 @@ const char* DrawViewArch::RenderModeEnums[]= {"Wireframe",
                                               "Solid",
                                               "Coin",
                                               "Coin mono",
-                                              NULL};
+                                              nullptr};
 
 DrawViewArch::DrawViewArch(void)
 {
     static const char *group = "Arch view";
 
-    ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"SectionPlane or BuildingPart object for this view");
+    ADD_PROPERTY_TYPE(Source ,(nullptr),group,App::Prop_None,"SectionPlane or BuildingPart object for this view");
     Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(AllOn ,(false),group,App::Prop_None,"If hidden objects must be shown or not");
     RenderMode.setEnums(RenderModeEnums);

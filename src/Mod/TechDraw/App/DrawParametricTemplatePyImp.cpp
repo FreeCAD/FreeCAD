@@ -41,7 +41,7 @@ std::string DrawParametricTemplatePy::representation(void) const
 
 PyObject *DrawParametricTemplatePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DrawParametricTemplatePy::setCustomAttributes(const char* attr, PyObject* obj)
@@ -72,7 +72,7 @@ PyObject* DrawParametricTemplatePy::drawLine(PyObject *args)
     double x2, y2;
 
     if (!PyArg_ParseTuple(args, "dddd", &x1, &y1, &x2, &y2))
-        return 0;
+        return nullptr;
 
     getDrawParametricTemplatePtr()->drawLine(x1,y1,x2,y2);
 

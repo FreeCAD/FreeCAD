@@ -48,7 +48,7 @@
 using namespace TechDrawGui;
 
 QGIDrawingTemplate::QGIDrawingTemplate(QGraphicsScene *scene) : QGITemplate(scene),
-                                                                                    pathItem(0)
+                                                                                    pathItem(nullptr)
 {
     pathItem = new QGraphicsPathItem;
 
@@ -63,7 +63,7 @@ QGIDrawingTemplate::QGIDrawingTemplate(QGraphicsScene *scene) : QGITemplate(scen
 
 QGIDrawingTemplate::~QGIDrawingTemplate()
 {
-    pathItem = 0;
+    pathItem = nullptr;
 }
 
 QVariant QGIDrawingTemplate::itemChange(GraphicsItemChange change, const QVariant &value)
@@ -82,7 +82,7 @@ TechDraw::DrawParametricTemplate * QGIDrawingTemplate::getParametricTemplate()
     if(pageTemplate && pageTemplate->isDerivedFrom(TechDraw::DrawParametricTemplate::getClassTypeId()))
         return static_cast<TechDraw::DrawParametricTemplate *>(pageTemplate);
     else
-        return 0;
+        return nullptr;
 }
 
 void QGIDrawingTemplate::draw()

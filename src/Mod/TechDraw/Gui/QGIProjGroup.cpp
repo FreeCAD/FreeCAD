@@ -193,7 +193,7 @@ QGIView * QGIProjGroup::getAnchorQItem() const
               return view;
         }
     }
-    return 0;
+    return nullptr;
 }
 
 void QGIProjGroup::updateView(bool update)

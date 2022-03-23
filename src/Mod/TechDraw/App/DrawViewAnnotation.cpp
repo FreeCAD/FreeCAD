@@ -53,7 +53,7 @@ const char* DrawViewAnnotation::TextStyleEnums[]= {"Normal",
                                       "Bold",
                                       "Italic",
                                       "Bold-Italic",
-                                      NULL};
+                                      nullptr};
 
 DrawViewAnnotation::DrawViewAnnotation(void)
 {

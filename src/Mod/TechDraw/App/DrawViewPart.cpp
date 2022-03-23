@@ -127,7 +127,7 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(TechDraw::DrawViewPart,
                                 TechDraw::DrawView)
 
 DrawViewPart::DrawViewPart(void) :
-    geometryObject(0)
+    geometryObject(nullptr)
 {
     static const char *group = "Projection";
     static const char *sgroup = "HLR Parameters";
@@ -142,10 +142,10 @@ DrawViewPart::DrawViewPart(void) :
     double defDist = hGrp->GetFloat("FocusDistance",100.0);
 
     //properties that affect Geometry
-    ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"3D Shape to view");
+    ADD_PROPERTY_TYPE(Source ,(nullptr),group,App::Prop_None,"3D Shape to view");
     Source.setScope(App::LinkScope::Global);
     Source.setAllowExternal(true);
-    ADD_PROPERTY_TYPE(XSource ,(0),group,App::Prop_None,"External 3D Shape to view");
+    ADD_PROPERTY_TYPE(XSource ,(nullptr),group,App::Prop_None,"External 3D Shape to view");
 
 
     ADD_PROPERTY_TYPE(Direction ,(0.0,-1.0,0.0),
@@ -724,11 +724,11 @@ TechDraw::BaseGeomPtr DrawViewPart::getGeomByIndex(int idx) const
     const std::vector<TechDraw::BaseGeomPtr> &geoms = getEdgeGeometry();
     if (geoms.empty()) {
         Base::Console().Log("INFO - getGeomByIndex(%d) - no Edge Geometry. Probably restoring?\n",idx);
-        return NULL;
+        return nullptr;
     }
     if ((unsigned)idx >= geoms.size()) {
         Base::Console().Log("INFO - getGeomByIndex(%d) - invalid index\n",idx);
-        return NULL;
+        return nullptr;
     }
     return geoms.at(idx);
 }
@@ -739,11 +739,11 @@ TechDraw::VertexPtr DrawViewPart::getProjVertexByIndex(int idx) const
     const std::vector<TechDraw::VertexPtr> &geoms = getVertexGeometry();
     if (geoms.empty()) {
         Base::Console().Log("INFO - getProjVertexByIndex(%d) - no Vertex Geometry. Probably restoring?\n",idx);
-        return NULL;
+        return nullptr;
     }
     if ((unsigned)idx >= geoms.size()) {
         Base::Console().Log("INFO - getProjVertexByIndex(%d) - invalid index\n",idx);
-        return NULL;
+        return nullptr;
     }
     return geoms.at(idx);
 }

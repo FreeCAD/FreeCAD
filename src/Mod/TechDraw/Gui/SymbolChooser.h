@@ -35,7 +35,7 @@ class TechDrawGuiExport SymbolChooser : public QDialog
     Q_OBJECT
 
 public:
-    SymbolChooser(QWidget *parent = 0,
+    SymbolChooser(QWidget *parent = nullptr,
                   QString startDir = QString(),
                   QString source = QString());
 

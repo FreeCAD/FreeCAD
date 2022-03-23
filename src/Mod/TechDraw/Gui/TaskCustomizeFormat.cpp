@@ -246,7 +246,7 @@ TaskDlgCustomizeFormat::TaskDlgCustomizeFormat(App::DocumentObject * object)
 {
     widget  = new TaskCustomizeFormat(object);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_ExtensionCustomizeFormat"),
-                                             widget->windowTitle(), true, 0);
+                                             widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

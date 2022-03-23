@@ -372,7 +372,7 @@ void QGIRichAnno::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
 
     QString text = QString::fromUtf8(annotation->AnnoText.getValue());
 
-    QDialog dialog(0);
+    QDialog dialog(nullptr);
     dialog.setWindowTitle(QObject::tr("Rich text editor"));
     dialog.setMinimumWidth(400);
     dialog.setMinimumHeight(400);

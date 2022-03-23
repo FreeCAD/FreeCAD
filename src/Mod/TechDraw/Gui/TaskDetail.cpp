@@ -661,7 +661,7 @@ TaskDlgDetail::TaskDlgDetail(TechDraw::DrawViewPart* baseFeat)
 {
     widget  = new TaskDetail(baseFeat);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_DetailView"),
-                                             widget->windowTitle(), true, 0);
+                                             widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }
@@ -671,7 +671,7 @@ TaskDlgDetail::TaskDlgDetail(TechDraw::DrawViewDetail* detailFeat)
 {
     widget  = new TaskDetail(detailFeat);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_DetailView"),
-                                             widget->windowTitle(), true, 0);
+                                             widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

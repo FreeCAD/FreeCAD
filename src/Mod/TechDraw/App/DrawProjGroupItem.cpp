@@ -55,7 +55,7 @@ const char* DrawProjGroupItem::TypeEnums[] = {"Front",
                                              "FrontTopRight",
                                              "FrontBottomLeft",
                                              "FrontBottomRight",
-                                             NULL};
+                                             nullptr};
 
 
 PROPERTY_SOURCE(TechDraw::DrawProjGroupItem, TechDraw::DrawViewPart)

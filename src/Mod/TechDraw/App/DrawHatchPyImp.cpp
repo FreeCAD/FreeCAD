@@ -44,7 +44,7 @@ std::string DrawHatchPy::representation(void) const
 
 PyObject *DrawHatchPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DrawHatchPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

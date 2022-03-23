@@ -59,7 +59,7 @@ class TechDrawGuiExport MDIViewPage : public Gui::MDIView, public Gui::Selection
     TYPESYSTEM_HEADER();
 
 public:
-    MDIViewPage(ViewProviderPage *page, Gui::Document* doc, QWidget* parent = 0);
+    MDIViewPage(ViewProviderPage *page, Gui::Document* doc, QWidget* parent = nullptr);
     virtual ~MDIViewPage();
 
     void addChildrenToPage(void);

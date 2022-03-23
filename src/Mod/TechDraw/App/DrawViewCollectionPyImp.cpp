@@ -74,7 +74,7 @@ PyObject* DrawViewCollectionPy::removeView(PyObject* args)
 
 PyObject *DrawViewCollectionPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DrawViewCollectionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

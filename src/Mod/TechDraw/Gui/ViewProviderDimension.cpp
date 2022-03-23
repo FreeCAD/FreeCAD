@@ -48,10 +48,10 @@ using namespace TechDrawGui;
 using namespace TechDraw;
 
 const char *ViewProviderDimension::StandardAndStyleEnums[]=
-    { "ISO Oriented", "ISO Referencing", "ASME Inlined", "ASME Referencing", NULL };
+    { "ISO Oriented", "ISO Referencing", "ASME Inlined", "ASME Referencing", nullptr };
 
 const char *ViewProviderDimension::RenderingExtentEnums[]=
-    { "None", "Minimal", "Confined", "Reduced", "Normal", "Expanded", NULL };
+    { "None", "Minimal", "Confined", "Reduced", "Normal", "Expanded", nullptr };
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderDimension, TechDrawGui::ViewProviderDrawingView)
 

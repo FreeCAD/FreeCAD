@@ -1688,7 +1688,7 @@ void Vertex::createNewTag()
     static bool seeded = false;
 
     if (!seeded) {
-        ran.seed(static_cast<unsigned int>(std::time(0)));
+        ran.seed(static_cast<unsigned int>(std::time(nullptr)));
         seeded = true;
     }
     static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);

@@ -36,7 +36,7 @@ class DlgPrefsTechDrawDimensionsImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgPrefsTechDrawDimensionsImp( QWidget* parent = 0 );
+    DlgPrefsTechDrawDimensionsImp( QWidget* parent = nullptr );
     ~DlgPrefsTechDrawDimensionsImp();
 
 protected:

@@ -61,7 +61,7 @@ PyObject *CosmeticEdgePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  
     // never create such objects with the constructor
     PyErr_SetString(PyExc_RuntimeError,
         "You cannot create an instance of the abstract class 'CosmeticEdge'.");
-    return 0;
+    return nullptr;
 }
 
 // constructor method
@@ -74,17 +74,17 @@ int CosmeticEdgePy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 PyObject* CosmeticEdgePy::clone(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     TechDraw::CosmeticEdge* geom = this->getCosmeticEdgePtr();
     PyTypeObject* type = this->GetType();
-    PyObject* cpy = 0;
+    PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, 0);
+        cpy = type->tp_new(type, this, nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_TypeError, "failed to create clone of CosmeticEdge");
-        return 0;
+        return nullptr;
     }
 
     TechDraw::CosmeticEdgePy* geompy = static_cast<TechDraw::CosmeticEdgePy*>(cpy);
@@ -101,17 +101,17 @@ PyObject* CosmeticEdgePy::clone(PyObject *args)
 PyObject* CosmeticEdgePy::copy(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     TechDraw::CosmeticEdge* geom = this->getCosmeticEdgePtr();
     PyTypeObject* type = this->GetType();
-    PyObject* cpy = 0;
+    PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, 0);
+        cpy = type->tp_new(type, this, nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_TypeError, "failed to create copy of CosmeticEdge");
-        return 0;
+        return nullptr;
     }
 
     TechDraw::CosmeticEdgePy* geompy = static_cast<TechDraw::CosmeticEdgePy*>(cpy);
@@ -377,7 +377,7 @@ void CosmeticEdgePy::setCenter(Py::Object arg)
 
 PyObject *CosmeticEdgePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int CosmeticEdgePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
