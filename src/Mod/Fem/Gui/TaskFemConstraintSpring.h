@@ -21,23 +21,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskFemConstraintSpring_H
 #define GUI_TASKVIEW_TaskFemConstraintSpring_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Base/Quantity.h>
+#include <QObject>
 
-#include "TaskFemConstraint.h"
 #include "TaskFemConstraintOnBoundary.h"
 #include "ViewProviderFemConstraintSpring.h"
 
-#include <QObject>
-#include <Base/Console.h>
-#include <App/DocumentObject.h>
-#include <QKeyEvent>
 
 class Ui_TaskFemConstraintSpring;
 

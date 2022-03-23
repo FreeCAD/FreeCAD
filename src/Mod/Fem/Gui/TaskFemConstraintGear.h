@@ -21,13 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskFemConstraintGear_H
 #define GUI_TASKVIEW_TaskFemConstraintGear_H
-
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
 
 #include "TaskFemConstraintBearing.h"
 #include "ViewProviderFemConstraintGear.h"

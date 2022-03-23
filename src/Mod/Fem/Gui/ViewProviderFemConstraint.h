@@ -21,7 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_VIEWPROVIDERFEMCONSTRAINT_H
 #define GUI_VIEWPROVIDERFEMCONSTRAINT_H
 

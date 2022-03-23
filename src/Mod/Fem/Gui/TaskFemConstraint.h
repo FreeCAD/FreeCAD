@@ -21,7 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskFemConstraint_H
 #define GUI_TASKVIEW_TaskFemConstraint_H
 
@@ -29,8 +28,10 @@
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#include <Mod/Fem/FemGlobal.h>
 
 #include "ViewProviderFemConstraint.h"
+
 
 class QAction;
 class QListWidget;

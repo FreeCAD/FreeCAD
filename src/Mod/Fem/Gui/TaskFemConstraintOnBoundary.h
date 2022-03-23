@@ -21,22 +21,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskFemConstraintOnBoundary_H
 #define GUI_TASKVIEW_TaskFemConstraintOnBoundary_H
 
-#include <Gui/TaskView/TaskView.h>
+#include <QObject>
+
 #include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
 #include <Gui/Widgets.h>
-#include <Base/Quantity.h>
+#include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Mod/Fem/FemGlobal.h>
 
 #include "TaskFemConstraint.h"
 
-#include <QObject>
-#include <Base/Console.h>
-#include <App/DocumentObject.h>
-#include <QKeyEvent>
 
 namespace FemGui {
 

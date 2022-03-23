@@ -23,23 +23,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskFemConstraintTemperature_H
 #define GUI_TASKVIEW_TaskFemConstraintTemperature_H
 
+#include <QObject>
+
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Base/Quantity.h>
 
-#include "TaskFemConstraint.h"
 #include "TaskFemConstraintOnBoundary.h"
 #include "ViewProviderFemConstraintTemperature.h"
 
-#include <QObject>
-#include <Base/Console.h>
-#include <App/DocumentObject.h>
-#include <QKeyEvent>
 
 class Ui_TaskFemConstraintTemperature;
 

@@ -20,13 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEMGUI_TaskAnalysisInfo_H
 #define FEMGUI_TaskAnalysisInfo_H
 
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-
 #include <Mod/Fem/App/FemSetNodesObject.h>
 
 

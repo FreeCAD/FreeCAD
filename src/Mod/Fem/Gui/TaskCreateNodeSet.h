@@ -20,13 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskCreateNodeSet_H
 #define GUI_TASKVIEW_TaskCreateNodeSet_H
 
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-
 #include <Mod/Fem/App/FemSetNodesObject.h>
 
 

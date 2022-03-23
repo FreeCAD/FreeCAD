@@ -20,16 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskPostDisplay_H
 #define GUI_TASKVIEW_TaskPostDisplay_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
 #include <Gui/ViewProviderDocumentObject.h>
-#include <Base/Parameter.h>
-#include <App/PropertyLinks.h>
+#include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
+
 #include "ViewProviderFemPostFunction.h"
+
 
 class QComboBox;
 class Ui_TaskPostDisplay;

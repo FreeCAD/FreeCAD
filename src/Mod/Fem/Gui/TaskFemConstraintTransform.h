@@ -27,18 +27,11 @@
 #ifndef GUI_TASKVIEW_TaskFemConstraintTransform_H
 #define GUI_TASKVIEW_TaskFemConstraintTransform_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Base/Quantity.h>
+#include <QObject>
 
 #include "TaskFemConstraint.h"
 #include "ViewProviderFemConstraintTransform.h"
 
-#include <QObject>
-#include <Base/Console.h>
-#include <App/DocumentObject.h>
-#include <QKeyEvent>
 
 class Ui_TaskFemConstraintTransform;
 

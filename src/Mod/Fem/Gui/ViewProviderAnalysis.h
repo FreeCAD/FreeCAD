@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_ViewProviderAnalysis_H
 #define FEM_ViewProviderAnalysis_H
 
@@ -28,6 +27,7 @@
 #include <Gui/ViewProviderPythonFeature.h>
 #include <Mod/Fem/FemGlobal.h>
 #include <QCoreApplication>
+
 
 namespace FemGui
 {

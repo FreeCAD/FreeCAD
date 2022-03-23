@@ -20,15 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef ROBOTGUI_TaskDlgCreateNodeSet_H
 #define ROBOTGUI_TaskDlgCreateNodeSet_H
 
 #include <Gui/TaskView/TaskDialog.h>
-
 #include <Mod/Fem/App/FemSetNodesObject.h>
+
 #include "TaskCreateNodeSet.h"
 #include "TaskObjectName.h"
+
 
 // forward
 namespace Gui { namespace TaskView { class TaskSelectLinkProperty;}}

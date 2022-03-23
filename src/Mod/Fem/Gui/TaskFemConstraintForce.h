@@ -21,19 +21,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskFemConstraintForce_H
 #define GUI_TASKVIEW_TaskFemConstraintForce_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
+#include <QObject>
 
-#include "TaskFemConstraint.h"
 #include "TaskFemConstraintOnBoundary.h"
 #include "ViewProviderFemConstraintForce.h"
 
-#include <QKeyEvent>
 
 class Ui_TaskFemConstraintForce;
 

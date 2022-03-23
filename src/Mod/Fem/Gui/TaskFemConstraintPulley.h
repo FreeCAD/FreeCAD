@@ -21,13 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskFemConstraintPulley_H
 #define GUI_TASKVIEW_TaskFemConstraintPulley_H
-
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
 
 #include "TaskFemConstraintGear.h"
 #include "ViewProviderFemConstraintPulley.h"

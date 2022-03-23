@@ -21,18 +21,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskFemConstraintBearing_H
 #define GUI_TASKVIEW_TaskFemConstraintBearing_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
+#include <QObject>
 
 #include "TaskFemConstraint.h"
 #include "ViewProviderFemConstraintBearing.h"
 
-#include <QKeyEvent>
 
 class Ui_TaskFemConstraintBearing;
 

@@ -20,15 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_VIEWPROVIDERFEMPOSTFUNCTION_H
 #define FEM_VIEWPROVIDERFEMPOSTFUNCTION_H
 
-#include <Gui/ViewProviderDocumentObject.h>
-#include <Mod/Fem/App/FemPostFunction.h>
-#include <Inventor/SbMatrix.h>
 #include <QWidget>
 #include <boost_signals2.hpp>
+#include <Gui/ViewProviderDocumentObject.h>
+#include <Mod/Fem/App/FemPostFunction.h>
+
 
 class SoScale;
 class SoSurroundScale;
