@@ -25,6 +25,7 @@
 
 #include <Base/Observer.h>
 #include <Gui/ViewProviderGeometryObject.h>
+#include <Mod/Fem/FemGlobal.h>
 
 #include <vtkAppendPolyData.h>
 #include <vtkExtractEdges.h>
