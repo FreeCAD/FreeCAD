@@ -39,7 +39,7 @@ class DlgPropertyLink : public QDialog, public Gui::SelectionObserver
     Q_OBJECT
 
 public:
-    DlgPropertyLink(QWidget* parent = 0);
+    DlgPropertyLink(QWidget* parent = nullptr);
     ~DlgPropertyLink();
 
     void accept();
@@ -91,7 +91,7 @@ private:
     void filterObjects();
     void filterItem(QTreeWidgetItem *item);
     bool filterType(QTreeWidgetItem *item);
-    QTreeWidgetItem *findItem(App::DocumentObject *obj, const char *subname=0, bool *found=nullptr);
+    QTreeWidgetItem *findItem(App::DocumentObject *obj, const char *subname=nullptr, bool *found=nullptr);
     void itemSearch(const QString &text, bool select);
     QList<App::SubObjectT> getLinkFromItem(QTreeWidgetItem *, bool needSubName=true) const;
 

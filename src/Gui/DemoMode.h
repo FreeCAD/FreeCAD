@@ -43,7 +43,7 @@ class GuiExport DemoMode : public QDialog
     Q_OBJECT
 
 public:
-    DemoMode(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+    DemoMode(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DemoMode();
 
     void accept();

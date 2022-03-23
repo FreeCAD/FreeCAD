@@ -354,7 +354,7 @@ void HttpServer::discardClient()
 /* TRANSLATOR Gui::StdCmdPythonHelp */
 
 StdCmdPythonHelp::StdCmdPythonHelp()
-  : Command("Std_PythonHelp"), server(0)
+  : Command("Std_PythonHelp"), server(nullptr)
 {
     sGroup        = "Tools";
     sMenuText     = QT_TR_NOOP("Automatic python modules documentation");

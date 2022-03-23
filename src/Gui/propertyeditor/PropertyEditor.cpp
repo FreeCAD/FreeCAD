@@ -279,7 +279,7 @@ void PropertyEditor::openEditor(const QModelIndex &index)
     str << tr("Edit").toUtf8().constData() << ' ';
     for(auto prop : items) {
         if(prop->getContainer()!=obj) {
-            obj = 0;
+            obj = nullptr;
             break;
         }
     }
@@ -776,7 +776,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
         if(res.size()) {
             std::string group = res.toUtf8().constData();
             for(auto prop : props)
-                prop->getContainer()->changeDynamicProperty(prop,group.c_str(),0);
+                prop->getContainer()->changeDynamicProperty(prop,group.c_str(),nullptr);
             buildUp(PropertyModel::PropertyList(propList),checkDocument);
         }
         return;

@@ -143,7 +143,7 @@ public:
             return QVariant();
         QVariant v;
         Info info = getInfo(index);
-        _data(info,index.row(),&v,0,role==Qt::UserRole);
+        _data(info,index.row(),&v,nullptr,role==Qt::UserRole);
         FC_TRACE(info.d.doc << "," << info.d.obj << "," << index.row()
                 << ": " << v.toString().toUtf8().constData());
         return v;
@@ -157,8 +157,8 @@ public:
         int objSize = 0;
         int propSize = 0;
         std::vector<std::pair<const char*, App::Property*> > props;
-        App::Document *doc = 0;
-        App::DocumentObject *obj = 0;
+        App::Document *doc = nullptr;
+        App::DocumentObject *obj = nullptr;
         const char *propName = nullptr;
         if(idx>=0 && idx<docSize)
             doc = docs[idx/2];
@@ -313,7 +313,7 @@ public:
                 return 0;
         }
         int count = 0;
-        _data(info,row,0,&count);
+        _data(info,row,nullptr,&count);
         FC_TRACE(info.d.doc << "," << info.d.obj << "," << row << " row count " << count);
         return count;
     }
@@ -577,7 +577,7 @@ void ExpressionLineEdit::setDocumentObject(const App::DocumentObject * currentDo
         completer->setDocumentObject(currentDocObj, checkInList);
         return;
     }
-    if (currentDocObj != 0) {
+    if (currentDocObj != nullptr) {
         completer = new ExpressionCompleter(currentDocObj, this, noProperty, checkInList);
         completer->setWidget(this);
         completer->setCaseSensitivity(Qt::CaseInsensitive);

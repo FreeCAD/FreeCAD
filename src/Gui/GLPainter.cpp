@@ -34,7 +34,7 @@ using namespace Gui;
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::GLGraphicsItem, Base::BaseClass)
 
 GLPainter::GLPainter()
-  : viewer(0)
+  : viewer(nullptr)
   , width(0)
   , height(0)
   , logicOp(false)
@@ -118,13 +118,13 @@ bool GLPainter::end()
     glPopAttrib();
     glPopMatrix();
 
-    viewer = 0;
+    viewer = nullptr;
     return true;
 }
 
 bool GLPainter::isActive() const
 {
-    return viewer != 0;
+    return viewer != nullptr;
 }
 
 void GLPainter::setLineWidth(float w)
@@ -222,7 +222,7 @@ Rubberband::Rubberband(View3DInventorViewer* v) : viewer(v)
     rgb_a = 1.0f;
 }
 
-Rubberband::Rubberband() : viewer(0)
+Rubberband::Rubberband() : viewer(nullptr)
 {
     x_old = y_old = x_new = y_new = 0;
     working = false;
@@ -326,7 +326,7 @@ Polyline::Polyline(View3DInventorViewer* v) : viewer(v)
     rgb_a = 1.0f;
 }
 
-Polyline::Polyline() : viewer(0)
+Polyline::Polyline() : viewer(nullptr)
 {
     x_new = y_new = 0;
     working = false;

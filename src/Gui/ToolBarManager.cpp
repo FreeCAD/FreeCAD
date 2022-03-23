@@ -78,7 +78,7 @@ ToolBarItem* ToolBarItem::findItem(const std::string& name)
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 ToolBarItem* ToolBarItem::copy() const
@@ -150,7 +150,7 @@ QList<ToolBarItem*> ToolBarItem::getItems() const
 
 // -----------------------------------------------------------
 
-ToolBarManager* ToolBarManager::_instance=0;
+ToolBarManager* ToolBarManager::_instance=nullptr;
 
 ToolBarManager* ToolBarManager::getInstance()
 {
@@ -162,7 +162,7 @@ ToolBarManager* ToolBarManager::getInstance()
 void ToolBarManager::destruct()
 {
     delete _instance;
-    _instance = 0;
+    _instance = nullptr;
 }
 
 ToolBarManager::ToolBarManager()
@@ -360,7 +360,7 @@ QToolBar* ToolBarManager::findToolBar(const QList<QToolBar*>& toolbars, const QS
             return *it;
     }
 
-    return 0; // no item with the user data found
+    return nullptr; // no item with the user data found
 }
 
 QAction* ToolBarManager::findAction(const QList<QAction*>& acts, const QString& item) const
@@ -370,7 +370,7 @@ QAction* ToolBarManager::findAction(const QList<QAction*>& acts, const QString& 
             return *it;
     }
 
-    return 0; // no item with the user data found
+    return nullptr; // no item with the user data found
 }
 
 QList<QToolBar*> ToolBarManager::toolBars() const

@@ -92,12 +92,12 @@ struct PythonConsoleP
     PythonConsoleP()
     {
         type = Normal;
-        _stdoutPy = 0;
-        _stderrPy = 0;
-        _stdinPy = 0;
-        _stdin = 0;
-        interpreter = 0;
-        callTipsList = 0;
+        _stdoutPy = nullptr;
+        _stderrPy = nullptr;
+        _stdinPy = nullptr;
+        _stdin = nullptr;
+        interpreter = nullptr;
+        callTipsList = nullptr;
         interactive = false;
         historyFile = QString::fromUtf8((App::Application::getUserAppDataDir() + "PythonHistory.log").c_str());
         colormap[QLatin1String("Text")] = Qt::black;
@@ -201,7 +201,7 @@ PyObject* InteractiveInterpreter::compile(const char* source) const
     }
 
     // can never happen
-    return 0;
+    return nullptr;
 }
 
 /**
@@ -273,7 +273,7 @@ bool InteractiveInterpreter::runSource(const char* source) const
         // message we don't need.
         PyObject *errobj, *errdata, *errtraceback;
         PyErr_Fetch(&errobj, &errdata, &errtraceback);
-        PyErr_Restore(errobj, errdata, 0);
+        PyErr_Restore(errobj, errdata, nullptr);
         // print error message
         if (PyErr_Occurred()) PyErr_Print();
             return false;
@@ -300,10 +300,10 @@ void InteractiveInterpreter::runCode(PyCodeObject* code) const
     Base::PyGILStateLocker lock;
     PyObject *module, *dict, *presult;           /* "exec code in d, d" */
     module = PyImport_AddModule("__main__");     /* get module, init python */
-    if (module == NULL)
+    if (module == nullptr)
         throw Base::PyException();                 /* not incref'd */
     dict = PyModule_GetDict(module);             /* get dict namespace */
-    if (dict == NULL)
+    if (dict == nullptr)
         throw Base::PyException();                 /* not incref'd */
 
     // It seems that the return value is always 'None' or Null
@@ -404,7 +404,7 @@ void InteractiveInterpreter::clearBuffer()
  *  Constructs a PythonConsole which is a child of 'parent'.
  */
 PythonConsole::PythonConsole(QWidget *parent)
-  : TextEdit(parent), WindowParameter( "Editor" ), _sourceDrain(NULL)
+  : TextEdit(parent), WindowParameter( "Editor" ), _sourceDrain(nullptr)
 {
     d = new PythonConsoleP();
     d->interactive = false;
@@ -1376,7 +1376,7 @@ QString PythonConsole::readline( void )
     // application is about to quit
     if (loop.exec() != 0)
       { PyErr_SetInterrupt(); }            //< send SIGINT to python
-    this->_sourceDrain = NULL;             //< disable source drain
+    this->_sourceDrain = nullptr;             //< disable source drain
     return inputBuffer.append(QChar::fromLatin1('\n')); //< pass a newline here, since the readline-caller may need it!
 }
 

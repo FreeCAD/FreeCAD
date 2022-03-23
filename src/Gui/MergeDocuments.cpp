@@ -121,7 +121,7 @@ private:
 };
 }
 
-MergeDocuments::MergeDocuments(App::Document* doc) : stream(0), appdoc(doc)
+MergeDocuments::MergeDocuments(App::Document* doc) : stream(nullptr), appdoc(doc)
 {
     connectExport = doc->signalExportObjects.connect
         (boost::bind(&MergeDocuments::exportObject, this, bp::_1, bp::_2));
@@ -150,7 +150,7 @@ MergeDocuments::importObjects(std::istream& input)
     std::vector<App::DocumentObject*> objs = appdoc->importObjects(reader);
 
     delete this->stream;
-    this->stream = 0;
+    this->stream = nullptr;
 
     return objs;
 }

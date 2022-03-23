@@ -50,7 +50,7 @@ struct SequencerDialogPrivate
 }
 
 
-SequencerDialog* SequencerDialog::_pclSingleton = 0;
+SequencerDialog* SequencerDialog::_pclSingleton = nullptr;
 
 SequencerDialog* SequencerDialog::instance()
 {

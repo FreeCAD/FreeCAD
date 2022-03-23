@@ -55,7 +55,7 @@ class GuiExport UrlHandler : public QObject
     Q_OBJECT
 
 public:
-    UrlHandler(QObject* parent = 0)
+    UrlHandler(QObject* parent = nullptr)
         : QObject(parent){
     }
     virtual ~UrlHandler() {
@@ -85,7 +85,7 @@ public:
      * Constructs an empty main window. For default \a parent is 0, as there usually is
      * no toplevel window there.
      */
-    MainWindow(QWidget * parent = 0, Qt::WindowFlags f = Qt::Window);
+    MainWindow(QWidget * parent = nullptr, Qt::WindowFlags f = Qt::Window);
     /** Destroys the object and frees any allocated resources. */
     ~MainWindow();
     /**
@@ -225,7 +225,7 @@ public Q_SLOTS:
     bool closeAllDocuments (bool close=true);
     /** Pop up a message box asking for saving document
      */
-    int confirmSave(const char *docName, QWidget *parent=0, bool addCheckBox=false);
+    int confirmSave(const char *docName, QWidget *parent=nullptr, bool addCheckBox=false);
     /**
      * Activates the next window in the child window chain.
      */

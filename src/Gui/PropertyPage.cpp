@@ -117,7 +117,7 @@ void PreferencePage::changeEvent(QEvent *e)
 // ----------------------------------------------------------------
 
 PreferenceUiForm::PreferenceUiForm(const QString& fn, QWidget* parent)
-  : PreferencePage(parent), form(0)
+  : PreferencePage(parent), form(nullptr)
 {
     UiLoader loader;
     loader.setLanguageChangeEnabled(true);

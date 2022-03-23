@@ -601,7 +601,7 @@ void IconFolders::removeFolder()
 
     addButton->setEnabled(true);
     QPushButton* remove = static_cast<QPushButton*>(sender());
-    QLineEdit* edit = 0;
+    QLineEdit* edit = nullptr;
     for (QList< QPair<QLineEdit*, QPushButton*> >::iterator it = buttonMap.begin(); it != buttonMap.end(); ++it) {
         if (it->second == remove) {
             edit = it->first;

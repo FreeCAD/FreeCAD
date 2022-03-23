@@ -84,7 +84,7 @@ struct ProgressBarPrivate
 };
 }
 
-SequencerBar* SequencerBar::_pclSingleton = 0;
+SequencerBar* SequencerBar::_pclSingleton = nullptr;
 
 SequencerBar* SequencerBar::instance()
 {
@@ -100,8 +100,8 @@ SequencerBar* SequencerBar::instance()
 SequencerBar::SequencerBar()
 {
     d = new SequencerBarPrivate;
-    d->bar = 0;
-    d->waitCursor = 0;
+    d->bar = nullptr;
+    d->waitCursor = nullptr;
     d->guiThread = true;
 }
 
@@ -336,7 +336,7 @@ void SequencerBar::resetData()
         // in Qt. The message is QEventDispatcherUNIX::unregisterTimer: invalid argument.
         d->bar->aboutToHide();
         delete d->waitCursor;
-        d->waitCursor = 0;
+        d->waitCursor = nullptr;
         d->bar->leaveControlEvents(d->guiThread);
         getMainWindow()->setPaneText(1, QString());
         getMainWindow()->showMessage(QString());
@@ -553,7 +553,7 @@ void ProgressBar::setupTaskBarProgress()
 
 bool ProgressBar::eventFilter(QObject* o, QEvent* e)
 {
-    if (sequencer->isRunning() && e != 0) {
+    if (sequencer->isRunning() && e != nullptr) {
         QThread* currentThread = QThread::currentThread();
         QThread* thr = this->thread(); // this is the main thread
         if (thr != currentThread) {

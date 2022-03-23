@@ -88,8 +88,8 @@ void coinRemoveAllChildren(SoGroup *group) {
 PROPERTY_SOURCE_ABSTRACT(Gui::ViewProvider, App::TransactionalObject)
 
 ViewProvider::ViewProvider()
-    : pcAnnotation(0)
-    , pyViewObject(0)
+    : pcAnnotation(nullptr)
+    , pyViewObject(nullptr)
     , overrideMode("As Is")
     , _iActualMode(-1)
     , _iEditMode(-1)
@@ -140,7 +140,7 @@ ViewProvider *ViewProvider::startEditing(int ModNum)
         _iEditMode = ModNum;
         return this;
     }
-    return 0;
+    return nullptr;
 }
 
 int ViewProvider::getEditingMode() const
@@ -404,7 +404,7 @@ SoNode* ViewProvider::getDisplayMaskMode(const char* type) const
         return pcModeSwitch->getChild(it->second);
     }
 
-    return 0;
+    return nullptr;
 }
 
 std::vector<std::string> ViewProvider::getDisplayMaskModes() const
@@ -433,7 +433,7 @@ void ViewProvider::setDisplayMode(const char* ModeName)
 
 const char* ViewProvider::getDefaultDisplayMode() const {
 
-    return 0;
+    return nullptr;
 }
 
 vector<std::string> ViewProvider::getDisplayModes(void) const {
@@ -910,7 +910,7 @@ bool ViewProvider::getElementPicked(const SoPickedPoint *pp, std::string &subnam
         if(ext->extensionGetElementPicked(pp,subname))
             return true;
     }
-    subname = getElement(pp?pp->getDetail():0);
+    subname = getElement(pp?pp->getDetail():nullptr);
     return true;
 }
 
@@ -962,7 +962,7 @@ int ViewProvider::partialRender(const std::vector<std::string> &elements, bool c
         if(hidden)
             element.resize(element.size()-hiddenMarker().size());
         path->truncate(0);
-        SoDetail *det = 0;
+        SoDetail *det = nullptr;
         if(getDetailPath(element.c_str(),path,false,det)) {
             if(!hidden && !det) {
                 FC_LOG("partial render element not found: " << element);
@@ -1028,7 +1028,7 @@ Base::BoundBox3d ViewProvider::getBoundingBox(const char *subname, bool transfor
     SoTempPath path(20);
     path.ref();
     if(subname && subname[0]) {
-        SoDetail *det=0;
+        SoDetail *det=nullptr;
         if(!getDetailPath(subname,&path,true,det)) {
             if(mode < 0)
                 pcModeSwitch->whichChild = mode;

@@ -69,10 +69,10 @@ ViewProviderDocumentObject::ViewProviderDocumentObject()
     ADD_PROPERTY_TYPE(ShowInTree, (true), dogroup, App::Prop_None, "Show the object in the tree view");
 
     ADD_PROPERTY_TYPE(SelectionStyle, ((long)0), sgroup, App::Prop_None, "Set the object selection style");
-    static const char *SelectionStyleEnum[] = {"Shape","BoundBox",0};
+    static const char *SelectionStyleEnum[] = {"Shape","BoundBox",nullptr};
     SelectionStyle.setEnums(SelectionStyleEnum);
 
-    static const char* OnTopEnum[]= {"Disabled","Enabled","Object","Element",NULL};
+    static const char* OnTopEnum[]= {"Disabled","Enabled","Object","Element",nullptr};
     ADD_PROPERTY_TYPE(OnTopWhenSelected,((long int)0), sgroup, App::Prop_None,
             "Enabled: Display the object on top of any other object when selected\n"
             "Object: On top only if the whole object is selected\n"
@@ -86,7 +86,7 @@ ViewProviderDocumentObject::~ViewProviderDocumentObject()
 {
     // Make sure that the property class does not destruct our string list
     DisplayMode.setContainer(nullptr);
-    DisplayMode.setEnums(0);
+    DisplayMode.setEnums(nullptr);
 }
 
 void ViewProviderDocumentObject::getTaskViewContent(std::vector<Gui::TaskView::TaskContent*>& vec) const
@@ -156,7 +156,7 @@ void ViewProviderDocumentObject::onBeforeChange(const App::Property* prop)
 {
     if (isAttachedToDocument()) {
         App::DocumentObject* obj = getObject();
-        App::Document* doc = obj ? obj->getDocument() : 0;
+        App::Document* doc = obj ? obj->getDocument() : nullptr;
         if (doc) {
             onBeforeChangeProperty(doc, prop);
         }
@@ -346,7 +346,7 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
     for (std::vector<std::string>::iterator it = aDisplayModesArray.begin(); it != aDisplayModesArray.end(); ++it) {
         aDisplayEnumsArray.push_back( it->c_str() );
     }
-    aDisplayEnumsArray.push_back(0); // null termination
+    aDisplayEnumsArray.push_back(nullptr); // null termination
     DisplayMode.setEnums(&(aDisplayEnumsArray[0]));
 
     if(!isRestoring()) {
@@ -441,7 +441,7 @@ Gui::MDIView* ViewProviderDocumentObject::getViewOfNode(SoNode* node) const
 SoNode* ViewProviderDocumentObject::findFrontRootOfType(const SoType& type) const
 {
     if(!pcObject)
-        return 0;
+        return nullptr;
     // first get the document this object is part of and get its GUI counterpart
     App::Document* pAppDoc = pcObject->getDocument();
     Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(pAppDoc);
@@ -470,7 +470,7 @@ SoNode* ViewProviderDocumentObject::findFrontRootOfType(const SoType& type) cons
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 void ViewProviderDocumentObject::setActiveMode()
@@ -625,7 +625,7 @@ bool ViewProviderDocumentObject::getDetailPath(const char *subname, SoFullPath *
 
     if(det) {
         delete det;
-        det = 0;
+        det = nullptr;
     }
 
     const char *dot = strchr(subname,'.');

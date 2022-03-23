@@ -241,7 +241,7 @@ StdCmdMacroStepOver::StdCmdMacroStepOver()
     sToolTipText  = QT_TR_NOOP("Step over");
     sWhatsThis    = "Std_MacroStepOver";
     sStatusTip    = QT_TR_NOOP("Step over");
-    sPixmap       = 0;
+    sPixmap       = nullptr;
     sAccel        = "F10";
     eType         = 0;
 }
@@ -268,7 +268,7 @@ StdCmdMacroStepInto::StdCmdMacroStepInto()
     sToolTipText  = QT_TR_NOOP("Step into");
     //sWhatsThis    = "Std_MacroStepOver";
     sStatusTip    = QT_TR_NOOP("Step into");
-    sPixmap       = 0;
+    sPixmap       = nullptr;
     sAccel        = "F11";
     eType         = 0;
 }
@@ -295,7 +295,7 @@ StdCmdToggleBreakpoint::StdCmdToggleBreakpoint()
     sToolTipText  = QT_TR_NOOP("Toggle breakpoint");
     sWhatsThis    = "Std_ToggleBreakpoint";
     sStatusTip    = QT_TR_NOOP("Toggle breakpoint");
-    sPixmap       = 0;
+    sPixmap       = nullptr;
     sAccel        = "F9";
     eType         = 0;
 }

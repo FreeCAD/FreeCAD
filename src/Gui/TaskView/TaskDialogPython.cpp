@@ -43,7 +43,7 @@
 using namespace Gui;
 using namespace Gui::TaskView;
 
-ControlPy* ControlPy::instance = 0;
+ControlPy* ControlPy::instance = nullptr;
 
 ControlPy* ControlPy::getInstance()
 {
@@ -128,7 +128,7 @@ Py::Object ControlPy::activeDialog(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-    return Py::Boolean(dlg!=0);
+    return Py::Boolean(dlg!=nullptr);
 }
 
 Py::Object ControlPy::closeDialog(const Py::Tuple& args)
@@ -211,7 +211,7 @@ Py::Object ControlPy::showModelView(const Py::Tuple& args)
 // ------------------------------------------------------------------
 
 TaskWatcherPython::TaskWatcherPython(const Py::Object& o)
-  : TaskWatcher(0), watcher(o)
+  : TaskWatcher(nullptr), watcher(o)
 {
     QString title;
     if (watcher.hasAttr(std::string("title"))) {
@@ -227,9 +227,9 @@ TaskWatcherPython::TaskWatcherPython(const Py::Object& o)
         icon = BitmapFactory().pixmap(s.c_str());
     }
 
-    Gui::TaskView::TaskBox *tb = 0;
+    Gui::TaskView::TaskBox *tb = nullptr;
     if (watcher.hasAttr(std::string("commands"))) {
-        tb = new Gui::TaskView::TaskBox(icon, title, true, 0);
+        tb = new Gui::TaskView::TaskBox(icon, title, true, nullptr);
         Py::Sequence cmds(watcher.getAttr(std::string("commands")));
         CommandManager &mgr = Gui::Application::Instance->commandManager();
         for (Py::Sequence::iterator it = cmds.begin(); it != cmds.end(); ++it) {
@@ -243,7 +243,7 @@ TaskWatcherPython::TaskWatcherPython(const Py::Object& o)
 
     if (watcher.hasAttr(std::string("widgets"))) {
         if (!tb && !title.isEmpty())
-            tb = new Gui::TaskView::TaskBox(icon, title, true, 0);
+            tb = new Gui::TaskView::TaskBox(icon, title, true, nullptr);
         Py::Sequence list(watcher.getAttr(std::string("widgets")));
 
         Gui::PythonWrapper wrap;
@@ -317,13 +317,13 @@ TaskDialogPython::TaskDialogPython(const Py::Object& o) : dlg(o)
         fn = QString::fromUtf8(path.c_str());
 
         QFile file(fn);
-        QWidget* form = 0;
+        QWidget* form = nullptr;
         if (file.open(QFile::ReadOnly))
-            form = loader.load(&file, 0);
+            form = loader.load(&file, nullptr);
         file.close();
         if (form) {
             Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
-                QPixmap(icon), form->windowTitle(), true, 0);
+                QPixmap(icon), form->windowTitle(), true, nullptr);
             taskbox->groupLayout()->addWidget(form);
             Content.push_back(taskbox);
         }
@@ -350,7 +350,7 @@ TaskDialogPython::TaskDialogPython(const Py::Object& o) : dlg(o)
                     QWidget* form = qobject_cast<QWidget*>(object);
                     if (form) {
                         Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
-                            form->windowIcon().pixmap(32), form->windowTitle(), true, 0);
+                            form->windowIcon().pixmap(32), form->windowTitle(), true, nullptr);
                         taskbox->groupLayout()->addWidget(form);
                         Content.push_back(taskbox);
                     }

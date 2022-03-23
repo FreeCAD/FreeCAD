@@ -369,7 +369,7 @@ void PropertyView::onTimer() {
     std::vector<PropInfo> propDataMap;
     std::vector<PropInfo> propViewMap;
     bool checkLink = true;
-    ViewProviderDocumentObject *vpLast = 0;
+    ViewProviderDocumentObject *vpLast = nullptr;
     auto sels = Gui::Selection().getSelectionEx("*");
     for(auto &sel : sels) {
         App::DocumentObject *ob = sel.getObject();

@@ -60,14 +60,14 @@ class GuiExport FileDialog : public QFileDialog
     Q_OBJECT
 
 public:
-    static QString getOpenFileName( QWidget * parent = 0, const QString & caption = QString(), const QString & dir = QString(),
-                                    const QString & filter = QString(), QString * selectedFilter = 0, Options options = Options() );
-    static QString getSaveFileName( QWidget * parent = 0, const QString & caption = QString(), const QString & dir = QString(),
-                                    const QString & filter = QString(), QString * selectedFilter = 0, Options options = Options() );
-    static QString getExistingDirectory( QWidget * parent = 0, const QString & caption = QString(), const QString & dir = QString(),
+    static QString getOpenFileName( QWidget * parent = nullptr, const QString & caption = QString(), const QString & dir = QString(),
+                                    const QString & filter = QString(), QString * selectedFilter = nullptr, Options options = Options() );
+    static QString getSaveFileName( QWidget * parent = nullptr, const QString & caption = QString(), const QString & dir = QString(),
+                                    const QString & filter = QString(), QString * selectedFilter = nullptr, Options options = Options() );
+    static QString getExistingDirectory( QWidget * parent = nullptr, const QString & caption = QString(), const QString & dir = QString(),
                                          Options options = ShowDirsOnly );
-    static QStringList getOpenFileNames( QWidget * parent = 0, const QString & caption = QString(), const QString & dir = QString(),
-                                         const QString & filter = QString(), QString * selectedFilter = 0, Options options = Options() );
+    static QStringList getOpenFileNames( QWidget * parent = nullptr, const QString & caption = QString(), const QString & dir = QString(),
+                                         const QString & filter = QString(), QString * selectedFilter = nullptr, Options options = Options() );
 
     /*! Return the last directory a file was read from or saved to. */
     static QString getWorkingDirectory();
@@ -76,7 +76,7 @@ public:
     static QString restoreLocation();
     static void saveLocation(const QString&);
 
-    FileDialog(QWidget * parent = 0);
+    FileDialog(QWidget * parent = nullptr);
     ~FileDialog();
 
     void accept();
@@ -164,7 +164,7 @@ public:
     enum Mode { File, Directory };
     enum AcceptMode { AcceptOpen, AcceptSave };
 
-    FileChooser ( QWidget * parent = 0 );
+    FileChooser ( QWidget * parent = nullptr );
     virtual ~FileChooser();
 
     /**

@@ -47,7 +47,7 @@ using namespace App;
 namespace bp = boost::placeholders;
 
 ExpressionBinding::ExpressionBinding()
-    : iconLabel(0)
+    : iconLabel(nullptr)
     , iconHeight(-1)
     , m_autoApply(false)
 {
@@ -60,7 +60,7 @@ ExpressionBinding::~ExpressionBinding()
 
 bool ExpressionBinding::isBound() const
 {
-    return path.getDocumentObject() != 0;
+    return path.getDocumentObject() != nullptr;
 }
 
 void ExpressionBinding::unbind()
@@ -105,7 +105,7 @@ void ExpressionBinding::bind(const App::ObjectIdentifier &_path)
 {
     const Property * prop = _path.getProperty();
 
-    Q_ASSERT(prop != 0);
+    Q_ASSERT(prop != nullptr);
 
     path = prop->canonicalPath(_path);
 
@@ -125,14 +125,14 @@ void ExpressionBinding::bind(const Property &prop)
 
 bool ExpressionBinding::hasExpression() const
 {
-    return isBound() && getExpression() != 0;
+    return isBound() && getExpression() != nullptr;
 }
 
 std::shared_ptr<App::Expression> ExpressionBinding::getExpression() const
 {
     DocumentObject * docObj = path.getDocumentObject();
 
-    Q_ASSERT(isBound() && docObj != 0);
+    Q_ASSERT(isBound() && docObj != nullptr);
 
     return docObj->getExpression(path).expression;
 }
@@ -238,7 +238,7 @@ bool ExpressionBinding::apply()
 {
     Property * prop(path.getProperty());
 
-    assert(prop != 0);
+    assert(prop != nullptr);
     Q_UNUSED(prop);
 
     DocumentObject * docObj(path.getDocumentObject());

@@ -353,9 +353,9 @@ struct PythonDebuggerP {
     PythonDebuggerP(PythonDebugger* that) :
         init(false), trystop(false), running(false)
     {
-        out_o = 0;
-        err_o = 0;
-        exc_o = 0;
+        out_o = nullptr;
+        err_o = nullptr;
+        exc_o = nullptr;
         Base::PyGILStateLocker lock;
         out_n = new PythonDebugStdout();
         err_n = new PythonDebugStderr();
@@ -437,9 +437,9 @@ void PythonDebugger::runFile(const QString& fn)
         module = PyImport_AddModule("__main__");
         dict = PyModule_GetDict(module);
         dict = PyDict_Copy(dict);
-        if (PyDict_GetItemString(dict, "__file__") == NULL) {
+        if (PyDict_GetItemString(dict, "__file__") == nullptr) {
             PyObject *f = PyUnicode_FromString((const char*)pxFileName);
-            if (f == NULL) {
+            if (f == nullptr) {
                 fclose(fp);
                 return;
             }
@@ -497,7 +497,7 @@ bool PythonDebugger::stop()
     if (!d->init)
         return false;
     Base::PyGILStateLocker lock;
-    PyEval_SetTrace(NULL, NULL);
+    PyEval_SetTrace(nullptr, nullptr);
     PySys_SetObject("stdout", d->out_o);
     PySys_SetObject("stderr", d->err_o);
     PySys_SetObject("excepthook", d->exc_o);
@@ -528,7 +528,7 @@ void PythonDebugger::stepRun()
 
 void PythonDebugger::showDebugMarker(const QString& fn, int line)
 {
-    PythonEditorView* edit = 0;
+    PythonEditorView* edit = nullptr;
     QList<QWidget*> mdis = getMainWindow()->windows();
     for (QList<QWidget*>::iterator it = mdis.begin(); it != mdis.end(); ++it) {
         edit = qobject_cast<PythonEditorView*>(*it);
@@ -551,7 +551,7 @@ void PythonDebugger::showDebugMarker(const QString& fn, int line)
 
 void PythonDebugger::hideDebugMarker(const QString& fn)
 {
-    PythonEditorView* edit = 0;
+    PythonEditorView* edit = nullptr;
     QList<QWidget*> mdis = getMainWindow()->windows();
     for (QList<QWidget*>::iterator it = mdis.begin(); it != mdis.end(); ++it) {
         edit = qobject_cast<PythonEditorView*>(*it);

@@ -760,7 +760,7 @@ class PlacementEditor : public Gui::LabelButton
     Q_OBJECT
 
 public:
-    PlacementEditor(const QString& name, QWidget * parent = 0);
+    PlacementEditor(const QString& name, QWidget * parent = nullptr);
     ~PlacementEditor();
 
 private Q_SLOTS:

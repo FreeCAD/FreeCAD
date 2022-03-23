@@ -284,10 +284,10 @@ StdCmdFreezeViews::StdCmdFreezeViews()
   , maxViews(50)
   , savedViews(0)
   , offset(0)
-  , saveView(0)
-  , freezeView(0)
-  , clearView(0)
-  , separator(0)
+  , saveView(nullptr)
+  , freezeView(nullptr)
+  , clearView(nullptr)
+  , separator(nullptr)
 {
     sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Freeze display");
@@ -338,7 +338,7 @@ void StdCmdFreezeViews::activated(int iMsg)
     }
     else if (iMsg == 3) {
         // Create a new view
-        const char* ppReturn=0;
+        const char* ppReturn=nullptr;
         getGuiApplication()->sendMsgToActiveView("GetCamera",&ppReturn);
 
         QList<QAction*> acts = pcAction->actions();
@@ -1708,12 +1708,12 @@ void StdViewDockUndockFullscreen::activated(int iMsg)
         if (!clone)
             return;
 
-        const char* ppReturn = 0;
+        const char* ppReturn = nullptr;
         if (view->onMsg("GetCamera", &ppReturn)) {
             std::string sMsg = "SetCamera ";
             sMsg += ppReturn;
 
-            const char** pReturnIgnore=0;
+            const char** pReturnIgnore=nullptr;
             clone->onMsg(sMsg.c_str(), pReturnIgnore);
         }
 
@@ -1987,7 +1987,7 @@ void StdCmdViewCreate::activated(int iMsg)
 
 bool StdCmdViewCreate::isActive(void)
 {
-    return (getActiveGuiDocument()!=NULL);
+    return (getActiveGuiDocument()!=nullptr);
 }
 
 //===========================================================================
@@ -2424,7 +2424,7 @@ void StdCmdViewIvIssueCamPos::activated(int iMsg)
     std::string Temp,Temp2;
     std::string::size_type pos;
 
-    const char* ppReturn=0;
+    const char* ppReturn=nullptr;
     getGuiApplication()->sendMsgToActiveView("GetCamera",&ppReturn);
 
     // remove the #inventor line...
@@ -2757,7 +2757,7 @@ static std::vector<std::string> getBoxSelection(
     // DO NOT check this view object Visibility, let the caller do this. Because
     // we may be called by upper object hierarchy that manages our visibility.
 
-    auto bbox3 = vp->getBoundingBox(0,transform);
+    auto bbox3 = vp->getBoundingBox(nullptr,transform);
     if(!bbox3.IsValid())
         return ret;
 
@@ -2783,9 +2783,9 @@ static std::vector<std::string> getBoxSelection(
             return ret;
         }
         Base::PyGILStateLocker lock;
-        PyObject *pyobj = 0;
+        PyObject *pyobj = nullptr;
         Base::Matrix4D matCopy(mat);
-        obj->getSubObject(0,&pyobj,&matCopy,transform,depth);
+        obj->getSubObject(nullptr,&pyobj,&matCopy,transform,depth);
         if(!pyobj)
             return ret;
         Py::Object pyobject(pyobj,true);
@@ -2837,10 +2837,10 @@ static std::vector<std::string> getBoxSelection(
 
     size_t count = 0;
     for(auto &sub : subs) {
-        App::DocumentObject *parent = 0;
+        App::DocumentObject *parent = nullptr;
         std::string childName;
         Base::Matrix4D smat(mat);
-        auto sobj = obj->resolve(sub.c_str(),&parent,&childName,0,0,&smat,transform,depth+1);
+        auto sobj = obj->resolve(sub.c_str(),&parent,&childName,nullptr,nullptr,&smat,transform,depth+1);
         if(!sobj)
             continue;
         int vis;
@@ -2938,7 +2938,7 @@ void StdBoxSelection::activated(int iMsg)
                 SoKeyboardEvent ev;
                 viewer->navigationStyle()->processEvent(&ev);
             }
-            SelectionCallbackHandler::Create(viewer, View3DInventorViewer::Rubberband, QCursor(QPixmap(cursor_box_select), 7, 7), doSelect, NULL);
+            SelectionCallbackHandler::Create(viewer, View3DInventorViewer::Rubberband, QCursor(QPixmap(cursor_box_select), 7, 7), doSelect, nullptr);
             SoNode* root = viewer->getSceneGraph();
             static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
         }
@@ -3129,7 +3129,7 @@ bool StdCmdTreeSelectAllInstances::isActive(void)
     if(!obj || !obj->getNameInDocument())
         return false;
     return dynamic_cast<ViewProviderDocumentObject*>(
-            Application::Instance->getViewProvider(obj))!=0;
+            Application::Instance->getViewProvider(obj))!=nullptr;
 }
 
 void StdCmdTreeSelectAllInstances::activated(int iMsg)
@@ -3266,7 +3266,7 @@ void StdCmdSceneInspector::activated(int iMsg)
     Q_UNUSED(iMsg);
     Gui::Document* doc = Application::Instance->activeDocument();
     if (doc) {
-        static QPointer<Gui::Dialog::DlgInspector> dlg = 0;
+        static QPointer<Gui::Dialog::DlgInspector> dlg = nullptr;
         if (!dlg)
             dlg = new Gui::Dialog::DlgInspector(getMainWindow());
         dlg->setDocument(doc);
@@ -3304,7 +3304,7 @@ bool StdCmdTextureMapping::isActive(void)
 {
     Gui::MDIView* view = getMainWindow()->activeWindow();
     return view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())
-                && (Gui::Control().activeDialog()==0);
+                && (Gui::Control().activeDialog()==nullptr);
 }
 
 DEF_STD_CMD(StdCmdDemoMode)
@@ -3324,7 +3324,7 @@ StdCmdDemoMode::StdCmdDemoMode()
 void StdCmdDemoMode::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    static QPointer<QDialog> dlg = 0;
+    static QPointer<QDialog> dlg = nullptr;
     if (!dlg)
         dlg = new Gui::Dialog::DemoMode(getMainWindow());
     dlg->setAttribute(Qt::WA_DeleteOnClose);

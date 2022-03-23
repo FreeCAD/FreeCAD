@@ -1315,7 +1315,7 @@ void NavigationStyle::abortSelection()
     if (mouseSelection) {
         mouseSelection->releaseMouseModel(true);
         delete mouseSelection;
-        mouseSelection = 0;
+        mouseSelection = nullptr;
     }
 }
 

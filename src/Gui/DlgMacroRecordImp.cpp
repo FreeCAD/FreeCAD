@@ -150,7 +150,7 @@ void DlgMacroRecordImp::on_buttonStop_clicked()
 
 void DlgMacroRecordImp::on_pushButtonChooseDir_clicked()
 {
-    QString newDir = QFileDialog::getExistingDirectory(0,tr("Choose macro directory"),macroPath);
+    QString newDir = QFileDialog::getExistingDirectory(nullptr,tr("Choose macro directory"),macroPath);
     if (!newDir.isEmpty()) {
         macroPath = QDir::toNativeSeparators(newDir + QDir::separator());
         ui->lineEditMacroPath->setText(macroPath);

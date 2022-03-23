@@ -105,7 +105,7 @@ public:
         Special    = 3
     };
 
-    PythonConsole(QWidget *parent = 0);
+    PythonConsole(QWidget *parent = nullptr);
     ~PythonConsole();
 
     void OnChange( Base::Subject<const char*> &rCaller,const char* rcReason );

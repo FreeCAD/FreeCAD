@@ -56,7 +56,7 @@ class TreeWidget : public QTreeWidget, public SelectionObserver
     Q_OBJECT
 
 public:
-    TreeWidget(const char *name, QWidget* parent=0);
+    TreeWidget(const char *name, QWidget* parent=nullptr);
     ~TreeWidget();
 
     static void scrollItemToTop();
@@ -78,7 +78,7 @@ public:
      * This function can return the non-group parent of the selected object,
      * which Gui::Selection() cannot provide.
      */
-    static std::vector<SelInfo> getSelection(App::Document *doc=0);
+    static std::vector<SelInfo> getSelection(App::Document *doc=nullptr);
 
     static TreeWidget *instance();
 
@@ -262,7 +262,7 @@ public:
     ~DocumentItem();
 
     Gui::Document* document() const;
-    void clearSelection(DocumentObjectItem *exclude=0);
+    void clearSelection(DocumentObjectItem *exclude=nullptr);
     void updateSelection(QTreeWidgetItem *, bool unselect=false);
     void updateSelection();
     void updateItemSelection(DocumentObjectItem *);
@@ -320,7 +320,7 @@ protected:
     bool updateObject(const Gui::ViewProviderDocumentObject&, const App::Property &prop);
 
     bool createNewItem(const Gui::ViewProviderDocumentObject&,
-                    QTreeWidgetItem *parent=0, int index=-1,
+                    QTreeWidgetItem *parent=nullptr, int index=-1,
                     DocumentObjectDataPtr ptrs = DocumentObjectDataPtr());
 
     int findRootIndex(App::DocumentObject *childObj);
@@ -395,15 +395,15 @@ public:
 
     // return the owner, and full qualified subname
     App::DocumentObject *getFullSubName(std::ostringstream &str,
-            DocumentObjectItem *parent = 0) const;
+            DocumentObjectItem *parent = nullptr) const;
 
     // return the immediate descendent of the common ancestor of this item and
     // 'cousin'.
     App::DocumentObject *getRelativeParent(
             std::ostringstream &str,
             DocumentObjectItem *cousin,
-            App::DocumentObject **topParent=0,
-            std::string *topSubname=0) const;
+            App::DocumentObject **topParent=nullptr,
+            std::string *topSubname=nullptr) const;
 
     // return the top most linked group owner's name, and subname.  This method
     // is necessary despite have getFullSubName above is because native geo group
@@ -471,7 +471,7 @@ class TreeDockWidget : public Gui::DockWindow
     Q_OBJECT
 
 public:
-    TreeDockWidget(Gui::Document*  pcDocument,QWidget *parent=0);
+    TreeDockWidget(Gui::Document*  pcDocument,QWidget *parent=nullptr);
     ~TreeDockWidget();
 };
 
@@ -482,7 +482,7 @@ public:
 class TreeWidgetEditDelegate: public QStyledItemDelegate {
     Q_OBJECT
 public:
-    TreeWidgetEditDelegate(QObject* parent=0);
+    TreeWidgetEditDelegate(QObject* parent=nullptr);
     virtual QWidget* createEditor(QWidget *parent,
             const QStyleOptionViewItem &, const QModelIndex &index) const;
 };

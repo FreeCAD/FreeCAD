@@ -43,7 +43,7 @@ class DlgSettingsImageImp : public QWidget
     Q_OBJECT
 
 public:
-    DlgSettingsImageImp( QWidget* parent = 0 );
+    DlgSettingsImageImp( QWidget* parent = nullptr );
     ~DlgSettingsImageImp();
 
     /** @name Image dimensions */

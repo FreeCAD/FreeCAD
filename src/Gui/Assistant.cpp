@@ -42,7 +42,7 @@ using namespace Gui;
 /* TRANSLATOR Gui::Assistant */
 
 Assistant::Assistant()
-    : proc(0)
+    : proc(nullptr)
 {
 }
 
@@ -95,7 +95,7 @@ bool Assistant::startAssistant()
 
         QFileInfo fi(qhc);
         if (!fi.isReadable()) {
-            QMessageBox::critical(0, tr("%1 Help").arg(exe),
+            QMessageBox::critical(nullptr, tr("%1 Help").arg(exe),
                 tr("%1 help files not found (%2). You might need to install the %1 documentation package.").arg(exe, qhc));
             return false;
         }
@@ -127,7 +127,7 @@ bool Assistant::startAssistant()
                     proc->start(app, args);
 
                     if (!proc->waitForFinished(50000)) {
-                        QMessageBox::critical(0, tr("%1 Help").arg(exe),
+                        QMessageBox::critical(nullptr, tr("%1 Help").arg(exe),
                             tr("Unable to launch Qt Assistant (%1)").arg(app));
                         return false;
                     }
@@ -141,7 +141,7 @@ bool Assistant::startAssistant()
                     proc->start(app, args);
 
                     if (!proc->waitForFinished(50000)) {
-                        QMessageBox::critical(0, tr("%1 Help").arg(exe),
+                        QMessageBox::critical(nullptr, tr("%1 Help").arg(exe),
                             tr("Unable to launch Qt Assistant (%1)").arg(app));
                         return false;
                     }
@@ -159,7 +159,7 @@ bool Assistant::startAssistant()
         proc->start(app, args);
 
         if (!proc->waitForStarted()) {
-            QMessageBox::critical(0, tr("%1 Help").arg(exe),
+            QMessageBox::critical(nullptr, tr("%1 Help").arg(exe),
                 tr("Unable to launch Qt Assistant (%1)").arg(app));
             return false;
         }

@@ -103,7 +103,7 @@ namespace Gui {
         { qDeleteAll(childItems); childItems.clear(); }
 
     protected:
-        DocumentModelIndex() : parentItem(0) {}
+        DocumentModelIndex() : parentItem(nullptr) {}
         DocumentModelIndex *parentItem;
         QList<DocumentModelIndex*> childItems;
     };
@@ -204,7 +204,7 @@ namespace Gui {
 
     // ------------------------------------------------------------------------
 
-    QIcon* DocumentIndex::documentIcon = 0;
+    QIcon* DocumentIndex::documentIcon = nullptr;
 
     void DocumentIndex::addToDocument(ViewProviderIndex* vp)
     {
@@ -374,7 +374,7 @@ DocumentModel::DocumentModel(QObject* parent)
 
 DocumentModel::~DocumentModel()
 {
-    delete d; d = 0;
+    delete d; d = nullptr;
 }
 
 void DocumentModel::slotNewDocument(const Gui::Document& Doc)
@@ -562,15 +562,15 @@ void DocumentModel::slotActiveObject(const Gui::ViewProviderDocumentObject& obj)
 const Document* DocumentModel::getDocument(const QModelIndex& index) const
 {
     if (!index.isValid())
-        return 0;
-    Base::BaseClass* item = 0;
+        return nullptr;
+    Base::BaseClass* item = nullptr;
     item = static_cast<Base::BaseClass*>(index.internalPointer());
     if (item->getTypeId() == DocumentIndex::getClassTypeId()) {
         const Gui::Document& d = static_cast<DocumentIndex*>(item)->d;
         return (&d);
     }
 
-    return 0;
+    return nullptr;
 }
 
 bool DocumentModel::isPropertyLink(const App::Property& prop) const
@@ -631,7 +631,7 @@ Qt::ItemFlags DocumentModel::flags(const QModelIndex &index) const
 
 QModelIndex DocumentModel::index (int row, int column, const QModelIndex & parent) const
 {
-    DocumentModelIndex* item = 0;
+    DocumentModelIndex* item = nullptr;
     if (!parent.isValid())
         item = d->rootItem;
     else
@@ -645,7 +645,7 @@ QModelIndex DocumentModel::parent (const QModelIndex & index) const
 {
     if (!index.isValid() || index.internalPointer() == d->rootItem)
         return QModelIndex();
-    DocumentModelIndex* item = 0;
+    DocumentModelIndex* item = nullptr;
     item = static_cast<DocumentModelIndex*>(index.internalPointer());
     DocumentModelIndex* parent = item->parent();
     return createIndex(parent->row(), 0, parent);
@@ -655,7 +655,7 @@ int DocumentModel::rowCount (const QModelIndex & parent) const
 {
     if (!parent.isValid())
         return 1; // the root item
-    DocumentModelIndex* item = 0;
+    DocumentModelIndex* item = nullptr;
     item = static_cast<DocumentModelIndex*>(parent.internalPointer());
     return item->childCount();
 }

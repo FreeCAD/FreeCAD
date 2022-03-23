@@ -162,7 +162,7 @@ void FCCmdTest2::activated(int iMsg)
 
 bool FCCmdTest2::isActive(void)
 {
-    return (getDocument()!=NULL);
+    return (getDocument()!=nullptr);
 }
 
 //===========================================================================
@@ -191,7 +191,7 @@ void FCCmdTest3::activated(int iMsg)
 
 bool FCCmdTest3::isActive(void)
 {
-    return (getDocument()!=NULL);
+    return (getDocument()!=nullptr);
 }
 
 //===========================================================================
@@ -221,7 +221,7 @@ void FCCmdTest4::activated(int iMsg)
 
 bool FCCmdTest4::isActive(void)
 {
-    return (getDocument()!=NULL);
+    return (getDocument()!=nullptr);
 }
 
 //===========================================================================
@@ -249,7 +249,7 @@ void FCCmdTest5::activated(int iMsg)
 
 bool FCCmdTest5::isActive(void)
 {
-  return (getDocument()!=NULL);
+  return (getDocument()!=nullptr);
 }
 
 
@@ -278,7 +278,7 @@ void FCCmdTest6::activated(int iMsg)
 
 bool FCCmdTest6::isActive(void)
 {
-    return (getDocument()!=NULL);
+    return (getDocument()!=nullptr);
 }
 
 //===========================================================================
@@ -327,7 +327,7 @@ void CmdTestCmdFuncs::activated(int iMsg)
 
 bool CmdTestCmdFuncs::isActive(void)
 {
-    return (getDocument()!=NULL);
+    return (getDocument()!=nullptr);
 }
 
 //===========================================================================
@@ -517,7 +517,7 @@ void CmdTestProgress4::activated(int iMsg)
             QWaitCondition().wait(&mutex, 5);
             if (i == 45) {
                 delete seq;
-                seq = 0;
+                seq = nullptr;
             }
             if (seq) {
                 seq->next(false);
@@ -692,7 +692,7 @@ void CmdTestMDI3::activated(int iMsg)
     Q_UNUSED(iMsg);
     MDIView* mdi = getMainWindow()->activeWindow();
     getMainWindow()->removeWindow(mdi);
-    mdi->setParent(0, Qt::Window | Qt::WindowTitleHint |
+    mdi->setParent(nullptr, Qt::Window | Qt::WindowTitleHint |
                    Qt::WindowSystemMenuHint |
                    Qt::WindowMinMaxButtonsHint);
     mdi->show();

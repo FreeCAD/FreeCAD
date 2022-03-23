@@ -130,8 +130,8 @@ public:
     };
     //@}
 
-    View3DInventorViewer (QWidget *parent, const QtGLWidget* sharewidget = 0);
-    View3DInventorViewer (const QtGLFormat& format, QWidget *parent, const QtGLWidget* sharewidget = 0);
+    View3DInventorViewer (QWidget *parent, const QtGLWidget* sharewidget = nullptr);
+    View3DInventorViewer (const QtGLFormat& format, QWidget *parent, const QtGLWidget* sharewidget = nullptr);
     virtual ~View3DInventorViewer();
 
     void init();
@@ -204,7 +204,7 @@ public:
     SbBool isEditingViewProvider() const;
     /// reset from edit mode
     void resetEditingViewProvider();
-    void setupEditingRoot(SoNode *node=0, const Base::Matrix4D *mat=0);
+    void setupEditingRoot(SoNode *node=nullptr, const Base::Matrix4D *mat=nullptr);
     void resetEditingRoot(bool updateLinks=true);
     void setEditingTransform(const Base::Matrix4D &mat);
     /** Helper method to get picked entities while editing.
@@ -241,9 +241,9 @@ public:
     void abortSelection();
     void stopSelection();
     bool isSelecting() const;
-    std::vector<SbVec2f> getGLPolygon(SelectionRole* role=0) const;
+    std::vector<SbVec2f> getGLPolygon(SelectionRole* role=nullptr) const;
     std::vector<SbVec2f> getGLPolygon(const std::vector<SbVec2s>&) const;
-    const std::vector<SbVec2s>& getPolygon(SelectionRole* role=0) const;
+    const std::vector<SbVec2s>& getPolygon(SelectionRole* role=nullptr) const;
     void setSelectionEnabled(const SbBool enable);
     SbBool isSelectionEnabled(void) const;
     //@}
@@ -278,11 +278,11 @@ public:
      * Set up a callback function \a cb which will be invoked for the given eventtype.
      * \a userdata will be given as the first argument to the callback function.
      */
-    void addEventCallback(SoType eventtype, SoEventCallbackCB * cb, void* userdata = 0);
+    void addEventCallback(SoType eventtype, SoEventCallbackCB * cb, void* userdata = nullptr);
     /**
      * Unregister the given callback function \a cb.
      */
-    void removeEventCallback(SoType eventtype, SoEventCallbackCB * cb, void* userdata = 0);
+    void removeEventCallback(SoType eventtype, SoEventCallbackCB * cb, void* userdata = nullptr);
 
     /** @name Clipping plane, near and far plane */
     //@{

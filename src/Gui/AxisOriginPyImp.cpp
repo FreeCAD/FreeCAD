@@ -54,8 +54,8 @@ PyObject* AxisOriginPy::getElementPicked(PyObject* args)
 {
     PyObject *obj;
     if (!PyArg_ParseTuple(args, "O",&obj))
-        return NULL;
-    void *ptr = 0;
+        return nullptr;
+    void *ptr = nullptr;
     Base::Interpreter().convertSWIGPointerObj("pivy.coin", "_p_SoPickedPoint", obj, &ptr, 0);
     SoPickedPoint *pp = reinterpret_cast<SoPickedPoint*>(ptr);
     if(!pp)
@@ -71,13 +71,13 @@ PyObject* AxisOriginPy::getDetailPath(PyObject* args)
     const char *sub;
     PyObject *path;
     if (!PyArg_ParseTuple(args, "sO",&sub,&path))
-        return NULL;
-    void *ptr = 0;
+        return nullptr;
+    void *ptr = nullptr;
     Base::Interpreter().convertSWIGPointerObj("pivy.coin", "_p_SoPath", path, &ptr, 0);
     SoPath *pPath = reinterpret_cast<SoPath*>(ptr);
     if(!pPath)
         throw Base::TypeError("type must be of coin.SoPath");
-    SoDetail *det = 0;
+    SoDetail *det = nullptr;
     if(!getAxisOriginPtr()->getDetailPath(
             sub,static_cast<SoFullPath*>(pPath),det))
     {
@@ -162,7 +162,7 @@ Py::Object AxisOriginPy::getNode(void) const
 
 PyObject *AxisOriginPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int AxisOriginPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

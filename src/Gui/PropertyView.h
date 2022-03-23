@@ -56,7 +56,7 @@ class PropertyView : public QWidget, public Gui::SelectionObserver
     Q_OBJECT
 
 public:
-    PropertyView(QWidget *parent=0);
+    PropertyView(QWidget *parent=nullptr);
     virtual ~PropertyView();
 
     Gui::PropertyEditor::PropertyEditor* propertyEditorView;
@@ -89,7 +89,7 @@ private:
     void slotDeletedViewObject(const Gui::ViewProvider&);
     void slotDeletedObject(const App::DocumentObject&);
 
-    void checkEnable(const char *doc = 0);
+    void checkEnable(const char *doc = nullptr);
 
 private:
     struct PropInfo;
@@ -120,7 +120,7 @@ class PropertyDockView : public Gui::DockWindow
     Q_OBJECT
 
 public:
-    PropertyDockView(Gui::Document*  pcDocument, QWidget *parent=0);
+    PropertyDockView(Gui::Document*  pcDocument, QWidget *parent=nullptr);
     virtual ~PropertyDockView();
 };
 

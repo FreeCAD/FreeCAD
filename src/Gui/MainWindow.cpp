@@ -108,7 +108,7 @@ using namespace Gui::DockWnd;
 using namespace std;
 
 
-MainWindow* MainWindow::instance = 0L;
+MainWindow* MainWindow::instance = nullptr;
 
 namespace Gui {
 
@@ -165,7 +165,7 @@ struct MainWindowP
 class MDITabbar : public QTabBar
 {
 public:
-    MDITabbar( QWidget * parent = 0 ) : QTabBar(parent)
+    MDITabbar( QWidget * parent = nullptr ) : QTabBar(parent)
     {
         menu = new QMenu(this);
         setDrawBase(false);
@@ -252,8 +252,8 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
   : QMainWindow( parent, f/*WDestructiveClose*/ )
 {
     d = new MainWindowP;
-    d->splashscreen = 0;
-    d->activeView = 0;
+    d->splashscreen = nullptr;
+    d->activeView = nullptr;
     d->whatsthis = false;
     d->assistant = new Assistant();
 
@@ -359,7 +359,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         group->SetBool("Enabled", enabled); //ensure entry exists.
         if (enabled) {
             treeView = true;
-            TreeDockWidget* tree = new TreeDockWidget(0, this);
+            TreeDockWidget* tree = new TreeDockWidget(nullptr, this);
             tree->setObjectName
                 (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Tree view")));
             tree->setMinimumWidth(210);
@@ -380,7 +380,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
         group->SetBool("Enabled", enabled); //ensure entry exists.
         if (enabled) {
             propertyView = true;
-            PropertyDockView* pcPropView = new PropertyDockView(0, this);
+            PropertyDockView* pcPropView = new PropertyDockView(nullptr, this);
             pcPropView->setObjectName
                 (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Property view")));
             pcPropView->setMinimumWidth(210);
@@ -390,7 +390,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
 
     // Selection view
     if (hiddenDockWindows.find("Std_SelectionView") == std::string::npos) {
-        SelectionView* pcSelectionView = new SelectionView(0, this);
+        SelectionView* pcSelectionView = new SelectionView(nullptr, this);
         pcSelectionView->setObjectName
             (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Selection view")));
         pcSelectionView->setMinimumWidth(210);
@@ -406,7 +406,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
             enable = group->GetBool("Enabled", true);
         }
 
-        ComboView* pcComboView = new ComboView(enable, 0, this);
+        ComboView* pcComboView = new ComboView(enable, nullptr, this);
         pcComboView->setObjectName(QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Combo View")));
         pcComboView->setMinimumWidth(150);
         pDockMgr->registerDockWindow("Std_ComboView", pcComboView);
@@ -486,7 +486,7 @@ MainWindow::~MainWindow()
 {
     delete d->status;
     delete d;
-    instance = 0;
+    instance = nullptr;
 }
 
 MainWindow* MainWindow::getInstance()
@@ -951,7 +951,7 @@ void MainWindow::removeWindow(Gui::MDIView* view, bool close)
     //
     auto subwindow = qobject_cast<QMdiSubWindow*>(parent);
     if(subwindow && d->mdiArea->subWindowList().contains(subwindow)) {
-        subwindow->setParent(0);
+        subwindow->setParent(nullptr);
 
         assert(!d->mdiArea->subWindowList().contains(subwindow));
         // d->mdiArea->removeSubWindow(parent);
@@ -1164,7 +1164,7 @@ void MainWindow::closeEvent (QCloseEvent * e)
         d->activityTimer->stop();
         saveWindowSettings();
         delete d->assistant;
-        d->assistant = 0;
+        d->assistant = nullptr;
 
         // See createMimeDataFromSelection
         QVariant prop = this->property("x-documentobject-file");
@@ -1345,12 +1345,12 @@ void MainWindow::switchToTopLevelMode()
 {
     QList<QDockWidget*> dw = this->findChildren<QDockWidget*>();
     for (QList<QDockWidget*>::Iterator it = dw.begin(); it != dw.end(); ++it) {
-        (*it)->setParent(0, Qt::Window);
+        (*it)->setParent(nullptr, Qt::Window);
         (*it)->show();
     }
     QList<QWidget*> mdi = getMainWindow()->windows();
     for (QList<QWidget*>::Iterator it = mdi.begin(); it != mdi.end(); ++it) {
-        (*it)->setParent(0, Qt::Window);
+        (*it)->setParent(nullptr, Qt::Window);
         (*it)->show();
     }
 }
@@ -1443,7 +1443,7 @@ void MainWindow::startSplasher(void)
             d->splashscreen->show();
         }
         else
-            d->splashscreen = 0;
+            d->splashscreen = nullptr;
     }
 }
 
@@ -1452,7 +1452,7 @@ void MainWindow::stopSplasher(void)
     if (d->splashscreen) {
         d->splashscreen->finish(this);
         delete d->splashscreen;
-        d->splashscreen = 0;
+        d->splashscreen = nullptr;
     }
 }
 
@@ -1627,16 +1627,16 @@ QMimeData * MainWindow::createMimeDataFromSelection () const
             sel.push_back(s.pObject);
     }
     if(sel.empty())
-        return 0;
+        return nullptr;
 
     auto all = App::Document::getDependencyList(sel);
     if (all.size() > sel.size()) {
         DlgObjectSelection dlg(sel,getMainWindow());
         if(dlg.exec()!=QDialog::Accepted)
-            return 0;
+            return nullptr;
         sel = dlg.getSelections();
         if(sel.empty())
-            return 0;
+            return nullptr;
     }
 
     std::vector<App::Document*> unsaved;
@@ -1645,7 +1645,7 @@ QMimeData * MainWindow::createMimeDataFromSelection () const
         QMessageBox::critical(getMainWindow(), tr("Unsaved document"),
             tr("The exported object contains external link. Please save the document"
                 "at least once before exporting."));
-        return 0;
+        return nullptr;
     }
 
     unsigned int memsize=1000; // ~ for the meta-information
@@ -1746,7 +1746,7 @@ void MainWindow::insertFromMimeData (const QMimeData * mimeData)
 
         doc->openTransaction("Paste");
         Base::ByteArrayIStreambuf buf(res);
-        std::istream in(0);
+        std::istream in(nullptr);
         in.rdbuf(&buf);
         MergeDocuments mimeView(doc);
         std::vector<App::DocumentObject*> newObj = mimeView.importObjects(in);

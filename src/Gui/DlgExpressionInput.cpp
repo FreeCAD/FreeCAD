@@ -45,13 +45,13 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
                                        const Base::Unit & _impliedUnit, QWidget *parent)
   : QDialog(parent)
   , ui(new Ui::DlgExpressionInput)
-  , expression(_expression ? _expression->copy() : 0)
+  , expression(_expression ? _expression->copy() : nullptr)
   , path(_path)
   , discarded(false)
   , impliedUnit(_impliedUnit)
   , minimumWidth(10)
 {
-    assert(path.getDocumentObject() != 0);
+    assert(path.getDocumentObject() != nullptr);
 
     // Setup UI
     ui->setupUi(this);

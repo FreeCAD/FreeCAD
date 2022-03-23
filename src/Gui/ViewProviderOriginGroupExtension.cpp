@@ -147,8 +147,8 @@ void ViewProviderOriginGroupExtension::updateOriginSize () {
         return;
 
     // obtain an Origin and it's ViewProvider
-    App::Origin* origin = 0;
-    Gui::ViewProviderOrigin* vpOrigin = 0;
+    App::Origin* origin = nullptr;
+    Gui::ViewProviderOrigin* vpOrigin = nullptr;
     try {
         origin = group->getOrigin ();
         assert (origin);

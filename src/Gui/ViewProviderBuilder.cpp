@@ -55,7 +55,7 @@ ViewProvider* ViewProviderBuilder::create(const Base::Type& type)
     std::map<Base::Type, Base::Type>::iterator it = _prop_to_view.find(type);
     if (it != _prop_to_view.end())
         return reinterpret_cast<ViewProvider*>(it->second.createInstance());
-    return 0;
+    return nullptr;
 }
 
 Gui::SoFCSelection* ViewProviderBuilder::createSelection()

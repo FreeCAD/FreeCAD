@@ -115,7 +115,7 @@ class GuiExport UIntSpinBox : public QSpinBox, public ExpressionSpinBox
     Q_OVERRIDE( uint value READ value WRITE setValue )
 
 public:
-    UIntSpinBox ( QWidget* parent=0 );
+    UIntSpinBox ( QWidget* parent=nullptr );
     virtual ~UIntSpinBox();
 
     void setRange( uint minVal, uint maxVal );
@@ -162,7 +162,7 @@ class GuiExport IntSpinBox : public QSpinBox, public ExpressionSpinBox
     Q_OBJECT
 
 public:
-    IntSpinBox ( QWidget* parent=0 );
+    IntSpinBox ( QWidget* parent=nullptr );
     virtual ~IntSpinBox();
 
     bool apply(const std::string &propName);
@@ -184,7 +184,7 @@ class GuiExport DoubleSpinBox : public QDoubleSpinBox, public ExpressionSpinBox
     Q_OBJECT
 
 public:
-    DoubleSpinBox ( QWidget* parent=0 );
+    DoubleSpinBox ( QWidget* parent=nullptr );
     virtual ~DoubleSpinBox();
 
     bool apply(const std::string &propName);

@@ -465,7 +465,7 @@ void DocumentPy::setInEditInfo(Py::Object arg)
 Py::Int DocumentPy::getEditMode(void) const
 {
     int mode = -1;
-    getDocumentPtr()->getInEdit(0,0,&mode);
+    getDocumentPtr()->getInEdit(nullptr,nullptr,&mode);
 
     return Py::Int(mode);
 }

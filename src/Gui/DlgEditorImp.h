@@ -45,7 +45,7 @@ class DlgSettingsEditorImp : public PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsEditorImp( QWidget* parent = 0 );
+    DlgSettingsEditorImp( QWidget* parent = nullptr );
     ~DlgSettingsEditorImp();
 
 public:

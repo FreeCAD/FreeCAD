@@ -33,7 +33,7 @@ class GuiExport DlgObjectSelection : public QDialog
 
 public:
     DlgObjectSelection(const std::vector<App::DocumentObject*> &objs,
-            QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+            QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgObjectSelection();
 
     std::vector<App::DocumentObject*> getSelections() const;
@@ -59,7 +59,7 @@ private:
         std::map<App::DocumentObject *, Info*> inList;
         std::map<App::DocumentObject *, Info*> outList;
         std::vector<QTreeWidgetItem*> items;
-        QTreeWidgetItem *depItem = 0;
+        QTreeWidgetItem *depItem = nullptr;
         Qt::CheckState checkState = Qt::Checked;
     };
     std::map<App::DocumentObject *,Info> objMap;

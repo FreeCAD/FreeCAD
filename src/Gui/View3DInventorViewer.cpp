@@ -250,7 +250,7 @@ public:
             Spaceball::MotionEvent* motionEvent = static_cast<Spaceball::MotionEvent*>(event);
             if (!motionEvent) {
                 Base::Console().Log("invalid spaceball motion event\n");
-                return NULL;
+                return nullptr;
             }
 
             motionEvent->setHandled(true);
@@ -275,7 +275,7 @@ public:
             return motion3Event;
         }
 
-        return NULL;
+        return nullptr;
     }
 };
 
@@ -294,18 +294,18 @@ public:
 
 View3DInventorViewer::View3DInventorViewer(QWidget* parent, const QtGLWidget* sharewidget)
     : Quarter::SoQTQuarterAdaptor(parent, sharewidget), SelectionObserver(false,0),
-      editViewProvider(0), navigation(0),
-      renderType(Native), framebuffer(0), axisCross(0), axisGroup(0), editing(false), redirected(false),
-      allowredir(false), overrideMode("As Is"), _viewerPy(0)
+      editViewProvider(nullptr), navigation(nullptr),
+      renderType(Native), framebuffer(nullptr), axisCross(nullptr), axisGroup(nullptr), editing(false), redirected(false),
+      allowredir(false), overrideMode("As Is"), _viewerPy(nullptr)
 {
     init();
 }
 
 View3DInventorViewer::View3DInventorViewer(const QtGLFormat& format, QWidget* parent, const QtGLWidget* sharewidget)
     : Quarter::SoQTQuarterAdaptor(format, parent, sharewidget), SelectionObserver(false,0),
-      editViewProvider(0), navigation(0),
-      renderType(Native), framebuffer(0), axisCross(0), axisGroup(0), editing(false), redirected(false),
-      allowredir(false), overrideMode("As Is"), _viewerPy(0)
+      editViewProvider(nullptr), navigation(nullptr),
+      renderType(Native), framebuffer(nullptr), axisCross(nullptr), axisGroup(nullptr), editing(false), redirected(false),
+      allowredir(false), overrideMode("As Is"), _viewerPy(nullptr)
 {
     init();
 }
@@ -315,7 +315,7 @@ void View3DInventorViewer::init()
     static bool _cacheModeInited;
     if(!_cacheModeInited) {
         _cacheModeInited = true;
-        pcViewProviderRoot = 0;
+        pcViewProviderRoot = nullptr;
         setRenderCache(-1);
     }
 
@@ -459,7 +459,7 @@ void View3DInventorViewer::init()
     pcGroupOnTopPreSel->ref();
     pcGroupOnTop->addChild(pcGroupOnTopPreSel);
 
-    pcClipPlane = 0;
+    pcClipPlane = nullptr;
 
     pcEditingRoot = new SoSeparator;
     pcEditingRoot->ref();
@@ -544,24 +544,24 @@ View3DInventorViewer::~View3DInventorViewer()
 
     // cleanup
     this->backgroundroot->unref();
-    this->backgroundroot = 0;
+    this->backgroundroot = nullptr;
     this->foregroundroot->unref();
-    this->foregroundroot = 0;
+    this->foregroundroot = nullptr;
     this->pcBackGround->unref();
-    this->pcBackGround = 0;
+    this->pcBackGround = nullptr;
 
-    setSceneGraph(0);
+    setSceneGraph(nullptr);
     this->pEventCallback->unref();
-    this->pEventCallback = 0;
+    this->pEventCallback = nullptr;
     // Note: It can happen that there is still someone who references
     // the root node but isn't destroyed when closing this viewer so
     // that it prevents all children from being deleted. To reduce this
     // likelihood we explicitly remove all child nodes now.
     coinRemoveAllChildren(this->pcViewProviderRoot);
     this->pcViewProviderRoot->unref();
-    this->pcViewProviderRoot = 0;
+    this->pcViewProviderRoot = nullptr;
     this->backlight->unref();
-    this->backlight = 0;
+    this->backlight = nullptr;
 
     this->pcGroupOnTop->unref();
     this->pcGroupOnTopPreSel->unref();
@@ -585,7 +585,7 @@ View3DInventorViewer::~View3DInventorViewer()
     delete viewerEventFilter;
 
     if (_viewerPy) {
-        static_cast<View3DInventorViewerPy*>(_viewerPy)->_viewer = 0;
+        static_cast<View3DInventorViewerPy*>(_viewerPy)->_viewer = nullptr;
         Py_DECREF(_viewerPy);
     }
 
@@ -634,7 +634,7 @@ void View3DInventorViewer::aboutToDestroyGLContext()
         if (gl)
             gl->makeCurrent();
         delete naviCube;
-        naviCube = 0;
+        naviCube = nullptr;
         naviCubeEnabled = false;
     }
 }
@@ -829,7 +829,7 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
         path.append(grpVp->getChildRoot());
     }
 
-    SoDetail *det = 0;
+    SoDetail *det = nullptr;
     if(vp->getDetailPath(subname, &path,true,det) && path.getLength()) {
         auto node = new SoFCPathAnnotation;
         node->setPath(&path);
@@ -845,7 +845,7 @@ void View3DInventorViewer::checkGroupOnTop(const SelectionChanges &Reason) {
             action.apply(&tmpPath);
             tmpPath.unrefNoDelete();
             node->setDetail(det);
-            det = 0;
+            det = nullptr;
         }
         FC_LOG("add annotation " << Reason.Type << " " << key);
         objs[key.c_str()] = node;
@@ -1107,7 +1107,7 @@ SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec2s& pos, ViewProvi
     path->unref();
 
     SoPickedPoint* pick = rp.getPickedPoint();
-    return (pick ? new SoPickedPoint(*pick) : 0);
+    return (pick ? new SoPickedPoint(*pick) : nullptr);
 }
 
 SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec3f& pos,const SbVec3f& dir, ViewProvider* vp) const
@@ -1158,7 +1158,7 @@ SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec3f& pos,const SbVe
     // returns a copy of the point
     SoPickedPoint* pick = rp.getPickedPoint();
     //return (pick ? pick->copy() : 0); // needs the same instance of CRT under MS Windows
-    return (pick ? new SoPickedPoint(*pick) : 0);
+    return (pick ? new SoPickedPoint(*pick) : nullptr);
 }
 
 void View3DInventorViewer::setEditingViewProvider(Gui::ViewProvider* p, int ModNum)
@@ -1184,7 +1184,7 @@ void View3DInventorViewer::resetEditingViewProvider()
 
         this->editViewProvider->unsetEditViewer(this);
         removeEventCallback(SoEvent::getClassTypeId(), Gui::ViewProvider::eventCallback,this->editViewProvider);
-        this->editViewProvider = 0;
+        this->editViewProvider = nullptr;
     }
 }
 
@@ -1415,7 +1415,7 @@ void View3DInventorViewer::setAxisCross(bool on)
     else {
         if (axisGroup) {
             sep->removeChild(axisGroup);
-            axisGroup = 0;
+            axisGroup = nullptr;
         }
     }
 }
@@ -1481,7 +1481,7 @@ void View3DInventorViewer::setSceneGraph(SoNode* root)
     if (!root) {
         _ViewProviderSet.clear();
         _ViewProviderMap.clear();
-        editViewProvider = 0;
+        editViewProvider = nullptr;
     }
 
     SoSearchAction sa;
@@ -1543,7 +1543,7 @@ void View3DInventorViewer::savePicture(int w, int h, int s, const QColor& bg, QI
     //If we need to support grayscale images with must either use SoOffscreenRenderer::LUMINANCE or
     //SoOffscreenRenderer::LUMINANCE_TRANSPARENCY.
 
-    SoCallback* cb = 0;
+    SoCallback* cb = nullptr;
 
     // for an invalid color use the viewer's current background color
     QColor bgColor;
@@ -1981,7 +1981,7 @@ void View3DInventorViewer::setRenderType(const RenderType type)
     glImage = QImage();
     if (type != Framebuffer) {
         delete framebuffer;
-        framebuffer = 0;
+        framebuffer = nullptr;
     }
 
     switch (type) {
@@ -2673,7 +2673,7 @@ void View3DInventorViewer::toggleClippingPlane(int toggle, bool beforeEditing,
         if(toggle<=0) {
             pcViewProviderRoot->removeChild(pcClipPlane);
             pcClipPlane->unref();
-            pcClipPlane = 0;
+            pcClipPlane = nullptr;
         }
         return;
     }else if(toggle==0)
@@ -2747,7 +2747,7 @@ SoPickedPoint* View3DInventorViewer::pickPoint(const SbVec2s& pos) const
     // returns a copy of the point
     SoPickedPoint* pick = rp.getPickedPoint();
     //return (pick ? pick->copy() : 0); // needs the same instance of CRT under MS Windows
-    return (pick ? new SoPickedPoint(*pick) : 0);
+    return (pick ? new SoPickedPoint(*pick) : nullptr);
 }
 
 const SoPickedPoint* View3DInventorViewer::getPickedPoint(SoEventCallback* n) const
@@ -2786,7 +2786,7 @@ void View3DInventorViewer::setCameraType(SoType t)
         // close camera but we don't have this other ugly effect.
         SoCamera* cam = this->getSoRenderManager()->getCamera();
 
-        if(cam == 0) return;
+        if(cam == nullptr) return;
 
         static_cast<SoPerspectiveCamera*>(cam)->heightAngle = (float)(M_PI / 4.0);
     }
@@ -2827,7 +2827,7 @@ namespace Gui {
 void View3DInventorViewer::moveCameraTo(const SbRotation& rot, const SbVec3f& pos, int steps, int ms)
 {
     SoCamera* cam = this->getSoRenderManager()->getCamera();
-    if (cam == 0) return;
+    if (cam == nullptr) return;
 
     CameraAnimation anim(cam, rot, pos);
     anim.setDuration(Base::clamp<int>(ms,0,5000));
@@ -3044,7 +3044,7 @@ void View3DInventorViewer::viewAll(float factor)
 void View3DInventorViewer::viewSelection()
 {
     Base::BoundBox3d bbox;
-    for(auto &sel : Selection().getSelection(0,0)) {
+    for(auto &sel : Selection().getSelection(nullptr,0)) {
         auto vp = Application::Instance->getViewProvider(sel.pObject);
         if(!vp)
             continue;
@@ -3595,7 +3595,7 @@ ViewProvider* View3DInventorViewer::getViewProviderByPath(SoPath* path) const
             }
         }
     }
-    return 0;
+    return nullptr;
 }
 
 ViewProvider* View3DInventorViewer::getViewProviderByPathFromTail(SoPath* path) const
@@ -3612,7 +3612,7 @@ ViewProvider* View3DInventorViewer::getViewProviderByPathFromTail(SoPath* path) 
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 std::vector<ViewProvider*> View3DInventorViewer::getViewProvidersOfType(const Base::Type& typeId) const

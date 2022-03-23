@@ -28,20 +28,20 @@
 
 using namespace Gui;
 
-Gui::WorkbenchFactoryInst* Gui::WorkbenchFactoryInst::_pcSingleton = 0;
+Gui::WorkbenchFactoryInst* Gui::WorkbenchFactoryInst::_pcSingleton = nullptr;
 
 WorkbenchFactoryInst& WorkbenchFactoryInst::instance()
 {
-  if (_pcSingleton == 0L)
+  if (_pcSingleton == nullptr)
     _pcSingleton = new WorkbenchFactoryInst;
   return *_pcSingleton;
 }
 
 void WorkbenchFactoryInst::destruct ()
 {
-  if ( _pcSingleton != 0 )
+  if ( _pcSingleton != nullptr )
     delete _pcSingleton;
-  _pcSingleton = 0;
+  _pcSingleton = nullptr;
 }
 
 Workbench* WorkbenchFactoryInst::createWorkbench ( const char* sName ) const
@@ -51,7 +51,7 @@ Workbench* WorkbenchFactoryInst::createWorkbench ( const char* sName ) const
   if ( !w )
   {
     delete obj; // delete the unknown object as no workbench object
-    return 0;
+    return nullptr;
   }
 
   w->setName( sName );

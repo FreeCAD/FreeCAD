@@ -313,7 +313,7 @@ void SelectionView::validateSearch(void)
         if (doc) {
             Gui::Selection().clearSelection();
             for (std::vector<App::DocumentObject*>::iterator it = searchList.begin(); it != searchList.end(); ++it) {
-                Gui::Selection().addSelection(doc->getName(),(*it)->getNameInDocument(),0);
+                Gui::Selection().addSelection(doc->getName(),(*it)->getNameInDocument(),nullptr);
             }
         }
     }

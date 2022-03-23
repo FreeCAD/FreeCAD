@@ -47,7 +47,7 @@ class GuiExport DlgParameterImp : public QDialog
     Q_OBJECT
 
 public:
-    DlgParameterImp( QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags() );
+    DlgParameterImp( QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags() );
     ~DlgParameterImp();
 
     void accept();
@@ -95,7 +95,7 @@ class ParameterGroup : public QTreeWidget
     Q_OBJECT
 
 public:
-    ParameterGroup( QWidget * parent = 0 );
+    ParameterGroup( QWidget * parent = nullptr );
     virtual ~ParameterGroup();
 
 protected:
@@ -147,7 +147,7 @@ class ParameterValue : public QTreeWidget
     Q_OBJECT
 
 public:
-    ParameterValue( QWidget * parent = 0 );
+    ParameterValue( QWidget * parent = nullptr );
     virtual ~ParameterValue();
 
     /** Sets the current parameter group that is displayed. */

@@ -1276,7 +1276,7 @@ void StdCmdSelectAll::activated(int iMsg)
 
 bool StdCmdSelectAll::isActive(void)
 {
-    return App::GetApplication().getActiveDocument() != 0;
+    return App::GetApplication().getActiveDocument() != nullptr;
 }
 
 //===========================================================================
@@ -1313,7 +1313,7 @@ void StdCmdDelete::activated(int iMsg)
 
         Gui::getMainWindow()->setUpdatesEnabled(false);
         auto editDoc = Application::Instance->editDocument();
-        ViewProviderDocumentObject *vpedit = 0;
+        ViewProviderDocumentObject *vpedit = nullptr;
         if(editDoc)
             vpedit = dynamic_cast<ViewProviderDocumentObject*>(editDoc->getInEdit());
         if(vpedit) {
@@ -1529,7 +1529,7 @@ void StdCmdTransform::activated(int iMsg)
 
 bool StdCmdTransform::isActive(void)
 {
-    return (Gui::Control().activeDialog()==0);
+    return (Gui::Control().activeDialog()==nullptr);
 }
 
 //===========================================================================
@@ -1707,7 +1707,7 @@ void StdCmdEdit::activated(int iMsg)
 
 bool StdCmdEdit::isActive(void)
 {
-    return (Selection().getCompleteSelection().size() > 0) || (Gui::Control().activeDialog() != 0);
+    return (Selection().getCompleteSelection().size() > 0) || (Gui::Control().activeDialog() != nullptr);
 }
 
 //======================================================================

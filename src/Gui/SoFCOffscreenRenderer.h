@@ -128,7 +128,7 @@ public:
     QStringList getWriteImageFiletypeInfo() const;
 
 private:
-    void init(const SbViewportRegion & vpr, SoGLRenderAction * glrenderaction = NULL);
+    void init(const SbViewportRegion & vpr, SoGLRenderAction * glrenderaction = nullptr);
     static void pre_render_cb(void * userdata, SoGLRenderAction * action);
     SbBool renderFromBase(SoBase * base);
     void makeFrameBuffer(int width, int height, int samples);

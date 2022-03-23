@@ -216,7 +216,7 @@ public:
     std::list<MDIView*> getMDIViewsOfType(const Base::Type& typeId) const;
     //@}
 
-    MDIView *setActiveView(ViewProviderDocumentObject *vp=0, Base::Type typeId = Base::Type());
+    MDIView *setActiveView(ViewProviderDocumentObject *vp=nullptr, Base::Type typeId = Base::Type());
 
     /** @name View provider handling  */
     //@{
@@ -240,7 +240,7 @@ public:
     std::vector<ViewProvider*> getViewProvidersOfType(const Base::Type& typeId) const;
     ViewProvider *getViewProviderByName(const char* name) const;
     /// set the ViewProvider in special edit mode
-    bool setEdit(Gui::ViewProvider* p, int ModNum=0, const char *subname=0);
+    bool setEdit(Gui::ViewProvider* p, int ModNum=0, const char *subname=nullptr);
     const Base::Matrix4D &getEditingTransform() const;
     void setEditingTransform(const Base::Matrix4D &mat);
     /// reset from edit mode, this cause all document to reset edit
@@ -248,8 +248,8 @@ public:
     /// reset edit of this document
     void _resetEdit(void);
     /// get the in edit ViewProvider or NULL
-    ViewProvider *getInEdit(ViewProviderDocumentObject **parentVp=0,
-            std::string *subname=0, int *mode=0, std::string *subElement=0) const;
+    ViewProvider *getInEdit(ViewProviderDocumentObject **parentVp=nullptr,
+            std::string *subname=nullptr, int *mode=nullptr, std::string *subElement=nullptr) const;
     /// set the in edit ViewProvider subname reference
     void setInEdit(ViewProviderDocumentObject *parentVp, const char *subname);
     /** Add or remove view provider from scene graphs of all views
@@ -263,7 +263,7 @@ public:
     /** @name methods for the UNDO REDO handling */
     //@{
     /// Open a new Undo transaction on the document
-    void openCommand(const char* sName=0);
+    void openCommand(const char* sName=nullptr);
     /// Commit the Undo transaction on the document
     void commitCommand(void);
     /// Abort the Undo transaction on the document

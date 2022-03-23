@@ -42,7 +42,7 @@ class EditTableView : public QTableView
     Q_OBJECT
 
 public:
-    EditTableView(QWidget *parent = 0);
+    EditTableView(QWidget *parent = nullptr);
     void keyPressEvent(QKeyEvent *event);
 
 public Q_SLOTS:
@@ -55,7 +55,7 @@ class SqueezeLabel : public QLabel
     Q_OBJECT
 
 public:
-    SqueezeLabel(QWidget *parent = 0);
+    SqueezeLabel(QWidget *parent = nullptr);
 
 protected:
     void paintEvent(QPaintEvent *event);
@@ -93,7 +93,7 @@ class NetworkAccessManager : public QNetworkAccessManager
     Q_OBJECT
 
 public:
-    NetworkAccessManager(QObject *parent = 0);
+    NetworkAccessManager(QObject *parent = nullptr);
 
 private Q_SLOTS:
     void authenticationRequired(QNetworkReply *reply, QAuthenticator *auth);
@@ -114,7 +114,7 @@ Q_SIGNALS:
     void statusChanged();
 
 public:
-    DownloadItem(QNetworkReply *reply = 0, bool requestFileName = false, QWidget *parent = 0);
+    DownloadItem(QNetworkReply *reply = nullptr, bool requestFileName = false, QWidget *parent = nullptr);
     bool downloading() const;
     bool downloadedSuccessfully() const;
 

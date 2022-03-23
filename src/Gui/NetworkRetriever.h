@@ -42,7 +42,7 @@ class NetworkRetriever : public QObject
     Q_OBJECT
 
 public:
-    NetworkRetriever( QObject * parent = 0 );
+    NetworkRetriever( QObject * parent = nullptr );
     virtual ~NetworkRetriever();
 
     void setNumberOfTries( int );
@@ -82,7 +82,7 @@ class StdCmdDownloadOnlineHelp : public QObject, public Command
     Q_OBJECT
 
 public:
-    StdCmdDownloadOnlineHelp(QObject * parent = 0);
+    StdCmdDownloadOnlineHelp(QObject * parent = nullptr);
     virtual ~StdCmdDownloadOnlineHelp();
     /** i18n stuff of the command. */
     virtual void languageChange();

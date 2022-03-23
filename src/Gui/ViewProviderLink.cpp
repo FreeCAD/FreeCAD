@@ -135,7 +135,7 @@ public:
                     return static_cast<ViewProviderDocumentObject*>(vp);
             }
         }
-        return 0;
+        return nullptr;
     }
 
     static Pointer get(App::DocumentObject *obj, Gui::LinkOwner *owner) {
@@ -255,11 +255,11 @@ public:
             coinRemoveAllChildren(pcChildGroup);
             pcChildGroup.reset();
         }
-        pcLinked = 0;
+        pcLinked = nullptr;
         connChangeIcon.disconnect();
     }
 
-    void updateSwitch(SoSwitch *node=0) {
+    void updateSwitch(SoSwitch *node=nullptr) {
         if(!isLinked() || !pcLinkedSwitch) return;
         int index = pcLinkedSwitch->whichChild.getValue();
         for(size_t i=0;i<pcSwitches.size();++i) {
@@ -340,11 +340,11 @@ public:
 
     SoSeparator *getSnapshot(int type, bool update=false) {
         if(type<0 || type>=LinkView::SnapshotMax)
-            return 0;
+            return nullptr;
 
         SoSeparator *root;
         if(!isLinked() || !(root=pcLinked->getRoot()))
-            return 0;
+            return nullptr;
 
         if(sensor.getAttachedNode()!=root) {
             sensor.detach();
@@ -408,7 +408,7 @@ public:
             if(switchSensor.getAttachedNode() != pcLinkedSwitch) {
                 switchSensor.detach();
                 switchSensor.attach(pcLinkedSwitch);
-                pcUpdateSwitch = 0;
+                pcUpdateSwitch = nullptr;
             }
 
             pcSnapshot->addChild(pcModeSwitch);
@@ -465,7 +465,7 @@ public:
         NodeMap nodeMap;
 
         for(auto child : pcLinked->claimChildren3D()) {
-            Pointer info = get(child,0);
+            Pointer info = get(child,nullptr);
             if(!info) continue;
             SoNode *node = info->getSnapshot(LinkView::SnapshotChild);
             if(!node) continue;
@@ -919,7 +919,7 @@ Base::BoundBox3d LinkView::getBoundBox(ViewProviderDocumentObject *vpd) const {
 ViewProviderDocumentObject *LinkView::getOwner() const {
     if(linkOwner && linkOwner->isLinked())
         return linkOwner->pcLinked;
-    return 0;
+    return nullptr;
 }
 
 void LinkView::setOwner(ViewProviderDocumentObject *vpd) {
@@ -984,7 +984,7 @@ void LinkView::setMaterial(int index, const App::Material *material) {
         c.a = material->transparency;
         pcLinkRoot->setColorOverride(c);
         for(int i=0;i<getSize();++i)
-            setMaterial(i,0);
+            setMaterial(i,nullptr);
     }else if(index >= (int)nodeArray.size())
         LINK_THROW(Base::ValueError,"LinkView: material index out of range");
     else {
@@ -1240,7 +1240,7 @@ ViewProviderDocumentObject *LinkView::getLinkedView() const {
     auto link = linkInfo;
     if(autoSubLink && subInfo.size()==1)
         link = subInfo.begin()->second->linkInfo;
-    return link?link->pcLinked:0;
+    return link?link->pcLinked:nullptr;
 }
 
 std::vector<std::string> LinkView::getSubNames() const {
@@ -1273,7 +1273,7 @@ void LinkView::setNodeType(SnapshotType type, bool sublink) {
         if(isLinked())
             replaceLinkedRoot(linkInfo->getSnapshot(type));
         else
-            replaceLinkedRoot(0);
+            replaceLinkedRoot(nullptr);
     }
     nodeType = type;
     updateLink();
@@ -1365,7 +1365,7 @@ void LinkView::updateLink() {
         auto &sub = *v.second;
         Base::Matrix4D mat;
         App::DocumentObject *sobj = obj->getSubObject(
-                v.first.c_str(), 0, &mat, nodeType==SnapshotContainer);
+                v.first.c_str(), nullptr, &mat, nodeType==SnapshotContainer);
         if(!sobj) {
             sub.unlink();
             continue;
@@ -1380,7 +1380,7 @@ void LinkView::updateLink() {
             SoSelectionElementAction action(SoSelectionElementAction::Append,true);
             for(const auto &subelement : sub.subElements) {
                 path.truncate(2);
-                SoDetail *det = 0;
+                SoDetail *det = nullptr;
                 if(!sub.linkInfo->getDetail(false,SnapshotTransform,subelement.c_str(),det,&path))
                     continue;
                 action.setElement(det);
@@ -1596,7 +1596,7 @@ static const char *_LinkElementIcon = "LinkElement";
 
 ViewProviderLink::ViewProviderLink()
     :linkType(LinkTypeNone),hasSubName(false),hasSubElement(false)
-    ,useCenterballDragger(false),childVp(0),overlayCacheKey(0)
+    ,useCenterballDragger(false),childVp(nullptr),overlayCacheKey(0)
 {
     sPixmap = _LinkIcon;
 
@@ -1610,7 +1610,7 @@ ViewProviderLink::ViewProviderLink()
     ShapeMaterial.setStatus(App::Property::MaterialEdit, true);
 
     ADD_PROPERTY_TYPE(DrawStyle,((long int)0), " Link", App::Prop_None, "");
-    static const char* DrawStyleEnums[]= {"None","Solid","Dashed","Dotted","Dashdot",NULL};
+    static const char* DrawStyleEnums[]= {"None","Solid","Dashed","Dotted","Dashdot",nullptr};
     DrawStyle.setEnums(DrawStyleEnums);
 
     int lwidth = ViewParams::instance()->getDefaultShapeLineWidth();
@@ -1650,7 +1650,7 @@ void ViewProviderLink::attach(App::DocumentObject *pcObj) {
     node->setName(pcObj->getFullName().c_str());
     addDisplayMaskMode(node,"Link");
     if(childVp) {
-        childVpLink = LinkInfo::get(childVp,0);
+        childVpLink = LinkInfo::get(childVp,nullptr);
         node = childVpLink->getSnapshot(LinkView::SnapshotTransform);
     }
     addDisplayMaskMode(node,"ChildView");
@@ -1722,7 +1722,7 @@ void ViewProviderLink::onChanged(const App::Property* prop) {
                 childVp->updateView();
                 childVp->setActiveMode();
                 if(pcModeSwitch->getNumChildren()>1){
-                    childVpLink = LinkInfo::get(childVp,0);
+                    childVpLink = LinkInfo::get(childVp,nullptr);
                     pcModeSwitch->replaceChild(1,childVpLink->getSnapshot(LinkView::SnapshotTransform));
                 }
             }
@@ -1772,13 +1772,13 @@ bool ViewProviderLink::setLinkType(App::LinkBaseExtension *ext) {
 
 App::LinkBaseExtension *ViewProviderLink::getLinkExtension() {
     if(!pcObject || !pcObject->getNameInDocument())
-        return 0;
+        return nullptr;
     return pcObject->getExtensionByType<App::LinkBaseExtension>(true);
 }
 
 const App::LinkBaseExtension *ViewProviderLink::getLinkExtension() const{
     if(!pcObject || !pcObject->getNameInDocument())
-        return 0;
+        return nullptr;
     return const_cast<App::DocumentObject*>(pcObject)->getExtensionByType<App::LinkBaseExtension>(true);
 }
 
@@ -2012,9 +2012,9 @@ void ViewProviderLink::applyMaterial() {
                OverrideMaterialList.getSize()>i && OverrideMaterialList[i])
                 linkView->setMaterial(i,&MaterialList[i]);
             else
-                linkView->setMaterial(i,0);
+                linkView->setMaterial(i,nullptr);
         }
-        linkView->setMaterial(-1,0);
+        linkView->setMaterial(-1,nullptr);
     }
 }
 
@@ -2071,7 +2071,7 @@ ViewProvider *ViewProviderLink::getLinkedView(
         getObject()->getLinkedObject(true);
     if(obj && obj!=getObject())
         return Application::Instance->getViewProvider(obj);
-    return 0;
+    return nullptr;
 }
 
 std::vector<App::DocumentObject*> ViewProviderLink::claimChildren(void) const {
@@ -2126,7 +2126,7 @@ void ViewProviderLink::dragObject(App::DocumentObject* obj) {
         const auto &objs = ext->getElementListValue();
         for(size_t i=0;i<objs.size();++i) {
             if(obj==objs[i]) {
-                ext->setLink(i,0);
+                ext->setLink(i,nullptr);
                 break;
             }
         }
@@ -2212,9 +2212,9 @@ std::string ViewProviderLink::dropObjectEx(App::DocumentObject* obj,
         else
             ext->setLink(-1,owner,subname);
     } else if(ext->getSubElements().size())
-        ext->setLink(-1,obj,0,subElements);
+        ext->setLink(-1,obj,nullptr,subElements);
     else
-        ext->setLink(-1,obj,0);
+        ext->setLink(-1,obj,nullptr);
     return std::string();
 }
 
@@ -2249,7 +2249,7 @@ bool ViewProviderLink::getElementPicked(const SoPickedPoint *pp, std::string &su
     if(!ret)
         return ret;
     if(isGroup(ext,true)) {
-        const char *sub = 0;
+        const char *sub = nullptr;
         int idx = App::LinkBaseExtension::getArrayIndex(subname.c_str(),&sub);
         if(idx>=0 ) {
             --sub;
@@ -2419,7 +2419,7 @@ bool ViewProviderLink::initDraggingPlacement() {
     // the dragger is meant to change our transformation.
     dragCtx->preTransform *= pla.inverse().toMatrix();
 
-    dragCtx->bbox = getBoundingBox(0,false);
+    dragCtx->bbox = getBoundingBox(nullptr,false);
     // The returned bounding box is before our own transform, but we still need
     // to scale it to get the correct center.
     auto scale = ext->getScaleVector();
@@ -2437,7 +2437,7 @@ bool ViewProviderLink::initDraggingPlacement() {
             && ((ext->getLinkedObjectValue() && !linkView->hasSubs())
                 || modifier == Qt::ControlModifier))
     {
-        App::PropertyPlacement *propPla = 0;
+        App::PropertyPlacement *propPla = nullptr;
         if(ext->getLinkTransformValue() && ext->getLinkedObjectValue()) {
             propPla = Base::freecad_dynamic_cast<App::PropertyPlacement>(
                     ext->getLinkedObjectValue()->getPropertyByName("Placement"));
@@ -2484,7 +2484,7 @@ ViewProvider *ViewProviderLink::startEditing(int mode) {
             doc->setEditingTransform(_editingTransform);
 
         if(!initDraggingPlacement())
-            return 0;
+            return nullptr;
         if(useCenterballDragger)
             pcDragger = CoinPtr<SoCenterballDragger>(new SoCenterballDragger);
         else
@@ -2498,7 +2498,7 @@ ViewProvider *ViewProviderLink::startEditing(int mode) {
 
     if(!linkEdit()) {
         FC_ERR("unsupported edit mode " << mode);
-        return 0;
+        return nullptr;
     }
 
     // TODO: the 0x8000 mask here is for caller to disambiguate the intention
@@ -2510,7 +2510,7 @@ ViewProvider *ViewProviderLink::startEditing(int mode) {
 
     if(!doc) {
         FC_ERR("no editing document");
-        return 0;
+        return nullptr;
     }
 
     // We are forwarding the editing request to linked object. We need to
@@ -2519,13 +2519,13 @@ ViewProvider *ViewProviderLink::startEditing(int mode) {
     auto linked = getObject()->getLinkedObject(true,&mat,false);
     if(!linked || linked==getObject()) {
         FC_ERR("no linked object");
-        return 0;
+        return nullptr;
     }
     auto vpd = freecad_dynamic_cast<ViewProviderDocumentObject>(
                 Application::Instance->getViewProvider(linked));
     if(!vpd) {
         FC_ERR("no linked viewprovider");
-        return 0;
+        return nullptr;
     }
     // Amend the editing transformation with the link transformation.
     // But save it first in case the linked object reroute the editing request
@@ -2902,8 +2902,8 @@ std::map<std::string, App::Color> ViewProviderLink::getElementColors(const char 
     }
     std::map<std::string, App::Color> ret;
     for(auto &v : colors) {
-        const char *pos = 0;
-        auto sobj = getObject()->resolve(v.first.c_str(),0,0,&pos);
+        const char *pos = nullptr;
+        auto sobj = getObject()->resolve(v.first.c_str(),nullptr,nullptr,&pos);
         if(!sobj || !pos)
             continue;
         auto link = sobj->getLinkedObject(true);
@@ -3011,8 +3011,8 @@ void ViewProviderLink::applyColors() {
     colors.erase("Face");
     for(auto &v : colors) {
         const char *subname = v.first.c_str();
-        const char *element = 0;
-        auto sobj = getObject()->resolve(subname,0,0,&element);
+        const char *element = nullptr;
+        auto sobj = getObject()->resolve(subname,nullptr,nullptr,&element);
         if(!sobj || !element)
             continue;
         if(ViewProvider::hiddenMarker() == element)
@@ -3029,7 +3029,7 @@ void ViewProviderLink::applyColors() {
             action.apply(linkView->getLinkRoot());
             continue;
         }
-        SoDetail *det=0;
+        SoDetail *det=nullptr;
         path.truncate(0);
         if(getDetailPath(v.first.c_str(), &path, false, det))
             action.apply(&path);
@@ -3038,7 +3038,7 @@ void ViewProviderLink::applyColors() {
 
     action.setType(SoSelectionElementAction::Hide);
     for(auto &sub : hideList) {
-        SoDetail *det=0;
+        SoDetail *det=nullptr;
         path.truncate(0);
         if(sub.size() && getDetailPath(sub.c_str(), &path, false, det))
             action.apply(&path);
@@ -3065,7 +3065,7 @@ void ViewProviderLink::onBeforeChange(const App::Property *prop) {
             childVp->beforeDelete();
             pcModeSwitch->replaceChild(1,linkView->getLinkRoot());
             childVpLink.reset();
-            childVp = 0;
+            childVp = nullptr;
         }
     }
     inherited::onBeforeChange(prop);
@@ -3085,10 +3085,10 @@ App::Property *ViewProviderLink::getPropertyByName(const char *name) const {
         prop = childVp->getPropertyByName(name);
         if(prop && !prop->testStatus(App::Property::Hidden))
             return prop;
-        prop = 0;
+        prop = nullptr;
     }
     if(pcObject && pcObject->canLinkProperties()) {
-        auto linked = getLinkedViewProvider(0,true);
+        auto linked = getLinkedViewProvider(nullptr,true);
         if(linked && linked!=this)
             prop = linked->getPropertyByName(name);
     }
@@ -3126,7 +3126,7 @@ ViewProviderDocumentObject *ViewProviderLink::getLinkedViewProvider(
     auto ext = getLinkExtension();
     if(!ext)
         return self;
-    App::DocumentObject *linked = 0;
+    App::DocumentObject *linked = nullptr;
     if(!recursive) {
         linked = ext->getLink();
         const char *s = ext->getSubName();

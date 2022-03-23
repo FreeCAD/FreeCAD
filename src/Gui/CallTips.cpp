@@ -234,7 +234,7 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
             return tips;
         }
 
-        PyObject* eval = 0;
+        PyObject* eval = nullptr;
         if (PyCode_Check(code)) {
             eval = PyEval_EvalCode(code, dict.ptr(), dict.ptr());
         }

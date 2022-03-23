@@ -83,7 +83,7 @@ DlgObjectSelection::DlgObjectSelection(
     }
     for(auto obj : objs) {
         auto &info = objMap[obj];
-        info.items.push_back(createItem(obj,0));
+        info.items.push_back(createItem(obj,nullptr));
         info.items.back()->setCheckState(0,Qt::Checked);
     }
 
@@ -201,7 +201,7 @@ App::DocumentObject *DlgObjectSelection::objFromItem(QTreeWidgetItem *item) {
         name = qPrintable(item->text(2));
     }
     auto doc = App::GetApplication().getDocument(docName.c_str());
-    if(!doc) return 0;
+    if(!doc) return nullptr;
     return doc->getObject(name.c_str());
 }
 
@@ -326,7 +326,7 @@ std::vector<App::DocumentObject*> DlgObjectSelection::getSelections() const {
 void DlgObjectSelection::onItemSelectionChanged() {
     SignalBlocker block2(ui->treeWidget);
     SignalBlocker block(ui->depList);
-    QTreeWidgetItem *scroll=0;
+    QTreeWidgetItem *scroll=nullptr;
     for(auto &v : objMap) {
         auto &info = v.second;
         auto it = sels.find(v.first);
@@ -353,7 +353,7 @@ void DlgObjectSelection::onItemSelectionChanged() {
 void DlgObjectSelection::onDepSelectionChanged() {
     SignalBlocker block2(ui->treeWidget);
     SignalBlocker block(ui->depList);
-    QTreeWidgetItem *scroll=0;
+    QTreeWidgetItem *scroll=nullptr;
     for(auto &v : objMap) {
         auto &info = v.second;
         auto it = sels.find(v.first);

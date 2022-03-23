@@ -67,7 +67,7 @@ AbstractSplitView::~AbstractSplitView()
 void AbstractSplitView::deleteSelf()
 {
     for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
-        (*it)->setSceneGraph(0);
+        (*it)->setSceneGraph(nullptr);
     }
     MDIView::deleteSelf();
 }
@@ -124,7 +124,7 @@ void AbstractSplitView::setupSettings()
 
 View3DInventorViewer* AbstractSplitView::getViewer(unsigned int n) const
 {
-    return (_viewer.size() > n ? _viewer[n] : 0);
+    return (_viewer.size() > n ? _viewer[n] : nullptr);
 }
 
 /// Observer message from the ParameterGrp
@@ -531,7 +531,7 @@ Py::Object AbstractSplitViewPy::fitAll(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        getSplitViewPtr()->onMsg("ViewFit", 0);
+        getSplitViewPtr()->onMsg("ViewFit", nullptr);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -551,7 +551,7 @@ Py::Object AbstractSplitViewPy::viewBottom(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        getSplitViewPtr()->onMsg("ViewBottom", 0);
+        getSplitViewPtr()->onMsg("ViewBottom", nullptr);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -572,7 +572,7 @@ Py::Object AbstractSplitViewPy::viewFront(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        getSplitViewPtr()->onMsg("ViewFront", 0);
+        getSplitViewPtr()->onMsg("ViewFront", nullptr);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -593,7 +593,7 @@ Py::Object AbstractSplitViewPy::viewLeft(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        getSplitViewPtr()->onMsg("ViewLeft", 0);
+        getSplitViewPtr()->onMsg("ViewLeft", nullptr);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -614,7 +614,7 @@ Py::Object AbstractSplitViewPy::viewRear(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        getSplitViewPtr()->onMsg("ViewRear", 0);
+        getSplitViewPtr()->onMsg("ViewRear", nullptr);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -635,7 +635,7 @@ Py::Object AbstractSplitViewPy::viewRight(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        getSplitViewPtr()->onMsg("ViewRight", 0);
+        getSplitViewPtr()->onMsg("ViewRight", nullptr);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -656,7 +656,7 @@ Py::Object AbstractSplitViewPy::viewTop(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        getSplitViewPtr()->onMsg("ViewTop", 0);
+        getSplitViewPtr()->onMsg("ViewTop", nullptr);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -677,7 +677,7 @@ Py::Object AbstractSplitViewPy::viewIsometric(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        getSplitViewPtr()->onMsg("ViewAxo", 0);
+        getSplitViewPtr()->onMsg("ViewAxo", nullptr);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -776,7 +776,7 @@ SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, Q
     while (views < 2)
         views ++;
 
-    QSplitter* mainSplitter = 0;
+    QSplitter* mainSplitter = nullptr;
 
     // if views < 3 show them as a row
     if (views <= 3) {

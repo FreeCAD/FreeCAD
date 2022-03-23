@@ -386,7 +386,7 @@ void DlgParameterImp::onChangeParameterSet(int itemPos)
     QStringList paths = path.split(QLatin1String("."), QString::SkipEmptyParts);
 #endif
 
-    QTreeWidgetItem* parent = 0;
+    QTreeWidgetItem* parent = nullptr;
     for (int index=0; index < paramGroup->topLevelItemCount() && !paths.empty(); index++) {
         QTreeWidgetItem* child = paramGroup->topLevelItem(index);
         if (child->text(0) == paths.front()) {
@@ -398,7 +398,7 @@ void DlgParameterImp::onChangeParameterSet(int itemPos)
     while (parent && !paths.empty()) {
         parent->setExpanded(true);
         QTreeWidgetItem* item = parent;
-        parent = 0;
+        parent = nullptr;
         for (int index=0; index < item->childCount(); index++) {
             QTreeWidgetItem* child = item->child(index);
             if (child->text(0) == paths.front()) {

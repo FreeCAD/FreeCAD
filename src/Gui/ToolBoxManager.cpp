@@ -38,7 +38,7 @@
 using namespace Gui;
 using DockWnd::ToolBox;
 
-ToolBoxManager* ToolBoxManager::_instance=0;
+ToolBoxManager* ToolBoxManager::_instance=nullptr;
 
 ToolBoxManager* ToolBoxManager::getInstance()
 {
@@ -50,10 +50,10 @@ ToolBoxManager* ToolBoxManager::getInstance()
 void ToolBoxManager::destruct()
 {
     delete _instance;
-    _instance = 0;
+    _instance = nullptr;
 }
 
-ToolBoxManager::ToolBoxManager() : _toolBox(0L)
+ToolBoxManager::ToolBoxManager() : _toolBox(nullptr)
 {
 }
 

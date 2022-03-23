@@ -71,7 +71,7 @@ void TaskCSysDragger::setupGui()
 {
   Gui::TaskView::TaskBox *incrementsBox = new Gui::TaskView::TaskBox(
       Gui::BitmapFactory().pixmap("button_valid"),
-      tr("Increments"), true, 0);
+      tr("Increments"), true, nullptr);
 
   QGridLayout *gridLayout = new QGridLayout();
   gridLayout->setColumnStretch(1, 1);

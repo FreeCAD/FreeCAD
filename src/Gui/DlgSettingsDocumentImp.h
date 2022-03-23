@@ -41,7 +41,7 @@ class DlgSettingsDocumentImp : public PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsDocumentImp( QWidget* parent = 0 );
+    DlgSettingsDocumentImp( QWidget* parent = nullptr );
     ~DlgSettingsDocumentImp();
 
     void saveSettings();

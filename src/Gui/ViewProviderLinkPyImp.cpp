@@ -75,7 +75,7 @@ Py::Object ViewProviderLinkPy::getLinkView() const {
 
 PyObject *ViewProviderLinkPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ViewProviderLinkPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

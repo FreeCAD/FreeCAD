@@ -282,7 +282,7 @@ void DefaultTransformStrategy::onSelectionChanged(const Gui::SelectionChanges& m
 /* TRANSLATOR Gui::Dialog::Transform */
 
 Transform::Transform(QWidget* parent, Qt::WindowFlags fl)
-  : Gui::LocationDialog(parent, fl), strategy(0)
+  : Gui::LocationDialog(parent, fl), strategy(nullptr)
 {
     ui = new Ui_TransformComp(this);
     ui->resetButton->hide();
@@ -431,7 +431,7 @@ TaskTransform::TaskTransform()
     this->setButtonPosition(TaskTransform::South);
     dialog = new Transform();
     dialog->showStandardButtons(false);
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), dialog->windowTitle(), true, 0);
+    taskbox = new Gui::TaskView::TaskBox(QPixmap(), dialog->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(dialog);
     Content.push_back(taskbox);
 }

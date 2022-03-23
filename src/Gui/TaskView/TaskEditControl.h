@@ -46,7 +46,7 @@ class TaskEditControl : public TaskWidget
     Q_OBJECT
 
 public:
-    TaskEditControl(QWidget *parent = 0);
+    TaskEditControl(QWidget *parent = nullptr);
     ~TaskEditControl();
     QDialogButtonBox* standardButtons() const;
     friend class TaskView;

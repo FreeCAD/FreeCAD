@@ -95,7 +95,7 @@ class GuiExport TimerFunction : public QObject
 
 public:
     /// Constructor
-    TimerFunction(QObject* = 0);
+    TimerFunction(QObject* = nullptr);
     virtual ~TimerFunction();
 
     void setFunction(boost::function<void()> func);

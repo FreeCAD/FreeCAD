@@ -41,7 +41,7 @@ class DlgOnlineHelpImp : public PreferencePage
     Q_OBJECT
 
 public:
-    DlgOnlineHelpImp( QWidget* parent = 0 );
+    DlgOnlineHelpImp( QWidget* parent = nullptr );
     ~DlgOnlineHelpImp();
 
     static QString getStartpage();

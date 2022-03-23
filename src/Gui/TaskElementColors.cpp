@@ -445,14 +445,14 @@ void ElementColors::on_removeAll_clicked()
 bool ElementColors::accept()
 {
     d->accept();
-    Application::Instance->setEditDocument(0);
+    Application::Instance->setEditDocument(nullptr);
     return true;
 }
 
 bool ElementColors::reject()
 {
     d->reset();
-    Application::Instance->setEditDocument(0);
+    Application::Instance->setEditDocument(nullptr);
     return true;
 }
 
@@ -508,7 +508,7 @@ TaskElementColors::TaskElementColors(ViewProviderDocumentObject* vp, bool noHide
 {
     widget = new ElementColors(vp,noHide);
     taskbox = new TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), true, 0);
+        QPixmap(), widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

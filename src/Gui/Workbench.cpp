@@ -349,8 +349,8 @@ void Workbench::createLinkMenu(MenuItem *item) {
     *linkMenu << "Std_LinkMakeGroup" << "Std_LinkMake";
 
     auto &rMgr = Application::Instance->commandManager();
-    const char *cmds[] = {"Std_LinkMakeRelative",0,"Std_LinkUnlink","Std_LinkReplace",
-        "Std_LinkImport","Std_LinkImportAll",0,"Std_LinkSelectLinked",
+    const char *cmds[] = {"Std_LinkMakeRelative",nullptr,"Std_LinkUnlink","Std_LinkReplace",
+        "Std_LinkImport","Std_LinkImportAll",nullptr,"Std_LinkSelectLinked",
         "Std_LinkSelectLinkedFinal","Std_LinkSelectAllLinks"};
     bool separator = true;
     for(size_t i=0;i<sizeof(cmds)/sizeof(cmds[0]);++i) {
@@ -998,12 +998,12 @@ MenuItem* TestWorkbench::setupMenuBar() const
 
 ToolBarItem* TestWorkbench::setupToolBars() const
 {
-    return 0;
+    return nullptr;
 }
 
 ToolBarItem* TestWorkbench::setupCommandBars() const
 {
-    return 0;
+    return nullptr;
 }
 
 // -----------------------------------------------------------------------
@@ -1011,7 +1011,7 @@ ToolBarItem* TestWorkbench::setupCommandBars() const
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::PythonBaseWorkbench, Gui::Workbench)
 
 PythonBaseWorkbench::PythonBaseWorkbench()
-  : _menuBar(0), _contextMenu(0), _toolBar(0), _commandBar(0), _workbenchPy(0)
+  : _menuBar(nullptr), _contextMenu(nullptr), _toolBar(nullptr), _commandBar(nullptr), _workbenchPy(nullptr)
 {
 }
 

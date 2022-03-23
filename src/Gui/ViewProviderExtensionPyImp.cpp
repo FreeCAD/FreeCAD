@@ -83,7 +83,7 @@ PyObject* ViewProviderExtensionPy::ignoreOverlayIcon(PyObject *args)
 
 PyObject *ViewProviderExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ViewProviderExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject * /*obj*/)

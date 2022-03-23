@@ -66,7 +66,7 @@ class PropertyEditor : public QTreeView
     Q_PROPERTY(QColor groupTextColor READ groupTextColor WRITE setGroupTextColor DESIGNABLE true SCRIPTABLE true)
 
 public:
-    PropertyEditor(QWidget *parent = 0);
+    PropertyEditor(QWidget *parent = nullptr);
     ~PropertyEditor();
 
     /** Builds up the list view with the properties. */

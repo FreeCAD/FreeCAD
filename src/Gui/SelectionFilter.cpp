@@ -262,14 +262,14 @@ PyObject *SelectionFilterPy::PyMake(struct _typeobject *, PyObject *args, PyObje
 {
     char* str;
     if (!PyArg_ParseTuple(args, "s",&str))
-        return 0;
+        return nullptr;
     try {
         SelectionFilter filter(str);
         return new SelectionFilterPy(filter.getFilter());
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_SyntaxError, e.what());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -300,7 +300,7 @@ Py::Object SelectionFilterPy::match(const Py::Tuple& args)
 Py::Object SelectionFilterPy::test(const Py::Tuple& args)
 {
     PyObject * pcObj;
-    char* text=0;
+    char* text=nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "O!|s",&(App::DocumentObjectPy::Type),&pcObj,&text))
         throw Py::Exception();
 
@@ -327,7 +327,7 @@ Py::Object SelectionFilterPy::result(const Py::Tuple&)
 
 Py::Object SelectionFilterPy::setFilter(const Py::Tuple& args)
 {
-    char* text=0;
+    char* text=nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s",&text))
         throw Py::Exception();
     try {
@@ -343,8 +343,8 @@ Py::Object SelectionFilterPy::setFilter(const Py::Tuple& args)
 
 // include the Scanner and the Parser for the filter language
 
-SelectionFilter* ActFilter=0;
-Node_Block *TopBlock=0;
+SelectionFilter* ActFilter=nullptr;
+Node_Block *TopBlock=nullptr;
 
 // error func
 void yyerror(char *errorinfo)
@@ -418,9 +418,9 @@ bool SelectionFilter::parse(void)
     assert(!ActFilter);
     ActFilter = this;
     /*int my_parse_result =*/ SelectionParser::yyparse();
-    ActFilter = 0;
+    ActFilter = nullptr;
     Ast.reset(TopBlock);
-    TopBlock = 0;
+    TopBlock = nullptr;
     SelectionParser::SelectionFilter_delete_buffer (my_string_buffer);
     SelectionParser::StringFactory::instance()->clear();
 

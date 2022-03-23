@@ -41,7 +41,7 @@ class GuiExport PythonEditor : public TextEditor
     Q_OBJECT
 
 public:
-    PythonEditor(QWidget *parent = 0);
+    PythonEditor(QWidget *parent = nullptr);
     ~PythonEditor();
 
     void toggleBreakpoint();

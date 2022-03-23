@@ -168,7 +168,7 @@ public:
     Private(GUISingleApplication *q_ptr)
       : q_ptr(q_ptr)
       , timer(new QTimer(q_ptr))
-      , server(0)
+      , server(nullptr)
       , running(false)
     {
         timer->setSingleShot(true);

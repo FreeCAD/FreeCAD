@@ -98,11 +98,11 @@ struct DockWindowManagerP
 };
 } // namespace Gui
 
-DockWindowManager* DockWindowManager::_instance = 0;
+DockWindowManager* DockWindowManager::_instance = nullptr;
 
 DockWindowManager* DockWindowManager::instance()
 {
-    if ( _instance == 0 )
+    if ( _instance == nullptr )
         _instance = new DockWindowManager;
     return _instance;
 }
@@ -110,7 +110,7 @@ DockWindowManager* DockWindowManager::instance()
 void DockWindowManager::destruct()
 {
     delete _instance;
-    _instance = 0;
+    _instance = nullptr;
 }
 
 DockWindowManager::DockWindowManager()
@@ -176,7 +176,7 @@ QWidget* DockWindowManager::getDockWindow(const char* name) const
             return (*it)->widget();
     }
 
-    return 0;
+    return nullptr;
 }
 
 /**
@@ -195,7 +195,7 @@ QList<QWidget*> DockWindowManager::getDockWindows() const
  */
 QWidget* DockWindowManager::removeDockWindow(const char* name)
 {
-    QWidget* widget=0;
+    QWidget* widget=nullptr;
     for (QList<QDockWidget*>::Iterator it = d->_dockedWindows.begin(); it != d->_dockedWindows.end(); ++it) {
         if ((*it)->objectName() == QLatin1String(name)) {
             QDockWidget* dw = *it;
@@ -203,8 +203,8 @@ QWidget* DockWindowManager::removeDockWindow(const char* name)
             getMainWindow()->removeDockWidget(dw);
             // avoid to destruct the embedded widget
             widget = dw->widget();
-            widget->setParent(0);
-            dw->setWidget(0);
+            widget->setParent(nullptr);
+            dw->setWidget(nullptr);
             disconnect(dw, SIGNAL(destroyed(QObject*)),
                        this, SLOT(onDockWidgetDestroyed(QObject*)));
             disconnect(widget, SIGNAL(destroyed(QObject*)),
@@ -229,8 +229,8 @@ void DockWindowManager::removeDockWindow(QWidget* widget)
             d->_dockedWindows.erase(it);
             getMainWindow()->removeDockWidget(dw);
             // avoid to destruct the embedded widget
-            widget->setParent(0);
-            dw->setWidget(0);
+            widget->setParent(nullptr);
+            dw->setWidget(nullptr);
             disconnect(dw, SIGNAL(destroyed(QObject*)),
                        this, SLOT(onDockWidgetDestroyed(QObject*)));
             disconnect(widget, SIGNAL(destroyed(QObject*)),
@@ -306,7 +306,7 @@ bool DockWindowManager::registerDockWindow(const char* name, QWidget* widget)
 
 QWidget* DockWindowManager::unregisterDockWindow(const char* name)
 {
-    QWidget* widget = 0;
+    QWidget* widget = nullptr;
     QMap<QString, QPointer<QWidget> >::Iterator it = d->_dockWindows.find(QLatin1String(name));
     if (it != d->_dockWindows.end()) {
         widget = d->_dockWindows.take(QLatin1String(name));
@@ -429,7 +429,7 @@ QDockWidget* DockWindowManager::findDockWidget(const QList<QDockWidget*>& dw, co
             return *it;
     }
 
-    return 0;
+    return nullptr;
 }
 
 void DockWindowManager::onDockWidgetDestroyed(QObject* dw)

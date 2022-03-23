@@ -118,7 +118,7 @@ void MDIView::deleteSelf()
     // detach from document
     if (_pcDocument)
         onClose();
-    _pcDocument = 0;
+    _pcDocument = nullptr;
 }
 
 PyObject* MDIView::getPyObject()
@@ -363,7 +363,7 @@ void MDIView::setCurrentViewMode(ViewMode mode)
                     if (qobject_cast<QMdiSubWindow*>(this->parentWidget()))
                         getMainWindow()->removeWindow(this,false);
                     setWindowFlags(windowFlags() | Qt::Window);
-                    setParent(0, Qt::Window | Qt::WindowTitleHint | Qt::WindowSystemMenuHint |
+                    setParent(nullptr, Qt::Window | Qt::WindowTitleHint | Qt::WindowSystemMenuHint |
                                  Qt::WindowMinMaxButtonsHint);
                     if (this->wstate & Qt::WindowMaximized)
                         showMaximized();
@@ -393,7 +393,7 @@ void MDIView::setCurrentViewMode(ViewMode mode)
                     if (qobject_cast<QMdiSubWindow*>(this->parentWidget()))
                         getMainWindow()->removeWindow(this,false);
                     setWindowFlags(windowFlags() | Qt::Window);
-                    setParent(0, Qt::Window);
+                    setParent(nullptr, Qt::Window);
                     showFullScreen();
                 }
                 else if (this->currentMode == TopLevel) {

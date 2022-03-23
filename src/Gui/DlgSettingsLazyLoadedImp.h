@@ -44,7 +44,7 @@ class DlgSettingsLazyLoadedImp : public PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsLazyLoadedImp( QWidget* parent = 0 );
+    DlgSettingsLazyLoadedImp( QWidget* parent = nullptr );
     ~DlgSettingsLazyLoadedImp();
 
     void saveSettings();

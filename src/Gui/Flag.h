@@ -42,7 +42,7 @@ class GuiExport Flag : public QtGLWidget
     Q_OBJECT
 
 public:
-    Flag(QWidget* parent=0);
+    Flag(QWidget* parent=nullptr);
     ~Flag();
 
     QSize sizeHint() const;

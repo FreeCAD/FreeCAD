@@ -51,7 +51,7 @@ public:
      * A constructor.
      * A more elaborate description of the constructor.
      */
-    SelectionView(Gui::Document* pcDocument, QWidget *parent=0);
+    SelectionView(Gui::Document* pcDocument, QWidget *parent=nullptr);
 
     /**
      * A destructor.
@@ -85,7 +85,7 @@ public Q_SLOTS:
     /// get called when the list is right-clicked
     void onItemContextMenu(const QPoint& point);
     /// different actions
-    void select(QListWidgetItem* item=0);
+    void select(QListWidgetItem* item=nullptr);
     void deselect(void);
     void zoom(void);
     void treeSelect(void);
@@ -93,8 +93,8 @@ public Q_SLOTS:
     void touch(void);
     void showPart(void);
     void onEnablePickList();
-    void toggleSelect(QListWidgetItem* item=0);
-    void preselect(QListWidgetItem* item=0);
+    void toggleSelect(QListWidgetItem* item=nullptr);
+    void preselect(QListWidgetItem* item=nullptr);
 
 protected:
     void showEvent(QShowEvent *) override;

@@ -61,7 +61,7 @@ namespace Gui {
 class SplashObserver : public Base::ILogger
 {
 public:
-    SplashObserver(QSplashScreen* splasher=0)
+    SplashObserver(QSplashScreen* splasher=nullptr)
       : splash(splasher), alignment(Qt::AlignBottom|Qt::AlignLeft), textColor(Qt::black)
     {
         Base::Console().AttachObserver(this);
@@ -176,7 +176,7 @@ void SplashScreen::drawContents ( QPainter * painter )
 
 // ------------------------------------------------------------------------------
 
-AboutDialogFactory* AboutDialogFactory::factory = 0;
+AboutDialogFactory* AboutDialogFactory::factory = nullptr;
 
 AboutDialogFactory::~AboutDialogFactory()
 {
@@ -774,7 +774,7 @@ void AboutDialog::on_copyButton_clicked()
 /* TRANSLATOR Gui::LicenseView */
 
 LicenseView::LicenseView(QWidget* parent)
-    : MDIView(0,parent,Qt::WindowFlags())
+    : MDIView(nullptr,parent,Qt::WindowFlags())
 {
     browser = new QTextBrowser(this);
     browser->setOpenExternalLinks(true);

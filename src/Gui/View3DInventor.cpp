@@ -86,7 +86,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(Gui::View3DInventor,Gui::MDIView)
 
 View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
                                const QtGLWidget* sharewidget, Qt::WindowFlags wflags)
-    : MDIView(pcDocument, parent, wflags), _viewerPy(0)
+    : MDIView(pcDocument, parent, wflags), _viewerPy(nullptr)
 {
     stack = new QStackedWidget(this);
     // important for highlighting
@@ -188,7 +188,7 @@ View3DInventor::~View3DInventor()
         QWidget* par = foc->parentWidget();
         while (par) {
             if (par == this) {
-                foc->setFocusProxy(0);
+                foc->setFocusProxy(nullptr);
                 foc->clearFocus();
                 break;
             }
@@ -207,8 +207,8 @@ View3DInventor::~View3DInventor()
 
 void View3DInventor::deleteSelf()
 {
-    _viewer->setSceneGraph(0);
-    _viewer->setDocument(0);
+    _viewer->setSceneGraph(nullptr);
+    _viewer->setDocument(nullptr);
     MDIView::deleteSelf();
 }
 
@@ -963,7 +963,7 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
         qApp->installEventFilter(this);
     }
     else if (newmode == Child) {
-        _viewer->getGLWidget()->setFocusProxy(0);
+        _viewer->getGLWidget()->setFocusProxy(nullptr);
         qApp->removeEventFilter(this);
         QList<QAction*> acts = this->actions();
         for (QList<QAction*>::Iterator it = acts.begin(); it != acts.end(); ++it)

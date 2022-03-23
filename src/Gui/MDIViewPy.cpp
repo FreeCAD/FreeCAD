@@ -164,7 +164,7 @@ Py::Object MDIViewPy::redoActions(const Py::Tuple& args)
 
 Py::Object MDIViewPy::sendMessage(const Py::Tuple& args)
 {
-    const char **ppReturn = 0;
+    const char **ppReturn = nullptr;
     char *psMsgStr;
     if (!PyArg_ParseTuple(args.ptr(), "s;Message string needed (string)",&psMsgStr))
         throw Py::Exception();
@@ -234,13 +234,13 @@ Py::Object MDIViewPy::setActiveObject(const Py::Tuple& args)
 {
     PyObject* docObject = Py_None;
     char* name;
-    char *subname = 0;
+    char *subname = nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s|Os", &name, &docObject, &subname))
         throw Py::Exception();
 
     if (_view) {
         if (docObject == Py_None) {
-            _view->setActiveObject(0, name);
+            _view->setActiveObject(nullptr, name);
         }
         else {
             if (!PyObject_TypeCheck(docObject, &App::DocumentObjectPy::Type))

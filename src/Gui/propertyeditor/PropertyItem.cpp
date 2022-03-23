@@ -62,11 +62,11 @@
 using namespace Gui::PropertyEditor;
 using namespace Gui::Dialog;
 
-Gui::PropertyEditor::PropertyItemFactory* Gui::PropertyEditor::PropertyItemFactory::_singleton = NULL;
+Gui::PropertyEditor::PropertyItemFactory* Gui::PropertyEditor::PropertyItemFactory::_singleton = nullptr;
 
 PropertyItemFactory& PropertyItemFactory::instance()
 {
-    if (_singleton == NULL)
+    if (_singleton == nullptr)
         _singleton = new PropertyItemFactory;
     return *_singleton;
 }
@@ -74,7 +74,7 @@ PropertyItemFactory& PropertyItemFactory::instance()
 void PropertyItemFactory::destruct ()
 {
     delete _singleton;
-    _singleton = 0;
+    _singleton = nullptr;
 }
 
 PropertyItem* PropertyItemFactory::createPropertyItem (const char* sName) const
@@ -96,7 +96,7 @@ Q_DECLARE_METATYPE(Py::Object)
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyItem)
 
-PropertyItem::PropertyItem() : parentItem(0), readonly(false), linked(false), expanded(false)
+PropertyItem::PropertyItem() : parentItem(nullptr), readonly(false), linked(false), expanded(false)
 {
     precision = Base::UnitsApi::getDecimals();
     setAutoApply(true);
@@ -212,14 +212,14 @@ bool PropertyItem::removeProperty(const App::Property* prop)
 App::Property* PropertyItem::getFirstProperty()
 {
     if (propertyItems.empty())
-        return 0;
+        return nullptr;
     return propertyItems.front();
 }
 
 const App::Property* PropertyItem::getFirstProperty() const
 {
     if (propertyItems.empty())
-        return 0;
+        return nullptr;
     return propertyItems.front();
 }
 
@@ -437,7 +437,7 @@ void PropertyItem::setValue(const QVariant& /*value*/)
 
 QWidget* PropertyItem::createEditor(QWidget* /*parent*/, const QObject* /*receiver*/, const char* /*method*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 void PropertyItem::setEditorData(QWidget * /*editor*/, const QVariant& /*data*/) const
@@ -452,7 +452,7 @@ QVariant PropertyItem::editorData(QWidget * /*editor*/) const
 QWidget* PropertyItem::createExpressionEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
     if(!isBound())
-        return 0;
+        return nullptr;
     ExpLineEdit *le = new ExpLineEdit(parent,true);
     le->setFrame(false);
     le->setReadOnly(true);
@@ -850,7 +850,7 @@ QWidget* PropertySeparatorItem::createEditor(QWidget* parent, const QObject* rec
     Q_UNUSED(parent); 
     Q_UNUSED(receiver); 
     Q_UNUSED(method); 
-    return 0;
+    return nullptr;
 }
 
 // --------------------------------------------------------------------
@@ -968,7 +968,7 @@ void PropertyIntegerConstraintItem::setEditorData(QWidget *editor, const QVarian
     const App::PropertyIntegerConstraint* prop = static_cast
         <const App::PropertyIntegerConstraint*>(getFirstProperty());
 
-    const App::PropertyIntegerConstraint::Constraints* c = 0;
+    const App::PropertyIntegerConstraint::Constraints* c = nullptr;
     if (prop) {
         c = prop->getConstraints();
     }
@@ -1167,7 +1167,7 @@ void PropertyUnitConstraintItem::setEditorData(QWidget *editor, const QVariant& 
     const App::PropertyQuantityConstraint* prop = static_cast
         <const App::PropertyQuantityConstraint*>(getFirstProperty());
 
-    const App::PropertyQuantityConstraint::Constraints* c = 0;
+    const App::PropertyQuantityConstraint::Constraints* c = nullptr;
     if (prop) {
         c = prop->getConstraints();
     }
@@ -1239,7 +1239,7 @@ void PropertyFloatConstraintItem::setEditorData(QWidget *editor, const QVariant&
     const App::PropertyFloatConstraint* prop = static_cast
         <const App::PropertyFloatConstraint*>(getFirstProperty());
 
-    const App::PropertyFloatConstraint::Constraints* c = 0;
+    const App::PropertyFloatConstraint::Constraints* c = nullptr;
     if (prop) {
         c = prop->getConstraints();
     }
@@ -1346,7 +1346,7 @@ class VectorLineEdit : public Gui::ExpLineEdit
 {
     int decimals;
 public:
-    VectorLineEdit (int decimals, QWidget * parent=0, bool expressionOnly=false)
+    VectorLineEdit (int decimals, QWidget * parent=nullptr, bool expressionOnly=false)
         : Gui::ExpLineEdit(parent, expressionOnly)
         , decimals(decimals)
     {
@@ -2450,7 +2450,7 @@ void PropertyRotationItem::propertyBound()
 // --------------------------------------------------------------------
 
 PlacementEditor::PlacementEditor(const QString& name, QWidget * parent)
-    : LabelButton(parent), _task(0)
+    : LabelButton(parent), _task(nullptr)
 {
     propertyname = name;
     propertyname.replace(QLatin1String(" "), QLatin1String(""));
@@ -2770,7 +2770,7 @@ void PropertyPlacementItem::propertyBound()
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyEnumItem)
 
 PropertyEnumItem::PropertyEnumItem()
-    :m_enum(0)
+    :m_enum(nullptr)
 {
     if(PropertyView::showAll()) {
         m_enum = static_cast<PropertyStringListItem*>(PropertyStringListItem::create());
@@ -2861,7 +2861,7 @@ void PropertyEnumItem::setEditorData(QWidget *editor, const QVariant& data) cons
     for (std::vector<App::Property*>::const_iterator it = items.begin(); it != items.end(); ++it) {
         if ((*it)->getTypeId() == App::PropertyEnumeration::getClassTypeId()) {
             App::PropertyEnumeration* prop = static_cast<App::PropertyEnumeration*>(*it);
-            if (prop->getEnums() == 0) {
+            if (prop->getEnums() == nullptr) {
                 commonModes.clear();
                 break;
             }
@@ -4347,7 +4347,7 @@ void PropertyLinkItem::setValue(const QVariant& value)
 QWidget* PropertyLinkItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
     if(propertyItems.empty())
-        return 0;
+        return nullptr;
     LinkLabel *ll = new LinkLabel(parent, propertyItems.front());
     ll->setAutoFillBackground(true);
     ll->setDisabled(isReadOnly());
@@ -4388,7 +4388,7 @@ PropertyItemEditorFactory::~PropertyItemEditorFactory()
 QWidget * PropertyItemEditorFactory::createEditor (int /*type*/, QWidget * /*parent*/) const
 {
     // do not allow to create any editor widgets because we do that in subclasses of PropertyItem
-    return 0;
+    return nullptr;
 }
 
 QByteArray PropertyItemEditorFactory::valuePropertyName (int /*type*/) const

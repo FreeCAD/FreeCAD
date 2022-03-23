@@ -359,7 +359,7 @@ void DlgPreferencesImp::applyChanges()
                 int index = page->metaObject()->indexOfMethod("checkSettings()");
                 try {
                     if (index >= 0) {
-                        page->qt_metacall(QMetaObject::InvokeMetaMethod, index, 0);
+                        page->qt_metacall(QMetaObject::InvokeMetaMethod, index, nullptr);
                     }
                 }
                 catch (const Base::Exception& e) {

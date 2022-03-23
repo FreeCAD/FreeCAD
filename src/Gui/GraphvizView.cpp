@@ -64,7 +64,7 @@ namespace Gui {
 class GraphvizWorker : public QThread {
     Q_OBJECT
 public:
-    GraphvizWorker(QObject * parent = 0)
+    GraphvizWorker(QObject * parent = nullptr)
         : QThread(parent)
     {
     }
@@ -226,7 +226,7 @@ void GraphvizGraphicsView::mouseReleaseEvent(QMouseEvent* e)
 /* TRANSLATOR Gui::GraphvizView */
 
 GraphvizView::GraphvizView(App::Document & _doc, QWidget* parent)
-  : MDIView(0, parent)
+  : MDIView(nullptr, parent)
   , doc(_doc)
   , nPending(0)
 {

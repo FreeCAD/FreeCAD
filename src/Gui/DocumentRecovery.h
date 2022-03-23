@@ -43,7 +43,7 @@ class DocumentRecovery : public QDialog
     Q_OBJECT
 
 public:
-    DocumentRecovery(const QList<QFileInfo>&, QWidget* parent = 0);
+    DocumentRecovery(const QList<QFileInfo>&, QWidget* parent = nullptr);
     virtual ~DocumentRecovery();
 
     void accept();

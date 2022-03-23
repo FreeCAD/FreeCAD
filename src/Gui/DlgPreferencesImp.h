@@ -116,7 +116,7 @@ public:
     static void removePage(const std::string& className, const std::string& group);
     static void reloadSettings();
 
-    DlgPreferencesImp(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+    DlgPreferencesImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgPreferencesImp();
 
     void accept();

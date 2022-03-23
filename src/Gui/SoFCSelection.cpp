@@ -65,7 +65,7 @@ namespace Gui {
 std::array<std::pair<double, std::string>,3 > schemaTranslatePoint(double x, double y, double z, double precision);
 }
 
-SoFullPath * Gui::SoFCSelection::currenthighlight = NULL;
+SoFullPath * Gui::SoFCSelection::currenthighlight = nullptr;
 
 
 // *************************************************************************
@@ -126,10 +126,10 @@ SoFCSelection::~SoFCSelection()
 {
     // If we're being deleted and we're the current highlight,
     // NULL out that variable
-    if (currenthighlight != NULL &&
+    if (currenthighlight != nullptr &&
         (!currenthighlight->getTail()->isOfType(SoFCSelection::getClassTypeId()))) {
         currenthighlight->unref();
-        currenthighlight = NULL;
+        currenthighlight = nullptr;
     }
     //delete THIS;
 }
@@ -324,7 +324,7 @@ SoFCSelection::getPickedPoint(SoHandleEventAction* action) const
     // almost similar coordinates we use the second point, instead.
     const SoPickedPointList & points = action->getPickedPointList();
     if (points.getLength() == 0)
-        return 0;
+        return nullptr;
     else if (points.getLength() == 1)
         return points[0];
     //const SoPickedPoint* pp0 = points[0];
@@ -485,7 +485,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                         Gui::Selection().clearSelection(documentName.getValue().getString());
                         Gui::Selection().addSelection(documentName.getValue().getString()
                                               ,objectName.getValue().getString()
-                                              ,0 ,pt[0] ,pt[1] ,pt[2]);
+                                              ,nullptr ,pt[0] ,pt[1] ,pt[2]);
                     }
 
                     if (mymode == OFF) {
@@ -1024,7 +1024,7 @@ SoFCSelection::turnoffcurrent(SoAction * action)
     }
     if (SoFCSelection::currenthighlight) {
         SoFCSelection::currenthighlight->unref();
-        SoFCSelection::currenthighlight = NULL;
+        SoFCSelection::currenthighlight = nullptr;
     }
 #else
     if (currenthighlight == NULL)
@@ -1053,7 +1053,7 @@ SoFCSelection::isHighlighted(SoAction *action)
 ////////////////////////////////////////////////////////////////////////
 {
     SoFullPath *actionPath = (SoFullPath *) action->getCurPath();
-    return (currenthighlight != NULL &&
+    return (currenthighlight != nullptr &&
         currenthighlight->getTail() == actionPath->getTail() && // nested SoHL!
         *currenthighlight == *actionPath);
 }

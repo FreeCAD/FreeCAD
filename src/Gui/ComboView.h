@@ -68,7 +68,7 @@ public:
      * A constructor.
      * A more elaborate description of the constructor.
      */
-    ComboView(bool showModel, Gui::Document*  pcDocument, QWidget *parent=0);
+    ComboView(bool showModel, Gui::Document*  pcDocument, QWidget *parent=nullptr);
 
     /**
      * A destructor.

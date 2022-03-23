@@ -49,7 +49,7 @@ class GuiExport QuantitySpinBox : public QAbstractSpinBox, public ExpressionSpin
     Q_PROPERTY(QString expression READ expressionText)
 
 public:
-    explicit QuantitySpinBox(QWidget *parent = 0);
+    explicit QuantitySpinBox(QWidget *parent = nullptr);
     virtual ~QuantitySpinBox();
 
     /// Get the current quantity

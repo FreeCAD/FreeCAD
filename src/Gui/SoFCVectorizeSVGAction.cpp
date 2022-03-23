@@ -121,7 +121,7 @@ class SoVectorizeImage : public SoVectorizeItem {
 public:
     SoVectorizeImage(void) {
         this->type = IMAGE;
-        this->image.data = 0;
+        this->image.data = nullptr;
         this->image.nc = 0;
     }
 

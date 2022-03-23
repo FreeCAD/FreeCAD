@@ -74,7 +74,7 @@ public:
         clipView->plane.setValue(SbPlane(SbVec3f(0,0,1),0));
         clipView->ref();
 
-        node = 0;
+        node = nullptr;
         sensor = new SoTimerSensor(moveCallback, this);
     }
     ~Private()

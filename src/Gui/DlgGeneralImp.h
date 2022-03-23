@@ -45,7 +45,7 @@ class DlgGeneralImp : public PreferencePage
     Q_OBJECT
 
 public:
-    DlgGeneralImp( QWidget* parent = 0 );
+    DlgGeneralImp( QWidget* parent = nullptr );
     ~DlgGeneralImp();
 
     void saveSettings();

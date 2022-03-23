@@ -52,7 +52,7 @@ using namespace Gui::Dialog;
 
 class ItemDelegate: public QStyledItemDelegate {
 public:
-    ItemDelegate(QObject* parent=0): QStyledItemDelegate(parent) {}
+    ItemDelegate(QObject* parent=nullptr): QStyledItemDelegate(parent) {}
 
     virtual QWidget* createEditor(QWidget *parent,
             const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -120,7 +120,7 @@ QList<App::SubObjectT> DlgPropertyLink::getLinksFromProperty(const App::Property
     prop->getLinks(objs,true,&subs,false);
     if(subs.empty()) {
         for(auto obj : objs)
-            res.push_back(App::SubObjectT(obj,0));
+            res.push_back(App::SubObjectT(obj,nullptr));
     } else if (objs.size()==1) {
         for(auto &sub : subs)
             res.push_back(App::SubObjectT(objs.front(),sub.c_str()));
@@ -195,7 +195,7 @@ QString DlgPropertyLink::formatLinks(App::Document *ownerDoc, QList<App::SubObje
             if( ++i >= 3)
                 break;
         }
-        return QString::fromLatin1("%1 [%2%3]").arg(formatObject(ownerDoc,obj,0),
+        return QString::fromLatin1("%1 [%2%3]").arg(formatObject(ownerDoc,obj,nullptr),
                                                     list.join(QLatin1String(", ")),
                                                     QLatin1String(links.size()>3?" ...":""));
     }
@@ -490,7 +490,7 @@ void DlgPropertyLink::onItemSelectionChanged()
     if(newSelections.isEmpty() || selections.contains(newSelections.back())) {
         selections = newSelections;
         if(newSelections.isEmpty())
-            currentObj = 0;
+            currentObj = nullptr;
         return;
     }
 
@@ -554,14 +554,14 @@ QTreeWidgetItem *DlgPropertyLink::findItem(
         *pfound = false;
 
     if(!obj || !obj->getNameInDocument())
-        return 0;
+        return nullptr;
 
     std::vector<App::DocumentObject *> sobjs;
     if(subname && subname[0]) {
         if(!allowSubObject) {
             obj = obj->getSubObject(subname);
             if(!obj)
-                return 0;
+                return nullptr;
         } else {
             sobjs = obj->getSubObjectList(subname);
         }
@@ -569,12 +569,12 @@ QTreeWidgetItem *DlgPropertyLink::findItem(
 
     auto itDoc = docItems.find(obj->getDocument());
     if(itDoc == docItems.end())
-        return 0;
+        return nullptr;
     onItemExpanded(itDoc->second);
 
     auto it = itemMap.find(obj);
     if(it == itemMap.end() || it->second->isHidden())
-        return 0;
+        return nullptr;
 
     if(!allowSubObject) {
         if(pfound)
@@ -872,15 +872,15 @@ QTreeWidgetItem *DlgPropertyLink::createItem(
         App::DocumentObject *obj, QTreeWidgetItem *parent)
 {
     if(!obj || !obj->getNameInDocument())
-        return 0;
+        return nullptr;
 
     if(inList.find(obj)!=inList.end())
-        return 0;
+        return nullptr;
 
     auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
             Application::Instance->getViewProvider(obj));
     if(!vp)
-        return 0;
+        return nullptr;
 
     QTreeWidgetItem* item;
     if(parent)
@@ -909,7 +909,7 @@ QTreeWidgetItem *DlgPropertyLink::createItem(
         Base::PyGILStateLocker lock;
         Py::Object proxy = prop->getValue();
         if(!proxy.isNone() && !proxy.isString()) {
-            const char *name = 0;
+            const char *name = nullptr;
             if (proxy.hasAttr("__class__"))
                 proxyType = QByteArray(proxy.getAttr("__class__").as_string().c_str());
             else {
@@ -931,9 +931,9 @@ QTreeWidgetItem *DlgPropertyLink::createItem(
 
 QTreeWidgetItem *DlgPropertyLink::createTypeItem(Base::Type type) {
     if(type.isBad())
-        return 0;
+        return nullptr;
 
-    QTreeWidgetItem *item = 0;
+    QTreeWidgetItem *item = nullptr;
     if(!type.isBad() && type!=App::DocumentObject::getClassTypeId()) {
         Base::Type parentType = type.getParent();
         if(!parentType.isBad()) {
@@ -961,7 +961,7 @@ QTreeWidgetItem *DlgPropertyLink::createTypeItem(Base::Type type) {
 
 bool DlgPropertyLink::filterType(QTreeWidgetItem *item) {
     auto proxyType = item->data(0, Qt::UserRole+3).toByteArray();
-    QTreeWidgetItem *proxyItem = 0;
+    QTreeWidgetItem *proxyItem = nullptr;
     if(proxyType.size()) {
         auto &pitem = typeItems[proxyType];
         if(!pitem) {

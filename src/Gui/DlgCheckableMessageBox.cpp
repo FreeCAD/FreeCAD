@@ -86,7 +86,7 @@ void DlgCheckableMessageBox::showMessage(const QString& header, const QString& m
 }
 
 struct DlgCheckableMessageBoxPrivate {
-    DlgCheckableMessageBoxPrivate() : clickedButton(0) {}
+    DlgCheckableMessageBoxPrivate() : clickedButton(nullptr) {}
 
     Ui::DlgCheckableMessageBox ui;
     QAbstractButton *clickedButton;

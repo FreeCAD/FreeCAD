@@ -52,7 +52,7 @@ namespace Gui
     {
     Q_OBJECT
     public:
-      LineEdit(QWidget *parentIn = 0);
+      LineEdit(QWidget *parentIn = nullptr);
     Q_SIGNALS:
       void acceptedSignal();
       void rejectedSignal();

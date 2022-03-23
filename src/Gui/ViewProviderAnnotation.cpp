@@ -61,8 +61,8 @@
 
 using namespace Gui;
 
-const char* ViewProviderAnnotation::JustificationEnums[]= {"Left","Right","Center",NULL};
-const char* ViewProviderAnnotation::RotationAxisEnums[]= {"X","Y","Z",NULL};
+const char* ViewProviderAnnotation::JustificationEnums[]= {"Left","Right","Center",nullptr};
+const char* ViewProviderAnnotation::RotationAxisEnums[]= {"X","Y","Z",nullptr};
 
 PROPERTY_SOURCE(Gui::ViewProviderAnnotation, Gui::ViewProviderDocumentObject)
 
@@ -272,7 +272,7 @@ void ViewProviderAnnotation::updateData(const App::Property* prop)
 
 // ----------------------------------------------------------------------------
 
-const char* ViewProviderAnnotationLabel::JustificationEnums[]= {"Left","Right","Center",NULL};
+const char* ViewProviderAnnotationLabel::JustificationEnums[]= {"Left","Right","Center",nullptr};
 
 PROPERTY_SOURCE(Gui::ViewProviderAnnotationLabel, Gui::ViewProviderDocumentObject)
 

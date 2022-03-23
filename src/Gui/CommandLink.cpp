@@ -277,7 +277,7 @@ StdCmdLinkMakeRelative::StdCmdLinkMakeRelative()
 }
 
 bool StdCmdLinkMakeRelative::isActive() {
-    return Selection().hasSubSelection(0,true);
+    return Selection().hasSubSelection(nullptr,true);
 }
 
 void StdCmdLinkMakeRelative::activated(int) {
@@ -650,22 +650,22 @@ StdCmdLinkSelectLinked::StdCmdLinkSelectLinked()
     sAccel        = "S, G";
 }
 
-static App::DocumentObject *getSelectedLink(bool finalLink, std::string *subname=0) {
+static App::DocumentObject *getSelectedLink(bool finalLink, std::string *subname=nullptr) {
     const auto &sels = Selection().getSelection("*",0,true);
     if(sels.empty())
-        return 0;
+        return nullptr;
     auto sobj = sels[0].pObject->getSubObject(sels[0].SubName);
     if(!sobj)
-        return 0;
+        return nullptr;
     auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
             Application::Instance->getViewProvider(sobj));
     if(!vp)
-        return 0;
+        return nullptr;
 
     auto linkedVp = vp->getLinkedViewProvider(subname,finalLink);
     if(!linkedVp || linkedVp==vp) {
         if(sobj->getDocument()==sels[0].pObject->getDocument())
-            return 0;
+            return nullptr;
         for(const char *dot=strchr(sels[0].SubName,'.');dot;dot=strchr(dot+1,'.')) {
             std::string sub(sels[0].SubName,dot+1-sels[0].SubName);
             auto obj = sels[0].pObject->getSubObject(sub.c_str());
@@ -674,21 +674,21 @@ static App::DocumentObject *getSelectedLink(bool finalLink, std::string *subname
             obj = obj->getLinkedObject(true);
             if(obj->getDocument()!=sels[0].pObject->getDocument()) {
                 if(finalLink)
-                    return sobj==obj?0:sobj;
+                    return sobj==obj?nullptr:sobj;
                 if(subname)
                     *subname = std::string(dot+1);
                 return obj;
             }
         }
-        return finalLink?0:sobj;
+        return finalLink?nullptr:sobj;
     }
 
     if(finalLink && linkedVp == vp->getLinkedViewProvider())
-        return 0;
+        return nullptr;
 
     auto linked = linkedVp->getObject();
     if(!linked || !linked->getNameInDocument())
-        return 0;
+        return nullptr;
 
     if(subname && sels[0].pObject!=sobj && sels[0].SubName) {
         bool found = false;
@@ -733,7 +733,7 @@ static App::DocumentObject *getSelectedLink(bool finalLink, std::string *subname
 }
 
 bool StdCmdLinkSelectLinked::isActive() {
-    return getSelectedLink(false)!=0;
+    return getSelectedLink(false)!=nullptr;
 }
 
 void StdCmdLinkSelectLinked::activated(int)
@@ -778,7 +778,7 @@ StdCmdLinkSelectLinkedFinal::StdCmdLinkSelectLinkedFinal()
 }
 
 bool StdCmdLinkSelectLinkedFinal::isActive() {
-    return getSelectedLink(true)!=0;
+    return getSelectedLink(true)!=nullptr;
 }
 
 void StdCmdLinkSelectLinkedFinal::activated(int) {

@@ -1495,14 +1495,14 @@ PyObject* Application::sCreateViewer(PyObject * /*self*/, PyObject *args)
         return nullptr;
     }
     else if (num_of_views == 1) {
-        View3DInventor* viewer = new View3DInventor(0, 0);
+        View3DInventor* viewer = new View3DInventor(nullptr, nullptr);
         if (title)
             viewer->setWindowTitle(QString::fromUtf8(title));
         Gui::getMainWindow()->addWindow(viewer);
         return viewer->getPyObject();
     }
     else {
-        SplitView3DInventor* viewer = new SplitView3DInventor(num_of_views, 0, 0);
+        SplitView3DInventor* viewer = new SplitView3DInventor(num_of_views, nullptr, nullptr);
         if (title)
             viewer->setWindowTitle(QString::fromUtf8(title));
         Gui::getMainWindow()->addWindow(viewer);

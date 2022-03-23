@@ -46,7 +46,7 @@ class DlgCustomToolbars : public CustomizeActionPage
 protected:
     enum Type { Toolbar, Toolboxbar };
 
-    DlgCustomToolbars(Type, QWidget* parent = 0);
+    DlgCustomToolbars(Type, QWidget* parent = nullptr);
     virtual ~DlgCustomToolbars();
 
 protected Q_SLOTS:
@@ -94,7 +94,7 @@ class DlgCustomToolbarsImp : public DlgCustomToolbars
     Q_OBJECT
 
 public:
-    DlgCustomToolbarsImp(QWidget* parent = 0);
+    DlgCustomToolbarsImp(QWidget* parent = nullptr);
     ~DlgCustomToolbarsImp();
 
 protected:
@@ -126,7 +126,7 @@ class DlgCustomToolBoxbarsImp : public DlgCustomToolbars
     Q_OBJECT
 
 public:
-    DlgCustomToolBoxbarsImp(QWidget* parent = 0);
+    DlgCustomToolBoxbarsImp(QWidget* parent = nullptr);
     ~DlgCustomToolBoxbarsImp();
 
 protected:

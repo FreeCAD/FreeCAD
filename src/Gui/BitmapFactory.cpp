@@ -86,11 +86,11 @@ public:
 };
 }
 
-BitmapFactoryInst* BitmapFactoryInst::_pcSingleton = NULL;
+BitmapFactoryInst* BitmapFactoryInst::_pcSingleton = nullptr;
 
 BitmapFactoryInst& BitmapFactoryInst::instance(void)
 {
-    if (_pcSingleton == NULL)
+    if (_pcSingleton == nullptr)
     {
         _pcSingleton = new BitmapFactoryInst;
         std::map<std::string,std::string>::const_iterator it;
@@ -114,9 +114,9 @@ BitmapFactoryInst& BitmapFactoryInst::instance(void)
 
 void BitmapFactoryInst::destruct (void)
 {
-    if (_pcSingleton != 0)
+    if (_pcSingleton != nullptr)
     delete _pcSingleton;
-    _pcSingleton = 0;
+    _pcSingleton = nullptr;
 }
 
 BitmapFactoryInst::BitmapFactoryInst()
@@ -555,7 +555,7 @@ void BitmapFactoryInst::convert(const QImage& p, SoSFImage& img) const
     }
 
     // allocate image data
-    img.setValue(size, numcomponents, NULL);
+    img.setValue(size, numcomponents, nullptr);
 
     unsigned char * bytes = img.startEditing(size, numcomponents);
 

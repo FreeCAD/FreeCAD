@@ -57,7 +57,7 @@ public:
      * the view will attach to the active document. Be aware! there isn't
      * always an active document!
      */
-    BaseView(Gui::Document* pcDocument=0);
+    BaseView(Gui::Document* pcDocument=nullptr);
     /** View destructor
      * Detach the view from the document, if attached!
      */

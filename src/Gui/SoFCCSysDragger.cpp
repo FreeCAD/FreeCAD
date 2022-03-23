@@ -312,13 +312,13 @@ SbBool TDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   if (onoff)
   {
     inherited::setUpConnections(onoff, doitalways);
-    TDragger::fieldSensorCB(this, NULL);
+    TDragger::fieldSensorCB(this, nullptr);
     if (this->fieldSensor.getAttachedField() != &this->translation)
       this->fieldSensor.attach(&this->translation);
   }
   else
   {
-    if (this->fieldSensor.getAttachedField() != NULL)
+    if (this->fieldSensor.getAttachedField() != nullptr)
       this->fieldSensor.detach();
     inherited::setUpConnections(onoff, doitalways);
   }
@@ -597,13 +597,13 @@ SbBool RDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   if (onoff)
   {
     inherited::setUpConnections(onoff, doitalways);
-    RDragger::fieldSensorCB(this, NULL);
+    RDragger::fieldSensorCB(this, nullptr);
     if (this->fieldSensor.getAttachedField() != &this->rotation)
       this->fieldSensor.attach(&this->rotation);
   }
   else
   {
-    if (this->fieldSensor.getAttachedField() != NULL)
+    if (this->fieldSensor.getAttachedField() != nullptr)
       this->fieldSensor.detach();
     inherited::setUpConnections(onoff, doitalways);
   }
@@ -857,10 +857,10 @@ SbBool SoFCCSysDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 
         inherited::setUpConnections(onoff, doitalways);
 
-        if (this->translationSensor.getAttachedField() != NULL)
+        if (this->translationSensor.getAttachedField() != nullptr)
           this->translationSensor.detach();
 
-        if (this->rotationSensor.getAttachedField() != NULL)
+        if (this->rotationSensor.getAttachedField() != nullptr)
             this->rotationSensor.detach();
     }
     return !(this->connectionsSetUp = onoff);

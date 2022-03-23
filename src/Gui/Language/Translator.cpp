@@ -98,7 +98,7 @@ using namespace Gui;
 
 /* TRANSLATOR Gui::Translator */
 
-Translator* Translator::_pcSingleton = 0;
+Translator* Translator::_pcSingleton = nullptr;
 
 namespace Gui {
 class TranslatorP
@@ -123,7 +123,7 @@ void Translator::destruct (void)
 {
     if (_pcSingleton)
         delete _pcSingleton;
-    _pcSingleton=0;
+    _pcSingleton=nullptr;
 }
 
 Translator::Translator()

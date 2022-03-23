@@ -68,7 +68,7 @@ class CameraDialog : public QDialog
     Q_OBJECT
 
 public:
-    CameraDialog(QWidget* parent=0);
+    CameraDialog(QWidget* parent=nullptr);
     ~CameraDialog();
     void setValues(double q0, double q1, double q2, double q3);
     void getValues(double& q0, double& q1, double& q2, double& q3) const;

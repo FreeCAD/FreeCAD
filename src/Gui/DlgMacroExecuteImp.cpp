@@ -310,7 +310,7 @@ void DlgMacroExecuteImp::on_fileChooser_fileNameChanged(const QString& fn)
 void DlgMacroExecuteImp::on_editButton_clicked()
 {
     QDir dir;
-    QTreeWidgetItem* item = 0;
+    QTreeWidgetItem* item = nullptr;
 
     int index = ui->tabMacroWidget->currentIndex();
     if (index == 0) { //user-specific
@@ -672,7 +672,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
 void DlgMacroExecuteImp::on_renameButton_clicked()
 {
     QDir dir;
-    QTreeWidgetItem* item = 0;
+    QTreeWidgetItem* item = nullptr;
 
     int index = ui->tabMacroWidget->currentIndex();
     if (index == 0) { //user-specific
@@ -729,7 +729,7 @@ void DlgMacroExecuteImp::on_renameButton_clicked()
 void DlgMacroExecuteImp::on_duplicateButton_clicked()
 {
     QDir dir;
-    QTreeWidgetItem* item = 0;
+    QTreeWidgetItem* item = nullptr;
 
     //When duplicating a macro we can either begin trying to find a unique name with @001 or begin with the current @NNN if applicable
 

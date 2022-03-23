@@ -53,7 +53,7 @@ class DlgCustomActionsImp : public CustomizeActionPage
     Q_OBJECT
 
 public:
-    DlgCustomActionsImp( QWidget* parent = 0 );
+    DlgCustomActionsImp( QWidget* parent = nullptr );
     ~DlgCustomActionsImp();
 
 Q_SIGNALS:

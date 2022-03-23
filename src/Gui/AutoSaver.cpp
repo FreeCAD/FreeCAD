@@ -52,7 +52,7 @@ FC_LOG_LEVEL_INIT("App",true,true)
 using namespace Gui;
 namespace bp = boost::placeholders;
 
-AutoSaver* AutoSaver::self = 0;
+AutoSaver* AutoSaver::self = nullptr;
 
 AutoSaver::AutoSaver(QObject* parent)
   : QObject(parent), timeout(900000), compressed(true)

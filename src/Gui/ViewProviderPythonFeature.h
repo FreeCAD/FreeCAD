@@ -266,7 +266,7 @@ public:
         return name;
     }
     virtual SoDetail* getDetail(const char* name) const override {
-        SoDetail *det = 0;
+        SoDetail *det = nullptr;
         if(imp->getDetail(name,det))
             return det;
         return ViewProviderT::getDetail(name);
@@ -570,8 +570,8 @@ protected:
     }
 
     virtual ViewProviderDocumentObject *getLinkedViewProvider(
-            std::string *subname=0, bool recursive=false) const override{
-        ViewProviderDocumentObject *res = 0;
+            std::string *subname=nullptr, bool recursive=false) const override{
+        ViewProviderDocumentObject *res = nullptr;
         if(!imp->getLinkedViewProvider(res, subname, recursive))
             res = ViewProviderT::getLinkedViewProvider(subname,recursive);
         return res;

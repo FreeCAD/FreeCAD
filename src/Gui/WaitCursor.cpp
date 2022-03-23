@@ -58,9 +58,9 @@ private:
 };
 } // namespace Gui
 
-WaitCursorP* WaitCursorP::_instance = 0;
+WaitCursorP* WaitCursorP::_instance = nullptr;
 
-WaitCursorP::WaitCursorP() : QObject(0), isOn(false), flags(WaitCursor::AllEvents)
+WaitCursorP::WaitCursorP() : QObject(nullptr), isOn(false), flags(WaitCursor::AllEvents)
 {
 }
 

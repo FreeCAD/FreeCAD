@@ -91,7 +91,7 @@ void ViewProviderDragger::setupContextMenu(QMenu* menu, QObject* receiver, const
 }
 
 ViewProvider *ViewProviderDragger::startEditing(int mode) {
-    _linkDragger = 0;
+    _linkDragger = nullptr;
     auto ret = ViewProviderDocumentObject::startEditing(mode);
     if(!ret)
         return ret;
@@ -103,7 +103,7 @@ bool ViewProviderDragger::checkLink() {
     // usually by doubleClicked(). If so, we route the request back. There shall
     // be no risk of infinite recursion, as ViewProviderLink handles
     // ViewProvider::Transform request by itself.
-    ViewProviderDocumentObject *vpParent = 0;
+    ViewProviderDocumentObject *vpParent = nullptr;
     std::string subname;
     auto doc = Application::Instance->editDocument();
     if(!doc)

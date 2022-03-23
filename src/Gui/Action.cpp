@@ -223,7 +223,7 @@ void Action::setMenuRole(QAction::MenuRole menuRole)
  * to the command object.
  */
 ActionGroup::ActionGroup ( Command* pcCmd,QObject * parent)
-  : Action(pcCmd, parent), _group(0), _dropDown(false),_external(false),_toggle(false),_isMode(false)
+  : Action(pcCmd, parent), _group(nullptr), _dropDown(false),_external(false),_toggle(false),_isMode(false)
 {
     _group = new QActionGroup(this);
     connect(_group, SIGNAL(triggered(QAction*)), this, SLOT(onActivated (QAction*)));
@@ -1169,7 +1169,7 @@ void RedoAction::setVisible ( bool b )
 // --------------------------------------------------------------------
 
 DockWidgetAction::DockWidgetAction ( Command* pcCmd, QObject * parent )
-  : Action(pcCmd, parent), _menu(0)
+  : Action(pcCmd, parent), _menu(nullptr)
 {
 }
 
@@ -1192,7 +1192,7 @@ void DockWidgetAction::addTo ( QWidget * w )
 // --------------------------------------------------------------------
 
 ToolBarAction::ToolBarAction ( Command* pcCmd, QObject * parent )
-  : Action(pcCmd, parent), _menu(0)
+  : Action(pcCmd, parent), _menu(nullptr)
 {
 }
 
@@ -1215,7 +1215,7 @@ void ToolBarAction::addTo ( QWidget * w )
 // --------------------------------------------------------------------
 
 WindowAction::WindowAction ( Command* pcCmd, QObject * parent )
-  : ActionGroup(pcCmd, parent), _menu(0)
+  : ActionGroup(pcCmd, parent), _menu(nullptr)
 {
 }
 

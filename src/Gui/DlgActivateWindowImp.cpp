@@ -50,7 +50,7 @@ DlgActivateWindowImp::DlgActivateWindowImp(QWidget* parent, Qt::WindowFlags fl)
     ui->setupUi(this);
     QPushButton* buttonOk = ui->buttonBox->button(QDialogButtonBox::Ok);
     buttonOk->setText(QApplication::translate("Gui::Dialog::DlgActivateWindow", "&Activate"));
-    QTreeWidgetItem* active=0;
+    QTreeWidgetItem* active=nullptr;
     QStringList labels; labels << tr("Windows");
     ui->treeWidget->setHeaderLabels(labels);
     ui->treeWidget->header()->hide();

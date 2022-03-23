@@ -200,5 +200,5 @@ const SoEvent* GesturesDevice::translateEvent(QEvent* event)
             return new SoGesturePanEvent(pg,this->widget);
         }
     }
-    return 0;
+    return nullptr;
 }

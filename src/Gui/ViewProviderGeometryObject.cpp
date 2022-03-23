@@ -56,8 +56,8 @@ PROPERTY_SOURCE(Gui::ViewProviderGeometryObject, Gui::ViewProviderDragger)
 const App::PropertyIntegerConstraint::Constraints intPercent = {0,100,1};
 
 ViewProviderGeometryObject::ViewProviderGeometryObject()
-    : pcBoundSwitch(0)
-    , pcBoundColor(0)
+    : pcBoundSwitch(nullptr)
+    , pcBoundColor(nullptr)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     bool randomColor = hGrp->GetBool("RandomColor", false);
@@ -223,7 +223,7 @@ SoPickedPoint* ViewProviderGeometryObject::getPickedPoint(const SbVec2s& pos, co
     // returns a copy of the point
     SoPickedPoint* pick = rp.getPickedPoint();
     //return (pick ? pick->copy() : 0); // needs the same instance of CRT under MS Windows
-    return (pick ? new SoPickedPoint(*pick) : 0);
+    return (pick ? new SoPickedPoint(*pick) : nullptr);
 }
 
 unsigned long ViewProviderGeometryObject::getBoundColor() const

@@ -427,7 +427,7 @@ bool ViewProviderPythonFeatureImp::getElement(const SoDetail *det, std::string &
     // Run the onChanged method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
-        PyObject* pivy = 0;
+        PyObject* pivy = nullptr;
         // Note: As there is no ref'counting mechanism for the SoDetail class we must
         // pass '0' as the last parameter so that the Python object does not 'own'
         // the detail object.
@@ -460,7 +460,7 @@ ViewProviderPythonFeatureImp::getElementPicked(const SoPickedPoint *pp, std::str
 
     Base::PyGILStateLocker lock;
     try {
-        PyObject* pivy = 0;
+        PyObject* pivy = nullptr;
         pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoPickedPoint *", (void*)pp, 0);
         Py::Tuple args(1);
         args.setItem(0, Py::Object(pivy, true));
@@ -494,10 +494,10 @@ bool ViewProviderPythonFeatureImp::getDetail(const char* name, SoDetail *&det) c
         Py::Tuple args(1);
         args.setItem(0, Py::String(name));
         Py::Object pydet(Base::pyCall(py_getDetail.ptr(),args.ptr()));
-        void* ptr = 0;
+        void* ptr = nullptr;
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDetail *", pydet.ptr(), &ptr, 0);
         SoDetail* detail = reinterpret_cast<SoDetail*>(ptr);
-        det = detail ? detail->copy() : 0;
+        det = detail ? detail->copy() : nullptr;
         return true;
     }
     catch (const Base::Exception& e) {
@@ -523,7 +523,7 @@ ViewProviderPythonFeatureImp::ValueT ViewProviderPythonFeatureImp::getDetailPath
     Base::PyGILStateLocker lock;
     auto length = path->getLength();
     try {
-        PyObject* pivy = 0;
+        PyObject* pivy = nullptr;
         pivy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoFullPath *", (void*)path, 1);
         path->ref();
         Py::Tuple args(3);
@@ -535,10 +535,10 @@ ViewProviderPythonFeatureImp::ValueT ViewProviderPythonFeatureImp::getDetailPath
             return Rejected;
         if(pyDet.isBoolean())
             return Accepted;
-        void* ptr = 0;
+        void* ptr = nullptr;
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDetail *", pyDet.ptr(), &ptr, 0);
         SoDetail* detail = reinterpret_cast<SoDetail*>(ptr);
-        det = detail ? detail->copy() : 0;
+        det = detail ? detail->copy() : nullptr;
         if(det)
             return Accepted;
         delete det;

@@ -45,7 +45,7 @@ class TaskAppearance : public TaskBox, public Gui::SelectionSingleton::ObserverT
     Q_OBJECT
 
 public:
-    TaskAppearance(QWidget *parent = 0);
+    TaskAppearance(QWidget *parent = nullptr);
     ~TaskAppearance();
     /// Observer message from the Selection
     void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,

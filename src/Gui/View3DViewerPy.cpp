@@ -120,7 +120,7 @@ Py::Object View3DInventorViewerPy::repr()
     return Py::String(s_out.str());
 }
 
-View3DInventorViewerPy::method_varargs_handler View3DInventorViewerPy::pycxx_handler = 0;
+View3DInventorViewerPy::method_varargs_handler View3DInventorViewerPy::pycxx_handler = nullptr;
 
 PyObject *View3DInventorViewerPy::method_varargs_ext_handler(PyObject *_self_and_name_tuple, PyObject *_args)
 {
@@ -178,7 +178,7 @@ Py::Object View3DInventorViewerPy::getSoRenderManager(const Py::Tuple& args)
 
     try {
         SoRenderManager* manager = _viewer->getSoRenderManager();
-        PyObject* proxy = 0;
+        PyObject* proxy = nullptr;
         proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoRenderManager *", (void*)manager, 0);
         return Py::Object(proxy, true);
     }
@@ -194,7 +194,7 @@ Py::Object View3DInventorViewerPy::getSceneGraph(const Py::Tuple& args)
 
     try {
         SoNode* scene = _viewer->getSceneGraph();
-        PyObject* proxy = 0;
+        PyObject* proxy = nullptr;
         proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoSeparator *", (void*)scene, 1);
         scene->ref();
         return Py::Object(proxy, true);
@@ -210,7 +210,7 @@ Py::Object View3DInventorViewerPy::setSceneGraph(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "O", &proxy))
         throw Py::Exception();
 
-    void* ptr = 0;
+    void* ptr = nullptr;
     try {
         Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", proxy, &ptr, 0);
         SoNode* node = static_cast<SoNode*>(ptr);
@@ -229,7 +229,7 @@ Py::Object View3DInventorViewerPy::getSoEventManager(const Py::Tuple& args)
 
     try {
         SoEventManager* manager = _viewer->getSoEventManager();
-        PyObject* proxy = 0;
+        PyObject* proxy = nullptr;
         proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoEventManager *", (void*)manager, 0);
         return Py::Object(proxy, true);
     }
@@ -381,14 +381,14 @@ Py::Object View3DInventorViewerPy::setupEditingRoot(const Py::Tuple& args)
         throw Py::Exception();
     }
 
-    Base::Matrix4D *mat = 0;
+    Base::Matrix4D *mat = nullptr;
     if(pymat != Py_None)
         mat = static_cast<Base::MatrixPy*>(pymat)->getMatrixPtr();
 
     try {
-        SoNode *node = 0;
+        SoNode *node = nullptr;
         if(pynode!=Py_None) {
-            void* ptr = 0;
+            void* ptr = nullptr;
             Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", pynode, &ptr, 0);
             node = reinterpret_cast<SoNode*>(ptr);
         }

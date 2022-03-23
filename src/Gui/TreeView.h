@@ -33,7 +33,7 @@ class GuiExport TreeView : public QTreeView
     Q_OBJECT
 
 public:
-    TreeView(QWidget* parent=0);
+    TreeView(QWidget* parent=nullptr);
     virtual ~TreeView();
 
 protected:
