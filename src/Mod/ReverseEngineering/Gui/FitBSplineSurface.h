@@ -35,7 +35,7 @@ class FitBSplineSurfaceWidget : public QWidget
     Q_OBJECT
 
 public:
-    FitBSplineSurfaceWidget(const App::DocumentObjectT&, QWidget* parent = 0);
+    FitBSplineSurfaceWidget(const App::DocumentObjectT&, QWidget* parent = nullptr);
     ~FitBSplineSurfaceWidget();
 
     bool accept();

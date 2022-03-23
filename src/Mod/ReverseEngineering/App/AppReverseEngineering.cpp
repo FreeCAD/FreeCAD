@@ -153,7 +153,7 @@ private:
     Py::Object approxSurface(const Py::Tuple& args, const Py::Dict& kwds)
     {
         PyObject *o;
-        PyObject *uvdirs = 0;
+        PyObject *uvdirs = nullptr;
         // spline parameters
         int uDegree = 3;
         int vDegree = 3;
@@ -172,7 +172,7 @@ private:
 
         static char* kwds_approx[] = {"Points", "UDegree", "VDegree", "NbUPoles", "NbVPoles",
                                       "Smooth", "Weight", "Grad", "Bend", "Curv",
-                                      "Iterations", "Correction", "PatchFactor","UVDirs", NULL};
+                                      "Iterations", "Correction", "PatchFactor","UVDirs", nullptr};
         if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O|iiiiO!ddddiO!dO!",kwds_approx,
                                         &o,&uDegree,&vDegree,&uPoles,&vPoles,
                                         &PyBool_Type,&smooth,&weight,&grad,&bend,&curv,
@@ -838,7 +838,7 @@ PyMOD_INIT_FUNC(ReverseEngineering)
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
 
     PyObject* mod = Reen::initModule();

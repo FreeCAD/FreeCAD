@@ -559,8 +559,8 @@ ParameterCorrection::ParameterCorrection(unsigned usUOrder, unsigned usVOrder,
   , _usVOrder(usVOrder)
   , _usUCtrlpoints(usUCtrlpoints)
   , _usVCtrlpoints(usVCtrlpoints)
-  , _pvcPoints(0)
-  , _pvcUVParam(0)
+  , _pvcPoints(nullptr)
+  , _pvcUVParam(nullptr)
   , _vCtrlPntsOfSurf(0,usUCtrlpoints-1,0,usVCtrlpoints-1)
   , _vUKnots(0,usUCtrlpoints-usUOrder+1)
   , _vVKnots(0,usVCtrlpoints-usVOrder+1)
@@ -721,11 +721,11 @@ Handle(Geom_BSplineSurface) ParameterCorrection::CreateSurface(const TColgp_Arra
                                                                bool  bParaCor,
                                                                double fSizeFactor)
 {
-    if (_pvcPoints != NULL) {
+    if (_pvcPoints != nullptr) {
         delete _pvcPoints;
-        _pvcPoints = NULL;
+        _pvcPoints = nullptr;
         delete _pvcUVParam;
-        _pvcUVParam = NULL;
+        _pvcUVParam = nullptr;
     }
 
     _pvcPoints = new TColgp_Array1OfPnt(points.Lower(), points.Upper());
@@ -733,9 +733,9 @@ Handle(Geom_BSplineSurface) ParameterCorrection::CreateSurface(const TColgp_Arra
     _pvcUVParam = new TColgp_Array1OfPnt2d(points.Lower(), points.Upper());
 
     if (_usUCtrlpoints*_usVCtrlpoints > static_cast<unsigned>(_pvcPoints->Length()))
-        return NULL; // LGS under-determined
+        return nullptr; // LGS under-determined
     if (!DoInitialParameterCorrection(fSizeFactor))
-        return NULL;
+        return nullptr;
 
     // Generate the approximation plane as a B-spline area
     if (iIter < 0) {
@@ -783,8 +783,8 @@ BSplineParameterCorrection::BSplineParameterCorrection(unsigned usUOrder, unsign
 void BSplineParameterCorrection::Init()
 {
     // Initializations
-    _pvcUVParam       = NULL;
-    _pvcPoints        = NULL;
+    _pvcUVParam       = nullptr;
+    _pvcPoints        = nullptr;
     _clFirstMatrix.Init(0.0);
     _clSecondMatrix.Init(0.0);
     _clThirdMatrix.Init(0.0);

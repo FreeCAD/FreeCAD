@@ -128,7 +128,7 @@ TaskPoisson::TaskPoisson(const App::DocumentObjectT& obj)
     widget = new PoissonWidget(obj);
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("actions/FitSurface"),
-        widget->windowTitle(), true, 0);
+        widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }
