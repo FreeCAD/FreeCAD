@@ -246,9 +246,9 @@ public:
         , cosAngle(0.7071) // 45 degree
         , approximate(true)
         , curve(new ViewProviderCurveOnMesh)
-        , mesh(0)
-        , grid(0)
-        , viewer(0)
+        , mesh(nullptr)
+        , grid(nullptr)
+        , viewer(nullptr)
         , editcursor(QPixmap(cursor_curveonmesh), 7, 7)
     {
     }
@@ -450,7 +450,7 @@ void CurveOnMeshHandler::disableCallback()
         view3d->removeViewProvider(d_ptr->curve);
         view3d->removeEventCallback(SoEvent::getClassTypeId(), Private::vertexCallback, this);
     }
-    d_ptr->viewer = 0;
+    d_ptr->viewer = nullptr;
 }
 
 std::vector<SbVec3f> CurveOnMeshHandler::getVertexes() const

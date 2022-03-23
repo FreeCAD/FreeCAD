@@ -586,7 +586,7 @@ TaskCrossSections::TaskCrossSections(const Base::BoundBox3d& bb)
     widget = new CrossSections(bb);
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Mesh_CrossSections"),
-        widget->windowTitle(), true, 0);
+        widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

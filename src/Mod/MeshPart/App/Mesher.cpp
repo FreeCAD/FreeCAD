@@ -81,7 +81,7 @@
 
 using namespace MeshPart;
 
-SMESH_Gen* Mesher::_mesh_gen = 0;
+SMESH_Gen* Mesher::_mesh_gen = nullptr;
 
 
 MeshingOutput::MeshingOutput() 

@@ -42,7 +42,7 @@ class CurveOnMeshWidget : public QWidget
     Q_OBJECT
 
 public:
-    CurveOnMeshWidget(Gui::View3DInventor* view, QWidget* parent=0);
+    CurveOnMeshWidget(Gui::View3DInventor* view, QWidget* parent=nullptr);
     ~CurveOnMeshWidget();
 
     void reject();
