@@ -1326,9 +1326,9 @@ private:
                     drawDirectionAtCursor(onSketchPos, center);
 
                     EditCurve[0] = center - (onSketchPos - center);
-                    EditCurve[1] = Base::Vector2d(EditCurve[0].x,onSketchPos.y);
+                    EditCurve[1] = Base::Vector2d(onSketchPos.x, EditCurve[0].y);
                     EditCurve[2] = onSketchPos;
-                    EditCurve[3] = Base::Vector2d(onSketchPos.x,EditCurve[0].y);
+                    EditCurve[3] = Base::Vector2d(EditCurve[0].x, onSketchPos.y);
                     EditCurve[4] = EditCurve[0];
                 }
 
@@ -1420,10 +1420,10 @@ private:
                     firstCurve+1,firstCurve+2, // coincident2
                     firstCurve+2,firstCurve+3, // coincident3
                     firstCurve+3,firstCurve, // coincident4
-                    firstCurve+1, // horizontal1
-                    firstCurve+3, // horizontal2
-                    firstCurve, // vertical1
-                    firstCurve+2, // vertical2
+                    firstCurve, // horizontal1
+                    firstCurve+2, // horizontal2
+                    firstCurve+1, // vertical1
+                    firstCurve+3, // vertical2
                     firstCurve+1, firstCurve, firstCurve + 4, // Symmetric
                     Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
 
@@ -1482,14 +1482,14 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::configureToo
     if(static_cast<DrawSketchHandlerRectangle *>(handler)->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal){
         toolWidget->setParameterLabel(WParameter::First, QApplication::translate("TaskSketcherTool_p1_rectangle", "x of 1st point"));
         toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("TaskSketcherTool_p2_rectangle", "y of 1st point"));
-        toolWidget->setParameterLabel(WParameter::Third, QApplication::translate("TaskSketcherTool_p3_rectangle", "x of 2nd point"));
-        toolWidget->setParameterLabel(WParameter::Fourth, QApplication::translate("TaskSketcherTool_p4_rectangle", "y of 2nd point"));
+        toolWidget->setParameterLabel(WParameter::Third, QApplication::translate("TaskSketcherTool_p3_rectangle", "Length (X axis)"));
+        toolWidget->setParameterLabel(WParameter::Fourth, QApplication::translate("TaskSketcherTool_p4_rectangle", "Width (Y axis)"));
     }
     else { //if (constructionMethod == ConstructionMethod::CenterAndCorner)
         toolWidget->setParameterLabel(WParameter::First, QApplication::translate("TaskSketcherTool_p1_rectangle", "x of center point"));
         toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("TaskSketcherTool_p2_rectangle", "y of center point"));
-        toolWidget->setParameterLabel(WParameter::Third, QApplication::translate("TaskSketcherTool_p3_rectangle", "x of 2nd point"));
-        toolWidget->setParameterLabel(WParameter::Fourth, QApplication::translate("TaskSketcherTool_p4_rectangle", "y of 2nd point"));
+        toolWidget->setParameterLabel(WParameter::Third, QApplication::translate("TaskSketcherTool_p3_rectangle", "Length (X axis)"));
+        toolWidget->setParameterLabel(WParameter::Fourth, QApplication::translate("TaskSketcherTool_p4_rectangle", "Width (Y axis)"));
     }
 }
 
@@ -1498,16 +1498,10 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptDrawing
     if(boxhandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal){
         switch(parameterindex) {
             case WParameter::First:
-                handler->EditCurve[0].x = value;
+                boxhandler->EditCurve[0].x = value;
                 break;
             case WParameter::Second:
-                handler->EditCurve[0].y = value;
-                break;
-            case WParameter::Third:
-                handler->EditCurve[2].x = value;
-                break;
-            case WParameter::Fourth:
-                handler->EditCurve[2].y = value;
+                boxhandler->EditCurve[0].y = value;
                 break;
         }
     }
@@ -1519,28 +1513,197 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptDrawing
             case WParameter::Second:
                 boxhandler->center.y = value;
                 break;
-            case WParameter::Third:
-                handler->EditCurve[2].x = value;
-                break;
-            case WParameter::Fourth:
-                handler->EditCurve[2].y = value;
-                break;
         }
-
     }
 }
 
-// NOTE: Not yet implemented
-template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::addConstraints() {}
+template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
+    prevCursorPosition = onSketchPos;
+    auto boxhandler = static_cast<DrawSketchHandlerRectangle*>(handler);
+
+    switch (handler->state()) {
+    case SelectMode::SeekFirst:
+    {
+        if (toolWidget->isParameterSet(WParameter::First))
+            onSketchPos.x = toolWidget->getParameter(WParameter::First);
+
+        if (toolWidget->isParameterSet(WParameter::Second))
+            onSketchPos.y = toolWidget->getParameter(WParameter::Second);
+    }
+    break;
+    case SelectMode::SeekSecond:
+    {
+        if (boxhandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal) {
+            if (toolWidget->isParameterSet(WParameter::Third)) {
+                double length = toolWidget->getParameter(WParameter::Third);
+                if (onSketchPos.x - boxhandler->EditCurve[0].x < 0) {
+                    length = -length;
+                }
+                onSketchPos.x = boxhandler->EditCurve[0].x + length;
+            }
+            if (toolWidget->isParameterSet(WParameter::Fourth)) {
+                double width = toolWidget->getParameter(WParameter::Fourth);
+                if (onSketchPos.y - boxhandler->EditCurve[0].y < 0) {
+                    width = -width;
+                }
+                onSketchPos.y = boxhandler->EditCurve[0].y + width;
+            }
+        }
+        else {
+            if (toolWidget->isParameterSet(WParameter::Third)) {
+                double length = toolWidget->getParameter(WParameter::Third);
+                onSketchPos.x = boxhandler->center.x + length/2;
+            }
+            if (toolWidget->isParameterSet(WParameter::Fourth)) {
+                double width = toolWidget->getParameter(WParameter::Fourth);
+                onSketchPos.y = boxhandler->center.y + width / 2;
+            }
+        }
+    }
+    break;
+    default:
+        break;
+    }
+}
+
+template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::updateVisualValues(Base::Vector2d onSketchPos) {
+    switch (handler->state()) {
+    case SelectMode::SeekFirst:
+    {
+        if (!toolWidget->isParameterSet(WParameter::First))
+            toolWidget->updateVisualValue(WParameter::First, onSketchPos.x);
+
+        if (!toolWidget->isParameterSet(WParameter::Second))
+            toolWidget->updateVisualValue(WParameter::Second, onSketchPos.y);
+    }
+    break;
+    case SelectMode::SeekSecond:
+    {
+        auto boxhandler = static_cast<DrawSketchHandlerRectangle*>(handler);
+        if (boxhandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal) {
+            if (!toolWidget->isParameterSet(WParameter::Third))
+                toolWidget->updateVisualValue(WParameter::Third, fabs(onSketchPos.x - boxhandler->EditCurve[0].x));
+
+            if (!toolWidget->isParameterSet(WParameter::Fourth))
+                toolWidget->updateVisualValue(WParameter::Fourth, fabs(onSketchPos.y - boxhandler->EditCurve[0].y));
+        }
+        else {
+            if (!toolWidget->isParameterSet(WParameter::Third))
+                toolWidget->updateVisualValue(WParameter::Third, fabs(onSketchPos.x - boxhandler->center.x)*2);
+
+            if (!toolWidget->isParameterSet(WParameter::Fourth))
+                toolWidget->updateVisualValue(WParameter::Fourth, fabs(onSketchPos.y - boxhandler->center.y)*2);
+        }
+    }
+    break;
+    default:
+        break;
+    }
+}
+
+template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doChangeDrawSketchHandlerMode() {
+    auto boxhandler = static_cast<DrawSketchHandlerRectangle*>(handler);
+    switch (handler->state()) {
+    case SelectMode::SeekFirst:
+    {
+        if (toolWidget->isParameterSet(WParameter::First) &&
+            toolWidget->isParameterSet(WParameter::Second)) {
+
+            handler->setState(SelectMode::SeekSecond);
+
+            handler->updateDataAndDrawToPosition(prevCursorPosition); // draw curve to cursor with suggested constraints
+        }
+    }
+    break;
+    case SelectMode::SeekSecond:
+    {
+        if (toolWidget->isParameterSet(WParameter::Third) ||
+            toolWidget->isParameterSet(WParameter::Fourth)) {
+
+            doOverrideSketchPosition(prevCursorPosition);
+            handler->updateDataAndDrawToPosition(prevCursorPosition); // draw curve to cursor with suggested constraints
+
+            if (toolWidget->isParameterSet(WParameter::Third) &&
+                toolWidget->isParameterSet(WParameter::Fourth) && 
+                boxhandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::CenterAndCorner) {
+
+                handler->setState(SelectMode::End);
+                handler->finish();
+            }
+        }
+    }
+    break;
+    default:
+        break;
+    }
+
+}
+
+template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::addConstraints() {
+    auto boxhandler = static_cast<DrawSketchHandlerRectangle*>(handler);
+    int firstCurve;
+    if (boxhandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal)
+        firstCurve = handler->getHighestCurveIndex() - 3;
+    else
+        firstCurve = handler->getHighestCurveIndex() - 4;
+
+    auto x0 = toolWidget->getParameter(WParameter::First);
+    auto y0 = toolWidget->getParameter(WParameter::Second);
+    auto length = toolWidget->getParameter(WParameter::Third);
+    auto width = toolWidget->getParameter(WParameter::Fourth);
+
+    auto x0set = toolWidget->isParameterSet(WParameter::First);
+    auto y0set = toolWidget->isParameterSet(WParameter::Second);
+    auto lengthSet = toolWidget->isParameterSet(WParameter::Third);
+    auto widthSet = toolWidget->isParameterSet(WParameter::Fourth);
+
+    using namespace Sketcher;
+
+    if (boxhandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal) {
+        if (x0set && y0set && x0 == 0. && y0 == 0.) {
+            ConstraintToAttachment(GeoElementId(firstCurve, PointPos::start), GeoElementId::RtPnt,
+                x0, handler->sketchgui->getObject());
+        }
+        else {
+            if (x0set)
+                ConstraintToAttachment(GeoElementId(firstCurve, PointPos::start), GeoElementId::VAxis,
+                    x0, handler->sketchgui->getObject());
+
+            if (y0set)
+                ConstraintToAttachment(GeoElementId(firstCurve, PointPos::start), GeoElementId::HAxis,
+                    y0, handler->sketchgui->getObject());
+        }
+    }
+    else {
+        if (x0set && y0set && x0 == 0. && y0 == 0.) {
+            ConstraintToAttachment(GeoElementId(firstCurve + 4, PointPos::start), GeoElementId::RtPnt,
+                x0, handler->sketchgui->getObject());
+        }
+        else {
+            if (x0set)
+                ConstraintToAttachment(GeoElementId(firstCurve + 4, PointPos::start), GeoElementId::VAxis,
+                    x0, handler->sketchgui->getObject());
+
+            if (y0set)
+                ConstraintToAttachment(GeoElementId(firstCurve + 4, PointPos::start), GeoElementId::HAxis,
+                    y0, handler->sketchgui->getObject());
+        }
+    }
+
+    if (lengthSet)
+        Gui::cmdAppObjectArgs(handler->sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
+            firstCurve, 1, firstCurve, 2, length);
+
+    if (widthSet)
+        Gui::cmdAppObjectArgs(handler->sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
+            firstCurve + 3, 1, firstCurve + 3, 2, width);
+}
 
 /* NOTE: This commented block shows how the toolwidget functions can be specialised. They are commented because
  * It may well be that the default implementation works just fine and no specialisation is necessary. They are
  * provided as examples.
  *
-template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doChangeDrawSketchHandlerMode() {}
 template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::onHandlerModeChanged() {}
-template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::updateVisualValues(Base::Vector2d onSketchPos) {}
-template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d &onSketchPos) {}
 */
 
 DEF_STD_CMD_AU(CmdSketcherCreateRectangle)
