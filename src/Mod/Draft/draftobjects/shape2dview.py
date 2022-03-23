@@ -184,9 +184,8 @@ class Shape2DView(DraftObject):
         return nedges
 
     def execute(self,obj):
-        if hasattr(obj,"AutoUpdate"):
-            if not obj.AutoUpdate:
-                return True
+        if not getattr(obj,"AutoUpdate", True):
+            return True
         import Part, DraftGeomUtils
         obj.positionBySupport()
         pl = obj.Placement
@@ -215,7 +214,7 @@ class Shape2DView(DraftObject):
                     if getattr(obj,"VisibleOnly",True):
                         objs = gui_utils.remove_hidden(objs)
                     shapes = []
-                    if hasattr(obj,"FuseArch") and obj.FuseArch:
+                    if getattr(obj,"FuseArch", False):
                         shtypes = {}
                         for o in objs:
                             if utils.get_type(o) in ["Wall","Structure"]:

@@ -24,16 +24,10 @@
 #ifndef GUI_TASKVIEW_TASKVIEW_H
 #define GUI_TASKVIEW_TASKVIEW_H
 
-#define QSINT_ACTIONPANEL
-
 #include <vector>
 #include <QScrollArea>
 
-#if !defined (QSINT_ACTIONPANEL)
-#include <Gui/iisTaskPanel/include/iisTaskPanel>
-#else
 #include <Gui/QSint/include/QSint>
-#endif
 #include <Gui/Selection.h>
 #include "TaskWatcher.h"
 
@@ -62,19 +56,6 @@ public:
     //~TaskContent();
 };
 
-#if !defined (QSINT_ACTIONPANEL)
-class GuiExport TaskGroup : public iisTaskGroup, public TaskContent
-{
-    Q_OBJECT
-
-public:
-    TaskGroup(QWidget *parent = 0);
-    ~TaskGroup();
-
-protected:
-    void actionEvent (QActionEvent*);
-};
-#else
 class GuiExport TaskGroup : public QSint::ActionBox, public TaskContent
 {
     Q_OBJECT
@@ -88,21 +69,13 @@ public:
 protected:
     void actionEvent (QActionEvent*);
 };
-#endif
 
 /// Father class of content with header and Icon
-#if !defined (QSINT_ACTIONPANEL)
-class GuiExport TaskBox : public iisTaskBox, public TaskContent
-#else
 class GuiExport TaskBox : public QSint::ActionGroup, public TaskContent
-#endif
 {
     Q_OBJECT
 
 public:
-#if !defined (QSINT_ACTIONPANEL)
-    TaskBox(const QPixmap &icon, const QString &title, bool expandable, QWidget *parent);
-#else
     /** Constructor. Creates TaskBox without header.
       */
     explicit TaskBox(QWidget *parent = 0);
@@ -126,7 +99,7 @@ public:
                      bool expandable = true,
                      QWidget *parent = 0);
     virtual QSize minimumSizeHint() const;
-#endif
+
     ~TaskBox();
     void hideGroupBox();
     bool isGroupVisible() const;
@@ -139,7 +112,6 @@ private:
     bool wasShown;
 };
 
-#if defined (QSINT_ACTIONPANEL)
 class GuiExport TaskPanel : public QSint::ActionPanel
 {
     Q_OBJECT
@@ -149,7 +121,6 @@ public:
     virtual ~TaskPanel();
     virtual QSize minimumSizeHint() const;
 };
-#endif
 
 /// Father class of content of a Free widget (without header and Icon), shut be an exception!
 class GuiExport TaskWidget : public QWidget, public TaskContent
@@ -213,11 +184,7 @@ protected:
 
     std::vector<TaskWatcher*> ActiveWatcher;
 
-#if !defined (QSINT_ACTIONPANEL)
-    iisTaskPanel* taskPanel;
-#else
     QSint::ActionPanel* taskPanel;
-#endif
     TaskDialog *ActiveDialog;
     TaskEditControl *ActiveCtrl;
 
