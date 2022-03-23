@@ -43,7 +43,7 @@ PROPERTY_SOURCE(Surface::Sewing, Part::Feature)
 
 Sewing::Sewing()
 {
-    ADD_PROPERTY_TYPE(ShapeList,(0,""), "Sewing", App::Prop_None, "Input shapes");
+    ADD_PROPERTY_TYPE(ShapeList,(nullptr,""), "Sewing", App::Prop_None, "Input shapes");
     ADD_PROPERTY_TYPE(Tolerance,(Precision::Confusion()), "Sewing", App::Prop_None, "Sewing tolerance");
     ADD_PROPERTY_TYPE(SewingOption,(true), "Sewing", App::Prop_None, "Sewing option");
     ADD_PROPERTY_TYPE(DegenerateShape,(true), "Sewing", App::Prop_None, "Analysis of degenerated shapes");

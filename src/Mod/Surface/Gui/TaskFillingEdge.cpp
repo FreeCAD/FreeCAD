@@ -330,7 +330,7 @@ void FillingEdgePanel::on_listUnbound_itemDoubleClicked(QListWidgetItem* item)
                 const TopTools_ListOfShape& adj_faces = edge2Face.FindFromKey(edge);
                 if (adj_faces.Extent() > 0) {
                     int n = adj_faces.Extent();
-                    ui->statusLabel->setText(tr("Edge has %n adjacent face(s)", 0, n));
+                    ui->statusLabel->setText(tr("Edge has %n adjacent face(s)", nullptr, n));
 
                     // fill up the combo boxes
                     modifyBoundary(true);

@@ -43,7 +43,7 @@ PROPERTY_SOURCE(Surface::Cut, Part::Feature)
 
 Cut::Cut()
 {
-    ADD_PROPERTY(ShapeList,(0,"TopoDS_Shape"));
+    ADD_PROPERTY(ShapeList,(nullptr,"TopoDS_Shape"));
     ShapeList.setScope(App::LinkScope::Global);
 }
 
@@ -95,7 +95,7 @@ App::DocumentObjectExecReturn *Cut::execute(void)
         }
 
         this->Shape.setValue(aCutShape);
-        return 0;
+        return nullptr;
     }
     catch (Standard_Failure& e) {
 

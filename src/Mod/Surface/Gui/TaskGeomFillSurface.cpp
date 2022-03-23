@@ -587,7 +587,7 @@ TaskGeomFillSurface::TaskGeomFillSurface(ViewProviderGeomFillSurface* vp, Surfac
     widget->setWindowTitle(QObject::tr("Surface"));
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Surface_BSplineSurface"),
-        widget->windowTitle(), true, 0);
+        widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

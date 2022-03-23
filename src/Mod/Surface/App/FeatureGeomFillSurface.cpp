@@ -94,7 +94,7 @@ void ShapeValidator::checkEdge(const TopoDS_Shape& shape)
 void ShapeValidator::checkAndAdd(const TopoDS_Shape &shape, Handle(ShapeExtend_WireData) *aWD)
 {
     checkEdge(shape);
-    if (aWD != NULL) {
+    if (aWD != nullptr) {
         BRepBuilderAPI_Copy copier(shape);
         // make a copy of the shape and the underlying geometry to avoid to affect the input shapes
         (*aWD)->Add(TopoDS::Edge(copier.Shape()));
@@ -104,7 +104,7 @@ void ShapeValidator::checkAndAdd(const TopoDS_Shape &shape, Handle(ShapeExtend_W
 void ShapeValidator::checkAndAdd(const Part::TopoShape &ts, const char *subName, Handle(ShapeExtend_WireData) *aWD)
 {
     try {
-        if (subName != NULL && *subName != '\0') {
+        if (subName != nullptr && *subName != '\0') {
             //we want only the subshape which is linked
             checkAndAdd(ts.getSubShape(subName), aWD);
         }
@@ -126,12 +126,12 @@ void ShapeValidator::checkAndAdd(const Part::TopoShape &ts, const char *subName,
 
 PROPERTY_SOURCE(Surface::GeomFillSurface, Part::Spline)
 
-const char* GeomFillSurface::FillTypeEnums[]    = {"Stretched", "Coons", "Curved", NULL};
+const char* GeomFillSurface::FillTypeEnums[]    = {"Stretched", "Coons", "Curved", nullptr};
 
 GeomFillSurface::GeomFillSurface(): Spline()
 {
     ADD_PROPERTY(FillType, ((long)0));
-    ADD_PROPERTY(BoundaryList, (0, "Dummy"));
+    ADD_PROPERTY(BoundaryList, (nullptr, "Dummy"));
     ADD_PROPERTY(ReversedList, (false));
     FillType.setEnums(FillTypeEnums);
     BoundaryList.setScope(App::LinkScope::Global);
