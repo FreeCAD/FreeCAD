@@ -51,7 +51,7 @@ int PropertyRowHeightsPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 
 PyObject *PropertyRowHeightsPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int PropertyRowHeightsPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

@@ -52,7 +52,7 @@ PropertiesDialog::PropertiesDialog(Sheet *_sheet, const std::vector<Range> &_ran
 
     Cell * cell = sheet->getNewCell(*range);
 
-    assert(cell != 0);
+    assert(cell != nullptr);
 
     (void)cell->getForeground(foregroundColor);
     (void)cell->getBackground(backgroundColor);

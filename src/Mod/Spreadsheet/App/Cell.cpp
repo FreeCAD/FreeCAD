@@ -706,15 +706,15 @@ void Cell::moveAbsolute(CellAddress newAddress)
 
 void Cell::restore(Base::XMLReader &reader, bool checkAlias)
 {
-    const char* style = reader.hasAttribute("style") ? reader.getAttribute("style") : 0;
-    const char* alignment = reader.hasAttribute("alignment") ? reader.getAttribute("alignment") : 0;
+    const char* style = reader.hasAttribute("style") ? reader.getAttribute("style") : nullptr;
+    const char* alignment = reader.hasAttribute("alignment") ? reader.getAttribute("alignment") : nullptr;
     const char* content = reader.hasAttribute("content") ? reader.getAttribute("content") : "";
-    const char* foregroundColor = reader.hasAttribute("foregroundColor") ? reader.getAttribute("foregroundColor") : 0;
-    const char* backgroundColor = reader.hasAttribute("backgroundColor") ? reader.getAttribute("backgroundColor") : 0;
-    const char* displayUnit = reader.hasAttribute("displayUnit") ? reader.getAttribute("displayUnit") : 0;
-    const char* alias = reader.hasAttribute("alias") ? reader.getAttribute("alias") : 0;
-    const char* rowSpan = reader.hasAttribute("rowSpan") ? reader.getAttribute("rowSpan") : 0;
-    const char* colSpan = reader.hasAttribute("colSpan") ? reader.getAttribute("colSpan") : 0;
+    const char* foregroundColor = reader.hasAttribute("foregroundColor") ? reader.getAttribute("foregroundColor") : nullptr;
+    const char* backgroundColor = reader.hasAttribute("backgroundColor") ? reader.getAttribute("backgroundColor") : nullptr;
+    const char* displayUnit = reader.hasAttribute("displayUnit") ? reader.getAttribute("displayUnit") : nullptr;
+    const char* alias = reader.hasAttribute("alias") ? reader.getAttribute("alias") : nullptr;
+    const char* rowSpan = reader.hasAttribute("rowSpan") ? reader.getAttribute("rowSpan") : nullptr;
+    const char* colSpan = reader.hasAttribute("colSpan") ? reader.getAttribute("colSpan") : nullptr;
 
     // Don't trigger multiple updates below; wait until everything is loaded by calling unfreeze() below.
     PropertySheet::AtomicPropertyChange signaller(*owner);
@@ -1001,7 +1001,7 @@ App::Color Cell::decodeColor(const std::string & color, const App::Color & defau
 
         if (color[0] != '#')
             return defaultColor;
-        unsigned int value = strtoul(color.c_str() + 1, 0, 16);
+        unsigned int value = strtoul(color.c_str() + 1, nullptr, 16);
 
         if (color.size() == 7)
             value = (value << 8) | 0xff;

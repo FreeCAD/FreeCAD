@@ -86,7 +86,7 @@ Cell *PropertySheet::getValue(CellAddress key)
     std::map<CellAddress, Cell*>::const_iterator i = data.find(key);
 
     if (i == data.end())
-        return 0;
+        return nullptr;
     else
         return i->second;
 }
@@ -96,7 +96,7 @@ const Cell *PropertySheet::getValue(CellAddress key) const
     std::map<CellAddress, Cell*>::const_iterator i = data.find(key);
 
     if (i == data.end())
-        return 0;
+        return nullptr;
     else
         return i->second;
 }
@@ -108,7 +108,7 @@ Cell * PropertySheet::getValueFromAlias(const std::string &alias)
     if (it != revAliasProp.end())
         return getValue(it->second);
     else
-        return 0;
+        return nullptr;
 }
 
 const Cell * PropertySheet::getValueFromAlias(const std::string &alias) const
@@ -118,7 +118,7 @@ const Cell * PropertySheet::getValueFromAlias(const std::string &alias) const
     if (it != revAliasProp.end())
         return getValue(it->second);
     else
-        return 0;
+        return nullptr;
 }
 
 bool PropertySheet::isValidAlias(const std::string &candidate)
@@ -127,7 +127,7 @@ bool PropertySheet::isValidAlias(const std::string &candidate)
     boost::cmatch cm;
 
     /* Check if it is used before */
-    if (getValueFromAlias(candidate) != 0)
+    if (getValueFromAlias(candidate) != nullptr)
         return false;
 
     /* Check to make sure it doesn't clash with a predefined unit */
@@ -517,7 +517,7 @@ Cell * PropertySheet::cellAt(CellAddress address)
     std::map<CellAddress, Cell*>::const_iterator i = data.find(address);
 
     if (i == data.end())
-        return 0;
+        return nullptr;
     else
         return i->second;
 }
@@ -537,7 +537,7 @@ const Cell * PropertySheet::cellAt(CellAddress address) const
     std::map<CellAddress, Cell*>::const_iterator i = data.find(address);
 
     if (i == data.end())
-        return 0;
+        return nullptr;
     else
         return i->second;
 }
@@ -566,14 +566,14 @@ Cell * PropertySheet::nonNullCellAt(CellAddress address)
 void PropertySheet::setContent(CellAddress address, const char *value)
 {
     Cell * cell = nonNullCellAt(address);
-    assert(cell != 0);
+    assert(cell != nullptr);
     cell->setContent(value);
 }
 
 void PropertySheet::setAlignment(CellAddress address, int _alignment)
 {
     Cell * cell = nonNullCellAt(address);
-    assert(cell != 0);
+    assert(cell != nullptr);
     if (cell->address != address) return; //Reject alignment change for merged cell except top-left one
     cell->setAlignment(_alignment);
 }
@@ -581,28 +581,28 @@ void PropertySheet::setAlignment(CellAddress address, int _alignment)
 void PropertySheet::setStyle(CellAddress address, const std::set<std::string> &_style)
 {
     Cell * cell = nonNullCellAt(address);
-    assert(cell != 0);
+    assert(cell != nullptr);
     cell->setStyle(_style);
 }
 
 void PropertySheet::setForeground(CellAddress address, const App::Color &color)
 {
     Cell * cell = nonNullCellAt(address);
-    assert(cell != 0);
+    assert(cell != nullptr);
     cell->setForeground(color);
 }
 
 void PropertySheet::setBackground(CellAddress address, const App::Color &color)
 {
     Cell * cell = nonNullCellAt(address);
-    assert(cell != 0);
+    assert(cell != nullptr);
     cell->setBackground(color);
 }
 
 void PropertySheet::setDisplayUnit(CellAddress address, const std::string &unit)
 {
     Cell * cell = nonNullCellAt(address);
-    assert(cell != 0);
+    assert(cell != nullptr);
     cell->setDisplayUnit(unit);
 }
 
@@ -614,7 +614,7 @@ void PropertySheet::setAlias(CellAddress address, const std::string &alias)
 
     const Cell * aliasedCell = getValueFromAlias(alias);
     Cell * cell = nonNullCellAt(address);
-    assert(cell != 0);
+    assert(cell != nullptr);
 
     if(aliasedCell == cell)
         return;
@@ -658,14 +658,14 @@ void PropertySheet::setAlias(CellAddress address, const std::string &alias)
 void PropertySheet::setComputedUnit(CellAddress address, const Base::Unit &unit)
 {
     Cell * cell = nonNullCellAt(address);
-    assert(cell != 0);
+    assert(cell != nullptr);
     cell->setComputedUnit(unit);
 }
 
 void PropertySheet::setSpans(CellAddress address, int rows, int columns)
 {
     Cell * cell = nonNullCellAt(address);
-    assert(cell != 0);
+    assert(cell != nullptr);
     cell->setSpans(rows, columns);
 }
 
@@ -1118,7 +1118,7 @@ void PropertySheet::addDependencies(CellAddress key)
 
     const Expression * expression = cell->getExpression();
 
-    if (expression == 0)
+    if (expression == nullptr)
         return;
 
     for(auto &var : expression->getIdentifiers()) {
@@ -1589,7 +1589,7 @@ Property *PropertySheet::CopyOnImportExternal(
         changed[d.first] = std::move(expr);
     }
     if(changed.empty())
-        return 0;
+        return nullptr;
     std::unique_ptr<PropertySheet> copy(new PropertySheet(*this));
     for(auto &change : changed) 
         copy->data[change.first]->setExpression(std::move(change.second));
@@ -1609,7 +1609,7 @@ Property *PropertySheet::CopyOnLabelChange(App::DocumentObject *obj,
         changed[d.first] = std::move(expr);
     }
     if(changed.empty())
-        return 0;
+        return nullptr;
     std::unique_ptr<PropertySheet> copy(new PropertySheet(*this));
     for(auto &change : changed) 
         copy->data[change.first]->setExpression(std::move(change.second));
@@ -1629,7 +1629,7 @@ Property *PropertySheet::CopyOnLinkReplace(const App::DocumentObject *parent,
         changed[d.first] = std::move(expr);
     }
     if(changed.empty())
-        return 0;
+        return nullptr;
     std::unique_ptr<PropertySheet> copy(new PropertySheet(*this));
     for(auto &change : changed) 
         copy->data[change.first]->setExpression(std::move(change.second));

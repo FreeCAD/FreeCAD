@@ -37,7 +37,7 @@ class SpreadsheetDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 public:
-    explicit SpreadsheetDelegate(Spreadsheet::Sheet * sheet, QWidget *parent = 0);
+    explicit SpreadsheetDelegate(Spreadsheet::Sheet * sheet, QWidget *parent = nullptr);
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &,
                           const QModelIndex &index) const;
     void setEditorData(QWidget *editor, const QModelIndex &index) const;

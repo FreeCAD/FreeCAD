@@ -153,7 +153,7 @@ void ViewProviderSheet::beforeDelete()
     if(!view)
         return;
     if(view==Gui::getMainWindow()->activeWindow())
-        getDocument()->setActiveView(0,Gui::View3DInventor::getClassTypeId());
+        getDocument()->setActiveView(nullptr,Gui::View3DInventor::getClassTypeId());
     Gui::getMainWindow()->removeWindow(view);
 }
 

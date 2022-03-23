@@ -109,7 +109,7 @@ static std::pair<int, int> selectedMinMaxColumns(QModelIndexList list)
 
 SheetTableView::SheetTableView(QWidget *parent)
     : QTableView(parent)
-    , sheet(0)
+    , sheet(nullptr)
     , tabCounter(0)
 {
     setHorizontalHeader(new SheetViewHeader(this,Qt::Horizontal));
@@ -276,7 +276,7 @@ std::vector<Range> SheetTableView::selectedRanges() const
 
 void SheetTableView::insertRows()
 {
-    assert(sheet != 0);
+    assert(sheet != nullptr);
 
     QModelIndexList rows = selectionModel()->selectedRows();
     std::vector<int> sortedRows;
@@ -313,7 +313,7 @@ void SheetTableView::insertRows()
 
 void SheetTableView::insertRowsAfter()
 {
-    assert(sheet != 0);
+    assert(sheet != nullptr);
     const auto rows = selectionModel()->selectedRows();
     const auto & [min, max] = selectedMinMaxRows(rows);
     assert(max - min == rows.size() - 1);
@@ -327,7 +327,7 @@ void SheetTableView::insertRowsAfter()
 
 void SheetTableView::removeRows()
 {
-    assert(sheet != 0);
+    assert(sheet != nullptr);
 
     QModelIndexList rows = selectionModel()->selectedRows();
     std::vector<int> sortedRows;
@@ -348,7 +348,7 @@ void SheetTableView::removeRows()
 
 void SheetTableView::insertColumns()
 {
-    assert(sheet != 0);
+    assert(sheet != nullptr);
 
     QModelIndexList cols = selectionModel()->selectedColumns();
     std::vector<int> sortedColumns;
@@ -386,7 +386,7 @@ void SheetTableView::insertColumns()
 
 void SheetTableView::insertColumnsAfter()
 {
-    assert(sheet != 0);
+    assert(sheet != nullptr);
     const auto columns = selectionModel()->selectedColumns();
     const auto& [min, max] = selectedMinMaxColumns(columns);
     assert(max - min == columns.size() - 1);
@@ -400,7 +400,7 @@ void SheetTableView::insertColumnsAfter()
 
 void SheetTableView::removeColumns()
 {
-    assert(sheet != 0);
+    assert(sheet != nullptr);
 
     QModelIndexList cols = selectionModel()->selectedColumns();
     std::vector<int> sortedColumns;
@@ -678,7 +678,7 @@ void SheetTableView::pasteClipboard()
         }else{
             QByteArray res = mimeData->data(_SheetMime);
             Base::ByteArrayIStreambuf buf(res);
-            std::istream in(0);
+            std::istream in(nullptr);
             in.rdbuf(&buf);
             Base::XMLReader reader("<memory>", in);
             sheet->getCells()->pasteCells(reader,range);

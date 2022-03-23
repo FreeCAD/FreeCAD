@@ -150,7 +150,7 @@ App::Property *DlgSheetConf::prepare(CellAddress &from, CellAddress &to,
             }
         }
     }
-    return 0;
+    return nullptr;
 }
 
 void DlgSheetConf::accept()

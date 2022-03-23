@@ -37,7 +37,7 @@ class SheetModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit SheetModel(Spreadsheet::Sheet * _sheet, QObject *parent = 0);
+    explicit SheetModel(Spreadsheet::Sheet * _sheet, QObject *parent = nullptr);
     ~SheetModel();
     
     SheetModel(QObject *parent);

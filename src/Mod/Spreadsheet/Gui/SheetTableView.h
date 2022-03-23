@@ -52,7 +52,7 @@ class SheetTableView : public QTableView
 {
     Q_OBJECT
 public:
-    explicit SheetTableView(QWidget *parent = 0);
+    explicit SheetTableView(QWidget *parent = nullptr);
     ~SheetTableView();
     
     void edit(const QModelIndex &index);

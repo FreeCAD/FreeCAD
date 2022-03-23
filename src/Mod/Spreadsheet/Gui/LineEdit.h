@@ -33,7 +33,7 @@ class LineEdit : public Gui::ExpressionLineEdit
 {
     Q_OBJECT
 public:
-    explicit LineEdit(QWidget *parent = 0);
+    explicit LineEdit(QWidget *parent = nullptr);
 
     bool event(QEvent *event);
 

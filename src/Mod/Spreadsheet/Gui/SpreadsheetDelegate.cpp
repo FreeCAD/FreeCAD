@@ -56,7 +56,7 @@ QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
     App::Range range(addr,addr);
     if(sheet && sheet->getCellBinding(range)) {
         FC_ERR("Bound cell " << addr.toString() << " cannot be edited");
-        return 0;
+        return nullptr;
     }
 
     SpreadsheetGui::LineEdit *editor = new SpreadsheetGui::LineEdit(parent);

@@ -37,7 +37,7 @@ class DlgSheetConf : public QDialog
     Q_OBJECT
     
 public:
-    explicit DlgSheetConf(Spreadsheet::Sheet *sheet, App::Range range, QWidget *parent = 0);
+    explicit DlgSheetConf(Spreadsheet::Sheet *sheet, App::Range range, QWidget *parent = nullptr);
     ~DlgSheetConf();
     
     void accept();

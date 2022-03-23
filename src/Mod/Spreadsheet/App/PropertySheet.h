@@ -43,7 +43,7 @@ class SpreadsheetExport PropertySheet : public App::PropertyExpressionContainer
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
 
-    PropertySheet(Sheet * _owner = 0);
+    PropertySheet(Sheet * _owner = nullptr);
 
     ~PropertySheet();
 
@@ -190,7 +190,7 @@ public:
     unsigned getBindingBorder(App::CellAddress address) const;
 
     bool isBindingPath(const App::ObjectIdentifier &path,
-            App::CellAddress *from=0, App::CellAddress *to=0, bool *href=0) const;
+            App::CellAddress *from=nullptr, App::CellAddress *to=nullptr, bool *href=nullptr) const;
 
     enum BindingType {
         BindingNone,
@@ -198,7 +198,7 @@ public:
         BindingHiddenRef,
     };
     BindingType getBinding(const App::Range &range,
-            App::ExpressionPtr *pStart=0, App::ExpressionPtr *pEnd=0) const;
+            App::ExpressionPtr *pStart=nullptr, App::ExpressionPtr *pEnd=nullptr) const;
 
 protected:
     virtual void hasSetValue() override;

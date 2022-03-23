@@ -37,7 +37,7 @@ class DlgBindSheet : public QDialog
     Q_OBJECT
     
 public:
-    explicit DlgBindSheet(Spreadsheet::Sheet *sheet, const std::vector<App::Range> &range, QWidget *parent = 0);
+    explicit DlgBindSheet(Spreadsheet::Sheet *sheet, const std::vector<App::Range> &range, QWidget *parent = nullptr);
     ~DlgBindSheet();
     
     void accept();

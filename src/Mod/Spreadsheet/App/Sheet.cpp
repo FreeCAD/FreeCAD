@@ -368,7 +368,7 @@ Cell *Sheet::getNewCell(CellAddress address)
 {
      Cell * cell = getCell(address);
 
-    if (cell == 0)
+    if (cell == nullptr)
         cell = cells.createCell(address);
 
     return cell;
@@ -384,7 +384,7 @@ Cell *Sheet::getNewCell(CellAddress address)
 
 void Sheet::setCell(const char * address, const char * contents)
 {
-    assert(address != 0 &&  contents != 0);
+    assert(address != nullptr &&  contents != nullptr);
 
     setCell(CellAddress(address), contents);
 }
@@ -400,7 +400,7 @@ void Sheet::setCell(const char * address, const char * contents)
 
 void Sheet::setCell(CellAddress address, const char * value)
 {
-    assert(value != 0);
+    assert(value != nullptr);
 
 
     if (*value == '\0') {
@@ -524,7 +524,7 @@ Property * Sheet::setFloatProperty(CellAddress key, double value)
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
         }
-        floatProp = freecad_dynamic_cast<PropertyFloat>(addDynamicProperty("App::PropertyFloat", name.c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
+        floatProp = freecad_dynamic_cast<PropertyFloat>(addDynamicProperty("App::PropertyFloat", name.c_str(), nullptr, nullptr, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
     }
     else
         floatProp = static_cast<PropertyFloat*>(prop);
@@ -547,7 +547,7 @@ Property * Sheet::setIntegerProperty(CellAddress key, long value)
             propAddress.erase(prop);
         }
         intProp = freecad_dynamic_cast<PropertyInteger>(addDynamicProperty(
-                    "App::PropertyInteger", name.c_str(), 0, 0, 
+                    "App::PropertyInteger", name.c_str(), nullptr, nullptr, 
                     Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
     }
     else
@@ -581,7 +581,7 @@ Property * Sheet::setQuantityProperty(CellAddress key, double value, const Base:
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
         }
-        Property * p = addDynamicProperty("Spreadsheet::PropertySpreadsheetQuantity", name.c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist);
+        Property * p = addDynamicProperty("Spreadsheet::PropertySpreadsheetQuantity", name.c_str(), nullptr, nullptr, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist);
         quantityProp = freecad_dynamic_cast<PropertySpreadsheetQuantity>(p);
     }
     else
@@ -616,7 +616,7 @@ Property * Sheet::setStringProperty(CellAddress key, const std::string & value)
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
         }
-        stringProp = freecad_dynamic_cast<PropertyString>(addDynamicProperty("App::PropertyString", name.c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
+        stringProp = freecad_dynamic_cast<PropertyString>(addDynamicProperty("App::PropertyString", name.c_str(), nullptr, nullptr, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
     }
 
     propAddress[stringProp] = key;
@@ -636,7 +636,7 @@ Property * Sheet::setObjectProperty(CellAddress key, Py::Object object)
             this->removeDynamicProperty(name.c_str());
             propAddress.erase(prop);
         }
-        pyProp = freecad_dynamic_cast<PropertyPythonObject>(addDynamicProperty("App::PropertyPythonObject", name.c_str(), 0, 0, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
+        pyProp = freecad_dynamic_cast<PropertyPythonObject>(addDynamicProperty("App::PropertyPythonObject", name.c_str(), nullptr, nullptr, Prop_ReadOnly | Prop_Hidden | Prop_NoPersist));
     }
 
     propAddress[pyProp] = key;
@@ -672,7 +672,7 @@ void Sheet::updateProperty(CellAddress key)
 {
     Cell * cell = getCell(key);
 
-    if (cell != 0) {
+    if (cell != nullptr) {
         std::unique_ptr<Expression> output;
         const Expression * input = cell->getExpression();
 
@@ -736,7 +736,7 @@ void Sheet::updateProperty(CellAddress key)
 Property *Sheet::getPropertyByName(const char* name) const
 {
     CellAddress addr = getCellAddress(name,true);
-    Property *prop = 0;
+    Property *prop = nullptr;
     if(addr.isValid())
         prop = getProperty(addr);
     if (prop)
@@ -747,7 +747,7 @@ Property *Sheet::getPropertyByName(const char* name) const
 
 Property *Sheet::getDynamicPropertyByName(const char* name) const {
     CellAddress addr = getCellAddress(name,true);
-    Property *prop = 0;
+    Property *prop = nullptr;
     if(addr.isValid())
         prop = getProperty(addr);
     if (prop)

@@ -81,12 +81,12 @@ int SheetModel::columnCount(const QModelIndex &parent) const
 
 QVariant SheetModel::data(const QModelIndex &index, int role) const
 {
-    static const Cell * emptyCell = new Cell(CellAddress(0, 0), 0);
+    static const Cell * emptyCell = new Cell(CellAddress(0, 0), nullptr);
     int row = index.row();
     int col = index.column();
     const Cell * cell = sheet->getCell(CellAddress(row, col));
 
-    if (cell == 0)
+    if (cell == nullptr)
         cell = emptyCell;
 
 //#define DEBUG_DEPS
