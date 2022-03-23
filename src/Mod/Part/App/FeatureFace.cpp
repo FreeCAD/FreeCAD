@@ -55,7 +55,7 @@ PROPERTY_SOURCE(Part::Face, Part::Feature)
 
 Face::Face()
 {
-    ADD_PROPERTY(Sources,(0));
+    ADD_PROPERTY(Sources,(nullptr));
     ADD_PROPERTY(FaceMakerClass,("Part::FaceMakerCheese"));//default value here is for legacy documents. Default for new objects is set in setupObject.
     Sources.setSize(0);
 }

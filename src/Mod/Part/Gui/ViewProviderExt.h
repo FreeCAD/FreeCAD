@@ -135,7 +135,7 @@ public:
     /** @name Color management methods 
      */
     //@{
-    virtual std::map<std::string,App::Color> getElementColors(const char *element=0) const override;
+    virtual std::map<std::string,App::Color> getElementColors(const char *element=nullptr) const override;
     //@}
 
     virtual bool isUpdateForced() const override {

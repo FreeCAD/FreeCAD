@@ -62,7 +62,7 @@ namespace PartGui
    * @param sub sub-object name to search.
    * @return signal if the search was successful.
    */
-  bool getShapeFromStrings(TopoDS_Shape &shapeOut, const std::string &doc, const std::string &object, const std::string &sub, Base::Matrix4D *mat=0);
+  bool getShapeFromStrings(TopoDS_Shape &shapeOut, const std::string &doc, const std::string &object, const std::string &sub, Base::Matrix4D *mat=nullptr);
   /*!examine pre selection
    * @param shape1 first shape in current selection
    * @param shape2 second shape in current selection
@@ -190,7 +190,7 @@ class SteppedSelection : public QWidget
 {
   Q_OBJECT
 public:
-  SteppedSelection(const uint &buttonCountIn, QWidget *parent = 0);
+  SteppedSelection(const uint &buttonCountIn, QWidget *parent = nullptr);
   ~SteppedSelection();
   QPushButton* getButton(const uint &index);
   void setIconDone(const uint &index);

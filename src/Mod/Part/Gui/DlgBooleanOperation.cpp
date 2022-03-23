@@ -179,8 +179,8 @@ void DlgBooleanOperation::slotChangedObject(const App::DocumentObject& obj,
                 ui->secondShape->topLevelItem(3)->setExpanded(true);
             }
             else { // belongs to none of these groups
-                delete child; child = 0;
-                delete copy; copy = 0;
+                delete child; child = nullptr;
+                delete copy; copy = nullptr;
             }
 
             // remove the watched object because now it is added to the tree
@@ -212,7 +212,7 @@ void DlgBooleanOperation::findShapes()
     std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType
         (Part::Feature::getClassTypeId());
 
-    QTreeWidgetItem *item_left=0, *item_right=0;
+    QTreeWidgetItem *item_left=nullptr, *item_right=nullptr;
     for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it!=objs.end(); ++it) {
         const TopoDS_Shape& shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
         if (!shape.IsNull()) {
@@ -254,8 +254,8 @@ void DlgBooleanOperation::findShapes()
                 ui->secondShape->topLevelItem(3)->addChild(copy);
             }
             else { // belongs to none of these groups
-                delete child; child = 0;
-                delete copy; copy = 0;
+                delete child; child = nullptr;
+                delete copy; copy = nullptr;
             }
 
             if (!item_left || !item_right) {
@@ -341,7 +341,7 @@ void DlgBooleanOperation::accept()
 {
     int ltop, lchild, rtop, rchild;
 
-    QTreeWidgetItem* litem = 0;
+    QTreeWidgetItem* litem = nullptr;
     int numLChild = ui->firstShape->topLevelItemCount();
     for (int i=0; i<numLChild; i++) {
         QTreeWidgetItem* item = ui->firstShape->topLevelItem(i);
@@ -357,7 +357,7 @@ void DlgBooleanOperation::accept()
             break;
     }
 
-    QTreeWidgetItem* ritem = 0;
+    QTreeWidgetItem* ritem = nullptr;
     int numRChild = ui->secondShape->topLevelItemCount();
     for (int i=0; i<numRChild; i++) {
         QTreeWidgetItem* item = ui->secondShape->topLevelItem(i);
@@ -459,7 +459,7 @@ void DlgBooleanOperation::accept()
             "Gui.activeDocument().hide(\"%s\")",shapeTwo.c_str());
 
         // add/remove fromgroup if needed
-        App::DocumentObjectGroup* targetGroup = 0;
+        App::DocumentObjectGroup* targetGroup = nullptr;
 
         App::DocumentObjectGroup* group1 = obj1->getGroup();
         if (group1) {
@@ -497,7 +497,7 @@ TaskBooleanOperation::TaskBooleanOperation()
     widget = new DlgBooleanOperation();
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Part_Booleans"),
-        widget->windowTitle(), false, 0);
+        widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

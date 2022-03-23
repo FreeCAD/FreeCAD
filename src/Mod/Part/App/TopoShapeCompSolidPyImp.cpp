@@ -95,7 +95,7 @@ PyObject*  TopoShapeCompSolidPy::add(PyObject *args)
 {
     PyObject *obj;
     if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapeSolidPy::Type), &obj))
-        return NULL;
+        return nullptr;
 
     BRep_Builder builder;
     TopoDS_Shape comp = getTopoShapePtr()->getShape();
@@ -111,7 +111,7 @@ PyObject*  TopoShapeCompSolidPy::add(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 
     getTopoShapePtr()->setShape(comp);
@@ -121,7 +121,7 @@ PyObject*  TopoShapeCompSolidPy::add(PyObject *args)
 
 PyObject *TopoShapeCompSolidPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int TopoShapeCompSolidPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

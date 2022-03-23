@@ -30,14 +30,14 @@
 
 using namespace Part;
 
-const char* Part::Offset::ModeEnums[]= {"Skin","Pipe", "RectoVerso",NULL};
-const char* Part::Offset::JoinEnums[]= {"Arc","Tangent", "Intersection",NULL};
+const char* Part::Offset::ModeEnums[]= {"Skin","Pipe", "RectoVerso",nullptr};
+const char* Part::Offset::JoinEnums[]= {"Arc","Tangent", "Intersection",nullptr};
 
 PROPERTY_SOURCE(Part::Offset, Part::Feature)
 
 Offset::Offset()
 {
-    ADD_PROPERTY_TYPE(Source,(0),"Offset",App::Prop_None,"Source shape");
+    ADD_PROPERTY_TYPE(Source,(nullptr),"Offset",App::Prop_None,"Source shape");
     ADD_PROPERTY_TYPE(Value,(1.0),"Offset",App::Prop_None,"Offset value");
     ADD_PROPERTY_TYPE(Mode,(long(0)),"Offset",App::Prop_None,"Mode");
     Mode.setEnums(ModeEnums);

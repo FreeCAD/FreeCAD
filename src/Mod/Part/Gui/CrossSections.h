@@ -44,7 +44,7 @@ class CrossSections : public QDialog
     enum Plane { XY, XZ, YZ };
 
 public:
-    CrossSections(const Base::BoundBox3d& bb, QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+    CrossSections(const Base::BoundBox3d& bb, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~CrossSections();
     void accept();
     void apply();

@@ -234,7 +234,7 @@ TaskOffset::TaskOffset(Part::Offset* offset)
     widget = new OffsetWidget(offset);
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Part_Offset"),
-        widget->windowTitle(), true, 0);
+        widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

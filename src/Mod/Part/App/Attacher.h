@@ -269,7 +269,7 @@ public: //methods
                                       bool useRefOrg_Plane = false,
                                       bool makeYVertical = false,
                                       bool makeLegacyFlatFaceOrientation = false,
-                                      Base::Placement* placeOfRef = 0) const;
+                                      Base::Placement* placeOfRef = nullptr) const;
 
     /**
      * @brief suggestMapModes is the procedure that knows everything about

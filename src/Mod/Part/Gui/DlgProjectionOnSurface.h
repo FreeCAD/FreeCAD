@@ -52,7 +52,7 @@ class DlgProjectionOnSurface : public QWidget,
     Q_OBJECT
 
 public:
-    explicit DlgProjectionOnSurface(QWidget *parent = 0);
+    explicit DlgProjectionOnSurface(QWidget *parent = nullptr);
     ~DlgProjectionOnSurface();
 
     void apply(void);

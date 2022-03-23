@@ -153,7 +153,7 @@ void  SurfaceOfExtrusionPy::setBasisCurve(Py::Object arg)
 
 PyObject *SurfaceOfExtrusionPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int SurfaceOfExtrusionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

@@ -69,7 +69,7 @@ namespace bp = boost::placeholders;
 // Create reference name from PropertyLinkSub values in a translatable fashion
 const QString makeRefString(const App::DocumentObject* obj, const std::string& sub)
 {
-    if (obj == NULL)
+    if (obj == nullptr)
         return QObject::tr("No reference selected");
 
     if (obj->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId()) ||
@@ -100,7 +100,7 @@ void TaskAttacher::makeRefStrings(std::vector<QString>& refstrings, std::vector<
     refnames = pcAttach->Support.getSubValues();
 
     for (size_t r = 0; r < 4; r++) {
-        if ((r < refs.size()) && (refs[r] != NULL)) {
+        if ((r < refs.size()) && (refs[r] != nullptr)) {
             refstrings.push_back(makeRefString(refs[r], refnames[r]));
             // for Origin or Datum features refnames is empty but we need a non-empty return value
             if (refnames[r].empty())
@@ -347,7 +347,7 @@ QLineEdit* TaskAttacher::getLine(unsigned idx)
         case 1: return ui->lineRef2;
         case 2: return ui->lineRef3;
         case 3: return ui->lineRef4;
-        default: return NULL;
+        default: return nullptr;
     }
 }
 
@@ -419,7 +419,7 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
 
         QLineEdit* line = getLine(iActiveRef);
-        if (line != NULL) {
+        if (line != nullptr) {
             line->blockSignals(true);
             line->setText(makeRefString(selObj, subname));
             line->setProperty("RefName", QByteArray(subname.c_str()));
@@ -563,7 +563,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         return;
 
     QLineEdit* line = getLine(idx);
-    if (line == NULL) return;
+    if (line == nullptr) return;
 
     if (text.length() == 0) {
         // Reference was removed
@@ -606,7 +606,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         parts.push_back(QString::fromLatin1(""));
     // Check whether this is the name of an App::Plane or Part::Datum feature
     App::DocumentObject* obj = ViewProvider->getObject()->getDocument()->getObject(parts[0].toLatin1());
-    if (obj == NULL) return;
+    if (obj == nullptr) return;
 
     std::string subElement;
 
@@ -803,7 +803,7 @@ void TaskAttacher::updateListOfModes()
     //populate list
     ui->listOfModes->blockSignals(true);
     ui->listOfModes->clear();
-    QListWidgetItem* iSelect = 0;
+    QListWidgetItem* iSelect = nullptr;
     if (modesInList.size()>0) {
         for (size_t i = 0  ;  i < modesInList.size()  ;  ++i){
             eMapMode mmode = modesInList[i];
@@ -995,14 +995,14 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
         auto editDoc = Gui::Application::Instance->editDocument();
         App::DocumentObject *editObj = ViewProvider->getObject();
         std::string editSubName;
-        auto sels = Gui::Selection().getSelection(0,0,true);
+        auto sels = Gui::Selection().getSelection(nullptr,0,true);
         if(sels.size() && sels[0].pResolvedObject 
                        && sels[0].pResolvedObject->getLinkedObject()==editObj) 
         {
             editObj = sels[0].pObject;
             editSubName = sels[0].SubName;
         } else {
-            ViewProviderDocumentObject *editVp = 0;
+            ViewProviderDocumentObject *editVp = nullptr;
             if (editDoc) {
                 editDoc->getInEdit(&editVp,&editSubName);
                 if (editVp)

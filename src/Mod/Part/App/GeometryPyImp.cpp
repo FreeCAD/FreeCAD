@@ -68,7 +68,7 @@ PyObject *GeometryPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // P
     // never create such objects with the constructor
     PyErr_SetString(PyExc_RuntimeError,
         "You cannot create an instance of the abstract class 'Geometry'.");
-    return 0;
+    return nullptr;
 }
 
 // constructor method
@@ -97,14 +97,14 @@ PyObject* GeometryPy::mirror(PyObject *args)
     }
 
     PyErr_SetString(PartExceptionOCCError, "either a point (vector) or axis (vector, vector) must be given");
-    return 0;
+    return nullptr;
 }
 
 PyObject* GeometryPy::rotate(PyObject *args)
 {
     PyObject* o;
     if (!PyArg_ParseTuple(args, "O!", &(Base::PlacementPy::Type),&o))
-        return 0;
+        return nullptr;
 
     Base::Placement* plm = static_cast<Base::PlacementPy*>(o)->getPlacementPtr();
     getGeometryPtr()->rotate(*plm);
@@ -130,14 +130,14 @@ PyObject* GeometryPy::scale(PyObject *args)
     }
 
     PyErr_SetString(PartExceptionOCCError, "either vector or tuple and float expected");
-    return 0;
+    return nullptr;
 }
 
 PyObject* GeometryPy::transform(PyObject *args)
 {
     PyObject* o;
     if (!PyArg_ParseTuple(args, "O!", &(Base::MatrixPy::Type),&o))
-        return 0;
+        return nullptr;
     Base::Matrix4D mat = static_cast<Base::MatrixPy*>(o)->value();
     getGeometryPtr()->transform(mat);
     Py_Return;
@@ -161,23 +161,23 @@ PyObject* GeometryPy::translate(PyObject *args)
     }
 
     PyErr_SetString(PartExceptionOCCError, "either vector or tuple expected");
-    return 0;
+    return nullptr;
 }
 
 PyObject* GeometryPy::copy(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     Part::Geometry* geom = this->getGeometryPtr();
     PyTypeObject* type = this->GetType();
-    PyObject* cpy = 0;
+    PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, 0);
+        cpy = type->tp_new(type, this, nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_TypeError, "failed to create copy of geometry");
-        return 0;
+        return nullptr;
     }
 
     Part::GeometryPy* geompy = static_cast<Part::GeometryPy*>(cpy);
@@ -194,17 +194,17 @@ PyObject* GeometryPy::copy(PyObject *args)
 PyObject* GeometryPy::clone(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     Part::Geometry* geom = this->getGeometryPtr();
     PyTypeObject* type = this->GetType();
-    PyObject* cpy = 0;
+    PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, 0);
+        cpy = type->tp_new(type, this, nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_TypeError, "failed to create clone of geometry");
-        return 0;
+        return nullptr;
     }
 
     Part::GeometryPy* geompy = static_cast<Part::GeometryPy*>(cpy);
@@ -233,7 +233,7 @@ PyObject* GeometryPy::setExtension(PyObject *args)
     }
 
     PyErr_SetString(PartExceptionOCCError, "A geometry extension object was expected");
-    return 0;
+    return nullptr;
 }
 
 PyObject* GeometryPy::getExtensionOfType(PyObject *args)
@@ -253,27 +253,27 @@ PyObject* GeometryPy::getExtensionOfType(PyObject *args)
             }
             catch(const Base::ValueError& e) {
                 PyErr_SetString(PartExceptionOCCError, e.what());
-                return 0;
+                return nullptr;
             }
             catch(const std::bad_weak_ptr&) {
                 PyErr_SetString(PartExceptionOCCError, "Geometry extension does not exist anymore.");
-                return 0;
+                return nullptr;
             }
             catch(Base::NotImplementedError&) {
                 PyErr_SetString(Part::PartExceptionOCCError, "Geometry extension does not implement a Python counterpart.");
-                return 0;
+                return nullptr;
             }
         }
         else
         {
             PyErr_SetString(PartExceptionOCCError, "Exception type does not exist");
-            return 0;
+            return nullptr;
         }
 
     }
 
     PyErr_SetString(PartExceptionOCCError, "A string with the name of the geometry extension type was expected");
-    return 0;
+    return nullptr;
 }
 
 PyObject* GeometryPy::getExtensionOfName(PyObject *args)
@@ -290,21 +290,21 @@ PyObject* GeometryPy::getExtensionOfName(PyObject *args)
         }
         catch(const Base::ValueError& e) {
             PyErr_SetString(PartExceptionOCCError, e.what());
-            return 0;
+            return nullptr;
         }
         catch(const std::bad_weak_ptr&) {
             PyErr_SetString(PartExceptionOCCError, "Geometry extension does not exist anymore.");
-            return 0;
+            return nullptr;
         }
         catch(Base::NotImplementedError&) {
             PyErr_SetString(Part::PartExceptionOCCError, "Geometry extension does not implement a Python counterpart.");
-            return 0;
+            return nullptr;
         }
 
     }
 
     PyErr_SetString(PartExceptionOCCError, "A string with the name of the geometry extension was expected");
-    return 0;
+    return nullptr;
 }
 
 PyObject* GeometryPy::hasExtensionOfType(PyObject *args)
@@ -320,19 +320,19 @@ PyObject* GeometryPy::hasExtensionOfType(PyObject *args)
             }
             catch(const Base::ValueError& e) {
                 PyErr_SetString(PartExceptionOCCError, e.what());
-                return 0;
+                return nullptr;
             }
         }
         else
         {
             PyErr_SetString(PartExceptionOCCError, "Exception type does not exist");
-            return 0;
+            return nullptr;
         }
 
     }
 
     PyErr_SetString(PartExceptionOCCError, "A string with the type of the geometry extension was expected");
-    return 0;
+    return nullptr;
 }
 
 PyObject* GeometryPy::hasExtensionOfName(PyObject *args)
@@ -345,13 +345,13 @@ PyObject* GeometryPy::hasExtensionOfName(PyObject *args)
         }
         catch(const Base::ValueError& e) {
             PyErr_SetString(PartExceptionOCCError, e.what());
-            return 0;
+            return nullptr;
         }
 
     }
 
     PyErr_SetString(PartExceptionOCCError, "A string with the type of the geometry extension was expected");
-    return 0;
+    return nullptr;
 }
 
 PyObject* GeometryPy::deleteExtensionOfType(PyObject *args)
@@ -368,19 +368,19 @@ PyObject* GeometryPy::deleteExtensionOfType(PyObject *args)
             }
             catch(const Base::ValueError& e) {
                 PyErr_SetString(PartExceptionOCCError, e.what());
-                return 0;
+                return nullptr;
             }
         }
         else
         {
             PyErr_SetString(PartExceptionOCCError, "Type does not exist");
-            return 0;
+            return nullptr;
         }
 
     }
 
     PyErr_SetString(PartExceptionOCCError, "A string with a type object was expected");
-    return 0;
+    return nullptr;
 }
 
 PyObject* GeometryPy::deleteExtensionOfName(PyObject *args)
@@ -394,19 +394,19 @@ PyObject* GeometryPy::deleteExtensionOfName(PyObject *args)
         }
         catch(const Base::ValueError& e) {
             PyErr_SetString(PartExceptionOCCError, e.what());
-            return 0;
+            return nullptr;
         }
     }
 
     PyErr_SetString(PartExceptionOCCError, "A string with the name of the extension was expected");
-    return 0;
+    return nullptr;
 }
 
 PyObject* GeometryPy::getExtensions(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, "")){
         PyErr_SetString(PartExceptionOCCError, "No arguments were expected");
-        return NULL;
+        return nullptr;
     }
 
     try {
@@ -435,7 +435,7 @@ PyObject* GeometryPy::getExtensions(PyObject *args)
     }
     catch(const Base::ValueError& e) {
         PyErr_SetString(PartExceptionOCCError, e.what());
-        return 0;
+        return nullptr;
     }
 
 }
@@ -448,7 +448,7 @@ Py::String GeometryPy::getTag(void) const
 
 PyObject *GeometryPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int GeometryPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

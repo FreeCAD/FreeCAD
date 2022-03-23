@@ -199,7 +199,7 @@ PyObject* TopoShapeEdgePy::getParameterByLength(PyObject *args)
     double u;
     double t=Precision::Confusion();
     if (!PyArg_ParseTuple(args, "d|d",&u,&t))
-        return 0;
+        return nullptr;
 
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
     BRepAdaptor_Curve adapt(e);
@@ -212,7 +212,7 @@ PyObject* TopoShapeEdgePy::getParameterByLength(PyObject *args)
 
         if (u < -length || u > length) {
             PyErr_SetString(PyExc_ValueError, "value out of range");
-            return 0;
+            return nullptr;
         }
         if (u < 0)
             u = length+u;
@@ -228,7 +228,7 @@ PyObject* TopoShapeEdgePy::valueAt(PyObject *args)
 {
     double u;
     if (!PyArg_ParseTuple(args, "d",&u))
-        return 0;
+        return nullptr;
 
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
     BRepAdaptor_Curve adapt(e);
@@ -242,9 +242,9 @@ PyObject* TopoShapeEdgePy::valueAt(PyObject *args)
 
 PyObject* TopoShapeEdgePy::parameters(PyObject *args)
 {
-    PyObject* pyface = 0;
+    PyObject* pyface = nullptr;
     if (!PyArg_ParseTuple(args, "|O!", &(TopoShapeFacePy::Type), &pyface))
-        return 0;
+        return nullptr;
 
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
     TopLoc_Location aLoc;
@@ -291,21 +291,21 @@ PyObject* TopoShapeEdgePy::parameters(PyObject *args)
         }
         else {
             PyErr_SetString(PyExc_ValueError, "Edge is not part of the face");
-            return 0;
+            return nullptr;
         }
     }
 
     PyErr_SetString(PyExc_RuntimeError, "Edge has no polygon");
-    return 0;
+    return nullptr;
 }
 
 PyObject* TopoShapeEdgePy::parameterAt(PyObject *args)
 {
     PyObject* pnt;
-    PyObject* face=0;
+    PyObject* face=nullptr;
     if (!PyArg_ParseTuple(args, "O!|O!",&TopoShapeVertexPy::Type,&pnt,
                                         &TopoShapeFacePy::Type,&face))
-        return 0;
+        return nullptr;
 
     try {
         const TopoDS_Shape& v = static_cast<TopoShapePy*>(pnt)->getTopoShapePtr()->getShape();
@@ -324,7 +324,7 @@ PyObject* TopoShapeEdgePy::parameterAt(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -332,7 +332,7 @@ PyObject* TopoShapeEdgePy::tangentAt(PyObject *args)
 {
     double u;
     if (!PyArg_ParseTuple(args, "d",&u))
-        return 0;
+        return nullptr;
 
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
     BRepAdaptor_Curve adapt(e);
@@ -345,7 +345,7 @@ PyObject* TopoShapeEdgePy::tangentAt(PyObject *args)
     }
     else {
         PyErr_SetString(PyExc_NotImplementedError, "Tangent not defined at this position!");
-        return 0;
+        return nullptr;
     }
 }
 
@@ -353,7 +353,7 @@ PyObject* TopoShapeEdgePy::normalAt(PyObject *args)
 {
     double u;
     if (!PyArg_ParseTuple(args, "d",&u))
-        return 0;
+        return nullptr;
 
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
     BRepAdaptor_Curve adapt(e);
@@ -367,7 +367,7 @@ PyObject* TopoShapeEdgePy::normalAt(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -375,7 +375,7 @@ PyObject* TopoShapeEdgePy::curvatureAt(PyObject *args)
 {
     double u;
     if (!PyArg_ParseTuple(args, "d",&u))
-        return 0;
+        return nullptr;
 
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
     BRepAdaptor_Curve adapt(e);
@@ -388,7 +388,7 @@ PyObject* TopoShapeEdgePy::curvatureAt(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -396,7 +396,7 @@ PyObject* TopoShapeEdgePy::centerOfCurvatureAt(PyObject *args)
 {
     double u;
     if (!PyArg_ParseTuple(args, "d",&u))
-        return 0;
+        return nullptr;
 
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
     BRepAdaptor_Curve adapt(e);
@@ -410,7 +410,7 @@ PyObject* TopoShapeEdgePy::centerOfCurvatureAt(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -418,7 +418,7 @@ PyObject* TopoShapeEdgePy::derivative1At(PyObject *args)
 {
     double u;
     if (!PyArg_ParseTuple(args, "d",&u))
-        return 0;
+        return nullptr;
 
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
     BRepAdaptor_Curve adapt(e);
@@ -431,7 +431,7 @@ PyObject* TopoShapeEdgePy::derivative1At(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -439,7 +439,7 @@ PyObject* TopoShapeEdgePy::derivative2At(PyObject *args)
 {
     double u;
     if (!PyArg_ParseTuple(args, "d",&u))
-        return 0;
+        return nullptr;
 
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
     BRepAdaptor_Curve adapt(e);
@@ -452,7 +452,7 @@ PyObject* TopoShapeEdgePy::derivative2At(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -460,7 +460,7 @@ PyObject* TopoShapeEdgePy::derivative3At(PyObject *args)
 {
     double u;
     if (!PyArg_ParseTuple(args, "d",&u))
-        return 0;
+        return nullptr;
 
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
     BRepAdaptor_Curve adapt(e);
@@ -473,7 +473,7 @@ PyObject* TopoShapeEdgePy::derivative3At(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -501,19 +501,19 @@ PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
             }
             else {
                 PyErr_SetString(PyExc_TypeError, "Either int or float expected");
-                return 0;
+                return nullptr;
             }
         }
         else {
             // use Number kwds
-            static char* kwds_numPoints[] = {"Number","First","Last",NULL};
+            static char* kwds_numPoints[] = {"Number","First","Last",nullptr};
             PyErr_Clear();
             if (PyArg_ParseTupleAndKeywords(args, kwds, "i|dd", kwds_numPoints, &numPoints, &first, &last)) {
                 uniformAbscissaPoints = true;
             }
             else {
                 // use Abscissa kwds
-                static char* kwds_Distance[] = {"Distance","First","Last",NULL};
+                static char* kwds_Distance[] = {"Distance","First","Last",nullptr};
                 PyErr_Clear();
                 if (PyArg_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_Distance, &distance, &first, &last)) {
                     uniformAbscissaDistance = true;
@@ -540,12 +540,12 @@ PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
             }
             else {
                 PyErr_SetString(PartExceptionOCCError, "Discretization of edge failed");
-                return 0;
+                return nullptr;
             }
         }
 
         // use Deflection kwds
-        static char* kwds_Deflection[] = {"Deflection","First","Last",NULL};
+        static char* kwds_Deflection[] = {"Deflection","First","Last",nullptr};
         PyErr_Clear();
         double deflection;
         if (PyArg_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_Deflection, &deflection, &first, &last)) {
@@ -562,12 +562,12 @@ PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
             }
             else {
                 PyErr_SetString(PartExceptionOCCError, "Discretization of edge failed");
-                return 0;
+                return nullptr;
             }
         }
 
         // use TangentialDeflection kwds
-        static char* kwds_TangentialDeflection[] = {"Angular","Curvature","First","Last","Minimum",NULL};
+        static char* kwds_TangentialDeflection[] = {"Angular","Curvature","First","Last","Minimum",nullptr};
         PyErr_Clear();
         double angular;
         double curvature;
@@ -586,12 +586,12 @@ PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
             }
             else {
                 PyErr_SetString(PartExceptionOCCError, "Discretization of edge failed");
-                return 0;
+                return nullptr;
             }
         }
 
         // use QuasiNumber kwds
-        static char* kwds_QuasiNumPoints[] = {"QuasiNumber","First","Last",NULL};
+        static char* kwds_QuasiNumPoints[] = {"QuasiNumber","First","Last",nullptr};
         PyErr_Clear();
         int quasiNumPoints;
         if (PyArg_ParseTupleAndKeywords(args, kwds, "i|dd", kwds_QuasiNumPoints, &quasiNumPoints, &first, &last)) {
@@ -608,12 +608,12 @@ PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
             }
             else {
                 PyErr_SetString(PartExceptionOCCError, "Discretization of edge failed");
-                return 0;
+                return nullptr;
             }
         }
 
         // use QuasiDeflection kwds
-        static char* kwds_QuasiDeflection[] = {"QuasiDeflection","First","Last",NULL};
+        static char* kwds_QuasiDeflection[] = {"QuasiDeflection","First","Last",nullptr};
         PyErr_Clear();
         double quasiDeflection;
         if (PyArg_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_QuasiDeflection, &quasiDeflection, &first, &last)) {
@@ -630,24 +630,24 @@ PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
             }
             else {
                 PyErr_SetString(PartExceptionOCCError, "Discretization of edge failed");
-                return 0;
+                return nullptr;
             }
         }
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PartExceptionOCCError, e.what());
-        return 0;
+        return nullptr;
     }
 
     PyErr_SetString(PartExceptionOCCError,"Wrong arguments");
-    return 0;
+    return nullptr;
 }
 
 PyObject* TopoShapeEdgePy::split(PyObject *args)
 {
     PyObject* float_or_list;
     if (!PyArg_ParseTuple(args, "O", &float_or_list))
-        return 0;
+        return nullptr;
 
     try {
         BRepAdaptor_Curve adapt(TopoDS::Edge(getTopoShapePtr()->getShape()));
@@ -660,11 +660,11 @@ PyObject* TopoShapeEdgePy::split(PyObject *args)
             double val = PyFloat_AsDouble(float_or_list);
             if (val == f || val == l) {
                 PyErr_SetString(PyExc_ValueError, "Cannot split edge at start or end point");
-                return 0;
+                return nullptr;
             }
             else if (val < f || val > l) {
                 PyErr_SetString(PyExc_ValueError, "Value out of parameter range");
-                return 0;
+                return nullptr;
             }
             par.push_back(val);
         }
@@ -674,18 +674,18 @@ PyObject* TopoShapeEdgePy::split(PyObject *args)
                 double val = (double)Py::Float(*it);
                 if (val == f || val == l) {
                     PyErr_SetString(PyExc_ValueError, "Cannot split edge at start or end point");
-                    return 0;
+                    return nullptr;
                 }
                 else if (val < f || val > l) {
                     PyErr_SetString(PyExc_ValueError, "Value out of parameter range");
-                    return 0;
+                    return nullptr;
                 }
                 par.push_back(val);
             }
         }
         else {
             PyErr_SetString(PyExc_TypeError, "Either float or list of floats expected");
-            return 0;
+            return nullptr;
         }
 
         par.push_back(l);
@@ -704,7 +704,7 @@ PyObject* TopoShapeEdgePy::split(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -712,7 +712,7 @@ PyObject* TopoShapeEdgePy::isSeam(PyObject *args)
 {
     PyObject* face;
     if (!PyArg_ParseTuple(args, "O!", &TopoShapeFacePy::Type, &face))
-        return 0;
+        return nullptr;
 
     try {
         const TopoDS_Edge& e = TopoDS::Edge(this->getTopoShapePtr()->getShape());
@@ -725,7 +725,7 @@ PyObject* TopoShapeEdgePy::isSeam(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -733,7 +733,7 @@ PyObject* TopoShapeEdgePy::firstVertex(PyObject *args)
 {
     PyObject* orient = Py_False;
     if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &orient))
-        return 0;
+        return nullptr;
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
     TopoDS_Vertex v = TopExp::FirstVertex(e, PyObject_IsTrue(orient) ? Standard_True : Standard_False);
     return new TopoShapeVertexPy(new TopoShape(v));
@@ -743,7 +743,7 @@ PyObject* TopoShapeEdgePy::lastVertex(PyObject *args)
 {
     PyObject* orient = Py_False;
     if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &orient))
-        return 0;
+        return nullptr;
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
     TopoDS_Vertex v = TopExp::LastVertex(e, PyObject_IsTrue(orient) ? Standard_True : Standard_False);
     return new TopoShapeVertexPy(new TopoShape(v));
@@ -1022,7 +1022,7 @@ PyObject* TopoShapeEdgePy::curveOnSurface(PyObject *args)
 {
     int idx;
     if (!PyArg_ParseTuple(args, "i", &idx))
-        return 0;
+        return nullptr;
 
     try {
         TopoDS_Edge edge = TopoDS::Edge(getTopoShapePtr()->getShape());
@@ -1059,13 +1059,13 @@ PyObject* TopoShapeEdgePy::curveOnSurface(PyObject *args)
     }
     catch (Standard_Failure& e) {
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
 PyObject *TopoShapeEdgePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int TopoShapeEdgePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

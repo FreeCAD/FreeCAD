@@ -55,14 +55,14 @@ PyObject *ParabolaPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // P
 // constructor method
 int ParabolaPy::PyInit(PyObject* args, PyObject* kwds)
 {
-    char* keywords_n[] = {NULL};
+    char* keywords_n[] = {nullptr};
     if (PyArg_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
         Handle(Geom_Parabola) parabola = Handle(Geom_Parabola)::DownCast(getGeomParabolaPtr()->handle());
         parabola->SetFocal(1.0);
         return 0;
     }
 
-    char* keywords_e[] = {"Parabola",NULL};
+    char* keywords_e[] = {"Parabola",nullptr};
     PyErr_Clear();
     PyObject *pParab;
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!",keywords_e, &(ParabolaPy::Type), &pParab)) {
@@ -75,7 +75,7 @@ int ParabolaPy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    char* keywords_ssc[] = {"Focus","Center","Normal",NULL};
+    char* keywords_ssc[] = {"Focus","Center","Normal",nullptr};
     PyErr_Clear();
     PyObject *pV1, *pV2, *pV3;
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!O!O!", keywords_ssc,
@@ -121,7 +121,7 @@ PyObject* ParabolaPy::compute(PyObject *args)
         &Base::VectorPy::Type,&p1,
         &Base::VectorPy::Type,&p2,
         &Base::VectorPy::Type,&p3))
-        return 0;
+        return nullptr;
     Base::Vector3d v1 = Py::Vector(p1,false).toVector();
     Base::Vector3d v2 = Py::Vector(p2,false).toVector();
     Base::Vector3d v3 = Py::Vector(p3,false).toVector();
@@ -129,7 +129,7 @@ PyObject* ParabolaPy::compute(PyObject *args)
     double zValue = v1.z;
     if (fabs(c.Length()) < 0.0001) {
         PyErr_SetString(PartExceptionOCCError, "Points are collinear");
-        return 0;
+        return nullptr;
     }
 
     Base::Matrix4D m;
@@ -187,7 +187,7 @@ Py::Float ParabolaPy::getParameter(void) const
 
 PyObject *ParabolaPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ParabolaPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

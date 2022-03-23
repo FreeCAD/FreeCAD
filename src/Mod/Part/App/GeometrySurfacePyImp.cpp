@@ -117,7 +117,7 @@ PyObject *GeometrySurfacePy::PyMake(struct _typeobject *, PyObject *, PyObject *
     // never create such objects with the constructor
     PyErr_SetString(PyExc_RuntimeError,
         "You cannot create an instance of the abstract class 'GeometrySurface'.");
-    return 0;
+    return nullptr;
 }
 
 // constructor method
@@ -135,7 +135,7 @@ PyObject* GeometrySurfacePy::toShape(PyObject *args)
             double u1,u2,v1,v2;
             s->Bounds(u1,u2,v1,v2);
             if (!PyArg_ParseTuple(args, "|dddd", &u1,&u2,&v1,&v2))
-                return 0;
+                return nullptr;
             BRepBuilderAPI_MakeFace mkBuilder(s, u1, u2, v1, v2
 #if OCC_VERSION_HEX >= 0x060502
               , Precision::Confusion()
@@ -148,11 +148,11 @@ PyObject* GeometrySurfacePy::toShape(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 
     PyErr_SetString(PartExceptionOCCError, "Geometry is not a surface");
-    return 0;
+    return nullptr;
 }
 
 PyObject* GeometrySurfacePy::toShell(PyObject *args, PyObject* kwds)
@@ -248,7 +248,7 @@ PyObject* GeometrySurfacePy::value(PyObject *args)
         if (!s.IsNull()) {
             double u,v;
             if (!PyArg_ParseTuple(args, "dd", &u,&v))
-                return 0;
+                return nullptr;
             gp_Pnt p = s->Value(u,v);
             return new Base::VectorPy(Base::Vector3d(p.X(),p.Y(),p.Z()));
         }
@@ -256,11 +256,11 @@ PyObject* GeometrySurfacePy::value(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 
     PyErr_SetString(PartExceptionOCCError, "Geometry is not a surface");
-    return 0;
+    return nullptr;
 }
 
 PyObject* GeometrySurfacePy::tangent(PyObject *args)
@@ -271,7 +271,7 @@ PyObject* GeometrySurfacePy::tangent(PyObject *args)
         if (!s.IsNull()) {
             double u,v;
             if (!PyArg_ParseTuple(args, "dd", &u,&v))
-                return 0;
+                return nullptr;
             gp_Dir dir;
             Py::Tuple tuple(2);
             GeomLProp_SLProps prop(s,u,v,2,Precision::Confusion());
@@ -290,11 +290,11 @@ PyObject* GeometrySurfacePy::tangent(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 
     PyErr_SetString(PartExceptionOCCError, "Geometry is not a surface");
-    return 0;
+    return nullptr;
 }
 
 PyObject* GeometrySurfacePy::normal(PyObject *args)
@@ -304,31 +304,31 @@ PyObject* GeometrySurfacePy::normal(PyObject *args)
         if (s) {
             double u,v;
             if (!PyArg_ParseTuple(args, "dd", &u,&v))
-                return 0;
+                return nullptr;
             gp_Dir d;
             if (s->normal(u,v,d)) {
                 return new Base::VectorPy(Base::Vector3d(d.X(),d.Y(),d.Z()));
             }
             else {
                 PyErr_SetString(PyExc_RuntimeError, "normal at this point is not defined");
-                return 0;
+                return nullptr;
             }
         }
     }
     catch (Standard_Failure& e) {
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 
     PyErr_SetString(PartExceptionOCCError, "Geometry is not a surface");
-    return 0;
+    return nullptr;
 }
 
 PyObject* GeometrySurfacePy::projectPoint(PyObject *args, PyObject* kwds)
 {
     PyObject* v;
     const char* meth = "NearestPoint";
-    static char *kwlist[] = {"Point", "Method", NULL};
+    static char *kwlist[] = {"Point", "Method", nullptr};
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!|s", kwlist,
         &Base::VectorPy::Type, &v, &meth))
         return nullptr;
@@ -408,7 +408,7 @@ PyObject* GeometrySurfacePy::isUmbillic(PyObject *args)
         if (s) {
             double u,v;
             if (!PyArg_ParseTuple(args, "dd", &u,&v))
-                return 0;
+                return nullptr;
 
             bool val = s->isUmbillic(u,v);
             return PyBool_FromLong(val ? 1 : 0);
@@ -417,11 +417,11 @@ PyObject* GeometrySurfacePy::isUmbillic(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 
     PyErr_SetString(PartExceptionOCCError, "Geometry is not a surface");
-    return 0;
+    return nullptr;
 }
 
 PyObject* GeometrySurfacePy::curvatureDirections(PyObject *args)
@@ -431,7 +431,7 @@ PyObject* GeometrySurfacePy::curvatureDirections(PyObject *args)
         if (s) {
             double u,v;
             if (!PyArg_ParseTuple(args, "dd", &u,&v))
-                return 0;
+                return nullptr;
 
             gp_Dir maxd, mind;
             s->curvatureDirections(u,v,maxd,mind);
@@ -445,11 +445,11 @@ PyObject* GeometrySurfacePy::curvatureDirections(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 
     PyErr_SetString(PartExceptionOCCError, "Geometry is not a surface");
-    return 0;
+    return nullptr;
 }
 
 PyObject* GeometrySurfacePy::curvature(PyObject *args)
@@ -460,7 +460,7 @@ PyObject* GeometrySurfacePy::curvature(PyObject *args)
             double u,v;
             char* type;
             if (!PyArg_ParseTuple(args, "dds", &u,&v,&type))
-                return 0;
+                return nullptr;
 
             GeomSurface::Curvature t;
             if (strcmp(type,"Max") == 0) {
@@ -477,7 +477,7 @@ PyObject* GeometrySurfacePy::curvature(PyObject *args)
             }
             else {
                 PyErr_SetString(PyExc_ValueError, "unknown curvature type");
-                return 0;
+                return nullptr;
             }
 
             double c = s->curvature(u,v,t);
@@ -487,11 +487,11 @@ PyObject* GeometrySurfacePy::curvature(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 
     PyErr_SetString(PartExceptionOCCError, "Geometry is not a surface");
-    return 0;
+    return nullptr;
 }
 
 PyObject* GeometrySurfacePy::isPlanar(PyObject *args)
@@ -502,7 +502,7 @@ PyObject* GeometrySurfacePy::isPlanar(PyObject *args)
         if (!surf.IsNull()) {
             double tol = Precision::Confusion();
             if (!PyArg_ParseTuple(args, "|d", &tol))
-                return 0;
+                return nullptr;
 
             GeomLib_IsPlanarSurface check(surf, tol);
             Standard_Boolean val = check.IsPlanar();
@@ -511,11 +511,11 @@ PyObject* GeometrySurfacePy::isPlanar(PyObject *args)
     }
     catch (Standard_Failure& e) {
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 
     PyErr_SetString(PartExceptionOCCError, "Geometry is not a surface");
-    return 0;
+    return nullptr;
 }
 
 PyObject* GeometrySurfacePy::parameter(PyObject *args)
@@ -527,7 +527,7 @@ PyObject* GeometrySurfacePy::parameter(PyObject *args)
             PyObject *p;
             double prec = Precision::Confusion();
             if (!PyArg_ParseTuple(args, "O!|d", &(Base::VectorPy::Type), &p, &prec))
-                return 0;
+                return nullptr;
             Base::Vector3d v = Py::Vector(p, false).toVector();
             gp_Pnt pnt(v.x,v.y,v.z);
             ShapeAnalysis_Surface as(surf);
@@ -541,17 +541,17 @@ PyObject* GeometrySurfacePy::parameter(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 
     PyErr_SetString(PartExceptionOCCError, "Geometry is not a surface");
-    return 0;
+    return nullptr;
 }
 
 PyObject* GeometrySurfacePy::bounds(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
 
     Handle(Geom_Surface) surf = Handle(Geom_Surface)
         ::DownCast(getGeometryPtr()->handle());
@@ -569,7 +569,7 @@ PyObject* GeometrySurfacePy::uIso(PyObject * args)
 {
     double v;
     if (!PyArg_ParseTuple(args, "d", &v))
-        return 0;
+        return nullptr;
 
     try {
         Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast
@@ -577,7 +577,7 @@ PyObject* GeometrySurfacePy::uIso(PyObject * args)
         Handle(Geom_Curve) c = surf->UIso(v);
         if (c.IsNull()) {
             PyErr_SetString(PyExc_RuntimeError, "failed to create u iso curve");
-            return 0;
+            return nullptr;
         }
 
         if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
@@ -595,7 +595,7 @@ PyObject* GeometrySurfacePy::uIso(PyObject * args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -603,7 +603,7 @@ PyObject* GeometrySurfacePy::vIso(PyObject * args)
 {
     double v;
     if (!PyArg_ParseTuple(args, "d", &v))
-        return 0;
+        return nullptr;
 
     try {
         Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast
@@ -611,7 +611,7 @@ PyObject* GeometrySurfacePy::vIso(PyObject * args)
         Handle(Geom_Curve) c = surf->VIso(v);
         if (c.IsNull()) {
             PyErr_SetString(PyExc_RuntimeError, "failed to create v iso curve");
-            return 0;
+            return nullptr;
         }
 
         if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
@@ -629,14 +629,14 @@ PyObject* GeometrySurfacePy::vIso(PyObject * args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
 PyObject* GeometrySurfacePy::isUPeriodic(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
 
     Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast
         (getGeometryPtr()->handle());
@@ -647,7 +647,7 @@ PyObject* GeometrySurfacePy::isUPeriodic(PyObject * args)
 PyObject* GeometrySurfacePy::isVPeriodic(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
 
     Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast
         (getGeometryPtr()->handle());
@@ -658,7 +658,7 @@ PyObject* GeometrySurfacePy::isVPeriodic(PyObject * args)
 PyObject* GeometrySurfacePy::isUClosed(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
 
     Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast
         (getGeometryPtr()->handle());
@@ -669,7 +669,7 @@ PyObject* GeometrySurfacePy::isUClosed(PyObject * args)
 PyObject* GeometrySurfacePy::isVClosed(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
 
     Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast
         (getGeometryPtr()->handle());
@@ -680,7 +680,7 @@ PyObject* GeometrySurfacePy::isVClosed(PyObject * args)
 PyObject* GeometrySurfacePy::UPeriod(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
 
     try {
         Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast
@@ -691,14 +691,14 @@ PyObject* GeometrySurfacePy::UPeriod(PyObject * args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
 PyObject* GeometrySurfacePy::VPeriod(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
 
     try {
         Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast
@@ -709,7 +709,7 @@ PyObject* GeometrySurfacePy::VPeriod(PyObject * args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -814,12 +814,12 @@ PyObject* GeometrySurfacePy::toBSpline(PyObject * args, PyObject * kwds)
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
     }
 
-    return 0;
+    return nullptr;
 }
 
 PyObject *GeometrySurfacePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int GeometrySurfacePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
@@ -837,12 +837,12 @@ PyObject* GeometrySurfacePy::intersectSS(PyObject *args)
             PyObject *p;
             double prec = Precision::Confusion();
             if (!PyArg_ParseTuple(args, "O!|d", &(Part::GeometrySurfacePy::Type), &p, &prec))
-                return 0;
+                return nullptr;
             Handle(Geom_Surface) surf2 = Handle(Geom_Surface)::DownCast(static_cast<GeometryPy*>(p)->getGeometryPtr()->handle());
             GeomAPI_IntSS intersector(surf1, surf2, prec);
             if (!intersector.IsDone()) {
                 PyErr_SetString(PyExc_RuntimeError, "Intersection of surfaces failed");
-                return 0;
+                return nullptr;
             }
 
             Py::List result;
@@ -857,11 +857,11 @@ PyObject* GeometrySurfacePy::intersectSS(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 
     PyErr_SetString(PyExc_TypeError, "intersectSS(): Geometry is not a surface");
-    return 0;
+    return nullptr;
 }
 
 // General intersection function
@@ -888,18 +888,18 @@ PyObject* GeometrySurfacePy::intersect(PyObject *args)
                 PyTuple_SetItem(t, 1, PyFloat_FromDouble(prec));
                 return curve->intersectCS(t);
             } else {
-                return 0;
+                return nullptr;
             }
         }
     }
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 
     PyErr_SetString(PyExc_TypeError, "intersect(): Geometry is not a surface");
-    return 0;
+    return nullptr;
 }
 
 Py::Object GeometrySurfacePy::getRotation(void) const

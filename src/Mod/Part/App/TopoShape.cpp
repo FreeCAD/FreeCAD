@@ -3198,7 +3198,7 @@ bool TopoShape::transformShape(const Base::Matrix4D& rclTrf, bool copy, bool che
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Cannot transform null shape");
 
-    return _makeTransform(TopoShape(*this),rclTrf,0,checkScale,copy);
+    return _makeTransform(TopoShape(*this),rclTrf,nullptr,checkScale,copy);
 }
 
 TopoDS_Shape TopoShape::mirror(const gp_Ax2& ax2) const
@@ -4128,7 +4128,7 @@ TopoShape &TopoShape::makeWires(const TopoShape &shape, const char *op, bool fix
         // Now retrieve the shape and set it without touching element map
         wires.back().setShape(aFix.Wire());
     }
-    return makeCompound(wires,0,false);
+    return makeCompound(wires,nullptr,false);
 }
 
 TopoShape &TopoShape::makeCompound(const std::vector<TopoShape> &shapes, const char *op, bool force)

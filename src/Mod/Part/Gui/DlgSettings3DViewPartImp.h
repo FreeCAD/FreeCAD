@@ -39,7 +39,7 @@ class DlgSettings3DViewPart : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettings3DViewPart(QWidget* parent = 0);
+    DlgSettings3DViewPart(QWidget* parent = nullptr);
     ~DlgSettings3DViewPart();
 
 protected:

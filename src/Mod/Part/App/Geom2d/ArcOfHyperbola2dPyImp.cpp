@@ -120,7 +120,7 @@ Py::Object ArcOfHyperbola2dPy::getHyperbola(void) const
 
 PyObject *ArcOfHyperbola2dPy::getCustomAttributes(const char* ) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ArcOfHyperbola2dPy::setCustomAttributes(const char* , PyObject *)

@@ -35,7 +35,7 @@ class OffsetWidget : public QWidget
     Q_OBJECT
 
 public:
-    OffsetWidget(Part::Offset*, QWidget* parent = 0);
+    OffsetWidget(Part::Offset*, QWidget* parent = nullptr);
     ~OffsetWidget();
 
     bool accept();

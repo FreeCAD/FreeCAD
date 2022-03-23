@@ -411,7 +411,7 @@ Py::Float CurveConstraintPy::getLength(void) const
 
 PyObject *CurveConstraintPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int CurveConstraintPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

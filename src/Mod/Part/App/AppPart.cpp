@@ -194,35 +194,35 @@ PyMOD_INIT_FUNC(Part)
 
     // Python exceptions
     //
-    PyObject* OCCError = 0;
+    PyObject* OCCError = nullptr;
     if (PyObject_IsSubclass(Base::PyExc_FC_GeneralError, PyExc_RuntimeError)) {
-        OCCError = PyErr_NewException("Part.OCCError", Base::PyExc_FC_GeneralError, NULL);
+        OCCError = PyErr_NewException("Part.OCCError", Base::PyExc_FC_GeneralError, nullptr);
     }
     else {
         Base::Console().Error("Can not inherit Part.OCCError form BaseFreeCADError.\n");
-        OCCError = PyErr_NewException("Part.OCCError", PyExc_RuntimeError, NULL);
+        OCCError = PyErr_NewException("Part.OCCError", PyExc_RuntimeError, nullptr);
     }
     Py_INCREF(OCCError);
     PyModule_AddObject(partModule, "OCCError", OCCError);
     PartExceptionOCCError = OCCError; //set global variable ;(
 
     // domain error
-    PartExceptionOCCDomainError = PyErr_NewException("Part.OCCDomainError", PartExceptionOCCError, NULL);
+    PartExceptionOCCDomainError = PyErr_NewException("Part.OCCDomainError", PartExceptionOCCError, nullptr);
     Py_INCREF(PartExceptionOCCDomainError);
     PyModule_AddObject(partModule, "OCCDomainError", PartExceptionOCCDomainError);
 
     // range error
-    PartExceptionOCCRangeError = PyErr_NewException("Part.OCCRangeError", PartExceptionOCCDomainError, NULL);
+    PartExceptionOCCRangeError = PyErr_NewException("Part.OCCRangeError", PartExceptionOCCDomainError, nullptr);
     Py_INCREF(PartExceptionOCCRangeError);
     PyModule_AddObject(partModule, "OCCRangeError", PartExceptionOCCRangeError);
 
     // construction error
-    PartExceptionOCCConstructionError = PyErr_NewException("Part.OCCConstructionError", PartExceptionOCCDomainError, NULL);
+    PartExceptionOCCConstructionError = PyErr_NewException("Part.OCCConstructionError", PartExceptionOCCDomainError, nullptr);
     Py_INCREF(PartExceptionOCCConstructionError);
     PyModule_AddObject(partModule, "OCCConstructionError", PartExceptionOCCConstructionError);
 
     // dimension error
-    PartExceptionOCCDimensionError = PyErr_NewException("Part.OCCDimensionError", PartExceptionOCCDomainError, NULL);
+    PartExceptionOCCDimensionError = PyErr_NewException("Part.OCCDimensionError", PartExceptionOCCDomainError, nullptr);
     Py_INCREF(PartExceptionOCCConstructionError);
     PyModule_AddObject(partModule, "OCCDimensionError", PartExceptionOCCDimensionError);
 

@@ -97,7 +97,7 @@ void GeometryDoubleExtensionPy::setValue(Py::Float value)
 
 PyObject *GeometryDoubleExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int GeometryDoubleExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

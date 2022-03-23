@@ -274,7 +274,7 @@ void CmdPartCut::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> Sel = 
-        getSelection().getSelectionEx(0, App::DocumentObject::getClassTypeId(),3);
+        getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(),3);
     if (Sel.size() != 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select two shapes please."));
@@ -303,7 +303,7 @@ void CmdPartCut::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Tool = App.activeDocument().%s",FeatName.c_str(),Sel[1].getFeatName());
 
     // hide the input objects and remove them from the parent group
-    App::DocumentObjectGroup* targetGroup = 0;
+    App::DocumentObjectGroup* targetGroup = nullptr;
     for (std::vector<Gui::SelectionObject>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
         doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->getFeatName());
         App::DocumentObjectGroup* group = it->getObject()->getGroup();
@@ -328,7 +328,7 @@ void CmdPartCut::activated(int iMsg)
 bool CmdPartCut::isActive(void)
 {
     return getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(),0,3)==2;
+            App::DocumentObject::getClassTypeId(),nullptr,3)==2;
 }
 
 //===========================================================================
@@ -352,7 +352,7 @@ void CmdPartCommon::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> Sel = 
-        getSelection().getSelectionEx(0, App::DocumentObject::getClassTypeId(), 3);
+        getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(), 3);
 
     //test if selected object is a compound, and if it is, look how many children it has...
     std::size_t numShapes = 0;
@@ -403,7 +403,7 @@ void CmdPartCommon::activated(int iMsg)
     runCommand(Doc,str.str().c_str());
 
     // hide the input objects and remove them from the parent group
-    App::DocumentObjectGroup* targetGroup = 0;
+    App::DocumentObjectGroup* targetGroup = nullptr;
     for (std::vector<Gui::SelectionObject>::iterator it = partObjects.begin(); it != partObjects.end(); ++it) {
         doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->getFeatName());
         App::DocumentObjectGroup* group = it->getObject()->getGroup();
@@ -428,7 +428,7 @@ void CmdPartCommon::activated(int iMsg)
 bool CmdPartCommon::isActive(void)
 {
     return getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(),0,3)>=1;
+            App::DocumentObject::getClassTypeId(),nullptr,3)>=1;
 }
 
 //===========================================================================
@@ -452,7 +452,7 @@ void CmdPartFuse::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> Sel = 
-        getSelection().getSelectionEx(0, App::DocumentObject::getClassTypeId(),3);
+        getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(),3);
 
     //test if selected object is a compound, and if it is, look how many children it has...
     std::size_t numShapes = 0;
@@ -503,7 +503,7 @@ void CmdPartFuse::activated(int iMsg)
     runCommand(Doc,str.str().c_str());
 
     // hide the input objects and remove them from the parent group
-    App::DocumentObjectGroup* targetGroup = 0;
+    App::DocumentObjectGroup* targetGroup = nullptr;
     for (std::vector<Gui::SelectionObject>::iterator it = partObjects.begin(); it != partObjects.end(); ++it) {
         doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->getFeatName());
         App::DocumentObjectGroup* group = it->getObject()->getGroup();
@@ -528,7 +528,7 @@ void CmdPartFuse::activated(int iMsg)
 bool CmdPartFuse::isActive(void)
 {
     return getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(),0,3)>=1;
+            App::DocumentObject::getClassTypeId(),nullptr,3)>=1;
 }
 
 //===========================================================================
@@ -888,7 +888,7 @@ void CmdPartCompound::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     unsigned int n = getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(),0,3);
+            App::DocumentObject::getClassTypeId(),nullptr,3);
     if (n < 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select one shape or more, please."));
@@ -921,7 +921,7 @@ void CmdPartCompound::activated(int iMsg)
 bool CmdPartCompound::isActive(void)
 {
     return getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(),0,3)>=1;
+            App::DocumentObject::getClassTypeId(),nullptr,3)>=1;
 }
 
 //===========================================================================
@@ -945,7 +945,7 @@ void CmdPartSection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> Sel = 
-        getSelection().getSelectionEx(0, App::DocumentObject::getClassTypeId(),3);
+        getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(),3);
     if (Sel.size() != 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select two shapes please."));
@@ -969,7 +969,7 @@ void CmdPartSection::activated(int iMsg)
 
 bool CmdPartSection::isActive(void)
 {
-    return getSelection().countObjectsOfType(App::DocumentObject::getClassTypeId(),0,3)==2;
+    return getSelection().countObjectsOfType(App::DocumentObject::getClassTypeId(),nullptr,3)==2;
 }
 
 //===========================================================================
@@ -1078,7 +1078,7 @@ void CmdPartExport::activated(int iMsg)
 
 bool CmdPartExport::isActive(void)
 {
-    return Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId(),0,3) > 0;
+    return Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId(),nullptr,3) > 0;
 }
 
 //===========================================================================
@@ -1150,7 +1150,7 @@ void CmdPartMakeSolid::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType
-        (App::DocumentObject::getClassTypeId(),0,3);
+        (App::DocumentObject::getClassTypeId(),nullptr,3);
     runCommand(Doc, "import Part");
     for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
         const TopoDS_Shape& shape = Part::Feature::getShape(*it);
@@ -1205,7 +1205,7 @@ void CmdPartMakeSolid::activated(int iMsg)
 bool CmdPartMakeSolid::isActive(void)
 {
     return Gui::Selection().countObjectsOfType
-        (App::DocumentObject::getClassTypeId(),0,3) > 0;
+        (App::DocumentObject::getClassTypeId(),nullptr,3) > 0;
 }
 
 //===========================================================================
@@ -1350,7 +1350,7 @@ CmdPartMakeFace::CmdPartMakeFace()
 void CmdPartMakeFace::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    auto sketches = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId(),0,3);
+    auto sketches = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId(),nullptr,3);
     if(sketches.empty())
         return;
     openCommand(QT_TRANSLATE_NOOP("Command", "Make face"));
@@ -1378,7 +1378,7 @@ void CmdPartMakeFace::activated(int iMsg)
 
 bool CmdPartMakeFace::isActive(void)
 {
-    return (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId(),0,3) > 0 &&
+    return (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId(),nullptr,3) > 0 &&
             !Gui::Control().activeDialog());
 }
 
@@ -1430,7 +1430,7 @@ CmdPartFillet::CmdPartFillet()
 void CmdPartFillet::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Control().showDialog(new PartGui::TaskFilletEdges(0));
+    Gui::Control().showDialog(new PartGui::TaskFilletEdges(nullptr));
 }
 
 bool CmdPartFillet::isActive(void)
@@ -1458,7 +1458,7 @@ CmdPartChamfer::CmdPartChamfer()
 void CmdPartChamfer::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Control().showDialog(new PartGui::TaskChamferEdges(0));
+    Gui::Control().showDialog(new PartGui::TaskChamferEdges(nullptr));
 }
 
 bool CmdPartChamfer::isActive(void)
@@ -1641,7 +1641,7 @@ CmdPartOffset::CmdPartOffset()
 void CmdPartOffset::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    auto shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId(),0,3);
+    auto shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId(),nullptr,3);
     if(shapes.empty())
         return;
     App::DocumentObject* shape = shapes.front();
@@ -1667,7 +1667,7 @@ void CmdPartOffset::activated(int iMsg)
 bool CmdPartOffset::isActive(void)
 {
     Base::Type partid = Base::Type::fromName("Part::Feature");
-    bool objectsSelected = Gui::Selection().countObjectsOfType(partid,0,3) == 1;
+    bool objectsSelected = Gui::Selection().countObjectsOfType(partid,nullptr,3) == 1;
     return (objectsSelected && !Gui::Control().activeDialog());
 }
 
@@ -1693,7 +1693,7 @@ CmdPartOffset2D::CmdPartOffset2D()
 void CmdPartOffset2D::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    auto shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId(),0,3);
+    auto shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId(),nullptr,3);
     if(shapes.empty())
         return;
     App::DocumentObject* shape = shapes.front();
@@ -1719,7 +1719,7 @@ void CmdPartOffset2D::activated(int iMsg)
 bool CmdPartOffset2D::isActive(void)
 {
     Base::Type partid = Base::Type::fromName("Part::Feature");
-    bool objectsSelected = Gui::Selection().countObjectsOfType(partid,0,3) == 1;
+    bool objectsSelected = Gui::Selection().countObjectsOfType(partid,nullptr,3) == 1;
     return (objectsSelected && !Gui::Control().activeDialog());
 }
 
@@ -1812,7 +1812,7 @@ void CmdPartCompOffset::languageChange()
 bool CmdPartCompOffset::isActive(void)
 {
     Base::Type partid = Base::Type::fromName("Part::Feature");
-    bool objectsSelected = Gui::Selection().countObjectsOfType(partid,0,3) == 1;
+    bool objectsSelected = Gui::Selection().countObjectsOfType(partid,nullptr,3) == 1;
     return (objectsSelected && !Gui::Control().activeDialog());
 }
 

@@ -206,7 +206,7 @@ Py::Object TopoShapeVertexPy::getPoint(void) const
 
 PyObject *TopoShapeVertexPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int TopoShapeVertexPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

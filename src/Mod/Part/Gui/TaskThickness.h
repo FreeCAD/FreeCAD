@@ -35,7 +35,7 @@ class ThicknessWidget : public QWidget
     Q_OBJECT
 
 public:
-    ThicknessWidget(Part::Thickness*, QWidget* parent = 0);
+    ThicknessWidget(Part::Thickness*, QWidget* parent = nullptr);
     ~ThicknessWidget();
 
     bool accept();

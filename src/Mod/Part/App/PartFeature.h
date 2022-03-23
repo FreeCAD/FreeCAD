@@ -93,19 +93,19 @@ public:
      * if pmat already include obj's transformation matrix.
      */
     static TopoDS_Shape getShape(const App::DocumentObject *obj,
-            const char *subname=0, bool needSubElement=false, Base::Matrix4D *pmat=0, 
-            App::DocumentObject **owner=0, bool resolveLink=true, bool transform=true);
+            const char *subname=nullptr, bool needSubElement=false, Base::Matrix4D *pmat=nullptr, 
+            App::DocumentObject **owner=nullptr, bool resolveLink=true, bool transform=true);
 
     static TopoShape getTopoShape(const App::DocumentObject *obj,
-            const char *subname=0, bool needSubElement=false, Base::Matrix4D *pmat=0, 
-            App::DocumentObject **owner=0, bool resolveLink=true, bool transform=true, 
+            const char *subname=nullptr, bool needSubElement=false, Base::Matrix4D *pmat=nullptr, 
+            App::DocumentObject **owner=nullptr, bool resolveLink=true, bool transform=true, 
             bool noElementMap=false);
 
     static void clearShapeCache();
 
-    static App::DocumentObject *getShapeOwner(const App::DocumentObject *obj, const char *subname=0);
+    static App::DocumentObject *getShapeOwner(const App::DocumentObject *obj, const char *subname=nullptr);
 
-    static bool hasShapeOwner(const App::DocumentObject *obj, const char *subname=0) {
+    static bool hasShapeOwner(const App::DocumentObject *obj, const char *subname=nullptr) {
         auto owner = getShapeOwner(obj,subname);
         return owner && owner->isDerivedFrom(getClassTypeId());
     }

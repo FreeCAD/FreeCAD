@@ -42,8 +42,8 @@ PROPERTY_SOURCE_ABSTRACT(Part::Boolean, Part::Feature)
 
 Boolean::Boolean(void)
 {
-    ADD_PROPERTY(Base,(0));
-    ADD_PROPERTY(Tool,(0));
+    ADD_PROPERTY(Base,(nullptr));
+    ADD_PROPERTY(Tool,(nullptr));
     ADD_PROPERTY_TYPE(History,(ShapeHistory()), "Boolean", (App::PropertyType)
         (App::Prop_Output|App::Prop_Transient|App::Prop_Hidden), "Shape history");
     History.setSize(0);

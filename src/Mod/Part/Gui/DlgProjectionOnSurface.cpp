@@ -77,7 +77,7 @@ public:
   bool canSelect;
 
   EdgeSelection()
-    : Gui::SelectionFilterGate((Gui::SelectionFilter*)0)
+    : Gui::SelectionFilterGate((Gui::SelectionFilter*)nullptr)
   {
     canSelect = false;
   }
@@ -106,7 +106,7 @@ public:
   bool canSelect;
 
   FaceSelection()
-    : Gui::SelectionFilterGate((Gui::SelectionFilter*)0)
+    : Gui::SelectionFilterGate((Gui::SelectionFilter*)nullptr)
   {
     canSelect = false;
   }
@@ -1050,7 +1050,7 @@ TaskProjectionOnSurface::TaskProjectionOnSurface()
   widget = new DlgProjectionOnSurface();
   taskbox = new Gui::TaskView::TaskBox(
     Gui::BitmapFactory().pixmap("Part_ProjectionOnSurface"),
-    widget->windowTitle(), true, 0);
+    widget->windowTitle(), true, nullptr);
   taskbox->groupLayout()->addWidget(widget);
   Content.push_back(taskbox);
 }

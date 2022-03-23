@@ -55,7 +55,7 @@ PyObject *EllipsePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Py
 // constructor method
 int EllipsePy::PyInit(PyObject* args, PyObject* kwds)
 {
-    char* keywords_n[] = {NULL};
+    char* keywords_n[] = {nullptr};
     if (PyArg_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
         Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(getGeomEllipsePtr()->handle());
         ellipse->SetMajorRadius(2.0);
@@ -63,7 +63,7 @@ int EllipsePy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    char* keywords_e[] = {"Ellipse",NULL};
+    char* keywords_e[] = {"Ellipse",nullptr};
     PyErr_Clear();
     PyObject *pElips;
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!",keywords_e, &(EllipsePy::Type), &pElips)) {
@@ -76,7 +76,7 @@ int EllipsePy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    char* keywords_ssc[] = {"S1","S2","Center",NULL};
+    char* keywords_ssc[] = {"S1","S2","Center",nullptr};
     PyErr_Clear();
     PyObject *pV1, *pV2, *pV3;
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!O!O!", keywords_ssc,
@@ -99,7 +99,7 @@ int EllipsePy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    char* keywords_cmm[] = {"Center","MajorRadius","MinorRadius",NULL};
+    char* keywords_cmm[] = {"Center","MajorRadius","MinorRadius",nullptr};
     PyErr_Clear();
     PyObject *pV;
     double major, minor;
@@ -173,7 +173,7 @@ Py::Object EllipsePy::getFocus2(void) const
 
 PyObject *EllipsePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int EllipsePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

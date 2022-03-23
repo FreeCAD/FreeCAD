@@ -54,11 +54,11 @@ const char* Extrusion::eDirModeStrings[] = {
     "Custom",
     "Edge",
     "Normal",
-    NULL };
+    nullptr };
 
 Extrusion::Extrusion()
 {
-    ADD_PROPERTY_TYPE(Base, (0), "Extrude", App::Prop_None, "Shape to extrude");
+    ADD_PROPERTY_TYPE(Base, (nullptr), "Extrude", App::Prop_None, "Shape to extrude");
     ADD_PROPERTY_TYPE(Dir, (Base::Vector3d(0.0, 0.0, 1.0)), "Extrude", App::Prop_None, "Direction of extrusion (also magnitude, if both lengths are zero).");
     ADD_PROPERTY_TYPE(DirMode, (dmCustom), "Extrude", App::Prop_None, "Sets, how Dir is updated.");
     DirMode.setEnums(eDirModeStrings);
@@ -189,9 +189,9 @@ Extrusion::ExtrusionParameters Extrusion::computeFinalParameters()
 
 Base::Vector3d Extrusion::calculateShapeNormal(const App::PropertyLink& shapeLink)
 {
-    App::DocumentObject* docobj = 0;
+    App::DocumentObject* docobj = nullptr;
     Base::Matrix4D mat;
-    TopoDS_Shape sh = Feature::getShape(shapeLink.getValue(), 0, false, &mat, &docobj);
+    TopoDS_Shape sh = Feature::getShape(shapeLink.getValue(), nullptr, false, &mat, &docobj);
 
     if (!docobj)
         throw Base::ValueError("calculateShapeNormal: link is empty");

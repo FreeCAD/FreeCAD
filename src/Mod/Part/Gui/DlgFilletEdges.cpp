@@ -85,7 +85,7 @@ QWidget *FilletRadiusDelegate::createEditor(QWidget *parent, const QStyleOptionV
                                             const QModelIndex & index) const
 {
     if (index.column() < 1)
-        return 0;
+        return nullptr;
 
     Gui::QuantitySpinBox *editor = new Gui::QuantitySpinBox(parent);
     editor->setUnit(Base::Unit::Length);
@@ -172,7 +172,7 @@ namespace PartGui {
         App::DocumentObject*& object;
     public:
         EdgeFaceSelection(App::DocumentObject*& obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), allowEdge(true), object(obj)
+            : Gui::SelectionFilterGate((Gui::SelectionFilter*)nullptr), allowEdge(true), object(obj)
         {
         }
         void selectEdges()
@@ -240,7 +240,7 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
     ui->filletEndRadius->setMinimum(0);
     ui->filletEndRadius->setUnit(Base::Unit::Length);
 
-    d->object = 0;
+    d->object = nullptr;
     d->selection = new EdgeFaceSelection(d->object);
     Gui::Selection().addSelectionGate(d->selection);
 
@@ -455,16 +455,16 @@ void DlgFilletEdges::onSelectEdgesOfFace(const QString& subelement, int type)
 void DlgFilletEdges::onDeleteObject(const App::DocumentObject& obj)
 {
     if (d->fillet == &obj) {
-        d->fillet = 0;
+        d->fillet = nullptr;
     }
     else if (d->fillet && d->fillet->Base.getValue() == &obj) {
-        d->fillet = 0;
-        d->object = 0;
+        d->fillet = nullptr;
+        d->object = nullptr;
         ui->shapeObject->setCurrentIndex(0);
         on_shapeObject_activated(0);
     }
     else if (d->object == &obj) {
-        d->object = 0;
+        d->object = nullptr;
         ui->shapeObject->removeItem(ui->shapeObject->currentIndex());
         ui->shapeObject->setCurrentIndex(0);
         on_shapeObject_activated(0);
@@ -694,7 +694,7 @@ void DlgFilletEdges::changeEvent(QEvent *e)
 
 void DlgFilletEdges::on_shapeObject_activated(int itemPos)
 {
-    d->object = 0;
+    d->object = nullptr;
     QStandardItemModel *model = qobject_cast<QStandardItemModel*>(ui->treeView->model());
     model->removeRows(0, model->rowCount());
 
@@ -999,7 +999,7 @@ TaskFilletEdges::TaskFilletEdges(Part::Fillet* fillet)
     widget = new DlgFilletEdges(DlgFilletEdges::FILLET, fillet);
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Part_Fillet"),
-        widget->windowTitle(), true, 0);
+        widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }
@@ -1058,7 +1058,7 @@ TaskChamferEdges::TaskChamferEdges(Part::Chamfer* chamfer)
     widget = new DlgChamferEdges(chamfer);
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Part_Chamfer"),
-        widget->windowTitle(), true, 0);
+        widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

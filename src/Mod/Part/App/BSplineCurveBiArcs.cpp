@@ -125,8 +125,8 @@ void GeomBSplineCurve::createArcs(double tolerance, std::list<Geometry*>& new_sp
 
     bool can_do_spline_whole = calculateBiArcPoints(p_start, v_start, p_end, v_end, p1, p2, p3);
 
-    Geometry* arc_object1 = NULL;
-    Geometry* arc_object2 = NULL;
+    Geometry* arc_object1 = nullptr;
+    Geometry* arc_object2 = nullptr;
 
     if (can_do_spline_whole) {
         Part::TangentialArc arc1(p_start, v_start, p2);

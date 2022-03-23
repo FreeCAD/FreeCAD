@@ -42,7 +42,7 @@ class DlgBooleanOperation : public QWidget
     Q_OBJECT
 
 public:
-    DlgBooleanOperation(QWidget* parent = 0);
+    DlgBooleanOperation(QWidget* parent = nullptr);
     ~DlgBooleanOperation();
     void accept();
 

@@ -330,7 +330,7 @@ App::DocumentObjectExecReturn *Plane::execute(void)
 #endif
     );
 
-    const char *error=0;
+    const char *error=nullptr;
     switch (mkFace.Error())
     {
     case BRepBuilderAPI_FaceDone:
@@ -760,8 +760,8 @@ App::DocumentObjectExecReturn *Torus::execute(void)
 
 PROPERTY_SOURCE(Part::Helix, Part::Primitive)
 
-const char* Part::Helix::LocalCSEnums[]= {"Right-handed","Left-handed",NULL};
-const char* Part::Helix::StyleEnums  []= {"Old style","New style",NULL};
+const char* Part::Helix::LocalCSEnums[]= {"Right-handed","Left-handed",nullptr};
+const char* Part::Helix::StyleEnums  []= {"Old style","New style",nullptr};
 
 Helix::Helix(void)
 {

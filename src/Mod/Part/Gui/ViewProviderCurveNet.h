@@ -69,8 +69,8 @@ protected:
         Gui::SoFCSelection  *pcHighlight;
         SoTransform    *pcTransform;
         Node() {
-            pcHighlight = 0;
-            pcTransform = 0;
+            pcHighlight = nullptr;
+            pcTransform = nullptr;
         }
     };
 

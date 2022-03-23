@@ -62,7 +62,7 @@ namespace PartGui {
         enum Type {VERTEX, EDGE, FACE, ALL};
         Type mode;
         ShapeSelection()
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), mode(ALL)
+            : Gui::SelectionFilterGate((Gui::SelectionFilter*)nullptr), mode(ALL)
         {
         }
         void setMode(Type mode)
@@ -581,7 +581,7 @@ TaskShapeBuilder::TaskShapeBuilder()
     widget = new ShapeBuilderWidget();
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Part_Shapebuilder"),
-        widget->windowTitle(), true, 0);
+        widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

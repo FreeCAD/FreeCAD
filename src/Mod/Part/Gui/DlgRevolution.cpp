@@ -66,7 +66,7 @@ public:
     bool canSelect;
 
     EdgeSelection()
-        : Gui::SelectionFilterGate((Gui::SelectionFilter*)0)
+        : Gui::SelectionFilterGate((Gui::SelectionFilter*)nullptr)
     {
         canSelect = false;
     }
@@ -102,7 +102,7 @@ public:
 DlgRevolution::DlgRevolution(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl)
   , ui(new Ui_DlgRevolution)
-  , filter(0)
+  , filter(nullptr)
 {
     ui->setupUi(this);
 
@@ -553,7 +553,7 @@ TaskRevolution::TaskRevolution()
     widget = new DlgRevolution();
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Part_Revolve"),
-        widget->windowTitle(), true, 0);
+        widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

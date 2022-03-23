@@ -232,7 +232,7 @@ PyObject* TopoShapeSolidPy::getMomentOfInertia(PyObject *args)
     PyObject *p,*d;
     if (!PyArg_ParseTuple(args, "O!O!",&Base::VectorPy::Type,&p
                                       ,&Base::VectorPy::Type,&d))
-        return 0;
+        return nullptr;
     Base::Vector3d pnt = Py::Vector(p,false).toVector();
     Base::Vector3d dir = Py::Vector(d,false).toVector();
 
@@ -246,7 +246,7 @@ PyObject* TopoShapeSolidPy::getMomentOfInertia(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -255,7 +255,7 @@ PyObject* TopoShapeSolidPy::getRadiusOfGyration(PyObject *args)
     PyObject *p,*d;
     if (!PyArg_ParseTuple(args, "O!O!",&Base::VectorPy::Type,&p
                                       ,&Base::VectorPy::Type,&d))
-        return 0;
+        return nullptr;
     Base::Vector3d pnt = Py::Vector(p,false).toVector();
     Base::Vector3d dir = Py::Vector(d,false).toVector();
 
@@ -269,7 +269,7 @@ PyObject* TopoShapeSolidPy::getRadiusOfGyration(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -318,7 +318,7 @@ PyObject* TopoShapeSolidPy::offsetFaces(PyObject *args)
 
     if (!paramOK) {
         PyErr_SetString(PyExc_TypeError, "Wrong parameter");
-        return 0;
+        return nullptr;
     }
 
     try {
@@ -329,13 +329,13 @@ PyObject* TopoShapeSolidPy::offsetFaces(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
 PyObject *TopoShapeSolidPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int TopoShapeSolidPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

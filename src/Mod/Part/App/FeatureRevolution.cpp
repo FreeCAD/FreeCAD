@@ -46,10 +46,10 @@ PROPERTY_SOURCE(Part::Revolution, Part::Feature)
 
 Revolution::Revolution()
 {
-    ADD_PROPERTY_TYPE(Source,(0), "Revolve", App::Prop_None, "Shape to revolve");
+    ADD_PROPERTY_TYPE(Source,(nullptr), "Revolve", App::Prop_None, "Shape to revolve");
     ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0,0.0,0.0)), "Revolve", App::Prop_None, "Base point of revolution axis");
     ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0,0.0,1.0)), "Revolve", App::Prop_None, "Direction of revolution axis");
-    ADD_PROPERTY_TYPE(AxisLink,(0),"Revolve",App::Prop_None,"Link to edge to use as revolution axis.");
+    ADD_PROPERTY_TYPE(AxisLink,(nullptr),"Revolve",App::Prop_None,"Link to edge to use as revolution axis.");
     ADD_PROPERTY_TYPE(Angle,(360.0), "Revolve", App::Prop_None, "Angle span of revolution. If angle is zero, and an arc is used for axis link, angle span of arc will be used.");
     Angle.setConstraints(&angleRangeU);
     ADD_PROPERTY_TYPE(Symmetric,(false),"Revolve",App::Prop_None,"Extend revolution symmetrically from the profile.");

@@ -95,7 +95,7 @@ void GeometryBoolExtensionPy::setValue(Py::Boolean value)
 
 PyObject *GeometryBoolExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int GeometryBoolExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

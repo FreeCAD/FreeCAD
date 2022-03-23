@@ -46,7 +46,7 @@ PyObject *ConicPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Pyth
     // never create such objects with the constructor
     PyErr_SetString(PyExc_RuntimeError,
         "You cannot create an instance of the abstract class 'Conic'.");
-    return 0;
+    return nullptr;
 }
 
 // constructor method
@@ -229,7 +229,7 @@ void  ConicPy::setYAxis(Py::Object arg)
 
 PyObject *ConicPy::getCustomAttributes(const char* ) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ConicPy::setCustomAttributes(const char* , PyObject *)

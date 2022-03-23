@@ -39,7 +39,7 @@ class DlgExtrusion : public QDialog, public Gui::SelectionObserver
     Q_OBJECT
 
 public:
-    DlgExtrusion(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+    DlgExtrusion(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgExtrusion();
     void accept();
     void apply();

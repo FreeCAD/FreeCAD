@@ -201,7 +201,7 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
         if (subname) 
             str << '.' << subname;
         FC_LOG(str.str());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -240,7 +240,7 @@ struct ShapeCache {
             return;
         if(strcmp(propName,"Shape")==0 
                 || strcmp(propName,"Group")==0 
-                || strstr(propName,"Touched")!=0)
+                || strstr(propName,"Touched")!=nullptr)
             slotClear(obj);
     }
 
@@ -256,7 +256,7 @@ struct ShapeCache {
         }
     }
 
-    bool getShape(const App::DocumentObject *obj, TopoShape &shape, const char *subname=0) {
+    bool getShape(const App::DocumentObject *obj, TopoShape &shape, const char *subname=nullptr) {
         init();
         auto &entry = cache[obj->getDocument()];
         if(!subname) subname = "";
@@ -268,7 +268,7 @@ struct ShapeCache {
         return false;
     }
 
-    void setShape(const App::DocumentObject *obj, const TopoShape &shape, const char *subname=0) {
+    void setShape(const App::DocumentObject *obj, const TopoShape &shape, const char *subname=nullptr) {
         init();
         if(!subname) subname = "";
         cache[obj->getDocument()][std::make_pair(obj,std::string(subname))] = shape;
@@ -289,9 +289,9 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
 
     if(!obj) return shape;
 
-    PyObject *pyobj = 0;
+    PyObject *pyobj = nullptr;
     Base::Matrix4D mat;
-    if(powner) *powner = 0;
+    if(powner) *powner = nullptr;
 
     std::string _subname;
     auto subelement = Data::ComplexGeoData::findElementName(subname);
@@ -311,14 +311,14 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
         }
     }
 
-    App::DocumentObject *linked = 0;
-    App::DocumentObject *owner = 0;
+    App::DocumentObject *linked = nullptr;
+    App::DocumentObject *owner = nullptr;
     Base::Matrix4D linkMat;
     // App::StringHasherRef hasher;
     // long tag;
     {
         Base::PyGILStateLocker lock;
-        owner = obj->getSubObject(subname,shape.isNull()?&pyobj:0,&mat,false);
+        owner = obj->getSubObject(subname,shape.isNull()?&pyobj:nullptr,&mat,false);
         if(!owner)
             return shape;
         // tag = owner->getID();
@@ -387,7 +387,7 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
     {
         // if there is a linked object, and there is no child cache (which is used
         // for special handling of plain group), obtain shape from the linked object
-        shape = Feature::getTopoShape(linked,0,false,0,0,false,false);
+        shape = Feature::getTopoShape(linked,nullptr,false,nullptr,nullptr,false,false);
         if(shape.isNull())
             return shape;
         if(owner==obj)
@@ -413,7 +413,7 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
         if(link && link->getElementCountValue()) {
             linked = link->getTrueLinkedObject(false,&baseMat);
             if(linked && linked!=owner) {
-                baseShape = Feature::getTopoShape(linked,0,false,0,0,false,false);
+                baseShape = Feature::getTopoShape(linked,nullptr,false,nullptr,nullptr,false,false);
                 // if(!link->getShowElementValue())
                 //     baseShape.reTagElementMap(owner->getID(),owner->getDocument()->getStringHasher());
             }
@@ -422,13 +422,13 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
             if(sub.empty()) continue;
             int visible;
             std::string childName;
-            App::DocumentObject *parent=0;
+            App::DocumentObject *parent=nullptr;
             Base::Matrix4D mat = baseMat;
-            App::DocumentObject *subObj=0;
+            App::DocumentObject *subObj=nullptr;
             if(sub.find('.')==std::string::npos)
                 visible = 1;
             else {
-                subObj = owner->resolve(sub.c_str(), &parent, &childName,0,0,&mat,false);
+                subObj = owner->resolve(sub.c_str(), &parent, &childName,nullptr,nullptr,&mat,false);
                 if(!parent || !subObj)
                     continue;
                 if(linkStack.size() 
@@ -442,7 +442,7 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
                 continue;
             TopoShape shape;
             if(!subObj || baseShape.isNull()) {
-                shape = _getTopoShape(owner,sub.c_str(),true,0,&subObj,false,false,linkStack);
+                shape = _getTopoShape(owner,sub.c_str(),true,nullptr,&subObj,false,false,linkStack);
                 if(shape.isNull())
                     continue;
                 if(visible<0 && subObj && !subObj->Visibility.getValue())
@@ -510,7 +510,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
         if(pmat)
             topMat = *pmat;
         if(transform)
-            obj->getSubObject(0,0,&topMat);
+            obj->getSubObject(nullptr,nullptr,&topMat);
 
         // Apply the top level transformation
         if(!shape.isNull())
@@ -526,7 +526,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
 
 App::DocumentObject *Feature::getShapeOwner(const App::DocumentObject *obj, const char *subname)
 {
-    if(!obj) return 0;
+    if(!obj) return nullptr;
     auto owner = obj->getSubObject(subname);
     if(owner) {
         auto linked = owner->getLinkedObject(true);
@@ -669,7 +669,7 @@ PROPERTY_SOURCE(Part::FilletBase, Part::Feature)
 
 FilletBase::FilletBase()
 {
-    ADD_PROPERTY(Base,(0));
+    ADD_PROPERTY(Base,(nullptr));
     ADD_PROPERTY(Edges,(0,0,0));
     Edges.setSize(0);
 }

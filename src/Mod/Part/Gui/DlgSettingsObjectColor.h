@@ -40,7 +40,7 @@ class DlgSettingsObjectColor : public Gui::Dialog::PreferencePage
   Q_OBJECT
 
 public:
-  DlgSettingsObjectColor(QWidget* parent = 0);
+  DlgSettingsObjectColor(QWidget* parent = nullptr);
   ~DlgSettingsObjectColor();
 
   void saveSettings();

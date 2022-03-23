@@ -197,8 +197,8 @@ static void _copyShape(const char *cmdName, bool resolve,bool needElement=false,
             subMap.emplace("",obj);
         else {
             for(const auto &sub : sel.getSubNames()) {
-                const char *element = 0;
-                auto sobj = obj->resolve(sub.c_str(),0,0,&element);
+                const char *element = nullptr;
+                auto sobj = obj->resolve(sub.c_str(),nullptr,nullptr,&element);
                 if(!sobj) continue;
                 if(!needElement && element) 
                     subMap.emplace(sub.substr(0,element-sub.c_str()),sobj);
@@ -378,7 +378,7 @@ void CmdPartDefeaturing::activated(int iMsg)
     Q_UNUSED(iMsg);
     Gui::WaitCursor wc;
     Base::Type partid = Base::Type::fromName("Part::Feature");
-    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx(0, partid);
+    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx(nullptr, partid);
     openCommand(QT_TRANSLATE_NOOP("Command", "Defeaturing"));
     for (std::vector<Gui::SelectionObject>::iterator it = objs.begin(); it != objs.end(); ++it) {
         try {
@@ -420,7 +420,7 @@ void CmdPartDefeaturing::activated(int iMsg)
 bool CmdPartDefeaturing::isActive(void)
 {
     Base::Type partid = Base::Type::fromName("Part::Feature");
-    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx(0, partid);
+    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx(nullptr, partid);
     for (std::vector<Gui::SelectionObject>::iterator it = objs.begin(); it != objs.end(); ++it) {
         std::vector<std::string> subnames = it->getSubNames();
         for (std::vector<std::string>::iterator sub = subnames.begin(); sub != subnames.end(); ++sub) {

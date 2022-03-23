@@ -224,7 +224,7 @@ void LinePy::setDirection(Py::Object arg)
 
 PyObject *LinePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int LinePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

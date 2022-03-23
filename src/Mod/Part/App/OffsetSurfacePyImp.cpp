@@ -127,7 +127,7 @@ void  OffsetSurfacePy::setBasisSurface(Py::Object arg)
 
 PyObject *OffsetSurfacePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int OffsetSurfacePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

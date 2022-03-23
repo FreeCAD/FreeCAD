@@ -61,7 +61,7 @@ PROPERTY_SOURCE(Part::MultiCommon, Part::Feature)
 
 MultiCommon::MultiCommon(void)
 {
-    ADD_PROPERTY(Shapes,(0));
+    ADD_PROPERTY(Shapes,(nullptr));
     Shapes.setSize(0);
     ADD_PROPERTY_TYPE(History,(ShapeHistory()), "Boolean", (App::PropertyType)
         (App::Prop_Output|App::Prop_Transient|App::Prop_Hidden), "Shape history");

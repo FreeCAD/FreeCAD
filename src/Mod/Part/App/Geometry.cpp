@@ -391,7 +391,7 @@ void Geometry::createNewTag()
     static bool seeded = false;
 
     if (!seeded) {
-        ran.seed(static_cast<unsigned int>(std::time(0)));
+        ran.seed(static_cast<unsigned int>(std::time(nullptr)));
         seeded = true;
     }
     static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
@@ -5084,7 +5084,7 @@ GeomArcOfCircle *createFilletGeometry(const GeomLineSegment *lineSeg1, const Geo
     Base::Vector3d corner;
     if (!Part::find2DLinesIntersection(lineSeg1, lineSeg2, corner))
         // Parallel Lines so return null pointer
-        return 0;
+        return nullptr;
 
     Base::Vector3d dir1 = lineSeg1->getEndPoint() - lineSeg1->getStartPoint();
     Base::Vector3d dir2 = lineSeg2->getEndPoint() - lineSeg2->getStartPoint();

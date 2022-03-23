@@ -313,33 +313,33 @@ public:
      * To be complete in next batch of patches
      */
     //@{
-    TopoShape &makeCompound(const std::vector<TopoShape> &shapes, const char *op=0, bool force=true);
+    TopoShape &makeCompound(const std::vector<TopoShape> &shapes, const char *op=nullptr, bool force=true);
 
-    TopoShape &makeWires(const TopoShape &shape, const char *op=0, bool fix=false, double tol=0.0);
-    TopoShape makeWires(const char *op=0, bool fix=false, double tol=0.0) const {
+    TopoShape &makeWires(const TopoShape &shape, const char *op=nullptr, bool fix=false, double tol=0.0);
+    TopoShape makeWires(const char *op=nullptr, bool fix=false, double tol=0.0) const {
         return TopoShape().makeWires(*this,op,fix,tol);
     }
-    TopoShape &makeFace(const std::vector<TopoShape> &shapes, const char *op=0, const char *maker=0);
-    TopoShape &makeFace(const TopoShape &shape, const char *op=0, const char *maker=0);
-    TopoShape makeFace(const char *op=0, const char *maker=0) const {
+    TopoShape &makeFace(const std::vector<TopoShape> &shapes, const char *op=nullptr, const char *maker=nullptr);
+    TopoShape &makeFace(const TopoShape &shape, const char *op=nullptr, const char *maker=nullptr);
+    TopoShape makeFace(const char *op=nullptr, const char *maker=nullptr) const {
         return TopoShape().makeFace(*this,op,maker);
     }
     bool _makeTransform(const TopoShape &shape, const Base::Matrix4D &mat,
-            const char *op=0, bool checkScale=false, bool copy=false);
+            const char *op=nullptr, bool checkScale=false, bool copy=false);
 
     TopoShape &makeTransform(const TopoShape &shape, const Base::Matrix4D &mat,
-            const char *op=0, bool checkScale=false, bool copy=false) {
+            const char *op=nullptr, bool checkScale=false, bool copy=false) {
         _makeTransform(shape,mat,op,checkScale,copy);
         return *this;
     }
-    TopoShape makeTransform(const Base::Matrix4D &mat, const char *op=0,
+    TopoShape makeTransform(const Base::Matrix4D &mat, const char *op=nullptr,
             bool checkScale=false, bool copy=false) const {
         return TopoShape().makeTransform(*this,mat,op,checkScale,copy);
     }
 
     TopoShape &makeTransform(const TopoShape &shape, const gp_Trsf &trsf,
-            const char *op=0, bool copy=false);
-    TopoShape makeTransform(const gp_Trsf &trsf, const char *op=0, bool copy=false) const {
+            const char *op=nullptr, bool copy=false);
+    TopoShape makeTransform(const gp_Trsf &trsf, const char *op=nullptr, bool copy=false) const {
         return TopoShape().makeTransform(*this,trsf,op,copy);
     }
 
@@ -353,13 +353,13 @@ public:
     }
 
     TopoShape &makeGTransform(const TopoShape &shape, const Base::Matrix4D &mat,
-            const char *op=0, bool copy=false);
-    TopoShape makeGTransform(const Base::Matrix4D &mat, const char *op=0, bool copy=false) const {
+            const char *op=nullptr, bool copy=false);
+    TopoShape makeGTransform(const Base::Matrix4D &mat, const char *op=nullptr, bool copy=false) const {
         return TopoShape().makeGTransform(*this,mat,op,copy);
     }
 
-    TopoShape &makeRefine(const TopoShape &shape, const char *op=0, bool no_fail=true);
-    TopoShape makeRefine(const char *op=0, bool no_fail=true) const {
+    TopoShape &makeRefine(const TopoShape &shape, const char *op=nullptr, bool no_fail=true);
+    TopoShape makeRefine(const char *op=nullptr, bool no_fail=true) const {
         return TopoShape().makeRefine(*this,op,no_fail);
     }
     //@}

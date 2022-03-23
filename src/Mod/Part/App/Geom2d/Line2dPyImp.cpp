@@ -219,7 +219,7 @@ void Line2dPy::setDirection(Py::Object arg)
 
 PyObject *Line2dPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int Line2dPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

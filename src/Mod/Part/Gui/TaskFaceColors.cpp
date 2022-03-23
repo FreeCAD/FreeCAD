@@ -103,7 +103,7 @@ public:
     Connection connectDelObj;
     Connection connectUndoDoc;
 
-    Private(ViewProviderPartExt* vp) : ui(new Ui_TaskFaceColors()), view(0), vp(vp)
+    Private(ViewProviderPartExt* vp) : ui(new Ui_TaskFaceColors()), view(nullptr), vp(vp)
     {
         obj = vp->getObject();
         doc = Gui::Application::Instance->getDocument(obj->getDocument());
@@ -244,7 +244,7 @@ public:
         }
 
         FaceColors* self = reinterpret_cast<FaceColors*>(ud);
-        self->d->view = 0;
+        self->d->view = nullptr;
         if (self->d->obj && self->d->obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
             cb->setHandled();
             const TopoDS_Shape& shape = static_cast<Part::Feature*>(self->d->obj)->Shape.getValue();
@@ -463,7 +463,7 @@ TaskFaceColors::TaskFaceColors(ViewProviderPartExt* vp)
 {
     widget = new FaceColors(vp);
     taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), true, 0);
+        QPixmap(), widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

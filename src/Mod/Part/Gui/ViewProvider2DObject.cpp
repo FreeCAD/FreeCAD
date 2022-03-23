@@ -55,7 +55,7 @@ using namespace std;
 //**************************************************************************
 // Construction/Destruction
 
-const char* ViewProvider2DObjectGrid::GridStyleEnums[]= {"Dashed","Light",NULL};
+const char* ViewProvider2DObjectGrid::GridStyleEnums[]= {"Dashed","Light",nullptr};
 App::PropertyQuantityConstraint::Constraints ViewProvider2DObjectGrid::GridSizeRange = {0.001,DBL_MAX,1.0};
 
 PROPERTY_SOURCE(PartGui::ViewProvider2DObjectGrid, PartGui::ViewProvider2DObject)

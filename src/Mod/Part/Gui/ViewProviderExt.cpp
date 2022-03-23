@@ -103,8 +103,8 @@ PROPERTY_SOURCE(PartGui::ViewProviderPartExt, Gui::ViewProviderGeometryObject)
 App::PropertyFloatConstraint::Constraints ViewProviderPartExt::sizeRange = {1.0,64.0,1.0};
 App::PropertyFloatConstraint::Constraints ViewProviderPartExt::tessRange = {0.01,100.0,0.01};
 App::PropertyQuantityConstraint::Constraints ViewProviderPartExt::angDeflectionRange = {1.0,180.0,0.05};
-const char* ViewProviderPartExt::LightingEnums[]= {"One side","Two side",NULL};
-const char* ViewProviderPartExt::DrawStyleEnums[]= {"Solid","Dashed","Dotted","Dashdot",NULL};
+const char* ViewProviderPartExt::LightingEnums[]= {"One side","Two side",nullptr};
+const char* ViewProviderPartExt::DrawStyleEnums[]= {"Solid","Dashed","Dotted","Dashdot",nullptr};
 
 ViewProviderPartExt::ViewProviderPartExt() 
 {
@@ -334,7 +334,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
             DiffuseColor.setValues(colors);
 
             App::PropertyContainer* parent = ShapeMaterial.getContainer();
-            ShapeMaterial.setContainer(0);
+            ShapeMaterial.setContainer(nullptr);
             ShapeMaterial.setTransparency(trans);
             ShapeMaterial.setContainer(parent);
         }
@@ -515,7 +515,7 @@ SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
         element = element.substr(0,pos);
     }
 
-    SoDetail* detail = 0;
+    SoDetail* detail = nullptr;
     if (index < 0)
         return detail;
     if (element == "Face") {

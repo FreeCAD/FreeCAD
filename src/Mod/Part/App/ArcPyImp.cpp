@@ -198,7 +198,7 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 PyObject *ArcPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ArcPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

@@ -496,7 +496,7 @@ PyObject* BuildPlateSurfacePy::G2Error(PyObject *args)
 
 PyObject *BuildPlateSurfacePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int BuildPlateSurfacePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
