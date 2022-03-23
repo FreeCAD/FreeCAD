@@ -1802,47 +1802,6 @@ bool CmdSketcherCreateRectangle::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
-DEF_STD_CMD_AU(CmdSketcherCreateRectangleCenter)
-
-CmdSketcherCreateRectangleCenter::CmdSketcherCreateRectangleCenter()
-  : Command("Sketcher_CreateRectangle_Center")
-{
-    sAppModule      = "Sketcher";
-    sGroup          = "Sketcher";
-    sMenuText       = QT_TR_NOOP("Create centered rectangle");
-    sToolTipText    = QT_TR_NOOP("Create a centered rectangle in the sketch");
-    sWhatsThis      = "Sketcher_CreateRectangle_Center";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_CreateRectangle_Center";
-    sAccel          = "G, V";
-    eType           = ForEdit;
-}
-
-void CmdSketcherCreateRectangleCenter::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRectangle(DrawSketchHandlerRectangle::ConstructionMethod::CenterAndCorner) );
-}
-
-void CmdSketcherCreateRectangleCenter::updateAction(int mode)
-{
-    switch (mode) {
-    case Normal:
-        if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Center"));
-        break;
-    case Construction:
-        if (getAction())
-            getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Center_Constr"));
-        break;
-    }
-}
-
-bool CmdSketcherCreateRectangleCenter::isActive(void)
-{
-    return isCreateGeoActive(getActiveGuiDocument());
-}
-
 
 /* Create rounded oblong =======================================================*/
 
@@ -2192,8 +2151,6 @@ void CmdSketcherCompCreateRectangles::activated(int iMsg)
     if (iMsg == 0)
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerRectangle(DrawSketchHandlerRectangle::ConstructionMethod::Diagonal));
     else if (iMsg == 1)
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerRectangle(DrawSketchHandlerRectangle::ConstructionMethod::CenterAndCorner));
-    else if (iMsg == 2)
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerOblong());
     else
         return;
@@ -2216,9 +2173,7 @@ Gui::Action* CmdSketcherCompCreateRectangles::createAction(void)
     QAction* arc1 = pcAction->addAction(QString());
     arc1->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle"));
     QAction* arc2 = pcAction->addAction(QString());
-    arc2->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Center"));
-    QAction* arc3 = pcAction->addAction(QString());
-    arc3->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateOblong"));
+    arc2->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateOblong"));
 
     _pcAction = pcAction;
     languageChange();
@@ -2241,14 +2196,12 @@ void CmdSketcherCompCreateRectangles::updateAction(int mode)
     switch (mode) {
     case Normal:
         a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle"));
-        a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Center"));
-        a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateOblong"));
+        a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateOblong"));
         getAction()->setIcon(a[index]->icon());
         break;
     case Construction:
         a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Constr"));
-        a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Center_Constr"));
-        a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateOblong_Constr"));
+        a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateOblong_Constr"));
         getAction()->setIcon(a[index]->icon());
         break;
     }
@@ -2268,13 +2221,9 @@ void CmdSketcherCompCreateRectangles::languageChange()
     rectangle1->setToolTip(QApplication::translate("Sketcher_CreateRectangle", "Create a rectangle"));
     rectangle1->setStatusTip(rectangle1->toolTip());
     QAction* rectangle2 = a[1];
-    rectangle2->setText(QApplication::translate("CmdSketcherCompCreateRectangles", "Centered rectangle"));
-    rectangle2->setToolTip(QApplication::translate("Sketcher_CreateRectangle_Center", "Create a centered rectangle"));
+    rectangle2->setText(QApplication::translate("CmdSketcherCompCreateRectangles", "Rounded rectangle"));
+    rectangle2->setToolTip(QApplication::translate("Sketcher_CreateOblong", "Create a rounded rectangle"));
     rectangle2->setStatusTip(rectangle2->toolTip());
-    QAction* rectangle3 = a[2];
-    rectangle3->setText(QApplication::translate("CmdSketcherCompCreateRectangles", "Rounded rectangle"));
-    rectangle3->setToolTip(QApplication::translate("Sketcher_CreateOblong", "Create a rounded rectangle"));
-    rectangle3->setStatusTip(rectangle3->toolTip());
 }
 
 bool CmdSketcherCompCreateRectangles::isActive(void)
@@ -9074,7 +9023,6 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherCreateLine());
     rcCmdMgr.addCommand(new CmdSketcherCreatePolyline());
     rcCmdMgr.addCommand(new CmdSketcherCreateRectangle());
-    rcCmdMgr.addCommand(new CmdSketcherCreateRectangleCenter());
     rcCmdMgr.addCommand(new CmdSketcherCreateOblong());
     rcCmdMgr.addCommand(new CmdSketcherCompCreateRegularPolygon());
     rcCmdMgr.addCommand(new CmdSketcherCreateTriangle());
