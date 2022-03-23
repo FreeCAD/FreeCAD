@@ -63,7 +63,7 @@ Workbench::~Workbench()
 class MeshInfoWatcher : public Gui::TaskView::TaskWatcher, public Gui::SelectionObserver
 {
 public:
-    MeshInfoWatcher() : TaskWatcher(0)
+    MeshInfoWatcher() : TaskWatcher(nullptr)
     {
         labelPoints = new QLabel();
         labelPoints->setText(QString::fromLatin1("Number of points:"));
@@ -98,7 +98,7 @@ public:
         grid->addWidget(numMax, 3, 1);
 
         Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
-            QPixmap(), QString::fromLatin1("Mesh info"), false, 0);
+            QPixmap(), QString::fromLatin1("Mesh info"), false, nullptr);
         taskbox->groupLayout()->addWidget(box);
         Content.push_back(taskbox);
     }

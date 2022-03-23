@@ -185,14 +185,14 @@ private:
     Py::Object importer(const Py::Tuple& args)
     {
         char* Name;
-        char* DocName=0;
+        char* DocName=nullptr;
         if (!PyArg_ParseTuple(args.ptr(), "et|s","utf-8",&Name,&DocName))
             throw Py::Exception();
 
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
-        App::Document *pcDoc = 0;
+        App::Document *pcDoc = nullptr;
         if (DocName) {
             pcDoc = App::GetApplication().getDocument(DocName);
         }
@@ -223,7 +223,7 @@ private:
         int exportAmfCompressed( hGrp->GetBool("ExportAmfCompressed", true) );
 
         static char *kwList[] = {"objectList", "filename", "tolerance",
-                                 "exportAmfCompressed", NULL};
+                                 "exportAmfCompressed", nullptr};
 
         if (!PyArg_ParseTupleAndKeywords( args.ptr(), keywds.ptr(),
                                           "Oet|dp",
