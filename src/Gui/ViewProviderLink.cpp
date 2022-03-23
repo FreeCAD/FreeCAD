@@ -80,6 +80,7 @@
 #include "TaskElementColors.h"
 #include "View3DInventor.h"
 #include "ViewParams.h"
+#include "Command.h"
 #include "ViewProviderGeometryObject.h"
 
 #include "ActionFunction.h"
