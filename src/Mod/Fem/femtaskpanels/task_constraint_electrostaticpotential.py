@@ -92,9 +92,9 @@ class _TaskPanel(object):
 
     def _initParamWidget(self):
         unit = "V"
-        q = Units.Quantity("{} {}".format(self._obj.Potential, unit))
+        quantity = Units.Quantity("{} {}".format(self._obj.Potential, unit))
         self._paramWidget.potentialQSB.setProperty(
-            'rawValue', q.Value)
+            'value', quantity)
         self._paramWidget.potentialBox.setChecked(
             not self._obj.PotentialEnabled)
         self._paramWidget.potentialConstantBox.setChecked(
