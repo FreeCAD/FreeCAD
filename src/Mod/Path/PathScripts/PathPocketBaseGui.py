@@ -106,7 +106,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.MinTravel = self.form.minTravel.isChecked()
 
     def updateZigZagAngle(self, obj, setModel=True):
-        if obj.OffsetPattern in ["Offset", "Spiral"]:
+        if obj.OffsetPattern in ["Offset"]:
             self.form.zigZagAngle.setEnabled(False)
         else:
             self.form.zigZagAngle.setEnabled(True)
