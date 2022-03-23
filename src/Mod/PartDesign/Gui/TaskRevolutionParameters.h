@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskRevolutionParameters_H
 #define GUI_TASKVIEW_TaskRevolutionParameters_H
 
-#include <Gui/TaskView/TaskView.h>
-
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderRevolution.h"
+
 
 class Ui_TaskRevolutionParameters;
 

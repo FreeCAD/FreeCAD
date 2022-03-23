@@ -20,14 +20,12 @@
  *                                                                            *
  ******************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskLinearPatternParameters_H
 #define GUI_TASKVIEW_TaskLinearPatternParameters_H
 
-#include <Gui/Selection.h>
-
 #include "TaskTransformedParameters.h"
 #include "ViewProviderLinearPattern.h"
+
 
 class QTimer;
 class Ui_TaskLinearPatternParameters;

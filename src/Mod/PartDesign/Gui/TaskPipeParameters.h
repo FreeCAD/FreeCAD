@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskPipeParameters_H
 #define GUI_TASKVIEW_TaskPipeParameters_H
-
-#include <Gui/TaskView/TaskView.h>
 
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderPipe.h"

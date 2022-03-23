@@ -20,14 +20,12 @@
  *                                                                            *
  ******************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskScaledParameters_H
 #define GUI_TASKVIEW_TaskScaledParameters_H
 
-#include <Gui/Selection.h>
-
 #include "TaskTransformedParameters.h"
 #include "ViewProviderScaled.h"
+
 
 class Ui_TaskScaledParameters;
 

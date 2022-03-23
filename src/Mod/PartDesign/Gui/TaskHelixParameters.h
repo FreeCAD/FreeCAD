@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskHelixParameters_H
 #define GUI_TASKVIEW_TaskHelixParameters_H
 
-#include <Gui/Selection.h>
-
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderHelix.h"
+
 
 namespace App {
 class Property;

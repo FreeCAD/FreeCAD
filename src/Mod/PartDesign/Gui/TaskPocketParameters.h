@@ -20,14 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskPocketParameters_H
 #define GUI_TASKVIEW_TaskPocketParameters_H
 
-#include <Gui/TaskView/TaskView.h>
-
 #include "TaskExtrudeParameters.h"
 #include "ViewProviderPocket.h"
+
 
 namespace App {
 class Property;

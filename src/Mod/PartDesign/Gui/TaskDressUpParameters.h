@@ -21,15 +21,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskDressUpParameters_H
 #define GUI_TASKVIEW_TaskDressUpParameters_H
 
-#include <Gui/Selection.h>
 #include <Gui/TaskView/TaskView.h>
 
 #include "TaskFeatureParameters.h"
 #include "ViewProviderDressUp.h"
+
 
 class QAction;
 class QListWidget;

@@ -20,14 +20,12 @@
  *                                                                            *
  ******************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskMirroredParameters_H
 #define GUI_TASKVIEW_TaskMirroredParameters_H
 
-#include <Gui/Selection.h>
-
 #include "TaskTransformedParameters.h"
 #include "ViewProviderMirrored.h"
+
 
 class Ui_TaskMirroredParameters;
 
