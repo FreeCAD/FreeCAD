@@ -169,8 +169,8 @@ public:
     }
 
     template<typename F>
-    boost::signals2::connection registerComboboxValueChanged(F&& f) {
-        return signalComboboxValueChanged.connect(std::forward<F>(f));
+    boost::signals2::connection registerComboboxSelectionChanged(F&& f) {
+        return signalComboboxSelectionChanged.connect(std::forward<F>(f));
     }
 
     
@@ -211,7 +211,7 @@ private:
 
     boost::signals2::signal<void (int parameterindex, double value)> signalParameterValueChanged;
     boost::signals2::signal<void(int checkboxindex, bool value)> signalCheckboxCheckedChanged;
-    boost::signals2::signal<void(int comboindex, int value)> signalComboboxValueChanged;
+    boost::signals2::signal<void(int comboindex, int value)> signalComboboxSelectionChanged;
 
     /// lock to block QT slots
     bool blockParameterSlots;

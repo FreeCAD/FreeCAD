@@ -137,11 +137,11 @@ SketcherToolDefaultWidget::SketcherToolDefaultWidget (QWidget *parent, ViewProvi
         this, SLOT(checkBoxTS3_toggled(bool)));
     connect(ui->checkBoxTS4, SIGNAL(toggled(bool)),
         this, SLOT(checkBoxTS4_toggled(bool)));
-    connect(ui->comboBox1, SIGNAL(valueChanged(int)),
+    connect(ui->comboBox1, SIGNAL(currentIndexChanged(int)),
         this, SLOT(comboBox1_valueChanged(int)));
-    connect(ui->comboBox2, SIGNAL(valueChanged(int)),
+    connect(ui->comboBox2, SIGNAL(currentIndexChanged(int)),
         this, SLOT(comboBox2_valueChanged(int)));
-    connect(ui->comboBox3, SIGNAL(valueChanged(int)),
+    connect(ui->comboBox3, SIGNAL(currentIndexChanged(int)),
         this, SLOT(comboBox3_valueChanged(int)));
 
     ui->parameterOne->installEventFilter(this);
@@ -199,6 +199,11 @@ void SketcherToolDefaultWidget::reset()
         setCheckboxVisible(i, false);
         setCheckboxChecked(i, false);
         setCheckboxPrefEntry(i, "");
+    }
+    for (int i = 0; i < nCombobox; i++) {
+        setComboboxVisible(i, false);
+        setComboboxIndex(i, 0);
+        getComboBox(i)->clear();
     }
 
     setNoticeVisible(false);
@@ -557,17 +562,17 @@ bool SketcherToolDefaultWidget::isCheckBoxPrefEntryEmpty(int checkboxindex)
 //Combobox functions
 void SketcherToolDefaultWidget::comboBox1_valueChanged(int val) {
     if (!blockParameterSlots) {
-        signalComboboxValueChanged(Combobox::FirstCombo, val);
+        signalComboboxSelectionChanged(Combobox::FirstCombo, val);
     }
 }
 void SketcherToolDefaultWidget::comboBox2_valueChanged(int val) {
     if (!blockParameterSlots) {
-        signalComboboxValueChanged(Combobox::SecondCombo, val);
+        signalComboboxSelectionChanged(Combobox::SecondCombo, val);
     }
 }
 void SketcherToolDefaultWidget::comboBox3_valueChanged(int val) {
     if (!blockParameterSlots) {
-        signalComboboxValueChanged(Combobox::ThirdCombo, val);
+        signalComboboxSelectionChanged(Combobox::ThirdCombo, val);
     }
 }
 
@@ -577,7 +582,6 @@ void SketcherToolDefaultWidget::initNComboboxes(int ncombobox)
 
     for (int i = 0; i < nCombobox; i++) {
         setComboboxVisible(i, (i < ncombobox) ? true : false);
-        setComboboxIndex(i, 0);
     }
 }
 
@@ -585,6 +589,7 @@ void SketcherToolDefaultWidget::setComboboxVisible(int comboboxindex, bool visib
 {
     if (comboboxindex < nCombobox) {
         getComboBox(comboboxindex)->setVisible(visible);
+        getComboBoxLabel(comboboxindex)->setVisible(visible);
     }
 }
 
@@ -616,10 +621,10 @@ QComboBox* SketcherToolDefaultWidget::getComboBox(int comboboxindex)
         return ui->comboBox1;
         break;
     case Combobox::SecondCombo:
-        return ui->comboBox1;
+        return ui->comboBox2;
         break;
     case Combobox::ThirdCombo:
-        return ui->comboBox1;
+        return ui->comboBox3;
         break;
     default:
         return nullptr;
