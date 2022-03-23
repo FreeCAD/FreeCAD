@@ -56,7 +56,7 @@ directories = [
         {"tsname":"FreeCAD", "workingdir":"./src/Gui", "tsdir":"Language"},
         {"tsname":"AddonManager", "workingdir":"./src/Mod/AddonManager/", "tsdir":"Resources/translations"},
         {"tsname":"Arch", "workingdir":"./src/Mod/Arch/", "tsdir":"Resources/translations"},
-        {"tsname":"Assembly", "workingdir":"./src/Mod/Assembly/", "tsdir":"Gui/Resources/translations"},
+        #{"tsname":"Assembly", "workingdir":"./src/Mod/Assembly/", "tsdir":"Gui/Resources/translations"},
         {"tsname":"Draft", "workingdir":"./src/Mod/Draft/", "tsdir":"Resources/translations"},
         {"tsname":"Drawing", "workingdir":"./src/Mod/Drawing/", "tsdir":"Gui/Resources/translations"},
         {"tsname":"Fem", "workingdir":"./src/Mod/Fem/", "tsdir":"Gui/Resources/translations"},
