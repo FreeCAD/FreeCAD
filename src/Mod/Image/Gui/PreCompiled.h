@@ -25,15 +25,6 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define ImageExport __declspec(dllimport)
-# define ImageGuiExport __declspec(dllexport)
-#else // for Linux
-# define ImageExport
-# define ImageGuiExport
-#endif
-
 // here get the warnings of too long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
 # pragma warning(disable : 4005)

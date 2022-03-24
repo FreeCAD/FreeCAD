@@ -25,13 +25,6 @@
 
 #include <FCConfig.h>
 
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-# define ImageExport __declspec(dllexport)
-#else // for Linux
-# define ImageExport
-#endif
-
 #ifdef _PreComp_
 /// here get the warnings of to long specifieres disabled (needed for VC6)
 #ifdef _MSC_VER
