@@ -680,6 +680,8 @@ private:
         {
             adaptDrawingToParameterChange(parameterindex, value);
 
+            doOverrideSketchPosition(prevCursorPosition); //Correct prevCursorPosition as it's modified by the new parameter
+
             doChangeDrawSketchHandlerMode();
 
         }
@@ -690,6 +692,8 @@ private:
         void checkboxCheckedChanged(int checkboxindex, bool value) {
             adaptDrawingToCheckboxChange(checkboxindex, value);
 
+            doOverrideSketchPosition(prevCursorPosition); //Correct prevCursorPosition as it's modified by the new parameter
+
             doChangeDrawSketchHandlerMode();
         }
 
@@ -698,6 +702,8 @@ private:
          */
         void comboboxSelectionChanged(int comboboxindex, int value) {
             adaptDrawingToComboboxChange(comboboxindex, value);
+
+            doOverrideSketchPosition(prevCursorPosition); //Correct prevCursorPosition as it's modified by the new parameter
 
             doChangeDrawSketchHandlerMode();
         }
@@ -757,7 +763,6 @@ private:
 
                             handler->setState(SelectMode::SeekSecond);
 
-                            doOverrideSketchPosition(prevCursorPosition); //Correct prevCursorPosition as it's modified by the parameters
                             handler->updateDataAndDrawToPosition(prevCursorPosition); // draw curve to cursor with suggested constraints
                         }
                     }
@@ -767,7 +772,6 @@ private:
                         if (toolWidget->isParameterSet(WParameter::Third) ||
                             toolWidget->isParameterSet(WParameter::Fourth)) {
 
-                            doOverrideSketchPosition(prevCursorPosition); //Correct prevCursorPosition as it's modified by the parameters
                             handler->updateDataAndDrawToPosition(prevCursorPosition); // draw curve to cursor with suggested constraints
 
                             if(toolWidget->isParameterSet(WParameter::Third) &&
@@ -946,8 +950,6 @@ private:
         * It MUST be specialised if the states correspond to different parameters
         */
         void doOverrideSketchPosition(Base::Vector2d &onSketchPos) {
-            prevCursorPosition = onSketchPos;
-
             if constexpr (std::is_same_v<StateMachines::TwoSeekEnd, SelectMode>) {
                 switch(handler->state()) {
                     case SelectMode::SeekFirst:
@@ -1005,6 +1007,8 @@ private:
                         break;
                 }
             }
+
+            prevCursorPosition = onSketchPos;//Register custor position after modifying it.
         }
         //@}
 
