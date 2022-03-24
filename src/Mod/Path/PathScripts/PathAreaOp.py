@@ -156,6 +156,7 @@ class ObjectOp(PathOp.ObjectOp):
         self.areaOpOnChanged(obj, prop)
 
     def opOnDocumentRestored(self, obj):
+        PathLog.track()
         for prop in ["AreaParams", "PathParams", "removalshape"]:
             if hasattr(obj, prop):
                 obj.setEditorMode(prop, 2)
@@ -419,6 +420,7 @@ class ObjectOp(PathOp.ObjectOp):
                 FreeCAD.Console.PrintError(
                     "Something unexpected happened. Check project and tool config."
                 )
+                raise e
             else:
                 if profileEdgesIsOpen:
                     ppCmds = pp

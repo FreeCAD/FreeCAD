@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
 # *   Copyright (c) 2020 russ4262 (Russell Johnson)                         *
@@ -105,6 +104,9 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         Can safely be overwritten by subclass."""
         pass
 
+    def areaOpSetDefaultValues(self, obj, job):
+        obj.PocketLastStepOver = 0
+
     def pocketInvertExtraOffset(self):
         """pocketInvertExtraOffset() ... return True if ExtraOffset's direction is inward.
         Can safely be overwritten by subclass."""
@@ -174,6 +176,15 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 "App::Property", "Attempts to avoid unnecessary retractions."
             ),
         )
+        obj.addProperty(
+            "App::PropertyPercent",
+            "PocketLastStepOver",
+            "Pocket",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Last Stepover Radius.  If 0, 50% of cutter is used. Tuning this can be used to improve stepover for some shapes",
+            ),
+        )
 
         for n in self.pocketPropertyEnumerations():
             setattr(obj, n[0], n[1])
@@ -190,6 +201,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
 
     def areaOpAreaParams(self, obj, isHole):
         """areaOpAreaParams(obj, isHole) ... return dictionary with pocket's area parameters"""
+        PathLog.track()
         params = {}
         params["Fill"] = 0
         params["Coplanar"] = 0
@@ -203,6 +215,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             extraOffset = 0 - extraOffset
         params["PocketExtraOffset"] = extraOffset
         params["ToolRadius"] = self.radius
+        params["PocketLastStepover"] = obj.PocketLastStepOver
 
         Pattern = [
             "ZigZag",
@@ -218,6 +231,20 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             params["FitArcs"] = False
 
         return params
+
+    def opOnDocumentRestored(self, obj):
+        if not hasattr(obj, "PocketLastStepover"):
+            obj.addProperty(
+                "App::PropertyPercent",
+                "PocketLastStepOver",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Last Stepover Radius.  If 0, 50% of cutter is used. Tuning this can be used to improve stepover for some shapes",
+                ),
+            )
+            obj.PocketLastStepOver = 0
+        PathLog.track()
 
     def areaOpPathParams(self, obj, isHole):
         """areaOpAreaParams(obj, isHole) ... return dictionary with pocket's path parameters"""
