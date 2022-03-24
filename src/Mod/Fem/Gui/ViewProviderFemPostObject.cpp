@@ -38,6 +38,7 @@
 # include <vtkCellData.h>
 # include <vtkPointData.h>
 
+# include <QApplication>
 # include <QMessageBox>
 # include <QTextStream>
 #endif
@@ -431,7 +432,7 @@ void ViewProviderFemPostObject::WritePointData(vtkPoints* points, vtkDataArray* 
     // because for Elmer we work with SI units and thus get a scaled result we need to transform
     auto Label = std::string(pcObject->Label.getValue());
     auto found = Label.find(std::string("Elmer"));
-    if (found != std::string::npos && Scale.getValueAsString() != "1000")
+    if (found != std::string::npos && strcmp(Scale.getValueAsString(), "1000") != 0)
         Scale.setValue("1000");
 
     // we must inherit the Scale of parent meshes (for example for clip filters)
@@ -457,7 +458,7 @@ void ViewProviderFemPostObject::WritePointData(vtkPoints* points, vtkDataArray* 
 
     m_coordinates->point.startEditing();
     m_coordinates->point.setNum(points->GetNumberOfPoints());
-    double scale = (Scale.getValueAsString() == "1") ? 1.0 : 1000.0;
+    double scale = (strcmp(Scale.getValueAsString(), "1") == 0) ? 1.0 : 1000.0;
     for (i = 0; i < points->GetNumberOfPoints(); i++) {
         p = points->GetPoint(i);
         m_coordinates->point.set1Value(i, p[0] * scale, p[1] * scale, p[2] * scale);
