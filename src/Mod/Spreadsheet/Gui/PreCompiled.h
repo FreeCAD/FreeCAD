@@ -27,15 +27,6 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define SpreadsheetExport    __declspec(dllimport)
-# define SpreadsheetGuiExport __declspec(dllexport)
-#else // for Linux
-# define SpreadsheetExport
-# define SpreadsheetGuiExport
-#endif
-
 
 // here get the warnings of too long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER

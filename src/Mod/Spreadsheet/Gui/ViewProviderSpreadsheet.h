@@ -27,6 +27,7 @@
 
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/ViewProviderPythonFeature.h>
+#include <Mod/Spreadsheet/SpreadsheetGlobal.h>
 #include <QPointer>
 
 namespace Spreadsheet {

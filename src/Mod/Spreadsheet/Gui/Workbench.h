@@ -26,6 +26,7 @@
 #define SPREADSHEET_WORKBENCH_H
 
 #include <Gui/Workbench.h>
+#include <Mod/Spreadsheet/SpreadsheetGlobal.h>
 
 class QtColorPicker;
 class QColor;

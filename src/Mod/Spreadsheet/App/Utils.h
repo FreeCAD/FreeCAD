@@ -28,6 +28,7 @@
 #include <set>
 #include <memory>
 #include <Base/BaseClass.h>
+#include <Mod/Spreadsheet/SpreadsheetGlobal.h>
 
 namespace Spreadsheet {
 
