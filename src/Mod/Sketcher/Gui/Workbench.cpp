@@ -192,7 +192,6 @@ template <>
 inline void SketcherAddWorkspaceArcs<Gui::MenuItem>(Gui::MenuItem& geom)
 {
     geom    << "Sketcher_CreateArc"
-            << "Sketcher_Create3PointArc"
             << "Sketcher_CreateCircle"
             << "Sketcher_CreateEllipseByCenter"
             << "Sketcher_CreateEllipseBy3Points"

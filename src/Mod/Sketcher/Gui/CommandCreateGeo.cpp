@@ -3817,379 +3817,6 @@ bool CmdSketcherCreateArc::isActive(void)
 
 // ======================================================================================
 
-// NOTE: Refactor together with Arc above using different construction modes
-class DrawSketchHandler3PointArc : public DrawSketchHandler
-{
-public:
-    DrawSketchHandler3PointArc()
-      : Mode(STATUS_SEEK_First), EditCurve(2)
-      , radius(0), startAngle(0)
-      , endAngle(0), arcAngle(0)
-      , arcPos1(Sketcher::PointPos::none)
-      , arcPos2(Sketcher::PointPos::none)
-    {
-    }
-    virtual ~DrawSketchHandler3PointArc(){}
-    /// mode table
-    enum SelectMode {
-        STATUS_SEEK_First,      /**< enum value ----. */
-        STATUS_SEEK_Second,     /**< enum value ----. */
-        STATUS_SEEK_Third,      /**< enum value ----. */
-        STATUS_End
-    };
-
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
-    {
-        if (Mode==STATUS_SEEK_First) {
-            setPositionText(onSketchPos);
-            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f))) {
-                renderSuggestConstraintsCursor(sugConstr1);
-                return;
-            }
-        }
-        else if (Mode==STATUS_SEEK_Second) {
-            CenterPoint  = EditCurve[0] = (onSketchPos - FirstPoint)/2 + FirstPoint;
-            EditCurve[1] = EditCurve[33] = onSketchPos;
-            radius = (onSketchPos - CenterPoint).Length();
-            double lineAngle = GetPointAngle(CenterPoint, onSketchPos);
-
-            // Build a 32 point circle ignoring already constructed points
-            for (int i=1; i <= 32; i++) {
-                // Start at current angle
-                double angle = (i-1)*2*M_PI/32.0 + lineAngle; // N point closed circle has N segments
-                if (i != 1 && i != 17 ) {
-                    EditCurve[i] = Base::Vector2d(CenterPoint.x + radius*cos(angle),
-                                                  CenterPoint.y + radius*sin(angle));
-                }
-            }
-
-            // Display radius and start angle
-            // This lineAngle will report counter-clockwise from +X, not relatively
-            SbString text;
-            text.sprintf(" (%.1fR,%.1fdeg)", (float) radius, (float) lineAngle * 180 / M_PI);
-            setPositionText(onSketchPos, text);
-
-            drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f))) {
-                renderSuggestConstraintsCursor(sugConstr2);
-                return;
-            }
-        }
-        else if (Mode==STATUS_SEEK_Third) {
-            /*
-            Centerline inverts when the arc flips sides.  Easily taken care of by replacing
-            centerline with a point.  It happens because the direction the curve is being drawn
-            reverses.
-            */
-            try {
-                CenterPoint = EditCurve[30] = Part::Geom2dCircle::getCircleCenter(FirstPoint, SecondPoint, onSketchPos);
-
-                radius = (SecondPoint - CenterPoint).Length();
-
-                double angle1 = GetPointAngle(CenterPoint, FirstPoint);
-                double angle2 = GetPointAngle(CenterPoint, SecondPoint);
-                double angle3 = GetPointAngle(CenterPoint, onSketchPos);
-
-                // Always build arc counter-clockwise
-                // Point 3 is between Point 1 and 2
-                if ( angle3 > min(angle1, angle2) && angle3 < max(angle1, angle2) ) {
-                    if (angle2 > angle1) {
-                        EditCurve[0] =  FirstPoint;
-                        EditCurve[29] = SecondPoint;
-                        arcPos1 = Sketcher::PointPos::start;
-                        arcPos2 = Sketcher::PointPos::end;
-                    }
-                    else {
-                        EditCurve[0] =  SecondPoint;
-                        EditCurve[29] = FirstPoint;
-                        arcPos1 = Sketcher::PointPos::end;
-                        arcPos2 = Sketcher::PointPos::start;
-                    }
-                    startAngle = min(angle1, angle2);
-                    endAngle   = max(angle1, angle2);
-                    arcAngle = endAngle - startAngle;
-                }
-                // Point 3 is not between Point 1 and 2
-                else {
-                    if (angle2 > angle1) {
-                        EditCurve[0] =  SecondPoint;
-                        EditCurve[29] = FirstPoint;
-                        arcPos1 = Sketcher::PointPos::end;
-                        arcPos2 = Sketcher::PointPos::start;
-                    }
-                    else {
-                        EditCurve[0] =  FirstPoint;
-                        EditCurve[29] = SecondPoint;
-                        arcPos1 = Sketcher::PointPos::start;
-                        arcPos2 = Sketcher::PointPos::end;
-                    }
-                    startAngle = max(angle1, angle2);
-                    endAngle   = min(angle1, angle2);
-                    arcAngle = 2*M_PI - (startAngle - endAngle);
-                }
-
-                // Build a 30 point circle ignoring already constructed points
-                for (int i=1; i <= 28; i++) {
-                    double angle = startAngle + i*arcAngle/29.0; // N point arc has N-1 segments
-                    EditCurve[i] = Base::Vector2d(CenterPoint.x + radius*cos(angle),
-                                                CenterPoint.y + radius*sin(angle));
-                }
-
-                SbString text;
-                text.sprintf(" (%.1fR,%.1fdeg)", (float) radius, (float) arcAngle * 180 / M_PI);
-                setPositionText(onSketchPos, text);
-
-                drawEdit(EditCurve);
-                if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.0,0.0),
-                                    AutoConstraint::CURVE)) {
-                    renderSuggestConstraintsCursor(sugConstr3);
-                    return;
-                }
-            }
-            catch(Base::ValueError &e) {
-                e.ReportException();
-            }
-        }
-        applyCursor();
-    }
-
-    virtual bool pressButton(Base::Vector2d onSketchPos) override
-    {
-        if (Mode==STATUS_SEEK_First){
-            // 32 point curve + center + endpoint
-            EditCurve.resize(34);
-            // 17 is circle halfway point (1+32/2)
-            FirstPoint = EditCurve[17] = onSketchPos;
-
-            Mode = STATUS_SEEK_Second;
-        }
-        else if (Mode==STATUS_SEEK_Second){
-            // 30 point arc and center point
-            EditCurve.resize(31);
-            SecondPoint = onSketchPos;
-
-            Mode = STATUS_SEEK_Third;
-        }
-        else {
-            EditCurve.resize(30);
-
-            drawEdit(EditCurve);
-            applyCursor();
-            Mode = STATUS_End;
-        }
-
-        return true;
-    }
-
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
-    {
-        Q_UNUSED(onSketchPos);
-        // Need to look at.  rx might need fixing.
-        if (Mode==STATUS_End) {
-            unsetCursor();
-            resetPositionText();
-
-            try {
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc"));
-                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.ArcOfCircle"
-                    "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f),%s)",
-                          CenterPoint.x, CenterPoint.y, radius,
-                          startAngle, endAngle,
-                          geometryCreationMode==Construction?"True":"False");
-
-                Gui::Command::commitCommand();
-            }
-            catch (const Base::Exception& e) {
-                Base::Console().Error("Failed to add arc: %s\n", e.what());
-                Gui::Command::abortCommand();
-            }
-
-            // Auto Constraint first picked point
-            if (sugConstr1.size() > 0) {
-                createAutoConstraints(sugConstr1, getHighestCurveIndex(), arcPos1);
-                sugConstr1.clear();
-            }
-
-            // Auto Constraint second picked point
-            if (sugConstr2.size() > 0) {
-                createAutoConstraints(sugConstr2, getHighestCurveIndex(), arcPos2);
-                sugConstr2.clear();
-            }
-
-            // Auto Constraint third picked point
-            if (sugConstr3.size() > 0) {
-                createAutoConstraints(sugConstr3, getHighestCurveIndex(), Sketcher::PointPos::none);
-                sugConstr3.clear();
-            }
-
-            tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
-
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-            bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
-            if(continuousMode){
-                // This code enables the continuous creation mode.
-                Mode=STATUS_SEEK_First;
-                EditCurve.clear();
-                drawEdit(EditCurve);
-                EditCurve.resize(2);
-                applyCursor();
-                /* this is ok not to call to purgeHandler
-                * in continuous creation mode because the
-                * handler is destroyed by the quit() method on pressing the
-                * right button of the mouse */
-            }
-            else{
-                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
-            }
-        }
-        return true;
-    }
-
-private:
-    virtual void activated() override
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_3PointArc");
-    }
-
-protected:
-    SelectMode Mode;
-    std::vector<Base::Vector2d> EditCurve;
-    Base::Vector2d CenterPoint, FirstPoint, SecondPoint;
-    double radius, startAngle, endAngle, arcAngle;
-    std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3;
-    Sketcher::PointPos arcPos1, arcPos2;
-};
-
-DEF_STD_CMD_A(CmdSketcherCreate3PointArc)
-
-CmdSketcherCreate3PointArc::CmdSketcherCreate3PointArc()
-  : Command("Sketcher_Create3PointArc")
-{
-    sAppModule      = "Sketcher";
-    sGroup          = "Sketcher";
-    sMenuText       = QT_TR_NOOP("Create arc by three points");
-    sToolTipText    = QT_TR_NOOP("Create an arc by its end points and a point along the arc");
-    sWhatsThis      = "Sketcher_Create3PointArc";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_Create3PointArc";
-    sAccel          = "G, 3, A";
-    eType           = ForEdit;
-}
-
-void CmdSketcherCreate3PointArc::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandler3PointArc() );
-}
-
-bool CmdSketcherCreate3PointArc::isActive(void)
-{
-    return isCreateGeoActive(getActiveGuiDocument());
-}
-
-
-DEF_STD_CMD_ACLU(CmdSketcherCompCreateArc)
-
-CmdSketcherCompCreateArc::CmdSketcherCompCreateArc()
-  : Command("Sketcher_CompCreateArc")
-{
-    sAppModule      = "Sketcher";
-    sGroup          = "Sketcher";
-    sMenuText       = QT_TR_NOOP("Create arc");
-    sToolTipText    = QT_TR_NOOP("Create an arc in the sketcher");
-    sWhatsThis      = "Sketcher_CompCreateArc";
-    sStatusTip      = sToolTipText;
-    eType           = ForEdit;
-}
-
-void CmdSketcherCompCreateArc::activated(int iMsg)
-{
-    if (iMsg==0)
-        ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerArc());
-    else if (iMsg==1)
-        ActivateHandler(getActiveGuiDocument(),new DrawSketchHandler3PointArc());
-    else
-        return;
-
-    // Since the default icon is reset when enabling/disabling the command we have
-    // to explicitly set the icon of the used command.
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
-
-    assert(iMsg < a.size());
-    pcAction->setIcon(a[iMsg]->icon());
-}
-
-Gui::Action * CmdSketcherCompCreateArc::createAction(void)
-{
-    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
-    pcAction->setDropDownMenu(true);
-    applyCommandData(this->className(), pcAction);
-
-    QAction* arc1 = pcAction->addAction(QString());
-    arc1->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateArc"));
-    QAction* arc2 = pcAction->addAction(QString());
-    arc2->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointArc"));
-
-    _pcAction = pcAction;
-    languageChange();
-
-    pcAction->setIcon(arc1->icon());
-    int defaultId = 0;
-    pcAction->setProperty("defaultAction", QVariant(defaultId));
-
-    return pcAction;
-}
-
-void CmdSketcherCompCreateArc::updateAction(int mode)
-{
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
-    if (!pcAction)
-        return;
-
-    QList<QAction*> a = pcAction->actions();
-    int index = pcAction->property("defaultAction").toInt();
-    switch (mode) {
-    case Normal:
-        a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateArc"));
-        a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointArc"));
-        getAction()->setIcon(a[index]->icon());
-        break;
-    case Construction:
-        a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateArc_Constr"));
-        a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointArc_Constr"));
-        getAction()->setIcon(a[index]->icon());
-        break;
-    }
-}
-
-void CmdSketcherCompCreateArc::languageChange()
-{
-    Command::languageChange();
-
-    if (!_pcAction)
-        return;
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
-
-    QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdSketcherCompCreateArc","Center and end points"));
-    arc1->setToolTip(QApplication::translate("Sketcher_CreateArc","Create an arc by its center and by its end points"));
-    arc1->setStatusTip(QApplication::translate("Sketcher_CreateArc","Create an arc by its center and by its end points"));
-    QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("CmdSketcherCompCreateArc","End points and rim point"));
-    arc2->setToolTip(QApplication::translate("Sketcher_Create3PointArc","Create an arc by its end points and a point along the arc"));
-    arc2->setStatusTip(QApplication::translate("Sketcher_Create3PointArc","Create an arc by its end points and a point along the arc"));
-}
-
-bool CmdSketcherCompCreateArc::isActive(void)
-{
-    return isCreateGeoActive(getActiveGuiDocument());
-}
-
-
-// ======================================================================================
-
 using DrawSketchHandlerCircleBase = DSHandlerDefaultWidget<  GeometryTools::Circle,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
@@ -6614,6 +6241,131 @@ void CmdSketcherCompCreateConic::languageChange()
 }
 
 bool CmdSketcherCompCreateConic::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+
+// Comp for arcs (circle, ellipse, hyperbola, parabola)===========================================
+
+DEF_STD_CMD_ACLU(CmdSketcherCompCreateArc)
+
+CmdSketcherCompCreateArc::CmdSketcherCompCreateArc()
+    : Command("Sketcher_CompCreateArc")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Create arc");
+    sToolTipText = QT_TR_NOOP("Create an arc in the sketcher");
+    sWhatsThis = "Sketcher_CompCreateArc";
+    sStatusTip = sToolTipText;
+    eType = ForEdit;
+}
+
+void CmdSketcherCompCreateArc::activated(int iMsg)
+{
+    if (iMsg == 0)
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerArc());
+    else if (iMsg == 1)
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerArcOfEllipse());
+    else if (iMsg == 2)
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerArcOfHyperbola());
+    else if (iMsg == 3)
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerArcOfParabola());
+    else
+        return;
+
+    // Since the default icon is reset when enabling/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+}
+
+Gui::Action* CmdSketcherCompCreateArc::createAction(void)
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* arc = pcAction->addAction(QString());
+    arc->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateArc"));
+
+    QAction* arcofellipse = pcAction->addAction(QString());
+    arcofellipse->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateElliptical_Arc"));
+
+    QAction* arcofhyperbola = pcAction->addAction(QString());
+    arcofhyperbola->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHyperbolic_Arc"));
+
+    QAction* arcofparabola = pcAction->addAction(QString());
+    arcofparabola->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateParabolic_Arc"));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(arc->icon());
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdSketcherCompCreateArc::updateAction(int mode)
+{
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    if (!pcAction)
+        return;
+
+    QList<QAction*> a = pcAction->actions();
+    int index = pcAction->property("defaultAction").toInt();
+    switch (mode) {
+    case Normal:
+        a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateArc"));
+        a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateElliptical_Arc"));
+        a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHyperbolic_Arc"));
+        a[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateParabolic_Arc"));
+        getAction()->setIcon(a[index]->icon());
+        break;
+    case Construction:
+        a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateArc_Constr"));
+        a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateElliptical_Arc_Constr"));
+        a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateHyperbolic_Arc_Constr"));
+        a[3]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateParabolic_Arc_Constr"));
+        getAction()->setIcon(a[index]->icon());
+        break;
+    }
+}
+
+void CmdSketcherCompCreateArc::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    QAction* arc1 = a[0];
+    arc1->setText(QApplication::translate("CmdSketcherCompCreateArc", "Arc of Circle"));
+    arc1->setToolTip(QApplication::translate("Sketcher_CreateArc", "Create an arc by its center or by its end points"));
+    arc1->setStatusTip(QApplication::translate("Sketcher_CreateArc", "Create an arc by its center or by its end points"));
+    QAction* arcofellipse = a[1];
+    arcofellipse->setText(QApplication::translate("CmdSketcherCompCreateArc", "Arc of ellipse"));
+    arcofellipse->setToolTip(QApplication::translate("Sketcher_CreateArcOfEllipse", "Create an arc of ellipse by its center, major radius, and endpoints"));
+    arcofellipse->setStatusTip(QApplication::translate("Sketcher_CreateArcOfEllipse", "Create an arc of ellipse by its center, major radius, and endpoints"));
+    QAction* arcofhyperbola = a[2];
+    arcofhyperbola->setText(QApplication::translate("CmdSketcherCompCreateArc", "Arc of hyperbola"));
+    arcofhyperbola->setToolTip(QApplication::translate("Sketcher_CreateArcOfHyperbola", "Create an arc of hyperbola by its center, major radius, and endpoints"));
+    arcofhyperbola->setStatusTip(QApplication::translate("Sketcher_CreateArcOfHyperbola", "Create an arc of hyperbola by its center, major radius, and endpoints"));
+    QAction* arcofparabola = a[3];
+    arcofparabola->setText(QApplication::translate("CmdSketcherCompCreateArc", "Arc of parabola"));
+    arcofparabola->setToolTip(QApplication::translate("Sketcher_CreateArcOfParabola", "Create an arc of parabola by its focus, vertex, and endpoints"));
+    arcofparabola->setStatusTip(QApplication::translate("Sketcher_CreateArcOfParabola", "Create an arc of parabola by its focus, vertex, and endpoints"));
+}
+
+bool CmdSketcherCompCreateArc::isActive(void)
 {
     return isCreateGeoActive(getActiveGuiDocument());
 }
@@ -9690,7 +9442,6 @@ void CreateSketcherCommandsCreateGeo(void)
 
     rcCmdMgr.addCommand(new CmdSketcherCreatePoint());
     rcCmdMgr.addCommand(new CmdSketcherCreateArc());
-    rcCmdMgr.addCommand(new CmdSketcherCreate3PointArc());
     rcCmdMgr.addCommand(new CmdSketcherCompCreateArc());
     rcCmdMgr.addCommand(new CmdSketcherCreateCircle());
     rcCmdMgr.addCommand(new CmdSketcherCompCreateCircle());
