@@ -33,6 +33,7 @@
 
 #include <Base/Vector3D.h>
 #include <Mod/Mesh/App/Mesh.h>
+#include <Mod/MeshPart/MeshPartGlobal.h>
 
 namespace MeshCore
 {

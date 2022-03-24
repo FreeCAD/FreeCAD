@@ -24,6 +24,7 @@
 #ifndef MESH_DECIMATION_H
 #define MESH_DECIMATION_H
 
+#include <Mod/Mesh/MeshGlobal.h>
 
 namespace MeshCore
 {
