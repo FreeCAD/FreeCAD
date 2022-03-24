@@ -27,17 +27,13 @@ if(PYCXX_INCLUDE_DIR)
     # headers better be in there
     if(NOT EXISTS "${PYCXX_INCLUDE_DIR}/CXX/Config.hxx")
         if(PyCXX_FIND_REQUIRED)
-            MESSAGE(FATAL_ERROR
-                "PyCXX: could not find CXX/Config.hxx in PYCXX_INCLUDE_DIR "
-            "${PYCXX_INCLUDE_DIR}")
+            MESSAGE(FATAL_ERROR "PyCXX: could not find CXX/Config.hxx in PYCXX_INCLUDE_DIR "  "${PYCXX_INCLUDE_DIR}")
         else(PyCXX_FIND_REQUIRED)
-            MESSAGE(WARNING
-                "PyCXX: could not find CXX/Config.hxx in PYCXX_INCLUDE_DIR "
-            "${PYCXX_INCLUDE_DIR}")
+            MESSAGE(WARNING "PyCXX: could not find CXX/Config.hxx in PYCXX_INCLUDE_DIR "  "${PYCXX_INCLUDE_DIR}")
             unset(PYCXX_FOUND)
         endif(PyCXX_FIND_REQUIRED)
     endif(NOT EXISTS "${PYCXX_INCLUDE_DIR}/CXX/Config.hxx")
-else(PYCXX_INCLUDE_DIR)
+else(NOT PYCXX_INCLUDE_DIR)
     # check in 'standard' places
     find_path(PYCXX_INCLUDE_DIR CXX/Config.hxx
         ${PYTHON_INCLUDE_DIR}
@@ -69,7 +65,7 @@ if(PYCXX_SOURCE_DIR)
             unset(PYCXX_FOUND)
         endif(PyCXX_FIND_REQUIRED)
     endif(NOT EXISTS "${PYCXX_SOURCE_DIR}/cxxextensions.c")
-else(PYCXX_SOURCE_DIR)
+else(NOT PYCXX_SOURCE_DIR)
     # check in 'standard' places
     find_path(PYCXX_SOURCE_DIR cxxextensions.c
         "${PYCXX_INCLUDE_DIR}/CXX"
@@ -122,7 +118,7 @@ if(PYCXX_FOUND)
             ${PYCXX_SOURCE_DIR}/cxx_exceptions.cxx)
         add_definitions(-DPYCXX_6_2_COMPATIBILITY)
     endif()
-else(PYCXX_FOUND)
+else(NOT PYCXX_FOUND)
     MESSAGE(STATUS "PyCXX not found")
 endif(PYCXX_FOUND)
 
