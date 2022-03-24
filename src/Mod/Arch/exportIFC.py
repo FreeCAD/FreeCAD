@@ -1374,10 +1374,9 @@ def export(exportList, filename, colors=None, preferences=None):
                     l = FreeCAD.Vector(vp.tbase).multiply(preferences['SCALE_FACTOR'])
                     pos = ifcbin.createIfcCartesianPoint((l.x,l.y,l.z))
                     tpl = ifcbin.createIfcAxis2Placement3D(pos,None,None)
-                    s = ";".join(vp.string)
                     if six.PY2:
                         s = s.encode("utf8")
-                    txt = ifcfile.createIfcTextLiteral(s,tpl,"LEFT")
+                    txt = ifcfile.createIfcTextLiteral(vp.string,tpl,"LEFT")
                     reps.append(txt)
             else:
                 print("Unable to handle object",anno.Label)
