@@ -118,6 +118,14 @@ def insert(filename,docname=None,preferences=None):
         if not iterator.next():
             break
 
+    # process 2D annotations
+    annotations = ifcfile.by_type("IfcAnnotation")
+    if annotations:
+        print("Processing",str(len(annotations)),"annotations...")
+        ifcscale = importIFCHelper.getScaling(ifcfile)
+        for annotation in annotations:
+            importIFCHelper.createAnnotation(annotation,FreeCAD.ActiveDocument,ifcscale,preferences)
+
     # post-processing
     processRelationships()
     storeColorDict()

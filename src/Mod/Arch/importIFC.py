@@ -1166,76 +1166,8 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             continue  # user given id skip list
         if annotation.is_a() in preferences['SKIP']:
             continue  # preferences-set type skip list
-        if annotation.is_a("IfcGrid"):
-            axes = []
-            uvwaxes = ()
-            if annotation.UAxes:
-                uvwaxes = annotation.UAxes
-            if annotation.VAxes:
-                uvwaxes = uvwaxes + annotation.VAxes
-            if annotation.WAxes:
-                uvwaxes = uvwaxes + annotation.WAxes
-            for axis in uvwaxes:
-                if axis.AxisCurve:
-                    sh = importIFCHelper.get2DShape(axis.AxisCurve,ifcscale)
-                    if sh and (len(sh[0].Vertexes) == 2):  # currently only straight axes are supported
-                        sh = sh[0]
-                        l = sh.Length
-                        pl = FreeCAD.Placement()
-                        pl.Base = sh.Vertexes[0].Point
-                        pl.Rotation = FreeCAD.Rotation(FreeCAD.Vector(0,1,0),sh.Vertexes[-1].Point.sub(sh.Vertexes[0].Point))
-                        o = Arch.makeAxis(1,l)
-                        o.Length = l
-                        o.Placement = pl
-                        o.CustomNumber = axis.AxisTag
-                        axes.append(o)
-            if axes:
-                name = "Grid"
-                grid_placement = None
-                if annotation.Name:
-                    name = annotation.Name
-                    if six.PY2:
-                        name = name.encode("utf8")
-                if annotation.ObjectPlacement:
-                    # https://forum.freecadweb.org/viewtopic.php?f=39&t=40027
-                    grid_placement = importIFCHelper.getPlacement(
-                        annotation.ObjectPlacement,
-                        scaling=1
-                    )
-                if preferences['PREFIX_NUMBERS']:
-                    name = "ID" + str(aid) + " " + name
-                anno = Arch.makeAxisSystem(axes,name)
-                if grid_placement:
-                    anno.Placement = grid_placement
-            print(" axis")
-        else:
-            name = "Annotation"
-            if annotation.Name:
-                name = annotation.Name
-                if six.PY2:
-                    name = name.encode("utf8")
-            if "annotation" not in name.lower():
-                name = "Annotation " + name
-            if preferences['PREFIX_NUMBERS']: name = "ID" + str(aid) + " " + name
-            shapes2d = []
-            for rep in annotation.Representation.Representations:
-                if rep.RepresentationIdentifier in ["Annotation","FootPrint","Axis"]:
-                    sh = importIFCHelper.get2DShape(rep,ifcscale)
-                    if sh in doc.Objects:
-                        # dirty hack: get2DShape might return an object directly if non-shape based (texts for ex)
-                        anno = sh
-                    else:
-                        shapes2d.extend(sh)
-            if shapes2d:
-                sh = Part.makeCompound(shapes2d)
-                if preferences['DEBUG']: print(" shape")
-                anno = doc.addObject("Part::Feature",name)
-                anno.Shape = sh
-                p = importIFCHelper.getPlacement(annotation.ObjectPlacement,ifcscale)
-                if p:  # and annotation.is_a("IfcAnnotation"):
-                    anno.Placement = p
-            else:
-                if preferences['DEBUG']: print(" no shape")
+
+        anno = importIFCHelper.createAnnotation(annotation,doc,ifcscale,preferences)
 
         # placing in container if needed
 
@@ -1299,7 +1231,7 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
             for added_mat in added_mats:
                 if (
                     "Description" in added_mat.Material
-                    and "DiffuseColor" in added_mat.Material 
+                    and "DiffuseColor" in added_mat.Material
                     and "DiffuseColor" in mdict  # Description has been set thus it is in mdict
                     and added_mat.Material["Description"] == mdict["Description"]
                     and added_mat.Material["DiffuseColor"] == mdict["DiffuseColor"]
