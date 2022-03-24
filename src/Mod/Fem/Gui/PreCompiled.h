@@ -26,19 +26,6 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define AppFemExport   __declspec(dllimport)
-# define FemExport   __declspec(dllimport)
-# define PartExport  __declspec(dllimport)
-# define FemGuiExport   __declspec(dllexport)
-#else // for Linux
-# define PartExport
-# define AppFemExport
-# define FemExport
-# define FemGuiExport
-#endif
-
 #ifdef _MSC_VER
 # pragma warning(disable : 4005)
 # pragma warning(disable : 4290)
