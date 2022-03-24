@@ -248,7 +248,7 @@ class ObjectDressup:
         return FreeCAD.Vector(xnew, ynew, Vector.z)
 
     def getLeadStart(self, obj, queue, action):
-        '''returns Lead In G-code.'''
+        """returns Lead In G-code."""
         # Modified March 2022 by lcorley to support leadin extension
         results = []
         op = PathDressup.baseOp(obj.Base)
@@ -259,7 +259,7 @@ class ObjectDressup:
         arcs_identical = False
 
         # Set the correct twist command
-        if self.getDirectionOfPath(obj) == 'left':
+        if self.getDirectionOfPath(obj) == "left":
             arcdir = "G3"
         else:
             arcdir = "G2"
@@ -269,18 +269,22 @@ class ObjectDressup:
             p0 = queue[0].Placement.Base
             p1 = queue[1].Placement.Base
             v = self.normalize(p1.sub(p0))
-            PathLog.debug(" CURRENT_IN Line : P0 Z:{} p1 Z:{}".format(p0.z,p1.z))
+            PathLog.debug(" CURRENT_IN Line : P0 Z:{} p1 Z:{}".format(p0.z, p1.z))
         else:
             p0 = queue[0].Placement.Base
             p1 = queue[1].Placement.Base
             v = self.normalize(p1.sub(p0))
-            PathLog.debug(" CURRENT_IN ARC : P0 X:{} Y:{} P1 X:{} Y:{} ".format(p0.x,p0.y,p1.x,p1.y))
+            PathLog.debug(
+                " CURRENT_IN ARC : P0 X:{} Y:{} P1 X:{} Y:{} ".format(
+                    p0.x, p0.y, p1.x, p1.y
+                )
+            )
 
         # Calculate offset vector (will be overwritten for arcs)
-        if self.getDirectionOfPath(obj) == 'right':
-            off_v = FreeCAD.Vector(v.y*R, -v.x*R, 0.0)
+        if self.getDirectionOfPath(obj) == "right":
+            off_v = FreeCAD.Vector(v.y * R, -v.x * R, 0.0)
         else:
-            off_v = FreeCAD.Vector(-v.y*R, v.x*R, 0.0)
+            off_v = FreeCAD.Vector(-v.y * R, v.x * R, 0.0)
 
         # Check if we enter at line or arc command
         if queue[1].Name in movecommands and queue[1].Name not in arccommands:
@@ -288,14 +292,18 @@ class ObjectDressup:
             vec = p1.sub(p0)
             vec_n = self.normalize(vec)
             vec_inv = self.invert(vec_n)
-            vec_off = self.multiply(vec_inv,  obj.ExtendLeadIn)
-            PathLog.debug("LineCMD: {}, Vxinv: {}, Vyinv: {}, Vxoff: {}, Vyoff: {}".format(queue[0].Name, vec_inv.x, vec_inv.y,  vec_off.x,  vec_off.y))
+            vec_off = self.multiply(vec_inv, obj.ExtendLeadIn)
+            PathLog.debug(
+                "LineCMD: {}, Vxinv: {}, Vyinv: {}, Vxoff: {}, Vyoff: {}".format(
+                    queue[0].Name, vec_inv.x, vec_inv.y, vec_off.x, vec_off.y
+                )
+            )
         else:
             # We have an arc move
             # Calculate coordinates for middle of circle
             pij = copy.deepcopy(p0)
-            pij.x += queue[1].Parameters['I']
-            pij.y += queue[1].Parameters['J']
+            pij.x += queue[1].Parameters["I"]
+            pij.y += queue[1].Parameters["J"]
 
             # Check if lead in and operation go in same direction (usually for inner circles)
             if arcdir == queue[1].Name:
@@ -306,9 +314,9 @@ class ObjectDressup:
 
             # Rotate vector to get direction for lead in
             if arcdir == "G2":
-                vec_rot = self.rotate(vec_circ,  90)
+                vec_rot = self.rotate(vec_circ, 90)
             else:
-                vec_rot = self.rotate(vec_circ,  -90)
+                vec_rot = self.rotate(vec_circ, -90)
 
             # Normalize and invert vector
             vec_n = self.normalize(vec_rot)
@@ -317,23 +325,23 @@ class ObjectDressup:
 
             # Calculate offset of lead in
             if arcdir == "G3":
-                off_v = FreeCAD.Vector(-v.y*R, v.x*R, 0.0)
+                off_v = FreeCAD.Vector(-v.y * R, v.x * R, 0.0)
             else:
-                off_v = FreeCAD.Vector(v.y*R, -v.x*R, 0.0)
+                off_v = FreeCAD.Vector(v.y * R, -v.x * R, 0.0)
 
             # Multiply offset by LeadIn length
-            #vec_off = self.multiply(vec_n,  obj.ExtendLeadIn)
+            # vec_off = self.multiply(vec_n,  obj.ExtendLeadIn)
 
-        #offsetvector = FreeCAD.Vector(v.x*R-vec_off.x, v.y*R-vec_off.y, 0)  # IJ
-        offsetvector = FreeCAD.Vector(v.x*R, v.y*R, 0)  # IJ
+        # offsetvector = FreeCAD.Vector(v.x*R-vec_off.x, v.y*R-vec_off.y, 0)  # IJ
+        offsetvector = FreeCAD.Vector(v.x * R, v.y * R, 0)  # IJ
 
-        if obj.RadiusCenter == 'Radius':
+        if obj.RadiusCenter == "Radius":
             leadstart = (p0.add(off_v)).sub(offsetvector)  # Rmode
             if arcs_identical:
                 t = p0.sub(leadstart)
                 t = p0.add(t)
                 leadstart = t
-                offsetvector = self.multiply(offsetvector,  -1)
+                offsetvector = self.multiply(offsetvector, -1)
         else:
             leadstart = p0.add(off_v)  # Dmode
         # At this point leadstart is the beginning of the leadin arc
@@ -344,81 +352,111 @@ class ObjectDressup:
             tangentvec = self.rotate(offsetvector, -90)
         else:
             tangentvec = self.rotate(offsetvector, 90)
-        #print ("tangentvec = ", tangentvec)
+        # print ("tangentvec = ", tangentvec)
         # Normalize the tangent vector
         tangentvecNorm = self.normalize(tangentvec)
-        #print ("tangentvecNorm = ", tangentvecNorm)
+        # print ("tangentvecNorm = ", tangentvecNorm)
         # Multiply tangentvecNorm by LeadIn length
-        leadlinevec = self.multiply(tangentvecNorm,  obj.ExtendLeadIn)
-        #print ("leadlinevec = ", leadlinevec)
+        leadlinevec = self.multiply(tangentvecNorm, obj.ExtendLeadIn)
+        # print ("leadlinevec = ", leadlinevec)
         # leadlinevec provides the offset from the beginning of the lead arc to the beginning of the extend line
         extendstart = leadstart.add(leadlinevec)
-        #print ("extendstart = ", extendstart)
+        # print ("extendstart = ", extendstart)
 
-        if action == 'start':
+        if action == "start":
             if obj.ExtendLeadIn != 0:
                 # Rapid move to beginning of extend line
-                extendcommand = Path.Command('G0', {"X": extendstart.x, "Y": extendstart.y, "Z": op.ClearanceHeight.Value})
+                extendcommand = Path.Command(
+                    "G0",
+                    {
+                        "X": extendstart.x,
+                        "Y": extendstart.y,
+                        "Z": op.ClearanceHeight.Value,
+                    },
+                )
             else:
                 # Rapid move to beginning of leadin arc
-                extendcommand = Path.Command('G0', {"X": leadstart.x, "Y": leadstart.y, "Z": op.ClearanceHeight.Value})
+                extendcommand = Path.Command(
+                    "G0",
+                    {"X": leadstart.x, "Y": leadstart.y, "Z": op.ClearanceHeight.Value},
+                )
             results.append(extendcommand)
-            extendcommand = Path.Command('G0', {"Z": op.SafeHeight.Value})
+            extendcommand = Path.Command("G0", {"Z": op.SafeHeight.Value})
             results.append(extendcommand)
 
-        if action == 'layer':
+        if action == "layer":
             if not obj.KeepToolDown:
-                extendcommand = Path.Command('G0', {"Z": op.SafeHeight.Value})
+                extendcommand = Path.Command("G0", {"Z": op.SafeHeight.Value})
                 results.append(extendcommand)
 
-            extendcommand = Path.Command('G0', {"X": leadstart.x, "Y": leadstart.y})
+            extendcommand = Path.Command("G0", {"X": leadstart.x, "Y": leadstart.y})
             results.append(extendcommand)
 
         if not obj.RapidPlunge:
-            extendcommand = Path.Command('G1', {"X": leadstart.x, "Y": leadstart.y, "Z": p1.z, "F": vertFeed})
+            extendcommand = Path.Command(
+                "G1", {"X": leadstart.x, "Y": leadstart.y, "Z": p1.z, "F": vertFeed}
+            )
         else:
-            extendcommand = Path.Command('G0', {"X": leadstart.x, "Y": leadstart.y, "Z": p1.z,})
+            extendcommand = Path.Command(
+                "G0",
+                {
+                    "X": leadstart.x,
+                    "Y": leadstart.y,
+                    "Z": p1.z,
+                },
+            )
         results.append(extendcommand)
 
         if obj.UseMachineCRC:
-            if self.getDirectionOfPath(obj) == 'right':
-                results.append(Path.Command('G42', {'D': toolnummer}))
+            if self.getDirectionOfPath(obj) == "right":
+                results.append(Path.Command("G42", {"D": toolnummer}))
             else:
-                results.append(Path.Command('G41', {'D': toolnummer}))
+                results.append(Path.Command("G41", {"D": toolnummer}))
 
-        if obj.StyleOn == 'Arc':
+        if obj.StyleOn == "Arc":
             if obj.ExtendLeadIn != 0:
                 # Insert move to beginning of leadin arc
-                extendcommand = Path.Command('G1', {"X": leadstart.x, "Y": leadstart.y, "F": horizFeed})
+                extendcommand = Path.Command(
+                    "G1", {"X": leadstart.x, "Y": leadstart.y, "F": horizFeed}
+                )
                 results.append(extendcommand)
-            arcmove = Path.Command(arcdir, {"X": p0.x, "Y": p0.y, "I": offsetvector.x, "J": offsetvector.y, "F": horizFeed})  # add G2/G3 move
+            arcmove = Path.Command(
+                arcdir,
+                {
+                    "X": p0.x,
+                    "Y": p0.y,
+                    "I": offsetvector.x,
+                    "J": offsetvector.y,
+                    "F": horizFeed,
+                },
+            )  # add G2/G3 move
             results.append(arcmove)
-        elif obj.StyleOn == 'Tangent':
-            extendcommand = Path.Command('G1', {"X": p0.x, "Y": p0.y, "F": horizFeed})
+        elif obj.StyleOn == "Tangent":
+            extendcommand = Path.Command("G1", {"X": p0.x, "Y": p0.y, "F": horizFeed})
             results.append(extendcommand)
         else:
             PathLog.debug(" CURRENT_IN Perp")
 
         currLocation.update(results[-1].Parameters)
-        currLocation['Z'] = p1.z
+        currLocation["Z"] = p1.z
 
         return results
 
     def getLeadEnd(self, obj, queue, action):
-        '''returns the Gcode of LeadOut.'''
+        """returns the Gcode of LeadOut."""
         # Modified March 2022 by lcorley to support leadout extension
-         # pylint: disable=unused-argument
+        # pylint: disable=unused-argument
         results = []
-        #print ("action =", action)
-        #print ("queue[0] =" ,queue[0])
-        #print ("queue[1] =" ,queue[1])
-        #print ("queue[2] =" ,queue[2])
+        # print ("action =", action)
+        # print ("queue[0] =" ,queue[0])
+        # print ("queue[1] =" ,queue[1])
+        # print ("queue[2] =" ,queue[2])
         horizFeed = PathDressup.toolController(obj.Base).HorizFeed.Value
         R = obj.Length.Value  # Radius of roll or length
         arcs_identical = False
 
         # Set the correct twist command
-        if self.getDirectionOfPath(obj) == 'right':
+        if self.getDirectionOfPath(obj) == "right":
             arcdir = "G2"
         else:
             arcdir = "G3"
@@ -432,10 +470,10 @@ class ObjectDressup:
             p1 = queue[1].Placement.Base
             v = self.normalize(p1.sub(p0))
 
-        if self.getDirectionOfPath(obj) == 'right':
-            off_v = FreeCAD.Vector(v.y*R, -v.x*R, 0.0)
+        if self.getDirectionOfPath(obj) == "right":
+            off_v = FreeCAD.Vector(v.y * R, -v.x * R, 0.0)
         else:
-            off_v = FreeCAD.Vector(-v.y*R, v.x*R, 0.0)
+            off_v = FreeCAD.Vector(-v.y * R, v.x * R, 0.0)
 
         # Check if we leave at line or arc command
         if queue[1].Name in movecommands and queue[1].Name not in arccommands:
@@ -443,83 +481,90 @@ class ObjectDressup:
             vec = p1.sub(p0)
             vec_n = self.normalize(vec)
             vec_inv = self.invert(vec_n)
-            vec_off = self.multiply(vec_inv,  obj.ExtendLeadOut)
-            #PathLog.debug("LineCMD: {}, Vxinv: {}, Vyinv: {}, Vxoff: {}, Vyoff: {}".format(queue[0].Name, vec_inv.x, vec_inv.y,  vec_off.x,  vec_off.y))
+            vec_off = self.multiply(vec_inv, obj.ExtendLeadOut)
+            # PathLog.debug("LineCMD: {}, Vxinv: {}, Vyinv: {}, Vxoff: {}, Vyoff: {}".format(queue[0].Name, vec_inv.x, vec_inv.y,  vec_off.x,  vec_off.y))
         else:
             # We have an arc move
             pij = copy.deepcopy(p0)
-            pij.x += queue[1].Parameters['I']
-            pij.y += queue[1].Parameters['J']
+            pij.x += queue[1].Parameters["I"]
+            pij.y += queue[1].Parameters["J"]
             ve = pij.sub(p1)
 
             if arcdir == queue[1].Name:
                 arcs_identical = True
 
             if arcdir == "G2":
-                vec_rot = self.rotate(ve,  -90)
+                vec_rot = self.rotate(ve, -90)
             else:
-                vec_rot = self.rotate(ve,  90)
+                vec_rot = self.rotate(ve, 90)
 
             vec_n = self.normalize(vec_rot)
             v = vec_n
 
             if arcdir == "G3":
-                off_v = FreeCAD.Vector(-v.y*R, v.x*R, 0.0)
+                off_v = FreeCAD.Vector(-v.y * R, v.x * R, 0.0)
             else:
-                off_v = FreeCAD.Vector(v.y*R, -v.x*R, 0.0)
+                off_v = FreeCAD.Vector(v.y * R, -v.x * R, 0.0)
 
             vec_inv = self.invert(vec_rot)
 
-            #vec_off = self.multiply(vec_inv,  obj.ExtendLeadOut)
+            # vec_off = self.multiply(vec_inv,  obj.ExtendLeadOut)
 
-        #offsetvector = FreeCAD.Vector(v.x*R-vec_off.x, v.y*R-vec_off.y, 0.0)
-        offsetvector = FreeCAD.Vector(v.x*R, v.y*R, 0.0)
-        if obj.RadiusCenter == 'Radius':
+        # offsetvector = FreeCAD.Vector(v.x*R-vec_off.x, v.y*R-vec_off.y, 0.0)
+        offsetvector = FreeCAD.Vector(v.x * R, v.y * R, 0.0)
+        if obj.RadiusCenter == "Radius":
             leadend = (p1.add(off_v)).add(offsetvector)  # Rmode
             if arcs_identical:
                 t = p1.sub(leadend)
                 t = p1.add(t)
                 leadend = t
-                off_v = self.multiply(off_v,   -1)
+                off_v = self.multiply(off_v, -1)
         else:
             leadend = p1.add(off_v)  # Dmode
 
         IJ = off_v  # .negative()
-        #print ("leadend = ", leadend)
-        #print ("IJ = ", IJ)
+        # print ("leadend = ", leadend)
+        # print ("IJ = ", IJ)
         # At this point leadend is the location of the end of the leadout arc
         # IJ is an offset from the begining of the leadout arc to its center.
         # It is parallel to a tangent line at the end of the leadout arc
         # Create the normalized tangent vector
         tangentvecNorm = self.normalize(IJ)
-        #print ("tangentvecNorm = ", tangentvecNorm)
+        # print ("tangentvecNorm = ", tangentvecNorm)
         # Multiply tangentvecNorm by LeadOut length
-        leadlinevec = self.multiply(tangentvecNorm,  obj.ExtendLeadOut)
-        #print ("leadlinevec = ", leadlinevec)
+        leadlinevec = self.multiply(tangentvecNorm, obj.ExtendLeadOut)
+        # print ("leadlinevec = ", leadlinevec)
         # leadlinevec provides the offset from the end of the leadout arc to the end of the extend line
         extendleadoutend = leadend.add(leadlinevec)
-        #print ("extendleadoutend = ", extendleadoutend)
+        # print ("extendleadoutend = ", extendleadoutend)
 
-        #results.append(queue[1])
-        if obj.StyleOff == 'Arc':
-            arcmove = Path.Command(arcdir, {"X": leadend.x, "Y": leadend.y, "I": IJ.x, "J": IJ.y, "F": horizFeed})  # add G2/G3 move
+        # results.append(queue[1])
+        if obj.StyleOff == "Arc":
+            arcmove = Path.Command(
+                arcdir,
+                {"X": leadend.x, "Y": leadend.y, "I": IJ.x, "J": IJ.y, "F": horizFeed},
+            )  # add G2/G3 move
             results.append(arcmove)
             if obj.ExtendLeadOut != 0:
-                extendcommand = Path.Command('G1', {"X": extendleadoutend.x, "Y": extendleadoutend.y, "F": horizFeed})
+                extendcommand = Path.Command(
+                    "G1",
+                    {"X": extendleadoutend.x, "Y": extendleadoutend.y, "F": horizFeed},
+                )
                 results.append(extendcommand)
-        elif obj.StyleOff == 'Tangent':
-            extendcommand = Path.Command('G1', {"X": leadend.x, "Y": leadend.y, "F": horizFeed})
+        elif obj.StyleOff == "Tangent":
+            extendcommand = Path.Command(
+                "G1", {"X": leadend.x, "Y": leadend.y, "F": horizFeed}
+            )
             results.append(extendcommand)
         else:
             PathLog.debug(" CURRENT_IN Perp")
 
         if obj.UseMachineCRC:  # crc off
-            results.append(Path.Command('G40', {}))
- 
-        #print ("results =",results)
+            results.append(Path.Command("G40", {}))
+
+        # print ("results =",results)
 
         return results
-
 
     def generateLeadInOutCurve(self, obj):
         global currLocation  # pylint: disable=global-statement
