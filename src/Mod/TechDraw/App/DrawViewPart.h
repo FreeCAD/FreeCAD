@@ -26,30 +26,21 @@
 #define _DrawViewPart_h_
 
 #include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
 #include <TopoDS_Wire.hxx>
 
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
 #include <App/FeaturePython.h>
-
+#include <App/PropertyLinks.h>
+#include <App/PropertyUnits.h>
 #include <Base/BoundBox.h>
 
-#include "PropertyGeomFormatList.h"
-#include "PropertyCenterLineList.h"
-#include "PropertyCosmeticEdgeList.h"
-#include "PropertyCosmeticVertexList.h"
 #include "CosmeticExtension.h"
 #include "DrawView.h"
+
 
 class gp_Pnt;
 class gp_Pln;
 class gp_Ax2;
-//class TopoDS_Edge;
-//class TopoDS_Vertex;
-//class TopoDS_Wire;
 class TopoDS_Shape;
 
 namespace App

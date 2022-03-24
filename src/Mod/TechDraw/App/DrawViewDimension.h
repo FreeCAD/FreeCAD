@@ -22,14 +22,15 @@
 
 #ifndef _TechDraw_DrawViewDimension_h_
 #define _TechDraw_DrawViewDimension_h_
+
 #include <tuple>
 
-# include <App/DocumentObject.h>
-# include <App/FeaturePython.h>
-# include <App/PropertyLinks.h>
-# include <Base/UnitsApi.h>
+#include <App/DocumentObject.h>
+#include <App/PropertyLinks.h>
+#include <Base/UnitsApi.h>
 
 #include "DrawView.h"
+
 
 class TopoDS_Shape;
 

@@ -24,10 +24,11 @@
 #define _DrawViewSymbol_h_
 
 #include <App/DocumentObject.h>
-#include "DrawView.h"
 #include <App/FeaturePython.h>
-
 #include <Base/BoundBox.h>
+
+#include "DrawView.h"
+
 
 namespace TechDraw
 {

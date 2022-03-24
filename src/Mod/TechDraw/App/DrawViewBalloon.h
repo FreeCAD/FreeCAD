@@ -22,14 +22,13 @@
 
 #ifndef _TechDraw_DrawViewBalloon_h_
 #define _TechDraw_DrawViewBalloon_h_
-#include <tuple>
 
-# include <App/DocumentObject.h>
-# include <App/FeaturePython.h>
-# include <App/PropertyLinks.h>
-# include <App/PropertyUnits.h>
+#include <App/DocumentObject.h>
+#include <App/PropertyLinks.h>
+#include <App/PropertyUnits.h>
 
 #include "DrawView.h"
+
 
 class TopoDS_Shape;
 

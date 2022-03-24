@@ -26,14 +26,13 @@
 #define _DrawViewMulti_h_
 
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyFile.h>
 #include <App/FeaturePython.h>
-#include <App/Material.h>
+#include <App/PropertyLinks.h>
 
 #include <TopoDS_Compound.hxx>
 
 #include "DrawViewPart.h"
+
 
 class gp_Pln;
 class TopoDS_Face;

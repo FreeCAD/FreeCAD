@@ -24,15 +24,15 @@
 #define _DrawViewImage_h_
 
 #include <App/DocumentObject.h>
-#include <App/PropertyFile.h>
-#include "DrawView.h"
 #include <App/FeaturePython.h>
-
+#include <App/PropertyFile.h>
 #include <Base/BoundBox.h>
+
+#include "DrawView.h"
+
 
 namespace TechDraw
 {
-
 
 class TechDrawExport DrawViewImage : public TechDraw::DrawView
 {
