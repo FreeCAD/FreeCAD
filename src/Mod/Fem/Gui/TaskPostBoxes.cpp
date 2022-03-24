@@ -66,8 +66,6 @@
 #include <Gui/Action.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-
-#include <Gui/View3DInventorViewer.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
 #include <Base/Console.h>
 

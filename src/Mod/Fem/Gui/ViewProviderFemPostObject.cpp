@@ -336,7 +336,6 @@ void ViewProviderFemPostObject::update3D() {
     WritePointData(points, normals, tcoords);
     bool ResetColorBarRange = true;
     WriteColorData(ResetColorBarRange);
-    WriteTransparency();
 
     // write out polys if any
     if (pd->GetNumberOfPolys() > 0) {
@@ -532,8 +531,9 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
 
 void ViewProviderFemPostObject::WriteTransparency() {
 
-    float trans = float(Transparency.getValue()) / 100.;
+    float trans = float(Transparency.getValue()) / 100.0;
     m_material->transparency.setValue(trans);
+    update3D();
 }
 
 void ViewProviderFemPostObject::updateData(const App::Property* p) {
