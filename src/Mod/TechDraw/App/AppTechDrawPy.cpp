@@ -778,9 +778,13 @@ private:
                         } else if(dvd->Type.isValue("Diameter")){
                             Base::Vector3d textLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY, 0.0);
                             arcPoints pts = dvd->getArcPoints();
-                            Base::Vector3d end1 = pts.onCurve.first;
+                            Base::Vector3d center = pts.center;
+                            center.y = -center.y;
+                            double radius = pts.radius;
+                            Base::Vector3d lineDir = (textLocn - center).Normalize();
+                            Base::Vector3d end1 = center + lineDir * radius;
                             end1.y = -end1.y;
-                            Base::Vector3d end2 = pts.onCurve.second;
+                            Base::Vector3d end2 = center - lineDir * radius;
                             end2.y = -end2.y;
                             end1 = end1 + parentPos;
                             end2 = end2 + parentPos;
