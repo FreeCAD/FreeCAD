@@ -56,6 +56,7 @@
 #include "ui_TaskPostWarpVector.h"
 
 #include "TaskPostBoxes.h"
+#include "ViewProviderFemPostFilter.h"
 #include "ViewProviderFemPostFunction.h"
 #include "ViewProviderFemPostObject.h"
 
