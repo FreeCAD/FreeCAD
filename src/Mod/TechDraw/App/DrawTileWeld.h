@@ -23,14 +23,13 @@
 #ifndef _TechDraw_DrawTileWeld_h_
 #define _TechDraw_DrawTileWeld_h_
 
-#include <QString>
-
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyFile.h>
 #include <App/PropertyStandard.h>
 
 #include "DrawTile.h"
+
 
 namespace TechDraw
 {

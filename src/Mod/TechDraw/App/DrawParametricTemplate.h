@@ -23,11 +23,12 @@
 #ifndef _TECHDRAW_DrawParametricTemplate_h_
 #define _TECHDRAW_DrawParametricTemplate_h_
 
-#include <App/PropertyFile.h>
 #include <App/FeaturePython.h>
+#include <App/PropertyFile.h>
 
-#include "Geometry.h"
 #include "DrawTemplate.h"
+#include "Geometry.h"
+
 
 namespace TechDraw
 {

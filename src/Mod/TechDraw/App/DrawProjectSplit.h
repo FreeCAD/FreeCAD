@@ -23,16 +23,12 @@
 #ifndef _DrawProjectSplit_h_
 #define _DrawProjectSplit_h_
 
-
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Vertex.hxx>
-#include <TopoDS_Wire.hxx>
 
-#include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
 #include <App/FeaturePython.h>
 #include <Base/Vector3D.h>
-#include <Base/BoundBox.h>
+
 
 class gp_Pnt;
 class gp_Ax2;

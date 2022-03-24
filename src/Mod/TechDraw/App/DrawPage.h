@@ -20,18 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef _DrawPage_h_
 #define _DrawPage_h_
 
 #include <boost_signals2.hpp>
 
 #include <App/DocumentObject.h>
-#include <App/DocumentObjectGroup.h>
 #include <App/PropertyStandard.h>
-#include <App/PropertyFile.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
+
 
 namespace TechDraw
 {

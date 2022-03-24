@@ -25,16 +25,14 @@
 
 #include <string>
 # include <QRectF>
+
 #include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
 #include <App/PropertyLinks.h>
-
-
 #include <Base/BoundBox.h>
-#include <Base/Matrix.h>
 #include <Base/Vector3D.h>
 
 #include "DrawViewCollection.h"
+
 
 class gp_Dir;
 class gp_Pnt;

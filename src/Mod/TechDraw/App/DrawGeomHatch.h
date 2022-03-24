@@ -25,9 +25,9 @@
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
-#include <App/Material.h>
-#include <App/PropertyLinks.h>
 #include <App/PropertyFile.h>
+#include <App/PropertyLinks.h>
+
 
 class TopoDS_Edge;
 class TopoDS_Face;

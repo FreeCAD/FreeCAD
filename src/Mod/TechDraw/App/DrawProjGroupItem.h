@@ -26,9 +26,11 @@
 #include <gp_Ax2.hxx>
 
 #include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
 #include <App/FeaturePython.h>
+#include <App/PropertyStandard.h>
+
 #include "DrawViewPart.h"
+
 
 namespace TechDraw
 {

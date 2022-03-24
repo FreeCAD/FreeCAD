@@ -23,11 +23,11 @@
 #ifndef _TECHDRAW_DrawSVGTemplate_h_
 #define _TECHDRAW_DrawSVGTemplate_h_
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyFile.h>
 #include <App/FeaturePython.h>
-#include <QRectF>
+#include <App/PropertyFile.h>
+
 #include "DrawTemplate.h"
+
 
 namespace TechDraw
 {
