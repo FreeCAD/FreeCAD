@@ -26,19 +26,6 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define ImportGuiExport __declspec(dllexport)
-# define ImportExport    __declspec(dllimport)
-# define PartExport      __declspec(dllimport)
-# define PartGuiExport   __declspec(dllimport)
-#else // for Linux
-# define ImportGuiExport
-# define ImportExport
-# define PartExport
-# define PartGuiExport
-#endif
-
 
 // here get the warnings of too long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER

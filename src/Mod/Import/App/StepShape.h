@@ -24,7 +24,7 @@
 #ifndef IMPORT_STEPSHAPE_H
 #define IMPORT_STEPSHAPE_H
 
-
+#include <Mod/Import/ImportGlobal.h>
 
 namespace Import
 {

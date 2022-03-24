@@ -20,6 +20,7 @@
 #include <cmath>
 
 #include <Base/Vector3D.h>
+#include <Mod/Import/ImportGlobal.h>
 
 //Following is required to be defined on Ubuntu with OCC 6.3.1
 #ifndef HAVE_IOSTREAM
