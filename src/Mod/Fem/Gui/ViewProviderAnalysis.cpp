@@ -33,13 +33,11 @@
 
 #include <App/MaterialObject.h>
 #include <App/TextDocument.h>
-
 #include <Gui/ActionFunction.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-
 #include <Mod/Fem/App/FemAnalysis.h>
 #include <Mod/Fem/App/FemConstraint.h>
 #include <Mod/Fem/App/FemMeshObject.h>

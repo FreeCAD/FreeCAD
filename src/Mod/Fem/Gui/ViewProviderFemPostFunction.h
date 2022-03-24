@@ -83,6 +83,11 @@ public:
     App::PropertyFloat SizeY;
     App::PropertyFloat SizeZ;
 
+    // handling when object is deleted
+    virtual bool onDelete(const std::vector<std::string>&);
+    /// asks view provider if the given object can be deleted
+    virtual bool canDelete(App::DocumentObject* obj) const;
+
 protected:
     virtual std::vector< App::DocumentObject* > claimChildren(void) const;
     virtual std::vector< App::DocumentObject* > claimChildren3D(void) const;

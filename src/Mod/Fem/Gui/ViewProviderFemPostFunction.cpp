@@ -20,54 +20,44 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Inventor/actions/SoSearchAction.h>
+# include <Inventor/draggers/SoCenterballDragger.h>
+# include <Inventor/draggers/SoHandleBoxDragger.h>
+# include <Inventor/manips/SoCenterballManip.h>
+# include <Inventor/manips/SoHandleBoxManip.h>
+# include <Inventor/manips/SoTransformManip.h>
 # include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoSurroundScale.h>
 # include <Inventor/nodes/SoLineSet.h>
+# include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTransform.h>
-# include <Inventor/nodes/SoMatrixTransform.h>
-# include <Inventor/nodes/SoSphere.h>
-# include <Inventor/manips/SoTransformManip.h>
-# include <Inventor/manips/SoCenterballManip.h>
-# include <Inventor/manips/SoTransformerManip.h>
-# include <Inventor/manips/SoTransformBoxManip.h>
-# include <Inventor/manips/SoHandleBoxManip.h>
-# include <Inventor/manips/SoTabBoxManip.h>
-# include <Inventor/actions/SoSearchAction.h>
-# include <Inventor/engines/SoDecomposeMatrix.h>
-# include <Inventor/draggers/SoCenterballDragger.h>
-# include <Inventor/draggers/SoTransformerDragger.h>
-# include <Inventor/draggers/SoTransformBoxDragger.h>
-# include <Inventor/draggers/SoHandleBoxDragger.h>
 
+# include <QApplication>
 # include <QMessageBox>
+# include <QTextStream>
 
 # include <boost_bind_bind.hpp>
 
 # include <cmath>
 #endif
 
-#include "ViewProviderFemPostFunction.h"
-#include "TaskPostBoxes.h"
-#include <Mod/Fem/App/FemPostFunction.h>
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/SoNavigationDragger.h>
-#include <Gui/Macro.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Gui/Control.h>
 #include <App/Document.h>
 #include <App/PropertyUnits.h>
+#include <Gui/Application.h>
+#include <Gui/Control.h>
+#include <Gui/Document.h>
+#include <Gui/MainWindow.h>
+#include <Gui/TaskView/TaskDialog.h>
+
+#include "ViewProviderFemPostFunction.h"
+#include "TaskPostBoxes.h"
 
 #include "ui_PlaneWidget.h"
 #include "ui_SphereWidget.h"
+
 
 using namespace FemGui;
 namespace bp = boost::placeholders;
@@ -134,7 +124,47 @@ void ViewProviderFemPostFunctionProvider::updateSize() {
     }
 }
 
+bool ViewProviderFemPostFunctionProvider::onDelete(const std::vector<std::string>&)
+{
+    // warn the user if the object has childs
 
+    auto objs = claimChildren();
+    if (!objs.empty())
+    {
+        // generate dialog
+        QString bodyMessage;
+        QTextStream bodyMessageStream(&bodyMessage);
+        bodyMessageStream << qApp->translate("Std_Delete",
+            "The functions list is not empty, therefore the\nfollowing referencing objects might be lost:");
+        bodyMessageStream << '\n';
+        for (auto ObjIterator : objs)
+            bodyMessageStream << '\n' << QString::fromUtf8(ObjIterator->Label.getValue());
+        bodyMessageStream << "\n\n" << QObject::tr("Are you sure you want to continue?");
+        // show and evaluate the dialog
+        int DialogResult = QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+            QMessageBox::Yes, QMessageBox::No);
+        if (DialogResult == QMessageBox::Yes)
+            return true;
+        else
+            return false;
+    }
+    else {
+        return true;
+    }
+}
+
+bool ViewProviderFemPostFunctionProvider::canDelete(App::DocumentObject* obj) const
+{
+    // deletions of objects from a FemFunction don't necesarily destroy anything
+    // thus we can pass this action
+    // we can warn the user if necessary in the object's ViewProvider in the onDelete() function
+    Q_UNUSED(obj)
+        return true;
+}
+
+
+// ***************************************************************************
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostFunction, Gui::ViewProviderDocumentObject)
 
@@ -217,12 +247,10 @@ bool ViewProviderFemPostFunction::doubleClicked(void) {
     return true;
 }
 
-
 SoTransformManip* ViewProviderFemPostFunction::setupManipulator() {
 
     return new SoCenterballManip;
 }
-
 
 std::vector<std::string> ViewProviderFemPostFunction::getDisplayModes(void) const
 {
@@ -320,7 +348,6 @@ void ViewProviderFemPostFunction::onChanged(const App::Property* prop) {
     if (m_autoscale)
         m_scale->scaleFactor = SbVec3f(AutoScaleFactorX.getValue(), AutoScaleFactorY.getValue(), AutoScaleFactorZ.getValue());
 }
-
 
 
 // ***************************************************************************
@@ -459,7 +486,6 @@ void PlaneWidget::originChanged(double) {
         static_cast<Fem::FemPostPlaneFunction*>(getObject())->Origin.setValue(vec);
     }
 }
-
 
 
 // ***************************************************************************
