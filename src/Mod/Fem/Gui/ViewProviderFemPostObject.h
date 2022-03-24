@@ -77,7 +77,7 @@ public:
     App::PropertyEnumeration            Field;
     App::PropertyEnumeration            VectorMode;
     App::PropertyPercent                Transparency;
-    App::PropertyFloat                  Scale;
+    App::PropertyEnumeration            Scale;
 
     void attach(App::DocumentObject *pcObject);
     void setDisplayMode(const char* ModeName);
@@ -140,6 +140,8 @@ protected:
     vtkSmartPointer<vtkOutlineCornerFilter>     m_outline;
     vtkSmartPointer<vtkExtractEdges>            m_wireframe, m_wireframeSurface;
     vtkSmartPointer<vtkVertexGlyphFilter>       m_points, m_pointsSurface;
+
+    static const char* ScaleEnums[];
 
 private:
     void updateProperties();

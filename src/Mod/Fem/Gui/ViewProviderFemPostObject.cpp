@@ -47,6 +47,7 @@
 #include <Gui/Document.h>
 #include <Gui/SoFCColorBar.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Mod/Fem/App/FemPostPipeline.h>
 
 #include "ViewProviderFemPostObject.h"
 #include "TaskPostBoxes.h"
@@ -60,6 +61,8 @@ typedef const vtkIdType* vtkIdTypePtr;
 typedef vtkIdType* vtkIdTypePtr;
 #endif
 
+const char* ViewProviderFemPostObject::ScaleEnums[] = { "1", "1000", nullptr };
+
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostObject, Gui::ViewProviderDocumentObject)
 
 ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(false)
@@ -68,7 +71,9 @@ ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(
     ADD_PROPERTY_TYPE(Field, ((long)0), "Coloring", App::Prop_None, "Select the field used for calculating the color");
     ADD_PROPERTY_TYPE(VectorMode, ((long)0), "Coloring", App::Prop_None, "Select what to show for a vector field");
     ADD_PROPERTY(Transparency, (0));
-    ADD_PROPERTY(Scale, (1.0));
+    ADD_PROPERTY_TYPE(Scale, (0L), "Base", (App::PropertyType)(App::Prop_None), "Scale factor of the mesh");
+    Scale.setEnums(ScaleEnums);
+    Scale.setReadOnly(true);
 
     sPixmap = "fem-femmesh-from-shape";
 
@@ -426,12 +431,33 @@ void ViewProviderFemPostObject::WritePointData(vtkPoints* points, vtkDataArray* 
     // because for Elmer we work with SI units and thus get a scaled result we need to transform
     auto Label = std::string(pcObject->Label.getValue());
     auto found = Label.find(std::string("Elmer"));
-    if (found != std::string::npos && Scale.getValue() != 1000.0)
-        Scale.setValue(1000.0);
+    if (found != std::string::npos && Scale.getValueAsString() != "1000")
+        Scale.setValue("1000");
+
+    // we must inherit the Scale of parent meshes (for example for clip filters)
+    auto parents = pcObject->getInList();
+    if (parents.size()) {
+        for (auto itParents = parents.begin(); itParents != parents.end(); ++itParents) {
+            if ((*itParents)->getTypeId() == Base::Type::fromName("Fem::FemPostPipeline")) {
+                auto vpObject = dynamic_cast<FemGui::ViewProviderFemPostObject*>(
+                    Gui::Application::Instance->getViewProvider(*itParents));
+                if (vpObject) {
+                    auto propScale = Base::freecad_dynamic_cast<App::PropertyEnumeration>(
+                        vpObject->getPropertyByName("Scale"));
+                    if (propScale) {
+                        if (propScale->getValue() != Scale.getValue()) {
+                            Scale.setValue(propScale->getValue());
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     m_coordinates->point.startEditing();
     m_coordinates->point.setNum(points->GetNumberOfPoints());
-    auto scale = Scale.getValue();
+    double scale = (Scale.getValueAsString() == "1") ? 1.0 : 1000.0;
     for (i = 0; i < points->GetNumberOfPoints(); i++) {
         p = points->GetPoint(i);
         m_coordinates->point.set1Value(i, p[0] * scale, p[1] * scale, p[2] * scale);
