@@ -3198,7 +3198,6 @@ public:
 
     DrawSketchHandlerArc(ConstructionMethod constrMethod = ConstructionMethod::Center) : 
         constructionMethod(constrMethod)
-        , rx(0), ry(0)
         , startAngle(0)
         , endAngle(0)
         , arcAngle(0) {}
@@ -3225,11 +3224,10 @@ private:
         break;
         case SelectMode::SeekSecond:
         {
-            Base::Console().Error("seek second start\n");
             if (constructionMethod == ConstructionMethod::Center) {
                 firstPoint = onSketchPos;
-                rx = firstPoint.x - centerPoint.x;
-                ry = firstPoint.y - centerPoint.y;
+                double rx = firstPoint.x - centerPoint.x;
+                double ry = firstPoint.y - centerPoint.y;
                 startAngle = atan2(ry, rx);
             }
             else {
@@ -3251,18 +3249,17 @@ private:
             text.sprintf(" (%.1fR,%.1fdeg)", (float)radius, (float)angle * 180 / M_PI);
             setPositionText(onSketchPos, text);
 
-            Base::Console().Error("seek second end\n");
             if (seekAutoConstraint(sugConstraints[1], onSketchPos, Base::Vector2d(0.f, 0.f))) {
                     renderSuggestConstraintsCursor(sugConstraints[1]);
                     return;
                 }
-            Base::Console().Error("seek second enddd\n");
         }
+        break;
         case SelectMode::SeekThird:
         {
-            Base::Console().Error("seek third\n");
             try
             {
+                double startAngleToDraw = startAngle;
                 if (constructionMethod == ConstructionMethod::Center) {
                     double angle1 = atan2(onSketchPos.y - centerPoint.y,
                         onSketchPos.x - centerPoint.x) - startAngle;
@@ -3272,7 +3269,7 @@ private:
                         endAngle = startAngle + arcAngle;
                     else {
                         endAngle = startAngle;
-                        startAngle += arcAngle;
+                        startAngleToDraw = startAngle + arcAngle;
                     }
                 }
                 else {
@@ -3317,12 +3314,13 @@ private:
                         endAngle = min(angle1, angle2);
                         arcAngle = 2 * M_PI - (startAngle - endAngle);
                     }
+                    startAngleToDraw = startAngle;
                 }
 
                 std::vector<Part::Geometry*> geometriesToAdd;
                 Part::GeomArcOfCircle* arc = new Part::GeomArcOfCircle();
                 arc->setRadius(radius);
-                arc->setRange(startAngle, endAngle, true);
+                arc->setRange(startAngleToDraw, endAngle, true);
                 arc->setCenter(Base::Vector3d(centerPoint.x, centerPoint.y, 0.));
                 geometriesToAdd.push_back(arc);
                 drawEdit(geometriesToAdd);
@@ -3357,6 +3355,15 @@ private:
     virtual void executeCommands() override {
         unsetCursor();
         resetPositionText();
+
+        if (constructionMethod == ConstructionMethod::Center) {
+            if (arcAngle > 0)
+                endAngle = startAngle + arcAngle;
+            else {
+                endAngle = startAngle;
+                startAngle += arcAngle;
+            }
+        }
 
         try {
             Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc"));
@@ -3426,7 +3433,7 @@ private:
 public:
     ConstructionMethod constructionMethod;
     Base::Vector2d centerPoint, firstPoint, secondPoint;
-    double radius, rx, ry, startAngle, endAngle, arcAngle;
+    double radius, startAngle, endAngle, arcAngle;
     Sketcher::PointPos arcPos1, arcPos2;
 
     void swapPoints(Base::Vector2d& p1, Base::Vector2d& p2) {
@@ -3435,15 +3442,15 @@ public:
         p2 = p3;
     }
 };
-//ok
+
 template <> void DrawSketchHandlerArcBase::ToolWidgetManager::configureToolWidget() {
     auto dHandler = static_cast<DrawSketchHandlerArc*>(handler);
     if (dHandler->constructionMethod == DrawSketchHandlerArc::ConstructionMethod::Center) {
         toolWidget->setParameterLabel(WParameter::First, QApplication::translate("TaskSketcherTool_p1_arc", "x of center"));
         toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("TaskSketcherTool_p2_arc", "y of center"));
         toolWidget->setParameterLabel(WParameter::Third, QApplication::translate("TaskSketcherTool_p3_arc", "Radius"));
-        toolWidget->setParameterLabel(WParameter::Third, QApplication::translate("TaskSketcherTool_p3_arc", "Start angle"));
-        toolWidget->setParameterLabel(WParameter::Third, QApplication::translate("TaskSketcherTool_p3_arc", "Arc angle"));
+        toolWidget->setParameterLabel(WParameter::Fourth, QApplication::translate("TaskSketcherTool_p3_arc", "Start angle"));
+        toolWidget->setParameterLabel(WParameter::Fifth, QApplication::translate("TaskSketcherTool_p3_arc", "Arc angle"));
     }
     else {
         toolWidget->setParameterLabel(WParameter::First, QApplication::translate("ToolWidgetManager_p1", "x of 1st point"));
@@ -3454,7 +3461,7 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::configureToolWidge
         toolWidget->setParameterLabel(WParameter::Sixth, QApplication::translate("ToolWidgetManager_p6", "y of 3rd point"));
     }
 }
-//ok
+
 template <> void DrawSketchHandlerArcBase::ToolWidgetManager::setComboBoxesElements() {
     auto dHandler = static_cast<DrawSketchHandlerArc*>(handler);
     /*This IF is because when the construction mode change by adaptDrawingToComboboxChange, we call reset to change nParameter.
@@ -3468,7 +3475,7 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::setComboBoxesEleme
         toolWidget->setComboboxElements(0, names);
     }
 }
-//ok
+
 template <> void DrawSketchHandlerArcBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
     auto dHandler = static_cast<DrawSketchHandlerArc*>(handler);
     if (dHandler->constructionMethod == DrawSketchHandlerArc::ConstructionMethod::Center) {
@@ -3504,7 +3511,7 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::adaptDrawingToPara
         }
     }
 }
-//ok
+
 template <> void DrawSketchHandlerArcBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
     auto dHandler = static_cast<DrawSketchHandlerArc*>(handler);
 
@@ -3522,9 +3529,8 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::adaptDrawingToComb
     reset(); //reset the widget to take into account the change of nparameter
     dHandler->reset(); //reset of handler to restart.
 }
-//ok-
+
 template <> void DrawSketchHandlerArcBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
-    prevCursorPosition = onSketchPos;
     auto dHandler = static_cast<DrawSketchHandlerArc*>(handler);
 
     switch (handler->state()) {
@@ -3545,13 +3551,13 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::doOverrideSketchPo
                 dHandler->radius = toolWidget->getParameter(WParameter::Third);
                 if (length != 0.) {
                     onSketchPos.x = dHandler->centerPoint.x + (onSketchPos.x - dHandler->centerPoint.x) * dHandler->radius / length;
-                    onSketchPos.y = dHandler->centerPoint.x + (onSketchPos.y - dHandler->centerPoint.y) * dHandler->radius / length;
+                    onSketchPos.y = dHandler->centerPoint.y + (onSketchPos.y - dHandler->centerPoint.y) * dHandler->radius / length;
                 }
             }
             if (toolWidget->isParameterSet(WParameter::Fourth)) {
                 dHandler->startAngle = toolWidget->getParameter(WParameter::Fourth);
                 onSketchPos.x = dHandler->centerPoint.x + cos(dHandler->startAngle * M_PI / 180) * length;
-                onSketchPos.y = dHandler->centerPoint.x + sin(dHandler->startAngle * M_PI / 180) * length;
+                onSketchPos.y = dHandler->centerPoint.y + sin(dHandler->startAngle * M_PI / 180) * length;
             }
         }
         else {
@@ -3567,10 +3573,10 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::doOverrideSketchPo
     {
         if (dHandler->constructionMethod == DrawSketchHandlerArc::ConstructionMethod::Center) {
             if (toolWidget->isParameterSet(WParameter::Fifth)){
-                dHandler->arcAngle = toolWidget->getParameter(WParameter::Fifth);
+                dHandler->arcAngle = toolWidget->getParameter(WParameter::Fifth) * M_PI / 180;
                 double length = (onSketchPos - dHandler->centerPoint).Length();
-                onSketchPos.x = dHandler->centerPoint.x + cos((dHandler->startAngle + dHandler->arcAngle) * M_PI / 180) * length;
-                onSketchPos.y = dHandler->centerPoint.x + sin((dHandler->startAngle + dHandler->arcAngle) * M_PI / 180) * length;
+                onSketchPos.x = dHandler->centerPoint.x + cos((dHandler->startAngle + dHandler->arcAngle)) * length;
+                onSketchPos.y = dHandler->centerPoint.y + sin((dHandler->startAngle + dHandler->arcAngle)) * length;
             }
         }
         else {
@@ -3585,8 +3591,9 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::doOverrideSketchPo
     default:
         break;
     }
+    prevCursorPosition = onSketchPos;
 }
-//ok
+
 template <> void DrawSketchHandlerArcBase::ToolWidgetManager::updateVisualValues(Base::Vector2d onSketchPos) {
     switch (handler->state()) {
     case SelectMode::SeekFirst:
@@ -3637,7 +3644,7 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::updateVisualValues
         break;
     }
 }
-//ok
+
 template <> void DrawSketchHandlerArcBase::ToolWidgetManager::doChangeDrawSketchHandlerMode() {
     auto dHandler = static_cast<DrawSketchHandlerArc*>(handler);
     switch (handler->state()) {
@@ -3703,7 +3710,7 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::doChangeDrawSketch
     }
 
 }
-//ok
+
 template <> void DrawSketchHandlerArcBase::ToolWidgetManager::addConstraints() {
     auto dHandler = static_cast<DrawSketchHandlerArc*>(handler);
     int firstCurve = handler->getHighestCurveIndex();
