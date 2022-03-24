@@ -26,14 +26,6 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define WebGuiExport __declspec(dllexport)
-#else // for Linux
-# define WebGuiExport
-#endif
-
-
 #ifdef _PreComp_
 
 // standard

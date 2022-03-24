@@ -27,6 +27,7 @@
 #include <QFile>
 #include <QNetworkCookieJar>
 #include <QTimer>
+#include <Mod/Web/WebGlobal.h>
 
 class QNetworkCookieJar;
 

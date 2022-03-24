@@ -26,6 +26,7 @@
 
 #include <Gui/MDIView.h>
 #include <Gui/Window.h>
+#include <Mod/Web/WebGlobal.h>
 #include <QLineEdit>
 
 #if defined(QTWEBENGINE)

@@ -26,13 +26,6 @@
 
 #include <FCConfig.h>
 
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-# define WebAppExport __declspec(dllexport)
-#else // for Linux
-# define WebAppExport
-#endif
-
 #ifdef _PreComp_
 
 // standard
