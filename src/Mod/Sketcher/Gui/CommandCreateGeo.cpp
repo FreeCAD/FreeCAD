@@ -4266,6 +4266,7 @@ private:
                 }
             }
         }
+        break;
         case SelectMode::SeekThird:
         {
             try
@@ -4565,7 +4566,6 @@ template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::doChangeDrawSke
         if (toolWidget->isParameterSet(WParameter::Third) ||
             toolWidget->isParameterSet(WParameter::Fourth)) {
 
-            doOverrideSketchPosition(prevCursorPosition);
             handler->updateDataAndDrawToPosition(prevCursorPosition);
 
             if (toolWidget->isParameterSet(WParameter::Third) &&
@@ -4589,7 +4589,6 @@ template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::doChangeDrawSke
         if (toolWidget->isParameterSet(WParameter::Fifth) ||
             toolWidget->isParameterSet(WParameter::Sixth)) {
 
-            doOverrideSketchPosition(prevCursorPosition);
             handler->updateDataAndDrawToPosition(prevCursorPosition);
 
             if (toolWidget->isParameterSet(WParameter::Fifth) &&
