@@ -163,23 +163,7 @@ void ViewProviderFemAnalysis::unsetEdit(int ModNum)
 
 bool ViewProviderFemAnalysis::onDelete(const std::vector<std::string> &)
 {
-    // get the support and Sketch
-
-    //PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(getObject());
-    //Sketcher::SketchObject *pcSketch = 0;
-    //App::DocumentObject    *pcSupport = 0;
-    //if (pcPad->Sketch.getValue()){
-    //    pcSketch = static_cast<Sketcher::SketchObject*>(pcPad->Sketch.getValue());
-    //    pcSupport = pcSketch->Support.getValue();
-    //}
-
-    // if abort command deleted the object the support is visible again
-
-    //if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
-    //    Gui::Application::Instance->getViewProvider(pcSketch)->show();
-    //if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
-    //    Gui::Application::Instance->getViewProvider(pcSupport)->show();
-
+    // do nothing special on deletion
     return true;
 }
 

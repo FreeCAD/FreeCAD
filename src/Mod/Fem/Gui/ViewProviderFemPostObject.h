@@ -98,6 +98,7 @@ public:
     //observer for the color bar
     virtual void OnChange(Base::Subject< int >& rCaller, int rcReason);
 
+    // handling when object is deleted
     virtual bool onDelete(const std::vector<std::string>&);
     virtual bool canDelete(App::DocumentObject* obj) const;
 
