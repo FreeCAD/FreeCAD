@@ -29,6 +29,7 @@
 #include <App/PropertyStandard.h>
 #include <App/PropertyGeo.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Drawing/DrawingGlobal.h>
 
 
 namespace Drawing

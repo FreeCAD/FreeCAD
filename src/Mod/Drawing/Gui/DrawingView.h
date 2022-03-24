@@ -25,6 +25,7 @@
 #define DRAWINGGUI_DRAWINGVIEW_H
 
 #include <Gui/MDIView.h>
+#include <Mod/Drawing/DrawingGlobal.h>
 #include <QGraphicsView>
 #include <QPrinter>
 
