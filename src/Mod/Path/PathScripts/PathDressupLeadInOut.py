@@ -162,7 +162,6 @@ class ObjectDressup:
         return None
 
     def __setstate__(self, state):
-        # pylint: disable=unused-argument
         return None
 
     def setup(self, obj):
@@ -329,10 +328,6 @@ class ObjectDressup:
             else:
                 off_v = FreeCAD.Vector(v.y * R, -v.x * R, 0.0)
 
-            # Multiply offset by LeadIn length
-            # vec_off = self.multiply(vec_n,  obj.ExtendLeadIn)
-
-        # offsetvector = FreeCAD.Vector(v.x*R-vec_off.x, v.y*R-vec_off.y, 0)  # IJ
         offsetvector = FreeCAD.Vector(v.x * R, v.y * R, 0)  # IJ
 
         if obj.RadiusCenter == "Radius":
@@ -352,16 +347,12 @@ class ObjectDressup:
             tangentvec = self.rotate(offsetvector, -90)
         else:
             tangentvec = self.rotate(offsetvector, 90)
-        # print ("tangentvec = ", tangentvec)
         # Normalize the tangent vector
         tangentvecNorm = self.normalize(tangentvec)
-        # print ("tangentvecNorm = ", tangentvecNorm)
         # Multiply tangentvecNorm by LeadIn length
         leadlinevec = self.multiply(tangentvecNorm, obj.ExtendLeadIn)
-        # print ("leadlinevec = ", leadlinevec)
         # leadlinevec provides the offset from the beginning of the lead arc to the beginning of the extend line
         extendstart = leadstart.add(leadlinevec)
-        # print ("extendstart = ", extendstart)
 
         if action == "start":
             if obj.ExtendLeadIn != 0:
@@ -444,13 +435,7 @@ class ObjectDressup:
 
     def getLeadEnd(self, obj, queue, action):
         """returns the Gcode of LeadOut."""
-        # Modified March 2022 by lcorley to support leadout extension
-        # pylint: disable=unused-argument
         results = []
-        # print ("action =", action)
-        # print ("queue[0] =" ,queue[0])
-        # print ("queue[1] =" ,queue[1])
-        # print ("queue[2] =" ,queue[2])
         horizFeed = PathDressup.toolController(obj.Base).HorizFeed.Value
         R = obj.Length.Value  # Radius of roll or length
         arcs_identical = False
@@ -482,7 +467,7 @@ class ObjectDressup:
             vec_n = self.normalize(vec)
             vec_inv = self.invert(vec_n)
             vec_off = self.multiply(vec_inv, obj.ExtendLeadOut)
-            # PathLog.debug("LineCMD: {}, Vxinv: {}, Vyinv: {}, Vxoff: {}, Vyoff: {}".format(queue[0].Name, vec_inv.x, vec_inv.y,  vec_off.x,  vec_off.y))
+            PathLog.debug("LineCMD: {}, Vxinv: {}, Vyinv: {}, Vxoff: {}, Vyoff: {}".format(queue[0].Name, vec_inv.x, vec_inv.y,  vec_off.x,  vec_off.y))
         else:
             # We have an arc move
             pij = copy.deepcopy(p0)
@@ -508,9 +493,6 @@ class ObjectDressup:
 
             vec_inv = self.invert(vec_rot)
 
-            # vec_off = self.multiply(vec_inv,  obj.ExtendLeadOut)
-
-        # offsetvector = FreeCAD.Vector(v.x*R-vec_off.x, v.y*R-vec_off.y, 0.0)
         offsetvector = FreeCAD.Vector(v.x * R, v.y * R, 0.0)
         if obj.RadiusCenter == "Radius":
             leadend = (p1.add(off_v)).add(offsetvector)  # Rmode
@@ -522,23 +504,15 @@ class ObjectDressup:
         else:
             leadend = p1.add(off_v)  # Dmode
 
-        IJ = off_v  # .negative()
-        # print ("leadend = ", leadend)
-        # print ("IJ = ", IJ)
+        IJ = off_v
         # At this point leadend is the location of the end of the leadout arc
-        # IJ is an offset from the begining of the leadout arc to its center.
+        # IJ is an offset from the beginning of the leadout arc to its center.
         # It is parallel to a tangent line at the end of the leadout arc
         # Create the normalized tangent vector
         tangentvecNorm = self.normalize(IJ)
-        # print ("tangentvecNorm = ", tangentvecNorm)
-        # Multiply tangentvecNorm by LeadOut length
         leadlinevec = self.multiply(tangentvecNorm, obj.ExtendLeadOut)
-        # print ("leadlinevec = ", leadlinevec)
-        # leadlinevec provides the offset from the end of the leadout arc to the end of the extend line
         extendleadoutend = leadend.add(leadlinevec)
-        # print ("extendleadoutend = ", extendleadoutend)
 
-        # results.append(queue[1])
         if obj.StyleOff == "Arc":
             arcmove = Path.Command(
                 arcdir,
@@ -562,12 +536,10 @@ class ObjectDressup:
         if obj.UseMachineCRC:  # crc off
             results.append(Path.Command("G40", {}))
 
-        # print ("results =",results)
-
         return results
 
     def generateLeadInOutCurve(self, obj):
-        global currLocation  # pylint: disable=global-statement
+        global currLocation
         firstmove = Path.Command("G0", {"X": 0, "Y": 0, "Z": 0})
         op = PathDressup.baseOp(obj.Base)
         currLocation.update(firstmove.Parameters)
@@ -579,7 +551,7 @@ class ObjectDressup:
 
         # Read in all commands
         for curCommand in obj.Base.Path.Commands:
-            # PathLog.debug("CurCMD: {}".format(curCommand))
+            PathLog.debug("CurCMD: {}".format(curCommand))
             if curCommand.Name not in movecommands + rapidcommands:
                 # Don't worry about non-move commands, just add to output
                 newpath.append(curCommand)
@@ -606,7 +578,7 @@ class ObjectDressup:
                     and prevCmd.Name in movecommands
                 ):
                     # Layer change within move cmds
-                    # PathLog.debug("Layer change in move: {}->{}".format(currLocation['Z'],  curCommand.z))
+                    PathLog.debug("Layer change in move: {}->{}".format(currLocation['Z'],  curCommand.z))
                     layers.append(queue)
                     queue = []
 
@@ -623,16 +595,14 @@ class ObjectDressup:
         # Go through each layer and add leadIn/Out
         idx = 0
         for layer in layers:
-            # PathLog.debug("Layer {}".format(idx))
+            PathLog.debug("Layer {}".format(idx))
 
             if obj.LeadIn:
                 temp = self.getLeadStart(obj, layer, action)
                 newpath.extend(temp)
 
             for cmd in layer:
-                # PathLog.debug("CurLoc: {}, NewCmd: {}".format(currLocation,  cmd))
-                # if currLocation['X'] == cmd.x and currLocation['Y'] == cmd.y and currLocation['Z'] == cmd.z and cmd.Name in ['G1',  'G01']:
-                # continue
+                PathLog.debug("CurLoc: {}, NewCmd: {}".format(currLocation,  cmd))
                 newpath.append(cmd)
 
             if obj.LeadOut:
@@ -693,11 +663,9 @@ class ViewProviderDressup:
                             group.remove(g)
                     i.Group = group
                     print(i.Group)
-        # FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
         return [self.obj.Base]
 
     def setEdit(self, vobj, mode=0):
-        # pylint: disable=unused-argument
         FreeCADGui.Control.closeDialog()
         panel = TaskDressupLeadInOut(vobj.Object, self)
         FreeCADGui.Control.showDialog(panel)
@@ -709,7 +677,6 @@ class ViewProviderDressup:
 
     def onDelete(self, arg1=None, arg2=None):
         """this makes sure that the base operation is added back to the project and visible"""
-        # pylint: disable=unused-argument
         PathLog.debug("Deleting Dressup")
         if arg1.Object and arg1.Object.Base:
             FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
@@ -723,7 +690,6 @@ class ViewProviderDressup:
         return None
 
     def __setstate__(self, state):
-        # pylint: disable=unused-argument
         return None
 
     def clearTaskPanel(self):
@@ -731,7 +697,6 @@ class ViewProviderDressup:
 
 
 class CommandPathDressupLeadInOut:
-    # pylint: disable=no-init
 
     def GetResources(self):
         return {
