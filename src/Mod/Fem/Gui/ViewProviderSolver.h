@@ -58,6 +58,10 @@ public:
     }
     /// A list of all possible display modes
     virtual std::vector<std::string> getDisplayModes(void) const;
+
+    // handling when object is deleted
+    virtual bool onDelete(const std::vector<std::string>&);
+    virtual bool canDelete(App::DocumentObject* obj) const;
 };
 
 typedef Gui::ViewProviderPythonFeatureT<ViewProviderSolver> ViewProviderSolverPython;
