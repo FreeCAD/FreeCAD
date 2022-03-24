@@ -1040,7 +1040,7 @@ class CommandAddonManager:
             QtWidgets.QMessageBox.Cancel,
         )
 
-    def display_dep_resolution_dialog(self, missing) -> None:
+    def display_dep_resolution_dialog(self, missing, repo: Addon) -> None:
         self.dependency_dialog = FreeCADGui.PySideUic.loadUi(
             os.path.join(
                 os.path.dirname(__file__), "dependency_resolution_dialog.ui"
@@ -1086,7 +1086,7 @@ class CommandAddonManager:
             or missing.python_optional
         ):
             # Recoverable: ask the user if they want to install the missing deps
-            self.display_dep_resolution_dialog(missing)
+            self.display_dep_resolution_dialog(missing, repo)
         else:
             # No missing deps, just install
             self.install(repo)
@@ -1188,7 +1188,7 @@ class CommandAddonManager:
             short_message
             + "\n\n"
             + translate("AddonsInstaller", "See Report View for detailed failure log."),
-            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+            QtWidgets.QMessageBox.Cancel,
         )
 
     def dependency_dialog_ignore_clicked(self, repo: Addon) -> None:
