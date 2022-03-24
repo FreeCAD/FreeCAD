@@ -25,15 +25,6 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define StartAppExport __declspec(dllimport)
-# define StartGuiExport __declspec(dllexport)
-#else // for Linux
-# define StartAppExport
-# define StartGuiExport
-#endif
-
 #ifdef _PreComp_
 // standard
 #include <iostream>

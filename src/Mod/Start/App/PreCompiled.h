@@ -25,15 +25,4 @@
 
 #include <FCConfig.h>
 
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-# define AppStartExport __declspec(dllexport)
-# define PartExport  __declspec(dllimport)
-# define MeshExport     __declspec(dllimport)
-#else // for Linux
-# define AppStartExport
-# define PartExport
-# define MeshExport
-#endif
-
 #endif
