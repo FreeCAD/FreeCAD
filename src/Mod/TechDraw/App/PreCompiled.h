@@ -59,6 +59,8 @@
 #include <set>
 #include <bitset>
 
+#include <boost/graph/boyer_myrvold_planar_test.hpp>
+#include <boost/graph/is_kuratowski_subgraph.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
 // OpenCasCade =====================================================================================
