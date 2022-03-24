@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <algorithm>
 # include <stdexcept>
+# include <Python.h>
 # include <SMESH_Gen.hxx>
 # include <SMESH_Group.hxx>
 # include <SMESH_Mesh.hxx>
