@@ -26,19 +26,6 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define PartExport           __declspec(dllimport)
-# define PartGuiExport        __declspec(dllimport)
-# define SurfaceExport        __declspec(dllimport)
-# define SurfaceGuiExport     __declspec(dllexport)
-#else // for Linux
-# define PartExport
-# define PartGuiExport
-# define SurfaceExport
-# define SurfaceGuiExport
-#endif
-
 #ifdef _PreComp_
 
 // standard
