@@ -24,6 +24,7 @@
 #define SKETCHER_SKETCHGEOMETRYEXTENSION_H
 
 #include <Mod/Part/App/Geometry.h>
+#include <Mod/Sketcher/SketcherGlobal.h>
 #include <atomic>
 #include <bitset>
 #include <array>

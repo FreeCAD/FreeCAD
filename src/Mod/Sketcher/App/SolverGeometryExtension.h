@@ -24,6 +24,7 @@
 #define SKETCHER_SOLVERGEOMETRYEXTENSION_H
 
 #include <Mod/Part/App/GeometryExtension.h>
+#include <Mod/Sketcher/SketcherGlobal.h>
 
 namespace Sketcher
 {

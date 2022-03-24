@@ -26,19 +26,6 @@
 
 #include <FCConfig.h>
 
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-# define SketcherExport     __declspec(dllexport)
-# define PartExport         __declspec(dllimport)
-# define PartDesignExport   __declspec(dllimport)
-# define MeshExport         __declspec(dllimport)
-#else // for Linux
-# define SketcherExport
-# define PartExport
-# define PartDesignExport
-# define MeshExport
-#endif
-
 #ifdef _PreComp_
 
 // standard
