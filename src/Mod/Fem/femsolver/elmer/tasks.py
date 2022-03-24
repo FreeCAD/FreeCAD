@@ -169,6 +169,10 @@ class Results(run.Results):
             "Fem::FemPostPipeline", self.solver.Name + "Result")
         self.solver.ElmerResult.Label = self.solver.Label + "Result"
         self.analysis.addObject(self.solver.ElmerResult)
+        # set the scale to 1 (meaning factor 1000) to scale the mesh back for display
+        self.solver.ElmerResult.ViewObject.Scale = 1
+        # to assure the user sees something, set the default to Surface
+        self.solver.ElmerResult.ViewObject.DisplayMode = "Surface"
 
     def _getResultFile(self):
         postPath = None

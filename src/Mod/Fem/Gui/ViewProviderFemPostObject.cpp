@@ -428,13 +428,6 @@ void ViewProviderFemPostObject::WritePointData(vtkPoints* points, vtkDataArray* 
     if (!points)
         return;
 
-    // if the object contains "Elmer" but no scale has been set, we set it to 1000.0
-    // because for Elmer we work with SI units and thus get a scaled result we need to transform
-    auto Label = std::string(pcObject->Label.getValue());
-    auto found = Label.find(std::string("Elmer"));
-    if (found != std::string::npos && strcmp(Scale.getValueAsString(), "1000") != 0)
-        Scale.setValue("1000");
-
     // we must inherit the Scale of parent meshes (for example for clip filters)
     auto parents = pcObject->getInList();
     if (parents.size()) {
