@@ -47,7 +47,6 @@
 #include <Gui/Document.h>
 #include <Gui/SoFCColorBar.h>
 #include <Gui/TaskView/TaskDialog.h>
-#include <Mod/Fem/App/FemPostPipeline.h>
 
 #include "ViewProviderFemPostObject.h"
 #include "TaskPostBoxes.h"
