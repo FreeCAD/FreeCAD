@@ -39,12 +39,14 @@
 # include <vtkPointData.h>
 
 # include <QMessageBox>
+# include <QTextStream>
 #endif
 
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/SoFCColorBar.h>
 #include <Gui/TaskView/TaskDialog.h>
 
@@ -667,4 +669,43 @@ void ViewProviderFemPostObject::show(void) {
 void ViewProviderFemPostObject::OnChange(Base::Subject< int >& /*rCaller*/, int /*rcReason*/) {
     bool ResetColorBarRange = false;
     WriteColorData(ResetColorBarRange);
+}
+
+bool ViewProviderFemPostObject::onDelete(const std::vector<std::string>&)
+{
+    // warn the user if the object has childs
+
+    auto objs = claimChildren();
+    if (!objs.empty())
+    {
+        // generate dialog
+        QString bodyMessage;
+        QTextStream bodyMessageStream(&bodyMessage);
+        bodyMessageStream << qApp->translate("Std_Delete",
+            "The page is not empty, therefore the\nfollowing referencing objects might be lost:");
+        bodyMessageStream << '\n';
+        for (auto ObjIterator : objs)
+            bodyMessageStream << '\n' << QString::fromUtf8(ObjIterator->Label.getValue());
+        bodyMessageStream << "\n\n" << QObject::tr("Are you sure you want to continue?");
+        // show and evaluate the dialog
+        int DialogResult = QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+            QMessageBox::Yes, QMessageBox::No);
+        if (DialogResult == QMessageBox::Yes)
+            return true;
+        else
+            return false;
+    }
+    else {
+        return true;
+    }
+}
+
+bool ViewProviderFemPostObject::canDelete(App::DocumentObject* obj) const
+{
+    // deletions of objects from a FemPostObject don't necesarily destroy anything
+    // thus we can pass this action
+    // we can warn the user if necessary in the object's ViewProvider in the onDelete() function
+    Q_UNUSED(obj)
+        return true;
 }

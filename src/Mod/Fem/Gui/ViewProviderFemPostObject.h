@@ -98,6 +98,9 @@ public:
     //observer for the color bar
     virtual void OnChange(Base::Subject< int >& rCaller, int rcReason);
 
+    virtual bool onDelete(const std::vector<std::string>&);
+    virtual bool canDelete(App::DocumentObject* obj) const;
+
       /** @name Selection handling
       * This group of methods do the selection handling.
       * Here you can define how the selection for your ViewProvider
