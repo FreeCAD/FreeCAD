@@ -38,6 +38,7 @@
 #include <TopTools_MapOfShape.hxx>
 #include <TopTools_ListOfShape.hxx>
 #include <BRepBuilderAPI_MakeShape.hxx>
+#include <Mod/Part/PartGlobal.h>
 
 
 namespace ModelRefine

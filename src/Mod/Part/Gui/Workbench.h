@@ -25,6 +25,7 @@
 #define PART_WORKBENCH_H
 
 #include <Gui/Workbench.h>
+#include <Mod/Part/PartGlobal.h>
 
 namespace PartGui {
 

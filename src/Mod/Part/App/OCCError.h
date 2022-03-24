@@ -54,6 +54,7 @@
 # include <Standard_TypeMismatch.hxx>
 # include <Standard_Underflow.hxx>
 
+#include <Mod/Part/PartGlobal.h>
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>

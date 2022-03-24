@@ -26,20 +26,7 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define PartExport    __declspec(dllimport)
-# define PartGuiExport __declspec(dllexport)
-#else // for Linux
-# define PartExport
-# define PartGuiExport
-#endif
-
-#ifdef FC_OS_WIN32
-# ifndef NOMINMAX
-# define NOMINMAX
-# endif
-#endif
+#include <Mod/Part/PartGlobal.h>
 
 // here get the warnings of too long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
@@ -50,6 +37,9 @@
 #endif
 
 #ifdef FC_OS_WIN32
+# ifndef NOMINMAX
+# define NOMINMAX
+# endif
 # include <windows.h>
 #endif
 

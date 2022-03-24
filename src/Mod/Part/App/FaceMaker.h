@@ -30,6 +30,7 @@
 #include <TopoDS_Wire.hxx>
 
 #include <memory>
+#include <Mod/Part/PartGlobal.h>
 
 namespace Part
 {

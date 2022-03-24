@@ -24,6 +24,7 @@
 #ifndef PART_BREPOFFSETAPI_MAKEOFFSETFIX_H
 #define PART_BREPOFFSETAPI_MAKEOFFSETFIX_H
 
+#include <Mod/Part/PartGlobal.h>
 #include <BRepOffsetAPI_MakeOffset.hxx>
 #include <list>
 #include <map>

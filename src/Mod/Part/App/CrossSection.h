@@ -24,6 +24,7 @@
 #ifndef PART_CROSSSECTION_H
 #define PART_CROSSSECTION_H
 
+#include <Mod/Part/PartGlobal.h>
 #include <list>
 #include <TopTools_IndexedMapOfShape.hxx>
 

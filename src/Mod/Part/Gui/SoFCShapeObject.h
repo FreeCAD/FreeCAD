@@ -29,6 +29,7 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/elements/SoReplacedElement.h>
+#include <Mod/Part/PartGlobal.h>
 
 namespace PartGui {
 
