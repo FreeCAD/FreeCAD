@@ -4311,16 +4311,37 @@ private:
     }
 
     virtual void createAutoConstraints() override {
-        // add auto constraints for the center point
-        if (!sugConstraints[0].empty()) {
-            DrawSketchHandler::createAutoConstraints(sugConstraints[0], getHighestCurveIndex(), Sketcher::PointPos::mid);
-            sugConstraints[0].clear();
-        }
+        if (constructionMethod == ConstructionMethod::Center) {
+            // add auto constraints for the center point
+            if (!sugConstraints[0].empty()) {
+                DrawSketchHandler::createAutoConstraints(sugConstraints[0], getHighestCurveIndex(), Sketcher::PointPos::mid);
+                sugConstraints[0].clear();
+            }
 
-        // add suggested constraints for circumference
-        if (!sugConstraints[1].empty()) {
-            DrawSketchHandler::createAutoConstraints(sugConstraints[1], getHighestCurveIndex(), Sketcher::PointPos::none);
-            sugConstraints[1].clear();
+            // add suggested constraints for circumference
+            if (!sugConstraints[1].empty()) {
+                DrawSketchHandler::createAutoConstraints(sugConstraints[1], getHighestCurveIndex(), Sketcher::PointPos::none);
+                sugConstraints[1].clear();
+            }
+        }
+        else {
+            // Auto Constraint first picked point
+            if (sugConstraints[0].size() > 0) {
+                DrawSketchHandler::createAutoConstraints(sugConstraints[0], getHighestCurveIndex(), Sketcher::PointPos::none);
+                sugConstraints[0].clear();
+            }
+
+            // Auto Constraint second picked point
+            if (sugConstraints[1].size() > 0) {
+                DrawSketchHandler::createAutoConstraints(sugConstraints[1], getHighestCurveIndex(), Sketcher::PointPos::none);
+                sugConstraints[1].clear();
+            }
+
+            // Auto Constraint third picked point
+            if (sugConstraints[2].size() > 0) {
+                DrawSketchHandler::createAutoConstraints(sugConstraints[2], getHighestCurveIndex(), Sketcher::PointPos::none);
+                sugConstraints[2].clear();
+            }
         }
     }
 
