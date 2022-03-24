@@ -26,6 +26,7 @@
 #define PARTDESIGN_DATUMLINE_H
 
 #include <Mod/Part/App/DatumFeature.h>
+#include <Mod/PartDesign/PartDesignGlobal.h>
 #include <App/PropertyUnits.h>
 
 namespace PartDesign

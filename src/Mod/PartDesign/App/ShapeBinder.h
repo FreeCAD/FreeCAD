@@ -28,6 +28,7 @@
 #include <App/DocumentObserver.h>
 #include <App/FeaturePython.h>
 #include <Mod/Part/App/DatumFeature.h>
+#include <Mod/PartDesign/PartDesignGlobal.h>
 
 namespace PartDesign
 {

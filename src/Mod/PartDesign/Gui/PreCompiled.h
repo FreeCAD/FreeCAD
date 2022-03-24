@@ -26,23 +26,6 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define PartDesignExport     __declspec(dllimport)
-# define PartDesignGuiExport  __declspec(dllexport)
-# define PartExport           __declspec(dllimport)
-# define PartGuiExport        __declspec(dllimport)
-# define SketcherExport       __declspec(dllimport)
-# define SketcherGuiExport    __declspec(dllimport)
-#else // for Linux
-# define PartDesignExport
-# define PartDesignGuiExport
-# define PartExport
-# define PartGuiExport
-# define SketcherExport
-# define SketcherGuiExport
-#endif
-
 
 #ifdef _MSC_VER
 #   pragma warning(disable : 4005)

@@ -26,6 +26,7 @@
 #define PARTDESIGN_DATUMPOINT_H
 
 #include <Mod/Part/App/DatumFeature.h>
+#include <Mod/PartDesign/PartDesignGlobal.h>
 
 namespace PartDesign
 {

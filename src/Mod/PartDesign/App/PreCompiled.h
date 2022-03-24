@@ -26,17 +26,6 @@
 
 #include <FCConfig.h>
 
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-# define PartDesignExport __declspec(dllexport)
-# define PartExport  __declspec(dllimport)
-# define MeshExport     __declspec(dllimport)
-#else // for Linux
-# define PartDesignExport
-# define PartExport
-# define MeshExport
-#endif
-
 #ifdef _MSC_VER
 // disable warning triggered by use of Part::FaceMaker
 // see forum thread "Warning C4275 non-dll class used as base for dll class"

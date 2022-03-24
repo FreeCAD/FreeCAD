@@ -25,6 +25,7 @@
 #define PARTDESIGN_Body_H
 
 #include <Mod/Part/App/BodyBase.h>
+#include <Mod/PartDesign/PartDesignGlobal.h>
 
 namespace App {
     class Origin;
