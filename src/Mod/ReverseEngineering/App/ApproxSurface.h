@@ -33,6 +33,7 @@
 #include <math_Matrix.hxx>
 
 #include <Base/Vector3D.h>
+#include <Mod/ReverseEngineering/ReverseEngineeringGlobal.h>
 
 namespace Base {
 class SequencerLauncher;

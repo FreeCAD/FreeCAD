@@ -26,13 +26,6 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define AppTestGuiExport __declspec(dllexport)
-#else // for Linux
-# define AppTestGuiExport
-#endif
-
 #ifdef _PreComp_
 
 // here get the warnings of too long specifiers disabled (needed for VC6)

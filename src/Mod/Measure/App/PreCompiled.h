@@ -26,17 +26,6 @@
 
 #include <FCConfig.h>
 
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-# define MeasureExport      __declspec(dllexport)
-# define PartExport         __declspec(dllimport)
-# define MeshExport         __declspec(dllimport)
-#else // for Linux
-# define MeasureExport
-# define PartExport
-# define MeshExport
-#endif
-
 #ifdef FC_OS_WIN32
 #define WIN32_LEAN_AND_MEAN
 #ifndef NOMINMAX

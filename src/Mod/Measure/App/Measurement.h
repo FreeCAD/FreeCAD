@@ -28,6 +28,7 @@
 
 #include <Base/BaseClass.h>
 #include <Base/Vector3D.h>
+#include <Mod/Measure/MeasureGlobal.h>
 
 
 class TopoDS_Shape;

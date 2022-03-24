@@ -26,15 +26,6 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define PointsExport    __declspec(dllimport)
-# define PointsGuiExport __declspec(dllexport)
-#else // for Linux
-# define PointsExport
-# define PointsGuiExport
-#endif
-
 #ifdef FC_OS_WIN32
 # ifndef NOMINMAX
 # define NOMINMAX

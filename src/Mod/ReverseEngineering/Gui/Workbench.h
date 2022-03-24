@@ -31,7 +31,7 @@ namespace ReverseEngineeringGui {
 /**
  * @author Werner Mayer
  */
-class ReenGuiExport Workbench : public Gui::StdWorkbench
+class Workbench : public Gui::StdWorkbench
 {
     TYPESYSTEM_HEADER();
 
