@@ -24,7 +24,7 @@
 #define Fem_FemAnalysis_H
 
 #include <App/DocumentObjectGroup.h>
-#include <App/PropertyLinks.h>
+#include <App/PropertyStandard.h>
 #include <App/FeaturePython.h>
 #include <Mod/Fem/FemGlobal.h>
 

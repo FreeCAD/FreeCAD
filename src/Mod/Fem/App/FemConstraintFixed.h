@@ -21,15 +21,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_CONSTRAINTFIXED_H
 #define FEM_CONSTRAINTFIXED_H
 
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
 #include <App/PropertyGeo.h>
 
 #include "FemConstraint.h"
+
 
 namespace Fem
 {

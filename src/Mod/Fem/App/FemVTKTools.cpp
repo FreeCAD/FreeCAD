@@ -87,6 +87,7 @@
 #include "FemVTKTools.h"
 #include "FemMeshProperty.h"
 #include "FemAnalysis.h"
+#include "FemResultObject.h"
 
 namespace Fem
 {

@@ -20,15 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_PROPERTYPOSTDATASET_H
 #define FEM_PROPERTYPOSTDATASET_H
 
-#include <App/Property.h>
-#include <vtkSmartPointer.h>
 #include <vtkDataObject.h>
 #include <vtkDataSet.h>
+#include <vtkSmartPointer.h>
+
+#include <App/Property.h>
 #include <Mod/Fem/FemGlobal.h>
+
 
 namespace Fem
 {

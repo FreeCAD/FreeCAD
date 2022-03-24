@@ -20,18 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef Fem_FemPostFunction_H
 #define Fem_FemPostFunction_H
 
-#include "FemPostObject.h"
-#include <App/PropertyUnits.h>
-
-#include <vtkSmartPointer.h>
+#include <vtkBoundingBox.h>
 #include <vtkImplicitFunction.h>
 #include <vtkPlane.h>
 #include <vtkSphere.h>
-#include <vtkBoundingBox.h>
+#include <vtkSmartPointer.h>
+
+#include <App/PropertyUnits.h>
+
+#include "FemPostObject.h"
+
 
 namespace Fem
 {

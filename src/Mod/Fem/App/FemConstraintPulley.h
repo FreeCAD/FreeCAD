@@ -21,15 +21,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_CONSTRAINTPulley_H
 #define FEM_CONSTRAINTPulley_H
 
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
+#include <App/PropertyStandard.h>
 
 #include "FemConstraintGear.h"
+
 
 namespace Fem
 {

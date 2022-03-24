@@ -20,15 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef Fem_FemResultObject_H
 #define Fem_FemResultObject_H
 
 #include <App/DocumentObject.h>
-#include <App/PropertyUnits.h>
 #include <App/PropertyStandard.h>
 #include <App/FeaturePython.h>
 #include <Mod/Fem/FemGlobal.h>
+
 
 namespace Fem
 {
@@ -51,8 +50,6 @@ public:
     App::PropertyFloatList Stats;
     /// Displacement vectors of analysis
 
-
-
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
         return "FemGui::ViewProviderResult";
@@ -62,8 +59,6 @@ public:
     }
     virtual short mustExecute(void) const;
     virtual PyObject *getPyObject(void);
-
-
 };
 
 typedef App::FeaturePythonT<FemResultObject> FemResultObjectPython;

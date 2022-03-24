@@ -20,13 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef Fem_FemSetFacesObject_H
 #define Fem_FemSetFacesObject_H
 
 #include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
 #include "FemSetObject.h"
+
 
 namespace Fem
 {
@@ -49,8 +48,6 @@ public:
     }
     virtual short mustExecute(void) const;
     virtual PyObject *getPyObject(void);
-
-
 };
 
 } //namespace Fem

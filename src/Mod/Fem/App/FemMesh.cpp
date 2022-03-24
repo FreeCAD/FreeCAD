@@ -49,7 +49,6 @@
 # include <SMESHDS_GroupBase.hxx>
 # include <SMESHDS_Group.hxx>
 # include <SMESHDS_Mesh.hxx>
-//# include <SMDS_PolyhedralVolumeOfNodes.hxx>
 # include <SMDS_VolumeTool.hxx>
 # include <StdMeshers_MaxLength.hxx>
 # include <StdMeshers_LocalLength.hxx>

@@ -20,17 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef Fem_FemMeshObject_H
 #define Fem_FemMeshObject_H
 
 #include <App/FeaturePython.h>
 #include <App/GeoFeature.h>
-#include <App/PropertyFile.h>
-#include <App/PropertyGeo.h>
 
 #include "FemMesh.h"
 #include "FemMeshProperty.h"
+
 
 namespace Fem
 {

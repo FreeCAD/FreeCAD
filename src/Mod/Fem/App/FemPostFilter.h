@@ -20,25 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef Fem_FemPostFilter_H
 #define Fem_FemPostFilter_H
 
-#include "FemPostObject.h"
-#include <App/PropertyUnits.h>
-
-#include <vtkSmartPointer.h>
-#include <vtkTableBasedClipDataSet.h>
-#include <vtkExtractGeometry.h>
-#include <vtkGeometryFilter.h>
-#include <vtkPassThrough.h>
-#include <vtkPlane.h>
-#include <vtkWarpVector.h>
 #include <vtkCutter.h>
+#include <vtkExtractGeometry.h>
 #include <vtkLineSource.h>
 #include <vtkPointSource.h>
 #include <vtkProbeFilter.h>
-#include <vtkThreshold.h>
+#include <vtkSmartPointer.h>
+#include <vtkTableBasedClipDataSet.h>
+#include <vtkWarpVector.h>
+
+#include <App/PropertyUnits.h>
+
+#include "FemPostObject.h"
+
 
 namespace Fem
 {

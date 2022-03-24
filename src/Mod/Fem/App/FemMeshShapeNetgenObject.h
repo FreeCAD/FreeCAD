@@ -20,14 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef Fem_FemMeshShapeNetgenObject_H
 #define Fem_FemMeshShapeNetgenObject_H
 
-
-#include "FemMesh.h"
-#include "FemMeshShapeObject.h"
 #include <App/PropertyStandard.h>
+#include "FemMeshShapeObject.h"
 
 namespace Fem
 {

@@ -20,13 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef Fem_FemSetElementsObjec_H
 #define Fem_FemSetElementsObjec_H
 
 #include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
 #include "FemSetObject.h"
+
 
 namespace Fem
 {
