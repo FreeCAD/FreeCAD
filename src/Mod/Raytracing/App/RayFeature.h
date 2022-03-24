@@ -39,8 +39,7 @@ class Property;
 
 /** Base class of all Feature classes in FreeCAD
  */
-//class RayFeature: public Part::PartFeature
-class AppRaytracingExport RayFeature: public Raytracing::RaySegment
+class RaytracingExport RayFeature: public Raytracing::RaySegment
 {
     PROPERTY_HEADER(Raytracing::RayFeature);
 public:

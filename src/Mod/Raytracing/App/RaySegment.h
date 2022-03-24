@@ -30,6 +30,7 @@
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyGeo.h>
+#include <Mod/Raytracing/RaytracingGlobal.h>
 
 
 namespace Raytracing
@@ -38,7 +39,7 @@ namespace Raytracing
 
 /** Base class of all View Features in the drawing module
  */
-class AppRaytracingExport RaySegment: public App::DocumentObject
+class RaytracingExport RaySegment: public App::DocumentObject
 {
   PROPERTY_HEADER(Raytracing::RaySegment);
 

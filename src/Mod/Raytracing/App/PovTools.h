@@ -26,6 +26,7 @@
 
 #include <gp_Vec.hxx>
 #include <vector>
+#include <Mod/Raytracing/RaytracingGlobal.h>
 
 class TopoDS_Shape;
 class TopoDS_Face;
@@ -71,7 +72,7 @@ public:
 };
 
 
-class AppRaytracingExport PovTools
+class RaytracingExport PovTools
 {
 public:
     /// returns the given camera position as povray defines in a file

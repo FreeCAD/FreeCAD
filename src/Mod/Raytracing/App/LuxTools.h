@@ -37,7 +37,7 @@ namespace Data { class ComplexGeoData; }
 namespace Raytracing
 {
     
-    class AppRaytracingExport LuxTools
+    class RaytracingExport LuxTools
     {
     public:
         /// returns the given camera position as luxray defines
