@@ -26,19 +26,6 @@
 
 #include <FCConfig.h>
 
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-# define InspectionExport __declspec(dllexport)
-# define MeshExport          __declspec(dllimport)
-# define PointsExport     __declspec(dllimport)
-# define PartExport       __declspec(dllimport)
-#else // for Linux
-# define InspectionExport
-# define MeshExport
-# define PointsExport
-# define PartExport
-#endif
-
 #ifdef _MSC_VER
 # pragma warning(disable : 4290)
 # pragma warning(disable : 4275)

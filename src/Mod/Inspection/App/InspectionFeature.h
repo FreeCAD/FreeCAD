@@ -27,6 +27,7 @@
 #include <App/DocumentObjectGroup.h>
 
 #include <Mod/Points/App/Points.h>
+#include <Mod/Inspection/InspectionGlobal.h>
 
 
 class TopoDS_Shape;

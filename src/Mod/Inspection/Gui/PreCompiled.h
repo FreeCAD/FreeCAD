@@ -26,19 +26,6 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define MeshExport          __declspec(dllimport)
-# define PointsExport     __declspec(dllimport)
-# define InspectionExport __declspec(dllimport)
-# define InspectionGuiExport __declspec(dllexport)
-#else // for Linux
-# define MeshExport
-# define PointsExport
-# define InspectionExport
-# define InspectionGuiExport
-#endif
-
 #ifdef FC_OS_WIN32
 # ifndef NOMINMAX
 # define NOMINMAX
