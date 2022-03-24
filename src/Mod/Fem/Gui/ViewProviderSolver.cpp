@@ -64,7 +64,7 @@ bool ViewProviderSolver::onDelete(const std::vector<std::string>&)
         QString bodyMessage;
         QTextStream bodyMessageStream(&bodyMessage);
         bodyMessageStream << qApp->translate("Std_Delete",
-            "The page is not empty, therefore the\nfollowing referencing objects might be lost:");
+            "The solver is not empty, therefore the\nfollowing referencing objects might be lost:");
         bodyMessageStream << '\n';
         for (auto ObjIterator : objs)
             bodyMessageStream << '\n' << QString::fromUtf8(ObjIterator->Label.getValue());
