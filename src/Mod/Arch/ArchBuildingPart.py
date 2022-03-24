@@ -755,14 +755,14 @@ class ViewProviderBuildingPart:
             if hasattr(vobj,"LineWidth"):
                 self.dst.lineWidth = vobj.LineWidth
         elif prop == "FontName":
-            if hasattr(vobj,"FontName"):
+            if hasattr(vobj,"FontName") and hasattr(self,"fon"):
                 if vobj.FontName:
                     if sys.version_info.major < 3:
                         self.fon.name = vobj.FontName.encode("utf8")
                     else:
                         self.fon.name = vobj.FontName
         elif prop in ["FontSize","DisplayOffset","OriginOffset"]:
-            if hasattr(vobj,"FontSize") and hasattr(vobj,"DisplayOffset") and hasattr(vobj,"OriginOffset"):
+            if hasattr(vobj,"FontSize") and hasattr(vobj,"DisplayOffset") and hasattr(vobj,"OriginOffset") and hasattr(self,"fon"):
                 fs = vobj.FontSize.Value
                 if fs:
                     self.fon.size = fs
@@ -775,7 +775,7 @@ class ViewProviderBuildingPart:
                     else:
                         self.lco.point.setValues([[-fs,0,0],[fs,0,0],[0,-fs,0],[0,fs,0],[0,0,-fs],[0,0,fs]])
         elif prop in ["OverrideUnit","ShowUnit","ShowLevel","ShowLabel"]:
-            if hasattr(vobj,"OverrideUnit") and hasattr(vobj,"ShowUnit") and hasattr(vobj,"ShowLevel") and hasattr(vobj,"ShowLabel"):
+            if hasattr(vobj,"OverrideUnit") and hasattr(vobj,"ShowUnit") and hasattr(vobj,"ShowLevel") and hasattr(vobj,"ShowLabel") and hasattr(self,"txt"):
                 z = vobj.Object.Placement.Base.z + vobj.Object.LevelOffset.Value
                 q = FreeCAD.Units.Quantity(z,FreeCAD.Units.Length)
                 txt = ""
