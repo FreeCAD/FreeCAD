@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
+ *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,32 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <FCGlobal.h>
 
-#ifndef DRAFTUTILS_PRECOMPILED_H
-#define DRAFTUTILS_PRECOMPILED_H
+#ifndef DRAFT_GLOBAL_H
+#define DRAFT_GLOBAL_H
 
-#include <FCConfig.h>
 
-#ifdef _MSC_VER
-# pragma warning(disable : 4275)
+// Draft
+#ifndef DraftUtilsExport
+#ifdef DraftUtils_EXPORTS
+#       define DraftUtilsExport   FREECAD_DECL_EXPORT
+#else
+#       define DraftUtilsExport   FREECAD_DECL_IMPORT
+#endif
 #endif
 
-#ifdef _PreComp_
-
-// standard
-#include <iostream>
-#include <sstream>
-#include <cstdio>
-#include <cassert>
-#include <string>
-#include <map>
-#include <vector>
-#include <set>
-#include <bitset>
-#include <cctype>
-
-#include <Python.h>
-
-#endif // _PreComp_
-#endif
-
+#endif //DRAFT_GLOBAL_H

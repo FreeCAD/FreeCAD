@@ -25,6 +25,7 @@
 
 #include "dxf.h"
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Draft/DraftGlobal.h>
 #include <App/Document.h>
 #include <gp_Pnt.hxx>
 
