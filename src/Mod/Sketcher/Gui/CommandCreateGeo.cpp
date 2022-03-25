@@ -1841,6 +1841,7 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doOverrideSk
             }
         }
     }
+    break;
     case SelectMode::SeekThird:
     {
         if (toolWidget->isParameterSet(WParameter::Fifth)) {
@@ -1887,6 +1888,7 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::updateVisual
                 toolWidget->updateVisualValue(WParameter::Fourth, fabs(onSketchPos.y - boxhandler->center.y)*2);
         }
     }
+    break;
     case SelectMode::SeekThird:
     {
         auto boxhandler = static_cast<DrawSketchHandlerRectangle*>(handler);
@@ -1935,6 +1937,7 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doChangeDraw
             }
         }
     }
+    break;
     case SelectMode::SeekThird:
     {
         if (toolWidget->isParameterSet(WParameter::Fifth)) {
@@ -1954,8 +1957,8 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doChangeDraw
 }
 
 template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::addConstraints() {
-    auto boxhandler = static_cast<DrawSketchHandlerRectangle*>(handler);
-    int firstCurve = boxhandler->firstCurve;
+    auto dHandler = static_cast<DrawSketchHandlerRectangle*>(handler);
+    int firstCurve = dHandler->firstCurve;
 
     auto x0 = toolWidget->getParameter(WParameter::First);
     auto y0 = toolWidget->getParameter(WParameter::Second);
@@ -1971,7 +1974,7 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::addConstrain
 
     using namespace Sketcher;
 
-    if (boxhandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal) {
+    if (dHandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal) {
         if (x0set && y0set && x0 == 0. && y0 == 0.) {
             ConstraintToAttachment(GeoElementId(firstCurve, PointPos::start), GeoElementId::RtPnt,
                 x0, handler->sketchgui->getObject());
