@@ -131,22 +131,14 @@
         <file>icons/geometry/Sketcher_CreateElliptical_Arc_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateFillet.svg</file>
         <file>icons/geometry/Sketcher_CreatePointFillet.svg</file>
-        <file>icons/geometry/Sketcher_CreateHeptagon.svg</file>
-        <file>icons/geometry/Sketcher_CreateHeptagon_Constr.svg</file>
-        <file>icons/geometry/Sketcher_CreateHexagon.svg</file>
-        <file>icons/geometry/Sketcher_CreateHexagon_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateHyperbolic_Arc.svg</file>
         <file>icons/geometry/Sketcher_CreateHyperbolic_Arc_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateLine.svg</file>
         <file>icons/geometry/Sketcher_CreateLine_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateOblong.svg</file>
         <file>icons/geometry/Sketcher_CreateOblong_Constr.svg</file>
-        <file>icons/geometry/Sketcher_CreateOctagon.svg</file>
-        <file>icons/geometry/Sketcher_CreateOctagon_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateParabolic_Arc.svg</file>
         <file>icons/geometry/Sketcher_CreateParabolic_Arc_Constr.svg</file>
-        <file>icons/geometry/Sketcher_CreatePentagon.svg</file>
-        <file>icons/geometry/Sketcher_CreatePentagon_Constr.svg</file>
         <file>icons/geometry/Sketcher_Create_Periodic_BSpline.svg</file>
         <file>icons/geometry/Sketcher_Create_Periodic_BSpline_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreatePoint.svg</file>
@@ -156,15 +148,11 @@
         <file>icons/geometry/Sketcher_CreateRectangle_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateRectangle_Center.svg</file>
         <file>icons/geometry/Sketcher_CreateRectangle_Center_Constr.svg</file>
-        <file>icons/geometry/Sketcher_CreateRegularPolygon.svg</file>
-        <file>icons/geometry/Sketcher_CreateRegularPolygon_Constr.svg</file>
+        <file>icons/geometry/Sketcher_CreatePolygon.svg</file>
+        <file>icons/geometry/Sketcher_CreatePolygon_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateSlot.svg</file>
         <file>icons/geometry/Sketcher_CreateSlot_Constr.svg</file>
-        <file>icons/geometry/Sketcher_CreateSquare.svg</file>
-        <file>icons/geometry/Sketcher_CreateSquare_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateText.svg</file>
-        <file>icons/geometry/Sketcher_CreateTriangle.svg</file>
-        <file>icons/geometry/Sketcher_CreateTriangle_Constr.svg</file>
         <file>icons/geometry/Sketcher_Extend.svg</file>
         <file>icons/geometry/Sketcher_External.svg</file>
         <file>icons/geometry/Sketcher_Split.svg</file>
