@@ -33,6 +33,7 @@ import FreeCAD
 import FreeCADGui
 
 import FemGui
+from PySide import QtGui
 from femtaskpanels import task_mesh_gmsh
 from femtools.femutils import is_of_type
 # from . import view_base_femobject
@@ -204,11 +205,17 @@ class VPMeshGmsh:
     def onDelete(self, feature, subelements):
         children = self.claimChildren()
         if len(children) > 0:
-            try:
-                for obj in children:
-                    obj.ViewObject.show()
-            except Exception as err:
-                FreeCAD.Console.PrintError("Error in onDelete: {0} \n".format(err))
+            # issue a warning
+            bodyMessage = "The mesh contains submesh objects, therefore the\nfollowing referencing objects might be lost:\n"
+            for obj in children:
+                bodyMessage += "\n" + obj.Label
+            bodyMessage += "\n\nAre you sure you want to continue?"
+            reply = QtGui.QMessageBox.warning(None, "Object dependencies", bodyMessage,
+            QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, QtGui.QMessageBox.No)
+            if reply == QtGui.QMessageBox.Yes:
+                return True
+            else:
+                return False
         return True
 
     def canDragObjects(self):

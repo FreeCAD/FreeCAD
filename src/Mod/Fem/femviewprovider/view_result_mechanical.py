@@ -73,8 +73,6 @@ class VPResultMechanical(view_base_femconstraint.VPBaseFemConstraint):
             QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, QtGui.QMessageBox.No)
             if reply == QtGui.QMessageBox.Yes:
                 return True
-            pass
-            if reply == QtGui.QMessageBox.No:
+            else:
                 return False
-            pass
         return True
