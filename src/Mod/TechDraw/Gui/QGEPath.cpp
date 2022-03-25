@@ -41,6 +41,8 @@
 
 #include "DrawGuiStd.h"
 #include "PreferencesGui.h"
+#include "Rez.h"
+#include "ZVALUE.h"
 #include "QGIPrimPath.h"
 #include "QGIVertex.h"
 #include "QGIView.h"

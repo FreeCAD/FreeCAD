@@ -25,12 +25,11 @@
 
 #include <QGraphicsScene>
 #include <QGraphicsSceneHoverEvent>
-#include <QMouseEvent>
 #include <QObject>
 
-#include <Base/Vector3D.h>
-#include "QGIVertex.h"
 #include "QGIPrimPath.h"
+#include "QGIVertex.h"
+
 
 namespace TechDrawGui
 {

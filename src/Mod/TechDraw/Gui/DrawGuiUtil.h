@@ -24,15 +24,14 @@
 #define _DrawGuiUtil_h_
 
 #include <string>
-#include <QCoreApplication>
-#include <QRectF>
-#include <QPointF>
 #include <QComboBox>
-#include <Base/Vector3D.h>
+#include <QCoreApplication>
+#include <QPointF>
+#include <QRectF>
 
 #include <App/DocumentObject.h>
+#include <Base/Vector3D.h>
 
-/*#include <Gui/PrefWidgets.h>*/
 
 namespace Part {
 class Feature;

@@ -20,21 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef TECHDRAWGUI_MDIVIEWPAGE_H
 #define TECHDRAWGUI_MDIVIEWPAGE_H
 
-#include "ViewProviderPage.h"
+#include <QGraphicsScene>
+#include <QPointF>
+#include <QPrinter>
 
 #include <Gui/MDIView.h>
 #include <Gui/MDIViewPy.h>
 #include <Gui/Selection.h>
-
-#include <QPrinter>
-#include <QGraphicsScene>
-#include <QPointF>
-
 #include <Mod/TechDraw/App/DrawPage.h>
+
+#include "ViewProviderPage.h"
+
 
 QT_BEGIN_NAMESPACE
 class QAction;

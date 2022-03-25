@@ -23,11 +23,12 @@
 #ifndef DRAWINGGUI_QGCUSTOMSVG_H
 #define DRAWINGGUI_QGCUSTOMSVG_H
 
+#include <QByteArray>
 #include <QGraphicsItem>
 #include <QGraphicsSvgItem>
 #include <QPointF>
-#include <QByteArray>
 #include <QSvgRenderer>
+
 
 QT_BEGIN_NAMESPACE
 class QPainter;
