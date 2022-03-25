@@ -566,6 +566,10 @@ class CommandAddonManager:
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Addons")
         if pref.GetBool("DownloadMacros", False):
             self.startup_sequence.append(self.load_macro_metadata)
+        selection = pref.GetString("SelectedAddon", "")
+        if selection:
+            self.startup_sequence.insert(2,lambda:self.select_addon(selection))
+            pref.SetString("SelectedAddon", "")
         self.current_progress_region = 0
         self.number_of_progress_regions = len(self.startup_sequence)
         self.do_next_startup_phase()
@@ -750,6 +754,17 @@ class CommandAddonManager:
             self.load_macro_metadata_worker.start()
         else:
             self.do_next_startup_phase()
+
+    def select_addon(self, name:str) -> None:
+        found = False
+        for addon in self.item_model.repos:
+            if addon.name == name:
+                self.table_row_activated(addon)
+                found = True
+                break
+        if not found:
+            FreeCAD.Console.PrintWarning(translate("AddonsInstaller","Could not find addon '{}' to select\n").format(name))
+        self.do_next_startup_phase()
 
     def check_updates(self) -> None:
         "checks every installed addon for available updates"
