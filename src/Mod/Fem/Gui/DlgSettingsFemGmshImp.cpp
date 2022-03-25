@@ -30,9 +30,9 @@
 
 using namespace FemGui;
 
-DlgSettingsFemGmshImp::DlgSettingsFemGmshImp( QWidget* parent )
-  : PreferencePage( parent )
-  , ui(new Ui_DlgSettingsFemGmshImp)
+DlgSettingsFemGmshImp::DlgSettingsFemGmshImp(QWidget* parent)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgSettingsFemGmshImp)
 {
     ui->setupUi(this);
 }
@@ -57,7 +57,7 @@ void DlgSettingsFemGmshImp::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsFemGmshImp::changeEvent(QEvent *e)
+void DlgSettingsFemGmshImp::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);

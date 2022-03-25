@@ -55,7 +55,7 @@ void ActiveAnalysisObserver::setActiveObject(Fem::FemAnalysis* fem)
         activeObject = fem;
         App::Document* doc = fem->getDocument();
         activeDocument = Gui::Application::Instance->getDocument(doc);
-        activeView = static_cast<Gui::ViewProviderDocumentObject *>(activeDocument->getViewProvider(activeObject));
+        activeView = static_cast<Gui::ViewProviderDocumentObject*>(activeDocument->getViewProvider(activeObject));
         attachDocument(doc);
     }
     else {

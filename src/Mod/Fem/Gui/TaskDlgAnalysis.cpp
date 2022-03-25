@@ -49,8 +49,8 @@ using namespace FemGui;
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgAnalysis::TaskDlgAnalysis(Fem::FemAnalysis *obj)
-    : TaskDialog(),FemAnalysis(obj)
+TaskDlgAnalysis::TaskDlgAnalysis(Fem::FemAnalysis* obj)
+    : TaskDialog(), FemAnalysis(obj)
 {
     driver  = new TaskDriver(obj);
     info    = new TaskAnalysisInfo(obj);
@@ -113,6 +113,5 @@ void TaskDlgAnalysis::helpRequested()
 {
 
 }
-
 
 #include "moc_TaskDlgAnalysis.cpp"

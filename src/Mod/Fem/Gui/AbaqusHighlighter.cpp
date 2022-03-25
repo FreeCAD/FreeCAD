@@ -44,7 +44,7 @@ AbaqusHighlighter::~AbaqusHighlighter()
 {
 }
 
-void AbaqusHighlighter::highlightBlock(const QString &text)
+void AbaqusHighlighter::highlightBlock(const QString& text)
 {
     // Find a syntax file for the Abaqus format here
     // http://notepad-plus.sourceforge.net/commun/userDefinedLang/userDefineLang_Abaqus.xml
@@ -54,11 +54,11 @@ void AbaqusHighlighter::highlightBlock(const QString &text)
     int state = NormalState;
     int start = 0;
 
-    QColor keywordColor(102,0,227); // this->colorByType(SyntaxHighlighter::Keyword)
-    QColor defnameColor(0,119,255); // this->colorByType(SyntaxHighlighter::Defname)
-    QColor operateColor(153,0,102); // this->colorByType(SyntaxHighlighter::Operator)
-    QColor valueColor(0,0,0); // this->colorByType(SyntaxHighlighter::String)
-    QColor numberColor(0,127,127); // this->colorByType(SyntaxHighlighter::Number)
+    QColor keywordColor(102, 0, 227); // this->colorByType(SyntaxHighlighter::Keyword)
+    QColor defnameColor(0, 119, 255); // this->colorByType(SyntaxHighlighter::Defname)
+    QColor operateColor(153, 0, 102); // this->colorByType(SyntaxHighlighter::Operator)
+    QColor valueColor(0, 0, 0); // this->colorByType(SyntaxHighlighter::String)
+    QColor numberColor(0, 127, 127); // this->colorByType(SyntaxHighlighter::Number)
     QColor commentColor = this->colorByType(SyntaxHighlighter::Comment);
 
     for (int i = 0; i < text.length(); ++i) {

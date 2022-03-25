@@ -136,13 +136,13 @@ QWidget* PropertyFemMeshItem::createEditor(QWidget* parent, const QObject* recei
     return nullptr;
 }
 
-void PropertyFemMeshItem::setEditorData(QWidget *editor, const QVariant& data) const
+void PropertyFemMeshItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
     Q_UNUSED(editor);
     Q_UNUSED(data);
 }
 
-QVariant PropertyFemMeshItem::editorData(QWidget *editor) const
+QVariant PropertyFemMeshItem::editorData(QWidget* editor) const
 {
     Q_UNUSED(editor);
     return QVariant();
