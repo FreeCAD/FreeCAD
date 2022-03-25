@@ -177,6 +177,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
         << "FEM_SolverCalculixCxxtools"
         << "FEM_SolverCalculiX"
         << "FEM_SolverElmer"
+        << "FEM_SolverZ88"
         << "Separator"
         << "FEM_EquationElasticity"
         << "FEM_EquationElectricforce"
