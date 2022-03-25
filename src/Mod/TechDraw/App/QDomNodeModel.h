@@ -28,8 +28,9 @@
 #define _QDOMNODEMODEL_H_
 
 #include <QAbstractXmlNodeModel>
-#include <QXmlNamePool>
 #include <QDomDocument>
+#include <QXmlNamePool>
+
 
 class TechDrawExport QDomNodeModel: public QAbstractXmlNodeModel
 {

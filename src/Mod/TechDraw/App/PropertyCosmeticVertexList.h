@@ -20,19 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef TECHDRAW_PropertyCosmeticVertexList_H
 #define TECHDRAW_PropertyCosmeticVertexList_H
 
-// Std. configurations
-
 #include <vector>
-#include <string>
 #include <App/Property.h>
 
-#include <Mod/TechDraw/App/CosmeticVertexPy.h>
-
-#include "Cosmetic.h"
 
 namespace Base {
 class Writer;

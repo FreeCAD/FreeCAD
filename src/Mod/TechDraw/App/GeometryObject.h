@@ -25,15 +25,15 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Compound.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Ax2.hxx>
-
-#include <Base/Vector3D.h>
-#include <Base/BoundBox.h>
 #include <string>
 #include <vector>
+
+#include <TopoDS_Shape.hxx>
+#include <gp_Ax2.hxx>
+#include <gp_Pnt.hxx>
+
+#include <Base/BoundBox.h>
+#include <Base/Vector3D.h>
 
 #include "Geometry.h"
 

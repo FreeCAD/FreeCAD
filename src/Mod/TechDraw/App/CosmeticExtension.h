@@ -32,6 +32,8 @@
 #include "PropertyCosmeticVertexList.h"
 #include "PropertyGeomFormatList.h"
 
+#include "Geometry.h"
+
 
 namespace TechDraw {
 class DrawViewPart;

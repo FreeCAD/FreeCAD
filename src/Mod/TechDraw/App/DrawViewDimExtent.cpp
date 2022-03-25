@@ -44,7 +44,7 @@
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 
-
+#include "Cosmetic.h"
 #include "Geometry.h"
 #include "DrawViewPart.h"
 #include "DrawViewDimExtent.h"

@@ -22,20 +22,23 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cmath>
-#include <gp_Pnt.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Ax1.hxx>
-#include <gp_Circ.hxx>
-#include <Geom_Circle.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Edge.hxx>
-#include <BRepBndLib.hxx>
-#include <Bnd_Box.hxx>
-#include <Precision.hxx>
-#endif  // #ifndef _PreComp_
+# include <cmath>
+# include <boost/uuid/uuid.hpp>
+# include <boost/uuid/uuid_io.hpp>
+# include <boost/uuid/uuid_generators.hpp>
+# include <gp_Pnt.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Ax1.hxx>
+# include <gp_Circ.hxx>
+# include <Geom_Circle.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Shape.hxx>
+# include <TopoDS_Edge.hxx>
+# include <BRepBndLib.hxx>
+# include <Bnd_Box.hxx>
+# include <Precision.hxx>
+#endif
 
 #include <Base/Console.h>
 #include <Base/Exception.h>

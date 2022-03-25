@@ -26,21 +26,18 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <boost/uuid/uuid.hpp>
-#include <boost/uuid/uuid_io.hpp>
-#include <boost/uuid/uuid_generators.hpp>
 
-#include <Base/Tools2D.h>
-#include <Base/Vector3D.h>
 #include <Base/Reader.h>
+#include <Base/Vector3D.h>
 #include <Base/Writer.h>
 
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Vertex.hxx>
 #include <TopoDS_Edge.hxx>
-#include <TopoDS_Wire.hxx>
 #include <TopoDS_Face.hxx>
+#include <TopoDS_Vertex.hxx>
+#include <TopoDS_Wire.hxx>
 
 #include <memory>
+
 
 namespace TechDraw {
 

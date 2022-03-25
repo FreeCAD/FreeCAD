@@ -25,21 +25,13 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
 
-#include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/FeaturePython.h>
-#include <App/GroupExtension.h>
-#include <App/Part.h>
 #include <App/Link.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyStandard.h>
-
 #include <Base/Type.h>
 #include <Base/Vector3D.h>
+
 
 namespace TechDraw
 {

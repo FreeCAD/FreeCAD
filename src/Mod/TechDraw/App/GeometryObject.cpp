@@ -76,6 +76,7 @@
 
 #include <Mod/Part/App/PartFeature.h>
 
+#include "Cosmetic.h"
 #include "DrawUtil.h"
 #include "GeometryObject.h"
 #include "DrawViewPart.h"

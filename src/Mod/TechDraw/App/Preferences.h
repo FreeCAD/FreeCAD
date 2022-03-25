@@ -26,6 +26,7 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <string>
+
 class QString;
 
 namespace App

@@ -24,10 +24,10 @@
 #define _TechDraw_LandmarkDimension_h_
 
 # include <App/DocumentObject.h>
-# include <App/FeaturePython.h>
-# include <App/PropertyLinks.h>
+# include <App/PropertyStandard.h>
 
 #include "DrawViewDimension.h"
+
 
 class TopoDS_Shape;
 class gp_Ax2;

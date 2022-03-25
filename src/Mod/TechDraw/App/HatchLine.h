@@ -27,15 +27,13 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <vector>
 #include <string>
+#include <vector>
 
 #include <TopoDS_Edge.hxx>
 #include <Bnd_Box.hxx>
 #include <Base/Vector3D.h>
 
-//class TopoDS_Edge;
-//class Bnd_Box;
 
 #include "Geometry.h"
 
