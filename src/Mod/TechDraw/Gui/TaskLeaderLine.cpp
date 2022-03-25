@@ -24,7 +24,7 @@
 
 #ifndef _PreComp_
 #include <cmath>
-#endif // #ifndef _PreComp_
+#endif
 
 #include <QStatusBar>
 #include <QGraphicsScene>
@@ -49,11 +49,11 @@
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/ArrowPropEnum.h>
-//#include <Mod/TechDraw/App/Preferences.h>
 
 #include <Mod/TechDraw/Gui/ui_TaskLeaderLine.h>
 
 #include "DrawGuiStd.h"
+#include "DrawGuiUtil.h"
 #include "PreferencesGui.h"
 #include "QGVPage.h"
 #include "QGIView.h"
