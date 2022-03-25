@@ -25,20 +25,22 @@
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Mod/TechDraw/App/DrawGeomHatch.h>
-#include <Mod/TechDraw/Gui/ui_TaskGeomHatch.h>
 
-
-class Ui_TaskGeomHatch;
 
 namespace App
 {
 class DocumentObject;
 }
 
+namespace TechDraw
+{
+class DrawGeomHatch;
+}
+
 
 namespace TechDrawGui
 {
+class Ui_TaskGeomHatch;
 class ViewProviderGeomHatch;
 
 class TaskGeomHatch : public QWidget

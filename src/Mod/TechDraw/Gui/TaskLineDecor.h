@@ -25,11 +25,7 @@
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Mod/TechDraw/Gui/ui_TaskLineDecor.h>
-#include <Mod/TechDraw/Gui/ui_TaskRestoreLines.h>   //????
 
-
-class Ui_TaskLineDecor;
 
 namespace App
 {
@@ -40,6 +36,8 @@ class DocumentObject;
 namespace TechDrawGui
 {
 
+class Ui_TaskLineDecor;
+class Ui_TaskRestoreLines;
 class TaskLineDecor : public QWidget
 {
     Q_OBJECT

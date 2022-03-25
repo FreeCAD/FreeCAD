@@ -41,6 +41,7 @@
 # include <Gui/Selection.h>
 # include <Gui/SelectionObject.h>
 
+# include <Mod/TechDraw/App/Cosmetic.h>
 # include <Mod/TechDraw/App/DrawViewBalloon.h>
 # include <Mod/TechDraw/App/DrawViewDimension.h>
 # include <Mod/TechDraw/App/DrawPage.h>

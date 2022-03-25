@@ -25,12 +25,14 @@
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Mod/TechDraw/Gui/ui_TaskSectionView.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawViewSection.h>
 
 
 class Ui_TaskSectionView;
+
+namespace TechDraw {
+    class DrawViewPart;
+    class DrawViewSection;
+}
 
 namespace TechDrawGui
 {

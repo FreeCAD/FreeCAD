@@ -41,6 +41,7 @@
 #include <App/DocumentObject.h>
 
 #include <Mod/TechDraw/App/HatchLine.h>
+#include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 

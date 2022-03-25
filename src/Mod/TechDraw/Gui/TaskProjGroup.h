@@ -29,13 +29,6 @@
 #include <Base/Vector3D.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Mod/TechDraw/App/DrawProjGroup.h>
-#include <Mod/TechDraw/Gui/ui_TaskProjGroup.h>
-
-#include "MDIViewPage.h"
-
-
-class Ui_TaskProjGroup;
 
 namespace TechDraw {
 class DrawProjGroup;
@@ -45,6 +38,7 @@ class DrawPage;
 namespace TechDrawGui
 {
 class MDIViewPage;
+class Ui_TaskProjGroup;
 class ViewProviderProjGroup;
 
 class TaskProjGroup : public QWidget

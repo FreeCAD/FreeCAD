@@ -29,6 +29,7 @@
 
 #include <App/DocumentObject.h>
 #include "ViewProviderAnnotation.h"
+#include "QGIView.h"
 
 using namespace TechDrawGui;
 

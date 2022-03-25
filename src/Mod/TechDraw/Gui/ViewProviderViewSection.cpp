@@ -41,6 +41,7 @@
 
 #include "TaskSectionView.h"
 #include "ViewProviderViewSection.h"
+#include "QGIView.h"
 
 using namespace TechDrawGui;
 

@@ -26,10 +26,10 @@
 
 #ifndef _PreComp_
 # include <QAction>
+# include <QColor>
 # include <QMenu>
 #endif
 
-#include <QColor>
 #include <Base/Parameter.h>
 #include <App/Application.h>
 #include <App/DocumentObject.h>

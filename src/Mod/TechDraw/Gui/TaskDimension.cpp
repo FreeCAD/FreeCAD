@@ -24,9 +24,9 @@
 
 #ifndef _PreComp_
 #include <cmath>
+#include <QMessageBox>
 #endif // #ifndef _PreComp_
 
-# include <QMessageBox>
 
 #include <Base/Console.h>
 

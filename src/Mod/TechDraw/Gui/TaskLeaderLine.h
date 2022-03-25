@@ -26,7 +26,6 @@
 #include <Base/Vector3D.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Mod/TechDraw/Gui/ui_TaskLeaderLine.h>
 
 #include "QGTracker.h"
 
@@ -38,8 +37,6 @@
 #define TRACKERCANCELEDIT 3
 #define TRACKERFINISHED 4
 #define TRACKERSAVE 5
-
-class Ui_TaskLeaderLine;
 
 namespace TechDraw
 {
@@ -59,6 +56,7 @@ class QGEPath;
 class QGMText;
 class QGILeaderLine;
 class ViewProviderLeader;
+class Ui_TaskLeaderLine;
 
 class TaskLeaderLine : public QWidget
 {

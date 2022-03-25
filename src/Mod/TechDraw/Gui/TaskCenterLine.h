@@ -25,7 +25,6 @@
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Mod/TechDraw/Gui/ui_TaskCenterLine.h>
 
 
 //TODO: make this a proper enum
@@ -36,20 +35,14 @@
 #define TRACKERFINISHED 4
 #define TRACKERSAVE 5
 
-class Ui_TaskCenterLine;
-
 namespace TechDraw
 {
 class DrawPage;
 class DrawView;
 class DrawViewPart;
 class CosmeticEdge;
-class LineFormat;
-}
-
-namespace TechDraw
-{
 class Face;
+class LineFormat;
 }
 
 namespace TechDrawGui
@@ -59,6 +52,7 @@ class QGIView;
 class QGIPrimPath;
 class MDIViewPage;
 class ViewProviderViewPart;
+class Ui_TaskCenterLine;
 
 class TaskCenterLine : public QWidget
 {

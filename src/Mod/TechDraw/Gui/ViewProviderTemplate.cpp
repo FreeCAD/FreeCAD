@@ -36,6 +36,7 @@
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 
+#include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawTemplate.h>
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>
 

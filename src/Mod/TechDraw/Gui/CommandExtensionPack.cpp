@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QApplication>
 # include <QMessageBox>
 # include <iostream>
 # include <string>
@@ -51,6 +52,7 @@
 # include <Mod/Part/App/PartFeature.h>
 # include <Mod/Part/App/Geometry2d.h>
 
+# include <Mod/TechDraw/App/Cosmetic.h>
 # include <Mod/TechDraw/App/DrawViewPart.h>
 # include <Mod/TechDraw/App/DrawProjGroupItem.h>
 # include <Mod/TechDraw/App/DrawProjGroup.h>

@@ -44,8 +44,6 @@
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/ArrowPropEnum.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskBalloon.h>
-
 #include "DrawGuiUtil.h"
 #include "QGIViewBalloon.h"
 #include "ViewProviderBalloon.h"

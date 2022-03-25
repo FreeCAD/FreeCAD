@@ -23,14 +23,10 @@
 #ifndef TECHDRAWGUI_TASKWELDINGSYMBOL_H
 #define TECHDRAWGUI_TASKWELDINGSYMBOL_H
 
-#include <QPushButton>
-
-#include <App/DocumentObject.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Mod/TechDraw/Gui/ui_TaskWeldingSymbol.h>
 
-
+class QPushButton;
 class Ui_TaskWeldingSymbol;
 
 namespace App {

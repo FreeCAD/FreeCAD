@@ -50,6 +50,7 @@
 #include <Mod/TechDraw/App/DrawViewPy.h>  // generated from DrawViewPy.xml
 
 #include "MDIViewPage.h"
+#include "QGIView.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderDrawingView.h"
 #include "Grabber3d.h"

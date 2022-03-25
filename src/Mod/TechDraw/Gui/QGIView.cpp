@@ -40,6 +40,7 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <App/Material.h>
 #include <Base/Console.h>
 #include <Gui/Selection.h>
@@ -68,6 +69,7 @@
 #include "QGTracker.h"
 
 #include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>

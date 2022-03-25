@@ -24,13 +24,12 @@
 #define DRAWINGGUI_QGIPRIMPATH_H
 
 #include <QGraphicsItem>
+#include <Base/Parameter.h>
 
 QT_BEGIN_NAMESPACE
 class QPainter;
 class QStyleOptionGraphicsItem;
 QT_END_NAMESPACE
-
-#include <Base/Parameter.h>
 
 namespace TechDrawGui
 {

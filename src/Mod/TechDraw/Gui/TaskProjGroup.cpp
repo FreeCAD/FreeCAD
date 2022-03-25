@@ -51,6 +51,7 @@
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 
+#include "MDIViewPage.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderProjGroup.h"
 #include "ViewProviderProjGroupItem.h"

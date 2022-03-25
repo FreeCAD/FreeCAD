@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QApplication>
 # include <QGraphicsView>
 # include <QMessageBox>
 # include <iostream>
@@ -69,6 +70,7 @@
 #include "TaskCosmeticLine.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderViewPart.h"
+#include "QGIView.h"
 #include "QGVPage.h"
 
 using namespace TechDrawGui;

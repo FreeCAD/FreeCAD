@@ -26,7 +26,6 @@
 #include <Base/Vector3D.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Mod/TechDraw/Gui/ui_TaskDetail.h>
 
 
 //TODO: make this a proper enum
@@ -34,8 +33,6 @@
 #define TRACKEREDIT 1
 #define TRACKERCANCEL 2
 #define TRACKERCANCELEDIT 3
-
-class Ui_TaskDetail;
 
 namespace TechDraw
 {
@@ -55,6 +52,7 @@ class QGEPath;
 class QGIDetail;
 class QGIGhostHighlight;
 class ViewProviderLeader;
+class Ui_TaskDetail;
 
 class TaskDetail : public QWidget
 {

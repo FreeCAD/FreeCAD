@@ -26,12 +26,12 @@
 
 #include <QDialog>
 #include <QString>
-
-#include <Mod/TechDraw/Gui/ui_DlgTemplateField.h>
+#include <memory>
 
 namespace TechDrawGui {
 
-class DlgTemplateField : public QDialog, public Ui_dlgTemplateField
+class Ui_dlgTemplateField;
+class DlgTemplateField : public QDialog
 {
     Q_OBJECT
 
@@ -49,6 +49,9 @@ public Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e);
+
+private:
+    std::shared_ptr<Ui_dlgTemplateField> ui;
 };
 
 } // namespace TechDrawGui

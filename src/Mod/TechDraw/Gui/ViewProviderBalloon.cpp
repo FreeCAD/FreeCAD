@@ -39,6 +39,7 @@
 #include <Mod/TechDraw/App/LineGroup.h>
 
 #include "PreferencesGui.h"
+#include "QGIViewBalloon.h"
 #include "TaskBalloon.h"
 #include "ViewProviderBalloon.h"
 

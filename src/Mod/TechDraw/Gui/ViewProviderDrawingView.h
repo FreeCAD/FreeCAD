@@ -31,8 +31,6 @@
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/TechDraw/App/DrawView.h>
 
-#include "QGIView.h"
-
 
 namespace TechDraw {
 class DrawView;

@@ -38,6 +38,7 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/LineGroup.h>
 
+#include "QGIView.h"
 #include "TaskGeomHatch.h"
 #include "PreferencesGui.h"
 #include "ViewProviderDrawingView.h"

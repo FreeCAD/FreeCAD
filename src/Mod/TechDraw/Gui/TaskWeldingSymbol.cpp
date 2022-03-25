@@ -26,12 +26,12 @@
 #include <cmath>
 #include <BRepBndLib.hxx>
 #include <Bnd_Box.hxx>
-
+#include <QApplication>
+#include <QGraphicsScene>
+#include <QPushButton>
+#include <QStatusBar>
 #endif // #ifndef _PreComp_
 
-#include <QApplication>
-#include <QStatusBar>
-#include <QGraphicsScene>
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
@@ -73,6 +73,7 @@
 #include "Rez.h"
 
 #include "TaskWeldingSymbol.h"
+#include "ui_TaskWeldingSymbol.h"
 
 using namespace Gui;
 using namespace TechDraw;

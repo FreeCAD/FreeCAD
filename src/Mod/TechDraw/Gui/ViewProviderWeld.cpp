@@ -37,6 +37,7 @@
 #include "PreferencesGui.h"
 #include "TaskWeldingSymbol.h"
 #include "ViewProviderWeld.h"
+#include "QGIView.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;

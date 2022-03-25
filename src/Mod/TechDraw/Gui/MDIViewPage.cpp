@@ -29,6 +29,7 @@
     #include <QApplication>
     #include <QContextMenuEvent>
     #include <QFileDialog>
+    #include <QGraphicsScene>
     #include <QGridLayout>
     #include <QGroupBox>
     #include <QListWidget>

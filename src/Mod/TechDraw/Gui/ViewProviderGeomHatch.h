@@ -24,10 +24,12 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERCROSSHATCH_H
 #define DRAWINGGUI_VIEWPROVIDERCROSSHATCH_H
 
-#include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
 #include <Gui/ViewProviderDocumentObject.h>
 
+namespace App {
+    class DocumentObject;
+}
 
 namespace TechDraw{
     class DrawGeomHatch;

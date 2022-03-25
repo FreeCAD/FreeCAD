@@ -34,6 +34,7 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 
+#include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawView.h>
 
 #include "ViewProviderDrawingView.h"

@@ -29,6 +29,7 @@
 #include <App/DocumentObject.h>
 
 #include "ViewProviderImage.h"
+#include "QGIView.h"
 
 using namespace TechDrawGui;
 

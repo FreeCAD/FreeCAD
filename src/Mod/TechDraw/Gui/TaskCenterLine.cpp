@@ -26,12 +26,11 @@
 #include <cmath>
 #include <BRepBndLib.hxx>
 #include <Bnd_Box.hxx>
-
-#endif // #ifndef _PreComp_
-
 #include <QButtonGroup>
 #include <QStatusBar>
 #include <QGraphicsScene>
+#endif // #ifndef _PreComp_
+
 
 #include <Base/Console.h>
 #include <Base/Tools.h>

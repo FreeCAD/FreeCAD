@@ -28,12 +28,13 @@
 # include <cstdlib>
 # include <exception>
 # include <boost/regex.hpp>
+# include <QComboBox>
 # include <QString>
 # include <QStringList>
 # include <QRegExp>
 # include <QMessageBox>
-#include <QRectF>
-
+# include <QRectF>
+# include <QPointF>
 #endif
 
 #include <gp_Vec.hxx>

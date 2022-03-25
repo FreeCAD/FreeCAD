@@ -25,7 +25,6 @@
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Mod/TechDraw/App/Cosmetic.h>
 
 
 class dimAttributes {

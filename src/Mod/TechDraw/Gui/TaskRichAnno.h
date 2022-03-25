@@ -26,7 +26,6 @@
 #include <Base/Vector3D.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Mod/TechDraw/Gui/ui_TaskRichAnno.h>
 
 
 class MRichTextEdit;

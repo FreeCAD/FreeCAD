@@ -26,19 +26,21 @@
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Mod/TechDraw/App/DrawHatch.h>
-#include <Mod/TechDraw/Gui/ui_TaskHatch.h>
 
-
-class Ui_TaskHatch;
 
 namespace App
 {
 class DocumentObject;
 }
 
+namespace TechDraw
+{
+class DrawHatch;
+}
+
 namespace TechDrawGui
 {
+class Ui_TaskHatch;
 class ViewProviderHatch;
 
 class TaskHatch : public QWidget

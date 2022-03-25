@@ -25,7 +25,6 @@
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <Mod/TechDraw/Gui/ui_TaskCosVertex.h>
 
 #include "QGTracker.h"
 
@@ -35,8 +34,6 @@
 #define TRACKEREDIT 1
 #define TRACKERCANCEL 2
 #define TRACKERCANCELEDIT 3
-
-class Ui_TaskCosVertex;
 
 namespace TechDraw
 {
@@ -56,6 +53,7 @@ class QGEPath;
 class QGMText;
 class QGICosVertex;
 class ViewProviderLeader;
+class Ui_TaskCosVertex;
 
 class TaskCosVertex : public QWidget
 {

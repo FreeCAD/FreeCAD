@@ -24,8 +24,6 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERANNOTATION_H
 #define DRAWINGGUI_VIEWPROVIDERANNOTATION_H
 
-#include <Gui/ViewProviderFeature.h>
-
 #include <Mod/TechDraw/App/DrawViewAnnotation.h>
 
 #include "ViewProviderDrawingView.h"

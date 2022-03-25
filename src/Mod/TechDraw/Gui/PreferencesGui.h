@@ -30,6 +30,7 @@ class QString;
 class QColor;
 
 #include <Mod/TechDraw/App/Preferences.h>
+#include <QColor>
 
 namespace TechDrawGui
 {

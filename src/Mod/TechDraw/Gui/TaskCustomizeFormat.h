@@ -23,7 +23,6 @@
 #ifndef TECHDRAWGUI_TASKCUSTOMIZEFORMAT_H
 #define TECHDRAWGUI_TASKCUSTOMIZEFORMAT_H
 
-#include <App/DocumentObject.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 

@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#include <QListWidget>
 
 #include <App/Application.h>
 #include <Mod/TechDraw/Gui/ui_SymbolChooser.h>
@@ -46,6 +47,10 @@ SymbolChooser::SymbolChooser(QWidget *parent,
             this, SLOT(onItemClicked(QListWidgetItem*)));
 
     setUiPrimary();
+}
+
+SymbolChooser::~SymbolChooser()
+{
 }
 
 void SymbolChooser::setUiPrimary()
