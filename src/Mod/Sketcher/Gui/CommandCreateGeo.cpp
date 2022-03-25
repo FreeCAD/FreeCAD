@@ -6713,42 +6713,53 @@ bool CmdSketcherCompCreateBSpline::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
-// ======================================================================================
+/* Create Point =======================================================*/
 
-class DrawSketchHandlerPoint: public DrawSketchHandler
+// DrawSketchHandlerPoint: An example of deriving from DSHandlerDefaultWidget with NVI for handler and specialisation for widgetmanager.
+
+using DrawSketchHandlerPointBase = DSHandlerDefaultWidget<  GeometryTools::Point,
+    StateMachines::ThreeSeekEnd,
+    /*PEditCurveSize =*/ 0,
+    /*PAutoConstraintSize =*/ 1,
+    /*PNumToolwidgetparameters =*/2,
+    /*PNumToolwidgetCheckboxes =*/ 0,
+    /*PNumToolwidgetComboboxes =*/ 0>;
+
+class DrawSketchHandlerPoint : public DrawSketchHandlerPointBase
 {
 public:
-    DrawSketchHandlerPoint() : selectionDone(false) {}
+
+    DrawSketchHandlerPoint() {}
     virtual ~DrawSketchHandlerPoint() {}
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
-    {
-        setPositionText(onSketchPos);
-        if (seekAutoConstraint(sugConstr, onSketchPos, Base::Vector2d(0.f,0.f))) {
-            renderSuggestConstraintsCursor(sugConstr);
-            return;
+private:
+    virtual void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override {
+        switch (state()) {
+        case SelectMode::SeekFirst:
+        {
+            drawPositionAtCursor(onSketchPos);
+
+            editPoint = onSketchPos;
+            selectionDone = true;
+
+            if (seekAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f))) {
+                renderSuggestConstraintsCursor(sugConstraints[0]);
+                return;
+            }
         }
-        applyCursor();
+        break;
+        default:
+            break;
+        }
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos) override
-    {
-        EditPoint = onSketchPos;
-        selectionDone = true;
-        return true;
-    }
-
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
-    {
-        Q_UNUSED(onSketchPos);
-        if (selectionDone){
-            unsetCursor();
-            resetPositionText();
+    virtual void executeCommands() override {
+        if (selectionDone) {
 
             try {
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch point"));
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Point(App.Vector(%f,%f,0)))",
-                          EditPoint.x,EditPoint.y);
+                    editPoint.x, editPoint.y);
 
                 Gui::Command::commitCommand();
             }
@@ -6756,43 +6767,133 @@ public:
                 Base::Console().Error("Failed to add point: %s\n", e.what());
                 Gui::Command::abortCommand();
             }
-
-            // add auto constraints for the line segment start
-            if (sugConstr.size() > 0) {
-                createAutoConstraints(sugConstr, getHighestCurveIndex(), Sketcher::PointPos::start);
-                sugConstr.clear();
-            }
-
-            tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
-
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-            bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
-            if(continuousMode){
-                // This code enables the continuous creation mode.
-                applyCursor();
-                /* It is ok not to call to purgeHandler
-                * in continuous creation mode because the
-                * handler is destroyed by the quit() method on pressing the
-                * right button of the mouse */
-            }
-            else{
-                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
-            }
+            selectionDone = false;
         }
-        return true;
     }
 
-private:
-    virtual void activated() override
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_Point");
+    virtual void createAutoConstraints() override {
+
+        if (!sugConstraints[0].empty()) {
+            DrawSketchHandler::createAutoConstraints(sugConstraints[0], getHighestCurveIndex(), Sketcher::PointPos::start);
+            sugConstraints[0].clear();
+        }
     }
 
-protected:
+    virtual std::string getToolName() const override {
+        return "DSH_Point";
+    }
+
+    virtual QString getCrosshairCursorString() const override {
+        return QString::fromLatin1("Sketcher_Pointer_Create_Point");
+    }
+
+    //reimplement because if not radius then it's 1 steps
+    virtual void onButtonPressed(Base::Vector2d onSketchPos) override {
+        this->updateDataAndDrawToPosition(onSketchPos);
+        
+        setState(SelectMode::End);
+    }
+
+public:
+    Base::Vector2d editPoint;
     bool selectionDone;
-    Base::Vector2d EditPoint;
-    std::vector<AutoConstraint> sugConstr;
 };
+
+template <> void DrawSketchHandlerPointBase::ToolWidgetManager::configureToolWidget() {
+    toolWidget->setParameterLabel(WParameter::First, QApplication::translate("TaskSketcherTool_p1_point", "x of point"));
+    toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("TaskSketcherTool_p2_point", "y of point"));
+}
+
+template <> void DrawSketchHandlerPointBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
+    auto dHandler = static_cast<DrawSketchHandlerPoint*>(handler);
+    switch (parameterindex) {
+    case WParameter::First:
+        dHandler->editPoint.x = value;
+        break;
+    case WParameter::Second:
+        dHandler->editPoint.y = value;
+        break;
+    }
+}
+
+template <> void DrawSketchHandlerPointBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
+    switch (handler->state()) {
+    case SelectMode::SeekFirst:
+    {
+        if (toolWidget->isParameterSet(WParameter::First))
+            onSketchPos.x = toolWidget->getParameter(WParameter::First);
+
+        if (toolWidget->isParameterSet(WParameter::Second))
+            onSketchPos.y = toolWidget->getParameter(WParameter::Second);
+    }
+    break;
+    default:
+        break;
+    }
+    prevCursorPosition = onSketchPos;
+}
+
+template <> void DrawSketchHandlerPointBase::ToolWidgetManager::updateVisualValues(Base::Vector2d onSketchPos) {
+    switch (handler->state()) {
+    case SelectMode::SeekFirst:
+    {
+        if (!toolWidget->isParameterSet(WParameter::First))
+            toolWidget->updateVisualValue(WParameter::First, onSketchPos.x);
+
+        if (!toolWidget->isParameterSet(WParameter::Second))
+            toolWidget->updateVisualValue(WParameter::Second, onSketchPos.y);
+    }
+    break;
+    default:
+        break;
+    }
+}
+
+template <> void DrawSketchHandlerPointBase::ToolWidgetManager::doChangeDrawSketchHandlerMode() {
+    switch (handler->state()) {
+    case SelectMode::SeekFirst:
+    {
+        if (toolWidget->isParameterSet(WParameter::First) &&
+            toolWidget->isParameterSet(WParameter::Second)) {
+
+            handler->updateDataAndDrawToPosition(prevCursorPosition); // draw curve to cursor with suggested constraints
+
+            handler->setState(SelectMode::End);
+            handler->finish();
+        }
+    }
+    break;
+    default:
+        break;
+    }
+
+}
+
+template <> void DrawSketchHandlerPointBase::ToolWidgetManager::addConstraints() {
+    int firstCurve = handler->getHighestCurveIndex();
+
+    auto x0 = toolWidget->getParameter(WParameter::First);
+    auto y0 = toolWidget->getParameter(WParameter::Second);
+
+    auto x0set = toolWidget->isParameterSet(WParameter::First);
+    auto y0set = toolWidget->isParameterSet(WParameter::Second);
+
+    using namespace Sketcher;
+
+    if (x0set && y0set && x0 == 0. && y0 == 0.) {
+        ConstraintToAttachment(GeoElementId(firstCurve, PointPos::start), GeoElementId::RtPnt,
+            x0, handler->sketchgui->getObject());
+    }
+    else {
+            if (x0set)
+                ConstraintToAttachment(GeoElementId(firstCurve, PointPos::start), GeoElementId::VAxis,
+                    x0, handler->sketchgui->getObject());
+
+            if (y0set)
+                ConstraintToAttachment(GeoElementId(firstCurve, PointPos::start), GeoElementId::HAxis,
+                    y0, handler->sketchgui->getObject());
+    }
+}
 
 DEF_STD_CMD_A(CmdSketcherCreatePoint)
 
