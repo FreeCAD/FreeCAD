@@ -54,7 +54,6 @@
 #include <Mod/TechDraw/App/DrawViewSection.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
-#include "DrawGuiStd.h"
 #include "Rez.h"
 #include "MDIViewPage.h"
 #include "QGVPage.h"

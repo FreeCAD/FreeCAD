@@ -56,7 +56,6 @@
 
 #include <Mod/TechDraw/Gui/ui_TaskCenterLine.h>
 
-#include "DrawGuiStd.h"
 #include "PreferencesGui.h"
 #include "QGVPage.h"
 #include "QGIView.h"

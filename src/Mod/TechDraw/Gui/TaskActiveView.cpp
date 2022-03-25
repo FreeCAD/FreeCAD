@@ -54,7 +54,6 @@
 
 #include <Mod/TechDraw/Gui/ui_TaskActiveView.h>
 
-#include "DrawGuiStd.h"
 #include "QGVPage.h"
 #include "QGIView.h"
 #include "Grabber3d.h"

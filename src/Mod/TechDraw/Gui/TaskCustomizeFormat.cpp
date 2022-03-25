@@ -53,7 +53,6 @@
 # include <Mod/TechDraw/App/DrawViewBalloon.h>
 # include <Mod/TechDraw/Gui/ui_TaskCustomizeFormat.h>
 
-#include "DrawGuiStd.h"
 #include "PreferencesGui.h"
 #include "QGVPage.h"
 #include "QGIView.h"

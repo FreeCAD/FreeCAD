@@ -52,7 +52,6 @@
 
 #include <Mod/TechDraw/Gui/ui_TaskLeaderLine.h>
 
-#include "DrawGuiStd.h"
 #include "DrawGuiUtil.h"
 #include "PreferencesGui.h"
 #include "QGVPage.h"

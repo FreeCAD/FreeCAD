@@ -54,7 +54,6 @@
 
 #include <Mod/TechDraw/Gui/ui_TaskDetail.h>
 
-#include "DrawGuiStd.h"
 #include "QGVPage.h"
 #include "QGIView.h"
 #include "QGIPrimPath.h"

@@ -59,11 +59,8 @@
 #include <Mod/TechDraw/App/DrawTileWeld.h>
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
-//#include <Mod/TechDraw/App/Preferences.h>
-
 #include <Mod/TechDraw/Gui/ui_TaskWeldingSymbol.h>
 
-#include "DrawGuiStd.h"
 #include "PreferencesGui.h"
 #include "QGVPage.h"
 #include "QGIView.h"

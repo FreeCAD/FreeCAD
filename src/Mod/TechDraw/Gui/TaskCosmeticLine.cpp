@@ -58,7 +58,6 @@
 
 #include <Mod/TechDraw/Gui/ui_TaskCosmeticLine.h>
 
-#include "DrawGuiStd.h"
 #include "PreferencesGui.h"
 #include "QGVPage.h"
 #include "QGIView.h"

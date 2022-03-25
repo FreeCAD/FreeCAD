@@ -58,7 +58,6 @@
 
 #include "ui_TaskSelectLineAttributes.h"
 #include "TaskSelectLineAttributes.h"
-#include "DrawGuiStd.h"
 #include "MDIViewPage.h"
 #include "PreferencesGui.h"
 #include "QGVPage.h"

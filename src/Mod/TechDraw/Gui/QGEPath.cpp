@@ -38,8 +38,8 @@
 #include <Base/Parameter.h>
 
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 
-#include "DrawGuiStd.h"
 #include "PreferencesGui.h"
 #include "Rez.h"
 #include "ZVALUE.h"
