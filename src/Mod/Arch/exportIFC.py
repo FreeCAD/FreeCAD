@@ -1704,7 +1704,7 @@ def getIfcTypeFromObj(obj):
         ifctype = obj.IfcType.replace(" ","")
     elif dtype in ["App::Part","Part::Compound"]:
         ifctype = "IfcElementAssembly"
-    elif dtype in ["App::DocumentObjctGroup"]:
+    elif dtype in ["App::DocumentObjectGroup"]:
         ifctype = "IfcGroup"
     else:
         ifctype = dtype
@@ -2030,6 +2030,7 @@ def getRepresentation(
                     # convert to meters
                     r = rdata[1] * preferences['SCALE_FACTOR']
                     for w in rdata[0]:
+                        w.Placement = w.Placement.multiply(obj.getGlobalPlacement())
                         w.scale(preferences['SCALE_FACTOR'])
                         cur = createCurve(ifcfile,w)
                         shape = ifcfile.createIfcSweptDiskSolid(cur,r)

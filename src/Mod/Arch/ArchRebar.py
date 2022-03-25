@@ -277,10 +277,10 @@ class _Rebar(ArchComponent.Component):
                 wire = DraftGeomUtils.filletWire(wire,radius)
         wires = []
         if obj.Amount == 1:
-            if size:
+            if size and father:
                 offset = DraftVecUtils.scaleTo(axis,size/2)
             else:
-                offset = axis
+                offset = FreeCAD.Vector()
             wire.translate(offset)
             wires.append(wire)
         else:
