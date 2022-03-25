@@ -23,20 +23,13 @@
 #ifndef TECHDRAWGUI_TASKCOSMETICLINE_H
 #define TECHDRAWGUI_TASKCOSMETICLINE_H
 
-#include <App/DocumentObject.h>
 #include <Base/Vector3D.h>
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
-
+#include <Gui/TaskView/TaskView.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
-
 #include <Mod/TechDraw/Gui/ui_TaskCosmeticLine.h>
 
 class Ui_TaskCosmeticLine;
-
-namespace App {
-class DocumentObject;
-}
 
 namespace TechDraw
 {

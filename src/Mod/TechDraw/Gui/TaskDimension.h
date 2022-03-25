@@ -23,11 +23,12 @@
 #ifndef GUI_TASKVIEW_TASKDIMENSION_H
 #define GUI_TASKVIEW_TASKDIMENSION_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
 
 #include "QGIViewDimension.h"
 #include "ViewProviderDimension.h"
+
 
 namespace TechDrawGui
 {

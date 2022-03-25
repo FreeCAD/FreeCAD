@@ -23,12 +23,10 @@
 #ifndef GUI_TASKVIEW_TASKLINKDIM_H
 #define GUI_TASKVIEW_TASKLINKDIM_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
-
-#include <Mod/TechDraw/Gui/ui_TaskLinkDim.h>
-
+#include <Gui/TaskView/TaskView.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
+#include <Mod/TechDraw/Gui/ui_TaskLinkDim.h>
 
 
 namespace Gui {

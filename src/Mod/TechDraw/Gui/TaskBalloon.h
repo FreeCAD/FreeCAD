@@ -24,11 +24,12 @@
 #ifndef GUI_TASKVIEW_TASKBALLOON_H
 #define GUI_TASKVIEW_TASKBALLOON_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
 
 #include "QGIViewBalloon.h"
 #include "ViewProviderBalloon.h"
+
 
 namespace TechDrawGui
 {

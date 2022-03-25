@@ -23,13 +23,10 @@
 #ifndef GUI_TASKVIEW_TASKGEOMHATCH_H
 #define GUI_TASKVIEW_TASKGEOMHATCH_H
 
-#include <App/Material.h>
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
-
-#include <Mod/TechDraw/Gui/ui_TaskGeomHatch.h>
-
+#include <Gui/TaskView/TaskView.h>
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
+#include <Mod/TechDraw/Gui/ui_TaskGeomHatch.h>
 
 
 class Ui_TaskGeomHatch;

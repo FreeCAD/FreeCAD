@@ -23,13 +23,11 @@
 #ifndef GUI_TASKVIEW_TASKLINEDECOR_H
 #define GUI_TASKVIEW_TASKLINEDECOR_H
 
-#include <App/Material.h>
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
-#include <Gui/FileDialog.h>
-
+#include <Gui/TaskView/TaskView.h>
 #include <Mod/TechDraw/Gui/ui_TaskLineDecor.h>
 #include <Mod/TechDraw/Gui/ui_TaskRestoreLines.h>   //????
+
 
 class Ui_TaskLineDecor;
 

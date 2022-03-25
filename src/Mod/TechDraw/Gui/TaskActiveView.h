@@ -25,18 +25,12 @@
 
 #include <QPushButton>
 
-#include <App/DocumentObject.h>
-#include <Base/Vector3D.h>
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
-
+#include <Gui/TaskView/TaskView.h>
 #include <Mod/TechDraw/Gui/ui_TaskActiveView.h>
 
-class Ui_TaskActiveView;
 
-namespace App {
-class DocumentObject;
-}
+class Ui_TaskActiveView;
 
 namespace TechDraw
 {

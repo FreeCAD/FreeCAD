@@ -26,17 +26,13 @@
 
 #include <QString>
 
-#include <Base/BoundBox.h>
 #include <Base/Vector3D.h>
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
-
-#include "MDIViewPage.h"
-
+#include <Gui/TaskView/TaskView.h>
+#include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/Gui/ui_TaskProjGroup.h>
 
-#include <Mod/TechDraw/App/DrawProjGroup.h>
-#include <Mod/TechDraw/App/DrawProjGroupItem.h>
+#include "MDIViewPage.h"
 
 
 class Ui_TaskProjGroup;

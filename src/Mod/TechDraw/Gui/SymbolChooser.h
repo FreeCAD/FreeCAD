@@ -22,11 +22,11 @@
 #ifndef TECHDRAWGUI_SYMBOLCHOOSER_H
 #define TECHDRAWGUI_SYMBOLCHOOSER_H
 
-#include <QPushButton>
 #include <QDialog>
 #include <QListWidget>
 
 #include <Mod/TechDraw/Gui/ui_SymbolChooser.h>
+
 
 namespace TechDrawGui {
 

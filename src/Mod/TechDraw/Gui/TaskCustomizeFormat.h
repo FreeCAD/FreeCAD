@@ -24,11 +24,9 @@
 #define TECHDRAWGUI_TASKCUSTOMIZEFORMAT_H
 
 #include <App/DocumentObject.h>
-#include <Base/Vector3D.h>
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
 
-#include <Mod/TechDraw/App/Cosmetic.h>
 
 namespace App {
 class DocumentObject;

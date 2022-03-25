@@ -23,14 +23,13 @@
 #ifndef TECHDRAWGUI_TASKTEXTLEADER_H
 #define TECHDRAWGUI_TASKTEXTLEADER_H
 
-#include <App/DocumentObject.h>
 #include <Base/Vector3D.h>
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
-
+#include <Gui/TaskView/TaskView.h>
 #include <Mod/TechDraw/Gui/ui_TaskLeaderLine.h>
 
 #include "QGTracker.h"
+
 
 //TODO: make this a proper enum
 #define TRACKERPICK 0
@@ -41,10 +40,6 @@
 #define TRACKERSAVE 5
 
 class Ui_TaskLeaderLine;
-
-namespace App {
-class DocumentObject;
-}
 
 namespace TechDraw
 {
