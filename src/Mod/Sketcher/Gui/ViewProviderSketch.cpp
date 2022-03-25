@@ -885,7 +885,6 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             geom.setCommand("Sketcher geoms");
                             geom << "Sketcher_CreatePoint"
                                   << "Sketcher_CreateArc"
-                                  << "Sketcher_Create3PointArc"
                                   << "Sketcher_CreateCircle"
                                   << "Sketcher_Create3PointCircle"
                                   << "Sketcher_CreateLine"
