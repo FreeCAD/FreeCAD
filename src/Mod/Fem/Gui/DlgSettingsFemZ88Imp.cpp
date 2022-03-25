@@ -24,6 +24,8 @@
 
 #include "PreCompiled.h"
 
+#include <Gui/Application.h>
+
 #include "DlgSettingsFemZ88Imp.h"
 #include "ui_DlgSettingsFemZ88.h"
 
@@ -46,12 +48,23 @@ void DlgSettingsFemZ88Imp::saveSettings()
 {
     ui->cb_z88_binary_std->onSave();
     ui->fc_z88_binary_path->onSave();
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+    ("User parameter:BaseApp/Preferences/Mod/Fem/Z88");
+    hGrp->SetInt("Solver", ui->cmb_solver->currentIndex());
+    ui->cmb_solver->onSave();
 }
 
 void DlgSettingsFemZ88Imp::loadSettings()
 {
     ui->cb_z88_binary_std->onRestore();
     ui->fc_z88_binary_path->onRestore();
+    ui->cmb_solver->onRestore();
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+    ("User parameter:BaseApp/Preferences/Mod/Fem/Z88");
+    int index = hGrp->GetInt("Solver", 0);
+    if (index > -1) ui->cmb_solver->setCurrentIndex(index);
 }
 
 /**
