@@ -23,19 +23,13 @@
 #ifndef TECHDRAWGUI_QGIRICHANNO_H
 #define TECHDRAWGUI_QGIRICHANNO_H
 
-#include <QObject>
-#include <QGraphicsView>
-#include <QStyleOptionGraphicsItem>
-#include <QGraphicsItem>
-#include <QGraphicsObject>
-#include <QPainterPath>
-#include <QColor>
 #include <QFont>
-#include <QPointF>
+#include <QGraphicsItem>
+#include <QObject>
+#include <QPainterPath>
 #include <QPen>
+#include <QStyleOptionGraphicsItem>
 
-#include <Base/Vector3D.h>
-#include "QGILeaderLine.h"
 
 namespace TechDraw {
 class DrawRichAnno;

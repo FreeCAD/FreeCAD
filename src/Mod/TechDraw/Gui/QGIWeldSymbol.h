@@ -23,18 +23,15 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMWELDSYMBOL_H
 #define DRAWINGGUI_QGRAPHICSITEMWELDSYMBOL_H
 
-#include <QObject>
-#include <QGraphicsView>
-#include <QStyleOptionGraphicsItem>
-#include <QGraphicsItem>
-#include <QGraphicsObject>
-#include <QPainterPath>
 #include <QColor>
 #include <QFont>
+#include <QGraphicsItem>
+#include <QPainterPath>
 #include <QPointF>
+#include <QStyleOptionGraphicsItem>
 
-#include <Base/Vector3D.h>
 #include "QGIView.h"
+
 
 namespace App {
 class Document;

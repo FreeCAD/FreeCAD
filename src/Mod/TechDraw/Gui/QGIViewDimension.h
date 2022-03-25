@@ -23,17 +23,18 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWDIMENSION_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEWDIMENSION_H
 
-#include <QObject>
-#include <QGraphicsView>
-#include <QStyleOptionGraphicsItem>
-#include <QGraphicsItem>
-#include <QGraphicsObject>
 #include <QColor>
 #include <QFont>
+#include <QGraphicsItem>
+#include <QGraphicsObject>
+#include <QStyleOptionGraphicsItem>
+
 #include <Base/Vector3D.h>
-#include "Rez.h"
-#include "QGIView.h"
+
 #include "QGCustomText.h"
+#include "QGIView.h"
+#include "Rez.h"
+
 
 namespace TechDraw {
 class DrawViewDimension;

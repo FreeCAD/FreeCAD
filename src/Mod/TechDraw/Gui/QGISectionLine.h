@@ -23,17 +23,16 @@
 #ifndef TECHDRAWGUI_QGISECTIONLINE_H
 #define TECHDRAWGUI_QGISECTIONLINE_H
 
+#include <QColor>
 #include <QFont>
 #include <QPointF>
-#include <QGraphicsTextItem>
-#include <QPainterPath>
-#include <QColor>
 
 #include <Base/Vector3D.h>
 
-#include "QGIArrow.h"
 #include "QGCustomText.h"
+#include "QGIArrow.h"
 #include "QGIDecoration.h"
+
 
 namespace TechDrawGui
 {

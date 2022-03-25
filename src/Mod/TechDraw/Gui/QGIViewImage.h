@@ -23,10 +23,6 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWIMAGE_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEWIMAGE_H
 
-#include <QObject>
-#include <QPainter>
-#include <QString>
-
 #include "QGIView.h"
 
 namespace TechDraw {

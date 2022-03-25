@@ -26,11 +26,9 @@
 #ifndef TECHDRAWGUI_MOVABLETEXT_H
 #define TECHDRAWGUI_MOVABLETEXT_H
 
-#include <QGraphicsTextItem>
-#include <QObject>
-//#include <QDocument>
-
 #include "QGCustomText.h"
+#include <QObject>
+
 
 QT_BEGIN_NAMESPACE
 class QPainter;

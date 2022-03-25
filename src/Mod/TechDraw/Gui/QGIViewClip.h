@@ -23,9 +23,6 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMCLIP_H
 #define DRAWINGGUI_QGRAPHICSITEMCLIP_H
 
-#include <QObject>
-#include <QPainter>
-
 #include "QGIView.h"
 
 namespace TechDrawGui

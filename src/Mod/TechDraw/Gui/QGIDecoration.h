@@ -23,9 +23,10 @@
 #ifndef DRAWINGGUI_QGIDECORATION_H
 #define DRAWINGGUI_QGIDECORATION_H
 
+#include <QBrush>
 #include <QGraphicsItemGroup>
 #include <QPen>
-#include <QBrush>
+
 
 QT_BEGIN_NAMESPACE
 class QPainter;

@@ -23,22 +23,15 @@
 #ifndef TECHDRAWGUI_QGITILE_H
 #define TECHDRAWGUI_QGITILE_H
 
-#include <QFont>
-#include <QPointF>
-#include <QGraphicsTextItem>
-#include <QGraphicsRectItem>
-#include <QGraphicsEllipseItem>
-#include <QPainterPath>
 #include <QColor>
+#include <QFont>
 #include <QGraphicsColorizeEffect>
+#include <QPointF>
 
-#include <Base/Vector3D.h>
-
-#include "QGIArrow.h"
 #include "QGCustomText.h"
-#include "QGCustomRect.h"
 #include "QGCustomSvg.h"
 #include "QGIDecoration.h"
+
 
 namespace TechDraw {
 class DrawTile;

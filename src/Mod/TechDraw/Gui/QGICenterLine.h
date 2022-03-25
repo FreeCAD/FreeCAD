@@ -23,13 +23,11 @@
 #ifndef TECHDRAWGUI_QGICENTERLINE_H
 #define TECHDRAWGUI_QGICENTERLINE_H
 
-#include <QPointF>
-#include <QPainterPath>
 #include <QColor>
-
-#include <Base/Vector3D.h>
+#include <QPointF>
 
 #include "QGIDecoration.h"
+
 
 namespace TechDrawGui
 {

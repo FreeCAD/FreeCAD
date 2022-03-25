@@ -23,18 +23,17 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMLEADERLINE_H
 #define DRAWINGGUI_QGRAPHICSITEMLEADERLINE_H
 
-#include <QObject>
-#include <QGraphicsView>
-#include <QStyleOptionGraphicsItem>
-#include <QGraphicsItem>
-#include <QGraphicsObject>
-#include <QPainterPath>
 #include <QColor>
-#include <QFont>
+#include <QGraphicsItem>
+#include <QObject>
+#include <QPainterPath>
 #include <QPointF>
+#include <QStyleOptionGraphicsItem>
 
 #include <Base/Vector3D.h>
+
 #include "QGIView.h"
+
 
 namespace TechDraw {
 class DrawLeaderLine;

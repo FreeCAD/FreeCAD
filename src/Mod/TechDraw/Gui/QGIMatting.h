@@ -27,10 +27,8 @@
 
 #include <QGraphicsItem>
 #include <QGraphicsItemGroup>
-#include <QGraphicsRectItem>
 #include <QGraphicsPathItem>
-#include <QPainterPath>
-#include <QPointF>
+
 
 QT_BEGIN_NAMESPACE
 class QPainter;

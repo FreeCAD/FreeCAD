@@ -23,9 +23,6 @@
 #ifndef _DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H
 #define _DRAWINGGUI_QGRAPHICSITEMVIEWCOLLECTION_H
 
-#include <QGraphicsItemGroup>
-#include <QObject>
-
 #include "QGIView.h"
 
 QT_BEGIN_NAMESPACE

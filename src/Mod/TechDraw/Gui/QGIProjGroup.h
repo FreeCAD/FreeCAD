@@ -23,10 +23,9 @@
 #ifndef DRAWINGGUI_QGIProjGroup_H
 #define DRAWINGGUI_QGIProjGroup_H
 
-#include <QGraphicsItemGroup>
+#include "QGIViewCollection.h"
 #include <QObject>
 
-#include "QGIViewCollection.h"
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;

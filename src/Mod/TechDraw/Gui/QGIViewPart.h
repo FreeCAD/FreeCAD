@@ -23,12 +23,12 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWPART_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEWPART_H
 
-#include <QObject>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
-
 #include <Mod/TechDraw/App/Geometry.h>
+
 #include "QGIView.h"
+
 
 namespace TechDraw {
 class DrawViewPart;

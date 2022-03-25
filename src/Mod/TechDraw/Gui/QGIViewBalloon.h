@@ -24,18 +24,18 @@
 #ifndef TECHDRAWGUI_QGIVBALLOON_H
 #define TECHDRAWGUI_QGIVBALLOON_H
 
-#include <QObject>
-#include <QGraphicsView>
-#include <QStyleOptionGraphicsItem>
-#include <QGraphicsItem>
-#include <QGraphicsObject>
 #include <QColor>
 #include <QFont>
+#include <QGraphicsItem>
+#include <QGraphicsObject>
+#include <QObject>
+#include <QStyleOptionGraphicsItem>
+
 #include <Base/Vector3D.h>
-#include "QGIView.h"
-#include "QGIViewPart.h"
+
 #include "QGCustomText.h"
-#include "QGIViewDimension.h"
+#include "QGIView.h"
+
 
 namespace TechDraw {
 class DrawViewBalloon;
