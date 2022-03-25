@@ -5269,8 +5269,8 @@ CmdSketcherCreateArc::CmdSketcherCreateArc()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create arc by center");
-    sToolTipText = QT_TR_NOOP("Create an arc by its center and by its end points");
+    sMenuText = QT_TR_NOOP("Create arc of circle");
+    sToolTipText = QT_TR_NOOP("Create an arc by its center or by its end points");
     sWhatsThis = "Sketcher_CreateArc";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateArc";
