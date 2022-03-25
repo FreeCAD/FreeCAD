@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <SMESH_Mesh.hxx>
+# include <QTextStream>
 #endif
 
 #include "PropertyFemMeshItem.h"
@@ -103,8 +104,17 @@ QVariant PropertyFemMeshItem::value(const App::Property*) const
         ctG += mesh->NbGroup();
     }
 
-    QString  str = QObject::tr("[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6, Groups: %7]")
-        .arg(ctN).arg(ctE).arg(ctF).arg(ctP).arg(ctV).arg(ctH).arg(ctG);
+    QString str;
+    QTextStream out(&str);
+    out << '[';
+    out << QObject::tr("Nodes") << ": " << ctN << ", ";
+    out << QObject::tr("Edges") << ": " << ctE << ", ";
+    out << QObject::tr("Faces") << ": " << ctF << ", ";
+    out << QObject::tr("Polygons") << ": " << ctP << ", ";
+    out << QObject::tr("Volumes") << ": " << ctV << ", ";
+    out << QObject::tr("Polyhedrons") << ": " << ctH << ", ";
+    out << QObject::tr("Groups") << ": " << ctG;
+    out << ']';
     return QVariant(str);
 }
 
