@@ -710,7 +710,6 @@ void InputField::wheelEvent (QWheelEvent * event)
 
 void InputField::fixup(QString& input) const
 {
-    input.remove(locale().groupSeparator());
     if (locale().negativeSign() != QLatin1Char('-'))
         input.replace(locale().negativeSign(), QLatin1Char('-'));
     if (locale().positiveSign() != QLatin1Char('+'))
