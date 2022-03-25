@@ -61,12 +61,19 @@
 
 #include <boost/graph/boyer_myrvold_planar_test.hpp>
 #include <boost/graph/is_kuratowski_subgraph.hpp>
+#include <boost/regex.hpp>
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
+#include <QFile>
+
 // OpenCasCade =====================================================================================
 #include <Mod/Part/App/OpenCascadeAll.h>
+#include <gce_MakeCirc.hxx>
+#include <HLRBRep_HLRToShape.hxx>
+#include <HLRBRep_PolyAlgo.hxx>
+#include <HLRBRep_PolyHLRToShape.hxx>
 
 #endif // _PreComp_
 #endif
