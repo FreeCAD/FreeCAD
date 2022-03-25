@@ -886,7 +886,6 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             geom << "Sketcher_CreatePoint"
                                   << "Sketcher_CreateArc"
                                   << "Sketcher_CreateCircle"
-                                  << "Sketcher_Create3PointCircle"
                                   << "Sketcher_CreateLine"
                                   << "Sketcher_CreatePolyline"
                                   << "Sketcher_CreateRectangle"
