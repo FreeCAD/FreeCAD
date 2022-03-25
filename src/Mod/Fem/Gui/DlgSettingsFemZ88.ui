@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>423</width>
-    <height>128</height>
+    <width>452</width>
+    <height>154</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -74,25 +74,19 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="l_z88_binary_path">
-          <property name="enabled">
+        <item row="0" column="2">
+         <widget class="Gui::PrefCheckBox" name="cb_z88_binary_std">
+          <property name="text">
+           <string>Search in known binary directories</string>
+          </property>
+          <property name="checked">
            <bool>true</bool>
           </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+          <property name="prefEntry" stdset="0">
+           <cstring>UseStandardZ88Location</cstring>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>z88r binary path:</string>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Fem/Z88</cstring>
           </property>
          </widget>
         </item>
@@ -115,22 +109,6 @@
            </size>
           </property>
          </spacer>
-        </item>
-        <item row="0" column="2">
-         <widget class="Gui::PrefCheckBox" name="cb_z88_binary_std">
-          <property name="text">
-           <string>Search in known binary directories</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>UseStandardZ88Location</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Fem/Z88</cstring>
-          </property>
-         </widget>
         </item>
         <item row="3" column="2">
          <widget class="Gui::PrefComboBox" name="cmb_solver">
@@ -164,6 +142,66 @@
             <string>Simple Cholesky solver (-choly)</string>
            </property>
           </item>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="l_z88_binary_path">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>z88r binary path:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="2">
+         <widget class="Gui::PrefSpinBox" name="sb_Z88_MaxGS">
+          <property name="toolTip">
+           <string>Maximal places in stiffnes matrix.
+You might need to increase this when using the
+Colesky solver and you get the error message
+that &quot;MAXGS&quot; needs to be increased.</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="minimum">
+           <number>6000000</number>
+          </property>
+          <property name="maximum">
+           <number>2147483647</number>
+          </property>
+          <property name="singleStep">
+           <number>10000000</number>
+          </property>
+          <property name="value">
+           <number>100000000</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>MaxGS</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Fem/Z88</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="l_ccx_max_iterations">
+          <property name="text">
+           <string>Max places in stiffnes matrix</string>
+          </property>
          </widget>
         </item>
        </layout>
@@ -206,6 +244,11 @@
   <customwidget>
    <class>Gui::PrefComboBox</class>
    <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

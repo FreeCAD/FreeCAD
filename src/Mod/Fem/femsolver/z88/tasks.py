@@ -108,7 +108,7 @@ class Solve(run.Solve):
         solver = SOLVER_TYPES
         solver = prefs.GetInt("Solver", 0)
         solver = SOLVER_TYPES[solver]
-        self.pushStatus("used solver: " + solver + "\n")
+        self.pushStatus("Used solver: " + solver + "\n")
 
         # run solver test mode
         # AFAIK: z88r needs to be run twice
