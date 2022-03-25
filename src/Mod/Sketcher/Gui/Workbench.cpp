@@ -226,22 +226,6 @@ inline void SketcherAddWorkspaceRectangles<Gui::ToolBarItem>(Gui::ToolBarItem& g
 }
 
 template <typename T>
-void SketcherAddWorkspaceFillets(T& geom);
-
-template <>
-inline void SketcherAddWorkspaceFillets<Gui::MenuItem>(Gui::MenuItem& geom)
-{
-    geom    << "Sketcher_CreateFillet"
-            << "Sketcher_CreatePointFillet";
-}
-
-template <>
-inline void SketcherAddWorkspaceFillets<Gui::ToolBarItem>(Gui::ToolBarItem& geom)
-{
-    geom    << "Sketcher_CompCreateFillets";
-}
-
-template <typename T>
 inline void SketcherAddWorkbenchGeometries(T& geom)
 {
     geom    << "Sketcher_CreatePoint"
@@ -251,9 +235,9 @@ inline void SketcherAddWorkbenchGeometries(T& geom)
             << "Sketcher_CreatePolyline";
     SketcherAddWorkspaceRectangles(geom);
     geom    << "Sketcher_CreateSlot"
-            << "Separator";
-    SketcherAddWorkspaceFillets(geom);
-    geom    << "Sketcher_Trimming"
+            << "Separator"
+            << "Sketcher_CreateFillet"
+            << "Sketcher_Trimming"
             << "Sketcher_Extend"
             << "Sketcher_Split"
             << "Sketcher_External"

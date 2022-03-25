@@ -257,20 +257,24 @@ public:
     int toggleConstruction(int GeoId);
     int setConstruction(int GeoId, bool on);
 
+    //Make the chamfer's lines. Called from fillet() function.
+    int makeChamfers(Part::GeomArcOfCircle* arc, int nAngles);
     /*!
      \brief Create a sketch fillet from the point at the intersection of two lines
      \param geoId, pos - one of the (exactly) two coincident endpoints
      \param radius - fillet radius
+     \param nofAngles. Fillet if 1, chamfer if 2 or -2, polychamfer if 3 or more. Inward fillet if -1, inward polychamfer if -3 or less
      \param trim - if false, leaves the original lines untouched
      \param createCorner - keep geoId/pos as a Point and keep as many constraints as possible
      \retval - 0 on success, -1 on failure
      */
-    int fillet(int geoId, PointPos pos, double radius, bool trim=true, bool preserveCorner=false);
+    int fillet(int geoId, PointPos pos, double radius, bool trim=true, bool preserveCorner=false, int nAngles = 1);
     /*!
      \brief More general form of fillet
      \param geoId1, geoId2 - geoId for two lines (which don't necessarily have to coincide)
      \param refPnt1, refPnt2 - reference points on the input geometry, used to influence the free fillet variables
      \param radius - fillet radius
+     \param nofAngles. Fillet if 1, chamfer if 2 or -2, polychamfer if 3 or more. Inward fillet if -1, inward polychamfer if -3 or less
      \param trim - if false, leaves the original lines untouched
      \param preserveCorner - if the lines are coincident, place a Point where they meet and keep as many
      of the existing constraints as possible
@@ -278,7 +282,7 @@ public:
      */
     int fillet(int geoId1, int geoId2,
                const Base::Vector3d& refPnt1, const Base::Vector3d& refPnt2,
-               double radius, bool trim=true, bool createCorner=false);
+               double radius, bool trim=true, bool createCorner=false, int nAngles = 1);
 
     /// trim a curve
     int trim(int geoId, const Base::Vector3d& point);
