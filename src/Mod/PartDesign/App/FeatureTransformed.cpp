@@ -249,8 +249,8 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         TopoDS_Shape current = support;
 
         BRep_Builder builder;
-        TopoDS_Compound compShape;
-        builder.MakeCompound(compShape);
+        TopoDS_CompSolid compShape;
+        builder.MakeCompSolid(compShape);
         std::vector<TopoDS_Shape> shapes;
         bool overlapping = false;
 
@@ -323,6 +323,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     }
 
     this->Shape.setValue(getSolid(support));  // picking the first solid
+    // FIXME: For some reason `rejected.IsNull()` is false even with 1 solid
     rejected = getRemainingSolids(support);
 
     return App::DocumentObject::StdReturn;
