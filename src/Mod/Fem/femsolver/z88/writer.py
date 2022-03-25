@@ -289,13 +289,16 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
     # ********************************************************************************************
     def write_z88_memory_parameter(self):
         prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Z88")
-        MaxGS = prefs.GetInt("MaxGS", 100000000)   
+        MaxGS = prefs.GetInt("MaxGS", 100000000)
+        MaxKOI = prefs.GetInt("MaxKOI", 2800000)
         global z88_dyn_template
         templateArray = z88_dyn_template.splitlines()
         output = ""
         for line in templateArray:
             if line.find("MAXGS") > -1:
                 line = "    MAXGS  " + str(MaxGS)
+            if line.find("MAXKOI") > -1:
+                line = "    MAXKOI   " + str(MaxKOI)
             output += line + "\n"
 
         solver_parameter_file_path = self.file_name + ".dyn"
@@ -370,7 +373,7 @@ Common entries for all modules         gemeinsame Daten fuer alle Module
 
   COMMON START
     MAXGS  100000000
-    MAXKOI   1200000
+    MAXKOI   2800000
     MAXK       60000
     MAXE      300000
     MAXNFG    200000

@@ -55,6 +55,8 @@ void DlgSettingsFemZ88Imp::saveSettings()
     ui->cmb_solver->onSave();
     hGrp->SetInt("MaxGS", ui->sb_Z88_MaxGS->value());
     ui->sb_Z88_MaxGS->onSave();
+    hGrp->SetInt("MaxKOI", ui->sb_Z88_MaxKOI->value());
+    ui->sb_Z88_MaxKOI->onSave();
 }
 
 void DlgSettingsFemZ88Imp::loadSettings()
@@ -72,6 +74,9 @@ void DlgSettingsFemZ88Imp::loadSettings()
     int places = hGrp->GetInt("MaxGS", 100000000);
     if (places > -1)
         ui->sb_Z88_MaxGS->setValue(places);
+    places = hGrp->GetInt("MaxKOI", 2800000);
+    if (places > -1)
+        ui->sb_Z88_MaxKOI->setValue(places);
 }
 
 /**
