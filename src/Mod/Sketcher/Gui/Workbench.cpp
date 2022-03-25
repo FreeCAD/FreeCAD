@@ -194,7 +194,6 @@ inline void SketcherAddWorkspaceArcs<Gui::MenuItem>(Gui::MenuItem& geom)
     geom    << "Sketcher_CreateArc"
             << "Sketcher_CreateCircle"
             << "Sketcher_CreateEllipseByCenter"
-            << "Sketcher_CreateEllipseBy3Points"
             << "Sketcher_CreateArcOfEllipse"
             << "Sketcher_CreateArcOfHyperbola"
             << "Sketcher_CreateArcOfParabola"
@@ -207,7 +206,6 @@ inline void SketcherAddWorkspaceArcs<Gui::ToolBarItem>(Gui::ToolBarItem& geom)
 {
     geom    << "Sketcher_CompCreateArc"
             << "Sketcher_CompCreateCircle"
-            << "Sketcher_CompCreateConic"
             << "Sketcher_CompCreateBSpline";
 }
 
