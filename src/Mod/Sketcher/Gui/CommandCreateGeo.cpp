@@ -2548,7 +2548,6 @@ template <> void DrawSketchHandlerPolygonBase::ToolWidgetManager::adaptDrawingTo
 }
 
 template <> void DrawSketchHandlerPolygonBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
-    prevCursorPosition = onSketchPos;
     auto dHandler = static_cast<DrawSketchHandlerPolygon*>(handler);
 
     switch (handler->state()) {
@@ -2581,6 +2580,7 @@ template <> void DrawSketchHandlerPolygonBase::ToolWidgetManager::doOverrideSket
     default:
         break;
     }
+    prevCursorPosition = onSketchPos;
 }
 
 template <> void DrawSketchHandlerPolygonBase::ToolWidgetManager::updateVisualValues(Base::Vector2d onSketchPos) {
