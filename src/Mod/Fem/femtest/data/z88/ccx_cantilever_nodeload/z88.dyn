@@ -23,7 +23,7 @@ Common entries for all modules         gemeinsame Daten fuer alle Module
 ---------------------------------------------------------------------------
 
   COMMON START
-    MAXGS    50000000
+    MAXGS  100000000
     MAXKOI   1200000
     MAXK       60000
     MAXE      300000
