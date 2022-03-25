@@ -68,8 +68,8 @@ def insert(
 # ********* module specific methods *********
 def import_z88_disp(
     filename,
-    analysis=None,
-    result_name_prefix=None
+    analysis = None,
+    result_name_prefix = None
 ):
     """insert a FreeCAD FEM mechanical result object in the ActiveDocument
     pure usage:
@@ -104,6 +104,7 @@ def import_z88_disp(
             result_mesh_object.FemMesh = femmesh
         else:
             Console.PrintError("Z88 mesh file z88i1.txt not found.\n")
+            return None
 
         # create result obj
         for result_set in disp_read["Results"]:
@@ -128,6 +129,7 @@ def import_z88_disp(
         Console.PrintError(
             "Problem on Z88 result file import. No nodes found in Z88 result file.\n"
         )
+        return None
     return res_obj
 
 
