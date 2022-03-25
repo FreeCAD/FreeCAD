@@ -813,6 +813,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         self.results_present = False
         self.load_results_ccxfrd()
         self.load_results_ccxdat()
+        self.analysis.Document.recompute()
 
     def load_results_ccxfrd(self):
         """Load results of ccx calculations from .frd file.
