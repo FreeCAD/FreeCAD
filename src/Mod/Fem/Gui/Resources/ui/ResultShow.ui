@@ -178,7 +178,7 @@
            <bool>true</bool>
           </property>
           <property name="unit" stdset="0">
-           <string>mm</string>
+           <string notr="true">mm</string>
           </property>
          </widget>
         </item>
