@@ -21,7 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef TECHDRAWGUI_VIEWPROVIDERVIEW_H
 #define TECHDRAWGUI_VIEWPROVIDERVIEW_H
 
@@ -29,11 +28,11 @@
 
 #include <boost_signals2.hpp> 
 
-#include <Gui/ViewProviderFeature.h>
-#include <Gui/ViewProviderDocumentObjectGroup.h>
-
+#include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/TechDraw/App/DrawView.h>
+
 #include "QGIView.h"
+
 
 namespace TechDraw {
 class DrawView;

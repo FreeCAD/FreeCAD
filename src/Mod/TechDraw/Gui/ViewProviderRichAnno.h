@@ -21,15 +21,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef TECHDRAWGUI_VIEWPROVIDERRICHANNO_H
 #define TECHDRAWGUI_VIEWPROVIDERRICHANNO_H
 
 #include <App/PropertyUnits.h>
-
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 
 #include "ViewProviderDrawingView.h"
+
 
 namespace TechDraw {
 class DrawRichAnno;

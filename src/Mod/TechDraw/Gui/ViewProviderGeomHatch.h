@@ -21,14 +21,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_VIEWPROVIDERCROSSHATCH_H
 #define DRAWINGGUI_VIEWPROVIDERCROSSHATCH_H
 
 #include <App/DocumentObject.h>
-#include <App/FeaturePython.h>
 #include <App/PropertyStandard.h>
-#include <Gui/ViewProviderFeature.h>
+#include <Gui/ViewProviderDocumentObject.h>
 
 
 namespace TechDraw{

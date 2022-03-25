@@ -20,16 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_VIEWPROVIDERVIEWPART_H
 #define DRAWINGGUI_VIEWPROVIDERVIEWPART_H
 
-#include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 
-#include "ViewProviderDrawingView.h"
-#include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
+
+#include "ViewProviderDrawingView.h"
+
 
 namespace TechDrawGui {
 

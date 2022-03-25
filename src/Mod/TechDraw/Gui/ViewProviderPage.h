@@ -21,18 +21,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_VIEWPROVIDERPAGE_H
 #define DRAWINGGUI_VIEWPROVIDERPAGE_H
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <QPointer>
-#include <Gui/ViewProviderDocumentObject.h>
-
 #include <boost_signals2.hpp> 
+#include <QPointer>
 
 #include <App/PropertyUnits.h>
+#include <Gui/ViewProviderDocumentObject.h>
+
 
 namespace TechDraw{
     class DrawPage;

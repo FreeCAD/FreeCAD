@@ -32,6 +32,7 @@
 #include <App/DocumentObject.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
+#include <Gui/Document.h>
 
 #include <Mod/TechDraw/App/DrawView.h>
 

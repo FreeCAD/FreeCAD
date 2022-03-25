@@ -21,18 +21,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef TECHDRAWGUI_VIEWPROVIDERVIEWSECTION_H
 #define TECHDRAWGUI_VIEWPROVIDERVIEWSECTION_H
 
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
 
 #include "ViewProviderViewPart.h"
 
-namespace TechDrawGui {
 
+namespace TechDrawGui {
 
 class TechDrawGuiExport ViewProviderViewSection : public ViewProviderViewPart
 {
