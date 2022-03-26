@@ -29,6 +29,9 @@
 #include <Gui/Selection.h>
 #include <boost_signals2.hpp>
 
+
+class QComboBox;
+
 namespace App {
 class Property;
 }
@@ -175,7 +178,7 @@ public:
         return signalComboboxSelectionChanged.connect(std::forward<F>(f));
     }
 
-    
+
 
 //Q_SIGNALS:
 protected Q_SLOTS:
