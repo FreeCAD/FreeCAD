@@ -1671,13 +1671,33 @@ void CmdFemPostPipelineFromResult::activated(int)
             , app->getName(), (*it)->getNameInDocument());
     }
 
+    // we need single result object to attach the pipeline to
     std::vector<Fem::FemResultObject*> results = getSelection().getObjectsOfType<Fem::FemResultObject>();
     if (results.size() == 1) {
+        // the pipeline should be inside the analysis container if possible
+        bool foundAnalysis = false;
+        Fem::FemAnalysis* pcAnalysis;
         std::string FeatName = getUniqueObjectName("ResultPipeline");
+        auto parents = results[0]->getInList();
+        if (parents.size()) {
+            for (auto parentObject : parents) {
+                if (parentObject->getTypeId() == Base::Type::fromName("Fem::FemAnalysis")) {
+                    pcAnalysis = static_cast<Fem::FemAnalysis*>(parentObject);
+                    foundAnalysis = true;
+                }
+            }
+        }
+        // create the pipeline object
         openCommand(QT_TRANSLATE_NOOP("Command", "Create pipeline from result"));
-        doCommand(Doc, "App.activeDocument().addObject('Fem::FemPostPipeline','%s')", FeatName.c_str());
+        if (foundAnalysis)
+            pcAnalysis->addObject("Fem::FemPostPipeline", FeatName.c_str());
+        else
+            doCommand(Doc, "App.activeDocument().addObject('Fem::FemPostPipeline','%s')", FeatName.c_str());
+        // load the contents of the result object to the pipeline
         doCommand(Doc, "App.activeDocument().ActiveObject.load("
             "App.activeDocument().getObject(\"%s\"))", results[0]->getNameInDocument());
+        // set display to assure the user sees the new object
+        doCommand(Doc, "App.activeDocument().ActiveObject.ViewObject.DisplayMode = \"Surface\"");
         commitCommand();
 
         this->updateActive();
