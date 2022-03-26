@@ -241,7 +241,7 @@ class Addon:
             metadata = FreeCAD.Metadata(file)
             self.set_metadata(metadata)
         else:
-            FreeCAD.Console.PrintMessage(
+            FreeCAD.Console.PrintLog(
                 "Internal error: {} does not exist".format(file)
             )
 
@@ -354,7 +354,7 @@ class Addon:
             return True
         elif self.repo_type == Addon.Kind.PACKAGE:
             if self.metadata is None:
-                FreeCAD.Console.PrintWarning(
+                FreeCAD.Console.PrintLog(
                     f"Addon Manager internal error: lost metadata for package {self.name}\n"
                 )
                 return False
@@ -375,7 +375,7 @@ class Addon:
             return True
         elif self.repo_type == Addon.Kind.PACKAGE:
             if self.metadata is None:
-                FreeCAD.Console.PrintWarning(
+                FreeCAD.Console.PrintLog(
                     f"Addon Manager internal error: lost metadata for package {self.name}\n"
                 )
                 return False
@@ -389,7 +389,7 @@ class Addon:
 
         if self.repo_type == Addon.Kind.PACKAGE:
             if self.metadata is None:
-                FreeCAD.Console.PrintWarning(
+                FreeCAD.Console.PrintLog(
                     f"Addon Manager internal error: lost metadata for package {self.name}\n"
                 )
                 return False
