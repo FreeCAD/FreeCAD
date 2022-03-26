@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 
-#include "Gui/Command.h"
+#include <Gui/Command.h>
 
 #include "ViewProviderResult.h"
 
