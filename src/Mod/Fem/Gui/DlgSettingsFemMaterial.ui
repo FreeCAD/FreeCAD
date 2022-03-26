@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>427</width>
-    <height>264</height>
+    <width>434</width>
+    <height>229</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,7 @@
      <property name="title">
       <string>Card resources</string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_6">
         <item>
@@ -44,7 +44,7 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="cb_use_mat_from_config_dir">
           <property name="text">
-           <string>Use materials from Materials directory in users FreeCAD user pref directory.</string>
+           <string>Use materials from Materials directory in user's FreeCAD preference directory</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -85,6 +85,12 @@
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>20</height>
+             </size>
             </property>
             <property name="baseSize">
              <size>
@@ -131,42 +137,38 @@
      <property name="title">
       <string>Card sorting and duplicates</string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_7">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="cb_delete_duplicates">
-          <property name="text">
-           <string>Delete card duplicates</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>DeleteDuplicates</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Material/Cards</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefCheckBox" name="cb_sort_by_resources">
-          <property name="text">
-           <string>Sort by resources (opposite would be sort by cards)</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>SortByResources</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Material/Cards</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="Gui::PrefCheckBox" name="cb_delete_duplicates">
+        <property name="text">
+         <string>Delete card duplicates</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DeleteDuplicates</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Material/Cards</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="cb_sort_by_resources">
+        <property name="text">
+         <string>Sort by resources (opposite would be sort by cards)</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>SortByResources</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Material/Cards</cstring>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -177,7 +179,7 @@
       <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
-      <enum>QSizePolicy::MinimumExpanding</enum>
+      <enum>QSizePolicy::Expanding</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
