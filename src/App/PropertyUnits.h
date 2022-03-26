@@ -252,6 +252,18 @@ public:
     virtual ~PropertyForce(){}
 };
 
+/** ElectricPotential property
+ * This is a property for electric potentials. It is basically a float
+ * property. On the Gui it has a quantity of Volt.
+ */
+class AppExport PropertyElectricPotential : public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyElectricPotential(void);
+    virtual ~PropertyElectricPotential() {}
+};
+
 /** VacuumPermittivity property
  * This is a property for representing vacuum permittivity. It is basically a float
  * property. On the Gui it has a quantity like s^4*A^2 / (m^3*kg).

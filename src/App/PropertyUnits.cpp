@@ -341,6 +341,18 @@ PropertyForce::PropertyForce()
 
 //**************************************************************************
 //**************************************************************************
+// PropertyElectricPotential
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyElectricPotential, App::PropertyQuantity)
+
+PropertyElectricPotential::PropertyElectricPotential()
+{
+    setUnit(Base::Unit::ElectricPotential);
+}
+
+//**************************************************************************
+//**************************************************************************
 // PropertyVacuumPermittivity
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
