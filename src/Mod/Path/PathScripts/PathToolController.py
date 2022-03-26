@@ -276,6 +276,7 @@ class ToolController:
                     args["spindledirection"] = SpindleDirection.CW
                 else:
                     args["spindledirection"] = SpindleDirection.CCW
+
         elif obj.SpindleDir == "None":
             args["spindledirection"] = SpindleDirection.OFF
         else:
@@ -366,6 +367,10 @@ def Create(
                 if tool.ViewObject:
                     tool.ViewObject.Visibility = False
         obj.Tool = tool
+
+        if hasattr(obj.Tool, "SpindleDirection"):
+            obj.SpindleDir = obj.Tool.SpindleDirection
+
     obj.ToolNumber = toolNumber
     return obj
 
