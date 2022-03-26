@@ -180,14 +180,14 @@ that &quot;MAXKOI&quot; needs to be increased.</string>
            </size>
           </property>
           <property name="text">
-           <string>z88r binary path:</string>
+           <string>z88r binary path</string>
           </property>
          </widget>
         </item>
         <item row="3" column="0">
          <widget class="QLabel" name="l_ccx_initial_time_step">
           <property name="text">
-           <string>Solver method:</string>
+           <string>Solver method</string>
           </property>
          </widget>
         </item>
