@@ -194,7 +194,7 @@ that &quot;MAXKOI&quot; needs to be increased.</string>
         <item row="4" column="0">
          <widget class="QLabel" name="l_ccx_max_iterations">
           <property name="text">
-           <string>Max places in stiffnes matrix</string>
+           <string>Max places in stiffness matrix</string>
           </property>
          </widget>
         </item>
