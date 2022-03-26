@@ -187,7 +187,7 @@ def setup(doc=None, solvertype="elmer"):
     analysis.addObject(material_obj)
 
     # constraint potential 0V
-    name_pot1 = "ConstraintElectrostaticPotential"
+    name_pot1 = "ElectrostaticPotential1"
     con_elect_pot1 = ObjectsFem.makeConstraintElectrostaticPotential(doc, name_pot1)
     con_elect_pot1.References = [(geom_obj, "Face2")]
     con_elect_pot1.Potential = 0.00
@@ -197,8 +197,7 @@ def setup(doc=None, solvertype="elmer"):
     analysis.addObject(con_elect_pot1)
 
     # constraint potential 1V
-    # TODO: use a better name for the constraint, but unit test needs to be changed
-    name_pot2 = "ConstraintElectrostaticPotential001"
+    name_pot2 = "ElectrostaticPotential2"
     con_elect_pot2 = ObjectsFem.makeConstraintElectrostaticPotential(doc, name_pot2)
     con_elect_pot2.References = [
         (geom_obj, "Face4"),
