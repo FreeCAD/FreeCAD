@@ -30,6 +30,7 @@ __url__ = "https://www.freecadweb.org"
 #  \ingroup FEM
 #  \brief constraint electrostatic potential object
 
+from FreeCAD import Units
 from . import base_fempythonobject
 
 
@@ -47,10 +48,10 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
     def add_properties(self, obj):
         if not hasattr(obj, "Potential"):
             obj.addProperty(
-                "App::PropertyFloat",
+                "App::PropertyElectricPotential",
                 "Potential",
                 "Parameter",
-                "Potential"
+                "Electric Potential"
             ),
             obj.Potential = 0.0
 

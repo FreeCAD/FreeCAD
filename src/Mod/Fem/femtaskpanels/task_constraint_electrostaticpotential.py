@@ -91,10 +91,8 @@ class _TaskPanel(object):
                 self._part.ViewObject.hide()
 
     def _initParamWidget(self):
-        unit = "V"
-        quantity = Units.Quantity("{} {}".format(self._obj.Potential, unit))
         self._paramWidget.potentialQSB.setProperty(
-            'value', quantity)
+            'value', self._obj.Potential)
         self._paramWidget.potentialBox.setChecked(
             not self._obj.PotentialEnabled)
         self._paramWidget.potentialConstantBox.setChecked(
@@ -125,13 +123,12 @@ class _TaskPanel(object):
                 potential = Units.Quantity(self._paramWidget.potentialQSB.text())
             except ValueError:
                 FreeCAD.Console.PrintMessage(
-                    "Wrong input. OK has been triggered without a green hook "
-                    "in the input field. Not recognised input: '{}' "
+                    "Wrong input. Not recognised input: '{}' "
                     "Potential has not been set.\n"
-                    .format(self._paramWidget.potentialTxt.text())
+                    .format(self._paramWidget.potentialQSB.text())
                 )
             if potential is not None:
-                self._obj.Potential = potential.getValueAs(unit).Value
+                self._obj.Potential = potential
 
         self._obj.PotentialConstant = self._paramWidget.potentialConstantBox.isChecked()
 

@@ -462,10 +462,9 @@ class Writer(object):
         for obj in self._getMember("Fem::ConstraintElectrostaticPotential"):
             if obj.References:
                 for name in obj.References[0][1]:
-                    # https://forum.freecadweb.org/viewtopic.php?f=18&t=41488&start=10#p369454  ff
                     if obj.PotentialEnabled:
                         if hasattr(obj, "Potential"):
-                            potential = self._getFromUi(obj.Potential, "V", "M*L^2/(T^3 * I)")
+                            potential = float(obj.Potential.getValueAs("V"))
                             self._boundary(name, "Potential", potential)
                     if obj.PotentialConstant:
                         self._boundary(name, "Potential Constant", True)
