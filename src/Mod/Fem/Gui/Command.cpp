@@ -1712,7 +1712,9 @@ void CmdFemPostPipelineFromResult::activated(int)
 
 bool CmdFemPostPipelineFromResult::isActive(void)
 {
-    return hasActiveDocument();
+    // only activate if a result object is selected from which the pipeline can be loaded
+    std::vector<Fem::FemResultObject*> results = getSelection().getObjectsOfType<Fem::FemResultObject>();
+    return (results.size() == 1) ? true : false;
 }
 
 #endif
