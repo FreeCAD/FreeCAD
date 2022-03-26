@@ -6955,7 +6955,7 @@ bool CmdSketcherCompCreateBSpline::isActive(void)
 // DrawSketchHandlerPoint: An example of deriving from DSHandlerDefaultWidget with NVI for handler and specialisation for widgetmanager.
 
 using DrawSketchHandlerPointBase = DSHandlerDefaultWidget<  GeometryTools::Point,
-    StateMachines::ThreeSeekEnd,
+    StateMachines::OneSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 1,
     /*PNumToolwidgetparameters =*/2,
@@ -6977,7 +6977,6 @@ private:
             drawPositionAtCursor(onSketchPos);
 
             editPoint = onSketchPos;
-            selectionDone = true;
 
             if (seekAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f))) {
                 renderSuggestConstraintsCursor(sugConstraints[0]);
@@ -6991,21 +6990,17 @@ private:
     }
 
     virtual void executeCommands() override {
-        if (selectionDone) {
+        try {
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch point"));
+            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Point(App.Vector(%f,%f,0)))",
+                editPoint.x, editPoint.y);
 
-            try {
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch point"));
-                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Point(App.Vector(%f,%f,0)))",
-                    editPoint.x, editPoint.y);
-
-                Gui::Command::commitCommand();
-            }
-            catch (const Base::Exception& e) {
+            Gui::Command::commitCommand();
+        }
+        catch (const Base::Exception& e) {
                 Base::Console().Error("Failed to add point: %s\n", e.what());
                 Gui::Command::abortCommand();
             }
-            selectionDone = false;
-        }
     }
 
     virtual void createAutoConstraints() override {
@@ -7024,16 +7019,8 @@ private:
         return QString::fromLatin1("Sketcher_Pointer_Create_Point");
     }
 
-    //reimplement because if not radius then it's 1 steps
-    virtual void onButtonPressed(Base::Vector2d onSketchPos) override {
-        this->updateDataAndDrawToPosition(onSketchPos);
-        
-        setState(SelectMode::End);
-    }
-
 public:
     Base::Vector2d editPoint;
-    bool selectionDone;
 };
 
 template <> void DrawSketchHandlerPointBase::ToolWidgetManager::configureToolWidget() {
