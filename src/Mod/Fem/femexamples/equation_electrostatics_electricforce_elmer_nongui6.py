@@ -190,7 +190,7 @@ def setup(doc=None, solvertype="elmer"):
     name_pot1 = "ElectrostaticPotential1"
     con_elect_pot1 = ObjectsFem.makeConstraintElectrostaticPotential(doc, name_pot1)
     con_elect_pot1.References = [(geom_obj, "Face2")]
-    con_elect_pot1.Potential = 0.00
+    con_elect_pot1.Potential = "0 V"
     con_elect_pot1.CapacitanceBody = 1
     con_elect_pot1.CapacitanceBodyEnabled = True
     con_elect_pot1.PotentialEnabled = True
@@ -204,7 +204,7 @@ def setup(doc=None, solvertype="elmer"):
         (geom_obj, "Face5"),
         (geom_obj, "Face6"),
         (geom_obj, "Face11")]
-    con_elect_pot2.Potential = 1.00
+    con_elect_pot2.Potential = "1 V"
     con_elect_pot2.CapacitanceBody = 2
     con_elect_pot2.CapacitanceBodyEnabled = True
     con_elect_pot2.PotentialEnabled = True

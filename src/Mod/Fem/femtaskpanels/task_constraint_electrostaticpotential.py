@@ -32,7 +32,6 @@ __url__ = "https://www.freecadweb.org"
 
 import FreeCAD
 import FreeCADGui
-from FreeCAD import Units
 from femguiutils import selection_widgets
 from femtools import femutils
 from femtools import membertools
@@ -120,7 +119,7 @@ class _TaskPanel(object):
             # we could run into a syntax error on getting the quantity
             potential = None
             try:
-                potential = Units.Quantity(self._paramWidget.potentialQSB.text())
+                potential = self._paramWidget.potentialQSB.property('value')
             except ValueError:
                 FreeCAD.Console.PrintMessage(
                     "Wrong input. Not recognised input: '{}' "
