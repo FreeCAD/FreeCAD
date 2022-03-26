@@ -2008,6 +2008,7 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptDrawing
 }
 
 template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptDrawingToCheckboxChange(int checkboxindex, bool value) {
+    Q_UNUSED(checkboxindex);
     auto dHandler = static_cast<DrawSketchHandlerRectangle*>(handler);
     dHandler->roundCorners = value;
     if (value)
@@ -2021,6 +2022,7 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptDrawing
 }
 
 template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
+    Q_UNUSED(comboboxindex);
     auto dHandler = static_cast<DrawSketchHandlerRectangle*>(handler);
 
     if (value == 0) {
@@ -2160,7 +2162,7 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doChangeDraw
             handler->updateDataAndDrawToPosition(prevCursorPosition); // draw curve to cursor with suggested constraints
 
             if (toolWidget->isParameterSet(WParameter::Third) &&
-                toolWidget->isParameterSet(WParameter::Fourth) && 
+                toolWidget->isParameterSet(WParameter::Fourth) &&
                 boxhandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::CenterAndCorner ) {
                 if (boxhandler->roundCorners) {
                     handler->setState(SelectMode::SeekThird);
@@ -2810,7 +2812,7 @@ class DrawSketchHandlerPolygon : public DrawSketchHandlerPolygonBase
 {
 public:
 
-    DrawSketchHandlerPolygon() : 
+    DrawSketchHandlerPolygon() :
         Corners(6),
         AngleOfSeparation(2.0 * M_PI / static_cast<double>(Corners)),
         cos_v(cos(AngleOfSeparation)),
@@ -2916,9 +2918,9 @@ private:
     }
 
 public:
+    unsigned int Corners;
     Base::Vector2d centerPoint, firstPoint, secondPoint;
     double AngleOfSeparation, cos_v, sin_v;
-    size_t Corners;
 };
 
 template <> void DrawSketchHandlerPolygonBase::ToolWidgetManager::configureToolWidget() {
@@ -3017,7 +3019,6 @@ template <> void DrawSketchHandlerPolygonBase::ToolWidgetManager::updateVisualVa
 }
 
 template <> void DrawSketchHandlerPolygonBase::ToolWidgetManager::doChangeDrawSketchHandlerMode() {
-    auto dHandler = static_cast<DrawSketchHandlerPolygon*>(handler);
     switch (handler->state()) {
     case SelectMode::SeekFirst:
     {
@@ -3054,7 +3055,6 @@ template <> void DrawSketchHandlerPolygonBase::ToolWidgetManager::doChangeDrawSk
 }
 
 template <> void DrawSketchHandlerPolygonBase::ToolWidgetManager::addConstraints() {
-    auto dHandler = static_cast<DrawSketchHandlerPolygon*>(handler);
     int lastCurve = handler->getHighestCurveIndex();
 
     auto x0 = toolWidget->getParameter(WParameter::First);
@@ -4171,6 +4171,7 @@ template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::adaptDrawingToP
 }
 
 template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
+    Q_UNUSED(comboboxindex);
     auto dHandler = static_cast<DrawSketchHandlerCircle*>(handler);
 
     if (value == 0) {
@@ -4304,7 +4305,7 @@ template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::doChangeDrawSke
             else if (toolWidget->isParameterSet(WParameter::Third) &&
                 toolWidget->isParameterSet(WParameter::Fourth) &&
                 dHandler->constructionMethod == DrawSketchHandlerCircle::ConstructionMethod::ThreeRim) {
-                
+
                 handler->setState(SelectMode::SeekThird);
 
             }
@@ -4413,7 +4414,7 @@ public:
         ThreeRim
     };
 
-    DrawSketchHandlerEllipse(ConstructionMethod constrMethod = ConstructionMethod::Center) : 
+    DrawSketchHandlerEllipse(ConstructionMethod constrMethod = ConstructionMethod::Center) :
         constructionMethod(constrMethod) {}
     virtual ~DrawSketchHandlerEllipse() {}
 
@@ -4694,6 +4695,7 @@ template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::adaptDrawingTo
 }
 
 template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
+    Q_UNUSED(comboboxindex);
     auto dHandler = static_cast<DrawSketchHandlerEllipse*>(handler);
 
     if (value == 0) {
@@ -5441,6 +5443,7 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::adaptDrawingToPara
 }
 
 template <> void DrawSketchHandlerArcBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
+    Q_UNUSED(comboboxindex);
     auto dHandler = static_cast<DrawSketchHandlerArc*>(handler);
 
     if (value == 0) {
@@ -7559,6 +7562,13 @@ private:
         return QString::fromLatin1("Sketcher_Pointer_Create_Point");
     }
 
+    //reimplement because if not radius then it's 1 steps
+    virtual void onButtonPressed(Base::Vector2d onSketchPos) override {
+        this->updateDataAndDrawToPosition(onSketchPos);
+
+        setState(SelectMode::End);
+    }
+
 public:
     Base::Vector2d editPoint;
 };
@@ -7747,11 +7757,11 @@ public:
         Chamfer
     };
 
-    DrawSketchHandlerFillet(ConstructionMethod constrMethod = ConstructionMethod::Fillet) : 
-        constructionMethod(constrMethod), 
-        firstCurve(0), 
-        radius(-1), 
-        nofAngles(1), 
+    DrawSketchHandlerFillet(ConstructionMethod constrMethod = ConstructionMethod::Fillet) :
+        constructionMethod(constrMethod),
+        radius(-1),
+        firstCurve(0),
+        nofAngles(1),
         preservePoint(false) {}
     virtual ~DrawSketchHandlerFillet() {}
 
@@ -7910,7 +7920,7 @@ private:
 
                     // create fillet between lines
                     try {
-                        
+
 
                         Base::Console().Error("nofAngles: %d\n", nofAngles);
                         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
@@ -7971,8 +7981,8 @@ private:
 
 public:
     ConstructionMethod constructionMethod;
-    int firstCurveCreated, firstCurve, nofAngles;
     double radius;
+    int firstCurveCreated, firstCurve, nofAngles;
     bool preservePoint;
     Base::Vector2d firstPos;
 };
@@ -8025,6 +8035,7 @@ template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::adaptDrawingToP
 }
 
 template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
+    Q_UNUSED(comboboxindex);
     auto dHandler = static_cast<DrawSketchHandlerFillet*>(handler);
 
     if (value == 0) {
@@ -8063,6 +8074,7 @@ template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::doOverrideSketc
 }
 
 template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::updateVisualValues(Base::Vector2d onSketchPos) {
+    Q_UNUSED(onSketchPos)
     //Do nothing
 }
 
@@ -8806,7 +8818,7 @@ private:
                 else
                     reverseArc = false;
 
-                if (reverseArc) 
+                if (reverseArc)
                     std::swap(startAngle, endAngle);
 
                 drawEdit(createArcGeometries());
@@ -9396,7 +9408,7 @@ void CmdSketcherCompModifyEdge::activated(int iMsg)
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerExtend()); break;
     case 2:
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerSplitting()); break;
-    case 3: 
+    case 3:
     {
         //The following code let us catch if user selected an edge before launching the tool.
         int geoId = Sketcher::GeoEnum::GeoUndef;
@@ -9885,7 +9897,7 @@ public:
         Snap5Degree
     };
 
-    DrawSketchHandlerSlot() : 
+    DrawSketchHandlerSlot() :
         radius(1)
         , angleIsSet(false), lengthIsSet(false)
         ,isHorizontal(false), isVertical(false) {}
@@ -10382,7 +10394,7 @@ private:
 
             //add line to show the snap at 5 degree.
             Part::GeomLineSegment* line = new Part::GeomLineSegment();
-            line->setPoints(Base::Vector3d(centerPoint.x , centerPoint.y, 0.), 
+            line->setPoints(Base::Vector3d(centerPoint.x , centerPoint.y, 0.),
                 Base::Vector3d(centerPoint.x + cos(startAngle) * 0.8 * radius, centerPoint.y + sin(startAngle) * 0.8 * radius, 0.));
             geometriesToAdd.push_back(line);
 
@@ -11113,6 +11125,6 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherExtend());
     rcCmdMgr.addCommand(new CmdSketcherSplit());
     rcCmdMgr.addCommand(new CmdSketcherInsert());
-    rcCmdMgr.addCommand(new CmdSketcherExternal()); 
+    rcCmdMgr.addCommand(new CmdSketcherExternal());
     rcCmdMgr.addCommand(new CmdSketcherCarbonCopy());
 }
