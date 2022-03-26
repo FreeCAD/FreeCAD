@@ -47,10 +47,16 @@ import FreeCAD
 import PathScripts.PathUtils as PathUtils
 import PathScripts.PathLog as PathLog
 import re
-import PathScripts.PathCustom as PathCustom
-import PathScripts.PathCustomGui as PathCustomGui
-import PathScripts.PathOpGui as PathOpGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
+
+if FreeCAD.GuiUp:
+    import PathScripts.PathCustomGui as PathCustomGui
+
+    PathCustom = PathCustomGui.PathCustom
+else:
+    import PathScripts.PathCustom as PathCustom
+
+translate = FreeCAD.Qt.translate
 
 
 if False:
@@ -58,6 +64,20 @@ if False:
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
+
+class PathNoActiveDocumentException(Exception):
+    """PathNoActiveDocumentException is raised when no active document is found."""
+
+    def __init__(self):
+        super().__init__("No active document")
+
+
+class PathNoJobException(Exception):
+    """PathNoJobException is raised when no target Job object is available."""
+
+    def __init__(self):
+        super().__init__("No job object")
 
 
 # to distinguish python built-in open function from the one declared below
@@ -82,54 +102,20 @@ def matchToolController(op, toolnumber):
     return toolcontrollers[0]
 
 
-def insert(filename, docname):
-    """called when freecad imports a file"""
-    PathLog.track(filename)
-    gfile = pythonopen(filename)
-    gcode = gfile.read()
-    gfile.close()
+def _isImportEnvironmentReady():
+    """_isImportEnvironmentReady(docname)...
+    Helper function to verify an active document exists, and that a Job object is available
+    as a receiver for the Custom operation(s) that will be created as a result of the import process."""
 
-    # Regular expression to match tool changes in the format 'M6 Tn'
-    p = re.compile("[mM]+?\s?0?6\s?T\d*\s")
+    # Verify active document exists
+    if FreeCAD.ActiveDocument is None:
+        raise PathNoActiveDocumentException()
 
-    # split the gcode on tool changes
-    paths = re.split("([mM]+?\s?0?6\s?T\d*\s)", gcode)
+    # Verify a Job object is available, and add one if not
+    if not PathUtils.GetJobs():
+        raise PathNoJobException()
 
-    # iterate the gcode sections and add customs for each
-    toolnumber = 0
-
-    for path in paths:
-
-        # if the section is a tool change, extract the tool number
-        m = p.match(path)
-        if m:
-            toolnumber = int(m.group().split("T")[-1])
-            continue
-
-        # Parse the gcode and throw away any empty lists
-        gcode = parse(path)
-        if len(gcode) == 0:
-            continue
-
-        # Create a custom and viewobject
-        obj = PathCustom.Create("Custom")
-        res = PathOpGui.CommandResources(
-            "Custom",
-            PathCustom.Create,
-            PathCustomGui.TaskPanelOpPage,
-            "Path_Custom",
-            QT_TRANSLATE_NOOP("Path_Custom", "Custom"),
-            "",
-            "",
-        )
-        obj.ViewObject.Proxy = PathOpGui.ViewProvider(obj.ViewObject, res)
-        obj.ViewObject.Proxy.setDeleteObjectsOnReject(False)
-
-        # Set the gcode and try to match a tool controller
-        obj.Gcode = gcode
-        obj.ToolController = matchToolController(obj, toolnumber)
-
-    FreeCAD.ActiveDocument.recompute()
+    return True
 
 
 def parse(inputstring):
@@ -193,6 +179,74 @@ def parse(inputstring):
 
     FreeCAD.Console.PrintMessage("done preprocessing.\n")
     return output
+
+
+def _identifygcodeByToolNumberList(filename):
+    """called when freecad imports a file"""
+    PathLog.track(filename)
+    gcodeByToolNumberList = []
+
+    gfile = pythonopen(filename)
+    gcode = gfile.read()
+    gfile.close()
+
+    # Regular expression to match tool changes in the format 'M6 Tn'
+    p = re.compile("[mM]+?\s?0?6\s?T\d*\s")
+
+    # split the gcode on tool changes
+    paths = re.split("([mM]+?\s?0?6\s?T\d*\s)", gcode)
+
+    # iterate the gcode sections and add customs for each
+    toolnumber = 0
+
+    for path in paths:
+
+        # if the section is a tool change, extract the tool number
+        m = p.match(path)
+        if m:
+            toolnumber = int(m.group().split("T")[-1])
+            continue
+
+        # Parse the gcode and throw away any empty lists
+        gcode = parse(path)
+        if len(gcode) > 0:
+            gcodeByToolNumberList.append((gcode, toolnumber))
+
+    return gcodeByToolNumberList
+
+
+def insert(filename, docname=None):
+    """called when freecad imports a file"""
+    PathLog.track(filename)
+
+    try:
+        if not _isImportEnvironmentReady():
+            return
+    except PathNoActiveDocumentException:
+        PathLog.error(translate("Path_Gcode_pre", "No active document"))
+        return
+    except PathNoJobException:
+        PathLog.error(translate("Path_Gcode_pre", "No job object"))
+        return
+
+    # Create a Custom operation for each gcode-toolNumber pair
+    for gcode, toolNumber in _identifygcodeByToolNumberList(filename):
+        obj = PathCustom.Create("Custom")
+
+        # Set the gcode and try to match a tool controller
+        obj.Gcode = gcode
+        obj.ToolController = matchToolController(obj, toolNumber)
+        if docname:
+            obj.Label = obj.Label + "_" + docname
+
+        if FreeCAD.GuiUp:
+            # Add a view provider to a Custom operation object
+            obj.ViewObject.Proxy = PathCustomGui.PathOpGui.ViewProvider(
+                obj.ViewObject, PathCustomGui.Command.res
+            )
+            obj.ViewObject.Proxy.setDeleteObjectsOnReject(False)
+
+    FreeCAD.ActiveDocument.recompute()
 
 
 print(__name__ + " gcode preprocessor loaded.")
