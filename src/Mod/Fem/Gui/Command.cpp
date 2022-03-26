@@ -1255,7 +1255,19 @@ void CmdFemPostClipFilter::activated(int)
 
 bool CmdFemPostClipFilter::isActive(void)
 {
-    return hasActiveDocument();
+    // only activate if a result is either a post pipeline, scalar, cut or warp filter or itself
+    if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostWarpVectorFilter>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1)
+        return true;
+    else
+        return false;
 }
 
 
@@ -1281,7 +1293,19 @@ void CmdFemPostCutFilter::activated(int)
 
 bool CmdFemPostCutFilter::isActive(void)
 {
-    return hasActiveDocument();
+    // only activate if a result is either a post pipeline, scalar, clip or warp filter or itself
+    if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostWarpVectorFilter>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1)
+        return true;
+    else
+        return false;
 }
 
 
@@ -1418,7 +1442,17 @@ void CmdFemPostScalarClipFilter::activated(int)
 
 bool CmdFemPostScalarClipFilter::isActive(void)
 {
-    return hasActiveDocument();
+    // only activate if a result is either a post pipeline, clip, cut or warp filter
+    if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostWarpVectorFilter>().size() == 1)
+        return true;
+    else
+        return false;
 }
 
 
@@ -1444,7 +1478,17 @@ void CmdFemPostWarpVectorFilter::activated(int)
 
 bool CmdFemPostWarpVectorFilter::isActive(void)
 {
-    return hasActiveDocument();
+    // only activate if a result is either a post pipeline, scalar, clip or cut filter
+    if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostScalarClipFilter>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostCutFilter>().size() == 1)
+        return true;
+    else if (getSelection().getObjectsOfType<Fem::FemPostClipFilter>().size() == 1)
+        return true;
+    else
+        return false;
 }
 
 
