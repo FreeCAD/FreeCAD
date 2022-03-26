@@ -1228,15 +1228,11 @@ void Part::BRepBuilderAPI_RefineModel::Build()
         }
         myShape = mkSolid.Solid();
 
-#if OCC_VERSION_HEX <= 0x060700
-        // With occ 6.7 and older it can happen that a solid is flipped.
-        // In this case it must be reversed
+        // It can happen that a solid is flipped. Reverse if it happens.
         GProp_GProps props;
         BRepGProp::VolumeProperties(myShape, props);
-        if (props.Mass() < 0) {
+        if (props.Mass() < 0)
             myShape.Reverse();
-        }
-#endif
     }
     else if (myShape.ShapeType() == TopAbs_SHELL) {
         const TopoDS_Shell& shell = TopoDS::Shell(myShape);
@@ -1272,7 +1268,16 @@ void Part::BRepBuilderAPI_RefineModel::Build()
                     }
                 }
             }
-            builder.Add(comp, reshape.Apply(solid));
+
+            TopoDS_Shape newSolid = reshape.Apply(solid);
+
+            // It can happen that a solid is flipped. Reverse if it happens.
+            GProp_GProps props;
+            BRepGProp::VolumeProperties(newSolid, props);
+            if (props.Mass() < 0)
+                newSolid.Reverse();
+
+            builder.Add(comp, newSolid);
         }
         // free shells
         for (xp.Init(myShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next()) {
