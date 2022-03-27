@@ -275,7 +275,7 @@ void FemPostDataAlongLineFilter::GetAxisData() {
     vtkDataArray* pdata = dset->GetPointData()->GetArray(PlotData.getValue());
     vtkDataArray *tcoords = dset->GetPointData()->GetTCoords("Texture Coordinates");
 
-    int component = 0;
+    vtkIdType component = 0;
 
     const Base::Vector3d& vec1 = Point1.getValue();
     const Base::Vector3d& vec2 = Point2.getValue();
@@ -290,7 +290,7 @@ void FemPostDataAlongLineFilter::GetAxisData() {
                 value = pdata->GetComponent(i, component);
             }
             else {
-                for (int j = 0; j < pdata->GetNumberOfComponents(); ++j)
+                for (vtkIdType j = 0; j < pdata->GetNumberOfComponents(); ++j)
                     value += std::pow(pdata->GetComponent(i, j), 2);
 
                 value = std::sqrt(value);
