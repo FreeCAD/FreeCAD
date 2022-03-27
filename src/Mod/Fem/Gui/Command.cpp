@@ -1165,20 +1165,27 @@ void setupFilter(Gui::Command* cmd, std::string Name) {
 
     // at first we must determine the pipeline of the selection object (which can be a pipeline itself)
     bool selectionIsPipeline = false;
-    Fem::FemPostPipeline* pipeline;
+    Fem::FemPostPipeline* pipeline = nullptr;
     if (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostPipeline")) {
         pipeline = static_cast<Fem::FemPostPipeline*>(selObject);
         selectionIsPipeline = true;
     }
     else {
         auto parents = selObject->getInList();
-        if (parents.size()) {
+        if (!parents.empty()) {
             for (auto parentObject : parents) {
                 if (parentObject->getTypeId() == Base::Type::fromName("Fem::FemPostPipeline")) {
                     pipeline = static_cast<Fem::FemPostPipeline*>(parentObject);
                 }
             }
         }
+    }
+
+    if (!pipeline) {
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("setupFilter", "Error: no post processing object selected."),
+            qApp->translate("setupFilter", "The filter could not be set up."));
+        return;
     }
 
     // create the object and add it to the pipeline
