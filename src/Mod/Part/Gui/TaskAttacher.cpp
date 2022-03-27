@@ -972,7 +972,8 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
                     QString::fromLatin1(editSubName.c_str()),
                     QString::fromLatin1(postfix.c_str()));
             Gui::Command::runCommand(Gui::Command::Gui,code.toLatin1().constData());
-        } else if(postfix.size()) {
+        }
+        else if (!postfix.empty()) {
             QString code = QString::fromLatin1(
                 "_tv_%1.restore()\n"
                 "del(_tv_%1)"

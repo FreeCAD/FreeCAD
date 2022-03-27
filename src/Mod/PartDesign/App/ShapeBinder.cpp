@@ -479,17 +479,17 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
     if(!Relative.getValue()) 
         parent = nullptr;
     else {
-        if(parent && parent->getSubObject(parentSub.c_str())==this) {
+        if (parent && parent->getSubObject(parentSub.c_str())==this) {
             auto parents = parent->getParents();
-            if(parents.size()) {
+            if (!parents.empty()) {
                 parent = parents.begin()->first;
                 parentSub = parents.begin()->second + parentSub;
             }
         } else
             parent = nullptr;
-        if(!parent && parentSub.empty()) {
+        if (!parent && parentSub.empty()) {
             auto parents = getParents();
-            if(parents.size()) {
+            if(!parents.empty()) {
                 parent = parents.begin()->first;
                 parentSub = parents.begin()->second;
             }
@@ -561,7 +561,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 auto tmpDoc = App::GetApplication().newDocument(
                                 "_tmp_binder", nullptr, false, true);
                 auto objs = tmpDoc->copyObject({obj},true,true);
-                if(objs.size()) {
+                if (!objs.empty()) {
                     for(auto it=objs.rbegin(); it!=objs.rend(); ++it)
                         _CopiedObjs.emplace_back(*it);
                     copied = objs.back();
@@ -648,7 +648,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
 
     if(!init) {
 
-        if(errMsg.size()) {
+        if (!errMsg.empty()) {
             if(!(options & UpdateInit))
                 FC_THROWM(Base::RuntimeError, errMsg);
             if(!Shape.getValue().IsNull())
@@ -706,7 +706,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 else 
                     solids.push_back(s.getShape());
             }
-            if(solids.size()) {
+            if (!solids.empty()) {
                 result = solid.fuse(solids);
                 fused = true;
             } else if (!solid.isNull()) {
@@ -819,7 +819,7 @@ void SubShapeBinder::onChanged(const App::Property *prop) {
         if(prop == &Support) {
             clearCopiedObjects();
             setupCopyOnChange();
-            if(Support.getSubListValues().size()) {
+            if (!Support.getSubListValues().empty()) {
                 update(); 
                 if(BindMode.getValue() == 2)
                     Support.setValue(nullptr);

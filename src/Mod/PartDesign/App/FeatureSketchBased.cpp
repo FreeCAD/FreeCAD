@@ -167,7 +167,7 @@ Part::Feature* ProfileBased::getVerifiedObject(bool silent) const {
 Part::TopoShape ProfileBased::getProfileShape() const
 {
     auto shape = getTopoShape(Profile.getValue());
-    if (!shape.isNull() && Profile.getSubValues().size()) {
+    if (!shape.isNull() && !Profile.getSubValues().empty()) {
         std::vector<Part::TopoShape> shapes;
         for (auto& sub : Profile.getSubValues(true))
             shapes.emplace_back(shape.getSubShape(sub.c_str()));

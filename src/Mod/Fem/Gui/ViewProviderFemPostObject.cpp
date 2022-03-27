@@ -430,7 +430,7 @@ void ViewProviderFemPostObject::WritePointData(vtkPoints* points, vtkDataArray* 
 
     // we must inherit the Scale of parent meshes (for example for clip filters)
     auto parents = pcObject->getInList();
-    if (parents.size()) {
+    if (!parents.empty()) {
         for (auto itParents = parents.begin(); itParents != parents.end(); ++itParents) {
             if ((*itParents)->getTypeId() == Base::Type::fromName("Fem::FemPostPipeline")) {
                 auto vpObject = dynamic_cast<FemGui::ViewProviderFemPostObject*>(

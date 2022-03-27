@@ -513,7 +513,7 @@ void SectionCut::startCutting(bool isInitial)
 
         // if the object is part of an App::Part container, the link needs to get the container placement
         auto parents = (*itCuts)->getInList();
-        if (parents.size()) {
+        if (!parents.empty()) {
             for (auto itParents = parents.begin(); itParents != parents.end(); ++itParents) {
                 if ((*itParents)->getTypeId() == Base::Type::fromName("App::Part")) {
                     App::Part* pcPartParent = static_cast<App::Part*>((*itParents));

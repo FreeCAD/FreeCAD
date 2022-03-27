@@ -1817,7 +1817,7 @@ void CmdFemPostPipelineFromResult::activated(int)
         Fem::FemAnalysis* pcAnalysis;
         std::string FeatName = getUniqueObjectName("ResultPipeline");
         auto parents = results[0]->getInList();
-        if (parents.size()) {
+        if (!parents.empty()) {
             for (auto parentObject : parents) {
                 if (parentObject->getTypeId() == Base::Type::fromName("Fem::FemAnalysis")) {
                     pcAnalysis = static_cast<Fem::FemAnalysis*>(parentObject);
