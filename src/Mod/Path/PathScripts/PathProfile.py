@@ -434,6 +434,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                         if numpy.isclose(
                             abs(shape.normalAt(0, 0).z), 1
                         ):  # horizontal face
+                            PathLog.debug(abs(shape.normalAt(0, 0).z))
                             for wire in shape.Wires:
                                 if wire.hashCode() == shape.OuterWire.hashCode():
                                     continue
@@ -450,7 +451,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 for baseShape, wire in holes:
                     cont = False
                     f = Part.makeFace(wire, "Part::FaceMakerSimple")
-                    drillable = drillableLib.isDrillable(baseShape, f)
+                    drillable = drillableLib.isDrillable(baseShape, f, vector=None)
+                    PathLog.debug(drillable)
 
                     if obj.processCircles:
                         if drillable:
@@ -526,6 +528,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 FreeCADGui.ActiveDocument.getObject(tmpGrpNm).Visibility = False
             self.tmpGrp.purgeTouched()
 
+        # for shape in shapes:
+        #     Part.show(shape[0])
+        #     print(shape)
         return shapes
 
     # Method to handle each model as a whole, when no faces are selected

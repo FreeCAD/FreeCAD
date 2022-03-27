@@ -122,7 +122,6 @@ def isDrillableFace(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1
     """
     checks if a flat face or edge is drillable
     """
-
     matchToolDiameter = tooldiameter is not None
     matchVector = vector is not None
     PathLog.debug(
@@ -131,7 +130,6 @@ def isDrillableFace(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1
         )
     )
 
-    PathLog.track()
     if not type(candidate.Surface) == Part.Plane:
         PathLog.debug("Drilling on non-planar faces not supported")
         return False
@@ -139,12 +137,14 @@ def isDrillableFace(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1
     if (
         len(candidate.Edges) == 1 and type(candidate.Edges[0].Curve) == Part.Circle
     ):  # Regular circular face
+        PathLog.debug("Face is circular - 1 edge")
         edge = candidate.Edges[0]
     elif (
         len(candidate.Edges) == 2
         and type(candidate.Edges[0].Curve) == Part.Circle
         and type(candidate.Edges[1].Curve) == Part.Circle
     ):  # process a donut
+        PathLog.debug("Face is a donut - 2 edges")
         e1 = candidate.Edges[0]
         e2 = candidate.Edges[1]
         edge = e1 if e1.Curve.Radius < e2.Curve.Radius else e2
@@ -157,11 +157,13 @@ def isDrillableFace(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1
         return False
     if vector is not None:  # Check for blind hole alignment
         if not compareVecs(candidate.normalAt(0, 0), vector, exact=True):
+            PathLog.debug("Vector not aligned")
             return False
     if matchToolDiameter and edge.Curve.Radius < tooldiameter / 2:
-        PathLog.track()
+        PathLog.debug("Failed diameter check")
         return False
     else:
+        PathLog.debug("Face is drillable")
         return True
 
 
