@@ -152,3 +152,175 @@ class TestPathPostUtils(unittest.TestCase):
         self.assertTrue(
             len([c for c in results.Commands if c.Name in ["G2", "G3"]]) == 0
         )
+
+
+class TestPathPostImport(unittest.TestCase):
+    def test001(self):
+        """test001()... Verify 'No active document' exception thrown if no document open."""
+        from PathScripts.post import gcode_pre as gcode_pre
+
+        self.assertRaises(
+            gcode_pre.PathNoActiveDocumentException,
+            gcode_pre._isImportEnvironmentReady,
+        )
+
+    def test002(self):
+        """test002()... Verify 'No job object' exception thrown if Job object available."""
+        from PathScripts.post import gcode_pre as gcode_pre
+
+        doc = FreeCAD.newDocument("TestPathPost")
+
+        self.assertRaises(
+            gcode_pre.PathNoJobException,
+            gcode_pre._isImportEnvironmentReady,
+        )
+        FreeCAD.closeDocument(doc.Name)
+
+    def test003(self, close=True):
+        """test003()... Verify 'No job object' exception thrown if Job object available."""
+        from PathScripts.post import gcode_pre as gcode_pre
+
+        doc = FreeCAD.newDocument("TestPathPost")
+
+        # Add temporary receiving Job object
+        box = FreeCAD.ActiveDocument.addObject("Part::Box", "Box")
+        box.Label = "Temporary Box"
+        # Add Job object with view provider support when possible
+        if FreeCAD.GuiUp:
+            import PathScripts.PathJobGui as PathJobGui
+
+            box.ViewObject.Visibility = False
+            job = PathJobGui.Create([box], openTaskPanel=False)
+        else:
+            import PathScripts.PathJob as PathJob
+
+            job = PathJob.Create("Job", [box])
+
+        importFile = FreeCAD.getHomePath() + "Mod/Path/PathTests/test_centroid_00.ngc"
+        gcode_pre.insert(importFile, "test_centroid_00")
+
+        # self.assertTrue(doc.Name == "test_centroid_00")
+
+        opList = doc.Job.Operations.Group
+        self.assertTrue(
+            len(opList) == 2,
+            "Expected 2 Custom operations to be created from source g-code file, test_centroid_00.ngc",
+        )
+        self.assertTrue(
+            opList[0].Name == "Custom", "Expected first operation to be Custom"
+        )
+        self.assertTrue(
+            opList[1].Name == "Custom001", "Expected second operation to be Custom001"
+        )
+
+        if close:
+            FreeCAD.closeDocument(doc.Name)
+
+    def test004(self):
+        """test004()... Verify g-code imported with g-code pre-processor"""
+
+        self.test003(close=False)
+
+        doc = FreeCAD.ActiveDocument
+        op1 = doc.Job.Operations.Group[0]
+        op2 = doc.Job.Operations.Group[1]
+
+        # Verify g-code sizes
+        self.assertTrue(
+            op1.Path.Size == 4, "Expected Custom g-code command count to be 4."
+        )
+        self.assertTrue(
+            op2.Path.Size == 60, "Expected Custom g-code command count to be 60."
+        )
+
+        # Verify g-code commands
+        op1_code = (
+            "(Custom_test_centroid_00)\n(Begin Custom)\nG90 G49.000000\n(End Custom)\n"
+        )
+        op2_code = "(Custom001_test_centroid_00)\n(Begin Custom)\nG0 Z15.000000\nG90\nG0 Z15.000000\nG0 X10.000000 Y10.000000\nG0 Z10.000000\nG1 X10.000000 Y10.000000 Z9.000000\nG1 X10.000000 Y0.000000 Z9.000000\nG1 X0.000000 Y0.000000 Z9.000000\nG1 X0.000000 Y10.000000 Z9.000000\nG1 X10.000000 Y10.000000 Z9.000000\nG1 X10.000000 Y10.000000 Z8.000000\nG1 X10.000000 Y0.000000 Z8.000000\nG1 X0.000000 Y0.000000 Z8.000000\nG1 X0.000000 Y10.000000 Z8.000000\nG1 X10.000000 Y10.000000 Z8.000000\nG1 X10.000000 Y10.000000 Z7.000000\nG1 X10.000000 Y0.000000 Z7.000000\nG1 X0.000000 Y0.000000 Z7.000000\nG1 X0.000000 Y10.000000 Z7.000000\nG1 X10.000000 Y10.000000 Z7.000000\nG1 X10.000000 Y10.000000 Z6.000000\nG1 X10.000000 Y0.000000 Z6.000000\nG1 X0.000000 Y0.000000 Z6.000000\nG1 X0.000000 Y10.000000 Z6.000000\nG1 X10.000000 Y10.000000 Z6.000000\nG1 X10.000000 Y10.000000 Z5.000000\nG1 X10.000000 Y0.000000 Z5.000000\nG1 X0.000000 Y0.000000 Z5.000000\nG1 X0.000000 Y10.000000 Z5.000000\nG1 X10.000000 Y10.000000 Z5.000000\nG1 X10.000000 Y10.000000 Z4.000000\nG1 X10.000000 Y0.000000 Z4.000000\nG1 X0.000000 Y0.000000 Z4.000000\nG1 X0.000000 Y10.000000 Z4.000000\nG1 X10.000000 Y10.000000 Z4.000000\nG1 X10.000000 Y10.000000 Z3.000000\nG1 X10.000000 Y0.000000 Z3.000000\nG1 X0.000000 Y0.000000 Z3.000000\nG1 X0.000000 Y10.000000 Z3.000000\nG1 X10.000000 Y10.000000 Z3.000000\nG1 X10.000000 Y10.000000 Z2.000000\nG1 X10.000000 Y0.000000 Z2.000000\nG1 X0.000000 Y0.000000 Z2.000000\nG1 X0.000000 Y10.000000 Z2.000000\nG1 X10.000000 Y10.000000 Z2.000000\nG1 X10.000000 Y10.000000 Z1.000000\nG1 X10.000000 Y0.000000 Z1.000000\nG1 X0.000000 Y0.000000 Z1.000000\nG1 X0.000000 Y10.000000 Z1.000000\nG1 X10.000000 Y10.000000 Z1.000000\nG1 X10.000000 Y10.000000 Z0.000000\nG1 X10.000000 Y0.000000 Z0.000000\nG1 X0.000000 Y0.000000 Z0.000000\nG1 X0.000000 Y10.000000 Z0.000000\nG1 X10.000000 Y10.000000 Z0.000000\nG0 Z15.000000\nG90 G49.000000\n(End Custom)\n"
+        code1 = op1.Path.toGCode()
+        self.assertTrue(
+            code1 == op1_code,
+            f"Gcode is not what is expected:\n~~~\n{code1}\n~~~\n\n\n~~~\n{op1_code}\n~~~",
+        )
+        code2 = op2.Path.toGCode()
+        self.assertTrue(
+            code2 == op2_code,
+            f"Gcode is not what is expected:\n~~~\n{code2}\n~~~\n\n\n~~~\n{op2_code}\n~~~",
+        )
+        FreeCAD.closeDocument(doc.Name)
+
+    def test005(self):
+        """test005()... verify `_identifygcodeByToolNumberList()` produces correct output"""
+
+        from PathScripts.post import gcode_pre as gcode_pre
+
+        importFile = FreeCAD.getHomePath() + "Mod/Path/PathTests/test_centroid_00.ngc"
+        gcodeByToolNumberList = gcode_pre._identifygcodeByToolNumberList(importFile)
+
+        self.assertTrue(gcodeByToolNumberList[0][0] == ["G90 G80 G40 G49"])
+        self.assertTrue(gcodeByToolNumberList[0][1] == 0)
+
+        self.assertTrue(
+            gcodeByToolNumberList[1][0]
+            == [
+                "G0 Z15.00",
+                "G90",
+                "G0 Z15.00",
+                "G0 X10.00 Y10.00",
+                "G0 Z10.00",
+                "G1 X10.00 Y10.00 Z9.00",
+                "G1 X10.00 Y0.00 Z9.00",
+                "G1 X0.00 Y0.00 Z9.00",
+                "G1 X0.00 Y10.00 Z9.00",
+                "G1 X10.00 Y10.00 Z9.00",
+                "G1 X10.00 Y10.00 Z8.00",
+                "G1 X10.00 Y0.00 Z8.00",
+                "G1 X0.00 Y0.00 Z8.00",
+                "G1 X0.00 Y10.00 Z8.00",
+                "G1 X10.00 Y10.00 Z8.00",
+                "G1 X10.00 Y10.00 Z7.00",
+                "G1 X10.00 Y0.00 Z7.00",
+                "G1 X0.00 Y0.00 Z7.00",
+                "G1 X0.00 Y10.00 Z7.00",
+                "G1 X10.00 Y10.00 Z7.00",
+                "G1 X10.00 Y10.00 Z6.00",
+                "G1 X10.00 Y0.00 Z6.00",
+                "G1 X0.00 Y0.00 Z6.00",
+                "G1 X0.00 Y10.00 Z6.00",
+                "G1 X10.00 Y10.00 Z6.00",
+                "G1 X10.00 Y10.00 Z5.00",
+                "G1 X10.00 Y0.00 Z5.00",
+                "G1 X0.00 Y0.00 Z5.00",
+                "G1 X0.00 Y10.00 Z5.00",
+                "G1 X10.00 Y10.00 Z5.00",
+                "G1 X10.00 Y10.00 Z4.00",
+                "G1 X10.00 Y0.00 Z4.00",
+                "G1 X0.00 Y0.00 Z4.00",
+                "G1 X0.00 Y10.00 Z4.00",
+                "G1 X10.00 Y10.00 Z4.00",
+                "G1 X10.00 Y10.00 Z3.00",
+                "G1 X10.00 Y0.00 Z3.00",
+                "G1 X0.00 Y0.00 Z3.00",
+                "G1 X0.00 Y10.00 Z3.00",
+                "G1 X10.00 Y10.00 Z3.00",
+                "G1 X10.00 Y10.00 Z2.00",
+                "G1 X10.00 Y0.00 Z2.00",
+                "G1 X0.00 Y0.00 Z2.00",
+                "G1 X0.00 Y10.00 Z2.00",
+                "G1 X10.00 Y10.00 Z2.00",
+                "G1 X10.00 Y10.00 Z1.00",
+                "G1 X10.00 Y0.00 Z1.00",
+                "G1 X0.00 Y0.00 Z1.00",
+                "G1 X0.00 Y10.00 Z1.00",
+                "G1 X10.00 Y10.00 Z1.00",
+                "G1 X10.00 Y10.00 Z0.00",
+                "G1 X10.00 Y0.00 Z0.00",
+                "G1 X0.00 Y0.00 Z0.00",
+                "G1 X0.00 Y10.00 Z0.00",
+                "G1 X10.00 Y10.00 Z0.00",
+                "G0 Z15.00",
+                "G90 G80 G40 G49",
+            ]
+        )
+        self.assertTrue(gcodeByToolNumberList[1][1] == 2)
