@@ -282,20 +282,24 @@ void FemPostDataAlongLineFilter::GetAxisData() {
     const Base::Vector3d diff = vec1 - vec2;
     double Len = diff.Length();
 
-    for(int i=0; i<dset->GetNumberOfPoints(); ++i) {
+    for (vtkIdType i = 0; i < dset->GetNumberOfPoints(); ++i) {
 
         double value = 0;
-        if(pdata->GetNumberOfComponents() == 1)
-            value = pdata->GetComponent(i, component);
-        else {
-            for(int j=0; j<pdata->GetNumberOfComponents(); ++j)
-                value += std::pow(pdata->GetComponent(i, j),2);
+        if (pdata) {
+            if (pdata->GetNumberOfComponents() == 1) {
+                value = pdata->GetComponent(i, component);
+            }
+            else {
+                for (int j = 0; j < pdata->GetNumberOfComponents(); ++j)
+                    value += std::pow(pdata->GetComponent(i, j), 2);
 
-            value = std::sqrt(value);
+                value = std::sqrt(value);
+            }
         }
+
         values.push_back(value);
         double tcoord = tcoords->GetComponent(i, component);
-        coords.push_back(tcoord*Len);
+        coords.push_back(tcoord * Len);
     }
     YAxisData.setValues(values);
     XAxisData.setValues(coords);
