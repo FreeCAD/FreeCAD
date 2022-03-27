@@ -7,15 +7,15 @@
     <x>0</x>
     <y>0</y>
     <width>466</width>
-    <height>173</height>
+    <height>218</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Z88</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
-    <widget class="QGroupBox" name="gb_z88_param">
+    <widget class="QGroupBox" name="gb_z88_param_binary">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -34,39 +34,123 @@
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <layout class="QGridLayout" name="gl_z88">
-        <item row="4" column="2">
-         <widget class="Gui::PrefSpinBox" name="sb_Z88_MaxGS">
+        <item row="2" column="2">
+         <widget class="Gui::PrefFileChooser" name="fc_z88_binary_path" native="true">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="sizeIncrement">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="toolTip">
-           <string>Maximal places in stiffnes matrix.
-You might need to increase this when using the
-Cholesky solver and you get the error message
-that &quot;MAXGS&quot; needs to be increased.</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="minimum">
-           <number>6000000</number>
-          </property>
-          <property name="maximum">
-           <number>2147483647</number>
-          </property>
-          <property name="singleStep">
-           <number>10000000</number>
-          </property>
-          <property name="value">
-           <number>100000000</number>
+           <string>Leave blank to use default Z88 z88r binary file</string>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>MaxGS</cstring>
+           <cstring>z88BinaryPath</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Fem/Z88</cstring>
           </property>
          </widget>
         </item>
-        <item row="5" column="2">
+        <item row="0" column="2">
+         <widget class="Gui::PrefCheckBox" name="cb_z88_binary_std">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Search in known binary directories</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>UseStandardZ88Location</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Fem/Z88</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="l_z88_binary_path">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>z88r binary path</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="gb_z88_param_solver">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="title">
+      <string>Solver settings</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QGridLayout" name="gl_z88_2">
+        <item row="3" column="2">
          <widget class="Gui::PrefSpinBox" name="sb_Z88_MaxKOI">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
+          </property>
           <property name="toolTip">
            <string>Maximal places in coincidence vector.
 (number of knots per element times
@@ -99,112 +183,70 @@ that &quot;MAXKOI&quot; needs to be increased.</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="2">
-         <widget class="Gui::PrefFileChooser" name="fc_z88_binary_path" native="true">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="sizeIncrement">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="baseSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Leave blank to use default Z88 z88r binary file</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>z88BinaryPath</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Fem/Z88</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="Gui::PrefCheckBox" name="cb_z88_binary_std">
-          <property name="text">
-           <string>Search in known binary directories</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>UseStandardZ88Location</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Fem/Z88</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="l_ccx_max_iterations_2">
-          <property name="text">
-           <string>Max places in coincidence vector</string>
-          </property>
-         </widget>
-        </item>
         <item row="2" column="0">
-         <widget class="QLabel" name="l_z88_binary_path">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>z88r binary path</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="l_ccx_initial_time_step">
-          <property name="text">
-           <string>Solver method</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="l_ccx_max_iterations">
+         <widget class="QLabel" name="l_max_stiffness">
           <property name="text">
            <string>Max places in stiffness matrix</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="2">
+        <item row="2" column="2">
+         <widget class="Gui::PrefSpinBox" name="sb_Z88_MaxGS">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Maximal places in stiffnes matrix.
+You might need to increase this when using the
+Cholesky solver and you get the error message
+that &quot;MAXGS&quot; needs to be increased.</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="minimum">
+           <number>6000000</number>
+          </property>
+          <property name="maximum">
+           <number>2147483647</number>
+          </property>
+          <property name="singleStep">
+           <number>10000000</number>
+          </property>
+          <property name="value">
+           <number>100000000</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>MaxGS</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Fem/Z88</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="l_solver_method">
+          <property name="text">
+           <string>Solver method</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
          <widget class="Gui::PrefComboBox" name="cmb_solver">
           <property name="enabled">
            <bool>true</bool>
           </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
+          </property>
           <property name="toolTip">
-           <string>solve to be used by Z88</string>
+           <string>Solver method to be used</string>
           </property>
           <property name="editable">
            <bool>false</bool>
@@ -230,6 +272,13 @@ that &quot;MAXKOI&quot; needs to be increased.</string>
             <string>Simple Cholesky solver (-choly)</string>
            </property>
           </item>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="l_max_coincidence">
+          <property name="text">
+           <string>Max places in coincidence vector</string>
+          </property>
          </widget>
         </item>
        </layout>
