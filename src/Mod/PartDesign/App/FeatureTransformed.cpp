@@ -226,7 +226,6 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     for (std::vector<App::DocumentObject*>::const_iterator o = originals.begin(); o != originals.end(); ++o)
     {
         // Extract the original shape and determine whether to cut or to fuse
-        TopoDS_Shape shape;
         Part::TopoShape fuseShape;
         Part::TopoShape cutShape;
 
@@ -257,13 +256,14 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         std::vector<gp_Trsf>::const_iterator transformIter = transformations.begin();
 
         // First transformation is skipped since it should not be part of the toolShape.
-        transformIter++;
+        ++transformIter;
 
         for (; transformIter != transformations.end(); ++transformIter) {
             // Make an explicit copy of the shape because the "true" parameter to BRepBuilderAPI_Transform
             // seems to be pretty broken
             BRepBuilderAPI_Copy copy(origShape);
 
+            TopoDS_Shape shape;
             shape = copy.Shape();
 
             BRepBuilderAPI_Transform mkTrf(shape, *transformIter, false); // No need to copy, now
@@ -271,8 +271,12 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 return new App::DocumentObjectExecReturn("Transformation failed", (*o));
             shape = mkTrf.Shape();
 
-            shapes.emplace_back(shape);
-            builder.Add(compShape, shape);
+            TopoShape trsfTopoShape(shape);
+
+            for (auto& solid : TopoShape(shape).getSubShapes(TopAbs_SOLID)) {
+                shapes.emplace_back(solid);
+                builder.Add(compShape, solid);
+            }
 
             if (overlapDetectionMode)
                 overlapping =  overlapping || (countSolids(TopoShape(origShape).fuse(shape))==1);
@@ -290,7 +294,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 #endif
 
         if (overlapping || overlapMode == "Overlap mode")
-            toolShape = TopoShape(shape).fuse(shapes, Precision::Confusion());
+            toolShape = TopoShape(shapes.back()).fuse(shapes, Precision::Confusion());
         else
             toolShape = compShape;
 
@@ -298,7 +302,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(new BRepAlgoAPI_Fuse(current, toolShape));
             if (!mkBool->IsDone()) {
                 std::stringstream error;
-                error << "Boolean operation failed";
+                error << "Boolean operation \"fuse\" failed";
                 return new App::DocumentObjectExecReturn(error.str());
             }
             current = mkBool->Shape();
@@ -306,7 +310,7 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(new BRepAlgoAPI_Cut(current, toolShape));
             if (!mkBool->IsDone()) {
                 std::stringstream error;
-                error << "Boolean operation failed";
+                error << "Boolean operation \"cut\" failed";
                 return new App::DocumentObjectExecReturn(error.str());
             }
             current = mkBool->Shape();
