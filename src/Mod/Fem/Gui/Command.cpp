@@ -1135,43 +1135,73 @@ bool CmdFemCreateNodesSet::isActive(void)
 // helper vtk post processing
 
 void setupFilter(Gui::Command* cmd, std::string Name) {
-    // get the pipeline object the filter should be added too
-    // if nothing is selected and there is exact one FemPostPipeline --> use this
-    // if the user selects a FemPostPipeline --> use this
-    // else --> error message
+    // In the isActive() functions it is already assured that the filters are only active on allowed objects
+    // For the case the clip filter is set by Python code, we check that the input is a post object
+    // and issue an error if not.
 
-    Fem::FemPostPipeline* pipeline = nullptr;
-    Gui::SelectionFilter pipelinesFilter("SELECT Fem::FemPostPipeline COUNT 1");
-    if (pipelinesFilter.match()) {
-        std::vector<Gui::SelectionObject> result = pipelinesFilter.Result[0];
-        pipeline = static_cast<Fem::FemPostPipeline*>(result.front().getObject());
+    if (Gui::Selection().getSelection().size() > 1) {
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("setupFilter", "Error: A filter can only be applied to a single object."),
+            qApp->translate("setupFilter", "The filter could not be set up."));
+        return;
+    }
+
+    auto selObject = Gui::Selection().getSelection()[0].pObject;
+
+    // issue error if no post object
+    if (!((selObject->getTypeId() == Base::Type::fromName("Fem::FemPostPipeline"))
+        || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostWarpVectorFilter"))
+        || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostScalarClipFilter"))
+        || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostCutFilter"))
+        || (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostClipFilter")) )
+        ) {
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("setupFilter", "Error: no post processing object selected."),
+            qApp->translate("setupFilter", "The filter could not be set up."));
+        return;
+    }
+
+    std::string FeatName = cmd->getUniqueObjectName(Name.c_str());
+
+    // at first we must determine the pipeline of the selection object (which can be a pipeline itself)
+    bool selectionIsPipeline = false;
+    Fem::FemPostPipeline* pipeline;
+    if (selObject->getTypeId() == Base::Type::fromName("Fem::FemPostPipeline")) {
+        pipeline = static_cast<Fem::FemPostPipeline*>(selObject);
+        selectionIsPipeline = true;
     }
     else {
-        std::vector<Fem::FemPostPipeline*> pipelines = App::GetApplication().getActiveDocument()->getObjectsOfType<Fem::FemPostPipeline>();
-        if (pipelines.size() == 1) {
-            pipeline = pipelines.front();
+        auto parents = selObject->getInList();
+        if (parents.size()) {
+            for (auto parentObject : parents) {
+                if (parentObject->getTypeId() == Base::Type::fromName("Fem::FemPostPipeline")) {
+                    pipeline = static_cast<Fem::FemPostPipeline*>(parentObject);
+                }
+            }
         }
     }
 
-    if (pipeline == nullptr) {
-        QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("setupFilter", "Error: Wrong or no or to many vtk post processing objects."),
-            qApp->translate("setupFilter", "The filter could not set up. Select one vtk post processing pipeline object, or select nothing and make sure there is exact one vtk post processing pipline object in the document."));
-        return;
-    }
-    else {
-        std::string FeatName = cmd->getUniqueObjectName(Name.c_str());
+    // create the object and add it to the pipeline
+    cmd->openCommand(QT_TRANSLATE_NOOP("Command", "Create filter"));
+    cmd->doCommand(Gui::Command::Doc, "App.activeDocument().addObject('Fem::FemPost%sFilter','%s')", Name.c_str(), FeatName.c_str());
+    // add it as subobject to the pipeline
+    cmd->doCommand(Gui::Command::Doc, "__list__ = App.ActiveDocument.%s.Filter", pipeline->getNameInDocument());
+    cmd->doCommand(Gui::Command::Doc, "__list__.append(App.ActiveDocument.%s)", FeatName.c_str());
+    cmd->doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Filter = __list__", pipeline->getNameInDocument());
+    cmd->doCommand(Gui::Command::Doc, "del __list__");
+        
+    // set display to assure the user sees the new object
+    cmd->doCommand(Gui::Command::Doc, "App.activeDocument().ActiveObject.ViewObject.DisplayMode = \"Surface\"");
 
-        cmd->openCommand(QT_TRANSLATE_NOOP("Command", "Create filter"));
-        cmd->doCommand(Gui::Command::Doc, "App.activeDocument().addObject('Fem::FemPost%sFilter','%s')", Name.c_str(), FeatName.c_str());
-        cmd->doCommand(Gui::Command::Doc, "__list__ = App.ActiveDocument.%s.Filter", pipeline->getNameInDocument());
-        cmd->doCommand(Gui::Command::Doc, "__list__.append(App.ActiveDocument.%s)", FeatName.c_str());
-        cmd->doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Filter = __list__", pipeline->getNameInDocument());
-        cmd->doCommand(Gui::Command::Doc, "del __list__");
+    // in case selObject is no pipeline we must set it as input object
+    auto objFilter = App::GetApplication().getActiveDocument()->getActiveObject();
+    auto femFilter = static_cast<Fem::FemPostFilter*>(objFilter);
+    if (!selectionIsPipeline)
+        femFilter->Input.setValue(selObject);
 
-        cmd->updateActive();
-        cmd->doCommand(Gui::Command::Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
-    }
+    cmd->updateActive();
+    // open the dialog to edit the filter
+    cmd->doCommand(Gui::Command::Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
 }
 
 
@@ -1255,6 +1285,9 @@ void CmdFemPostClipFilter::activated(int)
 
 bool CmdFemPostClipFilter::isActive(void)
 {
+    // only allow one object
+    if (getSelection().getSelection().size() > 1)
+        return false;
     // only activate if a result is either a post pipeline, scalar, cut or warp filter or itself
     if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1)
         return true;
@@ -1293,6 +1326,9 @@ void CmdFemPostCutFilter::activated(int)
 
 bool CmdFemPostCutFilter::isActive(void)
 {
+    // only allow one object
+    if (getSelection().getSelection().size() > 1)
+        return false;
     // only activate if a result is either a post pipeline, scalar, clip or warp filter or itself
     if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1)
         return true;
@@ -1331,6 +1367,9 @@ void CmdFemPostDataAlongLineFilter::activated(int)
 
 bool CmdFemPostDataAlongLineFilter::isActive(void)
 {
+    // only allow one object
+    if (getSelection().getSelection().size() > 1)
+        return false;
     return hasActiveDocument();
 }
 
@@ -1359,6 +1398,9 @@ void CmdFemPostDataAtPointFilter::activated(int)
 
 bool CmdFemPostDataAtPointFilter::isActive(void)
 {
+    // only allow one object
+    if (getSelection().getSelection().size() > 1)
+        return false;
     return hasActiveDocument();
 }
 
@@ -1442,6 +1484,9 @@ void CmdFemPostScalarClipFilter::activated(int)
 
 bool CmdFemPostScalarClipFilter::isActive(void)
 {
+    // only allow one object
+    if (getSelection().getSelection().size() > 1)
+        return false;
     // only activate if a result is either a post pipeline, clip, cut or warp filter
     if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1)
         return true;
@@ -1478,6 +1523,9 @@ void CmdFemPostWarpVectorFilter::activated(int)
 
 bool CmdFemPostWarpVectorFilter::isActive(void)
 {
+    // only allow one object
+    if (getSelection().getSelection().size() > 1)
+        return false;
     // only activate if a result is either a post pipeline, scalar, clip or cut filter
     if (getSelection().getObjectsOfType<Fem::FemPostPipeline>().size() == 1)
         return true;
