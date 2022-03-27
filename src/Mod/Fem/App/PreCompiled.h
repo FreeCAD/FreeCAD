@@ -54,6 +54,8 @@
 #include <boost/assign/list_of.hpp>
 #include <boost/tokenizer.hpp>
 
+#include <Python.h>
+
 // Salomesh
 #include <SMESH_Version.h>
 #include <SMESH_Gen.hxx>
