@@ -28,6 +28,7 @@
 # include <QRegularExpression>
 # include <QStringList>
 # include <QTranslator>
+# include <QWidget>
 #endif
 
 #include <App/Application.h>
@@ -275,9 +276,9 @@ void Translator::setSystemLocale() const
 
 void Translator::updateLocaleChange() const
 {
-    // Need to manually send the event so locale change is fully took into account on widgets
-    auto ev = QEvent(QEvent::LocaleChange);
-    qApp->sendEvent(qApp, &ev);
+    for (auto &topLevelWidget: qApp->topLevelWidgets()) {
+        topLevelWidget->setLocale(QLocale());
+    }
 }
 
 QStringList Translator::directories() const
