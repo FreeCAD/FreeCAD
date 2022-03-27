@@ -95,6 +95,9 @@ InputField::InputField(QWidget * parent)
 
     QObject::connect(this, SIGNAL(textChanged(QString)),
                      this, SLOT(newInput(QString)));
+#if FC_OS_WIN32
+    setLocale(QLocale());
+#endif
 }
 
 InputField::~InputField()
