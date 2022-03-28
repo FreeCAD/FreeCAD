@@ -474,11 +474,12 @@ protected:
     * to initial size. Reapplies the cursor bitmap.
     */
     void reset() {
+        size_t sizeOfEditCurve = EditCurve.size();
         EditCurve.clear();
         drawEdit(EditCurve);
 
         ModeStateMachine::reset();
-        EditCurve.resize(PInitEditCurveSize);
+        EditCurve.resize(sizeOfEditCurve);
         for(auto & ac : sugConstraints)
             ac.clear();
 
