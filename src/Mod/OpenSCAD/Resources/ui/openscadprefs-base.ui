@@ -436,7 +436,24 @@
           </property>
          </spacer>
         </item>
-        <item row="1" column="2">
+        <item row="0" column="2">
+         <widget class="QLabel" name="label_4">
+          <property name="toolTip">
+           <string>Deflection</string>
+          </property>
+          <property name="text">
+           <string>deflection</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Triangulation settings</string>
+          </property>
+         </widget>
+        </item>
+       <item row="1" column="2">
          <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox_2a">
           <property name="toolTip">
            <string>Deflection</string>
@@ -458,24 +475,7 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="2">
-         <widget class="QLabel" name="label_4">
-          <property name="toolTip">
-           <string>Deflection</string>
-          </property>
-          <property name="text">
-           <string>deflection</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Triangulation settings</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+        </layout>
       </item>
      </layout>
     </widget>
