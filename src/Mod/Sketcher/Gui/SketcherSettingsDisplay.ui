@@ -182,7 +182,7 @@
          <string>The current sketcher creation tool will remain active after creation.</string>
         </property>
         <property name="text">
-         <string>Geometry creation &quot;Continue Mode&quot;</string>
+         <string>Geometry creation "Continue Mode"</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -201,7 +201,7 @@
          <string>The current constraint creation tool will remain active after creation.</string>
         </property>
         <property name="text">
-         <string>Constraint creation &quot;Continue Mode&quot;</string>
+         <string>Constraint creation "Continue Mode"</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -250,7 +250,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
       <item row="8" column="1">
        <widget class="Gui::PrefLineEdit" name="prefDimensionalStringFormat">
         <property name="text">
-         <string  notr="true">%N = %V</string>
+         <string notr="true">%N = %V</string>
         </property>
         <property name="placeholderText">
          <string>%N = %V</string>
@@ -386,7 +386,7 @@ Defaults to: %N = %V
        <widget class="Gui::PrefCheckBox" name="checkBoxTVForceOrtho">
         <property name="toolTip">
          <string>When entering edit mode, force orthographic view of camera.
-Works only when &quot;Restore camera position after editing&quot; is enabled.</string>
+Works only when "Restore camera position after editing" is enabled.</string>
         </property>
         <property name="text">
          <string>Force orthographic camera when entering edit</string>
