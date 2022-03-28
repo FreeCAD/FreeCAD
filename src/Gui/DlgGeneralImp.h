@@ -64,8 +64,11 @@ private:
     void setRecentFileSize();
     void saveAsNewPreferencePack();
     void revertToSavedConfig();
+    void setLanguage();
+    void setNumberLocale();
 
 private:
+    int localeIndex;
     std::unique_ptr<Ui_DlgGeneral> ui;
     std::unique_ptr<DlgCreateNewPreferencePackImp> newPreferencePackDialog;
     std::unique_ptr<DlgPreferencePackManagementImp> preferencePackManagementDialog;

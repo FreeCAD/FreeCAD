@@ -106,20 +106,28 @@
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="Gui::PrefCheckBox" name="UseLocaleFormatting">
-           <property name="toolTip">
-            <string>If enabled, number formatting will be set according to selected language
-If not, C/POSIX default formatting will be used (English-like)</string>
-           </property>
-           <property name="text">
-            <string>Use selected language number format</string>
-           </property>
+          <widget class="Gui::PrefComboBox" name="UseLocaleFormatting">
            <property name="prefEntry" stdset="0">
             <cstring>UseLocaleFormatting</cstring>
            </property>
            <property name="prefPath" stdset="0">
             <cstring>General</cstring>
            </property>
+           <item>
+            <property name="text">
+             <string>Number format of operating system</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Use selected language number format</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>C/POSIX number format</string>
+            </property>
+           </item>
           </widget>
          </item>
         </layout>
@@ -174,11 +182,11 @@ If not, C/POSIX default formatting will be used (English-like)</string>
              <attribute name="horizontalHeaderCascadingSectionResizes">
               <bool>true</bool>
              </attribute>
-             <attribute name="horizontalHeaderMinimumSectionSize">
-              <number>30</number>
-             </attribute>
              <attribute name="horizontalHeaderDefaultSectionSize">
               <number>100</number>
+             </attribute>
+             <attribute name="horizontalHeaderMinimumSectionSize">
+              <number>30</number>
              </attribute>
              <attribute name="horizontalHeaderStretchLastSection">
               <bool>true</bool>
@@ -186,11 +194,11 @@ If not, C/POSIX default formatting will be used (English-like)</string>
              <attribute name="verticalHeaderVisible">
               <bool>false</bool>
              </attribute>
-             <attribute name="verticalHeaderMinimumSectionSize">
-              <number>16</number>
-             </attribute>
              <attribute name="verticalHeaderDefaultSectionSize">
               <number>24</number>
+             </attribute>
+             <attribute name="verticalHeaderMinimumSectionSize">
+              <number>16</number>
              </attribute>
              <column>
               <property name="text">
@@ -599,6 +607,11 @@ after FreeCAD launches</string>
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

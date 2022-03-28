@@ -53,6 +53,7 @@ using namespace Gui::Dialog;
  */
 DlgGeneralImp::DlgGeneralImp( QWidget* parent )
   : PreferencePage(parent)
+  , localeIndex(0)
   , ui(new Ui_DlgGeneral)
 {
     ui->setupUi(this);
@@ -119,6 +120,38 @@ void DlgGeneralImp::setRecentFileSize()
     }
 }
 
+void DlgGeneralImp::setLanguage()
+{
+    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
+    QString lang = QLocale::languageToString(QLocale().language());
+    QByteArray language = hGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str();
+    QByteArray current = ui->Languages->itemData(ui->Languages->currentIndex()).toByteArray();
+    if (current != language) {
+        hGrp->SetASCII("Language", current.constData());
+        Translator::instance()->activateLanguage(current.constData());
+    }
+}
+
+void DlgGeneralImp::setNumberLocale()
+{
+    int localeFormat = ui->UseLocaleFormatting->currentIndex();
+
+    // Only make the change if locale setting has changed
+    if (localeIndex == localeFormat)
+        return;
+
+    if (localeFormat == 0) {
+        Translator::instance()->setSystemLocale();
+    }
+    else if (localeFormat == 1) {
+        QByteArray current = ui->Languages->itemData(ui->Languages->currentIndex()).toByteArray();
+        Translator::instance()->setLocale(current.constData());
+    }
+    else if (localeFormat == 2) {
+        Translator::instance()->setLocale("C");
+    }
+}
+
 void DlgGeneralImp::saveSettings()
 {
     int index = ui->AutoloadModuleCombo->currentIndex();
@@ -134,17 +167,10 @@ void DlgGeneralImp::saveSettings()
     ui->SplashScreen->onSave();
 
     setRecentFileSize();
-    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
-    QString lang = QLocale::languageToString(QLocale().language());
-    QByteArray language = hGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str();
-    QByteArray current = ui->Languages->itemData(ui->Languages->currentIndex()).toByteArray();
-    if (current != language) {
-        hGrp->SetASCII("Language", current.constData());
-        Translator::instance()->activateLanguage(current.constData());
-    }
-    if (ui->UseLocaleFormatting->isChecked())
-        Translator::instance()->setLocale(current.constData());
+    setLanguage();
+    setNumberLocale();
 
+    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
     QVariant size = ui->toolbarIconSize->itemData(ui->toolbarIconSize->currentIndex());
     int pixel = size.toInt();
     hGrp->SetInt("ToolbarIconSize", pixel);
@@ -195,6 +221,8 @@ void DlgGeneralImp::loadSettings()
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
     auto langToStr = Translator::instance()->activeLanguage();
     QByteArray language = hGrp->GetASCII("Language", langToStr.c_str()).c_str();
+
+    localeIndex = ui->UseLocaleFormatting->currentIndex();
 
     int index = 1;
     TStringMap list = Translator::instance()->supportedLocales();
@@ -303,7 +331,9 @@ void DlgGeneralImp::loadSettings()
 void DlgGeneralImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
+        int index = ui->UseLocaleFormatting->currentIndex();
         ui->retranslateUi(this);
+        ui->UseLocaleFormatting->setCurrentIndex(index);
     }
     else {
         QWidget::changeEvent(e);

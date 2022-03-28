@@ -2072,10 +2072,12 @@ void Application::runApplication(void)
         mainApp.installEventFilter(filter);
     }
 
-    if (hGrp->GetBool("UseLocaleFormatting", false)) {
-        Translator::instance()->setLocale(hGrp->GetASCII(("Language"), Translator::instance()->activeLanguage().c_str()));
+    // For values different to 1 and 2 use the OS locale settings
+    auto localeFormat = hGrp->GetInt("UseLocaleFormatting", 0);
+    if (localeFormat == 1) {
+        Translator::instance()->setLocale(hGrp->GetASCII("Language", Translator::instance()->activeLanguage().c_str()));
     }
-    else {
+    else if (localeFormat == 2) {
         Translator::instance()->setLocale("C");
     }
 
