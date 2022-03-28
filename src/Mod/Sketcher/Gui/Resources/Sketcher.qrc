@@ -160,6 +160,7 @@
         <file>icons/geometry/Sketcher_Extend.svg</file>
         <file>icons/geometry/Sketcher_External.svg</file>
         <file>icons/geometry/Sketcher_Split.svg</file>
+        <file>icons/geometry/Sketcher_Insert.svg</file>
         <file>icons/geometry/Sketcher_ToggleConstruction.svg</file>
         <file>icons/geometry/Sketcher_Trimming.svg</file>
     </qresource>

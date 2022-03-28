@@ -237,6 +237,11 @@ If there is no such constraint an exception is raised.
             <UserDocu>Moves the geometric objects in the sketch displaced by a vector3d</UserDocu>
         </Documentation>
     </Methode>
+    <Methode Name="transferConstraints">
+      <Documentation>
+        <UserDocu>Transfer constraints from a point to another point</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="addRectangularArray">
       <Documentation>
         <UserDocu>add an array of size cols by rows where each element is a copy of the selected geometric objects displaced by a vector3d in the cols direction and by a vector perpendicular to it in the rows direction</UserDocu>

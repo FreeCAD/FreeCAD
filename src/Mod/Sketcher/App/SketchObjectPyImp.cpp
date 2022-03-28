@@ -1281,6 +1281,23 @@ PyObject* SketchObjectPy::addMove(PyObject *args)
     throw Py::TypeError(error);
 }
 
+PyObject* SketchObjectPy::transferConstraints(PyObject* args) {
+    //PyObject* pcObj1;
+    int geoId1, geoId2, posId1, posId2;
+
+    if (PyArg_ParseTuple(args, "iiii", &geoId1, &posId1, &geoId2, &posId2)) {
+
+        //Base::Vector3d v1 = static_cast<Base::VectorPy*>(pcObj1)->value();
+        if (this->getSketchObjectPtr()->transferConstraints(geoId1, (Sketcher::PointPos)posId1, geoId2, (Sketcher::PointPos)posId2, true)) {
+            std::stringstream str;
+            str << "Not able to transfer constraints.";
+            THROWM(Base::ValueError, str.str().c_str())
+                return 0;
+        }
+        Py_Return;
+    }
+}
+
 PyObject* SketchObjectPy::addRectangularArray(PyObject *args)
 {
     PyObject *pcObj, *pcVect;
