@@ -8811,6 +8811,7 @@ template <> void DrawSketchHandlerSlotBase::ToolWidgetManager::configureToolWidg
     toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("ToolWidgetManager_p2", "y of 1st point"));
     toolWidget->setParameterLabel(WParameter::Third, QApplication::translate("ToolWidgetManager_p3", "Length"));
     toolWidget->setParameterLabel(WParameter::Fourth, QApplication::translate("ToolWidgetManager_p4", "Angle to HAxis"));
+    toolWidget->configureParameterUnit(WParameter::Fourth, Base::Unit::Angle);
     toolWidget->setParameterLabel(WParameter::Fifth, QApplication::translate("ToolWidgetManager_p5", "Radius"));
 
     toolWidget->setNoticeVisible(true);
@@ -8902,7 +8903,7 @@ template <> void DrawSketchHandlerSlotBase::ToolWidgetManager::updateVisualValue
             toolWidget->updateVisualValue(WParameter::Third, dHandler->length);
 
         if (!toolWidget->isParameterSet(WParameter::Fourth))
-                toolWidget->updateVisualValue(WParameter::Fourth, dHandler->angle);
+                toolWidget->updateVisualValue(WParameter::Fourth, dHandler->angle * 180 / M_PI, Base::Unit::Angle);
     }
     break;
     case SelectMode::SeekThird:
