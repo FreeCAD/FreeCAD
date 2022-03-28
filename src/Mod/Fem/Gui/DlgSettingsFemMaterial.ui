@@ -75,7 +75,23 @@
         </item>
         <item>
          <layout class="QGridLayout" name="gridLayout">
-          <item row="1" column="1">
+          <item row="1" column="0">
+           <widget class="QLabel" name="l_custom_mat_dir">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>User directory</string>
+            </property>
+           </widget>
+          </item>
+         <item row="1" column="1">
            <widget class="Gui::PrefFileChooser" name="fc_custom_mat_dir">
             <property name="enabled">
              <bool>true</bool>
@@ -109,23 +125,7 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="l_custom_mat_dir">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>100</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>User directory</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
+          </layout>
         </item>
        </layout>
       </item>
