@@ -2302,7 +2302,7 @@ bool CmdSketcherCreateRectangle::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
-// ======================================================================================
+/* Polygon ================================================================================*/
 
 using DrawSketchHandlerPolygonBase = DSHandlerDefaultWidget<  GeometryTools::Polygon,
     StateMachines::TwoSeekEnd,
@@ -2620,7 +2620,7 @@ bool CmdSketcherCreatePolygon::isActive(void)
 }
 
 
-/* Rectangles Comp command =========================================*/
+/* Rectangles Comp command ==============================================================*/
 
 DEF_STD_CMD_ACLU(CmdSketcherCompCreateRectangles)
 
@@ -2721,7 +2721,7 @@ bool CmdSketcherCompCreateRectangles::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
-// ======================================================================================
+/* Polyline ================================================================================*/
 
 class DrawSketchHandlerLineSet: public DrawSketchHandler
 {
@@ -3411,7 +3411,7 @@ bool CmdSketcherCreatePolyline::isActive(void)
 }
 
 
-// ======================================================================================
+/* Circle ================================================================================*/
 
 using DrawSketchHandlerCircleBase = DSHandlerDefaultWidget<  GeometryTools::Circle,
     StateMachines::ThreeSeekEnd,
@@ -3891,7 +3891,7 @@ bool CmdSketcherCreateCircle::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
-// ======================================================================================
+/* Ellipse ==============================================================================*/
 using DrawSketchHandlerEllipseBase = DSHandlerDefaultWidget<  GeometryTools::Ellipse,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
