@@ -157,7 +157,7 @@ void DlgSettingsColorGradientImp::accept()
     double fMax = QLocale().toDouble(ui->floatLineEditMax->text());
     double fMin = QLocale().toDouble(ui->floatLineEditMin->text());
 
-    if (fMax <= fMin) {
+    if (fMax < fMin) {
         QMessageBox::warning(this, tr("Wrong parameter"),
             tr("The maximum value must be higher than the minimum value."));
     }
