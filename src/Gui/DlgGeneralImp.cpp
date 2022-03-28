@@ -138,8 +138,9 @@ void DlgGeneralImp::setNumberLocale(bool force/* = false*/)
 {
     int localeFormat = ui->UseLocaleFormatting->currentIndex();
 
-    // Only make the change if locale setting has changed
-    if (!force && localeIndex == localeFormat)
+    // Only make the change if locale setting has changed or if forced
+    // Except if format is "OS" where we don't want to run setLocale
+    if (localeIndex == localeFormat && (!force || localeFormat == 0))
         return;
 
     if (localeFormat == 0) {
@@ -152,6 +153,10 @@ void DlgGeneralImp::setNumberLocale(bool force/* = false*/)
     else if (localeFormat == 2) {
         Translator::instance()->setLocale("C");
     }
+    else {
+        return; // Prevent localeIndex updating if localeFormat is out of range
+    }
+    localeIndex = localeFormat;
 }
 
 void DlgGeneralImp::saveSettings()
