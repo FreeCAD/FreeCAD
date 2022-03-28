@@ -477,6 +477,10 @@ void ViewProviderFemPostObject::WritePointData(vtkPoints* points, vtkDataArray* 
 void ViewProviderFemPostObject::setRangeOfColorBar(double min, double max)
 {
     try {
+        if (min >= max) {
+            min = max - 10 * std::numeric_limits<float>::epsilon();
+            max = max + 10 * std::numeric_limits<float>::epsilon();
+        }
         m_colorBar->setRange(min, max);
     }
     catch (const Base::ValueError& e) {
