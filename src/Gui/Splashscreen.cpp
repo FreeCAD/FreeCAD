@@ -683,15 +683,15 @@ void AboutDialog::on_copyButton_clicked()
     QString minor  = QString::fromLatin1(config["BuildVersionMinor"].c_str());
     QString build  = QString::fromLatin1(config["BuildRevision"].c_str());
 
-    QString deskEnv = QProcessEnvironment::systemEnvironment().value(QString::fromLatin1("XDG_CURRENT_DESKTOP"),QString::fromLatin1(""));
-    QString deskSess = QProcessEnvironment::systemEnvironment().value(QString::fromLatin1("DESKTOP_SESSION"),QString::fromLatin1(""));
-    QString deskInfo = QString::fromLatin1("");
+    QString deskEnv = QProcessEnvironment::systemEnvironment().value(QStringLiteral("XDG_CURRENT_DESKTOP"),QStringLiteral(""));
+    QString deskSess = QProcessEnvironment::systemEnvironment().value(QStringLiteral("DESKTOP_SESSION"),QStringLiteral(""));
+    QString deskInfo = QStringLiteral("");
 
-    if (!(deskEnv == QString::fromLatin1("") && deskSess == QString::fromLatin1(""))) {
-        if (deskEnv == QString::fromLatin1("") || deskSess == QString::fromLatin1(""))
-            deskInfo = QString::fromLatin1(" (") + deskEnv + deskSess + QString::fromLatin1(")");
+    if ( !(deskEnv.isEmpty() && deskSess.isEmpty()) ) {
+        if ( deskEnv.isEmpty() || deskSess.isEmpty() )
+            deskInfo = QLatin1String(" (") + deskEnv + deskSess + QLatin1String(")");
         else
-            deskInfo = QString::fromLatin1(" (") + deskEnv + QString::fromLatin1("/") + deskSess + QString::fromLatin1(")");
+            deskInfo = QLatin1String(" (") + deskEnv + QLatin1String("/") + deskSess + QLatin1String(")");
     }
 
     str << "[code]\n";
@@ -735,7 +735,14 @@ void AboutDialog::on_copyButton_clicked()
     QLocale loc;
     str << "Locale: " << loc.languageToString(loc.language()) << "/"
         << loc.countryToString(loc.country())
-        << " (" << loc.name() << ")\n";
+        << " (" << loc.name() << ")";
+    if (loc != QLocale::system()) {
+        loc = QLocale::system();
+        str << " [ OS: " << loc.languageToString(loc.language()) << "/"
+            << loc.countryToString(loc.country())
+            << " (" << loc.name() << ") ]";
+    }
+    str << "\n";
 
     // Add installed module information:
     auto modDir = fs::path(App::Application::getUserAppDataDir()) / "Mod";
