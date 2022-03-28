@@ -869,7 +869,7 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
             }
 
             if (it->first.compare("DisplacementVectors") == 0)
-                factor = 0.001;
+                factor = 0.001; // to get meter
             else
                 factor = 1.0;
 
@@ -922,10 +922,11 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
                 || (it->first.compare("PrincipalMax") == 0)
                 || (it->first.compare("PrincipalMed") == 0)
                 || (it->first.compare("PrincipalMin") == 0)
-                || (it->first.compare("vonMises") == 0))
-                factor = 1e6;
+                || (it->first.compare("vonMises") == 0)
+                || (it->first.compare("NetworkPressure") == 0) )
+                factor = 1e6; // to get Pascal
             else if (it->first.compare("DisplacementLengths") == 0)
-                factor = 0.001;
+                factor = 0.001; // to get meter
             else
                 factor = 1.0;
 
