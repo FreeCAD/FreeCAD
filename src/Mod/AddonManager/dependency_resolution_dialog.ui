@@ -28,7 +28,7 @@
      <property name="text">
       <string>This Addon has the following required and optional dependencies. You must install them before this Addon can be used.
 
-Do you want the Addon Manager to install them automatically? Choose &quot;Ignore&quot; to install the Addon without installing the dependencies.</string>
+Do you want the Addon Manager to install them automatically? Choose "Ignore" to install the Addon without installing the dependencies.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

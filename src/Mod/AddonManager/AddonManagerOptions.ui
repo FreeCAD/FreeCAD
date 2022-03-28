@@ -258,7 +258,7 @@ of the line after a space (e.g. https://github.com/FreeCAD/FreeCAD master).</str
       </widget>
      </item>
      <item>
-      <widget class="Gui::PrefFileChooser" name="gui::preffilechooser" native="true">
+      <widget class="Gui::PrefFileChooser" name="gui::preffilechooser">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
