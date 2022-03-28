@@ -152,6 +152,10 @@
         <file>icons/geometry/Sketcher_CreatePolygon_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateSlot.svg</file>
         <file>icons/geometry/Sketcher_CreateSlot_Constr.svg</file>
+        <file>icons/geometry/Sketcher_CreateArcSlot.svg</file>
+        <file>icons/geometry/Sketcher_CreateArcSlot_Constr.svg</file>
+        <file>icons/geometry/Sketcher_CreateRectangleSlot.svg</file>
+        <file>icons/geometry/Sketcher_CreateRectangleSlot_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateText.svg</file>
         <file>icons/geometry/Sketcher_Extend.svg</file>
         <file>icons/geometry/Sketcher_External.svg</file>
