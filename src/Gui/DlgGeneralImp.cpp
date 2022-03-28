@@ -120,7 +120,7 @@ void DlgGeneralImp::setRecentFileSize()
     }
 }
 
-void DlgGeneralImp::setLanguage()
+bool DlgGeneralImp::setLanguage()
 {
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
     QString lang = QLocale::languageToString(QLocale().language());
@@ -129,15 +129,17 @@ void DlgGeneralImp::setLanguage()
     if (current != language) {
         hGrp->SetASCII("Language", current.constData());
         Translator::instance()->activateLanguage(current.constData());
+        return true;
     }
+    return false;
 }
 
-void DlgGeneralImp::setNumberLocale()
+void DlgGeneralImp::setNumberLocale(bool force/* = false*/)
 {
     int localeFormat = ui->UseLocaleFormatting->currentIndex();
 
     // Only make the change if locale setting has changed
-    if (localeIndex == localeFormat)
+    if (!force && localeIndex == localeFormat)
         return;
 
     if (localeFormat == 0) {
@@ -167,8 +169,9 @@ void DlgGeneralImp::saveSettings()
     ui->SplashScreen->onSave();
 
     setRecentFileSize();
-    setLanguage();
-    setNumberLocale();
+    bool force = setLanguage();
+    // In case type is "Selected language", we need to force locale change
+    setNumberLocale(force);
 
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
     QVariant size = ui->toolbarIconSize->itemData(ui->toolbarIconSize->currentIndex());
