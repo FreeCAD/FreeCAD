@@ -315,6 +315,11 @@ void SketcherToolDefaultWidget::setParameter(int parameterindex, double val)
     THROWM(Base::IndexError, QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
 }
 
+void SketcherToolDefaultWidget::configureParameterInitialValue(int parameterindex, double val) {
+    Base::StateLocker lock(blockParameterSlots, true);
+    setParameter(parameterindex, val);
+}
+
 void SketcherToolDefaultWidget::setParameterEnabled(int parameterindex, bool active)
 {
     if (parameterindex < nParameters) {

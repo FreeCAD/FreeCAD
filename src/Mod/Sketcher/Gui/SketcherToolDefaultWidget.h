@@ -126,6 +126,7 @@ public:
     //void keyPressEvent(QKeyEvent* event);
 
     void setParameter(int parameterindex, double val);
+    void configureParameterInitialValue(int parameterindex, double value);
     double getParameter(int parameterindex);
     bool isParameterSet(int parameterindex);
     void updateVisualValue(int parameterindex, double val);
