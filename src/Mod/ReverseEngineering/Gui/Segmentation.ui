@@ -14,20 +14,6 @@
    <string>Mesh segmentation</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="1">
-    <widget class="QSpinBox" name="smoothSteps">
-     <property name="value">
-      <number>3</number>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0" colspan="2">
-    <widget class="QCheckBox" name="createCompound">
-     <property name="text">
-      <string>Create compound</string>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="0">
     <widget class="QCheckBox" name="checkBoxSmooth">
      <property name="text">
@@ -35,6 +21,13 @@
      </property>
      <property name="checked">
       <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QSpinBox" name="smoothSteps">
+     <property name="value">
+      <number>3</number>
      </property>
     </widget>
    </item>
@@ -108,7 +101,14 @@
      </property>
     </widget>
    </item>
-  </layout>
+  <item row="3" column="0" colspan="2">
+    <widget class="QCheckBox" name="createCompound">
+     <property name="text">
+      <string>Create compound</string>
+     </property>
+    </widget>
+   </item>
+   </layout>
  </widget>
  <resources/>
  <connections/>
