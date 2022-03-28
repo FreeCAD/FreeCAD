@@ -45,7 +45,7 @@
          </widget>
         </item>
         <item>
-         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser" native="true">
+         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser">
           <property name="minimumSize">
            <size>
             <width>300</width>
@@ -229,7 +229,7 @@
          </widget>
         </item>
         <item>
-         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser" native="true">
+         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser">
           <property name="minimumSize">
            <size>
             <width>300</width>
