@@ -320,6 +320,19 @@ void SketcherToolDefaultWidget::configureParameterInitialValue(int parameterinde
     setParameter(parameterindex, val);
 }
 
+void SketcherToolDefaultWidget::configureParameterUnit(int parameterindex, Base::Unit unit) {
+    //For reference unit can be changed with : 
+    //setUnit(Base::Unit::Length); Base::Unit::Angle
+    Base::StateLocker lock(blockParameterSlots, true);
+    if (parameterindex < nParameters) {
+        getParameterSpinBox(parameterindex)->setUnit(unit);
+
+        return;
+    }
+
+    THROWM(Base::IndexError, QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
+}
+
 void SketcherToolDefaultWidget::setParameterEnabled(int parameterindex, bool active)
 {
     if (parameterindex < nParameters) {
@@ -440,13 +453,13 @@ bool SketcherToolDefaultWidget::isParameterSet(int parameterindex)
     THROWM(Base::IndexError, "ToolWidget parameter index out of range");
 }
 
-void SketcherToolDefaultWidget::updateVisualValue(int parameterindex, double val) {
+void SketcherToolDefaultWidget::updateVisualValue(int parameterindex, double val, Base::Unit unit) {
     if (parameterindex < nParameters) {
         Base::StateLocker lock(blockParameterSlots, true);
 
         auto parameterSpinBox = getParameterSpinBox(parameterindex);
 
-        parameterSpinBox->setValue(Base::Quantity(val, Base::Unit::Length));
+        parameterSpinBox->setValue(Base::Quantity(val, unit));
 
         if (parameterSpinBox->hasFocus()) {
             parameterSpinBox->selectNumber();

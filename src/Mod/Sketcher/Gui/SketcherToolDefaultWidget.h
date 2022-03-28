@@ -127,9 +127,10 @@ public:
 
     void setParameter(int parameterindex, double val);
     void configureParameterInitialValue(int parameterindex, double value);
+    void configureParameterUnit(int parameterindex, Base::Unit unit);
     double getParameter(int parameterindex);
     bool isParameterSet(int parameterindex);
-    void updateVisualValue(int parameterindex, double val);
+    void updateVisualValue(int parameterindex, double val, Base::Unit unit = Base::Unit::Length);
 
     void setParameterEnabled(int parameterindex, bool active = true);
     void setParameterFocus(int parameterindex);
