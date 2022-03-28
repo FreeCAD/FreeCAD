@@ -35,7 +35,7 @@
       <item>
        <layout class="QGridLayout" name="gl_z88">
         <item row="2" column="2">
-         <widget class="Gui::PrefFileChooser" name="fc_z88_binary_path" native="true">
+         <widget class="Gui::PrefFileChooser" name="fc_z88_binary_path">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -158,7 +158,7 @@
 
 You might need to increase this when using an
 iterative solver and you get the error message
-that &quot;MAXKOI&quot; needs to be increased.</string>
+that "MAXKOI" needs to be increased.</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -202,7 +202,7 @@ that &quot;MAXKOI&quot; needs to be increased.</string>
            <string>Maximal places in stiffnes matrix.
 You might need to increase this when using the
 Cholesky solver and you get the error message
-that &quot;MAXGS&quot; needs to be increased.</string>
+that "MAXGS" needs to be increased.</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

@@ -37,7 +37,7 @@
       </spacer>
      </item>
      <item row="0" column="2">
-      <widget class="Gui::QuantitySpinBox" name="potentialQSB" native="true">
+      <widget class="Gui::QuantitySpinBox" name="potentialQSB">
        <property name="enabled">
         <bool>false</bool>
        </property>
