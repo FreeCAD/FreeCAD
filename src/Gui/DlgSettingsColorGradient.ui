@@ -100,16 +100,6 @@
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="0" column="1">
-       <widget class="QRadioButton" name="radioButtonZero">
-        <property name="text">
-         <string>&amp;Zero</string>
-        </property>
-        <property name="shortcut">
-         <string>Alt+Z</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0">
        <widget class="QRadioButton" name="radioButtonFlow">
         <property name="text">
@@ -123,7 +113,17 @@
         </property>
        </widget>
       </item>
-     </layout>
+     <item row="0" column="1">
+       <widget class="QRadioButton" name="radioButtonZero">
+        <property name="text">
+         <string>&amp;Zero</string>
+        </property>
+        <property name="shortcut">
+         <string>Alt+Z</string>
+        </property>
+       </widget>
+      </item>
+      </layout>
     </widget>
    </item>
    <item row="2" column="0">
@@ -191,22 +191,6 @@
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="0" column="1">
-       <spacer>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Expanding</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>35</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
       <item row="0" column="0">
        <layout class="QGridLayout">
         <property name="leftMargin">
@@ -224,11 +208,18 @@
         <property name="spacing">
          <number>6</number>
         </property>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="floatLineEditMax"/>
+        <item row="0" column="0">
+         <widget class="QLabel" name="textLabelMax">
+          <property name="text">
+           <string>Ma&amp;ximum:</string>
+          </property>
+          <property name="buddy">
+           <cstring>floatLineEditMax</cstring>
+          </property>
+         </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="QLineEdit" name="floatLineEditMin"/>
+       <item row="0" column="1">
+         <widget class="QLineEdit" name="floatLineEditMax"/>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="textLabelMin">
@@ -240,17 +231,26 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="textLabelMax">
-          <property name="text">
-           <string>Ma&amp;ximum:</string>
-          </property>
-          <property name="buddy">
-           <cstring>floatLineEditMax</cstring>
-          </property>
-         </widget>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="floatLineEditMin"/>
         </item>
-       </layout>
+        </layout>
+      </item>
+      <item row="0" column="1">
+       <spacer>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Expanding</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>35</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
       <item row="0" column="2">
        <layout class="QGridLayout">
@@ -269,19 +269,6 @@
         <property name="spacing">
          <number>6</number>
         </property>
-        <item row="0" column="1">
-         <widget class="QSpinBox" name="spinBoxLabel"/>
-        </item>
-        <item row="1" column="1">
-         <widget class="QSpinBox" name="spinBoxDecimals">
-          <property name="maximum">
-           <number>6</number>
-          </property>
-          <property name="value">
-           <number>2</number>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="0">
          <widget class="QLabel" name="textLabel1">
           <property name="text">
@@ -291,6 +278,9 @@
            <cstring>spinBoxLabel</cstring>
           </property>
          </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QSpinBox" name="spinBoxLabel"/>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="textLabel1_2">
@@ -302,7 +292,17 @@
           </property>
          </widget>
         </item>
-       </layout>
+       <item row="1" column="1">
+         <widget class="QSpinBox" name="spinBoxDecimals">
+          <property name="maximum">
+           <number>6</number>
+          </property>
+          <property name="value">
+           <number>2</number>
+          </property>
+         </widget>
+        </item>
+        </layout>
       </item>
      </layout>
     </widget>

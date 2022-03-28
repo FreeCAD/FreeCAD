@@ -41,45 +41,6 @@
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="4" column="0">
-       <widget class="QLabel" name="TextLabelAxial">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Axial:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="TextLabelZ">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Z:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="TextLabelY">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Y:</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0">
        <widget class="QLabel" name="TextLabelX">
         <property name="sizePolicy">
@@ -96,11 +57,50 @@
       <item row="0" column="1">
        <widget class="Gui::QuantitySpinBox" name="xPos"/>
       </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="TextLabelY">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Y:</string>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="1">
        <widget class="Gui::QuantitySpinBox" name="yPos"/>
       </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="TextLabelZ">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Z:</string>
+        </property>
+       </widget>
+      </item>
       <item row="3" column="1">
        <widget class="Gui::QuantitySpinBox" name="zPos"/>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="TextLabelAxial">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Axial:</string>
+        </property>
+       </widget>
       </item>
       <item row="4" column="1">
        <widget class="Gui::QuantitySpinBox" name="axialPos"/>
@@ -139,32 +139,6 @@
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="2" column="0">
-       <widget class="QLabel" name="TextLabelZ_5">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Z:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="TextLabelY_2">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Y:</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0">
        <widget class="QLabel" name="TextLabelX_2">
         <property name="sizePolicy">
@@ -181,8 +155,34 @@
       <item row="0" column="1">
        <widget class="Gui::QuantitySpinBox" name="xCnt"/>
       </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="TextLabelY_2">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Y:</string>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="1">
        <widget class="Gui::QuantitySpinBox" name="yCnt"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="TextLabelZ_5">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Z:</string>
+        </property>
+       </widget>
       </item>
       <item row="2" column="1">
        <widget class="Gui::QuantitySpinBox" name="zCnt"/>
@@ -225,7 +225,21 @@
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="1" column="0">
+      <item row="0" column="0">
+       <widget class="QComboBox" name="rotationInput">
+        <item>
+         <property name="text">
+          <string>Rotation axis with angle</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Euler angles (zy'x'')</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     <item row="1" column="0">
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="currentIndex">
          <number>1</number>
@@ -264,26 +278,6 @@
             <property name="spacing">
              <number>6</number>
             </property>
-            <item row="1" column="0">
-             <widget class="QLabel" name="textLabelAngle">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Angle:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QComboBox" name="direction">
-              <property name="currentIndex">
-               <number>-1</number>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="0">
              <widget class="QLabel" name="TextLabelAxis">
               <property name="sizePolicy">
@@ -294,6 +288,26 @@
               </property>
               <property name="text">
                <string>Axis:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QComboBox" name="direction">
+              <property name="currentIndex">
+               <number>-1</number>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="textLabelAngle">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Angle:</string>
               </property>
              </widget>
             </item>
@@ -338,32 +352,6 @@
             <property name="spacing">
              <number>6</number>
             </property>
-            <item row="1" column="0">
-             <widget class="QLabel" name="TextLabelZ_3">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Pitch (around y-axis):</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="TextLabelZ_4">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Roll (around x-axis):</string>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="0">
              <widget class="QLabel" name="TextLabelZ_2">
               <property name="sizePolicy">
@@ -384,10 +372,36 @@
               </property>
              </widget>
             </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="TextLabelZ_3">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Pitch (around y-axis):</string>
+              </property>
+             </widget>
+            </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="pitchAngle">
               <property name="toolTip">
                <string>Pitch (around y-axis)</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="TextLabelZ_4">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Roll (around x-axis):</string>
               </property>
              </widget>
             </item>
@@ -405,21 +419,7 @@
         <widget class="QWidget" name="page_2"/>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QComboBox" name="rotationInput">
-        <item>
-         <property name="text">
-          <string>Rotation axis with angle</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Euler angles (zy'x'')</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-     </layout>
+      </layout>
     </widget>
    </item>
    <item row="2" column="0" colspan="2">

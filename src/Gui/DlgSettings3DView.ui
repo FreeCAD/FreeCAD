@@ -588,7 +588,23 @@ bounding box size of the 3D object that is currently displayed.</string>
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="0" column="1">
+      <item row="0" column="0">
+       <widget class="Gui::PrefRadioButton" name="radioPerspective">
+        <property name="toolTip">
+         <string>Objects will appear in a perspective projection</string>
+        </property>
+        <property name="text">
+         <string>Perspective renderin&amp;g</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>Perspective</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+     <item row="0" column="1">
        <widget class="Gui::PrefRadioButton" name="radioOrthographic">
         <property name="toolTip">
          <string>Objects will be projected in orthographic projection</string>
@@ -607,23 +623,7 @@ bounding box size of the 3D object that is currently displayed.</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="Gui::PrefRadioButton" name="radioPerspective">
-        <property name="toolTip">
-         <string>Objects will appear in a perspective projection</string>
-        </property>
-        <property name="text">
-         <string>Perspective renderin&amp;g</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>Perspective</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
-        </property>
-       </widget>
-      </item>
-     </layout>
+      </layout>
     </widget>
    </item>
    <item>

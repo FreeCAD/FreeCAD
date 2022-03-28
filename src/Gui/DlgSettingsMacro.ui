@@ -63,6 +63,108 @@
       <property name="spacing">
        <number>6</number>
       </property>
+      <item row="0" column="0">
+       <widget class="QGroupBox" name="GroupBox8">
+        <property name="title">
+         <string>Macro path</string>
+        </property>
+        <layout class="QGridLayout">
+         <property name="leftMargin">
+          <number>11</number>
+         </property>
+         <property name="topMargin">
+          <number>11</number>
+         </property>
+         <property name="rightMargin">
+          <number>11</number>
+         </property>
+         <property name="bottomMargin">
+          <number>11</number>
+         </property>
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="Gui::PrefFileChooser" name="MacroPath">
+           <property name="toolTip">
+            <string>The directory in which the application will search for macros</string>
+           </property>
+           <property name="mode">
+            <enum>Gui::FileChooser::Directory</enum>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>MacroPath</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>Macro</cstring>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     <item row="1" column="0">
+       <widget class="QGroupBox" name="GroupBox7">
+        <property name="title">
+         <string>Gui commands</string>
+        </property>
+        <layout class="QGridLayout">
+         <property name="leftMargin">
+          <number>11</number>
+         </property>
+         <property name="topMargin">
+          <number>11</number>
+         </property>
+         <property name="rightMargin">
+          <number>11</number>
+         </property>
+         <property name="bottomMargin">
+          <number>11</number>
+         </property>
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <item row="0" column="0">
+          <widget class="Gui::PrefCheckBox" name="PrefCheckBox_RecordGui">
+           <property name="toolTip">
+            <string>Recorded macros will also contain user interface commands</string>
+           </property>
+           <property name="text">
+            <string>Record GUI commands</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>RecordGui</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>Macro</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="Gui::PrefCheckBox" name="PrefCheckBox_GuiAsComment">
+           <property name="toolTip">
+            <string>Recorded macros will also contain user interface commands as comments</string>
+           </property>
+           <property name="text">
+            <string>Record as comment</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>GuiAsComment</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>Macro</cstring>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
       <item row="2" column="0">
        <widget class="QGroupBox" name="groupBox4">
         <property name="title">
@@ -132,109 +234,7 @@
         </layout>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QGroupBox" name="GroupBox7">
-        <property name="title">
-         <string>Gui commands</string>
-        </property>
-        <layout class="QGridLayout">
-         <property name="leftMargin">
-          <number>11</number>
-         </property>
-         <property name="topMargin">
-          <number>11</number>
-         </property>
-         <property name="rightMargin">
-          <number>11</number>
-         </property>
-         <property name="bottomMargin">
-          <number>11</number>
-         </property>
-         <property name="spacing">
-          <number>6</number>
-         </property>
-         <item row="0" column="0">
-          <widget class="Gui::PrefCheckBox" name="PrefCheckBox_RecordGui">
-           <property name="toolTip">
-            <string>Recorded macros will also contain user interface commands</string>
-           </property>
-           <property name="text">
-            <string>Record GUI commands</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-           <property name="prefEntry" stdset="0">
-            <cstring>RecordGui</cstring>
-           </property>
-           <property name="prefPath" stdset="0">
-            <cstring>Macro</cstring>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="Gui::PrefCheckBox" name="PrefCheckBox_GuiAsComment">
-           <property name="toolTip">
-            <string>Recorded macros will also contain user interface commands as comments</string>
-           </property>
-           <property name="text">
-            <string>Record as comment</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-           <property name="prefEntry" stdset="0">
-            <cstring>GuiAsComment</cstring>
-           </property>
-           <property name="prefPath" stdset="0">
-            <cstring>Macro</cstring>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QGroupBox" name="GroupBox8">
-        <property name="title">
-         <string>Macro path</string>
-        </property>
-        <layout class="QGridLayout">
-         <property name="leftMargin">
-          <number>11</number>
-         </property>
-         <property name="topMargin">
-          <number>11</number>
-         </property>
-         <property name="rightMargin">
-          <number>11</number>
-         </property>
-         <property name="bottomMargin">
-          <number>11</number>
-         </property>
-         <property name="spacing">
-          <number>6</number>
-         </property>
-         <item row="0" column="0">
-          <widget class="Gui::PrefFileChooser" name="MacroPath">
-           <property name="toolTip">
-            <string>The directory in which the application will search for macros</string>
-           </property>
-           <property name="mode">
-            <enum>Gui::FileChooser::Directory</enum>
-           </property>
-           <property name="prefEntry" stdset="0">
-            <cstring>MacroPath</cstring>
-           </property>
-           <property name="prefPath" stdset="0">
-            <cstring>Macro</cstring>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-     </layout>
+      </layout>
     </widget>
    </item>
    <item row="2" column="0">
