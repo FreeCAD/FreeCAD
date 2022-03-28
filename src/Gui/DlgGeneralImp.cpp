@@ -144,7 +144,7 @@ void DlgGeneralImp::setNumberLocale(bool force/* = false*/)
         return;
 
     if (localeFormat == 0) {
-        Translator::instance()->setSystemLocale();
+        Translator::instance()->setLocale(); // Defaults to system locale
     }
     else if (localeFormat == 1) {
         QByteArray current = ui->Languages->itemData(ui->Languages->currentIndex()).toByteArray();
