@@ -148,6 +148,8 @@
         <file>icons/geometry/Sketcher_CreateRectangle_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateRectangle_Center.svg</file>
         <file>icons/geometry/Sketcher_CreateRectangle_Center_Constr.svg</file>
+        <file>icons/geometry/Sketcher_CreateFrame.svg</file>
+        <file>icons/geometry/Sketcher_CreateFrame_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreatePolygon.svg</file>
         <file>icons/geometry/Sketcher_CreatePolygon_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateSlot.svg</file>
