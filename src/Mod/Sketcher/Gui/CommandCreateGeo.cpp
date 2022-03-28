@@ -4868,7 +4868,9 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::configureToolWidge
         toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("TaskSketcherTool_p2_arc", "y of center"));
         toolWidget->setParameterLabel(WParameter::Third, QApplication::translate("TaskSketcherTool_p3_arc", "Radius"));
         toolWidget->setParameterLabel(WParameter::Fourth, QApplication::translate("TaskSketcherTool_p4_arc", "Start angle"));
+        toolWidget->configureParameterUnit(WParameter::Fourth, Base::Unit::Angle);
         toolWidget->setParameterLabel(WParameter::Fifth, QApplication::translate("TaskSketcherTool_p5_arc", "Arc angle"));
+        toolWidget->configureParameterUnit(WParameter::Fifth, Base::Unit::Angle);
 
         toolWidget->setNoticeVisible(true);
         toolWidget->setNoticeText(QApplication::translate("TaskSketcherTool_p3_notice", "Press Ctrl to snap angles at 5° steps."));
@@ -5033,7 +5035,7 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::updateVisualValues
                 toolWidget->updateVisualValue(WParameter::Third, dHandler->radius);
 
             if (!toolWidget->isParameterSet(WParameter::Fourth))
-                toolWidget->updateVisualValue(WParameter::Fourth, dHandler->startAngle * 180 / M_PI);
+                toolWidget->updateVisualValue(WParameter::Fourth, dHandler->startAngle * 180 / M_PI, Base::Unit::Angle);
         }
         else {
             if (!toolWidget->isParameterSet(WParameter::Third))
@@ -5049,7 +5051,7 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::updateVisualValues
         auto dHandler = static_cast<DrawSketchHandlerArc*>(handler);
         if (dHandler->constructionMethod == DrawSketchHandlerArc::ConstructionMethod::Center) {
             if (!toolWidget->isParameterSet(WParameter::Fifth))
-                toolWidget->updateVisualValue(WParameter::Fifth, dHandler->arcAngle * 180 / M_PI);
+                toolWidget->updateVisualValue(WParameter::Fifth, dHandler->arcAngle * 180 / M_PI, Base::Unit::Angle);
         }
         else {
             if (!toolWidget->isParameterSet(WParameter::Fifth))
