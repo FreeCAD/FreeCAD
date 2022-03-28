@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <BRep_Tool.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepGProp.hxx>
 # include <gp_Pln.hxx>
 # include <gp_Pnt.hxx>
 # include <Standard_Failure.hxx>
@@ -73,7 +74,15 @@ TopoDS_Shape Feature::getSolid(const TopoDS_Shape& shape)
     TopExp_Explorer xp;
     xp.Init(shape,TopAbs_SOLID);
     if (xp.More()) {
-        return xp.Current();
+        TopoDS_Shape solid = xp.Current();
+
+        // It can happen that a solid is flipped. Reverse if it happens.
+        GProp_GProps props;
+        BRepGProp::VolumeProperties(solid, props);
+        if (props.Mass() < 0)
+            solid.Reverse();
+
+        return solid;
     }
 
     return TopoDS_Shape();
