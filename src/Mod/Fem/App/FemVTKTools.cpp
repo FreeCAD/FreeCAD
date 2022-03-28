@@ -933,7 +933,9 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
             SMDS_NodeIteratorPtr aNodeIter = meshDS->nodesIterator();
             for (size_t i = 0; i < vec.size(); ++i) {
                 const SMDS_MeshNode* node = aNodeIter->next();
-                data->SetValue(node->GetID() - 1, vec[i] * factor);
+                // for the MassFlowRate the last vec entries can be a nullptr, thus check this
+                if (node)
+                    data->SetValue(node->GetID() - 1, vec[i] * factor);
             }
 
             grid->GetPointData()->AddArray(data);
