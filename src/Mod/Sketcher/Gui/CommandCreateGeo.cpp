@@ -4583,6 +4583,11 @@ public:
         ThreeRim
     };
 
+    enum SnapMode {
+        Free,
+        Snap5Degree
+    };
+
     DrawSketchHandlerArc(ConstructionMethod constrMethod = ConstructionMethod::Center) :
         constructionMethod(constrMethod)
         , startAngle(0)
@@ -4592,6 +4597,11 @@ public:
 
 private:
     virtual void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override {
+        if (QApplication::keyboardModifiers() == Qt::ControlModifier)
+            snapMode = SnapMode::Snap5Degree;
+        else
+            snapMode = SnapMode::Free;
+
         switch (state()) {
         case SelectMode::SeekFirst:
         {
@@ -4616,6 +4626,11 @@ private:
                 double rx = firstPoint.x - centerPoint.x;
                 double ry = firstPoint.y - centerPoint.y;
                 startAngle = atan2(ry, rx);
+
+                if (snapMode == SnapMode::Snap5Degree) {
+                    startAngle = round(startAngle / (M_PI / 36)) * M_PI / 36;
+                    firstPoint = centerPoint + radius * Base::Vector2d(cos(startAngle), sin(startAngle));
+                }
             }
             else {
                 centerPoint = (onSketchPos - firstPoint) / 2 + firstPoint;
@@ -4629,6 +4644,13 @@ private:
             circle->setRadius(radius);
             circle->setCenter(Base::Vector3d(centerPoint.x, centerPoint.y, 0.));
             geometriesToAdd.push_back(circle);
+
+            //add line to show the snap at 5 degree.
+            Part::GeomLineSegment* line = new Part::GeomLineSegment();
+            line->setPoints(Base::Vector3d(centerPoint.x, centerPoint.y, 0.),
+                Base::Vector3d(centerPoint.x + cos(startAngle) * 0.8 * radius, centerPoint.y + sin(startAngle) * 0.8 * radius, 0.));
+            geometriesToAdd.push_back(line);
+
             drawEdit(geometriesToAdd);
 
             double angle = GetPointAngle(centerPoint, onSketchPos);
@@ -4652,6 +4674,11 @@ private:
                         onSketchPos.x - centerPoint.x) - startAngle;
                     double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI;
                     arcAngle = abs(angle1 - arcAngle) < abs(angle2 - arcAngle) ? angle1 : angle2;
+
+                    if (snapMode == SnapMode::Snap5Degree) {
+                        arcAngle = round(arcAngle / (M_PI / 36)) * M_PI / 36;
+                    }
+
                     if (arcAngle > 0)
                         endAngle = startAngle + arcAngle;
                     else {
@@ -4819,6 +4846,7 @@ private:
 
 public:
     ConstructionMethod constructionMethod;
+    SnapMode snapMode;
     Base::Vector2d centerPoint, firstPoint, secondPoint;
     double radius, startAngle, endAngle, arcAngle;
     Sketcher::PointPos arcPos1, arcPos2;
@@ -4937,14 +4965,13 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::doOverrideSketchPo
             if (toolWidget->isParameterSet(WParameter::Third)) {
                 dHandler->radius = toolWidget->getParameter(WParameter::Third);
                 if (length != 0.) {
-                    onSketchPos.x = dHandler->centerPoint.x + (onSketchPos.x - dHandler->centerPoint.x) * dHandler->radius / length;
-                    onSketchPos.y = dHandler->centerPoint.y + (onSketchPos.y - dHandler->centerPoint.y) * dHandler->radius / length;
+                    onSketchPos = dHandler->centerPoint + (onSketchPos - dHandler->centerPoint) * dHandler->radius / length;
                 }
             }
             if (toolWidget->isParameterSet(WParameter::Fourth)) {
-                dHandler->startAngle = toolWidget->getParameter(WParameter::Fourth);
-                onSketchPos.x = dHandler->centerPoint.x + cos(dHandler->startAngle * M_PI / 180) * length;
-                onSketchPos.y = dHandler->centerPoint.y + sin(dHandler->startAngle * M_PI / 180) * length;
+                dHandler->startAngle = toolWidget->getParameter(WParameter::Fourth) * M_PI / 180;
+                onSketchPos.x = dHandler->centerPoint.x + cos(dHandler->startAngle) * length;
+                onSketchPos.y = dHandler->centerPoint.y + sin(dHandler->startAngle) * length;
             }
         }
         else {
