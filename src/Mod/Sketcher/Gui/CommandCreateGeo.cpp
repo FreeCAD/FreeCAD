@@ -9455,8 +9455,13 @@ template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::configureToolW
     toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("TaskSketcherTool_p2_arcSlot", "y of center"));
     toolWidget->setParameterLabel(WParameter::Third, QApplication::translate("TaskSketcherTool_p3_arcSlot", "Radius"));
     toolWidget->setParameterLabel(WParameter::Fourth, QApplication::translate("TaskSketcherTool_p4_arcSlot", "Start angle"));
+    toolWidget->configureParameterUnit(WParameter::Fourth, Base::Unit::Angle);
     toolWidget->setParameterLabel(WParameter::Fifth, QApplication::translate("TaskSketcherTool_p5_arcSlot", "Arc angle"));
+    toolWidget->configureParameterUnit(WParameter::Fifth, Base::Unit::Angle);
     toolWidget->setParameterLabel(WParameter::Sixth, QApplication::translate("TaskSketcherTool_p6_arcSlot", "Slot width"));
+
+    toolWidget->setNoticeVisible(true);
+    toolWidget->setNoticeText(QApplication::translate("TaskSketcherTool_notice_arcSlot", "Press Ctrl to snap angle at 5° steps."));
 }
 
 template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::setComboBoxesElements() {
@@ -9597,13 +9602,13 @@ template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::updateVisualVa
             toolWidget->updateVisualValue(WParameter::Third, dHandler->radius);
 
         if (!toolWidget->isParameterSet(WParameter::Fourth))
-            toolWidget->updateVisualValue(WParameter::Fourth, dHandler->startAngle * 180 / M_PI);
+            toolWidget->updateVisualValue(WParameter::Fourth, dHandler->startAngle * 180 / M_PI, Base::Unit::Angle);
     }
     break;
     case SelectMode::SeekThird:
     {
         if (!toolWidget->isParameterSet(WParameter::Fifth))
-            toolWidget->updateVisualValue(WParameter::Fifth, dHandler->arcAngle * 180 / M_PI);
+            toolWidget->updateVisualValue(WParameter::Fifth, dHandler->arcAngle * 180 / M_PI, Base::Unit::Angle);
     }
     break;
     case SelectMode::SeekFourth:
