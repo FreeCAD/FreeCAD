@@ -57,10 +57,10 @@
    <item row="1" column="0">
     <widget class="QWidget" name="widget">
      <layout class="QGridLayout" name="gridLayout">
-      <item row="1" column="0">
-       <widget class="QLabel" name="directionLabel">
+      <item row="0" column="0">
+       <widget class="QLabel" name="cutSideLabel">
         <property name="text">
-         <string>Direction</string>
+         <string>Cut Side</string>
         </property>
        </widget>
       </item>
@@ -76,16 +76,10 @@
         </item>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="Gui::InputField" name="extraOffset">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of extra material left by this operation in relation to the target shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <item row="1" column="0">
+       <widget class="QLabel" name="directionLabel">
+        <property name="text">
+         <string>Direction</string>
         </property>
        </widget>
       </item>
@@ -101,13 +95,6 @@
         </item>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="cutSideLabel">
-        <property name="text">
-         <string>Cut Side</string>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="0">
        <widget class="QLabel" name="extraOffsetLabel">
         <property name="text">
@@ -115,7 +102,20 @@
         </property>
        </widget>
       </item>
-     </layout>
+     <item row="2" column="1">
+       <widget class="Gui::InputField" name="extraOffset">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of extra material left by this operation in relation to the target shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+      </layout>
     </widget>
    </item>
    <item row="2" column="0">

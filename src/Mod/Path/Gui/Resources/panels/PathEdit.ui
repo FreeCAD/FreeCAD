@@ -144,26 +144,6 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="1" colspan="2">
-     <widget class="QLineEdit" name="postProcessorArguments">
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the Post Processor. The arguments are specific for each Post Processor, please see it's documentation for details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="0">
-     <spacer name="verticalSpacer">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>747</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
     <item row="0" column="2">
      <widget class="QToolButton" name="postProcessorSetOutputFile">
       <property name="text">
@@ -185,6 +165,13 @@
      <widget class="QLabel" name="label_11">
       <property name="text">
        <string>Arguments</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1" colspan="2">
+     <widget class="QLineEdit" name="postProcessorArguments">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the Post Processor. The arguments are specific for each Post Processor, please see it's documentation for details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
     </item>
@@ -399,7 +386,20 @@
       </layout>
      </widget>
     </item>
-   </layout>
+   <item row="5" column="0">
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>747</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    </layout>
   </widget>
   <widget class="QWidget" name="tabSetup">
    <attribute name="title">
@@ -504,15 +504,15 @@
            <item>
             <widget class="QFrame" name="stockFromBase">
              <layout class="QGridLayout" name="gridLayout_9">
-              <item row="1" column="3">
-               <widget class="Gui::InputField" name="stockExtYpos"/>
-              </item>
               <item row="0" column="1">
                <widget class="QLabel" name="stockExtXLabel">
                 <property name="text">
                  <string>Ext. X</string>
                 </property>
                </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="Gui::InputField" name="stockExtXneg"/>
               </item>
               <item row="0" column="3">
                <widget class="Gui::InputField" name="stockExtXpos">
@@ -531,8 +531,11 @@
                 </property>
                </widget>
               </item>
-              <item row="0" column="2">
-               <widget class="Gui::InputField" name="stockExtXneg"/>
+              <item row="1" column="2">
+               <widget class="Gui::InputField" name="stockExtYneg"/>
+              </item>
+             <item row="1" column="3">
+               <widget class="Gui::InputField" name="stockExtYpos"/>
               </item>
               <item row="2" column="1">
                <widget class="QLabel" name="stockExtZLabel">
@@ -547,27 +550,21 @@
               <item row="2" column="3">
                <widget class="Gui::InputField" name="stockExtZpos"/>
               </item>
-              <item row="1" column="2">
-               <widget class="Gui::InputField" name="stockExtYneg"/>
-              </item>
-             </layout>
+              </layout>
             </widget>
            </item>
            <item>
             <widget class="QFrame" name="stockCreateCylinder">
              <layout class="QGridLayout" name="gridLayout_10">
-              <item row="0" column="2">
-               <widget class="Gui::InputField" name="stockCylinderRadius"/>
-              </item>
-              <item row="1" column="2">
-               <widget class="Gui::InputField" name="stockCylinderHeight"/>
-              </item>
               <item row="0" column="1">
                <widget class="QLabel" name="stockCylinderRadiusLabel">
                 <property name="text">
                  <string>Radius</string>
                 </property>
                </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="Gui::InputField" name="stockCylinderRadius"/>
               </item>
               <item row="1" column="1">
                <widget class="QLabel" name="stockCylinderHeightLabel">
@@ -576,7 +573,10 @@
                 </property>
                </widget>
               </item>
-             </layout>
+             <item row="1" column="2">
+               <widget class="Gui::InputField" name="stockCylinderHeight"/>
+              </item>
+              </layout>
             </widget>
            </item>
            <item>
@@ -589,18 +589,15 @@
                 </property>
                </widget>
               </item>
+              <item row="0" column="2">
+               <widget class="Gui::InputField" name="stockBoxLength"/>
+              </item>
               <item row="1" column="1">
                <widget class="QLabel" name="stockBoxWidthLabel">
                 <property name="text">
                  <string>Width</string>
                 </property>
                </widget>
-              </item>
-              <item row="0" column="2">
-               <widget class="Gui::InputField" name="stockBoxLength"/>
-              </item>
-              <item row="2" column="2">
-               <widget class="Gui::InputField" name="stockBoxHeight"/>
               </item>
               <item row="1" column="2">
                <widget class="Gui::InputField" name="stockBoxWidth"/>
@@ -612,7 +609,10 @@
                 </property>
                </widget>
               </item>
-             </layout>
+             <item row="2" column="2">
+               <widget class="Gui::InputField" name="stockBoxHeight"/>
+              </item>
+              </layout>
             </widget>
            </item>
           </layout>
@@ -624,6 +624,20 @@
            <string>Alignment</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_2">
+           <item row="0" column="0">
+            <widget class="QPushButton" name="moveToOrigin">
+             <property name="text">
+              <string>Move to Origin</string>
+             </property>
+            </widget>
+           </item>
+          <item row="0" column="1">
+            <widget class="QPushButton" name="setOrigin">
+             <property name="text">
+              <string>Set Origin</string>
+             </property>
+            </widget>
+           </item>
            <item row="2" column="0">
             <widget class="QPushButton" name="centerInStock">
              <property name="text">
@@ -638,21 +652,7 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QPushButton" name="setOrigin">
-             <property name="text">
-              <string>Set Origin</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QPushButton" name="moveToOrigin">
-             <property name="text">
-              <string>Move to Origin</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
+           </layout>
          </widget>
         </item>
         <item>
@@ -682,6 +682,13 @@
              </property>
             </widget>
            </item>
+           <item row="1" column="0">
+            <widget class="QPushButton" name="modelSetX0">
+             <property name="text">
+              <string>X=0</string>
+             </property>
+            </widget>
+           </item>
            <item row="1" column="1">
             <widget class="QPushButton" name="modelSetY0">
              <property name="text">
@@ -693,13 +700,6 @@
             <widget class="QPushButton" name="modelSetZ0">
              <property name="text">
               <string>Z=0</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QPushButton" name="modelSetX0">
-             <property name="text">
-              <string>X=0</string>
              </property>
             </widget>
            </item>
@@ -719,6 +719,23 @@
            <string>Move - XY</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_3">
+           <item row="0" column="0">
+            <widget class="QPushButton" name="modelMoveLeftUp">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../Path.qrc">
+               <normaloff>:/icons/arrow-left-up.svg</normaloff>:/icons/arrow-left-up.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
+             </property>
+            </widget>
+           </item>
            <item row="0" column="1">
             <widget class="QPushButton" name="modelMoveUp">
              <property name="text">
@@ -753,31 +770,14 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="0">
-            <widget class="QPushButton" name="modelMoveLeftUp">
+           <item row="1" column="0">
+            <widget class="QPushButton" name="modelMoveLeft">
              <property name="text">
               <string/>
              </property>
              <property name="icon">
               <iconset resource="../Path.qrc">
-               <normaloff>:/icons/arrow-left-up.svg</normaloff>:/icons/arrow-left-up.svg</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="QPushButton" name="modelMoveRight">
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../Path.qrc">
-               <normaloff>:/icons/arrow-right.svg</normaloff>:/icons/arrow-right.svg</iconset>
+               <normaloff>:/icons/arrow-left.svg</normaloff>:/icons/arrow-left.svg</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -800,14 +800,14 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="0">
-            <widget class="QPushButton" name="modelMoveLeft">
+           <item row="1" column="2">
+            <widget class="QPushButton" name="modelMoveRight">
              <property name="text">
               <string/>
              </property>
              <property name="icon">
               <iconset resource="../Path.qrc">
-               <normaloff>:/icons/arrow-left.svg</normaloff>:/icons/arrow-left.svg</iconset>
+               <normaloff>:/icons/arrow-right.svg</normaloff>:/icons/arrow-right.svg</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -877,6 +877,29 @@
            <string>Rotate - XY</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_6">
+           <item row="0" column="0">
+            <widget class="QPushButton" name="modelRotateLeft">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../Path.qrc">
+               <normaloff>:/icons/arrow-ccw.svg</normaloff>:/icons/arrow-ccw.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
+             </property>
+            </widget>
+           </item>
            <item row="0" column="1">
             <widget class="QWidget" name="widget_5">
              <layout class="QVBoxLayout" name="verticalLayout_18">
@@ -916,29 +939,6 @@
                </widget>
               </item>
              </layout>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QPushButton" name="modelRotateLeft">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../Path.qrc">
-               <normaloff>:/icons/arrow-ccw.svg</normaloff>:/icons/arrow-ccw.svg</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
             </widget>
            </item>
            <item row="0" column="2">
@@ -1052,10 +1052,23 @@
            <string>Heights</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_4">
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_7">
+           <item row="0" column="1" colspan="2">
+            <widget class="QLabel" name="label_15">
              <property name="text">
-              <string>Safe</string>
+              <string>Expression</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3">
+            <widget class="QLabel" name="label_14">
+             <property name="text">
+              <string>Offset</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
              </property>
             </widget>
            </item>
@@ -1063,13 +1076,6 @@
             <widget class="QLabel" name="label_13">
              <property name="text">
               <string>Clearance</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1" colspan="2">
-            <widget class="QLineEdit" name="setupSafeHeightExpr">
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as SafeHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;OpStockZMax+SetupSheet.SafeHeightOffset&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>
@@ -1087,23 +1093,17 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="3">
-            <widget class="QLabel" name="label_14">
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_7">
              <property name="text">
-              <string>Offset</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+              <string>Safe</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="1" colspan="2">
-            <widget class="QLabel" name="label_15">
-             <property name="text">
-              <string>Expression</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+           <item row="3" column="1" colspan="2">
+            <widget class="QLineEdit" name="setupSafeHeightExpr">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as SafeHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;OpStockZMax+SetupSheet.SafeHeightOffset&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>

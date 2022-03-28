@@ -57,13 +57,6 @@
    <item row="1" column="0">
     <widget class="QWidget" name="facingWidget">
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="1">
-       <widget class="QComboBox" name="boundaryShape">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.&lt;/p&gt;&lt;p&gt;The latter can be used to face of the entire stock area to ensure uniform heights for the following operations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0">
        <widget class="QLabel" name="boundaryShape_label">
         <property name="text">
@@ -71,7 +64,14 @@
         </property>
        </widget>
       </item>
-     </layout>
+     <item row="0" column="1">
+       <widget class="QComboBox" name="boundaryShape">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.&lt;/p&gt;&lt;p&gt;The latter can be used to face of the entire stock area to ensure uniform heights for the following operations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </item>
+      </layout>
     </widget>
    </item>
    <item row="2" column="0">
@@ -216,10 +216,13 @@
    <item row="3" column="0">
     <widget class="QWidget" name="pocketWidget">
      <layout class="QGridLayout" name="gridLayout">
-      <item row="2" column="1">
-       <widget class="QCheckBox" name="minTravel">
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="useStartPoint">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if this operation uses a starting point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
-         <string>Min Travel</string>
+         <string>Use Start Point</string>
         </property>
        </widget>
       </item>
@@ -233,16 +236,6 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="useStartPoint">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if this operation uses a starting point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-        <property name="text">
-         <string>Use Start Point</string>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="0">
        <widget class="QCheckBox" name="clearEdges">
         <property name="text">
@@ -250,7 +243,14 @@
         </property>
        </widget>
       </item>
-     </layout>
+     <item row="2" column="1">
+       <widget class="QCheckBox" name="minTravel">
+        <property name="text">
+         <string>Min Travel</string>
+        </property>
+       </widget>
+      </item>
+      </layout>
     </widget>
    </item>
    <item row="4" column="0">

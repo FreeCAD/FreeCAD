@@ -49,7 +49,17 @@
       <item>
        <widget class="QWidget" name="widget_2">
         <layout class="QGridLayout" name="gridLayout">
-         <item row="2" column="1">
+         <item row="2" column="0">
+          <widget class="QCheckBox" name="showExtensions">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected all potential extensions are visualised. Enabled extensions in purple and not enabled extensions in yellow.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="text">
+            <string>Show All</string>
+           </property>
+          </widget>
+         </item>
+        <item row="2" column="1">
           <widget class="QCheckBox" name="extendCorners">
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extend the corner between two edges of a pocket. If selected adjacent edges are combined.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -59,6 +69,13 @@
            </property>
            <property name="checked">
             <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Default Length</string>
            </property>
           </widget>
          </item>
@@ -75,24 +92,7 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string>Default Length</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QCheckBox" name="showExtensions">
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected all potential extensions are visualised. Enabled extensions in purple and not enabled extensions in yellow.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="text">
-            <string>Show All</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+         </layout>
        </widget>
       </item>
       <item>
