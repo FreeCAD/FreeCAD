@@ -38,7 +38,6 @@ They are more complex that simple text annotations.
 ## \addtogroup draftguitools
 # @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
-import sys
 
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -105,13 +104,7 @@ class ShapeString(gui_base_original.Creator):
         #       + str(type(self.SString)))
 
         dquote = '"'
-        if sys.version_info.major < 3:
-            # Python2, string needs to be converted to unicode
-            String = ('u' + dquote
-                      + self.SString.encode('unicode_escape') + dquote)
-        else:
-            # Python3, string is already unicode
-            String = dquote + self.SString + dquote
+        String = dquote + self.SString + dquote
 
         # Size and tracking are numbers;
         # they are ASCII so this conversion should always work

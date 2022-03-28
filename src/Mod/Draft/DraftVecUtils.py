@@ -35,7 +35,6 @@ but which can also be used in other workbenches and in macros.
 # flake8 --ignore=E226,E266,E401,W503
 
 import math
-import sys
 
 import FreeCAD
 from FreeCAD import Vector
@@ -44,13 +43,6 @@ import draftutils.messages as messages
 __title__ = "FreeCAD Draft Workbench - Vector library"
 __author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline"
 __url__ = "https://www.freecadweb.org"
-
-# Python 2 has two integer types, int and long.
-# In Python 3 there is no 'long' anymore, so make it 'int'.
-try:
-    long
-except NameError:
-    long = int
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
@@ -230,12 +222,7 @@ def scale(u, scalar):
     Base::Vector3
         The new vector with each of its elements multiplied by `scalar`.
     """
-    # Python 2 has two integer types, int and long.
-    # In Python 3 there is no 'long' anymore.
-    if sys.version_info.major < 3:
-        typecheck([(u, Vector), (scalar, (long, int, float))], "scale")
-    else:
-        typecheck([(u, Vector), (scalar, (int, int, float))], "scale")
+    typecheck([(u, Vector), (scalar, (int, int, float))], "scale")
     return Vector(u.x*scalar, u.y*scalar, u.z*scalar)
 
 
@@ -265,12 +252,7 @@ def scaleTo(u, l):
         The new vector with each of its elements scaled by a factor.
         Or the same input vector `u`, if it is `(0, 0, 0)`.
     """
-    # Python 2 has two integer types, int and long.
-    # In Python 3 there is no 'long' anymore.
-    if sys.version_info.major < 3:
-        typecheck([(u, Vector), (l, (long, int, float))], "scaleTo")
-    else:
-        typecheck([(u, Vector), (l, (int, int, float))], "scaleTo")
+    typecheck([(u, Vector), (l, (int, int, float))], "scaleTo")
     if u.Length == 0:
         return Vector(u)
     else:

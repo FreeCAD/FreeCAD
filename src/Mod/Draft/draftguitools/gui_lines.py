@@ -33,7 +33,6 @@ like Wire, BSpline, and BezCurve.
 
 ## \addtogroup draftguitools
 # @{
-import sys
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -76,9 +75,6 @@ class Line(gui_base_original.Creator):
             self.ui.wireUi(title=translate("draft", self.featureName), icon=icon)
         else:
             self.ui.lineUi(title=translate("draft", self.featureName), icon=icon)
-        if sys.version_info.major < 3:
-            if isinstance(self.featureName, unicode):
-                self.featureName = self.featureName.encode("utf8")
 
         self.obj = self.doc.addObject("Part::Feature", self.featureName)
         gui_utils.format_object(self.obj)
