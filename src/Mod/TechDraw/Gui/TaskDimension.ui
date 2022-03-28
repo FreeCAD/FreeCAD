@@ -313,23 +313,6 @@ be used instead if the dimension value</string>
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>
        <layout class="QGridLayout" name="gridLayout_4">
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>Extension line angle</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QPushButton" name="pbDimUseDefault">
-          <property name="toolTip">
-           <string>Set dimension line angle to default (ortho view).</string>
-          </property>
-          <property name="text">
-           <string>Use default</string>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="0">
          <widget class="QRadioButton" name="rbOverride">
           <property name="toolTip">
@@ -340,13 +323,10 @@ be used instead if the dimension value</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
-         <widget class="QPushButton" name="pbDimUseSelection">
-          <property name="toolTip">
-           <string>Set dimension line angle to match selected edge or vertices.</string>
-          </property>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>Use selection</string>
+           <string>Dimension line angle</string>
           </property>
          </widget>
         </item>
@@ -366,6 +346,33 @@ be used instead if the dimension value</string>
           </property>
          </widget>
         </item>
+        <item row="2" column="0">
+         <widget class="QPushButton" name="pbDimUseDefault">
+          <property name="toolTip">
+           <string>Set dimension line angle to default (ortho view).</string>
+          </property>
+          <property name="text">
+           <string>Use default</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QPushButton" name="pbDimUseSelection">
+          <property name="toolTip">
+           <string>Set dimension line angle to match selected edge or vertices.</string>
+          </property>
+          <property name="text">
+           <string>Use selection</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Extension line angle</string>
+          </property>
+         </widget>
+        </item>
         <item row="3" column="1">
          <widget class="QDoubleSpinBox" name="dsbExtAngle">
           <property name="toolTip">
@@ -382,23 +389,6 @@ be used instead if the dimension value</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Dimension line angle</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="QPushButton" name="pbExtUseSelection">
-          <property name="toolTip">
-           <string>Set extension line angle to match selected edge or vertices.</string>
-          </property>
-          <property name="text">
-           <string>Use selection</string>
-          </property>
-         </widget>
-        </item>
         <item row="4" column="0">
          <widget class="QPushButton" name="pbExtUseDefault">
           <property name="toolTip">
@@ -409,7 +399,17 @@ be used instead if the dimension value</string>
           </property>
          </widget>
         </item>
-       </layout>
+       <item row="4" column="1">
+         <widget class="QPushButton" name="pbExtUseSelection">
+          <property name="toolTip">
+           <string>Set extension line angle to match selected edge or vertices.</string>
+          </property>
+          <property name="text">
+           <string>Use selection</string>
+          </property>
+         </widget>
+        </item>
+        </layout>
       </item>
      </layout>
     </widget>

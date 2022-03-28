@@ -28,6 +28,23 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QGridLayout" name="grid_GDT">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_GDT">
+       <property name="text">
+        <string>GD&amp;T</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="pbA01">
+       <property name="toolTip">
+        <string>Straightness</string>
+       </property>
+       <property name="text">
+        <string>⏤</string>
+       </property>
+      </widget>
+     </item>
      <item row="1" column="1">
       <widget class="QPushButton" name="pbA02">
        <property name="toolTip">
@@ -35,16 +52,6 @@
        </property>
        <property name="text">
         <string>⏥</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QPushButton" name="pbA07">
-       <property name="toolTip">
-        <string>Angularity</string>
-       </property>
-       <property name="text">
-        <string>∠</string>
        </property>
       </widget>
      </item>
@@ -68,10 +75,13 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_GDT">
+     <item row="1" column="4">
+      <widget class="QPushButton" name="pbA05">
+       <property name="toolTip">
+        <string>Parallelism</string>
+       </property>
        <property name="text">
-        <string>GD&amp;T</string>
+        <string>∥</string>
        </property>
       </widget>
      </item>
@@ -85,23 +95,13 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="4">
-      <widget class="QPushButton" name="pbA05">
+     <item row="2" column="1">
+      <widget class="QPushButton" name="pbA07">
        <property name="toolTip">
-        <string>Parallelism</string>
+        <string>Angularity</string>
        </property>
        <property name="text">
-        <string>∥</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QPushButton" name="pbA11">
-       <property name="toolTip">
-        <string>Total runout</string>
-       </property>
-       <property name="text">
-        <string>⌰</string>
+        <string>∠</string>
        </property>
       </widget>
      </item>
@@ -117,16 +117,6 @@
        </property>
        <property name="text">
         <string>⌒</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="pbA01">
-       <property name="toolTip">
-        <string>Straightness</string>
-       </property>
-       <property name="text">
-        <string>⏤</string>
        </property>
       </widget>
      </item>
@@ -147,6 +137,16 @@
        </property>
        <property name="text">
         <string>↗</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QPushButton" name="pbA11">
+       <property name="toolTip">
+        <string>Total runout</string>
+       </property>
+       <property name="text">
+        <string>⌰</string>
        </property>
       </widget>
      </item>
@@ -191,6 +191,81 @@
    </item>
    <item>
     <layout class="QGridLayout" name="grid_Modifiers">
+     <item row="0" column="0">
+      <widget class="QPushButton" name="pbB01">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>derived geometry element</string>
+       </property>
+       <property name="text">
+        <string>Ⓐ</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="pbB02">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>Minimax (Tschebyschew)</string>
+       </property>
+       <property name="text">
+        <string>Ⓒ</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="pbB03">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>Hull condition</string>
+       </property>
+       <property name="text">
+        <string>Ⓔ</string>
+       </property>
+      </widget>
+     </item>
+    <item row="0" column="3">
+      <widget class="QPushButton" name="pbB04">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>Free state</string>
+       </property>
+       <property name="text">
+        <string>Ⓕ</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="pbB05">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>Least square geometry element</string>
+       </property>
+       <property name="text">
+        <string>Ⓖ</string>
+       </property>
+      </widget>
+     </item>
      <item row="1" column="0">
       <widget class="QPushButton" name="pbB06">
        <property name="font">
@@ -203,6 +278,51 @@
        </property>
        <property name="text">
         <string>Ⓛ</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="pbB07">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>Maximum material condition (MMC)</string>
+       </property>
+       <property name="text">
+        <string>Ⓜ</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="pbB08">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>least inscribed geometry element</string>
+       </property>
+       <property name="text">
+        <string>Ⓝ</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QPushButton" name="pbB09">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>Projected tolerance zone</string>
+       </property>
+       <property name="text">
+        <string>Ⓟ</string>
        </property>
       </widget>
      </item>
@@ -236,81 +356,6 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="2">
-      <widget class="QPushButton" name="pbB13">
-       <property name="font">
-        <font>
-         <pointsize>9</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>Unequal Bilateral</string>
-       </property>
-       <property name="text">
-        <string>Ⓤ</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QPushButton" name="pbB08">
-       <property name="font">
-        <font>
-         <pointsize>9</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>least inscribed geometry element</string>
-       </property>
-       <property name="text">
-        <string>Ⓝ</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="pbB05">
-       <property name="font">
-        <font>
-         <pointsize>9</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>Least square geometry element</string>
-       </property>
-       <property name="text">
-        <string>Ⓖ</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="pbB02">
-       <property name="font">
-        <font>
-         <pointsize>9</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>Minimax (Tschebyschew)</string>
-       </property>
-       <property name="text">
-        <string>Ⓒ</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="pbB07">
-       <property name="font">
-        <font>
-         <pointsize>9</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>Maximum material condition (MMC)</string>
-       </property>
-       <property name="text">
-        <string>Ⓜ</string>
-       </property>
-      </widget>
-     </item>
      <item row="2" column="1">
       <widget class="QPushButton" name="pbB12">
        <property name="font">
@@ -326,48 +371,18 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="pbB01">
+     <item row="2" column="2">
+      <widget class="QPushButton" name="pbB13">
        <property name="font">
         <font>
          <pointsize>9</pointsize>
         </font>
        </property>
        <property name="toolTip">
-        <string>derived geometry element</string>
+        <string>Unequal Bilateral</string>
        </property>
        <property name="text">
-        <string>Ⓐ</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="pbB04">
-       <property name="font">
-        <font>
-         <pointsize>9</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>Free state</string>
-       </property>
-       <property name="text">
-        <string>Ⓕ</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="3">
-      <widget class="QPushButton" name="pbB09">
-       <property name="font">
-        <font>
-         <pointsize>9</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>Projected tolerance zone</string>
-       </property>
-       <property name="text">
-        <string>Ⓟ</string>
+        <string>Ⓤ</string>
        </property>
       </widget>
      </item>
@@ -386,22 +401,7 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="pbB03">
-       <property name="font">
-        <font>
-         <pointsize>9</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>Hull condition</string>
-       </property>
-       <property name="text">
-        <string>Ⓔ</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+     </layout>
    </item>
    <item>
     <widget class="QLabel" name="label_4">
@@ -432,16 +432,6 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="3">
-      <widget class="QPushButton" name="pbC04">
-       <property name="toolTip">
-        <string>Diameter of sphere</string>
-       </property>
-       <property name="text">
-        <string>S⌀</string>
-       </property>
-      </widget>
-     </item>
      <item row="4" column="2">
       <widget class="QPushButton" name="pbC03">
        <property name="toolTip">
@@ -449,6 +439,16 @@
        </property>
        <property name="text">
         <string>SR</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="3">
+      <widget class="QPushButton" name="pbC04">
+       <property name="toolTip">
+        <string>Diameter of sphere</string>
+       </property>
+       <property name="text">
+        <string>S⌀</string>
        </property>
       </widget>
      </item>
@@ -483,26 +483,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="pbD04">
-       <property name="toolTip">
-        <string>(Arc) Tertie</string>
-       </property>
-       <property name="text">
-        <string>‴</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="pbD03">
-       <property name="toolTip">
-        <string>(Arc) Second</string>
-       </property>
-       <property name="text">
-        <string>″</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <widget class="QPushButton" name="pbD02">
        <property name="toolTip">
@@ -513,7 +493,27 @@
        </property>
       </widget>
      </item>
-    </layout>
+    <item row="0" column="2">
+      <widget class="QPushButton" name="pbD03">
+       <property name="toolTip">
+        <string>(Arc) Second</string>
+       </property>
+       <property name="text">
+        <string>″</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QPushButton" name="pbD04">
+       <property name="toolTip">
+        <string>(Arc) Tertie</string>
+       </property>
+       <property name="text">
+        <string>‴</string>
+       </property>
+      </widget>
+     </item>
+     </layout>
    </item>
    <item>
     <widget class="QLabel" name="label">
@@ -527,13 +527,13 @@
      <property name="leftMargin">
       <number>0</number>
      </property>
-     <item row="0" column="4">
-      <widget class="QPushButton" name="pbE05">
+     <item row="0" column="0">
+      <widget class="QPushButton" name="pbE01">
        <property name="toolTip">
-        <string>Plus - Minus</string>
+        <string>Taper</string>
        </property>
        <property name="text">
-        <string>±</string>
+        <string>⌲</string>
        </property>
       </widget>
      </item>
@@ -547,16 +547,6 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="3">
-      <widget class="QPushButton" name="pbE04">
-       <property name="toolTip">
-        <string>Countersink</string>
-       </property>
-       <property name="text">
-        <string>⌵</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="2">
       <widget class="QPushButton" name="pbE03">
        <property name="toolTip">
@@ -567,13 +557,23 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="pbE01">
+     <item row="0" column="3">
+      <widget class="QPushButton" name="pbE04">
        <property name="toolTip">
-        <string>Taper</string>
+        <string>Countersink</string>
        </property>
        <property name="text">
-        <string>⌲</string>
+        <string>⌵</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="4">
+      <widget class="QPushButton" name="pbE05">
+       <property name="toolTip">
+        <string>Plus - Minus</string>
+       </property>
+       <property name="text">
+        <string>±</string>
        </property>
       </widget>
      </item>
@@ -638,16 +638,6 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="pbF06">
-       <property name="toolTip">
-        <string>Small phi</string>
-       </property>
-       <property name="text">
-        <string>φ</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <widget class="QPushButton" name="pbF02">
        <property name="toolTip">
@@ -665,16 +655,6 @@
        </property>
        <property name="text">
         <string>Ω</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="pbF07">
-       <property name="toolTip">
-        <string>Small omega</string>
-       </property>
-       <property name="text">
-        <string>⍵</string>
        </property>
       </widget>
      </item>
@@ -698,21 +678,44 @@
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QGridLayout" name="grid_Format">
-     <item row="1" column="0">
-      <widget class="QLabel" name="lbPreview">
+    <item row="1" column="0">
+      <widget class="QPushButton" name="pbF06">
+       <property name="toolTip">
+        <string>Small phi</string>
+       </property>
        <property name="text">
-        <string>Preview:</string>
+        <string>φ</string>
        </property>
       </widget>
      </item>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="pbF07">
+       <property name="toolTip">
+        <string>Small omega</string>
+       </property>
+       <property name="text">
+        <string>⍵</string>
+       </property>
+      </widget>
+     </item>
+     </layout>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="grid_Format">
      <item row="0" column="0">
       <widget class="QLabel" name="lbFormat">
        <property name="text">
         <string>Format:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="leFormat"/>
+     </item>
+    <item row="1" column="0">
+      <widget class="QLabel" name="lbPreview">
+       <property name="text">
+        <string>Preview:</string>
        </property>
       </widget>
      </item>
@@ -723,10 +726,7 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="leFormat"/>
-     </item>
-    </layout>
+     </layout>
    </item>
   </layout>
  </widget>

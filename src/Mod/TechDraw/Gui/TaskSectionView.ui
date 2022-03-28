@@ -22,10 +22,10 @@
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
     <layout class="QGridLayout" name="gridLayout_4">
-     <item row="3" column="0">
-      <widget class="QLabel" name="label">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_7">
        <property name="text">
-        <string>Scale</string>
+        <string>BaseView</string>
        </property>
       </widget>
      </item>
@@ -41,26 +41,6 @@
         </size>
        </property>
       </spacer>
-     </item>
-     <item row="1" column="2">
-      <widget class="QLineEdit" name="leSymbol">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>22</height>
-        </size>
-       </property>
-       <property name="toolTip">
-        <string>Identifier for this section</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_7">
-       <property name="text">
-        <string>BaseView</string>
-       </property>
-      </widget>
      </item>
      <item row="0" column="2">
       <widget class="QLineEdit" name="leBaseView">
@@ -79,6 +59,61 @@
       <widget class="QLabel" name="label_2">
        <property name="text">
         <string>Identifier</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QLineEdit" name="leSymbol">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>22</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Identifier for this section</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Scale Type</string>
+       </property>
+      </widget>
+     </item>
+    <item row="2" column="2">
+      <widget class="QComboBox" name="cmbScaleType">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>22</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Scale Page/Auto/Custom</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>Page</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Automatic</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Custom</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Scale</string>
        </property>
       </widget>
      </item>
@@ -122,42 +157,7 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="2">
-      <widget class="QComboBox" name="cmbScaleType">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>22</height>
-        </size>
-       </property>
-       <property name="toolTip">
-        <string>Scale Page/Auto/Custom</string>
-       </property>
-       <item>
-        <property name="text">
-         <string>Page</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Automatic</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Custom</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Scale Type</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+     </layout>
    </item>
    <item>
     <widget class="Line" name="line">

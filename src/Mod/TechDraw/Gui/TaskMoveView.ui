@@ -16,17 +16,10 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QGridLayout" name="gridLayout" columnstretch="2,3,0">
-     <item row="0" column="2">
-      <widget class="QPushButton" name="pbView">
+     <item row="0" column="0">
+      <widget class="QLabel" name="lViewName">
        <property name="text">
-        <string>...</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QPushButton" name="pbFromPage">
-       <property name="text">
-        <string>...</string>
+        <string>View to move</string>
        </property>
       </widget>
      </item>
@@ -37,24 +30,10 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="2">
-      <widget class="QPushButton" name="pbToPage">
+     <item row="0" column="2">
+      <widget class="QPushButton" name="pbView">
        <property name="text">
         <string>...</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QLineEdit" name="leToPage">
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="leFromPage">
-       <property name="readOnly">
-        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -65,6 +44,20 @@
        </property>
       </widget>
      </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="leFromPage">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="pbFromPage">
+       <property name="text">
+        <string>...</string>
+       </property>
+      </widget>
+     </item>
      <item row="2" column="0">
       <widget class="QLabel" name="lToPage">
        <property name="text">
@@ -72,10 +65,17 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="lViewName">
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="leToPage">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QPushButton" name="pbToPage">
        <property name="text">
-        <string>View to move</string>
+        <string>...</string>
        </property>
       </widget>
      </item>
