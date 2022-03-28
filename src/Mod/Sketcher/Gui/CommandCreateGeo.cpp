@@ -7620,7 +7620,7 @@ bool CmdSketcherCreateFillet::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
-// ======================================================================================
+// Trim edge =========================================================================
 
 namespace SketcherGui {
     class TrimmingSelection : public Gui::SelectionFilterGate
@@ -7783,7 +7783,7 @@ bool CmdSketcherTrimming::isActive(void)
 }
 
 
-// ======================================================================================
+// Extend edge ========================================================================
 
 namespace SketcherGui {
     class ExtendSelection : public Gui::SelectionFilterGate
@@ -8098,7 +8098,7 @@ bool CmdSketcherExtend::isActive(void)
 }
 
 
-// ======================================================================================
+// Split edge ==========================================================================
 
 namespace SketcherGui {
     class SplittingSelection : public Gui::SelectionFilterGate
@@ -8217,6 +8217,98 @@ bool CmdSketcherSplit::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
+
+/* Modify edge comp ====================================================================*/
+
+DEF_STD_CMD_ACL(CmdSketcherCompModifyEdge)
+
+CmdSketcherCompModifyEdge::CmdSketcherCompModifyEdge()
+    : Command("Sketcher_CompModifyEdge")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Modify an edge");
+    sToolTipText = QT_TR_NOOP("Trim, extend, split... and edge");
+    sWhatsThis = "Sketcher_CompModifyEdge";
+    sStatusTip = sToolTipText;
+    sAccel = "G, T";
+    eType = ForEdit;
+}
+
+void CmdSketcherCompModifyEdge::activated(int iMsg)
+{
+    switch (iMsg) {
+    case 0:
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerTrimming()); break;
+    case 1:
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerExtend()); break;
+    case 2:
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerSplitting()); break;
+    default:
+        return;
+    }
+
+    // Since the default icon is reset when enabling/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+}
+
+Gui::Action* CmdSketcherCompModifyEdge::createAction(void)
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* trim = pcAction->addAction(QString());
+    trim->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Trimming"));
+    QAction* extend = pcAction->addAction(QString());
+    extend->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Extend"));
+    QAction* split = pcAction->addAction(QString());
+    split->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Split"));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(trim->icon());
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdSketcherCompModifyEdge::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    QAction* trim = a[0];
+    trim->setText(QApplication::translate("CmdSketcherCompModifyEdge", "Trim edge"));
+    trim->setToolTip(QApplication::translate("Sketcher_Trimming", "Trim an edge with respect to the picked position"));
+    trim->setStatusTip(QApplication::translate("Sketcher_Trimming", "Trim an edge with respect to the picked position"));
+    QAction* extend = a[1];
+    extend->setText(QApplication::translate("CmdSketcherCompModifyEdge", "Extend edge"));
+    extend->setToolTip(QApplication::translate("Sketcher_Extend", "Extend an edge with respect to the picked position"));
+    extend->setStatusTip(QApplication::translate("Sketcher_Extend", "Extend an edge with respect to the picked position"));
+    QAction* split = a[2];
+    split->setText(QApplication::translate("CmdSketcherCompModifyEdge", "Split edge"));
+    split->setToolTip(QApplication::translate("Sketcher_Split", "Splits an edge into two while preserving constraintst"));
+    split->setStatusTip(QApplication::translate("Sketcher_Split", "Splits an edge into two while preserving constraints"));
+}
+
+bool CmdSketcherCompModifyEdge::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+/* External Geometries ==================================================================*/
 
 namespace SketcherGui {
     class ExternalSelection : public Gui::SelectionFilterGate
@@ -9838,6 +9930,7 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherCreateFillet());
     //rcCmdMgr.addCommand(new CmdSketcherCreateText());
     //rcCmdMgr.addCommand(new CmdSketcherCreateDraftLine());
+    rcCmdMgr.addCommand(new CmdSketcherCompModifyEdge());
     rcCmdMgr.addCommand(new CmdSketcherTrimming());
     rcCmdMgr.addCommand(new CmdSketcherExtend());
     rcCmdMgr.addCommand(new CmdSketcherSplit());

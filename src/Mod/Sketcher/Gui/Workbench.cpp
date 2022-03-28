@@ -241,6 +241,24 @@ inline void SketcherAddWorkspaceSlot<Gui::ToolBarItem>(Gui::ToolBarItem& geom)
     geom << "Sketcher_CompCreateSlot";
 }
 
+
+template <typename T>
+void SketcherAddWorkspaceEdges(T& geom);
+
+template <>
+inline void SketcherAddWorkspaceEdges<Gui::MenuItem>(Gui::MenuItem& geom)
+{
+    geom << "Sketcher_Trimming"
+        << "Sketcher_Extend"
+        << "Sketcher_Split";
+}
+
+template <>
+inline void SketcherAddWorkspaceEdges<Gui::ToolBarItem>(Gui::ToolBarItem& geom)
+{
+    geom << "Sketcher_CompModifyEdge";
+}
+
 template <typename T>
 inline void SketcherAddWorkbenchGeometries(T& geom)
 {
@@ -252,11 +270,9 @@ inline void SketcherAddWorkbenchGeometries(T& geom)
     SketcherAddWorkspaceRectangles(geom);
     SketcherAddWorkspaceSlot(geom);
     geom    << "Separator"
-            << "Sketcher_CreateFillet"
-            << "Sketcher_Trimming"
-            << "Sketcher_Extend"
-            << "Sketcher_Split"
-            << "Sketcher_External"
+            << "Sketcher_CreateFillet";
+    SketcherAddWorkspaceEdges(geom);
+    geom    << "Sketcher_External"
             << "Sketcher_CarbonCopy"
             << "Sketcher_ToggleConstruction"
             /*<< "Sketcher_CreateText"*/
