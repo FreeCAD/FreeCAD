@@ -14,28 +14,6 @@
    <string>Setup Configuration Table</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>Property:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="2">
-    <widget class="QLineEdit" name="lineEditEnd">
-     <property name="toolTip">
-      <string>Ending cell address.
-
-The first column of the range is assumed to contain a list of configuration
-names, which will be used to generate a string list and bind to the given
-property for user to dynamically switch configuration.
-
-The first row of the range will be bound to whatever row (indirectly) selected
-by that property.
-</string>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
@@ -58,6 +36,28 @@ by that property.
      </property>
     </widget>
    </item>
+   <item row="0" column="2">
+    <widget class="QLineEdit" name="lineEditEnd">
+     <property name="toolTip">
+      <string>Ending cell address.
+
+The first column of the range is assumed to contain a list of configuration
+names, which will be used to generate a string list and bind to the given
+property for user to dynamically switch configuration.
+
+The first row of the range will be bound to whatever row (indirectly) selected
+by that property.
+</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Property:</string>
+     </property>
+    </widget>
+   </item>
    <item row="1" column="1" colspan="2">
     <widget class="Gui::ExpressionLineEdit" name="lineEditProp">
      <property name="toolTip">
@@ -66,17 +66,17 @@ switch the design configuration. The property will be created if not exist.</str
      </property>
     </widget>
    </item>
-   <item row="2" column="1" colspan="2">
-    <widget class="QLineEdit" name="lineEditGroup">
-     <property name="toolTip">
-      <string>Optional property group name.</string>
-     </property>
-    </widget>
-   </item>
    <item row="2" column="0">
     <widget class="QLabel" name="label_3">
      <property name="text">
       <string>Group:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1" colspan="2">
+    <widget class="QLineEdit" name="lineEditGroup">
+     <property name="toolTip">
+      <string>Optional property group name.</string>
      </property>
     </widget>
    </item>
