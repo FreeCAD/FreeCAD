@@ -38,18 +38,112 @@
       <string/>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
-      <item row="9" column="0">
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_icon">
+        <property name="text">
+         <string>(Placeholder for the icon)</string>
         </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
+       </widget>
+      </item>
+     <item row="1" column="0">
+       <layout class="QGridLayout" name="grid_values">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_r_distance">
+          <property name="toolTip">
+           <string>Distance from one layer of objects to the next layer of objects.</string>
+          </property>
+          <property name="text">
+           <string>Radial distance</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Gui::QuantitySpinBox" name="spinbox_r_distance">
+          <property name="toolTip">
+           <string>Distance from one layer of objects to the next layer of objects.</string>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true"/>
+          </property>
+          <property name="value">
+           <double>200.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_tan_distance">
+          <property name="toolTip">
+           <string>Distance from one element in one ring of the array to the next element in the same ring.
+It cannot be zero.</string>
+          </property>
+          <property name="text">
+           <string>Tangential distance</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::QuantitySpinBox" name="spinbox_tan_distance">
+          <property name="toolTip">
+           <string>Distance from one element in one ring of the array to the next element in the same ring.
+It cannot be zero.</string>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true"/>
+          </property>
+          <property name="value">
+           <double>100.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_number">
+          <property name="toolTip">
+           <string>Number of circular layers or rings to create, including a copy of the original object.
+It must be at least 2.</string>
+          </property>
+          <property name="text">
+           <string>Number of circular layers</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QSpinBox" name="spinbox_number">
+          <property name="toolTip">
+           <string>Number of circular layers or rings to create, including a copy of the original object.
+It must be at least 2.</string>
+          </property>
+          <property name="minimum">
+           <number>2</number>
+          </property>
+          <property name="value">
+           <number>3</number>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_symmetry">
+          <property name="toolTip">
+           <string>The number of symmetry lines in the circular array.</string>
+          </property>
+          <property name="text">
+           <string>Symmetry</string>
+          </property>
+         </widget>
+        </item>
+       <item row="3" column="1">
+         <widget class="QSpinBox" name="spinbox_symmetry">
+          <property name="toolTip">
+           <string>The number of symmetry lines in the circular array.</string>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="value">
+           <number>1</number>
+          </property>
+         </widget>
+        </item>
+        </layout>
       </item>
       <item row="5" column="0">
        <widget class="QGroupBox" name="group_center">
@@ -63,50 +157,10 @@ Change the direction of the axis itself in the property editor.</string>
         <layout class="QGridLayout" name="gridLayout_2">
          <item row="0" column="0">
           <layout class="QGridLayout" name="gridLayout">
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_c_z">
-             <property name="text">
-              <string>Z</string>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="0">
             <widget class="QLabel" name="label_c_x">
              <property name="text">
               <string>X</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_c_y">
-             <property name="text">
-              <string>Y</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="Gui::InputField" name="input_c_z">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="unit" stdset="0">
-              <string notr="true"/>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="Gui::InputField" name="input_c_y">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="unit" stdset="0">
-              <string notr="true"/>
              </property>
             </widget>
            </item>
@@ -123,7 +177,47 @@ Change the direction of the axis itself in the property editor.</string>
              </property>
             </widget>
            </item>
-          </layout>
+          <item row="1" column="0">
+            <widget class="QLabel" name="label_c_y">
+             <property name="text">
+              <string>Y</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="Gui::InputField" name="input_c_y">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="unit" stdset="0">
+              <string notr="true"/>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_c_z">
+             <property name="text">
+              <string>Z</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="Gui::InputField" name="input_c_z">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="unit" stdset="0">
+              <string notr="true"/>
+             </property>
+            </widget>
+           </item>
+           </layout>
          </item>
          <item row="1" column="0">
           <widget class="QPushButton" name="button_reset">
@@ -167,114 +261,20 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
         </item>
        </layout>
       </item>
-      <item row="1" column="0">
-       <layout class="QGridLayout" name="grid_values">
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_tan_distance">
-          <property name="toolTip">
-           <string>Distance from one element in one ring of the array to the next element in the same ring.
-It cannot be zero.</string>
-          </property>
-          <property name="text">
-           <string>Tangential distance</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="Gui::QuantitySpinBox" name="spinbox_tan_distance">
-          <property name="toolTip">
-           <string>Distance from one element in one ring of the array to the next element in the same ring.
-It cannot be zero.</string>
-          </property>
-          <property name="unit" stdset="0">
-           <string notr="true"/>
-          </property>
-          <property name="value">
-           <double>100.000000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_r_distance">
-          <property name="toolTip">
-           <string>Distance from one layer of objects to the next layer of objects.</string>
-          </property>
-          <property name="text">
-           <string>Radial distance</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="Gui::QuantitySpinBox" name="spinbox_r_distance">
-          <property name="toolTip">
-           <string>Distance from one layer of objects to the next layer of objects.</string>
-          </property>
-          <property name="unit" stdset="0">
-           <string notr="true"/>
-          </property>
-          <property name="value">
-           <double>200.000000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QSpinBox" name="spinbox_symmetry">
-          <property name="toolTip">
-           <string>The number of symmetry lines in the circular array.</string>
-          </property>
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="value">
-           <number>1</number>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QSpinBox" name="spinbox_number">
-          <property name="toolTip">
-           <string>Number of circular layers or rings to create, including a copy of the original object.
-It must be at least 2.</string>
-          </property>
-          <property name="minimum">
-           <number>2</number>
-          </property>
-          <property name="value">
-           <number>3</number>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_number">
-          <property name="toolTip">
-           <string>Number of circular layers or rings to create, including a copy of the original object.
-It must be at least 2.</string>
-          </property>
-          <property name="text">
-           <string>Number of circular layers</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_symmetry">
-          <property name="toolTip">
-           <string>The number of symmetry lines in the circular array.</string>
-          </property>
-          <property name="text">
-           <string>Symmetry</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_icon">
-        <property name="text">
-         <string>(Placeholder for the icon)</string>
+      <item row="9" column="0">
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
         </property>
-       </widget>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
       </item>
-     </layout>
+      </layout>
     </widget>
    </item>
   </layout>

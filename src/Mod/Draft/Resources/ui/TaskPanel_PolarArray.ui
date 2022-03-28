@@ -38,136 +38,14 @@
       <string/>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
-      <item row="9" column="0">
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_icon">
+        <property name="text">
+         <string>(Placeholder for the icon)</string>
         </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="5" column="0">
-       <widget class="QGroupBox" name="group_center">
-        <property name="toolTip">
-         <string>The coordinates of the point through which the axis of rotation passes.
-Change the direction of the axis itself in the property editor.</string>
-        </property>
-        <property name="title">
-         <string>Center of rotation</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_2">
-         <item row="0" column="0">
-          <layout class="QGridLayout" name="grid_center">
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_c_z">
-             <property name="text">
-              <string>Z</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="Gui::InputField" name="input_c_x">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="unit" stdset="0">
-              <string notr="true"/>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="Gui::InputField" name="input_c_y">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="unit" stdset="0">
-              <string notr="true"/>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="Gui::InputField" name="input_c_z">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="unit" stdset="0">
-              <string notr="true"/>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_c_x">
-             <property name="text">
-              <string>X</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_c_y">
-             <property name="text">
-              <string>Y</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="1" column="0">
-          <widget class="QPushButton" name="button_reset">
-           <property name="toolTip">
-            <string>Reset the coordinates of the center of rotation.</string>
-           </property>
-           <property name="text">
-            <string>Reset point</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
        </widget>
       </item>
-      <item row="6" column="0">
-       <layout class="QVBoxLayout" name="vertical_layout">
-        <item>
-         <widget class="QCheckBox" name="checkbox_fuse">
-          <property name="toolTip">
-           <string>If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if "Link array" is off.</string>
-          </property>
-          <property name="text">
-           <string>Fuse</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="checkbox_link">
-          <property name="toolTip">
-           <string>If checked, the resulting object will be a "Link array" instead of a regular array.
-A Link array is more efficient when creating multiple copies, but it cannot be fused together.</string>
-          </property>
-          <property name="text">
-           <string>Link array</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="1" column="0">
+     <item row="1" column="0">
        <layout class="QGridLayout" name="grid_values">
         <item row="0" column="0">
          <widget class="QLabel" name="label_angle">
@@ -229,14 +107,136 @@ It must be at least 2.</string>
         </item>
        </layout>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_icon">
-        <property name="text">
-         <string>(Placeholder for the icon)</string>
+      <item row="5" column="0">
+       <widget class="QGroupBox" name="group_center">
+        <property name="toolTip">
+         <string>The coordinates of the point through which the axis of rotation passes.
+Change the direction of the axis itself in the property editor.</string>
         </property>
+        <property name="title">
+         <string>Center of rotation</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="0" column="0">
+          <layout class="QGridLayout" name="grid_center">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_c_x">
+             <property name="text">
+              <string>X</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="Gui::InputField" name="input_c_x">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="unit" stdset="0">
+              <string notr="true"/>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_c_y">
+             <property name="text">
+              <string>Y</string>
+             </property>
+            </widget>
+           </item>
+          <item row="1" column="1">
+            <widget class="Gui::InputField" name="input_c_y">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="unit" stdset="0">
+              <string notr="true"/>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_c_z">
+             <property name="text">
+              <string>Z</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="Gui::InputField" name="input_c_z">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="unit" stdset="0">
+              <string notr="true"/>
+             </property>
+            </widget>
+           </item>
+           </layout>
+         </item>
+         <item row="1" column="0">
+          <widget class="QPushButton" name="button_reset">
+           <property name="toolTip">
+            <string>Reset the coordinates of the center of rotation.</string>
+           </property>
+           <property name="text">
+            <string>Reset point</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
-     </layout>
+      <item row="6" column="0">
+       <layout class="QVBoxLayout" name="vertical_layout">
+        <item>
+         <widget class="QCheckBox" name="checkbox_fuse">
+          <property name="toolTip">
+           <string>If checked, the resulting objects in the array will be fused if they touch each other.
+This only works if "Link array" is off.</string>
+          </property>
+          <property name="text">
+           <string>Fuse</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkbox_link">
+          <property name="toolTip">
+           <string>If checked, the resulting object will be a "Link array" instead of a regular array.
+A Link array is more efficient when creating multiple copies, but it cannot be fused together.</string>
+          </property>
+          <property name="text">
+           <string>Link array</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="9" column="0">
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      </layout>
     </widget>
    </item>
   </layout>
