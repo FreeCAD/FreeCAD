@@ -474,6 +474,16 @@ void ViewProviderFemPostObject::WritePointData(vtkPoints* points, vtkDataArray* 
     }
 }
 
+void ViewProviderFemPostObject::setRangeOfColorBar(double min, double max)
+{
+    try {
+        m_colorBar->setRange(min, max);
+    }
+    catch (const Base::ValueError& e) {
+        e.ReportException();
+    }
+}
+
 void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
 
     if (!setupPipeline())
@@ -501,7 +511,7 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
     if (ResetColorBarRange == true) {
         double range[2];
         data->GetRange(range, component);
-        m_colorBar->setRange(range[0], range[1]);
+        setRangeOfColorBar(range[0], range[1]);
     }
 
     m_material->diffuseColor.startEditing();
