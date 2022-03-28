@@ -35,31 +35,6 @@
       <string>List control</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
-      <item row="1" column="0">
-       <widget class="Gui::PrefCheckBox" name="filterInternalAlignment">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Internal alignments will be hidden</string>
-        </property>
-        <property name="text">
-         <string>Hide internal alignment</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>HideInternalAlignment</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Sketcher</cstring>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="extendedInformation">
         <property name="sizePolicy">
@@ -85,7 +60,32 @@
         </property>
        </widget>
       </item>
-     </layout>
+     <item row="1" column="0">
+       <widget class="Gui::PrefCheckBox" name="filterInternalAlignment">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Internal alignments will be hidden</string>
+        </property>
+        <property name="text">
+         <string>Hide internal alignment</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>HideInternalAlignment</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher</cstring>
+        </property>
+       </widget>
+      </item>
+      </layout>
     </widget>
    </item>
    <item>
