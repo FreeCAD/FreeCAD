@@ -2432,6 +2432,7 @@ template <> void DrawSketchHandlerPolygonBase::ToolWidgetManager::configureToolW
     toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("TaskSketcherTool_p2_polygon", "y of center"));
     toolWidget->setParameterLabel(WParameter::Third, QApplication::translate("TaskSketcherTool_p3_polygon", "Radius"));
     toolWidget->setParameterLabel(WParameter::Fourth, QApplication::translate("ToolWidgetManager_p4", "Angle"));
+    toolWidget->configureParameterUnit(WParameter::Fourth, Base::Unit::Angle);
     toolWidget->setParameterLabel(WParameter::Fifth, QApplication::translate("ToolWidgetManager_p4", "Side number"));
     toolWidget->configureParameterInitialValue(WParameter::Fifth, dHandler->EditCurve.size() - 1);
 }
@@ -2512,7 +2513,7 @@ template <> void DrawSketchHandlerPolygonBase::ToolWidgetManager::updateVisualVa
             toolWidget->updateVisualValue(WParameter::Third, (onSketchPos - dHandler->centerPoint).Length());
 
         if (!toolWidget->isParameterSet(WParameter::Fourth))
-            toolWidget->updateVisualValue(WParameter::Fourth, (onSketchPos - dHandler->centerPoint).Angle() * 180 / M_PI);
+            toolWidget->updateVisualValue(WParameter::Fourth, (onSketchPos - dHandler->centerPoint).Angle() * 180 / M_PI, Base::Unit::Angle);
     }
     break;
     default:
