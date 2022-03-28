@@ -88,10 +88,20 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.StepOver != self.form.stepOver.value():
             obj.StepOver = self.form.stepOver.value()
 
+        if obj.AvoidLastX_Faces != self.form.avoidLastX_Faces.value():
+            obj.AvoidLastX_Faces = self.form.avoidLastX_Faces.value()
+
         PathGui.updateInputField(obj, "SampleInterval", self.form.sampleInterval)
+        PathGui.updateInputField(obj, "DepthOffset", self.form.depthOffset)
 
         if obj.OptimizeLinearPaths != self.form.optimizeEnabled.isChecked():
             obj.OptimizeLinearPaths = self.form.optimizeEnabled.isChecked()
+
+        if obj.FinishingProfile != self.form.finishingProfile.isChecked():
+            obj.FinishingProfile = self.form.finishingProfile.isChecked()
+
+        if obj.BoundaryEnforcement != self.form.boundaryEnforcement.isChecked():
+            obj.BoundaryEnforcement = self.form.boundaryEnforcement.isChecked()
 
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
@@ -112,11 +122,28 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
                 obj.SampleInterval.Value, FreeCAD.Units.Length
             ).UserString
         )
+        self.form.depthOffset.setText(
+            FreeCAD.Units.Quantity(
+                obj.DepthOffset.Value, FreeCAD.Units.Length
+            ).UserString
+        )
 
         if obj.OptimizeLinearPaths:
             self.form.optimizeEnabled.setCheckState(QtCore.Qt.Checked)
         else:
             self.form.optimizeEnabled.setCheckState(QtCore.Qt.Unchecked)
+
+        if obj.FinishingProfile:
+            self.form.finishingProfile.setCheckState(QtCore.Qt.Checked)
+        else:
+            self.form.finishingProfile.setCheckState(QtCore.Qt.Unchecked)
+
+        if obj.BoundaryEnforcement:
+            self.form.boundaryEnforcement.setCheckState(QtCore.Qt.Checked)
+        else:
+            self.form.boundaryEnforcement.setCheckState(QtCore.Qt.Unchecked)
+
+        self.form.avoidLastX_Faces.setValue(obj.AvoidLastX_Faces)
 
         self.updateVisibility()
 
@@ -131,8 +158,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.cutPattern.currentIndexChanged)
         signals.append(self.form.boundaryAdjustment.editingFinished)
         signals.append(self.form.stepOver.editingFinished)
+        signals.append(self.form.depthOffset.editingFinished)
         signals.append(self.form.sampleInterval.editingFinished)
         signals.append(self.form.optimizeEnabled.stateChanged)
+        signals.append(self.form.finishingProfile.stateChanged)
+        signals.append(self.form.boundaryEnforcement.stateChanged)
 
         return signals
 
@@ -146,15 +176,38 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.cutPattern_label.hide()
             self.form.boundaryAdjustment.hide()
             self.form.boundaryAdjustment_label.hide()
+            self.form.depthOffset.hide()
+            self.form.depthOffset_label.hide()
             self.form.stepOver.hide()
             self.form.stepOver_label.hide()
             self.form.sampleInterval.show()
             self.form.sampleInterval_label.show()
+            self.form.finishingProfile.hide()
+            self.form.boundaryEnforcement.hide()
+            self.form.avoidLastX_Faces.hide()
+            self.form.avoidLastX_Faces_label.hide()
+        elif Algorithm == "Grid Dropcutter":
+            self.form.cutPattern.hide()
+            self.form.cutPattern_label.hide()
+            self.form.boundaryAdjustment.show()
+            self.form.boundaryAdjustment_label.show()
+            self.form.depthOffset.show()
+            self.form.depthOffset_label.show()
+            self.form.stepOver.show()
+            self.form.stepOver_label.show()
+            self.form.sampleInterval.show()
+            self.form.sampleInterval_label.show()
+            self.form.finishingProfile.show()
+            self.form.boundaryEnforcement.show()
+            self.form.avoidLastX_Faces.show()
+            self.form.avoidLastX_Faces_label.show()
         elif Algorithm == "Experimental":
             self.form.cutPattern.show()
             self.form.boundaryAdjustment.show()
             self.form.cutPattern_label.show()
             self.form.boundaryAdjustment_label.show()
+            self.form.depthOffset.hide()
+            self.form.depthOffset_label.hide()
             if self.form.cutPattern.currentData() == "None":
                 self.form.stepOver.hide()
                 self.form.stepOver_label.hide()
@@ -163,6 +216,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
                 self.form.stepOver_label.show()
             self.form.sampleInterval.hide()
             self.form.sampleInterval_label.hide()
+            self.form.finishingProfile.hide()
+            self.form.boundaryEnforcement.hide()
+            self.form.avoidLastX_Faces.hide()
+            self.form.avoidLastX_Faces_label.hide()
 
     def registerSignalHandlers(self, obj):
         self.form.algorithmSelect.currentIndexChanged.connect(self.updateVisibility)

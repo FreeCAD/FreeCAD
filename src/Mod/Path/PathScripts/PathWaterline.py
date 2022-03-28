@@ -30,6 +30,10 @@ __url__ = "http://www.freecadweb.org"
 __doc__ = "Class and implementation of Waterline operation."
 __contributors__ = ""
 
+import FreeCAD
+from PySide import QtCore
+import numpy
+from PathScripts.PathLevelMapOp import LevelMapOp, PathMeshBox
 translate = FreeCAD.Qt.translate
 
 # OCL must be installed
@@ -74,6 +78,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         return (
             PathOp.FeatureTool
             | PathOp.FeatureDepths
+            | PathOp.FeatureFinishDepth
             | PathOp.FeatureHeights
             | PathOp.FeatureStepDown
             | PathOp.FeatureCoolant
@@ -95,6 +100,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         enums = {
             "Algorithm": [
                 (translate("path_waterline", "OCL Dropcutter"), "OCL Dropcutter"),
+                (translate("path_waterline", "Grid Dropcutter"), "Grid Dropcutter"),
                 (translate("path_waterline", "Experimental"), "Experimental"),
             ],
             "BoundBox": [
@@ -289,7 +295,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                 "Clearing Options",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).",
+                    "Select the algorithm to use: OCL Dropcutter*, Grid Dropcutter, or Experimental (Not OCL based).",
                 ),
             ),
             (
@@ -368,6 +374,15 @@ class ObjectWaterline(PathOp.ObjectOp):
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Complete the operation in a single pass at depth, or mulitiple passes to final depth.",
+                ),
+            ),
+            (
+                "App::PropertyBool",
+                "FinishingProfile",
+                "Clearing Options",
+                QtCore.QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Make finishing with step between waterlines defined by Finish Depth.",
                 ),
             ),
             (
@@ -475,13 +490,15 @@ class ObjectWaterline(PathOp.ObjectOp):
             "StartPoint": FreeCAD.Vector(0.0, 0.0, obj.ClearanceHeight.Value),
             "Algorithm": "OCL Dropcutter",
             "LayerMode": "Single-pass",
+            "FinishingProfile": False,
+            "FinishDepth": 0.1,
             "CutMode": "Conventional",
             "CutPattern": "None",
             "HandleMultipleFeatures": "Collectively",
             "PatternCenterAt": "CenterOfMass",
             "GapSizes": "No gaps identified.",
             "ClearLastLayer": "Off",
-            "StepOver": 100.0,
+            "StepOver": 60.0,
             "CutPatternAngle": 0.0,
             "DepthOffset": 0.0,
             "SampleInterval": 1.0,
@@ -530,7 +547,15 @@ class ObjectWaterline(PathOp.ObjectOp):
         obj.setEditorMode("GapSizes", hide)
 
         if obj.Algorithm == "OCL Dropcutter":
-            pass
+            obj.setEditorMode("FinishingProfile", hide)
+        elif obj.Algorithm == "Grid Dropcutter":
+            obj.setEditorMode("FinishingProfile", 0)
+            obj.setEditorMode("BoundaryAdjustment", 0)
+            obj.setEditorMode("BoundaryEnforcement", 0)
+            obj.setEditorMode("AvoidLastX_Faces", 0)
+            obj.setEditorMode("HandleMultipleFeatures", 0)
+            B = 0
+            #obj.setEditorMode("FinishDepth", show)
         elif obj.Algorithm == "Experimental":
             A = B = C = 0
             expMode = G = show = hide = 2
@@ -724,6 +749,12 @@ class ObjectWaterline(PathOp.ObjectOp):
     def opExecute(self, obj):
         """opExecute(obj) ... process surface operation"""
         PathLog.track()
+
+        if obj.Algorithm == "Grid Dropcutter":
+            return self.opGridExecute( obj )
+            # It is a separated branch needed to avoid both OCL library and
+            # a very slow computation of BoundBox for models with several
+            # thousand faces caused by area.makeSections routine.
 
         self.modelSTLs = list()
         self.safeSTLs = list()
@@ -1724,6 +1755,525 @@ class ObjectWaterline(PathOp.ObjectOp):
         self.layerEndPnt = pnt
 
         return output
+
+    #--------------------------------------------------------------------------
+    # Grid Dropcutter waterline functions
+    def opGridExecute(self, obj):
+        # It is a separated branch needed to avoid both OCL library and
+        # a very slow computation of BoundBox for models with several
+        # thousand faces caused by area.makeSections routine.
+
+        CMDS = list()
+
+        # mark beginning of operation and identify parent Job
+        PathLog.info("\nBegin Grid Waterline operation...")
+        startTime = time.time()
+
+        # Identify parent Job
+        JOB = PathUtils.findParentJob(obj)
+        if JOB is None:
+            PathLog.error(translate("PathWaterline", "No JOB"))
+            return True
+        self.stockZMin = JOB.Stock.Shape.BoundBox.ZMin
+
+        # Begin GCode for operation with basic information
+        # ... and move cutter to clearance height and startpoint
+        if obj.Comment != "":
+            self.commandlist.append(Path.Command("N ({})".format(str(obj.Comment)), {}))
+        self.commandlist.append(Path.Command("N ({})".format(obj.Label), {}))
+        self.commandlist.append(
+            Path.Command("N (Tool type: {})".format(self.tool.ShapeName), {})
+        )
+        self.commandlist.append(
+            Path.Command(
+                "N (Compensated Tool Path. Diameter: {})".format(self.tool.Diameter), {}
+            )
+        )
+        self.commandlist.append(
+            Path.Command(
+                "N (Sample interval: {})".format(str(obj.SampleInterval.Value)), {}
+            )
+        )
+        self.commandlist.append(
+            Path.Command("N (Step over %: {})".format(str(obj.StepOver)), {})
+        )
+        self.commandlist.append(Path.Command("N ()", {}))
+        self.commandlist.append(
+            Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
+        )
+        if obj.UseStartPoint:
+            self.commandlist.append(
+                Path.Command(
+                    "G0",
+                    {
+                        "X": obj.StartPoint.x,
+                        "Y": obj.StartPoint.y,
+                        "F": self.horizRapid,
+                    },
+                )
+            )
+
+        # Impose property limits
+        self.opApplyPropertyLimits(obj)
+
+        # Get height offset values for later use
+        self.SafeHeightOffset = JOB.SetupSheet.SafeHeightOffset.Value
+        self.ClearHeightOffset = JOB.SetupSheet.ClearanceHeightOffset.Value
+
+        # Calculate default depthparams for operation
+        self.finish_depth = 0
+        if hasattr(obj, "FinishDepth"):
+            self.finish_depth = obj.FinishDepth.Value
+        self.depthParams = PathUtils.depth_params(
+            obj.ClearanceHeight.Value,
+            obj.SafeHeight.Value,
+            obj.StartDepth.Value,
+            obj.StepDown.Value,
+            0.0,
+            obj.FinalDepth.Value - self.finish_depth,
+        )
+
+        # ######  MAIN COMMANDS FOR OPERATION ######
+        for m in range(0, len(JOB.Model.Group)):
+            # Raise to clearance between models
+            model = JOB.Model.Group[m]
+            CMDS.append(
+                Path.Command(
+                    "N (Transition to base: {}.)".format(model.Label)
+                )
+            )
+            CMDS.append(
+                Path.Command(
+                    "G0",
+                    {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid},
+                )
+            )
+            PathLog.info(
+                "Working on Model.Group[{}]: {}".format(m, model.Label)
+            )
+            CMDS.extend( self._processGridWaterlineAreas(JOB, obj, m))
+
+            # Save gcode produced
+            self.commandlist.extend(CMDS)
+
+        # clean up class variables
+        self.resetOpVariables()
+        self.deleteOpVariables()
+
+        self.SafeHeightOffset = None
+        self.ClearHeightOffset = None
+        self.depthParams = None
+        del self.SafeHeightOffset
+        del self.ClearHeightOffset
+        del self.depthParams
+
+        execTime = time.time() - startTime
+        msg = translate("PathWaterline", "operation time is")
+        PathLog.info("GridWaterline " + msg + " {} sec.".format(execTime))
+        return True
+
+    # Methods for constructing the cut area and creating path geometry
+    def _processGridWaterlineAreas(self, JOB, obj, mdlIdx):
+        """_processGridWaterlineAreas(JOB, obj, mdlIdx)...
+        This method applies any avoided faces or regions to the selected faces.
+        It then calls the correct method."""
+        # The only function of COMP variable in the original algorithm was
+        # a provision of BoundBox for _oclWaterlineOp.
+        # The calculation of this variable uses:
+        # PSF.preProcessModel(self.module)
+        #   _preProcessEntireBase
+        #     getEnvelope
+        #       area.makeSections
+        # The last function is extremely uneffective for models with
+        # several thousand polygons. While this problem is not solved
+        # we use direct estimation of bounding box in this method.
+
+        # The user has selected subobjects from the base.  Pre-Process
+        #TODO Allow selection of whole model group in GUI
+        selection = list()
+        for (base, SBS) in obj.Base:
+            for sb in SBS:  # Names of selected faces
+                selection.append((base, sb))
+
+        faces = list()   # list of Part.Face
+        voids = list()
+        n_add = len(selection) - obj.AvoidLastX_Faces
+        for base, sb in selection:
+            n_add -= 1
+            shape = getattr(base.Shape, sb)
+            if isinstance(shape, Part.Face):
+                if n_add >= 0:
+                    if base is JOB.Model.Group[mdlIdx]:
+                        faces.append( shape )
+                else:
+                    voids.append( shape )
+
+        if len(selection) > 0 and len(faces) == 0:
+            return list()   # Nothing is selected in this model group
+
+        PathLog.info("_processGridWaterlineAreas()")
+
+        final = list()
+
+        # Process faces Collectively or Individually
+        if obj.HandleMultipleFeatures == "Collectively":
+            if len(faces) == 0:
+                COMP = None
+            else:
+                COMP = (faces, voids)
+
+            final.append(
+                Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
+            )
+            final.extend(
+                    self._gridWaterlineOp(JOB, obj, mdlIdx, COMP)
+                )  # independent method set for Waterline
+
+        elif obj.HandleMultipleFeatures == "Individually":
+            for face in faces:
+                COMP = ((face,), voids)
+
+                final.append(
+                    Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
+                )
+
+                final.extend(
+                        self._gridWaterlineOp(JOB, obj, mdlIdx, COMP)
+                    )  # independent method set for Waterline
+        # Eif
+
+        return final
+
+
+    def _gridWaterlineOp(self, JOB, obj, mdlIdx, subShp=None):
+        # From subShp only BoundBox is needed.
+        # Alternatively a tuple (faces, voids) can be specified, where
+        # faces and voids are lists of faces.
+        commands = []
+
+        base = JOB.Model.Group[mdlIdx]
+        depOfst = obj.DepthOffset.Value
+
+        if subShp is None:
+            # Get correct boundbox
+            if obj.BoundBox == 'Stock':
+                BS = JOB.Stock
+                bb = BS.Shape.BoundBox
+            elif obj.BoundBox == 'BaseBoundBox':
+                BS = base
+                bb = base.Shape.BoundBox
+        elif isinstance(subShp, tuple):
+            bb = subShp
+        else:
+            bb = subShp.BoundBox     # not used now
+
+        model = JOB.Model.Group[mdlIdx]
+
+        # Compute number and size of stepdowns, and final depth
+        depthparams = [dp for dp in self.depthParams]
+        lenDP = len(depthparams)
+
+        # Create LevelMap operations
+        t0 = time.time()
+        MIN = -1e37
+        z_min = obj.FinalDepth.Value
+        op = LevelMapOp(bb, obj.SampleInterval.Value, MIN, self.tool,
+                        boundary_adjustment=obj.BoundaryAdjustment.Value)
+
+        # Select a slope for ramps
+        slope = 0.1 * op.levelMap.sampleInterval
+        if self.vertFeed > 0:
+            slope = (self.vertFeed / max(self.vertFeed, self.horizFeed) *
+                      op.levelMap.sampleInterval)
+
+        mask = None
+        if isinstance(op.area, PathMeshBox):   # Create the mask by selected facets
+            op.raisePathMesh( op.area )
+            mask = op.getContourMap( 0.5 * MIN )
+            op.levelMap.reset(MIN)
+
+        void_mask = None
+        if isinstance(bb, tuple) and len(bb[1]) > 0:
+            # Create the mask by excluded faces
+            op.raisePathMesh( PathMeshBox(bb[1]))
+            void_mask = op.getContourMap( 0.5 * MIN )
+            op.levelMap.reset(MIN)
+
+        op.raiseModel( base )
+
+        # If there are selected faces but whole base is below FinalDepth level
+        # that it is used only for selection of the working area,
+        # in this case trace all models, otherwise only the base will be traced.
+        base_only = True
+        if numpy.all( op.levelMap.z < z_min):
+            if mask is None:
+                return []     # Nothing to process here
+            base_only = False
+        elif mask is None:
+            mask = op.getContourMap( 0.5 * MIN, air = 1 )  # 3 - inside (material),
+                                                           # 1 - outside
+            op.closeHoles( mask )   # Mark through holes as material (3)
+                                    # and air as 0
+
+        # Adjust the mask, only cells where mask != 0 should be traced
+        if obj.BoundaryEnforcement:
+            if obj.BoundaryAdjustment >= 0:
+                mask.subtract( void_mask )
+                op.exactShift( mask, -max(obj.BoundaryAdjustment.Value, op.radius))
+            else:
+                mask.shiftBorder( -obj.BoundaryAdjustment.Value )
+                if not void_mask is None:
+                    op.exactShift( void_mask, op.radius )
+                    mask.subtract( void_mask )
+        else:
+            mask.subtract( void_mask )
+            mask.shiftBorder( -obj.BoundaryAdjustment.Value )
+        # Add one row of cells more for gray zone
+        mask.highlightBorders(new_state=2)
+        mask.highlightBorders(threshold=2, new_state=2)
+
+        for m in range(0, len(JOB.Model.Group)):
+            if m != mdlIdx:
+                op.raiseModel( JOB.Model.Group[m], common = base_only )
+        op.cleanupCommonMap()
+        PathLog.info("LevelMap creation %.3f s" % (time.time() - t0))
+
+        t0 = time.time()
+        op.applyTool( self.tool )
+        PathLog.info("The tool application %.3f s" % (time.time() - t0))
+
+        # Extract layers per depthparams
+        layTime = time.time()
+        prevLayDep = obj.StartDepth.Value
+        contourMap = None
+        previousMap = None
+        halfMap    = None
+        backMap    = None
+        all_contours = []     # list of traces, each trace is a list of nodes
+        all_internals = []
+        max_dist_m = (max(self.horizFeed * self.horizRapid, 0.1) /
+                      max(self.horizRapid - self.horizFeed, 0.01) * 2 /
+                      max(self.vertRapid, 0.01)
+                     )
+        max_dist_c = (obj.StepDown.Value * self.vertRapid / max(self.vertFeed, 0.01) +
+                       obj.SafeHeight.Value)
+        step_over = max(4 * op.levelMap.sampleInterval,
+                        self.radius * (float(obj.StepOver) / 50.0) -
+                        op.levelMap.sampleInterval)
+
+        for layDep in depthparams:
+            max_distance = (max_dist_c - layDep) * max_dist_m
+
+            contourMap = op.getContourMap(layDep, obj.DepthOffset.Value,
+                                          out = contourMap)
+
+            traces = []   # list of traces, each trace is a list of nodes
+            contours = None
+            half_map_traces = []
+            while True:  # Collect traces of the single layer
+                if obj.LayerMode == "Single-pass":
+                    contourMap.highlightBorders()
+                    op.excludeCommonFrom(contourMap)
+                    contourMap.or_not( mask )  # simulate material around the work area
+                else:
+                    contourMap.or_not( mask )  # simulate material around the work area
+                    op.excludeCommonFrom(contourMap)
+                    contourMap.highlightBorders()
+
+                # Extract waterline
+                # contourMap.dump("drill_05_%i_%.1f_%i.txt" % (mdlIdx, layDep, len(traces)))
+                nothing = True
+                while True:
+                    nodes = contourMap.getBorder(obj.CutMode == "Climb")
+                    if nodes == []:
+                        break
+                    nothing = False
+                    for i in range( len(half_map_traces) - 1, -1, -1 ):
+                        if contourMap.insertNodes(nodes, half_map_traces[i],
+                                                  step_over):
+                            half_map_traces.pop( i )
+                    traces.append(nodes)
+
+                traces.extend( half_map_traces )
+                half_map_traces = []
+
+                if contours is None:
+                    contours = traces
+                    traces = []
+
+                if nothing or obj.LayerMode == "Single-pass":
+                    break
+
+                if step_over > self.radius:
+                    halfMap = contourMap.copy( out = halfMap )
+                    halfMap.shiftBorder( step_over * 0.5 )
+
+                contourMap.shiftBorder( step_over )
+
+                if not halfMap is None:
+                    backMap = contourMap.copy( out = backMap )
+                    backMap.shiftBorder( -self.radius )
+                    halfMap.or_not( backMap )
+                    halfMap.or_not( mask )  # simulate material around the work area
+                    op.excludeCommonFrom(halfMap)
+                    halfMap.highlightBorders()
+                    while True:
+                        nodes = halfMap.getBorder(obj.CutMode == "Climb")
+                        if nodes == []:
+                            break
+                        half_map_traces.append(nodes)
+
+            traces.extend( half_map_traces )
+
+            # make junctions between adjacent contours
+            for i in range(len(contours)-1, 0, -1):
+                for j in range(i-1, -1, -1):
+                    if contourMap.appendNodes(contours[i], contours[j], step_over * 1.5):
+                        contours.pop( j )
+                        break
+
+            # make junctions between adjacent internal traces
+            for i in range(len(traces)-1, 0, -1):
+                for j in range(i-1, -1, -1):
+                    if contourMap.appendNodes(traces[i], traces[j], step_over * 1.5):
+                        traces.pop( j )
+                        break
+
+            # If any contour is strictly under the contour of the previous layer
+            # (vertical walls) they can be joined immediately,
+            # if the direct path by the previous layer exists.
+            # It can significally reduce the number of fast moves.
+            for i in range(len(contours)-1, -1, -1):
+                nodes = contours[i]
+                for contour in all_contours[::-1]:
+                    if (previousMap.traceInTrace(nodes, contour) and
+                        previousMap.interlayerAppend(contour, nodes,
+                                                     slope, max_distance)):
+                        contours.pop(i)
+                        break
+
+            for contour in contours[::-1]:
+                all_contours.append(contourMap.prependRamp(contour, prevLayDep, slope))
+            # The best order in the layer will be calculated later, because the
+            # tail position of some traces can be changed.
+
+            for trace in traces[::-1]:
+                all_internals.append(contourMap.prependRamp(trace, prevLayDep, slope))
+
+            prevLayDep = layDep
+            previousMap, contourMap = contourMap, previousMap
+        # end of loop by layDep
+
+        # Finishing
+        final_traces = []
+        if obj.FinishingProfile:
+            layDep = obj.FinalDepth.Value
+            previousMap = None
+            workMap = None
+            final_shift = max(op.levelMap.activeRadius(
+                                 max(0.1, obj.FinishDepth.Value)),
+                              op.levelMap.sampleInterval * 2)
+            while layDep <= obj.StartDepth.Value:
+                max_distance = (max_dist_c - layDep) * max_dist_m
+                contourMap = op.getContourMap(layDep,
+                                              out = contourMap)
+                contourMap.highlightBorders()
+                op.excludeCommonFrom(contourMap)
+                contourMap.or_not( mask )
+
+                last_level = True
+                traces = []
+                while True:
+                    nodes = contourMap.getBorder(obj.CutMode == "Climb")
+                    if nodes == []:
+                        break
+                    last_level = False
+                    for trace in final_traces[::-1]:
+                        if contourMap.traceInTrace(nodes, trace, True):
+                            nodes = None
+                            break
+                    if not nodes is None:
+                        traces.append(nodes)
+
+                if not previousMap is None:
+                    workMap = contourMap.copy(out = workMap)
+                    # Finishing of the area between contourMap and previousMap
+                    workMap.m[1:-1, 1:-1] = (contourMap.m[1:-1, 1:-1] ==
+                                             previousMap.m[1:-1, 1:-1]) * 2
+                    while True:
+                        workMap.shiftBorder( final_shift )
+                        workMap.highlightBorders()
+                        # Extract waterline
+                        nothing = True
+                        while True:
+                            nodes = workMap.getBorder(obj.CutMode == "Climb")
+                            if nodes == []:
+                                break
+                            nothing = False
+                            traces.append(nodes)
+                        if nothing:
+                            break
+
+                for i in range(len(traces)-1, 0, -1):
+                    for j in range(i-1, -1, -1):
+                        if contourMap.appendNodes(traces[i], traces[j], final_shift * 1.5):
+                            traces.pop( j )
+                            break
+
+                final_traces.extend( traces )
+                previousMap, contourMap = contourMap, previousMap
+                layDep += max(0.1, obj.FinishDepth.Value)
+                if last_level:
+                    break
+
+        if contourMap is None:
+            contourMap = previousMap
+
+        # Take traces layer by layer, reorder them and convert to commands.
+        start_point = None
+        for all_traces in (all_internals, all_contours):
+            while len(all_traces) > 0:
+                traces = [all_traces.pop(0)]
+                while (len(all_traces) > 0
+                      and traces[0][0][2] - 0.01 < all_traces[0][0][2]):
+                    traces.append(all_traces.pop(0))
+                # contours (possible multi-layer) which are entirely under
+                # this level may be precessed here.
+                threshold = traces[0][0][2] - 0.01
+                if not all_traces is all_contours:
+                    i = 0
+                    while i < len(all_contours):
+                        if all_contours[i][-1][2] > threshold:
+                            traces.append(all_contours.pop(i))
+                        else:
+                            i += 1
+                # final_traces above this level can be processed too
+                min_z = threshold
+                threshold += 0.1 + obj.FinishDepth.Value * 1.5
+                i = 0
+                while i < len(final_traces):
+                    if final_traces[i][0][2] > threshold or len(all_contours) == 0:
+                        traces.append(
+                            op.levelMap.profileAlongPath(
+                                final_traces.pop(i),
+                                min(obj.FinishDepth.Value, op.levelMap.sampleInterval) * 0.25,
+                                    obj.FinishDepth.Value * 1.5,
+                                    min_z))
+                    else:
+                        i += 1
+
+                for i in op.optimizeConnections(traces, start_point):
+                    commands.extend(
+                        contourMap.nodesToPath(traces[i],
+                                              obj.ClearanceHeight.Value,
+                                              self))
+                    start_point = traces[i][-1]
+
+        PathLog.debug("--All layer scans combined took " + str(time.time() - layTime) + " s")
+
+        return commands
+
+    #----------------------------------------------------------------------------
 
     # Experimental waterline functions
     def _experimentalWaterlineOp(self, JOB, obj, mdlIdx, subShp=None):

@@ -34,6 +34,7 @@ SET(PathScripts_SRCS
     PathScripts/PathCircularHoleBase.py
     PathScripts/PathCircularHoleBaseGui.py
     PathScripts/PathComment.py
+    PathScripts/PathContourMap.py
     PathScripts/PathCopy.py
     PathScripts/PathCustom.py
     PathScripts/PathCustomGui.py
@@ -73,6 +74,8 @@ SET(PathScripts_SRCS
     PathScripts/PathJobCmd.py
     PathScripts/PathJobDlg.py
     PathScripts/PathJobGui.py
+    PathScripts/PathLevelMap.py
+    PathScripts/PathLevelMapOp.py
     PathScripts/PathLog.py
     PathScripts/PathMillFace.py
     PathScripts/PathMillFaceGui.py
