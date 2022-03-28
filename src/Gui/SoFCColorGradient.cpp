@@ -186,21 +186,21 @@ std::vector<float> SoFCColorGradient::getMarkerValues(float fMin, float fMax, in
             count++;
         int half = count / 2;
         for (int j = 0; j < half + 1; j++) {
-            float w = (float)j/((float)half);
-            float fValue = (1.0f-w)*fMax;
-            labels.push_back( fValue );
+            float w = (float)j / ((float)half);
+            float fValue = (1.0f - w) * fMax;
+            labels.push_back(fValue);
         }
         for (int k = half + 1; k < count; k++) {
-            float w = (float)(k-half+1)/((float)(count-half));
-            float fValue = w*fMin;
-            labels.push_back( fValue );
+            float w = (float)(k - half + 1) / ((float)(count - half));
+            float fValue = w * fMin;
+            labels.push_back(fValue);
         }
     }
     else { // either not zero based or 0 is not in between [fMin,fMax]
         for (int j = 0; j < count; j++) {
-            float w = (float)j/((float)count-1.0f);
-            float fValue = (1.0f-w)*fMax+w*fMin;
-            labels.push_back( fValue );
+            float w = (float)j / ((float)count - 1.0f);
+            float fValue = (1.0f - w) * fMax + w * fMin;
+            labels.push_back(fValue);
         }
     }
 
