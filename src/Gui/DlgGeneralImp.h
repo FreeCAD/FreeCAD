@@ -64,8 +64,8 @@ private:
     void setRecentFileSize();
     void saveAsNewPreferencePack();
     void revertToSavedConfig();
-    void setLanguage();
-    void setNumberLocale();
+    bool setLanguage(); //Returns true if language has been changed
+    void setNumberLocale(bool force = false);
 
 private:
     int localeIndex;
