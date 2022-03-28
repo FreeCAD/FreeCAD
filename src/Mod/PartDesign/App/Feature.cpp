@@ -67,7 +67,7 @@ short Feature::mustExecute() const
     return Part::Feature::mustExecute();
 }
 
-TopoDS_Shape Feature::getSolid(const TopoDS_Shape& shape)
+TopoDS_Shape Feature::getSolid(const TopoDS_Shape& shape, bool correctInverted)
 {
     if (shape.IsNull())
         Standard_Failure::Raise("Shape is null");
@@ -76,11 +76,13 @@ TopoDS_Shape Feature::getSolid(const TopoDS_Shape& shape)
     if (xp.More()) {
         TopoDS_Shape solid = xp.Current();
 
-        // It can happen that a solid is flipped. Reverse if it happens.
-        GProp_GProps props;
-        BRepGProp::VolumeProperties(solid, props);
-        if (props.Mass() < 0)
-            solid.Reverse();
+        if (correctInverted) {
+            // It can happen that a solid is flipped. Reverse if it happens.
+            GProp_GProps props;
+            BRepGProp::VolumeProperties(solid, props);
+            if (props.Mass() < 0)
+                solid.Reverse();
+        }
 
         return solid;
     }
