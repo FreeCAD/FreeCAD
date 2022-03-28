@@ -90,7 +90,7 @@
          </property>
          <layout class="QGridLayout" name="gridLayout">
           <item row="0" column="0">
-           <widget class="QWidget" name="widget_5" native="true">
+           <widget class="QWidget" name="widget_5">
             <layout class="QGridLayout" name="gridLayout_4">
              <item row="0" column="1">
               <widget class="Gui::InputField" name="geometryTolerance">
@@ -166,7 +166,7 @@
            <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
           </property>
           <item row="1" column="0">
-           <widget class="QWidget" name="widget_2" native="true">
+           <widget class="QWidget" name="widget_2">
             <layout class="QHBoxLayout" name="horizontalLayout_3">
              <item>
               <widget class="QLabel" name="label_4">
@@ -179,7 +179,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QWidget" name="widget" native="true">
+           <widget class="QWidget" name="widget">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -205,7 +205,7 @@
            </widget>
           </item>
           <item row="2" column="0">
-           <widget class="QWidget" name="widget_3" native="true">
+           <widget class="QWidget" name="widget_3">
             <layout class="QHBoxLayout" name="horizontalLayout_4">
              <item>
               <widget class="QLabel" name="label_5">
@@ -218,7 +218,7 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QWidget" name="widget_4" native="true">
+           <widget class="QWidget" name="widget_4">
             <layout class="QHBoxLayout" name="horizontalLayout_5">
              <item>
               <widget class="QComboBox" name="cboOutputPolicy">

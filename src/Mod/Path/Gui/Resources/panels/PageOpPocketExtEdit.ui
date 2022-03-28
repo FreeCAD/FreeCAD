@@ -32,7 +32,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QWidget" name="extensionEdit" native="true">
+    <widget class="QWidget" name="extensionEdit">
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <property name="leftMargin">
        <number>0</number>
@@ -47,7 +47,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QWidget" name="widget_2" native="true">
+       <widget class="QWidget" name="widget_2">
         <layout class="QGridLayout" name="gridLayout">
          <item row="2" column="1">
           <widget class="QCheckBox" name="extendCorners">
@@ -118,7 +118,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QWidget" name="widget" native="true">
+       <widget class="QWidget" name="widget">
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
           <widget class="QPushButton" name="buttonEnable">

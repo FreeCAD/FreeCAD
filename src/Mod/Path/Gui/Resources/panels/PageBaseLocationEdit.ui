@@ -32,7 +32,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="addRemoveEdit" native="true">
+    <widget class="QWidget" name="addRemoveEdit">
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="2">
        <widget class="QPushButton" name="removeLocation">

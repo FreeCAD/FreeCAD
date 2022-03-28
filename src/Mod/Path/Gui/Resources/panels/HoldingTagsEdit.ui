@@ -15,7 +15,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="2" column="0">
-    <widget class="QWidget" name="removeEditAddGroup" native="true">
+    <widget class="QWidget" name="removeEditAddGroup">
      <layout class="QGridLayout" name="gridLayout">
       <property name="leftMargin">
        <number>0</number>
@@ -61,7 +61,7 @@
     </widget>
    </item>
    <item row="0" column="0">
-    <widget class="QWidget" name="parameterGroup" native="true">
+    <widget class="QWidget" name="parameterGroup">
      <layout class="QFormLayout">
       <property name="fieldGrowthPolicy">
        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>

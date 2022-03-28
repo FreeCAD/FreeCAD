@@ -55,7 +55,7 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QWidget" name="facingWidget" native="true">
+    <widget class="QWidget" name="facingWidget">
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="1">
        <widget class="QComboBox" name="boundaryShape">
@@ -75,7 +75,7 @@
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QWidget" name="widget" native="true">
+    <widget class="QWidget" name="widget">
      <layout class="QFormLayout" name="formLayout">
       <property name="fieldGrowthPolicy">
        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
@@ -214,7 +214,7 @@
     </widget>
    </item>
    <item row="3" column="0">
-    <widget class="QWidget" name="pocketWidget" native="true">
+    <widget class="QWidget" name="pocketWidget">
      <layout class="QGridLayout" name="gridLayout">
       <item row="2" column="1">
        <widget class="QCheckBox" name="minTravel">
