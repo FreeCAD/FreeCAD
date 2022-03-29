@@ -581,20 +581,16 @@ void ViewProviderFemPostSphereFunction::updateData(const App::Property* p) {
     if (p == &func->Center || p == &func->Radius) {
         auto directParents = func->getInList();
         // directParents is at the level of the functions container, so we must read the parent of this container
-        if (!directParents.empty()) {
-            for (auto obj : directParents) {
-                if (obj->getTypeId() == Base::Type::fromName("Fem::FemPostFunctionProvider")) {
-                    auto outerParents = obj->getInList();
-                    if (!outerParents.empty()) {
-                        for (auto objOuter : outerParents) {
-                            if (objOuter->getTypeId() == Base::Type::fromName("Fem::FemPostPipeline") ) {
-                                if (!isDragging())
-                                    // not recursve, otherwise VTK will show an error on initialization
-                                    objOuter->recomputeFeature(); 
-                                else
-                                    objOuter->recomputeFeature(true);
-                            }
-                        }
+        for (auto obj : directParents) {
+            if (obj->getTypeId() == Base::Type::fromName("Fem::FemPostFunctionProvider")) {
+                auto outerParents = obj->getInList();
+                for (auto objOuter : outerParents) {
+                    if (objOuter->getTypeId() == Base::Type::fromName("Fem::FemPostPipeline") ) {
+                        if (!isDragging())
+                            // not recursve, otherwise VTK will show an error on initialization
+                            objOuter->recomputeFeature();
+                        else
+                            objOuter->recomputeFeature(true);
                     }
                 }
             }
