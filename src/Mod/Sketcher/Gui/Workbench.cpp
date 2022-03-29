@@ -379,6 +379,7 @@ inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consac
                 << "Sketcher_SelectRedundantConstraints"
                 << "Sketcher_SelectConflictingConstraints"
                 << "Sketcher_RestoreInternalAlignmentGeometry"
+                << "Sketcher_Rotate"
                 << "Sketcher_Symmetry"
                 << "Sketcher_CompCopy"
                 << "Sketcher_RectangularArray"
