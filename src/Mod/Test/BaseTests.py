@@ -115,6 +115,15 @@ class ParameterTestCase(unittest.TestCase):
         self.assertTrue(self.TestPar.HasGroup("44"),"A referenced group must not be deleted")
         Temp = 0
 
+    def testGroupNames(self):
+        with self.assertRaises(ValueError):
+            # no empty groups allowed
+            self.TestPar.GetGroup("")
+        grp1 = self.TestPar.GetGroup("////Sub1/////Sub2/////")
+        grp2 = self.TestPar.GetGroup("Sub1/Sub2")
+        self.assertEqual(grp1.GetGroupName(), "Sub2")
+        self.assertEqual(grp2.GetGroupName(), "Sub2")
+
     # check on special conditions
     def testInt(self):
         #FreeCAD.Console.PrintLog("Base::ParameterTestCase::testInt\n")
@@ -155,6 +164,49 @@ class ParameterTestCase(unittest.TestCase):
         # check on Deletion
         self.TestPar.RemString("44")
         self.assertEqual(self.TestPar.GetString("44","hallo"), "hallo","Deletion error at String")
+
+    def testNesting(self):
+        # Parameter testing
+        #FreeCAD.Console.PrintLog("Base::ParameterTestCase::testNesting\n")
+        for i in range(50):
+            self.TestPar.SetFloat(str(i),4711.4711)
+            self.TestPar.SetInt(str(i),4711)
+            self.TestPar.SetBool(str(i),1)
+            Temp = self.TestPar.GetGroup(str(i))
+            for l in range(50):
+                Temp.SetFloat(str(l),4711.4711)
+                Temp.SetInt(str(l),4711)
+                Temp.SetBool(str(l),1)
+        Temp = 0
+
+    def testExportImport(self):
+        # Parameter testing
+        #FreeCAD.Console.PrintLog("Base::ParameterTestCase::testNesting\n")
+        self.TestPar.SetFloat("ExTest",4711.4711)
+        self.TestPar.SetInt("ExTest",4711)
+        self.TestPar.SetString("ExTest","4711")
+        self.TestPar.SetBool("ExTest",1)
+        Temp = self.TestPar.GetGroup("ExTest")
+        Temp.SetFloat("ExTest",4711.4711)
+        Temp.SetInt("ExTest",4711)
+        Temp.SetString("ExTest","4711")
+        Temp.SetBool("ExTest",1)
+        TempPath = tempfile.gettempdir() + os.sep + "ExportTest.FCExport"
+
+        self.TestPar.Export(TempPath)
+        Temp = self.TestPar.GetGroup("ImportTest")
+        Temp.Import(TempPath)
+        self.assertEqual(Temp.GetFloat("ExTest"), 4711.4711,"ExportImport error")
+        Temp = 0
+
+    def tearDown(self):
+        #remove all
+        TestPar = FreeCAD.ParamGet("System parameter:Test")
+        TestPar.Clear()
+
+class AlgebraTestCase(unittest.TestCase):
+    def setUp(self):
+        pass
 
     def testAngle(self):
         v1 = FreeCAD.Vector(0,0,0.000001)
@@ -312,45 +364,6 @@ class ParameterTestCase(unittest.TestCase):
         self.assertTrue(b.intersect(b),"Bbox doesn't intersect with itself")
         self.assertFalse(b.intersected(FreeCAD.BoundBox(4,4,4,6,6,6)).isValid(),"Bbox should not intersect with Bbox outside")
         self.assertEqual(b.intersected(FreeCAD.BoundBox(-2,-2,-2,2,2,2)).Center, b.Center,"Bbox is not a full subset")
-
-    def testNesting(self):
-        # Parameter testing
-        #FreeCAD.Console.PrintLog("Base::ParameterTestCase::testNesting\n")
-        for i in range(50):
-            self.TestPar.SetFloat(str(i),4711.4711)
-            self.TestPar.SetInt(str(i),4711)
-            self.TestPar.SetBool(str(i),1)
-            Temp = self.TestPar.GetGroup(str(i))
-            for l in range(50):
-                Temp.SetFloat(str(l),4711.4711)
-                Temp.SetInt(str(l),4711)
-                Temp.SetBool(str(l),1)
-        Temp = 0
-
-    def testExportImport(self):
-        # Parameter testing
-        #FreeCAD.Console.PrintLog("Base::ParameterTestCase::testNesting\n")
-        self.TestPar.SetFloat("ExTest",4711.4711)
-        self.TestPar.SetInt("ExTest",4711)
-        self.TestPar.SetString("ExTest","4711")
-        self.TestPar.SetBool("ExTest",1)
-        Temp = self.TestPar.GetGroup("ExTest")
-        Temp.SetFloat("ExTest",4711.4711)
-        Temp.SetInt("ExTest",4711)
-        Temp.SetString("ExTest","4711")
-        Temp.SetBool("ExTest",1)
-        TempPath = tempfile.gettempdir() + os.sep + "ExportTest.FCExport"
-
-        self.TestPar.Export(TempPath)
-        Temp = self.TestPar.GetGroup("ImportTest")
-        Temp.Import(TempPath)
-        self.assertEqual(Temp.GetFloat("ExTest"), 4711.4711,"ExportImport error")
-        Temp = 0
-
-    def tearDown(self):
-        #remove all
-        TestPar = FreeCAD.ParamGet("System parameter:Test")
-        TestPar.Clear()
 
 class MatrixTestCase(unittest.TestCase):
     def setUp(self):

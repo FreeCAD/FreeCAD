@@ -312,33 +312,34 @@ void ParameterGrp::insert(const char* FileName)
 Base::Reference<ParameterGrp> ParameterGrp::GetGroup(const char* Name)
 {
     std::string cName = Name;
+    if (cName.empty())
+        throw Base::ValueError("Empty group name");
+
+    // Remove all leading slashes
+    std::string::size_type beg = cName.find_first_not_of('/');
+    if (beg > 0) {
+        cName.erase(0, beg);
+    }
+
+    // Remove all trailing slashes
+    std::string::size_type end = cName.find_last_not_of('/');
+    if (end+1 < cName.size()) {
+        cName.erase(end+1);
+    }
 
     std::string::size_type pos = cName.find('/');
 
     // is there a path separator ?
     if (pos == std::string::npos) {
-        return _GetGroup(Name);
-    }
-    else if (pos == cName.size()) {
-        // ending slash! cut it away
-        cName.erase(pos);
         return _GetGroup(cName.c_str());
-    }
-    else if (pos == 0) {
-        // a leading slash is not handled (root unknown)
-        //throw FCException("ParameterGrp::GetGroup() leading slash not allowed");
-        // remove leading slash
-        cName.erase(0,1);
-        // subsequent call
-        return GetGroup(cName.c_str());
     }
     else {
         // path, split the first path
         std::string cTemp;
         // getting the first part
-        cTemp.assign(cName,0,pos);
+        cTemp.assign(cName, 0, pos);
         // removing the first part from the original
-        cName.erase(0,pos+1);
+        cName.erase(0, pos+1);
         //subsequent call
         return _GetGroup(cTemp.c_str())->GetGroup(cName.c_str());
     }
