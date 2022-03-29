@@ -560,7 +560,8 @@ double ConstraintPointOnPerpBisector::error()
 double ConstraintPointOnPerpBisector::grad(double *param)
 {
     //first of all, check that we need to compute anything.
-    if ( findParamInPvec(param) == -1  ) return 0.0;
+    if ( findParamInPvec(param) == -1  )
+        return 0.0;
 
     double deriv;
     errorgrad(nullptr, &deriv, param);
@@ -1102,7 +1103,8 @@ double ConstraintEllipseTangentLine::error()
 double ConstraintEllipseTangentLine::grad(double *param)
 {
     //first of all, check that we need to compute anything.
-    if ( findParamInPvec(param) == -1 ) return 0.0;
+    if ( findParamInPvec(param) == -1 )
+        return 0.0;
 
     double deriv;
     errorgrad(nullptr, &deriv, param);
@@ -1228,7 +1230,8 @@ double ConstraintInternalAlignmentPoint2Ellipse::error()
 double ConstraintInternalAlignmentPoint2Ellipse::grad(double *param)
 {
     //first of all, check that we need to compute anything.
-    if ( findParamInPvec(param) == -1  ) return 0.0;
+    if ( findParamInPvec(param) == -1  )
+        return 0.0;
 
     double deriv;
     errorgrad(nullptr, &deriv, param);
@@ -1361,7 +1364,8 @@ double ConstraintInternalAlignmentPoint2Hyperbola::error()
 double ConstraintInternalAlignmentPoint2Hyperbola::grad(double *param)
 {
     //first of all, check that we need to compute anything.
-    if ( findParamInPvec(param) == -1  ) return 0.0;
+    if ( findParamInPvec(param) == -1  )
+        return 0.0;
 
     double deriv;
     errorgrad(nullptr, &deriv, param);
@@ -1423,7 +1427,8 @@ double ConstraintEqualMajorAxesConic::error()
 double ConstraintEqualMajorAxesConic::grad(double *param)
 {
     //first of all, check that we need to compute anything.
-    if ( findParamInPvec(param) == -1  ) return 0.0;
+    if ( findParamInPvec(param) == -1  )
+        return 0.0;
 
     double deriv;
     errorgrad(nullptr, &deriv, param);
@@ -1499,7 +1504,8 @@ double ConstraintEqualFocalDistance::error()
 double ConstraintEqualFocalDistance::grad(double *param)
 {
     //first of all, check that we need to compute anything.
-    if ( findParamInPvec(param) == -1  ) return 0.0;
+    if ( findParamInPvec(param) == -1  )
+        return 0.0;
 
     double deriv;
     errorgrad(nullptr, &deriv, param);
@@ -1587,7 +1593,8 @@ double ConstraintCurveValue::error()
 double ConstraintCurveValue::grad(double *param)
 {
     //first of all, check that we need to compute anything.
-    if ( findParamInPvec(param) == -1  ) return 0.0;
+    if ( findParamInPvec(param) == -1  )
+        return 0.0;
 
     double deriv;
     errorgrad(nullptr, &deriv, param);
@@ -1814,7 +1821,8 @@ double ConstraintPointOnParabola::error()
 double ConstraintPointOnParabola::grad(double *param)
 {
     //first of all, check that we need to compute anything.
-    if ( findParamInPvec(param) == -1  ) return 0.0;
+    if ( findParamInPvec(param) == -1  )
+        return 0.0;
 
     double deriv;
     errorgrad(nullptr, &deriv, param);
@@ -1884,7 +1892,8 @@ double ConstraintAngleViaPoint::error()
 double ConstraintAngleViaPoint::grad(double *param)
 {
     //first of all, check that we need to compute anything.
-    if ( findParamInPvec(param) == -1  ) return 0.0;
+    if ( findParamInPvec(param) == -1  )
+        return 0.0;
 
     double deriv=0.;
 
@@ -2000,7 +2009,8 @@ double ConstraintSnell::grad(double *param)
 {
 
     //first of all, check that we need to compute anything.
-    if ( findParamInPvec(param) == -1 ) return 0.0;
+    if ( findParamInPvec(param) == -1 )
+        return 0.0;
 
     double deriv;
     errorgrad(nullptr, &deriv, param);
@@ -2117,7 +2127,8 @@ double ConstraintEqualLineLength::error()
 
 double ConstraintEqualLineLength::grad(double *param)
 {
-    if ( findParamInPvec(param) == -1 ) return 0.0;
+    if ( findParamInPvec(param) == -1 )
+        return 0.0;
 
     double deriv;
     errorgrad(nullptr, &deriv, param);
