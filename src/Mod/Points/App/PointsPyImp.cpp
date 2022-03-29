@@ -55,7 +55,8 @@ int PointsPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return -1;
 
     // if no mesh is given
-    if (!pcObj) return 0;
+    if (!pcObj)
+        return 0;
     if (PyObject_TypeCheck(pcObj, &(PointsPy::Type))) {
         *getPointKernelPtr() = *(static_cast<PointsPy*>(pcObj)->getPointKernelPtr());
     }
