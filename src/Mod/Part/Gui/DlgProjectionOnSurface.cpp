@@ -86,15 +86,20 @@ public:
   bool allow(App::Document* /*pDoc*/, App::DocumentObject* iPObj, const char* sSubName)
   {
     Part::Feature* aPart = dynamic_cast<Part::Feature*>(iPObj);
-    if (!aPart) return false;
-    if (!sSubName) return false;
+    if (!aPart)
+        return false;
+    if (!sSubName)
+        return false;
     std::string subName(sSubName);
-    if (subName.empty()) return false;
+    if (subName.empty())
+        return false;
 
     auto subShape = aPart->Shape.getShape().getSubShape(sSubName);
-    if (subShape.IsNull()) return false;
+    if (subShape.IsNull())
+        return false;
     auto type = subShape.ShapeType();
-    if (type != TopAbs_EDGE) return false;
+    if (type != TopAbs_EDGE)
+        return false;
     return true;
   }
 };
@@ -115,15 +120,20 @@ public:
   bool allow(App::Document* /*pDoc*/, App::DocumentObject* iPObj, const char* sSubName)
   {
     Part::Feature* aPart = dynamic_cast<Part::Feature*>(iPObj);
-    if (!aPart) return false;
-    if (!sSubName) return false;
+    if (!aPart)
+        return false;
+    if (!sSubName)
+        return false;
     std::string subName(sSubName);
-    if (subName.empty()) return false;
+    if (subName.empty())
+        return false;
 
     auto subShape = aPart->Shape.getShape().getSubShape(sSubName, true);
-    if (subShape.IsNull()) return false;
+    if (subShape.IsNull())
+        return false;
     auto type = subShape.ShapeType();
-    if (type != TopAbs_FACE) return false;
+    if (type != TopAbs_FACE)
+        return false;
     return true;
   }
 };
@@ -333,7 +343,8 @@ void PartGui::DlgProjectionOnSurface::get_camera_direction(void)
   auto mainWindow = Gui::getMainWindow();
 
   auto mdiObject = dynamic_cast<Gui::View3DInventor*>(mainWindow->activeWindow());
-  if (!mdiObject) return;
+  if (!mdiObject)
+      return;
   auto camerRotation = mdiObject->getViewer()->getCameraOrientation();
 
   SbVec3f lookAt(0, 0, -1);
@@ -349,7 +360,8 @@ void PartGui::DlgProjectionOnSurface::get_camera_direction(void)
 
 void PartGui::DlgProjectionOnSurface::store_current_selected_parts(std::vector<SShapeStore>& iStoreVec, const unsigned int iColor)
 {
-  if (!m_partDocument) return;
+  if (!m_partDocument)
+      return;
   std::vector<Gui::SelectionObject> selObj = Gui::Selection().getSelectionEx();
   if (selObj.size())
   {
@@ -402,7 +414,8 @@ void PartGui::DlgProjectionOnSurface::store_current_selected_parts(std::vector<S
 
 bool PartGui::DlgProjectionOnSurface::store_part_in_vector(SShapeStore& iCurrentShape, std::vector<SShapeStore>& iStoreVec)
 {
-  if (iCurrentShape.inputShape.IsNull()) return false;
+  if (iCurrentShape.inputShape.IsNull())
+      return false;
   auto currentType = iCurrentShape.inputShape.ShapeType();
   for ( auto it = iStoreVec.begin(); it != iStoreVec.end(); ++it)
   {
@@ -450,7 +463,8 @@ void PartGui::DlgProjectionOnSurface::create_projection_wire(std::vector<SShapeS
 {
   try
   {
-    if (iCurrentShape.empty()) return;
+    if (iCurrentShape.empty())
+        return;
     for ( auto &itCurrentShape : iCurrentShape )
     {
       if (m_projectionSurfaceVec.empty()) continue;;
@@ -513,7 +527,8 @@ void PartGui::DlgProjectionOnSurface::create_projection_wire(std::vector<SShapeS
 
 TopoDS_Shape PartGui::DlgProjectionOnSurface::create_compound(const std::vector<SShapeStore>& iShapeVec)
 {
-  if (iShapeVec.empty()) return TopoDS_Shape();
+  if (iShapeVec.empty())
+      return TopoDS_Shape();
 
   TopoDS_Compound aCompound;
   TopoDS_Builder aBuilder;
@@ -581,11 +596,13 @@ TopoDS_Shape PartGui::DlgProjectionOnSurface::create_compound(const std::vector<
 
 void PartGui::DlgProjectionOnSurface::show_projected_shapes(const std::vector<SShapeStore>& iShapeStoreVec)
 {
-  if (!m_projectionObject) return;
+  if (!m_projectionObject)
+      return;
   auto aCompound = create_compound(iShapeStoreVec);
   if ( aCompound.IsNull() )
   {
-    if (!m_partDocument) return;
+    if (!m_partDocument)
+        return;
     m_projectionObject->Shape.setValue(TopoDS_Shape());
     return;
   }
@@ -625,7 +642,8 @@ void PartGui::DlgProjectionOnSurface::enable_ui_elements(const std::vector<QWidg
 
 void PartGui::DlgProjectionOnSurface::higlight_object(Part::Feature* iCurrentObject, const std::string& iShapeName, bool iHighlight, const unsigned int iColor)
 {
-  if (!iCurrentObject) return;
+  if (!iCurrentObject)
+      return;
   auto partenShape = iCurrentObject->Shape.getShape().getShape();
   auto subShape = iCurrentObject->Shape.getShape().getSubShape(iShapeName.c_str(), true);
 
@@ -635,8 +653,10 @@ void PartGui::DlgProjectionOnSurface::higlight_object(Part::Feature* iCurrentObj
   auto currentShapeType = currentShape.ShapeType();
   TopTools_IndexedMapOfShape anIndices;
   TopExp::MapShapes(partenShape, currentShapeType, anIndices);
-  if (anIndices.IsEmpty()) return;
-  if (!anIndices.Contains(currentShape)) return;
+  if (anIndices.IsEmpty())
+      return;
+  if (!anIndices.Contains(currentShape))
+      return;
   auto index = anIndices.FindIndex(currentShape);
 
   //set color
@@ -698,7 +718,8 @@ void PartGui::DlgProjectionOnSurface::create_projection_face_from_wire(std::vect
 {
   try
   {
-    if (iCurrentShape.empty()) return;
+    if (iCurrentShape.empty())
+        return;
 
     for ( auto &itCurrentShape : iCurrentShape )
     {
@@ -813,7 +834,8 @@ TopoDS_Wire PartGui::DlgProjectionOnSurface::sort_and_heal_wire(const std::vecto
 
   shapeAnalyzer.ConnectEdgesToWires(shapeList, 0.0001, false, aWireHandle);
   shapeAnalyzer.ConnectWiresToWires(aWireHandle, 0.0001, false, aWireWireHandle);
-  if (!aWireWireHandle) return TopoDS_Wire();
+  if (!aWireWireHandle)
+      return TopoDS_Wire();
   for (auto it = 1; it <= aWireWireHandle->Length(); ++it)
   {
     auto aShape = TopoDS::Wire(aWireWireHandle->Value(it));
@@ -835,7 +857,8 @@ void PartGui::DlgProjectionOnSurface::create_face_extrude(std::vector<SShapeStor
 {
   try
   {
-    if (iCurrentShape.empty()) return;
+    if (iCurrentShape.empty())
+        return;
 
     for ( auto &itCurrentShape : iCurrentShape )
     {
@@ -845,7 +868,8 @@ void PartGui::DlgProjectionOnSurface::create_face_extrude(std::vector<SShapeStor
 
       gp_Vec directionToExtrude(itCurrentShape.aProjectionDir.XYZ());
       directionToExtrude.Reverse();
-      if (height == 0) return;
+      if (height == 0)
+          return;
       directionToExtrude.Multiply(height);
       BRepPrimAPI_MakePrism extrude(itCurrentShape.aProjectedFace, directionToExtrude);
       itCurrentShape.aProjectedSolid = extrude.Shape();
@@ -862,11 +886,15 @@ void PartGui::DlgProjectionOnSurface::create_face_extrude(std::vector<SShapeStor
 
 void PartGui::DlgProjectionOnSurface::store_wire_in_vector(const SShapeStore& iCurrentShape, const TopoDS_Shape& iParentShape, std::vector<SShapeStore>& iStoreVec, const unsigned int iColor)
 {
-  if (m_currentSelection != "add_wire") return;
-  if (iParentShape.IsNull()) return;
-  if (iCurrentShape.inputShape.IsNull()) return;
+  if (m_currentSelection != "add_wire")
+      return;
+  if (iParentShape.IsNull())
+      return;
+  if (iCurrentShape.inputShape.IsNull())
+      return;
   auto currentType = iCurrentShape.inputShape.ShapeType();
-  if (currentType != TopAbs_EDGE) return;
+  if (currentType != TopAbs_EDGE)
+      return;
 
   std::vector<TopoDS_Wire> aWireVec;
   for (TopExp_Explorer aExplorer(iParentShape, TopAbs_WIRE); aExplorer.More(); aExplorer.Next())
@@ -888,15 +916,18 @@ void PartGui::DlgProjectionOnSurface::store_wire_in_vector(const SShapeStore& iC
     edgeVec.clear();
   }
 
-  if (edgeVec.empty()) return;
+  if (edgeVec.empty())
+      return;
   TopTools_IndexedMapOfShape indexMap;
   TopExp::MapShapes(iParentShape, TopAbs_EDGE, indexMap);
-  if (indexMap.IsEmpty()) return;
+  if (indexMap.IsEmpty())
+      return;
 
   for ( auto it : edgeVec )
   {
     if ( it.IsSame(iCurrentShape.inputShape)) continue;
-    if (!indexMap.Contains(it)) return;
+    if (!indexMap.Contains(it))
+        return;
     auto index = indexMap.FindIndex(it);
     auto newEdgeObject = iCurrentShape;
     newEdgeObject.inputShape = it;

@@ -459,7 +459,8 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 void SoBrepFaceSet::renderSimpleArray()
 {
     int cnt = index_array.size();
-    if (cnt == 0) return;
+    if (cnt == 0)
+        return;
 
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -485,7 +486,8 @@ void SoBrepFaceSet::renderColoredArray(SoMaterialBundle *const materials)
 {
     int num_parts = partIndex.getNum();
     int cnt = index_array.size();
-    if (cnt == 0) return;
+    if (cnt == 0)
+        return;
 
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -687,19 +689,22 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 #endif
 
 bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContextPtr ctx, SelContextPtr ctx2) {
-    if(!ctx && !ctx2) return false;
+    if(!ctx && !ctx2)
+        return false;
 
     auto state = action->getState();
     auto mb = SoMaterialBindingElement::get(state);
 
     auto element = SoLazyElement::getInstance(state);
     const SbColor *diffuse = element->getDiffusePointer();
-    if(!diffuse) return false;
+    if(!diffuse)
+        return false;
     int diffuse_size = element->getNumDiffuse();
 
     const float *trans = element->getTransparencyPointer();
     int trans_size = element->getNumTransparencies();
-    if(!trans || !trans_size) return false;
+    if(!trans || !trans_size)
+        return false;
     float trans0=0.0;
     bool hasTransparency = false;
     for(int i=0;i<trans_size;++i) {
@@ -979,7 +984,8 @@ void SoBrepFaceSet::generatePrimitives(SoAction * action)
 #else
     //This is highly experimental!!!
 
-    if (this->coordIndex.getNum() < 3) return;
+    if (this->coordIndex.getNum() < 3)
+        return;
     SoState * state = action->getState();
 
     if (this->vertexProperty.getValue()) {

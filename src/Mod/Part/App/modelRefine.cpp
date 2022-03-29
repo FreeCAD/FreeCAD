@@ -826,14 +826,22 @@ bool FaceTypedBSpline::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &fa
     if (surfaceOne.IsNull() || surfaceTwo.IsNull())
         return false;
 
-    if (surfaceOne->IsURational() != surfaceTwo->IsURational()) return false;
-    if (surfaceOne->IsVRational() != surfaceTwo->IsVRational()) return false;
-    if (surfaceOne->IsUPeriodic() != surfaceTwo->IsUPeriodic()) return false;
-    if (surfaceOne->IsVPeriodic() != surfaceTwo->IsVPeriodic()) return false;
-    if (surfaceOne->IsUClosed() != surfaceTwo->IsUClosed()) return false;
-    if (surfaceOne->IsVClosed() != surfaceTwo->IsVClosed()) return false;
-    if (surfaceOne->UDegree() != surfaceTwo->UDegree()) return false;
-    if (surfaceOne->VDegree() != surfaceTwo->VDegree()) return false;
+    if (surfaceOne->IsURational() != surfaceTwo->IsURational())
+        return false;
+    if (surfaceOne->IsVRational() != surfaceTwo->IsVRational())
+        return false;
+    if (surfaceOne->IsUPeriodic() != surfaceTwo->IsUPeriodic())
+        return false;
+    if (surfaceOne->IsVPeriodic() != surfaceTwo->IsVPeriodic())
+        return false;
+    if (surfaceOne->IsUClosed() != surfaceTwo->IsUClosed())
+        return false;
+    if (surfaceOne->IsVClosed() != surfaceTwo->IsVClosed())
+        return false;
+    if (surfaceOne->UDegree() != surfaceTwo->UDegree())
+        return false;
+    if (surfaceOne->VDegree() != surfaceTwo->VDegree())
+        return false;
 
     //pole test
     int uPoleCountOne(surfaceOne->NbUPoles());

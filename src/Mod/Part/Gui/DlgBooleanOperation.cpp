@@ -62,7 +62,8 @@ namespace PartGui {
             QTreeWidgetItem::setData(column, role, value);
             if (role == Qt::CheckStateRole && value.toBool() == true) {
                 QTreeWidget* tree = this->treeWidget();
-                if (!tree) return;
+                if (!tree)
+                    return;
                 int numChild = tree->topLevelItemCount();
                 for (int i=0; i<numChild; i++) {
                     QTreeWidgetItem* item = tree->topLevelItem(i);
@@ -117,7 +118,8 @@ void DlgBooleanOperation::changeEvent(QEvent *e)
 void DlgBooleanOperation::slotCreatedObject(const App::DocumentObject& obj)
 {
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
-    if (!activeDoc) return;
+    if (!activeDoc)
+        return;
     App::Document* doc = obj.getDocument();
     if (activeDoc == doc && obj.getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
         observe.push_back(&obj);
@@ -205,9 +207,11 @@ bool DlgBooleanOperation::hasSolids(const App::DocumentObject* obj) const
 void DlgBooleanOperation::findShapes()
 {
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
-    if (!activeDoc) return;
+    if (!activeDoc)
+        return;
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
-    if (!activeGui) return;
+    if (!activeGui)
+        return;
 
     std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType
         (Part::Feature::getClassTypeId());
