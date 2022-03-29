@@ -36,9 +36,11 @@ namespace geoff_geometry {
 
 	bool Matrix::operator==(const Matrix &m)const{
 		// m1 == m2
-		if(this->m_unit != m.m_unit || this->m_mirrored != m.m_mirrored) return false;
+		if(this->m_unit != m.m_unit || this->m_mirrored != m.m_mirrored)
+		    return false;
 		for(int i = 0; i < 16; i++)
-			if(FEQ(this->e[i], m.e[i], TIGHT_TOLERANCE) == false) return false;
+			if(FEQ(this->e[i], m.e[i], TIGHT_TOLERANCE) == false)
+			    return false;
 		return true;
 	}
 
@@ -227,10 +229,12 @@ namespace geoff_geometry {
 		// returns true if unit matrix
 		for(int i = 0; i < 16; i++) {
 			if(i == 0 || i == 5 || i == 10 || i == 15) {
-				if(e[i] != 1) return m_unit = false;
+				if(e[i] != 1)
+				    return m_unit = false;
 			}
 			else {
-				if(e[i] != 0) return m_unit = false;
+				if(e[i] != 0)
+				    return m_unit = false;
 			}
 		}
 		m_mirrored = false;
@@ -343,7 +347,8 @@ namespace geoff_geometry {
 		Matrix a = *this;
 		int l[4], m[4];
 
-		if(a.m_unit) return a;	// unit matrix
+		if(a.m_unit)	// unit matrix
+		    return a;
 
 		// search for largest element
 		nk =  - n ;
