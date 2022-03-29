@@ -63,6 +63,7 @@ class Macro(object):
         self.comment = ""
         self.code = ""
         self.url = ""
+        self.wiki = ""
         self.version = ""
         self.date = ""
         self.src_filename = ""
@@ -112,6 +113,7 @@ class Macro(object):
         # For now:
         # __Comment__
         # __Web__
+        # __Wiki__
         # __Version__
         # __Files__
         # __Author__
@@ -123,6 +125,7 @@ class Macro(object):
         string_search_mapping = {
             "__comment__": "comment",
             "__web__": "url",
+            "__wiki__": "wiki",
             "__version__": "version",
             "__files__": "other_files",
             "__author__": "author",
