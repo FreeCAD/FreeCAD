@@ -223,6 +223,7 @@
         <file>icons/tools/Sketcher_DeleteConstraints.svg</file>
         <file>icons/tools/Sketcher_DeleteGeometry.svg</file>
         <file>icons/tools/Sketcher_Move.svg</file>
+        <file>icons/tools/Sketcher_Translate.svg</file>
         <file>icons/tools/Sketcher_Rotate.svg</file>
         <file>icons/tools/Sketcher_Scale.svg</file>
         <file>icons/tools/Sketcher_Offset.svg</file>
