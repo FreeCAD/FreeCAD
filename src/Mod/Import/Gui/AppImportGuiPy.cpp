@@ -298,7 +298,8 @@ public:
 private:
     virtual void applyFaceColors(Part::Feature* part, const std::vector<App::Color>& colors) override {
         auto vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(part));
-        if (!vp) return;
+        if (!vp)
+            return;
         if(colors.empty()) {
             // vp->MapFaceColor.setValue(true);
             // vp->MapLineColor.setValue(true);
@@ -316,7 +317,8 @@ private:
     }
     virtual void applyEdgeColors(Part::Feature* part, const std::vector<App::Color>& colors) override {
         auto vp = dynamic_cast<PartGui::ViewProviderPartExt*>(Gui::Application::Instance->getViewProvider(part));
-        if (!vp) return;
+        if (!vp)
+            return;
         // vp->MapLineColor.setValue(false);
         if(colors.size() == 1)
             vp->LineColor.setValue(colors.front());
