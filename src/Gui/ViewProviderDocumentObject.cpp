@@ -581,7 +581,8 @@ bool ViewProviderDocumentObject::showInTree() const {
 
 bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint *pp, std::string &subname) const
 {
-    if(!isSelectable()) return false;
+    if(!isSelectable())
+        return false;
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for(Gui::ViewProviderExtension* ext : vector)
         if(ext->extensionGetElementPicked(pp,subname))
@@ -601,7 +602,8 @@ bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint *pp, std::
     if(idx<0 || idx+1>=path->getLength())
         return false;
     auto vp = getDocument()->getViewProvider(path->getNode(idx+1));
-    if(!vp) return false;
+    if(!vp)
+        return false;
     auto obj = vp->getObject();
     if(!obj || !obj->getNameInDocument())
         return false;
@@ -629,13 +631,17 @@ bool ViewProviderDocumentObject::getDetailPath(const char *subname, SoFullPath *
     }
 
     const char *dot = strchr(subname,'.');
-    if(!dot) return false;
+    if(!dot)
+        return false;
     auto obj = getObject();
-    if(!obj || !obj->getNameInDocument()) return false;
+    if(!obj || !obj->getNameInDocument())
+        return false;
     auto sobj = obj->getSubObject(std::string(subname,dot-subname+1).c_str());
-    if(!sobj) return false;
+    if(!sobj)
+        return false;
     auto vp = Application::Instance->getViewProvider(sobj);
-    if(!vp) return false;
+    if(!vp)
+        return false;
 
     auto childRoot = getChildRoot();
     if(!childRoot)

@@ -943,7 +943,8 @@ Py::Object View3DInventorPy::viewPosition(const Py::Tuple& args)
     }
 
     SoCamera* cam = getView3DIventorPtr()->getViewer()->getSoRenderManager()->getCamera();
-    if (!cam) return Py::None();
+    if (!cam)
+        return Py::None();
 
     SbRotation rot = cam->orientation.getValue();
     SbVec3f pos = cam->position.getValue();
@@ -1783,7 +1784,8 @@ void View3DInventorPy::eventCallback(void * ud, SoEventCallback * n)
     try {
         Py::Dict dict;
         const SoEvent* e = n->getEvent();
-        if (!e) return; // invalid event
+        if (!e) // invalid event
+            return;
         // Type
         dict.setItem("Type", Py::String(std::string(e->getTypeId().getName().getString())));
         // Time

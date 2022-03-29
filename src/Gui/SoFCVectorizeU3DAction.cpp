@@ -228,7 +228,8 @@ void SoFCVectorizeU3DActionP::printTriangle(const SoVectorizeTriangle * item) co
 
 void SoFCVectorizeU3DActionP::printTriangle(const SbVec3f * v, const SbColor * c) const
 {
-    if (v[0] == v[1] || v[1] == v[2] || v[0] == v[2]) return;
+    if (v[0] == v[1] || v[1] == v[2] || v[0] == v[2])
+        return;
     //uint32_t cc = c->getPackedValue();
 
     //std::ostream& str = publ->getU3DOutput()->getFileStream();

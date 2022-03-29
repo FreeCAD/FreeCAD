@@ -65,7 +65,8 @@ void TreeView::mouseDoubleClickEvent (QMouseEvent * event)
         QTreeView::mouseDoubleClickEvent(event);
         const Gui::Document* doc = static_cast<Gui::Document*>(item);
         MDIView *view = doc->getActiveView();
-        if (!view) return;
+        if (!view)
+            return;
         getMainWindow()->setActiveWindow(view);
     }
     else if (item->getTypeId().isDerivedFrom(ViewProvider::getClassTypeId())) {

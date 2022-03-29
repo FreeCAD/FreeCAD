@@ -343,7 +343,8 @@ std::vector<App::DocumentObject*> DlgObjectSelection::getSelections(SelectionOpt
 }
 
 void DlgObjectSelection::onDepItemChanged(QTreeWidgetItem * depItem, int column) {
-    if(column) return;
+    if(column)
+        return;
     QSignalBlocker blocker(ui->depList);
     QSignalBlocker blocker2(ui->inList);
     QSignalBlocker blocker3(ui->treeWidget);

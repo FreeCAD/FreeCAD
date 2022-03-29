@@ -219,7 +219,8 @@ void Placement::revertTransformation()
 void Placement::applyPlacement(const Base::Placement& p, bool incremental)
 {
     Gui::Document* document = Application::Instance->activeDocument();
-    if (!document) return;
+    if (!document)
+        return;
 
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType
         (App::DocumentObject::getClassTypeId(), document->getDocument()->getName());
@@ -257,7 +258,8 @@ void Placement::applyPlacement(const Base::Placement& p, bool incremental)
 void Placement::applyPlacement(const QString& data, bool incremental)
 {
     Gui::Document* document = Application::Instance->activeDocument();
-    if (!document) return;
+    if (!document)
+        return;
 
     // When directly changing the property we now only have to commit the transaction,
     // do a recompute and open a new transaction

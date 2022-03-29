@@ -518,7 +518,8 @@ public:
     static
     void  reorientCamera(SoCamera * cam, const SbRotation & rot)
     {
-        if (cam == nullptr) return;
+        if (cam == nullptr)
+            return;
 
         // Find global coordinates of focal point.
         SbVec3f direction;

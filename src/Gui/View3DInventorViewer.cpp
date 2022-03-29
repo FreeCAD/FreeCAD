@@ -2404,7 +2404,8 @@ void View3DInventorViewer::setSeekMode(SbBool on)
 void View3DInventorViewer::printDimension()
 {
     SoCamera* cam = getSoRenderManager()->getCamera();
-    if (!cam) return; // no camera there
+    if (!cam) // no camera there
+        return;
 
     SoType t = getSoRenderManager()->getCamera()->getTypeId();
     if (t.isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
@@ -2493,7 +2494,8 @@ SbVec3f View3DInventorViewer::getViewDirection() const
 {
     SoCamera* cam = this->getSoRenderManager()->getCamera();
 
-    if (!cam) return SbVec3f(0,0,-1);  // this is the default
+    if (!cam)  // this is the default
+        return SbVec3f(0,0,-1);
 
     SbVec3f projDir = cam->getViewVolume().getProjectionDirection();
     return projDir;
@@ -2510,7 +2512,8 @@ SbVec3f View3DInventorViewer::getUpDirection() const
 {
     SoCamera* cam = this->getSoRenderManager()->getCamera();
 
-    if (!cam) return SbVec3f(0,1,0);
+    if (!cam)
+        return SbVec3f(0,1,0);
 
     SbRotation camrot = cam->orientation.getValue();
     SbVec3f upvec(0, 1, 0); // init to default up vector
@@ -2559,7 +2562,8 @@ SbVec3f View3DInventorViewer::getPointOnFocalPlane(const SbVec2s& pnt) const
     SbVec2f pnt2d = getNormalizedPosition(pnt);
     SoCamera* pCam = this->getSoRenderManager()->getCamera();
 
-    if (!pCam) return SbVec3f();  // return invalid point
+    if (!pCam)  // return invalid point
+        return SbVec3f();
 
     SbViewVolume  vol = pCam->getViewVolume();
 
@@ -2599,7 +2603,8 @@ void View3DInventorViewer::getNearPlane(SbVec3f& rcPt, SbVec3f& rcNormal) const
 {
     SoCamera* pCam = getSoRenderManager()->getCamera();
 
-    if (!pCam) return;  // just do nothing
+    if (!pCam)  // just do nothing
+        return;
 
     SbViewVolume vol = pCam->getViewVolume();
 
@@ -2617,7 +2622,8 @@ void View3DInventorViewer::getFarPlane(SbVec3f& rcPt, SbVec3f& rcNormal) const
 {
     SoCamera* pCam = getSoRenderManager()->getCamera();
 
-    if (!pCam) return;  // just do nothing
+    if (!pCam)  // just do nothing
+        return;
 
     SbViewVolume vol = pCam->getViewVolume();
 
@@ -2636,7 +2642,8 @@ SbVec3f View3DInventorViewer::projectOnNearPlane(const SbVec2f& pt) const
     SbVec3f pt1, pt2;
     SoCamera* cam = this->getSoRenderManager()->getCamera();
 
-    if (!cam) return SbVec3f();  // return invalid point
+    if (!cam)  // return invalid point
+        return SbVec3f();
 
     SbViewVolume vol = cam->getViewVolume();
     vol.projectPointToLine(pt, pt1, pt2);
@@ -2648,7 +2655,8 @@ SbVec3f View3DInventorViewer::projectOnFarPlane(const SbVec2f& pt) const
     SbVec3f pt1, pt2;
     SoCamera* cam = this->getSoRenderManager()->getCamera();
 
-    if (!cam) return SbVec3f();  // return invalid point
+    if (!cam)  // return invalid point
+        return SbVec3f();
 
     SbViewVolume vol = cam->getViewVolume();
     vol.projectPointToLine(pt, pt1, pt2);
@@ -2660,7 +2668,8 @@ void View3DInventorViewer::projectPointToLine(const SbVec2s& pt, SbVec3f& pt1, S
     SbVec2f pnt2d = getNormalizedPosition(pt);
     SoCamera* pCam = this->getSoRenderManager()->getCamera();
 
-    if (!pCam) return;
+    if (!pCam)
+        return;
 
     SbViewVolume vol = pCam->getViewVolume();
     vol.projectPointToLine(pnt2d, pt1, pt2);
@@ -2754,7 +2763,8 @@ const SoPickedPoint* View3DInventorViewer::getPickedPoint(SoEventCallback* n) co
 {
     if (selectionRoot) {
         auto ret = selectionRoot->getPickedList(n->getAction(), true);
-        if(ret.size()) return ret[0].pp;
+        if(ret.size())
+            return ret[0].pp;
         return nullptr;
     }
     return n->getPickedPoint();
@@ -2786,7 +2796,8 @@ void View3DInventorViewer::setCameraType(SoType t)
         // close camera but we don't have this other ugly effect.
         SoCamera* cam = this->getSoRenderManager()->getCamera();
 
-        if(cam == nullptr) return;
+        if(cam == nullptr)
+            return;
 
         static_cast<SoPerspectiveCamera*>(cam)->heightAngle = (float)(M_PI / 4.0);
     }
@@ -2827,7 +2838,8 @@ namespace Gui {
 void View3DInventorViewer::moveCameraTo(const SbRotation& rot, const SbVec3f& pos, int steps, int ms)
 {
     SoCamera* cam = this->getSoRenderManager()->getCamera();
-    if (cam == nullptr) return;
+    if (cam == nullptr)
+        return;
 
     CameraAnimation anim(cam, rot, pos);
     anim.setDuration(Base::clamp<int>(ms,0,5000));
@@ -2991,9 +3003,11 @@ void View3DInventorViewer::viewAll(float factor)
 {
     SoCamera* cam = this->getSoRenderManager()->getCamera();
 
-    if (!cam) return;
+    if (!cam)
+        return;
 
-    if (factor <= 0.0f) return;
+    if (factor <= 0.0f)
+        return;
 
     if (factor != 1.0f) {
         SoSearchAction sa;
