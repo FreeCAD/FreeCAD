@@ -768,6 +768,27 @@ class depth_params(object):
             return [stop] + depths
 
 
+def extraKerf(tooldiameter, extrakerf=0.0):
+    """
+    Helper for converting Extrakerf property to PathArea params.
+    ExtraKerf is a float % of tool diameter. Extrakerf must be larger than 0
+    but may be more than 100% of the tool diameter.
+
+    Returns a dict of ExtraPass (count of loops) and Stepover (distance between)
+    {'ExtraPass': e, 'Stepover': s}
+    """
+
+    if extrakerf < 0:
+        raise ValueError("extrakerf must be 0 or greater")
+
+    if extrakerf == 0:
+        return {"ExtraPass": 0, "Stepover": 0.0}
+
+    passcount = math.ceil(extrakerf)
+    passstep = (extrakerf * tooldiameter) / passcount
+    return {"ExtraPass": passcount, "Stepover": passstep}
+
+
 def simplify3dLine(line, tolerance=1e-4):
     """Simplify a line defined by a list of App.Vectors, while keeping the
     maximum deviation from the original line within the defined tolerance.

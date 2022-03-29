@@ -137,3 +137,35 @@ class TestPathHelpers(PathTestBase):
         l = Part.makeLine(v1, v2)
         results = PathUtils.filterArcs(l)
         self.assertTrue(len(results) == 0)
+
+    def test03(self):
+        """Test PathUtils ExtraKerf helper"""
+
+        # Test error for negative extraKerf value
+        args = {'tooldiameter': 1.0, 'extrakerf': -0.25}
+        self.assertRaises(ValueError, PathUtils.extraKerf, **args)
+
+        # simple case, no additional offsets
+        result = PathUtils.extraKerf(1.0, 0)
+        expected = {"ExtraPass": 0, "Stepover": 0.0}
+        self.assertDictEqual(result, expected)
+
+        # Widen by 50 % - one more loop.
+        result = PathUtils.extraKerf(1.0, 0.5)
+        expected = {"ExtraPass": 1, "Stepover": 0.5}
+        self.assertDictEqual(result, expected)
+
+        # widen by 100% - one more loop
+        result = PathUtils.extraKerf(1.0, 1.0)
+        expected = {"ExtraPass": 1, "Stepover": 1.0}
+        self.assertDictEqual(result, expected)
+
+        # widen by 200% - one more loop
+        result = PathUtils.extraKerf(1.0, 2.0)
+        expected = {"ExtraPass": 2, "Stepover": 1.0}
+        self.assertDictEqual(result, expected)
+
+        # widen by 300% - three loops
+        result = PathUtils.extraKerf(1.0, 3.0)
+        expected = {"ExtraPass": 3, "Stepover": 1.0}
+        self.assertDictEqual(result, expected)

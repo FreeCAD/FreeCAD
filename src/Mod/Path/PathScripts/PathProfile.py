@@ -177,6 +177,14 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     "App::Property", "Make True, if using Cutter Radius Compensation"
                 ),
             ),
+            (
+                "App::PropertyFloat",
+                "ExpandKerf",
+                "Profile",
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Expand the kerf by % of tool diameter"
+                ),
+            ),
         ]
 
     @classmethod
@@ -287,6 +295,11 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         obj.setEditorMode("processHoles", fc)
         obj.setEditorMode("processPerimeter", fc)
 
+    def opOnChanged(self, obj, prop):
+        PathLog.debug(prop)
+        if prop == "ExpandKerf" and obj.ExpandKerf < 0:
+            obj.ExpandKerf = 0
+
     def _getOperationType(self, obj):
         if len(obj.Base) == 0:
             return "Contour"
@@ -315,6 +328,15 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         params["Fill"] = 0
         params["Coplanar"] = 0
         params["SectionCount"] = -1
+
+        if obj.ExpandKerf > 0:
+            params.update(
+                PathUtils.extraKerf(
+                    tooldiameter=(self.radius * 2), extrakerf=obj.ExpandKerf
+                )
+            )
+
+        PathLog.debug(params)
 
         offset = obj.OffsetExtra.Value  # 0.0
         if obj.UseComp:
