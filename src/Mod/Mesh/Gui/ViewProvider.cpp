@@ -1260,8 +1260,10 @@ std::vector<Mesh::FacetIndex> ViewProviderMesh::getFacetsOfRegion(const SbViewpo
 void ViewProviderMesh::panCamera(SoCamera * cam, float aspectratio, const SbPlane & panplane,
                                  const SbVec2f & currpos, const SbVec2f & prevpos)
 {
-    if (cam == nullptr) return; // can happen for empty scenegraph
-    if (currpos == prevpos) return; // useless invocation
+    if (cam == nullptr) // can happen for empty scenegraph
+        return;
+    if (currpos == prevpos) // useless invocation
+        return;
 
 
     // Find projection points for the last and current mouse coordinates.

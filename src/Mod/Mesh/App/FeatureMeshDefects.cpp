@@ -79,7 +79,8 @@ HarmonizeNormals::~HarmonizeNormals()
 App::DocumentObjectExecReturn *HarmonizeNormals::execute()
 {
     App::DocumentObject* link = Source.getValue();
-    if (!link) return new App::DocumentObjectExecReturn("No mesh linked");
+    if (!link)
+        return new App::DocumentObjectExecReturn("No mesh linked");
     App::Property* prop = link->getPropertyByName("Mesh");
     if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
@@ -107,7 +108,8 @@ FlipNormals::~FlipNormals()
 App::DocumentObjectExecReturn *FlipNormals::execute()
 {
     App::DocumentObject* link = Source.getValue();
-    if (!link) return new App::DocumentObjectExecReturn("No mesh linked");
+    if (!link)
+        return new App::DocumentObjectExecReturn("No mesh linked");
     App::Property* prop = link->getPropertyByName("Mesh");
     if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
@@ -135,7 +137,8 @@ FixNonManifolds::~FixNonManifolds()
 App::DocumentObjectExecReturn *FixNonManifolds::execute()
 {
     App::DocumentObject* link = Source.getValue();
-    if (!link) return new App::DocumentObjectExecReturn("No mesh linked");
+    if (!link)
+        return new App::DocumentObjectExecReturn("No mesh linked");
     App::Property* prop = link->getPropertyByName("Mesh");
     if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
@@ -163,7 +166,8 @@ FixDuplicatedFaces::~FixDuplicatedFaces()
 App::DocumentObjectExecReturn *FixDuplicatedFaces::execute()
 {
     App::DocumentObject* link = Source.getValue();
-    if (!link) return new App::DocumentObjectExecReturn("No mesh linked");
+    if (!link)
+        return new App::DocumentObjectExecReturn("No mesh linked");
     App::Property* prop = link->getPropertyByName("Mesh");
     if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
@@ -191,7 +195,8 @@ FixDuplicatedPoints::~FixDuplicatedPoints()
 App::DocumentObjectExecReturn *FixDuplicatedPoints::execute()
 {
     App::DocumentObject* link = Source.getValue();
-    if (!link) return new App::DocumentObjectExecReturn("No mesh linked");
+    if (!link)
+        return new App::DocumentObjectExecReturn("No mesh linked");
     App::Property* prop = link->getPropertyByName("Mesh");
     if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
@@ -219,7 +224,8 @@ FixDegenerations::~FixDegenerations()
 App::DocumentObjectExecReturn *FixDegenerations::execute()
 {
     App::DocumentObject* link = Source.getValue();
-    if (!link) return new App::DocumentObjectExecReturn("No mesh linked");
+    if (!link)
+        return new App::DocumentObjectExecReturn("No mesh linked");
     App::Property* prop = link->getPropertyByName("Mesh");
     if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
@@ -248,7 +254,8 @@ FixDeformations::~FixDeformations()
 App::DocumentObjectExecReturn *FixDeformations::execute()
 {
     App::DocumentObject* link = Source.getValue();
-    if (!link) return new App::DocumentObjectExecReturn("No mesh linked");
+    if (!link)
+        return new App::DocumentObjectExecReturn("No mesh linked");
     App::Property* prop = link->getPropertyByName("Mesh");
     if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
@@ -278,7 +285,8 @@ FixIndices::~FixIndices()
 App::DocumentObjectExecReturn *FixIndices::execute()
 {
     App::DocumentObject* link = Source.getValue();
-    if (!link) return new App::DocumentObjectExecReturn("No mesh linked");
+    if (!link)
+        return new App::DocumentObjectExecReturn("No mesh linked");
     App::Property* prop = link->getPropertyByName("Mesh");
     if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
@@ -308,7 +316,8 @@ FillHoles::~FillHoles()
 App::DocumentObjectExecReturn *FillHoles::execute()
 {
     App::DocumentObject* link = Source.getValue();
-    if (!link) return new App::DocumentObjectExecReturn("No mesh linked");
+    if (!link)
+        return new App::DocumentObjectExecReturn("No mesh linked");
     App::Property* prop = link->getPropertyByName("Mesh");
     if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
@@ -339,7 +348,8 @@ RemoveComponents::~RemoveComponents()
 App::DocumentObjectExecReturn *RemoveComponents::execute()
 {
     App::DocumentObject* link = Source.getValue();
-    if (!link) return new App::DocumentObjectExecReturn("No mesh linked");
+    if (!link)
+        return new App::DocumentObjectExecReturn("No mesh linked");
     App::Property* prop = link->getPropertyByName("Mesh");
     if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
