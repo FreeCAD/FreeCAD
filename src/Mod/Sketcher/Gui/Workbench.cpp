@@ -381,6 +381,7 @@ inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consac
                 << "Sketcher_RestoreInternalAlignmentGeometry"
                 << "Sketcher_Rotate"
                 << "Sketcher_Scale"
+                << "Sketcher_Offset"
                 << "Sketcher_Symmetry"
                 << "Sketcher_CompCopy"
                 << "Sketcher_RectangularArray"
