@@ -203,7 +203,8 @@ void TaskTransformedParameters::onButtonAddFeature(bool checked)
 void TaskTransformedParameters::checkVisibility() {
     auto feat = getObject();
     auto body = feat->getFeatureBody();
-    if(!body) return;
+    if(!body)
+        return;
     auto inset = feat->getInListEx(true);
     inset.emplace(feat);
     for(auto o : body->Group.getValues()) {

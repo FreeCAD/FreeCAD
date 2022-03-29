@@ -667,10 +667,13 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
-    if (features.empty()) return;
+    if (features.empty())
+        return;
 
     // Check if all features are valid to move
-    if (std::any_of(std::begin(features), std::end(features), [](App::DocumentObject* obj){return !PartDesignGui::isFeatureMovable(obj); }))
+    if (std::any_of(std::begin(features), std::end(features), [](App::DocumentObject* obj){
+        return !PartDesignGui::isFeatureMovable(obj);
+    }))
     {
         //show messagebox and cancel
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Features cannot be moved"),
@@ -725,9 +728,11 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
         qApp->translate("PartDesign_MoveFeature", "Select body"),
         qApp->translate("PartDesign_MoveFeature", "Select a body from the list"),
         items, 0, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
-    if (!ok) return;
+    if (!ok)
+        return;
     int index = items.indexOf(text);
-    if (index < 0) return;
+    if (index < 0)
+        return;
 
     PartDesign::Body* target = static_cast<PartDesign::Body*>(target_bodies[index]);
 
@@ -829,7 +834,8 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
-    if (features.empty()) return;
+    if (features.empty())
+        return;
 
     PartDesign::Body *body = PartDesignGui::getBodyFor ( features.front(), false );
     App::DocumentObject * bodyBase = nullptr;
@@ -875,7 +881,8 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
         qApp->translate("PartDesign_MoveFeatureInTree", "Select feature"),
         qApp->translate("PartDesign_MoveFeatureInTree", "Select a feature from the list"),
         items, 0, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
-    if (!ok) return;
+    if (!ok)
+        return;
     int index = items.indexOf(text);
     // first object is the beginning of the body
     App::DocumentObject* target = index != 0 ? model[index-1] : nullptr;

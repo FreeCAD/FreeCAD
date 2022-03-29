@@ -86,10 +86,12 @@ void ViewProviderDressUp::highlightReferences(const bool on)
 {
     PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(getObject());
     Part::Feature* base = pcDressUp->getBaseObject (/*silent =*/ true);
-    if (base == nullptr) return;
+    if (base == nullptr)
+        return;
     PartGui::ViewProviderPart* vp = dynamic_cast<PartGui::ViewProviderPart*>(
                 Gui::Application::Instance->getViewProvider(base));
-    if (vp == nullptr) return;
+    if (vp == nullptr)
+        return;
 
     std::vector<std::string> faces = pcDressUp->Base.getSubValuesStartsWith("Face");
     std::vector<std::string> edges = pcDressUp->Base.getSubValuesStartsWith("Edge");
