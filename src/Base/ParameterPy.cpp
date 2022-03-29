@@ -299,7 +299,7 @@ Py::Object ParameterGrpPy::getGroups(const Py::Tuple& args)
     // get the Handle of the wanted group
     std::vector<Base::Reference<ParameterGrp> > handle = _cParamGrp->GetGroups();
     Py::List list;
-    for (auto it : handle) {
+    for (const auto& it : handle) {
         list.append(Py::String(it->GetGroupName()));
     }
 
@@ -335,7 +335,7 @@ Py::Object ParameterGrpPy::getBools(const Py::Tuple& args)
 
     std::vector<std::pair<std::string,bool> > map = _cParamGrp->GetBoolMap(filter);
     Py::List list;
-    for (auto it : map) {
+    for (const auto& it : map) {
         list.append(Py::String(it.first));
     }
 
@@ -370,7 +370,7 @@ Py::Object ParameterGrpPy::getInts(const Py::Tuple& args)
 
     std::vector<std::pair<std::string,long> > map = _cParamGrp->GetIntMap(filter);
     Py::List list;
-    for (auto it : map) {
+    for (const auto& it : map) {
         list.append(Py::String(it.first));
     }
 
@@ -405,7 +405,7 @@ Py::Object ParameterGrpPy::getUnsigneds(const Py::Tuple& args)
 
     std::vector<std::pair<std::string,unsigned long> > map = _cParamGrp->GetUnsignedMap(filter);
     Py::List list;
-    for (auto it : map) {
+    for (const auto& it : map) {
         list.append(Py::String(it.first));
     }
 
@@ -441,7 +441,7 @@ Py::Object ParameterGrpPy::getFloats(const Py::Tuple& args)
 
     std::vector<std::pair<std::string,double> > map = _cParamGrp->GetFloatMap(filter);
     Py::List list;
-    for (auto it : map) {
+    for (const auto& it : map) {
         list.append(Py::String(it.first));
     }
 
@@ -477,7 +477,7 @@ Py::Object ParameterGrpPy::getStrings(const Py::Tuple& args)
 
     std::vector<std::pair<std::string,std::string> > map = _cParamGrp->GetASCIIMap(filter);
     Py::List list;
-    for (auto it : map) {
+    for (const auto& it : map) {
         list.append(Py::String(it.first));
     }
 
