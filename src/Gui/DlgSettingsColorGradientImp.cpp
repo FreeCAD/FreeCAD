@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 # include <cmath>
 # include <QDoubleValidator>
+# include <QFontMetrics>
 # include <QLocale>
 # include <QMessageBox>
 #endif
@@ -31,6 +32,7 @@
 #include "DlgSettingsColorGradientImp.h"
 #include "ui_DlgSettingsColorGradient.h"
 #include "SpinBox.h"
+#include "Tools.h"
 
 
 using namespace Gui::Dialog;
@@ -50,6 +52,9 @@ DlgSettingsColorGradientImp::DlgSettingsColorGradientImp( QWidget* parent, Qt::W
     ui->floatLineEditMax->setValidator(fMaxVal);
     fMinVal = new QDoubleValidator(-1000,1000,ui->spinBoxDecimals->maximum(),this);
     ui->floatLineEditMin->setValidator(fMinVal);
+
+    QFontMetrics fm(ui->floatLineEditMax->font());
+    ui->floatLineEditMax->setMinimumWidth(QtTools::horizontalAdvance(fm, QString::fromLatin1("-1000.000000")));
 }
 
 /**
@@ -157,7 +162,7 @@ void DlgSettingsColorGradientImp::accept()
     double fMax = QLocale().toDouble(ui->floatLineEditMax->text());
     double fMin = QLocale().toDouble(ui->floatLineEditMin->text());
 
-    if (fMax < fMin) {
+    if (fMax <= fMin) {
         QMessageBox::warning(this, tr("Wrong parameter"),
             tr("The maximum value must be higher than the minimum value."));
     }

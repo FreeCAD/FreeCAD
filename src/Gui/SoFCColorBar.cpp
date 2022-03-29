@@ -199,7 +199,13 @@ float SoFCColorBar::getMaxValue () const
 
 bool SoFCColorBar::customize()
 {
-    return this->getActiveBar()->customize();
+    try {
+        return this->getActiveBar()->customize();
+    }
+    catch (const Base::ValueError& e) {
+        e.ReportException();
+        return false;
+    }
 }
 
 App::Color SoFCColorBar::getColor( float fVal ) const
