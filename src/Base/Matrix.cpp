@@ -539,7 +539,8 @@ void Matrix_gauss(Matrix a, Matrix b)
     }
     indxr[i] = irow;
     indxc[i] = icol;
-    if (a[4*icol+icol] == 0.0) return;
+    if (a[4*icol+icol] == 0.0)
+        return;
     pivinv = 1.0/a[4*icol+icol];
     a[4*icol+icol] = 1.0;
     for (l = 0; l < 4; l++)

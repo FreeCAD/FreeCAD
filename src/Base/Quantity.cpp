@@ -430,7 +430,8 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
         else
             temp[i++] = *c;
         // check buffer overflow
-        if (i>39) return 0.0;
+        if (i>39)
+            return 0.0;
     }
     temp[i] = '\0';
 

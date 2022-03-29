@@ -145,7 +145,8 @@ bool BoundBox2d::Intersect(const Polygon2d &rclPoly) const
     return true;    /***** RETURN INTERSECTION *********/
 
   // test intersections of bound-lines
-  if (rclPoly.GetCtVectors() < 3) return false;
+  if (rclPoly.GetCtVectors() < 3)
+      return false;
   for (i = 0; i < rclPoly.GetCtVectors(); i++)
   {
     if (i == rclPoly.GetCtVectors() - 1)
@@ -288,7 +289,8 @@ static short _CalcTorsion (double *pfLine, double fX, double fY)
 
   // Abort at line points within a quadrant
   // Abort at non-intersecting line points
-  if (abs (sQuad[0] - sQuad[1]) <= 1) return 0;
+  if (abs (sQuad[0] - sQuad[1]) <= 1)
+      return 0;
 
   // Both points to the left of ulX
   if (abs (sQuad[0] - sQuad[1]) == 3)
@@ -317,7 +319,8 @@ bool Polygon2d::Contains (const Vector2d &rclV) const
   short sTorsion = 0;
 
   // Error check
-  if (GetCtVectors() < 3)  return false;
+  if (GetCtVectors() < 3)
+      return false;
 
   // for all polygon lines
   for (i = 0; i < GetCtVectors(); i++)

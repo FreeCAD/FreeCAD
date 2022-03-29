@@ -242,7 +242,8 @@ DWORD64
 
 static void MyStrCpy(char* szDest, size_t nMaxDestSize, const char* szSrc)
 {
-  if (nMaxDestSize <= 0) return;
+  if (nMaxDestSize <= 0)
+      return;
   if (strlen(szSrc) < nMaxDestSize)
   {
     strcpy_s(szDest, nMaxDestSize, szSrc);
