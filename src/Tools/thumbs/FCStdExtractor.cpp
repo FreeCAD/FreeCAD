@@ -222,7 +222,8 @@ HRESULT CFCStdExtractor::GetLocation(LPWSTR pszPathBuffer,
         DWORD *pdwFlags)
 {
     m_bmSize = *prgSize;
-    if (*pdwFlags & IEIFLAG_ASYNC)	return E_PENDING; 
+    if (*pdwFlags & IEIFLAG_ASYNC)
+        return E_PENDING; 
     return NOERROR;
 }
 
@@ -297,7 +298,8 @@ HRESULT CFCStdExtractor::GetDateStamp(FILETIME *pDateStamp)
     // open the file and get last write time
     HANDLE hFile = CreateFile(m_szFile,GENERIC_READ,FILE_SHARE_READ,NULL,
         OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,NULL);
-    if(!hFile) return E_FAIL;
+    if(!hFile)
+        return E_FAIL;
     GetFileTime(hFile,&ftCreationTime,&ftLastAccessTime,&ftLastWriteTime);
     CloseHandle(hFile);
     *pDateStamp = ftLastWriteTime;
