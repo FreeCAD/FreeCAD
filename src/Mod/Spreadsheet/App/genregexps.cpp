@@ -7,7 +7,9 @@
 
 int genUtf8(int c, unsigned char * b)
 {
-    if (c<0x80) { *b++=c, *b++ = '\0'; return 1; }
+    if (c<0x80) { *b++=c, *b++ = '\0';
+        return 1;
+    }
     else if (c<0x800) { *b++=192+c/64, *b++=128+c%64, *b++ = '\0';  return 2; }
     else if (c-0xd800u < 0x800) goto error;
     else if (c<0x10000) { *b++=224+c/4096, *b++=128+c/64%64, *b++=128+c%64, *b++ = '\0';  return 3; }
