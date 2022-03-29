@@ -1,89 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.2" width="17.2mm" height="17.2mm" viewBox="0 0 1720 1720" preserveAspectRatio="xMidYMid" fill-rule="evenodd" stroke-width="28.222" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" xmlns:ooo="http://xml.openoffice.org/svg/export" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:presentation="http://sun.com/xmlns/staroffice/presentation" xmlns:smil="http://www.w3.org/2001/SMIL20/" xmlns:anim="urn:oasis:names:tc:opendocument:xmlns:animation:1.0" xml:space="preserve">
+<!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
+<svg width="17.2mm" height="17.2mm" fill-rule="evenodd" stroke-linejoin="round" stroke-width="28.222" preserveAspectRatio="xMidYMid" version="1.2" viewBox="0 0 1720 1720" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:ooo="http://xml.openoffice.org/svg/export">
  <defs class="ClipPathGroup">
-  <clipPath id="presentation_clip_path" clipPathUnits="userSpaceOnUse">
-   <rect x="0" y="0" width="1720" height="1720"/>
-  </clipPath>
-  <clipPath id="presentation_clip_path_shrink" clipPathUnits="userSpaceOnUse">
-   <rect x="1" y="1" width="1717" height="1717"/>
+  <clipPath id="presentation_clip_path">
+   <rect width="1720" height="1720"/>
   </clipPath>
  </defs>
- <defs class="TextShapeIndex">
-  <g ooo:slide="id1" ooo:id-list="id3"/>
- </defs>
- <defs class="EmbeddedBulletChars">
-  <g id="bullet-char-template-57356" transform="scale(0.00048828125,-0.00048828125)">
-   <path d="M 580,1141 L 1163,571 580,0 -4,571 580,1141 Z"/>
-  </g>
-  <g id="bullet-char-template-57354" transform="scale(0.00048828125,-0.00048828125)">
-   <path d="M 8,1128 L 1137,1128 1137,0 8,0 8,1128 Z"/>
-  </g>
-  <g id="bullet-char-template-10146" transform="scale(0.00048828125,-0.00048828125)">
-   <path d="M 174,0 L 602,739 174,1481 1456,739 174,0 Z M 1358,739 L 309,1346 659,739 1358,739 Z"/>
-  </g>
-  <g id="bullet-char-template-10132" transform="scale(0.00048828125,-0.00048828125)">
-   <path d="M 2015,739 L 1276,0 717,0 1260,543 174,543 174,936 1260,936 717,1481 1274,1481 2015,739 Z"/>
-  </g>
-  <g id="bullet-char-template-10007" transform="scale(0.00048828125,-0.00048828125)">
-   <path d="M 0,-2 C -7,14 -16,27 -25,37 L 356,567 C 262,823 215,952 215,954 215,979 228,992 255,992 264,992 276,990 289,987 310,991 331,999 354,1012 L 381,999 492,748 772,1049 836,1024 860,1049 C 881,1039 901,1025 922,1006 886,937 835,863 770,784 769,783 710,716 594,584 L 774,223 C 774,196 753,168 711,139 L 727,119 C 717,90 699,76 672,76 641,76 570,178 457,381 L 164,-76 C 142,-110 111,-127 72,-127 30,-127 9,-110 8,-76 1,-67 -2,-52 -2,-32 -2,-23 -1,-13 0,-2 Z"/>
-  </g>
-  <g id="bullet-char-template-10004" transform="scale(0.00048828125,-0.00048828125)">
-   <path d="M 285,-33 C 182,-33 111,30 74,156 52,228 41,333 41,471 41,549 55,616 82,672 116,743 169,778 240,778 293,778 328,747 346,684 L 369,508 C 377,444 397,411 428,410 L 1163,1116 C 1174,1127 1196,1133 1229,1133 1271,1133 1292,1118 1292,1087 L 1292,965 C 1292,929 1282,901 1262,881 L 442,47 C 390,-6 338,-33 285,-33 Z"/>
-  </g>
-  <g id="bullet-char-template-9679" transform="scale(0.00048828125,-0.00048828125)">
-   <path d="M 813,0 C 632,0 489,54 383,161 276,268 223,411 223,592 223,773 276,916 383,1023 489,1130 632,1184 813,1184 992,1184 1136,1130 1245,1023 1353,916 1407,772 1407,592 1407,412 1353,268 1245,161 1136,54 992,0 813,0 Z"/>
-  </g>
-  <g id="bullet-char-template-8226" transform="scale(0.00048828125,-0.00048828125)">
-   <path d="M 346,457 C 273,457 209,483 155,535 101,586 74,649 74,723 74,796 101,859 155,911 209,963 273,989 346,989 419,989 480,963 531,910 582,859 608,796 608,723 608,648 583,586 532,535 482,483 420,457 346,457 Z"/>
-  </g>
-  <g id="bullet-char-template-8211" transform="scale(0.00048828125,-0.00048828125)">
-   <path d="M -4,459 L 1135,459 1135,606 -4,606 -4,459 Z"/>
-  </g>
-  <g id="bullet-char-template-61548" transform="scale(0.00048828125,-0.00048828125)">
-   <path d="M 173,740 C 173,903 231,1043 346,1159 462,1274 601,1332 765,1332 928,1332 1067,1274 1183,1159 1299,1043 1357,903 1357,740 1357,577 1299,437 1183,322 1067,206 928,148 765,148 601,148 462,206 346,322 231,437 173,577 173,740 Z"/>
-  </g>
- </defs>
- <g>
-  <g id="id2" class="Master_Slide">
-   <g id="bg-id2" class="Background"/>
-   <g id="bo-id2" class="BackgroundObjects"/>
-  </g>
- </g>
  <g class="SlideGroup">
-  <g>
    <g id="container-id1">
     <g id="id1" class="Slide" clip-path="url(#presentation_clip_path)">
      <g class="Page">
       <g class="Graphic">
        <g id="id3">
-        <rect class="BoundingBox" stroke="none" fill="none" x="0" y="0" width="1720" height="1720"/>
-        <path fill="rgb(255,0,0)" stroke="none" d="M 1040,1541 L 666,1542 853,1187 1040,1541 Z"/>
-        <path fill="none" stroke="rgb(43,17,0)" stroke-width="38" stroke-linejoin="round" stroke-linecap="round" d="M 1040,1541 L 666,1542 853,1187 1040,1541 Z"/>
-        <path fill="rgb(255,255,0)" stroke="none" d="M 1236,796 L 789,796 789,45 1682,45 1682,796 1236,796 Z"/>
-        <path fill="none" stroke="rgb(43,17,0)" stroke-width="30" stroke-linejoin="miter" stroke-linecap="round" d="M 1236,796 L 789,796 789,45 1682,45 1682,796 1236,796 Z"/>
-        <path fill="rgb(255,255,0)" stroke="none" d="M 412,796 L 37,796 37,45 788,45 788,796 412,796 Z"/>
-        <path fill="none" stroke="rgb(43,17,0)" stroke-width="30" stroke-linejoin="miter" stroke-linecap="round" d="M 412,796 L 37,796 37,45 788,45 788,796 412,796 Z"/>
-        <path fill="rgb(43,17,0)" stroke="none" d="M 412,881 L 412,787 452,787 452,976 412,976 412,881 Z"/>
-        <path fill="rgb(43,17,0)" stroke="none" d="M 835,1080 L 835,949 875,949 875,1210 835,1210 835,1080 Z"/>
-        <path fill="rgb(43,17,0)" stroke="none" d="M 650,935 L 874,935 874,975 427,975 427,935 650,935 Z"/>
-        <path fill="rgb(255,255,0)" stroke="none" d="M 858,1669 L 42,1669 42,1548 1675,1548 1675,1669 858,1669 Z"/>
-        <path fill="none" stroke="rgb(43,17,0)" stroke-width="40" stroke-linejoin="miter" stroke-linecap="round" d="M 858,1669 L 42,1669 42,1548 1675,1548 1675,1669 858,1669 Z"/>
-        <path fill="none" stroke="rgb(255,0,0)" stroke-width="70" stroke-linejoin="miter" stroke-linecap="round" d="M 615,424 C 615,461 605,497 587,529 568,561 542,588 510,606 477,625 441,635 404,635 367,635 331,625 299,606 267,588 240,561 221,529 203,497 193,461 193,424 193,387 203,350 221,318 240,286 267,259 299,241 331,222 367,213 404,213 441,213 477,222 510,241 542,259 568,286 587,318 605,350 615,387 615,424 Z"/>
-        <path fill="rgb(255,0,0)" stroke="none" d="M 406,732 L 392,732 392,97 420,97 420,732 406,732 Z"/>
-        <path fill="none" stroke="rgb(255,0,0)" stroke-width="40" stroke-linejoin="miter" stroke-linecap="round" d="M 406,732 L 392,732 392,97 420,97 420,732 406,732 Z"/>
-        <path fill="rgb(255,0,0)" stroke="none" d="M 89,414 L 89,400 724,400 724,428 89,428 89,414 Z"/>
-        <path fill="none" stroke="rgb(255,0,0)" stroke-width="40" stroke-linejoin="miter" stroke-linecap="round" d="M 89,414 L 89,400 724,400 724,428 89,428 89,414 Z"/>
-        <path fill="none" stroke="rgb(255,0,0)" stroke-width="69" stroke-linejoin="miter" stroke-linecap="round" d="M 1409,424 C 1409,455 1401,486 1386,513 1371,541 1349,563 1322,579 1296,595 1266,603 1236,603 1205,603 1175,595 1149,579 1123,563 1101,541 1086,513 1070,486 1062,455 1062,424 1062,392 1070,361 1086,334 1101,307 1123,284 1149,268 1175,252 1205,244 1236,244 1266,244 1296,252 1322,268 1349,284 1371,307 1386,334 1401,361 1409,392 1409,424 Z"/>
-        <path fill="rgb(255,0,0)" stroke="none" d="M 1303,693 L 1294,686 1621,264 1638,279 1312,701 1303,693 Z"/>
-        <path fill="none" stroke="rgb(255,0,0)" stroke-width="40" stroke-linejoin="miter" stroke-linecap="round" d="M 1303,693 L 1294,686 1621,264 1638,279 1312,701 1303,693 Z"/>
-        <path fill="rgb(255,0,0)" stroke="none" d="M 841,575 L 832,568 1158,146 1176,161 850,582 841,575 Z"/>
-        <path fill="none" stroke="rgb(255,0,0)" stroke-width="40" stroke-linejoin="miter" stroke-linecap="round" d="M 841,575 L 832,568 1158,146 1176,161 850,582 841,575 Z"/>
+        <rect class="BoundingBox" width="1720" height="1720" fill="none"/>
+        <path d="m1040 1541-374 1 187-355 187 354z" fill="#f00"/>
+        <path d="m1040 1541-374 1 187-355 187 354z" fill="none" stroke="#2b1100" stroke-linecap="round" stroke-linejoin="round" stroke-width="38"/>
+        <path d="m1236 796h-447v-751h893v751h-446z" fill="#ff0"/>
+        <path d="m1236 796h-447v-751h893v751h-446z" fill="none" stroke="#2b1100" stroke-linecap="round" stroke-linejoin="miter" stroke-width="30"/>
+        <path d="m412 796h-375v-751h751v751h-376z" fill="#ff0"/>
+        <path d="m412 796h-375v-751h751v751h-376z" fill="none" stroke="#2b1100" stroke-linecap="round" stroke-linejoin="miter" stroke-width="30"/>
+        <path d="m412 881v-94h40v189h-40v-95z" fill="#2b1100"/>
+        <path d="m835 1080v-131h40v261h-40v-130z" fill="#2b1100"/>
+        <path d="m650 935h224v40h-447v-40h223z" fill="#2b1100"/>
+        <path d="m858 1669h-816v-121h1633v121h-817z" fill="#ff0"/>
+        <path d="m858 1669h-816v-121h1633v121h-817z" fill="none" stroke="#2b1100" stroke-linecap="round" stroke-linejoin="miter" stroke-width="40"/>
+        <path d="m615 424c0 37-10 73-28 105-19 32-45 59-77 77-33 19-69 29-106 29s-73-10-105-29c-32-18-59-45-78-77-18-32-28-68-28-105s10-74 28-106c19-32 46-59 78-77 32-19 68-28 105-28s73 9 106 28c32 18 58 45 77 77 18 32 28 69 28 106z" fill="none" stroke="#f00" stroke-linecap="round" stroke-linejoin="miter" stroke-width="70"/>
+        <path d="m406 732h-14v-635h28v635h-14z" fill="#f00"/>
+        <path d="m406 732h-14v-635h28v635h-14z" fill="none" stroke="#f00" stroke-linecap="round" stroke-linejoin="miter" stroke-width="40"/>
+        <path d="m89 414v-14h635v28h-635v-14z" fill="#f00"/>
+        <path d="m89 414v-14h635v28h-635v-14z" fill="none" stroke="#f00" stroke-linecap="round" stroke-linejoin="miter" stroke-width="40"/>
+        <path d="m1409 424c0 31-8 62-23 89-15 28-37 50-64 66-26 16-56 24-86 24-31 0-61-8-87-24s-48-38-63-66c-16-27-24-58-24-89 0-32 8-63 24-90 15-27 37-50 63-66s56-24 87-24c30 0 60 8 86 24 27 16 49 39 64 66s23 58 23 90z" fill="none" stroke="#f00" stroke-linecap="round" stroke-linejoin="miter" stroke-width="69"/>
+        <path d="m1303 693-9-7 327-422 17 15-326 422-9-8z" fill="#f00"/>
+        <path d="m1303 693-9-7 327-422 17 15-326 422-9-8z" fill="none" stroke="#f00" stroke-linecap="round" stroke-linejoin="miter" stroke-width="40"/>
+        <path d="m841 575-9-7 326-422 18 15-326 421-9-7z" fill="#f00"/>
+        <path d="m841 575-9-7 326-422 18 15-326 421-9-7z" fill="none" stroke="#f00" stroke-linecap="round" stroke-linejoin="miter" stroke-width="40"/>
        </g>
       </g>
      </g>
     </g>
    </g>
-  </g>
  </g>
 </svg>
