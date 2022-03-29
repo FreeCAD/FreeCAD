@@ -163,8 +163,10 @@ bool ViewProviderHatch::canDelete(App::DocumentObject *obj) const
 Gui::MDIView *ViewProviderHatch::getMDIView() const
 {
     auto obj = getViewObject();
-    if(!obj) return nullptr;
+    if(!obj)
+        return nullptr;
     auto vp = Gui::Application::Instance->getViewProvider(obj->getSourceView());
-    if(!vp) return nullptr;
+    if(!vp)
+        return nullptr;
     return vp->getMDIView();
 }

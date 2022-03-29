@@ -194,8 +194,10 @@ TechDraw::DrawGeomHatch* ViewProviderGeomHatch::getViewObject() const
 Gui::MDIView *ViewProviderGeomHatch::getMDIView() const
 {
     auto obj = getViewObject();
-    if(!obj) return nullptr;
+    if(!obj)
+        return nullptr;
     auto vp = Gui::Application::Instance->getViewProvider(obj->getSourceView());
-    if(!vp) return nullptr;
+    if(!vp)
+        return nullptr;
     return vp->getMDIView();
 }

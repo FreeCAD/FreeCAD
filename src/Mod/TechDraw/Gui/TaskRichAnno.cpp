@@ -530,7 +530,8 @@ bool TaskRichAnno::accept()
     }
 
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
-    if (!doc) return false;
+    if (!doc)
+        return false;
 
     if (!getCreateMode())  {
         updateAnnoFeature();
