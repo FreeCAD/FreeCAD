@@ -1374,7 +1374,8 @@ PropertyString::~PropertyString()
 
 void PropertyString::setValue(const char* newLabel)
 {
-    if(!newLabel) return;
+    if(!newLabel)
+        return;
 
     if(_cValue == newLabel)
         return;

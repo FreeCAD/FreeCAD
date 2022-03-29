@@ -172,9 +172,11 @@ const char *ComplexGeoData::isMappedElement(const char *name) {
 }
 
 std::string ComplexGeoData::newElementName(const char *name) {
-    if(!name) return std::string();
+    if(!name)
+        return std::string();
     const char *dot = strrchr(name,'.');
-    if(!dot || dot==name) return name;
+    if(!dot || dot==name)
+        return name;
     const char *c = dot-1;
     for(;c!=name;--c) {
         if(*c == '.') {
@@ -188,9 +190,11 @@ std::string ComplexGeoData::newElementName(const char *name) {
 }
 
 std::string ComplexGeoData::oldElementName(const char *name) {
-    if(!name) return std::string();
+    if(!name)
+        return std::string();
     const char *dot = strrchr(name,'.');
-    if(!dot || dot==name) return name;
+    if(!dot || dot==name)
+        return name;
     const char *c = dot-1;
     for(;c!=name;--c) {
         if(*c == '.') {
@@ -204,7 +208,8 @@ std::string ComplexGeoData::oldElementName(const char *name) {
 }
 
 std::string ComplexGeoData::noElementName(const char *name) {
-    if(!name) return std::string();
+    if(!name)
+        return std::string();
     auto element = findElementName(name);
     if(element)
         return std::string(name,element-name);

@@ -160,7 +160,8 @@ const char *Application::getActiveTransaction(int *id) const {
 
 void Application::closeActiveTransaction(bool abort, int id) {
     if(!id) id = _activeTransactionID;
-    if(!id) return;
+    if(!id)
+        return;
 
     if(_activeTransactionGuard>0 && !abort) {
         FC_LOG("ignore close transaction");

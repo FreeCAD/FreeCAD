@@ -102,7 +102,8 @@ Extension* ExtensionContainer::getExtension(Base::Type t, bool derived, bool no_
             if(entry.first.isDerivedFrom(t))
                 return entry.second;
         }
-        if(no_except) return nullptr;
+        if(no_except)
+            return nullptr;
         //if we arrive here we don't have anything matching
         throw Base::TypeError("ExtensionContainer::getExtension: No extension of given type available");
     }
@@ -110,7 +111,8 @@ Extension* ExtensionContainer::getExtension(Base::Type t, bool derived, bool no_
         return result->second;
     }
     else {
-        if(no_except) return nullptr;
+        if(no_except)
+            return nullptr;
         //if we arrive here we don't have anything matching
         throw Base::TypeError("ExtensionContainer::getExtension: No extension of given type available");
     }
