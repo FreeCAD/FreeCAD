@@ -469,7 +469,7 @@ void TaskPostClip::collectImplicitFunctions() {
                 pipeline->Functions.getValue())->Functions.getValues();
             for (std::size_t i = 0; i < funcs.size(); ++i) {
                 items.push_back(QString::fromLatin1(funcs[i]->getNameInDocument()));
-                if (currentFunction = funcs[i])
+                if (currentFunction == funcs[i])
                     currentItem = i;
             }
             ui->FunctionBox->addItems(items);
