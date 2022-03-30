@@ -132,7 +132,7 @@ class GCodeEditorDialog(QtGui.QDialog):
         lab.setText(
             translate(
                 "Path_Inspect",
-                "<b>Note</b>: Pressing OK will commit any change you make above to the object, but if the object is parametric, these changes will be overridden on recompute.",
+                "<b>Note</b>: This dialog shows Path Commands in FreeCAD base units (mm/s). \n Values will be converted to the desired unit during post-processing.",
             )
         )
         lab.setWordWrap(True)
@@ -140,12 +140,12 @@ class GCodeEditorDialog(QtGui.QDialog):
 
         # OK and Cancel buttons
         self.buttons = QtGui.QDialogButtonBox(
-            QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel,
+            QtGui.QDialogButtonBox.Close,
             QtCore.Qt.Horizontal,
             self,
         )
+
         layout.addWidget(self.buttons)
-        self.buttons.accepted.connect(self.accept)
         self.buttons.rejected.connect(self.reject)
         self.editor.selectionChanged.connect(self.highlightpath)
         self.finished.connect(self.cleanup)
@@ -257,19 +257,16 @@ class CommandPathInspect:
     def GetResources(self):
         return {
             "Pixmap": "Path_Inspect",
-            "MenuText": QT_TRANSLATE_NOOP("Path_Inspect", "Inspect G-code"),
+            "MenuText": QT_TRANSLATE_NOOP("Path_Inspect", "Inspect Path Commands"),
             "Accel": "P, I",
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Path_Inspect", "Inspects the G-code contents of a path"
+                "Path_Inspect", "Inspects the contents of a Path object"
             ),
         }
 
     def IsActive(self):
-        if FreeCAD.ActiveDocument is not None:
-            for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == "Job":
-                    return True
-        return False
+        obj = FreeCADGui.Selection.getSelection()[0]
+        return hasattr(obj, "Path") and len(obj.Path.Commands) > 0
 
     def Activated(self):
         # check that the selection contains exactly what we want
