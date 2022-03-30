@@ -148,6 +148,12 @@ public:
     static Unit DynamicViscosity;
     static Unit KinematicViscosity;
     static Unit VacuumPermittivity;
+    static Unit VolumeFlowRate;
+    static Unit DissipationRate;
+
+    static Unit InverseLength;
+    static Unit InverseArea;
+    static Unit InverseVolume;
 
     //@}
 protected:
