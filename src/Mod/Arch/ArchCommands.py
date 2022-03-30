@@ -913,8 +913,6 @@ def survey(callback=False):
                                     elif "Edge" in el:
                                         u= FreeCAD.Units.Quantity(e.Length,FreeCAD.Units.Length)
                                         t = u.getUserPreferred()[0]
-                                        if sys.version_info.major < 3:
-                                            t = t.encode("utf8")
                                         anno.LabelText = "l " + t
                                         FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Length: " + utf8_decode(t) + "\n")
                                         FreeCAD.SurveyObserver.totalLength += u.Value
@@ -923,7 +921,6 @@ def survey(callback=False):
                                     elif "Vertex" in el:
                                         u = FreeCAD.Units.Quantity(e.Z,FreeCAD.Units.Length)
                                         t = u.getUserPreferred()[0]
-                                        t = t.encode("utf8")
                                         anno.LabelText = "z " + t
                                         FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Zcoord: " + utf8_decode(t) + "\n")
                                     if FreeCAD.GuiUp and t:
