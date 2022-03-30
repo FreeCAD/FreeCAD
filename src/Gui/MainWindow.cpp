@@ -704,8 +704,8 @@ void MainWindow::showDocumentation(const QString& help)
         QUrl url(help);
         if (url.scheme().isEmpty()) {
             QMessageBox::critical(getMainWindow(), tr("Help addon needed!"),
-            tr("The Help system of %s is now handled by the \"Help\" addon. "
-               "Install it with menu Tools > Addons Manager"),qApp->applicationName());
+            tr("The Help system of %1 is now handled by the \"Help\" addon. "
+               "Install it with menu Tools > Addons Manager").arg(QString(qApp->applicationName())));
         }
         else {
             QDesktopServices::openUrl(url);
