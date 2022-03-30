@@ -1,6 +1,6 @@
 ![Logo](https://www.freecadweb.org/images/logo.png)
 
-### Your own 3D parametric modeler
+### Your own 3D parametric modeler test
 
 [Website](https://www.freecadweb.org) • 
 [Documentation](https://wiki.freecadweb.org) •
