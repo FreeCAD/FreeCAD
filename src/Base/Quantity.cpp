@@ -88,6 +88,12 @@ Quantity::Quantity(double value, const Unit& unit)
 
 Quantity::Quantity(double value, const QString& unit)
 {
+    if (unit.isEmpty()) {
+        this->_Value = value;
+        this->_Unit = Unit();
+        return;
+    }
+
     try {
         auto tmpQty = parse(unit);
         this->_Unit = tmpQty.getUnit();
