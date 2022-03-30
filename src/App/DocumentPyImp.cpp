@@ -835,7 +835,8 @@ int DocumentPy::setCustomAttributes(const char* attr, PyObject *)
             return 0;
     }
     PyObject* item = PyDict_GetItemString(this->ob_type->tp_dict, attr);
-    if (item) return 0;
+    if (item)
+        return 0;
     DocumentObject* obj = getDocumentPtr()->getObject(attr);
     if (obj)
     {

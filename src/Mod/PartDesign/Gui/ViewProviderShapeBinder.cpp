@@ -144,7 +144,8 @@ void ViewProviderShapeBinder::highlightReferences(const bool on, bool /*auxiliar
 
     PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
         Gui::Application::Instance->getViewProvider(obj));
-    if (svp == nullptr) return;
+    if (svp == nullptr)
+        return;
 
     if (on) {
         if (!subs.empty() && originalLineColors.empty()) {
@@ -270,7 +271,8 @@ std::string ViewProviderSubShapeBinder::dropObjectEx(App::DocumentObject* obj, A
     const char* subname, const std::vector<std::string>& elements)
 {
     auto self = dynamic_cast<PartDesign::SubShapeBinder*>(getObject());
-    if (!self) return std::string();
+    if (!self)
+        return std::string();
     std::map<App::DocumentObject*, std::vector<std::string> > values;
     if (!subname) subname = "";
     std::string sub(subname);

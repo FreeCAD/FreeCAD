@@ -256,7 +256,8 @@ void DockWindowManager::activate(QWidget* widget)
         par = par->parentWidget();
     }
 
-    if (!dw) return;
+    if (!dw)
+        return;
 
     if (!dw->toggleViewAction()->isChecked()) {
         dw->toggleViewAction()->activate(QAction::Trigger);

@@ -458,7 +458,8 @@ void StdCmdFreezeViews::onRestoreViews()
 
     bool ok;
     int scheme = root.attribute(QString::fromLatin1("SchemaVersion")).toInt(&ok);
-    if (!ok) return;
+    if (!ok)
+        return;
     // SchemeVersion "1"
     if (scheme == 1) {
         // read the views, ignore the attribute 'Count'
@@ -1693,7 +1694,8 @@ void StdViewDockUndockFullscreen::activated(int iMsg)
         getMainWindow()->showNormal();
 
     MDIView* view = getMainWindow()->activeWindow();
-    if (!view) return; // no active view
+    if (!view) // no active view
+        return;
 
     // nothing to do when the view is docked and 'Docked' is pressed
     if (iMsg == 0 && view->currentViewMode() == MDIView::Child)
@@ -2167,7 +2169,8 @@ bool StdCmdAxisCross::isActive(void)
         if (_pcAction->isChecked())
             _pcAction->setChecked(false);
     }
-    if (view ) return true;
+    if (view )
+        return true;
     return false;
 
 }

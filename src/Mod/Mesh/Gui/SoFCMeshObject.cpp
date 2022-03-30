@@ -634,7 +634,8 @@ void SoFCMeshObjectShape::GLRender(SoGLRenderAction *action)
 
         SbBool mode = Gui::SoFCInteractiveElement::get(state);
         const Mesh::MeshObject * mesh = SoFCMeshObjectElement::get(state);
-        if (!mesh || mesh->countPoints() == 0) return;
+        if (!mesh || mesh->countPoints() == 0)
+            return;
 
         Binding mbind = this->findMaterialBinding(state);
 
@@ -974,7 +975,8 @@ void SoFCMeshObjectShape::doAction(SoAction * action)
 {
     if (action->getTypeId() == Gui::SoGLSelectAction::getClassTypeId()) {
         SoNode* node = action->getNodeAppliedTo();
-        if (!node) return; // on no node applied
+        if (!node) // on no node applied
+            return;
 
         // The node we have is the parent of this node and the coordinate node
         // thus we search there for it.
@@ -984,7 +986,8 @@ void SoFCMeshObjectShape::doAction(SoAction * action)
         sa.setType(SoFCMeshObjectNode::getClassTypeId(), 1);
         sa.apply(node);
         SoPath * path = sa.getPath();
-        if (!path) return;
+        if (!path)
+            return;
 
         // make sure we got the node we wanted
         SoNode* coords = path->getNodeFromTail(0);
@@ -1241,7 +1244,8 @@ void SoFCMeshObjectShape::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &c
  */
 void SoFCMeshObjectShape::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-    if (!this->shouldPrimitiveCount(action)) return;
+    if (!this->shouldPrimitiveCount(action))
+        return;
     SoState*  state = action->getState();
     const Mesh::MeshObject * mesh = SoFCMeshObjectElement::get(state);
     action->addNumTriangles(mesh->countFacets());
@@ -1284,7 +1288,8 @@ void SoFCMeshSegmentShape::GLRender(SoGLRenderAction *action)
 
         SbBool mode = Gui::SoFCInteractiveElement::get(state);
         const Mesh::MeshObject * mesh = SoFCMeshObjectElement::get(state);
-        if (!mesh) return;
+        if (!mesh)
+            return;
 
         Binding mbind = this->findMaterialBinding(state);
 
@@ -1652,7 +1657,8 @@ void SoFCMeshSegmentShape::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &
  */
 void SoFCMeshSegmentShape::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-    if (!this->shouldPrimitiveCount(action)) return;
+    if (!this->shouldPrimitiveCount(action))
+        return;
     SoState*  state = action->getState();
     const Mesh::MeshObject * mesh = SoFCMeshObjectElement::get(state);
     if (mesh && mesh->countSegments() > this->index.getValue()) {
@@ -1684,7 +1690,8 @@ void SoFCMeshObjectBoundary::GLRender(SoGLRenderAction *action)
     {
         SoState*  state = action->getState();
         const Mesh::MeshObject * mesh = SoFCMeshObjectElement::get(state);
-        if (!mesh) return;
+        if (!mesh)
+            return;
 
         SoMaterialBundle mb(action);
         SoTextureCoordinateBundle tb(action, true, false);
@@ -1801,7 +1808,8 @@ void SoFCMeshObjectBoundary::computeBBox(SoAction *action, SbBox3f &box, SbVec3f
  */
 void SoFCMeshObjectBoundary::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-    if (!this->shouldPrimitiveCount(action)) return;
+    if (!this->shouldPrimitiveCount(action))
+        return;
     SoState*  state = action->getState();
     const Mesh::MeshObject * mesh = SoFCMeshObjectElement::get(state);
     if (!mesh)

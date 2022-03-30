@@ -303,7 +303,8 @@ static void MakePoly(const CCurve& curve, TPolygon &p, bool reverse = false)
 	pts_for_AddVertex.clear();
 	const CVertex* prev_vertex = NULL;
 
-    if(!curve.m_vertices.size()) return;
+    if(!curve.m_vertices.size())
+        return;
     if(!curve.IsClosed()) AddVertex(curve.m_vertices.front(),NULL);
 
 	for (std::list<CVertex>::const_iterator It2 = curve.m_vertices.begin(); It2 != curve.m_vertices.end(); It2++)

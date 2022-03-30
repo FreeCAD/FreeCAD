@@ -338,7 +338,8 @@ SoDetail* ViewProviderPath::getDetail(const char* subelement) const
 
 void ViewProviderPath::onChanged(const App::Property* prop)
 {
-    if(blockPropertyChange) return;
+    if(blockPropertyChange)
+        return;
 
     if (prop == &LineWidth) {
         pcDrawStyle->lineWidth = LineWidth.getValue();
@@ -648,7 +649,8 @@ void ViewProviderPath::updateVisual(bool rebuild) {
     for(i=StartIndex.getValue();i<(int)command2Edge.size();++i)
         if((edgeStart=command2Edge[i])>=0) break;
 
-    if(edgeStart<0) return;
+    if(edgeStart<0)
+        return;
 
     if(i!=StartIndex.getValue() && StartIndex.getValue()!=0) {
         blockPropertyChange = true;

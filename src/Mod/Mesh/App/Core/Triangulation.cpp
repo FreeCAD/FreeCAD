@@ -383,13 +383,15 @@ bool EarClippingTriangulator::Triangulate::Snip(const std::vector<Base::Vector3f
     Cx = contour[V[w]].x;
     Cy = contour[V[w]].y;
 
-    if (FLOAT_EPS > (((Bx-Ax)*(Cy-Ay)) - ((By-Ay)*(Cx-Ax)))) return false;
+    if (FLOAT_EPS > (((Bx-Ax)*(Cy-Ay)) - ((By-Ay)*(Cx-Ax))))
+        return false;
 
     for (p=0;p<n;p++) {
         if( (p == u) || (p == v) || (p == w) ) continue;
         Px = contour[V[p]].x;
         Py = contour[V[p]].y;
-        if (InsideTriangle(Ax,Ay,Bx,By,Cx,Cy,Px,Py)) return false;
+        if (InsideTriangle(Ax,Ay,Bx,By,Cx,Cy,Px,Py))
+            return false;
     }
 
     return true;
@@ -403,7 +405,8 @@ bool EarClippingTriangulator::Triangulate::Process(const std::vector<Base::Vecto
     /* allocate and initialize list of Vertices in polygon */
 
     int n = contour.size();
-    if ( n < 3 ) return false;
+    if ( n < 3 )
+        return false;
 
     int *V = new int[n];
 
@@ -604,7 +607,8 @@ struct Vertex2d_Less
     {
         if (fabs(p.x - q.x) < MeshDefinitions::_fMinPointDistanceD1) {
         if (fabs(p.y - q.y) < MeshDefinitions::_fMinPointDistanceD1) {
-        return false; } else return p.y < q.y;
+        return false;
+    } else return p.y < q.y;
         } else return p.x < q.x;
     }
 };

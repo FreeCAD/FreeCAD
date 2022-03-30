@@ -463,12 +463,17 @@ void TaskPostClip::collectImplicitFunctions() {
 
             ui->FunctionBox->clear();
             QStringList items;
+            std::size_t currentItem = 0;
+            App::DocumentObject* currentFunction = static_cast<Fem::FemPostClipFilter*>(getObject())->Function.getValue();
             const std::vector<App::DocumentObject*>& funcs = static_cast<Fem::FemPostFunctionProvider*>(
                 pipeline->Functions.getValue())->Functions.getValues();
-            for (std::size_t i = 0; i < funcs.size(); ++i)
+            for (std::size_t i = 0; i < funcs.size(); ++i) {
                 items.push_back(QString::fromLatin1(funcs[i]->getNameInDocument()));
-
+                if (currentFunction = funcs[i])
+                    currentItem = i;
+            }
             ui->FunctionBox->addItems(items);
+            ui->FunctionBox->setCurrentIndex(currentItem);
         }
     }
 }
@@ -776,7 +781,7 @@ void TaskPostDataAtPoint::applyPythonCode() {
 }
 
 static const char* cursor_star[] = {
-"32 32 3 1",
+"32 17 3 1",
 "       c None",
 ".      c #FFFFFF",
 "+      c #FF0000",

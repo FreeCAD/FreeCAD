@@ -1004,7 +1004,8 @@ void CmdPartImport::activated(int iMsg)
     if (!fn.isEmpty()) {
         Gui::WaitCursor wc;
         App::Document* pDoc = getDocument();
-        if (!pDoc) return; // no document
+        if (!pDoc) // no document
+            return;
 
         fn = Base::Tools::escapeEncodeFilename(fn);
         openCommand(QT_TRANSLATE_NOOP("Command", "Import Part"));
@@ -1065,7 +1066,8 @@ void CmdPartExport::activated(int iMsg)
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")), &select);
     if (!fn.isEmpty()) {
         App::Document* pDoc = getDocument();
-        if (!pDoc) return; // no document
+        if (!pDoc) // no document
+            return;
         if (select == filter[1] ||
             select == filter[3]) {
             Gui::Application::Instance->exportTo((const char*)fn.toUtf8(),pDoc->getName(),"ImportGui");

@@ -51,8 +51,10 @@
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Mod/Fem/App/FemAnalysis.h>
 
 #include "ViewProviderFemPostFunction.h"
+#include "ActiveAnalysisObserver.h"
 #include "TaskPostBoxes.h"
 
 #include "ui_PlaneWidget.h"
@@ -577,28 +579,13 @@ void ViewProviderFemPostSphereFunction::updateData(const App::Property* p) {
     }
     Gui::ViewProviderDocumentObject::updateData(p);
 
-    // after updating the geometry we must recompute the pipeline the sphere is in
+    // after updating the geometry we must recompute
+    // A sphere can be used by filters in other pipelines than the one the sphere is in.
+    // Therefore we must recompute the analysis, not only a single pipeline
     if (p == &func->Center || p == &func->Radius) {
-        auto directParents = func->getInList();
-        // directParents is at the level of the functions container, so we must read the parent of this container
-        if (!directParents.empty()) {
-            for (auto obj : directParents) {
-                if (obj->getTypeId() == Base::Type::fromName("Fem::FemPostFunctionProvider")) {
-                    auto outerParents = obj->getInList();
-                    if (!outerParents.empty()) {
-                        for (auto objOuter : outerParents) {
-                            if (objOuter->getTypeId() == Base::Type::fromName("Fem::FemPostPipeline") ) {
-                                if (!isDragging())
-                                    // not recursve, otherwise VTK will show an error on initialization
-                                    objOuter->recomputeFeature(); 
-                                else
-                                    objOuter->recomputeFeature(true);
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        auto pcAnalysis = FemGui::ActiveAnalysisObserver::instance()->getActiveObject();
+        if (pcAnalysis)
+            pcAnalysis->recomputeFeature(true);
     }
 }
 

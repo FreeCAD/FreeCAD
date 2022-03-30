@@ -115,12 +115,15 @@ void
 DragDropHandlerP::dragEnterEvent(QDragEnterEvent * event)
 {
   const QMimeData * mimedata = event->mimeData();
-  if (!mimedata->hasUrls() && !mimedata->hasText()) return;
+  if (!mimedata->hasUrls() && !mimedata->hasText())
+      return;
 
   if (mimedata->hasUrls()) {
     QFileInfo fileinfo(mimedata->urls().takeFirst().path());
     QString suffix = fileinfo.suffix().toLower();
-    if (!this->suffixes.contains(suffix)) { return; }
+    if (!this->suffixes.contains(suffix)) {
+        return;
+    }
   }
 
   event->acceptProposedAction();
@@ -139,18 +142,21 @@ DragDropHandlerP::dropEvent(QDropEvent * event)
     QUrl url = mimedata->urls().takeFirst();
     if (url.scheme().isEmpty() || url.scheme().toLower() == QString("file") ) {
       // attempt to open file
-      if (!in.openFile(url.toLocalFile().toLatin1().constData())) return;
+      if (!in.openFile(url.toLocalFile().toLatin1().constData()))
+          return;
     }
   } else if (mimedata->hasText()) {
     /* FIXME 2007-11-09 preng: dropping text buffer does not work on Windows Vista. */
     bytes = mimedata->text().toUtf8();
     in.setBuffer((void *) bytes.constData(), bytes.size());
-    if (!in.isValidBuffer()) return;
+    if (!in.isValidBuffer())
+        return;
   }
 
   // attempt to import it
   root = SoDB::readAll(&in);
-  if (root == nullptr) return;
+  if (root == nullptr)
+      return;
 
   // set new scenegraph
   this->quarterwidget->setSceneGraph(root);

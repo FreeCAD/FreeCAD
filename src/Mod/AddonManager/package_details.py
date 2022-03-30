@@ -491,15 +491,23 @@ class PackageDetails(QWidget):
             self.macro_readme_updated()
 
     def macro_readme_updated(self):
+        url = self.repo.macro.wiki
+        if not url:
+            url = self.repo.macro.url
+
         if HAS_QTWEBENGINE:
-            self.ui.webView.load(QUrl(self.repo.macro.url))
-            self.ui.urlBar.setText(self.repo.macro.url)
+            if url:
+                self.ui.webView.load(QUrl(url))
+                self.ui.urlBar.setText(url)
+            else:
+                self.ui.urlBar.setText("(" + translate("AddonsInstaller", "No URL or wiki page provided by this macro") + ")")
         else:
-            readme_data = NetworkManager.AM_NETWORK_MANAGER.blocking_get(
-                self.repo.macro.url
-            )
-            text = readme_data.data().decode("utf8")
-            self.ui.textBrowserReadMe.setHtml(text)
+            if url:
+                readme_data = NetworkManager.AM_NETWORK_MANAGER.blocking_get(url)
+                text = readme_data.data().decode("utf8")
+                self.ui.textBrowserReadMe.setHtml(text)
+            else:
+                self.ui.textBrowserReadMe.setHtml("(" + translate("AddonsInstaller", "No URL or wiki page provided by this macro") + ")")
 
     def run_javascript(self):
         """Modify the page for a README to optimize for viewing in a smaller window"""

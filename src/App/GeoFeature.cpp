@@ -87,7 +87,8 @@ std::pair<std::string,std::string> GeoFeature::getElementName(
     (void)type;
 
     std::pair<std::string,std::string> ret;
-    if(!name) return ret;
+    if(!name)
+        return ret;
 
     ret.second = name;
     return ret;

@@ -301,7 +301,8 @@ struct MeshFacet_Less
         if (y1 > y2)
         { tmp = y1; y1 = y2; y2 = tmp; }
 
-        if      (x0 < y0)  return true;
+        if      (x0 < y0)
+            return true;
         else if (x0 > y0)  return false;
         else if (x1 < y1)  return true;
         else if (x1 > y1)  return false;
@@ -1065,7 +1066,9 @@ bool MeshEvalRangePoint::Evaluate()
     PointIndex ulCtPoints = _rclMesh.CountPoints();
 
     for (MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it) {
-        if (std::find_if(it->_aulPoints, it->_aulPoints + 3, [ulCtPoints](PointIndex i) { return i >= ulCtPoints; }) < it->_aulPoints + 3)
+        if (std::find_if(it->_aulPoints, it->_aulPoints + 3, [ulCtPoints](PointIndex i) {
+            return i >= ulCtPoints;
+        }) < it->_aulPoints + 3)
             return false;
     }
 
@@ -1080,7 +1083,9 @@ std::vector<PointIndex> MeshEvalRangePoint::GetIndices() const
 
     PointIndex ind=0;
     for (MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it, ind++) {
-        if (std::find_if(it->_aulPoints, it->_aulPoints + 3, [ulCtPoints](PointIndex i) { return i >= ulCtPoints; }) < it->_aulPoints + 3)
+        if (std::find_if(it->_aulPoints, it->_aulPoints + 3, [ulCtPoints](PointIndex i) {
+            return i >= ulCtPoints;
+        }) < it->_aulPoints + 3)
             aInds.push_back(ind);
     }
 

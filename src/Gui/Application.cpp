@@ -2438,7 +2438,8 @@ void Application::checkForPreviousCrashes()
 }
 
 App::Document *Application::reopen(App::Document *doc) {
-    if(!doc) return nullptr;
+    if(!doc)
+        return nullptr;
     std::string name = doc->FileName.getValue();
     std::set<const Gui::Document*> untouchedDocs;
     for(auto &v : d->documents) {

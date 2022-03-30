@@ -598,7 +598,8 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
         suggestedConstraints.push_back(constr);
 
     // Do not seek for tangent if we are actually building a primitive
-    if (type == AutoConstraint::VERTEX_NO_TANGENCY) return suggestedConstraints.size();
+    if (type == AutoConstraint::VERTEX_NO_TANGENCY)
+        return suggestedConstraints.size();
 
     // Find if there are tangent constraints (currently arcs and circles)
 

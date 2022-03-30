@@ -1023,7 +1023,8 @@ void DlgPropertyLink::onItemExpanded(QTreeWidgetItem * item) {
         }
     } else if(allowSubObject) {
         auto obj = doc->getObject(objName);
-        if(!obj) return;
+        if(!obj)
+            return;
         std::set<App::DocumentObject*> childSet;
         std::string sub;
         for(auto child : obj->getLinkedObject(true)->getOutList()) {

@@ -496,7 +496,9 @@ SoQtOffscreenRenderer::getBackgroundColor(void) const
 void
 SoQtOffscreenRenderer::setGLRenderAction(SoGLRenderAction * action)
 {
-    if (action == PRIVATE(this)->renderaction) { return; }
+    if (action == PRIVATE(this)->renderaction) {
+        return;
+    }
 
     if (PRIVATE(this)->didallocation) { delete PRIVATE(this)->renderaction; }
     PRIVATE(this)->renderaction = action;

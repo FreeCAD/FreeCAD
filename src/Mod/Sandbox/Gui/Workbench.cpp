@@ -169,7 +169,8 @@ void SoWidgetShape::GLRender(SoGLRenderAction * /*action*/)
 void SoWidgetShape::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center)
 {
     // ignore if node is empty
-    if (this->image.isNull()) return;
+    if (this->image.isNull())
+        return;
 
     SbVec3f v0, v1, v2, v3;
     // this will cause a cache dependency on the view volume,
@@ -237,7 +238,8 @@ SoWidgetShape::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
 
 void SoWidgetShape::generatePrimitives(SoAction *action)
 {
-    if (this->image.isNull()) return;
+    if (this->image.isNull())
+        return;
 
     SoState *state = action->getState();
     state->push();

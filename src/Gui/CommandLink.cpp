@@ -468,7 +468,8 @@ static bool linkConvertible(bool unlink) {
     int count = 0;
     for(auto &sel : TreeWidget::getSelection()) {
         auto parent = sel.parentVp;
-        if(!parent) return false;
+        if(!parent)
+            return false;
         auto obj = sel.vp->getObject();
         if(unlink) {
             auto linked = obj->getLinkedObject(false);

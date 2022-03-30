@@ -1807,7 +1807,8 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
         int filletId;
         std::unique_ptr<Part::GeomArcOfCircle> arc(
             Part::createFilletGeometry(lineSeg1, lineSeg2, filletCenter, radius));
-        if (!arc) return -1;
+        if (!arc)
+            return -1;
 
         // calculate intersection and distances before we invalidate lineSeg1 and lineSeg2
         if (!find2DLinesIntersection(lineSeg1, lineSeg2, intersection)) {

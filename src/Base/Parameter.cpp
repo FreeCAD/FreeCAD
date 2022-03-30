@@ -312,33 +312,34 @@ void ParameterGrp::insert(const char* FileName)
 Base::Reference<ParameterGrp> ParameterGrp::GetGroup(const char* Name)
 {
     std::string cName = Name;
+    if (cName.empty())
+        throw Base::ValueError("Empty group name");
+
+    // Remove all leading slashes
+    std::string::size_type beg = cName.find_first_not_of('/');
+    if (beg > 0) {
+        cName.erase(0, beg);
+    }
+
+    // Remove all trailing slashes
+    std::string::size_type end = cName.find_last_not_of('/');
+    if (end+1 < cName.size()) {
+        cName.erase(end+1);
+    }
 
     std::string::size_type pos = cName.find('/');
 
     // is there a path separator ?
     if (pos == std::string::npos) {
-        return _GetGroup(Name);
-    }
-    else if (pos == cName.size()) {
-        // ending slash! cut it away
-        cName.erase(pos);
         return _GetGroup(cName.c_str());
-    }
-    else if (pos == 0) {
-        // a leading slash is not handled (root unknown)
-        //throw FCException("ParameterGrp::GetGroup() leading slash not allowed");
-        // remove leading slash
-        cName.erase(0,1);
-        // subsequent call
-        return GetGroup(cName.c_str());
     }
     else {
         // path, split the first path
         std::string cTemp;
         // getting the first part
-        cTemp.assign(cName,0,pos);
+        cTemp.assign(cName, 0, pos);
         // removing the first part from the original
-        cName.erase(0,pos+1);
+        cName.erase(0, pos+1);
         //subsequent call
         return _GetGroup(cTemp.c_str())->GetGroup(cName.c_str());
     }
@@ -412,7 +413,8 @@ bool ParameterGrp::GetBool(const char* Name, bool bPreset) const
     // check if Element in group
     DOMElement *pcElem = FindElement(_pGroupNode,"FCBool",Name);
     // if not return preset
-    if (!pcElem) return bPreset;
+    if (!pcElem)
+        return bPreset;
     // if yes check the value and return
     if (strcmp(StrX(pcElem->getAttribute(XStr("Value").unicodeForm())).c_str(),"1"))
         return false;
@@ -479,7 +481,8 @@ long ParameterGrp::GetInt(const char* Name, long lPreset) const
     // check if Element in group
     DOMElement *pcElem = FindElement(_pGroupNode,"FCInt",Name);
     // if not return preset
-    if (!pcElem) return lPreset;
+    if (!pcElem)
+        return lPreset;
     // if yes check the value and return
     return atol (StrX(pcElem->getAttribute(XStr("Value").unicodeForm())).c_str());
 }
@@ -540,7 +543,8 @@ unsigned long ParameterGrp::GetUnsigned(const char* Name, unsigned long lPreset)
     // check if Element in group
     DOMElement *pcElem = FindElement(_pGroupNode,"FCUInt",Name);
     // if not return preset
-    if (!pcElem) return lPreset;
+    if (!pcElem)
+        return lPreset;
     // if yes check the value and return
     return strtoul (StrX(pcElem->getAttribute(XStr("Value").unicodeForm())).c_str(),nullptr,10);
 }
@@ -601,7 +605,8 @@ double ParameterGrp::GetFloat(const char* Name, double dPreset) const
     // check if Element in group
     DOMElement *pcElem = FindElement(_pGroupNode,"FCFloat",Name);
     // if not return preset
-    if (!pcElem) return dPreset;
+    if (!pcElem)
+        return dPreset;
     // if yes check the value and return
     return atof (StrX(pcElem->getAttribute(XStr("Value").unicodeForm())).c_str());
 }

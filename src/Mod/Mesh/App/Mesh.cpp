@@ -1454,7 +1454,9 @@ void MeshObject::removeSelfIntersections(const std::vector<FacetIndex>& indices)
     if (indices.size() % 2 != 0)
         return;
     unsigned long cntfacets = _kernel.CountFacets();
-    if (std::find_if(indices.begin(), indices.end(), [cntfacets](FacetIndex v) { return v >= cntfacets; }) < indices.end())
+    if (std::find_if(indices.begin(), indices.end(), [cntfacets](FacetIndex v) {
+        return v >= cntfacets;
+    }) < indices.end())
         return;
     std::vector<std::pair<FacetIndex, FacetIndex> > selfIntersections;
     std::vector<FacetIndex>::const_iterator it;

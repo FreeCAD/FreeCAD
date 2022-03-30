@@ -118,7 +118,8 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
     auto* prm = static_cast<PartDesign::FeaturePrimitive*>(
             pcActiveBody->getDocument()->getObject(FeatName.c_str()));
 
-    if(!prm) return;
+    if(!prm)
+        return;
     FCMD_OBJ_CMD(pcActiveBody,"addObject("<<getObjectCmd(prm)<<")");
     Gui::Command::updateActive();
 

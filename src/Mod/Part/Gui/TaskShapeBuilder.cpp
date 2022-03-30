@@ -172,7 +172,8 @@ void ShapeBuilderWidget::on_createButton_clicked()
 {
     int mode = d->bg.checkedId();
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (!doc) return;
+    if (!doc)
+        return;
 
     try {
         if (mode == 0) {

@@ -100,7 +100,8 @@ namespace KDL
 
     const char* ChainJntToJacSolver::strError(const int error) const
     {
-        if (E_JAC_FAILED == error) return "Jac Failed";
+        if (E_JAC_FAILED == error)
+            return "Jac Failed";
         else return SolverI::strError(error);
     }
 }

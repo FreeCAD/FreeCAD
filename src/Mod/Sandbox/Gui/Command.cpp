@@ -1380,7 +1380,8 @@ void CmdMengerSponge::activated(int)
         QString::fromLatin1("Menger sponge"),
         QString::fromLatin1("Recursion depth:"),
         3, 1, 5, 1, &ok);
-    if (!ok) return;
+    if (!ok)
+        return;
     int ret = QMessageBox::question(Gui::getMainWindow(),
         QString::fromLatin1("Parallel"),
         QString::fromLatin1("Do you want to run this in a thread pool?"),

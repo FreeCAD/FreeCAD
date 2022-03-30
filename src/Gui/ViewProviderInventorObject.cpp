@@ -94,7 +94,8 @@ void ViewProviderInventorObject::updateData(const App::Property* prop)
         SoInput in;
         std::string buffer = ivObj->Buffer.getValue();
         coinRemoveAllChildren(pcBuffer);
-        if (buffer.empty()) return;
+        if (buffer.empty())
+            return;
         in.setBuffer((void *)buffer.c_str(), buffer.size());
         SoSeparator * node = SoDB::readAll(&in);
         if (node) {

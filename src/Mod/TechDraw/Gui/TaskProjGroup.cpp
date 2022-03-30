@@ -526,7 +526,8 @@ bool TaskProjGroup::accept()
 {
 //    Base::Console().Message("TPG::accept()\n");
     Gui::Document* doc = Gui::Application::Instance->getDocument(multiView->getDocument());
-    if (!doc) return false;
+    if (!doc)
+        return false;
 
     multiView->recomputeChildren();
     multiView->recomputeFeature();
@@ -539,7 +540,8 @@ bool TaskProjGroup::accept()
 bool TaskProjGroup::reject()
 {
     Gui::Document* doc = Gui::Application::Instance->getDocument(multiView->getDocument());
-    if (!doc) return false;
+    if (!doc)
+        return false;
 
     if (getCreateMode()) {
         //remove the object completely from the document

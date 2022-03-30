@@ -220,7 +220,8 @@ short DrawProjGroup::mustExecute() const
                  spacingX.isTouched() ||
                  spacingY.isTouched();
     }
-    if (result) return result;
+    if (result)
+        return result;
     return TechDraw::DrawViewCollection::mustExecute();
 }
 

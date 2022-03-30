@@ -869,7 +869,9 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent* const ev)
     // Events when in "ready-to-seek" mode are ignored, except those
     // which influence the seek mode itself -- these are handled further
     // up the inheritance hierarchy.
-    if (this->isSeekMode()) { return superclass::processSoEvent(ev); }
+    if (this->isSeekMode()) {
+        return superclass::processSoEvent(ev);
+    }
     // Switch off viewing mode (Bug #0000911)
     if (!this->isSeekMode()&& !this->isAnimating() && this->isViewing() )
         this->setViewing(false); // by default disable viewing mode to render the scene
@@ -887,7 +889,8 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent* const ev)
     // give the nodes in the foreground root the chance to handle events (e.g color bar)
     if (!viewer->isEditing()) {
         bool processed = handleEventInForeground(ev);
-        if (processed) return true;
+        if (processed)
+            return true;
     }
 
     if (   (smev.isRelease(1) && this->button1down == false)

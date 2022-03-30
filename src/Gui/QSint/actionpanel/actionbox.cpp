@@ -215,7 +215,8 @@ void ActionBox::addLayout(QLayout * l)
 
 void ActionBox::addWidget(QWidget * w, QLayout * l)
 {
-    if (!w) return;
+    if (!w)
+        return;
 
     w->setParent(this);
 

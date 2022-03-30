@@ -807,7 +807,8 @@ bool TaskLeaderLine::accept()
     }
 
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
-    if (!doc) return false;
+    if (!doc)
+        return false;
 
     if (!getCreateMode())  {
 //        removeTracker();
@@ -838,7 +839,8 @@ bool TaskLeaderLine::reject()
     }
 
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
-    if (!doc) return false;
+    if (!doc)
+        return false;
 
     if (getCreateMode() &&
         (m_lineFeat != nullptr) )  {

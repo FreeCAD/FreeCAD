@@ -230,7 +230,8 @@ bool TaskLineDecor::accept()
 {
 //    Base::Console().Message("TLD::accept()\n");
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_partFeat->getDocument());
-    if (!doc) return false;
+    if (!doc)
+        return false;
 
     if (apply()) {
         applyDecorations();
@@ -248,7 +249,8 @@ bool TaskLineDecor::reject()
 {
 //    Base::Console().Message("TLD::reject()\n");
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_partFeat->getDocument());
-    if (!doc) return false;
+    if (!doc)
+        return false;
 
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
     return false;

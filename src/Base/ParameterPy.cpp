@@ -98,6 +98,7 @@ public:
     Py::Object repr();
 
     Py::Object getGroup(const Py::Tuple&);
+    Py::Object getGroupName(const Py::Tuple&);
     Py::Object getGroups(const Py::Tuple&);
     Py::Object remGroup(const Py::Tuple&);
     Py::Object hasGroup(const Py::Tuple&);
@@ -159,6 +160,7 @@ void ParameterGrpPy::init_type()
     behaviors().readyType();
 
     add_varargs_method("GetGroup",&ParameterGrpPy::getGroup,"GetGroup(str)");
+    add_varargs_method("GetGroupName",&ParameterGrpPy::getGroupName,"GetGroupName()");
     add_varargs_method("GetGroups",&ParameterGrpPy::getGroups,"GetGroups()");
     add_varargs_method("RemGroup",&ParameterGrpPy::remGroup,"RemGroup(str)");
     add_varargs_method("HasGroup",&ParameterGrpPy::hasGroup,"HasGroup(str)");
@@ -260,17 +262,33 @@ Py::Object ParameterGrpPy::getGroup(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
+    try {
+        // get the Handle of the wanted group
+        Base::Reference<ParameterGrp> handle = _cParamGrp->GetGroup(pstr);
+        if (handle.isValid()) {
+            // create a python wrapper class
+            ParameterGrpPy *pcParamGrp = new ParameterGrpPy(handle);
+            // increment the ref count
+            return Py::asObject(pcParamGrp);
+        }
+        else {
+            throw Py::RuntimeError("GetGroup failed");
+        }
+    }
+    catch (const Base::Exception& e) {
+        e.setPyException();
+        throw Py::Exception();
+    }
+}
+
+Py::Object ParameterGrpPy::getGroupName(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
     // get the Handle of the wanted group
-    Base::Reference<ParameterGrp> handle = _cParamGrp->GetGroup(pstr);
-    if (handle.isValid()) {
-        // create a python wrapper class
-        ParameterGrpPy *pcParamGrp = new ParameterGrpPy(handle);
-        // increment the ref count
-        return Py::asObject(pcParamGrp);
-    }
-    else {
-        throw Py::RuntimeError("GetGroup failed");
-    }
+    std::string name = _cParamGrp->GetGroupName();
+    return Py::String(name);
 }
 
 Py::Object ParameterGrpPy::getGroups(const Py::Tuple& args)
@@ -281,7 +299,7 @@ Py::Object ParameterGrpPy::getGroups(const Py::Tuple& args)
     // get the Handle of the wanted group
     std::vector<Base::Reference<ParameterGrp> > handle = _cParamGrp->GetGroups();
     Py::List list;
-    for (auto it : handle) {
+    for (const auto& it : handle) {
         list.append(Py::String(it->GetGroupName()));
     }
 
@@ -317,7 +335,7 @@ Py::Object ParameterGrpPy::getBools(const Py::Tuple& args)
 
     std::vector<std::pair<std::string,bool> > map = _cParamGrp->GetBoolMap(filter);
     Py::List list;
-    for (auto it : map) {
+    for (const auto& it : map) {
         list.append(Py::String(it.first));
     }
 
@@ -352,7 +370,7 @@ Py::Object ParameterGrpPy::getInts(const Py::Tuple& args)
 
     std::vector<std::pair<std::string,long> > map = _cParamGrp->GetIntMap(filter);
     Py::List list;
-    for (auto it : map) {
+    for (const auto& it : map) {
         list.append(Py::String(it.first));
     }
 
@@ -387,7 +405,7 @@ Py::Object ParameterGrpPy::getUnsigneds(const Py::Tuple& args)
 
     std::vector<std::pair<std::string,unsigned long> > map = _cParamGrp->GetUnsignedMap(filter);
     Py::List list;
-    for (auto it : map) {
+    for (const auto& it : map) {
         list.append(Py::String(it.first));
     }
 
@@ -423,7 +441,7 @@ Py::Object ParameterGrpPy::getFloats(const Py::Tuple& args)
 
     std::vector<std::pair<std::string,double> > map = _cParamGrp->GetFloatMap(filter);
     Py::List list;
-    for (auto it : map) {
+    for (const auto& it : map) {
         list.append(Py::String(it.first));
     }
 
@@ -459,7 +477,7 @@ Py::Object ParameterGrpPy::getStrings(const Py::Tuple& args)
 
     std::vector<std::pair<std::string,std::string> > map = _cParamGrp->GetASCIIMap(filter);
     Py::List list;
-    for (auto it : map) {
+    for (const auto& it : map) {
         list.append(Py::String(it.first));
     }
 

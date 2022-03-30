@@ -265,8 +265,10 @@ static bool getShapePlane(const TopoDS_Shape &shape, gp_Pln &pln) {
 }
 
 bool Area::isCoplanar(const TopoDS_Shape &s1, const TopoDS_Shape &s2) {
-    if(s1.IsNull() || s2.IsNull()) return false;
-    if(s1.IsSame(s2)) return true;
+    if(s1.IsNull() || s2.IsNull())
+        return false;
+    if(s1.IsSame(s2))
+        return true;
     gp_Pln pln1,pln2;
     if(!getShapePlane(s1,pln1) || !getShapePlane(s2,pln2))
         return false;
@@ -290,7 +292,8 @@ int Area::addShape(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf,
             addWire(area,TopoDS::Wire(it.Current()),trsf,deflection);
     }
 
-    if(haveShape) return skipped;
+    if(haveShape)
+        return skipped;
 
     CArea _area;
     CArea _areaOpen;
@@ -1052,7 +1055,8 @@ void Area::explode(const TopoDS_Shape &shape) {
                             TopoDS::Edge(xp.Current())).Wire(),&myTrsf,myParams.Deflection,true);
         }
     }
-    if(haveShape) return;
+    if(haveShape)
+        return;
     for(TopExp_Explorer it(shape, TopAbs_EDGE); it.More(); it.Next()) {
         if(myParams.Coplanar!=CoplanarNone && !isCoplanar(it.Current(),plane)){
             ++mySkippedShapes;
@@ -1616,7 +1620,8 @@ std::list<Area::Shape> Area::getProjectedShapes(const gp_Trsf &trsf, bool invers
 }
 
 void Area::build() {
-    if(isBuilt()) return;
+    if(isBuilt())
+        return;
 
     if(myShapes.empty())
         throw Base::ValueError("no shape added");
@@ -1773,9 +1778,11 @@ TopoDS_Shape Area::getShape(int index) {
     build();
     AREA_SECTION(getShape,index);
 
-    if(myShapeDone) return myShape;
+    if(myShapeDone)
+        return myShape;
 
-    if(!myArea) return TopoDS_Shape();
+    if(!myArea)
+        return TopoDS_Shape();
 
     CAreaConfig conf(myParams);
 
@@ -2270,7 +2277,8 @@ TopoDS_Shape Area::toShape(const CArea &area, bool fill, const gp_Trsf *trsf, in
             builder.Add(compound,wire);
     }
     TopExp_Explorer xp(compound,TopAbs_EDGE);
-    if(!xp.More()) return TopoDS_Shape();
+    if(!xp.More())
+        return TopoDS_Shape();
     if(fill) {
         try{
             FC_TIME_INIT(t);
@@ -2750,7 +2758,8 @@ struct ShapeInfoBuilder {
 
         if(type == TopAbs_EDGE) {
             BRepAdaptor_Curve curve(TopoDS::Edge(shape));
-            if(curve.GetType()!=GeomAbs_Circle) return;
+            if(curve.GetType()!=GeomAbs_Circle)
+                return;
         }else{
             bool found = false;
             for(TopExp_Explorer it(shape,TopAbs_EDGE);it.More();it.Next()) {
@@ -2760,7 +2769,8 @@ struct ShapeInfoBuilder {
                     break;
                 }
             }
-            if(!found) return;
+            if(!found)
+                return;
         }
         gp_Ax3 pos = myList.back().myPln.Position();
         if(!pos.Direct()) pos = gp_Ax3(pos.Ax2());
@@ -2788,15 +2798,21 @@ struct ShapeInfoBuilder {
             myArcPlaneFound = true;
             return;
         }case Area::ArcPlaneXY:
-            if(x0&&y0) {myArcPlaneFound=true;return;}
+            if(x0&&y0) {myArcPlaneFound=true;
+                return;
+            }
             dstPos = gp_Ax3(pos.Location(),gp_Dir(0,0,1));
             break;
         case Area::ArcPlaneZX:
-            if(x0&&z0) {myArcPlaneFound=true;return;}
+            if(x0&&z0) {myArcPlaneFound=true;
+                return;
+            }
             dstPos = gp_Ax3(pos.Location(),gp_Dir(0,1,0));
             break;
         case Area::ArcPlaneYZ:
-            if(z0&&y0) {myArcPlaneFound=true;return;}
+            if(z0&&y0) {myArcPlaneFound=true;
+                return;
+            }
             dstPos = gp_Ax3(pos.Location(),gp_Dir(1,0,0));
             break;
         default:
@@ -2873,7 +2889,8 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
 {
     std::list<TopoDS_Shape> wires;
 
-    if(shapes.empty()) return wires;
+    if(shapes.empty())
+        return wires;
 
     AxisGetter getter;
     AxisSetter setter;

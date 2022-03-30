@@ -151,7 +151,8 @@ public:
     }
 
     static Pointer get(ViewProviderDocumentObject *vp, LinkOwner *owner) {
-        if(!vp) return Pointer();
+        if(!vp)
+            return Pointer();
 
         auto ext = vp->getExtensionByType<ViewProviderLinkObserver>(true);
         if(!ext) {
@@ -272,7 +273,8 @@ public:
     }
 
     void updateSwitch(SoSwitch *node=nullptr) {
-        if(!isLinked() || !pcLinkedSwitch) return;
+        if(!isLinked() || !pcLinkedSwitch)
+            return;
         int index = pcLinkedSwitch->whichChild.getValue();
         for(size_t i=0;i<pcSwitches.size();++i) {
             if(!pcSwitches[i] || (node && node!=pcSwitches[i]))
@@ -366,7 +368,8 @@ public:
         auto &pcSnapshot = pcSnapshots[type];
         auto &pcModeSwitch = pcSwitches[type];
         if(pcSnapshot) {
-            if(!update) return pcSnapshot;
+            if(!update)
+                return pcSnapshot;
         }else{
             if(ViewParams::instance()->getUseSelectionRoot())
                 pcSnapshot = new SoFCSelectionRoot;
@@ -505,9 +508,11 @@ public:
         {
             SoPath *path = pp->getPath();
             int index = path->findNode(pcChildGroup);
-            if(index<=0) return false;
+            if(index<=0)
+                return false;
             auto it = nodeMap.find(path->getNode(index+1));
-            if(it==nodeMap.end()) return false;
+            if(it==nodeMap.end())
+                return false;
             return it->second->getElementPicked(true,LinkView::SnapshotChild,pp,str);
         }else{
             std::string subname;
@@ -540,11 +545,13 @@ public:
     bool getDetail(bool checkname, int type, const char* subname,
             SoDetail *&det, SoFullPath *path) const
     {
-        if(!isLinked()) return false;
+        if(!isLinked())
+            return false;
 
         if(checkname) {
             subname = checkSubname(pcLinked->getObject(),subname);
-            if(!subname) return false;
+            if(!subname)
+                return false;
         }
 
         if(pcSnapshots[type]->findChild(pcSwitches[type]) < 0) {
@@ -563,7 +570,8 @@ public:
                 return false;
             appendPath(path,pcSwitches[type]);
         }
-        if(*subname == 0) return true;
+        if(*subname == 0)
+            return true;
 
         auto pcSwitch = pcSwitches[type];
         if(!pcChildGroup || !pcSwitch || pcSwitch->whichChild.getValue()<0 ||
@@ -597,7 +605,8 @@ public:
 
         const char *dot = strchr(subname,'.');
         const char *nextsub = subname;
-        if(!dot) return false;
+        if(!dot)
+            return false;
         auto geoGroup = pcLinked->getObject();
         auto sobj = geoGroup;
         while(1) {
@@ -732,7 +741,8 @@ void ViewProviderLinkObserver::extensionReattach(App::DocumentObject *) {
 void ViewProviderLinkObserver::extensionOnChanged(const App::Property *prop) {
 #if 0
     auto owner = freecad_dynamic_cast<ViewProviderDocumentObject>(getExtendedContainer());
-    if(!owner || !linkInfo) return;
+    if(!owner || !linkInfo)
+        return;
     if(prop != &owner->Visibility && prop != &owner->DisplayMode)
         linkInfo->update();
 #else
@@ -1270,7 +1280,8 @@ std::vector<std::string> LinkView::getSubNames() const {
 
 void LinkView::setNodeType(SnapshotType type, bool sublink) {
     autoSubLink = sublink;
-    if(nodeType==type) return;
+    if(nodeType==type)
+        return;
     if(type>=SnapshotMax ||
        (type<0 && type!=SnapshotContainer && type!=SnapshotContainerTransform))
         LINK_THROW(Base::ValueError,"LinkView: invalid node type");
@@ -1445,7 +1456,8 @@ bool LinkView::linkGetElementPicked(const SoPickedPoint *pp, std::string &subnam
         }
     }
 
-    if(!isLinked()) return false;
+    if(!isLinked())
+        return false;
 
     if(nodeType >= 0) {
         if(linkInfo->getElementPicked(false,nodeType,pp,ss)) {
@@ -1455,7 +1467,8 @@ bool LinkView::linkGetElementPicked(const SoPickedPoint *pp, std::string &subnam
         return false;
     }
     auto idx = path->findNode(pcLinkedRoot);
-    if(idx<0 || idx+1>=path->getLength()) return false;
+    if(idx<0 || idx+1>=path->getLength())
+        return false;
     auto node = path->getNode(idx+1);
     for(const auto &v : subInfo) {
         auto &sub = *v.second;
@@ -1494,7 +1507,8 @@ bool LinkView::getGroupHierarchy(int index, SoFullPath *path) const {
 
 bool LinkView::linkGetDetailPath(const char *subname, SoFullPath *path, SoDetail *&det) const
 {
-    if(!subname || *subname==0) return true;
+    if(!subname || *subname==0)
+        return true;
     auto len = path->getLength();
     if(nodeArray.empty()) {
         if(!appendPathSafe(path,pcLinkRoot))
@@ -1594,7 +1608,8 @@ bool LinkView::linkGetDetailPath(const char *subname, SoFullPath *path, SoDetail
 }
 
 void LinkView::unlink(LinkInfoPtr info) {
-    if(!info) return;
+    if(!info)
+        return;
     if(info == linkOwner) {
         linkOwner->remove(this);
         linkOwner.reset();
@@ -1798,7 +1813,8 @@ void ViewProviderLink::onChanged(const App::Property* prop) {
 
 bool ViewProviderLink::setLinkType(App::LinkBaseExtension *ext) {
     auto propLink = ext->getLinkedObjectProperty();
-    if(!propLink) return false;
+    if(!propLink)
+        return false;
     LinkType type;
     if(hasSubName)
         type = LinkTypeSubs;
@@ -1848,7 +1864,8 @@ static inline bool canScale(const Base::Vector3d &v) {
 }
 
 void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension *ext, const App::Property *prop) {
-    if(!prop) return;
+    if(!prop)
+        return;
     if(prop == &ext->_ChildCache) {
         updateElementList(ext);
     } else if(prop == &ext->_LinkTouched) {
@@ -2050,7 +2067,8 @@ void ViewProviderLink::updateElementList(App::LinkBaseExtension *ext) {
 void ViewProviderLink::checkIcon(const App::LinkBaseExtension *ext) {
     if(!ext) {
         ext = getLinkExtension();
-        if(!ext) return;
+        if(!ext)
+            return;
     }
     const char *icon;
     auto element = freecad_dynamic_cast<App::LinkElement>(getObject());
@@ -2089,7 +2107,8 @@ void ViewProviderLink::applyMaterial() {
 void ViewProviderLink::finishRestoring() {
     FC_TRACE("finish restoring");
     auto ext = getLinkExtension();
-    if(!ext) return;
+    if(!ext)
+        return;
     linkView->setDrawStyle(DrawStyle.getValue(),LineWidth.getValue(),PointSize.getValue());
     updateDataPrivate(ext,ext->getLinkedObjectProperty());
     if(ext->getLinkPlacementProperty())
@@ -2115,7 +2134,8 @@ void ViewProviderLink::finishRestoring() {
 bool ViewProviderLink::hasElements(const App::LinkBaseExtension *ext) const {
     if(!ext) {
         ext = getLinkExtension();
-        if(!ext) return false;
+        if(!ext)
+            return false;
     }
     const auto &elements = ext->getElementListValue();
     return elements.size() && (int)elements.size()==ext->_getElementCountValue();
@@ -2124,7 +2144,8 @@ bool ViewProviderLink::hasElements(const App::LinkBaseExtension *ext) const {
 bool ViewProviderLink::isGroup(const App::LinkBaseExtension *ext, bool plainGroup) const {
     if(!ext) {
         ext = getLinkExtension();
-        if(!ext) return false;
+        if(!ext)
+            return false;
     }
     return (plainGroup && ext->linkedPlainGroup())
         || (ext->getElementListProperty() && !ext->getLinkedObjectProperty());
@@ -2297,7 +2318,8 @@ std::string ViewProviderLink::dropObjectEx(App::DocumentObject* obj,
 
 bool ViewProviderLink::canDragAndDropObject(App::DocumentObject* obj) const {
     auto ext = getLinkExtension();
-    if(!ext) return true;
+    if(!ext)
+        return true;
     if(isGroup(ext)) {
         return ext->getLinkModeValue()<App::LinkBaseExtension::LinkModeAutoLink &&
                obj->getDocument()==getObject()->getDocument();
@@ -2313,9 +2335,11 @@ bool ViewProviderLink::canDragAndDropObject(App::DocumentObject* obj) const {
 }
 
 bool ViewProviderLink::getElementPicked(const SoPickedPoint *pp, std::string &subname) const {
-    if(!isSelectable()) return false;
+    if(!isSelectable())
+        return false;
     auto ext = getLinkExtension();
-    if(!ext) return false;
+    if(!ext)
+        return false;
     if(childVpLink && childVp) {
         auto path = pp->getPath();
         int idx = path->findNode(childVpLink->getSnapshot(LinkView::SnapshotTransform));
@@ -2342,7 +2366,8 @@ bool ViewProviderLink::getDetailPath(
         const char *subname, SoFullPath *pPath, bool append, SoDetail *&det) const
 {
     auto ext = getLinkExtension();
-    if(!ext) return false;
+    if(!ext)
+        return false;
 
     auto len = pPath->getLength();
     if(append) {
@@ -2963,7 +2988,8 @@ void ViewProviderLink::updateDraggingPlacement(const Base::Placement &pla, bool 
 }
 
 bool ViewProviderLink::callDraggerProxy(const char *fname, bool update) {
-    if(!pcDragger) return false;
+    if(!pcDragger)
+        return false;
     Base::PyGILStateLocker lock;
     try {
         auto* proxy = getPropertyByName("Proxy");
@@ -3341,7 +3367,8 @@ void ViewProviderLink::applyColors() {
 
 void ViewProviderLink::setOverrideMode(const std::string &mode) {
     auto ext = getLinkExtension();
-    if(!ext) return;
+    if(!ext)
+        return;
     auto obj = ext->getTrueLinkedObject(false);
     if(obj && obj!=getObject()) {
         auto vp = Application::Instance->getViewProvider(obj);

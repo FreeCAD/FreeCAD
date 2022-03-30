@@ -61,7 +61,8 @@ Py::Vector::Vector (const Base::Vector3f& v)
 
 Py::Vector& Py::Vector::operator= (PyObject* rhsp)
 {
-    if(ptr() == rhsp) return *this;
+    if(ptr() == rhsp)
+        return *this;
     set (rhsp, false);
     return *this;
 }

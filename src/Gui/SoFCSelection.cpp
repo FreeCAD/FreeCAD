@@ -308,10 +308,14 @@ void SoFCSelection::doAction(SoAction *action)
 int SoFCSelection::getPriority(const SoPickedPoint* p)
 {
     const SoDetail* detail = p->getDetail();
-    if(!detail) return 0;
-    if(detail->isOfType(SoFaceDetail::getClassTypeId())) return 1;
-    if(detail->isOfType(SoLineDetail::getClassTypeId())) return 2;
-    if(detail->isOfType(SoPointDetail::getClassTypeId())) return 3;
+    if(!detail)
+        return 0;
+    if(detail->isOfType(SoFaceDetail::getClassTypeId()))
+        return 1;
+    if(detail->isOfType(SoLineDetail::getClassTypeId()))
+        return 2;
+    if(detail->isOfType(SoPointDetail::getClassTypeId()))
+        return 3;
     return 0;
 }
 

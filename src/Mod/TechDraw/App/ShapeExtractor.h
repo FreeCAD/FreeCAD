@@ -52,6 +52,8 @@ public:
     static Base::Vector3d getLocation3dFromFeat(App::DocumentObject* obj);
     static bool prefAdd2d(void);
 
+    static TopoDS_Shape stripInfiniteShapes(TopoDS_Shape inShape);
+
 protected:
 
 private:

@@ -3245,7 +3245,8 @@ Py::Float TopoShapePy::getVolume(void) const
 
 PyObject *TopoShapePy::getCustomAttributes(const char* attr) const
 {
-    if (!attr) return nullptr;
+    if (!attr)
+        return nullptr;
     PY_TRY {
         TopoDS_Shape res = getTopoShapePtr()->getSubShape(attr,true);
         if(!res.IsNull())

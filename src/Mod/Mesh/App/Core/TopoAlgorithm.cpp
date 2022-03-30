@@ -1406,7 +1406,8 @@ void MeshTopoAlgorithm::SplitNeighbourFacet(FacetIndex ulFacetPos, unsigned shor
 
 bool MeshTopoAlgorithm::RemoveDegeneratedFacet(FacetIndex index)
 {
-  if (index >= _rclMesh._aclFacetArray.size()) return false;
+  if (index >= _rclMesh._aclFacetArray.size())
+      return false;
   MeshFacet& rFace = _rclMesh._aclFacetArray[index];
 
   // coincident corners (either topological or geometrical)
@@ -1475,7 +1476,8 @@ bool MeshTopoAlgorithm::RemoveDegeneratedFacet(FacetIndex index)
 
 bool MeshTopoAlgorithm::RemoveCorruptedFacet(FacetIndex index)
 {
-  if (index >= _rclMesh._aclFacetArray.size()) return false;
+  if (index >= _rclMesh._aclFacetArray.size())
+      return false;
   MeshFacet& rFace = _rclMesh._aclFacetArray[index];
 
   // coincident corners (topological)

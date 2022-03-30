@@ -1060,7 +1060,8 @@ void TreeWidget::onFinishEditing()
         DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>
             (this->contextItem);
         App::DocumentObject* obj = objitem->object()->getObject();
-        if (!obj) return;
+        if (!obj)
+            return;
         Gui::Document* doc = Gui::Application::Instance->getDocument(obj->getDocument());
         doc->commitCommand();
         doc->resetEdit();
@@ -1238,7 +1239,8 @@ std::vector<TreeWidget::SelInfo> TreeWidget::getSelection(App::Document* doc)
                 break;
             }
     }
-    if (!tree) return ret;
+    if (!tree)
+        return ret;
 
     if (tree->selectTimer->isActive())
         tree->onSelectTimer();
@@ -1438,13 +1440,15 @@ void TreeWidget::keyPressEvent(QKeyEvent* event)
 void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
 {
     QTreeWidgetItem* item = itemAt(event->pos());
-    if (!item) return;
+    if (!item)
+        return;
 
     try {
         if (item->type() == TreeWidget::DocumentType) {
             //QTreeWidget::mouseDoubleClickEvent(event);
             Gui::Document* doc = static_cast<DocumentItem*>(item)->document();
-            if (!doc) return;
+            if (!doc)
+                return;
             if (doc->getDocument()->testStatus(App::Document::PartialDoc)) {
                 contextItem = item;
                 onReloadDoc();
@@ -2867,7 +2871,8 @@ void TreeWidget::syncView(ViewProviderDocumentObject* vp)
 
 void TreeWidget::onShowHidden()
 {
-    if (!this->contextItem) return;
+    if (!this->contextItem)
+        return;
     DocumentItem* docItem = nullptr;
     if (this->contextItem->type() == DocumentType)
         docItem = static_cast<DocumentItem*>(contextItem);
@@ -4144,7 +4149,8 @@ void DocumentItem::updateSelection(QTreeWidgetItem* ti, bool unselect) {
         }
     }
 
-    if (unselect) return;
+    if (unselect)
+        return;
     for (int i = 0, count = ti->childCount(); i < count; ++i)
         updateSelection(ti->child(i));
 }
@@ -4469,7 +4475,8 @@ void DocumentItem::selectItems(SelectionReason reason) {
 
 void DocumentItem::populateParents(const ViewProvider* vp, ViewParentMap& parentMap) {
     auto it = parentMap.find(vp);
-    if (it == parentMap.end()) return;
+    if (it == parentMap.end())
+        return;
     for (auto parent : it->second) {
         auto it = ObjectMap.find(parent->getObject());
         if (it == ObjectMap.end())

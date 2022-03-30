@@ -6885,7 +6885,8 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
         ui_Datum.labelEdit->setSingleStep(0.05);
         // Unable to bind, because the constraint does not yet exist
 
-        if (dlg.exec() != QDialog::Accepted) return;
+        if (dlg.exec() != QDialog::Accepted)
+            return;
         ui_Datum.labelEdit->pushToHistory();
 
         Base::Quantity newQuant = ui_Datum.labelEdit->value();

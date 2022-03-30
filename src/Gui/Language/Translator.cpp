@@ -28,6 +28,7 @@
 # include <QRegularExpression>
 # include <QStringList>
 # include <QTranslator>
+# include <QWidget>
 #endif
 
 #include <App/Application.h>
@@ -251,33 +252,30 @@ std::string Translator::locale(const std::string& lang) const
     return loc;
 }
 
-bool Translator::setLocale(const std::string& language) const
+void Translator::setLocale(const std::string& language) const
 {
-    auto loc = QLocale::c(); //Defaulting to POSIX locale
-    auto bcp47 = locale(language);
-    if (!bcp47.empty())
-        loc  = QLocale(QString::fromStdString(bcp47));
+    auto loc = QLocale::system(); //Defaulting to OS locale
+    if (language == "C" || language == "c") {
+        loc = QLocale::c();
+    }
+    else {
+        auto bcp47 = locale(language);
+        if (!bcp47.empty())
+            loc  = QLocale(QString::fromStdString(bcp47));
+    }
     QLocale::setDefault(loc);
     updateLocaleChange();
 
 #ifdef FC_DEBUG
     Base::Console().Log("Locale changed to %s => %s\n", qPrintable(loc.bcp47Name()), qPrintable(loc.name()));
 #endif
-
-    return (loc.language() != loc.C);
-}
-
-void Translator::setSystemLocale() const
-{
-    QLocale::setDefault(QLocale::system());
-    updateLocaleChange();
 }
 
 void Translator::updateLocaleChange() const
 {
-    // Need to manually send the event so locale change is fully took into account on widgets
-    auto ev = QEvent(QEvent::LocaleChange);
-    qApp->sendEvent(qApp, &ev);
+    for (auto &topLevelWidget: qApp->topLevelWidgets()) {
+        topLevelWidget->setLocale(QLocale());
+    }
 }
 
 QStringList Translator::directories() const

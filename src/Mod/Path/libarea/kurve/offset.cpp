@@ -273,7 +273,8 @@ namespace geoff_geometry {
 			sp.dir = k.Get(kCheckVertex++, sp.p1, sp.pc);
 			sp.SetProperties(true);
 			// check for interference 
-			if(Dist(sp, pInt, dummy) < offset) return true;
+			if(Dist(sp, pInt, dummy) < offset)
+			    return true;
 			sp.p0 = sp.p1;
 		}
 		return false;	// intersection is ok
