@@ -118,6 +118,14 @@ QPoint DlgExpressionInput::expressionPosition() const
 
 void DlgExpressionInput::textChanged(const QString &text)
 {
+    if (text.isEmpty()) {
+        ui->okBtn->setDisabled(true);
+        ui->discardBtn->setDefault(true);
+        return;
+    }
+
+    ui->okBtn->setDefault(true);
+
     try {
         //resize the input field according to text size
         QFontMetrics fm(ui->expression->font());
