@@ -48,6 +48,7 @@
 # include <QToolBar>
 # include <QUrlQuery>
 # include <QWhatsThis>
+# include <QPushButton>
 #endif
 
 #include <App/Application.h>
@@ -703,9 +704,18 @@ void MainWindow::showDocumentation(const QString& help)
         PyErr_Clear();
         QUrl url(help);
         if (url.scheme().isEmpty()) {
-            QMessageBox::critical(getMainWindow(), tr("Help addon needed!"),
-            tr("The Help system of %1 is now handled by the \"Help\" addon. "
-               "Install it with menu Tools > Addons Manager").arg(QString(qApp->applicationName())));
+            QMessageBox msgBox(getMainWindow());
+            msgBox.setWindowTitle(tr("Help addon needed!"));
+            msgBox.setText(tr("The Help system of %1 is now handled by the \"Help\" addon. "
+               "It can easily be installed via the Addons Manager").arg(QString(qApp->applicationName())));
+            QAbstractButton* pButtonAddonMgr = msgBox.addButton(tr("Open Addon Manager"), QMessageBox::YesRole);
+            msgBox.addButton(QMessageBox::Ok);
+            msgBox.exec();
+            if (msgBox.clickedButton() == pButtonAddonMgr) {
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Addons");
+                hGrp->SetASCII("SelectedAddon", "Help");
+                Gui::Command::doCommand(Gui::Command::Gui,"Gui.runCommand('Std_AddonMgr',0)");
+            }
         }
         else {
             QDesktopServices::openUrl(url);
