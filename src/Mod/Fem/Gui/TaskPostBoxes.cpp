@@ -781,7 +781,7 @@ void TaskPostDataAtPoint::applyPythonCode() {
 }
 
 static const char* cursor_star[] = {
-"32 32 3 1",
+"32 17 3 1",
 "       c None",
 ".      c #FFFFFF",
 "+      c #FF0000",
