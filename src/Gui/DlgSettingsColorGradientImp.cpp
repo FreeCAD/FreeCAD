@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cmath>
+# include <QComboBox>
 # include <QDoubleValidator>
 # include <QFontMetrics>
 # include <QLocale>
@@ -54,7 +55,10 @@ DlgSettingsColorGradientImp::DlgSettingsColorGradientImp( QWidget* parent, Qt::W
     ui->floatLineEditMin->setValidator(fMinVal);
 
     QFontMetrics fm(ui->floatLineEditMax->font());
-    ui->floatLineEditMax->setMinimumWidth(QtTools::horizontalAdvance(fm, QString::fromLatin1("-1000.000000")));
+    ui->floatLineEditMax->setMinimumWidth(QtTools::horizontalAdvance(fm, QString::fromLatin1("-1000.0")));
+
+    connect(ui->comboBoxModel, qOverload<int>(&QComboBox::currentIndexChanged),
+        this, &DlgSettingsColorGradientImp::onModelChanged);
 }
 
 /**
@@ -169,6 +173,11 @@ void DlgSettingsColorGradientImp::accept()
     else {
         QDialog::accept();
     }
+}
+
+void DlgSettingsColorGradientImp::onModelChanged(int index)
+{
+    Q_EMIT ModelChange(index);
 }
 
 #include "moc_DlgSettingsColorGradientImp.cpp"

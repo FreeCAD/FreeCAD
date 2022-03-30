@@ -77,6 +77,12 @@ public:
     int numberOfDecimals() const;
     //@}
 
+Q_SIGNALS:
+    void ModelChange(int index);
+
+protected Q_SLOTS:
+    void onModelChanged(int index);
+
 private:
     std::unique_ptr<Ui_DlgSettingsColorGradient> ui;
     QDoubleValidator* fMaxVal;

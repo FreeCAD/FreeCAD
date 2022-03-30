@@ -74,6 +74,9 @@ public:
   /** Returns the name of the color bar. */
   const char* getColorBarName() const { return "Color Gradient"; }
 
+protected Q_SLOTS:
+    void onModelChanged(int index);
+
 protected:
   /**
    * Sets the current viewer size this color gradient is embedded into, to recalculate its new position.

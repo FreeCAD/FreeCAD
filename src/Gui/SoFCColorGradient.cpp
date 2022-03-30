@@ -299,6 +299,11 @@ bool SoFCColorGradient::isVisible (float fVal) const
     return true;
 }
 
+void SoFCColorGradient::onModelChanged(int index)
+{
+    _cColGrad.setColorModel(index);
+}
+
 bool SoFCColorGradient::customize()
 {
     QWidget* parent = Gui::getMainWindow()->activeWindow();
@@ -314,10 +319,11 @@ bool SoFCColorGradient::customize()
     float fMin, fMax;
     _cColGrad.getRange(fMin, fMax);
     dlg.setRange(fMin, fMax);
+    QObject::connect(dlg, SIGNAL(dlg.ModelChange(int index)), this, SLOT(onModelChanged(int index)));
 
     QPoint pos(QCursor::pos());
-    pos += QPoint((int)(-1.1*dlg.width()),(int)(-0.1*dlg.height()));
-    dlg.move( pos );
+    pos += QPoint((int)(-1.1 * dlg.width()), (int)(-0.1 * dlg.height()));
+    dlg.move(pos);
 
     if (dlg.exec() == QDialog::Accepted) {
         _cColGrad.setColorModel(dlg.colorModel());
@@ -336,3 +342,4 @@ bool SoFCColorGradient::customize()
 
     return false;
 }
+
