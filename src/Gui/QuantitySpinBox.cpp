@@ -778,7 +778,8 @@ void QuantitySpinBox::stepBy(int steps)
     else if (val < d->minimum)
         val = d->minimum;
 
-    lineEdit()->setText(QString::fromUtf8("%L1 %2").arg(val).arg(d->unitStr));
+    Quantity quant(val, d->unitStr);
+    updateText(quant);
     updateFromCache(true);
     update();
     selectNumber();
