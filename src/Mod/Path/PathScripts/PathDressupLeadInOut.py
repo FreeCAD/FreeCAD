@@ -41,7 +41,7 @@ from PathPythonGui.simple_edit_panel import SimpleEditPanel
 
 translate = FreeCAD.Qt.translate
 
-if True:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -354,16 +354,6 @@ class ObjectDressup:
         # leadlinevec provides the offset from the beginning of the lead arc to the beginning of the extend line
         extendstart = leadstart.add(leadlinevec)
 
-                # commandname = "G0" if obj.RapidPlunge else "G1"
-                # extendcommand = Path.Command(
-                #     commandname,
-                #     {
-                #         "X": leadstart.x,
-                #         "Y": leadstart.y,
-                #         "Z": p1.z,
-                #     },
-                # )
-                # results.append(extendcommand)
         if action == "start":
             if obj.ExtendLeadIn != 0:
                 # Rapid move to beginning of extend line
@@ -379,7 +369,11 @@ class ObjectDressup:
                 # Rapid move to beginning of leadin arc
                 extendcommand = Path.Command(
                     "G0",
-                    {"X": extendstart.x, "Y": extendstart.y, "Z": op.ClearanceHeight.Value},
+                    {
+                        "X": extendstart.x,
+                        "Y": extendstart.y,
+                        "Z": op.ClearanceHeight.Value,
+                    },
                 )
             results.append(extendcommand)
             extendcommand = Path.Command("G0", {"Z": op.SafeHeight.Value})
@@ -397,26 +391,10 @@ class ObjectDressup:
         extendcommand = Path.Command(
             commandname,
             {
-                # "X": leadstart.x,
-                # "Y": leadstart.y,
                 "Z": p1.z,
             },
         )
         results.append(extendcommand)
-        # if not obj.RapidPlunge:
-        #     extendcommand = Path.Command(
-        #         "G1", {"X": leadstart.x, "Y": leadstart.y, "Z": p1.z, "F": vertFeed}
-        #     )
-        # else:
-        #     extendcommand = Path.Command(
-        #         "G0",
-        #         {
-        #             "X": leadstart.x,
-        #             "Y": leadstart.y,
-        #             "Z": p1.z,
-        #         },
-        #     )
-        # results.append(extendcommand)
 
         if obj.UseMachineCRC:
             if self.getDirectionOfPath(obj) == "right":
@@ -487,7 +465,11 @@ class ObjectDressup:
             vec_n = self.normalize(vec)
             vec_inv = self.invert(vec_n)
             vec_off = self.multiply(vec_inv, obj.ExtendLeadOut)
-            PathLog.debug("LineCMD: {}, Vxinv: {}, Vyinv: {}, Vxoff: {}, Vyoff: {}".format(queue[0].Name, vec_inv.x, vec_inv.y,  vec_off.x,  vec_off.y))
+            PathLog.debug(
+                "LineCMD: {}, Vxinv: {}, Vyinv: {}, Vxoff: {}, Vyoff: {}".format(
+                    queue[0].Name, vec_inv.x, vec_inv.y, vec_off.x, vec_off.y
+                )
+            )
         else:
             # We have an arc move
             pij = copy.deepcopy(p0)
@@ -598,7 +580,11 @@ class ObjectDressup:
                     and prevCmd.Name in movecommands
                 ):
                     # Layer change within move cmds
-                    PathLog.debug("Layer change in move: {}->{}".format(currLocation['Z'],  curCommand.z))
+                    PathLog.debug(
+                        "Layer change in move: {}->{}".format(
+                            currLocation["Z"], curCommand.z
+                        )
+                    )
                     layers.append(queue)
                     queue = []
 
@@ -622,7 +608,7 @@ class ObjectDressup:
                 newpath.extend(temp)
 
             for cmd in layer:
-                PathLog.debug("CurLoc: {}, NewCmd: {}!!".format(currLocation,  cmd))
+                PathLog.debug("CurLoc: {}, NewCmd: {}!!".format(currLocation, cmd))
                 newpath.append(cmd)
 
             if obj.LeadOut:
@@ -717,7 +703,6 @@ class ViewProviderDressup:
 
 
 class CommandPathDressupLeadInOut:
-
     def GetResources(self):
         return {
             "Pixmap": "Path_Dressup",
