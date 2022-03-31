@@ -3248,6 +3248,19 @@ Aborting op creation</source>
     </message>
   </context>
   <context>
+    <name>Path_Gcode_pre</name>
+    <message>
+      <location filename="gcode_pre.py" line="226"/>
+      <source>No active document</source>
+      <translation>Нет активного документа</translation>
+    </message>
+    <message>
+      <location filename="gcode_pre.py" line="229"/>
+      <source>No job object</source>
+      <translation type="unfinished">No job object</translation>
+    </message>
+  </context>
+  <context>
     <name>Path_Helix</name>
     <message>
       <location filename="PathHelixGui.py" line="91"/>
@@ -3314,6 +3327,16 @@ Aborting op creation</source>
       <location filename="PathInspect.py" line="244"/>
       <source>Inspects the G-code contents of a path</source>
       <translation>Проверяет содержимое G-кода пути</translation>
+    </message>
+    <message>
+      <location filename="PathInspect.py" line="260"/>
+      <source>Inspect Path Commands</source>
+      <translation type="unfinished">Inspect Path Commands</translation>
+    </message>
+    <message>
+      <location filename="PathInspect.py" line="264"/>
+      <source>Inspects the contents of a Path object</source>
+      <translation type="unfinished">Inspects the contents of a Path object</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="260"/>
@@ -3401,7 +3424,7 @@ Aborting op creation</source>
     <message>
       <location filename="PathJobGui.py" line="1596"/>
       <source>Please add one.</source>
-      <translation type="unfinished">Please add one.</translation>
+      <translation>Пожалуйста, добавьте один.</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="1597"/>
@@ -3416,12 +3439,12 @@ Aborting op creation</source>
     <message>
       <location filename="PathJobGui.py" line="1610"/>
       <source>This job has no base model.</source>
-      <translation type="unfinished">This job has no base model.</translation>
+      <translation>В этой работе нет базовой модели.</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="1617"/>
       <source>This job has no tool.</source>
-      <translation type="unfinished">This job has no tool.</translation>
+      <translation>У этой работы нет инструмента.</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="257"/>
@@ -4556,11 +4579,6 @@ Aborting op creation</source>
       <translation>Добавить Контроллер Инструмента</translation>
     </message>
     <message>
-      <location filename="PathToolController.py" line="134"/>
-      <source>None</source>
-      <translation>Ничего</translation>
-    </message>
-    <message>
       <location filename="PathToolController.py" line="132"/>
       <source>Forward</source>
       <translation type="unfinished">Forward</translation>
@@ -4569,6 +4587,11 @@ Aborting op creation</source>
       <location filename="PathToolController.py" line="133"/>
       <source>Reverse</source>
       <translation>Развернуть</translation>
+    </message>
+    <message>
+      <location filename="PathToolController.py" line="134"/>
+      <source>None</source>
+      <translation>Ничего</translation>
     </message>
   </context>
   <context>

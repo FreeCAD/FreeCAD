@@ -730,11 +730,6 @@ Diese Eigenschaft ist nur lesbar, da die Zahl von den Punkten im 'Punkt Objekt' 
       <translation>Die von diesem Objekt verwendete PAT-Datei</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Die Form dieses Objekts</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation>Der von diesem Objekt verwendete Mustername</translation>
@@ -743,6 +738,11 @@ Diese Eigenschaft ist nur lesbar, da die Zahl von den Punkten im 'Punkt Objekt' 
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>Maßstab des für dieses Objekt verwendeten Musters</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Die Form dieses Objekts</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -2485,7 +2485,7 @@ Die geschlossenen Formen können für Extrusionen und boolesche Operationen verw
     <message>
       <location filename="gui_snaps.py" line="589"/>
       <source>Show snap toolbar</source>
-      <translation>Fang Werkzeugleiste einblenden</translation>
+      <translation>Fangen-Symbolleiste einblenden</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="592"/>
@@ -4962,7 +4962,7 @@ Antworten Sie mit "Ja", um FreeCAD den automatischen Download der Bibliotheken z
     <message>
       <location filename="gui_snaps.py" line="583"/>
       <source>Show snap toolbar</source>
-      <translation>Fang Werkzeugleiste einblenden</translation>
+      <translation>Fangen-Symbolleiste einblenden</translation>
     </message>
     <message>
       <location filename="gui_array_simple.py" line="77"/>

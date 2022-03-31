@@ -91,7 +91,7 @@
     <message>
       <location filename="NavigationIndicatorGui.py" line="297"/>
       <source>Undefined</source>
-      <translation type="unfinished">Undefined</translation>
+      <translation>Tidak terdefinisi</translation>
     </message>
   </context>
 </TS>

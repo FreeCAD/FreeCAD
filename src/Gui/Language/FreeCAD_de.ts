@@ -404,7 +404,7 @@
     </message>
     <message>
       <source>Press middle+left or middle+right button</source>
-      <translation>Drücke die mittlere + linke oder die mittlere + rechte Maustaste</translation>
+      <translation>Halte die mittlere + linke oder die mittlere + rechte Maustaste gedrückt</translation>
     </message>
     <message>
       <source>Scroll middle mouse button or keep middle button depressed
@@ -1552,7 +1552,8 @@ after FreeCAD launches</source>
     <message>
       <source>Words will be wrapped when they exceed available
 horizontal space in Python console</source>
-      <translation>Automatischer Zeilenumbruch in der Python Umgebung</translation>
+      <translation>Zeilen werden in der Python-Konsole automatisch umbrochen,
+wenn sie die verfügbare Zeilenlänge überschreiten</translation>
     </message>
   </context>
   <context>
@@ -1668,7 +1669,7 @@ horizontal space in Python console</source>
     </message>
     <message>
       <source>Toolbar</source>
-      <translation>Werkzeugleiste</translation>
+      <translation>Symbolleiste</translation>
     </message>
   </context>
   <context>
@@ -2328,7 +2329,7 @@ on-screen while displaying the warning</source>
     <message>
       <source>When a normal message has occurred, the Report View dialog becomes visible
 on-screen while displaying the message</source>
-      <translation>Wenn eine normale Meldung aufgetreten ist, erscheint der Berichtsansicht-Dialog auf dem Bildschirm um die Meldung anzuzeigen</translation>
+      <translation>Wenn eine normale Meldung aufgetreten ist, erscheint der Ausgabefenster-Dialog auf dem Bildschirm um die Meldung anzuzeigen</translation>
     </message>
     <message>
       <source>Show report view on normal message</source>
@@ -2362,14 +2363,14 @@ on-screen while displaying the log message</source>
     <message>
       <source>Internal Python output will be redirected
 from Python console to Report view panel</source>
-      <translation>Die Interne Python-Ausgabe wird
-von der Python-Konsole in das Berichtsfenster umgeleitet</translation>
+      <translation>Die interne Python-Ausgabe wird
+von der Python-Konsole in das Ausgabefenster umgeleitet</translation>
     </message>
     <message>
       <source>Internal Python error messages will be redirected
 from Python console to Report view panel</source>
-      <translation>Die Interne Python-Fehlermeldung wird
-von der Python-Konsole in das Berichtsfenster umgeleitet</translation>
+      <translation>Die internen Python-Fehlermeldungen werden
+von der Python-Konsole in das Ausgabefenster umgeleitet</translation>
     </message>
     <message>
       <source>Include a timecode for each report</source>
@@ -3342,7 +3343,7 @@ Sie können auch das Formular verwenden: John Doe &lt;john@doe.com&gt;</translat
     </message>
     <message>
       <source>Show script commands in python console</source>
-      <translation>Skript-Befehle in Pythonkonsole anzeigen</translation>
+      <translation>Skript-Befehle in Python-Konsole anzeigen</translation>
     </message>
     <message>
       <source>Log all commands issued by menus to file:</source>
@@ -5820,7 +5821,7 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     <name>Gui::TaskView::TaskDialog</name>
     <message>
       <source>A dialog is already open in the task panel</source>
-      <translation>Ein Dialog im Arbeitspaneele ist bereits geöffnet</translation>
+      <translation>Im Aufgabenbereich ist bereits ein Dialog geöffnet</translation>
     </message>
   </context>
   <context>

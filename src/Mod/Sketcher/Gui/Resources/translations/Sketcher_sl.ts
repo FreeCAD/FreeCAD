@@ -238,7 +238,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5337"/>
       <source>Create a circle in the sketcher</source>
-      <translation>Ustvari krog v skicirniku</translation>
+      <translation>Ustvari krog v očrtovalniku</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5414"/>
@@ -261,7 +261,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4450"/>
       <source>Create a conic in the sketch</source>
-      <translation>Ustvari stožnico v skici</translation>
+      <translation>Ustvari stožnico v očrtu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4555"/>

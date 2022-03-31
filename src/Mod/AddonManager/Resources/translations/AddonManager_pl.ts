@@ -120,6 +120,11 @@
       </translation>
     </message>
     <message>
+      <location filename="package_details.py" line="510"/>
+      <source>No URL or wiki page provided by this macro</source>
+      <translation type="unfinished">No URL or wiki page provided by this macro</translation>
+    </message>
+    <message>
       <location filename="package_details.py" line="563"/>
       <source>Could not load README data from URL {}</source>
       <translation>Nie można wczytać pliku danych README z adresu URL {}</translation>
@@ -640,7 +645,7 @@
     <message>
       <location filename="addonmanager_workers.py" line="1715"/>
       <source>Downloaded icon for {}</source>
-      <translation>Pobrano ikonę dla {}</translation>
+      <translation>Pobrano plik ikonki dla {}</translation>
     </message>
     <message>
       <location filename="addonmanager_utilities.py" line="332"/>
@@ -800,6 +805,18 @@
       <translation>Aktualizowanie pamięci podręcznej ...</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="766"/>
+      <source>Could not find addon &apos;{}&apos; to select
+</source>
+      <translation type="unfinished">Could not find addon &apos;{}&apos; to select
+</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="243"/>
+      <source>Checking for updates...</source>
+      <translation>Sprawdzanie aktualizacji...</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>Dodatki, które mogą być zainstalowane, nie są oficjalnie częścią FreeCAD, i nie są sprawdzane przez zespół FreeCAD. Upewnij się, że wiesz, co instalujesz!</translation>
@@ -818,11 +835,6 @@
       <location filename="AddonManager.py" line="241"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
       <translation>Nie można zaimportować QtNetwork — szczegóły możesz zobaczyć w Widoku raportu. Menedżer dodatków jest niedostępny.</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="243"/>
-      <source>Checking for updates...</source>
-      <translation>Sprawdzanie aktualizacji...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="262"/>

@@ -4497,7 +4497,7 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="ArchRebar.py" line="108"/>
       <source>Creates a Reinforcement bar from the selected face of solid object and/or a sketch</source>
-      <translation type="unfinished">Creates a Reinforcement bar from the selected face of solid object and/or a sketch</translation>
+      <translation>Crea una barra di rinforzo dalla faccia selezionata di un oggetto solido e/o uno schizzo</translation>
     </message>
     <message>
       <location filename="ArchRebar.py" line="108"/>

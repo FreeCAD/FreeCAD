@@ -2576,7 +2576,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathAdaptive.py" line="922"/>
       <source>Clearing</source>
-      <translation type="unfinished">Clearing</translation>
+      <translation>Compensazione</translation>
     </message>
     <message>
       <location filename="PathAdaptive.py" line="923"/>
@@ -3248,6 +3248,19 @@ Interruzione creazione op</translation>
     </message>
   </context>
   <context>
+    <name>Path_Gcode_pre</name>
+    <message>
+      <location filename="gcode_pre.py" line="226"/>
+      <source>No active document</source>
+      <translation>Nessun documento attivo</translation>
+    </message>
+    <message>
+      <location filename="gcode_pre.py" line="229"/>
+      <source>No job object</source>
+      <translation type="unfinished">No job object</translation>
+    </message>
+  </context>
+  <context>
     <name>Path_Helix</name>
     <message>
       <location filename="PathHelixGui.py" line="91"/>
@@ -3314,6 +3327,16 @@ Interruzione creazione op</translation>
       <location filename="PathInspect.py" line="244"/>
       <source>Inspects the G-code contents of a path</source>
       <translation>Controlla il contenuto del codice G di un percorso</translation>
+    </message>
+    <message>
+      <location filename="PathInspect.py" line="260"/>
+      <source>Inspect Path Commands</source>
+      <translation type="unfinished">Inspect Path Commands</translation>
+    </message>
+    <message>
+      <location filename="PathInspect.py" line="264"/>
+      <source>Inspects the contents of a Path object</source>
+      <translation type="unfinished">Inspects the contents of a Path object</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="260"/>
@@ -3401,7 +3424,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathJobGui.py" line="1596"/>
       <source>Please add one.</source>
-      <translation type="unfinished">Please add one.</translation>
+      <translation>Per favore, aggiungerne una.</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="1597"/>
@@ -3416,12 +3439,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathJobGui.py" line="1610"/>
       <source>This job has no base model.</source>
-      <translation type="unfinished">This job has no base model.</translation>
+      <translation>Questa lavorazione non ha un modello di base.</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="1617"/>
       <source>This job has no tool.</source>
-      <translation type="unfinished">This job has no tool.</translation>
+      <translation>Questa lavorazione non ha utensili.</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="257"/>
@@ -4556,11 +4579,6 @@ Interruzione creazione op</translation>
       <translation>Aggiungi un Controllo utensile</translation>
     </message>
     <message>
-      <location filename="PathToolController.py" line="134"/>
-      <source>None</source>
-      <translation>Nessuno</translation>
-    </message>
-    <message>
       <location filename="PathToolController.py" line="132"/>
       <source>Forward</source>
       <translation>Avanti</translation>
@@ -4569,6 +4587,11 @@ Interruzione creazione op</translation>
       <location filename="PathToolController.py" line="133"/>
       <source>Reverse</source>
       <translation>Inverti</translation>
+    </message>
+    <message>
+      <location filename="PathToolController.py" line="134"/>
+      <source>None</source>
+      <translation>Nessuno</translation>
     </message>
   </context>
   <context>
@@ -5547,12 +5570,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../../Command.cpp" line="115"/>
       <source>Create Path Area</source>
-      <translation type="unfinished">Create Path Area</translation>
+      <translation>Crea area percorso</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="203"/>
       <source>Select Workplane for Path Area</source>
-      <translation type="unfinished">Select Workplane for Path Area</translation>
+      <translation>Seleziona piano di lavoro per l'area del percorso</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="254"/>
@@ -5590,7 +5613,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="14"/>
       <source>Select Base Models</source>
-      <translation type="unfinished">Select Base Models</translation>
+      <translation>Seleziona modelli base</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="24"/>

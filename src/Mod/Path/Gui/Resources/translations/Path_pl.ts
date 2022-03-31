@@ -3253,6 +3253,19 @@ Przerwanie procesu tworzenia</translation>
     </message>
   </context>
   <context>
+    <name>Path_Gcode_pre</name>
+    <message>
+      <location filename="gcode_pre.py" line="226"/>
+      <source>No active document</source>
+      <translation>Brak aktywnego dokumentu</translation>
+    </message>
+    <message>
+      <location filename="gcode_pre.py" line="229"/>
+      <source>No job object</source>
+      <translation type="unfinished">No job object</translation>
+    </message>
+  </context>
+  <context>
     <name>Path_Helix</name>
     <message>
       <location filename="PathHelixGui.py" line="91"/>
@@ -3319,6 +3332,16 @@ Przerwanie procesu tworzenia</translation>
       <location filename="PathInspect.py" line="244"/>
       <source>Inspects the G-code contents of a path</source>
       <translation>Sprawdza zawartość G-kod ścieżki</translation>
+    </message>
+    <message>
+      <location filename="PathInspect.py" line="260"/>
+      <source>Inspect Path Commands</source>
+      <translation type="unfinished">Inspect Path Commands</translation>
+    </message>
+    <message>
+      <location filename="PathInspect.py" line="264"/>
+      <source>Inspects the contents of a Path object</source>
+      <translation type="unfinished">Inspects the contents of a Path object</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="260"/>
@@ -3406,7 +3429,7 @@ Przerwanie procesu tworzenia</translation>
     <message>
       <location filename="PathJobGui.py" line="1596"/>
       <source>Please add one.</source>
-      <translation type="unfinished">Please add one.</translation>
+      <translation>Proszę dodać jeden.</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="1597"/>
@@ -3421,12 +3444,12 @@ Przerwanie procesu tworzenia</translation>
     <message>
       <location filename="PathJobGui.py" line="1610"/>
       <source>This job has no base model.</source>
-      <translation type="unfinished">This job has no base model.</translation>
+      <translation>To zadanie nie ma modelu bazowego.</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="1617"/>
       <source>This job has no tool.</source>
-      <translation type="unfinished">This job has no tool.</translation>
+      <translation>Zadanie bez przydzielonego narzędzia.</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="257"/>
@@ -4561,11 +4584,6 @@ Przerwanie procesu tworzenia</translation>
       <translation>Dodaj kontroler narzędzi</translation>
     </message>
     <message>
-      <location filename="PathToolController.py" line="134"/>
-      <source>None</source>
-      <translation>Brak</translation>
-    </message>
-    <message>
       <location filename="PathToolController.py" line="132"/>
       <source>Forward</source>
       <translation>W przód</translation>
@@ -4574,6 +4592,11 @@ Przerwanie procesu tworzenia</translation>
       <location filename="PathToolController.py" line="133"/>
       <source>Reverse</source>
       <translation>Odwróć</translation>
+    </message>
+    <message>
+      <location filename="PathToolController.py" line="134"/>
+      <source>None</source>
+      <translation>Brak</translation>
     </message>
   </context>
   <context>

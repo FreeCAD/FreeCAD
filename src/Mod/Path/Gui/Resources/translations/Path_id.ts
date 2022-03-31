@@ -3247,6 +3247,19 @@ Aborting op creation</translation>
     </message>
   </context>
   <context>
+    <name>Path_Gcode_pre</name>
+    <message>
+      <location filename="gcode_pre.py" line="226"/>
+      <source>No active document</source>
+      <translation>Tidak ada dokumen aktif</translation>
+    </message>
+    <message>
+      <location filename="gcode_pre.py" line="229"/>
+      <source>No job object</source>
+      <translation type="unfinished">No job object</translation>
+    </message>
+  </context>
+  <context>
     <name>Path_Helix</name>
     <message>
       <location filename="PathHelixGui.py" line="91"/>
@@ -3313,6 +3326,16 @@ Aborting op creation</translation>
       <location filename="PathInspect.py" line="244"/>
       <source>Inspects the G-code contents of a path</source>
       <translation>Memeriksa isi kode G dari jalur</translation>
+    </message>
+    <message>
+      <location filename="PathInspect.py" line="260"/>
+      <source>Inspect Path Commands</source>
+      <translation type="unfinished">Inspect Path Commands</translation>
+    </message>
+    <message>
+      <location filename="PathInspect.py" line="264"/>
+      <source>Inspects the contents of a Path object</source>
+      <translation type="unfinished">Inspects the contents of a Path object</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="260"/>
@@ -4556,11 +4579,6 @@ Aborting op creation</translation>
       <translation>Tambahkan Alat Pengontrol</translation>
     </message>
     <message>
-      <location filename="PathToolController.py" line="134"/>
-      <source>None</source>
-      <translation>Tidak ada</translation>
-    </message>
-    <message>
       <location filename="PathToolController.py" line="132"/>
       <source>Forward</source>
       <translation type="unfinished">Forward</translation>
@@ -4569,6 +4587,11 @@ Aborting op creation</translation>
       <location filename="PathToolController.py" line="133"/>
       <source>Reverse</source>
       <translation>Membalikkan</translation>
+    </message>
+    <message>
+      <location filename="PathToolController.py" line="134"/>
+      <source>None</source>
+      <translation>Tidak ada</translation>
     </message>
   </context>
   <context>

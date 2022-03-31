@@ -4497,7 +4497,7 @@ Wenn Länge = 0 dann wird der Länge so berechnet, dass die Höhe gleich dem rel
     <message>
       <location filename="ArchRebar.py" line="108"/>
       <source>Creates a Reinforcement bar from the selected face of solid object and/or a sketch</source>
-      <translation type="unfinished">Creates a Reinforcement bar from the selected face of solid object and/or a sketch</translation>
+      <translation>Erzeugt einen Bewehrungsstab von der ausgewählten Fläche des festen Objekts und/oder einer Skizze</translation>
     </message>
     <message>
       <location filename="ArchRebar.py" line="108"/>
@@ -6080,8 +6080,8 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-ifc.ui" line="54"/>
       <source>Shows verbose debug messages during import and export
 of IFC files in the Report view panel</source>
-      <translation>Zeigt ausführliche Debug-Meldungen beim Import und Export von
-IFC-Dateien in der Berichtsansicht an</translation>
+      <translation>Zeigt ausführliche Debug-Meldungen beim Import und Export
+ von IFC-Dateien im Ausgabefenster an</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="58"/>

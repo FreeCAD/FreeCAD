@@ -6,12 +6,12 @@
     <message>
       <location filename="install_to_toolbar.py" line="76"/>
       <source>Create new toolbar</source>
-      <translation type="unfinished">Create new toolbar</translation>
+      <translation>Crea una nova barra d'eines</translation>
     </message>
     <message>
       <location filename="install_to_toolbar.py" line="219"/>
       <source>A macro installed with the FreeCAD Addon Manager</source>
-      <translation type="unfinished">A macro installed with the FreeCAD Addon Manager</translation>
+      <translation>Una macro instal·lada amb el FreeCAD Addon Manager</translation>
     </message>
     <message>
       <location filename="install_to_toolbar.py" line="221"/>
@@ -116,6 +116,11 @@
         <numerusform>Delete cached version of this README and re-download</numerusform>
         <numerusform>Delete cached version of this README and re-download</numerusform>
       </translation>
+    </message>
+    <message>
+      <location filename="package_details.py" line="510"/>
+      <source>No URL or wiki page provided by this macro</source>
+      <translation type="unfinished">No URL or wiki page provided by this macro</translation>
     </message>
     <message>
       <location filename="package_details.py" line="563"/>
@@ -475,7 +480,7 @@
     <message>
       <location filename="addonmanager_workers.py" line="646"/>
       <source>An error occurred updating macros from GitHub</source>
-      <translation type="unfinished">An error occurred updating macros from GitHub</translation>
+      <translation>Ha ocorregut un error actualitzant macros des de GitHub</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="651"/>
@@ -595,7 +600,7 @@
     <message>
       <location filename="addonmanager_workers.py" line="1013"/>
       <source>Error updating module</source>
-      <translation type="unfinished">Error updating module</translation>
+      <translation>Error en actualitzar un mòdul</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1075"/>
@@ -787,6 +792,18 @@
       <translation type="unfinished">Updating cache...</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="766"/>
+      <source>Could not find addon &apos;{}&apos; to select
+</source>
+      <translation type="unfinished">Could not find addon &apos;{}&apos; to select
+</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="243"/>
+      <source>Checking for updates...</source>
+      <translation>Buscant actualitzacions...</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>Els complements que es poden instal·lar aquí no formen part oficialment de FreeCAD, i l'equip de FreeCAD no els pot revisar. Assegureu-vos que sabeu què esteu instal·lant!</translation>
@@ -805,11 +822,6 @@
       <location filename="AddonManager.py" line="241"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
       <translation type="unfinished">Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="243"/>
-      <source>Checking for updates...</source>
-      <translation>Buscant actualitzacions...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="262"/>
@@ -983,7 +995,7 @@
     <message>
       <location filename="AddonManager.py" line="1558"/>
       <source>Successfully uninstalled {}</source>
-      <translation type="unfinished">Successfully uninstalled {}</translation>
+      <translation>Instal·lat amb èxit {}</translation>
     </message>
     <message>
       <location filename="addonmanager_macro.py" line="157"/>

@@ -121,6 +121,11 @@
       </translation>
     </message>
     <message>
+      <location filename="package_details.py" line="510"/>
+      <source>No URL or wiki page provided by this macro</source>
+      <translation type="unfinished">No URL or wiki page provided by this macro</translation>
+    </message>
+    <message>
       <location filename="package_details.py" line="563"/>
       <source>Could not load README data from URL {}</source>
       <translation type="unfinished">Could not load README data from URL {}</translation>
@@ -800,6 +805,18 @@
       <translation>Ažuriram cache…</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="766"/>
+      <source>Could not find addon &apos;{}&apos; to select
+</source>
+      <translation type="unfinished">Could not find addon &apos;{}&apos; to select
+</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="243"/>
+      <source>Checking for updates...</source>
+      <translation>Provjeri ima li ažuriranja...</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>Dodaci koji se ovdje mogu instalirati nisu službeni dio FreeCAD programa, i nisu ispitani od FreeCAD tima. Budite sigurni da znate što će se instalirati!</translation>
@@ -818,11 +835,6 @@
       <location filename="AddonManager.py" line="241"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
       <translation type="unfinished">Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="243"/>
-      <source>Checking for updates...</source>
-      <translation>Provjeri ima li ažuriranja...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="262"/>

@@ -3249,6 +3249,19 @@ Prekinitev ustvarjanja opravila</translation>
     </message>
   </context>
   <context>
+    <name>Path_Gcode_pre</name>
+    <message>
+      <location filename="gcode_pre.py" line="226"/>
+      <source>No active document</source>
+      <translation>Ni dejavnega dokumenta</translation>
+    </message>
+    <message>
+      <location filename="gcode_pre.py" line="229"/>
+      <source>No job object</source>
+      <translation type="unfinished">No job object</translation>
+    </message>
+  </context>
+  <context>
     <name>Path_Helix</name>
     <message>
       <location filename="PathHelixGui.py" line="91"/>
@@ -3315,6 +3328,16 @@ Prekinitev ustvarjanja opravila</translation>
       <location filename="PathInspect.py" line="244"/>
       <source>Inspects the G-code contents of a path</source>
       <translation>Pregleda vsebino G-kode poti</translation>
+    </message>
+    <message>
+      <location filename="PathInspect.py" line="260"/>
+      <source>Inspect Path Commands</source>
+      <translation type="unfinished">Inspect Path Commands</translation>
+    </message>
+    <message>
+      <location filename="PathInspect.py" line="264"/>
+      <source>Inspects the contents of a Path object</source>
+      <translation type="unfinished">Inspects the contents of a Path object</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="260"/>
@@ -3402,7 +3425,7 @@ Prekinitev ustvarjanja opravila</translation>
     <message>
       <location filename="PathJobGui.py" line="1596"/>
       <source>Please add one.</source>
-      <translation type="unfinished">Please add one.</translation>
+      <translation>Dodajte eno.</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="1597"/>
@@ -3417,12 +3440,12 @@ Prekinitev ustvarjanja opravila</translation>
     <message>
       <location filename="PathJobGui.py" line="1610"/>
       <source>This job has no base model.</source>
-      <translation type="unfinished">This job has no base model.</translation>
+      <translation>To opravilo nima osnovnega oblikovanca.</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="1617"/>
       <source>This job has no tool.</source>
-      <translation type="unfinished">This job has no tool.</translation>
+      <translation>To opravilo nima orodja.</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="257"/>
@@ -4557,11 +4580,6 @@ Prekinitev ustvarjanja opravila</translation>
       <translation>Dodaj orodni krmilnik</translation>
     </message>
     <message>
-      <location filename="PathToolController.py" line="134"/>
-      <source>None</source>
-      <translation>Brez</translation>
-    </message>
-    <message>
       <location filename="PathToolController.py" line="132"/>
       <source>Forward</source>
       <translation>Naprej</translation>
@@ -4570,6 +4588,11 @@ Prekinitev ustvarjanja opravila</translation>
       <location filename="PathToolController.py" line="133"/>
       <source>Reverse</source>
       <translation>Obrni</translation>
+    </message>
+    <message>
+      <location filename="PathToolController.py" line="134"/>
+      <source>None</source>
+      <translation>Brez</translation>
     </message>
   </context>
   <context>

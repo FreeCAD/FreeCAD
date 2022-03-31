@@ -732,11 +732,6 @@ Esta propiedad es de solo lectura, así que el número depende de los puntos con
       <translation>Ruta usada por este objeto</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>La forma de este objeto</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation>Nombre del patrón utilizado por este objeto</translation>
@@ -745,6 +740,11 @@ Esta propiedad es de solo lectura, así que el número depende de los puntos con
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>Escala del patrón usado por este objeto</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>La forma de este objeto</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>

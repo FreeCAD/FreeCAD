@@ -118,6 +118,11 @@
       </translation>
     </message>
     <message>
+      <location filename="package_details.py" line="510"/>
+      <source>No URL or wiki page provided by this macro</source>
+      <translation type="unfinished">No URL or wiki page provided by this macro</translation>
+    </message>
+    <message>
       <location filename="package_details.py" line="563"/>
       <source>Could not load README data from URL {}</source>
       <translation>No se pudo cargar datos README desde la URL {}</translation>
@@ -787,6 +792,18 @@
       <translation>Actualizando caché...</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="766"/>
+      <source>Could not find addon &apos;{}&apos; to select
+</source>
+      <translation type="unfinished">Could not find addon &apos;{}&apos; to select
+</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="243"/>
+      <source>Checking for updates...</source>
+      <translation>Buscando actualizaciones...</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>Los complementos que se pueden instalar aquí no son oficialmente parte de FreeCAD y no son revisados por el equipo de FreeCAD. ¡Asegúrese de saber lo que está instalando!</translation>
@@ -805,11 +822,6 @@
       <location filename="AddonManager.py" line="241"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
       <translation>No se pudo importar QtNetwork -- vea la Vista del Reporte para más detalles. Administrador de complementos no disponible.</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="243"/>
-      <source>Checking for updates...</source>
-      <translation>Buscando actualizaciones...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="262"/>

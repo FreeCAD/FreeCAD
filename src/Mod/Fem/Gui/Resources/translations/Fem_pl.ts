@@ -1064,7 +1064,7 @@
     <message>
       <location filename="../../Command.cpp" line="1535"/>
       <source>Select a pipeline, please.</source>
-      <translation>Wyberz proces.</translation>
+      <translation>Proszę wybierz rurociąg.</translation>
     </message>
   </context>
   <context>
@@ -1537,7 +1537,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="253"/>
       <source>Thermomech</source>
-      <translation>Termomechanika</translation>
+      <translation>Termo mechanika</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="270"/>

@@ -1967,7 +1967,7 @@ Ten katalog będzie używany do wyboru symboli.</translation>
     </message>
     <message>
       <source>Include edges with unexpected geometry (zero length etc.) in results</source>
-      <translation>Uwzględnij krawędzie o niespodziewanej geometrii (zerowa długość itp.) w wynikach</translation>
+      <translation>Uwzględnij w wynikach krawędzie o niespodziewanej geometrii (zerowa długość itp.)</translation>
     </message>
     <message>
       <source>Allow Crazy Edges</source>
@@ -3282,7 +3282,7 @@ Czy chcesz kontynuować?</translation>
     </message>
     <message>
       <source>3d Point</source>
-      <translation>Punkt 3d</translation>
+      <translation>Punkt 3D</translation>
     </message>
     <message>
       <source>X:</source>
@@ -3353,7 +3353,7 @@ Czy chcesz kontynuować?</translation>
     </message>
     <message>
       <source>reference label</source>
-      <translation>etykieta referencyjna/ odniesienie etykiety</translation>
+      <translation>odniesienie etykiety</translation>
     </message>
     <message>
       <source>y position of detail highlight within view</source>

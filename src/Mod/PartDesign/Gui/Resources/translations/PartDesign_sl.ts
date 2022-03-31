@@ -584,7 +584,7 @@
     <message>
       <location filename="../../Command.cpp" line="1378"/>
       <source>Revolve a selected sketch</source>
-      <translation>Zavrti izbrano skico</translation>
+      <translation>Zvrti izbrani očrt</translation>
     </message>
   </context>
   <context>
@@ -652,7 +652,7 @@
     <message>
       <location filename="../../Command.cpp" line="1771"/>
       <source>Sweep a selected sketch along a helix and remove it from the body</source>
-      <translation>Vzdolži izbrani očrt vijačnici in dobljeno odštej od telesa</translation>
+      <translation>Vzdolži izbrani očrt ob vijačnici in dobljeno odštej od telesa</translation>
     </message>
   </context>
   <context>
@@ -936,7 +936,7 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="48"/>
       <source>Sketch already used by other feature</source>
-      <translation>Očrt je že uporabljena za drugo značilnost</translation>
+      <translation>Očrt je že uporabljen za drugo značilnost</translation>
     </message>
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="49"/>
@@ -1761,7 +1761,7 @@ s ponovnim klikom pa zaključite izbiranje</translation>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="70"/>
       <source>Sketch already used by other feature</source>
-      <translation>Očrt je že uporabljena za drugo značilnost</translation>
+      <translation>Očrt je že uporabljen za drugo značilnost</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="71"/>

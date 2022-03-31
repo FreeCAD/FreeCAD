@@ -3733,7 +3733,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
       <location filename="../../ViewProviderFemPostFunction.cpp" line="277"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="579"/>
       <source>A dialog is already open in the task panel</source>
-      <translation>Ein Dialog im Arbeitspanel ist bereits geöffnet</translation>
+      <translation>Im Aufgabenbereich ist bereits ein Dialog geöffnet</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraintBearing.cpp" line="78"/>

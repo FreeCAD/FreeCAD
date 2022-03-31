@@ -51,7 +51,7 @@
     <message>
       <location filename="ArchBuildingPart.py" line="352"/>
       <source>If true, only solids will be collected by this object when referenced from other files</source>
-      <translation>Jeśli prawda, w odniesieniach do tego obiektu w zewnętrznych plikach zawarte zostaną wyłącznie jego bryły</translation>
+      <translation>Jeśli parametr ma wartość Prawda, tylko bryły będą pobierane przez ten obiekt przy odwołaniach z innych plików</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="355"/>
@@ -1356,7 +1356,7 @@
     <message>
       <location filename="ArchSite.py" line="593"/>
       <source>The postal or zip code of this site</source>
-      <translation>Kod pocztowy działki tej budowlanej</translation>
+      <translation>Kod pocztowy działki budowlanej</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="595"/>
@@ -4494,7 +4494,7 @@ Jeśli Bieg = 0, wówczas Bieg jest obliczany tak, aby wysokość była taka sam
     <message>
       <location filename="ArchRebar.py" line="108"/>
       <source>Creates a Reinforcement bar from the selected face of solid object and/or a sketch</source>
-      <translation type="unfinished">Creates a Reinforcement bar from the selected face of solid object and/or a sketch</translation>
+      <translation>Tworzy pręt zbrojeniowy na bazie wybranej powierzchni, bryły lub szkicu</translation>
     </message>
     <message>
       <location filename="ArchRebar.py" line="108"/>
@@ -4598,12 +4598,12 @@ Jeśli Bieg = 0, wówczas Bieg jest obliczany tak, aby wysokość była taka sam
     <message>
       <location filename="ArchCommands.py" line="1483"/>
       <source>Select non-manifold meshes</source>
-      <translation>Wybierz nieróżnorodne siatki</translation>
+      <translation>Wybierz siatki niebryłowe</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="1486"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
-      <translation>Wybiera wszystkie nieróżnorodne siatki z dokumentu lub wybranych grup</translation>
+      <translation>Wybiera wszystkie niebryłowe siatki z dokumentu lub wybranych grup</translation>
     </message>
   </context>
   <context>

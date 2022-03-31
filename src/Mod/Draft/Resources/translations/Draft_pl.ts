@@ -732,11 +732,6 @@ Tę właściwość można tylko przeglądać, ponieważ liczba jest zależna od 
       <translation>Plik wzoru używany przez ten obiekt</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Kształt tego obiektu</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation>Nazwa wzoru używana przez ten obiekt</translation>
@@ -745,6 +740,11 @@ Tę właściwość można tylko przeglądać, ponieważ liczba jest zależna od 
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>Skala wzoru używana przez ten obiekt</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Kształt tego obiektu</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>

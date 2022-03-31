@@ -391,7 +391,7 @@
     <message>
       <location filename="PathDressupLeadInOut.py" line="61"/>
       <source>Calculate roll-off from path</source>
-      <translation type="unfinished">Calculate roll-off from path</translation>
+      <translation>ტრაექტორიიდან roll-off-ის გამოთვლა</translation>
     </message>
     <message>
       <location filename="PathDressupLeadInOut.py" line="62"/>
@@ -1440,7 +1440,7 @@
     <message>
       <location filename="PathArray.py" line="245"/>
       <source>No base objects for PathArray.</source>
-      <translation type="unfinished">No base objects for PathArray.</translation>
+      <translation>PathArray-ს საბაზისო ობიექტების გარეშე.</translation>
     </message>
     <message>
       <location filename="PathArray.py" line="258"/>
@@ -2302,7 +2302,7 @@ Aborting op creation</source>
     <message>
       <location filename="PathSurfaceSupport.py" line="559"/>
       <source>Failed to pre-process base as a whole.</source>
-      <translation type="unfinished">Failed to pre-process base as a whole.</translation>
+      <translation>ბაზის სრულად დამუშავების შეცდომა.</translation>
     </message>
     <message>
       <location filename="PathSurfaceSupport.py" line="672"/>
@@ -3168,7 +3168,7 @@ Aborting op creation</source>
     <message>
       <location filename="PathDressupZCorrect.py" line="308"/>
       <source>Use Probe Map to correct Z depth</source>
-      <translation type="unfinished">Use Probe Map to correct Z depth</translation>
+      <translation>ზონდის რუკის გამოყენება Z-ის სიღრმის ჩასასწორებლად</translation>
     </message>
     <message>
       <location filename="PathDressupZCorrect.py" line="330"/>
@@ -3249,6 +3249,19 @@ Aborting op creation</source>
     </message>
   </context>
   <context>
+    <name>Path_Gcode_pre</name>
+    <message>
+      <location filename="gcode_pre.py" line="226"/>
+      <source>No active document</source>
+      <translation>აქტიური დოკუმენტის გარეშე</translation>
+    </message>
+    <message>
+      <location filename="gcode_pre.py" line="229"/>
+      <source>No job object</source>
+      <translation type="unfinished">No job object</translation>
+    </message>
+  </context>
+  <context>
     <name>Path_Helix</name>
     <message>
       <location filename="PathHelixGui.py" line="91"/>
@@ -3315,6 +3328,16 @@ Aborting op creation</source>
       <location filename="PathInspect.py" line="244"/>
       <source>Inspects the G-code contents of a path</source>
       <translation>ბილიკის G-code-ის შემოწმება</translation>
+    </message>
+    <message>
+      <location filename="PathInspect.py" line="260"/>
+      <source>Inspect Path Commands</source>
+      <translation type="unfinished">Inspect Path Commands</translation>
+    </message>
+    <message>
+      <location filename="PathInspect.py" line="264"/>
+      <source>Inspects the contents of a Path object</source>
+      <translation type="unfinished">Inspects the contents of a Path object</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="260"/>
@@ -3402,7 +3425,7 @@ Aborting op creation</source>
     <message>
       <location filename="PathJobGui.py" line="1596"/>
       <source>Please add one.</source>
-      <translation type="unfinished">Please add one.</translation>
+      <translation>დაამატეთ.</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="1597"/>
@@ -3417,12 +3440,12 @@ Aborting op creation</source>
     <message>
       <location filename="PathJobGui.py" line="1610"/>
       <source>This job has no base model.</source>
-      <translation type="unfinished">This job has no base model.</translation>
+      <translation>დავალებას საბაზისო მოდელი არ გააჩნია.</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="1617"/>
       <source>This job has no tool.</source>
-      <translation type="unfinished">This job has no tool.</translation>
+      <translation>დავალებას ხელსაწყო არ გააჩნია.</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="257"/>
@@ -4141,7 +4164,7 @@ Aborting op creation</source>
     <message>
       <location filename="PathSlot.py" line="1146"/>
       <source>Verify slot path start and end points.</source>
-      <translation type="unfinished">Verify slot path start and end points.</translation>
+      <translation>სლოტის ტრაექტორიის საწყისი და საბოლოო წერტილების შემოწმება.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="973"/>
@@ -4557,11 +4580,6 @@ Aborting op creation</source>
       <translation>ხელსაწყოს კონტროლერის დამატება</translation>
     </message>
     <message>
-      <location filename="PathToolController.py" line="134"/>
-      <source>None</source>
-      <translation>არცერთი</translation>
-    </message>
-    <message>
       <location filename="PathToolController.py" line="132"/>
       <source>Forward</source>
       <translation>წინ</translation>
@@ -4570,6 +4588,11 @@ Aborting op creation</source>
       <location filename="PathToolController.py" line="133"/>
       <source>Reverse</source>
       <translation>რევერსი</translation>
+    </message>
+    <message>
+      <location filename="PathToolController.py" line="134"/>
+      <source>None</source>
+      <translation>არცერთი</translation>
     </message>
   </context>
   <context>
@@ -4928,7 +4951,7 @@ Aborting op creation</source>
     <message>
       <location filename="PathSlot.py" line="926"/>
       <source>Verify slot path start and end points.</source>
-      <translation type="unfinished">Verify slot path start and end points.</translation>
+      <translation>სლოტის ტრაექტორიის საწყისი და საბოლოო წერტილების შემოწმება.</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="942"/>
@@ -5499,7 +5522,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../Command.cpp" line="139"/>
       <source>Select a workplane for a FeatureArea</source>
-      <translation type="unfinished">Select a workplane for a FeatureArea</translation>
+      <translation>აირჩიეთ FeatureArea-ის სამუშაო მაგიდა</translation>
     </message>
   </context>
   <context>
@@ -5553,7 +5576,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../Command.cpp" line="203"/>
       <source>Select Workplane for Path Area</source>
-      <translation type="unfinished">Select Workplane for Path Area</translation>
+      <translation>აირჩიეთ სამუშაო მაგიდა ტრაექტორიის ფართისთვის</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="254"/>
@@ -6986,7 +7009,7 @@ Aborting op creation</source>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="177"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if this profile operation should also process the outside perimeter of the base geometry shapes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if this profile operation should also process the outside perimeter of the base geometry shapes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ჩართეთ, თუ ამ პროფილის ოპერაციებმა საბაზისო გეომეტრული ფიგურების გარე პერიმეტრიც უნდა დაამუშაონ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="180"/>
@@ -7161,7 +7184,7 @@ Aborting op creation</source>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="70"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="266"/>
       <source>Sample interval</source>
-      <translation type="unfinished">Sample interval</translation>
+      <translation>სინჯის ინტერვალი</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="85"/>
@@ -8019,7 +8042,7 @@ Aborting op creation</source>
     <message>
       <location filename="../preferences/PathJob.ui" line="639"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Legacy Tools have no accurate shape representation and are stored in the user preferences of FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Legacy Tools have no accurate shape representation and are stored in the user preferences of FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;მოძველებულ ხელსაწყოებს მოხაზულობის წარმოდგენის ზუსტი საშუალება არ გააჩნიათ და ინახებიან FreeCAD-ის მომხმარებლის პარამეტრებთან ერთად.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="642"/>

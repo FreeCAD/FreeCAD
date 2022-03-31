@@ -724,11 +724,6 @@ Cette propriété est en lecture seule, car le nombre dépend des points contenu
       <translation>Le fichier PAT utilisé par cet objet</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>La forme de cet objet</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation>Le nom du motif utilisé par cet objet</translation>
@@ -737,6 +732,11 @@ Cette propriété est en lecture seule, car le nombre dépend des points contenu
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>La mise à l'échelle du motif utilisée par cet objet</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>La forme de cet objet</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>

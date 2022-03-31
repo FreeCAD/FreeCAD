@@ -4938,7 +4938,7 @@ oder Schwarz verwendet werden.</translation>
     <message>
       <location filename="../../Location.ui" line="90"/>
       <source>3D view</source>
-      <translation>3D</translation>
+      <translation>3D-Ansicht</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="106"/>

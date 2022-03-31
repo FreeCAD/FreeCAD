@@ -2656,7 +2656,7 @@ La modification de cette option nécessite un redémarrage de l'application.</tr
     </message>
     <message>
       <source>Use software OpenGL</source>
-      <translation>Utiliser OpenGL</translation>
+      <translation>Utiliser OpenGL logiciel</translation>
     </message>
     <message>
       <source>What kind of multisample anti-aliasing is used</source>

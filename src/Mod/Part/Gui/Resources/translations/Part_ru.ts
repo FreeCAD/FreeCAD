@@ -1828,7 +1828,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Command.cpp" line="2163"/>
       <source>Set the color of each individual face of the selected object.</source>
-      <translation type="unfinished">Set the color of each individual face of the selected object.</translation>
+      <translation>Установить цвет каждой отдельной грани выбранного объекта.</translation>
     </message>
   </context>
   <context>

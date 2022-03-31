@@ -4477,7 +4477,7 @@ Se a extensão = 0, ela será calculada de modo que a altura seja a mesma do per
     <message>
       <location filename="ArchRebar.py" line="108"/>
       <source>Creates a Reinforcement bar from the selected face of solid object and/or a sketch</source>
-      <translation type="unfinished">Creates a Reinforcement bar from the selected face of solid object and/or a sketch</translation>
+      <translation>Cria uma barra de reforço a partir da face selecionada de um objeto sólido e/ou de um esboço</translation>
     </message>
     <message>
       <location filename="ArchRebar.py" line="108"/>

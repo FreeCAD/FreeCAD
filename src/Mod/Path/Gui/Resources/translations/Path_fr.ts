@@ -3249,6 +3249,19 @@ Abandon de la création</translation>
     </message>
   </context>
   <context>
+    <name>Path_Gcode_pre</name>
+    <message>
+      <location filename="gcode_pre.py" line="226"/>
+      <source>No active document</source>
+      <translation>Aucun document actif</translation>
+    </message>
+    <message>
+      <location filename="gcode_pre.py" line="229"/>
+      <source>No job object</source>
+      <translation type="unfinished">No job object</translation>
+    </message>
+  </context>
+  <context>
     <name>Path_Helix</name>
     <message>
       <location filename="PathHelixGui.py" line="91"/>
@@ -3315,6 +3328,16 @@ Abandon de la création</translation>
       <location filename="PathInspect.py" line="244"/>
       <source>Inspects the G-code contents of a path</source>
       <translation>Inspecte le G-code d'un parcours</translation>
+    </message>
+    <message>
+      <location filename="PathInspect.py" line="260"/>
+      <source>Inspect Path Commands</source>
+      <translation type="unfinished">Inspect Path Commands</translation>
+    </message>
+    <message>
+      <location filename="PathInspect.py" line="264"/>
+      <source>Inspects the contents of a Path object</source>
+      <translation type="unfinished">Inspects the contents of a Path object</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="260"/>
@@ -3422,7 +3445,7 @@ Abandon de la création</translation>
     <message>
       <location filename="PathJobGui.py" line="1617"/>
       <source>This job has no tool.</source>
-      <translation type="unfinished">This job has no tool.</translation>
+      <translation>Cette tâche n'a pas d'outil.</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="257"/>
@@ -3550,7 +3573,7 @@ Abandon de la création</translation>
     <message>
       <location filename="PathMillFace.py" line="69"/>
       <source>Boundbox</source>
-      <translation type="unfinished">Boundbox</translation>
+      <translation>Boîte de délimitation</translation>
     </message>
     <message>
       <location filename="PathMillFace.py" line="70"/>
@@ -4061,7 +4084,7 @@ Abandon de la création</translation>
     <message>
       <location filename="PathSlot.py" line="262"/>
       <source>Single-pass</source>
-      <translation type="unfinished">Single-pass</translation>
+      <translation>Une seule passe</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="263"/>
@@ -4086,27 +4109,27 @@ Abandon de la création</translation>
     <message>
       <location filename="PathSlot.py" line="284"/>
       <source>Center of BoundBox</source>
-      <translation type="unfinished">Center of BoundBox</translation>
+      <translation>Centre de la boîte de délimitation</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="287"/>
       <source>Lowest Point</source>
-      <translation type="unfinished">Lowest Point</translation>
+      <translation>Point le moin élevé</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="288"/>
       <source>Highest Point</source>
-      <translation type="unfinished">Highest Point</translation>
+      <translation>Point le plus haut</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="277"/>
       <source>Long Edge</source>
-      <translation type="unfinished">Long Edge</translation>
+      <translation>Bord long</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="278"/>
       <source>Short Edge</source>
-      <translation type="unfinished">Short Edge</translation>
+      <translation>Bord court</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="289"/>
@@ -4312,7 +4335,7 @@ Abandon de la création</translation>
     <message>
       <location filename="PathSurface.py" line="486"/>
       <source>Single-pass</source>
-      <translation type="unfinished">Single-pass</translation>
+      <translation>Une seule passe</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="487"/>
@@ -4557,11 +4580,6 @@ Abandon de la création</translation>
       <translation>Ajouter un contrôleur d'outil</translation>
     </message>
     <message>
-      <location filename="PathToolController.py" line="134"/>
-      <source>None</source>
-      <translation>Aucun</translation>
-    </message>
-    <message>
       <location filename="PathToolController.py" line="132"/>
       <source>Forward</source>
       <translation>En avant</translation>
@@ -4570,6 +4588,11 @@ Abandon de la création</translation>
       <location filename="PathToolController.py" line="133"/>
       <source>Reverse</source>
       <translation>Inverser</translation>
+    </message>
+    <message>
+      <location filename="PathToolController.py" line="134"/>
+      <source>None</source>
+      <translation>Aucun</translation>
     </message>
   </context>
   <context>
@@ -4814,7 +4837,7 @@ Abandon de la création</translation>
     <message>
       <location filename="PathWaterline.py" line="138"/>
       <source>Single-pass</source>
-      <translation type="unfinished">Single-pass</translation>
+      <translation>Une seule passe</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="139"/>
@@ -6288,13 +6311,13 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="70"/>
       <source>All locations will be processed using the same operation properties.</source>
-      <translation type="unfinished">All locations will be processed using the same operation properties.</translation>
+      <translation>Tous les emplacements seront traités en utilisant les mêmes propriétés d'opération.</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="39"/>
       <location filename="../panels/SetupGlobal.ui" line="36"/>
       <source>Start Depth</source>
-      <translation type="unfinished">Start Depth</translation>
+      <translation>Profondeur de départ</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="46"/>
@@ -6603,7 +6626,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="63"/>
       <source>Start from</source>
-      <translation type="unfinished">Start from</translation>
+      <translation>Démarrer à partir de</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="70"/>
@@ -6645,7 +6668,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="35"/>
       <source>Ignore Edges and Wires</source>
-      <translation type="unfinished">Ignore Edges and Wires</translation>
+      <translation>Ignorer les bords et les polylignes</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="50"/>
@@ -6720,7 +6743,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="67"/>
       <source>Boundbox</source>
-      <translation type="unfinished">Boundbox</translation>
+      <translation>Boîte de délimitation</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="72"/>
@@ -6769,7 +6792,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="130"/>
       <source>Pattern</source>
-      <translation type="unfinished">Pattern</translation>
+      <translation>Motif</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="137"/>
@@ -6847,7 +6870,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="242"/>
       <source>Min Travel</source>
-      <translation type="unfinished">Min Travel</translation>
+      <translation>Trajet minimum</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="249"/>
@@ -6899,12 +6922,12 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="101"/>
       <source>Y Offset</source>
-      <translation type="unfinished">Y Offset</translation>
+      <translation>Décalage en Y</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="115"/>
       <source>X Offset</source>
-      <translation type="unfinished">X Offset</translation>
+      <translation>Décalage en X</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="132"/>
@@ -6944,7 +6967,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="124"/>
       <source>Extra Offset</source>
-      <translation type="unfinished">Extra Offset</translation>
+      <translation>Décalage supplémentaire</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="137"/>
@@ -7006,29 +7029,29 @@ Abandon de la création</translation>
       <location filename="../panels/PageOpSlotEdit.ui" line="92"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="174"/>
       <source>Center of BoundBox</source>
-      <translation type="unfinished">Center of BoundBox</translation>
+      <translation>Centre de la boîte de délimitation</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="97"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="179"/>
       <source>Lowest Point</source>
-      <translation type="unfinished">Lowest Point</translation>
+      <translation>Point le moin élevé</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="102"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="184"/>
       <source>Highest Point</source>
-      <translation type="unfinished">Highest Point</translation>
+      <translation>Point le plus haut</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="107"/>
       <source>Long Edge</source>
-      <translation type="unfinished">Long Edge</translation>
+      <translation>Bord long</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="112"/>
       <source>Short Edge</source>
-      <translation type="unfinished">Short Edge</translation>
+      <translation>Bord court</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="117"/>
@@ -7130,7 +7153,7 @@ Abandon de la création</translation>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="267"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="103"/>
       <source>Single-pass</source>
-      <translation type="unfinished">Single-pass</translation>
+      <translation>Une seule passe</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="390"/>
@@ -8716,7 +8739,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="136"/>
       <source>Start Depth</source>
-      <translation type="unfinished">Start Depth</translation>
+      <translation>Profondeur de départ</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="150"/>
@@ -9477,7 +9500,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1022"/>
       <source>Start Depth</source>
-      <translation type="unfinished">Start Depth</translation>
+      <translation>Profondeur de départ</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1029"/>

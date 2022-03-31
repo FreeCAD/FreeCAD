@@ -3251,6 +3251,19 @@ Abbruch der OP-Erstellung</translation>
     </message>
   </context>
   <context>
+    <name>Path_Gcode_pre</name>
+    <message>
+      <location filename="gcode_pre.py" line="226"/>
+      <source>No active document</source>
+      <translation>Kein aktives Dokument</translation>
+    </message>
+    <message>
+      <location filename="gcode_pre.py" line="229"/>
+      <source>No job object</source>
+      <translation type="unfinished">No job object</translation>
+    </message>
+  </context>
+  <context>
     <name>Path_Helix</name>
     <message>
       <location filename="PathHelixGui.py" line="91"/>
@@ -3317,6 +3330,16 @@ Abbruch der OP-Erstellung</translation>
       <location filename="PathInspect.py" line="244"/>
       <source>Inspects the G-code contents of a path</source>
       <translation>Untersucht den G-Code-Inhalt eines Pfades</translation>
+    </message>
+    <message>
+      <location filename="PathInspect.py" line="260"/>
+      <source>Inspect Path Commands</source>
+      <translation type="unfinished">Inspect Path Commands</translation>
+    </message>
+    <message>
+      <location filename="PathInspect.py" line="264"/>
+      <source>Inspects the contents of a Path object</source>
+      <translation type="unfinished">Inspects the contents of a Path object</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="260"/>
@@ -3404,7 +3427,7 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="PathJobGui.py" line="1596"/>
       <source>Please add one.</source>
-      <translation type="unfinished">Please add one.</translation>
+      <translation>Bitte einen hinzufügen.</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="1597"/>
@@ -3419,12 +3442,12 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="PathJobGui.py" line="1610"/>
       <source>This job has no base model.</source>
-      <translation type="unfinished">This job has no base model.</translation>
+      <translation>Dieser Job hat kein Basismodell.</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="1617"/>
       <source>This job has no tool.</source>
-      <translation type="unfinished">This job has no tool.</translation>
+      <translation>Dieser Job hat kein Werkzeug.</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="257"/>
@@ -4559,11 +4582,6 @@ Abbruch der OP-Erstellung</translation>
       <translation>Werkzeugsteuerung hinzufügen</translation>
     </message>
     <message>
-      <location filename="PathToolController.py" line="134"/>
-      <source>None</source>
-      <translation>Kein</translation>
-    </message>
-    <message>
       <location filename="PathToolController.py" line="132"/>
       <source>Forward</source>
       <translation>vorwärts</translation>
@@ -4572,6 +4590,11 @@ Abbruch der OP-Erstellung</translation>
       <location filename="PathToolController.py" line="133"/>
       <source>Reverse</source>
       <translation>Umkehren</translation>
+    </message>
+    <message>
+      <location filename="PathToolController.py" line="134"/>
+      <source>None</source>
+      <translation>Kein</translation>
     </message>
   </context>
   <context>
@@ -7918,7 +7941,7 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="304"/>
       <source>Mod/Path</source>
-      <translation type="unfinished">Mod/Path</translation>
+      <translation>Mod/Pfad</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="311"/>
@@ -8642,7 +8665,7 @@ p, li { white-space: pre-wrapp; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="133"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the fillet at the top.&lt;/p&gt;&lt;p&gt;If the radius is too big for the tag shape it gets reduced to the maximum possible radius - resulting in a spherical shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the fillet at the top.&lt;/p&gt;&lt;p&gt;If the radius is too big for the tag shape it gets reduced to the maximum possible radius - resulting in a spherical shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius der Verrundung oben.&lt;/p&gt;&lt;p&gt;Wenn der Radius für die Tagform zu groß ist, wird er auf den maximal möglichen Radius reduziert - was zu einer kugelförmigen Form führt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="146"/>
@@ -8808,7 +8831,7 @@ p, li { white-space: pre-wrapp; }
     <message>
       <location filename="../panels/ZCorrectEdit.ui" line="61"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the filename containing the probe data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the filename containing the probe data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Geben Sie den Dateinamen mit den Testdaten ein&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>

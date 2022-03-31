@@ -534,7 +534,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
-      <translation type="unfinished">Organizations</translation>
+      <translation>Organisaatiot</translation>
     </message>
   </context>
   <context>
@@ -1441,7 +1441,7 @@ Jos tämä ei ole rastitettuna, ominaisuus on nimettävä ainutlaatuisesti, ja s
     </message>
     <message>
       <source>Code lines will be numbered</source>
-      <translation type="unfinished">Code lines will be numbered</translation>
+      <translation>Koodirivit numeroidaan</translation>
     </message>
   </context>
   <context>
@@ -3320,7 +3320,7 @@ Voit myös käyttää muotoa: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Autoload</source>
-      <translation type="unfinished">Autoload</translation>
+      <translation>Automaattilataus</translation>
     </message>
     <message>
       <source>If checked</source>

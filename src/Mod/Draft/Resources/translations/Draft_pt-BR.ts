@@ -729,11 +729,6 @@ Esta propriedade é somente leitura, já que o número depende dos outros parâm
       <translation>O arquivo PAT usado por este objeto</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>A forma deste objeto</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation>O nome do padrão usado por este objeto</translation>
@@ -742,6 +737,11 @@ Esta propriedade é somente leitura, já que o número depende dos outros parâm
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>A escala de padrão usada por este objeto</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>A forma deste objeto</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>

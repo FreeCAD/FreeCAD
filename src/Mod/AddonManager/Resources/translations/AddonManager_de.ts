@@ -118,6 +118,11 @@
       </translation>
     </message>
     <message>
+      <location filename="package_details.py" line="510"/>
+      <source>No URL or wiki page provided by this macro</source>
+      <translation type="unfinished">No URL or wiki page provided by this macro</translation>
+    </message>
+    <message>
       <location filename="package_details.py" line="563"/>
       <source>Could not load README data from URL {}</source>
       <translation>Konnte die README-Daten nicht von URL {} laden</translation>
@@ -165,7 +170,7 @@
     <message>
       <location filename="package_details.py" line="786"/>
       <source>Change Branch</source>
-      <translation>Zweig wechseln</translation>
+      <translation>Git-Branch wechseln</translation>
     </message>
     <message>
       <location filename="package_details.py" line="867"/>
@@ -198,22 +203,22 @@
     <message>
       <location filename="package_list.py" line="125"/>
       <source>Filter regular expression is invalid</source>
-      <translation>Filter regulärer Ausdruck ist ungültig</translation>
+      <translation>RegEx Filter ist ungültig</translation>
     </message>
     <message>
       <location filename="package_list.py" line="207"/>
       <source>Click for details about package {}</source>
-      <translation>Für Details über Paket {} klicken</translation>
+      <translation>Für Details zum Paket {} klicken</translation>
     </message>
     <message>
       <location filename="package_list.py" line="211"/>
       <source>Click for details about workbench {}</source>
-      <translation>Für Details über Arbeitsbereich {} klicken</translation>
+      <translation>Klicken für Details zum Arbeitsbereich {}</translation>
     </message>
     <message>
       <location filename="package_list.py" line="215"/>
       <source>Click for details about macro {}</source>
-      <translation>Für Details über Makro {} klicken</translation>
+      <translation>Klicken für Details über Makro {}</translation>
     </message>
     <message>
       <location filename="package_list.py" line="326"/>
@@ -228,7 +233,7 @@
     <message>
       <location filename="package_list.py" line="364"/>
       <source>Tags</source>
-      <translation>Markierung</translation>
+      <translation>Tags</translation>
     </message>
     <message>
       <location filename="package_list.py" line="371"/>
@@ -303,7 +308,7 @@
     <message>
       <location filename="package_list.py" line="566"/>
       <source>Show Addons containing:</source>
-      <translation>Zeige Programmerweiterungen die enthalten:</translation>
+      <translation>Zeige Addons die folgendes enthalten:</translation>
     </message>
     <message>
       <location filename="package_list.py" line="569"/>
@@ -395,12 +400,12 @@
     <message>
       <location filename="addonmanager_workers.py" line="367"/>
       <source>Unable to fetch git updates for workbench</source>
-      <translation>Git-Updates für Workbench können nicht abgerufen werden</translation>
+      <translation>Git-Updates für die Arbeitsbereiche können nicht abgerufen werden</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="391"/>
       <source>Retrieving info from</source>
-      <translation>Informationen werden abgerufen von</translation>
+      <translation>Lade informationen von</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="419"/>
@@ -410,12 +415,12 @@
     <message>
       <location filename="addonmanager_workers.py" line="426"/>
       <source>git fetch failed for {}</source>
-      <translation>git fetch fehlgeschlagen für {}</translation>
+      <translation>Git-Fetch fehlgeschlagen für {}</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="429"/>
       <source>git fetch failed for {wb.name}</source>
-      <translation>git fetch fehlgeschlagen für {wb.name}</translation>
+      <translation>Git-Fetch fehlgeschlagen für {wb.name}</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="433"/>
@@ -611,7 +616,7 @@ Bitte FreeCAD neu starten, um die Änderungen zu übernehmen.</translation>
     <message>
       <location filename="addonmanager_workers.py" line="1220"/>
       <source>Error: Unable to locate ZIP from</source>
-      <translation>Fehler: ZIP-Datei konnte nicht gefunden werden unter</translation>
+      <translation>Fehler: Nicht gefunden ZIP-Datei von</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1403"/>
@@ -626,12 +631,12 @@ Bitte FreeCAD neu starten, um die Änderungen zu übernehmen.</translation>
     <message>
       <location filename="addonmanager_workers.py" line="1611"/>
       <source>Downloaded package.xml for {}</source>
-      <translation>Package.xml heruntergeladen für {}</translation>
+      <translation>package.xml heruntergeladen für {}</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1641"/>
       <source>Downloaded metadata.txt for {}</source>
-      <translation>Metadata.txt heruntergeladen für {}</translation>
+      <translation>metadata.txt heruntergeladen für {}</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1715"/>
@@ -682,7 +687,7 @@ Bitte FreeCAD neu starten, um die Änderungen zu übernehmen.</translation>
       <location filename="change_branch.py" line="192"/>
       <source>Branch</source>
       <comment>git terminology</comment>
-      <translation>Zweig</translation>
+      <translation>Git-Branch</translation>
     </message>
     <message>
       <location filename="change_branch.py" line="178"/>
@@ -788,6 +793,18 @@ Bitte FreeCAD neu starten, um die Änderungen zu übernehmen.</translation>
       <translation>Cache wird aktualisiert...</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="766"/>
+      <source>Could not find addon &apos;{}&apos; to select
+</source>
+      <translation type="unfinished">Could not find addon &apos;{}&apos; to select
+</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="243"/>
+      <source>Checking for updates...</source>
+      <translation>Nach Updates suchen...</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>Die Addons, die hier installiert werden können, sind nicht offiziell Teil von FreeCAD und werden nicht vom FreeCAD Team überprüft. Stellen Sie sicher, dass Sie wissen, was Sie installieren!</translation>
@@ -806,11 +823,6 @@ Bitte FreeCAD neu starten, um die Änderungen zu übernehmen.</translation>
       <location filename="AddonManager.py" line="241"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
       <translation>QtNetwork konnte nicht importiert werden - siehe Berichtsansicht für Details. Der Addon Manager ist nicht verfügbar.</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="243"/>
-      <source>Checking for updates...</source>
-      <translation>Nach Updates suchen...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="262"/>
@@ -860,7 +872,7 @@ Bitte FreeCAD neu starten, um die Änderungen zu übernehmen.</translation>
     <message>
       <location filename="AddonManager.py" line="534"/>
       <source>Addon Manager: Skipping update check because AutoCheck user preference is False</source>
-      <translation>Programmerweiterungs-Manager: Überspringen der Aktualisierungsprüfung, weil die Benutzereinstellung AutoCheck auf „false“ gesetzt ist</translation>
+      <translation>Addon-Manager: Überspringen der Aktualisierungsprüfung, weil die Benutzereinstellung "AutoCheck" auf "false" gesetzt ist</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="542"/>
@@ -870,7 +882,7 @@ Bitte FreeCAD neu starten, um die Änderungen zu übernehmen.</translation>
     <message>
       <location filename="AddonManager.py" line="773"/>
       <source>Apply {} update(s)</source>
-      <translation>{} Aktualisierung(en) anwenden</translation>
+      <translation>{} Update(s) anwenden</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="577"/>
@@ -890,7 +902,7 @@ Bitte FreeCAD neu starten, um die Änderungen zu übernehmen.</translation>
     <message>
       <location filename="AddonManager.py" line="915"/>
       <source>Too many to list</source>
-      <translation>Zu viel aufzulisten</translation>
+      <translation>Zu viele zum Auflisten</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="893"/>
@@ -939,7 +951,7 @@ Bitte FreeCAD neu starten, um die Änderungen zu übernehmen.</translation>
     <message>
       <location filename="AddonManager.py" line="1178"/>
       <source>Succeeded</source>
-      <translation>Operation erfolgreich abgeschlossen</translation>
+      <translation>Erfolgreich</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1159"/>

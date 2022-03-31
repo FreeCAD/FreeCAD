@@ -729,11 +729,6 @@ This property is read-only, as the number depends on the points contained within
       <translation>PAT-файл, используется данным объектом</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Форма этого объекта</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="58"/>
       <source>The pattern name used by this object</source>
       <translation>Название штриховки, используемой этим объектом</translation>
@@ -742,6 +737,11 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>Масштабирование штриховки, используемой этим объектом</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Форма этого объекта</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -1251,7 +1251,7 @@ beyond the dimension line</source>
     <message>
       <location filename="init_draft_statusbar.py" line="302"/>
       <source>Toggles Visual Aid Dimensions On/Off</source>
-      <translation type="unfinished">Toggles Visual Aid Dimensions On/Off</translation>
+      <translation>Вкл/выкл визуальные подсказки размеров</translation>
     </message>
     <message>
       <location filename="init_draft_statusbar.py" line="322"/>
@@ -1261,7 +1261,7 @@ beyond the dimension line</source>
     <message>
       <location filename="init_draft_statusbar.py" line="340"/>
       <source>Toggles Constrain to Working Plane On/Off</source>
-      <translation type="unfinished">Toggles Constrain to Working Plane On/Off</translation>
+      <translation>Включение/выключение ограничений на рабочей плоскости</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="157"/>
@@ -1919,9 +1919,9 @@ For example, it explodes the selected polylines into simpler faces, wires, and t
       <source>Convert bidirectionally between Draft objects and Sketches.
 Many Draft objects will be converted into a single non-constrained Sketch.
 However, a single sketch with disconnected traces will be converted into several individual Draft objects.</source>
-      <translation type="unfinished">Convert bidirectionally between Draft objects and Sketches.
-Many Draft objects will be converted into a single non-constrained Sketch.
-However, a single sketch with disconnected traces will be converted into several individual Draft objects.</translation>
+      <translation>Конвертирует двунаправленно между объектами чертежа и эскизами.
+Многие объекты чертежа будут преобразованы в один неограниченный эскиз.
+Однако один эскиз с отсоединенными трассировками будет преобразован в несколько отдельных объектов чертежа.</translation>
     </message>
   </context>
   <context>
@@ -1936,9 +1936,9 @@ However, a single sketch with disconnected traces will be converted into several
       <source>Creates a 2D projection on a Drawing Workbench page from the selected objects.
 This command is OBSOLETE since the Drawing Workbench became obsolete in 0.17.
 Use TechDraw Workbench instead for generating technical drawings.</source>
-      <translation type="unfinished">Creates a 2D projection on a Drawing Workbench page from the selected objects.
-This command is OBSOLETE since the Drawing Workbench became obsolete in 0.17.
-Use TechDraw Workbench instead for generating technical drawings.</translation>
+      <translation>Создает 2D проекцию на листе верстака Drawing из выбранных объектов.
+Эта команда УСТАРЕВШАЯ с момента устаревания верстака Drawing в 0.17.
+Вместо этого используйте верстак TechDraw для создания технических рисунков.</translation>
     </message>
   </context>
   <context>
@@ -1981,7 +1981,7 @@ on supported nodes and on supported objects.</source>
     <message>
       <location filename="gui_facebinders.py" line="62"/>
       <source>Creates a facebinder object from selected faces.</source>
-      <translation type="unfinished">Creates a facebinder object from selected faces.</translation>
+      <translation>Создает объект граневяз, состоящий из выбранных граней.</translation>
     </message>
   </context>
   <context>

@@ -2628,7 +2628,7 @@ opening or creation</translation>
     </message>
     <message>
       <source>Show axis cross by default</source>
-      <translation type="unfinished">Show axis cross by default</translation>
+      <translation>默认显示坐标轴</translation>
     </message>
     <message>
       <source>Pick radius (px):</source>

@@ -1592,7 +1592,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="121"/>
       <source>Incompatible reference set</source>
-      <translation>Niekompatybilny zbiór odniesienia</translation>
+      <translation>Niekompatybilny zestaw odwołań</translation>
     </message>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="122"/>
@@ -1971,7 +1971,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="296"/>
       <source>Remove outside of profile</source>
-      <translation>Usuń za obrębem profilu profilu</translation>
+      <translation>Usuń za obrębem profilu</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="315"/>

@@ -263,7 +263,7 @@
     </message>
     <message>
       <source>Insert Balloon Annotation</source>
-      <translation>Ballon-Anmerkung einfügen</translation>
+      <translation>Hinweisfeld einfügen</translation>
     </message>
   </context>
   <context>
@@ -825,7 +825,7 @@
     </message>
     <message>
       <source>Insert SVG Symbol</source>
-      <translation>SVG Zeichnungselement einfügen</translation>
+      <translation>SVG-Zeichnungselement einfügen</translation>
     </message>
     <message>
       <source>Insert symbol from an SVG file</source>
@@ -967,7 +967,7 @@
     </message>
     <message>
       <source>Drag Balloon</source>
-      <translation>Ziehe Ballon</translation>
+      <translation>Hinweisfeld ziehen</translation>
     </message>
     <message>
       <source>Drag Dimension</source>
@@ -975,7 +975,7 @@
     </message>
     <message>
       <source>Create Balloon</source>
-      <translation>Erstelle Ballon</translation>
+      <translation>Hinweisfeld erstellen</translation>
     </message>
     <message>
       <source>Create ActiveView</source>
@@ -1369,7 +1369,7 @@
     </message>
     <message>
       <source>Need three points to make a 3 point Angle Dimension</source>
-      <translation>Es werden 3 Punkte für ein Winkelmaß benötigt</translation>
+      <translation>Es werden drei Punkte für ein Winkelmaß über 3 Punkte benötigt</translation>
     </message>
     <message>
       <source>There is no 3D object in your selection</source>
@@ -2165,7 +2165,7 @@ Jede Einheit ist etwa 0,1 mm breit</translation>
     </message>
     <message>
       <source>Length of balloon leader line kink</source>
-      <translation>Länge der Balloon-Hinweislinie bis zum Knick</translation>
+      <translation>Länge der Linie des Hinweisfeldes bis zum Knick</translation>
     </message>
     <message>
       <source>Type for centerlines</source>
@@ -2173,7 +2173,7 @@ Jede Einheit ist etwa 0,1 mm breit</translation>
     </message>
     <message>
       <source>Shape of balloon annotations</source>
-      <translation>Form der Balloon-Anmerkungen</translation>
+      <translation>Form der Hinweisfelder</translation>
     </message>
     <message>
       <source>Circular</source>
@@ -2205,7 +2205,7 @@ Jede Einheit ist etwa 0,1 mm breit</translation>
     </message>
     <message>
       <source>Balloon Leader End</source>
-      <translation>Ende der Balloon-Hinweislinie</translation>
+      <translation>Ende der Linie des Hinweisfeldes</translation>
     </message>
     <message>
       <source>Standard to be used to draw section lines</source>
@@ -2245,23 +2245,23 @@ Jede Einheit ist etwa 0,1 mm breit</translation>
     </message>
     <message>
       <source>Style for balloon leader line ends</source>
-      <translation>Objekt am Ende der Balloon-Hinweislinie</translation>
+      <translation>Symbol am Ende der Linie des Hinweisfeldes</translation>
     </message>
     <message>
       <source>Length of horizontal portion of Balloon leader</source>
-      <translation>Länge des horizontalen Anteils der Balloon-Hinweislinie</translation>
+      <translation>Länge des horizontalen Anteils der Linie des Hinweisfeldes</translation>
     </message>
     <message>
       <source>Ballon Leader Kink Length</source>
-      <translation>Balloon-Hinweislinien-Knicklänge</translation>
+      <translation>Knicklänge der Linie des Hinweisfeldes</translation>
     </message>
     <message>
       <source>Restrict Filled Triangle line end to vertical or horizontal directions</source>
-      <translation>Schränkt die Ausrichtung des gefüllten Dreiecks am Ende der Balloon-Hinweislinie auf vertikal oder horizontal ein</translation>
+      <translation>Schränkt die Ausrichtung des gefüllten Dreiecks am Ende der Linie des Hinweisfeldes auf vertikal oder horizontal ein</translation>
     </message>
     <message>
       <source>Balloon Orthogonal Triangle</source>
-      <translation>Balloon mit rechtwinkligem Dreieck</translation>
+      <translation>Hinweisfeld mit rechtwinkligem Dreieck</translation>
     </message>
     <message>
       <source>Line group used to set line widths</source>
@@ -2273,7 +2273,7 @@ Jede Einheit ist etwa 0,1 mm breit</translation>
     </message>
     <message>
       <source>Balloon Shape</source>
-      <translation>Balloon-Umriss</translation>
+      <translation>Form des Hinweisfeldes</translation>
     </message>
     <message>
       <source>Show arc centers in printed output</source>
@@ -3010,7 +3010,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Shape of the balloon bubble</source>
-      <translation>Form der Ballonblase</translation>
+      <translation>Form des Hinweisfeldes</translation>
     </message>
     <message>
       <source>Circular</source>
@@ -3054,7 +3054,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>End symbol for the balloon line</source>
-      <translation>Endsymbol für die Ballonlinie</translation>
+      <translation>Endsymbol für die Linie des Hinweisfeldes</translation>
     </message>
     <message>
       <source>End Symbol Scale:</source>
@@ -3090,11 +3090,11 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Leader Kink Length:</source>
-      <translation>Knicklänge der Balloon-Hinweislinie:</translation>
+      <translation>Knicklänge der Linie des Hinweisfeles:</translation>
     </message>
     <message>
       <source>Length of balloon leader line kink</source>
-      <translation>Länge der Balloon-Hinweislinie bis zum Knick</translation>
+      <translation>Länge der Linie des Hinweisfeldes bis zum Knick</translation>
     </message>
   </context>
   <context>

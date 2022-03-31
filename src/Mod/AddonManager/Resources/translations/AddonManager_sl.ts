@@ -120,6 +120,11 @@
       </translation>
     </message>
     <message>
+      <location filename="package_details.py" line="510"/>
+      <source>No URL or wiki page provided by this macro</source>
+      <translation type="unfinished">No URL or wiki page provided by this macro</translation>
+    </message>
+    <message>
       <location filename="package_details.py" line="563"/>
       <source>Could not load README data from URL {}</source>
       <translation>S spletnega naslova {} ni bilo mogoče naložiti podatkov README</translation>
@@ -799,6 +804,18 @@
       <translation>Posodabljanje krajevnega predpomnilnika ...</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="766"/>
+      <source>Could not find addon &apos;{}&apos; to select
+</source>
+      <translation type="unfinished">Could not find addon &apos;{}&apos; to select
+</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="243"/>
+      <source>Checking for updates...</source>
+      <translation>Preverjam za posodobitve...</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>Dodatki, ki jih je tukaj mogoče namestiti, niso uradno del FreeCADA in jih osebje FreeCADA ni pregledalo. Zato poskrbite, da pred namestitivijo izdelek poznate!</translation>
@@ -817,11 +834,6 @@
       <location filename="AddonManager.py" line="241"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
       <translation>QtNetwork-a ni mogoče uvoziti - za več podrobnosti preberite Poročevalni pogled. Upravljalnik dodatkov ni na voljo.</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="243"/>
-      <source>Checking for updates...</source>
-      <translation>Preverjam za posodobitve...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="262"/>
