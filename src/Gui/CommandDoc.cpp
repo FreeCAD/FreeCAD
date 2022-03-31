@@ -959,7 +959,7 @@ StdCmdQuit::StdCmdQuit()
   sWhatsThis    = "Std_Quit";
   sStatusTip    = QT_TR_NOOP("Quits the application");
   sPixmap       = "application-exit";
-  sAccel        = "Alt+F4";
+  sAccel        = keySequenceToAccel(QKeySequence::Quit);
   eType         = NoTransaction;
 }
 
