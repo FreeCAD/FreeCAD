@@ -646,11 +646,6 @@ This property is read-only, as the number depends on the points contained within
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="hatch.py" line="49"/>
-        <source>The shape of this object</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="hatch.py" line="58"/>
         <source>The pattern name used by this object</source>
         <translation type="unfinished"></translation>
@@ -658,6 +653,11 @@ This property is read-only, as the number depends on the points contained within
     <message>
         <location filename="hatch.py" line="61"/>
         <source>The pattern scale used by this object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="hatch.py" line="49"/>
+        <source>The shape of this object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
