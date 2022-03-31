@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>260</width>
+    <width>255</width>
     <height>313</height>
    </rect>
   </property>
@@ -19,8 +19,8 @@
   <property name="modal">
    <bool>true</bool>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
     <widget class="QGroupBox" name="groupBoxModel">
      <property name="title">
       <string>Color model</string>
@@ -68,7 +68,7 @@
         <property name="sizeType">
          <enum>QSizePolicy::Expanding</enum>
         </property>
-        <property name="sizeHint" stdset="0">
+        <property name="sizeHint">
          <size>
           <width>3</width>
           <height>20</height>
@@ -79,7 +79,7 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item>
     <widget class="QGroupBox" name="buttonGroupStyle">
      <property name="title">
       <string>Style</string>
@@ -113,7 +113,7 @@
         </property>
        </widget>
       </item>
-     <item row="0" column="1">
+      <item row="0" column="1">
        <widget class="QRadioButton" name="radioButtonZero">
         <property name="text">
          <string>&amp;Zero</string>
@@ -123,10 +123,10 @@
         </property>
        </widget>
       </item>
-      </layout>
+     </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item>
     <widget class="QGroupBox" name="groupBoxVisible">
      <property name="title">
       <string>Visibility</string>
@@ -170,73 +170,42 @@
      </layout>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item>
     <widget class="QGroupBox" name="groupBoxRange">
      <property name="title">
       <string>Parameter range</string>
      </property>
-     <layout class="QGridLayout">
-      <property name="leftMargin">
-       <number>11</number>
-      </property>
-      <property name="topMargin">
-       <number>11</number>
-      </property>
-      <property name="rightMargin">
-       <number>11</number>
-      </property>
-      <property name="bottomMargin">
-       <number>11</number>
-      </property>
-      <property name="spacing">
-       <number>6</number>
-      </property>
-      <item row="0" column="0">
-       <layout class="QGridLayout">
-        <property name="leftMargin">
-         <number>0</number>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0" rowspan="2">
+       <widget class="QLabel" name="textLabelMax">
+        <property name="text">
+         <string>Ma&amp;ximum:</string>
         </property>
-        <property name="topMargin">
-         <number>0</number>
+        <property name="buddy">
+         <cstring>floatLineEditMax</cstring>
         </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <property name="spacing">
-         <number>6</number>
-        </property>
-        <item row="0" column="0">
-         <widget class="QLabel" name="textLabelMax">
-          <property name="text">
-           <string>Ma&amp;ximum:</string>
-          </property>
-          <property name="buddy">
-           <cstring>floatLineEditMax</cstring>
-          </property>
-         </widget>
-        </item>
-       <item row="0" column="1">
-         <widget class="QLineEdit" name="floatLineEditMax"/>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="textLabelMin">
-          <property name="text">
-           <string>Mi&amp;nimum:</string>
-          </property>
-          <property name="buddy">
-           <cstring>floatLineEditMin</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLineEdit" name="floatLineEditMin"/>
-        </item>
-        </layout>
+       </widget>
       </item>
-      <item row="0" column="1">
+      <item row="0" column="1" rowspan="2">
+       <widget class="QLineEdit" name="floatLineEditMax">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+     <item row="0" column="3">
        <spacer>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -244,70 +213,99 @@
         <property name="sizeType">
          <enum>QSizePolicy::Expanding</enum>
         </property>
-        <property name="sizeHint" stdset="0">
+        <property name="sizeHint">
          <size>
-          <width>35</width>
+          <width>20</width>
           <height>20</height>
          </size>
         </property>
        </spacer>
       </item>
-      <item row="0" column="2">
-       <layout class="QGridLayout">
-        <property name="leftMargin">
-         <number>0</number>
+      <item row="0" column="4" rowspan="2">
+       <widget class="QLabel" name="textLabel1">
+        <property name="text">
+         <string>&amp;Labels:</string>
         </property>
-        <property name="topMargin">
-         <number>0</number>
+        <property name="buddy">
+         <cstring>spinBoxLabel</cstring>
         </property>
-        <property name="rightMargin">
-         <number>0</number>
+       </widget>
+      </item>
+      <item row="0" column="5" rowspan="2">
+       <widget class="QSpinBox" name="spinBoxLabel">
+        <property name="minimumSize">
+         <size>
+          <width>40</width>
+          <height>0</height>
+         </size>
         </property>
-        <property name="bottomMargin">
-         <number>0</number>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
-        <property name="spacing">
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="textLabelMin">
+        <property name="text">
+         <string>Mi&amp;nimum:</string>
+        </property>
+        <property name="buddy">
+         <cstring>floatLineEditMin</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="floatLineEditMin">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="4">
+       <widget class="QLabel" name="textLabel1_2">
+        <property name="text">
+         <string>&amp;Decimals:</string>
+        </property>
+        <property name="buddy">
+         <cstring>spinBoxDecimals</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="5">
+       <widget class="QSpinBox" name="spinBoxDecimals">
+        <property name="minimumSize">
+         <size>
+          <width>40</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="maximum">
          <number>6</number>
         </property>
-        <item row="0" column="0">
-         <widget class="QLabel" name="textLabel1">
-          <property name="text">
-           <string>&amp;Labels:</string>
-          </property>
-          <property name="buddy">
-           <cstring>spinBoxLabel</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QSpinBox" name="spinBoxLabel"/>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="textLabel1_2">
-          <property name="text">
-           <string>&amp;Decimals:</string>
-          </property>
-          <property name="buddy">
-           <cstring>spinBoxDecimals</cstring>
-          </property>
-         </widget>
-        </item>
-       <item row="1" column="1">
-         <widget class="QSpinBox" name="spinBoxDecimals">
-          <property name="maximum">
-           <number>6</number>
-          </property>
-          <property name="value">
-           <number>2</number>
-          </property>
-         </widget>
-        </item>
-        </layout>
+        <property name="value">
+         <number>2</number>
+        </property>
+       </widget>
       </item>
-     </layout>
+      </layout>
     </widget>
    </item>
-   <item row="4" column="0">
+   <item>
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
