@@ -79,8 +79,7 @@ public:
 
 private:
     std::unique_ptr<Ui_DlgSettingsColorGradient> ui;
-    QDoubleValidator* fMaxVal;
-    QDoubleValidator* fMinVal;
+    QDoubleValidator* validator;
 };
 
 } // namespace Dialog

@@ -48,13 +48,17 @@ DlgSettingsColorGradientImp::DlgSettingsColorGradientImp( QWidget* parent, Qt::W
   , ui(new Ui_DlgSettingsColorGradient)
 {
     ui->setupUi(this);
-    fMaxVal = new QDoubleValidator(-1000,1000,ui->spinBoxDecimals->maximum(),this);
-    ui->floatLineEditMax->setValidator(fMaxVal);
-    fMinVal = new QDoubleValidator(-1000,1000,ui->spinBoxDecimals->maximum(),this);
-    ui->floatLineEditMin->setValidator(fMinVal);
-
+    // remove the automatic help button in dialog title since we don't use it
+    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
+    // the elementary charge is 1.6e-19, since such values might be the result of
+    // simulations, use this as boundary for a scientific validator
+    validator = new QDoubleValidator(-2e19, 2e19, ui->spinBoxDecimals->maximum(), this);
+    validator->setNotation(QDoubleValidator::ScientificNotation);
+    ui->floatLineEditMax->setValidator(validator);
+    ui->floatLineEditMin->setValidator(validator);
+    // assure that the LineEdit is as wide to contain numbers with 4 digits and 6 decimals
     QFontMetrics fm(ui->floatLineEditMax->font());
-    ui->floatLineEditMax->setMinimumWidth(QtTools::horizontalAdvance(fm, QString::fromLatin1("-1000.000000")));
+    ui->floatLineEditMax->setMinimumWidth(QtTools::horizontalAdvance(fm, QString::fromLatin1("-8000.000000")));
 }
 
 /**

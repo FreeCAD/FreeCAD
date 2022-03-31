@@ -316,7 +316,7 @@ bool SoFCColorGradient::customize()
     dlg.setRange(fMin, fMax);
 
     QPoint pos(QCursor::pos());
-    pos += QPoint((int)(-1.1*dlg.width()),(int)(-0.1*dlg.height()));
+    pos += QPoint((int)(-1.1 * dlg.width()), (int)(-0.1 * dlg.height()));
     dlg.move( pos );
 
     if (dlg.exec() == QDialog::Accepted) {
