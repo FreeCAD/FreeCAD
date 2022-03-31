@@ -28,10 +28,10 @@ import unittest
 
 import FreeCAD
 import Path
-import PathScripts.PathLog as PathLog
-import PathScripts.PathPost as PathPost
-import PathScripts.PathUtil as PathUtil
-import PathScripts.PostUtils as PostUtils
+from PathScripts import PathLog
+from PathScripts import PathPost
+from PathScripts import PathUtil
+from PathScripts import PostUtils
 
 from PathScripts.PathPostProcessor import PostProcessor
 
@@ -251,8 +251,8 @@ class TestPathPost(unittest.TestCase):
         Returns
         -------
         None
-        """
 
+        """
         PATHTESTS_LOCATION = "Mod/Path/PathTests/"
 
         freecad_document_path = (
@@ -262,11 +262,12 @@ class TestPathPost(unittest.TestCase):
         self.job = FreeCAD.ActiveDocument.getObject(job_name)
         (split, postlist) = self._generate_gcode(self.job)
         if split:
-            gcode = ""
+            gcode_list = []
             for slist in postlist:
                 processor = PostProcessor.load(postprocessor_file)
                 part_gcode = processor.export(slist, gcode_file, postprocessor_args)
-                gcode.append(part_gcode)
+                gcode_list.append(part_gcode)
+            gcode = "".join(gcode_list)
         else:
             finalpostlist = [item for slist in postlist for item in slist]
             processor = PostProcessor.load(postprocessor_file)
