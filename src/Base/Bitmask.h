@@ -112,7 +112,7 @@ class Flags {
 
 public:
     constexpr inline Flags(Enum f) : i(f) {}
-    constexpr bool testFlag(Enum f) {
+    constexpr bool testFlag(Enum f) const {
         using u = typename std::underlying_type<Enum>::type;
         return (i & f) == f && (static_cast<u>(f) != 0 || i == f);
     }
