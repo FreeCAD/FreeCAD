@@ -2128,6 +2128,7 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
     options_description generic("Generic options");
     generic.add_options()
     ("version,v", "Prints version string")
+    ("verbose", "Prints verbose version string")
     ("help,h", "Prints help message")
     ("console,c", "Starts in console mode")
     ("response-file", value<string>(),"Can be specified with '@name', too")
@@ -2293,6 +2294,21 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
         std::stringstream str;
         str << mConfig["ExeName"] << " " << mConfig["ExeVersion"]
             << " Revision: " << mConfig["BuildRevision"] << std::endl;
+        if (vm.count("verbose")) {
+            str << "\nLibrary versions:\n";
+            str << "boost    " << BOOST_LIB_VERSION << '\n';
+            str << "Coin3D   " << FC_COIN3D_VERSION << '\n';
+            str << "Eigen3   " << FC_EIGEN3_VERSION << '\n';
+#ifdef OCC_VERSION_STRING_EXT
+            str << "OCC      " << OCC_VERSION_STRING_EXT << '\n';
+#endif
+            str << "Qt       " << QT_VERSION_STR << '\n';
+            str << "Python   " << PY_VERSION << '\n';
+            str << "PySide   " << FC_PYSIDE_VERSION << '\n';
+            str << "shiboken " << FC_SHIBOKEN_VERSION << '\n';
+            str << "VTK      " << FC_VTK_VERSION << '\n';
+            str << "xerces-c " << FC_XERCESC_VERSION << '\n';
+        }
         throw Base::ProgramInformation(str.str());
     }
 
