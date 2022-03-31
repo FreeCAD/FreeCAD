@@ -28,7 +28,6 @@
 
 ## \addtogroup drafttaskpanels
 # @{
-import sys
 import PySide.QtCore as QtCore
 import PySide.QtGui as QtGui
 
@@ -120,10 +119,7 @@ class ShapeStringTaskPanel:
     def createObject(self):
         """Create object in the current document."""
         dquote = '"'
-        if sys.version_info.major < 3:  # Python3: no more unicode
-            String = 'u' + dquote + str(self.task.leString.text().encode('unicode_escape')) + dquote
-        else:
-            String = dquote + self.task.leString.text() + dquote
+        String = dquote + self.task.leString.text() + dquote
         FFile = dquote + str(self.fileSpec) + dquote
 
         Size = str(U.Quantity(self.task.sbHeight.text()).Value)
