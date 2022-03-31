@@ -51,6 +51,10 @@ inline Vector3<T> getVectorFromTuple(PyObject* o)
 class BaseExport Vector2dPy : public Py::PythonClass<Vector2dPy>
 {
 public:
+    static Py::PythonType &behaviors();
+    static PyTypeObject *type_object();
+    static bool check( PyObject *p );
+
     static Py::PythonClassObject<Vector2dPy> create(const Vector2d&);
     static Py::PythonClassObject<Vector2dPy> create(double x, double y);
     Vector2dPy(Py::PythonClassInstance *self, Py::Tuple &args, Py::Dict &kwds);

@@ -91,6 +91,21 @@ Base::Vector3d Py::Vector::toVector() const
 
 namespace Base {
 
+Py::PythonType& Vector2dPy::behaviors()
+{
+    return Py::PythonClass<Vector2dPy>::behaviors();
+}
+
+PyTypeObject* Vector2dPy::type_object()
+{
+    return Py::PythonClass<Vector2dPy>::type_object();
+}
+
+bool Vector2dPy::check( PyObject *p )
+{
+    return Py::PythonClass<Vector2dPy>::check(p);
+}
+
 Py::PythonClassObject<Vector2dPy> Vector2dPy::create(const Vector2d& v)
 {
     return create(v.x, v.y);
