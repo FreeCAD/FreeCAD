@@ -71,7 +71,7 @@
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <TopoDS.hxx>
 
-#include "DrawSketchHandlerDefaultWidget.h"
+#include "DrawSketchDefaultWidgetHandler.h"
 
 using namespace std;
 using namespace SketcherGui;
@@ -2307,7 +2307,7 @@ private:
 
     virtual void activated() override
     {
-        DrawSketchGeometryHandler::activated();
+        DrawSketchDefaultHandler::activated();
         firstCurveCreated = getHighestCurveIndex() + 1;
     }
 
@@ -2746,7 +2746,7 @@ private:
 
     virtual void activated() override
     {
-        DrawSketchGeometryHandler::activated();
+        DrawSketchDefaultHandler::activated();
         firstCurveCreated = getHighestCurveIndex() + 1;
     }
 
@@ -3364,7 +3364,7 @@ private:
 
     virtual void activated() override
     {
-        DrawSketchGeometryHandler::activated();
+        DrawSketchDefaultHandler::activated();
         firstCurveCreated = getHighestCurveIndex() + 1;
     }
 
@@ -3918,7 +3918,7 @@ private:
 
     virtual void activated() override
     {
-        DrawSketchGeometryHandler::activated();
+        DrawSketchDefaultHandler::activated();
         firstCurveCreated = getHighestCurveIndex() + 1;
 
         vCC = generatevCC(listOfGeoIds);

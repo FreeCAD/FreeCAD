@@ -30,8 +30,6 @@
 
 #include "Utils.h"
 
-#include "DrawSketchHandlerDefaultWidget.h"
-
 #include "SketcherToolDefaultWidget.h"
 
 #include <QApplication>
@@ -107,9 +105,9 @@ template< GeometryTools PTool,          // The geometry tool for which the templ
           int PNumToolwidgetparameters, // The number of parameter spinboxes in the default widget
           int PNumToolwidgetCheckboxes, // The number of checkboxes in the default widget
           int PNumToolwidgetComboboxes > // The number of comboboxes in the default widget
-class DSHandlerDefaultWidget: public DrawSketchGeometryHandler<PTool, SelectModeT, PEditCurveSize, PAutoConstraintSize>
+class DSHandlerDefaultWidget: public DrawSketchDefaultHandler<PTool, SelectModeT, PEditCurveSize, PAutoConstraintSize>
 {
-    using DSGeometryHandler = DrawSketchGeometryHandler<PTool, SelectModeT, PEditCurveSize, PAutoConstraintSize>;
+    using DSDefaultHandler = DrawSketchDefaultHandler<PTool, SelectModeT, PEditCurveSize, PAutoConstraintSize>;
 
 private:
     class ToolWidgetManager {
@@ -762,7 +760,7 @@ public:
 
     virtual bool releaseButton(Base::Vector2d onSketchPos) override {
         Q_UNUSED(onSketchPos);
-        DSGeometryHandler::finish();
+        DSDefaultHandler::finish();
         return true;
     }
     //@}
@@ -792,7 +790,7 @@ private:
         On the last seek, it changes to SelectMode::End
         If this behaviour is not acceptable, then the function must be specialised.*/
     virtual void onButtonPressed(Base::Vector2d onSketchPos) override {
-        DSGeometryHandler::onButtonPressed(onSketchPos);
+        DSDefaultHandler::onButtonPressed(onSketchPos);
     }
 
     virtual void beforeCreateAutoConstraints() override
@@ -801,7 +799,7 @@ private:
     }
 
     virtual void onWidgetChanged() override {
-        toolWidgetManager.initWidget(DSGeometryHandler::toolwidget);
+        toolWidgetManager.initWidget(DSDefaultHandler::toolwidget);
     }
 
     virtual void onReset() override {

@@ -54,8 +54,6 @@
 #include "ViewProviderSketch.h"
 #include "CommandConstraints.h"
 
-#include "DrawSketchHandlerDefaultWidget.h"
-
 using namespace SketcherGui;
 using namespace Sketcher;
 
