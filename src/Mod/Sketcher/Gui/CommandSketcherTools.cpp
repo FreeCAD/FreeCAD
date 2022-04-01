@@ -2167,6 +2167,8 @@ using DrawSketchHandlerTranslateBase = DrawSketchDefaultWidgetHandler< DrawSketc
 
 class DrawSketchHandlerTranslate : public DrawSketchHandlerTranslateBase
 {
+    friend DrawSketchHandlerTranslateBase;
+
 public:
     enum class ConstructionMethod {
         LinearArray,
@@ -2186,7 +2188,7 @@ public:
         , secondNumberOfCopies(1)
 
         {}
-    virtual ~DrawSketchHandlerTranslate() {}
+    virtual ~DrawSketchHandlerTranslate() = default;
 
 
     enum class SnapMode {
@@ -2305,7 +2307,7 @@ private:
         firstCurveCreated = getHighestCurveIndex() + 1;
     }
 
-public:
+private:
     ConstructionMethod constructionMethod;
     SnapMode snapMode;
     std::vector<int> listOfGeoIds;
@@ -2625,6 +2627,8 @@ using DrawSketchHandlerRotateBase = DrawSketchDefaultWidgetHandler< DrawSketchHa
 
 class DrawSketchHandlerRotate : public DrawSketchHandlerRotateBase
 {
+    friend DrawSketchHandlerRotateBase;
+
 public:
     DrawSketchHandlerRotate(std::vector<int> listOfGeoIds)
         : snapMode(SnapMode::Free)
@@ -2632,7 +2636,8 @@ public:
         , deleteOriginal(false)
         , cloneConstraints(false)
         , numberOfCopies(0) {}
-    virtual ~DrawSketchHandlerRotate() {}
+
+    virtual ~DrawSketchHandlerRotate() = default;
 
     enum class SnapMode {
         Free,
@@ -2745,7 +2750,7 @@ private:
         firstCurveCreated = getHighestCurveIndex() + 1;
     }
 
-public:
+private:
     SnapMode snapMode;
     std::vector<int> listOfGeoIds;
     Base::Vector2d centerPoint, startPoint, endpoint;
@@ -3257,6 +3262,8 @@ using DrawSketchHandlerScaleBase = DrawSketchDefaultWidgetHandler< DrawSketchHan
 
 class DrawSketchHandlerScale : public DrawSketchHandlerScaleBase
 {
+    friend DrawSketchHandlerScaleBase;
+
 public:
     DrawSketchHandlerScale(std::vector<int> listOfGeoIds)
         : snapMode(SnapMode::Free)
@@ -3361,7 +3368,7 @@ private:
         firstCurveCreated = getHighestCurveIndex() + 1;
     }
 
-public:
+private:
     SnapMode snapMode;
     std::vector<int> listOfGeoIds;
     Base::Vector2d referencePoint, startPoint, endPoint;
@@ -3821,6 +3828,8 @@ using DrawSketchHandlerOffsetBase = DrawSketchDefaultWidgetHandler< DrawSketchHa
 
 class DrawSketchHandlerOffset : public DrawSketchHandlerOffsetBase
 {
+    friend DrawSketchHandlerOffsetBase;
+
 public:
     DrawSketchHandlerOffset(std::vector<int> listOfGeoIds)
         : snapMode(SnapMode::Free)
@@ -3830,7 +3839,7 @@ public:
         , offsetConstraint(false)
         , offsetLength(1) {}
 
-    virtual ~DrawSketchHandlerOffset() {}
+    virtual ~DrawSketchHandlerOffset() = default;
 
     enum class SnapMode {
         Free,
@@ -3916,7 +3925,7 @@ private:
         generateSourceWires();
     }
 
-public:
+private:
     class CoincidencePointPos
     {
     public:
