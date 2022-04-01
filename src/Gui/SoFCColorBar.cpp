@@ -90,8 +90,7 @@ public:
     ~SoFCColorBarProxyObject() {}
     void customEvent(QEvent *)
     {
-        if (bar->customize())
-            bar->Notify(0);
+        bar->customize(bar->getActiveBar());
         this->deleteLater();
     }
 
@@ -197,14 +196,18 @@ float SoFCColorBar::getMaxValue () const
     return this->getActiveBar()->getMaxValue();
 }
 
-bool SoFCColorBar::customize()
+void SoFCColorBar::triggerChange(SoFCColorBarBase*)
+{
+    Notify(0);
+}
+
+void SoFCColorBar::customize(SoFCColorBarBase* child)
 {
     try {
-        return this->getActiveBar()->customize();
+        return child->customize(this);
     }
     catch (const Base::ValueError& e) {
         e.ReportException();
-        return false;
     }
 }
 

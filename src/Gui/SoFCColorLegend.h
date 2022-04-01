@@ -65,7 +65,7 @@ public:
   float getMaxValue () const { return _currentLegend.getMaxValue(); }
   std::size_t countColors () const { return _currentLegend.hasNumberOfFields(); }
 
-  bool customize() { return false; }
+  void customize(SoFCColorBarBase*) { }
   const char* getColorBarName() const { return "Color Legend"; }
 
 //  virtual void handleEvent(SoHandleEventAction * action);

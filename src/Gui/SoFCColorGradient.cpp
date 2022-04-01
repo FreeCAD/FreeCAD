@@ -294,7 +294,7 @@ bool SoFCColorGradient::isVisible (float fVal) const
     return true;
 }
 
-bool SoFCColorGradient::customize()
+void SoFCColorGradient::customize(SoFCColorBarBase* parentNode)
 {
     QWidget* parent = Gui::getMainWindow()->activeWindow();
     Gui::Dialog::DlgSettingsColorGradientImp dlg(parent);
@@ -326,8 +326,6 @@ bool SoFCColorGradient::customize()
         setRange(fMin, fMax, dec);
         rebuildGradient();
 
-        return true;
+        triggerChange(parentNode);
     }
-
-    return false;
 }

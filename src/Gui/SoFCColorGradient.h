@@ -68,9 +68,8 @@ public:
   float getMaxValue () const { return _cColGrad.getMaxValue(); }
   /**
    * Opens a dialog to customize the current settings of the color gradient bar.
-   * Returns true if the settings have been changed, false otherwise.
    */
-  bool customize();
+  void customize(SoFCColorBarBase*);
   /** Returns the name of the color bar. */
   const char* getColorBarName() const { return "Color Gradient"; }
 

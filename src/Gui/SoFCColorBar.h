@@ -95,11 +95,16 @@ public:
   virtual float getMaxValue () const = 0;
   /**
    * Opens a dialog to customize the current settings of the color bar.
-   * Returns true if the settings have been changed, false otherwise.
    *
    * This method must be implemented in subclasses.
    */
-  virtual bool customize() = 0;
+  virtual void customize(SoFCColorBarBase*) = 0;
+  /**
+   * Forward a triggered change
+   */
+  virtual void triggerChange(SoFCColorBarBase* base) {
+    base->triggerChange(this);
+  }
   /** Returns the name of the color bar.
    *
    * This method must be implemented in subclasses.
@@ -173,7 +178,11 @@ public:
   /**
    * Customizes the currently active color bar.
    */
-  bool customize();
+  void customize(SoFCColorBarBase*);
+  /**
+   * Notify observers
+   */
+  void triggerChange(SoFCColorBarBase*);
   /** Returns the name of the color bar.
    */
   const char* getColorBarName() const { return "Color Bar"; }
