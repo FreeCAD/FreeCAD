@@ -48,7 +48,7 @@ SO_NODE_SOURCE(SoFCColorGradient)
 /*!
   Constructor.
 */
-SoFCColorGradient::SoFCColorGradient() : _bbox(4.0f, -4.0f, 4.5f, 4.0f), _bOutInvisible(false), _precision(3)
+SoFCColorGradient::SoFCColorGradient() : _bbox(4.0f, -4.0f, 4.5f, 4.0f), _precision(3)
 {
     SO_NODE_CONSTRUCTOR(SoFCColorGradient);
     coords = new SoCoordinate3;
@@ -287,13 +287,8 @@ void SoFCColorGradient::rebuildGradient()
 
 bool SoFCColorGradient::isVisible (float fVal) const
 {
-    if (_bOutInvisible) {
-        float fMin, fMax;
-        _cColGrad.getRange(fMin, fMax);
-        if ((fVal > fMax) || (fVal < fMin))
-            return false;
-        else
-            return true;
+    if (_cColGrad.isOutsideInvisible()) {
+        return !_cColGrad.isOutOfRange(fVal);
     }
 
     return true;
@@ -308,7 +303,7 @@ bool SoFCColorGradient::customize()
     dlg.setColorModel(_cColGrad.getColorModelType());
     dlg.setColorStyle(_cColGrad.getStyle());
     dlg.setOutGrayed(_cColGrad.isOutsideGrayed());
-    dlg.setOutInvisible(_bOutInvisible);
+    dlg.setOutInvisible(_cColGrad.isOutsideInvisible());
     dlg.setNumberOfLabels(_cColGrad.getCountColors());
     dlg.setNumberOfDecimals(_precision);
     float fMin, fMax;
@@ -323,7 +318,7 @@ bool SoFCColorGradient::customize()
         _cColGrad.setColorModel(dlg.colorModel());
         _cColGrad.setStyle(dlg.colorStyle());
         _cColGrad.setOutsideGrayed(dlg.isOutGrayed());
-        _bOutInvisible = dlg.isOutInvisible();
+        _cColGrad.setOutsideInvisible(dlg.isOutInvisible());
         _cColGrad.setCountColors(dlg.numberOfLabels());
         _precision = dlg.numberOfDecimals();
         dlg.getRange(fMin, fMax);

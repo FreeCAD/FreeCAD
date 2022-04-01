@@ -104,7 +104,6 @@ private:
   SoCoordinate3* coords;
   SoSeparator* labels;
   SbBox2f _bbox;
-  bool  _bOutInvisible;
   int _precision;
   App::ColorGradient _cColGrad;
 };
