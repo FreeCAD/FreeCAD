@@ -25,12 +25,28 @@
 #define APP_COLORMODEL_H
 
 #include "Material.h"
+#include <Base/Bitmask.h>
 
 #include <algorithm>
 #include <deque>
 #include <string>
 #include <vector>
 
+
+namespace App
+{
+
+enum class Visibility {
+    Default,
+    Grayed,
+    Invisible
+};
+
+using VisibilityFlags = Base::Flags<Visibility>;
+
+}
+
+ENABLE_BITMASK_OPERATORS(App::Visibility)
 
 namespace App
 {
@@ -62,7 +78,7 @@ public:
     std::size_t getCountColors() const {
         return colors.size();
     }
-    std::vector<Color>  colors;
+    std::vector<Color> colors;
 };
 
 class AppExport ColorModelBlueGreenRed : public ColorModel
@@ -301,7 +317,7 @@ inline Color ColorField::getColor (float fVal) const
         float r = (float)(i+1)/(float)ct;
         if (t < r) {
             // calculate the exact position in the subrange
-            float s = t * (float)ct - (float)i;
+            float s = t * float(ct) - float(i);
             Color c1 = colorModel.colors[i];
             Color c2 = colorModel.colors[i+1];
             col.r = (1.0f-s) * c1.r + s * c2.r;
@@ -316,7 +332,7 @@ inline Color ColorField::getColor (float fVal) const
 
 inline std::size_t ColorField::getColorIndex (float fVal) const
 {
-    return (std::size_t)(std::min<int>(std::max<int>(int(fConstant + fAscent * fVal), 0), int(ctColors - 1)));
+    return std::size_t(std::min<int>(std::max<int>(int(fConstant + fAscent * fVal), 0), int(ctColors - 1)));
 }
 
 
@@ -326,35 +342,44 @@ public:
     enum TStyle { FLOW, ZERO_BASED };
 
     ColorGradient ();
-    ColorGradient (float fMin, float fMax, std::size_t usCtColors, TStyle tS, bool bOG = false);
+    ColorGradient (float fMin, float fMax, std::size_t usCtColors, TStyle tS, VisibilityFlags fl = Visibility::Default);
     ColorGradient (const ColorGradient &) = default;
     ColorGradient& operator = (const ColorGradient &) = default;
 
-    void set (float fMin, float fMax, std::size_t usCt, TStyle tS, bool bOG);
+    void set (float fMin, float fMax, std::size_t usCt, TStyle tS, VisibilityFlags fl);
     void setRange (float fMin, float fMax) {
-        set(fMin, fMax, ctColors, tStyle, outsideGrayed);
+        set(fMin, fMax, ctColors, tStyle, visibility);
     }
     void getRange (float &rfMin, float &rfMax) const {
         rfMin = _fMin; rfMax = _fMax;
+    }
+    bool isOutOfRange(float fVal) const {
+        return ((fVal < _fMin) || (fVal > _fMax));
     }
     std::size_t getCountColors () const {
         return ctColors;
     }
     void setCountColors (std::size_t usCt) {
-        set(_fMin, _fMax, usCt, tStyle, outsideGrayed);
+        set(_fMin, _fMax, usCt, tStyle, visibility);
     }
     void setStyle (TStyle tS) {
-        set(_fMin, _fMax, ctColors, tS, outsideGrayed);
+        set(_fMin, _fMax, ctColors, tS, visibility);
     }
     std::size_t getMinColors () const;
     TStyle getStyle () const {
         return tStyle;
     }
-    void setOutsideGrayed (bool bGrayed) {
-        outsideGrayed = bGrayed;
+    void setOutsideGrayed (bool value) {
+        visibility.setFlag(Visibility::Grayed, value);
     }
     bool isOutsideGrayed () const {
-        return outsideGrayed;
+        return visibility.testFlag(Visibility::Grayed);
+    }
+    void setOutsideInvisible (bool value) {
+        visibility.setFlag(Visibility::Invisible, value);
+    }
+    bool isOutsideInvisible () const {
+        return visibility.testFlag(Visibility::Invisible);
     }
     void setColorModel (std::size_t tModel);
     std::size_t getColorModelType () const {
@@ -372,6 +397,9 @@ public:
     inline Color  getColor (float fVal) const;
     inline std::size_t getColorIndex (float fVal) const;
 
+private:
+    inline Color _getColor (float fVal) const;
+
 protected:
     void createStandardPacks();
 
@@ -380,7 +408,7 @@ protected:
     TStyle         tStyle;
     float          _fMin, _fMax;
     std::size_t    ctColors;
-    bool           outsideGrayed;
+    VisibilityFlags visibility;
     std::size_t    tColorModel;
     ColorModelPack currentModelPack;
     std::vector<ColorModelPack> modelPacks;
@@ -491,8 +519,19 @@ inline float ColorLegend::getMaxValue () const
 
 inline Color ColorGradient::getColor (float fVal) const
 {
-    if (outsideGrayed) {
-        if ((fVal < _fMin) || (fVal > _fMax))
+    Color color = _getColor(fVal);
+    if (isOutsideInvisible()) {
+        if (isOutOfRange(fVal))
+            color.a = 0.8f;
+    }
+
+    return color;
+}
+
+inline Color ColorGradient::_getColor (float fVal) const
+{
+    if (isOutsideGrayed()) {
+        if (isOutOfRange(fVal))
             return Color(0.5f, 0.5f, 0.5f);
     }
 
@@ -505,8 +544,9 @@ inline Color ColorGradient::getColor (float fVal) const
                 else
                     return colorField2.getColor(fVal);
             }
-            else
+            else {
                 return colorField1.getColor(fVal);
+            }
         }
 
     default:
@@ -526,10 +566,11 @@ inline std::size_t ColorGradient::getColorIndex (float fVal) const
                 if (fVal < 0.0f)
                     return colorField1.getColorIndex(fVal);
                 else
-                    return (std::size_t)(colorField1.getCountColors() + colorField2.getColorIndex(fVal));
+                    return std::size_t(colorField1.getCountColors() + colorField2.getColorIndex(fVal));
             }
-            else
+            else {
                 return colorField1.getColorIndex(fVal);
+            }
         }
 
     default:
@@ -550,9 +591,8 @@ inline const ColorModel& ColorGradient::getColorModel () const
         else
             return currentModelPack.totalModel;
     }
-    else {
-        return currentModelPack.totalModel;
-    }
+
+    return currentModelPack.totalModel;
 }
 
 } // namespace App
