@@ -61,9 +61,19 @@ class GuiExport PrefWidget : public WindowParameter
 public:
   void setEntryName( const QByteArray& name );
   QByteArray entryName() const;
+  /** Does the same as setEntryName().
+   * This function is added for convenience because the ui compiler
+   * will use this function if the attribute stdset isn't set to 0 in a .ui file.
+   */
+  void setPrefEntry(const QByteArray& name);
 
   void setParamGrpPath( const QByteArray& path );
   QByteArray paramGrpPath() const;
+  /** Does the same as setParamGrpPath().
+   * This function is added for convenience because the ui compiler
+   * will use this function if the attribute stdset isn't set to 0 in a .ui file.
+   */
+  void setPrefPath(const QByteArray& name);
 
   virtual void OnChange(Base::Subject<const char*> &rCaller, const char * sReason);
   void onSave();

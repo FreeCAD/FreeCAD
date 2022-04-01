@@ -59,6 +59,12 @@ void PrefWidget::setEntryName( const QByteArray& name )
   m_sPrefName = name;
 }
 
+/** Sets the preference name to \a name. */
+void PrefWidget::setPrefEntry(const QByteArray& name)
+{
+  setEntryName(name);
+}
+
 /** Returns the widget's preference name. */
 QByteArray PrefWidget::entryName() const
 {
@@ -85,6 +91,12 @@ void PrefWidget::setParamGrpPath( const QByteArray& path )
       getWindowParameter()->Attach(this);
     }
   }
+}
+
+/** Sets the preference path to \a path. */
+void PrefWidget::setPrefPath(const QByteArray& name)
+{
+  setParamGrpPath(name);
 }
 
 /** Returns the widget's preferences path. */
