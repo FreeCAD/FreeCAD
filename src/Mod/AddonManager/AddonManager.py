@@ -958,13 +958,14 @@ class CommandAddonManager:
             self.wbs = []
             for dep in deps.internal_workbenches:
                 if dep.lower() + "workbench" not in wbs:
-                    if dep == "Plot":
+                    if dep.lower() == "plot":
                         # Special case for plot, which is no longer a full workbench:
                         try:
                             __import__("Plot")
                         except ImportError:
                             # Plot might fail for a number of reasons
                             self.wbs.append(dep)
+                            FreeCAD.Console.PrintLog("Failed to import Plot module")
                     else:
                         self.wbs.append(dep)
 
@@ -982,15 +983,7 @@ class CommandAddonManager:
                 try:
                     __import__(py_dep)
                 except ImportError:
-                    allowed = False
-                    for dep in python_required:
-                        if dep in self.allowed_packages:
-                            allowed = True
-                            break
-                    if allowed:
-                        self.python_optional.append(py_dep)
-                    else:
-                        FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Specified optional package {} is not in the allowed packages list").format(py_dep))
+                    self.python_optional.append(py_dep)
 
             self.wbs.sort()
             self.external_addons.sort()
@@ -1099,6 +1092,14 @@ class CommandAddonManager:
         missing = CommandAddonManager.MissingDependencies(repo, self.item_model.repos)
         if self.handle_disallowed_python(missing.python_required):
             return
+        
+        good_packages = []
+        for dep in missing.python_optional:
+            if dep in self.allowed_packages:
+                good_packages.append(dep)
+            else:
+                FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Optional dependency on {} ignored because it is not in the allow-list\n").format(dep))
+        missing.python_optional = good_packages
 
         if missing.wbs:
             # Unrecoverable failure, needs a new version of FreeCAD installation
