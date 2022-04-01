@@ -97,6 +97,7 @@ protected:
     void onChanged(const App::Property* prop);
     void setVertexCurvatureMode(int mode);
     std::string curvatureInfo(bool detail, int index1, int index2, int index3) const;
+    void touchShapeNode();
 
 private:
     void init(const Mesh::PropertyCurvatureList *prop);

@@ -543,7 +543,10 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
     m_material->diffuseColor.finishEditing();
     m_material->transparency.finishEditing();
     m_materialBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
-    m_materialBinding->touch();
+
+    // In order to apply the transparency changes the shape nodes must be touched
+    m_faces->touch();
+    m_triangleStrips->touch();
 }
 
 void ViewProviderFemPostObject::WriteTransparency() {

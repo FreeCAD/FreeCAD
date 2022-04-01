@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <Inventor/SoPickedPoint.h>
+# include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoPointDetail.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
@@ -357,6 +358,21 @@ void ViewProviderMeshCurvature::setVertexCurvatureMode(int mode)
 
     pcColorMat->diffuseColor.finishEditing();
     pcColorMat->transparency.finishEditing();
+
+    // In order to apply the transparency changes the IndexFaceSet node must be touched
+    touchShapeNode();
+}
+
+void ViewProviderMeshCurvature::touchShapeNode()
+{
+    SoSearchAction searchAction;
+    searchAction.setType(SoIndexedFaceSet::getClassTypeId());
+    searchAction.setInterest(SoSearchAction::FIRST);
+    searchAction.apply(pcLinkRoot);
+    SoPath* selectionPath = searchAction.getPath();
+    if (selectionPath) {
+        selectionPath->getTail()->touch();
+    }
 }
 
 QIcon ViewProviderMeshCurvature::getIcon() const
