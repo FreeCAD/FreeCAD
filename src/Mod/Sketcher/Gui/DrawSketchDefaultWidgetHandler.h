@@ -92,16 +92,16 @@ namespace SketcherGui {
  * using a default widget (toolwidget), and will lead to easier to maintain code.
  */
 
-template< GeometryTools PTool,          // The geometry tool for which the template is created (See GeometryTools above)
+template< typename PHandler,          // The geometry tool for which the template is created (See GeometryTools above)
           typename SelectModeT,         // The state machine defining the states that the handle iterates
           int PEditCurveSize,           // The initial size of the EditCurve
           int PAutoConstraintSize,      // The initial size of the AutoConstraint
           int PNumToolwidgetparameters, // The number of parameter spinboxes in the default widget
           int PNumToolwidgetCheckboxes, // The number of checkboxes in the default widget
           int PNumToolwidgetComboboxes > // The number of comboboxes in the default widget
-class DrawSketchDefaultWidgetHandler: public DrawSketchDefaultHandler<PTool, SelectModeT, PEditCurveSize, PAutoConstraintSize>
+class DrawSketchDefaultWidgetHandler: public DrawSketchDefaultHandler<PHandler, SelectModeT, PEditCurveSize, PAutoConstraintSize>
 {
-    using DSDefaultHandler = DrawSketchDefaultHandler<PTool, SelectModeT, PEditCurveSize, PAutoConstraintSize>;
+    using DSDefaultHandler = DrawSketchDefaultHandler<PHandler, SelectModeT, PEditCurveSize, PAutoConstraintSize>;
 
 private:
     class ToolWidgetManager {

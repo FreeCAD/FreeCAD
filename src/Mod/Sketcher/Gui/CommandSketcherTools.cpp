@@ -2161,7 +2161,10 @@ bool CmdSketcherRectangularArray::isActive(void)
 
 // Translate / rectangular pattern tool =======================================================
 //Todo: Add 2 more paramters to the tool widget so that we can use 8. Adding angles of translation vectors.
-using DrawSketchHandlerTranslateBase = DrawSketchDefaultWidgetHandler< GeometryTools::Translate,
+
+class DrawSketchHandlerTranslate;
+
+using DrawSketchHandlerTranslateBase = DrawSketchDefaultWidgetHandler< DrawSketchHandlerTranslate,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 0,
@@ -2619,8 +2622,9 @@ bool CmdSketcherTranslate::isActive(void)
 
 // Rotate / circular pattern tool =======================================================
 //TODO DrawSketchDefaultWidgetHandler is not a template!
+class DrawSketchHandlerRotate;
 
-using DrawSketchHandlerRotateBase = DrawSketchDefaultWidgetHandler< GeometryTools::Rotate,
+using DrawSketchHandlerRotateBase = DrawSketchDefaultWidgetHandler< DrawSketchHandlerRotate,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 0,
@@ -3254,7 +3258,9 @@ bool CmdSketcherRotate::isActive(void)
 
 // Scale tool =====================================================================
 
-using DrawSketchHandlerScaleBase = DrawSketchDefaultWidgetHandler< GeometryTools::Scale,
+class DrawSketchHandlerScale;
+
+using DrawSketchHandlerScaleBase = DrawSketchDefaultWidgetHandler< DrawSketchHandlerScale,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 0,
@@ -3820,7 +3826,9 @@ bool CmdSketcherScale::isActive(void)
 
 // Offset tool =====================================================================
 
-using DrawSketchHandlerOffsetBase = DrawSketchDefaultWidgetHandler< GeometryTools::Offset,
+class DrawSketchHandlerOffset;
+
+using DrawSketchHandlerOffsetBase = DrawSketchDefaultWidgetHandler< DrawSketchHandlerOffset,
     StateMachines::OneSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 0,

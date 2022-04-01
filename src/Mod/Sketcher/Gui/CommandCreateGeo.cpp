@@ -227,94 +227,101 @@ void ConstraintToAttachment(Sketcher::GeoElementId element, Sketcher::GeoElement
 
 // DrawSketchHandlerLine: An example of using DrawSketchDefaultWidgetHandler and specialisation for both handler and widget
 
-using DrawSketchHandlerLine = DrawSketchDefaultWidgetHandler< GeometryTools::Line,
-                                                      /*SelectModeT*/ StateMachines::TwoSeekEnd,
-                                                      /*PEditCurveSize =*/ 2,
-                                                      /*PAutoConstraintSize =*/ 2,
-                                                      /*PNumToolwidgetparameters =*/ 4,
-                                                      /*PNumToolwidgetCheckboxes =*/ 0,
-                                                      /*PNumToolwidgetComboboxes =*/ 0>;
+class DrawSketchHandlerLine;
 
-// String representing the name of the tool
-template <> std::string DrawSketchHandlerLine::getToolName() const { return "DSH_Line";}
+using DrawSketchHandlerLineBase = DrawSketchDefaultWidgetHandler<   DrawSketchHandlerLine,
+                                                                    /*SelectModeT*/ StateMachines::TwoSeekEnd,
+                                                                    /*PEditCurveSize =*/ 2,
+                                                                    /*PAutoConstraintSize =*/ 2,
+                                                                    /*PNumToolwidgetparameters =*/ 4,
+                                                                    /*PNumToolwidgetCheckboxes =*/ 0,
+                                                                    /*PNumToolwidgetComboboxes =*/ 0>;
 
-// String representing the name of the SVG file for the cursor
-template <> QString DrawSketchHandlerLine::getCrosshairCursorString() const { return QString::fromLatin1("Sketcher_Pointer_Create_Line"); }
+class DrawSketchHandlerLine: public DrawSketchHandlerLineBase
+{
+public:
+    DrawSketchHandlerLine() = default;
+    virtual ~DrawSketchHandlerLine() = default;
 
+private:
+    virtual void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override {
+        switch(state()) {
+            case SelectMode::SeekFirst:
+            {
+                drawPositionAtCursor(onSketchPos);
 
+                EditCurve[0] = onSketchPos;
 
-// Function responsible for drawing the edit curve at each state and making sure that any member data relating to the new position is updated
-template <> void DrawSketchHandlerLine::updateDataAndDrawToPosition(Base::Vector2d onSketchPos) {
-
-    switch(state()) {
-        case SelectMode::SeekFirst:
-        {
-            drawPositionAtCursor(onSketchPos);
-
-            EditCurve[0] = onSketchPos;
-
-            if (seekAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f,0.f))) {
-                renderSuggestConstraintsCursor(sugConstraints[0]);
-                return;
+                if (seekAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f,0.f))) {
+                    renderSuggestConstraintsCursor(sugConstraints[0]);
+                    return;
+                }
             }
-        }
-        break;
-        case SelectMode::SeekSecond:
-        {
-            //Check if user changed first parameters, if so go back to SEEK_first. This way we don't have to disable parameters after they are set.
-            drawDirectionAtCursor(onSketchPos, EditCurve[0]);
-
-            EditCurve[1] = onSketchPos;
-
-            drawEdit(EditCurve);
-
-            if (seekAutoConstraint(sugConstraints[1], onSketchPos, onSketchPos - EditCurve[0])) {
-                renderSuggestConstraintsCursor(sugConstraints[1]);
-                return;
-            }
-        }
-        break;
-        default:
             break;
-    }
-}
+            case SelectMode::SeekSecond:
+            {
+                //Check if user changed first parameters, if so go back to SEEK_first. This way we don't have to disable parameters after they are set.
+                drawDirectionAtCursor(onSketchPos, EditCurve[0]);
 
-// Function responsible for creating geometry
-template <> void DrawSketchHandlerLine::executeCommands() {
-    try {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch line"));
-        Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
-                    EditCurve[0].x,EditCurve[0].y,EditCurve[1].x,EditCurve[1].y,
-                    geometryCreationMode==Construction?"True":"False");
+                EditCurve[1] = onSketchPos;
 
-        Gui::Command::commitCommand();
-    }
-    catch (const Base::Exception& e) {
-        Base::Console().Error("Failed to add line: %s\n", e.what());
-        Gui::Command::abortCommand();
-    }
-}
+                drawEdit(EditCurve);
 
-// Function responsible for creating autoconstraints
-template <> void DrawSketchHandlerLine::createAutoConstraints() {
-    if(avoidRedundants)
-        removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),sugConstraints[0],sugConstraints[1]);
-
-    // add auto constraints for the line segment start
-    if (!sugConstraints[0].empty()) {
-        DrawSketchHandler::createAutoConstraints(sugConstraints[0], getHighestCurveIndex(), Sketcher::PointPos::start);
-        sugConstraints[0].clear();
+                if (seekAutoConstraint(sugConstraints[1], onSketchPos, onSketchPos - EditCurve[0])) {
+                    renderSuggestConstraintsCursor(sugConstraints[1]);
+                    return;
+                }
+            }
+            break;
+            default:
+                break;
+        }
     }
 
-    // add auto constraints for the line segment end
-    if (!sugConstraints[1].empty()) {
-        DrawSketchHandler::createAutoConstraints(sugConstraints[1], getHighestCurveIndex(), Sketcher::PointPos::end);
-        sugConstraints[1].clear();
+    virtual void executeCommands() override {
+        try {
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch line"));
+            Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
+                        EditCurve[0].x,EditCurve[0].y,EditCurve[1].x,EditCurve[1].y,
+                        geometryCreationMode==Construction?"True":"False");
+
+            Gui::Command::commitCommand();
+        }
+        catch (const Base::Exception& e) {
+            Base::Console().Error("Failed to add line: %s\n", e.what());
+            Gui::Command::abortCommand();
+        }
     }
-}
+
+    virtual void createAutoConstraints() override {
+        if(avoidRedundants)
+            removeRedundantHorizontalVertical(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()),sugConstraints[0],sugConstraints[1]);
+
+        // add auto constraints for the line segment start
+        if (!sugConstraints[0].empty()) {
+            DrawSketchHandler::createAutoConstraints(sugConstraints[0], getHighestCurveIndex(), Sketcher::PointPos::start);
+            sugConstraints[0].clear();
+        }
+
+        // add auto constraints for the line segment end
+        if (!sugConstraints[1].empty()) {
+            DrawSketchHandler::createAutoConstraints(sugConstraints[1], getHighestCurveIndex(), Sketcher::PointPos::end);
+            sugConstraints[1].clear();
+        }
+    }
+
+    virtual std::string getToolName() const override {
+        return "DSH_Line";
+    }
+
+    virtual QString getCrosshairCursorString() const override {
+        return QString::fromLatin1("Sketcher_Pointer_Create_Line");
+    }
+
+};
 
 // Function responsible for updating the DrawSketchHandler data members when widget parameters change
-template <> void DrawSketchHandlerLine::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
+template <> void DrawSketchHandlerLineBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
     switch(parameterindex) {
         case WParameter::First:
             handler->EditCurve[0].x = value;
@@ -332,7 +339,7 @@ template <> void DrawSketchHandlerLine::ToolWidgetManager::adaptDrawingToParamet
 }
 
 // Function responsible to add widget mandated constraints (it is executed before creating autoconstraints)
-template <> void DrawSketchHandlerLine::ToolWidgetManager::addConstraints() {
+template <> void DrawSketchHandlerLineBase::ToolWidgetManager::addConstraints() {
     int firstCurve = handler->getHighestCurveIndex();
 
     auto x0 = toolWidget->getParameter(WParameter::First);
@@ -437,13 +444,15 @@ bool CmdSketcherCreateLine::isActive(void)
 
 // DrawSketchHandlerRectangle: An example of deriving from DrawSketchDefaultWidgetHandler with NVI for handler and specialisation for widgetmanager.
 
-using DrawSketchHandlerRectangleBase = DrawSketchDefaultWidgetHandler<  GeometryTools::Rectangle,
-                                                                StateMachines::ThreeSeekEnd,
-                                                                /*PEditCurveSize =*/ 5,
-                                                                /*PAutoConstraintSize =*/ 2,
-                                                                /*PNumToolwidgetparameters =*/4,
-                                                                /*PNumToolwidgetCheckboxes =*/ 1,
-                                                                /*PNumToolwidgetComboboxes =*/ 1>;
+class DrawSketchHandlerRectangle;
+
+using DrawSketchHandlerRectangleBase = DrawSketchDefaultWidgetHandler<  DrawSketchHandlerRectangle,
+                                                                        StateMachines::ThreeSeekEnd,
+                                                                        /*PEditCurveSize =*/ 5,
+                                                                        /*PAutoConstraintSize =*/ 2,
+                                                                        /*PNumToolwidgetparameters =*/4,
+                                                                        /*PNumToolwidgetCheckboxes =*/ 1,
+                                                                        /*PNumToolwidgetComboboxes =*/ 1>;
 
 class DrawSketchHandlerRectangle: public DrawSketchHandlerRectangleBase
 {
@@ -1201,7 +1210,9 @@ bool CmdSketcherCreateRectangle::isActive(void)
 
 /* Create frame =======================================================*/
 
-using DrawSketchHandlerFrameBase = DrawSketchDefaultWidgetHandler<  GeometryTools::Frame,
+class DrawSketchHandlerFrame;
+
+using DrawSketchHandlerFrameBase = DrawSketchDefaultWidgetHandler<  DrawSketchHandlerFrame,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 5,
     /*PAutoConstraintSize =*/ 2,
@@ -1692,8 +1703,9 @@ bool CmdSketcherCreateFrame::isActive(void)
 }
 
 /* Polygon ================================================================================*/
+class DrawSketchHandlerPolygon;
 
-using DrawSketchHandlerPolygonBase = DrawSketchDefaultWidgetHandler<  GeometryTools::Polygon,
+using DrawSketchHandlerPolygonBase = DrawSketchDefaultWidgetHandler<  DrawSketchHandlerPolygon,
     StateMachines::TwoSeekEnd,
     /*PEditCurveSize =*/ 7,
     /*PAutoConstraintSize =*/ 2,
@@ -2809,8 +2821,9 @@ bool CmdSketcherCreatePolyline::isActive(void)
 
 
 /* Circle ================================================================================*/
+class DrawSketchHandlerCircle;
 
-using DrawSketchHandlerCircleBase = DrawSketchDefaultWidgetHandler<  GeometryTools::Circle,
+using DrawSketchHandlerCircleBase = DrawSketchDefaultWidgetHandler<  DrawSketchHandlerCircle,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 3,
@@ -3290,7 +3303,9 @@ bool CmdSketcherCreateCircle::isActive(void)
 }
 
 /* Ellipse ==============================================================================*/
-using DrawSketchHandlerEllipseBase = DrawSketchDefaultWidgetHandler<  GeometryTools::Ellipse,
+class DrawSketchHandlerEllipse;
+
+using DrawSketchHandlerEllipseBase = DrawSketchDefaultWidgetHandler<  DrawSketchHandlerEllipse,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 3,
@@ -3968,8 +3983,9 @@ bool CmdSketcherCompCreateCircle::isActive(void)
 
 
 /* Arc of Circle tool  =================================================================*/
+class DrawSketchHandlerArc;
 
-using DrawSketchHandlerArcBase = DrawSketchDefaultWidgetHandler<  GeometryTools::Arc,
+using DrawSketchHandlerArcBase = DrawSketchDefaultWidgetHandler<  DrawSketchHandlerArc,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 3,
@@ -6389,8 +6405,9 @@ bool CmdSketcherCompCreateBSpline::isActive(void)
 /* Create Point =======================================================*/
 
 // DrawSketchHandlerPoint: An example of deriving from DrawSketchDefaultWidgetHandler with NVI for handler and specialisation for widgetmanager.
+class DrawSketchHandlerPoint;
 
-using DrawSketchHandlerPointBase = DrawSketchDefaultWidgetHandler<  GeometryTools::Point,
+using DrawSketchHandlerPointBase = DrawSketchDefaultWidgetHandler<  DrawSketchHandlerPoint,
     StateMachines::OneSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 1,
@@ -6633,7 +6650,10 @@ namespace SketcherGui {
     };
 }
 
-using DrawSketchHandlerFilletBase = DrawSketchDefaultWidgetHandler<  GeometryTools::Fillet,
+
+class DrawSketchHandlerFillet;
+
+using DrawSketchHandlerFilletBase = DrawSketchDefaultWidgetHandler<  DrawSketchHandlerFillet,
     StateMachines::TwoSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 0,
@@ -7628,7 +7648,9 @@ bool CmdSketcherSplit::isActive(void)
 }
 
 /* Create Insert =====================================================*/
-using DrawSketchHandlerInsertBase = DrawSketchDefaultWidgetHandler<  GeometryTools::Insert,
+class DrawSketchHandlerInsert;
+
+using DrawSketchHandlerInsertBase = DrawSketchDefaultWidgetHandler<  DrawSketchHandlerInsert,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 2,
@@ -8774,7 +8796,9 @@ void CmdSketcherCarbonCopy::updateAction(int mode)
 
 /* Create Slot =========================================================*/
 
-using DrawSketchHandlerSlotBase = DrawSketchDefaultWidgetHandler<  GeometryTools::Slot,
+class DrawSketchHandlerSlot;
+
+using DrawSketchHandlerSlotBase = DrawSketchDefaultWidgetHandler<  DrawSketchHandlerSlot,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 3,
@@ -9218,8 +9242,9 @@ bool CmdSketcherCreateSlot::isActive(void)
 }
 
 /* Create Arc Slot =========================================================*/
+class DrawSketchHandlerArcSlot;
 
-using DrawSketchHandlerArcSlotBase = DrawSketchDefaultWidgetHandler<  GeometryTools::ArcSlot,
+using DrawSketchHandlerArcSlotBase = DrawSketchDefaultWidgetHandler<  DrawSketchHandlerArcSlot,
     StateMachines::FourSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 3,
