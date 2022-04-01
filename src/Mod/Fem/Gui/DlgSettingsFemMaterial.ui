@@ -27,48 +27,58 @@
        <layout class="QVBoxLayout" name="verticalLayout_6">
         <item>
          <widget class="Gui::PrefCheckBox" name="cb_use_built_in_materials">
+          <property name="toolTip">
+           <string>The cards built-in to FreeCAD will be listed as available.</string>
+          </property>
           <property name="text">
            <string>Use built-in materials</string>
           </property>
           <property name="checked">
            <bool>true</bool>
           </property>
-          <property name="prefEntry" stdset="0">
+          <property name="prefEntry">
            <cstring>UseBuiltInMaterials</cstring>
           </property>
-          <property name="prefPath" stdset="0">
+          <property name="prefPath">
            <cstring>Mod/Material/Resources</cstring>
           </property>
          </widget>
         </item>
         <item>
          <widget class="Gui::PrefCheckBox" name="cb_use_mat_from_config_dir">
+          <property name="toolTip">
+           <string>Also cards from FreeCAD's preferences directory will be listed as available.</string>
+          </property>
           <property name="text">
            <string>Use materials from Materials directory in user's FreeCAD preference directory</string>
           </property>
           <property name="checked">
            <bool>true</bool>
           </property>
-          <property name="prefEntry" stdset="0">
+          <property name="prefEntry">
            <cstring>UseMaterialsFromConfigDir</cstring>
           </property>
-          <property name="prefPath" stdset="0">
+          <property name="prefPath">
            <cstring>Mod/Material/Resources</cstring>
           </property>
          </widget>
         </item>
         <item>
          <widget class="Gui::PrefCheckBox" name="cb_use_mat_from_custom_dir">
+          <property name="toolTip">
+           <string>Also material cards also from the specified directory
+will be listed as available.</string>
+          </property>
           <property name="text">
            <string>Use materials from user defined directory</string>
           </property>
           <property name="checked">
            <bool>true</bool>
           </property>
-          <property name="prefEntry" stdset="0">
+          <property name="prefEntry">
            <cstring>UseMaterialsFromCustomDir</cstring>
           </property>
-          <property name="prefPath" stdset="0">
+          <property name="prefPath">
            <cstring>Mod/Material/Resources</cstring>
           </property>
          </widget>
@@ -91,7 +101,7 @@
             </property>
            </widget>
           </item>
-         <item row="1" column="1">
+          <item row="1" column="1">
            <widget class="Gui::PrefFileChooser" name="fc_custom_mat_dir">
             <property name="enabled">
              <bool>true</bool>
@@ -114,18 +124,18 @@
               <height>0</height>
              </size>
             </property>
-            <property name="prefEntry" stdset="0">
+            <property name="prefEntry">
              <cstring>CustomMaterialsDir</cstring>
             </property>
             <property name="mode">
              <enum>Gui::FileChooser::Directory</enum>
             </property>
-            <property name="prefPath" stdset="0">
+            <property name="prefPath">
              <cstring>Mod/Material/Resources</cstring>
             </property>
            </widget>
           </item>
-          </layout>
+         </layout>
         </item>
        </layout>
       </item>
@@ -140,32 +150,39 @@
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
        <widget class="Gui::PrefCheckBox" name="cb_delete_duplicates">
+        <property name="toolTip">
+         <string>Duplicate cards will be deleted from the displayed material card list.</string>
+        </property>
         <property name="text">
          <string>Delete card duplicates</string>
         </property>
         <property name="checked">
          <bool>true</bool>
         </property>
-        <property name="prefEntry" stdset="0">
+        <property name="prefEntry">
          <cstring>DeleteDuplicates</cstring>
         </property>
-        <property name="prefPath" stdset="0">
+        <property name="prefPath">
          <cstring>Mod/Material/Cards</cstring>
         </property>
        </widget>
       </item>
       <item>
        <widget class="Gui::PrefCheckBox" name="cb_sort_by_resources">
+        <property name="toolTip">
+         <string>Material cards appear sorted by their resources (locations).
+If unchecked, they will be sorted by their name.</string>
+        </property>
         <property name="text">
-         <string>Sort by resources (opposite would be sort by cards)</string>
+         <string>Sort by resources</string>
         </property>
         <property name="checked">
          <bool>true</bool>
         </property>
-        <property name="prefEntry" stdset="0">
+        <property name="prefEntry">
          <cstring>SortByResources</cstring>
         </property>
-        <property name="prefPath" stdset="0">
+        <property name="prefPath">
          <cstring>Mod/Material/Cards</cstring>
         </property>
        </widget>
@@ -181,7 +198,7 @@
      <property name="sizeType">
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="sizeHint" stdset="0">
+     <property name="sizeHint">
       <size>
        <width>20</width>
        <height>40</height>
@@ -212,5 +229,22 @@
  <resources>
   <include location="Resources/Fem.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>cb_use_mat_from_custom_dir</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>fc_custom_mat_dir</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>216</x>
+     <y>87</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>316</x>
+     <y>112</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
