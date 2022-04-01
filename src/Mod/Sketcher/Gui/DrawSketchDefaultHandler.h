@@ -172,14 +172,14 @@ private:
  * the base class from DrawSketchDefaultHandler to DrawSketchDefaultWidgetHandler. Then you will have to implement the code that
  * is exclusively necessary for the default widget to work.
  */
-template < typename PHandler,         // The geometry tool for which the template is created (See GeometryTools above)
+template < typename HandlerT,         // The geometry tool for which the template is created (See GeometryTools above)
            typename SelectModeT,        // The state machine defining the states that the handle iterates
            int PInitEditCurveSize,      // The initial size of the EditCurve
            int PInitAutoConstraintSize> // The initial size of the AutoConstraint>
 class DrawSketchDefaultHandler: public DrawSketchHandler, public StateMachine<SelectModeT>
 {
 public:
-    DrawSketchDefaultHandler(): EditCurve(PInitEditCurveSize)
+    DrawSketchDefaultHandler():  EditCurve(PInitEditCurveSize)
                                 ,sugConstraints(PInitAutoConstraintSize)
     {
         applyCursor();

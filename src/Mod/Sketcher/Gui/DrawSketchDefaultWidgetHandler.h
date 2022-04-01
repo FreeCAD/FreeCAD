@@ -92,16 +92,16 @@ namespace SketcherGui {
  * using a default widget (toolwidget), and will lead to easier to maintain code.
  */
 
-template< typename PHandler,          // The geometry tool for which the template is created (See GeometryTools above)
+template< typename HandlerT,          // The geometry tool for which the template is created (See GeometryTools above)
           typename SelectModeT,         // The state machine defining the states that the handle iterates
           int PEditCurveSize,           // The initial size of the EditCurve
           int PAutoConstraintSize,      // The initial size of the AutoConstraint
           int PNumToolwidgetparameters, // The number of parameter spinboxes in the default widget
           int PNumToolwidgetCheckboxes, // The number of checkboxes in the default widget
           int PNumToolwidgetComboboxes > // The number of comboboxes in the default widget
-class DrawSketchDefaultWidgetHandler: public DrawSketchDefaultHandler<PHandler, SelectModeT, PEditCurveSize, PAutoConstraintSize>
+class DrawSketchDefaultWidgetHandler: public DrawSketchDefaultHandler<HandlerT, SelectModeT, PEditCurveSize, PAutoConstraintSize>
 {
-    using DSDefaultHandler = DrawSketchDefaultHandler<PHandler, SelectModeT, PEditCurveSize, PAutoConstraintSize>;
+    using DSDefaultHandler = DrawSketchDefaultHandler<HandlerT, SelectModeT, PEditCurveSize, PAutoConstraintSize>;
 
 private:
     class ToolWidgetManager {
@@ -110,7 +110,8 @@ private:
         int nCombobox = PNumToolwidgetComboboxes;
 
         SketcherToolDefaultWidget* toolWidget;
-        DrawSketchDefaultWidgetHandler * handler;
+        DrawSketchDefaultWidgetHandler * handler; // used to access private implementations
+        HandlerT * dhandler; // real derived type
 
         using Connection = boost::signals2::connection;
 
@@ -126,7 +127,7 @@ private:
         using SelectMode = SelectModeT;
 
     public:
-        ToolWidgetManager(DrawSketchDefaultWidgetHandler * dshandler):handler(dshandler){}
+        ToolWidgetManager(DrawSketchDefaultWidgetHandler * dshandler):handler(dshandler), dhandler(static_cast<HandlerT *>(dshandler)){}
 
         ~ToolWidgetManager(){
             connectionParameterValueChanged.disconnect();
