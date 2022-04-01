@@ -200,9 +200,9 @@ enum class GeometryTools {
  *
  * Question 2: I want to use the default widget, do I need to use this handler or derive from this handler?
  *
- * You should use DSHandlerDefaultWidget instead. However, both clases use the same interface, so if you derive from
+ * You should use DrawSketchDefaultWidgetHandler instead. However, both clases use the same interface, so if you derive from
  * this class when implementing your handler and then decide to use the tool widget, all you have to do is to change
- * the base class from DrawSketchDefaultHandler to DSHandlerDefaultWidget. Then you will have to implement the code that
+ * the base class from DrawSketchDefaultHandler to DrawSketchDefaultWidgetHandler. Then you will have to implement the code that
  * is exclusively necessary for the default widget to work.
  */
 template < auto PTool,         // The geometry tool for which the template is created (See GeometryTools above)

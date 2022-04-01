@@ -225,9 +225,9 @@ void ConstraintToAttachment(Sketcher::GeoElementId element, Sketcher::GeoElement
 
 /* Sketch commands =======================================================*/
 
-// DrawSketchHandlerLine: An example of using DSHandlerDefaultWidget and specialisation for both handler and widget
+// DrawSketchHandlerLine: An example of using DrawSketchDefaultWidgetHandler and specialisation for both handler and widget
 
-using DrawSketchHandlerLine = DSHandlerDefaultWidget< GeometryTools::Line,
+using DrawSketchHandlerLine = DrawSketchDefaultWidgetHandler< GeometryTools::Line,
                                                       /*SelectModeT*/ StateMachines::TwoSeekEnd,
                                                       /*PEditCurveSize =*/ 2,
                                                       /*PAutoConstraintSize =*/ 2,
@@ -435,9 +435,9 @@ bool CmdSketcherCreateLine::isActive(void)
 
 /* Create Rectangle =======================================================*/
 
-// DrawSketchHandlerRectangle: An example of deriving from DSHandlerDefaultWidget with NVI for handler and specialisation for widgetmanager.
+// DrawSketchHandlerRectangle: An example of deriving from DrawSketchDefaultWidgetHandler with NVI for handler and specialisation for widgetmanager.
 
-using DrawSketchHandlerRectangleBase = DSHandlerDefaultWidget<  GeometryTools::Rectangle,
+using DrawSketchHandlerRectangleBase = DrawSketchDefaultWidgetHandler<  GeometryTools::Rectangle,
                                                                 StateMachines::ThreeSeekEnd,
                                                                 /*PEditCurveSize =*/ 5,
                                                                 /*PAutoConstraintSize =*/ 2,
@@ -1201,7 +1201,7 @@ bool CmdSketcherCreateRectangle::isActive(void)
 
 /* Create frame =======================================================*/
 
-using DrawSketchHandlerFrameBase = DSHandlerDefaultWidget<  GeometryTools::Frame,
+using DrawSketchHandlerFrameBase = DrawSketchDefaultWidgetHandler<  GeometryTools::Frame,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 5,
     /*PAutoConstraintSize =*/ 2,
@@ -1693,7 +1693,7 @@ bool CmdSketcherCreateFrame::isActive(void)
 
 /* Polygon ================================================================================*/
 
-using DrawSketchHandlerPolygonBase = DSHandlerDefaultWidget<  GeometryTools::Polygon,
+using DrawSketchHandlerPolygonBase = DrawSketchDefaultWidgetHandler<  GeometryTools::Polygon,
     StateMachines::TwoSeekEnd,
     /*PEditCurveSize =*/ 7,
     /*PAutoConstraintSize =*/ 2,
@@ -2810,7 +2810,7 @@ bool CmdSketcherCreatePolyline::isActive(void)
 
 /* Circle ================================================================================*/
 
-using DrawSketchHandlerCircleBase = DSHandlerDefaultWidget<  GeometryTools::Circle,
+using DrawSketchHandlerCircleBase = DrawSketchDefaultWidgetHandler<  GeometryTools::Circle,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 3,
@@ -3290,7 +3290,7 @@ bool CmdSketcherCreateCircle::isActive(void)
 }
 
 /* Ellipse ==============================================================================*/
-using DrawSketchHandlerEllipseBase = DSHandlerDefaultWidget<  GeometryTools::Ellipse,
+using DrawSketchHandlerEllipseBase = DrawSketchDefaultWidgetHandler<  GeometryTools::Ellipse,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 3,
@@ -3969,7 +3969,7 @@ bool CmdSketcherCompCreateCircle::isActive(void)
 
 /* Arc of Circle tool  =================================================================*/
 
-using DrawSketchHandlerArcBase = DSHandlerDefaultWidget<  GeometryTools::Arc,
+using DrawSketchHandlerArcBase = DrawSketchDefaultWidgetHandler<  GeometryTools::Arc,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 3,
@@ -6388,9 +6388,9 @@ bool CmdSketcherCompCreateBSpline::isActive(void)
 
 /* Create Point =======================================================*/
 
-// DrawSketchHandlerPoint: An example of deriving from DSHandlerDefaultWidget with NVI for handler and specialisation for widgetmanager.
+// DrawSketchHandlerPoint: An example of deriving from DrawSketchDefaultWidgetHandler with NVI for handler and specialisation for widgetmanager.
 
-using DrawSketchHandlerPointBase = DSHandlerDefaultWidget<  GeometryTools::Point,
+using DrawSketchHandlerPointBase = DrawSketchDefaultWidgetHandler<  GeometryTools::Point,
     StateMachines::OneSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 1,
@@ -6633,7 +6633,7 @@ namespace SketcherGui {
     };
 }
 
-using DrawSketchHandlerFilletBase = DSHandlerDefaultWidget<  GeometryTools::Fillet,
+using DrawSketchHandlerFilletBase = DrawSketchDefaultWidgetHandler<  GeometryTools::Fillet,
     StateMachines::TwoSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 0,
@@ -7628,7 +7628,7 @@ bool CmdSketcherSplit::isActive(void)
 }
 
 /* Create Insert =====================================================*/
-using DrawSketchHandlerInsertBase = DSHandlerDefaultWidget<  GeometryTools::Insert,
+using DrawSketchHandlerInsertBase = DrawSketchDefaultWidgetHandler<  GeometryTools::Insert,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 2,
@@ -8774,7 +8774,7 @@ void CmdSketcherCarbonCopy::updateAction(int mode)
 
 /* Create Slot =========================================================*/
 
-using DrawSketchHandlerSlotBase = DSHandlerDefaultWidget<  GeometryTools::Slot,
+using DrawSketchHandlerSlotBase = DrawSketchDefaultWidgetHandler<  GeometryTools::Slot,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 3,
@@ -9219,7 +9219,7 @@ bool CmdSketcherCreateSlot::isActive(void)
 
 /* Create Arc Slot =========================================================*/
 
-using DrawSketchHandlerArcSlotBase = DSHandlerDefaultWidget<  GeometryTools::ArcSlot,
+using DrawSketchHandlerArcSlotBase = DrawSketchDefaultWidgetHandler<  GeometryTools::ArcSlot,
     StateMachines::FourSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 3,

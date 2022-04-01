@@ -105,7 +105,7 @@ template< GeometryTools PTool,          // The geometry tool for which the templ
           int PNumToolwidgetparameters, // The number of parameter spinboxes in the default widget
           int PNumToolwidgetCheckboxes, // The number of checkboxes in the default widget
           int PNumToolwidgetComboboxes > // The number of comboboxes in the default widget
-class DSHandlerDefaultWidget: public DrawSketchDefaultHandler<PTool, SelectModeT, PEditCurveSize, PAutoConstraintSize>
+class DrawSketchDefaultWidgetHandler: public DrawSketchDefaultHandler<PTool, SelectModeT, PEditCurveSize, PAutoConstraintSize>
 {
     using DSDefaultHandler = DrawSketchDefaultHandler<PTool, SelectModeT, PEditCurveSize, PAutoConstraintSize>;
 
@@ -116,7 +116,7 @@ private:
         int nCombobox = PNumToolwidgetComboboxes;
 
         SketcherToolDefaultWidget* toolWidget;
-        DSHandlerDefaultWidget * handler;
+        DrawSketchDefaultWidgetHandler * handler;
 
         using Connection = boost::signals2::connection;
 
@@ -132,7 +132,7 @@ private:
         using SelectMode = SelectModeT;
 
     public:
-        ToolWidgetManager(DSHandlerDefaultWidget * dshandler):handler(dshandler){}
+        ToolWidgetManager(DrawSketchDefaultWidgetHandler * dshandler):handler(dshandler){}
 
         ~ToolWidgetManager(){
             connectionParameterValueChanged.disconnect();
@@ -177,7 +177,7 @@ private:
         }
 
         /** boost slot triggering when a parameter has changed in the widget
-         * It is intended to remote control the DSHandlerDefaultWidget
+         * It is intended to remote control the DrawSketchDefaultWidgetHandler
          */
         void parameterValueChanged(int parameterindex, double value)
         {
@@ -190,7 +190,7 @@ private:
         }
 
         /** boost slot triggering when a checkbox has changed in the widget
-         * It is intended to remote control the DSHandlerDefaultWidget
+         * It is intended to remote control the DrawSketchDefaultWidgetHandler
          */
         void checkboxCheckedChanged(int checkboxindex, bool value) {
             adaptDrawingToCheckboxChange(checkboxindex, value);
@@ -201,7 +201,7 @@ private:
         }
 
         /** boost slot triggering when a combobox has changed in the widget
-         * It is intended to remote control the DSHandlerDefaultWidget
+         * It is intended to remote control the DrawSketchDefaultWidgetHandler
          */
         void comboboxSelectionChanged(int comboboxindex, int value) {
             adaptDrawingToComboboxChange(comboboxindex, value);
@@ -738,8 +738,8 @@ private:
      };
 
 public:
-    DSHandlerDefaultWidget():toolWidgetManager(this) {}
-    virtual ~DSHandlerDefaultWidget() = default;
+    DrawSketchDefaultWidgetHandler():toolWidgetManager(this) {}
+    virtual ~DrawSketchDefaultWidgetHandler() = default;
 
     /** @name functions NOT intended for specialisation */
     //@{

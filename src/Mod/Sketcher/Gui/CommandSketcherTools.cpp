@@ -2161,7 +2161,7 @@ bool CmdSketcherRectangularArray::isActive(void)
 
 // Translate / rectangular pattern tool =======================================================
 //Todo: Add 2 more paramters to the tool widget so that we can use 8. Adding angles of translation vectors.
-using DrawSketchHandlerTranslateBase = DSHandlerDefaultWidget< GeometryTools::Translate,
+using DrawSketchHandlerTranslateBase = DrawSketchDefaultWidgetHandler< GeometryTools::Translate,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 0,
@@ -2618,9 +2618,9 @@ bool CmdSketcherTranslate::isActive(void)
 }
 
 // Rotate / circular pattern tool =======================================================
-//TODO DSHandlerDefaultWidget is not a template!
+//TODO DrawSketchDefaultWidgetHandler is not a template!
 
-using DrawSketchHandlerRotateBase = DSHandlerDefaultWidget< GeometryTools::Rotate,
+using DrawSketchHandlerRotateBase = DrawSketchDefaultWidgetHandler< GeometryTools::Rotate,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 0,
@@ -3254,7 +3254,7 @@ bool CmdSketcherRotate::isActive(void)
 
 // Scale tool =====================================================================
 
-using DrawSketchHandlerScaleBase = DSHandlerDefaultWidget< GeometryTools::Scale,
+using DrawSketchHandlerScaleBase = DrawSketchDefaultWidgetHandler< GeometryTools::Scale,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 0,
@@ -3820,7 +3820,7 @@ bool CmdSketcherScale::isActive(void)
 
 // Offset tool =====================================================================
 
-using DrawSketchHandlerOffsetBase = DSHandlerDefaultWidget< GeometryTools::Offset,
+using DrawSketchHandlerOffsetBase = DrawSketchDefaultWidgetHandler< GeometryTools::Offset,
     StateMachines::OneSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 0,
