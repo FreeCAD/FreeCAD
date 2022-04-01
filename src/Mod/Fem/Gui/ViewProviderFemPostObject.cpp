@@ -518,7 +518,10 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
         setRangeOfColorBar(range[0], range[1]);
     }
 
-    m_material->diffuseColor.startEditing();
+    m_material->diffuseColor.setNum(pd->GetNumberOfPoints());
+    SbColor* diffcol = m_material->diffuseColor.startEditing();
+    m_material->transparency.setNum(pd->GetNumberOfPoints());
+    float* transp = m_material->transparency.startEditing();
 
     for (int i = 0; i < pd->GetNumberOfPoints(); i++) {
 
@@ -531,10 +534,14 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
 
             value = std::sqrt(value);
         }
+
         App::Color c = m_colorBar->getColor(value);
-        m_material->diffuseColor.set1Value(i, c.r, c.g, c.b);
+        diffcol[i].setValue(c.r, c.g, c.b);
+        transp[i] = c.a;
     }
+
     m_material->diffuseColor.finishEditing();
+    m_material->transparency.finishEditing();
     m_materialBinding->value = SoMaterialBinding::PER_VERTEX_INDEXED;
     m_materialBinding->touch();
 }
