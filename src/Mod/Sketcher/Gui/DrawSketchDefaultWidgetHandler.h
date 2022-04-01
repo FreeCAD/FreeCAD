@@ -24,17 +24,11 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerDefaultWidget_H
 #define SKETCHERGUI_DrawSketchHandlerDefaultWidget_H
 
-#include "DrawSketchHandler.h"
-
 #include "DrawSketchDefaultHandler.h"
-
-#include "Utils.h"
 
 #include "SketcherToolDefaultWidget.h"
 
 #include <QApplication>
-
-#include "ViewProviderSketch.h"
 
 namespace bp = boost::placeholders;
 
