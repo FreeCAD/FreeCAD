@@ -69,6 +69,9 @@
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
+#include <TopoDS.hxx>
+
+#include "DrawSketchHandlerDefaultWidget.h"
 
 using namespace std;
 using namespace SketcherGui;
@@ -2158,13 +2161,15 @@ bool CmdSketcherRectangularArray::isActive(void)
 
 // Translate / rectangular pattern tool =======================================================
 //Todo: Add 2 more paramters to the tool widget so that we can use 8. Adding angles of translation vectors.
-using DrawSketchHandlerTranslateBase = DSHandlerDefaultWidget< SketcherTools::Translate,
+using DrawSketchHandlerTranslateBase = DSHandlerDefaultWidget< GeometryTools::Translate,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 0,
     /*PNumToolwidgetparameters =*/6,
     /*PNumToolwidgetCheckboxes =*/ 1,
     /*PNumToolwidgetComboboxes =*/ 1>;
+
+
 
 class DrawSketchHandlerTranslate : public DrawSketchHandlerTranslateBase
 {
@@ -2177,14 +2182,16 @@ public:
     DrawSketchHandlerTranslate(std::vector<int> listOfGeoIds)
         :
         constructionMethod(ConstructionMethod::LinearArray)
-        , numberOfCopies(0)
-        , secondNumberOfCopies(1)
-        , deleteOriginal(false)
-        , cloneConstraints(false)
         , snapMode(SnapMode::Free)
+        , listOfGeoIds(listOfGeoIds)
         , firstTranslationVector(Base::Vector3d(0., 0., 0.))
         , secondTranslationVector(Base::Vector3d(0., 0., 0.))
-        , listOfGeoIds(listOfGeoIds) {}
+        , deleteOriginal(false)
+        , cloneConstraints(false)
+        , numberOfCopies(0)
+        , secondNumberOfCopies(1)
+
+        {}
     virtual ~DrawSketchHandlerTranslate() {}
 
 
@@ -2327,8 +2334,8 @@ public:
 
         //Generate geos
         std::vector<Part::Geometry*> geometriesToAdd;
-        for (size_t k = 0; k < secondNumberOfCopies; k++) {
-            for (size_t i = 0; i <= numberOfCopiesToMake; i++) {
+        for (int k = 0; k < secondNumberOfCopies; k++) {
+            for (int i = 0; i <= numberOfCopiesToMake; i++) {
                 if (!(k == 0 && i == 0)) {
                     for (size_t j = 0; j < listOfGeoIds.size(); j++) {
                         Part::Geometry* geo = Obj->getGeometry(listOfGeoIds[j])->copy();
@@ -2397,8 +2404,8 @@ public:
                     || (*it)->Type == Sketcher::Tangent
                     || (*it)->Type == Sketcher::Perpendicular)
                     && firstIndex >= 0 && secondIndex >= 0 && thirdIndex >= 0) {
-                    for (size_t k = 0; k < secondNumberOfCopies; k++) {
-                        for (size_t i = 0; i <= numberOfCopiesToMake; i++) {
+                    for (int k = 0; k < secondNumberOfCopies; k++) {
+                        for (int i = 0; i <= numberOfCopiesToMake; i++) {
                             if (!(k == 0 && i == 0)) {
                                 Constraint* constNew = (*it)->copy();
                                 constNew->First = firstCurveCreated + firstIndex + listOfGeoIds.size() * (i - 1) + listOfGeoIds.size() * (numberOfCopiesToMake + 1) * k;
@@ -2418,8 +2425,8 @@ public:
                     || (*it)->Type == Sketcher::Angle
                     || (*it)->Type == Sketcher::PointOnObject)
                     && firstIndex >= 0 && secondIndex >= 0 && thirdIndex == GeoEnum::GeoUndef) {
-                    for (size_t k = 0; k < secondNumberOfCopies; k++) {
-                        for (size_t i = 0; i <= numberOfCopiesToMake; i++) {
+                    for (int k = 0; k < secondNumberOfCopies; k++) {
+                        for (int i = 0; i <= numberOfCopiesToMake; i++) {
                             if (!(k == 0 && i == 0)) {
                                 Constraint* constNew = (*it)->copy();
                                 constNew->First = firstCurveCreated + firstIndex + listOfGeoIds.size() * (i - 1) + listOfGeoIds.size() * (numberOfCopiesToMake + 1) * k;
@@ -2432,8 +2439,8 @@ public:
                 else if (((*it)->Type == Sketcher::Radius
                     || (*it)->Type == Sketcher::Diameter)
                     && firstIndex >= 0) {
-                    for (size_t k = 0; k < secondNumberOfCopies; k++) {
-                        for (size_t i = 0; i <= numberOfCopiesToMake; i++) {
+                    for (int k = 0; k < secondNumberOfCopies; k++) {
+                        for (int i = 0; i <= numberOfCopiesToMake; i++) {
                             if (!(k == 0 && i == 0)) {
                                 if (deleteOriginal || !cloneConstraints) {
                                     Constraint* constNew = (*it)->copy();
@@ -2455,8 +2462,8 @@ public:
                     || (*it)->Type == Sketcher::DistanceX
                     || (*it)->Type == Sketcher::DistanceY)
                     && firstIndex >= 0 && secondIndex >= 0) { //only line length because we can't apply equality between points.
-                    for (size_t k = 0; k < secondNumberOfCopies; k++) {
-                        for (size_t i = 0; i <= numberOfCopiesToMake; i++) {
+                    for (int k = 0; k < secondNumberOfCopies; k++) {
+                        for (int i = 0; i <= numberOfCopiesToMake; i++) {
                             if (!(k == 0 && i == 0)) {
                                 if (deleteOriginal || !cloneConstraints || (*it)->First != (*it)->Second) {
                                     Constraint* constNew = (*it)->copy();
@@ -2538,232 +2545,6 @@ public:
     }
 };
 
-template <> void DrawSketchHandlerTranslateBase::ToolWidgetManager::configureToolWidget() {
-    auto dHandler = static_cast<DrawSketchHandlerTranslate*>(handler);
-    toolWidget->setParameterLabel(WParameter::First, QApplication::translate("TaskSketcherTool_p1_translate", "x of reference"));
-    toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("TaskSketcherTool_p2_translate", "y of reference"));
-
-    if (dHandler->constructionMethod == DrawSketchHandlerTranslate::ConstructionMethod::LinearArray) {
-        toolWidget->setParameterLabel(WParameter::Third, QApplication::translate("TaskSketcherTool_p3_translate", "Number of copies"));
-        toolWidget->setParameterLabel(WParameter::Fourth, QApplication::translate("TaskSketcherTool_p4_translate", "Translation length"));
-    }
-    else {
-        toolWidget->setParameterLabel(WParameter::Third, QApplication::translate("TaskSketcherTool_p3_translate", "First number of copies"));
-        toolWidget->setParameterLabel(WParameter::Fourth, QApplication::translate("TaskSketcherTool_p4_translate", "First translation length"));
-        toolWidget->setParameterLabel(WParameter::Fifth, QApplication::translate("TaskSketcherTool_p5_translate", "Second number of copies"));
-        toolWidget->setParameterLabel(WParameter::Sixth, QApplication::translate("TaskSketcherTool_p6_translate", "Second translation length"));
-    }
-
-    toolWidget->setCheckboxLabel(WCheckbox::FirstBox, QApplication::translate("TaskSketcherTool_c1_translate", "Clone constraints"));
-
-    toolWidget->setNoticeVisible(true);
-    toolWidget->setNoticeText(QApplication::translate("Translate_1", "Select the reference point of the translation."));
-}
-
-template <> void DrawSketchHandlerTranslateBase::ToolWidgetManager::setComboBoxesElements() {
-    auto dHandler = static_cast<DrawSketchHandlerTranslate*>(handler);
-    /*This if is because when the construction mode change by adaptDrawingToComboboxChange, we call reset to change nParameter.
-    But doing so also triggers this function which re-initialize the combo box. Meaning that it reset the combobox index to 0.
-    The following if enables to setComboBoxesElements only if combobox index is 0 (ie if tool starts for the first time (or if tool returns to mode 0 but that's not a problem then)) */
-    if (dHandler->constructionMethod == DrawSketchHandlerTranslate::ConstructionMethod::LinearArray) {
-        std::string str = "Linear array";
-        std::string str2 = "Rectangular array";
-        QStringList names;
-        names << QString::fromStdString(str) << QString::fromStdString(str2);
-        toolWidget->setComboboxElements(0, names);
-    }
-}
-
-template <> void DrawSketchHandlerTranslateBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
-    auto dHandler = static_cast<DrawSketchHandlerTranslate*>(handler);
-    switch (parameterindex) {
-    case WParameter::First:
-        dHandler->referencePoint.x = value;
-        break;
-    case WParameter::Second:
-        dHandler->referencePoint.y = value;
-        break;
-    case WParameter::Third:
-        dHandler->numberOfCopies = floor(abs(value));
-        break;
-    case WParameter::Fifth:
-        dHandler->secondNumberOfCopies = floor(abs(value));
-        break;
-    }
-}
-
-template <> void DrawSketchHandlerTranslateBase::ToolWidgetManager::adaptDrawingToCheckboxChange(int checkboxindex, bool value) {
-    auto dHandler = static_cast<DrawSketchHandlerTranslate*>(handler);
-    switch (checkboxindex) {
-    case WCheckbox::FirstBox:
-        dHandler->deleteOriginal = value;
-        break;
-    case WCheckbox::SecondBox:
-        dHandler->cloneConstraints = value;
-        break;
-    }
-    handler->updateDataAndDrawToPosition(prevCursorPosition);
-    onHandlerModeChanged(); //re-focus/select spinbox
-}
-
-template <> void DrawSketchHandlerTranslateBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
-    auto dHandler = static_cast<DrawSketchHandlerTranslate*>(handler);
-
-    if (value == 0) {
-        dHandler->constructionMethod = DrawSketchHandlerTranslate::ConstructionMethod::LinearArray;
-        nParameter = 4;
-    }
-    else {
-        dHandler->constructionMethod = DrawSketchHandlerTranslate::ConstructionMethod::RectangularArray;
-        nParameter = 6;
-    }
-    reset(); //reset the widget to take into account the change of nparameter
-    dHandler->reset(); //reset of handler to restart.
-}
-
-template <> void DrawSketchHandlerTranslateBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
-    auto dHandler = static_cast<DrawSketchHandlerTranslate*>(handler);
-
-    switch (handler->state()) {
-    case SelectMode::SeekFirst:
-    {
-        if (toolWidget->isParameterSet(WParameter::First))
-            onSketchPos.x = toolWidget->getParameter(WParameter::First);
-
-        if (toolWidget->isParameterSet(WParameter::Second))
-            onSketchPos.y = toolWidget->getParameter(WParameter::Second);
-    }
-    break;
-    case SelectMode::SeekSecond:
-    {
-        if (toolWidget->isParameterSet(WParameter::Fourth)) {
-            double length = (onSketchPos - dHandler->referencePoint).Length();
-            onSketchPos = dHandler->referencePoint + (onSketchPos - dHandler->referencePoint) / length * toolWidget->getParameter(WParameter::Fourth);
-        }
-    }
-    break;
-    case SelectMode::SeekThird:
-    {
-        if (toolWidget->isParameterSet(WParameter::Sixth)) {
-            double length = (onSketchPos - dHandler->referencePoint).Length();
-            onSketchPos = dHandler->referencePoint + (onSketchPos - dHandler->referencePoint) / length * toolWidget->getParameter(WParameter::Sixth);
-        }
-    }
-    break;
-    default:
-        break;
-    }
-    prevCursorPosition = onSketchPos;
-}
-
-template <> void DrawSketchHandlerTranslateBase::ToolWidgetManager::updateVisualValues(Base::Vector2d onSketchPos) {
-    auto dHandler = static_cast<DrawSketchHandlerTranslate*>(handler);
-
-    switch (handler->state()) {
-    case SelectMode::SeekFirst:
-    {
-        if (!toolWidget->isParameterSet(WParameter::First))
-            toolWidget->updateVisualValue(WParameter::First, onSketchPos.x);
-
-        if (!toolWidget->isParameterSet(WParameter::Second))
-            toolWidget->updateVisualValue(WParameter::Second, onSketchPos.y);
-    }
-    break;
-    case SelectMode::SeekSecond:
-    {
-        if (!toolWidget->isParameterSet(WParameter::Fourth))
-            toolWidget->updateVisualValue(WParameter::Fourth, (onSketchPos - dHandler->referencePoint).Length());
-    }
-    case SelectMode::SeekThird:
-    {
-        if (!toolWidget->isParameterSet(WParameter::Sixth))
-            toolWidget->updateVisualValue(WParameter::Sixth, (onSketchPos - dHandler->referencePoint).Length());
-    }
-    break;
-    default:
-        break;
-    }
-}
-
-template <> void DrawSketchHandlerTranslateBase::ToolWidgetManager::doChangeDrawSketchHandlerMode() {
-    auto dHandler = static_cast<DrawSketchHandlerTranslate*>(handler);
-    switch (handler->state()) {
-    case SelectMode::SeekFirst:
-    {
-        if (toolWidget->isParameterSet(WParameter::First) &&
-            toolWidget->isParameterSet(WParameter::Second)) {
-
-            handler->setState(SelectMode::SeekSecond);
-
-            handler->updateDataAndDrawToPosition(prevCursorPosition);
-        }
-    }
-    break;
-    case SelectMode::SeekSecond:
-    {
-        if (toolWidget->isParameterSet(WParameter::Third) || 
-            toolWidget->isParameterSet(WParameter::Fourth)) {
-
-            handler->updateDataAndDrawToPosition(prevCursorPosition);
-
-            if (toolWidget->isParameterSet(WParameter::Third) &&
-                toolWidget->isParameterSet(WParameter::Fourth)) {
-
-                if (dHandler->constructionMethod == DrawSketchHandlerTranslate::ConstructionMethod::LinearArray) {
-                    handler->setState(SelectMode::End);
-                    handler->finish();
-                }
-                else {
-                    handler->setState(SelectMode::SeekThird);
-                }
-            }
-        }
-    }
-    break;
-    case SelectMode::SeekThird:
-    {
-        if (toolWidget->isParameterSet(WParameter::Fifth) ||
-            toolWidget->isParameterSet(WParameter::Sixth)) {
-
-            handler->updateDataAndDrawToPosition(prevCursorPosition);
-
-            if (toolWidget->isParameterSet(WParameter::Fifth) &&
-                toolWidget->isParameterSet(WParameter::Sixth)) {
-
-                handler->setState(SelectMode::End);
-                handler->finish();
-            }
-        }
-    }
-    break;
-    default:
-        break;
-    }
-}
-
-template <> void DrawSketchHandlerTranslateBase::ToolWidgetManager::addConstraints() {
-    //none
-}
-
-template <> void DrawSketchHandlerTranslateBase::ToolWidgetManager::onHandlerModeChanged() {
-    switch (handler->state()) {
-    case SelectMode::SeekFirst:
-        toolWidget->setParameterFocus(WParameter::First);
-        toolWidget->setNoticeText(QApplication::translate("Translate_1", "Select the reference point of the translation."));
-        break;
-    case SelectMode::SeekSecond:
-        toolWidget->setParameterFocus(WParameter::Third);
-        toolWidget->setNoticeText(QApplication::translate("Translate_2", "Select first translation point defining the first translation vector which starts from the reference point."));
-        break;
-    case SelectMode::SeekThird:
-        toolWidget->setParameterFocus(WParameter::Fifth);
-        toolWidget->setNoticeText(QApplication::translate("Translate_3", "Select second translation point defining the second translation vector which starts from the reference point."));
-        break;
-    default:
-        break;
-    }
-}
-
 
 DEF_STD_CMD_A(CmdSketcherTranslate)
 
@@ -2839,7 +2620,7 @@ bool CmdSketcherTranslate::isActive(void)
 // Rotate / circular pattern tool =======================================================
 //TODO DSHandlerDefaultWidget is not a template!
 
-using DrawSketchHandlerRotateBase = DSHandlerDefaultWidget< SketcherTools::Rotate,
+using DrawSketchHandlerRotateBase = DSHandlerDefaultWidget< GeometryTools::Rotate,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 0,
@@ -2851,11 +2632,11 @@ class DrawSketchHandlerRotate : public DrawSketchHandlerRotateBase
 {
 public:
     DrawSketchHandlerRotate(std::vector<int> listOfGeoIds)
-        : numberOfCopies(0)
+        : snapMode(SnapMode::Free)
+        , listOfGeoIds(listOfGeoIds)
         , deleteOriginal(false)
         , cloneConstraints(false)
-        , snapMode(SnapMode::Free)
-        , listOfGeoIds(listOfGeoIds) {}
+        , numberOfCopies(0) {}
     virtual ~DrawSketchHandlerRotate() {}
 
     enum class SnapMode {
@@ -2994,7 +2775,7 @@ public:
 
         //Generate geos
         std::vector<Part::Geometry*> geometriesToAdd;
-        for (size_t i = 1; i <= numberOfCopiesToMake; i++) {
+        for (int i = 1; i <= numberOfCopiesToMake; i++) {
             for (size_t j = 0; j < listOfGeoIds.size(); j++) {
                 Part::Geometry* geo = Obj->getGeometry(listOfGeoIds[j])->copy();
                 GeometryFacade::setConstruction(geo, GeometryFacade::getConstruction(Obj->getGeometry(listOfGeoIds[j])));
@@ -3090,7 +2871,7 @@ public:
                     || (*it)->Type == Sketcher::Tangent
                     || (*it)->Type == Sketcher::Perpendicular)
                     && firstIndex >= 0 && secondIndex >= 0 && thirdIndex >= 0) {
-                    for (size_t i = 0; i < numberOfCopiesToMake; i++) {
+                    for (int i = 0; i < numberOfCopiesToMake; i++) {
                         Constraint* constNew = (*it)->copy();
                         constNew->First = firstCurveCreated + firstIndex + listOfGeoIds.size() * i;
                         constNew->Second = firstCurveCreated + secondIndex + listOfGeoIds.size() * i;
@@ -3106,7 +2887,7 @@ public:
                     || (*it)->Type == Sketcher::Equal
                     || (*it)->Type == Sketcher::PointOnObject)
                     && firstIndex >= 0 && secondIndex >= 0 && thirdIndex == GeoEnum::GeoUndef) {
-                    for (size_t i = 0; i < numberOfCopiesToMake; i++) {
+                    for (int i = 0; i < numberOfCopiesToMake; i++) {
                         Constraint* constNew = (*it)->copy();
                         constNew->First = firstCurveCreated + firstIndex + listOfGeoIds.size() * i;
                         constNew->Second = firstCurveCreated + secondIndex + listOfGeoIds.size() * i;
@@ -3116,7 +2897,7 @@ public:
                 else if (((*it)->Type == Sketcher::Radius
                     || (*it)->Type == Sketcher::Diameter)
                     && firstIndex >= 0) {
-                    for (size_t i = 0; i < numberOfCopiesToMake; i++) {
+                    for (int i = 0; i < numberOfCopiesToMake; i++) {
                         if (deleteOriginal || !cloneConstraints) {
                             Constraint* constNew = (*it)->copy();
                             constNew->First = firstCurveCreated + firstIndex + listOfGeoIds.size() * i;
@@ -3135,7 +2916,7 @@ public:
                     || (*it)->Type == Sketcher::DistanceX
                     || (*it)->Type == Sketcher::DistanceY)
                     && firstIndex >= 0 && secondIndex >= 0) { //only line length because we can't apply equality between points.
-                    for (size_t i = 0; i < numberOfCopiesToMake; i++) {
+                    for (int i = 0; i < numberOfCopiesToMake; i++) {
                         if ((deleteOriginal || !cloneConstraints) && (*it)->Type == Sketcher::Distance) {
                             Constraint* constNew = (*it)->copy();
                             constNew->First = firstCurveCreated + firstIndex + listOfGeoIds.size() * i;
@@ -3232,7 +3013,6 @@ public:
 };
 
 template <> void DrawSketchHandlerRotateBase::ToolWidgetManager::configureToolWidget() {
-    auto dHandler = static_cast<DrawSketchHandlerRotate*>(handler);
     toolWidget->setParameterLabel(WParameter::First, QApplication::translate("TaskSketcherTool_p1_rotate", "x of center"));
     toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("TaskSketcherTool_p2_rotate", "y of center"));
     toolWidget->setParameterLabel(WParameter::Third, QApplication::translate("TaskSketcherTool_p3_rotate", "Total angle"));
@@ -3262,7 +3042,27 @@ template <> void DrawSketchHandlerRotateBase::ToolWidgetManager::adaptDrawingToP
     }
 }
 
+template <> void DrawSketchHandlerRotateBase::ToolWidgetManager::onHandlerModeChanged() {
+    switch (handler->state()) {
+    case SelectMode::SeekFirst:
+        toolWidget->setParameterFocus(WParameter::First);
+        toolWidget->setNoticeText(QApplication::translate("Rotate_1", "Select the center of the rotation."));
+        break;
+    case SelectMode::SeekSecond:
+        toolWidget->setParameterFocus(WParameter::Third);
+        toolWidget->setNoticeText(QApplication::translate("Rotate_2", "Select a first point that will define the rotation angle with the next point."));
+        break;
+    case SelectMode::SeekThird:
+        toolWidget->setParameterFocus(WParameter::Fifth);
+        toolWidget->setNoticeText(QApplication::translate("Rotate_3", "Select the second point that will determine the rotation angle."));
+        break;
+    default:
+        break;
+    }
+}
+
 template <> void DrawSketchHandlerRotateBase::ToolWidgetManager::adaptDrawingToCheckboxChange(int checkboxindex, bool value) {
+    Q_UNUSED(checkboxindex)
     auto dHandler = static_cast<DrawSketchHandlerRotate*>(handler);
     dHandler->cloneConstraints = value;
 
@@ -3334,7 +3134,6 @@ template <> void DrawSketchHandlerRotateBase::ToolWidgetManager::updateVisualVal
 }
 
 template <> void DrawSketchHandlerRotateBase::ToolWidgetManager::doChangeDrawSketchHandlerMode() {
-    auto dHandler = static_cast<DrawSketchHandlerRotate*>(handler);
     switch (handler->state()) {
     case SelectMode::SeekFirst:
     {
@@ -3380,25 +3179,6 @@ template <> void DrawSketchHandlerRotateBase::ToolWidgetManager::doChangeDrawSke
 
 template <> void DrawSketchHandlerRotateBase::ToolWidgetManager::addConstraints() {
     //none
-}
-
-template <> void DrawSketchHandlerRotateBase::ToolWidgetManager::onHandlerModeChanged() {
-    switch (handler->state()) {
-    case SelectMode::SeekFirst:
-        toolWidget->setParameterFocus(WParameter::First);
-        toolWidget->setNoticeText(QApplication::translate("Rotate_1", "Select the center of the rotation."));
-        break;
-    case SelectMode::SeekSecond:
-        toolWidget->setParameterFocus(WParameter::Third);
-        toolWidget->setNoticeText(QApplication::translate("Rotate_2", "Select a first point that will define the rotation angle with the next point."));
-        break;
-    case SelectMode::SeekThird:
-        toolWidget->setParameterFocus(WParameter::Fifth);
-        toolWidget->setNoticeText(QApplication::translate("Rotate_3", "Select the second point that will determine the rotation angle."));
-        break;
-    default:
-        break;
-    }
 }
 
 DEF_STD_CMD_A(CmdSketcherRotate)
@@ -3474,7 +3254,7 @@ bool CmdSketcherRotate::isActive(void)
 
 // Scale tool =====================================================================
 
-using DrawSketchHandlerScaleBase = DSHandlerDefaultWidget< SketcherTools::Scale,
+using DrawSketchHandlerScaleBase = DSHandlerDefaultWidget< GeometryTools::Scale,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 0,
@@ -3486,14 +3266,15 @@ class DrawSketchHandlerScale : public DrawSketchHandlerScaleBase
 {
 public:
     DrawSketchHandlerScale(std::vector<int> listOfGeoIds)
-        : deleteOriginal(false)
-        , snapMode(SnapMode::Free)
-        , listOfGeoIds(listOfGeoIds) {}
+        : snapMode(SnapMode::Free)
+        , listOfGeoIds(listOfGeoIds)
+        , deleteOriginal(false) {}
     virtual ~DrawSketchHandlerScale() {}
 
     enum class SnapMode {
         Free,
-        Snap
+        Snap,
+        Snap5Degree
     };
 
 private:
@@ -3594,6 +3375,7 @@ public:
     bool deleteOriginal;
     double refLength, length, scaleFactor;
     int firstCurveCreated;
+    Base::Vector2d centerPoint;
 
     void generateScaledGeos(bool onReleaseButton) {
         Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
@@ -3807,7 +3589,6 @@ public:
 };
 
 template <> void DrawSketchHandlerScaleBase::ToolWidgetManager::configureToolWidget() {
-    auto dHandler = static_cast<DrawSketchHandlerScale*>(handler);
     toolWidget->setParameterLabel(WParameter::First, QApplication::translate("TaskSketcherTool_p1_scale", "x of reference"));
     toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("TaskSketcherTool_p2_scale", "y of reference"));
     toolWidget->setParameterLabel(WParameter::Third, QApplication::translate("TaskSketcherTool_p3_scale", "Scale factor"));
@@ -3833,7 +3614,27 @@ template <> void DrawSketchHandlerScaleBase::ToolWidgetManager::adaptDrawingToPa
     }
 }
 
+template <> void DrawSketchHandlerScaleBase::ToolWidgetManager::onHandlerModeChanged() {
+    switch (handler->state()) {
+    case SelectMode::SeekFirst:
+        toolWidget->setParameterFocus(WParameter::First);
+        toolWidget->setNoticeText(QApplication::translate("Scale_1", "Select the center of the rotation."));
+        break;
+    case SelectMode::SeekSecond:
+        toolWidget->setParameterFocus(WParameter::Third);
+        toolWidget->setNoticeText(QApplication::translate("Scale_2", "Select a point where distance from this point to reference point represent the reference length."));
+        break;
+    case SelectMode::SeekThird:
+        toolWidget->setParameterFocus(WParameter::Third);
+        toolWidget->setNoticeText(QApplication::translate("Scale_3", "Select a point where distance from this point to reference point represent the length defining scale factor (scale factor = length / reference length)."));
+        break;
+    default:
+        break;
+    }
+}
+
 template <> void DrawSketchHandlerScaleBase::ToolWidgetManager::adaptDrawingToCheckboxChange(int checkboxindex, bool value) {
+    Q_UNUSED(checkboxindex)
     auto dHandler = static_cast<DrawSketchHandlerScale*>(handler);
     dHandler->deleteOriginal = value;
 
@@ -3867,7 +3668,7 @@ template <> void DrawSketchHandlerScaleBase::ToolWidgetManager::doOverrideSketch
         if (toolWidget->isParameterSet(WParameter::Third)) {
             dHandler->scaleFactor = toolWidget->getParameter(WParameter::Third);
             dHandler->startPoint = dHandler->referencePoint + Base::Vector2d(1.0, 0.0);
-            dHandler->endPoint = dHandler->referencePoint + Base::Vector2d(scaleFactor, 0.0);
+            dHandler->endPoint = dHandler->referencePoint + Base::Vector2d(dHandler->scaleFactor, 0.0);
 
             onSketchPos = dHandler->endPoint;
         }
@@ -3903,7 +3704,6 @@ template <> void DrawSketchHandlerScaleBase::ToolWidgetManager::updateVisualValu
 }
 
 template <> void DrawSketchHandlerScaleBase::ToolWidgetManager::doChangeDrawSketchHandlerMode() {
-    auto dHandler = static_cast<DrawSketchHandlerScale*>(handler);
     switch (handler->state()) {
     case SelectMode::SeekFirst:
     {
@@ -3946,24 +3746,6 @@ template <> void DrawSketchHandlerScaleBase::ToolWidgetManager::addConstraints()
     //none
 }
 
-template <> void DrawSketchHandlerScaleBase::ToolWidgetManager::onHandlerModeChanged() {
-    switch (handler->state()) {
-    case SelectMode::SeekFirst:
-        toolWidget->setParameterFocus(WParameter::First);
-        toolWidget->setNoticeText(QApplication::translate("Scale_1", "Select the center of the rotation."));
-        break;
-    case SelectMode::SeekSecond:
-        toolWidget->setParameterFocus(WParameter::Third);
-        toolWidget->setNoticeText(QApplication::translate("Scale_2", "Select a point where distance from this point to reference point represent the reference length."));
-        break;
-    case SelectMode::SeekThird:
-        toolWidget->setParameterFocus(WParameter::Third);
-        toolWidget->setNoticeText(QApplication::translate("Scale_3", "Select a point where distance from this point to reference point represent the length defining scale factor (scale factor = length / reference length)."));
-        break;
-    default:
-        break;
-    }
-}
 
 DEF_STD_CMD_A(CmdSketcherScale)
 
@@ -4038,7 +3820,7 @@ bool CmdSketcherScale::isActive(void)
 
 // Offset tool =====================================================================
 
-using DrawSketchHandlerOffsetBase = DSHandlerDefaultWidget< SketcherTools::Offset,
+using DrawSketchHandlerOffsetBase = DSHandlerDefaultWidget< GeometryTools::Offset,
     StateMachines::OneSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 0,
@@ -4050,12 +3832,13 @@ class DrawSketchHandlerOffset : public DrawSketchHandlerOffsetBase
 {
 public:
     DrawSketchHandlerOffset(std::vector<int> listOfGeoIds)
-        : deleteOriginal(false)
-        , offsetConstraint(false)
+        : snapMode(SnapMode::Free)
+        , listOfGeoIds(listOfGeoIds)
+        , deleteOriginal(false)
         , offsetLengthSet(false)
-        , offsetLength(1)
-        , snapMode(SnapMode::Free)
-        , listOfGeoIds(listOfGeoIds) {}
+        , offsetConstraint(false)
+        , offsetLength(1) {}
+
     virtual ~DrawSketchHandlerOffset() {}
 
     enum class SnapMode {
@@ -4254,7 +4037,7 @@ public:
 
                 Base::Console().Warning("hello ellipse\n");
                 gp_Elips ellipse = curve.Ellipse();
-                gp_Pnt cnt = ellipse.Location();
+                //gp_Pnt cnt = ellipse.Location();
                 gp_Pnt beg = curve.Value(curve.FirstParameter());
                 gp_Pnt end = curve.Value(curve.LastParameter());
 
@@ -4459,7 +4242,7 @@ public:
             bool reRunForFirst = false;
             bool inTangentGroup = false;
 
-            for (int j = 0; j < static_cast<int> (vCCO[i].size()); j++) {
+            for (size_t j = 0; j < vCCO[i].size(); j++) {
 
                 //Tangent constraint is constraining the offset already. So if there are tangents we should not create the construction lines. Hence the code below.
                 bool createLine = true;
@@ -4635,13 +4418,13 @@ public:
 
                     }
                     else if (geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() && geo2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
-                        const Part::GeomArcOfEllipse* arcOfEllipse = static_cast<const Part::GeomArcOfEllipse*>(geo2);
+                        //const Part::GeomArcOfEllipse* arcOfEllipse = static_cast<const Part::GeomArcOfEllipse*>(geo2);
                     }
                     else if (geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() && geo2->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
-                        const Part::GeomArcOfHyperbola* arcOfHyperbola = static_cast<const Part::GeomArcOfHyperbola*>(geo2);
+                        //const Part::GeomArcOfHyperbola* arcOfHyperbola = static_cast<const Part::GeomArcOfHyperbola*>(geo2);
                     }
                     else if (geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() && geo2->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
-                        const Part::GeomArcOfParabola* arcOfParabola = static_cast<const Part::GeomArcOfParabola*>(geo2);
+                        //const Part::GeomArcOfParabola* arcOfParabola = static_cast<const Part::GeomArcOfParabola*>(geo2);
                     }
                     else if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() && geo2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
                     }
@@ -4698,7 +4481,7 @@ public:
                         //Base::Console().Warning("edge : %d ", vcc[j][k]);
                         CoincidencePointPos pointPosOfCoincidence = checkForCoincidence(listOfGeo[i], vcc[j][k]);
                         if (pointPosOfCoincidence.FirstGeoPos != Sketcher::PointPos::none) {
-                            if (inserted && insertedIn != j) {
+                            if (inserted && insertedIn != int(j)) {
                                 //if it's already inserted in another continuous curve then we need to merge both curves together.
                                 //There're 2 cases, it could have been inserted at the end or at the beginning.
                                 if (vcc[insertedIn][0] == listOfGeo[i]) {
@@ -4726,7 +4509,7 @@ public:
                                     //Base::Console().Warning("inserted at the end in : %d ", j);
                                 }
                                 else {
-                                    //in this case k should actually be 0. 
+                                    //in this case k should actually be 0.
                                     vcc[j].insert(vcc[j].begin() + k, listOfGeo[i]);
                                     //Base::Console().Warning("inserted after %d in : %d ", k, j);
                                 }
@@ -4901,7 +4684,6 @@ public:
 };
 
 template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::configureToolWidget() {
-    auto dHandler = static_cast<DrawSketchHandlerOffset*>(handler);
     toolWidget->setParameterLabel(WParameter::First, QApplication::translate("TaskSketcherTool_p1_offset", "Offset length"));
 
     toolWidget->setCheckboxLabel(WCheckbox::FirstBox, QApplication::translate("TaskSketcherTool_c1_offset", "Delete original geometries"));
@@ -4950,23 +4732,25 @@ template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::adaptDrawingToC
 }
 
 template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
+    Q_UNUSED(comboboxindex)
     auto dHandler = static_cast<DrawSketchHandlerOffset*>(handler);
 
     if (value == 0) {
-        dHandler->joinMode = DrawSketchHandlerOffset::ConstructionMethod::Arc;
+        dHandler->joinMode = DrawSketchHandlerOffset::JoinMode::Arc;
     }
     else {
-        dHandler->joinMode = DrawSketchHandlerOffset::ConstructionMethod::Intersection;
+        dHandler->joinMode = DrawSketchHandlerOffset::JoinMode::Intersection;
     }
 }
 
 template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
     //Too hard to override onsketchpos such that it is at offsetLength from the curve. So we use offsetLengthSet to prevent rewrite of offsetLength.
-    
+
     prevCursorPosition = onSketchPos;
 }
 
 template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::updateVisualValues(Base::Vector2d onSketchPos) {
+    Q_UNUSED(onSketchPos)
     auto dHandler = static_cast<DrawSketchHandlerOffset*>(handler);
 
     switch (handler->state()) {
@@ -4982,7 +4766,6 @@ template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::updateVisualVal
 }
 
 template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::doChangeDrawSketchHandlerMode() {
-    auto dHandler = static_cast<DrawSketchHandlerOffset*>(handler);
     switch (handler->state()) {
     case SelectMode::SeekFirst:
     {
@@ -5041,7 +4824,7 @@ void CmdSketcherOffset::activated(int iMsg)
     // get the needed lists and objects
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
     if (!SubNames.empty()) {
-        Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+        //Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
         for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end(); ++it) {
             // only handle non-external edges

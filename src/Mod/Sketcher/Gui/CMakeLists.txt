@@ -126,6 +126,8 @@ SET(SketcherGui_SRCS
     ViewProviderSketch.h
     DrawSketchHandler.cpp
     DrawSketchHandler.h
+    DrawSketchDefaultHandler.h
+    DrawSketchDefaultWidgetHandler.h
     Workbench.cpp
     Workbench.h
     EditDatumDialog.cpp
