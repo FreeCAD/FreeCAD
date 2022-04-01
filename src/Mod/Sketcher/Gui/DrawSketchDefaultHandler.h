@@ -28,8 +28,6 @@
 
 #include "Utils.h"
 
-#include "ViewProviderSketch.h"
-
 namespace bp = boost::placeholders;
 
 namespace SketcherGui {
@@ -133,37 +131,6 @@ private:
     SelectModeT Mode;
     static const constexpr int maxMode = static_cast<int>(SelectModeT::End);
 
-};
-
-/************************ List of Handlers/Commands ************************************/
-
-enum class GeometryTools {
-    Line,
-    Rectangle,
-    Frame,
-    Polyline, // also known as LineSet
-    Arc,
-    Circle,
-    Ellipse,
-    ArcOfEllipse,
-    ArcOfHyperbola,
-    ArcOfParabola,
-    BSpline,
-    Point,
-    Fillet,
-    Trim,
-    Extend,
-    Split,
-    Insert,
-    External,
-    CarbonCopy,
-    Slot,
-    ArcSlot,
-    Polygon,
-    Rotate,
-    Scale,
-    Offset,
-    Translate
 };
 
 /** @brief A state machine DrawSketchHandler for geometry.

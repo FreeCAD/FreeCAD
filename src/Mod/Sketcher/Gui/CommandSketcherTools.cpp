@@ -109,15 +109,6 @@ void ActivateAcceleratorHandler(Gui::Document *doc, DrawSketchHandler *handler)
     }
 }
 
-/************************ List of Handlers/Commands ************************************/
-
-enum class SketcherTools {
-    Rotate,
-    Scale,
-    Offset,
-    Translate
-};
-
 // ================================================================================
 
 // Close Shape Command
