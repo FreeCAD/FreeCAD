@@ -46,6 +46,7 @@
 # include <QWhatsThis>
 #endif
 
+# include <boost/range/adaptors.hpp>
 # include <iomanip>
 # include <ios>
 
@@ -325,32 +326,37 @@ SoSeparator* ViewProviderMeshCurvature::getFrontRoot() const
 
 void ViewProviderMeshCurvature::setVertexCurvatureMode(int mode)
 {
-    Mesh::PropertyCurvatureList* pCurvInfo=nullptr;
-    std::map<std::string,App::Property*> Map;
+    using PropertyMap = std::map<std::string,App::Property*>;
+    Mesh::PropertyCurvatureList* pCurvInfo = nullptr;
+    PropertyMap Map;
     pcObject->getPropertyMap(Map);
-    for( std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it ) {
-        Base::Type t = it->second->getTypeId();
-        if ( t==Mesh::PropertyCurvatureList::getClassTypeId() ) {
-            pCurvInfo = (Mesh::PropertyCurvatureList*)it->second;
-            break;
-        }
-    }
 
-    if ( !pCurvInfo )
+    auto it = std::find_if(Map.begin(), Map.end(), [](const PropertyMap::value_type& v) {
+        Base::Type type = v.second->getTypeId();
+        return (type == Mesh::PropertyCurvatureList::getClassTypeId());
+    });
+
+    if (it == Map.end())
         return; // cannot display this feature type due to missing curvature property
 
+    pCurvInfo = static_cast<Mesh::PropertyCurvatureList*>(it->second);
+
     // curvature values
-    std::vector<float> fValues = pCurvInfo->getCurvature( mode ); 
-    int j=0;
-    for ( std::vector<float>::const_iterator jt = fValues.begin(); jt != fValues.end(); ++jt, j++ ) {
-        App::Color col = pcColorBar->getColor( *jt );
-        pcColorMat->diffuseColor.set1Value(j, SbColor(col.r, col.g, col.b));
-        if ( pcColorBar->isVisible( *jt ) ) {
-            pcColorMat->transparency.set1Value(j, 0.0f);
-        } else {
-            pcColorMat->transparency.set1Value(j, 0.8f);
-        }
+    std::vector<float> fValues = pCurvInfo->getCurvature(mode);
+    pcColorMat->diffuseColor.setNum(fValues.size());
+    pcColorMat->transparency.setNum(fValues.size());
+
+    SbColor* diffcol = pcColorMat->diffuseColor.startEditing();
+    float* transp = pcColorMat->transparency.startEditing();
+
+    for (auto const& value : fValues | boost::adaptors::indexed(0)) {
+        App::Color c = pcColorBar->getColor(value.value());
+        diffcol[value.index()].setValue(c.r, c.g, c.b);
+        transp[value.index()] = c.a;
     }
+
+    pcColorMat->diffuseColor.finishEditing();
+    pcColorMat->transparency.finishEditing();
 }
 
 QIcon ViewProviderMeshCurvature::getIcon() const
