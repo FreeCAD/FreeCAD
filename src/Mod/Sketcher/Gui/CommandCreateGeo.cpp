@@ -887,23 +887,23 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::setComboBoxe
 }
 
 template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
-    if(dhandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal){
+    if(dHandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal){
         switch(parameterindex) {
             case WParameter::First:
-                dhandler->firstCorner.x = value;
+                dHandler->firstCorner.x = value;
                 break;
             case WParameter::Second:
-                dhandler->firstCorner.y = value;
+                dHandler->firstCorner.y = value;
                 break;
         }
     }
     else { //if (constructionMethod == ConstructionMethod::CenterAndCorner)
         switch(parameterindex) {
             case WParameter::First:
-                dhandler->center.x = value;
+                dHandler->center.x = value;
                 break;
             case WParameter::Second:
-                dhandler->center.y = value;
+                dHandler->center.y = value;
                 break;
         }
     }
@@ -951,30 +951,30 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doOverrideSk
     break;
     case SelectMode::SeekSecond:
     {
-        if (dhandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal) {
+        if (dHandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal) {
             if (toolWidget->isParameterSet(WParameter::Third)) {
                 double length = toolWidget->getParameter(WParameter::Third);
-                if (onSketchPos.x - dhandler->firstCorner.x < 0) {
+                if (onSketchPos.x - dHandler->firstCorner.x < 0) {
                     length = -length;
                 }
-                onSketchPos.x = dhandler->firstCorner.x + length;
+                onSketchPos.x = dHandler->firstCorner.x + length;
             }
             if (toolWidget->isParameterSet(WParameter::Fourth)) {
                 double width = toolWidget->getParameter(WParameter::Fourth);
-                if (onSketchPos.y - dhandler->firstCorner.y < 0) {
+                if (onSketchPos.y - dHandler->firstCorner.y < 0) {
                     width = -width;
                 }
-                onSketchPos.y = dhandler->firstCorner.y + width;
+                onSketchPos.y = dHandler->firstCorner.y + width;
             }
         }
         else {
             if (toolWidget->isParameterSet(WParameter::Third)) {
                 double length = toolWidget->getParameter(WParameter::Third);
-                onSketchPos.x = dhandler->center.x + length/2;
+                onSketchPos.x = dHandler->center.x + length/2;
             }
             if (toolWidget->isParameterSet(WParameter::Fourth)) {
                 double width = toolWidget->getParameter(WParameter::Fourth);
-                onSketchPos.y = dhandler->center.y + width / 2;
+                onSketchPos.y = dHandler->center.y + width / 2;
             }
         }
     }
@@ -983,11 +983,11 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doOverrideSk
     {
         if (toolWidget->isParameterSet(WParameter::Fifth)) {
             double radius = toolWidget->getParameter(WParameter::Fifth);
-            if(dhandler->firstCorner.x - dhandler->thirdCorner.x > 0.)
-                onSketchPos.x = dhandler->firstCorner.x - radius;
+            if(dHandler->firstCorner.x - dHandler->thirdCorner.x > 0.)
+                onSketchPos.x = dHandler->firstCorner.x - radius;
             else
-                onSketchPos.x = dhandler->firstCorner.x + radius;
-            onSketchPos.y = dhandler->firstCorner.y;
+                onSketchPos.x = dHandler->firstCorner.x + radius;
+            onSketchPos.y = dHandler->firstCorner.y;
         }
     }
     break;
@@ -1009,26 +1009,26 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::updateVisual
     break;
     case SelectMode::SeekSecond:
     {
-        if (dhandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal) {
+        if (dHandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal) {
             if (!toolWidget->isParameterSet(WParameter::Third))
-                toolWidget->updateVisualValue(WParameter::Third, fabs(onSketchPos.x - dhandler->firstCorner.x));
+                toolWidget->updateVisualValue(WParameter::Third, fabs(onSketchPos.x - dHandler->firstCorner.x));
 
             if (!toolWidget->isParameterSet(WParameter::Fourth))
-                toolWidget->updateVisualValue(WParameter::Fourth, fabs(onSketchPos.y - dhandler->firstCorner.y));
+                toolWidget->updateVisualValue(WParameter::Fourth, fabs(onSketchPos.y - dHandler->firstCorner.y));
         }
         else {
             if (!toolWidget->isParameterSet(WParameter::Third))
-                toolWidget->updateVisualValue(WParameter::Third, fabs(onSketchPos.x - dhandler->center.x)*2);
+                toolWidget->updateVisualValue(WParameter::Third, fabs(onSketchPos.x - dHandler->center.x)*2);
 
             if (!toolWidget->isParameterSet(WParameter::Fourth))
-                toolWidget->updateVisualValue(WParameter::Fourth, fabs(onSketchPos.y - dhandler->center.y)*2);
+                toolWidget->updateVisualValue(WParameter::Fourth, fabs(onSketchPos.y - dHandler->center.y)*2);
         }
     }
     break;
     case SelectMode::SeekThird:
     {
         if (!toolWidget->isParameterSet(WParameter::Fifth))
-            toolWidget->updateVisualValue(WParameter::Fifth, dhandler->radius);
+            toolWidget->updateVisualValue(WParameter::Fifth, dHandler->radius);
     }
     break;
     default:
@@ -1059,8 +1059,8 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doChangeDraw
 
             if (toolWidget->isParameterSet(WParameter::Third) &&
                 toolWidget->isParameterSet(WParameter::Fourth) &&
-                dhandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::CenterAndCorner ) {
-                if (dhandler->roundCorners) {
+                dHandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::CenterAndCorner ) {
+                if (dHandler->roundCorners) {
                     handler->setState(SelectMode::SeekThird);
                 }
                 else {
