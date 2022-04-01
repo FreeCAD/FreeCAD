@@ -982,7 +982,15 @@ class CommandAddonManager:
                 try:
                     __import__(py_dep)
                 except ImportError:
-                    self.python_optional.append(py_dep)
+                    allowed = False
+                    for dep in python_required:
+                        if dep in self.allowed_packages:
+                            allowed = True
+                            break
+                    if allowed:
+                        self.python_optional.append(py_dep)
+                    else:
+                        FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Specified optional package {} is not in the allowed packages list").format(py_dep))
 
             self.wbs.sort()
             self.external_addons.sort()
