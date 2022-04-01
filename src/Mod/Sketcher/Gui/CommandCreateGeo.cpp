@@ -874,7 +874,6 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::configureToo
 }
 
 template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::setComboBoxesElements() {
-    auto dHandler = static_cast<DrawSketchHandlerRectangle*>(handler);
     /*This if is because when the construction mode change by adaptDrawingToComboboxChange, we call reset to change nParameter.
     But doing so also triggers this function which re-initialize the combo box. Meaning that it reset the combobox index to 0.
     The following if enables to setComboBoxesElements only if combobox index is 0 (ie if tool starts for the first time (or if tool returns to mode 0 but that's not a problem then)) */
@@ -913,7 +912,6 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptDrawing
 
 template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptDrawingToCheckboxChange(int checkboxindex, bool value) {
     Q_UNUSED(checkboxindex);
-    auto dHandler = static_cast<DrawSketchHandlerRectangle*>(handler);
     dHandler->roundCorners = value;
     if (value)
         dHandler->setCrosshairCursor("Sketcher_Pointer_Oblong");
@@ -927,7 +925,6 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptDrawing
 
 template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
     Q_UNUSED(comboboxindex);
-    auto dHandler = static_cast<DrawSketchHandlerRectangle*>(handler);
 
     if (value == 0) {
         dHandler->constructionMethod = DrawSketchHandlerRectangle::ConstructionMethod::Diagonal;
@@ -1099,7 +1096,6 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doChangeDraw
 }
 
 template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::addConstraints() {
-    auto dHandler = static_cast<DrawSketchHandlerRectangle*>(handler);
     int firstCurve = dHandler->firstCurve;
 
     auto x0 = toolWidget->getParameter(WParameter::First);
@@ -1468,7 +1464,6 @@ template <> void DrawSketchHandlerFrameBase::ToolWidgetManager::configureToolWid
 }
 
 template <> void DrawSketchHandlerFrameBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
-    auto dHandler = static_cast<DrawSketchHandlerFrame*>(handler);
     switch (parameterindex) {
     case WParameter::First:
         dHandler->firstPoint.x = value;
@@ -1489,7 +1484,6 @@ template <> void DrawSketchHandlerFrameBase::ToolWidgetManager::adaptDrawingToPa
 }
 
 template <> void DrawSketchHandlerFrameBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
-    auto dHandler = static_cast<DrawSketchHandlerFrame*>(handler);
 
     switch (handler->state()) {
     case SelectMode::SeekFirst:
@@ -1540,7 +1534,6 @@ template <> void DrawSketchHandlerFrameBase::ToolWidgetManager::doOverrideSketch
 }
 
 template <> void DrawSketchHandlerFrameBase::ToolWidgetManager::updateVisualValues(Base::Vector2d onSketchPos) {
-    auto dHandler = static_cast<DrawSketchHandlerFrame*>(handler);
     switch (handler->state()) {
     case SelectMode::SeekFirst:
     {
@@ -1612,7 +1605,6 @@ template <> void DrawSketchHandlerFrameBase::ToolWidgetManager::doChangeDrawSket
 }
 
 template <> void DrawSketchHandlerFrameBase::ToolWidgetManager::addConstraints() {
-    auto dHandler = static_cast<DrawSketchHandlerFrame*>(handler);
 
     auto x0 = toolWidget->getParameter(WParameter::First);
     auto y0 = toolWidget->getParameter(WParameter::Second);
@@ -1829,7 +1821,6 @@ public:
 };
 
 template <> void DrawSketchHandlerPolygonBase::ToolWidgetManager::configureToolWidget() {
-    auto dHandler = static_cast<DrawSketchHandlerPolygon*>(handler);
     toolWidget->setParameterLabel(WParameter::First, QApplication::translate("TaskSketcherTool_p1_polygon", "x of center"));
     toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("TaskSketcherTool_p2_polygon", "y of center"));
     toolWidget->setParameterLabel(WParameter::Third, QApplication::translate("TaskSketcherTool_p3_polygon", "Radius"));
@@ -1840,7 +1831,6 @@ template <> void DrawSketchHandlerPolygonBase::ToolWidgetManager::configureToolW
 }
 
 template <> void DrawSketchHandlerPolygonBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
-    auto dHandler = static_cast<DrawSketchHandlerPolygon*>(handler);
     switch (parameterindex) {
         case WParameter::First:
             dHandler->centerPoint.x = value;
@@ -1861,7 +1851,6 @@ template <> void DrawSketchHandlerPolygonBase::ToolWidgetManager::adaptDrawingTo
 }
 
 template <> void DrawSketchHandlerPolygonBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
-    auto dHandler = static_cast<DrawSketchHandlerPolygon*>(handler);
 
     switch (handler->state()) {
     case SelectMode::SeekFirst:
@@ -1909,7 +1898,6 @@ template <> void DrawSketchHandlerPolygonBase::ToolWidgetManager::updateVisualVa
     break;
     case SelectMode::SeekSecond:
     {
-        auto dHandler = static_cast<DrawSketchHandlerPolygon*>(handler);
 
         if (!toolWidget->isParameterSet(WParameter::Third))
             toolWidget->updateVisualValue(WParameter::Third, (onSketchPos - dHandler->centerPoint).Length());
@@ -3016,7 +3004,6 @@ public:
 };
 
 template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::configureToolWidget() {
-    auto dHandler = static_cast<DrawSketchHandlerCircle*>(handler);
     if (dHandler->constructionMethod == DrawSketchHandlerCircle::ConstructionMethod::Center) {
         toolWidget->setParameterLabel(WParameter::First, QApplication::translate("TaskSketcherTool_p1_circle", "x of center"));
         toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("TaskSketcherTool_p2_circle", "y of center"));
@@ -3033,7 +3020,6 @@ template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::configureToolWi
 }
 
 template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::setComboBoxesElements() {
-    auto dHandler = static_cast<DrawSketchHandlerCircle*>(handler);
     /*This if is because when the construction mode change by adaptDrawingToComboboxChange, we call reset to change nParameter.
     But doing so also triggers this function which re-initialize the combo box. Meaning that it reset the combobox index to 0.
     The following if enables to setComboBoxesElements only if combobox index is 0 (ie if tool starts for the first time (or if tool returns to mode 0 but that's not a problem then)) */
@@ -3047,7 +3033,6 @@ template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::setComboBoxesEl
 }
 
 template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
-    auto dHandler = static_cast<DrawSketchHandlerCircle*>(handler);
     if (dHandler->constructionMethod == DrawSketchHandlerCircle::ConstructionMethod::Center) {
         switch (parameterindex) {
         case WParameter::First:
@@ -3078,7 +3063,6 @@ template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::adaptDrawingToP
 
 template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
     Q_UNUSED(comboboxindex);
-    auto dHandler = static_cast<DrawSketchHandlerCircle*>(handler);
 
     if (value == 0) {
         dHandler->constructionMethod = DrawSketchHandlerCircle::ConstructionMethod::Center;
@@ -3096,7 +3080,6 @@ template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::adaptDrawingToC
 
 template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
     prevCursorPosition = onSketchPos;
-    auto dHandler = static_cast<DrawSketchHandlerCircle*>(handler);
 
     switch (handler->state()) {
     case SelectMode::SeekFirst:
@@ -3153,7 +3136,6 @@ template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::updateVisualVal
     break;
     case SelectMode::SeekSecond:
     {
-        auto dHandler = static_cast<DrawSketchHandlerCircle*>(handler);
         if (dHandler->constructionMethod == DrawSketchHandlerCircle::ConstructionMethod::Center) {
             if (!toolWidget->isParameterSet(WParameter::Third))
                 toolWidget->updateVisualValue(WParameter::Third,dHandler->radius);
@@ -3182,7 +3164,6 @@ template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::updateVisualVal
 }
 
 template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::doChangeDrawSketchHandlerMode() {
-    auto dHandler = static_cast<DrawSketchHandlerCircle*>(handler);
     switch (handler->state()) {
     case SelectMode::SeekFirst:
     {
@@ -3241,7 +3222,6 @@ template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::doChangeDrawSke
 }
 
 template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::addConstraints() {
-    auto dHandler = static_cast<DrawSketchHandlerCircle*>(handler);
     if (dHandler->constructionMethod == DrawSketchHandlerCircle::ConstructionMethod::Center) {
         int firstCurve = handler->getHighestCurveIndex();
 
@@ -3534,7 +3514,6 @@ public:
 };
 
 template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::configureToolWidget() {
-    auto dHandler = static_cast<DrawSketchHandlerEllipse*>(handler);
     if (dHandler->constructionMethod == DrawSketchHandlerEllipse::ConstructionMethod::Center) {
         toolWidget->setParameterLabel(WParameter::First, QApplication::translate("TaskSketcherTool_p1_ellipse", "x of center"));
         toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("TaskSketcherTool_p2_ellipse", "y of center"));
@@ -3553,7 +3532,6 @@ template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::configureToolW
 }
 
 template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::setComboBoxesElements() {
-    auto dHandler = static_cast<DrawSketchHandlerEllipse*>(handler);
     /*This if is because when the construction mode change by adaptDrawingToComboboxChange, we call reset to change nParameter.
     But doing so also triggers this function which re-initialize the combo box. Meaning that it reset the combobox index to 0.
     The following if enables to setComboBoxesElements only if combobox index is 0 (ie if tool starts for the first time (or if tool returns to mode 0 but that's not a problem then)) */
@@ -3567,7 +3545,6 @@ template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::setComboBoxesE
 }
 
 template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
-    auto dHandler = static_cast<DrawSketchHandlerEllipse*>(handler);
     if (dHandler->constructionMethod == DrawSketchHandlerEllipse::ConstructionMethod::Center) {
         switch (parameterindex) {
         case WParameter::First:
@@ -3604,7 +3581,6 @@ template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::adaptDrawingTo
 
 template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
     Q_UNUSED(comboboxindex);
-    auto dHandler = static_cast<DrawSketchHandlerEllipse*>(handler);
 
     if (value == 0) {
         dHandler->constructionMethod = DrawSketchHandlerEllipse::ConstructionMethod::Center;
@@ -3622,7 +3598,6 @@ template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::adaptDrawingTo
 
 template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
     prevCursorPosition = onSketchPos;
-    auto dHandler = static_cast<DrawSketchHandlerEllipse*>(handler);
 
     switch (handler->state()) {
     case SelectMode::SeekFirst:
@@ -3695,7 +3670,6 @@ template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::updateVisualVa
     break;
     case SelectMode::SeekSecond:
     {
-        auto dHandler = static_cast<DrawSketchHandlerEllipse*>(handler);
         if (dHandler->constructionMethod == DrawSketchHandlerEllipse::ConstructionMethod::Center) {
             if (!toolWidget->isParameterSet(WParameter::Third))
                 toolWidget->updateVisualValue(WParameter::Third, dHandler->firstRadius);
@@ -3714,7 +3688,6 @@ template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::updateVisualVa
     break;
     case SelectMode::SeekThird:
     {
-        auto dHandler = static_cast<DrawSketchHandlerEllipse*>(handler);
         if (dHandler->constructionMethod == DrawSketchHandlerEllipse::ConstructionMethod::Center) {
             if (!toolWidget->isParameterSet(WParameter::Fifth))
                 toolWidget->updateVisualValue(WParameter::Fifth, dHandler->secondRadius);
@@ -3734,7 +3707,6 @@ template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::updateVisualVa
 }
 
 template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::doChangeDrawSketchHandlerMode() {
-    auto dHandler = static_cast<DrawSketchHandlerEllipse*>(handler);
     switch (handler->state()) {
     case SelectMode::SeekFirst:
     {
@@ -3797,7 +3769,6 @@ template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::doChangeDrawSk
 }
 
 template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::addConstraints() {
-    auto dHandler = static_cast<DrawSketchHandlerEllipse*>(handler);
     if (dHandler->constructionMethod == DrawSketchHandlerEllipse::ConstructionMethod::Center) {
         int firstCurve = dHandler->ellipseGeoId;
 
@@ -4278,7 +4249,6 @@ public:
 };
 
 template <> void DrawSketchHandlerArcBase::ToolWidgetManager::configureToolWidget() {
-    auto dHandler = static_cast<DrawSketchHandlerArc*>(handler);
     if (dHandler->constructionMethod == DrawSketchHandlerArc::ConstructionMethod::Center) {
         toolWidget->setParameterLabel(WParameter::First, QApplication::translate("TaskSketcherTool_p1_arc", "x of center"));
         toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("TaskSketcherTool_p2_arc", "y of center"));
@@ -4302,7 +4272,6 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::configureToolWidge
 }
 
 template <> void DrawSketchHandlerArcBase::ToolWidgetManager::setComboBoxesElements() {
-    auto dHandler = static_cast<DrawSketchHandlerArc*>(handler);
     /*This IF is because when the construction mode change by adaptDrawingToComboboxChange, we call reset to change nParameter.
     But doing so also triggers this function which re-initialize the combo box. Meaning that it reset the combobox index to 0.
     The following if enables to setComboBoxesElements only if combobox index is 0 (ie if tool starts for the first time (or if tool returns to mode 0 but that's not a problem then)) */
@@ -4316,7 +4285,6 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::setComboBoxesEleme
 }
 
 template <> void DrawSketchHandlerArcBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
-    auto dHandler = static_cast<DrawSketchHandlerArc*>(handler);
     if (dHandler->constructionMethod == DrawSketchHandlerArc::ConstructionMethod::Center) {
         switch (parameterindex) {
         case WParameter::First:
@@ -4353,7 +4321,6 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::adaptDrawingToPara
 
 template <> void DrawSketchHandlerArcBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
     Q_UNUSED(comboboxindex);
-    auto dHandler = static_cast<DrawSketchHandlerArc*>(handler);
 
     if (value == 0) {
         dHandler->constructionMethod = DrawSketchHandlerArc::ConstructionMethod::Center;
@@ -4371,7 +4338,6 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::adaptDrawingToComb
 }
 
 template <> void DrawSketchHandlerArcBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
-    auto dHandler = static_cast<DrawSketchHandlerArc*>(handler);
 
     switch (handler->state()) {
     case SelectMode::SeekFirst:
@@ -4446,7 +4412,6 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::updateVisualValues
     break;
     case SelectMode::SeekSecond:
     {
-        auto dHandler = static_cast<DrawSketchHandlerArc*>(handler);
         if (dHandler->constructionMethod == DrawSketchHandlerArc::ConstructionMethod::Center) {
             if (!toolWidget->isParameterSet(WParameter::Third))
                 toolWidget->updateVisualValue(WParameter::Third, dHandler->radius);
@@ -4465,7 +4430,6 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::updateVisualValues
     break;
     case SelectMode::SeekThird:
     {
-        auto dHandler = static_cast<DrawSketchHandlerArc*>(handler);
         if (dHandler->constructionMethod == DrawSketchHandlerArc::ConstructionMethod::Center) {
             if (!toolWidget->isParameterSet(WParameter::Fifth))
                 toolWidget->updateVisualValue(WParameter::Fifth, dHandler->arcAngle * 180 / M_PI, Base::Unit::Angle);
@@ -4485,7 +4449,6 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::updateVisualValues
 }
 
 template <> void DrawSketchHandlerArcBase::ToolWidgetManager::doChangeDrawSketchHandlerMode() {
-    auto dHandler = static_cast<DrawSketchHandlerArc*>(handler);
     switch (handler->state()) {
     case SelectMode::SeekFirst:
     {
@@ -4551,7 +4514,6 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::doChangeDrawSketch
 }
 
 template <> void DrawSketchHandlerArcBase::ToolWidgetManager::addConstraints() {
-    auto dHandler = static_cast<DrawSketchHandlerArc*>(handler);
     int firstCurve = handler->getHighestCurveIndex();
     using namespace Sketcher;
 
@@ -6489,7 +6451,6 @@ template <> void DrawSketchHandlerPointBase::ToolWidgetManager::configureToolWid
 }
 
 template <> void DrawSketchHandlerPointBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
-    auto dHandler = static_cast<DrawSketchHandlerPoint*>(handler);
     switch (parameterindex) {
     case WParameter::First:
         dHandler->editPoint.x = value;
@@ -6901,7 +6862,6 @@ public:
 };
 
 template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::configureToolWidget() {
-    auto dHandler = static_cast<DrawSketchHandlerFillet*>(handler);
     toolWidget->setParameterLabel(WParameter::First, QApplication::translate("TaskSketcherTool_p1_fillet", "Radius"));
     if (dHandler->constructionMethod == DrawSketchHandlerFillet::ConstructionMethod::Chamfer) {
         toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("TaskSketcherTool_p2_fillet", "Number of corners"));
@@ -6913,7 +6873,6 @@ template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::configureToolWi
 }
 
 template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::setComboBoxesElements() {
-    auto dHandler = static_cast<DrawSketchHandlerFillet*>(handler);
     /*This if is because when the construction mode change by adaptDrawingToComboboxChange, we call reset to change nParameter.
     But doing so also triggers this function which re-initialize the combo box. Meaning that it reset the combobox index to 0.
     The following if enables to setComboBoxesElements only if combobox index is 0 (ie if tool starts for the first time (or if tool returns to mode 0 but that's not a problem then)) */
@@ -6927,7 +6886,6 @@ template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::setComboBoxesEl
 }
 
 template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
-    auto dHandler = static_cast<DrawSketchHandlerFillet*>(handler);
     if (dHandler->constructionMethod == DrawSketchHandlerFillet::ConstructionMethod::Fillet) {
         switch (parameterindex) {
         case WParameter::First:
@@ -6949,7 +6907,6 @@ template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::adaptDrawingToP
 
 template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
     Q_UNUSED(comboboxindex);
-    auto dHandler = static_cast<DrawSketchHandlerFillet*>(handler);
 
     if (value == 0) {
         dHandler->constructionMethod = DrawSketchHandlerFillet::ConstructionMethod::Fillet;
@@ -6967,7 +6924,6 @@ template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::adaptDrawingToC
 }
 
 template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::adaptDrawingToCheckboxChange(int checkboxindex, bool value) {
-    auto dHandler = static_cast<DrawSketchHandlerFillet*>(handler);
 
     switch (checkboxindex) {
     case WCheckbox::FirstBox:
@@ -6996,7 +6952,6 @@ template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::doChangeDrawSke
 }
 
 template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::addConstraints() {
-    auto dHandler = static_cast<DrawSketchHandlerFillet*>(handler);
 
     auto radiusSet = toolWidget->isParameterSet(WParameter::First);
 
@@ -8008,7 +7963,6 @@ public:
 };
 
 template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::configureToolWidget() {
-    auto dHandler = static_cast<DrawSketchHandlerInsert*>(handler);
     toolWidget->setParameterEnabled(WParameter::First, false);
     toolWidget->setParameterEnabled(WParameter::Second, false);
     toolWidget->setParameterEnabled(WParameter::Third, false);
@@ -8021,7 +7975,6 @@ template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::configureToolWi
 }
 
 template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::setComboBoxesElements() {
-    auto dHandler = static_cast<DrawSketchHandlerInsert*>(handler);
     /*This if is because when the construction mode change by adaptDrawingToComboboxChange, we call reset to change nParameter.
     But doing so also triggers this function which re-initialize the combo box. Meaning that it reset the combobox index to 0.
     The following if enables to setComboBoxesElements only if combobox index is 0 (ie if tool starts for the first time (or if tool returns to mode 0 but that's not a problem then)) */
@@ -8035,7 +7988,6 @@ template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::setComboBoxesEl
 }
 
 template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
-    auto dHandler = static_cast<DrawSketchHandlerInsert*>(handler);
     switch (parameterindex) {
     case WParameter::First:
         dHandler->startLength = value;
@@ -8048,7 +8000,6 @@ template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::adaptDrawingToP
 
 template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
     Q_UNUSED(comboboxindex)
-    auto dHandler = static_cast<DrawSketchHandlerInsert*>(handler);
 
     if (value == 0) {
         dHandler->constructionMethod = DrawSketchHandlerInsert::ConstructionMethod::Box;
@@ -8060,7 +8011,6 @@ template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::adaptDrawingToC
 }
 
 template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
-    auto dHandler = static_cast<DrawSketchHandlerInsert*>(handler);
 
     switch (handler->state()) {
     case SelectMode::SeekSecond:
@@ -8134,14 +8084,12 @@ template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::updateVisualVal
     switch (handler->state()) {
     case SelectMode::SeekSecond:
     {
-        auto dHandler = static_cast<DrawSketchHandlerInsert*>(handler);
         if (!toolWidget->isParameterSet(WParameter::First))
             toolWidget->updateVisualValue(WParameter::First, dHandler->startLength);
     }
     break;
     case SelectMode::SeekThird:
     {
-        auto dHandler = static_cast<DrawSketchHandlerInsert*>(handler);
         if (!toolWidget->isParameterSet(WParameter::Second))
             toolWidget->updateVisualValue(WParameter::Second, dHandler->boxLength);
 
@@ -8204,7 +8152,6 @@ template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::doChangeDrawSke
 }
 
 template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::addConstraints() {
-    auto dHandler = static_cast<DrawSketchHandlerInsert*>(handler);
 
     auto depth = toolWidget->getParameter(WParameter::Third);
 
@@ -9019,7 +8966,6 @@ template <> void DrawSketchHandlerSlotBase::ToolWidgetManager::configureToolWidg
 }
 
 template <> void DrawSketchHandlerSlotBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
-    auto dHandler = static_cast<DrawSketchHandlerSlot*>(handler);
 
     switch (parameterindex) {
     case WParameter::First:
@@ -9040,7 +8986,6 @@ template <> void DrawSketchHandlerSlotBase::ToolWidgetManager::adaptDrawingToPar
 }
 
 template <> void DrawSketchHandlerSlotBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
-    auto dHandler = static_cast<DrawSketchHandlerSlot*>(handler);
 
     switch (handler->state()) {
     case SelectMode::SeekFirst:
@@ -9086,7 +9031,6 @@ template <> void DrawSketchHandlerSlotBase::ToolWidgetManager::doOverrideSketchP
 }
 
 template <> void DrawSketchHandlerSlotBase::ToolWidgetManager::updateVisualValues(Base::Vector2d onSketchPos) {
-    auto dHandler = static_cast<DrawSketchHandlerSlot*>(handler);
     switch (handler->state()) {
     case SelectMode::SeekFirst:
     {
@@ -9163,7 +9107,6 @@ template <> void DrawSketchHandlerSlotBase::ToolWidgetManager::doChangeDrawSketc
 }
 
 template <> void DrawSketchHandlerSlotBase::ToolWidgetManager::addConstraints() {
-    auto dHandler = static_cast<DrawSketchHandlerSlot*>(handler);
 
     int firstCurve = handler->getHighestCurveIndex() - 3;
 
@@ -9664,7 +9607,6 @@ template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::configureToolW
 }
 
 template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::setComboBoxesElements() {
-    auto dHandler = static_cast<DrawSketchHandlerArcSlot*>(handler);
     /*This IF is because when the construction mode change by adaptDrawingToComboboxChange, we call reset to change nParameter.
     But doing so also triggers this function which re-initialize the combo box. Meaning that it reset the combobox index to 0.
     The following if enables to setComboBoxesElements only if combobox index is 0 (ie if tool starts for the first time (or if tool returns to mode 0 but that's not a problem then)) */
@@ -9678,7 +9620,6 @@ template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::setComboBoxesE
 }
 
 template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
-    auto dHandler = static_cast<DrawSketchHandlerArcSlot*>(handler);
     switch (parameterindex) {
     case WParameter::First:
         dHandler->centerPoint.x = value;
@@ -9706,7 +9647,6 @@ template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::adaptDrawingTo
 
 template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
     Q_UNUSED(comboboxindex)
-    auto dHandler = static_cast<DrawSketchHandlerArcSlot*>(handler);
 
     if (value == 0) {
         dHandler->constructionMethod = DrawSketchHandlerArcSlot::ConstructionMethod::ArcSlot;
@@ -9727,7 +9667,6 @@ template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::adaptDrawingTo
 }
 
 template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
-    auto dHandler = static_cast<DrawSketchHandlerArcSlot*>(handler);
 
     switch (handler->state()) {
     case SelectMode::SeekFirst:
@@ -9785,7 +9724,6 @@ template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::doOverrideSket
 }
 
 template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::updateVisualValues(Base::Vector2d onSketchPos) {
-    auto dHandler = static_cast<DrawSketchHandlerArcSlot*>(handler);
     switch (handler->state()) {
     case SelectMode::SeekFirst:
     {
@@ -9827,7 +9765,6 @@ template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::updateVisualVa
 }
 
 template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::addConstraints() {
-    auto dHandler = static_cast<DrawSketchHandlerArcSlot*>(handler);
     int firstCurve = handler->getHighestCurveIndex() - 3;
     using namespace Sketcher;
 

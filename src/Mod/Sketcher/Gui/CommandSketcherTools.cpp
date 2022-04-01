@@ -3020,7 +3020,6 @@ template <> void DrawSketchHandlerRotateBase::ToolWidgetManager::configureToolWi
 }
 
 template <> void DrawSketchHandlerRotateBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
-    auto dHandler = static_cast<DrawSketchHandlerRotate*>(handler);
     switch (parameterindex) {
     case WParameter::First:
         dHandler->centerPoint.x = value;
@@ -3058,7 +3057,6 @@ template <> void DrawSketchHandlerRotateBase::ToolWidgetManager::onHandlerModeCh
 
 template <> void DrawSketchHandlerRotateBase::ToolWidgetManager::adaptDrawingToCheckboxChange(int checkboxindex, bool value) {
     Q_UNUSED(checkboxindex)
-    auto dHandler = static_cast<DrawSketchHandlerRotate*>(handler);
     dHandler->cloneConstraints = value;
 
     handler->updateDataAndDrawToPosition(prevCursorPosition);
@@ -3066,7 +3064,6 @@ template <> void DrawSketchHandlerRotateBase::ToolWidgetManager::adaptDrawingToC
 }
 
 template <> void DrawSketchHandlerRotateBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
-    auto dHandler = static_cast<DrawSketchHandlerRotate*>(handler);
 
     switch (handler->state()) {
     case SelectMode::SeekFirst:
@@ -3118,7 +3115,6 @@ template <> void DrawSketchHandlerRotateBase::ToolWidgetManager::updateVisualVal
     break;
     case SelectMode::SeekThird:
     {
-        auto dHandler = static_cast<DrawSketchHandlerRotate*>(handler);
         if (!toolWidget->isParameterSet(WParameter::Third))
             toolWidget->updateVisualValue(WParameter::Third, dHandler->totalAngle * 180 / M_PI);
     }
@@ -3597,7 +3593,6 @@ template <> void DrawSketchHandlerScaleBase::ToolWidgetManager::configureToolWid
 }
 
 template <> void DrawSketchHandlerScaleBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
-    auto dHandler = static_cast<DrawSketchHandlerScale*>(handler);
     switch (parameterindex) {
     case WParameter::First:
         dHandler->centerPoint.x = value;
@@ -3632,7 +3627,6 @@ template <> void DrawSketchHandlerScaleBase::ToolWidgetManager::onHandlerModeCha
 
 template <> void DrawSketchHandlerScaleBase::ToolWidgetManager::adaptDrawingToCheckboxChange(int checkboxindex, bool value) {
     Q_UNUSED(checkboxindex)
-    auto dHandler = static_cast<DrawSketchHandlerScale*>(handler);
     dHandler->deleteOriginal = value;
 
     handler->updateDataAndDrawToPosition(prevCursorPosition);
@@ -3640,7 +3634,6 @@ template <> void DrawSketchHandlerScaleBase::ToolWidgetManager::adaptDrawingToCh
 }
 
 template <> void DrawSketchHandlerScaleBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
-    auto dHandler = static_cast<DrawSketchHandlerScale*>(handler);
 
     switch (handler->state()) {
     case SelectMode::SeekFirst:
@@ -3690,7 +3683,6 @@ template <> void DrawSketchHandlerScaleBase::ToolWidgetManager::updateVisualValu
     break;
     case SelectMode::SeekThird:
     {
-        auto dHandler = static_cast<DrawSketchHandlerScale*>(handler);
         if (!toolWidget->isParameterSet(WParameter::Third))
             toolWidget->updateVisualValue(WParameter::Third, dHandler->scaleFactor);
     }
@@ -4693,7 +4685,6 @@ template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::configureToolWi
 }
 
 template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::setComboBoxesElements() {
-    auto dHandler = static_cast<DrawSketchHandlerOffset*>(handler);
     /*This if is because when the construction mode change by adaptDrawingToComboboxChange, we call reset to change nParameter.
     But doing so also triggers this function which re-initialize the combo box. Meaning that it reset the combobox index to 0.
     The following if enables to setComboBoxesElements only if combobox index is 0 (ie if tool starts for the first time (or if tool returns to mode 0 but that's not a problem then)) */
@@ -4707,7 +4698,6 @@ template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::setComboBoxesEl
 }
 
 template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
-    auto dHandler = static_cast<DrawSketchHandlerOffset*>(handler);
     switch (parameterindex) {
     case WParameter::First:
         dHandler->offsetLengthSet = true;
@@ -4717,7 +4707,6 @@ template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::adaptDrawingToP
 }
 
 template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::adaptDrawingToCheckboxChange(int checkboxindex, bool value) {
-    auto dHandler = static_cast<DrawSketchHandlerOffset*>(handler);
     switch (checkboxindex) {
     case WCheckbox::FirstBox:
         dHandler->deleteOriginal = value;
@@ -4732,7 +4721,6 @@ template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::adaptDrawingToC
 
 template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
     Q_UNUSED(comboboxindex)
-    auto dHandler = static_cast<DrawSketchHandlerOffset*>(handler);
 
     if (value == 0) {
         dHandler->joinMode = DrawSketchHandlerOffset::JoinMode::Arc;
@@ -4750,7 +4738,6 @@ template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::doOverrideSketc
 
 template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::updateVisualValues(Base::Vector2d onSketchPos) {
     Q_UNUSED(onSketchPos)
-    auto dHandler = static_cast<DrawSketchHandlerOffset*>(handler);
 
     switch (handler->state()) {
     case SelectMode::SeekFirst:

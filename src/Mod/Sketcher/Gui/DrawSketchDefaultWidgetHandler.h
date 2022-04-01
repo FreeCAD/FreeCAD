@@ -111,7 +111,7 @@ private:
 
         SketcherToolDefaultWidget* toolWidget;
         DrawSketchDefaultWidgetHandler * handler; // used to access private implementations
-        HandlerT * dhandler; // real derived type
+        HandlerT * dHandler; // real derived type
 
         using Connection = boost::signals2::connection;
 
@@ -127,7 +127,7 @@ private:
         using SelectMode = SelectModeT;
 
     public:
-        ToolWidgetManager(DrawSketchDefaultWidgetHandler * dshandler):handler(dshandler), dhandler(static_cast<HandlerT *>(dshandler)){}
+        ToolWidgetManager(DrawSketchDefaultWidgetHandler * dshandler):handler(dshandler), dHandler(static_cast<HandlerT *>(dshandler)){}
 
         ~ToolWidgetManager(){
             connectionParameterValueChanged.disconnect();
