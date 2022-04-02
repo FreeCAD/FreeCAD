@@ -122,17 +122,17 @@
      </item>
      <item>
       <widget class="Gui::InputField" name="spSlope">
-       <property name="maximum" stdset="0">
-        <double>1000000000.000000000000000</double>
-       </property>
-       <property name="singleStep" stdset="0">
+       <property name="singleStep">
         <double>1.000000000000000</double>
        </property>
-       <property name="value" stdset="0">
-        <double>1000000.000000000000000</double>
+       <property name="maximum">
+        <double>1000000000.000000000000000</double>
        </property>
        <property name="unit" stdset="0">
         <string notr="true">Pa</string>
+       </property>
+       <property name="value" stdset="0">
+        <double>1000000.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -163,6 +163,8 @@
     </layout>
    </item>
   </layout>
+  <zorder>lbl_info_2</zorder>
+  <zorder>lbl_info</zorder>
   <zorder>lw_referencesSlave</zorder>
   <zorder>lw_referencesMaster</zorder>
  </widget>

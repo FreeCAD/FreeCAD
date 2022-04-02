@@ -78,7 +78,7 @@
           </property>
          </widget>
         </item>
-       <item row="2" column="2">
+        <item row="2" column="2">
          <widget class="Gui::PrefFileChooser" name="fc_z88_binary_path">
           <property name="enabled">
            <bool>false</bool>
@@ -118,7 +118,7 @@
           </property>
          </widget>
         </item>
-        </layout>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -209,7 +209,7 @@
            <string>Maximal places in stiffnes matrix.
 You might need to increase this when using the
 Cholesky solver and you get the error message
-that "MAXGS" needs to be increased.</string>
+that &quot;MAXGS&quot; needs to be increased.</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -241,7 +241,7 @@ that "MAXGS" needs to be increased.</string>
           </property>
          </widget>
         </item>
-       <item row="3" column="2">
+        <item row="3" column="2">
          <widget class="Gui::PrefSpinBox" name="sb_Z88_MaxKOI">
           <property name="minimumSize">
            <size>
@@ -256,7 +256,7 @@ that "MAXGS" needs to be increased.</string>
 
 You might need to increase this when using an
 iterative solver and you get the error message
-that "MAXKOI" needs to be increased.</string>
+that &quot;MAXKOI&quot; needs to be increased.</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -281,7 +281,7 @@ that "MAXKOI" needs to be increased.</string>
           </property>
          </widget>
         </item>
-        </layout>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -304,11 +304,6 @@ that "MAXKOI" needs to be increased.</string>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::FileChooser</class>
    <extends>QWidget</extends>
    <header>Gui/FileDialog.h</header>
@@ -319,13 +314,18 @@ that "MAXKOI" needs to be increased.</string>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefComboBox</class>
-   <extends>QComboBox</extends>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefSpinBox</class>
-   <extends>QSpinBox</extends>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

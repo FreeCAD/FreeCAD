@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>396</width>
-    <height>448</height>
+    <width>400</width>
+    <height>274</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -54,7 +54,7 @@
           </property>
          </widget>
         </item>
-       <item row="2" column="1">
+        <item row="2" column="1">
          <widget class="QPushButton" name="pb_edit_m">
           <property name="text">
            <string>Edit</string>
@@ -75,7 +75,7 @@
           </property>
          </widget>
         </item>
-        </layout>
+       </layout>
       </item>
       <item>
        <widget class="QLabel" name="l_description_m">
@@ -127,7 +127,7 @@
           </property>
          </widget>
         </item>
-       <item row="2" column="1">
+        <item row="2" column="1">
          <widget class="QPushButton" name="pb_edit_r">
           <property name="text">
            <string>Edit</string>
@@ -148,7 +148,7 @@
           </property>
          </widget>
         </item>
-        </layout>
+       </layout>
       </item>
       <item>
        <widget class="QLabel" name="l_description_r">

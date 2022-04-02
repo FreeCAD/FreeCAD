@@ -50,22 +50,22 @@
        <property name="toolTip">
         <string>Electric potential in V</string>
        </property>
-       <property name="keyboardTracking" stdset="0">
+       <property name="keyboardTracking">
         <bool>true</bool>
        </property>
        <property name="unit" stdset="0">
         <string notr="true">V</string>
        </property>
-       <property name="minimum" stdset="0">
+       <property name="minimum">
         <double>-1000000000000000000000.000000000000000</double>
        </property>
-       <property name="maximum" stdset="0">
+       <property name="maximum">
         <double>1000000000000000000000.000000000000000</double>
        </property>
-       <property name="singleStep" stdset="0">
+       <property name="singleStep">
         <double>1.000000000000000</double>
        </property>
-       <property name="value" stdset="0">
+       <property name="value">
         <double>1.000000000000000</double>
        </property>
       </widget>

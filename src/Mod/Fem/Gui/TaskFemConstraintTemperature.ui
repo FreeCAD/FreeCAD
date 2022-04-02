@@ -87,7 +87,10 @@
         <string>300 K</string>
        </property>
        <property name="unit" stdset="0">
-        <string notr="true"/>
+        <string notr="true">K</string>
+       </property>
+       <property name="quantity" stdset="0">
+        <double>300.000000000000000</double>
        </property>
       </widget>
      </item>

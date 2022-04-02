@@ -63,7 +63,7 @@
         <string>0 MPa</string>
        </property>
        <property name="unit" stdset="0">
-        <string notr="true"/>
+        <string notr="true">MPa</string>
        </property>
       </widget>
      </item>

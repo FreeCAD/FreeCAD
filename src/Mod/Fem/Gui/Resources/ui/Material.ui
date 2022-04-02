@@ -171,15 +171,15 @@
            </size>
           </property>
           <property name="text">
-           <string>8000 kg/m^3</string>
+           <string>0 kg/m^3</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="singleStep" stdset="0">
+          <property name="singleStep">
            <double>2.000000000000000</double>
           </property>
-          <property name="maximum" stdset="0">
+          <property name="maximum">
            <double>2000000000.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
@@ -237,15 +237,15 @@
            </size>
           </property>
           <property name="text">
-           <string>200 GPa</string>
+           <string>0 Pa</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="singleStep" stdset="0">
+          <property name="singleStep">
            <double>2.000000000000000</double>
           </property>
-          <property name="maximum" stdset="0">
+          <property name="maximum">
            <double>90000000000.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
@@ -341,15 +341,15 @@
            </size>
           </property>
           <property name="text">
-           <string>0.000001 m^2/s</string>
+           <string>0 m^2/s</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="singleStep" stdset="0">
+          <property name="singleStep">
            <double>0.000001000000000</double>
           </property>
-          <property name="maximum" stdset="0">
+          <property name="maximum">
            <double>1000.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
@@ -407,15 +407,15 @@
            </size>
           </property>
           <property name="text">
-           <string>50 W/m/K</string>
+           <string>0 W/m/K</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="singleStep" stdset="0">
+          <property name="singleStep">
            <double>2.000000000000000</double>
           </property>
-          <property name="maximum" stdset="0">
+          <property name="maximum">
            <double>2000000000.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
@@ -451,15 +451,15 @@
            </size>
           </property>
           <property name="text">
-           <string>12 um/m/K</string>
+           <string>0 m/m/K</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="singleStep" stdset="0">
+          <property name="singleStep">
            <double>2.000000000000000</double>
           </property>
-          <property name="maximum" stdset="0">
+          <property name="maximum">
            <double>2000000000.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
@@ -495,15 +495,15 @@
            </size>
           </property>
           <property name="text">
-           <string>500 J/kg/K</string>
+           <string>0 J/kg/K</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="singleStep" stdset="0">
+          <property name="singleStep">
            <double>2.000000000000000</double>
           </property>
-          <property name="maximum" stdset="0">
+          <property name="maximum">
            <double>2050000000.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
@@ -539,15 +539,15 @@
            </size>
           </property>
           <property name="text">
-           <string>0.001 m/m/K</string>
+           <string>0 m/m/K</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="singleStep" stdset="0">
+          <property name="singleStep">
            <double>0.001000000000000</double>
           </property>
-          <property name="maximum" stdset="0">
+          <property name="maximum">
            <double>1.000000000000000</double>
           </property>
           <property name="unit" stdset="0">

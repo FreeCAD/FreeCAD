@@ -31,7 +31,7 @@
        <property name="enabled">
         <bool>false</bool>
        </property>
-       <property name="singleStep" stdset="0">
+       <property name="singleStep">
         <double>1.000000000000000</double>
        </property>
        <property name="unit" stdset="0">
@@ -65,7 +65,7 @@
        <property name="enabled">
         <bool>false</bool>
        </property>
-       <property name="singleStep" stdset="0">
+       <property name="singleStep">
         <double>1.000000000000000</double>
        </property>
        <property name="unit" stdset="0">
@@ -99,7 +99,7 @@
        <property name="enabled">
         <bool>false</bool>
        </property>
-       <property name="singleStep" stdset="0">
+       <property name="singleStep">
         <double>1.000000000000000</double>
        </property>
        <property name="unit" stdset="0">

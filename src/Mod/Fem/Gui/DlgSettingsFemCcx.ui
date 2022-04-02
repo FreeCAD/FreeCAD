@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>425</width>
-    <height>622</height>
+    <height>640</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -41,7 +41,7 @@
           </property>
          </widget>
         </item>
-       <item row="2" column="1">
+        <item row="2" column="1">
          <widget class="Gui::PrefCheckBox" name="cb_ccx_binary_std">
           <property name="text">
            <string>Search in known binary directories</string>
@@ -191,7 +191,7 @@
           </property>
          </widget>
         </item>
-        </layout>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -260,7 +260,7 @@
             <string>Check Mesh</string>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="Resources/Fem.qrc">
              <normaloff>:/icons/fem-solver-analysis-checkmesh.svg</normaloff>:/icons/fem-solver-analysis-checkmesh.svg</iconset>
            </property>
           </item>
@@ -269,7 +269,7 @@
             <string>Buckling</string>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="Resources/Fem.qrc">
              <normaloff>:/icons/fem-solver-analysis-buckling.svg</normaloff>:/icons/fem-solver-analysis-buckling.svg</iconset>
            </property>
           </item>
@@ -432,7 +432,7 @@
           </property>
          </spacer>
         </item>
-       <item row="5" column="2">
+        <item row="5" column="2">
          <widget class="Gui::PrefDoubleSpinBox" name="dsb_ccx_initial_time_step">
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -526,7 +526,7 @@
           </property>
          </widget>
         </item>
-        </layout>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -546,7 +546,7 @@
           </property>
          </widget>
         </item>
-       <item row="1" column="1">
+        <item row="1" column="1">
          <widget class="Gui::PrefCheckBox" name="cb_static">
           <property name="text">
            <string>Use steady state</string>
@@ -591,7 +591,7 @@
           </property>
          </widget>
         </item>
-        </layout>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -624,7 +624,7 @@
           </property>
          </spacer>
         </item>
-       <item row="1" column="2">
+        <item row="1" column="2">
          <widget class="Gui::PrefSpinBox" name="sb_eigenmode_number">
           <property name="minimumSize">
            <size>
@@ -742,7 +742,7 @@
           </property>
          </widget>
         </item>
-        </layout>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -751,11 +751,6 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
-  <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
   <customwidget>
    <class>Gui::FileChooser</class>
    <extends>QWidget</extends>
@@ -769,6 +764,11 @@
   <customwidget>
    <class>Gui::PrefSpinBox</class>
    <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>

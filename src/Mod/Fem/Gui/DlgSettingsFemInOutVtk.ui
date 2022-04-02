@@ -88,7 +88,7 @@ exported from FreeCAD.</string>
      </layout>
     </widget>
    </item>
-  <item row="1" column="0">
+   <item row="1" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -101,7 +101,7 @@ exported from FreeCAD.</string>
      </property>
     </spacer>
    </item>
-   </layout>
+  </layout>
  </widget>
  <customwidgets>
   <customwidget>

@@ -36,10 +36,10 @@
           <property name="checked">
            <bool>true</bool>
           </property>
-          <property name="prefEntry">
+          <property name="prefEntry" stdset="0">
            <cstring>UseBuiltInMaterials</cstring>
           </property>
-          <property name="prefPath">
+          <property name="prefPath" stdset="0">
            <cstring>Mod/Material/Resources</cstring>
           </property>
          </widget>
@@ -55,10 +55,10 @@
           <property name="checked">
            <bool>true</bool>
           </property>
-          <property name="prefEntry">
+          <property name="prefEntry" stdset="0">
            <cstring>UseMaterialsFromConfigDir</cstring>
           </property>
-          <property name="prefPath">
+          <property name="prefPath" stdset="0">
            <cstring>Mod/Material/Resources</cstring>
           </property>
          </widget>
@@ -75,10 +75,10 @@ will be listed as available.</string>
           <property name="checked">
            <bool>true</bool>
           </property>
-          <property name="prefEntry">
+          <property name="prefEntry" stdset="0">
            <cstring>UseMaterialsFromCustomDir</cstring>
           </property>
-          <property name="prefPath">
+          <property name="prefPath" stdset="0">
            <cstring>Mod/Material/Resources</cstring>
           </property>
          </widget>
@@ -124,13 +124,13 @@ will be listed as available.</string>
               <height>0</height>
              </size>
             </property>
-            <property name="prefEntry">
-             <cstring>CustomMaterialsDir</cstring>
-            </property>
             <property name="mode">
              <enum>Gui::FileChooser::Directory</enum>
             </property>
-            <property name="prefPath">
+            <property name="prefEntry" stdset="0">
+             <cstring>CustomMaterialsDir</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
              <cstring>Mod/Material/Resources</cstring>
             </property>
            </widget>
@@ -159,10 +159,10 @@ will be listed as available.</string>
         <property name="checked">
          <bool>true</bool>
         </property>
-        <property name="prefEntry">
+        <property name="prefEntry" stdset="0">
          <cstring>DeleteDuplicates</cstring>
         </property>
-        <property name="prefPath">
+        <property name="prefPath" stdset="0">
          <cstring>Mod/Material/Cards</cstring>
         </property>
        </widget>
@@ -179,10 +179,10 @@ If unchecked, they will be sorted by their name.</string>
         <property name="checked">
          <bool>true</bool>
         </property>
-        <property name="prefEntry">
+        <property name="prefEntry" stdset="0">
          <cstring>SortByResources</cstring>
         </property>
-        <property name="prefPath">
+        <property name="prefPath" stdset="0">
          <cstring>Mod/Material/Cards</cstring>
         </property>
        </widget>
@@ -198,7 +198,7 @@ If unchecked, they will be sorted by their name.</string>
      <property name="sizeType">
       <enum>QSizePolicy::Expanding</enum>
      </property>
-     <property name="sizeHint">
+     <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
        <height>40</height>
@@ -211,11 +211,6 @@ If unchecked, they will be sorted by their name.</string>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::FileChooser</class>
    <extends>QWidget</extends>
    <header>Gui/FileDialog.h</header>
@@ -223,6 +218,11 @@ If unchecked, they will be sorted by their name.</string>
   <customwidget>
    <class>Gui::PrefFileChooser</class>
    <extends>Gui::FileChooser</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>179</height>
+    <height>199</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -228,11 +228,6 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::FileChooser</class>
    <extends>QWidget</extends>
    <header>Gui/FileDialog.h</header>
@@ -240,6 +235,11 @@
   <customwidget>
    <class>Gui::PrefFileChooser</class>
    <extends>Gui::FileChooser</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

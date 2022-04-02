@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>300</width>
-    <height>236</height>
+    <height>243</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -84,7 +84,7 @@
      </item>
      <item>
       <widget class="Gui::QuantitySpinBox" name="spinForce">
-       <property name="value" stdset="0">
+       <property name="value">
         <double>500.000000000000000</double>
        </property>
       </widget>
