@@ -85,7 +85,7 @@ namespace SketcherGui {
  * - executeCommands                        => execution of commands to create the geometry
  * - createAutoConstraints                  => execution of commands to create autoconstraints (widget mandated constraints are called BEFORE this)
  *
- * Question: Do I need to use this handler or derive from this handler to make a new hander using the default tool widget?
+ * Question: Do I need to use this handler or derive from this handler to make a new handler using the default tool widget?
  *
  * No, you do not NEED to. But you are encouraged to. Structuring a handler following this NVI, apart
  * from substantial savings in amount of code typed, enables a much easier and less verbose implementation of a handler

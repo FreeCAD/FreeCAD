@@ -2151,7 +2151,7 @@ bool CmdSketcherRectangularArray::isActive(void)
 
 
 // Translate / rectangular pattern tool =======================================================
-//Todo: Add 2 more paramters to the tool widget so that we can use 8. Adding angles of translation vectors.
+//Todo: Add 2 more parameters to the tool widget so that we can use 8. Adding angles of translation vectors.
 
 class DrawSketchHandlerTranslate;
 
@@ -4282,7 +4282,7 @@ private:
                 Base::Console().Warning("i-j : %d-%d / vCCO[i][j] : %d / / createLine %d / reRunForFirst %d\n", i, j, vCCO[i][j], createLine, reRunForFirst);
                 const Part::Geometry* geo = Obj->getGeometry(vCCO[i][j]);
                 for (size_t k = 0; k < listOfGeoIds.size(); k++) {
-                    //Check if listOfGeoIds[k] is the offseted curve giving curve i-j.
+                    //Check if listOfGeoIds[k] is the offsetted curve giving curve i-j.
                     const Part::Geometry* geo2 = Obj->getGeometry(listOfGeoIds[k]);
 
                     if (geo->getTypeId() == Part::GeomCircle::getClassTypeId() && geo2->getTypeId() == Part::GeomCircle::getClassTypeId()) {

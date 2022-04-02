@@ -189,7 +189,7 @@ public:
 
     /** @name public DrawSketchHandler interface
      * NOTE: Not intended to be specialised. It calls some functions intended to be
-     * overriden/specialised instead.
+     * overridden/specialised instead.
      */
     //@{
     virtual void mouseMove(Base::Vector2d onSketchPos) override
@@ -297,7 +297,7 @@ protected:
     //@}
 
 private:
-    /** @name functions are intended to be overriden/specialised to extend basic functionality
+    /** @name functions are intended to be overridden/specialised to extend basic functionality
         NVI interface. See documentation of the functions above.*/
     //@{
     virtual void onReset() { }
@@ -310,10 +310,10 @@ private:
     virtual void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) {Q_UNUSED(onSketchPos)};
     //@}
 protected:
-    /** @name functions are intended to be overriden/specialised to extend basic functionality
+    /** @name functions are intended to be overridden/specialised to extend basic functionality
         See documentation of the functions above*/
     //@{
-    /// Handles avoid redundants and continuous mode, if overriden the base class must be called!
+    /// Handles avoid redundants and continuous mode, if overridden the base class must be called!
     virtual void activated() override {
         avoidRedundants = sketchgui->AvoidRedundant.getValue()  && sketchgui->Autoconstraints.getValue();
 

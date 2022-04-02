@@ -3406,7 +3406,7 @@ private:
         resetPositionText();
         Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
         if (fabs(firstRadius - secondRadius) < Precision::Confusion()) {
-            //don't make an ellipse with equal radius it wont work. We could create a circle instead?
+            //don't make an ellipse with equal radius it won't work. We could create a circle instead?
             return;
         }
         try {
@@ -8787,7 +8787,7 @@ private:
 
             angle = GetPointAngle(startPoint, secondPoint);
             length = (secondPoint - startPoint).Length();
-            radius = length / 5; //radius choosen at 1/5 of length
+            radius = length / 5; //radius chosen at 1/5 of length
 
             if (!angleIsSet && snapMode == SnapMode::Snap5Degree) {
                 angle = round(angle / (M_PI / 36)) * M_PI / 36;
