@@ -192,9 +192,9 @@ protected Q_SLOTS:
     void checkBoxTS2_toggled(bool val);
     void checkBoxTS3_toggled(bool val);
     void checkBoxTS4_toggled(bool val);
-    void comboBox1_valueChanged(int val);
-    void comboBox2_valueChanged(int val);
-    void comboBox3_valueChanged(int val);
+    void comboBox1_currentIndexChanged(int val);
+    void comboBox2_currentIndexChanged(int val);
+    void comboBox3_currentIndexChanged(int val);
 
 protected:
     void changeEvent(QEvent *e);

@@ -921,7 +921,7 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptDrawing
     dHandler->reset(); //reset of handler to restart.
 }
 
-template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
+template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
     prevCursorPosition = onSketchPos;
 
     switch (handler->state()) {
@@ -1039,7 +1039,7 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doChangeDraw
         if (toolWidget->isParameterSet(WParameter::Third) ||
             toolWidget->isParameterSet(WParameter::Fourth)) {
 
-            doOverrideSketchPosition(prevCursorPosition);
+            doEnforceWidgetParameters(prevCursorPosition);
             handler->updateDataAndDrawToPosition(prevCursorPosition); // draw curve to cursor with suggested constraints
 
             if (toolWidget->isParameterSet(WParameter::Third) &&
@@ -1061,7 +1061,7 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doChangeDraw
     {
         if (toolWidget->isParameterSet(WParameter::Fifth)) {
 
-            doOverrideSketchPosition(prevCursorPosition);
+            doEnforceWidgetParameters(prevCursorPosition);
             handler->updateDataAndDrawToPosition(prevCursorPosition); // draw curve to cursor with suggested constraints
 
             handler->setState(SelectMode::End);
@@ -1464,7 +1464,7 @@ template <> void DrawSketchHandlerFrameBase::ToolWidgetManager::adaptDrawingToPa
     }
 }
 
-template <> void DrawSketchHandlerFrameBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
+template <> void DrawSketchHandlerFrameBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
 
     switch (handler->state()) {
     case SelectMode::SeekFirst:
@@ -1832,7 +1832,7 @@ template <> void DrawSketchHandlerPolygonBase::ToolWidgetManager::adaptDrawingTo
     }
 }
 
-template <> void DrawSketchHandlerPolygonBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
+template <> void DrawSketchHandlerPolygonBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
 
     switch (handler->state()) {
     case SelectMode::SeekFirst:
@@ -3061,7 +3061,7 @@ template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::adaptDrawingToC
     dHandler->reset(); //reset of handler to restart.
 }
 
-template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
+template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
     prevCursorPosition = onSketchPos;
 
     switch (handler->state()) {
@@ -3581,7 +3581,7 @@ template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::adaptDrawingTo
     dHandler->reset(); //reset of handler to restart.
 }
 
-template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
+template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
     prevCursorPosition = onSketchPos;
 
     switch (handler->state()) {
@@ -4324,7 +4324,7 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::adaptDrawingToComb
     dHandler->reset(); //reset of handler to restart.
 }
 
-template <> void DrawSketchHandlerArcBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
+template <> void DrawSketchHandlerArcBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
 
     switch (handler->state()) {
     case SelectMode::SeekFirst:
@@ -4453,7 +4453,7 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::doChangeDrawSketch
         if (toolWidget->isParameterSet(WParameter::Third) ||
             toolWidget->isParameterSet(WParameter::Fourth)) {
 
-            doOverrideSketchPosition(prevCursorPosition);
+            doEnforceWidgetParameters(prevCursorPosition);
             handler->updateDataAndDrawToPosition(prevCursorPosition);
 
             if (toolWidget->isParameterSet(WParameter::Third) &&
@@ -4470,7 +4470,7 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::doChangeDrawSketch
         if (toolWidget->isParameterSet(WParameter::Fifth) &&
             dHandler->constructionMethod == DrawSketchHandlerArc::ConstructionMethod::Center) {
 
-            doOverrideSketchPosition(prevCursorPosition);
+            doEnforceWidgetParameters(prevCursorPosition);
             handler->updateDataAndDrawToPosition(prevCursorPosition);
 
             handler->setState(SelectMode::End);
@@ -4481,7 +4481,7 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::doChangeDrawSketch
             toolWidget->isParameterSet(WParameter::Sixth)) &&
             dHandler->constructionMethod == DrawSketchHandlerArc::ConstructionMethod::ThreeRim) {
 
-            doOverrideSketchPosition(prevCursorPosition);
+            doEnforceWidgetParameters(prevCursorPosition);
             handler->updateDataAndDrawToPosition(prevCursorPosition);
 
 
@@ -6450,7 +6450,7 @@ template <> void DrawSketchHandlerPointBase::ToolWidgetManager::adaptDrawingToPa
     }
 }
 
-template <> void DrawSketchHandlerPointBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
+template <> void DrawSketchHandlerPointBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
     switch (handler->state()) {
     case SelectMode::SeekFirst:
     {
@@ -6930,7 +6930,7 @@ template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::adaptDrawingToC
     }
 }
 
-template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
+template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
     prevCursorPosition = onSketchPos;
 }
 
@@ -8002,7 +8002,7 @@ template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::adaptDrawingToC
     dHandler->reset(); //reset of handler to restart.
 }
 
-template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
+template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
 
     switch (handler->state()) {
     case SelectMode::SeekSecond:
@@ -8111,7 +8111,7 @@ template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::doChangeDrawSke
     {
         if (toolWidget->isParameterSet(WParameter::First)) {
 
-            doOverrideSketchPosition(prevCursorPosition);
+            doEnforceWidgetParameters(prevCursorPosition);
             handler->updateDataAndDrawToPosition(prevCursorPosition);
 
 
@@ -8125,7 +8125,7 @@ template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::doChangeDrawSke
         if ((toolWidget->isParameterSet(WParameter::Second) ||
             toolWidget->isParameterSet(WParameter::Third))) {
 
-            doOverrideSketchPosition(prevCursorPosition);
+            doEnforceWidgetParameters(prevCursorPosition);
             handler->updateDataAndDrawToPosition(prevCursorPosition);
 
 
@@ -8979,7 +8979,7 @@ template <> void DrawSketchHandlerSlotBase::ToolWidgetManager::adaptDrawingToPar
     }
 }
 
-template <> void DrawSketchHandlerSlotBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
+template <> void DrawSketchHandlerSlotBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
 
     switch (handler->state()) {
     case SelectMode::SeekFirst:
@@ -9663,7 +9663,7 @@ template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::adaptDrawingTo
     dHandler->reset(); //reset of handler to restart.
 }
 
-template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
+template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
 
     switch (handler->state()) {
     case SelectMode::SeekFirst:

@@ -70,7 +70,7 @@ namespace SketcherGui {
  * - doChangeDrawSketchHandlerMode()
  * - onHandlerModeChanged()
  * - updateVisualValues()
- * - doOverrideSketchPosition()
+ * - doEnforceWidgetParameters()
  *
  * Handler provides:
  * - generic initialisation
@@ -164,11 +164,11 @@ private:
             configureToolWidget();
         }
 
-        void overrideSketchPosition(Base::Vector2d &onSketchPos)
+        void enforceWidgetParameters(Base::Vector2d &onSketchPos)
         {
             prevCursorPosition = onSketchPos;
 
-            doOverrideSketchPosition(onSketchPos);
+            doEnforceWidgetParameters(onSketchPos);
         }
 
         /** boost slot triggering when a parameter has changed in the widget
@@ -178,7 +178,7 @@ private:
         {
             adaptDrawingToParameterChange(parameterindex, value);
 
-            doOverrideSketchPosition(prevCursorPosition); //Correct prevCursorPosition as it's modified by the new parameter
+            doEnforceWidgetParameters(prevCursorPosition); //Correct prevCursorPosition as it's modified by the new parameter
 
             doChangeDrawSketchHandlerMode();
 
@@ -190,7 +190,7 @@ private:
         void checkboxCheckedChanged(int checkboxindex, bool value) {
             adaptDrawingToCheckboxChange(checkboxindex, value);
 
-            doOverrideSketchPosition(prevCursorPosition); //Correct prevCursorPosition as it's modified by the new parameter
+            doEnforceWidgetParameters(prevCursorPosition); //Correct prevCursorPosition as it's modified by the new parameter
 
             doChangeDrawSketchHandlerMode();
         }
@@ -201,7 +201,7 @@ private:
         void comboboxSelectionChanged(int comboboxindex, int value) {
             adaptDrawingToComboboxChange(comboboxindex, value);
 
-            doOverrideSketchPosition(prevCursorPosition); //Correct prevCursorPosition as it's modified by the new parameter
+            doEnforceWidgetParameters(prevCursorPosition); //Correct prevCursorPosition as it's modified by the new parameter
 
             doChangeDrawSketchHandlerMode();
         }
@@ -614,7 +614,7 @@ private:
         *
         * It MUST be specialised if the states correspond to different parameters
         */
-        void doOverrideSketchPosition(Base::Vector2d &onSketchPos) {
+        void doEnforceWidgetParameters(Base::Vector2d &onSketchPos) {
             if constexpr (std::is_same_v<StateMachines::OneSeekEnd, SelectMode>) {
                 switch (handler->state()) {
                 case SelectMode::SeekFirst:
@@ -740,14 +740,14 @@ public:
     //@{
     virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
-        toolWidgetManager.overrideSketchPosition(onSketchPos);
+        toolWidgetManager.enforceWidgetParameters(onSketchPos);
         toolWidgetManager.updateVisualValues(onSketchPos);
         updateDataAndDrawToPosition (onSketchPos);
     }
 
     virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
-        toolWidgetManager.overrideSketchPosition(onSketchPos);
+        toolWidgetManager.enforceWidgetParameters(onSketchPos);
 
         onButtonPressed(onSketchPos);
         return true;

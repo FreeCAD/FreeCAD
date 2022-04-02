@@ -3068,7 +3068,7 @@ template <> void DrawSketchHandlerRotateBase::ToolWidgetManager::adaptDrawingToC
     onHandlerModeChanged(); //re-focus/select spinbox
 }
 
-template <> void DrawSketchHandlerRotateBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
+template <> void DrawSketchHandlerRotateBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
 
     switch (handler->state()) {
     case SelectMode::SeekFirst:
@@ -3640,7 +3640,7 @@ template <> void DrawSketchHandlerScaleBase::ToolWidgetManager::adaptDrawingToCh
     onHandlerModeChanged(); //re-focus/select spinbox
 }
 
-template <> void DrawSketchHandlerScaleBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
+template <> void DrawSketchHandlerScaleBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
 
     switch (handler->state()) {
     case SelectMode::SeekFirst:
@@ -4739,7 +4739,7 @@ template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::adaptDrawingToC
     }
 }
 
-template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::doOverrideSketchPosition(Base::Vector2d& onSketchPos) {
+template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
     //Too hard to override onsketchpos such that it is at offsetLength from the curve. So we use offsetLengthSet to prevent rewrite of offsetLength.
 
     prevCursorPosition = onSketchPos;

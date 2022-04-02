@@ -141,11 +141,11 @@ SketcherToolDefaultWidget::SketcherToolDefaultWidget (QWidget *parent, ViewProvi
     connect(ui->checkBoxTS4, SIGNAL(toggled(bool)),
         this, SLOT(checkBoxTS4_toggled(bool)));
     connect(ui->comboBox1, SIGNAL(currentIndexChanged(int)),
-        this, SLOT(comboBox1_valueChanged(int)));
+        this, SLOT(comboBox1_currentIndexChanged(int)));
     connect(ui->comboBox2, SIGNAL(currentIndexChanged(int)),
-        this, SLOT(comboBox2_valueChanged(int)));
+        this, SLOT(comboBox2_currentIndexChanged(int)));
     connect(ui->comboBox3, SIGNAL(currentIndexChanged(int)),
-        this, SLOT(comboBox3_valueChanged(int)));
+        this, SLOT(comboBox3_currentIndexChanged(int)));
 
     ui->parameterOne->installEventFilter(this);
     ui->parameterTwo->installEventFilter(this);
@@ -408,7 +408,7 @@ QLabel * SketcherToolDefaultWidget::getParameterLabel(int parameterindex)
             return ui->label6;
             break;
         default:
-            return nullptr;
+            THROWM(Base::IndexError, "ToolWidget spinbox index out of range");
     }
 }
 
@@ -434,7 +434,7 @@ Gui::PrefQuantitySpinBox * SketcherToolDefaultWidget::getParameterSpinBox(int pa
             return ui->parameterSix;
             break;
         default:
-            return nullptr;
+            THROWM(Base::IndexError, "ToolWidget spinbox index out of range");
     }
 }
 
@@ -554,7 +554,7 @@ Gui::PrefCheckBox* SketcherToolDefaultWidget::getCheckBox(int checkboxindex)
         return ui->checkBoxTS4;
         break;
     default:
-        return nullptr;
+        THROWM(Base::IndexError, "ToolWidget checkbox index out of range");
     }
 }
 
@@ -581,17 +581,17 @@ bool SketcherToolDefaultWidget::isCheckBoxPrefEntryEmpty(int checkboxindex)
 }
 
 //Combobox functions
-void SketcherToolDefaultWidget::comboBox1_valueChanged(int val) {
+void SketcherToolDefaultWidget::comboBox1_currentIndexChanged(int val) {
     if (!blockParameterSlots) {
         signalComboboxSelectionChanged(Combobox::FirstCombo, val);
     }
 }
-void SketcherToolDefaultWidget::comboBox2_valueChanged(int val) {
+void SketcherToolDefaultWidget::comboBox2_currentIndexChanged(int val) {
     if (!blockParameterSlots) {
         signalComboboxSelectionChanged(Combobox::SecondCombo, val);
     }
 }
-void SketcherToolDefaultWidget::comboBox3_valueChanged(int val) {
+void SketcherToolDefaultWidget::comboBox3_currentIndexChanged(int val) {
     if (!blockParameterSlots) {
         signalComboboxSelectionChanged(Combobox::ThirdCombo, val);
     }
@@ -648,7 +648,7 @@ QComboBox* SketcherToolDefaultWidget::getComboBox(int comboboxindex)
         return ui->comboBox3;
         break;
     default:
-        return nullptr;
+        THROWM(Base::IndexError, "ToolWidget combobox index out of range");
     }
 }
 QLabel* SketcherToolDefaultWidget::getComboBoxLabel(int comboboxindex)
@@ -664,7 +664,7 @@ QLabel* SketcherToolDefaultWidget::getComboBoxLabel(int comboboxindex)
         return ui->comboLabel3;
         break;
     default:
-        return nullptr;
+        THROWM(Base::IndexError, "ToolWidget combobox index out of range");
     }
 }
 
