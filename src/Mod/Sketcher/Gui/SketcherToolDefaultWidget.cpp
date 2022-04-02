@@ -98,6 +98,9 @@ void SketcherToolDefaultWidget::KeyboardManager::detectKeyboardEventHandlingMode
         keyEvent->key() == Qt::Key_Backtab ||
         keyEvent->key() == Qt::Key_Backspace ||
         keyEvent->key() == Qt::Key_Delete ||
+        keyEvent->key() == Qt::Key_Minus ||
+        keyEvent->key() == Qt::Key_Period ||
+        keyEvent->key() == Qt::Key_Comma ||
         QRegExp(QStringLiteral("[0-9]")).exactMatch(keyEvent->text()))
     {
         keyMode = KeyboardEventHandlingMode::Widget;
@@ -321,7 +324,7 @@ void SketcherToolDefaultWidget::configureParameterInitialValue(int parameterinde
 }
 
 void SketcherToolDefaultWidget::configureParameterUnit(int parameterindex, Base::Unit unit) {
-    //For reference unit can be changed with : 
+    //For reference unit can be changed with :
     //setUnit(Base::Unit::Length); Base::Unit::Angle
     Base::StateLocker lock(blockParameterSlots, true);
     if (parameterindex < nParameters) {
