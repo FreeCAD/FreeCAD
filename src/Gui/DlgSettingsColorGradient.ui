@@ -68,7 +68,7 @@
         <property name="sizeType">
          <enum>QSizePolicy::Expanding</enum>
         </property>
-        <property name="sizeHint">
+        <property name="sizeHint" stdset="0">
          <size>
           <width>3</width>
           <height>20</height>
@@ -102,6 +102,9 @@
       </property>
       <item row="0" column="0">
        <widget class="QRadioButton" name="radioButtonFlow">
+        <property name="toolTip">
+         <string>Color gradient is used with its full color range</string>
+        </property>
         <property name="text">
          <string>&amp;Flow</string>
         </property>
@@ -115,6 +118,9 @@
       </item>
       <item row="0" column="1">
        <widget class="QRadioButton" name="radioButtonZero">
+        <property name="toolTip">
+         <string>Color gradient starts from the zero value</string>
+        </property>
         <property name="text">
          <string>&amp;Zero</string>
         </property>
@@ -149,6 +155,10 @@
       </property>
       <item>
        <widget class="QCheckBox" name="checkBoxGrayed">
+        <property name="toolTip">
+         <string>Data outside the specified min-max range
+will be displayed in gray</string>
+        </property>
         <property name="text">
          <string>Out g&amp;rayed</string>
         </property>
@@ -159,8 +169,12 @@
       </item>
       <item>
        <widget class="QCheckBox" name="checkBoxInvisible">
+        <property name="toolTip">
+         <string>Data outside the specified min-max range
+will be displayed with transparency</string>
+        </property>
         <property name="text">
-         <string>Out &amp;invisible</string>
+         <string>Out &amp;transparent</string>
         </property>
         <property name="shortcut">
          <string>Alt+I</string>
@@ -205,7 +219,7 @@
         </property>
        </widget>
       </item>
-     <item row="0" column="3">
+      <item row="0" column="3">
        <spacer>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -213,7 +227,7 @@
         <property name="sizeType">
          <enum>QSizePolicy::Expanding</enum>
         </property>
-        <property name="sizeHint">
+        <property name="sizeHint" stdset="0">
          <size>
           <width>20</width>
           <height>20</height>
@@ -238,6 +252,9 @@
           <width>40</width>
           <height>0</height>
          </size>
+        </property>
+        <property name="toolTip">
+         <string>Number of labels besides the color bar</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -291,6 +308,10 @@
           <height>0</height>
          </size>
         </property>
+        <property name="toolTip">
+         <string>Number of decimals for labels
+besides the color bar</string>
+        </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
@@ -302,7 +323,7 @@
         </property>
        </widget>
       </item>
-      </layout>
+     </layout>
     </widget>
    </item>
    <item>
