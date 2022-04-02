@@ -217,12 +217,15 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         params["ToolRadius"] = self.radius
         params["PocketLastStepover"] = obj.PocketLastStepOver
 
+        # Reference list for PocketMode index value
         Pattern = [
             "ZigZag",
             "Offset",
+            "Spiral",
             "ZigZagOffset",
             "Line",
             "Grid",
+            "Triangle",
         ]
         params["PocketMode"] = Pattern.index(obj.OffsetPattern) + 1
 
