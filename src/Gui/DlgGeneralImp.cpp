@@ -388,7 +388,7 @@ void DlgGeneralImp::recreatePreferencePackMenu()
         ui->PreferencePacks->setItem(row, 1, kind);
         auto button = new QPushButton(icon, tr("Apply"));
         button->setToolTip(tr("Apply the %1 preference pack").arg(QString::fromStdString(pack.first)));
-        connect(button, &QPushButton::clicked, this, [this, &pack]() { onLoadPreferencePackClicked(pack.first); });
+        connect(button, &QPushButton::clicked, this, [this, pack]() { onLoadPreferencePackClicked(pack.first); });
         ui->PreferencePacks->setCellWidget(row, 2, button);
         ++row;
     }
