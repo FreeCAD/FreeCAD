@@ -233,7 +233,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         return params
 
     def opOnDocumentRestored(self, obj):
-        if not hasattr(obj, "PocketLastStepover"):
+        if not hasattr(obj, "PocketLastStepOver"):
             obj.addProperty(
                 "App::PropertyPercent",
                 "PocketLastStepOver",
