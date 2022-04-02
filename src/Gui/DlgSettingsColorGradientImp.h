@@ -44,21 +44,35 @@ class DlgSettingsColorGradientImp : public QDialog
     Q_OBJECT
 
 public:
-    DlgSettingsColorGradientImp( QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags() );
+    DlgSettingsColorGradientImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgSettingsColorGradientImp();
 
     void accept();
 
+    /** @name Color profile */
+    //@{
+    App::ColorGradientProfile getProfile() const;
+    void setProfile(const App::ColorGradientProfile& pro);
+    //@}
+    /** @name Color model */
+    //@{
+    void setColorModelNames(const std::vector<std::string>&);
+    //@}
+    /** @name Parameter range and scale */
+    //@{
+    void setNumberOfDecimals(int);
+    int numberOfDecimals() const;
+    //@}
+private:
     /** @name Color model */
     //@{
     void setColorModel(std::size_t tModel);
     std::size_t colorModel() const;
-    void setColorModelNames(const std::vector<std::string>&);
     //@}
     /** @name Color style */
     //@{
-    void setColorStyle( App::ColorGradient::TStyle tStyle );
-    App::ColorGradient::TStyle colorStyle() const;
+    void setColorStyle( App::ColorBarStyle tStyle );
+    App::ColorBarStyle colorStyle() const;
     //@}
     /** @name Display mode */
     //@{
@@ -69,12 +83,10 @@ public:
     //@}
     /** @name Parameter range and scale */
     //@{
-    void setRange( float fMin, float fMax );
-    void getRange( float& fMin, float& fMax) const;
+    void setRange(float fMin, float fMax);
+    void getRange(float& fMin, float& fMax) const;
     void setNumberOfLabels(int);
     int numberOfLabels() const;
-    void setNumberOfDecimals(int);
-    int numberOfDecimals() const;
     //@}
 
 private:

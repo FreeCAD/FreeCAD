@@ -44,6 +44,11 @@ enum class Visibility {
 
 using VisibilityFlags = Base::Flags<Visibility>;
 
+enum class ColorBarStyle {
+    FLOW,
+    ZERO_BASED
+};
+
 }
 
 ENABLE_BITMASK_OPERATORS(App::Visibility)
@@ -335,63 +340,81 @@ inline std::size_t ColorField::getColorIndex (float fVal) const
     return std::size_t(std::min<int>(std::max<int>(int(fConstant + fAscent * fVal), 0), int(ctColors - 1)));
 }
 
+struct AppExport ColorGradientProfile
+{
+    ColorBarStyle tStyle;
+    float fMin;
+    float fMax;
+    std::size_t ctColors;
+    std::size_t tColorModel;
+    VisibilityFlags visibility;
+
+    ColorGradientProfile();
+    ColorGradientProfile (const ColorGradientProfile &) = default;
+    ColorGradientProfile& operator = (const ColorGradientProfile &) = default;
+
+    bool isEqual(const ColorGradientProfile&) const;
+};
 
 class AppExport ColorGradient
 {
 public:
-    enum TStyle { FLOW, ZERO_BASED };
-
     ColorGradient ();
-    ColorGradient (float fMin, float fMax, std::size_t usCtColors, TStyle tS, VisibilityFlags fl = Visibility::Default);
+    ColorGradient (float fMin, float fMax, std::size_t usCtColors, ColorBarStyle tS, VisibilityFlags fl = Visibility::Default);
     ColorGradient (const ColorGradient &) = default;
     ColorGradient& operator = (const ColorGradient &) = default;
+    const ColorGradientProfile& getProfile() const {
+        return profile;
+    }
+    void setProfile(const ColorGradientProfile& pro);
 
-    void set (float fMin, float fMax, std::size_t usCt, TStyle tS, VisibilityFlags fl);
+    void set (float fMin, float fMax, std::size_t usCt, ColorBarStyle tS, VisibilityFlags fl);
     void setRange (float fMin, float fMax) {
-        set(fMin, fMax, ctColors, tStyle, visibility);
+        set(fMin, fMax, profile.ctColors, profile.tStyle, profile.visibility);
     }
     void getRange (float &rfMin, float &rfMax) const {
-        rfMin = _fMin; rfMax = _fMax;
+        rfMin = profile.fMin;
+        rfMax = profile.fMax;
     }
     bool isOutOfRange(float fVal) const {
-        return ((fVal < _fMin) || (fVal > _fMax));
+        return ((fVal < profile.fMin) || (fVal > profile.fMax));
     }
     std::size_t getCountColors () const {
-        return ctColors;
+        return profile.ctColors;
     }
     void setCountColors (std::size_t usCt) {
-        set(_fMin, _fMax, usCt, tStyle, visibility);
+        set(profile.fMin, profile.fMax, usCt, profile.tStyle, profile.visibility);
     }
-    void setStyle (TStyle tS) {
-        set(_fMin, _fMax, ctColors, tS, visibility);
+    void setStyle (ColorBarStyle tS) {
+        set(profile.fMin, profile.fMax, profile.ctColors, tS, profile.visibility);
     }
     std::size_t getMinColors () const;
-    TStyle getStyle () const {
-        return tStyle;
+    ColorBarStyle getStyle () const {
+        return profile.tStyle;
     }
     void setOutsideGrayed (bool value) {
-        visibility.setFlag(Visibility::Grayed, value);
+        profile.visibility.setFlag(Visibility::Grayed, value);
     }
     bool isOutsideGrayed () const {
-        return visibility.testFlag(Visibility::Grayed);
+        return profile.visibility.testFlag(Visibility::Grayed);
     }
     void setOutsideInvisible (bool value) {
-        visibility.setFlag(Visibility::Invisible, value);
+        profile.visibility.setFlag(Visibility::Invisible, value);
     }
     bool isOutsideInvisible () const {
-        return visibility.testFlag(Visibility::Invisible);
+        return profile.visibility.testFlag(Visibility::Invisible);
     }
     void setColorModel (std::size_t tModel);
     std::size_t getColorModelType () const {
-        return tColorModel;
+        return profile.tColorModel;
     }
     inline const ColorModel& getColorModel () const;
     std::vector<std::string> getColorModelNames() const;
     float getMinValue () const {
-        return _fMin;
+        return profile.fMin;
     }
     float getMaxValue () const {
-        return _fMax;
+        return profile.fMax;
     }
 
     inline Color  getColor (float fVal) const;
@@ -404,12 +427,8 @@ protected:
     void createStandardPacks();
 
 protected:
+    ColorGradientProfile profile;
     ColorField     colorField1, colorField2;
-    TStyle         tStyle;
-    float          _fMin, _fMax;
-    std::size_t    ctColors;
-    VisibilityFlags visibility;
-    std::size_t    tColorModel;
     ColorModelPack currentModelPack;
     std::vector<ColorModelPack> modelPacks;
 
@@ -535,10 +554,10 @@ inline Color ColorGradient::_getColor (float fVal) const
             return Color(0.5f, 0.5f, 0.5f);
     }
 
-    switch (tStyle) {
-    case ZERO_BASED:
+    switch (profile.tStyle) {
+    case ColorBarStyle::ZERO_BASED:
         {
-            if ((_fMin < 0.0f) && (_fMax > 0.0f)) {
+            if ((profile.fMin < 0.0f) && (profile.fMax > 0.0f)) {
                 if (fVal < 0.0f)
                     return colorField1.getColor(fVal);
                 else
@@ -550,7 +569,7 @@ inline Color ColorGradient::_getColor (float fVal) const
         }
 
     default:
-    case FLOW:
+    case ColorBarStyle::FLOW:
         {
             return colorField1.getColor(fVal);
         }
@@ -559,10 +578,10 @@ inline Color ColorGradient::_getColor (float fVal) const
 
 inline std::size_t ColorGradient::getColorIndex (float fVal) const
 {
-    switch (tStyle) {
-    case ZERO_BASED:
+    switch (profile.tStyle) {
+    case ColorBarStyle::ZERO_BASED:
         {
-            if ((_fMin < 0.0f) && (_fMax > 0.0f)) {
+            if ((profile.fMin < 0.0f) && (profile.fMax > 0.0f)) {
                 if (fVal < 0.0f)
                     return colorField1.getColorIndex(fVal);
                 else
@@ -574,7 +593,7 @@ inline std::size_t ColorGradient::getColorIndex (float fVal) const
         }
 
     default:
-    case FLOW:
+    case ColorBarStyle::FLOW:
         {
             return colorField1.getColorIndex(fVal);
         }
@@ -583,10 +602,10 @@ inline std::size_t ColorGradient::getColorIndex (float fVal) const
 
 inline const ColorModel& ColorGradient::getColorModel () const
 {
-    if (tStyle == ZERO_BASED) {
-        if (_fMax <= 0.0f)
+    if (profile.tStyle == ColorBarStyle::ZERO_BASED) {
+        if (profile.fMax <= 0.0f)
             return currentModelPack.bottomModel;
-        else if ( _fMin >= 0.0f )
+        else if ( profile.fMin >= 0.0f )
             return currentModelPack.topModel;
         else
             return currentModelPack.totalModel;

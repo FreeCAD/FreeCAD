@@ -69,6 +69,28 @@ DlgSettingsColorGradientImp::~DlgSettingsColorGradientImp()
     // no need to delete child widgets, Qt does it all for us
 }
 
+App::ColorGradientProfile DlgSettingsColorGradientImp::getProfile() const
+{
+    App::ColorGradientProfile profile;
+    profile.tColorModel = colorModel();
+    profile.tStyle = colorStyle();
+    profile.visibility.setFlag(App::Visibility::Grayed, isOutGrayed());
+    profile.visibility.setFlag(App::Visibility::Invisible, isOutInvisible());
+    profile.ctColors = numberOfLabels();
+    getRange(profile.fMin, profile.fMax);
+    return profile;
+}
+
+void DlgSettingsColorGradientImp::setProfile(const App::ColorGradientProfile& pro)
+{
+    setColorModel(pro.tColorModel);
+    setColorStyle(pro.tStyle);
+    setOutGrayed(pro.visibility.testFlag(App::Visibility::Grayed));
+    setOutInvisible(pro.visibility.testFlag(App::Visibility::Invisible));
+    setNumberOfLabels(pro.ctColors);
+    setRange(pro.fMin, pro.fMax);
+}
+
 void DlgSettingsColorGradientImp::setColorModel(std::size_t index)
 {
     ui->comboBoxModel->setCurrentIndex(index);
@@ -87,22 +109,23 @@ void DlgSettingsColorGradientImp::setColorModelNames(const std::vector<std::stri
     }
 }
 
-void DlgSettingsColorGradientImp::setColorStyle( App::ColorGradient::TStyle tStyle )
+void DlgSettingsColorGradientImp::setColorStyle( App::ColorBarStyle tStyle )
 {
     switch ( tStyle )
     {
-    case App::ColorGradient::FLOW:
+    case App::ColorBarStyle::FLOW:
         ui->radioButtonFlow->setChecked(true);
         break;
-    case App::ColorGradient::ZERO_BASED:
+    case App::ColorBarStyle::ZERO_BASED:
         ui->radioButtonZero->setChecked(true);
         break;
     }
 }
 
-App::ColorGradient::TStyle DlgSettingsColorGradientImp::colorStyle() const
+App::ColorBarStyle DlgSettingsColorGradientImp::colorStyle() const
 {
-    return ui->radioButtonZero->isChecked() ? App::ColorGradient::ZERO_BASED : App::ColorGradient::FLOW;
+    return ui->radioButtonZero->isChecked() ? App::ColorBarStyle::ZERO_BASED
+                                            : App::ColorBarStyle::FLOW;
 }
 
 void DlgSettingsColorGradientImp::setOutGrayed( bool grayed )
@@ -125,7 +148,7 @@ bool DlgSettingsColorGradientImp::isOutInvisible() const
     return ui->checkBoxInvisible->isChecked();
 }
 
-void DlgSettingsColorGradientImp::setRange( float fMin, float fMax )
+void DlgSettingsColorGradientImp::setRange(float fMin, float fMax)
 {
     ui->floatLineEditMax->blockSignals(true);
     ui->floatLineEditMax->setText(QLocale().toString(fMax, 'g', numberOfDecimals()));

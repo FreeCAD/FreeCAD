@@ -168,20 +168,45 @@ void ColorField::interpolate (Color clCol1, std::size_t usInd1, Color clCol2, st
 }
 
 
+ColorGradientProfile::ColorGradientProfile()
+  : tStyle{ColorBarStyle::FLOW}
+  , fMin{}
+  , fMax{}
+  , ctColors{}
+  , tColorModel{}
+  , visibility{Visibility::Default}
+{
+
+}
+
+bool ColorGradientProfile::isEqual(const ColorGradientProfile& cg) const
+{
+    if (tStyle != cg.tStyle)
+        return false;
+    if (fMin != cg.fMin)
+        return false;
+    if (fMax != cg.fMax)
+        return false;
+    if (visibility.testFlag(Visibility::Grayed) !=
+        cg.visibility.testFlag(Visibility::Grayed))
+        return false;
+    if (visibility.testFlag(Visibility::Invisible) !=
+        cg.visibility.testFlag(Visibility::Invisible))
+        return false;
+    if (tColorModel != cg.tColorModel)
+        return false;
+    return true;
+}
+
+
 ColorGradient::ColorGradient ()
-  : tStyle(ZERO_BASED)
-  , visibility(Visibility::Default)
-  , tColorModel(0)
 {
     createStandardPacks();
     setColorModel();
-    set(-1.0f, 1.0f, 13, ZERO_BASED, Visibility::Default);
+    set(-1.0f, 1.0f, 13, ColorBarStyle::ZERO_BASED, Visibility::Default);
 }
 
-ColorGradient::ColorGradient (float fMin, float fMax, std::size_t usCtColors, TStyle tS, VisibilityFlags flags)
-  : tStyle(tS)
-  , visibility(Visibility::Default)
-  , tColorModel(0)
+ColorGradient::ColorGradient (float fMin, float fMax, std::size_t usCtColors, ColorBarStyle tS, VisibilityFlags flags)
 {
     createStandardPacks();
     setColorModel();
@@ -206,41 +231,48 @@ std::vector<std::string> ColorGradient::getColorModelNames() const
     return names;
 }
 
-void ColorGradient::set (float fMin, float fMax, std::size_t usCt, TStyle tS, VisibilityFlags flags)
+void ColorGradient::setProfile(const ColorGradientProfile& pro)
+{
+    profile = pro;
+    setColorModel();
+    rebuild();
+}
+
+void ColorGradient::set (float fMin, float fMax, std::size_t usCt, ColorBarStyle tS, VisibilityFlags flags)
 {
     auto bounds = std::minmax(fMin, fMax);
     if (bounds.second <= bounds.first) {
         throw Base::ValueError("Maximum must be higher than minimum");
     }
 
-    _fMin = bounds.first;
-    _fMax = bounds.second;
-    ctColors = std::max<std::size_t>(usCt, getMinColors());
-    tStyle = tS;
-    visibility = flags;
+    profile.fMin = bounds.first;
+    profile.fMax = bounds.second;
+    profile.ctColors = std::max<std::size_t>(usCt, getMinColors());
+    profile.tStyle = tS;
+    profile.visibility = flags;
     rebuild();
 }
 
 void ColorGradient::rebuild ()
 {
-    switch (tStyle)
+    switch (profile.tStyle)
     {
-        case FLOW:
+    case ColorBarStyle::FLOW:
         {
-            colorField1.set(currentModelPack.totalModel, _fMin, _fMax, ctColors);
+            colorField1.set(currentModelPack.totalModel, profile.fMin, profile.fMax, profile.ctColors);
             break;
         }
-        case ZERO_BASED:
+    case ColorBarStyle::ZERO_BASED:
         {
-            if ((_fMin < 0.0f) && (_fMax > 0.0f))
+            if ((profile.fMin < 0.0f) && (profile.fMax > 0.0f))
             {
-                colorField1.set(currentModelPack.bottomModel, _fMin, 0.0f, ctColors / 2);
-                colorField2.set(currentModelPack.topModel, 0.0f, _fMax, ctColors / 2);
+                colorField1.set(currentModelPack.bottomModel, profile.fMin, 0.0f, profile.ctColors / 2);
+                colorField2.set(currentModelPack.topModel, 0.0f, profile.fMax, profile.ctColors / 2);
             }
-            else if (_fMin >= 0.0f)
-                colorField1.set(currentModelPack.topModel, 0.0f, _fMax, ctColors);
+            else if (profile.fMin >= 0.0f)
+                colorField1.set(currentModelPack.topModel, 0.0f, profile.fMax, profile.ctColors);
             else
-                colorField1.set(currentModelPack.bottomModel, _fMin, 0.0f, ctColors);
+                colorField1.set(currentModelPack.bottomModel, profile.fMin, 0.0f, profile.ctColors);
             break;
         }
     }
@@ -248,13 +280,13 @@ void ColorGradient::rebuild ()
 
 std::size_t ColorGradient::getMinColors () const
 {
-    switch (tStyle)
+    switch (profile.tStyle)
     {
-        case FLOW:
-            return colorField1.getMinColors();
-        case ZERO_BASED:
+    case ColorBarStyle::FLOW:
+        return colorField1.getMinColors();
+    case ColorBarStyle::ZERO_BASED:
         {
-            if ((_fMin < 0.0f) && (_fMax > 0.0f))
+            if ((profile.fMin < 0.0f) && (profile.fMax > 0.0f))
                 return colorField1.getMinColors() + colorField2.getMinColors();
             else
                 return colorField1.getMinColors();
@@ -265,25 +297,25 @@ std::size_t ColorGradient::getMinColors () const
 
 void ColorGradient::setColorModel (std::size_t tModel)
 {
-    tColorModel = tModel;
+    profile.tColorModel = tModel;
     setColorModel();
     rebuild();
 }
 
 void ColorGradient::setColorModel ()
 {
-    if (tColorModel < modelPacks.size())
-        currentModelPack = modelPacks[tColorModel];
+    if (profile.tColorModel < modelPacks.size())
+        currentModelPack = modelPacks[profile.tColorModel];
 
-    switch (tStyle)
+    switch (profile.tStyle)
     {
-    case FLOW:
+    case ColorBarStyle::FLOW:
     {
         colorField1.setColorModel(currentModelPack.totalModel);
         colorField2.setColorModel(currentModelPack.bottomModel);
         break;
     }
-    case ZERO_BASED:
+    case ColorBarStyle::ZERO_BASED:
     {
         colorField1.setColorModel(currentModelPack.topModel);
         colorField2.setColorModel(currentModelPack.bottomModel);

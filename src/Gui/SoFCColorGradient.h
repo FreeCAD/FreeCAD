@@ -88,7 +88,7 @@ protected:
    * Sets the color style of the underlying color gradient to \a tStyle. \a tStyle either can
    * be \c FLOW or \c ZERO_BASED
    */
-  void setColorStyle (App::ColorGradient::TStyle tStyle);
+  void setColorStyle (App::ColorBarStyle tStyle);
   /** Rebuild the gradient bar. */
   void rebuildGradient();
   /** Returns a list of \a count labels within the ranhe [\a fMin, \a fMax].  */

@@ -48,7 +48,7 @@ SO_NODE_SOURCE(SoFCColorGradient)
 /*!
   Constructor.
 */
-SoFCColorGradient::SoFCColorGradient() : _bbox(4.0f, -4.0f, 4.5f, 4.0f), _precision(3)
+SoFCColorGradient::SoFCColorGradient() : _bbox(4.0f, -4.0f, 4.5f, 4.0f), _precision(5)
 {
     SO_NODE_CONSTRUCTOR(SoFCColorGradient);
     coords = new SoCoordinate3;
@@ -56,7 +56,7 @@ SoFCColorGradient::SoFCColorGradient() : _bbox(4.0f, -4.0f, 4.5f, 4.0f), _precis
     labels = new SoSeparator;
     labels->ref();
 
-    _cColGrad.setStyle(App::ColorGradient::FLOW);
+    _cColGrad.setStyle(App::ColorBarStyle::FLOW);
     setColorModel(0);
     setRange(-0.5f, 0.5f, 1);
 }
@@ -181,7 +181,7 @@ std::vector<float> SoFCColorGradient::getMarkerValues(float fMin, float fMax, in
     std::vector<float> labels;
 
     // the middle of the bar is zero
-    if (fMin < 0.0f && fMax > 0.0f && _cColGrad.getStyle() == App::ColorGradient::ZERO_BASED) {
+    if (fMin < 0.0f && fMax > 0.0f && _cColGrad.getStyle() == App::ColorBarStyle::ZERO_BASED) {
         if (count % 2 == 0)
             count++;
         int half = count / 2;
@@ -230,7 +230,7 @@ void SoFCColorGradient::setColorModel(std::size_t index)
     rebuildGradient();
 }
 
-void SoFCColorGradient::setColorStyle (App::ColorGradient::TStyle tStyle)
+void SoFCColorGradient::setColorStyle (App::ColorBarStyle tStyle)
 {
     _cColGrad.setStyle( tStyle );
     rebuildGradient();
@@ -298,32 +298,20 @@ void SoFCColorGradient::customize(SoFCColorBarBase* parentNode)
 {
     QWidget* parent = Gui::getMainWindow()->activeWindow();
     Gui::Dialog::DlgSettingsColorGradientImp dlg(parent);
-
     dlg.setColorModelNames(_cColGrad.getColorModelNames());
-    dlg.setColorModel(_cColGrad.getColorModelType());
-    dlg.setColorStyle(_cColGrad.getStyle());
-    dlg.setOutGrayed(_cColGrad.isOutsideGrayed());
-    dlg.setOutInvisible(_cColGrad.isOutsideInvisible());
-    dlg.setNumberOfLabels(_cColGrad.getCountColors());
+    App::ColorGradientProfile profile = _cColGrad.getProfile();
+    dlg.setProfile(profile);
     dlg.setNumberOfDecimals(_precision);
-    float fMin, fMax;
-    _cColGrad.getRange(fMin, fMax);
-    dlg.setRange(fMin, fMax);
 
     QPoint pos(QCursor::pos());
     pos += QPoint((int)(-1.1 * dlg.width()), (int)(-0.1 * dlg.height()));
     dlg.move( pos );
 
     if (dlg.exec() == QDialog::Accepted) {
-        _cColGrad.setColorModel(dlg.colorModel());
-        _cColGrad.setStyle(dlg.colorStyle());
-        _cColGrad.setOutsideGrayed(dlg.isOutGrayed());
-        _cColGrad.setOutsideInvisible(dlg.isOutInvisible());
-        _cColGrad.setCountColors(dlg.numberOfLabels());
+        App::ColorGradientProfile profileMod = dlg.getProfile();
+        _cColGrad.setProfile(profileMod);
         _precision = dlg.numberOfDecimals();
-        dlg.getRange(fMin, fMax);
-        int dec = dlg.numberOfDecimals();
-        setRange(fMin, fMax, dec);
+        setRange(profileMod.fMin, profileMod.fMax, _precision);
         rebuildGradient();
 
         triggerChange(parentNode);
