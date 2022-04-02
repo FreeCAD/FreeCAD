@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cmath>
+# include <QButtonGroup>
 # include <QDoubleValidator>
 # include <QFontMetrics>
 # include <QLocale>
@@ -76,7 +77,27 @@ DlgSettingsColorGradientImp::~DlgSettingsColorGradientImp()
 
 void DlgSettingsColorGradientImp::setupConnections()
 {
+    QButtonGroup* group = new QButtonGroup(this);
+    group->setExclusive(true);
+    group->addButton(ui->radioButtonFlow);
+    group->addButton(ui->radioButtonZero);
+    connect(group, qOverload<int>(&QButtonGroup::buttonClicked),
+            this, &DlgSettingsColorGradientImp::colorModelChanged);
 
+    connect(ui->comboBoxModel, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &DlgSettingsColorGradientImp::colorModelChanged);
+
+    connect(ui->checkBoxGrayed, &QCheckBox::toggled,
+            this, &DlgSettingsColorGradientImp::colorModelChanged);
+
+    connect(ui->checkBoxInvisible, &QCheckBox::toggled,
+            this, &DlgSettingsColorGradientImp::colorModelChanged);
+
+    connect(ui->floatLineEditMax, &QLineEdit::editingFinished,
+            this, &DlgSettingsColorGradientImp::colorModelChanged);
+
+    connect(ui->floatLineEditMin, &QLineEdit::editingFinished,
+            this, &DlgSettingsColorGradientImp::colorModelChanged);
 }
 
 App::ColorGradientProfile DlgSettingsColorGradientImp::getProfile() const
