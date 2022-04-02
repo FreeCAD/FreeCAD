@@ -70,7 +70,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 (translate("Path_Pocket", "ZigZagOffset"), "ZigZagOffset"),
                 (translate("Path_Pocket", "Line"), "Line"),
                 (translate("Path_Pocket", "Grid"), "Grid"),
-                (translate("Path_Pocket", "Triangle"), "Triangle"),
             ],  # Fill Pattern
         }
 
@@ -217,14 +216,15 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         params["ToolRadius"] = self.radius
         params["PocketLastStepover"] = obj.PocketLastStepOver
 
-        Pattern = [
-            "ZigZag",
-            "Offset",
-            "ZigZagOffset",
-            "Line",
-            "Grid",
-        ]
-        params["PocketMode"] = Pattern.index(obj.OffsetPattern) + 1
+        Pattern = {
+            "ZigZag": 1,
+            "Offset": 2,
+            "ZigZagOffset": 4,
+            "Line": 5,
+            "Grid": 6,
+        }
+
+        params["PocketMode"] = Pattern.get(obj.OffsetPattern, 1)
 
         if obj.SplitArcs:
             params["Explode"] = True
@@ -233,6 +233,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         return params
 
     def opOnDocumentRestored(self, obj):
+        super().opOnDocumentRestored(obj)
         if not hasattr(obj, "PocketLastStepOver"):
             obj.addProperty(
                 "App::PropertyPercent",
