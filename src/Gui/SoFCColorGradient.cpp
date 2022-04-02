@@ -297,15 +297,13 @@ bool SoFCColorGradient::isVisible (float fVal) const
 void SoFCColorGradient::customize(SoFCColorBarBase* parentNode)
 {
     QWidget* parent = Gui::getMainWindow()->activeWindow();
-    Gui::Dialog::DlgSettingsColorGradientImp dlg(parent);
-    dlg.setColorModelNames(_cColGrad.getColorModelNames());
-    App::ColorGradientProfile profile = _cColGrad.getProfile();
-    dlg.setProfile(profile);
+    Gui::Dialog::DlgSettingsColorGradientImp dlg(_cColGrad, parent);
+  //App::ColorGradientProfile profile = _cColGrad.getProfile();
     dlg.setNumberOfDecimals(_precision);
 
     QPoint pos(QCursor::pos());
-    pos += QPoint((int)(-1.1 * dlg.width()), (int)(-0.1 * dlg.height()));
-    dlg.move( pos );
+    pos += QPoint(int(-1.1 * dlg.width()), int(-0.1 * dlg.height()));
+    dlg.move(pos);
 
     if (dlg.exec() == QDialog::Accepted) {
         App::ColorGradientProfile profileMod = dlg.getProfile();

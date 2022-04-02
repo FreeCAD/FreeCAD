@@ -43,7 +43,8 @@ using namespace Gui::Dialog;
  *  Constructs a DlgSettingsColorGradientImp as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-DlgSettingsColorGradientImp::DlgSettingsColorGradientImp( QWidget* parent, Qt::WindowFlags fl )
+DlgSettingsColorGradientImp::DlgSettingsColorGradientImp(const App::ColorGradient& cg,
+                                                         QWidget* parent, Qt::WindowFlags fl)
   : QDialog( parent, fl )
   , ui(new Ui_DlgSettingsColorGradient)
 {
@@ -59,6 +60,10 @@ DlgSettingsColorGradientImp::DlgSettingsColorGradientImp( QWidget* parent, Qt::W
     // assure that the LineEdit is as wide to contain numbers with 4 digits and 6 decimals
     QFontMetrics fm(ui->floatLineEditMax->font());
     ui->floatLineEditMax->setMinimumWidth(QtTools::horizontalAdvance(fm, QString::fromLatin1("-8000.000000")));
+
+    setColorModelNames(cg.getColorModelNames());
+    setProfile(cg.getProfile());
+    setupConnections();
 }
 
 /**
@@ -67,6 +72,11 @@ DlgSettingsColorGradientImp::DlgSettingsColorGradientImp( QWidget* parent, Qt::W
 DlgSettingsColorGradientImp::~DlgSettingsColorGradientImp()
 {
     // no need to delete child widgets, Qt does it all for us
+}
+
+void DlgSettingsColorGradientImp::setupConnections()
+{
+
 }
 
 App::ColorGradientProfile DlgSettingsColorGradientImp::getProfile() const

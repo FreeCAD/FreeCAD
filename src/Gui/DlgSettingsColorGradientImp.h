@@ -44,7 +44,9 @@ class DlgSettingsColorGradientImp : public QDialog
     Q_OBJECT
 
 public:
-    DlgSettingsColorGradientImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    DlgSettingsColorGradientImp(const App::ColorGradient& cg,
+                                QWidget* parent = nullptr,
+                                Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgSettingsColorGradientImp();
 
     void accept();
@@ -54,18 +56,18 @@ public:
     App::ColorGradientProfile getProfile() const;
     void setProfile(const App::ColorGradientProfile& pro);
     //@}
-    /** @name Color model */
-    //@{
-    void setColorModelNames(const std::vector<std::string>&);
-    //@}
     /** @name Parameter range and scale */
     //@{
     void setNumberOfDecimals(int);
     int numberOfDecimals() const;
     //@}
+
 private:
+    void setupConnections();
+
     /** @name Color model */
     //@{
+    void setColorModelNames(const std::vector<std::string>&);
     void setColorModel(std::size_t tModel);
     std::size_t colorModel() const;
     //@}
@@ -88,6 +90,9 @@ private:
     void setNumberOfLabels(int);
     int numberOfLabels() const;
     //@}
+
+Q_SIGNALS:
+    void colorModelChanged();
 
 private:
     std::unique_ptr<Ui_DlgSettingsColorGradient> ui;
