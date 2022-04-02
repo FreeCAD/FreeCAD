@@ -178,7 +178,7 @@ public:
     ColorModelWhiteRed () : ColorModel(3) {
         colors[0] = Color(1, 1, 1);
         colors[1] = Color(1, float(85.0 / 255), 0);
-        colors[2] = Color(0, 1, 0);
+        colors[2] = Color(0, 0, 1);
     }
 };
 
