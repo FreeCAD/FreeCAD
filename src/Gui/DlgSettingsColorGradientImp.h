@@ -58,7 +58,7 @@ public:
     //@}
     /** @name Parameter range and scale */
     //@{
-    void setNumberOfDecimals(int);
+    void setNumberOfDecimals(int, float fMin, float fMax);
     int numberOfDecimals() const;
     //@}
 

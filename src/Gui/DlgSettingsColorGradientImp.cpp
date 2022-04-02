@@ -93,10 +93,10 @@ void DlgSettingsColorGradientImp::setupConnections()
     connect(ui->checkBoxInvisible, &QCheckBox::toggled,
             this, &DlgSettingsColorGradientImp::colorModelChanged);
 
-    connect(ui->floatLineEditMax, &QLineEdit::editingFinished,
+    connect(ui->floatLineEditMax, &QLineEdit::textEdited,
             this, &DlgSettingsColorGradientImp::colorModelChanged);
 
-    connect(ui->floatLineEditMin, &QLineEdit::editingFinished,
+    connect(ui->floatLineEditMin, &QLineEdit::textEdited,
             this, &DlgSettingsColorGradientImp::colorModelChanged);
 }
 
@@ -205,9 +205,10 @@ int DlgSettingsColorGradientImp::numberOfLabels() const
     return ui->spinBoxLabel->value();
 }
 
-void DlgSettingsColorGradientImp::setNumberOfDecimals(int val)
+void DlgSettingsColorGradientImp::setNumberOfDecimals(int val, float fMin, float fMax)
 {
     ui->spinBoxDecimals->setValue(val);
+    setRange(fMin, fMax);
 }
 
 int DlgSettingsColorGradientImp::numberOfDecimals() const

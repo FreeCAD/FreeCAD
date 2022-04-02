@@ -299,7 +299,7 @@ void SoFCColorGradient::customize(SoFCColorBarBase* parentNode)
     QWidget* parent = Gui::getMainWindow()->activeWindow();
     Gui::Dialog::DlgSettingsColorGradientImp dlg(_cColGrad, parent);
     App::ColorGradientProfile profile = _cColGrad.getProfile();
-    dlg.setNumberOfDecimals(_precision);
+    dlg.setNumberOfDecimals(_precision, profile.fMin, profile.fMax);
 
     QPoint pos(QCursor::pos());
     pos += QPoint(int(-1.1 * dlg.width()), int(-0.1 * dlg.height()));
