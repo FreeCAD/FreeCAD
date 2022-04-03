@@ -41,6 +41,7 @@ class TestProfile:
 class TestFeature:
     def __init__(self):
         self.Path = Path.Path()
+        self.Name = "TestFeature"
 
     def addProperty(self, typ, nam, category, tip):
         setattr(self, nam, None)
