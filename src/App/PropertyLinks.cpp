@@ -939,6 +939,11 @@ PropertyLinkSub::~PropertyLinkSub()
 #endif
 }
 
+void PropertyLinkSub::setSyncSubObject(bool enable)
+{
+    _Flags.set((std::size_t)LinkSyncSubObject, enable);
+}
+
 void PropertyLinkSub::setValue(App::DocumentObject * lValue,
         const std::vector<std::string> &SubList, std::vector<ShadowSub> &&shadows)
 {
@@ -1612,6 +1617,11 @@ PropertyLinkSubList::~PropertyLinkSubList()
         }
     }
 #endif
+}
+
+void PropertyLinkSubList::setSyncSubObject(bool enable)
+{
+    _Flags.set((std::size_t)LinkSyncSubObject, enable);
 }
 
 void PropertyLinkSubList::verifyObject(App::DocumentObject* obj, App::DocumentObject* parent)
@@ -2968,12 +2978,18 @@ PropertyXLink::PropertyXLink(bool _allowPartial, PropertyLinkBase *parent)
 {
     setAllowPartial(_allowPartial);
     setAllowExternal(true);
+    setSyncSubObject(true);
     if(parent)
         setContainer(parent->getContainer());
 }
 
 PropertyXLink::~PropertyXLink() {
     unlink();
+}
+
+void PropertyXLink::setSyncSubObject(bool enable)
+{
+    _Flags.set((std::size_t)LinkSyncSubObject, enable);
 }
 
 void PropertyXLink::unlink() {
@@ -3835,10 +3851,16 @@ TYPESYSTEM_SOURCE(App::PropertyXLinkSubList , App::PropertyLinkBase)
 PropertyXLinkSubList::PropertyXLinkSubList()
 {
     _pcScope = LinkScope::Global;
+    setSyncSubObject(true);
 }
 
 PropertyXLinkSubList::~PropertyXLinkSubList()
 {
+}
+
+void PropertyXLinkSubList::setSyncSubObject(bool enable)
+{
+    _Flags.set((std::size_t)LinkSyncSubObject, enable);
 }
 
 int PropertyXLinkSubList::getSize(void) const
