@@ -654,19 +654,13 @@ def p_difference_action(p):
         if (len(p[5]) > 2 ):
            if printverbose: print("Need to Fuse Extra First")
            mycut.Tool = fuse(p[5][1:],'union')
-           checkObjShape(myfuse.Base)
-           checkObjShape(myfuse.Tool)
-           for o in p[5][1:]: 
-               checkObjShape(o)
-               mycut.Tool.Shape = mycut.Tool.cut(o.Shape)
         else :
            mycut.Tool = p[5][1]
-        mycut.Shape = mycut.Base.Shape.cut(mycut.Tool.Shape)
+           checkObjShape(mycut.Tool)
         if gui:
             mycut.Base.ViewObject.hide()
             mycut.Tool.ViewObject.hide()
         if printverbose: print("Push Resulting Cut")
-        mycut.Shape = mycut.Base.Shape.cut(mycut.Tool.Shape)
         p[0] = [mycut]
     if printverbose: print("End Cut")
 
