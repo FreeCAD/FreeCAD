@@ -838,6 +838,11 @@ private:
 };
 
 template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::configureToolWidget() {
+    if(!init) { // Code to be executed only upon initialisation
+        QStringList names = {QStringLiteral("Diagonal corners"), QStringLiteral("Center and corner")};
+        toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
+    }
+
     if(dHandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal){
         toolWidget->setParameterLabel(WParameter::First, QApplication::translate("TaskSketcherTool_p1_rectangle", "x of 1st point"));
         toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("TaskSketcherTool_p2_rectangle", "y of 1st point"));
@@ -855,19 +860,6 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::configureToo
     toolWidget->setCheckboxLabel(WCheckbox::FirstBox, QApplication::translate("TaskSketcherTool_c1_rectangle", "Rounded corners"));
     if (!toolWidget->getCheckboxChecked(WCheckbox::FirstBox)) {
         toolWidget->setParameterVisible(WParameter::Fifth, false);
-    }
-}
-
-template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::setComboBoxesElements() {
-    /*This if is because when the construction mode change by adaptDrawingToComboboxChange, we call reset to change nParameter.
-    But doing so also triggers this function which re-initialize the combo box. Meaning that it reset the combobox index to 0.
-    The following if enables to setComboBoxesElements only if combobox index is 0 (ie if tool starts for the first time (or if tool returns to mode 0 but that's not a problem then)) */
-    if (dHandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal) {
-        std::string str = "Diagonal corners";
-        std::string str2 = "Center and corner";
-        QStringList names;
-        names << QString::fromStdString(str) << QString::fromStdString(str2);
-        toolWidget->setComboboxElements(0, names);
     }
 }
 
@@ -908,17 +900,8 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptDrawing
 }
 
 template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
-    Q_UNUSED(comboboxindex);
-
-    if (value == 0) {
-        dHandler->constructionMethod = DrawSketchHandlerRectangle::ConstructionMethod::Diagonal;
-        //dHandler->setCrosshairCursor("Sketcher_Pointer_Create_Box");
-    }
-    else {
-        dHandler->constructionMethod = DrawSketchHandlerRectangle::ConstructionMethod::CenterAndCorner;
-        //dHandler->setCrosshairCursor("Sketcher_Pointer_Create_Box"); //No icon for center box
-    }
-    dHandler->reset(); //reset of handler to restart.
+     if (comboboxindex == WCombobox::FirstCombo)
+        this->setMode(dHandler->constructionMethod, value);
 }
 
 template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
@@ -2966,7 +2949,10 @@ private:
     }
 
     virtual QString getCrosshairCursorString() const override {
-        return QString::fromLatin1("Sketcher_Pointer_Create_Circle");
+        if (constructionMethod == DrawSketchHandlerCircle::ConstructionMethod::Center)
+            return QString::fromLatin1("Sketcher_Pointer_Create_Circle");
+        else // constructionMethod == DrawSketchHandlerCircle::ConstructionMethod::ThreeRim
+            return QString::fromLatin1("Sketcher_Pointer_Create_3PointCircle");
     }
 
     //reimplement because circle is 2 steps while 3rims is 3 steps
@@ -2987,6 +2973,12 @@ private:
 };
 
 template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::configureToolWidget() {
+
+    if(!init) { // Code to be executed only upon initialisation
+        QStringList names = {QStringLiteral("Center"), QStringLiteral("3 rim points")};
+        toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
+    }
+
     if (dHandler->constructionMethod == DrawSketchHandlerCircle::ConstructionMethod::Center) {
         toolWidget->setParameterLabel(WParameter::First, QApplication::translate("TaskSketcherTool_p1_circle", "x of center"));
         toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("TaskSketcherTool_p2_circle", "y of center"));
@@ -2999,19 +2991,6 @@ template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::configureToolWi
         toolWidget->setParameterLabel(WParameter::Fourth, QApplication::translate("ToolWidgetManager_p4", "y of 2nd point"));
         toolWidget->setParameterLabel(WParameter::Fifth, QApplication::translate("ToolWidgetManager_p5", "x of 3rd point"));
         toolWidget->setParameterLabel(WParameter::Sixth, QApplication::translate("ToolWidgetManager_p6", "y of 3rd point"));
-    }
-}
-
-template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::setComboBoxesElements() {
-    /*This if is because when the construction mode change by adaptDrawingToComboboxChange, we call reset to change nParameter.
-    But doing so also triggers this function which re-initialize the combo box. Meaning that it reset the combobox index to 0.
-    The following if enables to setComboBoxesElements only if combobox index is 0 (ie if tool starts for the first time (or if tool returns to mode 0 but that's not a problem then)) */
-    if (dHandler->constructionMethod == DrawSketchHandlerCircle::ConstructionMethod::Center) {
-        std::string str = "Center";
-        std::string str2 = "3 rim points";
-        QStringList names;
-        names << QString::fromStdString(str) << QString::fromStdString(str2);
-        toolWidget->setComboboxElements(0, names);
     }
 }
 
@@ -3045,20 +3024,11 @@ template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::adaptDrawingToP
 }
 
 template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
-    Q_UNUSED(comboboxindex);
+     if (comboboxindex == WCombobox::FirstCombo) {
+        static std::vector<int> nparameters = {3, 6};
 
-    if (value == 0) {
-        dHandler->constructionMethod = DrawSketchHandlerCircle::ConstructionMethod::Center;
-        dHandler->setCrosshairCursor("Sketcher_Pointer_Create_Circle");
-        nParameter = 3;
+        this->setModeAndAdaptParameters(dHandler->constructionMethod, value, nparameters);
     }
-    else {
-        dHandler->constructionMethod = DrawSketchHandlerCircle::ConstructionMethod::ThreeRim;
-        dHandler->setCrosshairCursor("Sketcher_Pointer_Create_3PointCircle");
-        nParameter = 6;
-    }
-    reset(); //reset the widget to take into account the change of nparameter
-    dHandler->reset(); //reset of handler to restart.
 }
 
 template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
@@ -3482,7 +3452,10 @@ private:
     }
 
     virtual QString getCrosshairCursorString() const override {
-        return QString::fromLatin1("Sketcher_Pointer_Create_Ellipse");
+        if (constructionMethod == DrawSketchHandlerEllipse::ConstructionMethod::Center)
+            return QString::fromLatin1("Sketcher_Pointer_Create_Ellipse");
+        else // constructionMethod == DrawSketchHandlerCircle::ConstructionMethod::ThreeRim
+            return QString::fromLatin1("Sketcher_Pointer_Create_3PointEllipse");
     }
 
 private:
@@ -3499,6 +3472,12 @@ private:
 };
 
 template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::configureToolWidget() {
+
+    if(!init) { // Code to be executed only upon initialisation
+        QStringList names = {QStringLiteral("Center"), QStringLiteral("3 rim points")};
+        toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
+    }
+
     if (dHandler->constructionMethod == DrawSketchHandlerEllipse::ConstructionMethod::Center) {
         toolWidget->setParameterLabel(WParameter::First, QApplication::translate("TaskSketcherTool_p1_ellipse", "x of center"));
         toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("TaskSketcherTool_p2_ellipse", "y of center"));
@@ -3513,19 +3492,6 @@ template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::configureToolW
         toolWidget->setParameterLabel(WParameter::Fourth, QApplication::translate("ToolWidgetManager_p4", "y of 2nd point"));
         toolWidget->setParameterLabel(WParameter::Fifth, QApplication::translate("ToolWidgetManager_p5", "x of 3rd point"));
         toolWidget->setParameterLabel(WParameter::Sixth, QApplication::translate("ToolWidgetManager_p6", "y of 3rd point"));
-    }
-}
-
-template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::setComboBoxesElements() {
-    /*This if is because when the construction mode change by adaptDrawingToComboboxChange, we call reset to change nParameter.
-    But doing so also triggers this function which re-initialize the combo box. Meaning that it reset the combobox index to 0.
-    The following if enables to setComboBoxesElements only if combobox index is 0 (ie if tool starts for the first time (or if tool returns to mode 0 but that's not a problem then)) */
-    if (dHandler->constructionMethod == DrawSketchHandlerEllipse::ConstructionMethod::Center) {
-        std::string str = "Center";
-        std::string str2 = "3 rim points";
-        QStringList names;
-        names << QString::fromStdString(str) << QString::fromStdString(str2);
-        toolWidget->setComboboxElements(0, names);
     }
 }
 
@@ -3565,20 +3531,11 @@ template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::adaptDrawingTo
 }
 
 template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
-    Q_UNUSED(comboboxindex);
+    if (comboboxindex == WCombobox::FirstCombo) {
+        static std::vector<int> nparameters = {5, 6};
 
-    if (value == 0) {
-        dHandler->constructionMethod = DrawSketchHandlerEllipse::ConstructionMethod::Center;
-        dHandler->setCrosshairCursor("Sketcher_Pointer_Create_Ellipse");
-        nParameter = 5;
+        this->setModeAndAdaptParameters(dHandler->constructionMethod, value, nparameters);
     }
-    else {
-        dHandler->constructionMethod = DrawSketchHandlerEllipse::ConstructionMethod::ThreeRim;
-        dHandler->setCrosshairCursor("Sketcher_Pointer_Create_3PointEllipse");
-        nParameter = 6;
-    }
-    reset(); //reset the widget to take into account the change of nparameter
-    dHandler->reset(); //reset of handler to restart.
 }
 
 template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
@@ -4218,7 +4175,10 @@ private:
     }
 
     virtual QString getCrosshairCursorString() const override {
-        return QString::fromLatin1("Sketcher_Pointer_Create_Arc");
+        if (constructionMethod == DrawSketchHandlerArc::ConstructionMethod::Center)
+            return QString::fromLatin1("Sketcher_Pointer_Create_Arc");
+        else // constructionMethod == DrawSketchHandlerArc::ConstructionMethod::ThreeRim
+            return QString::fromLatin1("Sketcher_Pointer_Create_3PointArc");
     }
 
 private:
@@ -4236,6 +4196,11 @@ private:
 };
 
 template <> void DrawSketchHandlerArcBase::ToolWidgetManager::configureToolWidget() {
+    if(!init) { // Code to be executed only upon initialisation
+        QStringList names = {QStringLiteral("Center"), QStringLiteral("3 rim points")};
+        toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
+    }
+
     if (dHandler->constructionMethod == DrawSketchHandlerArc::ConstructionMethod::Center) {
         toolWidget->setParameterLabel(WParameter::First, QApplication::translate("TaskSketcherTool_p1_arc", "x of center"));
         toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("TaskSketcherTool_p2_arc", "y of center"));
@@ -4255,19 +4220,6 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::configureToolWidge
         toolWidget->setParameterLabel(WParameter::Fourth, QApplication::translate("ToolWidgetManager_p4", "y of 2nd point"));
         toolWidget->setParameterLabel(WParameter::Fifth, QApplication::translate("ToolWidgetManager_p5", "x of 3rd point"));
         toolWidget->setParameterLabel(WParameter::Sixth, QApplication::translate("ToolWidgetManager_p6", "y of 3rd point"));
-    }
-}
-
-template <> void DrawSketchHandlerArcBase::ToolWidgetManager::setComboBoxesElements() {
-    /*This IF is because when the construction mode change by adaptDrawingToComboboxChange, we call reset to change nParameter.
-    But doing so also triggers this function which re-initialize the combo box. Meaning that it reset the combobox index to 0.
-    The following if enables to setComboBoxesElements only if combobox index is 0 (ie if tool starts for the first time (or if tool returns to mode 0 but that's not a problem then)) */
-    if (dHandler->constructionMethod == DrawSketchHandlerArc::ConstructionMethod::Center) {
-        std::string str = "Center";
-        std::string str2 = "3 rim points";
-        QStringList names;
-        names << QString::fromStdString(str) << QString::fromStdString(str2);
-        toolWidget->setComboboxElements(0, names);
     }
 }
 
@@ -4307,21 +4259,11 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::adaptDrawingToPara
 }
 
 template <> void DrawSketchHandlerArcBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
-    Q_UNUSED(comboboxindex);
+     if (comboboxindex == WCombobox::FirstCombo) {
+        static std::vector<int> nparameters = {5, 6};
 
-    if (value == 0) {
-        dHandler->constructionMethod = DrawSketchHandlerArc::ConstructionMethod::Center;
-        dHandler->setCrosshairCursor("Sketcher_Pointer_Create_Arc");
-        nParameter = 5;
-
+        this->setModeAndAdaptParameters(dHandler->constructionMethod, value, nparameters);
     }
-    else {
-        dHandler->constructionMethod = DrawSketchHandlerArc::ConstructionMethod::ThreeRim;
-        dHandler->setCrosshairCursor("Sketcher_Pointer_Create_3PointArc");
-        nParameter = 6;
-    }
-    reset(); //reset the widget to take into account the change of nparameter
-    dHandler->reset(); //reset of handler to restart.
 }
 
 template <> void DrawSketchHandlerArcBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
@@ -6854,6 +6796,12 @@ private:
 };
 
 template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::configureToolWidget() {
+
+    if(!init) { // Code to be executed only upon initialisation
+        QStringList names = {QStringLiteral("Fillet"), QStringLiteral("Chamfer")};
+        toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
+    }
+
     toolWidget->setParameterLabel(WParameter::First, QApplication::translate("TaskSketcherTool_p1_fillet", "Radius"));
     if (dHandler->constructionMethod == DrawSketchHandlerFillet::ConstructionMethod::Chamfer) {
         toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("TaskSketcherTool_p2_fillet", "Number of corners"));
@@ -6862,19 +6810,6 @@ template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::configureToolWi
     toolWidget->setCheckboxLabel(WCheckbox::FirstBox, QApplication::translate("TaskSketcherTool_c1_fillet", "Preserve corner and most constraints"));
     toolWidget->setCheckboxPrefEntry(WCheckbox::FirstBox, "PreserveFilletChamferCorner");
     toolWidget->setCheckboxLabel(WCheckbox::SecondBox, QApplication::translate("TaskSketcherTool_c2_fillet", "Inward"));
-}
-
-template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::setComboBoxesElements() {
-    /*This if is because when the construction mode change by adaptDrawingToComboboxChange, we call reset to change nParameter.
-    But doing so also triggers this function which re-initialize the combo box. Meaning that it reset the combobox index to 0.
-    The following if enables to setComboBoxesElements only if combobox index is 0 (ie if tool starts for the first time (or if tool returns to mode 0 but that's not a problem then)) */
-    if (dHandler->constructionMethod == DrawSketchHandlerFillet::ConstructionMethod::Fillet) {
-        std::string str = "Fillet";
-        std::string str2 = "Chamfer";
-        QStringList names;
-        names << QString::fromStdString(str) << QString::fromStdString(str2);
-        toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
-    }
 }
 
 template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
@@ -6898,21 +6833,11 @@ template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::adaptDrawingToP
 }
 
 template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
-    Q_UNUSED(comboboxindex);
+     if (comboboxindex == WCombobox::FirstCombo) {
+        static std::vector<int> nparameters = {1, 2};
 
-    if (value == 0) {
-        dHandler->constructionMethod = DrawSketchHandlerFillet::ConstructionMethod::Fillet;
-        dHandler->setCrosshairCursor("Sketcher_Pointer_Create_Fillet");
-        nParameter = 1;
+        this->setModeAndAdaptParameters(dHandler->constructionMethod, value, nparameters);
     }
-    else {
-        dHandler->constructionMethod = DrawSketchHandlerFillet::ConstructionMethod::Chamfer;
-        //Todo: make chamfer cursor icon?
-        dHandler->setCrosshairCursor("Sketcher_Pointer_Create_Fillet");
-        nParameter = 2;
-    }
-    reset(); //reset the widget to take into account the change of nparameter
-    dHandler->reset(); //reset of handler to restart.
 }
 
 template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::adaptDrawingToCheckboxChange(int checkboxindex, bool value) {
@@ -7955,6 +7880,11 @@ private:
 };
 
 template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::configureToolWidget() {
+    if(!init) { // Code to be executed only upon initialisation
+        QStringList names = {QStringLiteral("Box"), QStringLiteral("Arc")};
+        toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
+    }
+
     toolWidget->setParameterEnabled(WParameter::First, false);
     toolWidget->setParameterEnabled(WParameter::Second, false);
     toolWidget->setParameterEnabled(WParameter::Third, false);
@@ -7964,19 +7894,6 @@ template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::configureToolWi
         toolWidget->setParameterLabel(WParameter::Third, QApplication::translate("TaskSketcherTool_p3_insert", "Insert depth"));
     else
         toolWidget->setParameterLabel(WParameter::Third, QApplication::translate("TaskSketcherTool_p3_insert", "Distance of center to line"));
-}
-
-template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::setComboBoxesElements() {
-    /*This if is because when the construction mode change by adaptDrawingToComboboxChange, we call reset to change nParameter.
-    But doing so also triggers this function which re-initialize the combo box. Meaning that it reset the combobox index to 0.
-    The following if enables to setComboBoxesElements only if combobox index is 0 (ie if tool starts for the first time (or if tool returns to mode 0 but that's not a problem then)) */
-    if (dHandler->constructionMethod == DrawSketchHandlerInsert::ConstructionMethod::Box) {
-        std::string str = "Box";
-        std::string str2 = "Arc";
-        QStringList names;
-        names << QString::fromStdString(str) << QString::fromStdString(str2);
-        toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
-    }
 }
 
 template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
@@ -7991,15 +7908,8 @@ template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::adaptDrawingToP
 }
 
 template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
-    Q_UNUSED(comboboxindex)
-
-    if (value == 0) {
-        dHandler->constructionMethod = DrawSketchHandlerInsert::ConstructionMethod::Box;
-    }
-    else {
-        dHandler->constructionMethod = DrawSketchHandlerInsert::ConstructionMethod::Arc;
-    }
-    dHandler->reset(); //reset of handler to restart.
+     if (comboboxindex == WCombobox::FirstCombo)
+        this->setMode(dHandler->constructionMethod, value);
 }
 
 template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
@@ -9576,10 +9486,18 @@ private:
     }
 
     virtual QString getCrosshairCursorString() const override {
-        if (geometryCreationMode)
-            return QString::fromLatin1("Sketcher_CreateArcSlot_Constr");
-        else
-            return QString::fromLatin1("Sketcher_CreateArcSlot");
+        if(constructionMethod == DrawSketchHandlerArcSlot::ConstructionMethod::ArcSlot) {
+            if (geometryCreationMode)
+                return QString::fromLatin1("Sketcher_CreateArcSlot_Constr");
+            else
+                return QString::fromLatin1("Sketcher_CreateArcSlot");
+        }
+        else { // constructionMethod == DrawSketchHandlerArcSlot::ConstructionMethod::RectangleSlot
+           if (geometryCreationMode)
+                return QString::fromLatin1("Sketcher_CreateRectangleSlot_Constr");
+            else
+                return QString::fromLatin1("Sketcher_CreateRectangleSlot");
+        }
     }
 
 private:
@@ -9590,6 +9508,11 @@ private:
 };
 
 template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::configureToolWidget() {
+    if(!init) { // Code to be executed only upon initialisation
+        QStringList names = {QStringLiteral("Arc ends"), QStringLiteral("Flat ends")};
+        toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
+    }
+
     toolWidget->setParameterLabel(WParameter::First, QApplication::translate("TaskSketcherTool_p1_arcSlot", "x of center"));
     toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("TaskSketcherTool_p2_arcSlot", "y of center"));
     toolWidget->setParameterLabel(WParameter::Third, QApplication::translate("TaskSketcherTool_p3_arcSlot", "Radius"));
@@ -9601,19 +9524,6 @@ template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::configureToolW
 
     toolWidget->setNoticeVisible(true);
     toolWidget->setNoticeText(QApplication::translate("TaskSketcherTool_notice_arcSlot", "Press Ctrl to snap angle at 5° steps."));
-}
-
-template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::setComboBoxesElements() {
-    /*This IF is because when the construction mode change by adaptDrawingToComboboxChange, we call reset to change nParameter.
-    But doing so also triggers this function which re-initialize the combo box. Meaning that it reset the combobox index to 0.
-    The following if enables to setComboBoxesElements only if combobox index is 0 (ie if tool starts for the first time (or if tool returns to mode 0 but that's not a problem then)) */
-    if (dHandler->constructionMethod == DrawSketchHandlerArcSlot::ConstructionMethod::ArcSlot) {
-        std::string str = "Arc ends";
-        std::string str2 = "Flat ends";
-        QStringList names;
-        names << QString::fromStdString(str) << QString::fromStdString(str2);
-        toolWidget->setComboboxElements(0, names);
-    }
 }
 
 template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
@@ -9643,24 +9553,8 @@ template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::adaptDrawingTo
 }
 
 template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
-    Q_UNUSED(comboboxindex)
-
-    if (value == 0) {
-        dHandler->constructionMethod = DrawSketchHandlerArcSlot::ConstructionMethod::ArcSlot;
-        if(geometryCreationMode)
-            dHandler->setCrosshairCursor("Sketcher_CreateArcSlot_Constr");
-        else
-            dHandler->setCrosshairCursor("Sketcher_CreateArcSlot");
-
-    }
-    else {
-        dHandler->constructionMethod = DrawSketchHandlerArcSlot::ConstructionMethod::RectangleSlot;
-        if (geometryCreationMode)
-            dHandler->setCrosshairCursor("Sketcher_CreateRectangleSlot_Constr");
-        else
-            dHandler->setCrosshairCursor("Sketcher_CreateRectangleSlot");
-    }
-    dHandler->reset(); //reset of handler to restart.
+     if (comboboxindex == WCombobox::FirstCombo)
+        this->setMode(dHandler->constructionMethod, value);
 }
 
 template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {

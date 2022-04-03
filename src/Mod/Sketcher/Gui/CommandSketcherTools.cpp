@@ -4684,6 +4684,11 @@ private:
 };
 
 template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::configureToolWidget() {
+    if(!init) { // Code to be executed only upon initialisation
+        QStringList names = {QStringLiteral("Arc"), QStringLiteral("Intersection")};
+        toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
+    }
+
     toolWidget->setParameterLabel(WParameter::First, QApplication::translate("TaskSketcherTool_p1_offset", "Offset length"));
 
     toolWidget->setCheckboxLabel(WCheckbox::FirstBox, QApplication::translate("TaskSketcherTool_c1_offset", "Delete original geometries"));
@@ -4691,19 +4696,6 @@ template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::configureToolWi
 
     toolWidget->setNoticeVisible(true);
     toolWidget->setNoticeText(QApplication::translate("Offset_1", "Positive offset length is outward, negative inward."));
-}
-
-template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::setComboBoxesElements() {
-    /*This if is because when the construction mode change by adaptDrawingToComboboxChange, we call reset to change nParameter.
-    But doing so also triggers this function which re-initialize the combo box. Meaning that it reset the combobox index to 0.
-    The following if enables to setComboBoxesElements only if combobox index is 0 (ie if tool starts for the first time (or if tool returns to mode 0 but that's not a problem then)) */
-    if (dHandler->joinMode == DrawSketchHandlerOffset::JoinMode::Arc) {
-        std::string str = "Arc";
-        std::string str2 = "Intersection";
-        QStringList names;
-        names << QString::fromStdString(str) << QString::fromStdString(str2);
-        toolWidget->setComboboxElements(0, names);
-    }
 }
 
 template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
@@ -4729,13 +4721,8 @@ template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::adaptDrawingToC
 }
 
 template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
-    Q_UNUSED(comboboxindex)
-
-    if (value == 0) {
-        dHandler->joinMode = DrawSketchHandlerOffset::JoinMode::Arc;
-    }
-    else {
-        dHandler->joinMode = DrawSketchHandlerOffset::JoinMode::Intersection;
+    if (comboboxindex == WCombobox::FirstCombo) {
+        this->setMode(dHandler->joinMode, value);
     }
 }
 

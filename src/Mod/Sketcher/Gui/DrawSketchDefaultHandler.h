@@ -179,7 +179,8 @@ template < typename HandlerT,         // The geometry tool for which the templat
 class DrawSketchDefaultHandler: public DrawSketchHandler, public StateMachine<SelectModeT>
 {
 public:
-    DrawSketchDefaultHandler():  EditCurve(PInitEditCurveSize)
+    DrawSketchDefaultHandler():   initialEditCurveSize(PInitEditCurveSize)
+                                , EditCurve(PInitEditCurveSize)
                                 ,sugConstraints(PInitAutoConstraintSize)
     {
         applyCursor();
@@ -261,12 +262,11 @@ protected:
     * to initial size. Reapplies the cursor bitmap.
     */
     void reset() {
-        size_t sizeOfEditCurve = EditCurve.size();
         EditCurve.clear();
         drawEdit(EditCurve);
 
         ModeStateMachine::reset();
-        EditCurve.resize(sizeOfEditCurve);
+        EditCurve.resize(initialEditCurveSize);
         for(auto & ac : sugConstraints)
             ac.clear();
 
@@ -332,6 +332,10 @@ protected:
     //@}
 
 protected:
+    // The initial size may need to change in some tools due to the configuration of the tool, so resetting may lead to a
+    // different number than the compiled time value
+    int initialEditCurveSize;
+
     std::vector<Base::Vector2d> EditCurve;
     std::vector<std::vector<AutoConstraint>> sugConstraints;
 

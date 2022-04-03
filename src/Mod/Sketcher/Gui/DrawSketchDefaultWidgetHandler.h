@@ -112,6 +112,7 @@ private:
         SketcherToolDefaultWidget* toolWidget;
         DrawSketchDefaultWidgetHandler * handler; // used to access private implementations
         HandlerT * dHandler; // real derived type
+        bool init; // returns true if the widget has been configured
 
         using Connection = boost::signals2::connection;
 
@@ -127,7 +128,7 @@ private:
         using SelectMode = SelectModeT;
 
     public:
-        ToolWidgetManager(DrawSketchDefaultWidgetHandler * dshandler):handler(dshandler), dHandler(static_cast<HandlerT *>(dshandler)){}
+        ToolWidgetManager(DrawSketchDefaultWidgetHandler * dshandler):handler(dshandler), dHandler(static_cast<HandlerT *>(dshandler)), init(false){}
 
         ~ToolWidgetManager(){
             connectionParameterValueChanged.disconnect();
@@ -147,6 +148,7 @@ private:
             connectionComboboxSelectionChanged = toolWidget->registerComboboxSelectionChanged(boost::bind(&ToolWidgetManager::comboboxSelectionChanged, this, bp::_1, bp::_2));
 
             reset();
+            init = true;
         }
 
         void reset() {
@@ -158,8 +160,6 @@ private:
             toolWidget->initNParameters(nParameter);
             toolWidget->initNCheckboxes(nCheckbox);
             toolWidget->initNComboboxes(nCombobox);
-
-            setComboBoxesElements();
 
             configureToolWidget();
         }
@@ -221,7 +221,6 @@ private:
 
         /// function to create constraints based on widget information.
         void addConstraints() {}
-        void setComboBoxesElements() {}
         //@}
 
         /** @name functions which MAY need to be specialised */
@@ -730,6 +729,42 @@ private:
         }
         //@}
 
+    private:
+        /** @name helper functions */
+        //@{
+            /// function to assist in adaptDrawingToComboboxChange specialisation
+            /// assigns the modevalue to the modeenum and updates the number of parameters according to map
+            /// it also triggers an update of the cursor
+            template <typename T>
+            void setModeAndAdaptParameters(T & modeenum, int modevalue, const std::vector<int> & parametersmap) {
+                if (modevalue < static_cast<int>(parametersmap.size())) {
+                    auto mode = static_cast<T>(modevalue);
+
+                    nParameter = parametersmap[modevalue];
+
+                    modeenum = mode;
+
+                    dHandler->updateCursor();
+
+                    reset(); //reset the widget to take into account the change of nparameter
+                    dHandler->reset(); //reset of handler to restart.
+                }
+            }
+
+            /// function to assist in adaptDrawingToComboboxChange specialisation
+            /// assigns the modevalue to the modeenum
+            /// it also triggers an update of the cursor
+            template <typename T>
+            void setMode(T & modeenum, int modevalue) {
+                auto mode = static_cast<T>(modevalue);
+
+                modeenum = mode;
+
+                dHandler->updateCursor();
+
+                dHandler->reset(); //reset of handler to restart.
+            }
+        //@}
      };
 
 public:
