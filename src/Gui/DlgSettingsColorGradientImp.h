@@ -96,7 +96,6 @@ Q_SIGNALS:
 
 private:
     std::unique_ptr<Ui_DlgSettingsColorGradient> ui;
-    QDoubleValidator* validator;
 };
 
 } // namespace Dialog

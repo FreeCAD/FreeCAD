@@ -315,7 +315,12 @@ void SoFCColorGradient::customize(SoFCColorBarBase* parentNode)
     };
     QObject::connect(&dlg, &Gui::Dialog::DlgSettingsColorGradientImp::colorModelChanged,
                      [&] {
-        applyProfile(dlg.getProfile());
+        try {
+            applyProfile(dlg.getProfile());
+        }
+        catch (const Base::Exception& e) {
+            e.ReportException();
+        }
     });
 
     if (dlg.exec() != QDialog::Accepted) {

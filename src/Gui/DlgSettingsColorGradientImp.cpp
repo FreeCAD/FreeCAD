@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cmath>
+# include <limits>
 # include <QButtonGroup>
 # include <QDoubleValidator>
 # include <QFontMetrics>
@@ -50,14 +51,20 @@ DlgSettingsColorGradientImp::DlgSettingsColorGradientImp(const App::ColorGradien
   , ui(new Ui_DlgSettingsColorGradient)
 {
     ui->setupUi(this);
+    ui->spinBoxDecimals->setMaximum(std::numeric_limits<float>::digits10);
+
     // remove the automatic help button in dialog title since we don't use it
     setWindowFlag(Qt::WindowContextHelpButtonHint, false);
+
     // the elementary charge is 1.6e-19, since such values might be the result of
     // simulations, use this as boundary for a scientific validator
-    validator = new QDoubleValidator(-2e19, 2e19, ui->spinBoxDecimals->maximum(), this);
-    validator->setNotation(QDoubleValidator::ScientificNotation);
-    ui->floatLineEditMax->setValidator(validator);
-    ui->floatLineEditMin->setValidator(validator);
+    QDoubleValidator* maxValidator = new QDoubleValidator(-2e19, 2e19, ui->spinBoxDecimals->maximum(), this);
+    maxValidator->setNotation(QDoubleValidator::ScientificNotation);
+    ui->floatLineEditMax->setValidator(maxValidator);
+    QDoubleValidator* minValidator = new QDoubleValidator(-2e19, 2e19, ui->spinBoxDecimals->maximum(), this);
+    minValidator->setNotation(QDoubleValidator::ScientificNotation);
+    ui->floatLineEditMin->setValidator(minValidator);
+
     // assure that the LineEdit is as wide to contain numbers with 4 digits and 6 decimals
     QFontMetrics fm(ui->floatLineEditMax->font());
     ui->floatLineEditMax->setMinimumWidth(QtTools::horizontalAdvance(fm, QString::fromLatin1("-8000.000000")));
