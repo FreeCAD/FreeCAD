@@ -4341,7 +4341,7 @@ void PropertyXLinkSubList::getLinks(std::vector<App::DocumentObject *> &objs,
         for(auto &l : _Links) {
             auto obj = l.getValue();
             if(obj && obj->getNameInDocument())
-                count += l.getSubValues().size();
+                count += std::max((int)l.getSubValues().size(), 1);
         }
         if(!count) {
             objs.reserve(objs.size()+_Links.size());
@@ -4358,7 +4358,10 @@ void PropertyXLinkSubList::getLinks(std::vector<App::DocumentObject *> &objs,
         for(auto &l : _Links) {
             auto obj = l.getValue();
             if(obj && obj->getNameInDocument()) {
-                for(auto &sub : l.getSubValues(newStyle)) {
+                auto subnames = l.getSubValues(newStyle);
+                if (subnames.empty())
+                    subnames.push_back("");
+                for(auto &sub : subnames) {
                     objs.push_back(obj);
                     subs->push_back(std::move(sub));
                 }
