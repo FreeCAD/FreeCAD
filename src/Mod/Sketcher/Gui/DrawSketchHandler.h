@@ -178,6 +178,7 @@ protected:
     void setSvgCursor(const QString &svgName, int x, int y,
                       const std::map<unsigned long, unsigned long>& colorMapping = std::map<unsigned long, unsigned long>());
     void addCursorTail(std::vector<QPixmap> &pixmaps);
+    void updateCursor();
     void unsetCursor(void);
     void applyCursor(void);
     void applyCursor(QCursor &newCursor);
