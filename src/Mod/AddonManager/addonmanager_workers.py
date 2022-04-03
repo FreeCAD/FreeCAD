@@ -1326,7 +1326,7 @@ class DependencyInstallationWorker(QtCore.QThread):
             if QtCore.QThread.currentThread().isInterruptionRequested():
                 return
             proc = subprocess.run(
-                [python_exe, "-m", "pip", "install", "--target", vendor_path, pymod],
+                [python_exe, "-m", "pip", "install", "--disable-pip-version-check", "--target", vendor_path, pymod],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
