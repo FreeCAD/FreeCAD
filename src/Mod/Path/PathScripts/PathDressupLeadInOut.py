@@ -179,6 +179,10 @@ class ObjectDressup:
         obj.IncludeLayers = True
 
     def execute(self, obj):
+        if PathUtils.isDressupCancelled(obj):
+            PathLog.debug("LeadInOut Dressup cancelled")
+            return
+
         if not obj.Base:
             return
         if not obj.Base.isDerivedFrom("Path::Feature"):
@@ -633,6 +637,21 @@ class ObjectDressup:
 class TaskDressupLeadInOut(SimpleEditPanel):
     _transaction_name = "Edit LeadInOut Dress-up"
     _ui_file = ":/panels/DressUpLeadInOutEdit.ui"
+
+    def abort(self):
+        """abort() overwritten here to include task panel cancel action"""
+        FreeCAD.ActiveDocument.abortTransaction()
+        # Set flag to cancel dressup execution
+        PathUtils.cancelExecution(self.obj.Name)
+        self.cleanup(True)
+
+    def reject(self):
+        """reject() overwritten here to include task panel cancel action"""
+        FreeCAD.ActiveDocument.abortTransaction()
+        # Set flag to cancel dressup execution
+        PathUtils.cancelExecution(self.obj.Name)
+        FreeCADGui.Control.closeDialog()
+        FreeCAD.ActiveDocument.recompute()
 
     def setupUi(self):
         self.connectWidget("LeadIn", self.form.chkLeadIn)

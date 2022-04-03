@@ -373,6 +373,10 @@ class ObjectDressup:
         return (results, replace)
 
     def execute(self, obj):
+        if PathUtils.isDressupCancelled(obj):
+            # PathLog.debug("Dragknife Dressup cancelled")  # PathLog module unavailable
+            return
+
         newpath = []
         global currLocation
 
@@ -512,6 +516,8 @@ class TaskPanel:
 
     def reject(self):
         FreeCAD.ActiveDocument.abortTransaction()
+        # Set flag to cancel dressup execution
+        PathUtils.cancelExecution(self.obj.Name)
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
 

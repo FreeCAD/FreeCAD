@@ -1230,6 +1230,10 @@ class ObjectTagDressup:
         return (tags, positions, disabled)
 
     def execute(self, obj):
+        if PathUtils.isDressupCancelled(obj):
+            PathLog.debug("Holding Tags Dressup cancelled")
+            return
+
         # import cProfile
         # pr = cProfile.Profile()
         # pr.enable()

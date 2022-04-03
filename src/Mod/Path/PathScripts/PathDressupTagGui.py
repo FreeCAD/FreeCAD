@@ -69,7 +69,7 @@ class PathDressupTagTaskPanel:
             self.jvoVisible = jvoVisibility
         self.pt = FreeCAD.Vector(0, 0, 0)
 
-        self.isDirty = True
+        self.isDirty = False  # True
         self.buttonBox = None
         self.tags = None
         self.Positions = None
@@ -95,10 +95,16 @@ class PathDressupTagTaskPanel:
 
     def abort(self):
         FreeCAD.ActiveDocument.abortTransaction()
+        if self.isDirty:
+            # Set flag to cancel dressup execution
+            PathUtils.cancelExecution(self.obj.Name)
         self.cleanup(False)
 
     def reject(self):
         FreeCAD.ActiveDocument.abortTransaction()
+        if self.isDirty:
+            # Set flag to cancel dressup execution
+            PathUtils.cancelExecution(self.obj.Name)
         self.cleanup(True)
 
     def accept(self):

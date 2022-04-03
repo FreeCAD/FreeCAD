@@ -1211,6 +1211,9 @@ class TaskPanel(object):
             except Exception as ee:
                 PathLog.debug("{}\n".format(ee))
             FreeCAD.ActiveDocument.commitTransaction()
+        else:
+            PathUtils.cancelExecution(self.obj.Name)
+
         self.cleanup(resetEdit)
         return True
 

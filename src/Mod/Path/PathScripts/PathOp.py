@@ -767,6 +767,10 @@ class ObjectOp(object):
         """
         PathLog.track()
 
+        if PathUtils.isOperationCancelled(obj):
+            PathLog.debug("Operation cancelled")
+            return
+
         if not obj.Active:
             path = Path.Path("(inactive operation)")
             obj.Path = path

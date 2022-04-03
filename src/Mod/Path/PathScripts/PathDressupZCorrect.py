@@ -154,6 +154,10 @@ class ObjectDressup:
 
     def execute(self, obj):
 
+        if PathUtils.isDressupCancelled(obj):
+            PathLog.debug("Z Correct Dressup cancelled")
+            return
+
         sampleD = obj.SegInterpolate.Value
         curveD = obj.ArcInterpolate.Value
 
@@ -237,6 +241,8 @@ class TaskPanel:
 
     def reject(self):
         FreeCAD.ActiveDocument.abortTransaction()
+        # Set flag to cancel dressup execution
+        PathUtils.cancelExecution(self.obj.Name)
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
 

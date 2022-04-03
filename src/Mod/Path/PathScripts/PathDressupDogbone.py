@@ -887,6 +887,10 @@ class ObjectDressup(object):
         return commands, bones
 
     def execute(self, obj, forReal=True):
+        if PathUtils.isDressupCancelled(obj):
+            PathLog.debug("Dogbone Dressup cancelled")
+            return
+
         if not obj.Base:
             return
         if forReal and not obj.Base.isDerivedFrom("Path::Feature"):
@@ -1133,6 +1137,8 @@ class TaskPanel(object):
 
     def reject(self):
         FreeCAD.ActiveDocument.abortTransaction()
+        # Set flag to cancel dressup execution
+        PathUtils.cancelExecution(self.obj.Name)
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.Selection.removeObserver(self.s)

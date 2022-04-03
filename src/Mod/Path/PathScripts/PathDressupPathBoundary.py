@@ -103,6 +103,10 @@ class DressupPathBoundary(object):
         return True
 
     def execute(self, obj):
+        if PathUtils.isDressupCancelled(obj):
+            PathLog.debug("Boundary Dressup cancelled")
+            return
+
         pb = PathBoundary(obj.Base, obj.Stock.Shape, obj.Inside)
         obj.Path = pb.execute()
 

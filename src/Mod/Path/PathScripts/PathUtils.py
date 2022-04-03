@@ -827,7 +827,7 @@ def RtoIJ(startpoint, command):
     perp = chord.cross(Vector(0, 0, 1))
 
     # use pythagoras to get the perp length
-    plength = math.sqrt(radius**2 - (chord.Length / 2) ** 2)
+    plength = math.sqrt(radius ** 2 - (chord.Length / 2) ** 2)
     perp.normalize()
     perp.scale(plength, plength, plength)
 
@@ -843,3 +843,99 @@ def RtoIJ(startpoint, command):
     newcommand.Parameters = params
 
     return newcommand
+
+
+# Helper functions to manage cancellation of `execute()` method in ops and dressups
+def cancelAllOps(job):
+    """cancelAllOps()... Method to flag all operations, including their bases, as cancelled for execution."""
+    PathLog.debug("doNotRecomputeOps")
+    if not hasattr(FreeCAD, "pathCancelExecution"):
+        FreeCAD.pathCancelExecution = []
+    for op in job.Proxy.allOperations():
+        cancelExecution(op.Name)
+
+
+def isOperationCancelled(obj):
+    """isOperationCancelled(obj)  Return True if operation object has been cancelled."""
+    cancelList = getattr(FreeCAD, "pathCancelExecution", [])
+
+    if obj.Name in cancelList and hasattr(obj, "InList"):
+        if obj.InList[0].Name == "Operations":
+            # Reset cancel flag if direct child of Operations group
+            idx = cancelList.index(obj.Name)
+            cancelList.pop(idx)
+        PathLog.info(f"{obj.Name} cancelled")
+        return True
+
+    # Reset cancel names
+    FreeCAD.pathCancelExecution = []
+    # PathLog.debug(f"{obj.Name} not cancelled")
+    return False
+
+
+def isDressupCancelled(obj):
+    """isDressupCancelled(obj)  Return True if dressup object has been cancelled,
+    and manage the related `pathCancelExecution` list."""
+    # PathLog.debug(f"isDressupCancelled({obj.Name}) for \n{FreeCAD.pathCancelExecution}")
+    cancelList = getattr(FreeCAD, "pathCancelExecution", [])
+
+    cancel = False
+    clearObjName = False
+    replaceBaseName = True
+
+    if not hasattr(obj, "InList"):
+        # obj is likely not within Job object
+        return False
+
+    # Is dressup primary, or intermmediate?
+    if obj.InList[0].Name == "Operations":
+        # Dressup is primary
+        if obj.Name in cancelList:
+            clearObjName = True
+        if obj.Base.Name in cancelList:
+            replaceBaseName = True
+
+        if not clearObjName and not replaceBaseName:
+            PathLog.debug(f"{obj.Name} primary dressup error")
+            return False
+    else:
+        # Dressup is intermediate
+        if obj.Name in cancelList:
+            clearObjName = True
+        if obj.Base.Name in cancelList:
+            replaceBaseName = True
+
+        if not clearObjName and not replaceBaseName:
+            PathLog.error(f"{obj.Name} intermediate dressup error")
+            print(f"{cancelList}")
+            return False
+
+    # Update `pathCancelExecution` list items
+    if clearObjName:
+        if obj.Name in cancelList:
+            idx = cancelList.index(obj.Name)
+            cancelList.pop(idx)
+            cancel = True
+    if replaceBaseName:
+        if obj.Base.Name in cancelList:
+            baseIdx = cancelList.index(obj.Base.Name)
+            cancelList[baseIdx] = obj.Name
+            if obj.Name in cancelList:
+                idx = cancelList.index(obj.Name)
+                cancelList.pop(idx)
+            cancel = True
+
+    if cancel:
+        PathLog.debug(f"   {obj.Name} cancelled")
+        return True
+
+    # PathLog.debug(f"   {obj.Name} not cancelled")
+    FreeCAD.pathCancelExecution = []  # Reset cancel names
+    return False
+
+
+def cancelExecution(objName):
+    """cancelExecution(objName)  Ensure object name is item in FreeCAD.pathCancelExecution list."""
+    PathLog.debug(f"{objName} flagged for `execute()` cancel")
+    if objName not in FreeCAD.pathCancelExecution:
+        FreeCAD.pathCancelExecution.append(objName)

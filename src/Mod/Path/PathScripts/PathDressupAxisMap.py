@@ -109,6 +109,10 @@ class ObjectDressup:
 
     def execute(self, obj):
 
+        if PathUtils.isDressupCancelled(obj):
+            PathLog.debug("Axis Map Dressup cancelled")
+            return
+
         inAxis = obj.AxisMap[0]
         outAxis = obj.AxisMap[3]
         d = 0.1
@@ -176,6 +180,8 @@ class TaskPanel:
 
     def reject(self):
         FreeCAD.ActiveDocument.abortTransaction()
+        # Set flag to cancel dressup execution
+        PathUtils.cancelExecution(self.obj.Name)
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
 

@@ -36,6 +36,7 @@ else:
 
 
 translate = FreeCAD.Qt.translate
+PathUtils = PathDressupPathBoundary.PathUtils
 
 
 class TaskPanel(object):
@@ -88,6 +89,8 @@ class TaskPanel(object):
 
     def reject(self):
         FreeCAD.ActiveDocument.abortTransaction()
+        # Set flag to cancel dressup execution
+        PathUtils.cancelExecution(self.obj.Name)
         self.cleanup(True)
 
     def accept(self):
