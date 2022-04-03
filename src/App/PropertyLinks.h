@@ -537,6 +537,7 @@ public:
         LinkRestoring,
         LinkAllowPartial,
         LinkRestoreLabel,
+        LinkSyncSubObject, // used by DlgPropertyLink
     };
     inline bool testFlag(int flag) const {
         return _Flags.test((std::size_t)flag);
@@ -857,6 +858,7 @@ public:
 
     virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
 
+    void setSyncSubObject(bool enable);
 protected:
     App::DocumentObject*     _pcLinkSub;
     std::vector<std::string> _cSubList;
@@ -1003,6 +1005,8 @@ public:
 
     virtual bool adjustLink(const std::set<App::DocumentObject *> &inList) override;
 
+    void setSyncSubObject(bool enable);
+
 private:
     void verifyObject(App::DocumentObject *, App::DocumentObject *);
 
@@ -1138,6 +1142,8 @@ public:
     }
 
     virtual bool upgrade(Base::XMLReader &reader, const char *typeName);
+
+    void setSyncSubObject(bool enable);
 
 protected:
     void unlink();
@@ -1291,6 +1297,8 @@ public:
 
     virtual void hasSetChildValue(Property &) override;
     virtual void aboutToSetChildValue(Property &) override;
+
+    void setSyncSubObject(bool enable);
 
 protected:
     std::list<PropertyXLinkSub> _Links;

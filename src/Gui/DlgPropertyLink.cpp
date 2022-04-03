@@ -322,18 +322,22 @@ void DlgPropertyLink::init(const App::DocumentObjectT &prop, bool tryFilter) {
         docItems[d] = item;
     }
 
-    if(oldLinks.isEmpty())
-        return;
-
     if(allowSubObject) {
-        for(auto &link : oldLinks) {
-            auto sobj = link.getSubObject();
-            if(sobj && sobj!=link.getObject()) {
-                ui->checkSubObject->setChecked(true);
-                break;
+        if (propLink->testFlag(App::PropertyLinkBase::LinkSyncSubObject))
+            ui->checkSubObject->setChecked(true);
+        else {
+            for(auto &link : oldLinks) {
+                auto sobj = link.getSubObject();
+                if(sobj && sobj!=link.getObject()) {
+                    ui->checkSubObject->setChecked(true);
+                    break;
+                }
             }
         }
     }
+
+    if(oldLinks.isEmpty())
+        return;
 
     // Try to select items corresponding to the current links inside the
     // property
