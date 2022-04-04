@@ -3107,7 +3107,7 @@ template <> void DrawSketchHandlerRotateBase::ToolWidgetManager::doEnforceWidget
     prevCursorPosition = onSketchPos;
 }
 
-template <> void DrawSketchHandlerRotateBase::ToolWidgetManager::updateVisualValues(Base::Vector2d onSketchPos) {
+template <> void DrawSketchHandlerRotateBase::ToolWidgetManager::adaptWidgetParameters(Base::Vector2d onSketchPos) {
     switch (handler->state()) {
     case SelectMode::SeekFirst:
     {
@@ -3677,7 +3677,7 @@ template <> void DrawSketchHandlerScaleBase::ToolWidgetManager::doEnforceWidgetP
     prevCursorPosition = onSketchPos;
 }
 
-template <> void DrawSketchHandlerScaleBase::ToolWidgetManager::updateVisualValues(Base::Vector2d onSketchPos) {
+template <> void DrawSketchHandlerScaleBase::ToolWidgetManager::adaptWidgetParameters(Base::Vector2d onSketchPos) {
     switch (handler->state()) {
     case SelectMode::SeekFirst:
     {
@@ -4732,7 +4732,7 @@ template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::doEnforceWidget
     prevCursorPosition = onSketchPos;
 }
 
-template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::updateVisualValues(Base::Vector2d onSketchPos) {
+template <> void DrawSketchHandlerOffsetBase::ToolWidgetManager::adaptWidgetParameters(Base::Vector2d onSketchPos) {
     Q_UNUSED(onSketchPos)
 
     switch (handler->state()) {

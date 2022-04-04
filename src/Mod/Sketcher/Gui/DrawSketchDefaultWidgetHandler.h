@@ -69,7 +69,7 @@ namespace SketcherGui {
  * Widget MAY need to specialise, if default behaviour is not appropriate:
  * - doChangeDrawSketchHandlerMode()
  * - onHandlerModeChanged()
- * - updateVisualValues()
+ * - adaptWidgetParameters()
  * - doEnforceWidgetParameters()
  *
  * Handler provides:
@@ -488,7 +488,7 @@ private:
         *
         * It MUST be specialised if the states correspond to different parameters
         */
-        void updateVisualValues(Base::Vector2d onSketchPos) {
+        void adaptWidgetParameters(Base::Vector2d onSketchPos) {
             if constexpr (std::is_same_v<StateMachines::OneSeekEnd, SelectMode>) {
                 switch (handler->state()) {
                 case SelectMode::SeekFirst:
@@ -776,7 +776,7 @@ public:
     virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         toolWidgetManager.enforceWidgetParameters(onSketchPos);
-        toolWidgetManager.updateVisualValues(onSketchPos);
+        toolWidgetManager.adaptWidgetParameters(onSketchPos);
         updateDataAndDrawToPosition (onSketchPos);
     }
 
