@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <algorithm>
+# include <QApplication>
 # include <QComboBox>
 # include <QFontDatabase>
 # include <QLocale>
@@ -32,8 +33,6 @@
 # include <QPixmap>
 # include <QTextStream>
 # include <QTimer>
-# include <QApplication>
-# include <QPalette>
 # include <QtGlobal>
 # include <QMenu>
 #endif
@@ -2927,7 +2926,7 @@ QWidget* PropertyEnumItem::createEditor(QWidget* parent, const QObject* receiver
             field = field.trimmed();
             auto it = children->end();
             if (field.isEmpty()) {
-                if (children->size())
+                if (!children->empty())
                     --it;
                 else
                     continue;
