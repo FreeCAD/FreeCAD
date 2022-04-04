@@ -2169,7 +2169,7 @@ using DrawSketchHandlerTranslateBase = DrawSketchDefaultWidgetHandler< DrawSketc
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 0,
-    /*WidgetParametersT =*/WidgetParameters<6, 6>,
+    /*WidgetParametersT =*/WidgetParameters<4, 6>,
     /*WidgetCheckboxesT =*/WidgetCheckboxes<1, 1>,
     /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
     ConstructionMethods::TranslateConstructionMethod,
@@ -2543,6 +2543,209 @@ private:
         return -1;
     }
 };
+
+template <> void DrawSketchHandlerTranslateBase::ToolWidgetManager::configureToolWidget() {
+    if (!init) { // Code to be executed only upon initialisation
+        QStringList names = { QStringLiteral("Linear array"), QStringLiteral("Rectangular array") };
+        toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
+    }
+
+    auto dHandler = static_cast<DrawSketchHandlerTranslate*>(handler);
+    toolWidget->setParameterLabel(WParameter::First, QApplication::translate("TaskSketcherTool_p1_translate", "x of reference"));
+    toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("TaskSketcherTool_p2_translate", "y of reference"));
+
+    if (dHandler->constructionMethod() == ConstructionMethod::LinearArray) {
+        toolWidget->setParameterLabel(WParameter::Third, QApplication::translate("TaskSketcherTool_p3_translate", "Number of copies"));
+        toolWidget->setParameterLabel(WParameter::Fourth, QApplication::translate("TaskSketcherTool_p4_translate", "Translation length"));
+    }
+    else {
+        toolWidget->setParameterLabel(WParameter::Third, QApplication::translate("TaskSketcherTool_p3_translate", "First number of copies"));
+        toolWidget->setParameterLabel(WParameter::Fourth, QApplication::translate("TaskSketcherTool_p4_translate", "First translation length"));
+        toolWidget->setParameterLabel(WParameter::Fifth, QApplication::translate("TaskSketcherTool_p5_translate", "Second number of copies"));
+        toolWidget->setParameterLabel(WParameter::Sixth, QApplication::translate("TaskSketcherTool_p6_translate", "Second translation length"));
+    }
+
+    toolWidget->setCheckboxLabel(WCheckbox::FirstBox, QApplication::translate("TaskSketcherTool_c1_translate", "Clone constraints"));
+
+    toolWidget->setNoticeVisible(true);
+    toolWidget->setNoticeText(QApplication::translate("Translate_1", "Select the reference point of the translation."));
+}
+
+template <> void DrawSketchHandlerTranslateBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
+    auto dHandler = static_cast<DrawSketchHandlerTranslate*>(handler);
+    switch (parameterindex) {
+    case WParameter::First:
+        dHandler->referencePoint.x = value;
+        break;
+    case WParameter::Second:
+        dHandler->referencePoint.y = value;
+        break;
+    case WParameter::Third:
+        dHandler->numberOfCopies = floor(abs(value));
+        break;
+    case WParameter::Fifth:
+        dHandler->secondNumberOfCopies = floor(abs(value));
+        break;
+    }
+}
+
+template <> void DrawSketchHandlerTranslateBase::ToolWidgetManager::onHandlerModeChanged() {
+    switch (handler->state()) {
+    case SelectMode::SeekFirst:
+        toolWidget->setParameterFocus(WParameter::First);
+        toolWidget->setNoticeText(QApplication::translate("Translate_1", "Select the reference point of the translation."));
+        break;
+    case SelectMode::SeekSecond:
+        toolWidget->setParameterFocus(WParameter::Third);
+        toolWidget->setNoticeText(QApplication::translate("Translate_2", "Select first translation point defining the first translation vector which starts from the reference point."));
+        break;
+    case SelectMode::SeekThird:
+        toolWidget->setParameterFocus(WParameter::Fifth);
+        toolWidget->setNoticeText(QApplication::translate("Translate_3", "Select second translation point defining the second translation vector which starts from the reference point."));
+        break;
+    default:
+        break;
+    }
+}
+
+template <> void DrawSketchHandlerTranslateBase::ToolWidgetManager::adaptDrawingToCheckboxChange(int checkboxindex, bool value) {
+    auto dHandler = static_cast<DrawSketchHandlerTranslate*>(handler);
+    switch (checkboxindex) {
+    case WCheckbox::FirstBox:
+        dHandler->deleteOriginal = value;
+        break;
+    case WCheckbox::SecondBox:
+        dHandler->cloneConstraints = value;
+        break;
+    }
+    handler->updateDataAndDrawToPosition(prevCursorPosition);
+    onHandlerModeChanged(); //re-focus/select spinbox
+}
+
+template <> void DrawSketchHandlerTranslateBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
+    auto dHandler = static_cast<DrawSketchHandlerTranslate*>(handler);
+
+    switch (handler->state()) {
+    case SelectMode::SeekFirst:
+    {
+        if (toolWidget->isParameterSet(WParameter::First))
+            onSketchPos.x = toolWidget->getParameter(WParameter::First);
+
+        if (toolWidget->isParameterSet(WParameter::Second))
+            onSketchPos.y = toolWidget->getParameter(WParameter::Second);
+    }
+    break;
+    case SelectMode::SeekSecond:
+    {
+        if (toolWidget->isParameterSet(WParameter::Fourth)) {
+            double length = (onSketchPos - dHandler->referencePoint).Length();
+            onSketchPos = dHandler->referencePoint + (onSketchPos - dHandler->referencePoint) / length * toolWidget->getParameter(WParameter::Fourth);
+        }
+    }
+    break;
+    case SelectMode::SeekThird:
+    {
+        if (toolWidget->isParameterSet(WParameter::Sixth)) {
+            double length = (onSketchPos - dHandler->referencePoint).Length();
+            onSketchPos = dHandler->referencePoint + (onSketchPos - dHandler->referencePoint) / length * toolWidget->getParameter(WParameter::Sixth);
+        }
+    }
+    break;
+    default:
+        break;
+    }
+    prevCursorPosition = onSketchPos;
+}
+
+template <> void DrawSketchHandlerTranslateBase::ToolWidgetManager::adaptWidgetParameters(Base::Vector2d onSketchPos) {
+    auto dHandler = static_cast<DrawSketchHandlerTranslate*>(handler);
+
+    switch (handler->state()) {
+    case SelectMode::SeekFirst:
+    {
+        if (!toolWidget->isParameterSet(WParameter::First))
+            toolWidget->updateVisualValue(WParameter::First, onSketchPos.x);
+
+        if (!toolWidget->isParameterSet(WParameter::Second))
+            toolWidget->updateVisualValue(WParameter::Second, onSketchPos.y);
+    }
+    break;
+    case SelectMode::SeekSecond:
+    {
+        if (!toolWidget->isParameterSet(WParameter::Fourth))
+            toolWidget->updateVisualValue(WParameter::Fourth, (onSketchPos - dHandler->referencePoint).Length());
+    }
+    break;
+    case SelectMode::SeekThird:
+    {
+        if (!toolWidget->isParameterSet(WParameter::Sixth))
+            toolWidget->updateVisualValue(WParameter::Sixth, (onSketchPos - dHandler->referencePoint).Length());
+    }
+    break;
+    default:
+        break;
+    }
+}
+
+template <> void DrawSketchHandlerTranslateBase::ToolWidgetManager::doChangeDrawSketchHandlerMode() {
+    auto dHandler = static_cast<DrawSketchHandlerTranslate*>(handler);
+    switch (handler->state()) {
+    case SelectMode::SeekFirst:
+    {
+        if (toolWidget->isParameterSet(WParameter::First) &&
+            toolWidget->isParameterSet(WParameter::Second)) {
+
+            handler->setState(SelectMode::SeekSecond);
+
+            handler->updateDataAndDrawToPosition(prevCursorPosition);
+        }
+    }
+    break;
+    case SelectMode::SeekSecond:
+    {
+        if (toolWidget->isParameterSet(WParameter::Third) ||
+            toolWidget->isParameterSet(WParameter::Fourth)) {
+
+            handler->updateDataAndDrawToPosition(prevCursorPosition);
+
+            if (toolWidget->isParameterSet(WParameter::Third) &&
+                toolWidget->isParameterSet(WParameter::Fourth)) {
+
+                if (dHandler->constructionMethod() == ConstructionMethod::LinearArray) {
+                    handler->setState(SelectMode::End);
+                    handler->finish();
+                }
+                else {
+                    handler->setState(SelectMode::SeekThird);
+                }
+            }
+        }
+    }
+    break;
+    case SelectMode::SeekThird:
+    {
+        if (toolWidget->isParameterSet(WParameter::Fifth) ||
+            toolWidget->isParameterSet(WParameter::Sixth)) {
+
+            handler->updateDataAndDrawToPosition(prevCursorPosition);
+
+            if (toolWidget->isParameterSet(WParameter::Fifth) &&
+                toolWidget->isParameterSet(WParameter::Sixth)) {
+
+                handler->setState(SelectMode::End);
+                handler->finish();
+            }
+        }
+    }
+    break;
+    default:
+        break;
+    }
+}
+
+template <> void DrawSketchHandlerTranslateBase::ToolWidgetManager::addConstraints() {
+    //none
+}
 
 
 DEF_STD_CMD_A(CmdSketcherTranslate)
@@ -5094,6 +5297,7 @@ void CreateSketcherCommandsConstraintAccel(void)
     rcCmdMgr.addCommand(new CmdSketcherSelectElementsAssociatedWithConstraints());
     rcCmdMgr.addCommand(new CmdSketcherSelectElementsWithDoFs());
     rcCmdMgr.addCommand(new CmdSketcherRestoreInternalAlignmentGeometry());
+    rcCmdMgr.addCommand(new CmdSketcherTranslate());
     rcCmdMgr.addCommand(new CmdSketcherRotate());
     rcCmdMgr.addCommand(new CmdSketcherScale());
     rcCmdMgr.addCommand(new CmdSketcherOffset());
