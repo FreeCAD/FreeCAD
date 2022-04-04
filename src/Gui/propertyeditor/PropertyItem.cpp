@@ -2847,6 +2847,8 @@ void PropertyEnumItem::setValue(const QVariant& value)
     setPropertyValue(data);
 }
 
+namespace  {
+
 class EnumItems;
 
 struct EnumItem {
@@ -2874,6 +2876,8 @@ void EnumItem::populate(QMenu *menu)
     for (auto &item : *children)
         item.populate(subMenu);
 }
+
+} // anonymous namespace
 
 QWidget* PropertyEnumItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
