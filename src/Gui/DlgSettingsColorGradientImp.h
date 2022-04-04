@@ -95,6 +95,7 @@ Q_SIGNALS:
     void colorModelChanged();
 
 private:
+    QDoubleValidator* validator;
     std::unique_ptr<Ui_DlgSettingsColorGradient> ui;
 };
 

@@ -48,6 +48,7 @@ using namespace Gui::Dialog;
 DlgSettingsColorGradientImp::DlgSettingsColorGradientImp(const App::ColorGradient& cg,
                                                          QWidget* parent, Qt::WindowFlags fl)
   : QDialog( parent, fl )
+  , validator(nullptr)
   , ui(new Ui_DlgSettingsColorGradient)
 {
     ui->setupUi(this);
@@ -58,12 +59,10 @@ DlgSettingsColorGradientImp::DlgSettingsColorGradientImp(const App::ColorGradien
 
     // the elementary charge is 1.6e-19, since such values might be the result of
     // simulations, use this as boundary for a scientific validator
-    QDoubleValidator* maxValidator = new QDoubleValidator(-2e19, 2e19, ui->spinBoxDecimals->maximum(), this);
-    maxValidator->setNotation(QDoubleValidator::ScientificNotation);
-    ui->floatLineEditMax->setValidator(maxValidator);
-    QDoubleValidator* minValidator = new QDoubleValidator(-2e19, 2e19, ui->spinBoxDecimals->maximum(), this);
-    minValidator->setNotation(QDoubleValidator::ScientificNotation);
-    ui->floatLineEditMin->setValidator(minValidator);
+    validator = new QDoubleValidator(-2e19, 2e19, ui->spinBoxDecimals->maximum(), this);
+    validator->setNotation(QDoubleValidator::ScientificNotation);
+    ui->floatLineEditMax->setValidator(validator);
+    ui->floatLineEditMin->setValidator(validator);
 
     // assure that the LineEdit is as wide to contain numbers with 4 digits and 6 decimals
     QFontMetrics fm(ui->floatLineEditMax->font());
@@ -100,10 +99,10 @@ void DlgSettingsColorGradientImp::setupConnections()
     connect(ui->checkBoxInvisible, &QCheckBox::toggled,
             this, &DlgSettingsColorGradientImp::colorModelChanged);
 
-    connect(ui->floatLineEditMax, &QLineEdit::textEdited,
+    connect(ui->floatLineEditMax, &QLineEdit::editingFinished,
             this, &DlgSettingsColorGradientImp::colorModelChanged);
 
-    connect(ui->floatLineEditMin, &QLineEdit::textEdited,
+    connect(ui->floatLineEditMin, &QLineEdit::editingFinished,
             this, &DlgSettingsColorGradientImp::colorModelChanged);
 }
 
@@ -188,11 +187,24 @@ bool DlgSettingsColorGradientImp::isOutInvisible() const
 
 void DlgSettingsColorGradientImp::setRange(float fMin, float fMax)
 {
+    auto toString = [=](float value, int decimals) {
+        int pos = 0;
+        while (decimals > 0) {
+            QString str = QLocale().toString(value, 'g', decimals--);
+            if (validator->validate(str, pos) == QValidator::Acceptable) {
+                return str;
+            }
+        }
+
+        return QLocale().toString(value, 'g', 1);
+    };
+
     ui->floatLineEditMax->blockSignals(true);
-    ui->floatLineEditMax->setText(QLocale().toString(fMax, 'g', numberOfDecimals()));
+    ui->floatLineEditMax->setText(toString(fMax, numberOfDecimals()));
     ui->floatLineEditMax->blockSignals(false);
+
     ui->floatLineEditMin->blockSignals(true);
-    ui->floatLineEditMin->setText(QLocale().toString(fMin, 'g', numberOfDecimals()));
+    ui->floatLineEditMin->setText(toString(fMin, numberOfDecimals()));
     ui->floatLineEditMin->blockSignals(false);
 }
 
