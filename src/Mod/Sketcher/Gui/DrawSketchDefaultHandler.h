@@ -104,6 +104,8 @@ protected:
 
     bool isState(SelectModeT state) { return Mode == state;}
 
+    bool isFirstState() { return Mode == (static_cast<SelectModeT>(0));}
+
     SelectModeT getNextMode() {
         auto modeint = static_cast<int>(state());
 

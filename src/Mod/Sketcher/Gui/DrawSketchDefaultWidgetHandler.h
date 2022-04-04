@@ -121,6 +121,7 @@ private:
         Connection connectionComboboxSelectionChanged;
 
         Base::Vector2d prevCursorPosition;
+        Base::Vector2d lastWidgetEnforcedPosition;
 
         using WParameter = SketcherToolDefaultWidget::Parameter;
         using WCheckbox  = SketcherToolDefaultWidget::Checkbox;
@@ -176,34 +177,34 @@ private:
          */
         void parameterValueChanged(int parameterindex, double value)
         {
+            doEnforceWidgetParameters(prevCursorPosition); // updates lastWidgetEnforcedPosition with new widget state
+
             adaptDrawingToParameterChange(parameterindex, value);
 
-            doEnforceWidgetParameters(prevCursorPosition); //Correct prevCursorPosition as it's modified by the new parameter
-
-            doChangeDrawSketchHandlerMode();
-
+            finishWidgetChange();
         }
 
         /** boost slot triggering when a checkbox has changed in the widget
          * It is intended to remote control the DrawSketchDefaultWidgetHandler
          */
         void checkboxCheckedChanged(int checkboxindex, bool value) {
+            doEnforceWidgetParameters(prevCursorPosition); // updates lastWidgetEnforcedPosition with new widget state
+
             adaptDrawingToCheckboxChange(checkboxindex, value);
 
-            doEnforceWidgetParameters(prevCursorPosition); //Correct prevCursorPosition as it's modified by the new parameter
-
-            doChangeDrawSketchHandlerMode();
+            finishWidgetChange();
         }
 
         /** boost slot triggering when a combobox has changed in the widget
          * It is intended to remote control the DrawSketchDefaultWidgetHandler
          */
         void comboboxSelectionChanged(int comboboxindex, int value) {
+
+            doEnforceWidgetParameters(prevCursorPosition); // updates lastWidgetEnforcedPosition with new widget state
+
             adaptDrawingToComboboxChange(comboboxindex, value);
 
-            doEnforceWidgetParameters(prevCursorPosition); //Correct prevCursorPosition as it's modified by the new parameter
-
-            doChangeDrawSketchHandlerMode();
+            finishWidgetChange();
         }
 
         //@}
@@ -270,8 +271,6 @@ private:
                     if (toolWidget->isParameterSet(WParameter::First) &&
                         toolWidget->isParameterSet(WParameter::Second)) {
 
-                        handler->updateDataAndDrawToPosition(prevCursorPosition); // draw curve to cursor with suggested constraints
-
                         handler->setState(SelectMode::End);
                         handler->finish();
                     }
@@ -289,8 +288,6 @@ private:
                             toolWidget->isParameterSet(WParameter::Second)) {
 
                             handler->setState(SelectMode::SeekSecond);
-
-                            handler->updateDataAndDrawToPosition(prevCursorPosition); // draw curve to cursor with suggested constraints
                         }
                     }
                     break;
@@ -298,8 +295,6 @@ private:
                     {
                         if (toolWidget->isParameterSet(WParameter::Third) ||
                             toolWidget->isParameterSet(WParameter::Fourth)) {
-
-                            handler->updateDataAndDrawToPosition(prevCursorPosition); // draw curve to cursor with suggested constraints
 
                             if(toolWidget->isParameterSet(WParameter::Third) &&
                                 toolWidget->isParameterSet(WParameter::Fourth)) {
@@ -322,8 +317,6 @@ private:
                             toolWidget->isParameterSet(WParameter::Second)) {
 
                             handler->setState(SelectMode::SeekSecond);
-
-                            handler->updateDataAndDrawToPosition(prevCursorPosition); // draw curve to cursor with suggested constraints
                         }
                     }
                     break;
@@ -331,8 +324,6 @@ private:
                     {
                         if (toolWidget->isParameterSet(WParameter::Third) ||
                             toolWidget->isParameterSet(WParameter::Fourth)) {
-
-                            handler->updateDataAndDrawToPosition(prevCursorPosition); // draw curve to cursor with suggested constraints
 
                             if(toolWidget->isParameterSet(WParameter::Third) &&
                                 toolWidget->isParameterSet(WParameter::Fourth)) {
@@ -346,8 +337,6 @@ private:
                     {
                         if (toolWidget->isParameterSet(WParameter::Fifth) ||
                             toolWidget->isParameterSet(WParameter::Sixth)) {
-
-                            handler->updateDataAndDrawToPosition(prevCursorPosition); // draw curve to cursor with suggested constraints
 
                             if(toolWidget->isParameterSet(WParameter::Fifth) &&
                                 toolWidget->isParameterSet(WParameter::Sixth)) {
@@ -370,8 +359,6 @@ private:
                         toolWidget->isParameterSet(WParameter::Second)) {
 
                         handler->setState(SelectMode::SeekSecond);
-
-                        handler->updateDataAndDrawToPosition(prevCursorPosition); // draw curve to cursor with suggested constraints
                     }
                 }
                 break;
@@ -379,8 +366,6 @@ private:
                 {
                     if (toolWidget->isParameterSet(WParameter::Third) ||
                         toolWidget->isParameterSet(WParameter::Fourth)) {
-
-                        handler->updateDataAndDrawToPosition(prevCursorPosition); // draw curve to cursor with suggested constraints
 
                         if (toolWidget->isParameterSet(WParameter::Third) &&
                             toolWidget->isParameterSet(WParameter::Fourth)) {
@@ -394,8 +379,6 @@ private:
                 {
                     if (toolWidget->isParameterSet(WParameter::Fifth)) {
 
-                        handler->updateDataAndDrawToPosition(prevCursorPosition); // draw curve to cursor with suggested constraints
-
                         handler->setState(SelectMode::SeekFourth);
                     }
                 }
@@ -403,8 +386,6 @@ private:
                 case SelectMode::SeekFourth:
                 {
                     if (toolWidget->isParameterSet(WParameter::Sixth)) {
-
-                        handler->updateDataAndDrawToPosition(prevCursorPosition); // draw curve to cursor with suggested constraints
 
                         handler->setState(SelectMode::End);
                         handler->finish();
@@ -725,7 +706,7 @@ private:
                 }
             }
 
-            prevCursorPosition = onSketchPos;//Register custor position after modifying it.
+            lastWidgetEnforcedPosition = onSketchPos; // store enforced cursor position.
         }
         //@}
 
@@ -763,6 +744,19 @@ private:
                 dHandler->updateCursor();
 
                 dHandler->reset(); //reset of handler to restart.
+            }
+
+            /// function to redraw before and after any eventual mode change in reaction to a widget change
+            void finishWidgetChange() {
+                // ensure drawing in the previous mode
+                handler->updateDataAndDrawToPosition(lastWidgetEnforcedPosition);
+
+                doChangeDrawSketchHandlerMode();
+
+                if(handler->isFirstState()) {
+                    // ensure drawing in the next mode
+                    handler->updateDataAndDrawToPosition(lastWidgetEnforcedPosition);
+                }
             }
         //@}
      };

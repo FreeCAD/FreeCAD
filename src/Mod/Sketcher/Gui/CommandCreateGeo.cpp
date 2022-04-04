@@ -8966,8 +8966,6 @@ template <> void DrawSketchHandlerSlotBase::ToolWidgetManager::doChangeDrawSketc
             toolWidget->isParameterSet(WParameter::Second)) {
 
             handler->setState(SelectMode::SeekSecond);
-
-            handler->updateDataAndDrawToPosition(prevCursorPosition);
         }
     }
     break;
@@ -8975,8 +8973,6 @@ template <> void DrawSketchHandlerSlotBase::ToolWidgetManager::doChangeDrawSketc
     {
         if (toolWidget->isParameterSet(WParameter::Third) ||
             toolWidget->isParameterSet(WParameter::Fourth)) {
-
-            handler->updateDataAndDrawToPosition(prevCursorPosition);
 
             if (toolWidget->isParameterSet(WParameter::Third) &&
                 toolWidget->isParameterSet(WParameter::Fourth)) {
@@ -8989,8 +8985,6 @@ template <> void DrawSketchHandlerSlotBase::ToolWidgetManager::doChangeDrawSketc
     case SelectMode::SeekThird:
     {
         if (toolWidget->isParameterSet(WParameter::Fifth)) {
-
-            handler->updateDataAndDrawToPosition(prevCursorPosition);
 
             handler->setState(SelectMode::End);
             handler->finish();
