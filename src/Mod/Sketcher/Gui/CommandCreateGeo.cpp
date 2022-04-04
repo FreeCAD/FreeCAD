@@ -6365,13 +6365,6 @@ private:
         return QString::fromLatin1("Sketcher_Pointer_Create_Point");
     }
 
-    //reimplement because if not radius then it's 1 steps
-    virtual void onButtonPressed(Base::Vector2d onSketchPos) override {
-        this->updateDataAndDrawToPosition(onSketchPos);
-
-        setState(SelectMode::End);
-    }
-
 private:
     Base::Vector2d editPoint;
 };
