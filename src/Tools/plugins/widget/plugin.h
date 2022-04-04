@@ -21,7 +21,7 @@
  ***************************************************************************/
 
 
-#include <QtDesigner>
+#include <QtUiPlugin>
 #include <qplugin.h>
 
 class QDesignerFormEditorInterface;
