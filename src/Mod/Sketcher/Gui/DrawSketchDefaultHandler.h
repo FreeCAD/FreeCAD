@@ -24,7 +24,10 @@
 #ifndef SKETCHERGUI_DrawSketchDefaultHandler_H
 #define SKETCHERGUI_DrawSketchDefaultHandler_H
 
+#include <Inventor/events/SoKeyboardEvent.h>
+
 #include "DrawSketchHandler.h"
+
 
 #include "Utils.h"
 
@@ -98,15 +101,17 @@ protected:
         onModeChanged();
     }
 
-    SelectModeT state() {
+    SelectModeT state() const {
         return Mode;
     }
 
-    bool isState(SelectModeT state) { return Mode == state;}
+    bool isState(SelectModeT state) const { return Mode == state;}
 
-    bool isFirstState() { return Mode == (static_cast<SelectModeT>(0));}
+    bool isFirstState() const { return Mode == (static_cast<SelectModeT>(0));}
 
-    SelectModeT getNextMode() {
+    bool isLastState() const { return Mode == SelectModeT::End;}
+
+    SelectModeT getNextMode() const {
         auto modeint = static_cast<int>(state());
 
 
@@ -133,6 +138,65 @@ private:
     SelectModeT Mode;
     static const constexpr int maxMode = static_cast<int>(SelectModeT::End);
 
+};
+
+namespace ConstructionMethods {
+
+enum class DefaultConstructionMethod {
+    End // Must be the last one
+};
+
+} // namespace ConstructionMethods
+
+template <typename ConstructionMethodT>
+class ConstructionMethodMachine
+{
+public:
+    ConstructionMethodMachine():ConstructionMode(static_cast<ConstructionMethodT>(0)) {}
+    virtual ~ConstructionMethodMachine(){}
+
+protected:
+    void setConstructionMethod(ConstructionMethodT mode) {
+        ConstructionMode = mode;
+        onConstructionMethodChanged();
+    }
+
+    ConstructionMethodT constructionMethod() const {
+        return ConstructionMode;
+    }
+
+    bool isConstructionMethod(ConstructionMethodT state) const { return ConstructionMode == state;}
+
+    void resetConstructionMode() {
+        ConstructionMode = static_cast<ConstructionMethodT>(0);
+    }
+
+    // Cyclically iterate construction methods
+    ConstructionMethodT getNextMethod() const {
+        auto modeint = static_cast<int>(ConstructionMode);
+
+
+        if(modeint < (maxMode-1)) {
+            auto newmode = static_cast<ConstructionMethodT>(modeint+1);
+            return newmode;
+        }
+        else {
+            return static_cast<ConstructionMethodT>(0);
+        }
+    }
+
+    void iterateToNextConstructionMethod() {
+        if(ConstructionMethodsCount() > 1)
+            setConstructionMethod(getNextMethod());
+    }
+
+    virtual void onConstructionMethodChanged() {};
+
+    static constexpr int ConstructionMethodsCount() {return maxMode;}
+
+private:
+    ConstructionMethodT ConstructionMode;
+    static const constexpr int maxMode = static_cast<int>(ConstructionMethodT::End);
 };
 
 /** @brief A state machine DrawSketchHandler for geometry.
@@ -174,11 +238,12 @@ private:
  * the base class from DrawSketchDefaultHandler to DrawSketchDefaultWidgetHandler. Then you will have to implement the code that
  * is exclusively necessary for the default widget to work.
  */
-template < typename HandlerT,         // The geometry tool for which the template is created (See GeometryTools above)
+template < typename HandlerT,           // The geometry tool for which the template is created (See GeometryTools above)
            typename SelectModeT,        // The state machine defining the states that the handle iterates
            int PInitEditCurveSize,      // The initial size of the EditCurve
-           int PInitAutoConstraintSize> // The initial size of the AutoConstraint>
-class DrawSketchDefaultHandler: public DrawSketchHandler, public StateMachine<SelectModeT>
+           int PInitAutoConstraintSize, // The initial size of the AutoConstraint>
+           typename ConstructionMethodT = ConstructionMethods::DefaultConstructionMethod >
+class DrawSketchDefaultHandler: public DrawSketchHandler, public StateMachine<SelectModeT>, public ConstructionMethodMachine<ConstructionMethodT>
 {
 public:
     DrawSketchDefaultHandler():   initialEditCurveSize(PInitEditCurveSize)
@@ -212,13 +277,19 @@ public:
         finish();
         return true;
     }
+
+    virtual void registerPressedKey(bool pressed, int key) override {
+        if (key == SoKeyboardEvent::M && pressed && !this->isLastState())
+            this->iterateToNextConstructionMethod();
+    }
     //@}
 
 
 protected:
     using SelectMode = SelectModeT;
     using ModeStateMachine = StateMachine<SelectModeT>;
-
+    using ConstructionMethod = ConstructionMethodT;
+    using ConstructionMachine = ConstructionMethodMachine<ConstructionMethodT>;
 
     /** @name functions NOT intended for specialisation or to be hidden
         These functions define a predefined structure and are extendable using NVI.
@@ -308,6 +379,8 @@ private:
     virtual void createAutoConstraints() {}
 
     virtual void onModeChanged() override { };
+
+    virtual void onConstructionMethodChanged() override {};
 
     virtual void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) {Q_UNUSED(onSketchPos)};
     //@}

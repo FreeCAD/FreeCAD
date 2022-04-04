@@ -2155,26 +2155,31 @@ bool CmdSketcherRectangularArray::isActive(void)
 
 class DrawSketchHandlerTranslate;
 
+namespace SketcherGui::ConstructionMethods {
+
+enum class TranslateConstructionMethod {
+    LinearArray,
+    RectangularArray,
+    End // Must be the last one
+};
+
+}
+
 using DrawSketchHandlerTranslateBase = DrawSketchDefaultWidgetHandler< DrawSketchHandlerTranslate,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 0,
-    /*PNumToolwidgetparameters =*/6,
-    /*PNumToolwidgetCheckboxes =*/ 1,
-    /*PNumToolwidgetComboboxes =*/ 1>;
-
-
+    /*WidgetParametersT =*/WidgetParameters<6, 6>,
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<1, 1>,
+    /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
+    ConstructionMethods::TranslateConstructionMethod,
+    /*bool PFirstComboboxIsConstructionMethod =*/ true>;
 
 class DrawSketchHandlerTranslate : public DrawSketchHandlerTranslateBase
 {
     friend DrawSketchHandlerTranslateBase;
 
 public:
-    enum class ConstructionMethod {
-        LinearArray,
-        RectangularArray
-    };
-
     DrawSketchHandlerTranslate(std::vector<int> listOfGeoIds)
         :
         constructionMethod(ConstructionMethod::LinearArray)
@@ -2621,9 +2626,9 @@ using DrawSketchHandlerRotateBase = DrawSketchDefaultWidgetHandler< DrawSketchHa
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 0,
-    /*PNumToolwidgetparameters =*/4,
-    /*PNumToolwidgetCheckboxes =*/ 1,
-    /*PNumToolwidgetComboboxes =*/ 0>;
+    /*WidgetParametersT =*/WidgetParameters<4>,
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<1>,
+    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
 
 class DrawSketchHandlerRotate : public DrawSketchHandlerRotateBase
 {
@@ -3256,9 +3261,9 @@ using DrawSketchHandlerScaleBase = DrawSketchDefaultWidgetHandler< DrawSketchHan
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 0,
-    /*PNumToolwidgetparameters =*/3,
-    /*PNumToolwidgetCheckboxes =*/ 1,
-    /*PNumToolwidgetComboboxes =*/ 0>;
+    /*WidgetParametersT =*/WidgetParameters<3>,
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<1>,
+    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
 
 class DrawSketchHandlerScale : public DrawSketchHandlerScaleBase
 {
@@ -3822,9 +3827,9 @@ using DrawSketchHandlerOffsetBase = DrawSketchDefaultWidgetHandler< DrawSketchHa
     StateMachines::OneSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 0,
-    /*PNumToolwidgetparameters =*/1,
-    /*PNumToolwidgetCheckboxes =*/ 2,
-    /*PNumToolwidgetComboboxes =*/ 1>;
+    /*WidgetParametersT =*/WidgetParameters<1>,
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<2>,
+    /*WidgetComboboxesT =*/WidgetComboboxes<1>>;
 
 class DrawSketchHandlerOffset : public DrawSketchHandlerOffsetBase
 {

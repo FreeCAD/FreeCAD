@@ -28,6 +28,8 @@
 
 #include "SketcherToolDefaultWidget.h"
 
+#include <Base/Tools.h>
+
 #include <QApplication>
 
 namespace bp = boost::placeholders;
@@ -52,8 +54,8 @@ namespace SketcherGui {
  * SelectModeT : The type of statemachine to be used (see namespace StateMachines above).
  * PInitEditCurveSize : Initial size of the EditCurve vector
  * PInitAutoConstraintSize : Initial size of the AutoConstraint vector
- * PNumToolwidgetparameters: The number of parameter spinboxes in the default widget
- * PNumToolwidgetCheckboxes: The number of checkboxes in the default widget
+ * WidgetParametersT: The number of parameter spinboxes in the default widget
+ * WidgetCheckboxesT: The number of checkboxes in the default widget
  *
  * Widget:
  * - Automatically initialises the parameters necessary
@@ -92,27 +94,61 @@ namespace SketcherGui {
  * using a default widget (toolwidget), and will lead to easier to maintain code.
  */
 
+template< int... sizes> // Initial sizes for each mode
+class WidgetInitialValues {
+public:
+    template<typename constructionT>
+    static constexpr int size(constructionT constructionmethod) {
+        auto modeint = static_cast<int>(constructionmethod);
+
+        return constructionMethodParameters[modeint];
+    }
+
+    static constexpr int defaultMethodSize() {
+        return size(0);
+    }
+private:
+    static constexpr std::array<int,sizeof...(sizes)> constructionMethodParameters = {{sizes...}};
+};
+
+template< int... sizes> // Initial sizes for each mode
+class WidgetParameters : public WidgetInitialValues<sizes...> {
+};
+
+template< int... sizes> // Initial sizes for each mode
+class WidgetCheckboxes : public WidgetInitialValues<sizes...> {
+};
+
+template< int... sizes> // Initial sizes for each mode
+class WidgetComboboxes : public WidgetInitialValues<sizes...> {
+};
+
 template< typename HandlerT,          // The geometry tool for which the template is created (See GeometryTools above)
           typename SelectModeT,         // The state machine defining the states that the handle iterates
           int PEditCurveSize,           // The initial size of the EditCurve
           int PAutoConstraintSize,      // The initial size of the AutoConstraint
-          int PNumToolwidgetparameters, // The number of parameter spinboxes in the default widget
-          int PNumToolwidgetCheckboxes, // The number of checkboxes in the default widget
-          int PNumToolwidgetComboboxes > // The number of comboboxes in the default widget
-class DrawSketchDefaultWidgetHandler: public DrawSketchDefaultHandler<HandlerT, SelectModeT, PEditCurveSize, PAutoConstraintSize>
+          typename WidgetParametersT, // The number of parameter spinboxes in the default widget
+          typename WidgetCheckboxesT, // The number of checkboxes in the default widget
+          typename WidgetComboboxesT, // The number of comboboxes in the default widget
+          typename ConstructionMethodT = ConstructionMethods::DefaultConstructionMethod,
+          bool PFirstComboboxIsConstructionMethod = false>
+class DrawSketchDefaultWidgetHandler: public DrawSketchDefaultHandler<HandlerT, SelectModeT, PEditCurveSize, PAutoConstraintSize, ConstructionMethodT>
 {
-    using DSDefaultHandler = DrawSketchDefaultHandler<HandlerT, SelectModeT, PEditCurveSize, PAutoConstraintSize>;
+    using DSDefaultHandler = DrawSketchDefaultHandler<HandlerT, SelectModeT, PEditCurveSize, PAutoConstraintSize, ConstructionMethodT>;
+    using ConstructionMachine = ConstructionMethodMachine<ConstructionMethodT>;
 
 private:
     class ToolWidgetManager {
-        int nParameter = PNumToolwidgetparameters;
-        int nCheckbox = PNumToolwidgetCheckboxes;
-        int nCombobox = PNumToolwidgetComboboxes;
+        int nParameter = WidgetParametersT::defaultMethodSize();
+        int nCheckbox = WidgetCheckboxesT::defaultMethodSize();
+        int nCombobox = WidgetComboboxesT::defaultMethodSize();
+
+        //std::array<int,ConstructionMachine::ConstructionMethodsCount()> constructionMethodParameters;
 
         SketcherToolDefaultWidget* toolWidget;
         DrawSketchDefaultWidgetHandler * handler; // used to access private implementations
         HandlerT * dHandler; // real derived type
-        bool init; // returns true if the widget has been configured
+        bool init = false; // returns true if the widget has been configured
 
         using Connection = boost::signals2::connection;
 
@@ -129,7 +165,7 @@ private:
         using SelectMode = SelectModeT;
 
     public:
-        ToolWidgetManager(DrawSketchDefaultWidgetHandler * dshandler):handler(dshandler), dHandler(static_cast<HandlerT *>(dshandler)), init(false){}
+        ToolWidgetManager(DrawSketchDefaultWidgetHandler * dshandler):handler(dshandler), dHandler(static_cast<HandlerT *>(dshandler)){}
 
         ~ToolWidgetManager(){
             connectionParameterValueChanged.disconnect();
@@ -181,7 +217,7 @@ private:
 
             adaptDrawingToParameterChange(parameterindex, value);
 
-            finishWidgetChange();
+            finishWidgetChanged();
         }
 
         /** boost slot triggering when a checkbox has changed in the widget
@@ -192,7 +228,7 @@ private:
 
             adaptDrawingToCheckboxChange(checkboxindex, value);
 
-            finishWidgetChange();
+            finishWidgetChanged();
         }
 
         /** boost slot triggering when a combobox has changed in the widget
@@ -204,7 +240,7 @@ private:
 
             adaptDrawingToComboboxChange(comboboxindex, value);
 
-            finishWidgetChange();
+            finishWidgetChanged();
         }
 
         //@}
@@ -218,7 +254,17 @@ private:
         void adaptDrawingToCheckboxChange(int checkboxindex, bool value) {Q_UNUSED(checkboxindex);Q_UNUSED(value);}
 
         /// Change DSH to reflect a comboBox changed in the widget
-        void adaptDrawingToComboboxChange(int comboboxindex, int value) { Q_UNUSED(comboboxindex); Q_UNUSED(value); }
+        void adaptDrawingToComboboxChange(int comboboxindex, int value) {
+            Q_UNUSED(comboboxindex); Q_UNUSED(value);
+
+            if constexpr (PFirstComboboxIsConstructionMethod == true) {
+
+                if (comboboxindex == WCombobox::FirstCombo && handler->ConstructionMethodsCount() > 1) {
+                    handler->iterateToNextConstructionMethod();
+                }
+
+            }
+        }
 
         /// function to create constraints based on widget information.
         void addConstraints() {}
@@ -460,6 +506,24 @@ private:
                     break;
                 }
             }
+        }
+
+        /** function that is called by the handler when the construction mode changed
+        *
+        * This is just a default implementation for common stateMachines, that may
+        * or may not do what you expect. It assumes two parameters per seek state.
+        *
+        * It MUST be specialised otherwise
+        */
+        void onConstructionMethodChanged() {
+
+            nParameter = WidgetParametersT::size(handler->constructionMethod());
+            nCheckbox = WidgetCheckboxesT::size(handler->constructionMethod());
+            nCombobox = WidgetComboboxesT::size(handler->constructionMethod());
+
+            dHandler->updateCursor();
+
+            dHandler->reset(); //reset of handler to restart.
         }
 
         /** function that is called by the handler with a Vector2d position to update the widget
@@ -716,12 +780,14 @@ private:
             /// function to assist in adaptDrawingToComboboxChange specialisation
             /// assigns the modevalue to the modeenum and updates the number of parameters according to map
             /// it also triggers an update of the cursor
-            template <typename T>
+            /*template <typename T>
             void setModeAndAdaptParameters(T & modeenum, int modevalue, const std::vector<int> & parametersmap) {
                 if (modevalue < static_cast<int>(parametersmap.size())) {
                     auto mode = static_cast<T>(modevalue);
 
-                    nParameter = parametersmap[modevalue];
+                    nParameter = WidgetParametersT::constructionMethodParameters[modevalue];
+                    nCheckbox = WidgetCheckboxesT::constructionMethodParameters[modevalue];
+                    nCombobox = WidgetComboboxesT::constructionMethodParameters[modevalue];
 
                     modeenum = mode;
 
@@ -730,7 +796,7 @@ private:
                     reset(); //reset the widget to take into account the change of nparameter
                     dHandler->reset(); //reset of handler to restart.
                 }
-            }
+            }*/
 
             /// function to assist in adaptDrawingToComboboxChange specialisation
             /// assigns the modevalue to the modeenum
@@ -747,7 +813,7 @@ private:
             }
 
             /// function to redraw before and after any eventual mode change in reaction to a widget change
-            void finishWidgetChange() {
+            void finishWidgetChanged() {
                 // ensure drawing in the previous mode
                 handler->updateDataAndDrawToPosition(lastWidgetEnforcedPosition);
 
@@ -832,7 +898,11 @@ private:
 
     virtual void onModeChanged() override {
         toolWidgetManager.onHandlerModeChanged();
-    };
+    }
+
+    virtual void onConstructionMethodChanged() override {
+        toolWidgetManager.onConstructionMethodChanged();
+    }
     //@}
 
 private:

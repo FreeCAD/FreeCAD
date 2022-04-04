@@ -233,9 +233,9 @@ using DrawSketchHandlerLineBase = DrawSketchDefaultWidgetHandler<   DrawSketchHa
                                                                     /*SelectModeT*/ StateMachines::TwoSeekEnd,
                                                                     /*PEditCurveSize =*/ 2,
                                                                     /*PAutoConstraintSize =*/ 2,
-                                                                    /*PNumToolwidgetparameters =*/ 4,
-                                                                    /*PNumToolwidgetCheckboxes =*/ 0,
-                                                                    /*PNumToolwidgetComboboxes =*/ 0>;
+                                                                    /*WidgetParametersT =*/WidgetParameters<4>,
+                                                                    /*WidgetCheckboxesT =*/WidgetCheckboxes<0>,
+                                                                    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
 
 class DrawSketchHandlerLine: public DrawSketchHandlerLineBase
 {
@@ -429,22 +429,30 @@ bool CmdSketcherCreateLine::isActive(void)
 
 class DrawSketchHandlerRectangle;
 
+namespace SketcherGui::ConstructionMethods {
+
+enum class RectangleConstructionMethod {
+    Diagonal,
+    CenterAndCorner,
+    End // Must be the last one
+};
+
+}
+
 using DrawSketchHandlerRectangleBase = DrawSketchDefaultWidgetHandler<  DrawSketchHandlerRectangle,
                                                                         StateMachines::ThreeSeekEnd,
                                                                         /*PEditCurveSize =*/ 5,
                                                                         /*PAutoConstraintSize =*/ 2,
-                                                                        /*PNumToolwidgetparameters =*/4,
-                                                                        /*PNumToolwidgetCheckboxes =*/ 1,
-                                                                        /*PNumToolwidgetComboboxes =*/ 1>;
+                                                                        /*WidgetParametersT =*/WidgetParameters<4, 4>,
+                                                                        /*WidgetCheckboxesT =*/WidgetCheckboxes<1, 1>,
+                                                                        /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
+                                                                        ConstructionMethods::RectangleConstructionMethod,
+                                                                        /*bool PFirstComboboxIsConstructionMethod =*/ true>;
 
 class DrawSketchHandlerRectangle: public DrawSketchHandlerRectangleBase
 {
     friend DrawSketchHandlerRectangleBase; // allow DrawSketchHandlerRectangleBase specialisations access DrawSketchHandlerRectangle private members
 public:
-    enum class ConstructionMethod {
-        Diagonal,
-        CenterAndCorner
-    };
 
     DrawSketchHandlerRectangle(ConstructionMethod constrMethod = ConstructionMethod::Diagonal) :
         constructionMethod(constrMethod),
@@ -899,11 +907,6 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptDrawing
     onHandlerModeChanged(); //re-focus/select spinbox
 }
 
-template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
-     if (comboboxindex == WCombobox::FirstCombo)
-        this->setMode(dHandler->constructionMethod, value);
-}
-
 template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
     prevCursorPosition = onSketchPos;
 
@@ -1119,13 +1122,6 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::addConstrain
             firstCurve + 5, radius);
 }
 
-/* NOTE: This commented block shows how the toolwidget functions can be specialised. They are commented because
- * It may well be that the default implementation works just fine and no specialisation is necessary. They are
- * provided as examples.
- *
-template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::onHandlerModeChanged() {}
-*/
-
 DEF_STD_CMD_AU(CmdSketcherCreateRectangle)
 
 CmdSketcherCreateRectangle::CmdSketcherCreateRectangle()
@@ -1145,7 +1141,7 @@ CmdSketcherCreateRectangle::CmdSketcherCreateRectangle()
 void CmdSketcherCreateRectangle::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRectangle(DrawSketchHandlerRectangle::ConstructionMethod::Diagonal) );
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRectangle(ConstructionMethods::RectangleConstructionMethod::Diagonal) );
 }
 
 void CmdSketcherCreateRectangle::updateAction(int mode)
@@ -1175,9 +1171,9 @@ using DrawSketchHandlerFrameBase = DrawSketchDefaultWidgetHandler<  DrawSketchHa
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 5,
     /*PAutoConstraintSize =*/ 2,
-    /*PNumToolwidgetparameters =*/5,
-    /*PNumToolwidgetCheckboxes =*/ 0,
-    /*PNumToolwidgetComboboxes =*/ 0>;
+    /*WidgetParametersT =*/WidgetParameters<5>,
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<0>,
+    /*WidgetComboboxesT =*/WidgetComboboxes<1>>;
 
 class DrawSketchHandlerFrame : public DrawSketchHandlerFrameBase
 {
@@ -1665,9 +1661,9 @@ using DrawSketchHandlerPolygonBase = DrawSketchDefaultWidgetHandler<  DrawSketch
     StateMachines::TwoSeekEnd,
     /*PEditCurveSize =*/ 7,
     /*PAutoConstraintSize =*/ 2,
-    /*PNumToolwidgetparameters =*/5,
-    /*PNumToolwidgetCheckboxes =*/ 0,
-    /*PNumToolwidgetComboboxes =*/ 0>;
+    /*WidgetParametersT =*/ WidgetParameters<5>,
+    /*WidgetCheckboxesT =*/ WidgetCheckboxes<0>,
+    /*WidgetComboboxesT =*/ WidgetComboboxes<0>>;
 
 class DrawSketchHandlerPolygon : public DrawSketchHandlerPolygonBase
 {
@@ -1991,7 +1987,7 @@ CmdSketcherCompCreateRectangles::CmdSketcherCompCreateRectangles()
 void CmdSketcherCompCreateRectangles::activated(int iMsg)
 {
     if (iMsg == 0)
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerRectangle(DrawSketchHandlerRectangle::ConstructionMethod::Diagonal));
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerRectangle(ConstructionMethods::RectangleConstructionMethod::Diagonal));
     else if (iMsg == 1)
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFrame());
     else if (iMsg == 2)
@@ -2776,24 +2772,31 @@ bool CmdSketcherCreatePolyline::isActive(void)
 /* Circle ================================================================================*/
 class DrawSketchHandlerCircle;
 
+namespace SketcherGui::ConstructionMethods {
+
+enum class CircleEllipseConstructionMethod {
+    Center,
+    ThreeRim,
+    End // Must be the last one
+};
+
+}
+
 using DrawSketchHandlerCircleBase = DrawSketchDefaultWidgetHandler<  DrawSketchHandlerCircle,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 3,
-    /*PNumToolwidgetparameters =*/3,
-    /*PNumToolwidgetCheckboxes =*/ 0,
-    /*PNumToolwidgetComboboxes =*/ 1>;
+    /*WidgetParametersT =*/WidgetParameters<3, 6>,
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0>,
+    /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
+    ConstructionMethods::CircleEllipseConstructionMethod,
+    /*bool PFirstComboboxIsConstructionMethod =*/ true>;
 
 class DrawSketchHandlerCircle : public DrawSketchHandlerCircleBase
 {
     friend DrawSketchHandlerCircleBase;
 
 public:
-    enum class ConstructionMethod {
-        Center,
-        ThreeRim
-    };
-
     DrawSketchHandlerCircle(ConstructionMethod constrMethod = ConstructionMethod::Center) : constructionMethod(constrMethod) {}
     virtual ~DrawSketchHandlerCircle() = default;
 
@@ -3023,14 +3026,6 @@ template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::adaptDrawingToP
     }
 }
 
-template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
-     if (comboboxindex == WCombobox::FirstCombo) {
-        static std::vector<int> nparameters = {3, 6};
-
-        this->setModeAndAdaptParameters(dHandler->constructionMethod, value, nparameters);
-    }
-}
-
 template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
     prevCursorPosition = onSketchPos;
 
@@ -3227,7 +3222,7 @@ CmdSketcherCreateCircle::CmdSketcherCreateCircle()
 void CmdSketcherCreateCircle::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerCircle(DrawSketchHandlerCircle::ConstructionMethod::Center));
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerCircle(ConstructionMethods::CircleEllipseConstructionMethod::Center));
 }
 
 bool CmdSketcherCreateCircle::isActive(void)
@@ -3242,21 +3237,17 @@ using DrawSketchHandlerEllipseBase = DrawSketchDefaultWidgetHandler<  DrawSketch
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 3,
-    /*PNumToolwidgetparameters =*/5,
-    /*PNumToolwidgetCheckboxes =*/ 0,
-    /*PNumToolwidgetComboboxes =*/ 1>;
+    /*WidgetParametersT =*/WidgetParameters<5, 6>,
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0>,
+    /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
+    ConstructionMethods::CircleEllipseConstructionMethod,
+    /*bool PFirstComboboxIsConstructionMethod =*/ true>;
 
 class DrawSketchHandlerEllipse : public DrawSketchHandlerEllipseBase
 {
     friend DrawSketchHandlerEllipseBase;
 
 public:
-
-    enum class ConstructionMethod {
-        Center,
-        ThreeRim
-    };
-
     DrawSketchHandlerEllipse(ConstructionMethod constrMethod = ConstructionMethod::Center) :
         constructionMethod(constrMethod) {}
     virtual ~DrawSketchHandlerEllipse() = default;
@@ -3530,14 +3521,6 @@ template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::adaptDrawingTo
     }
 }
 
-template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
-    if (comboboxindex == WCombobox::FirstCombo) {
-        static std::vector<int> nparameters = {5, 6};
-
-        this->setModeAndAdaptParameters(dHandler->constructionMethod, value, nparameters);
-    }
-}
-
 template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
     prevCursorPosition = onSketchPos;
 
@@ -3785,7 +3768,7 @@ CmdSketcherCreateEllipseByCenter::CmdSketcherCreateEllipseByCenter()
 void CmdSketcherCreateEllipseByCenter::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerEllipse(DrawSketchHandlerEllipse::ConstructionMethod::Center));
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerEllipse(ConstructionMethods::CircleEllipseConstructionMethod::Center));
 }
 
 bool CmdSketcherCreateEllipseByCenter::isActive(void)
@@ -3812,9 +3795,9 @@ CmdSketcherCompCreateCircle::CmdSketcherCompCreateCircle()
 void CmdSketcherCompCreateCircle::activated(int iMsg)
 {
     if (iMsg == 0)
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerCircle(DrawSketchHandlerCircle::ConstructionMethod::Center));
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerCircle(ConstructionMethods::CircleEllipseConstructionMethod::Center));
     else if (iMsg == 1)
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerEllipse(DrawSketchHandlerEllipse::ConstructionMethod::Center));
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerEllipse(ConstructionMethods::CircleEllipseConstructionMethod::Center));
     else
         return;
 
@@ -3902,20 +3885,16 @@ using DrawSketchHandlerArcBase = DrawSketchDefaultWidgetHandler<  DrawSketchHand
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 3,
-    /*PNumToolwidgetparameters =*/5,
-    /*PNumToolwidgetCheckboxes =*/ 0,
-    /*PNumToolwidgetComboboxes =*/ 1>;
+    /*WidgetParametersT =*/WidgetParameters<5, 6>,
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0>,
+    /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
+    ConstructionMethods::CircleEllipseConstructionMethod,
+    /*bool PFirstComboboxIsConstructionMethod =*/ true>;
 
 class DrawSketchHandlerArc : public DrawSketchHandlerArcBase
 {
     friend DrawSketchHandlerArcBase;
 public:
-
-    enum class ConstructionMethod {
-        Center,
-        ThreeRim
-    };
-
     enum SnapMode {
         Free,
         Snap5Degree
@@ -4255,14 +4234,6 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::adaptDrawingToPara
             dHandler->secondPoint.y = value;
             break;
         }
-    }
-}
-
-template <> void DrawSketchHandlerArcBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
-     if (comboboxindex == WCombobox::FirstCombo) {
-        static std::vector<int> nparameters = {5, 6};
-
-        this->setModeAndAdaptParameters(dHandler->constructionMethod, value, nparameters);
     }
 }
 
@@ -6302,9 +6273,9 @@ using DrawSketchHandlerPointBase = DrawSketchDefaultWidgetHandler<  DrawSketchHa
     StateMachines::OneSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 1,
-    /*PNumToolwidgetparameters =*/2,
-    /*PNumToolwidgetCheckboxes =*/ 0,
-    /*PNumToolwidgetComboboxes =*/ 0>;
+    /*WidgetParametersT =*/WidgetParameters<2>,
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<0>,
+    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
 
 class DrawSketchHandlerPoint : public DrawSketchHandlerPointBase
 {
@@ -6538,13 +6509,25 @@ namespace SketcherGui {
 
 class DrawSketchHandlerFillet;
 
+namespace SketcherGui::ConstructionMethods {
+
+enum class FilletChamferConstructionMethod {
+        Fillet,
+        Chamfer,
+    End // Must be the last one
+};
+
+}
+
 using DrawSketchHandlerFilletBase = DrawSketchDefaultWidgetHandler<  DrawSketchHandlerFillet,
     StateMachines::TwoSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 0,
-    /*PNumToolwidgetparameters =*/1,
-    /*PNumToolwidgetCheckboxes =*/ 2,
-    /*PNumToolwidgetComboboxes =*/ 1>;
+    /*WidgetParametersT =*/WidgetParameters<1, 2>,
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<2, 2>,
+    /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
+    ConstructionMethods::FilletChamferConstructionMethod,
+    /*bool PFirstComboboxIsConstructionMethod =*/ true>;
 
 class DrawSketchHandlerFillet : public DrawSketchHandlerFilletBase
 {
@@ -6822,14 +6805,6 @@ template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::adaptDrawingToP
             dHandler->nofAngles = max(2, abs(static_cast<int>(value)));
             break;
         }
-    }
-}
-
-template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
-     if (comboboxindex == WCombobox::FirstCombo) {
-        static std::vector<int> nparameters = {1, 2};
-
-        this->setModeAndAdaptParameters(dHandler->constructionMethod, value, nparameters);
     }
 }
 
@@ -7514,24 +7489,30 @@ bool CmdSketcherSplit::isActive(void)
 /* Create Insert =====================================================*/
 class DrawSketchHandlerInsert;
 
+namespace SketcherGui::ConstructionMethods {
+
+enum class InsertConstructionMethod {
+    Box,
+    Arc,
+    End // Must be the last one
+};
+
+}
+
 using DrawSketchHandlerInsertBase = DrawSketchDefaultWidgetHandler<  DrawSketchHandlerInsert,
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 2,
-    /*PNumToolwidgetparameters =*/ 3,
-    /*PNumToolwidgetCheckboxes =*/ 0,
-    /*PNumToolwidgetComboboxes =*/ 1>;
+    /*WidgetParametersT =*/WidgetParameters<3, 3>,
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0>,
+    /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
+    ConstructionMethods::InsertConstructionMethod,
+    /*bool PFirstComboboxIsConstructionMethod =*/ true>;
 
 class DrawSketchHandlerInsert : public DrawSketchHandlerInsertBase
 {
     friend DrawSketchHandlerInsertBase;
 public:
-
-    enum class ConstructionMethod {
-        Box,
-        Arc
-    };
-
     DrawSketchHandlerInsert(int geoI, ConstructionMethod constrMethod = ConstructionMethod::Box) :
         constructionMethod(constrMethod),
         reverseArc(false),
@@ -7898,11 +7879,6 @@ template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::adaptDrawingToP
         dHandler->boxLength = value;
         break;
     }
-}
-
-template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
-     if (comboboxindex == WCombobox::FirstCombo)
-        this->setMode(dHandler->constructionMethod, value);
 }
 
 template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
@@ -8644,9 +8620,9 @@ using DrawSketchHandlerSlotBase = DrawSketchDefaultWidgetHandler<  DrawSketchHan
     StateMachines::ThreeSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 3,
-    /*PNumToolwidgetparameters =*/5,
-    /*PNumToolwidgetCheckboxes =*/ 0,
-    /*PNumToolwidgetComboboxes =*/ 0>;
+    /*WidgetParametersT =*/WidgetParameters<5>,
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<0>,
+    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
 
 class DrawSketchHandlerSlot : public DrawSketchHandlerSlotBase
 {
@@ -9078,25 +9054,31 @@ bool CmdSketcherCreateSlot::isActive(void)
 /* Create Arc Slot =========================================================*/
 class DrawSketchHandlerArcSlot;
 
+namespace SketcherGui::ConstructionMethods {
+
+enum class ArcSlotConstructionMethod {
+    ArcSlot,
+    RectangleSlot,
+    End // Must be the last one
+};
+
+}
+
 using DrawSketchHandlerArcSlotBase = DrawSketchDefaultWidgetHandler<  DrawSketchHandlerArcSlot,
     StateMachines::FourSeekEnd,
     /*PEditCurveSize =*/ 0,
     /*PAutoConstraintSize =*/ 3,
-    /*PNumToolwidgetparameters =*/6,
-    /*PNumToolwidgetCheckboxes =*/ 0,
-    /*PNumToolwidgetComboboxes =*/ 1>;
+    /*WidgetParametersT =*/WidgetParameters<6, 6>,
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0>,
+    /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
+    ConstructionMethods::ArcSlotConstructionMethod,
+    /*bool PFirstComboboxIsConstructionMethod =*/ true>;
 
 class DrawSketchHandlerArcSlot : public DrawSketchHandlerArcSlotBase
 {
     friend DrawSketchHandlerArcSlotBase;
 
 public:
-
-    enum class ConstructionMethod {
-        ArcSlot,
-        RectangleSlot
-    };
-
     enum class SnapMode {
         Free,
         Snap5Degree
@@ -9537,11 +9519,6 @@ template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::adaptDrawingTo
             dHandler->r = value;
         break;
     }
-}
-
-template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::adaptDrawingToComboboxChange(int comboboxindex, int value) {
-     if (comboboxindex == WCombobox::FirstCombo)
-        this->setMode(dHandler->constructionMethod, value);
 }
 
 template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
