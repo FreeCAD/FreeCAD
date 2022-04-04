@@ -194,6 +194,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self.extensionsCache = dict()
         self.extensionsReady = False
         self.enabled = True
+        self.lastDefaultLength = ""
 
         self.extensions = list()
 
@@ -284,6 +285,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self._initializeExtensions(obj)  # Efficiently initialize Extensions
         self.defaultLength.updateSpinBox()
         self._getUseOutlineState()  # Find `useOutline` checkbox and get its boolean value
+        self.lastDefaultLength = self.form.defaultLength.text()
         self.fieldsSet = True  # flag to identify initial values set
 
     def _initializeExtensions(self, obj):
@@ -299,15 +301,32 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
             self.form.extensionEdit.setDisabled(True)
         self.setExtensions(self.extensions)
 
-    def updateQuantitySpinBoxes(self, index=None):
-        prevValue = self.form.defaultLength.text()
-        self.defaultLength.updateSpinBox()
-        postValue = self.form.defaultLength.text()
+    def _isDefaultLengthExpression(self):
+        """_isDefaultLengthExpression()... Return True if Default Length is determined by an expression."""
+        for prop, __ in self.obj.ExpressionEngine:
+            if prop == "ExtensionLengthDefault":
+                return True
+        return False
 
-        if postValue != prevValue:
-            PathLog.debug("updateQuantitySpinBoxes() post != prev value")
+    def _applyDefaultLengthChange(self, index=None):
+        """_applyDefaultLengthChange(index=None)...
+        Helper method to update Default Length spinbox, and update extensions due to change in Default Length."""
+        self.defaultLength.updateSpinBox()
+        if self.form.defaultLength.text() != self.lastDefaultLength:
+            self.lastDefaultLength = self.form.defaultLength.text()
             self._resetCachedExtensions()  # Reset extension cache because extension dimensions likely changed
             self._enableExtensions()  # Recalculate extensions
+
+    def _defaultLengthChanged(self):
+        """_defaultLengthChanged()... Slot method for determining if a change in Default Length
+        value is determined from an expression edit, or a simple spinbox change. If the former,
+        emit a `editingFinished` signal manually because the Formula Editor window returned
+        a value to the base SpinBox."""
+        if (
+            self._isDefaultLengthExpression()
+            and self.form.defaultLength.text() != self.lastDefaultLength
+        ):
+            self.form.defaultLength.editingFinished.emit()
 
     def createItemForBaseModel(self, base, sub, edges, extensions):
         PathLog.track(
@@ -490,7 +509,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
             if self.fieldsSet:
                 if self.form.enableExtensions.isChecked():
                     if prop == "ExtensionLengthDefault":
-                        self.updateQuantitySpinBoxes()
+                        self._applyDefaultLengthChange()
                     elif prop == "Base":
                         self.extensionsReady = False
                         self.setExtensions(FeatureExtensions.getExtensions(obj))
@@ -625,8 +644,11 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self.form.buttonClear.clicked.connect(self.extensionsClear)
         self.form.buttonDisable.clicked.connect(self.extensionsDisable)
         self.form.buttonEnable.clicked.connect(self.extensionsEnable)
-        self.form.defaultLength.editingFinished.connect(self.updateQuantitySpinBoxes)
         self.form.enableExtensions.toggled.connect(self._enableExtensions)
+
+        # These two handlers are needed to provide immediate updates to extension length
+        self.form.defaultLength.editingFinished.connect(self._applyDefaultLengthChange)
+        self.form.defaultLength.textChanged.connect(self._defaultLengthChanged)
 
         self.model.itemChanged.connect(self.updateItemEnabled)
 
