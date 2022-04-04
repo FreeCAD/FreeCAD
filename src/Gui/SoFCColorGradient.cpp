@@ -48,7 +48,7 @@ SO_NODE_SOURCE(SoFCColorGradient)
 /*!
   Constructor.
 */
-SoFCColorGradient::SoFCColorGradient() : _bbox(4.0f, -4.0f, 4.5f, 4.0f), _precision(5)
+SoFCColorGradient::SoFCColorGradient() : _bbox(4.0f, -4.0f, 4.5f, 4.0f), _precision(3)
 {
     SO_NODE_CONSTRUCTOR(SoFCColorGradient);
     coords = new SoCoordinate3;
@@ -305,10 +305,9 @@ void SoFCColorGradient::customize(SoFCColorBarBase* parentNode)
     pos += QPoint(int(-1.1 * dlg.width()), int(-0.1 * dlg.height()));
     dlg.move(pos);
 
-    auto applyProfile = [&](const App::ColorGradientProfile& pro) {
+    auto applyProfile = [&](const App::ColorGradientProfile& pro, int precision) {
         _cColGrad.setProfile(pro);
-        _precision = dlg.numberOfDecimals();
-        setRange(pro.fMin, pro.fMax, _precision);
+        setRange(pro.fMin, pro.fMax, precision);
         rebuildGradient();
 
         triggerChange(parentNode);
@@ -316,7 +315,7 @@ void SoFCColorGradient::customize(SoFCColorBarBase* parentNode)
     QObject::connect(&dlg, &Gui::Dialog::DlgSettingsColorGradientImp::colorModelChanged,
                      [&] {
         try {
-            applyProfile(dlg.getProfile());
+            applyProfile(dlg.getProfile(), dlg.numberOfDecimals());
         }
         catch (const Base::Exception& e) {
             e.ReportException();
@@ -324,7 +323,11 @@ void SoFCColorGradient::customize(SoFCColorBarBase* parentNode)
     });
 
     if (dlg.exec() != QDialog::Accepted) {
-        if (!profile.isEqual(dlg.getProfile()))
-            applyProfile(profile);
+        int decimals = dlg.numberOfDecimals();
+        if (!profile.isEqual(dlg.getProfile()) || decimals != _precision)
+            applyProfile(profile, _precision);
+    }
+    else {
+        _precision = dlg.numberOfDecimals();
     }
 }

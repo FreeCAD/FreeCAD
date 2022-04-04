@@ -52,6 +52,7 @@ DlgSettingsColorGradientImp::DlgSettingsColorGradientImp(const App::ColorGradien
   , ui(new Ui_DlgSettingsColorGradient)
 {
     ui->setupUi(this);
+    ui->spinBoxLabel->setRange(5, 30);
     ui->spinBoxDecimals->setMaximum(std::numeric_limits<float>::digits10);
 
     // remove the automatic help button in dialog title since we don't use it
@@ -103,6 +104,12 @@ void DlgSettingsColorGradientImp::setupConnections()
             this, &DlgSettingsColorGradientImp::colorModelChanged);
 
     connect(ui->floatLineEditMin, &QLineEdit::editingFinished,
+            this, &DlgSettingsColorGradientImp::colorModelChanged);
+
+    connect(ui->spinBoxLabel, qOverload<int>(&QSpinBox::valueChanged),
+            this, &DlgSettingsColorGradientImp::colorModelChanged);
+
+    connect(ui->spinBoxDecimals, qOverload<int>(&QSpinBox::valueChanged),
             this, &DlgSettingsColorGradientImp::colorModelChanged);
 }
 
