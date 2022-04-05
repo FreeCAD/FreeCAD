@@ -52,10 +52,6 @@ else:
 
 
 translate = FreeCAD.Qt.translate
-
-VD = []
-Vertex = {}
-
 _sorting = "global"
 
 
@@ -68,9 +64,6 @@ def _collectVoronoiWires(vd):
             j = vertex.get(i, [])
             j.append(e)
             vertex[i] = j
-    Vertex.clear()
-    for v in vertex:
-        Vertex[v] = vertex[v]
 
     # knots are the start and end points of a wire
     knots = [i for i in vertex if len(vertex[i]) == 1]
@@ -296,7 +289,6 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
             return path
 
-        VD.clear()
         voronoiWires = []
         for f in faces:
             vd = Path.Voronoi()
@@ -320,7 +312,6 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             if _sorting != "global":
                 wires = _sortVoronoiWires(wires)
             voronoiWires.extend(wires)
-            VD.append((f, vd, wires))
 
         if _sorting == "global":
             voronoiWires = _sortVoronoiWires(voronoiWires)

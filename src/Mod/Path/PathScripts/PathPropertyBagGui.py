@@ -222,9 +222,6 @@ class PropertyCreate(object):
         return self.form.exec_()
 
 
-Panel = []
-
-
 class TaskPanel(object):
     ColumnName = 0
     # ColumnType = 1
@@ -241,7 +238,6 @@ class TaskPanel(object):
         self.model = None
         self.delegate = None
         FreeCAD.ActiveDocument.openTransaction("Edit PropertyBag")
-        Panel.append(self)
 
     def updateData(self, topLeft, bottomRight):
         pass
