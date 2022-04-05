@@ -1345,11 +1345,17 @@ def export(exportList, filename, colors=None, preferences=None):
             elif Draft.getType(anno) in ["DraftText","Text"]:
                 l = FreeCAD.Vector(anno.Placement.Base).multiply(preferences['SCALE_FACTOR'])
                 pos = ifcbin.createIfcCartesianPoint((l.x,l.y,l.z))
-                tpl = ifcbin.createIfcAxis2Placement3D(pos,None,None)
+                zdir = ifcbin.createIfcDirection(tuple(anno.Placement.multVec(FreeCAD.Vector(0,0,1))))
+                xdir = ifcbin.createIfcDirection(tuple(anno.Placement.multVec(FreeCAD.Vector(1,0,0))))
+                tpl = ifcbin.createIfcAxis2Placement3D(pos,zdir,xdir)
+                alg = "LEFT"
+                if FreeCAD.GuiUp and hasattr(anno.ViewObject,"Justification"):
+                    if anno.ViewObject.Justification == "Right":
+                        alg = "RIGHT"
                 s = ";".join(anno.Text)
                 if six.PY2:
                     s = s.encode("utf8")
-                txt = ifcfile.createIfcTextLiteral(s,tpl,"LEFT")
+                txt = ifcfile.createIfcTextLiteral(s,tpl,alg)
                 reps = [txt]
             elif Draft.getType(anno) in ["Dimension","LinearDimension","AngularDimension"]:
                 if FreeCAD.GuiUp:
