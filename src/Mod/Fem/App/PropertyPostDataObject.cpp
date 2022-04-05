@@ -264,6 +264,15 @@ void PropertyPostDataObject::SaveDocFile (Base::Writer &writer) const
     xmlWriter->SetFileName(fi.filePath().c_str());
     xmlWriter->SetDataModeToBinary();
 
+#ifdef VTK_CELL_ARRAY_V2
+    // Looks like an invalid data object that causes a crash with vtk9
+    vtkUnstructuredGrid* dataGrid = vtkUnstructuredGrid::SafeDownCast(m_dataObject);
+    if (dataGrid && dataGrid->GetPiece() < 0) {
+        std::cerr << "PropertyPostDataObject::SaveDocFile: ignore broken vtkUnstructuredGrid\n";
+        return;
+    }
+#endif
+
     if ( xmlWriter->Write() != 1 ) {
         // Note: Do NOT throw an exception here because if the tmp. file could
         // not be created we should not abort.
