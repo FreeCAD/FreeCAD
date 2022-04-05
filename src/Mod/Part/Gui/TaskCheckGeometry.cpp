@@ -607,7 +607,7 @@ void TaskCheckGeometryResults::buildShapeContent(App::DocumentObject *pObject, c
         args.setItem(2, Py::Boolean(advancedShapeContent));
         Py::Module shapecontent(module, true);
         Py::String result(shapecontent.callMemberFunction("buildShapeContent", args));
-        stream << result.as_std_string("ascii");
+        stream << result.as_std_string("utf-8");
     }
     catch (Py::Exception&) {
         Base::PyException e;
