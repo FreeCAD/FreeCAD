@@ -91,7 +91,7 @@ protected:
   void setColorStyle (App::ColorBarStyle tStyle);
   /** Rebuild the gradient bar. */
   void rebuildGradient();
-  /** Returns a list of \a count labels within the ranhe [\a fMin, \a fMax].  */
+  /** Returns a list of \a count labels within the range [\a fMin, \a fMax].  */
   std::vector<float> getMarkerValues(float fMin, float fMax, int count) const;
 
 private:
