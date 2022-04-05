@@ -48,9 +48,6 @@ else:
 translate = FreeCAD.Qt.translate
 
 
-failures = []
-
-
 def debugEdge(edge, prefix, force=False):
     if force or PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
         pf = edge.valueAt(edge.FirstParameter)
@@ -568,7 +565,6 @@ class MapWireToTag:
         return shell
 
     def commandsForEdges(self):
-        global failures
         if self.edges:
             try:
                 shape = self.shell().common(self.tag.solid)
@@ -623,7 +619,6 @@ class MapWireToTag:
                     commands.extend(
                         PathGeom.cmdsForEdge(e, hSpeed=self.hSpeed, vSpeed=self.vSpeed)
                     )
-                failures.append(self)
                 return commands
         return []
 
@@ -1299,8 +1294,6 @@ class ObjectTagDressup:
 
     @waiting_effects
     def processTags(self, obj):
-        global failures
-        failures = []
         tagID = 0
         if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
             for tag in self.tags:
