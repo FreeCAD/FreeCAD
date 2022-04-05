@@ -708,6 +708,10 @@ def insert(srcfile, docname, skip=[], only=[], root=None, preferences=None):
                         obj.Height = 0
                         obj.Width = 0
                         obj.Length = 0
+                    if (freecadtype in ["Rebar"]) and baseobj:
+                        # TODO rebars don't keep link to their baee object - we can remove it
+                        bn = baseobj.Name
+                        doc.removeObject(bn)
                     if store:
                         sharedobjects[store] = obj
 

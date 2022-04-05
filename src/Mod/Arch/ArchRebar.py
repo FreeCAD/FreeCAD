@@ -317,14 +317,12 @@ class _Rebar(ArchComponent.Component):
 
         if self.clone(obj):
             return
-        if not obj.Base and ((not obj.Shape) or (not obj.Shape.isNull())):
-            # let pass without error if we already have a shape
-            return
         if not obj.Base:
-            FreeCAD.Console.PrintError(
-                "No Base, return without a rebar shape for {}.\n"
-                .format(obj.Name)
-            )
+            # let pass without error so that object can receive a shape directly
+            #FreeCAD.Console.PrintError(
+            #    "No Base, return without a rebar shape for {}.\n"
+            #    .format(obj.Name)
+            #)
             return
         if not hasattr(obj.Base,"Shape") or (not obj.Base.Shape) or obj.Base.Shape.isNull():
             FreeCAD.Console.PrintError(
