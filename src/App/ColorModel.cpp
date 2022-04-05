@@ -187,11 +187,7 @@ bool ColorGradientProfile::isEqual(const ColorGradientProfile& cg) const
         return false;
     if (fMax != cg.fMax)
         return false;
-    if (visibility.testFlag(Visibility::Grayed) !=
-        cg.visibility.testFlag(Visibility::Grayed))
-        return false;
-    if (visibility.testFlag(Visibility::Invisible) !=
-        cg.visibility.testFlag(Visibility::Invisible))
+    if (!visibility.isEqual(cg.visibility))
         return false;
     if (tColorModel != cg.tColorModel)
         return false;

@@ -116,9 +116,12 @@ public:
         using u = typename std::underlying_type<Enum>::type;
         return (i & f) == f && (static_cast<u>(f) != 0 || i == f);
     }
-    constexpr inline void setFlag(Enum f, bool on = true)
-    {
+    constexpr inline void setFlag(Enum f, bool on = true) {
         on ? (i |= f) : (i &= ~f);
+    }
+    constexpr bool isEqual(Flags f) const {
+        using u = typename std::underlying_type<Enum>::type;
+        return static_cast<u>(i) == static_cast<u>(f.i);
     }
 };
 }
