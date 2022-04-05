@@ -661,7 +661,8 @@ class ViewProviderBuildingPart:
         self.lco = coin.SoCoordinate3()
         self.sep.addChild(self.lco)
         lin = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
-        lin.coordIndex.setValues([0,1,-1,2,3,-1,4,5,-1])
+        if lin:
+            lin.coordIndex.setValues([0,1,-1,2,3,-1,4,5,-1])
         self.sep.addChild(lin)
         self.bbox = coin.SoSwitch()
         self.bbox.whichChild = -1
