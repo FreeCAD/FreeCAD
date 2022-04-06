@@ -666,6 +666,7 @@ SET(Editor_CPP_SRCS
     PythonConsole.cpp
     PythonConsolePy.cpp
     PythonDebugger.cpp
+    PythonTracing.cpp
     PythonEditor.cpp
     SyntaxHighlighter.cpp
     TextEdit.cpp
@@ -677,6 +678,7 @@ SET(Editor_HPP_SRCS
     PythonConsole.h
     PythonConsolePy.h
     PythonDebugger.h
+    PythonTracing.h
     PythonEditor.h
     SyntaxHighlighter.h
     TextEdit.h

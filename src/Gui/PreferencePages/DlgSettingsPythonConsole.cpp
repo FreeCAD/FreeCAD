@@ -44,6 +44,7 @@ void DlgSettingsPythonConsole::saveSettings()
     ui->PythonWordWrap->onSave();
     ui->PythonBlockCursor->onSave();
     ui->PythonSaveHistory->onSave();
+    ui->ProfilerInterval->onSave();
 }
 
 void DlgSettingsPythonConsole::loadSettings()
@@ -51,6 +52,7 @@ void DlgSettingsPythonConsole::loadSettings()
     ui->PythonWordWrap->onRestore();
     ui->PythonBlockCursor->onRestore();
     ui->PythonSaveHistory->onRestore();
+    ui->ProfilerInterval->onRestore();
 }
 
 void DlgSettingsPythonConsole::changeEvent(QEvent *e)
