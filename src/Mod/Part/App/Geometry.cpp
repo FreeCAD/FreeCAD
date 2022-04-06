@@ -4681,9 +4681,20 @@ Geometry *GeomPlane::copy(void) const
 }
 
 // Persistence implementer
-unsigned int GeomPlane::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
-void         GeomPlane::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
-void         GeomPlane::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
+unsigned int GeomPlane::getMemSize (void) const
+{
+    throw Base::NotImplementedError("GeomPlane::getMemSize");
+}
+
+void GeomPlane::Save(Base::Writer &/*writer*/) const
+{
+    throw Base::NotImplementedError("GeomPlane::Save");
+}
+
+void GeomPlane::Restore(Base::XMLReader &/*reader*/)
+{
+    throw Base::NotImplementedError("GeomPlane::Restore");
+}
 
 PyObject *GeomPlane::getPyObject(void)
 {
