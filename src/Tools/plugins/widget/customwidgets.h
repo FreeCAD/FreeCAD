@@ -158,7 +158,7 @@ class UrlLabel : public QLabel
     Q_PROPERTY( QString  url    READ url   WRITE setUrl)
 
 public:
-    UrlLabel ( QWidget * parent = 0, Qt::WindowFlags f = 0 );
+    UrlLabel ( QWidget * parent = 0, Qt::WindowFlags f = Qt::WindowFlags());
     virtual ~UrlLabel();
 
     QString url() const;

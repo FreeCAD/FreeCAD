@@ -20,8 +20,35 @@ add_library(FreeCAD_widgets SHARED
     plugin.h
 )
 
+set(FreeCAD_widgets_LIBS
+    ${Qt5Widgets_LIBRARIES}
+    ${Qt5Designer_LIBRARIES}
+)
+
+if(MSVC)
+    list(APPEND FreeCAD_widgets_LIBS
+        debug msvcrtd.lib
+        debug msvcprtd.lib
+        optimized msvcrt.lib
+        optimized msvcprt.lib
+    )
+
+    #Universal C runtime introduced in VS 2015 (cl version 19)
+    if (NOT (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "19"))
+        list(APPEND FreeCAD_widgets_LIBS
+            debug vcruntimed.lib
+            debug ucrtd.lib
+            debug concrtd.lib
+            optimized vcruntime.lib
+            optimized ucrt.lib
+            optimized concrt.lib
+        )
+    endif()
+endif()
+
 target_link_libraries(FreeCAD_widgets PRIVATE ${Qt5Widgets_LIBRARIES} ${Qt5Designer_LIBRARIES})
 target_compile_options(FreeCAD_widgets PRIVATE ${COMPILE_OPTIONS})
+set (libFreeCAD_widgets "libFreeCAD_widgets"  PARENT_SCOPE)
 
 
 # Get the install location of a plugin to determine the path to designer plguins
