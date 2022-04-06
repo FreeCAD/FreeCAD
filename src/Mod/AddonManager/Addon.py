@@ -301,6 +301,7 @@ class Addon:
         for dep in metadata.Depend:
             # Simple version for now: eventually support all of the version params...
             self.requires.add(dep["package"])
+            FreeCAD.Console.PrintLog(f"Package {self.name}: Adding dependency on {dep['package']}\n")
         for dep in metadata.Conflict:
             self.blocks.add(dep["package"])
 

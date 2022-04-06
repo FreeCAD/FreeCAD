@@ -1005,6 +1005,9 @@ class CommandAddonManager:
             if dep not in self.allowed_packages:
                 bad_packages.append(dep)
 
+        for dep in bad_packages:
+            python_required.remove(dep)
+
         if bad_packages:
             message = "<p>" + translate(
                 "AddonsInstaller",
@@ -1018,8 +1021,12 @@ class CommandAddonManager:
                     "<li>(" + translate("AddonsInstaller", "Too many to list") + ")</li>"
                 )
             message += "</ul>"
-            QtWidgets.QMessageBox.critical(
-                self.dialog, translate("AddonsInstaller", "Missing Requirement"), message
+            message += "To ignore this error and install anyway, press OK."
+            r = QtWidgets.QMessageBox.critical(
+                self.dialog,
+                translate("AddonsInstaller", "Missing Requirement"),
+                message,
+                QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel,
             )
             FreeCAD.Console.PrintMessage(
                 translate(
@@ -1030,11 +1037,16 @@ class CommandAddonManager:
             )
             for package in self.allowed_packages:
                 FreeCAD.Console.PrintMessage(f"  * {package}\n")
-            return True
+
+            if r == QtWidgets.QMessageBox.Ok:
+                # Force the installation to proceed
+                return False
+            else:
+                return True
         else:
             return False
 
-    def report_missing_workbenches(self, addon_name:str, wbs) -> None:
+    def report_missing_workbenches(self, addon_name:str, wbs) -> bool:
         if len(wbs) == 1:
             name = wbs[0]
             message = translate(
@@ -1049,12 +1061,17 @@ class CommandAddonManager:
             for wb in wbs:
                 message += "<li>" + wb + "</li>"
             message += "</ul>"
-        QtWidgets.QMessageBox.critical(
+            message += translate("AddonsInstaller", "Press OK to install anyway.")
+        r = QtWidgets.QMessageBox.critical(
             self.dialog,
             translate("AddonsInstaller", "Missing Requirement"),
             message,
-            QtWidgets.QMessageBox.Cancel,
+            QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel,
         )
+        if r == QtWidgets.QMessageBox.Ok:
+            return True
+        else:
+            return False
 
     def display_dep_resolution_dialog(self, missing, repo: Addon) -> None:
         self.dependency_dialog = FreeCADGui.PySideUic.loadUi(
@@ -1102,9 +1119,10 @@ class CommandAddonManager:
         missing.python_optional = good_packages
 
         if missing.wbs:
-            # Unrecoverable failure, needs a new version of FreeCAD installation
-            self.report_missing_workbenches(repo.display_name, missing.wbs)
-        elif (
+            r = self.report_missing_workbenches(repo.display_name, missing.wbs)
+            if r == False:
+                return
+        if (
             missing.external_addons
             or missing.python_required
             or missing.python_optional
