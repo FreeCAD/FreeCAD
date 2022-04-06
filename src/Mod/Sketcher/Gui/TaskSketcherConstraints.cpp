@@ -828,6 +828,11 @@ void TaskSketcherConstraints::on_multipleFilterButton_clicked(bool)
         // if tracking, it will call slotConstraintChanged via update mechanism as Multi Filter affects not only visibility, but also filtered list content, if not tracking will still update the list to match the multi-filter.
         updateList();
     }
+    else
+    {
+        // restore previous filter if Multiple filter dialog is canceled
+        ui->comboBoxFilter->setCurrentIndex(filterindex);
+    }
 }
 
 void TaskSketcherConstraints::on_settingsDialogButton_clicked(bool)
