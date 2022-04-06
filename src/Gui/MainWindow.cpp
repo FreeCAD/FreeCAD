@@ -866,6 +866,7 @@ bool MainWindow::eventFilter(QObject* o, QEvent* e)
                 QApplication::sendEvent(this, &e);
             }
             static_cast<QWidget *>(o)->setAttribute(Qt::WA_OutsideWSRange);
+            o->deleteLater();
             return true;
         }
         if (o->inherits("QWhatsThat") && e->type() == QEvent::Hide) {
