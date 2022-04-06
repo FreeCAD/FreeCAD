@@ -26,6 +26,7 @@
 #include <Python.h>
 #include "PythonEditor.h"
 
+#include <QTimer>
 
 class QPlainTextEdit;
 class QPushButton;
@@ -41,6 +42,8 @@ class GuiExport InteractiveInterpreter
 public:
     InteractiveInterpreter();
     ~InteractiveInterpreter();
+
+    bool isOccupied() const;
 
     bool push(const char*);
     int compileCommand(const char*) const;
@@ -165,6 +168,10 @@ private:
     PythonConsoleHighlighter* pythonSyntax;
     QString                 *_sourceDrain;
     QString                  _historyFile;
+
+private:
+    QTimer *flusher;
+    void flushOutput();
 };
 
 /**

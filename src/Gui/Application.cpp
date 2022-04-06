@@ -116,6 +116,7 @@
 #include "WorkbenchManager.h"
 #include "WidgetFactory.h"
 
+#include <chrono>
 
 using namespace Gui;
 using namespace Gui::DockWnd;
@@ -124,6 +125,25 @@ namespace sp = std::placeholders;
 
 
 Application* Application::Instance = nullptr;
+
+
+/*
+ * This callback ensures that Qt runs its event loop (i.e. updates the GUI, processes keyboard and mouse events, etc.)
+ * at least every 200 ms, even when there is long-running Python code on the main thread. It is registered as the global
+ * trace function of the Python environment.
+ */
+int pythonTraceFunc(PyObject *obj, PyFrameObject *frame, int what, PyObject *arg) {
+    static std::chrono::time_point<std::chrono::steady_clock> lastCalledTime = std::chrono::steady_clock::now();
+	std::chrono::time_point<std::chrono::steady_clock> currTime = std::chrono::steady_clock::now();
+	long ms = (currTime - lastCalledTime) / 1ms;
+
+	if(ms >= Application::Instance->getPythonTracerInterval()) {
+		lastCalledTime = currTime;
+		QGuiApplication::processEvents();
+	}
+
+    return 0;
+}
 
 namespace Gui {
 
@@ -195,6 +215,7 @@ struct ApplicationP
     /// Handles all commands
     CommandManager commandManager;
     ViewProviderMap viewproviderMap;
+    int profilerInterval;
 };
 
 static PyObject *
@@ -526,6 +547,23 @@ Application::~Application()
 
     delete d;
     Instance = nullptr;
+}
+
+void Application::setPythonTracerEnabled(bool enabled) const
+{
+    auto parameterGroup = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/PythonConsole");
+    int interval = d->profilerInterval = parameterGroup->GetInt("ProfilerInterval", 200); // 200 ms
+    parameterGroup->SetInt("ProfilerInterval", interval); // Make sure it gets added to the parameter list
+
+    Py_tracefunc tracer = NULL;
+    if(enabled && interval > 0) tracer = &pythonTraceFunc;
+
+    PyEval_SetTrace(tracer, NULL);
+}
+
+int Application::getPythonTracerInterval(void) const
+{
+    return d->profilerInterval;
 }
 
 

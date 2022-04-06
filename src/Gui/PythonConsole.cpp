@@ -121,6 +121,7 @@ struct InteractiveInterpreterP
     PyObject* interpreter;
     PyObject* sysmodule;
     QStringList buffer;
+    bool occupied;
 };
 } // namespace Gui
 
@@ -134,6 +135,7 @@ InteractiveInterpreter::InteractiveInterpreter()
     PyObject* func = PyObject_GetAttrString(module, "InteractiveInterpreter");
     PyObject* args = Py_BuildValue("()");
     d = new InteractiveInterpreterP;
+    d->occupied = false;
 #if PY_VERSION_HEX < 0x03090000
     d->interpreter = PyEval_CallObject(func,args);
 #else
@@ -152,6 +154,10 @@ InteractiveInterpreter::~InteractiveInterpreter()
     Py_XDECREF(d->interpreter);
     Py_XDECREF(d->sysmodule);
     delete d;
+}
+
+bool InteractiveInterpreter::isOccupied() const {
+    return d->occupied;
 }
 
 /**
@@ -297,6 +303,10 @@ bool InteractiveInterpreter::runSource(const char* source) const
  */
 void InteractiveInterpreter::runCode(PyCodeObject* code) const
 {
+    if(isOccupied()) return;
+    else d->occupied = true;
+    Application::Instance->setPythonTracerEnabled(true);
+
     Base::PyGILStateLocker lock;
     PyObject *module, *dict, *presult;           /* "exec code in d, d" */
     module = PyImport_AddModule("__main__");     /* get module, init python */
@@ -348,6 +358,9 @@ void InteractiveInterpreter::runCode(PyCodeObject* code) const
     } else {
         Py_DECREF(presult);
     }
+
+    Application::Instance->setPythonTracerEnabled(false);
+    d->occupied = false;
 }
 
 /**
@@ -463,6 +476,10 @@ PythonConsole::PythonConsole(QWidget *parent)
     d->output = d->info;
     printPrompt(PythonConsole::Complete);
     loadHistory();
+
+    flusher = new QTimer(this);
+    connect(flusher, &QTimer::timeout, this, &PythonConsole::flushOutput);
+    flusher->start(100);
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -538,6 +555,13 @@ void PythonConsole::keyPressEvent(QKeyEvent * e)
     bool restartHistory = true;
     QTextCursor cursor = this->textCursor();
     QTextCursor inputLineBegin = this->inputBegin();
+
+    if (e->key() == Qt::Key_C && e->modifiers() == Qt::ControlModifier && d->interpreter->isOccupied())
+    {
+        Base::PyGILStateLocker lock;
+        PyErr_SetInterrupt();
+		return;
+    }
 
     if (!cursorBeyond( cursor, inputLineBegin ))
     {
@@ -713,6 +737,12 @@ void PythonConsole::onFlush()
     printPrompt(PythonConsole::Flush);
 }
 
+void PythonConsole::flushOutput()
+{
+    if(d->output.length() > 0 || d->error.length() > 0)
+        printPrompt(PythonConsole::Complete);
+}
+
 /** Prints the ps1 prompt (>>> ) for complete and ps2 prompt (... ) for
  * incomplete commands to the console window.
  */
@@ -802,6 +832,11 @@ void PythonConsole::runSource(const QString& line)
       *this->_sourceDrain = line;
       Q_EMIT pendingSource();
       return;
+    }
+
+    if(d->interpreter->isOccupied()) {
+        insertPythonError(QString::fromLatin1("Previous command still running!"));
+        return;
     }
 
     bool incomplete = false;

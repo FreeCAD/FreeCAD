@@ -78,6 +78,35 @@ horizontal space in Python console</string>
         </property>
        </widget>
       </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="labelProfilerInterval">
+        <property name="text">
+         <string>Python profiler interval (milliseconds): </string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::PrefSpinBox" name="ProfilerInterval">
+        <property name="toolTip">
+         <string>The interval at which the profiler runs when there's Python code running (to keep the GUI responding). Set to 0 to disable.</string>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>5000</number>
+        </property>
+        <property name="value">
+         <number>200</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ProfilerInterval</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>PythonConsole</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -100,6 +129,11 @@ horizontal space in Python console</string>
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

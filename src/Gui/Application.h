@@ -221,6 +221,9 @@ public:
 
     Gui::PreferencePackManager* prefPackManager(void);
 
+    void setPythonTracerEnabled(bool) const;
+    int getPythonTracerInterval(void) const;
+
     /** @name Init, Destruct an Access methods */
     //@{
     /// some kind of singleton
