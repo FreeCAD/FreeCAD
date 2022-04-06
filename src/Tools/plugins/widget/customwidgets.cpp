@@ -140,7 +140,7 @@ void LocationWidget::retranslateUi()
 } 
 
 FileChooser::FileChooser( QWidget *parent )
-  : QWidget( parent ), md( File ), _filter( QString::null )
+  : QWidget(parent), md(File), _filter(QString())
 {
     QHBoxLayout *layout = new QHBoxLayout( this );
     layout->setMargin( 0 );
@@ -153,7 +153,7 @@ FileChooser::FileChooser( QWidget *parent )
             this, SIGNAL(fileNameChanged(const QString &)));
 
     button = new QPushButton( "...", this );
-    button->setFixedWidth(2*button->fontMetrics().width( " ... " ));
+    button->setFixedWidth(2*button->fontMetrics().horizontalAdvance( " ... " ));
     layout->addWidget( button );
 
     connect(button, SIGNAL(clicked()), this, SLOT(chooseFile()));
@@ -216,8 +216,8 @@ void FileChooser::setFilter ( const QString& filter )
 void FileChooser::setButtonText( const QString& txt )
 {
     button->setText( txt );
-    int w1 = 2*button->fontMetrics().width(txt);
-    int w2 = 2*button->fontMetrics().width(" ... ");
+    int w1 = 2*button->fontMetrics().horizontalAdvance(txt);
+    int w2 = 2*button->fontMetrics().horizontalAdvance(" ... ");
     button->setFixedWidth((w1 > w2 ? w1 : w2));
 }
 
@@ -1391,7 +1391,7 @@ void CommandIconView::startDrag ( Qt::DropActions /*supportedActions*/ )
     drag->setMimeData(mimeData);
     drag->setHotSpot(QPoint(pixmap.width()/2, pixmap.height()/2));
     drag->setPixmap(pixmap);
-    drag->start(Qt::MoveAction);
+    drag->exec(Qt::MoveAction);
 }
 
 void CommandIconView::onSelectionChanged(QListWidgetItem * item, QListWidgetItem *)
