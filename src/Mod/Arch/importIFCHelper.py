@@ -860,11 +860,12 @@ def get2DShape(representation,scaling=1000):
             elif item.is_a("IfcTextLiteral"):
                 pl = getPlacement(item.Placement, scaling)
                 if pl:
-                    t = Draft.make_text(item.Literal.split(";"), pl.Base)
+                    t = Draft.make_text(item.Literal.split(";"), pl)
                     if FreeCAD.GuiUp:
                         if item.Path == "RIGHT":
                             t.ViewObject.Justification = "Right"
-                    return []  # TODO dirty hack... Object creation should not be done here
+                    # do not return because there might be more than one representation
+                    #return []  # TODO dirty hack... Object creation should not be done here
     elif representation.is_a() in ["IfcPolyline","IfcCircle","IfcTrimmedCurve","IfcRectangleProfileDef"]:
         result = getCurveSet(representation)
     return result

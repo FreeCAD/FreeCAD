@@ -1378,8 +1378,14 @@ def export(exportList, filename, colors=None, preferences=None):
                     if curves:
                         reps.append(ifcfile.createIfcGeometricCurveSet(curves))
                     l = FreeCAD.Vector(vp.tbase).multiply(preferences['SCALE_FACTOR'])
+                    zdir = None
+                    xdir = None
+                    if hasattr(vp,"trot"):
+                        r = FreeCAD.Rotation(vp.trot[0],vp.trot[1],vp.trot[2],vp.trot[3])
+                        zdir = ifcbin.createIfcDirection(tuple(r.multVec(FreeCAD.Vector(0,0,1))))
+                        xdir = ifcbin.createIfcDirection(tuple(r.multVec(FreeCAD.Vector(1,0,0))))
                     pos = ifcbin.createIfcCartesianPoint((l.x,l.y,l.z))
-                    tpl = ifcbin.createIfcAxis2Placement3D(pos,None,None)
+                    tpl = ifcbin.createIfcAxis2Placement3D(pos,zdir,xdir)
                     if six.PY2:
                         s = s.encode("utf8")
                     txt = ifcfile.createIfcTextLiteral(vp.string,tpl,"LEFT")

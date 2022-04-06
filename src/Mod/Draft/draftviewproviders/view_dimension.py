@@ -595,10 +595,10 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         else:
             offset = DraftVecUtils.scaleTo(v1, 0.05)
 
-        rott = rot1
+        self.trot = rot1
         if hasattr(vobj, "FlipText") and vobj.FlipText:
-            _rott = App.Rotation(rott[0], rott[1], rott[2], rott[3])
-            rott = _rott.multiply(App.Rotation(App.Vector(0, 0, 1), 180)).Q
+            _rott = App.Rotation(self.trot[0], self.trot[1], self.trot[2], self.trot[3])
+            self.trot = _rott.multiply(App.Rotation(App.Vector(0, 0, 1), 180)).Q
             offset = offset.negative()
 
         # On first run the `DisplayMode` enumeration is not set, so we trap
@@ -628,8 +628,8 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         self.textpos.translation.setValue([self.tbase.x,
                                            self.tbase.y,
                                            self.tbase.z])
-        self.textpos.rotation = coin.SbRotation(rott[0], rott[1],
-                                                rott[2], rott[3])
+        self.textpos.rotation = coin.SbRotation(self.trot[0], self.trot[1],
+                                                self.trot[2], self.trot[3])
 
         show_unit = True
         if hasattr(vobj, "ShowUnit"):
