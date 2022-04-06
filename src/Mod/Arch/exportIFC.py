@@ -1310,12 +1310,21 @@ def export(exportList, filename, colors=None, preferences=None):
         curvestyles = {}
         if annotations and preferences['DEBUG']: print("exporting 2D objects...")
         for anno in annotations:
+            objectType = None
             xvc = ifcbin.createIfcDirection((1.0,0.0,0.0))
             zvc = ifcbin.createIfcDirection((0.0,0.0,1.0))
             ovc = ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
             gpl = ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
             placement = ifcbin.createIfcLocalPlacement(gpl)
             if anno.isDerivedFrom("Part::Feature"):
+                if Draft.getType(anno) == "Hatch":
+                    objectType = "HATCH"
+                elif getattr(anno.ViewObject,"EndArrow",False):
+                    objectType = "LEADER"
+                elif anno.Shape.Faces:
+                    objectType = "AREA"
+                else:
+                    objectType = "LINEWORK"
                 reps = []
                 sh = anno.Shape.copy()
                 sh.scale(preferences['SCALE_FACTOR']) # to meters
@@ -1334,6 +1343,7 @@ def export(exportList, filename, colors=None, preferences=None):
                 if curves:
                     reps.append(ifcfile.createIfcGeometricCurveSet(curves))
             elif anno.isDerivedFrom("App::Annotation"):
+                objectType = "TEXT"
                 l = FreeCAD.Vector(anno.Position).multiply(preferences['SCALE_FACTOR'])
                 pos = ifcbin.createIfcCartesianPoint((l.x,l.y,l.z))
                 tpl = ifcbin.createIfcAxis2Placement3D(pos,None,None)
@@ -1343,10 +1353,11 @@ def export(exportList, filename, colors=None, preferences=None):
                 txt = ifcfile.createIfcTextLiteral(s,tpl,"LEFT")
                 reps = [txt]
             elif Draft.getType(anno) in ["DraftText","Text"]:
+                objectType = "TEXT"
                 l = FreeCAD.Vector(anno.Placement.Base).multiply(preferences['SCALE_FACTOR'])
                 pos = ifcbin.createIfcCartesianPoint((l.x,l.y,l.z))
-                zdir = ifcbin.createIfcDirection(tuple(anno.Placement.multVec(FreeCAD.Vector(0,0,1))))
-                xdir = ifcbin.createIfcDirection(tuple(anno.Placement.multVec(FreeCAD.Vector(1,0,0))))
+                zdir = ifcbin.createIfcDirection(tuple(anno.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))))
+                xdir = ifcbin.createIfcDirection(tuple(anno.Placement.Rotation.multVec(FreeCAD.Vector(1,0,0))))
                 tpl = ifcbin.createIfcAxis2Placement3D(pos,zdir,xdir)
                 alg = "LEFT"
                 if FreeCAD.GuiUp and hasattr(anno.ViewObject,"Justification"):
@@ -1359,6 +1370,7 @@ def export(exportList, filename, colors=None, preferences=None):
                 reps = [txt]
             elif Draft.getType(anno) in ["Dimension","LinearDimension","AngularDimension"]:
                 if FreeCAD.GuiUp:
+                    objectType = "DIMENSION"
                     vp = anno.ViewObject.Proxy
                     reps = []
                     sh = Part.makePolygon([vp.p1,vp.p2,vp.p3,vp.p4])
@@ -1418,7 +1430,7 @@ def export(exportList, filename, colors=None, preferences=None):
                 ifcopenshell.guid.new(),
                 history,l,
                 '',
-                None,
+                objectType,
                 placement,
                 rep
             )
