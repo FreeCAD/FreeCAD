@@ -71,7 +71,7 @@ PyObject* PersistencePy::dumpContent(PyObject *args, PyObject *kwds)
         getPersistencePtr()->dumpToStream(stream, compression);
     }
     catch (...) {
-       PyErr_SetString(PyExc_IOError, "Unable parse content into binary representation");
+       PyErr_SetString(PyExc_IOError, "Unable to parse content into binary representation");
        return nullptr;
     }
 
