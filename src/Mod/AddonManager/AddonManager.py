@@ -259,7 +259,7 @@ class CommandAddonManager:
         self.dialog = FreeCADGui.PySideUic.loadUi(
             os.path.join(os.path.dirname(__file__), "AddonManager.ui")
         )
-        #self.dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
+        # self.dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
 
         # cleanup the leftovers from previous runs
         self.macro_repo_dir = FreeCAD.getUserMacroDir(True)
@@ -568,7 +568,7 @@ class CommandAddonManager:
             self.startup_sequence.append(self.load_macro_metadata)
         selection = pref.GetString("SelectedAddon", "")
         if selection:
-            self.startup_sequence.insert(2,lambda:self.select_addon(selection))
+            self.startup_sequence.insert(2, lambda: self.select_addon(selection))
             pref.SetString("SelectedAddon", "")
         self.current_progress_region = 0
         self.number_of_progress_regions = len(self.startup_sequence)
@@ -755,7 +755,7 @@ class CommandAddonManager:
         else:
             self.do_next_startup_phase()
 
-    def select_addon(self, name:str) -> None:
+    def select_addon(self, name: str) -> None:
         found = False
         for addon in self.item_model.repos:
             if addon.name == name:
@@ -763,7 +763,11 @@ class CommandAddonManager:
                 found = True
                 break
         if not found:
-            FreeCAD.Console.PrintWarning(translate("AddonsInstaller","Could not find addon '{}' to select\n").format(name))
+            FreeCAD.Console.PrintWarning(
+                translate(
+                    "AddonsInstaller", "Could not find addon '{}' to select\n"
+                ).format(name)
+            )
         self.do_next_startup_phase()
 
     def check_updates(self) -> None:
@@ -930,7 +934,7 @@ class CommandAddonManager:
         self.item_model.append_item(repo)
 
     # @dataclass(frozen)
-    class MissingDependencies():
+    class MissingDependencies:
         """Encapsulates a group of four types of dependencies:
         * Internal workbenches -> wbs
         * External addons -> external_addons
@@ -995,7 +999,7 @@ class CommandAddonManager:
                 if option not in self.python_required
             ]
 
-    def handle_disallowed_python(self, python_required:List[str]) -> bool:
+    def handle_disallowed_python(self, python_required: List[str]) -> bool:
         """Determine if we are missing any required Python packages that are not in the allowed
         packages list. If so, display a message to the user, and return True. Otherwise return
         False."""
@@ -1009,16 +1013,22 @@ class CommandAddonManager:
             python_required.remove(dep)
 
         if bad_packages:
-            message = "<p>" + translate(
-                "AddonsInstaller",
-                "This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:",
-            ) + "</p><ul>"
+            message = (
+                "<p>"
+                + translate(
+                    "AddonsInstaller",
+                    "This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:",
+                )
+                + "</p><ul>"
+            )
             if len(bad_packages) < 15:
                 for dep in bad_packages:
                     message += f"<li>{dep}</li>"
             else:
                 message += (
-                    "<li>(" + translate("AddonsInstaller", "Too many to list") + ")</li>"
+                    "<li>("
+                    + translate("AddonsInstaller", "Too many to list")
+                    + ")</li>"
                 )
             message += "</ul>"
             message += "To ignore this error and install anyway, press OK."
@@ -1046,7 +1056,7 @@ class CommandAddonManager:
         else:
             return False
 
-    def report_missing_workbenches(self, addon_name:str, wbs) -> bool:
+    def report_missing_workbenches(self, addon_name: str, wbs) -> bool:
         if len(wbs) == 1:
             name = wbs[0]
             message = translate(
@@ -1054,10 +1064,14 @@ class CommandAddonManager:
                 "Addon '{}' requires '{}', which is not available in your copy of FreeCAD.",
             ).format(addon_name, name)
         else:
-            message = "<p>" + translate(
-                "AddonsInstaller",
-                "Addon '{}' requires the following workbenches, which are not available in your copy of FreeCAD:",
-            ).format(addon_name) + "</p><ul>"
+            message = (
+                "<p>"
+                + translate(
+                    "AddonsInstaller",
+                    "Addon '{}' requires the following workbenches, which are not available in your copy of FreeCAD:",
+                ).format(addon_name)
+                + "</p><ul>"
+            )
             for wb in wbs:
                 message += "<li>" + wb + "</li>"
             message += "</ul>"
@@ -1075,9 +1089,7 @@ class CommandAddonManager:
 
     def display_dep_resolution_dialog(self, missing, repo: Addon) -> None:
         self.dependency_dialog = FreeCADGui.PySideUic.loadUi(
-            os.path.join(
-                os.path.dirname(__file__), "dependency_resolution_dialog.ui"
-            )
+            os.path.join(os.path.dirname(__file__), "dependency_resolution_dialog.ui")
         )
         self.dependency_dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
 
@@ -1109,13 +1121,18 @@ class CommandAddonManager:
         missing = CommandAddonManager.MissingDependencies(repo, self.item_model.repos)
         if self.handle_disallowed_python(missing.python_required):
             return
-        
+
         good_packages = []
         for dep in missing.python_optional:
             if dep in self.allowed_packages:
                 good_packages.append(dep)
             else:
-                FreeCAD.Console.PrintWarning(translate("AddonsInstaller", "Optional dependency on {} ignored because it is not in the allow-list\n").format(dep))
+                FreeCAD.Console.PrintWarning(
+                    translate(
+                        "AddonsInstaller",
+                        "Optional dependency on {} ignored because it is not in the allow-list\n",
+                    ).format(dep)
+                )
         missing.python_optional = good_packages
 
         if missing.wbs:

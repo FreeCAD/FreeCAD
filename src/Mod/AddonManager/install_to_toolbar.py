@@ -46,6 +46,7 @@ def ask_to_install_toolbar_button(repo: Addon) -> None:
         )
         add_toolbar_button_dialog.exec()
 
+
 def check_for_button(repo: Addon) -> bool:
     command = FreeCADGui.Command.findCustomCommand(repo.macro.filename)
     if not command:
@@ -59,6 +60,7 @@ def check_for_button(repo: Addon) -> bool:
         if toolbar.GetString(command, "*") != "*":
             return True
     return False
+
 
 def ask_for_toolbar(
     repo: Addon, custom_toolbars

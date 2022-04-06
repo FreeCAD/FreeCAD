@@ -49,6 +49,7 @@ INTERNAL_WORKBENCHES["sketcher"] = "Sketcher"
 INTERNAL_WORKBENCHES["spreadsheet"] = "Spreadsheet"
 INTERNAL_WORKBENCHES["techdraw"] = "TechDraw"
 
+
 class Addon:
     "Encapsulate information about a FreeCAD addon"
 
@@ -96,10 +97,10 @@ class Addon:
 
     class Dependencies:
         def __init__(self):
-            self.required_external_addons = [] # A list of Addons
-            self.blockers = [] # A list of Addons
-            self.replaces = [] # A list of Addons
-            self.internal_workbenches: Set[str] = set() # Required internal workbenches
+            self.required_external_addons = []  # A list of Addons
+            self.blockers = []  # A list of Addons
+            self.replaces = []  # A list of Addons
+            self.internal_workbenches: Set[str] = set()  # Required internal workbenches
             self.python_required: Set[str] = set()
             self.python_optional: Set[str] = set()
 
@@ -131,7 +132,9 @@ class Addon:
         # The url should never end in ".git", so strip it if it's there
         parsed_url = urlparse(self.url)
         if parsed_url.path.endswith(".git"):
-            self.url = parsed_url.scheme + "://" + parsed_url.netloc + parsed_url.path[:-4]
+            self.url = (
+                parsed_url.scheme + "://" + parsed_url.netloc + parsed_url.path[:-4]
+            )
             if parsed_url.query:
                 self.url += "?" + parsed_url.query
             if parsed_url.fragment:
@@ -241,9 +244,7 @@ class Addon:
             metadata = FreeCAD.Metadata(file)
             self.set_metadata(metadata)
         else:
-            FreeCAD.Console.PrintLog(
-                "Internal error: {} does not exist".format(file)
-            )
+            FreeCAD.Console.PrintLog("Internal error: {} does not exist".format(file))
 
     def set_metadata(self, metadata: FreeCAD.Metadata) -> None:
         self.metadata = metadata
@@ -271,23 +272,31 @@ class Addon:
             if dep_fc_min and dep_fc_min != "0.0.0":
                 required_version = dep_fc_min.split(".")
                 if fc_major < int(required_version[0]):
-                    return False # Major version is too low
+                    return False  # Major version is too low
                 elif fc_major == int(required_version[0]):
-                    if len(required_version) > 1 and fc_minor < int(required_version[1]):
-                        return False # Same major, and minor is too low
+                    if len(required_version) > 1 and fc_minor < int(
+                        required_version[1]
+                    ):
+                        return False  # Same major, and minor is too low
         except ValueError:
-            FreeCAD.Console.PrintMessage(f"Metadata file for {self.name} has invalid FreeCADMin version info\n")
+            FreeCAD.Console.PrintMessage(
+                f"Metadata file for {self.name} has invalid FreeCADMin version info\n"
+            )
 
         try:
             if dep_fc_max and dep_fc_max != "0.0.0":
                 required_version = dep_fc_max.split(".")
                 if fc_major > int(required_version[0]):
-                    return False # Major version is too high
+                    return False  # Major version is too high
                 elif fc_major == int(required_version[0]):
-                    if len(required_version) > 1 and fc_minor > int(required_version[1]):
-                        return False # Same major, and minor is too high
+                    if len(required_version) > 1 and fc_minor > int(
+                        required_version[1]
+                    ):
+                        return False  # Same major, and minor is too high
         except ValueError:
-            FreeCAD.Console.PrintMessage(f"Metadata file for {self.name} has invalid FreeCADMax version info\n")
+            FreeCAD.Console.PrintMessage(
+                f"Metadata file for {self.name} has invalid FreeCADMax version info\n"
+            )
 
         return True
 
@@ -301,7 +310,9 @@ class Addon:
         for dep in metadata.Depend:
             # Simple version for now: eventually support all of the version params...
             self.requires.add(dep["package"])
-            FreeCAD.Console.PrintLog(f"Package {self.name}: Adding dependency on {dep['package']}\n")
+            FreeCAD.Console.PrintLog(
+                f"Package {self.name}: Adding dependency on {dep['package']}\n"
+            )
         for dep in metadata.Conflict:
             self.blocks.add(dep["package"])
 
@@ -457,7 +468,7 @@ class Addon:
                 elif dep.upper().endswith("WORKBENCH"):
                     real_name = dep[:-9].strip().lower()
                 else:
-                   real_name = dep.strip().lower()
+                    real_name = dep.strip().lower()
 
                 if real_name in INTERNAL_WORKBENCHES:
                     deps.internal_workbenches.add(INTERNAL_WORKBENCHES[real_name])
