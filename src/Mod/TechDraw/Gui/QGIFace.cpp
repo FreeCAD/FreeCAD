@@ -134,6 +134,8 @@ void QGIFace::draw()
                     lineSetToFillItems(ls);
                 }
             }
+            m_image->hide();
+            m_rect->hide();
         } else if ((m_mode == FromFile) ||
                    (m_mode == SvgFill)  ||
                    (m_mode == BitmapFill)) {  
@@ -171,7 +173,12 @@ void QGIFace::draw()
             }
         } else if (m_mode == PlainFill) {
             setFill(m_colNormalFill, m_styleNormal);
+            m_image->hide();
+            m_rect->hide();
         }
+    } else {
+        m_image->hide();
+        m_rect->hide();
     }
     show();
 }

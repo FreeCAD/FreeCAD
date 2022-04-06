@@ -353,8 +353,6 @@ void QGIDatumLabel::setToleranceString()
         m_tolTextUnder->setPlainText(QString());
         return;
     }
-    m_tolTextOver->show();
-    m_tolTextUnder->show();
 
     std::pair<std::string, std::string> labelTexts, unitTexts;
 
@@ -373,8 +371,18 @@ void QGIDatumLabel::setToleranceString()
         }
     }
 
-    m_tolTextUnder->setPlainText(QString::fromUtf8(labelTexts.first.c_str()));
-    m_tolTextOver->setPlainText(QString::fromUtf8(labelTexts.second.c_str()));
+    if (labelTexts.first.empty()) {
+        m_tolTextUnder->hide();
+    } else {
+        m_tolTextUnder->setPlainText(QString::fromUtf8(labelTexts.first.c_str()));
+        m_tolTextUnder->show();
+    }
+    if (labelTexts.second.empty()) {
+        m_tolTextOver->hide();
+    }else {
+        m_tolTextOver->setPlainText(QString::fromUtf8(labelTexts.second.c_str()));
+        m_tolTextOver->show();
+    }
 
     return;
 } 
@@ -382,7 +390,12 @@ void QGIDatumLabel::setToleranceString()
 void QGIDatumLabel::setUnitString(QString t)
 {
     prepareGeometryChange();
-    m_unitText->setPlainText(t);
+    if (t.isEmpty()) {
+        m_unitText->hide();
+    } else {
+        m_unitText->setPlainText(t);
+        m_unitText->show();
+    }
 } 
 
 
@@ -507,6 +520,8 @@ QGIViewDimension::QGIViewDimension() :
 
     setZValue(ZVALUE::DIMENSION);         //note: this won't paint dimensions over another View if it stacks
                                           //above this Dimension's parent view.   need Layers?
+    m_border->hide();
+    m_label->hide();
 }
 
 QVariant QGIViewDimension::itemChange(GraphicsItemChange change, const QVariant &value)
