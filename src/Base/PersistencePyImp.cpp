@@ -70,6 +70,10 @@ PyObject* PersistencePy::dumpContent(PyObject *args, PyObject *kwds)
     try {
         getPersistencePtr()->dumpToStream(stream, compression);
     }
+    catch(Base::NotImplementedError&) {
+        PyErr_SetString(PyExc_NotImplementedError, "Dumping content of this object type is not implemented");
+        return nullptr;
+    }
     catch (...) {
        PyErr_SetString(PyExc_IOError, "Unable to parse content into binary representation");
        return nullptr;
