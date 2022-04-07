@@ -578,15 +578,6 @@ void ViewProviderFemPostSphereFunction::updateData(const App::Property* p) {
         getManipulator()->setMatrix(t);
     }
     Gui::ViewProviderDocumentObject::updateData(p);
-
-    // after updating the geometry we must recompute
-    // A sphere can be used by filters in other pipelines than the one the sphere is in.
-    // Therefore we must recompute the analysis, not only a single pipeline
-    if (p == &func->Center || p == &func->Radius) {
-        auto pcAnalysis = FemGui::ActiveAnalysisObserver::instance()->getActiveObject();
-        if (pcAnalysis)
-            pcAnalysis->recomputeFeature(true);
-    }
 }
 
 FunctionWidget* ViewProviderFemPostSphereFunction::createControlWidget() {
