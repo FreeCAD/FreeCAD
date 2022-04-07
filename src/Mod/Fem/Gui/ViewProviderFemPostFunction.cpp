@@ -55,6 +55,7 @@
 
 #include "ViewProviderFemPostFunction.h"
 #include "ActiveAnalysisObserver.h"
+#include "FemSettings.h"
 #include "TaskPostBoxes.h"
 
 #include "ui_PlaneWidget.h"
@@ -268,8 +269,7 @@ void ViewProviderFemPostFunction::dragStartCallback(void* data, SoDragger*)
     reinterpret_cast<ViewProviderFemPostFunction*>(data)->m_isDragging = true;
 
     ViewProviderFemPostFunction* that = reinterpret_cast<ViewProviderFemPostFunction*>(data);
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Fem");
-    that->m_autoRecompute = hGrp->GetBool("PostAutoRecompute", false);
+    that->m_autoRecompute = FemSettings().getPostAutoRecompute();
 }
 
 void ViewProviderFemPostFunction::dragFinishCallback(void* data, SoDragger*)

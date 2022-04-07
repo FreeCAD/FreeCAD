@@ -313,6 +313,8 @@ SET(FemGui_SRCS_Module
     ActiveAnalysisObserver.cpp
     ActiveAnalysisObserver.h
     Command.cpp
+    FemSettings.cpp
+    FemSettings.h
     Resources/Fem.qrc
     PreCompiled.cpp
     PreCompiled.h

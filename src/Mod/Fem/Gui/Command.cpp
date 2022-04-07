@@ -53,6 +53,7 @@
 #include <Mod/Fem/App/FemSetNodesObject.h>
 
 #include "ActiveAnalysisObserver.h"
+#include "FemSettings.h"
 
 #ifdef FC_USE_VTK
 #include <Mod/Fem/App/FemPostPipeline.h>
@@ -1744,12 +1745,7 @@ CmdFemPostApllyChanges::CmdFemPostApllyChanges()
 
 void CmdFemPostApllyChanges::activated(int iMsg)
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Fem");
-
-    if (iMsg == 1)
-        hGrp->SetBool("PostAutoRecompute", true);
-    else
-        hGrp->SetBool("PostAutoRecompute", false);
+    FemGui::FemSettings().setPostAutoRecompute(iMsg == 1);
 }
 
 bool CmdFemPostApllyChanges::isActive(void)
@@ -1764,8 +1760,7 @@ Gui::Action* CmdFemPostApllyChanges::createAction(void)
 {
     Gui::Action* pcAction = Command::createAction();
     pcAction->setCheckable(true);
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Fem");
-    pcAction->setChecked(hGrp->GetBool("PostAutoRecompute", false));
+    pcAction->setChecked(FemGui::FemSettings().getPostAutoRecompute());
 
     return pcAction;
 }

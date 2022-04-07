@@ -55,6 +55,7 @@
 #include "ui_TaskPostScalarClip.h"
 #include "ui_TaskPostWarpVector.h"
 
+#include "FemSettings.h"
 #include "TaskPostBoxes.h"
 #include "ViewProviderFemPostFilter.h"
 #include "ViewProviderFemPostFunction.h"
@@ -300,8 +301,7 @@ TaskPostBox::~TaskPostBox() {
 
 bool TaskPostBox::autoApply() {
 
-    ParameterGrp::handle pGroup = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Fem");
-    return pGroup->GetBool("PostAutoRecompute", false);
+    return FemSettings().getPostAutoRecompute();
 }
 
 void TaskPostBox::recompute() {
