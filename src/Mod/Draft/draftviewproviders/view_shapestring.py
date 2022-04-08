@@ -23,7 +23,6 @@
 
 """Provides the viewprovider code for the Shapestring object."""
 
-import FreeCAD as App
 import FreeCADGui as Gui
 
 from draftviewproviders.view_base import ViewProviderDraft
