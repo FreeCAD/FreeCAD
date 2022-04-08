@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWDIMENSION_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEWDIMENSION_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
 #include <QFont>
 #include <QGraphicsItem>
@@ -47,6 +49,7 @@ class AOC;
 
 namespace TechDrawGui
 {
+class QGCustomText;
 class QGIArrow;
 class QGIDimLines;
 class QGIViewDimension;

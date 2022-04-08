@@ -54,6 +54,7 @@
 #include <Mod/TechDraw/Gui/ui_TaskRichAnno.h>
 
 #include "PreferencesGui.h"
+#include "QGSPage.h"
 #include "QGVPage.h"
 #include "QGIView.h"
 #include "QGIPrimPath.h"
@@ -120,9 +121,9 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
     m_qgParent = nullptr;
     m_haveMdi = true;
     if (m_mdi != nullptr) {
-        m_view = m_mdi->getQGVPage();
+        m_scene = m_mdi->getQGSPage();
         if (m_baseFeat != nullptr) {
-            m_qgParent = m_view->findQViewForDocObj(m_baseFeat);
+            m_qgParent = m_scene->findQViewForDocObj(m_baseFeat);
         }
     } else {
         m_haveMdi = false;
@@ -175,8 +176,8 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
     m_haveMdi = true;
     m_mdi = dvp->getMDIViewPage();
     if (m_mdi != nullptr) {
-        m_view = m_mdi->getQGVPage();
-        m_qgParent = m_view->findQViewForDocObj(baseFeat);
+        m_scene= m_mdi->getQGSPage();
+        m_qgParent = m_scene->findQViewForDocObj(baseFeat);
     } else {
         m_haveMdi = false;
     }

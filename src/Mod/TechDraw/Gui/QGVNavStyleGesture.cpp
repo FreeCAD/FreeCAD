@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2012-2014 Luke Parry <l.parry@warwick.ac.uk>            *
+ *   Copyright (c) 2022 Wanderer Fan <wandererfan@gmail.com>               *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,55 +20,59 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H
-#define DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H
+#include "PreCompiled.h"
+#ifndef _PreComp_
+#include <QApplication>
+#include <QGuiApplication>
+#include <QMouseEvent>
+#endif
 
-QT_BEGIN_NAMESPACE
-class QGraphicsScene;
-class QGraphicsSvgItem;
-class QSvgRenderer;
-class QFile;
-class QString;
-QT_END_NAMESPACE
+#include "QGVPage.h"
+#include "QGVNavStyleGesture.h"
 
-namespace TechDraw {
-class DrawSVGTemplate;
+using namespace TechDrawGui;
+
+namespace TechDrawGui {
+
+QGVNavStyleGesture::QGVNavStyleGesture()
+{
 }
 
-#include "QGITemplate.h"
-
-namespace TechDrawGui
+QGVNavStyleGesture::~QGVNavStyleGesture()
 {
-class QGSPage;
+}
 
-class TechDrawGuiExport QGISVGTemplate : public QGITemplate
+void QGVNavStyleGesture::handleMousePressEvent(QMouseEvent *event)
 {
-    Q_OBJECT
-
-public:
-    QGISVGTemplate(QGSPage* scene);
-    virtual ~QGISVGTemplate();
-
-    enum {Type = QGraphicsItem::UserType + 153};
-    int type() const { return Type; }
-
-    void draw();
-    virtual void updateView(bool update = false);
-
-    TechDraw::DrawSVGTemplate *getSVGTemplate();
-
-protected:
-    void openFile(const QFile &file);
-    void load (const QString & fileName);
-    void createClickHandles(void);
-
-protected:
-    bool firstTime;
-    QGraphicsSvgItem *m_svgItem;
-    QSvgRenderer *m_svgRender;
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-};  // class QGISVGTemplate
+    if (event->button() == Qt::RightButton) {
+        startPan(event->pos());
+        event->accept();
+    }
 
 }
 
-#endif // DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H
+void QGVNavStyleGesture::handleMouseMoveEvent(QMouseEvent *event)
+{
+    if (getViewer()->isBalloonPlacing()) {
+        getViewer()->setBalloonCursorPos(event->pos());
+    }
+
+    if (panningActive) {
+        pan(event->pos());
+        event->accept();
+    }
+}
+
+void QGVNavStyleGesture::handleMouseReleaseEvent(QMouseEvent *event)
+{
+    if (getViewer()->isBalloonPlacing()) {
+        placeBalloon(event->pos());
+    }
+
+    if (event->button() == Qt::RightButton) {
+        stopPan();
+        event->accept();
+    }
+}
+
+}  // namespace TechDrawGui

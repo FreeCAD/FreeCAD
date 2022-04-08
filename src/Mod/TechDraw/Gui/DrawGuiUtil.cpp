@@ -78,6 +78,7 @@
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/ArrowPropEnum.h>
 
+#include "QGSPage.h"
 #include "QGVPage.h"
 #include "MDIViewPage.h"
 #include "ViewProviderPage.h"
@@ -128,7 +129,7 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd)
             MDIViewPage* mvp = dynamic_cast<MDIViewPage*>(mv);
             if (mvp) {
                 QString windowTitle = mvp->windowTitle();
-                QGVPage* qp = mvp->getQGVPage();
+                QGSPage* qp = mvp->getQGSPage();
                 page = qp->getDrawPage();
             }
             else {

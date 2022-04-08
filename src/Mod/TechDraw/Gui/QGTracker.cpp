@@ -46,13 +46,14 @@
 
 #include "Rez.h"
 #include "ZVALUE.h"
+#include "QGSPage.h"
 #include "DrawGuiUtil.h"
 #include "QGIView.h"
 #include "QGTracker.h"
 
 using namespace TechDrawGui;
 
-QGTracker::QGTracker(QGraphicsScene* inScene, TrackerMode m):
+QGTracker::QGTracker(QGSPage* inScene, TrackerMode m):
     m_sleep(false),
     m_qgParent(nullptr),
     m_lastClick(QPointF(FLT_MAX,FLT_MAX))

@@ -66,6 +66,7 @@
 # include <Mod/TechDraw/App/DrawViewBalloon.h>
 
 # include "ViewProviderBalloon.h"
+# include "QGSPage.h"
 # include "QGVPage.h"
 # include "DrawGuiUtil.h"
 # include "ViewProviderPage.h"
@@ -1884,9 +1885,9 @@ namespace TechDrawGui {
         Gui::Document* guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
         ViewProviderPage* pageVP = dynamic_cast<ViewProviderPage*>(guiDoc->getViewProvider(page));
         if (pageVP) {
-            QGVPage* viewPage = pageVP->getGraphicsView();
-            featName = viewPage->getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
-            std::string pageName = viewPage->getDrawPage()->getNameInDocument();
+            QGSPage* scenePage = pageVP->getGraphicsScene();
+            featName = scenePage->getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
+            std::string pageName = scenePage->getDrawPage()->getNameInDocument();
             cmd->doCommand(cmd->Doc, "App.activeDocument().addObject('TechDraw::DrawViewBalloon','%s')",
                            featName.c_str());
             cmd->doCommand(cmd->Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)",

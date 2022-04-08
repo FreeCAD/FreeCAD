@@ -85,9 +85,10 @@
 #include <Mod/TechDraw/App/DrawViewDetail.h>
 #include <Mod/TechDraw/App/DrawViewArch.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
-#include <Mod/TechDraw/Gui/QGVPage.h>
 
 #include "DrawGuiUtil.h"
+#include "QGSPage.h"
+#include "QGVPage.h"
 #include "MDIViewPage.h"
 #include "PreferencesGui.h"
 #include "QGIViewPart.h"
@@ -890,13 +891,14 @@ void CmdTechDrawBalloon::activated(int iMsg)
 
     if (pageVP && partVP) {
         QGVPage* viewPage = pageVP->getGraphicsView();
+        QGSPage* scenePage = pageVP->getGraphicsScene();
         if (viewPage) {
             viewPage->startBalloonPlacing();
 
             QGIViewPart* viewPart = dynamic_cast<QGIViewPart*>(partVP->getQView());
             QPointF placement;
             if (viewPart && _checkDirectPlacement(viewPart, selection[0].getSubNames(), placement)) {
-                viewPage->createBalloon(placement, objFeat);
+                scenePage->createBalloon(placement, objFeat);
             }
         }
     }

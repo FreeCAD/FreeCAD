@@ -101,6 +101,7 @@
 #include "QGIEdge.h"
 #include "QGIFace.h"
 #include "ViewProviderPage.h"
+#include "QGSPage.h"
 #include "QGVPage.h"
 #include "QGILeaderLine.h"
 #include "QGIRichAnno.h"
@@ -126,7 +127,7 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
 {
 
     setMouseTracking(true);
-    m_scene = new QGraphicsScene(this);
+    m_scene = new QGSPage(pageVp, this);
     m_scene->setItemIndexMethod(QGraphicsScene::NoIndex); //this prevents crash when deleting dims.
                                                           //scene(view?) indices of dirty regions gets
                                                           //out of sync.  missing prepareGeometryChange
@@ -161,7 +162,7 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
 
     // Connect Signals and Slots
     QObject::connect(
-        m_view->scene(), SIGNAL(selectionChanged()),
+        m_scene, SIGNAL(selectionChanged()),
         this           , SLOT  (sceneSelectionChanged())
        );
 
@@ -169,6 +170,8 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
     App::Document* appDoc = m_vpPage->getDocument()->getDocument();
     auto bnd = boost::bind(&MDIViewPage::onDeleteObject, this, bp::_1);
     connectDeletedObject = appDoc->signalDeletedObject.connect(bnd);
+
+//    setContextMenuPolicy(Qt::NoContextMenu);
 }
 
 
@@ -218,22 +221,22 @@ void MDIViewPage::matchSceneRectToTemplate(void)
         //make sceneRect 1 pagesize bigger in every direction
         double width  =  Rez::guiX(pageTemplate->Width.getValue());
         double height =  Rez::guiX(pageTemplate->Height.getValue());
-        m_view->scene()->setSceneRect(QRectF(-width,-2.0 * height,3.0*width,3.0*height));
+        m_scene->setSceneRect(QRectF(-width,-2.0 * height,3.0*width,3.0*height));
     }
 }
 
 void MDIViewPage::setDimensionGroups(void)
 {
-    const std::vector<QGIView *> &allItems = m_view->getViews();
+    const std::vector<QGIView *> &allItems = m_scene->getViews();
     std::vector<QGIView *>::const_iterator itInspect;
     int dimItemType = QGraphicsItem::UserType + 106;
 
     for (itInspect = allItems.begin(); itInspect != allItems.end(); itInspect++) {
         if (((*itInspect)->type() == dimItemType) && (!(*itInspect)->group())) {
-            QGIView* parent = m_view->findParent((*itInspect));
+            QGIView* parent = m_scene->findParent((*itInspect));
             if (parent) {
                 QGIViewDimension* dim = dynamic_cast<QGIViewDimension*>((*itInspect));
-                m_view->addDimToParent(dim,parent);
+                m_scene->addDimToParent(dim,parent);
             }
         }
     }
@@ -241,16 +244,16 @@ void MDIViewPage::setDimensionGroups(void)
 
 void MDIViewPage::setBalloonGroups(void)
 {
-    const std::vector<QGIView *> &allItems = m_view->getViews();
+    const std::vector<QGIView *> &allItems = m_scene->getViews();
     std::vector<QGIView *>::const_iterator itInspect;
     int balloonItemType = QGraphicsItem::UserType + 140;
 
     for (itInspect = allItems.begin(); itInspect != allItems.end(); itInspect++) {
         if (((*itInspect)->type() == balloonItemType) && (!(*itInspect)->group())) {
-            QGIView* parent = m_view->findParent((*itInspect));
+            QGIView* parent = m_scene->findParent((*itInspect));
             if (parent) {
                 QGIViewBalloon* balloon = dynamic_cast<QGIViewBalloon*>((*itInspect));
-                m_view->addBalloonToParent(balloon,parent);
+                m_scene->addBalloonToParent(balloon,parent);
             }
         }
     }
@@ -259,7 +262,7 @@ void MDIViewPage::setBalloonGroups(void)
 void MDIViewPage::setLeaderGroups(void)
 {
 //    Base::Console().Message("MDIVP::setLeaderGroups()\n");
-    const std::vector<QGIView *> &allItems = m_view->getViews();
+    const std::vector<QGIView *> &allItems = m_scene->getViews();
     std::vector<QGIView *>::const_iterator itInspect;
     int leadItemType = QGraphicsItem::UserType + 232;
 
@@ -267,10 +270,10 @@ void MDIViewPage::setLeaderGroups(void)
     //quite possibly redundant
     for (itInspect = allItems.begin(); itInspect != allItems.end(); itInspect++) {
         if (((*itInspect)->type() == leadItemType) && (!(*itInspect)->group())) {
-            QGIView* parent = m_view->findParent((*itInspect));
+            QGIView* parent = m_scene->findParent((*itInspect));
             if (parent) {
                 QGILeaderLine* lead = dynamic_cast<QGILeaderLine*>((*itInspect));
-                m_view->addLeaderToParent(lead,parent);
+                m_scene->addLeaderToParent(lead,parent);
             }
         }
     }
@@ -309,7 +312,7 @@ void MDIViewPage::closeEvent(QCloseEvent* ev)
 
 void MDIViewPage::attachTemplate(TechDraw::DrawTemplate *obj)
 {
-    m_view->setPageTemplate(obj);
+    m_scene->setPageTemplate(obj);
     pagewidth  =  obj->Width.getValue();
     pageheight =  obj->Height.getValue();
     m_paperSize = QPageSize::id(QSizeF(pagewidth, pageheight), QPageSize::Millimeter, QPageSize::FuzzyOrientationMatch);
@@ -350,46 +353,46 @@ bool MDIViewPage::attachView(App::DocumentObject *obj)
     QGIView *qview(nullptr);
 
     if (typeId.isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId()) ) {
-        qview = m_view->addViewSection( static_cast<TechDraw::DrawViewSection *>(obj) );
+        qview = m_scene->addViewSection( static_cast<TechDraw::DrawViewSection *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) ) {
-        qview = m_view->addViewPart( static_cast<TechDraw::DrawViewPart *>(obj) );
+        qview = m_scene->addViewPart( static_cast<TechDraw::DrawViewPart *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawProjGroup::getClassTypeId()) ) {
-        qview = m_view->addProjectionGroup( static_cast<TechDraw::DrawProjGroup *>(obj) );
+        qview = m_scene->addProjectionGroup( static_cast<TechDraw::DrawProjGroup *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewCollection::getClassTypeId()) ) {
-        qview = m_view->addDrawView( static_cast<TechDraw::DrawViewCollection *>(obj) );
+        qview = m_scene->addDrawView( static_cast<TechDraw::DrawViewCollection *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId()) ) {
-        qview = m_view->addViewDimension( static_cast<TechDraw::DrawViewDimension *>(obj) );
+        qview = m_scene->addViewDimension( static_cast<TechDraw::DrawViewDimension *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId()) ) {
-        qview = m_view->addViewBalloon( static_cast<TechDraw::DrawViewBalloon *>(obj) );
+        qview = m_scene->addViewBalloon( static_cast<TechDraw::DrawViewBalloon *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewAnnotation::getClassTypeId()) ) {
-        qview = m_view->addDrawViewAnnotation( static_cast<TechDraw::DrawViewAnnotation *>(obj) );
+        qview = m_scene->addDrawViewAnnotation( static_cast<TechDraw::DrawViewAnnotation *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewSymbol::getClassTypeId()) ) {
-        qview = m_view->addDrawViewSymbol( static_cast<TechDraw::DrawViewSymbol *>(obj) );
+        qview = m_scene->addDrawViewSymbol( static_cast<TechDraw::DrawViewSymbol *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewClip::getClassTypeId()) ) {
-        qview = m_view->addDrawViewClip( static_cast<TechDraw::DrawViewClip *>(obj) );
+        qview = m_scene->addDrawViewClip( static_cast<TechDraw::DrawViewClip *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewSpreadsheet::getClassTypeId()) ) {
-        qview = m_view->addDrawViewSpreadsheet( static_cast<TechDraw::DrawViewSpreadsheet *>(obj) );
+        qview = m_scene->addDrawViewSpreadsheet( static_cast<TechDraw::DrawViewSpreadsheet *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewImage::getClassTypeId()) ) {
-        qview = m_view->addDrawViewImage( static_cast<TechDraw::DrawViewImage *>(obj) );
+        qview = m_scene->addDrawViewImage( static_cast<TechDraw::DrawViewImage *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId()) ) {
-        qview = m_view->addViewLeader( static_cast<TechDraw::DrawLeaderLine *>(obj) );
+        qview = m_scene->addViewLeader( static_cast<TechDraw::DrawLeaderLine *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId()) ) {
-        qview = m_view->addRichAnno( static_cast<TechDraw::DrawRichAnno*>(obj) );
+        qview = m_scene->addRichAnno( static_cast<TechDraw::DrawRichAnno*>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawWeldSymbol::getClassTypeId()) ) {
-        qview = m_view->addWeldSymbol( static_cast<TechDraw::DrawWeldSymbol*>(obj) );
+        qview = m_scene->addWeldSymbol( static_cast<TechDraw::DrawWeldSymbol*>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawHatch::getClassTypeId()) ) {
         //Hatch is not attached like other Views (since it isn't really a View)
@@ -408,7 +411,7 @@ void MDIViewPage::onDeleteObject(const App::DocumentObject& obj)
     //if this page has a QView for this obj, delete it.
     blockSceneSelection(true);
     if (obj.isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
-        (void) m_view->removeQViewByName(obj.getNameInDocument());
+        (void) m_scene->removeQViewByName(obj.getNameInDocument());
     }
     blockSceneSelection(false);
 }
@@ -432,7 +435,7 @@ void MDIViewPage::updateTemplate(bool forceUpdate)
         if(forceUpdate ||
            (templObj && templObj->isTouched() && templObj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId())) ) {
 
-            QGITemplate *qItemTemplate = m_view->getTemplate();
+            QGITemplate *qItemTemplate = m_scene->getTemplate();
 
             if(qItemTemplate) {
                 TechDraw::DrawTemplate *pageTemplate = dynamic_cast<TechDraw::DrawTemplate *>(templObj);
@@ -470,13 +473,13 @@ void MDIViewPage::fixOrphans(bool force)
         if (dv->isRemoving()) {
             continue;
         }
-        QGIView* qv = m_view->findQViewForDocObj(dv);
+        QGIView* qv = m_scene->findQViewForDocObj(dv);
         if (qv == nullptr) {
             attachView(dv);
         }
     }
     // if qView doesn't have a Feature on this Page, delete it
-    std::vector<QGIView*> qvss = m_view->getViews();
+    std::vector<QGIView*> qvss = m_scene->getViews();
     // qvss may contain an item and its child item(s) and to avoid to access a deleted item a QPointer is needed
     std::vector<QPointer<QGIView>> qvs;
     std::for_each(qvss.begin(), qvss.end(), [&qvs](QGIView* v) {
@@ -489,21 +492,21 @@ void MDIViewPage::fixOrphans(bool force)
         App::DocumentObject* obj = doc->getObject(qv->getViewName());
         if (obj == nullptr) {
             //no DrawView anywhere in Document
-            m_view->removeQView(qv);
+            m_scene->removeQView(qv);
         } else {
             //DrawView exists in Document.  Does it belong to this DrawPage?
             int numParentPages = qv->getViewObject()->countParentPages();
             if (numParentPages == 0) {
                 //DrawView does not belong to any DrawPage
                 //remove QGItem from QGScene
-                m_view->removeQView(qv);
+                m_scene->removeQView(qv);
             } else if (numParentPages == 1) {
                 //Does DrawView belong to this DrawPage?
                 TechDraw::DrawPage* pp = qv->getViewObject()->findParentPage();
                 if (thisPage != pp) {
                     //DrawView does not belong to this DrawPage
                     //remove QGItem from QGScene
-                    m_view->removeQView(qv);
+                    m_scene->removeQView(qv);
                 }
             } else if (numParentPages > 1) {
                 //DrawView belongs to multiple DrawPages
@@ -519,7 +522,7 @@ void MDIViewPage::fixOrphans(bool force)
                 }
                 if (!found) {
                     //none of the parent Pages for View correspond to this Page
-                    m_view->removeQView(qv);
+                    m_scene->removeQView(qv);
                 }
             }
         }
@@ -529,7 +532,7 @@ void MDIViewPage::fixOrphans(bool force)
 //NOTE: this doesn't add missing views.  see fixOrphans()
 void MDIViewPage::redrawAllViews()
 {
-    const std::vector<QGIView *> &upviews = m_view->getViews();
+    const std::vector<QGIView *> &upviews = m_scene->getViews();
     for(std::vector<QGIView *>::const_iterator it = upviews.begin(); it != upviews.end(); ++it) {
             (*it)->updateView(true);
     }
@@ -539,7 +542,7 @@ void MDIViewPage::redrawAllViews()
 void MDIViewPage::redraw1View(TechDraw::DrawView* dv)
 {
     std::string dvName = dv->getNameInDocument();
-    const std::vector<QGIView *> &upviews = m_view->getViews();
+    const std::vector<QGIView *> &upviews = m_scene->getViews();
     for(std::vector<QGIView *>::const_iterator it = upviews.begin(); it != upviews.end(); ++it) {
         std::string qgivName = (*it)->getViewName();
         if(dvName == qgivName) {
@@ -572,7 +575,7 @@ void MDIViewPage::findMissingViews(const std::vector<App::DocumentObject*> &list
 /// Helper function
 bool MDIViewPage::hasQView(App::DocumentObject *obj)
 {
-    const std::vector<QGIView *> &views = m_view->getViews();
+    const std::vector<QGIView *> &views = m_scene->getViews();
     std::vector<QGIView *>::const_iterator qview = views.begin();
 
     while(qview != views.end()) {
@@ -807,7 +810,7 @@ void MDIViewPage::print(QPrinter* printer)
     bool saveState = m_vpPage->getFrameState();
     m_vpPage->setFrameState(false);
     m_vpPage->setTemplateMarkers(false);
-    m_view->refreshViews();
+    m_scene->refreshViews();
 
     Gui::Selection().clearSelection();
 
@@ -821,12 +824,12 @@ void MDIViewPage::print(QPrinter* printer)
     }
     QRectF sourceRect(0.0,-height,width,height);
 
-    m_view->scene()->render(&p, targetRect,sourceRect);
+    m_scene->render(&p, targetRect,sourceRect);
 
     // Reset
     m_vpPage->setFrameState(saveState);
     m_vpPage->setTemplateMarkers(saveState);
-    m_view->refreshViews();
+    m_scene->refreshViews();
     //bool block =
     static_cast<void> (blockSelection(false));
 }
@@ -842,6 +845,7 @@ PyObject* MDIViewPage::getPyObject()
 
 void MDIViewPage::contextMenuEvent(QContextMenuEvent *event)
 {
+//    Base::Console().Message("MDIVP::contextMenuEvent() - reason: %d\n", event->reason());
     QMenu menu;
     menu.addAction(m_toggleFrameAction);
     menu.addAction(m_toggleKeepUpdatedAction);
@@ -864,8 +868,7 @@ void MDIViewPage::toggleKeepUpdated(void)
 
 void MDIViewPage::viewAll()
 {
-    //m_view->fitInView(m_view->scene()->sceneRect(), Qt::KeepAspectRatio);
-    m_view->fitInView(m_view->scene()->itemsBoundingRect(), Qt::KeepAspectRatio);
+    m_view->fitInView(m_scene->itemsBoundingRect(), Qt::KeepAspectRatio);
 }
 
 void MDIViewPage::saveSVG()
@@ -880,7 +883,7 @@ void MDIViewPage::saveSVG()
     }
     static_cast<void> (blockSelection(true)); // avoid to be notified by itself
 
-    m_view->saveSvg(fn);
+    m_scene->saveSvg(fn);
 }
 
 void MDIViewPage::saveSVG(std::string file)
@@ -890,7 +893,7 @@ void MDIViewPage::saveSVG(std::string file)
         return;
     }
     QString filename = QString::fromUtf8(file.data(),file.size());
-    m_view->saveSvg(filename);
+    m_scene->saveSvg(filename);
 }
 
 void MDIViewPage::saveDXF()
@@ -1007,7 +1010,7 @@ void MDIViewPage::clearSceneSelection()
     blockSceneSelection(true);
     m_qgSceneSelected.clear();
 
-    std::vector<QGIView *> views = m_view->getViews();
+    std::vector<QGIView *> views = m_scene->getViews();
 
     // Iterate through all views and unselect all
     for (std::vector<QGIView *>::iterator it = views.begin(); it != views.end(); ++it) {
@@ -1037,7 +1040,7 @@ void MDIViewPage::clearSceneSelection()
 //!Update QGIView's selection state based on Selection made outside Drawing Interface
 void MDIViewPage::selectQGIView(App::DocumentObject *obj, const bool isSelected)
 {
-    QGIView *view = m_view->findQViewForDocObj(obj);
+    QGIView *view = m_scene->findQViewForDocObj(obj);
 
     blockSceneSelection(true);
     if(view) {
@@ -1081,7 +1084,7 @@ void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
 void MDIViewPage::sceneSelectionManager()
 {
 //    Base::Console().Message("MDIVP::sceneSelectionManager()\n");
-    QList<QGraphicsItem*> sceneSel = m_view->scene()->selectedItems();
+    QList<QGraphicsItem*> sceneSel = m_scene->selectedItems();
 
     if (sceneSel.isEmpty()) {
         m_qgSceneSelected.clear(); //TODO: need to signal somebody?  Tree? handled elsewhere
@@ -1124,12 +1127,10 @@ void MDIViewPage::sceneSelectionManager()
 }
 
 //! update Tree Selection from QGraphicsScene selection
-//triggered by m_view->scene() signal
+//triggered by m_scene signal
 void MDIViewPage::sceneSelectionChanged()
 {
     sceneSelectionManager();
-
-//    QList<QGraphicsItem*> dbsceneSel = m_view->scene()->selectedItems();
 
     if(isSelectionBlocked)  {
         return;
@@ -1393,7 +1394,8 @@ void MDIViewPage::showStatusMsg(const char* s1, const char* s2, const char* s3) 
     }
 }
 
-MDIViewPage *MDIViewPage::getFromScene(const QGraphicsScene *scene)
+//return the MDIViewPage that owns the scene
+MDIViewPage *MDIViewPage::getFromScene(const QGSPage *scene)
 {
     if (scene != nullptr && scene->parent() != nullptr) {
         return dynamic_cast<MDIViewPage *>(scene->parent());

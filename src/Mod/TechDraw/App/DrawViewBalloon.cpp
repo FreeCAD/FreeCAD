@@ -286,6 +286,21 @@ int DrawViewBalloon::prefEnd(void) const
     return Preferences::balloonArrow();
 }
 
+QPointF DrawViewBalloon::getOrigin()
+{
+    double x = OriginX.getValue();
+    double y = OriginY.getValue();
+    QPointF result(x, y);
+    return result;
+}
+
+void DrawViewBalloon::setOrigin(QPointF p)
+{
+    OriginX.setValue(p.x());
+    OriginY.setValue(p.y());
+    origin = p;
+}
+
 Base::Vector3d DrawViewBalloon::getOriginOffset() const
 {
     double x = X.getValue();

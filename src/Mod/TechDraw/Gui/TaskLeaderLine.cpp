@@ -54,6 +54,7 @@
 
 #include "DrawGuiUtil.h"
 #include "PreferencesGui.h"
+#include "QGSPage.h"
 #include "QGVPage.h"
 #include "QGIView.h"
 #include "QGIPrimPath.h"
@@ -121,10 +122,10 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
     m_haveMdi = true;
     m_mdi = vpp->getMDIViewPage();
     if (m_mdi != nullptr) {
-        m_scene = m_mdi->m_scene;
+        m_scene = m_mdi->getQGSPage();
         m_view = m_mdi->getQGVPage();
         if (m_baseFeat != nullptr) {
-            m_qgParent = m_view->findQViewForDocObj(m_baseFeat);
+            m_qgParent = m_scene->findQViewForDocObj(m_baseFeat);
         }
     } else {
         m_haveMdi = false;
@@ -197,10 +198,10 @@ TaskLeaderLine::TaskLeaderLine(TechDraw::DrawView* baseFeat,
     m_haveMdi = true;
     m_mdi = vpp->getMDIViewPage();
     if (m_mdi != nullptr) {
-        m_scene = m_mdi->m_scene;
+        m_scene = m_mdi->getQGSPage();
         m_view = m_mdi->getQGVPage();
         if (baseFeat != nullptr) {
-            m_qgParent = m_view->findQViewForDocObj(baseFeat);
+            m_qgParent = m_scene->findQViewForDocObj(baseFeat);
         }
     } else {
         m_haveMdi = false;
@@ -558,8 +559,8 @@ void TaskLeaderLine::onTrackerClicked(bool b)
             m_inProgressLock = true;
             m_saveContextPolicy = m_mdi->contextMenuPolicy();
             m_mdi->setContextMenuPolicy(Qt::PreventContextMenu);
-            QGVPage* qgvp = m_mdi->getQGVPage();
-            QGIView* qgiv = qgvp->findQViewForDocObj(m_lineFeat);
+            QGSPage* qgsp = m_mdi->getQGSPage();
+            QGIView* qgiv = qgsp->findQViewForDocObj(m_lineFeat);
             QGILeaderLine* qgLead = dynamic_cast<QGILeaderLine*>(qgiv);
 
             if (qgLead == nullptr) {
@@ -712,7 +713,7 @@ void TaskLeaderLine::setEditCursor(QCursor c)
         return;
     }
     if (m_baseFeat != nullptr) {
-        QGIView* qgivBase = m_view->findQViewForDocObj(m_baseFeat);
+        QGIView* qgivBase = m_scene->findQViewForDocObj(m_baseFeat);
         qgivBase->setCursor(c);
     }
 }
