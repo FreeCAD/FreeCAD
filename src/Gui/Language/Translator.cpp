@@ -25,6 +25,7 @@
 # include <algorithm>
 # include <QApplication>
 # include <QDir>
+# include <QKeyEvent>
 # include <QRegularExpression>
 # include <QStringList>
 # include <QTranslator>
@@ -127,7 +128,8 @@ void Translator::destruct ()
     _pcSingleton=nullptr;
 }
 
-Translator::Translator()
+Translator::Translator():
+    decimalPointConversionEnabled(false)
 {
     // This is needed for Qt's lupdate
     d = new TranslatorP;
@@ -173,8 +175,8 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Valencian"            )] = "val-ES";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Vietnamese"           )] = "vi";
 
-    auto entries = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-        GetASCII("AdditionalLanguageDomainEntries", "");
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
+    auto entries = hGrp->GetASCII("AdditionalLanguageDomainEntries", "");
     // The format of the entries is "Language Name 1"="code1";"Language Name 2"="code2";...
     // Example: <FCText Name="AdditionalLanguageDomainEntries">"Romanian"="ro";"Polish"="pl";</FCText>
     QRegularExpression matchingRE(QString::fromUtf8("\"(.*[^\\s]+.*)\"\\s*=\\s*\"([^\\s]+)\";?"));
@@ -189,6 +191,8 @@ Translator::Translator()
     d->activatedLanguage = "English";
 
     d->paths = directories();
+
+    enableDecimalPointConversion(hGrp->GetBool("SubstituteDecimalSeparator", false));
 }
 
 Translator::~Translator()
@@ -356,6 +360,43 @@ void Translator::removeTranslators()
     }
 
     d->translators.clear();
+}
+
+bool Translator::eventFilter(QObject* obj, QEvent* ev)
+{
+    if (ev->type() == QEvent::KeyPress || ev->type() == QEvent::KeyRelease) {
+        QKeyEvent *kev = static_cast<QKeyEvent *>(ev);
+        Qt::KeyboardModifiers mod = kev->modifiers();
+        int key = kev->key();
+        if ((mod & Qt::KeypadModifier) && (key == Qt::Key_Period || key == Qt::Key_Comma))
+        {
+            QChar dp = QLocale().decimalPoint();
+            if (key != dp) {
+                QKeyEvent modifiedKeyEvent(kev->type(), dp.digitValue(), mod, QString(dp), kev->isAutoRepeat(), kev->count());
+                qApp->sendEvent(obj, &modifiedKeyEvent);
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+void Translator::enableDecimalPointConversion(bool on)
+{
+    if (!on) {
+        qApp->removeEventFilter(this);
+        decimalPointConversionEnabled = false;
+        return;
+    }
+    if (on && !decimalPointConversionEnabled) {
+        qApp->installEventFilter(this);
+        decimalPointConversionEnabled = true;
+    }
+#if FC_DEBUG
+    if (on && decimalPointConversionEnabled) {
+        Base::Console().Instance().Warning("Translator: decimal point converter is already installed\n");
+    }
+#endif
 }
 
 #include "moc_Translator.cpp"

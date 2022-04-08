@@ -2051,12 +2051,6 @@ void Application::runApplication()
         auto filter = new WheelEventFilter(&mainApp);
         mainApp.installEventFilter(filter);
     }
-    
-    //filter keyboard events to substitute decimal separator
-    if (hGrp->GetBool("SubstituteDecimalSeparator", false)) {
-        auto filter = new KeyboardFilter(&mainApp);
-        mainApp.installEventFilter(filter);
-    }
 
     // For values different to 1 and 2 use the OS locale settings
     auto localeFormat = hGrp->GetInt("UseLocaleFormatting", 0);
