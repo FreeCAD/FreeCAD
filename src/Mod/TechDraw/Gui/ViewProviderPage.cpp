@@ -58,6 +58,7 @@
 #include "MDIViewPage.h"
 #include "PreferencesGui.h"
 #include "QGITemplate.h"
+#include "QGSPage.h"
 #include "QGVPage.h"
 #include "ViewProviderTemplate.h"
 #include "ViewProviderPage.h"
@@ -80,7 +81,8 @@ ViewProviderPage::ViewProviderPage()
   : m_mdiView(nullptr),
     m_docReady(true),
     m_pageName(""),
-    m_graphicsView(nullptr)
+    m_graphicsView(nullptr),
+    m_graphicsScene(nullptr)
 {
     sPixmap = "TechDraw_TreePage";
     static const char *group = "Grid";
@@ -433,9 +435,9 @@ void ViewProviderPage::setFrameState(bool state)
 void ViewProviderPage::toggleFrameState(void)
 {
 //    Base::Console().Message("VPP::toggleFrameState()\n");
-    if (m_graphicsView != nullptr) {
+    if (m_graphicsScene != nullptr) {
         setFrameState(!getFrameState());
-        m_graphicsView->refreshViews();
+        m_graphicsScene->refreshViews();
         setTemplateMarkers(getFrameState());
     }
 }
@@ -460,6 +462,11 @@ void ViewProviderPage::setTemplateMarkers(bool state)
 void ViewProviderPage::setGraphicsView(QGVPage* gv)
 {
     m_graphicsView = gv;
+}
+
+void ViewProviderPage::setGraphicsScene(QGSPage* gs)
+{
+    m_graphicsScene = gs;
 }
 
 bool ViewProviderPage::canDelete(App::DocumentObject *obj) const

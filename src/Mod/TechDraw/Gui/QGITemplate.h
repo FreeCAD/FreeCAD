@@ -37,13 +37,14 @@ class DrawTemplate;
 namespace TechDrawGui
 {
 class TemplateTextField;
+class QGSPage;
 
 class TechDrawGuiExport QGITemplate : public QObject, public QGraphicsItemGroup
 {
     Q_OBJECT
 
 public:
-    QGITemplate(QGraphicsScene *);
+    QGITemplate(QGSPage *);
     ~QGITemplate();
 
     enum {Type = QGraphicsItem::UserType + 150};

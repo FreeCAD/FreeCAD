@@ -53,6 +53,7 @@
 
 #include <Mod/TechDraw/Gui/ui_TaskCosVertex.h>
 
+#include "QGSPage.h"
 #include "QGVPage.h"
 #include "QGIView.h"
 #include "QGIPrimPath.h"
@@ -95,7 +96,7 @@ TaskCosVertex::TaskCosVertex(TechDraw::DrawViewPart* baseFeat,
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_basePage);
     ViewProviderPage* vpp = static_cast<ViewProviderPage*>(vp);
     m_mdi = vpp->getMDIViewPage();
-    m_scene = m_mdi->m_scene;
+    m_scene = m_mdi->getQGSPage();
     m_view = m_mdi->getQGVPage();
 
     setUiPrimary();
@@ -285,7 +286,7 @@ void TaskCosVertex::removeTracker(void)
 void TaskCosVertex::setEditCursor(QCursor c)
 {
     if (m_baseFeat != nullptr) {
-        QGIView* qgivBase = m_view->findQViewForDocObj(m_baseFeat);
+        QGIView* qgivBase = m_scene->findQViewForDocObj(m_baseFeat);
         qgivBase->setCursor(c);
     }
 }

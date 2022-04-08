@@ -48,12 +48,13 @@
 
 #include "Rez.h"
 #include "ZVALUE.h"
+#include "QGSPage.h"
 #include "TemplateTextField.h"
 #include "QGISVGTemplate.h"
 
 using namespace TechDrawGui;
 
-QGISVGTemplate::QGISVGTemplate(QGraphicsScene *scene)
+QGISVGTemplate::QGISVGTemplate(QGSPage* scene)
     : QGITemplate(scene),
       firstTime(true)
 {

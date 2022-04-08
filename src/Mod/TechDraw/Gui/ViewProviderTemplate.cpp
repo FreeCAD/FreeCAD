@@ -43,6 +43,7 @@
 #include "QGITemplate.h"
 #include "QGISVGTemplate.h"
 #include "QGVPage.h"
+#include "QGSPage.h"
 #include "MDIViewPage.h"
 #include "TemplateTextField.h"
 #include "ViewProviderPage.h"
@@ -94,6 +95,7 @@ void ViewProviderTemplate::updateData(const App::Property* prop)
             if (mdi != nullptr) {
                 mdi->attachTemplate(t);
                 mdi->viewAll();
+                mdi->getViewProviderPage()->setGrid();
             }
        }
     }
@@ -151,7 +153,7 @@ QGITemplate* ViewProviderTemplate::getQTemplate(void)
     if (dt) {
         MDIViewPage* mdi = getMDIViewPage();
         if (mdi != nullptr) {
-            result = mdi->getQGVPage()->getTemplate();
+            result = mdi->getQGSPage()->getTemplate();
         }
     }
     return result;

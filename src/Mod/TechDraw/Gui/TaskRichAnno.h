@@ -41,6 +41,7 @@ class DrawRichAnno;
 
 namespace TechDrawGui
 {
+class QGSPage;
 class QGVPage;
 class QGIView;
 class QGIPrimPath;
@@ -101,6 +102,7 @@ private:
     bool blockUpdate;
 
     MDIViewPage* m_mdi;
+    QGSPage* m_scene;
     QGVPage* m_view;
     ViewProviderRichAnno* m_annoVP;
     TechDraw::DrawView* m_baseFeat;

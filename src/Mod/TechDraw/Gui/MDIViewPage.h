@@ -51,6 +51,7 @@ namespace TechDrawGui
 
 class ViewProviderPage;
 class QGVPage;
+class QGSPage;
 class QGIView;
 
 class TechDrawGuiExport MDIViewPage : public Gui::MDIView, public Gui::SelectionObserver
@@ -98,8 +99,8 @@ public:
     TechDraw::DrawPage * getPage() { return m_vpPage->getDrawPage(); }
 
     QGVPage* getQGVPage(void) {return m_view;}
-
-    QGraphicsScene* m_scene;
+    QGSPage* getQGSPage(void) {return m_scene;}
+    ViewProviderPage* getViewProviderPage() {return m_vpPage;}
 
     QPointF getTemplateCenter(TechDraw::DrawTemplate *obj);
     void centerOnPage(void);
@@ -111,7 +112,7 @@ public:
 
     bool addView(const App::DocumentObject *obj);
 
-    static MDIViewPage *getFromScene(const QGraphicsScene *scene);
+    static MDIViewPage *getFromScene(const QGSPage *scene);
 
 public Q_SLOTS:
     void viewAll();
@@ -129,7 +130,7 @@ protected:
     bool hasQView(App::DocumentObject *obj);
     bool orphanExists(const char *viewName, const std::vector<App::DocumentObject*> &list);
 
-    /// Attaches view of obj to m_view.  Returns true on success, false otherwise
+    /// Attaches view of obj to m_scene.  Returns true on success, false otherwise
     bool attachView(App::DocumentObject *obj);
 
     void contextMenuEvent(QContextMenuEvent *event);
@@ -161,6 +162,7 @@ private:
     std::string m_objectName;
     std::string m_documentName;
     bool isSelectionBlocked;
+    QGSPage* m_scene;
     QGVPage *m_view;
     QTimer *m_timer;
 
@@ -171,7 +173,7 @@ private:
     ViewProviderPage *m_vpPage;
 
     QList<QGraphicsItem*> m_qgSceneSelected;        //items in selection order
-    QList<QGIView *> deleteItems;
+//    QList<QGIView *> deleteItems;
 };
 
 class MDIViewPagePy : public Py::PythonExtension<MDIViewPagePy>
