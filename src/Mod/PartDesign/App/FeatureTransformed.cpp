@@ -169,6 +169,8 @@ short Transformed::mustExecute() const
 
 App::DocumentObjectExecReturn *Transformed::execute(void)
 {
+    TopoDS_Shape toolShape;
+
     std::string overlapMode = Overlap.getValueAsString();
     bool overlapDetectionMode = overlapMode == "Detect";
 
@@ -218,6 +220,58 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     supportShape.setTransform(Base::Matrix4D());
     TopoDS_Shape support = supportShape.getShape();
 
+    auto getTransformedCompShape = [&](const auto& origShape)
+    {
+        BRep_Builder builder;
+        TopoDS_CompSolid compShape;
+        builder.MakeCompSolid(compShape);
+        std::vector<TopoDS_Shape> shapes;
+        bool overlapping = false;
+
+        std::vector<gp_Trsf>::const_iterator transformIter = transformations.begin();
+
+        // First transformation is skipped since it should not be part of the toolShape.
+        ++transformIter;
+
+        for (; transformIter != transformations.end(); ++transformIter) {
+            // Make an explicit copy of the shape because the "true" parameter to BRepBuilderAPI_Transform
+            // seems to be pretty broken
+            BRepBuilderAPI_Copy copy(origShape);
+
+            TopoDS_Shape shape;
+            shape = copy.Shape();
+
+            BRepBuilderAPI_Transform mkTrf(shape, *transformIter, false); // No need to copy, now
+            if (!mkTrf.IsDone())
+                return toolShape;
+            shape = mkTrf.Shape();
+
+            TopoShape trsfTopoShape(shape);
+
+            for (auto& solid : TopoShape(shape).getSubShapes(TopAbs_SOLID)) {
+                shapes.emplace_back(solid);
+                builder.Add(compShape, solid);
+            }
+
+            if (overlapDetectionMode)
+                overlapping =  overlapping || (countSolids(TopoShape(origShape).fuse(shape))==1);
+        }
+
+#ifdef FC_DEBUG
+        if (overlapping || overlapMode == "Overlap mode")
+            Base::Console().Message("Transformed: Overlapping feature mode (fusing tool shapes)\n");
+        else
+            Base::Console().Message("Transformed: Non-Overlapping feature mode (compound of tool shapes)\n");
+#endif
+
+        if (overlapping || overlapMode == "Overlap mode")
+            toolShape = TopoShape(shapes.back()).fuse(shapes, Precision::Confusion());
+        else
+            toolShape = compShape;
+
+        return toolShape;
+    };
+
     // NOTE: It would be possible to build a compound from all original addShapes/subShapes and then
     // transform the compounds as a whole. But we choose to apply the transformations to each
     // Original separately. This way it is easier to discover what feature causes a fuse/cut
@@ -243,62 +297,14 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
         else {
             return new App::DocumentObjectExecReturn("Only additive and subtractive features can be transformed");
         }
-        TopoDS_Shape origShape = fuseShape.isNull()?cutShape.getShape():fuseShape.getShape();
 
         TopoDS_Shape current = support;
 
-        BRep_Builder builder;
-        TopoDS_CompSolid compShape;
-        builder.MakeCompSolid(compShape);
-        std::vector<TopoDS_Shape> shapes;
-        bool overlapping = false;
-
-        std::vector<gp_Trsf>::const_iterator transformIter = transformations.begin();
-
-        // First transformation is skipped since it should not be part of the toolShape.
-        ++transformIter;
-
-        for (; transformIter != transformations.end(); ++transformIter) {
-            // Make an explicit copy of the shape because the "true" parameter to BRepBuilderAPI_Transform
-            // seems to be pretty broken
-            BRepBuilderAPI_Copy copy(origShape);
-
-            TopoDS_Shape shape;
-            shape = copy.Shape();
-
-            BRepBuilderAPI_Transform mkTrf(shape, *transformIter, false); // No need to copy, now
-            if (!mkTrf.IsDone())
-                return new App::DocumentObjectExecReturn("Transformation failed", (*o));
-            shape = mkTrf.Shape();
-
-            TopoShape trsfTopoShape(shape);
-
-            for (auto& solid : TopoShape(shape).getSubShapes(TopAbs_SOLID)) {
-                shapes.emplace_back(solid);
-                builder.Add(compShape, solid);
-            }
-
-            if (overlapDetectionMode)
-                overlapping =  overlapping || (countSolids(TopoShape(origShape).fuse(shape))==1);
-
-        }
-
-        TopoDS_Shape toolShape;
-
-
-#ifdef FC_DEBUG
-        if (overlapping || overlapMode == "Overlap mode")
-            Base::Console().Message("Transformed: Overlapping feature mode (fusing tool shapes)\n");
-        else
-            Base::Console().Message("Transformed: Non-Overlapping feature mode (compound of tool shapes)\n");
-#endif
-
-        if (overlapping || overlapMode == "Overlap mode")
-            toolShape = TopoShape(shapes.back()).fuse(shapes, Precision::Confusion());
-        else
-            toolShape = compShape;
-
         if (!fuseShape.isNull()) {
+            TopoDS_Shape toolShape = getTransformedCompShape(fuseShape.getShape());
+            if (toolShape.IsNull())
+                return new App::DocumentObjectExecReturn("Transformation failed", (*o));
+
             std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(new BRepAlgoAPI_Fuse(current, toolShape));
             if (!mkBool->IsDone()) {
                 std::stringstream error;
@@ -306,7 +312,13 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
                 return new App::DocumentObjectExecReturn(error.str());
             }
             current = mkBool->Shape();
-        } else {
+        }
+        if (!cutShape.isNull()){
+            TopoDS_Shape toolShape = getTransformedCompShape(cutShape.getShape());
+            if (toolShape.IsNull())
+                return new App::DocumentObjectExecReturn("Transformation failed", (*o));
+
+
             std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(new BRepAlgoAPI_Cut(current, toolShape));
             if (!mkBool->IsDone()) {
                 std::stringstream error;
