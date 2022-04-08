@@ -46,9 +46,9 @@ import DraftVecUtils
 import draftutils.utils as utils
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
-import drafttaskpanels.task_shapestring as task_shapestring
 import draftutils.todo as todo
 
+from drafttaskpanels.task_shapestring import ShapeStringTaskPanelCmd
 from draftutils.translate import translate
 from draftutils.messages import _msg, _err
 
@@ -70,7 +70,6 @@ class ShapeString(gui_base_original.Creator):
     def Activated(self):
         """Execute when the command is called."""
         super(ShapeString, self).Activated(name="ShapeString")
-        self.creator = gui_base_original.Creator
         if self.ui:
             self.ui.sourceCmd = self
             self.taskmode = utils.getParam("UiMode", 1)
@@ -81,8 +80,9 @@ class ShapeString(gui_base_original.Creator):
                     del self.task
                 except AttributeError:
                     pass
-                self.task = task_shapestring.ShapeStringTaskPanel()
-                self.task.sourceCmd = self
+                self.task = ShapeStringTaskPanelCmd(self)
+                self.call = self.view.addEventCallback("SoEvent", self.task.action)
+                _msg(translate("draft", "Pick ShapeString location point"))
                 todo.ToDo.delay(Gui.Control.showDialog, self.task)
             else:
                 self.dialog = None

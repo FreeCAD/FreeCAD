@@ -349,6 +349,8 @@ from draftobjects.shapestring import (ShapeString,
                                       _ShapeString)
 from draftmake.make_shapestring import (make_shapestring,
                                         makeShapeString)
+if App.GuiUp:
+    from draftviewproviders.view_shapestring import ViewProviderShapeString
 
 # shape 2d view
 from draftobjects.shape2dview import (Shape2DView,

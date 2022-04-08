@@ -27,7 +27,6 @@
 
 ## \addtogroup draftviewproviders
 # @{
-import FreeCAD as App
 import FreeCADGui as Gui
 
 import DraftGui

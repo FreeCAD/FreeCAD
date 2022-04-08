@@ -197,6 +197,7 @@ SET(Draft_view_providers
     draftviewproviders/view_wire.py
     draftviewproviders/view_wpproxy.py
     draftviewproviders/view_hatch.py
+    draftviewproviders/view_shapestring.py
     draftviewproviders/README.md
 )
 
