@@ -879,7 +879,7 @@ Py::Object TopoShapeFacePy::getSurface() const
 {
     const TopoDS_Face& f = TopoDS::Face(getTopoShapePtr()->getShape());
     if (f.IsNull())
-        return Py::Object(Py_None);
+        return Py::None();
     BRepAdaptor_Surface adapt(f);
     Base::PyObjectBase* surface = nullptr;
     switch(adapt.GetType())
