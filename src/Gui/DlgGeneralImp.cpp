@@ -166,6 +166,10 @@ void DlgGeneralImp::setNumberLocale(bool force/* = false*/)
     localeIndex = localeFormat;
 }
 
+void DlgGeneralImp::setDecimalPointConversion(bool on) {
+    Translator::instance()->enableDecimalPointConversion(on);
+}
+
 void DlgGeneralImp::saveSettings()
 {
     int index = ui->AutoloadModuleCombo->currentIndex();
@@ -184,6 +188,7 @@ void DlgGeneralImp::saveSettings()
     bool force = setLanguage();
     // In case type is "Selected language", we need to force locale change
     setNumberLocale(force);
+    setDecimalPointConversion(ui->SubstituteDecimal->isChecked());
 
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
     QVariant size = ui->toolbarIconSize->itemData(ui->toolbarIconSize->currentIndex());

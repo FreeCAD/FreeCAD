@@ -103,22 +103,22 @@
           </widget>
          </item>
          <item row="1" column="2">
-          <widget class="Gui::PrefCheckBox" name="SubstituteDecimal">
-           <property name="toolTip">
-            <string>If enabled, numerical keypad decimal separator will be substituted with locale separator</string>
-           </property>
-           <property name="text">
-            <string>Substitute decimal separator (needs restart)</string>
-           </property>
-           <property name="prefEntry" stdset="0">
-            <cstring>SubstituteDecimalSeparator</cstring>
-           </property>
-           <property name="prefPath" stdset="0">
-            <cstring>General</cstring>
-           </property>
-          </widget>
-         </item>
-        </layout>
+           <widget class="Gui::PrefCheckBox" name="SubstituteDecimal">
+            <property name="toolTip">
+             <string>If enabled, numerical keypad decimal separator will be substituted with locale separator</string>
+            </property>
+            <property name="text">
+             <string>Substitute decimal separator (numpad)</string>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>SubstituteDecimalSeparator</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>General</cstring>
+            </property>
+           </widget>
+          </item>
+         </layout>
        </widget>
       </item>
       <item>

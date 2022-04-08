@@ -31,7 +31,6 @@
 # include <QDataStream>
 # include <QFileInfo>
 # include <QFileOpenEvent>
-# include <QKeyEvent>
 # include <QSessionManager>
 # include <QTimer>
 #endif
@@ -321,30 +320,5 @@ bool WheelEventFilter::eventFilter(QObject* obj, QEvent* ev)
     }
     return false;
 }
-
-KeyboardFilter::KeyboardFilter(QObject* parent)
-  : QObject(parent)
-{
-}
-
-bool KeyboardFilter::eventFilter(QObject* obj, QEvent* ev)
-{
-    if (ev->type() == QEvent::KeyPress || ev->type() == QEvent::KeyRelease) {
-        auto kev = static_cast<QKeyEvent *>(ev);
-        Qt::KeyboardModifiers mod = kev->modifiers();
-        int key = kev->key();
-        if ((mod & Qt::KeypadModifier) && (key == Qt::Key_Period || key == Qt::Key_Comma))
-        {
-            QChar dp = QLocale().decimalPoint();
-            if (key != dp) {
-                QKeyEvent modifiedKeyEvent(kev->type(), dp.digitValue(), mod, QString(dp), kev->isAutoRepeat(), kev->count());
-                qApp->sendEvent(obj, &modifiedKeyEvent);
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
 
 #include "moc_GuiApplication.cpp"

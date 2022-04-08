@@ -67,6 +67,7 @@ private:
     void revertToSavedConfig();
     bool setLanguage(); //Returns true if language has been changed
     void setNumberLocale(bool force = false);
+    void setDecimalPointConversion(bool on);
 
 private:
     int localeIndex;
