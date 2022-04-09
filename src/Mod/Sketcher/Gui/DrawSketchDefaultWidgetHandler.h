@@ -522,6 +522,18 @@ private:
             nCheckbox = WidgetCheckboxesT::size(handler->constructionMethod());
             nCombobox = WidgetComboboxesT::size(handler->constructionMethod());
 
+            // update the combobox only if necessary (if the change was not triggered by the combobox)
+            if constexpr (PFirstComboboxIsConstructionMethod == true) {
+                auto currentindex = toolWidget->getComboboxIndex(WCombobox::FirstCombo);
+                auto methodint = static_cast<int>(handler->constructionMethod());
+
+                if (currentindex != methodint) {
+                    // avoid triggering of method change
+                    boost::signals2::shared_connection_block combobox_block(connectionComboboxSelectionChanged);
+                    toolWidget->setComboboxIndex(WCombobox::FirstCombo, methodint);
+                }
+            }
+
             dHandler->updateCursor();
 
             dHandler->reset(); //reset of handler to restart.
