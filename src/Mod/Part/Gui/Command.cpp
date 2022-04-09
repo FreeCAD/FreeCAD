@@ -307,7 +307,7 @@ void CmdPartCut::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> Sel = 
-        getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(),3);
+        getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::FollowLink);
     if (Sel.size() != 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select two shapes please."));
@@ -361,7 +361,7 @@ void CmdPartCut::activated(int iMsg)
 bool CmdPartCut::isActive(void)
 {
     return getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(),nullptr,3)==2;
+            App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink)==2;
 }
 
 //===========================================================================
@@ -385,7 +385,7 @@ void CmdPartCommon::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> Sel = 
-        getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(), 3);
+        getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::FollowLink);
 
     //test if selected object is a compound, and if it is, look how many children it has...
     std::size_t numShapes = 0;
@@ -461,7 +461,7 @@ void CmdPartCommon::activated(int iMsg)
 bool CmdPartCommon::isActive(void)
 {
     return getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(),nullptr,3)>=1;
+            App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) >= 1;
 }
 
 //===========================================================================
@@ -485,7 +485,7 @@ void CmdPartFuse::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> Sel = 
-        getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(),3);
+        getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::FollowLink);
 
     //test if selected object is a compound, and if it is, look how many children it has...
     std::size_t numShapes = 0;
@@ -561,7 +561,7 @@ void CmdPartFuse::activated(int iMsg)
 bool CmdPartFuse::isActive(void)
 {
     return getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(),nullptr,3)>=1;
+            App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) >= 1;
 }
 
 //===========================================================================
@@ -921,7 +921,7 @@ void CmdPartCompound::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     unsigned int n = getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(),nullptr,3);
+            App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink);
     if (n < 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select one shape or more, please."));
@@ -954,7 +954,7 @@ void CmdPartCompound::activated(int iMsg)
 bool CmdPartCompound::isActive(void)
 {
     return getSelection().countObjectsOfType(
-            App::DocumentObject::getClassTypeId(),nullptr,3)>=1;
+            App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) >= 1;
 }
 
 //===========================================================================
@@ -978,7 +978,7 @@ void CmdPartSection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> Sel = 
-        getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(),3);
+        getSelection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(), Gui::ResolveMode::FollowLink);
     if (Sel.size() != 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select two shapes please."));
@@ -1002,7 +1002,7 @@ void CmdPartSection::activated(int iMsg)
 
 bool CmdPartSection::isActive(void)
 {
-    return getSelection().countObjectsOfType(App::DocumentObject::getClassTypeId(),nullptr,3)==2;
+    return getSelection().countObjectsOfType(App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) == 2;
 }
 
 //===========================================================================
@@ -1113,7 +1113,7 @@ void CmdPartExport::activated(int iMsg)
 
 bool CmdPartExport::isActive(void)
 {
-    return Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId(),nullptr,3) > 0;
+    return Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) > 0;
 }
 
 //===========================================================================
@@ -1185,7 +1185,7 @@ void CmdPartMakeSolid::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType
-        (App::DocumentObject::getClassTypeId(),nullptr,3);
+        (App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink);
     runCommand(Doc, "import Part");
     for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
         const TopoDS_Shape& shape = Part::Feature::getShape(*it);
@@ -1240,7 +1240,7 @@ void CmdPartMakeSolid::activated(int iMsg)
 bool CmdPartMakeSolid::isActive(void)
 {
     return Gui::Selection().countObjectsOfType
-        (App::DocumentObject::getClassTypeId(),nullptr,3) > 0;
+        (App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) > 0;
 }
 
 //===========================================================================
@@ -1303,7 +1303,7 @@ void CmdPartReverseShape::activated(int iMsg)
 bool CmdPartReverseShape::isActive(void)
 {
     return Gui::Selection().countObjectsOfType
-        (Part::Feature::getClassTypeId(), 0, 3) > 0;
+        (Part::Feature::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) > 0;
 }
 
 //===========================================================================
@@ -1385,7 +1385,7 @@ CmdPartMakeFace::CmdPartMakeFace()
 void CmdPartMakeFace::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    auto sketches = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId(),nullptr,3);
+    auto sketches = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink);
     if(sketches.empty())
         return;
     openCommand(QT_TRANSLATE_NOOP("Command", "Make face"));
@@ -1413,7 +1413,7 @@ void CmdPartMakeFace::activated(int iMsg)
 
 bool CmdPartMakeFace::isActive(void)
 {
-    return (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId(),nullptr,3) > 0 &&
+    return (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) > 0 &&
             !Gui::Control().activeDialog());
 }
 
@@ -1960,7 +1960,7 @@ void CmdPartThickness::activated(int iMsg)
 bool CmdPartThickness::isActive(void)
 {
     Base::Type partid = Base::Type::fromName("Part::Feature");
-    bool objectsSelected = Gui::Selection().countObjectsOfType(partid, 0, 3) > 0;
+    bool objectsSelected = Gui::Selection().countObjectsOfType(partid, nullptr, Gui::ResolveMode::FollowLink) > 0;
     return (objectsSelected && !Gui::Control().activeDialog());
 }
 

@@ -429,9 +429,13 @@ QWidget* TreeWidgetEditDelegate::createEditor(
 // ---------------------------------------------------------------------------
 
 TreeWidget::TreeWidget(const char* name, QWidget* parent)
-    : QTreeWidget(parent), SelectionObserver(true, 0), contextItem(nullptr)
-    , searchObject(nullptr), searchDoc(nullptr), searchContextDoc(nullptr)
-    , editingItem(nullptr), currentDocItem(nullptr)
+    : QTreeWidget(parent), SelectionObserver(true, ResolveMode::NoResolve)
+    , contextItem(nullptr)
+    , searchObject(nullptr)
+    , searchDoc(nullptr)
+    , searchContextDoc(nullptr)
+    , editingItem(nullptr)
+    , currentDocItem(nullptr)
     , myName(name)
 {
     Instances.insert(this);
@@ -2752,7 +2756,7 @@ void TreeWidget::scrollItemToTop()
 
         tree->_updateStatus(false);
 
-        if (doc && Gui::Selection().hasSelection(doc->getDocument()->getName(), false)) {
+        if (doc && Gui::Selection().hasSelection(doc->getDocument()->getName(), ResolveMode::NoResolve)) {
             auto it = tree->DocumentMap.find(doc);
             if (it != tree->DocumentMap.end()) {
                 bool lock = tree->blockSelection(true);
@@ -4419,7 +4423,7 @@ DocumentObjectItem* DocumentItem::findItem(
 }
 
 void DocumentItem::selectItems(SelectionReason reason) {
-    const auto& sels = Selection().getSelection(pDocument->getDocument()->getName(), false);
+    const auto& sels = Selection().getSelection(pDocument->getDocument()->getName(), ResolveMode::NoResolve);
 
     bool sync = (sels.size() > 50 || reason == SR_SELECT) ? false : true;
 

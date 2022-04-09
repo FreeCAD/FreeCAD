@@ -66,7 +66,7 @@ static ParameterGrp::handle _GetParam() {
  * in two tabs.
  */
 PropertyView::PropertyView(QWidget *parent)
-  : QWidget(parent), SelectionObserver(false, 0)
+  : QWidget(parent), SelectionObserver(false, ResolveMode::NoResolve)
 {
     QGridLayout* pLayout = new QGridLayout( this );
     pLayout->setSpacing(0);
@@ -298,7 +298,7 @@ void PropertyView::checkEnable(const char *doc) {
     }
     // check if at least one selected object is part of the active document
     setEnabled(!Selection().hasSelection()
-            || Selection().hasSelection(doc,false));
+            || Selection().hasSelection(doc, ResolveMode::NoResolve));
 }
 
 struct PropertyView::PropInfo

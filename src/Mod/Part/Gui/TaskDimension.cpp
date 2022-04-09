@@ -121,7 +121,7 @@ bool PartGui::getShapeFromStrings(TopoDS_Shape &shapeOut, const std::string &doc
 
 bool PartGui::evaluateLinearPreSelection(TopoDS_Shape &shape1, TopoDS_Shape &shape2)
 {
-  std::vector<Gui::SelectionSingleton::SelObj> selections = Gui::Selection().getSelection(nullptr,false);
+  std::vector<Gui::SelectionSingleton::SelObj> selections = Gui::Selection().getSelection(nullptr, Gui::ResolveMode::NoResolve);
   if (selections.size() != 2)
     return false;
   std::vector<Gui::SelectionSingleton::SelObj>::iterator it;
@@ -515,7 +515,7 @@ void PartGui::DimensionLinear::setupDimension()
 }
 
 PartGui::TaskMeasureLinear::TaskMeasureLinear()
-    : Gui::SelectionObserver(true,false)
+    : Gui::SelectionObserver(true, Gui::ResolveMode::NoResolve)
     , selections1(), selections2(), buttonSelectedIndex(0)
 {
   setUpGui();
@@ -832,7 +832,7 @@ void PartGui::goDimensionAngularRoot()
 
 bool PartGui::evaluateAngularPreSelection(VectorAdapter &vector1Out, VectorAdapter &vector2Out)
 {
-  std::vector<Gui::SelectionSingleton::SelObj> selections = Gui::Selection().getSelection(nullptr,false);
+  std::vector<Gui::SelectionSingleton::SelObj> selections = Gui::Selection().getSelection(nullptr, Gui::ResolveMode::NoResolve);
   if (selections.size() > 4 || selections.size() < 2)
     return false;
   std::vector<Gui::SelectionSingleton::SelObj>::iterator it;
@@ -1514,7 +1514,7 @@ void PartGui::DimensionControl::clearAllSlot(bool)
 }
 
 PartGui::TaskMeasureAngular::TaskMeasureAngular()
-    : Gui::SelectionObserver(true,false)
+    : Gui::SelectionObserver(true, Gui::ResolveMode::NoResolve)
     , selections1(), selections2(), buttonSelectedIndex(0)
 {
   setUpGui();

@@ -276,7 +276,7 @@ public:
         busy = true;
         std::map<std::string,int> sels;
         for(auto &sel : Selection().getSelectionEx(
-                    editDoc.c_str(),App::DocumentObject::getClassTypeId(),0))
+                    editDoc.c_str(),App::DocumentObject::getClassTypeId(), ResolveMode::NoResolve))
         {
             if(sel.getFeatName()!=editObj) continue;
             for(auto &sub : sel.getSubNames()) {
@@ -324,7 +324,7 @@ ElementColors::ElementColors(ViewProviderDocumentObject* vp, bool noHide)
     if(d->ui->onTop->isChecked())
         d->vpParent->OnTopWhenSelected.setValue(3);
 
-    Selection().addSelectionGate(d,0);
+    Selection().addSelectionGate(d, ResolveMode::NoResolve);
 
     d->connectDelDoc = Application::Instance->signalDeleteDocument.connect(boost::bind
         (&ElementColors::slotDeleteDocument, this, bp::_1));
@@ -379,7 +379,7 @@ void ElementColors::on_boxSelect_clicked()
 }
 
 void ElementColors::on_hideSelection_clicked() {
-    auto sels = Selection().getSelectionEx(d->editDoc.c_str(),App::DocumentObject::getClassTypeId(),0);
+    auto sels = Selection().getSelectionEx(d->editDoc.c_str(), App::DocumentObject::getClassTypeId(), ResolveMode::NoResolve);
     for(auto &sel : sels) {
         if(d->editObj!=sel.getFeatName())
             continue;
@@ -400,7 +400,7 @@ void ElementColors::on_hideSelection_clicked() {
 
 void ElementColors::on_addSelection_clicked()
 {
-    auto sels = Selection().getSelectionEx(d->editDoc.c_str(),App::DocumentObject::getClassTypeId(),0);
+    auto sels = Selection().getSelectionEx(d->editDoc.c_str(), App::DocumentObject::getClassTypeId(), ResolveMode::NoResolve);
     d->items.clear();
     if(sels.empty())
         d->addItem(-1,"Face",true);

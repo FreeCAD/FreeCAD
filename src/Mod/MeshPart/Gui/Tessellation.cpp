@@ -193,7 +193,7 @@ void Tessellation::on_estimateMaximumEdgeLength_clicked()
     }
 
     double edgeLen = 0;
-    for (auto &sel : Gui::Selection().getSelection("*",0)) {
+    for (auto &sel : Gui::Selection().getSelection("*", Gui::ResolveMode::NoResolve)) {
         auto shape = Part::Feature::getTopoShape(sel.pObject,sel.SubName);
         if (shape.hasSubShape(TopAbs_FACE)) {
             Base::BoundBox3d bbox = shape.getBoundBox();
@@ -225,7 +225,7 @@ bool Tessellation::accept()
 
     bool bodyWithNoTip = false;
     bool partWithNoFace = false;
-    for (auto &sel : Gui::Selection().getSelection("*",0)) {
+    for (auto &sel : Gui::Selection().getSelection("*", Gui::ResolveMode::NoResolve)) {
         auto shape = Part::Feature::getTopoShape(sel.pObject,sel.SubName);
         if (shape.hasSubShape(TopAbs_FACE)) {
             shapeObjects.emplace_back(sel.pObject, sel.SubName);

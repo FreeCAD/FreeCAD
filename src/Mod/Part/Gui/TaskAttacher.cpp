@@ -999,7 +999,7 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
         auto editDoc = Gui::Application::Instance->editDocument();
         App::DocumentObject *editObj = ViewProvider->getObject();
         std::string editSubName;
-        auto sels = Gui::Selection().getSelection(nullptr,0,true);
+        auto sels = Gui::Selection().getSelection(nullptr, Gui::ResolveMode::NoResolve, true);
         if(sels.size() && sels[0].pResolvedObject 
                        && sels[0].pResolvedObject->getLinkedObject()==editObj) 
         {
