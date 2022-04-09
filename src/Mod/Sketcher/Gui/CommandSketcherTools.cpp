@@ -2180,9 +2180,8 @@ class DrawSketchHandlerTranslate : public DrawSketchHandlerTranslateBase
     friend DrawSketchHandlerTranslateBase;
 
 public:
-    DrawSketchHandlerTranslate(std::vector<int> listOfGeoIds)
-        :
-        constructionMethod(ConstructionMethod::LinearArray)
+    DrawSketchHandlerTranslate(std::vector<int> listOfGeoIds, ConstructionMethod constrMethod = ConstructionMethod::LinearArray) :
+        DrawSketchHandlerTranslateBase(constrMethod)
         , snapMode(SnapMode::Free)
         , listOfGeoIds(listOfGeoIds)
         , firstTranslationVector(Base::Vector3d(0., 0., 0.))
@@ -2298,7 +2297,7 @@ private:
     //reimplement because linear array is 2 steps while rectangular array is 3 steps
     virtual void onButtonPressed(Base::Vector2d onSketchPos) override {
         this->updateDataAndDrawToPosition(onSketchPos);
-        if (state() == SelectMode::SeekSecond && constructionMethod == ConstructionMethod::LinearArray) {
+        if (state() == SelectMode::SeekSecond && constructionMethod() == ConstructionMethod::LinearArray) {
             setState(SelectMode::End);
         }
         else {
@@ -2313,7 +2312,6 @@ private:
     }
 
 private:
-    ConstructionMethod constructionMethod;
     SnapMode snapMode;
     std::vector<int> listOfGeoIds;
     Base::Vector2d referencePoint, firstTranslationPoint, secondTranslationPoint;
