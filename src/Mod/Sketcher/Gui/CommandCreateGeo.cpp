@@ -509,7 +509,10 @@ private:
                     radius = 0.;
                 }
 
-                drawEdit(getRectangleGeometries());
+                try {
+                    drawEdit(getRectangleGeometries());
+                }
+                catch(const Base::ValueError &) {} // equal points while hovering raise an objection that can be safely ignored
 
                 if (seekAutoConstraint(sugConstraints[1], onSketchPos, Base::Vector2d(0.0,0.0))) {
                     renderSuggestConstraintsCursor(sugConstraints[1]);
