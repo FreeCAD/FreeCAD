@@ -455,7 +455,7 @@ class DrawSketchHandlerRectangle: public DrawSketchHandlerRectangleBase
 public:
 
     DrawSketchHandlerRectangle(ConstructionMethod constrMethod = ConstructionMethod::Diagonal) :
-        constructionMethod(constrMethod),
+        DrawSketchHandlerRectangleBase(constrMethod),
         roundCorners(false) {}
 
     virtual ~DrawSketchHandlerRectangle() = default;
@@ -467,7 +467,7 @@ private:
             {
                 drawPositionAtCursor(onSketchPos);
 
-                if(constructionMethod == ConstructionMethod::Diagonal)
+                if(constructionMethod() == ConstructionMethod::Diagonal)
                     firstCorner = onSketchPos;
                 else //(constructionMethod == ConstructionMethod::CenterAndCorner)
                     center = onSketchPos;
@@ -480,7 +480,7 @@ private:
             break;
             case SelectMode::SeekSecond:
             {
-                if(constructionMethod == ConstructionMethod::Diagonal) {
+                if(constructionMethod() == ConstructionMethod::Diagonal) {
                     drawDirectionAtCursor(onSketchPos, firstCorner);
 
                     thirdCorner = onSketchPos;
@@ -568,7 +568,7 @@ private:
             //create geometries
             Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
             std::vector<Part::Geometry*> geometriesToAdd = getRectangleGeometries();
-            if (constructionMethod == ConstructionMethod::CenterAndCorner) {
+            if (constructionMethod() == ConstructionMethod::CenterAndCorner) {
                 Part::GeomPoint* point = new Part::GeomPoint();
                 point->setPoint(Base::Vector3d(center.x, center.y, 0.));
                 Sketcher::GeometryFacade::setConstruction(point, true);
@@ -578,7 +578,7 @@ private:
             Obj->addGeometry(std::move(geometriesToAdd));
 
 
-            if (constructionMethod == ConstructionMethod::CenterAndCorner) {
+            if (constructionMethod() == ConstructionMethod::CenterAndCorner) {
                 Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d,%d)) ",
                     firstCurve + 1, 2, firstCurve + 3, 2, firstCurve + 4 + (radius > Precision::Confusion() ? 4 : 0), 1);
             }
@@ -622,7 +622,7 @@ private:
                     firstCurve + 6, firstCurve + 7, // equal  3
                     Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
 
-                if (constructionMethod == ConstructionMethod::CenterAndCorner) {
+                if (constructionMethod() == ConstructionMethod::CenterAndCorner) {
                     // now add construction geometry - two points used to take suggested constraints
                     Gui::Command::doCommand(Gui::Command::Doc,
                         "geoList = []\n"
@@ -696,7 +696,7 @@ private:
     }
 
     virtual void createAutoConstraints() override {
-        if(constructionMethod == ConstructionMethod::Diagonal) {
+        if(constructionMethod() == ConstructionMethod::Diagonal) {
             // add auto constraints at the start of the first side
             if (radius > Precision::Confusion()) {
                 if (!sugConstraints[0].empty()) {
@@ -725,7 +725,7 @@ private:
                 }
             }
         }
-        else if (constructionMethod == ConstructionMethod::CenterAndCorner) {
+        else if (constructionMethod() == ConstructionMethod::CenterAndCorner) {
             // add auto constraints at center
             if (!sugConstraints[0].empty()) {
                 DrawSketchHandler::createAutoConstraints(sugConstraints[0], firstCurve + 8, Sketcher::PointPos::start);
@@ -768,7 +768,6 @@ private:
     }
 
 private:
-    ConstructionMethod constructionMethod;
     Base::Vector2d center, firstCorner, secondCorner, thirdCorner, FourthCorner;
     bool roundCorners;
     double radius, length, width;
@@ -851,7 +850,7 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::configureToo
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
     }
 
-    if(dHandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal){
+    if(dHandler->constructionMethod() == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal){
         toolWidget->setParameterLabel(WParameter::First, QApplication::translate("TaskSketcherTool_p1_rectangle", "x of 1st point"));
         toolWidget->setParameterLabel(WParameter::Second, QApplication::translate("TaskSketcherTool_p2_rectangle", "y of 1st point"));
         toolWidget->setParameterLabel(WParameter::Third, QApplication::translate("TaskSketcherTool_p3_rectangle", "Length (X axis)"));
@@ -872,7 +871,7 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::configureToo
 }
 
 template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
-    if(dHandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal){
+    if(dHandler->constructionMethod() == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal){
         switch(parameterindex) {
             case WParameter::First:
                 dHandler->firstCorner.x = value;
@@ -908,7 +907,6 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptDrawing
 }
 
 template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
-    prevCursorPosition = onSketchPos;
 
     switch (handler->state()) {
     case SelectMode::SeekFirst:
@@ -922,7 +920,7 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doEnforceWid
     break;
     case SelectMode::SeekSecond:
     {
-        if (dHandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal) {
+        if (dHandler->constructionMethod() == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal) {
             if (toolWidget->isParameterSet(WParameter::Third)) {
                 double length = toolWidget->getParameter(WParameter::Third);
                 if (onSketchPos.x - dHandler->firstCorner.x < 0) {
@@ -980,7 +978,7 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptWidgetP
     break;
     case SelectMode::SeekSecond:
     {
-        if (dHandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal) {
+        if (dHandler->constructionMethod() == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal) {
             if (!toolWidget->isParameterSet(WParameter::Third))
                 toolWidget->updateVisualValue(WParameter::Third, fabs(onSketchPos.x - dHandler->firstCorner.x));
 
@@ -1030,7 +1028,7 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doChangeDraw
 
             if (toolWidget->isParameterSet(WParameter::Third) &&
                 toolWidget->isParameterSet(WParameter::Fourth) &&
-                dHandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::CenterAndCorner ) {
+                dHandler->constructionMethod() == DrawSketchHandlerRectangle::ConstructionMethod::CenterAndCorner ) {
                 if (dHandler->roundCorners) {
                     handler->setState(SelectMode::SeekThird);
                 }
@@ -1078,7 +1076,7 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::addConstrain
 
     using namespace Sketcher;
 
-    if (dHandler->constructionMethod == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal) {
+    if (dHandler->constructionMethod() == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal) {
         if (x0set && y0set && x0 == 0. && y0 == 0.) {
             ConstraintToAttachment(GeoElementId(firstCurve, PointPos::start), GeoElementId::RtPnt,
                 x0, handler->sketchgui->getObject());
@@ -1490,7 +1488,6 @@ template <> void DrawSketchHandlerFrameBase::ToolWidgetManager::doEnforceWidgetP
     default:
         break;
     }
-    prevCursorPosition = onSketchPos;
 }
 
 template <> void DrawSketchHandlerFrameBase::ToolWidgetManager::adaptWidgetParameters(Base::Vector2d onSketchPos) {
@@ -1843,7 +1840,6 @@ template <> void DrawSketchHandlerPolygonBase::ToolWidgetManager::doEnforceWidge
     default:
         break;
     }
-    prevCursorPosition = onSketchPos;
 }
 
 template <> void DrawSketchHandlerPolygonBase::ToolWidgetManager::adaptWidgetParameters(Base::Vector2d onSketchPos) {
@@ -3027,7 +3023,6 @@ template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::adaptDrawingToP
 }
 
 template <> void DrawSketchHandlerCircleBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
-    prevCursorPosition = onSketchPos;
 
     switch (handler->state()) {
     case SelectMode::SeekFirst:
@@ -3522,7 +3517,6 @@ template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::adaptDrawingTo
 }
 
 template <> void DrawSketchHandlerEllipseBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
-    prevCursorPosition = onSketchPos;
 
     switch (handler->state()) {
     case SelectMode::SeekFirst:
@@ -4296,7 +4290,6 @@ template <> void DrawSketchHandlerArcBase::ToolWidgetManager::doEnforceWidgetPar
     default:
         break;
     }
-    prevCursorPosition = onSketchPos;
 }
 
 template <> void DrawSketchHandlerArcBase::ToolWidgetManager::adaptWidgetParameters(Base::Vector2d onSketchPos) {
@@ -6370,7 +6363,6 @@ template <> void DrawSketchHandlerPointBase::ToolWidgetManager::doEnforceWidgetP
     default:
         break;
     }
-    prevCursorPosition = onSketchPos;
 }
 
 template <> void DrawSketchHandlerPointBase::ToolWidgetManager::adaptWidgetParameters(Base::Vector2d onSketchPos) {
@@ -6821,10 +6813,6 @@ template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::adaptDrawingToC
             dHandler->nofAngles = abs(dHandler->nofAngles);
         break;
     }
-}
-
-template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::doEnforceWidgetParameters(Base::Vector2d& onSketchPos) {
-    prevCursorPosition = onSketchPos;
 }
 
 template <> void DrawSketchHandlerFilletBase::ToolWidgetManager::adaptWidgetParameters(Base::Vector2d onSketchPos) {
@@ -7947,7 +7935,6 @@ template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::doEnforceWidget
     default:
         break;
     }
-    prevCursorPosition = onSketchPos;
 }
 
 template <> void DrawSketchHandlerInsertBase::ToolWidgetManager::adaptWidgetParameters(Base::Vector2d onSketchPos) {
@@ -8900,7 +8887,6 @@ template <> void DrawSketchHandlerSlotBase::ToolWidgetManager::doEnforceWidgetPa
     default:
         break;
     }
-    prevCursorPosition = onSketchPos;
 }
 
 template <> void DrawSketchHandlerSlotBase::ToolWidgetManager::adaptWidgetParameters(Base::Vector2d onSketchPos) {
@@ -9575,7 +9561,6 @@ template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::doEnforceWidge
     default:
         break;
     }
-    prevCursorPosition = onSketchPos;
 }
 
 template <> void DrawSketchHandlerArcSlotBase::ToolWidgetManager::adaptWidgetParameters(Base::Vector2d onSketchPos) {
