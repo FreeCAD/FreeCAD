@@ -724,7 +724,7 @@ void DlgPropertyLink::onTimer() {
     Gui::Selection().setPreselect(sobj.getDocumentName().c_str(),
                                   sobj.getObjectName().c_str(),
                                   sobj.getSubName().c_str(),
-                                  0,0,0,2);
+                                  0, 0, 0, Gui::SelectionChanges::MsgSource::TreeView);
 }
 
 QList<App::SubObjectT> DlgPropertyLink::currentLinks() const
@@ -857,7 +857,8 @@ void DlgPropertyLink::itemSearch(const QString &text, bool select) {
                     obj->getNameInDocument(),subname);
         }else{
             Selection().setPreselect(obj->getDocument()->getName(),
-                    obj->getNameInDocument(), subname,0,0,0,2);
+                    obj->getNameInDocument(), subname, 0, 0, 0,
+                    Gui::SelectionChanges::MsgSource::TreeView);
             searchItem = item;
             ui->treeWidget->scrollToItem(searchItem);
             bgBrush = searchItem->background(0);

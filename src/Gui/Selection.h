@@ -83,12 +83,19 @@ public:
         RmvPreselectSignal, // to request 3D view to remove preselect
         MovePreselect, // to signal observer the mouse movement when preselect
     };
+    enum class MsgSource {
+        Any = 0,
+        Internal = 1,
+        TreeView = 2
+    };
 
     SelectionChanges(MsgType type = ClrSelection,
             const char *docName=nullptr, const char *objName=nullptr,
             const char *subName=nullptr, const char *typeName=nullptr,
-            float x=0, float y=0, float z=0, int subtype=0)
-        : Type(type),SubType(subtype)
+            float x=0, float y=0, float z=0,
+            MsgSource subtype=MsgSource::Any)
+        : Type(type)
+        , SubType(subtype)
         , x(x),y(y),z(z)
         , Object(docName,objName,subName)
     {
@@ -104,8 +111,10 @@ public:
                      const std::string &objName,
                      const std::string &subName,
                      const std::string &typeName = std::string(),
-                     float x=0,float y=0,float z=0, int subtype=0)
-        : Type(type), SubType(subtype)
+                     float x=0,float y=0,float z=0,
+                     MsgSource subtype=MsgSource::Any)
+        : Type(type)
+        , SubType(subtype)
         , x(x),y(y),z(z)
         , Object(docName.c_str(), objName.c_str(), subName.c_str())
         , TypeName(typeName)
@@ -157,7 +166,7 @@ public:
     }
 
     MsgType Type;
-    int SubType;
+    MsgSource SubType;
 
     const char* pDocName;
     const char* pObjectName;
@@ -402,7 +411,8 @@ public:
 
     /// set the preselected object (mostly by the 3D view)
     int setPreselect(const char* pDocName, const char* pObjectName,
-            const char* pSubName, float x=0, float y=0, float z=0, int signal=0);
+            const char* pSubName, float x=0, float y=0, float z=0,
+            SelectionChanges::MsgSource signal=SelectionChanges::MsgSource::Any);
     /// remove the present preselection
     void rmvPreselect(bool signal=false);
     /// sets different coords for the preselection

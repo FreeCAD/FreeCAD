@@ -782,15 +782,16 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg)
     }
 }
 
-int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectName, const char* pSubName, float x, float y, float z, int signal)
+int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectName, const char* pSubName,
+                                     float x, float y, float z, SelectionChanges::MsgSource signal)
 {
-    if(!pDocName || !pObjectName) {
+    if (!pDocName || !pObjectName) {
         rmvPreselect();
         return 0;
     }
-    if(!pSubName) pSubName = "";
+    if (!pSubName) pSubName = "";
 
-    if(DocName==pDocName && FeatName==pObjectName && SubName==pSubName) {
+    if (DocName==pDocName && FeatName==pObjectName && SubName==pSubName) {
         // MovePreselect is likely going to slow down large scene rendering.
         // Disable it for now.
 #if 0
@@ -808,7 +809,7 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
 
     rmvPreselect();
 
-    if (ActiveGate && signal!=1) {
+    if (ActiveGate && signal != SelectionChanges::MsgSource::Internal) {
         App::Document* pDoc = getDocument(pDocName);
         if (!pDoc || !pObjectName)
             return 0;
@@ -860,18 +861,22 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
     hz = z;
 
     // set up the change object
-    SelectionChanges Chng(signal==1?SelectionChanges::SetPreselectSignal:SelectionChanges::SetPreselect,
+    SelectionChanges Chng(signal == SelectionChanges::MsgSource::Internal
+                                  ? SelectionChanges::SetPreselectSignal
+                                  : SelectionChanges::SetPreselect,
             DocName,FeatName,SubName,std::string(),x,y,z,signal);
 
-    if(Chng.Type==SelectionChanges::SetPreselect) {
+    if (Chng.Type==SelectionChanges::SetPreselect) {
         CurrentPreselection = Chng;
         FC_TRACE("preselect "<<DocName<<'#'<<FeatName<<'.'<<SubName);
-    }else
+    }
+    else {
         FC_TRACE("preselect signal "<<DocName<<'#'<<FeatName<<'.'<<SubName);
+    }
 
     notify(Chng);
 
-    if(signal==1 && DocName.size()) {
+    if (signal == SelectionChanges::MsgSource::Internal && DocName.size()) {
         FC_TRACE("preselect "<<DocName<<'#'<<FeatName<<'.'<<SubName);
         Chng.Type = SelectionChanges::SetPreselect;
         CurrentPreselection = Chng;
@@ -2311,7 +2316,7 @@ PyObject *SelectionSingleton::sSetPreselection(PyObject * /*self*/, PyObject *ar
 
         Selection().setPreselect(docObj->getDocument()->getName(),
                                  docObj->getNameInDocument(),
-                                 subname,x,y,z,type);
+                                 subname,x,y,z, static_cast<SelectionChanges::MsgSource>(type));
         Py_Return;
     }
 

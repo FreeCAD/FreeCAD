@@ -487,7 +487,8 @@ void ElementColors::on_elementList_itemEntered(QListWidgetItem *item) {
     }
     Selection().setPreselect(d->editDoc.c_str(),
             d->editObj.c_str(), (d->editSub+name).c_str(),0,0,0,
-            d->ui->onTop->isChecked()?2:1);
+            d->ui->onTop->isChecked() ? Gui::SelectionChanges::MsgSource::TreeView
+                                      : Gui::SelectionChanges::MsgSource::Internal);
 }
 
 void ElementColors::on_elementList_itemSelectionChanged() {

@@ -893,7 +893,7 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges &_Reason)
             Reason.Type = SelectionChanges::RmvSelection;
         // fall through
     case SelectionChanges::SetPreselect:
-        if(Reason.SubType!=2) // 2 means it is triggered from tree view
+        if(Reason.SubType != SelectionChanges::MsgSource::TreeView)
             break;
         // fall through
     case SelectionChanges::RmvPreselect:
