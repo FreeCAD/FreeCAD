@@ -87,6 +87,10 @@ void BRepOffsetAPI_MakeOffsetFix::AddWire(const TopoDS_Wire& Spine)
         }
 
         wire = mkWire.Wire();
+
+        // Make sure that the new wire has the same orientation as the source wire
+        // because otherwise the offset will shrink the wire
+        wire.Orientation(Spine.Orientation());
     }
     mkOffset.AddWire(wire);
     myResult.Nullify();
@@ -103,7 +107,7 @@ void BRepOffsetAPI_MakeOffsetFix::Build()
 }
 
 void BRepOffsetAPI_MakeOffsetFix::Init(const TopoDS_Face& Spine, const GeomAbs_JoinType Join,
-    const Standard_Boolean IsOpenResult)
+                                       const Standard_Boolean IsOpenResult)
 {
     mkOffset.Init(Spine, Join, IsOpenResult);
 }
