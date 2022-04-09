@@ -1887,13 +1887,13 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "docName : str\n    Name of the `App.Document`.\n"
      "clearPreSelect : bool\n    Clear preselection."},
     {"isSelected",           (PyCFunction) SelectionSingleton::sIsSelected, METH_VARARGS,
-     "isSelected(obj, subName, resolve=True) -> bool\n"
+     "isSelected(obj, subName, resolve=ResolveMode.OldStyleElement) -> bool\n"
      "\n"
      "Check if a given object is selected.\n"
      "\n"
      "obj : App.DocumentObject\n    Object to check.\n"
      "subName : str\n    Name of the subelement.\n"
-     "resolve : bool\n    Resolve subelement reference."},
+     "resolve : int\n    Resolve subelement reference."},
     {"setPreselection",      reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( SelectionSingleton::sSetPreselection )), METH_VARARGS|METH_KEYWORDS,
      "setPreselection(obj, subName, x=0, y=0, z=0, type=1) -> None\n"
      "\n"
@@ -1914,7 +1914,7 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "\n"
      "Clear the preselection."},
     {"countObjectsOfType",   (PyCFunction) SelectionSingleton::sCountObjectsOfType, METH_VARARGS,
-     "countObjectsOfType(type, docName, resolve=1) -> int\n"
+     "countObjectsOfType(type, docName, resolve=ResolveMode.OldStyleElement) -> int\n"
      "\n"
      "Get the number of selected objects. If no document name is given the\n"
      "active document is used and '*' means all documents.\n"
@@ -1923,7 +1923,7 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "docName : str\n    Name of the `App.Document`.\n"
      "resolve : int"},
     {"getSelection",         (PyCFunction) SelectionSingleton::sGetSelection, METH_VARARGS,
-     "getSelection(docName, resolve=1, single=False) -> list\n"
+     "getSelection(docName, resolve=ResolveMode.OldStyleElement, single=False) -> list\n"
      "\n"
      "Return a list of selected objects. If no document name is given\n"
      "the active document is used and '*' means all documents.\n"
@@ -1947,13 +1947,13 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "\n"
      "enable : bool"},
     {"getCompleteSelection", (PyCFunction) SelectionSingleton::sGetCompleteSelection, METH_VARARGS,
-     "getCompleteSelection(resolve=1) -> list\n"
+     "getCompleteSelection(resolve=ResolveMode.OldStyleElement) -> list\n"
      "\n"
      "Return a list of selected objects across all documents.\n"
      "\n"
      "resolve : int"},
     {"getSelectionEx",         (PyCFunction) SelectionSingleton::sGetSelectionEx, METH_VARARGS,
-     "getSelectionEx(docName, resolve=1, single=False) -> list of Gui.SelectionObject\n"
+     "getSelectionEx(docName, resolve=ResolveMode.OldStyleElement, single=False) -> list of Gui.SelectionObject\n"
      "\n"
      "Return a list of SelectionObjects. If no document name is given the\n"
      "active document is used and '*' means all documents.\n"
@@ -1974,7 +1974,7 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "subName : str\n    Subelement name.\n"
      "point : tuple\n    Coordinates of the point to pick."},
     {"addObserver",         (PyCFunction) SelectionSingleton::sAddSelObserver, METH_VARARGS,
-     "addObserver(object, resolve=1) -> None\n"
+     "addObserver(object, resolve=ResolveMode.OldStyleElement) -> None\n"
      "\n"
      "Install an observer.\n"
      "\n"
@@ -1987,7 +1987,7 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "\n"
      "object : object\n    Python object instance."},
     {"addSelectionGate",      (PyCFunction) SelectionSingleton::sAddSelectionGate, METH_VARARGS,
-     "addSelectionGate(filter, resolve=1) -> None\n"
+     "addSelectionGate(filter, resolve=ResolveMode.OldStyleElement) -> None\n"
      "\n"
      "Activate the selection gate.\n"
      "The selection gate will prohibit all selections that do not match\n"
@@ -2028,13 +2028,13 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "clearForward : bool\n    Clear the forward selection stack.\n"
      "overwrite : bool\n    Overwrite the top back selection stack with current selection."},
     {"hasSelection",      (PyCFunction) SelectionSingleton::sHasSelection, METH_VARARGS,
-     "hasSelection(docName, resolve=False) -> bool\n"
+     "hasSelection(docName, resolve=ResolveMode.NoResolve) -> bool\n"
      "\n"
      "Check if there is any selection. If no document name is given,\n"
      "checks selections in all documents.\n"
      "\n"
      "docName : str\n    Name of the `App.Document`.\n"
-     "resolve : bool"},
+     "resolve : int"},
     {"hasSubSelection",   (PyCFunction) SelectionSingleton::sHasSubSelection, METH_VARARGS,
      "hasSubSelection(docName, subElement=False) -> bool\n"
      "\n"
@@ -2044,7 +2044,7 @@ PyMethodDef SelectionSingleton::Methods[] = {
      "docName : str\n    Name of the `App.Document`.\n"
      "subElement : bool"},
     {"getSelectionFromStack",(PyCFunction) SelectionSingleton::sGetSelectionFromStack, METH_VARARGS,
-     "getSelectionFromStack(docName, resolve=1, index=0) -> list of Gui.SelectionObject\n"
+     "getSelectionFromStack(docName, resolve=ResolveMode.OldStyleElement, index=0) -> list of Gui.SelectionObject\n"
      "\n"
      "Return SelectionObjects from selection stack. If no document name is given\n"
      "the active document is used and '*' means all documents.\n"
