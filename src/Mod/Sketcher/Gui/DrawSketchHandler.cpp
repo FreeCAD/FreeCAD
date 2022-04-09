@@ -240,6 +240,11 @@ void DrawSketchHandler::activate(ViewProviderSketch * vp)
 {
     sketchgui = vp;
 
+    // save the cursor at the time the DSH is activated
+    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
+    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
+    oldCursor = viewer->getWidget()->cursor();
+
     updateCursor();
 
     this->signalToolChanged();
@@ -253,6 +258,11 @@ void DrawSketchHandler::deactivate()
     this->deactivated();
     this->postDeactivated();
     ViewProviderSketchDrawSketchHandlerAttorney::setConstraintSelectability(*sketchgui, true);
+
+    // clear temporary Curve and Markers from the scenograph
+    drawEdit(std::vector<Base::Vector2d>());
+    drawEditMarkers(std::vector<Base::Vector2d>());
+    resetPositionText();
     unsetCursor();
 
     ViewProviderSketchDrawSketchHandlerAttorney::signalToolChanged(*sketchgui, "DSH_None");
@@ -266,14 +276,10 @@ void DrawSketchHandler::preActivated()
 void DrawSketchHandler::quit(void)
 {
     assert(sketchgui);
-    drawEdit(std::vector<Base::Vector2d>());
-    drawEditMarkers(std::vector<Base::Vector2d>());
-    resetPositionText();
 
     Gui::Selection().rmvSelectionGate();
     Gui::Selection().rmvPreselect();
 
-    unsetCursor();
     sketchgui->purgeHandler();
 }
 
@@ -355,8 +361,6 @@ void DrawSketchHandler::setCursor(const QPixmap &p,int x,int y, bool autoScale)
     Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
     if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
-
-        oldCursor = viewer->getWidget()->cursor();
 
         QCursor cursor;
         QPixmap p1(p);
