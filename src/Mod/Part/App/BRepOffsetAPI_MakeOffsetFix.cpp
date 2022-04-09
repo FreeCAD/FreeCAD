@@ -102,6 +102,17 @@ void BRepOffsetAPI_MakeOffsetFix::Build()
     mkOffset.Build();
 }
 
+void BRepOffsetAPI_MakeOffsetFix::Init(const TopoDS_Face& Spine, const GeomAbs_JoinType Join,
+    const Standard_Boolean IsOpenResult)
+{
+    mkOffset.Init(Spine, Join, IsOpenResult);
+}
+
+void BRepOffsetAPI_MakeOffsetFix::Init(const GeomAbs_JoinType Join, const Standard_Boolean IsOpenResult)
+{
+    mkOffset.Init(Join, IsOpenResult);
+}
+
 Standard_Boolean BRepOffsetAPI_MakeOffsetFix::IsDone() const
 {
     return mkOffset.IsDone();
