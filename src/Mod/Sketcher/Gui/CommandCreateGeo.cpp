@@ -4155,7 +4155,7 @@ private:
         else // constructionMethod == DrawSketchHandlerArc::ConstructionMethod::ThreeRim
             return QString::fromLatin1("Sketcher_Pointer_Create_3PointArc");
 
-        return QStringLiteral("");
+        return QStringLiteral("None");
     }
 
 private:
@@ -9450,7 +9450,7 @@ private:
                 return QString::fromLatin1("Sketcher_CreateRectangleSlot");
         }
 
-        return QStringLiteral("");
+        return QStringLiteral("None");
     }
 
 private:
