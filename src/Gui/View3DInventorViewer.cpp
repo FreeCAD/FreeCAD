@@ -293,19 +293,37 @@ public:
 // *************************************************************************
 
 View3DInventorViewer::View3DInventorViewer(QWidget* parent, const QtGLWidget* sharewidget)
-    : Quarter::SoQTQuarterAdaptor(parent, sharewidget), SelectionObserver(false,0),
-      editViewProvider(nullptr), navigation(nullptr),
-      renderType(Native), framebuffer(nullptr), axisCross(nullptr), axisGroup(nullptr), editing(false), redirected(false),
-      allowredir(false), overrideMode("As Is"), _viewerPy(nullptr)
+    : Quarter::SoQTQuarterAdaptor(parent, sharewidget)
+    , SelectionObserver(false, ResolveMode::NoResolve)
+    , editViewProvider(nullptr)
+    , navigation(nullptr)
+    , renderType(Native)
+    , framebuffer(nullptr)
+    , axisCross(nullptr)
+    , axisGroup(nullptr)
+    , editing(false)
+    , redirected(false)
+    , allowredir(false)
+    , overrideMode("As Is")
+    , _viewerPy(nullptr)
 {
     init();
 }
 
 View3DInventorViewer::View3DInventorViewer(const QtGLFormat& format, QWidget* parent, const QtGLWidget* sharewidget)
-    : Quarter::SoQTQuarterAdaptor(format, parent, sharewidget), SelectionObserver(false,0),
-      editViewProvider(nullptr), navigation(nullptr),
-      renderType(Native), framebuffer(nullptr), axisCross(nullptr), axisGroup(nullptr), editing(false), redirected(false),
-      allowredir(false), overrideMode("As Is"), _viewerPy(nullptr)
+    : Quarter::SoQTQuarterAdaptor(format, parent, sharewidget)
+    , SelectionObserver(false, ResolveMode::NoResolve)
+    , editViewProvider(nullptr)
+    , navigation(nullptr)
+    , renderType(Native)
+    , framebuffer(nullptr)
+    , axisCross(nullptr)
+    , axisGroup(nullptr)
+    , editing(false)
+    , redirected(false)
+    , allowredir(false)
+    , overrideMode("As Is")
+    , _viewerPy(nullptr)
 {
     init();
 }
@@ -646,7 +664,7 @@ void View3DInventorViewer::setDocument(Gui::Document* pcDocument)
     selectionRoot->pcDocument = pcDocument;
 
     if(pcDocument) {
-        const auto &sels = Selection().getSelection(pcDocument->getDocument()->getName(),0);
+        const auto &sels = Selection().getSelection(pcDocument->getDocument()->getName(), ResolveMode::NoResolve);
         for(auto &sel : sels) {
             SelectionChanges Chng(SelectionChanges::ShowSelection,
                     sel.DocName,sel.FeatName,sel.SubName);
@@ -3058,7 +3076,7 @@ void View3DInventorViewer::viewAll(float factor)
 void View3DInventorViewer::viewSelection()
 {
     Base::BoundBox3d bbox;
-    for(auto &sel : Selection().getSelection(nullptr,0)) {
+    for(auto &sel : Selection().getSelection(nullptr, ResolveMode::NoResolve)) {
         auto vp = Application::Instance->getViewProvider(sel.pObject);
         if(!vp)
             continue;

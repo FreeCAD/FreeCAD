@@ -290,7 +290,7 @@ void StdCmdLinkMakeRelative::activated(int) {
     try {
         std::map<std::pair<App::DocumentObject*,std::string>,
                  std::pair<App::DocumentObject*, std::vector<std::string> > > linkInfo;
-        for(auto &sel : Selection().getCompleteSelection(0)) {
+        for(auto &sel : Selection().getCompleteSelection(ResolveMode::NoResolve)) {
             if(!sel.pObject || !sel.pObject->getNameInDocument())
                 continue;
             auto key = std::make_pair(sel.pObject,
@@ -548,7 +548,7 @@ StdCmdLinkImport::StdCmdLinkImport()
 static std::map<App::Document*, std::vector<App::DocumentObject*> > getLinkImportSelections()
 {
     std::map<App::Document*, std::vector<App::DocumentObject*> > objMap;
-    for(auto &sel : Selection().getCompleteSelection(false)) {
+    for(auto &sel : Selection().getCompleteSelection(ResolveMode::NoResolve)) {
         auto obj = sel.pObject->resolve(sel.SubName);
         if(!obj || !obj->getNameInDocument())
             continue;
@@ -652,7 +652,7 @@ StdCmdLinkSelectLinked::StdCmdLinkSelectLinked()
 }
 
 static App::DocumentObject *getSelectedLink(bool finalLink, std::string *subname=nullptr) {
-    const auto &sels = Selection().getSelection("*",0,true);
+    const auto &sels = Selection().getSelection("*", ResolveMode::NoResolve, true);
     if(sels.empty())
         return nullptr;
     auto sobj = sels[0].pObject->getSubObject(sels[0].SubName);
@@ -812,7 +812,7 @@ StdCmdLinkSelectAllLinks::StdCmdLinkSelectAllLinks()
 }
 
 bool StdCmdLinkSelectAllLinks::isActive() {
-    const auto &sels = Selection().getSelection("*",true,true);
+    const auto &sels = Selection().getSelection("*", ResolveMode::OldStyleElement, true);
     if(sels.empty())
         return false;
     return App::GetApplication().hasLinksTo(sels[0].pObject);
@@ -820,7 +820,7 @@ bool StdCmdLinkSelectAllLinks::isActive() {
 
 void StdCmdLinkSelectAllLinks::activated(int)
 {
-    auto sels = Selection().getSelection("*",true,true);
+    auto sels = Selection().getSelection("*", ResolveMode::OldStyleElement, true);
     if(sels.empty())
         return;
     Selection().selStackPush();

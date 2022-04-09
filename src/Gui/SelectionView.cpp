@@ -54,7 +54,7 @@ using namespace Gui::DockWnd;
 
 SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
   : DockWindow(pcDocument,parent)
-  , SelectionObserver(true,0)
+  , SelectionObserver(true, ResolveMode::NoResolve)
   , x(0.0f), y(0.0f), z(0.0f)
   , openedAutomatically(false)
 {
@@ -201,7 +201,7 @@ void SelectionView::onSelectionChanged(const SelectionChanges &Reason)
     else if (Reason.Type == SelectionChanges::SetSelection) {
         // remove all items
         selectionView->clear();
-        std::vector<SelectionSingleton::SelObj> objs = Gui::Selection().getSelection(Reason.pDocName,0);
+        std::vector<SelectionSingleton::SelObj> objs = Gui::Selection().getSelection(Reason.pDocName, ResolveMode::NoResolve);
         for (std::vector<SelectionSingleton::SelObj>::iterator it = objs.begin(); it != objs.end(); ++it) {
             // save as user data
             QStringList list;

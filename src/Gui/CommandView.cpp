@@ -2169,7 +2169,7 @@ bool StdCmdAxisCross::isActive(void)
         if (_pcAction->isChecked())
             _pcAction->setChecked(false);
     }
-    if (view )
+    if (view)
         return true;
     return false;
 
@@ -3125,7 +3125,7 @@ StdCmdTreeSelectAllInstances::StdCmdTreeSelectAllInstances()
 
 bool StdCmdTreeSelectAllInstances::isActive(void)
 {
-    const auto &sels = Selection().getSelectionEx("*",App::DocumentObject::getClassTypeId(),true,true);
+    const auto &sels = Selection().getSelectionEx("*",App::DocumentObject::getClassTypeId(), ResolveMode::OldStyleElement, true);
     if(sels.empty())
         return false;
     auto obj = sels[0].getObject();
@@ -3138,7 +3138,7 @@ bool StdCmdTreeSelectAllInstances::isActive(void)
 void StdCmdTreeSelectAllInstances::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    const auto &sels = Selection().getSelectionEx("*",App::DocumentObject::getClassTypeId(),true,true);
+    const auto &sels = Selection().getSelectionEx("*",App::DocumentObject::getClassTypeId(), ResolveMode::OldStyleElement, true);
     if(sels.empty())
         return;
     auto obj = sels[0].getObject();

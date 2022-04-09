@@ -995,14 +995,13 @@ void CmdTechDrawLinkDimension::activated(int iMsg)
     if (!page) {
         return;
     }
-    std::string PageName = page->getNameInDocument();
 
     bool result = _checkSelection(this,2);
     if (!result)
         return;
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(nullptr,
-            App::DocumentObject::getClassTypeId(),0);
+            App::DocumentObject::getClassTypeId(), Gui::ResolveMode::NoResolve);
 
     App::DocumentObject* obj3D = nullptr;
     std::vector<App::DocumentObject*> parts;

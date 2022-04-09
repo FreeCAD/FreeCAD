@@ -66,7 +66,7 @@ public:
 /* TRANSLATOR Gui::Dialog::DlgPropertyLink */
 
 DlgPropertyLink::DlgPropertyLink(QWidget* parent)
-  : QDialog(parent), SelectionObserver(false,0)
+  : QDialog(parent), SelectionObserver(false, ResolveMode::NoResolve)
   , ui(new Ui_DlgPropertyLink)
 {
     ui->setupUi(this);
@@ -428,7 +428,7 @@ void DlgPropertyLink::attachObserver() {
             auto view = qobject_cast<Gui::PropertyView*>(p);
             if(view) {
                 parentView = view;
-                for(auto &sel : Gui::Selection().getCompleteSelection(0))
+                for(auto &sel : Gui::Selection().getCompleteSelection(ResolveMode::NoResolve))
                     savedSelections.emplace_back(sel.DocName, sel.FeatName, sel.SubName);
                 break;
             }
