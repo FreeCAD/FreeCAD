@@ -206,6 +206,8 @@ private:
             prevCursorPosition = onSketchPos;
 
             doEnforceWidgetParameters(onSketchPos);
+
+            lastWidgetEnforcedPosition = onSketchPos; // store enforced cursor position.
         }
 
         /** boost slot triggering when a parameter has changed in the widget
@@ -213,7 +215,7 @@ private:
          */
         void parameterValueChanged(int parameterindex, double value)
         {
-            doEnforceWidgetParameters(prevCursorPosition); // updates lastWidgetEnforcedPosition with new widget state
+            enforceWidgetParametersOnPreviousCursorPosition();
 
             adaptDrawingToParameterChange(parameterindex, value);
 
@@ -224,7 +226,7 @@ private:
          * It is intended to remote control the DrawSketchDefaultWidgetHandler
          */
         void checkboxCheckedChanged(int checkboxindex, bool value) {
-            doEnforceWidgetParameters(prevCursorPosition); // updates lastWidgetEnforcedPosition with new widget state
+            enforceWidgetParametersOnPreviousCursorPosition();
 
             adaptDrawingToCheckboxChange(checkboxindex, value);
 
@@ -235,8 +237,7 @@ private:
          * It is intended to remote control the DrawSketchDefaultWidgetHandler
          */
         void comboboxSelectionChanged(int comboboxindex, int value) {
-
-            doEnforceWidgetParameters(prevCursorPosition); // updates lastWidgetEnforcedPosition with new widget state
+            enforceWidgetParametersOnPreviousCursorPosition();
 
             adaptDrawingToComboboxChange(comboboxindex, value);
 
@@ -769,8 +770,6 @@ private:
                     break;
                 }
             }
-
-            lastWidgetEnforcedPosition = onSketchPos; // store enforced cursor position.
         }
         //@}
 
@@ -819,16 +818,29 @@ private:
 
                 doChangeDrawSketchHandlerMode();
 
-                if(handler->isFirstState()) {
+                if(!handler->isLastState()) {
+                    // mode has changed, so reprocess the previous position to the new widget state
+                    enforceWidgetParametersOnPreviousCursorPosition();
+
                     // ensure drawing in the next mode
                     handler->updateDataAndDrawToPosition(lastWidgetEnforcedPosition);
                 }
+            }
+
+            void enforceWidgetParametersOnPreviousCursorPosition() {
+                auto simulatedCursorPosition = prevCursorPosition; // ensure prevCursorPosition is preserved
+
+                doEnforceWidgetParameters(simulatedCursorPosition); // updates lastWidgetEnforcedPosition with new widget state
+
+                lastWidgetEnforcedPosition = simulatedCursorPosition; // store enforced cursor position.
             }
         //@}
      };
 
 public:
-    DrawSketchDefaultWidgetHandler():toolWidgetManager(this) {}
+    DrawSketchDefaultWidgetHandler(ConstructionMethodT constructionmethod = static_cast<ConstructionMethodT>(0)):
+         DSDefaultHandler(constructionmethod)
+        ,toolWidgetManager(this) {}
     virtual ~DrawSketchDefaultWidgetHandler() = default;
 
     /** @name functions NOT intended for specialisation */
