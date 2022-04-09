@@ -834,6 +834,9 @@ private:
                     // mode has changed, so reprocess the previous position to the new widget state
                     enforceWidgetParametersOnPreviousCursorPosition();
 
+                    // update the widget if state changed
+                    adaptWidgetParameters(lastWidgetEnforcedPosition);
+
                     // ensure drawing in the next mode
                     handler->updateDataAndDrawToPosition(lastWidgetEnforcedPosition);
                 }
