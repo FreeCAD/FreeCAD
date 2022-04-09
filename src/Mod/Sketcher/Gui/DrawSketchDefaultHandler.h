@@ -152,7 +152,7 @@ template <typename ConstructionMethodT>
 class ConstructionMethodMachine
 {
 public:
-    ConstructionMethodMachine():ConstructionMode(static_cast<ConstructionMethodT>(0)) {}
+    ConstructionMethodMachine(ConstructionMethodT constructionmethod = static_cast<ConstructionMethodT>(0)):ConstructionMode(constructionmethod) {}
     virtual ~ConstructionMethodMachine(){}
 
 protected:
@@ -246,9 +246,11 @@ template < typename HandlerT,           // The geometry tool for which the templ
 class DrawSketchDefaultHandler: public DrawSketchHandler, public StateMachine<SelectModeT>, public ConstructionMethodMachine<ConstructionMethodT>
 {
 public:
-    DrawSketchDefaultHandler():   initialEditCurveSize(PInitEditCurveSize)
-                                , EditCurve(PInitEditCurveSize)
-                                ,sugConstraints(PInitAutoConstraintSize)
+    DrawSketchDefaultHandler(ConstructionMethodT constructionmethod = static_cast<ConstructionMethodT>(0)):
+        ConstructionMethodMachine<ConstructionMethodT>(constructionmethod)
+        ,initialEditCurveSize(PInitEditCurveSize)
+        , EditCurve(PInitEditCurveSize)
+        ,sugConstraints(PInitAutoConstraintSize)
     {
         applyCursor();
     }
