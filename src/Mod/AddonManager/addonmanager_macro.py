@@ -230,6 +230,10 @@ class Macro(object):
         # Truncate long comments to speed up searches, and clean up display
         if len(self.comment) > 512:
             self.comment = self.comment[:511] + "…"
+
+        # Make sure the icon is not an absolute path, etc.
+        self.clean_icon()
+
         self.parsed = True
 
     def fill_details_from_wiki(self, url):
@@ -307,11 +311,14 @@ class Macro(object):
         self.fill_details_from_code(self.code)
         if not self.icon and not self.xpm:
             self.parse_wiki_page_for_icon(p)
+            self.clean_icon()
 
         if not self.author:
             self.author = self.parse_desc("Author: ")
         if not self.date:
             self.date = self.parse_desc("Last modified: ")
+
+    def clean_icon(self):
         if self.icon.startswith("http://") or self.icon.startswith("https://"):
             FreeCAD.Console.PrintLog(
                 f"Attempting to fetch macro icon from {self.icon}\n"
@@ -334,6 +341,11 @@ class Macro(object):
                         f.write(p.data())
                     self.icon_source = self.icon
                     self.icon = constructed_name
+            else:
+                FreeCAD.Console.PrintLog(
+                    f"MACRO DEVELOPER WARNING: failed to download icon from {self.icon} for macro {self.name}\n"
+                )
+                self.icon = ""
 
     def parse_desc(self, line_start: str) -> Union[str, None]:
         components = self.desc.split(">")
@@ -498,7 +510,7 @@ class Macro(object):
         if wiki_icon.startswith("http"):
             # It's a File: wiki link. We can load THAT page and get the image from it...
             FreeCAD.Console.PrintLog(
-                f"Found a File: link for macro {self.name} -- {wiki_icon}"
+                f"Found a File: link for macro {self.name} -- {wiki_icon}\n"
             )
             p = NetworkManager.AM_NETWORK_MANAGER.blocking_get(wiki_icon)
             if p:
