@@ -201,7 +201,7 @@ protected:
     int getPreselectCross(void) const;
 
     virtual std::string getToolName() const;
-    virtual QString getCrosshairCursorString() const;
+    virtual QString getCrosshairCursorSVGName() const;
 
     void signalToolChanged() const;
 

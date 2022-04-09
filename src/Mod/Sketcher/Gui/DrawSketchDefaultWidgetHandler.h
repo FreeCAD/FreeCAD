@@ -82,7 +82,7 @@ namespace SketcherGui {
  *
  * Handler MUST specialise:
  * - getToolName                            => provide the string name of the tool
- * - getCrosshairCursorString               => provide the string for the svg icon of the cursor
+ * - getCrosshairCursorSVGName               => provide the string for the svg icon of the cursor
  * - updateEditDataAndDrawToPositionImpl    => function to update the EditData structure and draw a temporal curve
  * - executeCommands                        => execution of commands to create the geometry
  * - createAutoConstraints                  => execution of commands to create autoconstraints (widget mandated constraints are called BEFORE this)
@@ -884,7 +884,7 @@ protected:
     /** @name functions requiring specialisation */
     //@{
     virtual std::string getToolName() const override { return DrawSketchHandler::getToolName();}
-    virtual QString getCrosshairCursorString() const override { return DrawSketchHandler::getCrosshairCursorString();}
+    virtual QString getCrosshairCursorSVGName() const override { return DrawSketchHandler::getCrosshairCursorSVGName();}
     //@}
 
 private:

@@ -2290,7 +2290,7 @@ private:
         return "DSH_Translate";
     }
 
-    virtual QString getCrosshairCursorString() const override {
+    virtual QString getCrosshairCursorSVGName() const override {
         return QString::fromLatin1("Sketcher_Translate");
     }
 
@@ -2743,7 +2743,7 @@ private:
         return "DSH_Rotate";
     }
 
-    virtual QString getCrosshairCursorString() const override {
+    virtual QString getCrosshairCursorSVGName() const override {
         return QString::fromLatin1("Sketcher_Rotate");
     }
 
@@ -3361,7 +3361,7 @@ private:
         return "DSH_Scale";
     }
 
-    virtual QString getCrosshairCursorString() const override {
+    virtual QString getCrosshairCursorSVGName() const override {
         return QString::fromLatin1("Sketcher_Scale");
     }
 
@@ -3915,7 +3915,7 @@ private:
         return "DSH_Offset";
     }
 
-    virtual QString getCrosshairCursorString() const override {
+    virtual QString getCrosshairCursorSVGName() const override {
         return QString::fromLatin1("Sketcher_Offset");
     }
 

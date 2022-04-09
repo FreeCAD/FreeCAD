@@ -314,7 +314,7 @@ private:
         return "DSH_Line";
     }
 
-    virtual QString getCrosshairCursorString() const override {
+    virtual QString getCrosshairCursorSVGName() const override {
         return QString::fromLatin1("Sketcher_Pointer_Create_Line");
     }
 
@@ -755,7 +755,7 @@ private:
         return "DSH_Rectangle";
     }
 
-    virtual QString getCrosshairCursorString() const override {
+    virtual QString getCrosshairCursorSVGName() const override {
         return QString::fromLatin1("Sketcher_Pointer_Create_Box");
     }
 
@@ -1406,7 +1406,7 @@ private:
         return "DSH_Frame";
     }
 
-    virtual QString getCrosshairCursorString() const override {
+    virtual QString getCrosshairCursorSVGName() const override {
         return QString::fromLatin1("Sketcher_CreateFrame");
     }
 
@@ -1771,7 +1771,7 @@ private:
         return "DSH_Polygon";
     }
 
-    virtual QString getCrosshairCursorString() const override {
+    virtual QString getCrosshairCursorSVGName() const override {
         return QString::fromLatin1("Sketcher_Pointer_Regular_Polygon");
     }
 
@@ -2951,7 +2951,7 @@ private:
         return "DSH_Circle";
     }
 
-    virtual QString getCrosshairCursorString() const override {
+    virtual QString getCrosshairCursorSVGName() const override {
         if (constructionMethod() == DrawSketchHandlerCircle::ConstructionMethod::Center)
             return QString::fromLatin1("Sketcher_Pointer_Create_Circle");
         else // constructionMethod == DrawSketchHandlerCircle::ConstructionMethod::ThreeRim
@@ -3440,7 +3440,7 @@ private:
         return "DSH_Ellipse";
     }
 
-    virtual QString getCrosshairCursorString() const override {
+    virtual QString getCrosshairCursorSVGName() const override {
         if (constructionMethod() == DrawSketchHandlerEllipse::ConstructionMethod::Center)
             return QString::fromLatin1("Sketcher_Pointer_Create_Ellipse");
         else // constructionMethod == DrawSketchHandlerCircle::ConstructionMethod::ThreeRim
@@ -4149,7 +4149,7 @@ private:
         return "DSH_Arc";
     }
 
-    virtual QString getCrosshairCursorString() const override {
+    virtual QString getCrosshairCursorSVGName() const override {
         if (constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::Center)
             return QString::fromLatin1("Sketcher_Pointer_Create_Arc");
         else // constructionMethod == DrawSketchHandlerArc::ConstructionMethod::ThreeRim
@@ -6328,7 +6328,7 @@ private:
         return "DSH_Point";
     }
 
-    virtual QString getCrosshairCursorString() const override {
+    virtual QString getCrosshairCursorSVGName() const override {
         return QString::fromLatin1("Sketcher_Pointer_Create_Point");
     }
 
@@ -6556,7 +6556,7 @@ private:
         return "DSH_Fillet";
     }
 
-    virtual QString getCrosshairCursorString() const override {
+    virtual QString getCrosshairCursorSVGName() const override {
         return QString::fromLatin1("Sketcher_Pointer_Create_Fillet");
     }
 
@@ -7721,7 +7721,7 @@ private:
         return "DSH_Insert";
     }
 
-    virtual QString getCrosshairCursorString() const override {
+    virtual QString getCrosshairCursorSVGName() const override {
         return QString::fromLatin1("Sketcher_Insert");
     }
 
@@ -8768,7 +8768,7 @@ private:
         return "DSH_Slot";
     }
 
-    virtual QString getCrosshairCursorString() const override {
+    virtual QString getCrosshairCursorSVGName() const override {
         return QString::fromLatin1("Sketcher_Pointer_Slot");
     }
 
@@ -9436,7 +9436,7 @@ private:
         return "DSH_ArcSlot";
     }
 
-    virtual QString getCrosshairCursorString() const override {
+    virtual QString getCrosshairCursorSVGName() const override {
         if(constructionMethod() == DrawSketchHandlerArcSlot::ConstructionMethod::ArcSlot) {
             if (geometryCreationMode)
                 return QString::fromLatin1("Sketcher_CreateArcSlot_Constr");

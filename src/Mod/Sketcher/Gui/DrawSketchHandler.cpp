@@ -230,7 +230,7 @@ std::string DrawSketchHandler::getToolName() const
     return "DSH_None";
 }
 
-QString DrawSketchHandler::getCrosshairCursorString() const
+QString DrawSketchHandler::getCrosshairCursorSVGName() const
 {
     return QString::fromLatin1("None");
 }
@@ -445,7 +445,7 @@ void DrawSketchHandler::addCursorTail( std::vector<QPixmap> &pixmaps ) {
 
 void DrawSketchHandler::updateCursor()
 {
-    auto cursorstring = getCrosshairCursorString();
+    auto cursorstring = getCrosshairCursorSVGName();
 
     if(cursorstring != QString::fromLatin1("None"))
         setCrosshairCursor(cursorstring);
