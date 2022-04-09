@@ -420,6 +420,7 @@ void ExtrusionHelper::createTaperedPrismOffset(TopoDS_Wire sourceWire,
     // then this placement must be reset because otherwise
     // BRepOffsetAPI_MakeOffset shows weird behaviour by applying the placement, see
     // https://dev.opencascade.org/content/brepoffsetapimakeoffset-wire-and-face-odd-occt-740
+    std::ignore = numEdges;
     gp_Trsf tempTransform;
     tempTransform.SetTranslation(translation);
     TopLoc_Location loc(tempTransform);
