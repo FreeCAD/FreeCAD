@@ -154,16 +154,16 @@ void ExtrusionHelper::makeDraft(const TopoDS_Shape& shape,
                 // create an offset copy of the wire
                 if (!isInnerWire[rows]) {
                     // this is an outer wire
-                    createTaperedPrismOffset(TopoDS::Wire(singleWire), vecRev, distanceRev, numEdges, true, offsetWire);
+                    createTaperedPrismOffset(TopoDS::Wire(singleWire), vecRev, distanceRev, true, offsetWire);
                 }
                 else {
                     // there is an OCC bug with single-edge wires (circles), see inside createTaperedPrismOffset
                     if (numEdges > 1 || !isPartDesign)
                         // inner wires must get the negated offset
-                        createTaperedPrismOffset(TopoDS::Wire(singleWire), vecRev, -distanceRev, numEdges, true, offsetWire);
+                        createTaperedPrismOffset(TopoDS::Wire(singleWire), vecRev, -distanceRev, true, offsetWire);
                     else
-                        // these wires must not get the negated offset
-                        createTaperedPrismOffset(TopoDS::Wire(singleWire), vecRev, distanceRev, numEdges, true, offsetWire);
+                        // circles in PartDesign must not get the negated offset
+                        createTaperedPrismOffset(TopoDS::Wire(singleWire), vecRev, distanceRev, true, offsetWire);
                 }
                 if (offsetWire.IsNull())
                     return;
@@ -202,16 +202,16 @@ void ExtrusionHelper::makeDraft(const TopoDS_Shape& shape,
                 // create an offset copy of the wire
                 if (!isInnerWire[rows]) {
                     // this is an outer wire
-                    createTaperedPrismOffset(TopoDS::Wire(singleWire), vecFwd, distanceFwd, numEdges, false, offsetWire);
+                    createTaperedPrismOffset(TopoDS::Wire(singleWire), vecFwd, distanceFwd, false, offsetWire);
                 }
                 else {
-                    // there is an OCC bug with single-edge wires (circles)
+                    // there is an OCC bug with single-edge wires (circles), see inside createTaperedPrismOffset
                     if (numEdges > 1 || !isPartDesign)
                         // inner wires must get the negated offset
-                        createTaperedPrismOffset(TopoDS::Wire(singleWire), vecFwd, -distanceFwd, numEdges, false, offsetWire);
+                        createTaperedPrismOffset(TopoDS::Wire(singleWire), vecFwd, -distanceFwd, false, offsetWire);
                     else
-                        // circles in isPartDesign must not get the negated offset
-                        createTaperedPrismOffset(TopoDS::Wire(singleWire), vecFwd, distanceFwd, numEdges, false, offsetWire);
+                        // circles in PartDesign must not get the negated offset
+                        createTaperedPrismOffset(TopoDS::Wire(singleWire), vecFwd, distanceFwd, false, offsetWire);
                 }
                 if (offsetWire.IsNull())
                     return;
@@ -412,7 +412,6 @@ void ExtrusionHelper::checkInnerWires(std::vector<bool>& isInnerWire, const gp_D
 void ExtrusionHelper::createTaperedPrismOffset(TopoDS_Wire sourceWire,
                                                const gp_Vec& translation,
                                                double offset,
-                                               int numEdges,
                                                bool isSecond,
                                                TopoDS_Wire& result) {
 
@@ -420,7 +419,8 @@ void ExtrusionHelper::createTaperedPrismOffset(TopoDS_Wire sourceWire,
     // then this placement must be reset because otherwise
     // BRepOffsetAPI_MakeOffset shows weird behaviour by applying the placement, see
     // https://dev.opencascade.org/content/brepoffsetapimakeoffset-wire-and-face-odd-occt-740
-    std::ignore = numEdges;
+    // therefore we use here the workaround of BRepOffsetAPI_MakeOffsetFix and not BRepOffsetAPI_MakeOffset
+
     gp_Trsf tempTransform;
     tempTransform.SetTranslation(translation);
     TopLoc_Location loc(tempTransform);
