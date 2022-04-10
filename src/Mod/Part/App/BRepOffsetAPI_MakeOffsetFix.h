@@ -65,7 +65,7 @@ public:
     //! prolonged until intersection.
     void Init(const TopoDS_Face& Spine, const GeomAbs_JoinType Join = GeomAbs_Arc, const Standard_Boolean IsOpenResult = Standard_False);
 
-    //! Initialize the evaluation of Offseting.
+    //! Initialize the evaluation of Offsetting.
     void Init(const GeomAbs_JoinType Join = GeomAbs_Arc, const Standard_Boolean IsOpenResult = Standard_False);
 
     virtual Standard_Boolean IsDone() const;
