@@ -787,9 +787,9 @@ class Plane:
                     vdir = view.getViewDirection()
                     # The angle is between 0 and 180 degrees.
                     angle = vdir.getAngle(self.axis)
-                    if (angle > 0.001) and (angle < 3.14159):
-                        # don't change the plane if it is already
-                        # perpendicular to the current view
+                    # don't change the plane if the axis is already
+                    # antiparallel to the current view
+                    if abs(math.pi - angle) > Part.Precision.angular():
                         self.alignToPointAndAxis(Vector(0, 0, 0),
                                                  vdir.negative(), 0, upvec)
                 except Exception:
