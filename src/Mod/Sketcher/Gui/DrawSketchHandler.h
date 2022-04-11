@@ -159,12 +159,16 @@ public:
 
     void toolWidgetChanged(QWidget * newwidget);
 
-private:
+private: // NVI
     virtual void preActivated();
     virtual void activated(){}
     virtual void deactivated(){}
     virtual void postDeactivated(){}
     virtual void onWidgetChanged(){}
+
+protected: // NVI requiring base implementation
+    virtual std::string getToolName() const;
+    virtual QString getCrosshairCursorSVGName() const;
 
 protected:
     // helpers
@@ -174,18 +178,28 @@ protected:
      *
      * \param autoScale - set this to false if pixmap already scaled for HiDPI
      **/
+
+    /** @name Icon helpers */
+    //@{
     void setCursor(const QPixmap &pixmap, int x,int y, bool autoScale=true);
-    void setSvgCursor(const QString &svgName, int x, int y,
-                      const std::map<unsigned long, unsigned long>& colorMapping = std::map<unsigned long, unsigned long>());
-    void addCursorTail(std::vector<QPixmap> &pixmaps);
+
+    /// updates the actCursor with the icon by calling getCrosshairCursorSVGName(),
+    /// enabling to set data member dependent icons (i.e. for different construction methods)
     void updateCursor();
+
+    /// restitutes the cursor that was in use at the moment of starting the DrawSketchHandler (i.e. oldCursor)
     void unsetCursor(void);
+
+    /// restitutes the DSH cached cursor (e.g. without any tail due to autoconstraints, ...)
     void applyCursor(void);
-    void applyCursor(QCursor &newCursor);
+
+    /// returns the color to be used for the crosshair (configurable as a parameter)
     unsigned long getCrosshairColor();
+
+    /// functions to set the cursor to a given svgName (to be migrated to NVI style)
+
     qreal devicePixelRatio();
-    void setCrosshairCursor(const QString & svgName);
-    void setCrosshairCursor(const char* svgName);
+    //@}
 
     void drawEdit(const std::vector<Base::Vector2d> &EditCurve);
     void drawEdit(const std::list<std::vector<Base::Vector2d>> &list);
@@ -200,11 +214,20 @@ protected:
     int getPreselectCurve(void) const;
     int getPreselectCross(void) const;
 
-    virtual std::string getToolName() const;
-    virtual QString getCrosshairCursorSVGName() const;
-
     void signalToolChanged() const;
 
+private:
+    void setSvgCursor(const QString &svgName, int x, int y,
+                      const std::map<unsigned long, unsigned long>& colorMapping = std::map<unsigned long, unsigned long>());
+
+    void addCursorTail(std::vector<QPixmap> &pixmaps);
+
+    void applyCursor(QCursor &newCursor);
+
+    void setCrosshairCursor(const QString & svgName);
+    void setCrosshairCursor(const char* svgName);
+
+protected:
     /**
      * Returns constraints icons scaled to width.
      **/
