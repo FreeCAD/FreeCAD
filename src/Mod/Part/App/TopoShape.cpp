@@ -990,6 +990,10 @@ void TopoShape::exportIges(const char *filename) const
 void TopoShape::exportStep(const char *filename) const
 {
     try {
+        // Fixes issue #6282
+        // Do not write out any assembly information when using the simplified STEP export
+        Interface_Static::SetIVal("write.step.assembly", 0);
+
         // write step file
         STEPControl_Writer aWriter;
 
