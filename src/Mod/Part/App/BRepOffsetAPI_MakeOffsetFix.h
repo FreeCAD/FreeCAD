@@ -26,6 +26,7 @@
 
 #include <Mod/Part/PartGlobal.h>
 #include <BRepOffsetAPI_MakeOffset.hxx>
+#include <GeomAbs_CurveType.hxx>
 #include <list>
 #include <map>
 
@@ -85,7 +86,12 @@ public:
     //! Returns true if the shape S has been deleted.
     virtual Standard_Boolean IsDeleted (const TopoDS_Shape& S);
 
+    //! Replaces the given curve type with a B-Spline. Input shape <S>
+    //! must be a wire or a compound of wires
+    TopoDS_Shape Replace(GeomAbs_CurveType, const TopoDS_Shape& S) const;
+
 private:
+    TopoDS_Wire ReplaceEdges(GeomAbs_CurveType, const TopoDS_Wire& S) const;
     void MakeWire(TopoDS_Shape&);
 
 private:
