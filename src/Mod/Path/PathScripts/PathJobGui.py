@@ -620,6 +620,7 @@ class TaskPanel:
             self.obj, self.form.jobBox.widget(1)
         )
         self.name = self.obj.Name
+        self.doNotRecomputeOps = False
 
         vUnit = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity).getUserPreferred()[2]
         self.form.toolControllerList.horizontalHeaderItem(1).setText("#")
@@ -725,6 +726,9 @@ class TaskPanel:
 
     def cleanup(self, resetEdit):
         PathLog.track()
+        if self.doNotRecomputeOps:
+            self.doNotRecomputeOps = False
+            PathUtils.cancelAllOps(self.obj)
         FreeCADGui.Control.closeDialog()
         if resetEdit:
             FreeCADGui.ActiveDocument.resetEdit()
@@ -1024,6 +1028,8 @@ class TaskPanel:
                     name=tool.Label, tool=tool, toolNumber=toolNum
                 )
                 self.obj.Proxy.addToolController(tc)
+                # Cancel recompute for all ops, since new tool controller does not affect ops
+                # self.doNotRecomputeOps = True
 
             FreeCAD.ActiveDocument.recompute()
             self.updateToolController()
