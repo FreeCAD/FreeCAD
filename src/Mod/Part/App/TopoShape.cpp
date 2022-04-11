@@ -2967,6 +2967,11 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
             }
             offsetShape = mkOffset.Shape();
 
+            // Replace OffsetCurve with B-Spline
+            if (!offsetShape.IsNull()) {
+                offsetShape = mkOffset.Replace(GeomAbs_OffsetCurve, offsetShape);
+            }
+
             if (offsetShape.IsNull())
                 throw Base::CADKernelError("makeOffset2D: result of offsetting is null!");
 
