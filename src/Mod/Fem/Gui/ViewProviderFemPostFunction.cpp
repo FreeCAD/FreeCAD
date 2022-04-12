@@ -26,8 +26,10 @@
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/draggers/SoCenterballDragger.h>
 # include <Inventor/draggers/SoHandleBoxDragger.h>
+# include <Inventor/draggers/SoJackDragger.h>
 # include <Inventor/manips/SoCenterballManip.h>
 # include <Inventor/manips/SoHandleBoxManip.h>
+# include <Inventor/manips/SoJackManip.h>
 # include <Inventor/manips/SoTransformManip.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoLineSet.h>
@@ -355,9 +357,12 @@ void ViewProviderFemPostFunction::onChanged(const App::Property* prop) {
 // ***************************************************************************
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostPlaneFunction, FemGui::ViewProviderFemPostFunction)
+static const App::PropertyFloatConstraint::Constraints scaleConstraint = {1.0e-6, 1.0e6, 1.0};
 
 ViewProviderFemPostPlaneFunction::ViewProviderFemPostPlaneFunction() {
 
+    ADD_PROPERTY_TYPE(Scale, (1.0), "Manipulator", App::Prop_None, "Scaling factor for the manipulator");
+    Scale.setConstraints(&scaleConstraint);
     sPixmap = "fem-post-geo-plane";
 
     setAutoScale(true);
@@ -382,21 +387,35 @@ ViewProviderFemPostPlaneFunction::~ViewProviderFemPostPlaneFunction() {
 void ViewProviderFemPostPlaneFunction::draggerUpdate(SoDragger* m) {
 
     Fem::FemPostPlaneFunction* func = static_cast<Fem::FemPostPlaneFunction*>(getObject());
-    SoCenterballDragger* dragger = static_cast<SoCenterballDragger*>(m);
+    SoJackDragger* dragger = static_cast<SoJackDragger*>(m);
 
     // the new axis of the plane
-    SbRotation rot, scaleDir;
-    const SbVec3f& center = dragger->center.getValue();
+    const SbVec3f& base = dragger->translation.getValue();
+    const SbVec3f& scale = dragger->scaleFactor.getValue();
 
-    SbVec3f norm(0, 0, 1);
+    SbVec3f norm(0., 1., 0.);
     dragger->rotation.getValue().multVec(norm, norm);
-    func->Origin.setValue(center[0], center[1], center[2]);
+    func->Origin.setValue(base[0], base[1], base[2]);
     func->Normal.setValue(norm[0], norm[1], norm[2]);
+    this->Scale.setValue(scale[0]);
+}
 
-    SbVec3f t = static_cast<SoCenterballManip*>(getManipulator())->translation.getValue();
-    SbVec3f rt, irt;
-    dragger->rotation.getValue().multVec(t, rt);
-    dragger->rotation.getValue().inverse().multVec(t, irt);
+void ViewProviderFemPostPlaneFunction::onChanged(const App::Property* prop)
+{
+    if (!isDragging() && prop == &Scale) {
+        // get current matrix
+        SbVec3f t, s;
+        SbRotation r, so;
+        SbMatrix matrix = getManipulator()->getDragger()->getMotionMatrix();
+        matrix.getTransform(t, r, s, so);
+
+        float scale = static_cast<float>(Scale.getValue());
+        s.setValue(scale, scale, scale);
+
+        matrix.setTransform(t, r, s, so);
+        getManipulator()->setMatrix(matrix);
+    }
+    ViewProviderFemPostFunction::onChanged(prop);
 }
 
 void ViewProviderFemPostPlaneFunction::updateData(const App::Property* p) {
@@ -408,16 +427,21 @@ void ViewProviderFemPostPlaneFunction::updateData(const App::Property* p) {
         Base::Vector3d trans = func->Origin.getValue();
         Base::Vector3d norm = func->Normal.getValue();
 
-        norm = norm / norm.Length();
-        SbRotation rot(SbVec3f(0., 0., 1.), SbVec3f(norm.x, norm.y, norm.z));
+        norm.Normalize();
+        SbRotation rot(SbVec3f(0., 1., 0.), SbVec3f(norm.x, norm.y, norm.z));
+        float scale = static_cast<float>(Scale.getValue());
 
-        SbMatrix t, translate;
-        t.setRotate(rot);
-        translate.setTranslate(SbVec3f(trans.x, trans.y, trans.z));
-        t.multRight(translate);
-        getManipulator()->setMatrix(t);
+        SbMatrix mat;
+        mat.setTransform(SbVec3f(trans.x, trans.y, trans.z), rot, SbVec3f(scale, scale, scale));
+        getManipulator()->setMatrix(mat);
     }
     Gui::ViewProviderDocumentObject::updateData(p);
+}
+
+
+SoTransformManip* ViewProviderFemPostPlaneFunction::setupManipulator()
+{
+    return new SoJackManip;
 }
 
 

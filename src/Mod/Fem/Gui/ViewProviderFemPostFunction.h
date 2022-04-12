@@ -176,11 +176,15 @@ public:
     ViewProviderFemPostPlaneFunction();
     virtual ~ViewProviderFemPostPlaneFunction();
 
+    App::PropertyFloatConstraint Scale;
+
+    virtual SoTransformManip* setupManipulator();
     virtual FunctionWidget* createControlWidget();
 
 protected:
     virtual void draggerUpdate(SoDragger* mat);
     virtual void updateData(const App::Property*);
+    virtual void onChanged(const App::Property*);
 };
 
 
