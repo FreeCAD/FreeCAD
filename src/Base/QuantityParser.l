@@ -138,11 +138,6 @@ CGRP     '\,'[0-9][0-9][0-9]
 "kN"       yylval = Quantity::KiloNewton;          return UNIT; // kilo Newton
 "MN"       yylval = Quantity::MegaNewton;          return UNIT; // mega Newton
 
-"N/m"       yylval = Quantity::NewtonPerMeter;     return UNIT; // Newton per meter (N/m or kg/s^2)
-"mN/m"      yylval = Quantity::MilliNewtonPerMeter;return UNIT; // milli Newton per meter
-"kN/m"      yylval = Quantity::KiloNewtonPerMeter; return UNIT; // kilo Newton per meter
-"MN/m"      yylval = Quantity::MegaNewtonPerMeter; return UNIT; // mega Newton per meter
-
 "Pa"       yylval = Quantity::Pascal;              return UNIT; // Pascal (kg/m/s^2 or N/m^2)
 "kPa"      yylval = Quantity::KiloPascal;          return UNIT; // kilo Pascal
 "MPa"      yylval = Quantity::MegaPascal;          return UNIT; // mega Pascal
