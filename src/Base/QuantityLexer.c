@@ -1,25 +1,3 @@
-/***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *     
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
-
 #line 2 "QuantityLexer.c"
 
 #line 4 "QuantityLexer.c"
@@ -375,8 +353,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 159
-#define YY_END_OF_BUFFER 160
+#define YY_NUM_RULES 155
+#define YY_END_OF_BUFFER 156
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -384,38 +362,37 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static const flex_int16_t yy_accept[274] =
+static const flex_int16_t yy_accept[266] =
     {   0,
-        0,    0,    0,    0,  160,  158,    4,    5,   45,   47,
-        6,  158,    7,  158,  136,  135,   33,   98,  103,  100,
-      109,  114,   37,  131,   61,  158,  158,   91,   99,   86,
-       82,    1,  158,  158,  158,  158,  141,  158,   27,   32,
-      158,  158,   17,   15,  158,  158,  158,  158,   30,   29,
-      158,  158,  158,  158,    3,  159,    2,    5,  139,  137,
-      138,  136,  136,    0,  133,  119,    0,    0,   19,   36,
-        0,   64,    0,    0,   89,    0,    0,    0,  117,  102,
-        0,   69,    0,    0,   85,  101,  120,    0,    0,    0,
-        0,    0,    0,   43,    0,   13,    0,    0,    0,   14,
+        0,    0,    0,    0,  156,  154,    4,    5,   45,   47,
+        6,  154,    7,  154,  132,  131,   33,   94,   99,   96,
+      105,  110,   37,  127,   61,  154,  154,   87,   95,   82,
+       78,    1,  154,  154,  154,  154,  137,  154,   27,   32,
+      154,  154,   17,   15,  154,  154,  154,  154,   30,   29,
+      154,  154,  154,  154,    3,  155,    2,    5,  135,  133,
+      134,  132,  132,    0,  129,  115,    0,    0,   19,   36,
+        0,   64,    0,    0,   85,    0,    0,  113,   98,    0,
+       65,    0,    0,   81,   97,  116,    0,    0,    0,    0,
+        0,    0,   43,    0,   13,    0,    0,    0,   14,  118,
 
-      122,    0,   46,    0,   44,   35,    0,  116,   63,    0,
-        0,   90,   87,   84,    0,    0,   28,   16,    0,   55,
-        0,   34,  104,  110,  115,   38,   62,   92,    0,   88,
-       83,    0,   26,   51,   18,   12,    0,    0,  107,  113,
-        9,   57,  108,  140,    0,    0,    0,    0,    0,   58,
-        0,    0,  106,  112,   40,   94,    0,   24,   10,   50,
-      127,    0,    0,    0,    0,    0,  138,    0,  136,    0,
-        0,  136,   22,   72,   21,    0,    0,   71,  124,    0,
-       65,   95,   23,    0,  118,  148,    0,    0,    0,   73,
-      125,   54,  146,   59,  128,  147,  130,   20,    0,    0,
+        0,   46,    0,   44,   35,    0,  112,   63,    0,    0,
+       86,   83,   80,    0,    0,   28,   16,    0,   55,    0,
+       34,  100,  106,  111,   38,   62,   88,    0,   84,   79,
+        0,   26,   51,   18,   12,    0,    0,  103,  109,    9,
+       57,  104,  136,    0,    0,    0,    0,    0,   58,    0,
+        0,  102,  108,   40,   90,    0,   24,   10,   50,  123,
+        0,    0,    0,    0,    0,  134,    0,  132,    0,    0,
+      132,   22,   68,   21,    0,   67,  120,    0,   91,   23,
+        0,  114,  144,    0,    0,    0,   69,  121,   54,  142,
+       59,  124,  143,  126,   20,    0,   66,  117,    0,  119,
 
-       70,  121,    0,  123,   80,   60,   56,  150,    0,    0,
-        0,   49,   31,    0,  149,   41,   52,  152,   79,  129,
-      153,    0,    0,  155,    0,    0,  105,  111,   39,   93,
-        0,   25,   11,  132,  134,    8,    0,  139,    0,  137,
-        0,  138,    0,  136,   68,   97,   81,   75,  142,  143,
-      144,   67,   96,  126,    0,   66,    0,   74,   42,  154,
-       53,  157,  156,   48,    0,    0,  145,  151,   76,   77,
-        0,   78,    0
+       76,   60,   56,  146,    0,    0,   49,   31,    0,  145,
+       41,   52,  148,   75,  125,  149,    0,    0,  151,    0,
+        0,  101,  107,   39,   89,    0,   25,   11,  128,  130,
+        8,    0,  135,    0,  133,    0,  134,    0,  132,   93,
+       77,   71,  138,  139,  140,   92,  122,    0,    0,   70,
+       42,  150,   53,  153,  152,   48,    0,    0,  141,  147,
+       72,   73,    0,   74,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -424,33 +401,33 @@ static const YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    2,    1,    4,    1,    1,    1,    1,    5,    6,
-        6,    6,    7,    8,    9,   10,   11,   12,   13,   14,
-       15,   15,   15,   15,   15,   15,   15,    1,    1,    1,
-        6,    1,    1,    1,   16,    1,   17,    1,   18,   19,
-       20,   21,    1,   22,   23,    1,   24,   25,   26,   27,
-        1,    1,   28,   29,    1,   30,   31,    1,    1,    1,
-       32,    1,   33,    6,    1,    1,   34,   35,   36,   37,
+        6,    6,    7,    8,    9,   10,    6,   11,   12,   13,
+       14,   14,   14,   14,   14,   14,   14,    1,    1,    1,
+        6,    1,    1,    1,   15,    1,   16,    1,   17,   18,
+       19,   20,    1,   21,   22,    1,   23,   24,   25,   26,
+        1,    1,   27,   28,    1,   29,   30,    1,    1,    1,
+       31,    1,   32,    6,    1,    1,   33,   34,   35,   36,
 
-       38,   39,   40,   41,   42,    1,   43,   44,   45,   46,
-       47,   48,   49,   50,   51,   52,   53,    1,   54,   55,
-       56,   57,    1,    1,    1,    1,    1,   58,    1,    1,
+       37,   38,   39,   40,   41,    1,   42,   43,   44,   45,
+       46,   47,   48,   49,   50,   51,   52,    1,   53,   54,
+       55,   56,    1,    1,    1,    1,    1,   57,    1,    1,
+        1,    1,    1,    1,    1,   58,    1,    1,    1,    1,
         1,    1,    1,    1,    1,   59,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,   60,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,   61,    1,   62,   63,    1,
-       64,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,   65,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,   60,    1,   61,   62,    1,
+       63,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,   64,    1,    1,    1,    1,    1,    1,
 
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,   66,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,   65,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1
     } ;
 
-static const YY_CHAR yy_meta[67] =
+static const YY_CHAR yy_meta[66] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -458,134 +435,131 @@ static const YY_CHAR yy_meta[67] =
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1
+        1,    1,    1,    1,    1
     } ;
 
-static const flex_int16_t yy_base[275] =
+static const flex_int16_t yy_base[267] =
     {   0,
-        0,    0,   64,   65,  404,  405,  405,  400,  405,  405,
-      405,   57,  405,   61,   69,   78,  374,  371,  405,   68,
-      343,  405,  405,   83,   67,   62,  365,  405,   59,  382,
-       50,  405,   78,  363,   81,   79,   64,  344,  348,  405,
-      348,  120,   87,  156,  104,  336,  119,  358,   91,   98,
-      186,  354,   41,   94,  405,  405,  405,  387,  198,  205,
-      215,  226,  237,  247,  405,  405,  332,  354,  405,  405,
-      330,  375,  344,  350,  405,  353,  331,  336,  405,  405,
-      335,  405,  322,  328,  326,  405,  405,  325,  328,  332,
-      339,  322,  327,  405,  318,  405,  318,  316,  327,  405,
+        0,    0,   63,   64,  395,  396,  396,  391,  396,  396,
+      396,   57,  396,   61,   68,   76,  366,  363,  396,   57,
+      335,  396,  396,   77,  346,   54,  356,  396,   79,  373,
+       66,  396,   72,  354,   82,   73,   79,  335,  339,  396,
+      339,  121,   75,  157,  109,  327,   93,  349,   89,   79,
+      187,  345,   89,   74,  396,  396,  396,  377,  156,  199,
+      206,  216,  227,  150,  396,  396,  323,  345,  396,  396,
+      321,  396,  336,  342,  396,  345,  323,  396,  396,  328,
+      396,  315,  321,  319,  396,  396,  318,  321,  325,  332,
+      315,  320,  396,  311,  396,  311,  309,  320,  396,  396,
 
-      405,  318,  405,  319,  405,  405,  307,  405,  352,  321,
-      327,  405,  405,  319,  325,  303,  405,  405,  277,  118,
-      277,  405,  405,  405,  405,  405,  304,  405,  266,  405,
-      405,  278,  405,  118,  405,  256,  100,  261,  405,  405,
-      405,  405,  405,  405,  244,  246,  249,  237,  130,  405,
-      232,  230,  405,  405,  405,  405,  219,  405,  405,  405,
-      405,  244,   92,  198,  267,  278,  282,  292,  296,  309,
-      180,  256,  405,  405,  405,  212,  203,  405,  405,  204,
-      405,  405,  405,  192,  405,  405,  186,  189,  188,  405,
-      405,  405,  405,  405,  405,  405,  405,  405,  187,  180,
+      311,  396,  312,  396,  396,  300,  396,  396,  315,  321,
+      396,  396,  313,  319,  322,  396,  396,  309,  100,  310,
+      396,  396,  396,  396,  396,  396,  396,  302,  396,  396,
+      314,  396,  131,  396,  300,  146,  305,  396,  396,  396,
+      396,  396,  396,  291,  256,  257,  239,  117,  396,  235,
+      223,  396,  396,  396,  396,  221,  396,  396,  396,  396,
+      227,  133,  206,  249,  261,  265,  274,  278,  287,  292,
+      296,  396,  396,  396,  215,  396,  396,  216,  396,  396,
+      203,  396,  396,  201,  205,  203,  396,  396,  396,  396,
+      396,  396,  396,  396,  396,  202,  396,  396,  199,  396,
 
-      405,  405,  180,  405,  405,  405,  405,  209,  176,  158,
-      156,  405,  405,  158,  405,  405,  405,  405,  405,  405,
-      158,  145,  138,  148,  135,  133,  405,  405,  405,  405,
-      135,  405,  405,  405,  405,  405,  313,  317,  323,  327,
-      331,  335,  339,  343,  405,  405,  405,  405,  405,  405,
-      162,  405,  405,  405,  162,  405,  123,  405,  405,  405,
-      405,  405,  405,  405,  118,  117,  405,  405,  405,  405,
-      109,  405,  405,  126
+      396,  396,  396,  222,  183,  176,  396,  396,  181,  396,
+      396,  396,  396,  396,  396,  182,  170,  157,  166,  150,
+      150,  396,  396,  396,  396,  151,  396,  396,  396,  396,
+      396,  300,  305,  309,  313,  317,  321,  325,  329,  396,
+      396,  396,  396,  396,  179,  396,  396,  179,  139,  396,
+      396,  396,  396,  396,  396,  396,  134,  131,  396,  396,
+      396,  396,  105,  396,  396,   97
     } ;
 
-static const flex_int16_t yy_def[275] =
+static const flex_int16_t yy_def[267] =
     {   0,
-      273,    1,  274,  274,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
+      265,    1,  266,  266,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
 
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
 
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,    0,  273
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,    0,  265
     } ;
 
-static const flex_int16_t yy_nxt[472] =
+static const flex_int16_t yy_nxt[462] =
     {   0,
         6,    7,    8,    9,   10,   11,   11,   12,   13,   14,
-       11,   15,   16,   15,   15,   17,   18,    6,   19,   20,
-       21,   22,   23,   24,   25,   26,   27,   28,   29,   30,
-       31,   32,    6,   33,   34,   35,   36,   37,   38,   39,
-       40,   41,   42,   43,   44,   45,   46,   47,    6,   48,
-       49,   50,   51,    6,    6,   52,    6,    6,    6,    6,
-        6,    6,    6,    6,   53,   54,   56,   56,   59,   59,
-       59,   59,   60,   60,   60,   60,   61,   78,   62,   83,
-       63,   63,   63,   63,   86,   61,   64,   62,   67,   63,
-       63,   63,   63,  101,   68,   64,   57,   57,   70,   80,
+       15,   16,   15,   15,   17,   18,    6,   19,   20,   21,
+       22,   23,   24,   25,   26,   27,   28,   29,   30,   31,
+       32,    6,   33,   34,   35,   36,   37,   38,   39,   40,
+       41,   42,   43,   44,   45,   46,   47,    6,   48,   49,
+       50,   51,    6,    6,   52,    6,    6,    6,    6,    6,
+        6,    6,    6,   53,   54,   56,   56,   59,   59,   59,
+       59,   60,   60,   60,   60,   61,   67,   62,   63,   63,
+       63,   63,   68,   61,   64,   62,   63,   63,   63,   63,
+       79,   70,   64,   80,   57,   57,   71,   55,   82,   85,
 
-       87,  161,   81,   71,  162,   84,   64,   72,   73,   74,
-       75,   79,   88,   89,   93,   64,   99,   94,  102,   95,
-       76,  120,  139,  100,  140,   96,   55,   97,   90,   91,
-       77,  151,  148,  121,   98,  106,  215,  143,  152,  149,
-      107,  108,  150,  216,  109,  110,  111,  112,  141,  113,
-      114,  163,  164,  234,  235,  115,  206,  116,  272,  117,
-      144,  212,  207,  213,  118,  145,  271,  270,  222,  146,
-      119,  122,  269,  268,  123,  267,  124,  125,  126,  223,
-      127,  266,  265,  128,  129,  130,  131,  264,  263,  262,
-      132,  172,  172,  172,  172,  133,  261,  134,  260,  135,
+       72,   73,   74,   75,   64,   87,   88,  100,  119,   98,
+      142,  150,   64,   76,   92,   86,   99,   93,  151,   94,
+      120,   89,   90,   77,   83,   95,  138,   96,  139,  147,
+      162,  163,  101,  143,   97,  105,  148,  202,  144,  149,
+      106,  107,  145,  203,  108,  109,  110,  111,  160,  112,
+      113,  161,  140,  264,  217,  114,  170,  115,  170,  116,
+      171,  171,  171,  171,  117,  218,   59,   59,   59,   59,
+      118,  121,  164,  207,  122,  208,  123,  124,  125,  263,
+      126,  210,  262,  127,  128,  129,  130,  261,  211,  260,
+      131,  259,  164,  229,  230,  132,  258,  133,  257,  134,
 
-      136,  259,  137,  138,  153,  258,  154,  257,  155,   59,
-       59,   59,   59,  156,  157,  165,   60,   60,   60,   60,
-      256,  255,  166,  254,  253,  158,  167,  167,  167,  167,
-      159,  252,  168,  251,  250,  165,  249,  169,  169,  169,
-      169,  248,  166,  170,   61,  247,   62,  246,   63,   63,
-       63,   63,  168,  171,   64,  171,  245,  236,  172,  172,
-      172,  172,  227,  170,  228,  226,  229,  172,  172,  172,
-      172,  230,  231,  237,   64,  237,  225,  224,  238,  238,
-      238,  238,  221,  232,  239,  220,  239,  219,  233,  240,
-      240,  240,  240,  167,  167,  167,  167,  218,  241,  168,
+      135,  256,  136,  137,  152,  255,  153,  254,  154,   60,
+       60,   60,   60,  155,  156,  165,  166,  166,  166,  166,
+      253,  252,  167,  251,  250,  157,  168,  168,  168,  168,
+      158,  249,  169,  248,   61,  165,   62,   63,   63,   63,
+       63,  247,  167,   64,  222,  246,  223,  245,  224,  244,
+      243,  242,  169,  225,  226,  232,  241,  232,  240,  233,
+      233,  233,  233,   64,  231,  227,  221,  234,  220,  234,
+      228,  235,  235,  235,  235,  166,  166,  166,  166,  219,
+      236,  167,  236,  216,  237,  237,  237,  237,  168,  168,
+      168,  168,  215,  238,  169,  238,  214,  239,  239,  239,
 
-      241,  217,  214,  242,  242,  242,  242,  169,  169,  169,
-      169,  211,  210,  170,  209,  243,  208,  243,  205,  168,
-      244,  244,  244,  244,  238,  238,  238,  238,  238,  238,
-      238,  238,  204,  170,  240,  240,  240,  240,  240,  240,
-      240,  240,  242,  242,  242,  242,  242,  242,  242,  242,
-      244,  244,  244,  244,  244,  244,  244,  244,  203,  202,
-      201,  200,  199,  198,  197,  196,  195,  194,  193,  192,
-      191,  190,  189,  188,  187,  186,  185,  184,  183,  182,
-      181,  180,  179,  178,  177,  176,  175,  174,  173,   58,
-      160,  147,  142,  105,  104,  103,   92,   85,   82,   69,
+      239,  167,  171,  171,  171,  171,  171,  171,  171,  171,
+      233,  233,  233,  233,  169,  233,  233,  233,  233,  235,
+      235,  235,  235,  235,  235,  235,  235,  237,  237,  237,
+      237,  237,  237,  237,  237,  239,  239,  239,  239,  239,
+      239,  239,  239,  213,  212,  209,  206,  205,  204,  201,
+      200,  199,  198,  197,  196,  195,  194,  193,  192,  191,
+      190,  189,  188,  187,  186,  185,  184,  183,  182,  181,
+      180,  179,  178,  177,  176,  175,  174,  173,  172,   58,
+      159,  146,  141,  104,  103,  102,   91,   84,   81,   78,
+       69,   66,   65,   58,  265,    5,  265,  265,  265,  265,
 
-       66,   65,   58,  273,    5,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265
     } ;
 
-static const flex_int16_t yy_chk[472] =
+static const flex_int16_t yy_chk[462] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -593,52 +567,51 @@ static const flex_int16_t yy_chk[472] =
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    3,    4,   12,   12,
-       12,   12,   14,   14,   14,   14,   15,   25,   15,   29,
-       15,   15,   15,   15,   31,   16,   15,   16,   20,   16,
-       16,   16,   16,   37,   20,   16,    3,    4,   24,   26,
+        1,    1,    1,    1,    1,    3,    4,   12,   12,   12,
+       12,   14,   14,   14,   14,   15,   20,   15,   15,   15,
+       15,   15,   20,   16,   15,   16,   16,   16,   16,   16,
+       26,   24,   16,   26,    3,    4,   24,  266,   29,   31,
 
-       31,   53,   26,   24,   53,   29,   15,   24,   24,   24,
-       24,   25,   33,   33,   35,   16,   36,   35,   37,   35,
-       24,   43,   45,   36,   45,   35,  274,   35,   33,   33,
-       24,   50,   49,   43,   35,   42,  137,   47,   50,   49,
-       42,   42,   49,  137,   42,   42,   42,   42,   45,   42,
-       42,   54,   54,  163,  163,   42,  120,   42,  271,   42,
-       47,  134,  120,  134,   42,   47,  266,  265,  149,   47,
-       42,   44,  257,  255,   44,  251,   44,   44,   44,  149,
-       44,  231,  226,   44,   44,   44,   44,  225,  224,  223,
-       44,  171,  171,  171,  171,   44,  222,   44,  221,   44,
+       24,   24,   24,   24,   15,   33,   33,   37,   43,   36,
+       47,   50,   16,   24,   35,   31,   36,   35,   50,   35,
+       43,   33,   33,   24,   29,   35,   45,   35,   45,   49,
+       54,   54,   37,   47,   35,   42,   49,  119,   47,   49,
+       42,   42,   47,  119,   42,   42,   42,   42,   53,   42,
+       42,   53,   45,  263,  148,   42,   64,   42,   64,   42,
+       64,   64,   64,   64,   42,  148,   59,   59,   59,   59,
+       42,   44,   59,  133,   44,  133,   44,   44,   44,  258,
+       44,  136,  257,   44,   44,   44,   44,  249,  136,  248,
+       44,  245,   59,  162,  162,   44,  226,   44,  221,   44,
 
-       44,  214,   44,   44,   51,  211,   51,  210,   51,   59,
-       59,   59,   59,   51,   51,   59,   60,   60,   60,   60,
-      209,  208,   60,  203,  200,   51,   61,   61,   61,   61,
-       51,  199,   61,  189,  188,   59,  187,   62,   62,   62,
-       62,  184,   60,   62,   63,  180,   63,  177,   63,   63,
-       63,   63,   61,   64,   63,   64,  176,  164,   64,   64,
-       64,   64,  162,   62,  162,  157,  162,  172,  172,  172,
-      172,  162,  162,  165,   63,  165,  152,  151,  165,  165,
-      165,  165,  148,  162,  166,  147,  166,  146,  162,  166,
-      166,  166,  166,  167,  167,  167,  167,  145,  168,  167,
+       44,  220,   44,   44,   51,  219,   51,  218,   51,   60,
+       60,   60,   60,   51,   51,   60,   61,   61,   61,   61,
+      217,  216,   61,  209,  206,   51,   62,   62,   62,   62,
+       51,  205,   62,  204,   63,   60,   63,   63,   63,   63,
+       63,  199,   61,   63,  161,  196,  161,  186,  161,  185,
+      184,  181,   62,  161,  161,  164,  178,  164,  175,  164,
+      164,  164,  164,   63,  163,  161,  156,  165,  151,  165,
+      161,  165,  165,  165,  165,  166,  166,  166,  166,  150,
+      167,  166,  167,  147,  167,  167,  167,  167,  168,  168,
+      168,  168,  146,  169,  168,  169,  145,  169,  169,  169,
 
-      168,  138,  136,  168,  168,  168,  168,  169,  169,  169,
-      169,  132,  129,  169,  127,  170,  121,  170,  119,  167,
-      170,  170,  170,  170,  237,  237,  237,  237,  238,  238,
-      238,  238,  116,  169,  239,  239,  239,  239,  240,  240,
-      240,  240,  241,  241,  241,  241,  242,  242,  242,  242,
-      243,  243,  243,  243,  244,  244,  244,  244,  115,  114,
-      111,  110,  109,  107,  104,  102,   99,   98,   97,   95,
-       93,   92,   91,   90,   89,   88,   85,   84,   83,   81,
-       78,   77,   76,   74,   73,   72,   71,   68,   67,   58,
-       52,   48,   46,   41,   39,   38,   34,   30,   27,   21,
+      169,  166,  170,  170,  170,  170,  171,  171,  171,  171,
+      232,  232,  232,  232,  168,  233,  233,  233,  233,  234,
+      234,  234,  234,  235,  235,  235,  235,  236,  236,  236,
+      236,  237,  237,  237,  237,  238,  238,  238,  238,  239,
+      239,  239,  239,  144,  137,  135,  131,  128,  120,  118,
+      115,  114,  113,  110,  109,  106,  103,  101,   98,   97,
+       96,   94,   92,   91,   90,   89,   88,   87,   84,   83,
+       82,   80,   77,   76,   74,   73,   71,   68,   67,   58,
+       52,   48,   46,   41,   39,   38,   34,   30,   27,   25,
+       21,   18,   17,    8,    5,  265,  265,  265,  265,  265,
 
-       18,   17,    8,    5,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273,  273,  273,  273,  273,  273,  273,  273,  273,  273,
-      273
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265,  265,  265,  265,  265,  265,  265,  265,  265,  265,
+      265
     } ;
 
 static yy_state_type yy_last_accepting_state;
@@ -657,10 +630,27 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "QuantityParser.l"
 #line 2 "QuantityParser.l"
+/***************************************************************************
+ *   Copyright (c) 2013 Jürgen Riegel <juergen.riegel@web.de>              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
 
 /* Lexer for the FreeCAD  Units language   */
-/* (c) 2013 Juergen Riegel  LGPL           */
-
 
 /* use this file to generate the file 'QuantityLexer.c' using the program flex
  * the command for this operation is:
@@ -673,12 +663,12 @@ char *yytext;
  * on Win32. The C++ scanner uses STL streams instead. */
 #define YY_NO_UNISTD_H
 
-#line 672 "QuantityLexer.c"
+#line 667 "QuantityLexer.c"
 /*** Flex Declarations and Options ***/
 /* the manual says "somewhat more optimized" */
 /* no support for include files is planned */
 
-#line 677 "QuantityLexer.c"
+#line 672 "QuantityLexer.c"
 
 #define INITIAL 0
 #define C_COMMENT 1
@@ -897,7 +887,7 @@ YY_DECL
 #line 56 "QuantityParser.l"
 
 
-#line 896 "QuantityLexer.c"
+#line 891 "QuantityLexer.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -924,13 +914,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 274 )
+				if ( yy_current_state >= 266 )
 					yy_c = yy_meta[yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
 			++yy_cp;
 			}
-		while ( yy_current_state != 273 );
+		while ( yy_current_state != 265 );
 		yy_cp = (yy_last_accepting_cpos);
 		yy_current_state = (yy_last_accepting_state);
 
@@ -1274,479 +1264,459 @@ yylval = Quantity::MegaNewton;          return UNIT; // mega Newton
 case 65:
 YY_RULE_SETUP
 #line 141 "QuantityParser.l"
-yylval = Quantity::NewtonPerMeter;     return UNIT; // Newton per meter (N/m or kg/s^2)
+yylval = Quantity::Pascal;              return UNIT; // Pascal (kg/m/s^2 or N/m^2)
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
 #line 142 "QuantityParser.l"
-yylval = Quantity::MilliNewtonPerMeter;return UNIT;
+yylval = Quantity::KiloPascal;          return UNIT; // kilo Pascal
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
 #line 143 "QuantityParser.l"
-yylval = Quantity::KiloNewtonPerMeter; return UNIT;
+yylval = Quantity::MegaPascal;          return UNIT; // mega Pascal
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
 #line 144 "QuantityParser.l"
-yylval = Quantity::MegaNewtonPerMeter; return UNIT;
+yylval = Quantity::GigaPascal;          return UNIT; // giga Pascal
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
 #line 146 "QuantityParser.l"
-yylval = Quantity::Pascal;              return UNIT; // Pascal (kg/m/s^2 or N/m^2)
+yylval = Quantity::Bar;                 return UNIT; // 1 bar = 100 kPa
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
 #line 147 "QuantityParser.l"
-yylval = Quantity::KiloPascal;          return UNIT; // kilo Pascal
+yylval = Quantity::MilliBar;            return UNIT; // milli Bar
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 148 "QuantityParser.l"
-yylval = Quantity::MegaPascal;          return UNIT; // mega Pascal
+#line 149 "QuantityParser.l"
+yylval = Quantity::Torr;                return UNIT; // portion of Pascal ( 101325/760 )
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 149 "QuantityParser.l"
-yylval = Quantity::GigaPascal;          return UNIT; // giga Pascal
+#line 150 "QuantityParser.l"
+yylval = Quantity::mTorr;               return UNIT; //
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
 #line 151 "QuantityParser.l"
-yylval = Quantity::Bar;                 return UNIT; // 1 bar = 100 kPa
+yylval = Quantity::yTorr;               return UNIT; //
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
 #line 152 "QuantityParser.l"
-yylval = Quantity::MilliBar;            return UNIT; // milli Bar
+yylval = Quantity::yTorr;               return UNIT; //
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
 #line 154 "QuantityParser.l"
-yylval = Quantity::Torr;                return UNIT; // portion of Pascal ( 101325/760 )
+yylval = Quantity::PSI;                 return UNIT; // pounds/in^2
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
 #line 155 "QuantityParser.l"
-yylval = Quantity::mTorr;               return UNIT; //
+yylval = Quantity::KSI;                 return UNIT; // 1000 x pounds/in^2
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
 #line 156 "QuantityParser.l"
-yylval = Quantity::yTorr;               return UNIT; //
+yylval = Quantity::MPSI;                return UNIT; // 1000 ksi
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
-#line 157 "QuantityParser.l"
-yylval = Quantity::yTorr;               return UNIT; //
+#line 158 "QuantityParser.l"
+yylval = Quantity::Watt;                return UNIT; // Watt (kg*m^2/s^3)
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
 #line 159 "QuantityParser.l"
-yylval = Quantity::PSI;                 return UNIT; // pounds/in^2
+yylval = Quantity::MilliWatt;           return UNIT; // milli Watt
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
 #line 160 "QuantityParser.l"
-yylval = Quantity::KSI;                 return UNIT; // 1000 x pounds/in^2
+yylval = Quantity::KiloWatt;            return UNIT; // kilo Watt
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
 #line 161 "QuantityParser.l"
-yylval = Quantity::MPSI;                return UNIT; // 1000 ksi
+yylval = Quantity::VoltAmpere;          return UNIT; // VoltAmpere (kg*m^2/s^3)
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
 #line 163 "QuantityParser.l"
-yylval = Quantity::Watt;                return UNIT; // Watt (kg*m^2/s^3)
+yylval = Quantity::Volt;                return UNIT; // Volt (kg*m^2/A/s^3)
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
 #line 164 "QuantityParser.l"
-yylval = Quantity::MilliWatt;           return UNIT; // milli Watt
+yylval = Quantity::KiloVolt;            return UNIT; // kilo Volt
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
 #line 165 "QuantityParser.l"
-yylval = Quantity::KiloWatt;            return UNIT; // kilo Watt
+yylval = Quantity::MilliVolt;           return UNIT; // milli Volt
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 166 "QuantityParser.l"
-yylval = Quantity::VoltAmpere;          return UNIT; // VoltAmpere (kg*m^2/s^3)
+#line 167 "QuantityParser.l"
+yylval = Quantity::MegaSiemens;         return UNIT; // mega Siemens
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
 #line 168 "QuantityParser.l"
-yylval = Quantity::Volt;                return UNIT; // Volt (kg*m^2/A/s^3)
+yylval = Quantity::KiloSiemens;         return UNIT; // kilo Siemens
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
 #line 169 "QuantityParser.l"
-yylval = Quantity::KiloVolt;            return UNIT; // kilo Volt
+yylval = Quantity::Siemens;             return UNIT; // Siemens (A^2*s^3/kg/m^2)
 	YY_BREAK
 case 88:
 YY_RULE_SETUP
 #line 170 "QuantityParser.l"
-yylval = Quantity::MilliVolt;           return UNIT; // milli Volt
+yylval = Quantity::MilliSiemens;        return UNIT; // milli Siemens
 	YY_BREAK
 case 89:
 YY_RULE_SETUP
-#line 172 "QuantityParser.l"
-yylval = Quantity::MegaSiemens;         return UNIT; // mega Siemens
+#line 171 "QuantityParser.l"
+yylval = Quantity::MicroSiemens;   return UNIT; // micro Siemens
 	YY_BREAK
 case 90:
 YY_RULE_SETUP
-#line 173 "QuantityParser.l"
-yylval = Quantity::KiloSiemens;         return UNIT; // kilo Siemens
+#line 172 "QuantityParser.l"
+yylval = Quantity::MicroSiemens;        return UNIT; // micro Siemens
 	YY_BREAK
 case 91:
 YY_RULE_SETUP
 #line 174 "QuantityParser.l"
-yylval = Quantity::Siemens;             return UNIT; // Siemens (A^2*s^3/kg/m^2)
+yylval = Quantity::Ohm;                 return UNIT; // Ohm (kg*m^2/A^2/s^3)
 	YY_BREAK
 case 92:
 YY_RULE_SETUP
 #line 175 "QuantityParser.l"
-yylval = Quantity::MilliSiemens;        return UNIT; // milli Siemens
+yylval = Quantity::KiloOhm;             return UNIT; // kilo Ohm
 	YY_BREAK
 case 93:
 YY_RULE_SETUP
 #line 176 "QuantityParser.l"
-yylval = Quantity::MicroSiemens;   return UNIT; // micro Siemens
+yylval = Quantity::MegaOhm;             return UNIT; // mega Ohm
 	YY_BREAK
 case 94:
 YY_RULE_SETUP
-#line 177 "QuantityParser.l"
-yylval = Quantity::MicroSiemens;        return UNIT; // micro Siemens
+#line 178 "QuantityParser.l"
+yylval = Quantity::Coulomb;             return UNIT; // Coulomb (A*s)
 	YY_BREAK
 case 95:
 YY_RULE_SETUP
-#line 179 "QuantityParser.l"
-yylval = Quantity::Ohm;                 return UNIT; // Ohm (kg*m^2/A^2/s^3)
+#line 180 "QuantityParser.l"
+yylval = Quantity::Tesla;               return UNIT; // Tesla (kg/s^2/A)
 	YY_BREAK
 case 96:
 YY_RULE_SETUP
-#line 180 "QuantityParser.l"
-yylval = Quantity::KiloOhm;             return UNIT; // kilo Ohm
+#line 181 "QuantityParser.l"
+yylval = Quantity::Gauss;               return UNIT; // Gauss (1 G = 1e-4 T)
 	YY_BREAK
 case 97:
 YY_RULE_SETUP
-#line 181 "QuantityParser.l"
-yylval = Quantity::MegaOhm;             return UNIT; // mega Ohm
+#line 183 "QuantityParser.l"
+yylval = Quantity::Weber;               return UNIT; // Weber (kg*m^2/s^2/A)
 	YY_BREAK
 case 98:
 YY_RULE_SETUP
-#line 183 "QuantityParser.l"
-yylval = Quantity::Coulomb;             return UNIT; // Coulomb (A*s)
+#line 185 "QuantityParser.l"
+yylval = Quantity::Oersted;             return UNIT; // Oersted (A/m)
 	YY_BREAK
 case 99:
 YY_RULE_SETUP
-#line 185 "QuantityParser.l"
-yylval = Quantity::Tesla;               return UNIT; // Tesla (kg/s^2/A)
+#line 187 "QuantityParser.l"
+yylval = Quantity::Farad;               return UNIT; // Farad (s^4*A^2/m^2/kg)
 	YY_BREAK
 case 100:
 YY_RULE_SETUP
-#line 186 "QuantityParser.l"
-yylval = Quantity::Gauss;               return UNIT; // Gauss (1 G = 1e-4 T)
+#line 188 "QuantityParser.l"
+yylval = Quantity::MilliFarad;          return UNIT; // milli Farad
 	YY_BREAK
 case 101:
 YY_RULE_SETUP
-#line 188 "QuantityParser.l"
-yylval = Quantity::Weber;               return UNIT; // Weber (kg*m^2/s^2/A)
+#line 189 "QuantityParser.l"
+yylval = Quantity::MicroFarad;      return UNIT; // micro Farad
 	YY_BREAK
 case 102:
 YY_RULE_SETUP
 #line 190 "QuantityParser.l"
-yylval = Quantity::Oersted;             return UNIT; // Oersted (A/m)
+yylval = Quantity::MicroFarad;          return UNIT; // micro Farad
 	YY_BREAK
 case 103:
 YY_RULE_SETUP
-#line 192 "QuantityParser.l"
-yylval = Quantity::Farad;               return UNIT; // Farad (s^4*A^2/m^2/kg)
+#line 191 "QuantityParser.l"
+yylval = Quantity::NanoFarad;           return UNIT; // nano Farad
 	YY_BREAK
 case 104:
 YY_RULE_SETUP
-#line 193 "QuantityParser.l"
-yylval = Quantity::MilliFarad;          return UNIT; // milli Farad
+#line 192 "QuantityParser.l"
+yylval = Quantity::PicoFarad;           return UNIT; // pico Farad
 	YY_BREAK
 case 105:
 YY_RULE_SETUP
 #line 194 "QuantityParser.l"
-yylval = Quantity::MicroFarad;      return UNIT; // micro Farad
+yylval = Quantity::Henry;               return UNIT; // Henry (kg*m^2/s^2/A^2)
 	YY_BREAK
 case 106:
 YY_RULE_SETUP
 #line 195 "QuantityParser.l"
-yylval = Quantity::MicroFarad;          return UNIT; // micro Farad
+yylval = Quantity::MilliHenry;          return UNIT; // milli Henry
 	YY_BREAK
 case 107:
 YY_RULE_SETUP
 #line 196 "QuantityParser.l"
-yylval = Quantity::NanoFarad;           return UNIT; // nano Farad
+yylval = Quantity::MicroHenry;      return UNIT; // micro Henry
 	YY_BREAK
 case 108:
 YY_RULE_SETUP
 #line 197 "QuantityParser.l"
-yylval = Quantity::PicoFarad;           return UNIT; // pico Farad
+yylval = Quantity::MicroHenry;          return UNIT; // micro Henry
 	YY_BREAK
 case 109:
 YY_RULE_SETUP
-#line 199 "QuantityParser.l"
-yylval = Quantity::Henry;               return UNIT; // Henry (kg*m^2/s^2/A^2)
+#line 198 "QuantityParser.l"
+yylval = Quantity::NanoHenry;           return UNIT; // nano Henry
 	YY_BREAK
 case 110:
 YY_RULE_SETUP
 #line 200 "QuantityParser.l"
-yylval = Quantity::MilliHenry;          return UNIT; // milli Henry
+yylval = Quantity::Joule;               return UNIT; // Joule (kg*m^2/s^2)
 	YY_BREAK
 case 111:
 YY_RULE_SETUP
 #line 201 "QuantityParser.l"
-yylval = Quantity::MicroHenry;      return UNIT; // micro Henry
+yylval = Quantity::MilliJoule;          return UNIT; // milli Joule
 	YY_BREAK
 case 112:
 YY_RULE_SETUP
 #line 202 "QuantityParser.l"
-yylval = Quantity::MicroHenry;          return UNIT; // micro Henry
+yylval = Quantity::KiloJoule;           return UNIT; // kilo Joule
 	YY_BREAK
 case 113:
 YY_RULE_SETUP
 #line 203 "QuantityParser.l"
-yylval = Quantity::NanoHenry;           return UNIT; // nano Henry
+yylval = Quantity::NewtonMeter;         return UNIT; // N*m = Joule
 	YY_BREAK
 case 114:
 YY_RULE_SETUP
-#line 205 "QuantityParser.l"
-yylval = Quantity::Joule;               return UNIT; // Joule (kg*m^2/s^2)
+#line 204 "QuantityParser.l"
+yylval = Quantity::VoltAmpereSecond;    return UNIT; // V*A*s = Joule
 	YY_BREAK
 case 115:
 YY_RULE_SETUP
-#line 206 "QuantityParser.l"
-yylval = Quantity::MilliJoule;          return UNIT; // milli Joule
+#line 205 "QuantityParser.l"
+yylval = Quantity::WattSecond;          return UNIT; //
 	YY_BREAK
 case 116:
 YY_RULE_SETUP
-#line 207 "QuantityParser.l"
-yylval = Quantity::KiloJoule;           return UNIT; // kilo Joule
+#line 206 "QuantityParser.l"
+yylval = Quantity::WattSecond;          return UNIT; // W*s = Joule
 	YY_BREAK
 case 117:
 YY_RULE_SETUP
-#line 208 "QuantityParser.l"
-yylval = Quantity::NewtonMeter;         return UNIT; // N*m = Joule
+#line 207 "QuantityParser.l"
+yylval = Quantity::KiloWattHour;        return UNIT; // 1 kWh = 3.6e6 J
 	YY_BREAK
 case 118:
 YY_RULE_SETUP
-#line 209 "QuantityParser.l"
-yylval = Quantity::VoltAmpereSecond;    return UNIT; // V*A*s = Joule
+#line 208 "QuantityParser.l"
+yylval = Quantity::ElectronVolt;        return UNIT; // 1 eV = 1.602176634e-19 J
 	YY_BREAK
 case 119:
 YY_RULE_SETUP
-#line 210 "QuantityParser.l"
-yylval = Quantity::WattSecond;          return UNIT; //
+#line 209 "QuantityParser.l"
+yylval = Quantity::KiloElectronVolt;    return UNIT;
 	YY_BREAK
 case 120:
 YY_RULE_SETUP
-#line 211 "QuantityParser.l"
-yylval = Quantity::WattSecond;          return UNIT; // W*s = Joule
+#line 210 "QuantityParser.l"
+yylval = Quantity::MegaElectronVolt;    return UNIT;
 	YY_BREAK
 case 121:
 YY_RULE_SETUP
-#line 212 "QuantityParser.l"
-yylval = Quantity::KiloWattHour;        return UNIT; // 1 kWh = 3.6e6 J
+#line 211 "QuantityParser.l"
+yylval = Quantity::Calorie;             return UNIT; // 1 cal = 4.1868 J
 	YY_BREAK
 case 122:
 YY_RULE_SETUP
-#line 213 "QuantityParser.l"
-yylval = Quantity::ElectronVolt;        return UNIT; // 1 eV = 1.602176634e-19 J
+#line 212 "QuantityParser.l"
+yylval = Quantity::KiloCalorie;         return UNIT;
 	YY_BREAK
 case 123:
 YY_RULE_SETUP
 #line 214 "QuantityParser.l"
-yylval = Quantity::KiloElectronVolt;    return UNIT;
+yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)
 	YY_BREAK
 case 124:
 YY_RULE_SETUP
 #line 215 "QuantityParser.l"
-yylval = Quantity::MegaElectronVolt;    return UNIT;
+yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)
 	YY_BREAK
 case 125:
 YY_RULE_SETUP
 #line 216 "QuantityParser.l"
-yylval = Quantity::Calorie;             return UNIT; // 1 cal = 4.1868 J
+yylval = Quantity::Radian;              return UNIT; // radian
 	YY_BREAK
 case 126:
 YY_RULE_SETUP
 #line 217 "QuantityParser.l"
-yylval = Quantity::KiloCalorie;         return UNIT;
+yylval = Quantity::Gon;                 return UNIT; // gon
 	YY_BREAK
 case 127:
 YY_RULE_SETUP
-#line 219 "QuantityParser.l"
-yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)
+#line 218 "QuantityParser.l"
+yylval = Quantity::AngMinute;           return UNIT; // minute(Angular)
 	YY_BREAK
 case 128:
 YY_RULE_SETUP
-#line 220 "QuantityParser.l"
-yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)
+#line 219 "QuantityParser.l"
+yylval = Quantity::AngMinute;       return UNIT; // minute(Angular)
 	YY_BREAK
 case 129:
 YY_RULE_SETUP
-#line 221 "QuantityParser.l"
-yylval = Quantity::Radian;              return UNIT; // radian
+#line 220 "QuantityParser.l"
+yylval = Quantity::AngSecond;           return UNIT; // second(Angular)
 	YY_BREAK
 case 130:
 YY_RULE_SETUP
-#line 222 "QuantityParser.l"
-yylval = Quantity::Gon;                 return UNIT; // gon
+#line 221 "QuantityParser.l"
+yylval = Quantity::AngSecond;       return UNIT; // second(Angular)
 	YY_BREAK
 case 131:
 YY_RULE_SETUP
 #line 223 "QuantityParser.l"
-yylval = Quantity::AngMinute;           return UNIT; // minute(Angular)
+yylval = Quantity(1.0);                 return ONE;
 	YY_BREAK
 case 132:
 YY_RULE_SETUP
 #line 224 "QuantityParser.l"
-yylval = Quantity::AngMinute;       return UNIT; // minute(Angular)
+{  yylval = Quantity(num_change(yytext,'.',','));return NUM;  }
 	YY_BREAK
 case 133:
 YY_RULE_SETUP
 #line 225 "QuantityParser.l"
-yylval = Quantity::AngSecond;           return UNIT; // second(Angular)
+{  yylval = Quantity(num_change(yytext,'.',','));return NUM;  }
 	YY_BREAK
 case 134:
 YY_RULE_SETUP
 #line 226 "QuantityParser.l"
-yylval = Quantity::AngSecond;       return UNIT; // second(Angular)
+{  yylval = Quantity(num_change(yytext,',','.'));return NUM;  }
 	YY_BREAK
 case 135:
 YY_RULE_SETUP
-#line 228 "QuantityParser.l"
-yylval = Quantity(1.0);                 return ONE;
+#line 227 "QuantityParser.l"
+{  yylval = Quantity(num_change(yytext,',','.'));return NUM;  }
 	YY_BREAK
 case 136:
 YY_RULE_SETUP
-#line 229 "QuantityParser.l"
-{  yylval = Quantity(num_change(yytext,'.',','));return NUM;  }
+#line 230 "QuantityParser.l"
+{yylval = Quantity(M_PI)          ; return NUM;} // constant pi
 	YY_BREAK
 case 137:
 YY_RULE_SETUP
-#line 230 "QuantityParser.l"
-{  yylval = Quantity(num_change(yytext,'.',','));return NUM;  }
+#line 231 "QuantityParser.l"
+{yylval = Quantity(M_E)           ; return NUM;} // constant e
 	YY_BREAK
 case 138:
 YY_RULE_SETUP
-#line 231 "QuantityParser.l"
-{  yylval = Quantity(num_change(yytext,',','.'));return NUM;  }
+#line 233 "QuantityParser.l"
+return ACOS;
 	YY_BREAK
 case 139:
 YY_RULE_SETUP
-#line 232 "QuantityParser.l"
-{  yylval = Quantity(num_change(yytext,',','.'));return NUM;  }
+#line 234 "QuantityParser.l"
+return ASIN;
 	YY_BREAK
 case 140:
 YY_RULE_SETUP
 #line 235 "QuantityParser.l"
-{yylval = Quantity(M_PI)          ; return NUM;} // constant pi
+return ATAN;
 	YY_BREAK
 case 141:
 YY_RULE_SETUP
 #line 236 "QuantityParser.l"
-{yylval = Quantity(M_E)           ; return NUM;} // constant e
+return ATAN2;
 	YY_BREAK
 case 142:
 YY_RULE_SETUP
-#line 238 "QuantityParser.l"
-return ACOS;
+#line 237 "QuantityParser.l"
+return COS;
 	YY_BREAK
 case 143:
 YY_RULE_SETUP
-#line 239 "QuantityParser.l"
-return ASIN;
+#line 238 "QuantityParser.l"
+return EXP;
 	YY_BREAK
 case 144:
 YY_RULE_SETUP
-#line 240 "QuantityParser.l"
-return ATAN;
+#line 239 "QuantityParser.l"
+return ABS;
 	YY_BREAK
 case 145:
 YY_RULE_SETUP
-#line 241 "QuantityParser.l"
-return ATAN2;
+#line 240 "QuantityParser.l"
+return MOD;
 	YY_BREAK
 case 146:
 YY_RULE_SETUP
-#line 242 "QuantityParser.l"
-return COS;
+#line 241 "QuantityParser.l"
+return LOG;
 	YY_BREAK
 case 147:
 YY_RULE_SETUP
-#line 243 "QuantityParser.l"
-return EXP;
+#line 242 "QuantityParser.l"
+return LOG10;
 	YY_BREAK
 case 148:
 YY_RULE_SETUP
-#line 244 "QuantityParser.l"
-return ABS;
+#line 243 "QuantityParser.l"
+return POW;
 	YY_BREAK
 case 149:
 YY_RULE_SETUP
-#line 245 "QuantityParser.l"
-return MOD;
+#line 244 "QuantityParser.l"
+return SIN;
 	YY_BREAK
 case 150:
 YY_RULE_SETUP
-#line 246 "QuantityParser.l"
-return LOG;
+#line 245 "QuantityParser.l"
+return SINH;
 	YY_BREAK
 case 151:
 YY_RULE_SETUP
-#line 247 "QuantityParser.l"
-return LOG10;
+#line 246 "QuantityParser.l"
+return TAN;
 	YY_BREAK
 case 152:
 YY_RULE_SETUP
-#line 248 "QuantityParser.l"
-return POW;
+#line 247 "QuantityParser.l"
+return TANH;
 	YY_BREAK
 case 153:
 YY_RULE_SETUP
-#line 249 "QuantityParser.l"
-return SIN;
+#line 248 "QuantityParser.l"
+return SQRT;
 	YY_BREAK
 case 154:
 YY_RULE_SETUP
 #line 250 "QuantityParser.l"
-return SINH;
+return *yytext;
 	YY_BREAK
 case 155:
 YY_RULE_SETUP
 #line 251 "QuantityParser.l"
-return TAN;
-	YY_BREAK
-case 156:
-YY_RULE_SETUP
-#line 252 "QuantityParser.l"
-return TANH;
-	YY_BREAK
-case 157:
-YY_RULE_SETUP
-#line 253 "QuantityParser.l"
-return SQRT;
-	YY_BREAK
-case 158:
-YY_RULE_SETUP
-#line 255 "QuantityParser.l"
-return *yytext;
-	YY_BREAK
-case 159:
-YY_RULE_SETUP
-#line 256 "QuantityParser.l"
 ECHO;
 	YY_BREAK
-#line 1745 "QuantityLexer.c"
+#line 1720 "QuantityLexer.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(C_COMMENT):
 	yyterminate();
@@ -2045,7 +2015,7 @@ static int yy_get_next_buffer (void)
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 274 )
+			if ( yy_current_state >= 266 )
 				yy_c = yy_meta[yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
@@ -2073,11 +2043,11 @@ static int yy_get_next_buffer (void)
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 274 )
+		if ( yy_current_state >= 266 )
 			yy_c = yy_meta[yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
-	yy_is_jam = (yy_current_state == 273);
+	yy_is_jam = (yy_current_state == 265);
 
 		return yy_is_jam ? 0 : yy_current_state;
 }
@@ -2716,4 +2686,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 256 "QuantityParser.l"
+#line 251 "QuantityParser.l"
