@@ -2967,6 +2967,14 @@ void View3DInventorViewer::boxZoom(const SbBox2s& box)
     navigation->boxZoom(box);
 }
 
+SbBox3f View3DInventorViewer::getBoundingBox() const
+{
+    SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
+    SoGetBoundingBoxAction action(vp);
+    action.apply(this->getSoRenderManager()->getSceneGraph());
+    return action.getBoundingBox();
+}
+
 void View3DInventorViewer::viewAll()
 {
     SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();

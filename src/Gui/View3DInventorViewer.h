@@ -358,6 +358,11 @@ public:
     void viewVR(void);
 
     /**
+     * Returns the bounding box of the scene graph.
+     */
+    SbBox3f getBoundingBox() const;
+
+    /**
      * Reposition the current camera so we can see all selected objects
      * of the scene. Therefore we search for all SOFCSelection nodes, if
      * none of them is selected nothing happens.
