@@ -2713,9 +2713,7 @@ void View3DInventorViewer::toggleClippingPlane(int toggle, bool beforeEditing,
     if(!noManip) {
         SoClipPlaneManip* clip = new SoClipPlaneManip;
         pcClipPlane = clip;
-        SoGetBoundingBoxAction action(this->getSoRenderManager()->getViewportRegion());
-        action.apply(this->getSoRenderManager()->getSceneGraph());
-        SbBox3f box = action.getBoundingBox();
+        SbBox3f box = getBoundingBox();
 
         if (!box.isEmpty()) {
             // adjust to overall bounding box of the scene
@@ -2882,9 +2880,7 @@ void View3DInventorViewer::animatedViewAll(int steps, int ms)
     SbVec3f campos = cam->position.getValue();
     SbRotation camrot = cam->orientation.getValue();
     SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
-    SoGetBoundingBoxAction action(vp);
-    action.apply(this->getSoRenderManager()->getSceneGraph());
-    SbBox3f box = action.getBoundingBox();
+    SbBox3f box = getBoundingBox();
 
 #if (COIN_MAJOR_VERSION >= 3)
     float aspectRatio = vp.getViewportAspectRatio();
@@ -2977,10 +2973,7 @@ SbBox3f View3DInventorViewer::getBoundingBox() const
 
 void View3DInventorViewer::viewAll()
 {
-    SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
-    SoGetBoundingBoxAction action(vp);
-    action.apply(this->getSoRenderManager()->getSceneGraph());
-    SbBox3f box = action.getBoundingBox();
+    SbBox3f box = getBoundingBox();
 
     if (box.isEmpty())
         return;
@@ -3048,9 +3041,7 @@ void View3DInventorViewer::viewAll(float factor)
             group->mode = SoSkipBoundingGroup::EXCLUDE_BBOX;
         }
 
-        SoGetBoundingBoxAction action(this->getSoRenderManager()->getViewportRegion());
-        action.apply(this->getSoRenderManager()->getSceneGraph());
-        SbBox3f box = action.getBoundingBox();
+        SbBox3f box = getBoundingBox();
         float minx,miny,minz,maxx,maxy,maxz;
         box.getBounds(minx,miny,minz,maxx,maxy,maxz);
 
