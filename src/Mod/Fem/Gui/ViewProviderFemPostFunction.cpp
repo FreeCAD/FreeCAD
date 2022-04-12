@@ -52,8 +52,11 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Mod/Fem/App/FemAnalysis.h>
+#include <Mod/Fem/App/FemPostPipeline.h>
 
 #include "ViewProviderFemPostFunction.h"
 #include "ActiveAnalysisObserver.h"
@@ -247,6 +250,32 @@ void ViewProviderFemPostFunction::attach(App::DocumentObject* pcObj)
     pcEditNode->unref();
 }
 
+SbBox3f ViewProviderFemPostFunction::getBoundingsOfView() const
+{
+    SbBox3f box;
+    Gui::Document* doc = this->getDocument();
+    Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(doc->getViewOfViewProvider(this));
+    if (view) {
+        Gui::View3DInventorViewer* viewer = view->getViewer();
+        box = viewer->getBoundingBox();
+    }
+
+    return box;
+}
+
+bool ViewProviderFemPostFunction::findScaleFactor(double& scale) const
+{
+    SbBox3f bbox = getBoundingsOfView();
+    if (bbox.hasVolume()) {
+        float dx, dy, dz;
+        bbox.getSize(dx, dy, dz);
+        scale = 0.2 * std::max(std::max(dx, dy), dz);
+        return true;
+    }
+
+    return false;
+}
+
 bool ViewProviderFemPostFunction::doubleClicked(void) {
     Gui::Application::Instance->activeDocument()->setEdit(this, (int)ViewProvider::Default);
     return true;
@@ -357,11 +386,14 @@ void ViewProviderFemPostFunction::onChanged(const App::Property* prop) {
 // ***************************************************************************
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostPlaneFunction, FemGui::ViewProviderFemPostFunction)
-static const App::PropertyFloatConstraint::Constraints scaleConstraint = {1.0e-6, 1.0e6, 1.0};
+//NOTE: The technical lower limit is at 1e-4 that the Coin3D manipulator can handle
+static const App::PropertyFloatConstraint::Constraints scaleConstraint = {1e-4, DBL_MAX, 1.0};
 
-ViewProviderFemPostPlaneFunction::ViewProviderFemPostPlaneFunction() {
+ViewProviderFemPostPlaneFunction::ViewProviderFemPostPlaneFunction()
+    : m_detectscale(false)
+{
 
-    ADD_PROPERTY_TYPE(Scale, (1.0), "Manipulator", App::Prop_None, "Scaling factor for the manipulator");
+    ADD_PROPERTY_TYPE(Scale, (1000.0), "Manipulator", App::Prop_None, "Scaling factor for the manipulator");
     Scale.setConstraints(&scaleConstraint);
     sPixmap = "fem-post-geo-plane";
 
@@ -402,18 +434,23 @@ void ViewProviderFemPostPlaneFunction::draggerUpdate(SoDragger* m) {
 
 void ViewProviderFemPostPlaneFunction::onChanged(const App::Property* prop)
 {
-    if (!isDragging() && prop == &Scale) {
-        // get current matrix
-        SbVec3f t, s;
-        SbRotation r, so;
-        SbMatrix matrix = getManipulator()->getDragger()->getMotionMatrix();
-        matrix.getTransform(t, r, s, so);
+    if (prop == &Scale) {
+        // When loading the Scale property from a project then keep that
+        if (Scale.getConstraints())
+            m_detectscale = true;
+        if (!isDragging()) {
+            // get current matrix
+            SbVec3f t, s;
+            SbRotation r, so;
+            SbMatrix matrix = getManipulator()->getDragger()->getMotionMatrix();
+            matrix.getTransform(t, r, s, so);
 
-        float scale = static_cast<float>(Scale.getValue());
-        s.setValue(scale, scale, scale);
+            float scale = static_cast<float>(Scale.getValue());
+            s.setValue(scale, scale, scale);
 
-        matrix.setTransform(t, r, s, so);
-        getManipulator()->setMatrix(matrix);
+            matrix.setTransform(t, r, s, so);
+            getManipulator()->setMatrix(matrix);
+        }
     }
     ViewProviderFemPostFunction::onChanged(prop);
 }
@@ -423,6 +460,13 @@ void ViewProviderFemPostPlaneFunction::updateData(const App::Property* p) {
     Fem::FemPostPlaneFunction* func = static_cast<Fem::FemPostPlaneFunction*>(getObject());
 
     if (!isDragging() && (p == &func->Origin || p == &func->Normal)) {
+        if (!m_detectscale) {
+            double s;
+            if (findScaleFactor(s)) {
+                m_detectscale = true;
+                this->Scale.setValue(s);
+            }
+        }
 
         Base::Vector3d trans = func->Origin.getValue();
         Base::Vector3d norm = func->Normal.getValue();

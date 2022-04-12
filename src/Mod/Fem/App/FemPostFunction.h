@@ -102,6 +102,8 @@ public:
 
 protected:
     virtual void onChanged(const App::Property* prop);
+    /// get called after a document has been fully restored
+    virtual void onDocumentRestored();
 
     vtkSmartPointer<vtkPlane> m_plane;
 };

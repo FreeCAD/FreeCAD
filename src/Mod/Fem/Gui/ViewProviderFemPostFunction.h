@@ -25,6 +25,7 @@
 
 #include <QWidget>
 #include <boost_signals2.hpp>
+#include <Inventor/SbBox3f.h>
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/Fem/App/FemPostFunction.h>
 
@@ -127,6 +128,8 @@ protected:
     bool autoScale()              {return m_autoscale;}
 
     bool isDragging() {return m_isDragging;}
+    SbBox3f getBoundingsOfView() const;
+    bool findScaleFactor(double& scale) const;
 
     virtual SoTransformManip*   setupManipulator();
     virtual void                draggerUpdate(SoDragger*) {}
@@ -185,6 +188,9 @@ protected:
     virtual void draggerUpdate(SoDragger* mat);
     virtual void updateData(const App::Property*);
     virtual void onChanged(const App::Property*);
+
+private:
+    bool m_detectscale;
 };
 
 
