@@ -241,7 +241,7 @@ bool ViewProviderFemAnalysis::onDelete(const std::vector<std::string>&)
 
 bool ViewProviderFemAnalysis::canDelete(App::DocumentObject* obj) const
 {
-    // deletions of objects from a FemAnalysis don't necesarily destroy anything
+    // deletions of objects from a FemAnalysis don't necessarily destroy anything
     // thus we can pass this action
     // we can warn the user if necessary in the object's ViewProvider in the onDelete() function
     Q_UNUSED(obj)

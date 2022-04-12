@@ -85,11 +85,11 @@ bool ViewProviderSolver::onDelete(const std::vector<std::string>&)
 
 bool ViewProviderSolver::canDelete(App::DocumentObject* obj) const
 {
-    // deletions of objects from a FemSolver don't necesarily destroy anything
+    // deletions of objects from a FemSolver don't necessarily destroy anything
     // thus we can pass this action
     // we can warn the user if necessary in the object's ViewProvider in the onDelete() function
     Q_UNUSED(obj)
-        return true;
+    return true;
 }
 
 
