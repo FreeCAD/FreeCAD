@@ -2231,7 +2231,7 @@ Gui::MDIView* Document::getViewOfNode(SoNode* node) const
     return nullptr;
 }
 
-Gui::MDIView* Document::getViewOfViewProvider(Gui::ViewProvider* vp) const
+Gui::MDIView* Document::getViewOfViewProvider(const Gui::ViewProvider* vp) const
 {
     return getViewOfNode(vp->getRoot());
 }

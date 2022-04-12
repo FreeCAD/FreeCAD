@@ -178,7 +178,7 @@ public:
     Gui::MDIView* getActiveView(void) const;
     void setActiveWindow(Gui::MDIView* view);
     Gui::MDIView* getEditingViewOfViewProvider(Gui::ViewProvider*) const;
-    Gui::MDIView* getViewOfViewProvider(Gui::ViewProvider*) const;
+    Gui::MDIView* getViewOfViewProvider(const Gui::ViewProvider*) const;
     Gui::MDIView* getViewOfNode(SoNode*) const;
     /// Create a new view
     MDIView *createView(const Base::Type& typeId);
