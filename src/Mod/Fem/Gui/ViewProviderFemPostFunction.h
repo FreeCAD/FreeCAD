@@ -176,6 +176,7 @@ public:
     ViewProviderFemPostPlaneFunction();
     virtual ~ViewProviderFemPostPlaneFunction();
 
+    virtual SoTransformManip* setupManipulator();
     virtual FunctionWidget* createControlWidget();
 
 protected:

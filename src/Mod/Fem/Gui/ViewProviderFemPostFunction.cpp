@@ -26,7 +26,9 @@
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/draggers/SoCenterballDragger.h>
 # include <Inventor/draggers/SoHandleBoxDragger.h>
+# include <Inventor/draggers/SoJackDragger.h>
 # include <Inventor/manips/SoCenterballManip.h>
+# include <Inventor/manips/SoJackManip.h>
 # include <Inventor/manips/SoHandleBoxManip.h>
 # include <Inventor/manips/SoTransformManip.h>
 # include <Inventor/nodes/SoCoordinate3.h>
@@ -57,6 +59,7 @@
 #include "ActiveAnalysisObserver.h"
 #include "FemSettings.h"
 #include "TaskPostBoxes.h"
+#include "ViewProviderFemPostObject.h"
 
 #include "ui_PlaneWidget.h"
 #include "ui_SphereWidget.h"
@@ -195,7 +198,7 @@ ViewProviderFemPostFunction::~ViewProviderFemPostFunction()
     m_geometrySeperator->unref();
     m_manip->unref();
     m_scale->unref();
-    //transform is unref'd when it is replaced by the dragger
+    //transform is unreferenced when it is replaced by the dragger
 }
 
 void ViewProviderFemPostFunction::attach(App::DocumentObject* pcObj)
@@ -360,7 +363,7 @@ ViewProviderFemPostPlaneFunction::ViewProviderFemPostPlaneFunction() {
 
     sPixmap = "fem-post-geo-plane";
 
-    setAutoScale(true);
+    setAutoScale(false);
 
     //setup the visualisation geometry
     SoCoordinate3* points = new SoCoordinate3();
@@ -379,21 +382,25 @@ ViewProviderFemPostPlaneFunction::~ViewProviderFemPostPlaneFunction() {
 
 }
 
+SoTransformManip* ViewProviderFemPostPlaneFunction::setupManipulator() {
+    return new SoJackManip();
+}
+
 void ViewProviderFemPostPlaneFunction::draggerUpdate(SoDragger* m) {
 
     Fem::FemPostPlaneFunction* func = static_cast<Fem::FemPostPlaneFunction*>(getObject());
-    SoCenterballDragger* dragger = static_cast<SoCenterballDragger*>(m);
+    SoJackDragger* dragger = static_cast<SoJackDragger*>(m);
 
     // the new axis of the plane
     SbRotation rot, scaleDir;
-    const SbVec3f& center = dragger->center.getValue();
+    const SbVec3f& center = dragger->translation.getValue();
 
     SbVec3f norm(0, 0, 1);
     dragger->rotation.getValue().multVec(norm, norm);
     func->Origin.setValue(center[0], center[1], center[2]);
     func->Normal.setValue(norm[0], norm[1], norm[2]);
 
-    SbVec3f t = static_cast<SoCenterballManip*>(getManipulator())->translation.getValue();
+    SbVec3f t = static_cast<SoJackManip*>(getManipulator())->translation.getValue();
     SbVec3f rt, irt;
     dragger->rotation.getValue().multVec(t, rt);
     dragger->rotation.getValue().inverse().multVec(t, irt);
@@ -413,6 +420,37 @@ void ViewProviderFemPostPlaneFunction::updateData(const App::Property* p) {
 
         SbMatrix t, translate;
         t.setRotate(rot);
+
+        
+        // we must inherit the scale of the parent pipeline
+        float scale = 1.0;
+        auto parents = pcObject->getInList();
+        // parents is at the level of the functions container, so we must read the parent of this container
+        for (auto obj : parents) {
+            if (obj->getTypeId() == Base::Type::fromName("Fem::FemPostFunctionProvider")) {
+                auto outerParents = obj->getInList();
+                for (auto objOuter : outerParents) {
+                    if (objOuter->getTypeId() == Base::Type::fromName("Fem::FemPostPipeline")) {
+                        auto vpObject = dynamic_cast<FemGui::ViewProviderFemPostObject*>(
+                            Gui::Application::Instance->getViewProvider(objOuter));
+                        if (vpObject) {
+                            auto propScale = Base::freecad_dynamic_cast<App::PropertyEnumeration>(
+                                vpObject->getPropertyByName("Scale"));
+                            if (propScale) {
+                                scale = (propScale->getValue() == 0) ? 1.0 : 1000.0;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // FEM works with lengths in mm, therefore use a scale factor of 1000 as guess
+        // FIXME: maybe it is better to use the view bounding box to determine a suitable scaling
+        t.setScale(1000 * scale);
+
+
         translate.setTranslate(SbVec3f(trans.x, trans.y, trans.z));
         t.multRight(translate);
         getManipulator()->setMatrix(t);
@@ -572,7 +610,32 @@ void ViewProviderFemPostSphereFunction::updateData(const App::Property* p) {
         double radius = func->Radius.getValue();
 
         SbMatrix t, translate;
-        t.setScale(radius);
+
+        // we must inherit the scale of the parent pipeline
+        float scale = 1.0;
+        auto parents = pcObject->getInList();
+        // parents is at the level of the functions container, so we must read the parent of this container
+        for (auto obj : parents) {
+            if (obj->getTypeId() == Base::Type::fromName("Fem::FemPostFunctionProvider")) {
+                auto outerParents = obj->getInList();
+                for (auto objOuter : outerParents) {
+                    if (objOuter->getTypeId() == Base::Type::fromName("Fem::FemPostPipeline")) {
+                        auto vpObject = dynamic_cast<FemGui::ViewProviderFemPostObject*>(
+                            Gui::Application::Instance->getViewProvider(objOuter));
+                        if (vpObject) {
+                            auto propScale = Base::freecad_dynamic_cast<App::PropertyEnumeration>(
+                                vpObject->getPropertyByName("Scale"));
+                            if (propScale) {
+                                scale = (propScale->getValue() == 0) ? 1.0 : 1000.0;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        t.setScale(radius * scale);
         translate.setTranslate(SbVec3f(trans.x, trans.y, trans.z));
         t.multRight(translate);
         getManipulator()->setMatrix(t);
