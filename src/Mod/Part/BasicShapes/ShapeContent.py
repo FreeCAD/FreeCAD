@@ -8,6 +8,7 @@
 # from buildShapeContent()
 
 import FreeCAD as App
+import Part
 
 def roundVector(v,dec):
     return str([round(v[0],dec), round(v[1],dec), round(v[2],dec)])
@@ -15,11 +16,10 @@ def roundVector(v,dec):
 def buildShapeContent(objArg, decimals=2, advancedShapeContent=True):
     linkName = ""
     if objArg.isDerivedFrom("App::Link"):
-        obj = objArg.getLinkedObject()
         linkName = "<" + objArg.Name + "> "
-    else:
-        obj = objArg
-    shp = obj.Shape
+
+    obj = objArg
+    shp = Part.getShape(objArg)
     typeStr = str(shp.ShapeType)
     lbl = '' if obj.Name == obj.Label else '(' + obj.Label + ')'
     result = linkName + obj.Name + lbl + '\n'
