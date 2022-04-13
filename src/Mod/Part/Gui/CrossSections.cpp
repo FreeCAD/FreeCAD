@@ -200,7 +200,7 @@ void CrossSections::apply()
     std::vector<App::DocumentObject*> obj;
     for (std::vector<App::DocumentObject*>::iterator it = docobjs.begin(); it != docobjs.end(); ++it){
         if (!Part::Feature::getTopoShape(*it).isNull()) {
-            obj.push_back((*it)->getLinkedObject());
+            obj.push_back((*it));
         }
     }
 
