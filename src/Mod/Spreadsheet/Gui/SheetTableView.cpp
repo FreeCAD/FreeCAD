@@ -971,9 +971,9 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent *)
         actionCut->setEnabled(true);
         actionCopy->setEnabled(true);
         actionDel->setEnabled(true);
-        actionSplit->setEnabled(selectedIndexes().size() == 1 &&
+        actionSplit->setEnabled(selectedIndexesRaw().size() == 1 &&
             sheet->isMergedCell(CellAddress(currentIndex().row(),currentIndex().column())));
-        actionMerge->setEnabled(selectedIndexes().size() > 1);
+        actionMerge->setEnabled(selectedIndexesRaw().size() > 1);
     }
 
     auto ranges = selectedRanges();
