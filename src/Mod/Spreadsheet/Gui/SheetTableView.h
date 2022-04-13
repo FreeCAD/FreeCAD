@@ -89,6 +89,7 @@ protected:
     bool event(QEvent *event);
     void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint);
     void mousePressEvent(QMouseEvent* event);
+    void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
     void contextMenuEvent (QContextMenuEvent * e);
 
