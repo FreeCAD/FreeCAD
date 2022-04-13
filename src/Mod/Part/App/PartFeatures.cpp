@@ -83,7 +83,7 @@ App::DocumentObjectExecReturn* RuledSurface::getShape(const App::PropertyLinkSub
                                                       TopoDS_Shape& shape) const
 {
     App::DocumentObject* obj = link.getValue();
-    const Part::TopoShape part = Part::Feature::getShape(obj, "", false, 0, 0, true, false);
+    const Part::TopoShape part = Part::Feature::getTopoShape(obj);
     if (part.isNull()) {
         return new App::DocumentObjectExecReturn("No shape linked.");
     }
