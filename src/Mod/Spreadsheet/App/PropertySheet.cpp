@@ -1016,8 +1016,10 @@ bool PropertySheet::mergeCells(CellAddress from, CellAddress to)
     // Check that this merge is not overlapping other merged cells
     for (int r = from.row(); r <= to.row(); ++r) {
         for (int c = from.col(); c <= to.col(); ++c) {
-            if (mergedCells.find(CellAddress(r, c)) != mergedCells.end())
-                return false;
+            if (mergedCells.find(CellAddress(r, c)) != mergedCells.end()) {
+                    Base::Console().Warning("Cells merging is not possible when already merged cells are in the target range.\n");
+                    return false;
+            }
         }
     }
 
