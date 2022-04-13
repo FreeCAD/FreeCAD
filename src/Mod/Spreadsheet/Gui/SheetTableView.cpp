@@ -274,6 +274,11 @@ std::vector<Range> SheetTableView::selectedRanges() const
     return result;
 }
 
+QModelIndexList SheetTableView::selectedIndexesRaw() const
+{
+    return selectedIndexes();
+}
+
 void SheetTableView::insertRows()
 {
     assert(sheet != nullptr);
@@ -966,7 +971,8 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent *)
         actionCut->setEnabled(true);
         actionCopy->setEnabled(true);
         actionDel->setEnabled(true);
-        actionSplit->setEnabled(true);
+        actionSplit->setEnabled(selectedIndexes().size() == 1 &&
+            sheet->isMergedCell(CellAddress(currentIndex().row(),currentIndex().column())));
         actionMerge->setEnabled(true);
     }
 

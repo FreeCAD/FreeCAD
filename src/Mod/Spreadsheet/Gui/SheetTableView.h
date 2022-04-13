@@ -58,6 +58,7 @@ public:
     void edit(const QModelIndex &index);
     void setSheet(Spreadsheet::Sheet *_sheet);
     std::vector<App::Range> selectedRanges() const;
+    QModelIndexList selectedIndexesRaw() const;
     QString toHtml() const;
 
 public Q_SLOTS:
