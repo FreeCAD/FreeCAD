@@ -750,14 +750,14 @@ Ovo svojstvo je samo za čitanje, budući da broj ovisi o točkama sadržanim un
       <translation>Skaliranje uzorka korištenog kod ovog objekta</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Oblik ovog objekta</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation>Rotacija uzorka korištenog kod ovog objekta</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Oblik ovog objekta</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>

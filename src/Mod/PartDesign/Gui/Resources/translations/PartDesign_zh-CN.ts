@@ -435,12 +435,12 @@
     <message>
       <location filename="../../CommandBody.cpp" line="528"/>
       <source>Set tip</source>
-      <translation>设置标记</translation>
+      <translation>设置结算位置</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="529"/>
       <source>Move the tip of the body</source>
-      <translation>移动实体的标记</translation>
+      <translation>移动实体的结算位置</translation>
     </message>
   </context>
   <context>
@@ -878,7 +878,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="575"/>
       <source>Move tip to selected feature</source>
-      <translation>将提示移至所选特征</translation>
+      <translation>将结算位置移至所选特征</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="620"/>
@@ -951,7 +951,7 @@
     <message>
       <location filename="../../FeaturePickDialog.cpp" line="51"/>
       <source>Feature is located after the Tip feature</source>
-      <translation>特征位于标记特征之后</translation>
+      <translation>特征位于结算位置之后</translation>
     </message>
   </context>
   <context>
@@ -1789,7 +1789,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="75"/>
       <source>Feature is located after the tip feature</source>
-      <translation>特征位于标记特征之后</translation>
+      <translation>特征位于结算位置之后</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="86"/>
@@ -2026,7 +2026,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="71"/>
       <source>ISO metric regular profile</source>
-      <translation type="unfinished">ISO metric regular profile</translation>
+      <translation>ISO 公制常规配置</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="72"/>
@@ -2069,7 +2069,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>列表可以通过拖动重新排序</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="56"/>
@@ -2152,7 +2152,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="103"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>列表可以通过拖动重新排序</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="120"/>
@@ -2190,7 +2190,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>列表可以通过拖动重新排序</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="56"/>
@@ -2238,7 +2238,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>列表可以通过拖动重新排序</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="54"/>
@@ -2333,20 +2333,20 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadParameters.ui" line="65"/>
       <source>Direction/edge:</source>
-      <translation type="unfinished">Direction/edge:</translation>
+      <translation>方向/边缘：</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="72"/>
       <source>Either along the sketch normal
 or select an edge as reference</source>
-      <translation type="unfinished">Either along the sketch normal
-or select an edge as reference</translation>
+      <translation>沿草图方向
+或选择边缘作为参考</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="77"/>
       <location filename="../../TaskPadParameters.cpp" line="698"/>
       <source>Sketch normal</source>
-      <translation type="unfinished">Sketch normal</translation>
+      <translation>草图法向</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="82"/>
@@ -2401,8 +2401,7 @@ the sketch plane's normal vector will be used</translation>
       <location filename="../../TaskPadParameters.ui" line="211"/>
       <source>If unchecked, the length will be
 measured along the specified direction</source>
-      <translation type="unfinished">If unchecked, the length will be
-measured along the specified direction</translation>
+      <translation>如果不选中，长度将按照指定的方向进行测量</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="215"/>
@@ -2412,7 +2411,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPadParameters.ui" line="227"/>
       <source>Offset to face</source>
-      <translation type="unfinished">Offset to face</translation>
+      <translation>相对于面偏移</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="234"/>
@@ -2432,7 +2431,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPadParameters.ui" line="259"/>
       <source>Reverses pad direction</source>
-      <translation type="unfinished">Reverses pad direction</translation>
+      <translation>反转凸台方向</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="262"/>
@@ -2815,7 +2814,7 @@ measured along the specified direction</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="44"/>
       <source>List can be reordered by dragging</source>
-      <translation type="unfinished">List can be reordered by dragging</translation>
+      <translation>列表可以通过拖动重新排序</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="56"/>
@@ -3196,12 +3195,12 @@ click again to end selection</source>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="200"/>
       <source>Create an additive box by its width, height, and length</source>
-      <translation type="unfinished">Create an additive box by its width, height, and length</translation>
+      <translation>创建宽、高、长定义的增料长方体</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="204"/>
       <source>Create an additive cylinder by its radius, height, and angle</source>
-      <translation type="unfinished">Create an additive cylinder by its radius, height, and angle</translation>
+      <translation>创建半径、高、角度定义的增料圆柱体</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="208"/>
@@ -3305,17 +3304,17 @@ click again to end selection</source>
     <message>
       <location filename="../../CommandBody.cpp" line="950"/>
       <source>Move tip</source>
-      <translation type="unfinished">Move tip</translation>
+      <translation>移动结算位置</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="951"/>
       <source>The moved feature appears after the currently set tip.</source>
-      <translation type="unfinished">The moved feature appears after the currently set tip.</translation>
+      <translation>被移动特征出现在当前设置的结算位置之后。</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="952"/>
       <source>Do you want the last feature to be the new tip?</source>
-      <translation type="unfinished">Do you want the last feature to be the new tip?</translation>
+      <translation>您想要最后一个特征成为新的结算位置？</translation>
     </message>
   </context>
   <context>
@@ -3416,17 +3415,17 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="1060"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
-      <translation type="unfinished">Cannot use this command as there is no solid to subtract from.</translation>
+      <translation>无法使用此命令，因为没有可以减去的实体。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1061"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
-      <translation type="unfinished">Ensure that the body contains a feature before attempting a subtractive command.</translation>
+      <translation>在尝试减料命令之前确保实体包含特征。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1082"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
-      <translation type="unfinished">Cannot use selected object. Selected object must belong to the active body</translation>
+      <translation>无法使用所选对象。所选对象必须属于活动实体</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1083"/>
@@ -3454,12 +3453,12 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="1837"/>
       <source>Select an edge, face, or body.</source>
-      <translation type="unfinished">Select an edge, face, or body.</translation>
+      <translation>选择一边，面或体</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1841"/>
       <source>Select an edge, face, or body from a single body.</source>
-      <translation type="unfinished">Select an edge, face, or body from a single body.</translation>
+      <translation>从一单一实体中选择一边，面或体</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1845"/>
@@ -3470,7 +3469,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="1846"/>
       <source>Select an edge, face, or body from an active body.</source>
-      <translation type="unfinished">Select an edge, face, or body from an active body.</translation>
+      <translation>从活动实体中选择边、面或体。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1856"/>
@@ -3500,12 +3499,12 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="2165"/>
       <source>Please create a feature first.</source>
-      <translation type="unfinished">Please create a feature first.</translation>
+      <translation>请先创建一个特征。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2174"/>
       <source>Please select only one feature in an active body.</source>
-      <translation type="unfinished">Please select only one feature in an active body.</translation>
+      <translation>请在一个活动的实体中仅选择一个特征。</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="71"/>
@@ -3586,7 +3585,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="344"/>
       <source>No PartDesign features found that don't belong to a body. Nothing to migrate.</source>
-      <translation type="unfinished">No PartDesign features found that don't belong to a body. Nothing to migrate.</translation>
+      <translation>没有找到不属于实体的零件设计工作台特征。没有可迁移对象。</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="492"/>
@@ -3620,7 +3619,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="565"/>
       <source>Only a solid feature can be the tip of a body.</source>
-      <translation>只有实体特征才能成为实体的标记特征。</translation>
+      <translation>只有实体特征才能成为实体的结算特征。</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="680"/>
@@ -3662,14 +3661,14 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="936"/>
       <source>Dependency violation</source>
-      <translation type="unfinished">Dependency violation</translation>
+      <translation>依赖冲突</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="937"/>
       <source>Early feature must not depend on later feature.
 
 </source>
-      <translation type="unfinished">Early feature must not depend on later feature.
+      <translation>较早的特征不能依赖于较后的特征。
 
 </translation>
     </message>
@@ -3851,12 +3850,12 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="259"/>
       <source>Synchronize</source>
-      <translation type="unfinished">Synchronize</translation>
+      <translation>同步</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="261"/>
       <source>Select bound object</source>
-      <translation type="unfinished">Select bound object</translation>
+      <translation>选择绑定对象</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="173"/>
@@ -3898,9 +3897,7 @@ This feature is broken and can't be edited.</source>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
-      <translation type="unfinished">Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
-If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
-Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</translation>
+      <translation>注意: 如果您选择迁移, 您将无法使用旧的 FreeCAD 版本编辑该文件。如果你拒绝迁移, 你将无法使用新的零件设计工作台功能, 如实体和零部件。因此, 您也无法在装配工作台中使用您的零部件。但是以后您仍然可以用 "零件设计-迁移..."来完成迁移。</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="166"/>
@@ -3920,7 +3917,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../TaskPadParameters.cpp" line="362"/>
       <source>Sketch normal</source>
-      <translation type="unfinished">Sketch normal</translation>
+      <translation>草图法向</translation>
     </message>
   </context>
   <context>
@@ -3938,7 +3935,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="40"/>
       <source>Sprocket Reference</source>
-      <translation type="unfinished">Sprocket Reference</translation>
+      <translation>链轮参考</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="48"/>

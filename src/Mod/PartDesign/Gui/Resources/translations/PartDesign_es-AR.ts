@@ -11,7 +11,7 @@
     <message>
       <location filename="InvoluteGearFeature.py" line="61"/>
       <source>Creates or edit the involute gear definition.</source>
-      <translation>Crear o editar la precisión de la herramienta definida.</translation>
+      <translation>Crea o edita la definición de engranaje evolvente.</translation>
     </message>
   </context>
   <context>
@@ -24,7 +24,7 @@
     <message>
       <location filename="SprocketFeature.py" line="66"/>
       <source>Creates or edit the sprocket definition.</source>
-      <translation>Crear o editar la precisión del avance.</translation>
+      <translation>Crea o edita la definición de rueda dentada.</translation>
     </message>
   </context>
   <context>
@@ -32,12 +32,12 @@
     <message>
       <location filename="WizardShaft.py" line="211"/>
       <source>Shaft design wizard...</source>
-      <translation>Asistente de diseño de engranajes.</translation>
+      <translation>Asistente de diseño de ejes...</translation>
     </message>
     <message>
       <location filename="WizardShaft.py" line="212"/>
       <source>Start the shaft design wizard</source>
-      <translation>Iniciar el asistente de diseño de engranajes.</translation>
+      <translation>Inicia el asistente de diseño de ejes</translation>
     </message>
   </context>
   <context>
@@ -98,7 +98,7 @@
     <message>
       <location filename="../../Command.cpp" line="1701"/>
       <source>Sweep a selected sketch along a helix</source>
-      <translation>Hacer un barrido al croquis seleccionado a lo largo de una hélice</translation>
+      <translation>Barrido del croquis seleccionado a lo largo de una hélice</translation>
     </message>
   </context>
   <context>
@@ -152,7 +152,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="91"/>
       <source>Create a new body and make it active</source>
-      <translation>Crear un nuevo cuerpo y activarlo</translation>
+      <translation>Crea un nuevo cuerpo y lo hace activo</translation>
     </message>
   </context>
   <context>
@@ -188,7 +188,7 @@
     <message>
       <location filename="../../Command.cpp" line="252"/>
       <source>Create a new local coordinate system</source>
-      <translation>Crear un nuevo sistema de coordenadas local</translation>
+      <translation>Crea un nuevo sistema de coordenadas local</translation>
     </message>
   </context>
   <context>
@@ -224,7 +224,7 @@
     <message>
       <location filename="../../Command.cpp" line="432"/>
       <source>Create a new clone</source>
-      <translation>Crear un nuevo clon</translation>
+      <translation>Crea un nuevo clon</translation>
     </message>
   </context>
   <context>
@@ -242,7 +242,7 @@
     <message>
       <location filename="../../Command.cpp" line="1992"/>
       <source>Make a draft on a face</source>
-      <translation>Hacer una inclinación en una cara</translation>
+      <translation>Hace una inclinación en una cara</translation>
     </message>
   </context>
   <context>
@@ -278,7 +278,7 @@
     <message>
       <location filename="../../Command.cpp" line="1935"/>
       <source>Make a fillet on an edge, face or body</source>
-      <translation>Crear un redondeado en una arista, cara o cuerpo</translation>
+      <translation>Crea un redondeado en una arista, cara o cuerpo</translation>
     </message>
   </context>
   <context>
@@ -314,7 +314,7 @@
     <message>
       <location filename="../../Command.cpp" line="1332"/>
       <source>Create a hole with the selected sketch</source>
-      <translation>Crear un agujero con el croquis seleccionado</translation>
+      <translation>Crea un agujero en el croquis seleccionado</translation>
     </message>
   </context>
   <context>
@@ -332,7 +332,7 @@
     <message>
       <location filename="../../Command.cpp" line="196"/>
       <source>Create a new datum line</source>
-      <translation>Crear una nueva línea de referencia</translation>
+      <translation>Crea una nueva línea de referencia</translation>
     </message>
   </context>
   <context>
@@ -350,7 +350,7 @@
     <message>
       <location filename="../../Command.cpp" line="2259"/>
       <source>Create a linear pattern feature</source>
-      <translation>Crear un proceso de patrón lineal</translation>
+      <translation>Crea un proceso de patrón lineal</translation>
     </message>
   </context>
   <context>
@@ -386,7 +386,7 @@
     <message>
       <location filename="../../Command.cpp" line="2197"/>
       <source>Create a mirrored feature</source>
-      <translation>Crear un proceso de simetría</translation>
+      <translation>Crea un proceso de simetría</translation>
     </message>
   </context>
   <context>
@@ -458,7 +458,7 @@
     <message>
       <location filename="../../Command.cpp" line="2437"/>
       <source>Create a multitransform feature</source>
-      <translation>Crear un proceso de multi-transformación</translation>
+      <translation>Crea un proceso de multi-transformación</translation>
     </message>
   </context>
   <context>
@@ -494,7 +494,7 @@
     <message>
       <location filename="../../Command.cpp" line="1231"/>
       <source>Pad a selected sketch</source>
-      <translation>Extruir croquis seleccionado</translation>
+      <translation>Extruye el croquis seleccionado</translation>
     </message>
   </context>
   <context>
@@ -512,7 +512,7 @@
     <message>
       <location filename="../../Command.cpp" line="168"/>
       <source>Create a new datum plane</source>
-      <translation>Crear un nuevo plano de referencia</translation>
+      <translation>Crea un nuevo plano de referencia</translation>
     </message>
   </context>
   <context>
@@ -530,7 +530,7 @@
     <message>
       <location filename="../../Command.cpp" line="1285"/>
       <source>Create a pocket with the selected sketch</source>
-      <translation>Crear un hueco con el croquis seleccionado</translation>
+      <translation>Crea un hueco con el croquis seleccionado</translation>
     </message>
   </context>
   <context>
@@ -548,7 +548,7 @@
     <message>
       <location filename="../../Command.cpp" line="224"/>
       <source>Create a new datum point</source>
-      <translation>Crear un nuevo punto de referencia</translation>
+      <translation>Crea un nuevo punto de referencia</translation>
     </message>
   </context>
   <context>
@@ -566,7 +566,7 @@
     <message>
       <location filename="../../Command.cpp" line="2323"/>
       <source>Create a polar pattern feature</source>
-      <translation>Crear proceso de patrón polar</translation>
+      <translation>Crea un proceso de patrón polar</translation>
     </message>
   </context>
   <context>
@@ -584,7 +584,7 @@
     <message>
       <location filename="../../Command.cpp" line="1378"/>
       <source>Revolve a selected sketch</source>
-      <translation>Revolucionar un croquis seleccionado</translation>
+      <translation>Revoluciona un croquis seleccionado</translation>
     </message>
   </context>
   <context>
@@ -670,7 +670,7 @@
     <message>
       <location filename="../../Command.cpp" line="1652"/>
       <source>Loft a selected profile through other profile sections and remove it from the body</source>
-      <translation>Puentea un perfil seleccionado a través de otras secciones de perfil y lo elimina del cuerpo</translation>
+      <translation>Interpola un perfil seleccionado a través de otras secciones de perfil y lo elimina del cuerpo</translation>
     </message>
   </context>
   <context>
@@ -750,7 +750,7 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="219"/>
       <source>Additive Torus</source>
-      <translation>Rosca Aditiva</translation>
+      <translation>Toro Aditivo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="223"/>
@@ -804,7 +804,7 @@
     <message>
       <location filename="../../CommandPrimitive.cpp" line="375"/>
       <source>Subtractive Torus</source>
-      <translation>Rosca Sustractiva</translation>
+      <translation>Toro sustractivo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="379"/>
@@ -2346,7 +2346,7 @@ o seleccione una arista como referencia</translation>
       <location filename="../../TaskPadParameters.ui" line="77"/>
       <location filename="../../TaskPadParameters.cpp" line="698"/>
       <source>Sketch normal</source>
-      <translation>Croquis normal</translation>
+      <translation>Normal al croquis</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="82"/>
@@ -2406,7 +2406,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadParameters.ui" line="215"/>
       <source>Length along sketch normal</source>
-      <translation>Longitud a lo largo del croquis normal</translation>
+      <translation>Longitud a lo largo de la normal al croquis</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="227"/>
@@ -3195,42 +3195,42 @@ haga clic de nuevo para finalizar la selección</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="200"/>
       <source>Create an additive box by its width, height, and length</source>
-      <translation>Crear una caja aditiva por su anchura, altura y longitud</translation>
+      <translation>Crea un cubo aditivo por su ancho, alto y largo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="204"/>
       <source>Create an additive cylinder by its radius, height, and angle</source>
-      <translation>Crear un cilindro aditivo por su radio, altura y ángulo</translation>
+      <translation>Crea un cilindro aditivo por su radio, altura y ángulo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="208"/>
       <source>Create an additive sphere by its radius and various angles</source>
-      <translation>Crear una esfera aditiva por su radio y varios ángulos</translation>
+      <translation>Crea una esfera aditiva por su radio y varios ángulos</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="212"/>
       <source>Create an additive cone</source>
-      <translation>Crear un cono aditivo</translation>
+      <translation>Crea un cono aditivo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="216"/>
       <source>Create an additive ellipsoid</source>
-      <translation>Crear un elipsoide aditivo</translation>
+      <translation>Crea un elipsoide aditivo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="220"/>
       <source>Create an additive torus</source>
-      <translation>Crear una rosca aditiva</translation>
+      <translation>Crea un toro aditivo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="224"/>
       <source>Create an additive prism</source>
-      <translation>Crear un prisma aditivo</translation>
+      <translation>Crea un prisma aditivo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="228"/>
       <source>Create an additive wedge</source>
-      <translation>Crear una cuña aditiva</translation>
+      <translation>Crea una cuña aditiva</translation>
     </message>
   </context>
   <context>
@@ -3238,42 +3238,42 @@ haga clic de nuevo para finalizar la selección</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="356"/>
       <source>Create a subtractive box by its width, height and length</source>
-      <translation>Crear una caja sustractiva por su ancho, alto y largo</translation>
+      <translation>Crea un cubo sustractivo por su ancho, alto y largo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="360"/>
       <source>Create a subtractive cylinder by its radius, height and angle</source>
-      <translation>Crear un cilindro sustractivo por su radio, altura y ángulo</translation>
+      <translation>Crea un cilindro sustractivo por su radio, altura y ángulo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="364"/>
       <source>Create a subtractive sphere by its radius and various angles</source>
-      <translation>Crear una esfera sustractiva por su radio y varios ángulos</translation>
+      <translation>Crea una esfera sustractiva por su radio y varios ángulos</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="368"/>
       <source>Create a subtractive cone</source>
-      <translation>Crear un cono sustractivo</translation>
+      <translation>Crea un cono sustractivo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="372"/>
       <source>Create a subtractive ellipsoid</source>
-      <translation>Crear un elipsoide sustractivo</translation>
+      <translation>Crea un elipsoide sustractivo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="376"/>
       <source>Create a subtractive torus</source>
-      <translation>Crear una rosca sustractiva</translation>
+      <translation>Crea un toro sustractivo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="380"/>
       <source>Create a subtractive prism</source>
-      <translation>Crear un prisma sustractivo</translation>
+      <translation>Crea un prisma sustractivo</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="384"/>
       <source>Create a subtractive wedge</source>
-      <translation>Crear una cuña sustractiva</translation>
+      <translation>Crea una cuña sustractiva</translation>
     </message>
   </context>
   <context>
@@ -3918,7 +3918,7 @@ Aunque podrá migrar en cualquier momento después con 'Part Design -&gt; Migrat
     <message>
       <location filename="../../TaskPadParameters.cpp" line="362"/>
       <source>Sketch normal</source>
-      <translation>Croquis normal</translation>
+      <translation>Normal al croquis</translation>
     </message>
   </context>
   <context>
@@ -4535,7 +4535,7 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>Create a datum</source>
-      <translation>Crear un datum</translation>
+      <translation>Crear geometría de referencia</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
@@ -4555,7 +4555,7 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
       <source>Apply a dress-up feature</source>
-      <translation>Aplicar una característica de envolver</translation>
+      <translation>Aplicar una característica de terminación</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
@@ -4570,7 +4570,7 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Shaft design wizard</source>
-      <translation>Asistente de diseño de eje</translation>
+      <translation>Asistente de diseño de ejes</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="67"/>

@@ -317,12 +317,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1096"/>
       <source>Create rectangles</source>
-      <translation type="unfinished">Create rectangles</translation>
+      <translation>Crear Rectángulo</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1097"/>
       <source>Creates a rectangle in the sketch</source>
-      <translation type="unfinished">Creates a rectangle in the sketch</translation>
+      <translation>Fai un rectángulo no esbozo</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1180"/>
@@ -1318,7 +1318,7 @@ as mirroring reference.</translation>
     <message>
       <location filename="../../Command.cpp" line="144"/>
       <source>Create a new sketch.</source>
-      <translation type="unfinished">Create a new sketch.</translation>
+      <translation>Crear un novo esbozo.</translation>
     </message>
   </context>
   <context>
@@ -1326,7 +1326,7 @@ as mirroring reference.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1945"/>
       <source>Rectangular array</source>
-      <translation type="unfinished">Rectangular array</translation>
+      <translation>Matriz rectangular</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1946"/>
@@ -3314,12 +3314,12 @@ As combinacións aceptadas son: dúas curvas; cabo e curva; dous cabos; dúas cu
     <message>
       <location filename="../../TaskSketcherConstrains.cpp" line="488"/>
       <source>Deactivate</source>
-      <translation type="unfinished">Deactivate</translation>
+      <translation>Desactivar</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.cpp" line="488"/>
       <source>Activate</source>
-      <translation type="unfinished">Activate</translation>
+      <translation>Activar</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.cpp" line="492"/>
@@ -3402,7 +3402,7 @@ As combinacións aceptadas son: dúas curvas; cabo e curva; dous cabos; dúas cu
     <message>
       <location filename="../../EditDatumDialog.cpp" line="115"/>
       <source>Weight:</source>
-      <translation type="unfinished">Weight:</translation>
+      <translation>Peso:</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="119"/>
@@ -3766,7 +3766,7 @@ Requires to re-enter edit mode to take effect.</translation>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="20"/>
       <source>Working colors</source>
-      <translation type="unfinished">Working colors</translation>
+      <translation>Cores de traballo</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="34"/>
@@ -4090,7 +4090,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</transla
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="256"/>
       <source>%N = %V</source>
-      <translation type="unfinished">%N = %V</translation>
+      <translation>%N = %V</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="259"/>
@@ -4360,7 +4360,7 @@ Pola contra, non se atoparon constricións ligadas os cabos.</translation>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="50"/>
       <source>Geometric</source>
-      <translation type="unfinished">Geometric</translation>
+      <translation>Xeométrico</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="55"/>
@@ -4415,7 +4415,7 @@ Pola contra, non se atoparon constricións ligadas os cabos.</translation>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="105"/>
       <source>Equality</source>
-      <translation type="unfinished">Equality</translation>
+      <translation>Igualdade</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="110"/>
@@ -4435,12 +4435,12 @@ Pola contra, non se atoparon constricións ligadas os cabos.</translation>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="125"/>
       <source>Horizontal Distance</source>
-      <translation type="unfinished">Horizontal Distance</translation>
+      <translation>Distancia Horizontal</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="130"/>
       <source>Vertical Distance</source>
-      <translation type="unfinished">Vertical Distance</translation>
+      <translation>Distancia vertical</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="135"/>
@@ -4470,7 +4470,7 @@ Pola contra, non se atoparon constricións ligadas os cabos.</translation>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="160"/>
       <source>Internal Alignment</source>
-      <translation type="unfinished">Internal Alignment</translation>
+      <translation>Aliñación interna</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="195"/>
@@ -4495,7 +4495,7 @@ Pola contra, non se atoparon constricións ligadas os cabos.</translation>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="238"/>
       <source>Hide All</source>
-      <translation type="unfinished">Hide All</translation>
+      <translation>Agochar todo</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="244"/>
@@ -4505,7 +4505,7 @@ Pola contra, non se atoparon constricións ligadas os cabos.</translation>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="247"/>
       <source>Automation</source>
-      <translation type="unfinished">Automation</translation>
+      <translation>Automatización</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="265"/>
@@ -4596,7 +4596,7 @@ Pola contra, non se atoparon constricións ligadas os cabos.</translation>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="69"/>
       <source>Mode:</source>
-      <translation type="unfinished">Mode:</translation>
+      <translation>Modo:</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="89"/>
@@ -4625,7 +4625,7 @@ Pola contra, non se atoparon constricións ligadas os cabos.</translation>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="104"/>
       <source>External</source>
-      <translation type="unfinished">External</translation>
+      <translation>Externo</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="133"/>
@@ -5350,7 +5350,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1181"/>
       <source>Create a rectangle</source>
-      <translation type="unfinished">Create a rectangle</translation>
+      <translation>Crear Rectángulo</translation>
     </message>
   </context>
   <context>
@@ -5688,7 +5688,7 @@ to determine whether a solution converges or not</translation>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="301"/>
       <source>QR algorithm:</source>
-      <translation type="unfinished">QR algorithm:</translation>
+      <translation>Algoritmo QR:</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="308"/>

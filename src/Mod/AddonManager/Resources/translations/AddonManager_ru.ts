@@ -32,12 +32,12 @@
     <message>
       <location filename="package_details.py" line="121"/>
       <source>Installed on {date}</source>
-      <translation>Установлена {date}</translation>
+      <translation>Установлено {date}</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="567"/>
       <source>Installed</source>
-      <translation>Установлен</translation>
+      <translation>Установлено</translation>
     </message>
     <message>
       <location filename="package_details.py" line="96"/>
@@ -47,32 +47,32 @@
     <message>
       <location filename="package_details.py" line="103"/>
       <source>Unknown version (no package.xml file found)</source>
-      <translation type="unfinished">Unknown version (no package.xml file found)</translation>
+      <translation>Неизвестная версия (файл package.xml не найден)</translation>
     </message>
     <message>
       <location filename="package_details.py" line="108"/>
       <source>installed on</source>
-      <translation type="unfinished">installed on</translation>
+      <translation>установлен</translation>
     </message>
     <message>
       <location filename="package_details.py" line="118"/>
       <source>installed</source>
-      <translation type="unfinished">installed</translation>
+      <translation>установлен</translation>
     </message>
     <message>
       <location filename="package_details.py" line="126"/>
       <source>Update available to version</source>
-      <translation type="unfinished">Update available to version</translation>
+      <translation>Доступно обновление до версии</translation>
     </message>
     <message>
       <location filename="package_details.py" line="144"/>
       <source>This is the latest version available</source>
-      <translation type="unfinished">This is the latest version available</translation>
+      <translation>Это последняя доступная версия</translation>
     </message>
     <message>
       <location filename="package_details.py" line="151"/>
       <source>Updated, please restart FreeCAD to use</source>
-      <translation type="unfinished">Updated, please restart FreeCAD to use</translation>
+      <translation>Обновлено, пожалуйста, перезапустите FreeCAD для использования</translation>
     </message>
     <message>
       <location filename="package_details.py" line="159"/>
@@ -82,27 +82,27 @@
     <message>
       <location filename="package_details.py" line="163"/>
       <source>Automatic update checks disabled</source>
-      <translation type="unfinished">Automatic update checks disabled</translation>
+      <translation>Автоматическая проверка обновлений отключена</translation>
     </message>
     <message>
       <location filename="package_details.py" line="172"/>
       <source>Installation location</source>
-      <translation type="unfinished">Installation location</translation>
+      <translation>Место установки</translation>
     </message>
     <message>
       <location filename="package_details.py" line="240"/>
       <source>WARNING: This addon is obsolete</source>
-      <translation>ВНИМАНИЕ: Это дополнение устарел</translation>
+      <translation>ВНИМАНИЕ: Это дополнение устарело</translation>
     </message>
     <message>
       <location filename="package_details.py" line="250"/>
       <source>WARNING: This addon is Python 2 Only</source>
-      <translation>ВНИМАНИЕ: Это дополнение только Python 2</translation>
+      <translation>ВНИМАНИЕ: Это дополнение только для Python 2</translation>
     </message>
     <message>
       <location filename="package_details.py" line="312"/>
       <source>Fetching README.md from package repository</source>
-      <translation type="unfinished">Fetching README.md from package repository</translation>
+      <translation>Получение README.md из репозитория пакетов</translation>
     </message>
     <message>
       <location filename="package_details.py" line="354"/>
@@ -112,47 +112,47 @@
     <message numerus="yes">
       <location filename="package_details.py" line="431"/>
       <source>Delete cached version of this README and re-download</source>
-      <translation type="unfinished">
-        <numerusform>Delete cached version of this README and re-download</numerusform>
-        <numerusform>Delete cached version of this README and re-download</numerusform>
-        <numerusform>Delete cached version of this README and re-download</numerusform>
-        <numerusform>Delete cached version of this README and re-download</numerusform>
+      <translation>
+        <numerusform>Удалите кэшированную версию этой README и загрузите заново</numerusform>
+        <numerusform>Удалите кэшированные версии этих README и загрузите заново</numerusform>
+        <numerusform>Удалите кэшированные версии этих README и загрузите заново</numerusform>
+        <numerusform>Удалите кэшированные версии этих README и загрузите заново</numerusform>
       </translation>
     </message>
     <message>
       <location filename="package_details.py" line="510"/>
       <source>No URL or wiki page provided by this macro</source>
-      <translation type="unfinished">No URL or wiki page provided by this macro</translation>
+      <translation>Нет ссылки или вики-страницы, предоставленной этим макросом</translation>
     </message>
     <message>
       <location filename="package_details.py" line="563"/>
       <source>Could not load README data from URL {}</source>
-      <translation>Не удалось загрузить данные README из URL-адреса {}</translation>
+      <translation>Не удалось загрузить данные README по ссылке {}</translation>
     </message>
     <message>
       <location filename="package_details.py" line="577"/>
       <source>Success</source>
-      <translation>Готово</translation>
+      <translation>Успешно</translation>
     </message>
     <message>
       <location filename="package_details.py" line="600"/>
       <source>Changed to git ref &apos;{}&apos; -- please restart to use Addon.</source>
-      <translation type="unfinished">Changed to git ref &apos;{}&apos; -- please restart to use Addon.</translation>
+      <translation>Изменено на git ref '{}' -- пожалуйста, перезапустите программу, чтобы использовать дополнение.</translation>
     </message>
     <message>
       <location filename="package_details.py" line="636"/>
       <source>Page JavaScript reported</source>
-      <translation type="unfinished">Page JavaScript reported</translation>
+      <translation>Страница JavaScript отправлена</translation>
     </message>
     <message>
       <location filename="package_details.py" line="407"/>
       <source>Install</source>
-      <translation type="unfinished">Install</translation>
+      <translation>Установить</translation>
     </message>
     <message>
       <location filename="package_details.py" line="410"/>
       <source>Uninstall</source>
-      <translation type="unfinished">Uninstall</translation>
+      <translation>Удалить</translation>
     </message>
     <message>
       <location filename="package_details.py" line="413"/>
@@ -162,12 +162,12 @@
     <message>
       <location filename="package_details.py" line="416"/>
       <source>Check for Update</source>
-      <translation>Проверить наличие обновлений</translation>
+      <translation>Проверить обновления</translation>
     </message>
     <message>
       <location filename="package_details.py" line="419"/>
       <source>Run Macro</source>
-      <translation type="unfinished">Run Macro</translation>
+      <translation>Выполнить макрос</translation>
     </message>
     <message>
       <location filename="package_details.py" line="786"/>
@@ -187,57 +187,57 @@
     <message>
       <location filename="package_details.py" line="424"/>
       <source>Return to package list</source>
-      <translation type="unfinished">Return to package list</translation>
+      <translation>Вернуться к списку пакетов</translation>
     </message>
     <message numerus="yes">
       <location filename="package_details.py" line="800"/>
       <source>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</source>
-      <translation type="unfinished">
-        <numerusform>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</numerusform>
-        <numerusform>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</numerusform>
-        <numerusform>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</numerusform>
-        <numerusform>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</numerusform>
+      <translation>
+        <numerusform>Привязка QtWebEngine Python не установлена, используйте резервный README. Смотрите подробности отчёта и инструкции по установке.</numerusform>
+        <numerusform>Привязки QtWebEngine Python не установлены, используйте резервный README. Смотрите подробности отчёта и инструкции по установке.</numerusform>
+        <numerusform>Привязки QtWebEngine Python не установлены, используйте резервный README. Смотрите подробности отчёта и инструкции по установке.</numerusform>
+        <numerusform>Привязки QtWebEngine Python не установлены, используйте резервный README. Смотрите подробности отчёта и инструкции по установке.</numerusform>
       </translation>
     </message>
     <message>
       <location filename="package_list.py" line="119"/>
       <source>Filter is valid</source>
-      <translation type="unfinished">Filter is valid</translation>
+      <translation>Фильтр действителен</translation>
     </message>
     <message>
       <location filename="package_list.py" line="125"/>
       <source>Filter regular expression is invalid</source>
-      <translation type="unfinished">Filter regular expression is invalid</translation>
+      <translation>Регулярное выражение фильтра недопустимо</translation>
     </message>
     <message>
       <location filename="package_list.py" line="207"/>
       <source>Click for details about package {}</source>
-      <translation>Нажмите для подробностей о пакете {}</translation>
+      <translation>Щёлкните для подробностей о пакете {}</translation>
     </message>
     <message>
       <location filename="package_list.py" line="211"/>
       <source>Click for details about workbench {}</source>
-      <translation type="unfinished">Click for details about workbench {}</translation>
+      <translation>Щёлкните для подробностей о верстаке {}</translation>
     </message>
     <message>
       <location filename="package_list.py" line="215"/>
       <source>Click for details about macro {}</source>
-      <translation>Нажмите для подробностей о макросе {}</translation>
+      <translation>Щёлкните для подробностей о макросе {}</translation>
     </message>
     <message>
       <location filename="package_list.py" line="326"/>
       <source>Maintainer</source>
-      <translation type="unfinished">Maintainer</translation>
+      <translation>Разработчик</translation>
     </message>
     <message>
       <location filename="package_list.py" line="330"/>
       <source>Maintainers:</source>
-      <translation type="unfinished">Maintainers:</translation>
+      <translation>Разработчики:</translation>
     </message>
     <message>
       <location filename="package_list.py" line="364"/>
       <source>Tags</source>
-      <translation>Теги</translation>
+      <translation>Метки</translation>
     </message>
     <message>
       <location filename="package_list.py" line="371"/>
@@ -262,7 +262,7 @@
     <message>
       <location filename="package_list.py" line="414"/>
       <source>Pending restart</source>
-      <translation type="unfinished">Pending restart</translation>
+      <translation>Ожидает перезапуска</translation>
     </message>
     <message>
       <location filename="package_list.py" line="498"/>
@@ -277,17 +277,17 @@
     <message>
       <location filename="package_list.py" line="180"/>
       <source>Click for details about package</source>
-      <translation type="unfinished">Click for details about package</translation>
+      <translation>Щёлкните для подробностей о пакете</translation>
     </message>
     <message>
       <location filename="package_list.py" line="185"/>
       <source>Click for details about workbench</source>
-      <translation type="unfinished">Click for details about workbench</translation>
+      <translation>Щёлкните для подробностей о верстаке</translation>
     </message>
     <message>
       <location filename="package_list.py" line="190"/>
       <source>Click for details about macro</source>
-      <translation type="unfinished">Click for details about macro</translation>
+      <translation>Щёлкните для подробностей о макросе</translation>
     </message>
     <message>
       <location filename="package_list.py" line="376"/>
@@ -302,17 +302,17 @@
     <message>
       <location filename="package_list.py" line="383"/>
       <source>Installed on</source>
-      <translation type="unfinished">Installed on</translation>
+      <translation>Установлен</translation>
     </message>
     <message>
       <location filename="package_list.py" line="394"/>
       <source>Available version</source>
-      <translation type="unfinished">Available version</translation>
+      <translation>Доступная версия</translation>
     </message>
     <message>
       <location filename="package_list.py" line="566"/>
       <source>Show Addons containing:</source>
-      <translation type="unfinished">Show Addons containing:</translation>
+      <translation>Показать дополнения, содержащие:</translation>
     </message>
     <message>
       <location filename="package_list.py" line="569"/>
@@ -332,7 +332,7 @@
     <message>
       <location filename="package_list.py" line="578"/>
       <source>Preference Packs</source>
-      <translation type="unfinished">Preference Packs</translation>
+      <translation>Настройки пакетов</translation>
     </message>
     <message>
       <location filename="package_list.py" line="692"/>
@@ -347,7 +347,7 @@
     <message>
       <location filename="package_list.py" line="702"/>
       <source>Not installed</source>
-      <translation>Не установлено</translation>
+      <translation>Не установлен</translation>
     </message>
     <message>
       <location filename="package_list.py" line="582"/>
@@ -363,7 +363,7 @@
       <location filename="addonmanager_workers.py" line="115"/>
       <source>Checking network connection...
 </source>
-      <translation>Проверка сетевого соединение...
+      <translation>Проверка сетевого подключения...
 </translation>
     </message>
     <message>
@@ -374,12 +374,12 @@
     <message>
       <location filename="addonmanager_workers.py" line="172"/>
       <source>Workbenches list was updated.</source>
-      <translation>Список рабочих окружений обновлен.</translation>
+      <translation>Список верстаков обновлен.</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="261"/>
       <source>Failed loading</source>
-      <translation type="unfinished">Failed loading</translation>
+      <translation>Не удалось загрузить</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="296"/>
@@ -404,27 +404,27 @@
     <message>
       <location filename="addonmanager_workers.py" line="367"/>
       <source>Unable to fetch git updates for workbench</source>
-      <translation type="unfinished">Unable to fetch git updates for workbench</translation>
+      <translation>Не удалось получить обновления git для верстака</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="391"/>
       <source>Retrieving info from</source>
-      <translation>Получение информации от</translation>
+      <translation>Получение информации из</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="419"/>
       <source>Failed to read metadata from</source>
-      <translation type="unfinished">Failed to read metadata from</translation>
+      <translation>Не удалось прочитать метаданные из</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="426"/>
       <source>git fetch failed for {}</source>
-      <translation type="unfinished">git fetch failed for {}</translation>
+      <translation>не удалось получить git для {}</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="429"/>
       <source>git fetch failed for {wb.name}</source>
-      <translation type="unfinished">git fetch failed for {wb.name}</translation>
+      <translation>не удалось получить git для {wb.name}</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="433"/>
@@ -439,12 +439,12 @@
     <message>
       <location filename="addonmanager_workers.py" line="439"/>
       <source>git pull failed for {wb.name}</source>
-      <translation>git pull не удалось для {wb.name}</translation>
+      <translation>не удалось получить git для {wb.name}</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="514"/>
       <source>Done locating macros.</source>
-      <translation type="unfinished">Done locating macros.</translation>
+      <translation>Поиск макросов выполнен.</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="521"/>
@@ -474,12 +474,12 @@
     <message>
       <location filename="addonmanager_workers.py" line="564"/>
       <source>This workbench may no longer be maintained and installing it on a Python 3 system will more than likely result in errors at startup or while in use.</source>
-      <translation>Этот верстак больше не может быть поддержан, и установка его на систему с Python 3, вероятно, вызовет ошибки при запуске или во время использования.</translation>
+      <translation>Этот верстак может больше не поддерживаться, и установка его на систему с Python 3, вероятно, вызовет ошибки при запуске или во время использования.</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="608"/>
       <source>An error occurred fetching macros from GitHub</source>
-      <translation>Произошла ошибка при извлечение макросов из GitHub</translation>
+      <translation>Произошла ошибка при получении макроса из GitHub</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="646"/>
@@ -499,7 +499,7 @@
     <message>
       <location filename="addonmanager_workers.py" line="697"/>
       <source>Caching macro code...</source>
-      <translation>Кэширование макрокода...</translation>
+      <translation>Кэширование кода макроса...</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="700"/>
@@ -544,7 +544,7 @@
     <message>
       <location filename="addonmanager_workers.py" line="824"/>
       <source>Retrieving info from {}</source>
-      <translation>Получение информации из</translation>
+      <translation>Получение информации от {}</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="835"/>
@@ -572,9 +572,24 @@
       <translation>Сначала установите недостающие компоненты.</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="915"/>
+      <source>Retrieving macro description...</source>
+      <translation>Получение описания макроса...</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="653"/>
+      <source>Retrieving info from git</source>
+      <translation>Получение информации из git</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="873"/>
       <source>Error: Unable to locate zip from</source>
       <translation>Ошибка: Не удается найти zip из</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="656"/>
+      <source>Retrieving info from wiki</source>
+      <translation>Получение информации из вики</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="880"/>
@@ -587,59 +602,44 @@
       <translation>Успешно установлено</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="915"/>
-      <source>Retrieving macro description...</source>
-      <translation type="unfinished">Retrieving macro description...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="653"/>
-      <source>Retrieving info from git</source>
-      <translation>Получение информации из git</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="656"/>
-      <source>Retrieving info from wiki</source>
-      <translation>Получение информации из вики</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="1013"/>
       <source>Error updating module</source>
       <translation>Ошибка обновления модуля</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1075"/>
-      <source>Error updating module </source>
-      <translation type="unfinished">Error updating module </translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="1078"/>
       <source>Please fix manually</source>
-      <translation type="unfinished">Please fix manually</translation>
+      <translation>Пожалуйста, исправьте вручную</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1075"/>
+      <source>Error updating module </source>
+      <translation>Ошибка обновления модуля </translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1220"/>
       <source>Error: Unable to locate ZIP from</source>
-      <translation type="unfinished">Error: Unable to locate ZIP from</translation>
+      <translation>Ошибка: Не удается найти ZIP из</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1403"/>
       <source>Retrieving package metadata...</source>
-      <translation type="unfinished">Retrieving package metadata...</translation>
+      <translation>Получение метаданных пакета...</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1405"/>
       <source>Failed to execute pip. Returned error was:</source>
-      <translation type="unfinished">Failed to execute pip. Returned error was:</translation>
+      <translation>Не удалось выполнить pip. Возникла ошибка:</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1611"/>
       <source>Downloaded package.xml for {}</source>
-      <translation type="unfinished">Downloaded package.xml for {}</translation>
+      <translation>Загружен package.xml для {}</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1641"/>
       <source>Downloaded metadata.txt for {}</source>
-      <translation type="unfinished">Downloaded metadata.txt for {}</translation>
+      <translation>Загружено metadata.txt для {}</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1715"/>
@@ -669,7 +669,7 @@
     <message>
       <location filename="addonmanager_metadata.py" line="135"/>
       <source>Failed to connect to</source>
-      <translation type="unfinished">Failed to connect to</translation>
+      <translation>Не удалось подключиться к</translation>
     </message>
     <message>
       <location filename="addonmanager_metadata.py" line="220"/>
@@ -696,7 +696,7 @@
       <location filename="change_branch.py" line="178"/>
       <source>Tag</source>
       <comment>git terminology</comment>
-      <translation type="unfinished">Tag</translation>
+      <translation>Метка</translation>
     </message>
     <message numerus="yes">
       <location filename="change_branch.py" line="261"/>
@@ -730,22 +730,22 @@
       <location filename="change_branch.py" line="277"/>
       <source>Local updated</source>
       <comment>Table header for git update time of local branch</comment>
-      <translation type="unfinished">
-        <numerusform>Локаль обновлена</numerusform>
-        <numerusform>Local updated</numerusform>
-        <numerusform>Локали обновлены</numerusform>
-        <numerusform>Local updated</numerusform>
+      <translation>
+        <numerusform>Локальное обновление</numerusform>
+        <numerusform>Локальные обновления</numerusform>
+        <numerusform>Локальные обновления</numerusform>
+        <numerusform>Локальные обновления</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="change_branch.py" line="283"/>
       <source>Remote updated</source>
       <comment>Table header for git update time of remote branch</comment>
-      <translation type="unfinished">
-        <numerusform>Remote updated</numerusform>
-        <numerusform>Remote updated</numerusform>
-        <numerusform>Remote updated</numerusform>
-        <numerusform>Remote updated</numerusform>
+      <translation>
+        <numerusform>Удаленное обновление</numerusform>
+        <numerusform>Удаленные обновления</numerusform>
+        <numerusform>Удаленные обновления</numerusform>
+        <numerusform>Удаленные обновления</numerusform>
       </translation>
     </message>
     <message>
@@ -776,7 +776,7 @@
     <message>
       <location filename="AddonManager.py" line="258"/>
       <source>Loading addon information</source>
-      <translation type="unfinished">Loading addon information</translation>
+      <translation>Загрузка информации о дополнении</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="199"/>
@@ -786,12 +786,12 @@
     <message>
       <location filename="AddonManager.py" line="209"/>
       <source>Restart now</source>
-      <translation type="unfinished">Restart now</translation>
+      <translation>Перезапустить сейчас</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="210"/>
       <source>Restart later</source>
-      <translation type="unfinished">Restart later</translation>
+      <translation>Перезагрузить позже</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1248"/>
@@ -807,13 +807,38 @@
       <location filename="AddonManager.py" line="766"/>
       <source>Could not find addon &apos;{}&apos; to select
 </source>
-      <translation type="unfinished">Could not find addon &apos;{}&apos; to select
+      <translation>Не удалось найти дополнение {} для выбора
 </translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="243"/>
       <source>Checking for updates...</source>
       <translation>Проверка обновлений...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation>Применить {} обновление(й)</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="577"/>
+      <source>No updates available</source>
+      <translation>Нет доступных обновлений</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="915"/>
+      <source>Too many to list</source>
+      <translation>Слишком много для списка</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="893"/>
+      <source>Missing Requirement</source>
+      <translation>Отсутствуют требование</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1079"/>
+      <source>Press OK to install anyway.</source>
+      <translation type="unfinished">Press OK to install anyway.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="86"/>
@@ -823,7 +848,7 @@
     <message>
       <location filename="AddonManager.py" line="203"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
-      <translation type="unfinished">You must restart FreeCAD for changes to take effect.</translation>
+      <translation>Чтобы изменения вступили в силу, вам необходимо перезапустить FreeCAD.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="204"/>
@@ -833,7 +858,7 @@
     <message>
       <location filename="AddonManager.py" line="241"/>
       <source>Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</source>
-      <translation type="unfinished">Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.</translation>
+      <translation>Не удалось импортировать QtNetwork -- см. Отчет для подробностей. Менеджер дополнений недоступен.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="262"/>
@@ -883,7 +908,7 @@
     <message>
       <location filename="AddonManager.py" line="534"/>
       <source>Addon Manager: Skipping update check because AutoCheck user preference is False</source>
-      <translation type="unfinished">Addon Manager: Skipping update check because AutoCheck user preference is False</translation>
+      <translation>Менеджер дополнений: проверка обновлений пропущена, потому что настройки автоматической проверки обновлений не верны</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="542"/>
@@ -891,34 +916,14 @@
       <translation>Требуется перезапуск</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation>Применить {} обновление(й)</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="577"/>
-      <source>No updates available</source>
-      <translation type="unfinished">No updates available</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="774"/>
       <source>All packages updates failed. Packages:</source>
-      <translation type="unfinished">All packages updates failed. Packages:</translation>
+      <translation>Не удалось обновить все пакеты. Пакеты:</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="786"/>
       <source>Failed packages:</source>
-      <translation type="unfinished">Failed packages:</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="915"/>
-      <source>Too many to list</source>
-      <translation>Слишком много для списка</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="893"/>
-      <source>Missing Requirement</source>
-      <translation>Отсутствуют требование</translation>
+      <translation>Неудачные пакеты:</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="964"/>
@@ -943,22 +948,22 @@
     <message>
       <location filename="AddonManager.py" line="1105"/>
       <source>See Report View for detailed failure log.</source>
-      <translation type="unfinished">See Report View for detailed failure log.</translation>
+      <translation>Подробный журнал ошибок смотрите в Отчете.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="703"/>
       <source>Installation of macro failed</source>
-      <translation type="unfinished">Installation of macro failed</translation>
+      <translation>Не удалось установить макрос</translation>
     </message>
     <message numerus="yes">
       <location filename="AddonManager.py" line="1280"/>
       <source>{} total, see Report view for list</source>
       <comment>Describes the number of updates that were completed (&apos;{}&apos; is replaced by the number of updates)</comment>
-      <translation type="unfinished">
-        <numerusform>{} total, see Report view for list</numerusform>
-        <numerusform>{} total, see Report view for list</numerusform>
-        <numerusform>{} total, see Report view for list</numerusform>
-        <numerusform>{} total, see Report view for list</numerusform>
+      <translation>
+        <numerusform>{} всего, смотрите отчет для списка</numerusform>
+        <numerusform>{} всего, смотрите отчет для списка</numerusform>
+        <numerusform>{} всего, смотрите отчет для списка</numerusform>
+        <numerusform>{} всего, смотрите отчет для списка</numerusform>
       </translation>
     </message>
     <message>
@@ -979,17 +984,17 @@
     <message>
       <location filename="AddonManager.py" line="800"/>
       <source>Update report</source>
-      <translation type="unfinished">Update report</translation>
+      <translation>Обновить отчет</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="850"/>
       <source>Installation succeeded</source>
-      <translation type="unfinished">Installation succeeded</translation>
+      <translation>Установка прошла успешно</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="866"/>
       <source>Installation failed</source>
-      <translation type="unfinished">Installation failed</translation>
+      <translation>Установка не удалась</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1457"/>
@@ -1004,7 +1009,7 @@
     <message>
       <location filename="AddonManager.py" line="1513"/>
       <source>Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</source>
-      <translation type="unfinished">Execution of Addon&apos;s uninstall.py script failed. Proceeding with uninstall...</translation>
+      <translation>Ошибка при выполнении скрипта аддонов uninstall.py. Продолжить удаление...</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="1558"/>

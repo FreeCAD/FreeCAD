@@ -1936,7 +1936,7 @@ This directory will be used for the symbol selection.</translation>
     </message>
     <message>
       <source>*.svg</source>
-      <translation type="unfinished">*.svg</translation>
+      <translation>*.svg</translation>
     </message>
     <message>
       <source>Text at end of symbol</source>
@@ -1955,7 +1955,7 @@ This directory will be used for the symbol selection.</translation>
     <name>TechDrawGui::DlgPrefsTechDrawAdvancedImp</name>
     <message>
       <source>Advanced</source>
-      <translation type="unfinished">Advanced</translation>
+      <translation>Avanzado</translation>
     </message>
     <message>
       <source>Include 2D Objects in projection</source>
@@ -2116,7 +2116,7 @@ Each unit is approx. 0.1 mm wide</translation>
     </message>
     <message>
       <source>Continuous</source>
-      <translation type="unfinished">Continuous</translation>
+      <translation>Continuo</translation>
     </message>
     <message>
       <source>Dash</source>
@@ -2148,7 +2148,7 @@ Each unit is approx. 0.1 mm wide</translation>
     </message>
     <message>
       <source>Hide</source>
-      <translation type="unfinished">Hide</translation>
+      <translation>Agochar</translation>
     </message>
     <message>
       <source>Solid Color</source>
@@ -2482,7 +2482,7 @@ Each unit is approx. 0.1 mm wide</translation>
     </message>
     <message>
       <source>⌀</source>
-      <translation type="unfinished">⌀</translation>
+      <translation>⌀</translation>
     </message>
     <message>
       <source>Append unit to dimension values</source>
@@ -2490,11 +2490,11 @@ Each unit is approx. 0.1 mm wide</translation>
     </message>
     <message>
       <source>Show Units</source>
-      <translation type="unfinished">Show Units</translation>
+      <translation>Amosa Unidades</translation>
     </message>
     <message>
       <source>Diameter Symbol</source>
-      <translation type="unfinished">Diameter Symbol</translation>
+      <translation>Símbolo de Diámetro</translation>
     </message>
     <message>
       <source>Use system setting for number of decimals</source>
@@ -2518,11 +2518,11 @@ Each unit is approx. 0.1 mm wide</translation>
     </message>
     <message>
       <source>Alternate Decimals</source>
-      <translation type="unfinished">Alternate Decimals</translation>
+      <translation>Decimales Alternativos</translation>
     </message>
     <message>
       <source>Font Size</source>
-      <translation type="unfinished">Font Size</translation>
+      <translation>Tamaño da fonte</translation>
     </message>
     <message>
       <source>Tolerance Text Scale</source>
@@ -2589,7 +2589,7 @@ for ProjectionGroups</translation>
     </message>
     <message>
       <source>Labels</source>
-      <translation type="unfinished">Labels</translation>
+      <translation>Etiquetas</translation>
     </message>
     <message>
       <source>* this font is also used for dimensions
@@ -2599,23 +2599,23 @@ for ProjectionGroups</translation>
     </message>
     <message>
       <source>Label Font*</source>
-      <translation type="unfinished">Label Font*</translation>
+      <translation>Fonte de Etiqueta*</translation>
     </message>
     <message>
       <source>Label Size</source>
-      <translation type="unfinished">Label Size</translation>
+      <translation>Tamaño da Etiqueta</translation>
     </message>
     <message>
       <source>Font for labels</source>
-      <translation type="unfinished">Font for labels</translation>
+      <translation>Fonte prás etiquetas</translation>
     </message>
     <message>
       <source>Label size</source>
-      <translation type="unfinished">Label size</translation>
+      <translation>Tamaño da Etiqueta</translation>
     </message>
     <message>
       <source>Conventions</source>
-      <translation type="unfinished">Conventions</translation>
+      <translation>Convencións</translation>
     </message>
     <message>
       <source>Projection Group Angle</source>
@@ -2627,7 +2627,7 @@ for ProjectionGroups</translation>
     </message>
     <message>
       <source>First</source>
-      <translation type="unfinished">First</translation>
+      <translation>Primeiro</translation>
     </message>
     <message>
       <source>Third</source>
@@ -2647,7 +2647,7 @@ for ProjectionGroups</translation>
     </message>
     <message>
       <source>Continuous</source>
-      <translation type="unfinished">Continuous</translation>
+      <translation>Continuo</translation>
     </message>
     <message>
       <source>Dashed</source>
@@ -2655,19 +2655,19 @@ for ProjectionGroups</translation>
     </message>
     <message>
       <source>Files</source>
-      <translation type="unfinished">Files</translation>
+      <translation>Ficheiros</translation>
     </message>
     <message>
       <source>Default Template</source>
-      <translation type="unfinished">Default Template</translation>
+      <translation>Modelo predefinido</translation>
     </message>
     <message>
       <source>Default template file for new pages</source>
-      <translation type="unfinished">Default template file for new pages</translation>
+      <translation>Ficheiro modelo para novas páxinas</translation>
     </message>
     <message>
       <source>Template Directory</source>
-      <translation type="unfinished">Template Directory</translation>
+      <translation>Cartafol de modelos</translation>
     </message>
     <message>
       <source>Starting directory for menu &apos;Insert Page using Template&apos;</source>
@@ -2699,7 +2699,7 @@ for ProjectionGroups</translation>
     </message>
     <message>
       <source>PAT File</source>
-      <translation type="unfinished">PAT File</translation>
+      <translation>Ficheiro PAT</translation>
     </message>
     <message>
       <source>Default PAT pattern definition file for geometric hatching</source>
@@ -2726,7 +2726,7 @@ for ProjectionGroups</translation>
     <name>TechDrawGui::DlgPrefsTechDrawHLRImp</name>
     <message>
       <source>HLR</source>
-      <translation type="unfinished">HLR</translation>
+      <translation>HLR</translation>
     </message>
     <message>
       <source>Hidden Line Removal</source>
@@ -2734,7 +2734,7 @@ for ProjectionGroups</translation>
     </message>
     <message>
       <source>Visible</source>
-      <translation type="unfinished">Visible</translation>
+      <translation>Visible</translation>
     </message>
     <message>
       <source>Number of ISO lines per face edge</source>
@@ -2859,7 +2859,7 @@ Fast, but result is a collection of short straight lines.</translation>
     </message>
     <message>
       <source>Vertex Scale</source>
-      <translation type="unfinished">Vertex Scale</translation>
+      <translation>Escala de Vértice</translation>
     </message>
     <message>
       <source>Size of template field click handles</source>
@@ -2991,7 +2991,7 @@ Quere seguir?</translation>
     </message>
     <message>
       <source>Text:</source>
-      <translation type="unfinished">Text:</translation>
+      <translation>Texto:</translation>
     </message>
     <message>
       <source>Text to be displayed</source>
@@ -2999,7 +2999,7 @@ Quere seguir?</translation>
     </message>
     <message>
       <source>Text Color:</source>
-      <translation type="unfinished">Text Color:</translation>
+      <translation>Cor do texto:</translation>
     </message>
     <message>
       <source>Color for &apos;Text&apos;</source>
@@ -3007,7 +3007,7 @@ Quere seguir?</translation>
     </message>
     <message>
       <source>Font Size:</source>
-      <translation type="unfinished">Font Size:</translation>
+      <translation>Tamaño da fonte:</translation>
     </message>
     <message>
       <source>Fontsize for &apos;Text&apos;</source>
@@ -3059,7 +3059,7 @@ Quere seguir?</translation>
     </message>
     <message>
       <source>End Symbol:</source>
-      <translation type="unfinished">End Symbol:</translation>
+      <translation>Símbolo Final:</translation>
     </message>
     <message>
       <source>End symbol for the balloon line</source>
@@ -3204,7 +3204,7 @@ Quere seguir?</translation>
     </message>
     <message>
       <source>Continuous</source>
-      <translation type="unfinished">Continuous</translation>
+      <translation>Continuo</translation>
     </message>
     <message>
       <source>Dash</source>
@@ -3278,11 +3278,11 @@ Quere seguir?</translation>
     </message>
     <message>
       <source>2d Point</source>
-      <translation type="unfinished">2d Point</translation>
+      <translation>Punto 2d</translation>
     </message>
     <message>
       <source>3d Point</source>
-      <translation type="unfinished">3d Point</translation>
+      <translation>Punto 3d</translation>
     </message>
     <message>
       <source>X:</source>
@@ -3309,7 +3309,7 @@ Quere seguir?</translation>
     </message>
     <message>
       <source>Detail View</source>
-      <translation type="unfinished">Detail View</translation>
+      <translation>Visualización detallada</translation>
     </message>
     <message>
       <source>Click to drag detail highlight to new position</source>
@@ -3438,7 +3438,7 @@ by negative value of &apos;Over Tolerance&apos;.</translation>
     </message>
     <message>
       <source>Formatting</source>
-      <translation type="unfinished">Formatting</translation>
+      <translation>Formatando</translation>
     </message>
     <message>
       <source>Format Specifier:</source>
@@ -3480,7 +3480,7 @@ be used instead if the dimension value</translation>
     </message>
     <message>
       <source>Display Style</source>
-      <translation type="unfinished">Display Style</translation>
+      <translation>Estilo de presentación</translation>
     </message>
     <message>
       <source>Flip Arrowheads</source>
@@ -3496,7 +3496,7 @@ be used instead if the dimension value</translation>
     </message>
     <message>
       <source>Font Size:</source>
-      <translation type="unfinished">Font Size:</translation>
+      <translation>Tamaño da fonte:</translation>
     </message>
     <message>
       <source>Fontsize for &apos;Text&apos;</source>
@@ -3504,7 +3504,7 @@ be used instead if the dimension value</translation>
     </message>
     <message>
       <source>Drawing Style:</source>
-      <translation type="unfinished">Drawing Style:</translation>
+      <translation>Estilo de debuxo:</translation>
     </message>
     <message>
       <source>Standard and style according to which dimension is drawn</source>
@@ -3684,7 +3684,7 @@ You can pick further points to get line segments.</translation>
     </message>
     <message>
       <source>Continuous</source>
-      <translation type="unfinished">Continuous</translation>
+      <translation>Continuo</translation>
     </message>
     <message>
       <source>Dash</source>
@@ -3735,7 +3735,7 @@ You can pick further points to get line segments.</translation>
     </message>
     <message>
       <source>Lines</source>
-      <translation type="unfinished">Lines</translation>
+      <translation>Liñas</translation>
     </message>
     <message>
       <source>Style</source>
@@ -3743,7 +3743,7 @@ You can pick further points to get line segments.</translation>
     </message>
     <message>
       <source>Continuous</source>
-      <translation type="unfinished">Continuous</translation>
+      <translation>Continuo</translation>
     </message>
     <message>
       <source>Dash</source>
@@ -3775,7 +3775,7 @@ You can pick further points to get line segments.</translation>
     </message>
     <message>
       <source>Visible</source>
-      <translation type="unfinished">Visible</translation>
+      <translation>Visible</translation>
     </message>
     <message>
       <source>False</source>
@@ -3975,11 +3975,11 @@ using the given X/Y Spacing</translation>
     </message>
     <message>
       <source>X Spacing</source>
-      <translation type="unfinished">X Spacing</translation>
+      <translation>Espazo X</translation>
     </message>
     <message>
       <source>Y Spacing</source>
-      <translation type="unfinished">Y Spacing</translation>
+      <translation>Espazo Y</translation>
     </message>
     <message>
       <source>Vertical space between border of projections</source>
@@ -4069,7 +4069,7 @@ using the given X/Y Spacing</translation>
     </message>
     <message>
       <source>Continuous</source>
-      <translation type="unfinished">Continuous</translation>
+      <translation>Continuo</translation>
     </message>
     <message>
       <source>Dash</source>
@@ -4104,7 +4104,7 @@ using the given X/Y Spacing</translation>
     </message>
     <message>
       <source>Identifier</source>
-      <translation type="unfinished">Identifier</translation>
+      <translation>Identificador</translation>
     </message>
     <message>
       <source>Identifier for this section</source>
@@ -4179,11 +4179,11 @@ using the given X/Y Spacing</translation>
     </message>
     <message>
       <source>arrow</source>
-      <translation type="unfinished">arrow</translation>
+      <translation>frecha</translation>
     </message>
     <message>
       <source>other</source>
-      <translation type="unfinished">other</translation>
+      <translation>outros</translation>
     </message>
   </context>
   <context>
@@ -4313,7 +4313,7 @@ using the given X/Y Spacing</translation>
     </message>
     <message>
       <source>Views</source>
-      <translation type="unfinished">Views</translation>
+      <translation>Vistas</translation>
     </message>
   </context>
 </TS>

@@ -226,7 +226,7 @@
     <message>
       <location filename="PathAdaptive.py" line="1039"/>
       <source>Stop processing</source>
-      <translation type="unfinished">Stop processing</translation>
+      <translation>Deter o procesamento</translation>
     </message>
     <message>
       <location filename="PathProbe.py" line="58"/>
@@ -714,16 +714,6 @@
       <translation type="unfinished">Expression used for StepDown of new operations.</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="73"/>
-      <source>Start pocketing at center or boundary</source>
-      <translation>Principiar baleirando no centro ou na beira</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Percent of cutter diameter to step over on each pass</source>
-      <translation>Porcentaxe do diámetro da fresa para entrar no material en cada pasaxe</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="71"/>
       <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
       <translation type="unfinished">The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</translation>
@@ -732,6 +722,16 @@
       <location filename="PathPocketBase.py" line="72"/>
       <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
       <translation>Desfase extra para aplicar a operación. A dirección é dependente da operación.</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="73"/>
+      <source>Start pocketing at center or boundary</source>
+      <translation>Principiar baleirando no centro ou na beira</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Percent of cutter diameter to step over on each pass</source>
+      <translation>Porcentaxe do diámetro da fresa para entrar no material en cada pasaxe</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="75"/>
@@ -926,7 +926,7 @@
     <message>
       <location filename="PathDeburr.py" line="146"/>
       <source>Direction of Operation</source>
-      <translation type="unfinished">Direction of Operation</translation>
+      <translation>Dirección de Operación</translation>
     </message>
     <message>
       <location filename="PathDeburr.py" line="153"/>
@@ -1294,17 +1294,17 @@
     <message>
       <location filename="PathToolBitGui.py" line="204"/>
       <source>Invalid Filename</source>
-      <translation type="unfinished">Invalid Filename</translation>
+      <translation>Nome do arquivo non válido</translation>
     </message>
     <message>
       <location filename="PathDeburr.py" line="185"/>
       <source>CW</source>
-      <translation type="unfinished">CW</translation>
+      <translation>CW</translation>
     </message>
     <message>
       <location filename="PathDeburr.py" line="186"/>
       <source>CCW</source>
-      <translation type="unfinished">CCW</translation>
+      <translation>CCW</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="114"/>
@@ -1339,12 +1339,12 @@
     <message>
       <location filename="InitGui.py" line="147"/>
       <source>Path Dressup</source>
-      <translation type="unfinished">Path Dressup</translation>
+      <translation>Revestir traxectoria</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="149"/>
       <source>Supplemental Commands</source>
-      <translation type="unfinished">Supplemental Commands</translation>
+      <translation>Comandos Suplementarios</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="151"/>
@@ -1364,12 +1364,12 @@
     <message>
       <location filename="InitGui.py" line="159"/>
       <source>Utils</source>
-      <translation type="unfinished">Utils</translation>
+      <translation>Utilidades</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="275"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>Aviso</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="277"/>
@@ -1475,7 +1475,7 @@
     <message>
       <location filename="PathDeburr.py" line="109"/>
       <source>Direction of Operation</source>
-      <translation type="unfinished">Direction of Operation</translation>
+      <translation>Dirección de Operación</translation>
     </message>
     <message>
       <location filename="PathDeburr.py" line="112"/>
@@ -1570,16 +1570,6 @@
   <context>
     <name>PathJob</name>
     <message>
-      <location filename="PathJobGui.py" line="1258"/>
-      <source>Unsupported stock object %s</source>
-      <translation>Obxecto de stock non soportado %s</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1274"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>Tipo de stock non soportado %s (%d)</translation>
-    </message>
-    <message>
       <location filename="PathJobGui.py" line="387"/>
       <source>Stock not from Base bound box!</source>
       <translation>Stock non dende caixa atada á Base!</translation>
@@ -1593,6 +1583,16 @@
       <location filename="PathJobGui.py" line="525"/>
       <source>Stock not a cylinder!</source>
       <translation>Non un cilindo de existencias!</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1258"/>
+      <source>Unsupported stock object %s</source>
+      <translation>Obxecto de stock non soportado %s</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1274"/>
+      <source>Unsupported stock type %s (%d)</source>
+      <translation>Tipo de stock non soportado %s (%d)</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="112"/>
@@ -1738,16 +1738,16 @@
       <translation>Localización Base</translation>
     </message>
     <message>
-      <location filename="PathOpGui.py" line="855"/>
-      <source>Heights</source>
-      <translation>Alturas</translation>
-    </message>
-    <message>
       <location filename="PathOpGui.py" line="848"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>FinalDepth non pode modificar para esta operación.
 Se é necesario axustar o xogo FinalDepth manualmente por favor escolma unha opción diferente.</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>Alturas</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="869"/>
@@ -1767,7 +1767,7 @@ Se é necesario axustar o xogo FinalDepth manualmente por favor escolma unha opc
     <message>
       <location filename="PathOpGui.py" line="1058"/>
       <source>Operation</source>
-      <translation type="unfinished">Operation</translation>
+      <translation>Operación</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="1224"/>
@@ -1993,7 +1993,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathProfile.py" line="196"/>
       <source>CW</source>
-      <translation type="unfinished">CW</translation>
+      <translation>CW</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="91"/>
@@ -2008,7 +2008,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathProfile.py" line="197"/>
       <source>CCW</source>
-      <translation type="unfinished">CCW</translation>
+      <translation>CCW</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="200"/>
@@ -2018,7 +2018,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathProfile.py" line="201"/>
       <source>Individually</source>
-      <translation type="unfinished">Individually</translation>
+      <translation>Individualmente</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="204"/>
@@ -2577,7 +2577,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathAdaptive.py" line="922"/>
       <source>Clearing</source>
-      <translation type="unfinished">Clearing</translation>
+      <translation>Limpando</translation>
     </message>
     <message>
       <location filename="PathAdaptive.py" line="923"/>
@@ -3181,12 +3181,12 @@ Aborting op creation</translation>
     <message>
       <location filename="PathDrilling.py" line="71"/>
       <source>G99</source>
-      <translation type="unfinished">G99</translation>
+      <translation>G99</translation>
     </message>
     <message>
       <location filename="PathDrilling.py" line="72"/>
       <source>G98</source>
-      <translation type="unfinished">G98</translation>
+      <translation>G98</translation>
     </message>
     <message>
       <location filename="PathDrilling.py" line="75"/>
@@ -3276,12 +3276,12 @@ Aborting op creation</translation>
     <message>
       <location filename="PathHelix.py" line="72"/>
       <source>CW</source>
-      <translation type="unfinished">CW</translation>
+      <translation>CW</translation>
     </message>
     <message>
       <location filename="PathHelix.py" line="73"/>
       <source>CCW</source>
-      <translation type="unfinished">CCW</translation>
+      <translation>CCW</translation>
     </message>
   </context>
   <context>
@@ -3420,12 +3420,12 @@ Aborting op creation</translation>
     <message>
       <location filename="PathJobGui.py" line="1595"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>Aviso</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="1596"/>
       <source>Please add one.</source>
-      <translation type="unfinished">Please add one.</translation>
+      <translation>Por favor engade un.</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="1597"/>
@@ -3460,7 +3460,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathJob.py" line="259"/>
       <source>Operation</source>
-      <translation type="unfinished">Operation</translation>
+      <translation>Operación</translation>
     </message>
     <message>
       <location filename="PathJobDlg.py" line="64"/>
@@ -3470,7 +3470,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathJob.py" line="263"/>
       <source>2.5D</source>
-      <translation type="unfinished">2.5D</translation>
+      <translation>2.5D</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="264"/>
@@ -3480,7 +3480,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathJob.py" line="265"/>
       <source>Multiaxis</source>
-      <translation type="unfinished">Multiaxis</translation>
+      <translation>Multieixes</translation>
     </message>
     <message>
       <location filename="PathJobDlg.py" line="63"/>
@@ -3598,7 +3598,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathPocket.py" line="121"/>
       <source>Individually</source>
-      <translation type="unfinished">Individually</translation>
+      <translation>Individualmente</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="61"/>
@@ -3631,11 +3631,6 @@ Aborting op creation</translation>
       <translation>Separación</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="71"/>
-      <source>Spiral</source>
-      <translation>Espiral</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="72"/>
       <source>ZigZagOffset</source>
       <translation type="unfinished">ZigZagOffset</translation>
@@ -3646,14 +3641,19 @@ Aborting op creation</translation>
       <translation>Liña</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Grid</source>
-      <translation>Grella</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Triangle</source>
       <translation>Triángulo</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="71"/>
+      <source>Spiral</source>
+      <translation>Espiral</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Grid</source>
+      <translation>Grella</translation>
     </message>
     <message>
       <location filename="PathPocketGui.py" line="46"/>
@@ -3748,7 +3748,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathProbeGui.py" line="107"/>
       <source>Probe</source>
-      <translation type="unfinished">Probe</translation>
+      <translation>Sonda</translation>
     </message>
     <message>
       <location filename="PathProbeGui.py" line="108"/>
@@ -3787,27 +3787,27 @@ Aborting op creation</translation>
     <message>
       <location filename="PathSanity.py" line="225"/>
       <source>Base Object(s)</source>
-      <translation type="unfinished">Base Object(s)</translation>
+      <translation>Obxecto(s) base</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="226"/>
       <source>Job Sequence</source>
-      <translation type="unfinished">Job Sequence</translation>
+      <translation>Secuencia de traballo</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="227"/>
       <source>Job Description</source>
-      <translation type="unfinished">Job Description</translation>
+      <translation>Traballo Descrición</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="228"/>
       <source>Job Type</source>
-      <translation type="unfinished">Job Type</translation>
+      <translation>Tipo de Traballo</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="229"/>
       <source>CAD File Name</source>
-      <translation type="unfinished">CAD File Name</translation>
+      <translation>Nome de ficheiro CAD</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="230"/>
@@ -3827,7 +3827,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathSanity.py" line="291"/>
       <source>Operation</source>
-      <translation type="unfinished">Operation</translation>
+      <translation>Operación</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="259"/>
@@ -3887,7 +3887,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathSanity.py" line="292"/>
       <source>Tool Controller</source>
-      <translation type="unfinished">Tool Controller</translation>
+      <translation>Ferramenta de control</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="293"/>
@@ -3912,17 +3912,17 @@ Aborting op creation</translation>
     <message>
       <location filename="PathSanity.py" line="324"/>
       <source>X Size</source>
-      <translation type="unfinished">X Size</translation>
+      <translation>Tamaño X</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="325"/>
       <source>Y Size</source>
-      <translation type="unfinished">Y Size</translation>
+      <translation>Tamaño Y</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="326"/>
       <source>Z Size</source>
-      <translation type="unfinished">Z Size</translation>
+      <translation>Tamaño Z</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="328"/>
@@ -3937,7 +3937,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathSanity.py" line="343"/>
       <source>Order By</source>
-      <translation type="unfinished">Order By</translation>
+      <translation>Ordenar por</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="345"/>
@@ -3947,7 +3947,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathSanity.py" line="357"/>
       <source>Gcode File</source>
-      <translation type="unfinished">Gcode File</translation>
+      <translation>Ficheiro gcode</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="358"/>
@@ -3957,37 +3957,37 @@ Aborting op creation</translation>
     <message>
       <location filename="PathSanity.py" line="359"/>
       <source>Stops</source>
-      <translation type="unfinished">Stops</translation>
+      <translation>Paradas</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="360"/>
       <source>Programmer</source>
-      <translation type="unfinished">Programmer</translation>
+      <translation>Programador</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="361"/>
       <source>Machine</source>
-      <translation type="unfinished">Machine</translation>
+      <translation>Máquina</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="362"/>
       <source>Postprocessor</source>
-      <translation type="unfinished">Postprocessor</translation>
+      <translation>Pos-procesador</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="363"/>
       <source>Post Processor Flags</source>
-      <translation type="unfinished">Post Processor Flags</translation>
+      <translation>Pos-procesador de marcadores</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="364"/>
       <source>File Size (kbs)</source>
-      <translation type="unfinished">File Size (kbs)</translation>
+      <translation>Tamaño do ficheiro (kbs)</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="366"/>
       <source>Line Count</source>
-      <translation type="unfinished">Line Count</translation>
+      <translation>Conta liñas</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="379"/>
@@ -4002,7 +4002,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathSanity.py" line="382"/>
       <source>Date</source>
-      <translation type="unfinished">Date</translation>
+      <translation>Data</translation>
     </message>
   </context>
   <context>
@@ -4219,7 +4219,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathSlotGui.py" line="243"/>
       <source>Slot</source>
-      <translation type="unfinished">Slot</translation>
+      <translation>Rañura</translation>
     </message>
     <message>
       <location filename="PathSlotGui.py" line="244"/>
@@ -4330,7 +4330,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathSurface.py" line="483"/>
       <source>Individually</source>
-      <translation type="unfinished">Individually</translation>
+      <translation>Individualmente</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="486"/>
@@ -4355,7 +4355,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathSurface.py" line="492"/>
       <source>First</source>
-      <translation type="unfinished">First</translation>
+      <translation>Primeiro</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="493"/>
@@ -4582,7 +4582,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathToolController.py" line="132"/>
       <source>Forward</source>
-      <translation type="unfinished">Forward</translation>
+      <translation>Adiante</translation>
     </message>
     <message>
       <location filename="PathToolController.py" line="133"/>
@@ -4615,7 +4615,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathToolLibraryEditor.py" line="387"/>
       <source>Enter Name:</source>
-      <translation type="unfinished">Enter Name:</translation>
+      <translation>Introducir nome:</translation>
     </message>
     <message>
       <location filename="PathToolLibraryEditor.py" line="425"/>
@@ -4709,12 +4709,12 @@ Aborting op creation</translation>
     <message>
       <location filename="InitGui.py" line="209"/>
       <source>Path Dressup</source>
-      <translation type="unfinished">Path Dressup</translation>
+      <translation>Revestir traxectoria</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="216"/>
       <source>Supplemental Commands</source>
-      <translation type="unfinished">Supplemental Commands</translation>
+      <translation>Comandos Suplementarios</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="231"/>
@@ -4724,7 +4724,7 @@ Aborting op creation</translation>
     <message>
       <location filename="InitGui.py" line="242"/>
       <source>Utils</source>
-      <translation type="unfinished">Utils</translation>
+      <translation>Utilidades</translation>
     </message>
   </context>
   <context>
@@ -4777,7 +4777,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathWaterline.py" line="112"/>
       <source>Off</source>
-      <translation type="unfinished">Off</translation>
+      <translation>Apagado</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="126"/>
@@ -4832,7 +4832,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathWaterline.py" line="135"/>
       <source>Individually</source>
-      <translation type="unfinished">Individually</translation>
+      <translation>Individualmente</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="138"/>
@@ -5299,7 +5299,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathProbeGui.py" line="89"/>
       <source>Probe</source>
-      <translation type="unfinished">Probe</translation>
+      <translation>Sonda</translation>
     </message>
     <message>
       <location filename="PathProbeGui.py" line="90"/>
@@ -5332,7 +5332,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathToolLibraryEditor.py" line="352"/>
       <source>Enter Name:</source>
-      <translation type="unfinished">Enter Name:</translation>
+      <translation>Introducir nome:</translation>
     </message>
     <message>
       <location filename="PathToolLibraryEditor.py" line="383"/>
@@ -5764,7 +5764,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../panels/DlgSelectPostProcessor.ui" line="14"/>
       <source>Post Processor</source>
-      <translation type="unfinished">Post Processor</translation>
+      <translation>Pos-procesador</translation>
     </message>
     <message>
       <location filename="../panels/DlgSelectPostProcessor.ui" line="42"/>
@@ -5779,7 +5779,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="29"/>
       <source>Controller</source>
-      <translation type="unfinished">Controller</translation>
+      <translation>Controlador</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="35"/>
@@ -5814,7 +5814,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="196"/>
       <source>Forward</source>
-      <translation type="unfinished">Forward</translation>
+      <translation>Adiante</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="201"/>
@@ -5834,12 +5834,12 @@ Aborting op creation</translation>
     <message>
       <location filename="../panels/DlgToolEdit.ui" line="14"/>
       <source>Tool Editor</source>
-      <translation type="unfinished">Tool Editor</translation>
+      <translation>Ferramenta de edición</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="14"/>
       <source>Create Property</source>
-      <translation type="unfinished">Create Property</translation>
+      <translation>Crear propiedade</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="20"/>
@@ -5978,7 +5978,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../panels/DlgTCChooser.ui" line="29"/>
       <source>Tool Controller</source>
-      <translation type="unfinished">Tool Controller</translation>
+      <translation>Ferramenta de control</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolCopy.ui" line="23"/>
@@ -6475,7 +6475,7 @@ Aborting op creation</translation>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="158"/>
       <location filename="../panels/SetupGlobal.ui" line="166"/>
       <source>Tool Controller</source>
-      <translation type="unfinished">Tool Controller</translation>
+      <translation>Ferramenta de control</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="131"/>
@@ -6497,14 +6497,14 @@ Aborting op creation</translation>
       <location filename="../panels/PageOpHelixEdit.ui" line="98"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="104"/>
       <source>CW</source>
-      <translation type="unfinished">CW</translation>
+      <translation>CW</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="153"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="103"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="109"/>
       <source>CCW</source>
-      <translation type="unfinished">CCW</translation>
+      <translation>CCW</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="188"/>
@@ -6918,7 +6918,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="95"/>
       <source>Probe</source>
-      <translation type="unfinished">Probe</translation>
+      <translation>Sonda</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="101"/>
@@ -7254,7 +7254,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="175"/>
       <source>First</source>
-      <translation type="unfinished">First</translation>
+      <translation>Primeiro</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="180"/>
@@ -7437,7 +7437,7 @@ Aborting op creation</translation>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="183"/>
       <location filename="../panels/SetupGlobal.ui" line="24"/>
       <source>Operation</source>
-      <translation type="unfinished">Operation</translation>
+      <translation>Operación</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="189"/>
@@ -7666,7 +7666,7 @@ Aborting op creation</translation>
       <location filename="../panels/ToolEditor.ui" line="237"/>
       <location filename="../panels/ToolEditor.ui" line="277"/>
       <source>0.00</source>
-      <translation type="unfinished">0.00</translation>
+      <translation>0.00</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="87"/>
@@ -7698,7 +7698,7 @@ Aborting op creation</translation>
       <location filename="../panels/ToolEditor.ui" line="161"/>
       <location filename="../panels/ToolEditor.ui" line="254"/>
       <source>180°</source>
-      <translation type="unfinished">180°</translation>
+      <translation>180°</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="164"/>
@@ -7709,27 +7709,27 @@ Aborting op creation</translation>
     <message>
       <location filename="../panels/ToolEditor.ui" line="196"/>
       <source>D = </source>
-      <translation type="unfinished">D = </translation>
+      <translation>D = </translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="213"/>
       <source>d =</source>
-      <translation type="unfinished">d =</translation>
+      <translation>d =</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="230"/>
       <source>H =</source>
-      <translation type="unfinished">H =</translation>
+      <translation>H =</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="247"/>
       <source>α = </source>
-      <translation type="unfinished">α = </translation>
+      <translation>α = </translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="267"/>
       <source>S = </source>
-      <translation type="unfinished">S = </translation>
+      <translation>S = </translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="308"/>
@@ -7865,17 +7865,17 @@ Aborting op creation</translation>
       <location filename="../preferences/PathJob.ui" line="150"/>
       <location filename="../preferences/PathJob.ui" line="265"/>
       <source>Post Processor</source>
-      <translation type="unfinished">Post Processor</translation>
+      <translation>Pos-procesador</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="162"/>
       <source>Output File</source>
-      <translation type="unfinished">Output File</translation>
+      <translation>Ficheiro de saída</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="174"/>
       <source>Default Path</source>
-      <translation type="unfinished">Default Path</translation>
+      <translation>Sitio por defecto</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="193"/>
@@ -7905,7 +7905,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="246"/>
       <source>Overwrite existing file</source>
-      <translation type="unfinished">Overwrite existing file</translation>
+      <translation>Sobrescribir os ficheiros existentes</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="251"/>
@@ -7925,7 +7925,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="291"/>
       <source>Default Post Processor</source>
-      <translation type="unfinished">Default Post Processor</translation>
+      <translation>Pos-procesador por defecto</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="298"/>
@@ -7955,7 +7955,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="356"/>
       <source>Setup</source>
-      <translation type="unfinished">Setup</translation>
+      <translation>Axustes</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="362"/>
@@ -8188,27 +8188,27 @@ Aborting op creation</translation>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="416"/>
       <source>Classic</source>
-      <translation type="unfinished">Classic</translation>
+      <translation>Clásico</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="421"/>
       <source>Classic - reversed</source>
-      <translation type="unfinished">Classic - reversed</translation>
+      <translation>Clásico — invertido</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="426"/>
       <source>Multi Panel</source>
-      <translation type="unfinished">Multi Panel</translation>
+      <translation>Panel Múltiple</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="431"/>
       <source>Multi Panel - reversed</source>
-      <translation type="unfinished">Multi Panel - reversed</translation>
+      <translation>Panel Múltiple — invertido</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="14"/>
       <source>Advanced</source>
-      <translation type="unfinished">Advanced</translation>
+      <translation>Avanzado</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="20"/>
@@ -8334,32 +8334,32 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="64"/>
       <source>X-&gt;A</source>
-      <translation type="unfinished">X-&gt;A</translation>
+      <translation>X-&gt;A</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="69"/>
       <source>Y-&gt;A</source>
-      <translation type="unfinished">Y-&gt;A</translation>
+      <translation>Y-&gt;A</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="74"/>
       <source>X-&gt;B</source>
-      <translation type="unfinished">X-&gt;B</translation>
+      <translation>X-&gt;B</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="79"/>
       <source>Y-&gt;B</source>
-      <translation type="unfinished">Y-&gt;B</translation>
+      <translation>Y-&gt;B</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="84"/>
       <source>X-&gt;C</source>
-      <translation type="unfinished">X-&gt;C</translation>
+      <translation>X-&gt;C</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="89"/>
       <source>Y-&gt;C</source>
-      <translation type="unfinished">Y-&gt;C</translation>
+      <translation>Y-&gt;C</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="14"/>
@@ -8644,7 +8644,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="86"/>
       <source>Angle            </source>
-      <translation type="unfinished">Angle            </translation>
+      <translation>Ángulo            </translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="93"/>
@@ -8669,18 +8669,18 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="146"/>
       <source>Copy From</source>
-      <translation type="unfinished">Copy From</translation>
+      <translation>Copiar de</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="155"/>
       <location filename="../panels/HoldingTagsEdit.ui" line="181"/>
       <source>Replace All</source>
-      <translation type="unfinished">Replace All</translation>
+      <translation>Substituír todo</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="165"/>
       <source>Auto Generate</source>
-      <translation type="unfinished">Auto Generate</translation>
+      <translation>Xeración automática</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="20"/>
@@ -8705,7 +8705,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="70"/>
       <source>add</source>
-      <translation type="unfinished">add</translation>
+      <translation>engadir</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="77"/>
@@ -8775,7 +8775,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="248"/>
       <source>Operation</source>
-      <translation type="unfinished">Operation</translation>
+      <translation>Operación</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="263"/>
@@ -8878,7 +8878,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="98"/>
       <source>Step</source>
-      <translation type="unfinished">Step</translation>
+      <translation>Paso</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="115"/>
@@ -8898,7 +8898,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="209"/>
       <source>G/s</source>
-      <translation type="unfinished">G/s</translation>
+      <translation>G/s</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="229"/>
@@ -8913,7 +8913,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="278"/>
       <source>Job:</source>
-      <translation type="unfinished">Job:</translation>
+      <translation>Traballo:</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="300"/>
@@ -8991,7 +8991,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="138"/>
       <source>0 °</source>
-      <translation type="unfinished">0 °</translation>
+      <translation>0 °</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="141"/>
@@ -9006,7 +9006,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="155"/>
       <source>0 mm</source>
-      <translation type="unfinished">0 mm</translation>
+      <translation>0 mm</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="158"/>
@@ -9021,7 +9021,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="198"/>
       <source>Attributes</source>
-      <translation type="unfinished">Attributes</translation>
+      <translation>Atributo</translation>
     </message>
   </context>
   <context>
@@ -9029,17 +9029,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="20"/>
       <source>Tool Library</source>
-      <translation type="unfinished">Tool Library</translation>
+      <translation>Libraría de Ferramentas</translation>
     </message>
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="28"/>
       <source>Import...</source>
-      <translation type="unfinished">Import...</translation>
+      <translation>Importar...</translation>
     </message>
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="35"/>
       <source>Export...</source>
-      <translation type="unfinished">Export...</translation>
+      <translation>Exportar...</translation>
     </message>
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="71"/>
@@ -9049,7 +9049,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="234"/>
       <source>New Tool</source>
-      <translation type="unfinished">New Tool</translation>
+      <translation>Nova ferramenta</translation>
     </message>
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="257"/>
@@ -9167,7 +9167,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="136"/>
       <source>Output File</source>
-      <translation type="unfinished">Output File</translation>
+      <translation>Ficheiro de saída</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="143"/>
@@ -9219,7 +9219,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="220"/>
       <source>Operation</source>
-      <translation type="unfinished">Operation</translation>
+      <translation>Operación</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="228"/>
@@ -9229,7 +9229,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="235"/>
       <source>Order By</source>
-      <translation type="unfinished">Order By</translation>
+      <translation>Ordenar por</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="254"/>
@@ -9334,7 +9334,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="421"/>
       <source>Setup</source>
-      <translation type="unfinished">Setup</translation>
+      <translation>Axustes</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="439"/>

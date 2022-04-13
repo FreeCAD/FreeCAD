@@ -1281,12 +1281,12 @@
     <message>
       <location filename="ArchReference.py" line="98"/>
       <source>The way the referenced objects are included in the current document. 'Normal' includes the shape, 'Transient' discards the shape when the object is switched off (smaller filesize), 'Lightweight' does not import the shape but only the OpenInventor representation</source>
-      <translation type="unfinished">The way the referenced objects are included in the current document. 'Normal' includes the shape, 'Transient' discards the shape when the object is switched off (smaller filesize), 'Lightweight' does not import the shape but only the OpenInventor representation</translation>
+      <translation>该被引用的对象被包含在此文档中的方式。“Normal” 包含了形状，“Transient” 在对象被关闭时丢弃形状（有更小的文件尺寸），“Lightweight” 不导入形状而只导入 OpenInventor 表示。</translation>
     </message>
     <message>
       <location filename="ArchReference.py" line="106"/>
       <source>Fuse objects of same material</source>
-      <translation type="unfinished">Fuse objects of same material</translation>
+      <translation>融合材质相同的对象。</translation>
     </message>
     <message>
       <location filename="ArchReference.py" line="385"/>
@@ -1426,7 +1426,7 @@
     <message>
       <location filename="ArchSite.py" line="639"/>
       <source>The time zone where this site is located</source>
-      <translation type="unfinished">The time zone where this site is located</translation>
+      <translation>此位置所在的时区</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="641"/>
@@ -2865,7 +2865,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="importSHP.py" line="163"/>
       <source>Shapefile module not found. Aborting.</source>
-      <translation type="unfinished">Shapefile module not found. Aborting.</translation>
+      <translation>未找到 Shapefile 模块。中止。</translation>
     </message>
     <message>
       <location filename="importSHP.py" line="164"/>
@@ -2905,12 +2905,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchWindow.py" line="327"/>
       <source>Window options</source>
-      <translation type="unfinished">Window options</translation>
+      <translation>窗口选项</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="331"/>
       <source>Auto include in host object</source>
-      <translation type="unfinished">Auto include in host object</translation>
+      <translation>自动包含在宿主对象</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="337"/>
@@ -2920,7 +2920,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchStructure.py" line="451"/>
       <source>Preset</source>
-      <translation type="unfinished">Preset</translation>
+      <translation>预设值</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="1173"/>

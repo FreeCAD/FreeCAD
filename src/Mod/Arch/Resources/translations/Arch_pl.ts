@@ -76,7 +76,7 @@
     <message>
       <location filename="ArchBuildingPart.py" line="527"/>
       <source>If true, show the level</source>
-      <translation>Jeśli prawda, pokaż poziom</translation>
+      <translation>Jeśli parametr ma wartość Prawda, pokaż poziom</translation>
     </message>
     <message>
       <location filename="ArchBuildingPart.py" line="530"/>
@@ -456,7 +456,7 @@
     <message>
       <location filename="ArchSpace.py" line="285"/>
       <source>The thickness of the floor finish</source>
-      <translation>Grubość wykończenia podłogi</translation>
+      <translation>Grubość warstwy wykończenia podłogi</translation>
     </message>
     <message>
       <location filename="ArchSpace.py" line="287"/>
@@ -851,7 +851,7 @@
     <message>
       <location filename="ArchWindow.py" line="570"/>
       <source>Shows plan opening symbols if available</source>
-      <translation>Wyświetla symbole otwierające płaszczyznę, jeśli są dostępne</translation>
+      <translation>Pokazuje symbole otwarcia planu, jeśli są dostępne</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="572"/>

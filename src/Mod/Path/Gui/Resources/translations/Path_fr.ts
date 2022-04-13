@@ -376,7 +376,7 @@
     <message>
       <location filename="PathDressupAxisMap.py" line="63"/>
       <source>The input mapping axis</source>
-      <translation>L’axe d’entrée de mappage</translation>
+      <translation>L'axe d'application d'entrée</translation>
     </message>
     <message>
       <location filename="PathDressupAxisMap.py" line="69"/>
@@ -714,16 +714,6 @@
       <translation>Expression utilisée pour la valeur StepDown dans les nouvelles opérations.</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="73"/>
-      <source>Start pocketing at center or boundary</source>
-      <translation>Débuter la création de la poche au centre ou sur la limite</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Percent of cutter diameter to step over on each pass</source>
-      <translation>Avance en pourcentage du diamètre de l'outil à chaque passe</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="71"/>
       <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
       <translation>Direction du parcours d’outils autour de la pièce en sens horaire (CW) ou anti-horaire (CCW)</translation>
@@ -732,6 +722,16 @@
       <location filename="PathPocketBase.py" line="72"/>
       <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
       <translation>Décalage supplémentaire à appliquer à l’opération. Direction est opération dépendante.</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="73"/>
+      <source>Start pocketing at center or boundary</source>
+      <translation>Débuter la création de la poche au centre ou sur la limite</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Percent of cutter diameter to step over on each pass</source>
+      <translation>Avance en pourcentage du diamètre de l'outil à chaque passe</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="75"/>
@@ -1359,7 +1359,7 @@
     <message>
       <location filename="InitGui.py" line="159"/>
       <source>&amp;Path</source>
-      <translation>&amp;Parcours</translation>
+      <translation>&amp;Path</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="159"/>
@@ -1570,16 +1570,6 @@
   <context>
     <name>PathJob</name>
     <message>
-      <location filename="PathJobGui.py" line="1258"/>
-      <source>Unsupported stock object %s</source>
-      <translation>Objet brut " %s " non pris en charge</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1274"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>Type de brut " %s (%d) " non pris en charge</translation>
-    </message>
-    <message>
       <location filename="PathJobGui.py" line="387"/>
       <source>Stock not from Base bound box!</source>
       <translation>Le brut ne tient pas dans les bases de la boîte englobante!</translation>
@@ -1593,6 +1583,16 @@
       <location filename="PathJobGui.py" line="525"/>
       <source>Stock not a cylinder!</source>
       <translation>Le brut n'est pas un cylindre !</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1258"/>
+      <source>Unsupported stock object %s</source>
+      <translation>Objet brut " %s " non pris en charge</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1274"/>
+      <source>Unsupported stock type %s (%d)</source>
+      <translation>Type de brut " %s (%d) " non pris en charge</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="112"/>
@@ -1738,16 +1738,16 @@
       <translation>Emplacement de base</translation>
     </message>
     <message>
-      <location filename="PathOpGui.py" line="855"/>
-      <source>Heights</source>
-      <translation>Hauteur</translation>
-    </message>
-    <message>
       <location filename="PathOpGui.py" line="848"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>FinalDepth ne peut pas être modifiée pour cette opération. 
 S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner une opération différente.</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>Hauteur</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="869"/>
@@ -2702,7 +2702,7 @@ Abandon de la création</translation>
     <message>
       <location filename="PathDressupAxisMap.py" line="54"/>
       <source>The input mapping axis</source>
-      <translation>L’axe d’entrée de mappage</translation>
+      <translation>L'axe d'application d'entrée</translation>
     </message>
     <message>
       <location filename="PathDressupAxisMap.py" line="55"/>
@@ -2712,7 +2712,7 @@ Abandon de la création</translation>
     <message>
       <location filename="PathDressupAxisMap.py" line="245"/>
       <source>Axis Map Dress-up</source>
-      <translation>Mappage des axes</translation>
+      <translation>Placage des axes</translation>
     </message>
     <message>
       <location filename="PathDressupAxisMap.py" line="249"/>
@@ -3163,7 +3163,7 @@ Abandon de la création</translation>
     <message>
       <location filename="PathDressupZCorrect.py" line="304"/>
       <source>Z Depth Correction Dress-up</source>
-      <translation>Habillage de la correction de profondeur Z</translation>
+      <translation>Correction de la profondeur Z</translation>
     </message>
     <message>
       <location filename="PathDressupZCorrect.py" line="308"/>
@@ -3258,7 +3258,7 @@ Abandon de la création</translation>
     <message>
       <location filename="gcode_pre.py" line="229"/>
       <source>No job object</source>
-      <translation type="unfinished">No job object</translation>
+      <translation>Aucune tâche définie</translation>
     </message>
   </context>
   <context>
@@ -3332,12 +3332,12 @@ Abandon de la création</translation>
     <message>
       <location filename="PathInspect.py" line="260"/>
       <source>Inspect Path Commands</source>
-      <translation type="unfinished">Inspect Path Commands</translation>
+      <translation>Inspecter les commandes de trajectoire</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="264"/>
       <source>Inspects the contents of a Path object</source>
-      <translation type="unfinished">Inspects the contents of a Path object</translation>
+      <translation>Inspecte le contenu d'un objet Chemin</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="260"/>
@@ -3631,11 +3631,6 @@ Abandon de la création</translation>
       <translation>Décalage</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="71"/>
-      <source>Spiral</source>
-      <translation>Spirale</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="72"/>
       <source>ZigZagOffset</source>
       <translation type="unfinished">ZigZagOffset</translation>
@@ -3646,14 +3641,19 @@ Abandon de la création</translation>
       <translation>Ligne</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Grid</source>
-      <translation>Grille</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Triangle</source>
       <translation>Triangle</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="71"/>
+      <source>Spiral</source>
+      <translation>Spirale</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Grid</source>
+      <translation>Grille</translation>
     </message>
     <message>
       <location filename="PathPocketGui.py" line="46"/>
@@ -3782,7 +3782,7 @@ Abandon de la création</translation>
     <message>
       <location filename="PathSanity.py" line="108"/>
       <source>Check the path job for common errors</source>
-      <translation>Vérifier le travail path pour les erreurs courantes</translation>
+      <translation>Vérifier la tâche d'usinage pour les erreurs courantes</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="225"/>
@@ -4704,7 +4704,7 @@ Abandon de la création</translation>
     <message>
       <location filename="InitGui.py" line="241"/>
       <source>&amp;Path</source>
-      <translation>&amp;Parcours</translation>
+      <translation>&amp;Path</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="209"/>

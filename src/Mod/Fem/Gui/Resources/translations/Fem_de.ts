@@ -5117,7 +5117,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="156"/>
       <source>Styling</source>
-      <translation type="unfinished">Styling</translation>
+      <translation>Styling</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="162"/>

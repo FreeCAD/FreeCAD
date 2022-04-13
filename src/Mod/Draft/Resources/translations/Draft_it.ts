@@ -734,14 +734,14 @@ Questa proprietà è di sola lettura, poiché il numero dipende dai punti conten
       <translation>La scala del motivo usata da questo oggetto</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>La forma di questo oggetto</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation>La rotazione del motivo usata da questo oggetto</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>La forma di questo oggetto</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
@@ -4291,7 +4291,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="utils.py" line="652"/>
       <source>Wires:</source>
-      <translation type="unfinished">Wires:</translation>
+      <translation>Cavi:</translation>
     </message>
     <message>
       <location filename="utils.py" line="653"/>

@@ -120,7 +120,7 @@
     <message>
       <location filename="package_details.py" line="510"/>
       <source>No URL or wiki page provided by this macro</source>
-      <translation type="unfinished">No URL or wiki page provided by this macro</translation>
+      <translation>მაკრო არ შეიცავს ბმულს ან wiki-ის გვერდს</translation>
     </message>
     <message>
       <location filename="package_details.py" line="563"/>
@@ -568,9 +568,24 @@
       <translation>გთხოვთ ჯერ დააყენოთ კომპონენტები, რომლებიც აკლია.</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="915"/>
+      <source>Retrieving macro description...</source>
+      <translation>მაკროს აღწერის მიღება...</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="653"/>
+      <source>Retrieving info from git</source>
+      <translation>ინფორმაციის git-დან მიღება</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="873"/>
       <source>Error: Unable to locate zip from</source>
       <translation>Zip ფაილის მოძებნის შეცდომა</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="656"/>
+      <source>Retrieving info from wiki</source>
+      <translation>ინფორმაციის wiki-დან მიღება</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="880"/>
@@ -583,34 +598,19 @@
       <translation>დაყენება წარმატებულია</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="915"/>
-      <source>Retrieving macro description...</source>
-      <translation>მაკროს აღწერის მიღება...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="653"/>
-      <source>Retrieving info from git</source>
-      <translation>ინფორმაციის git-დან მიღება</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="656"/>
-      <source>Retrieving info from wiki</source>
-      <translation>ინფორმაციის wiki-დან მიღება</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="1013"/>
       <source>Error updating module</source>
       <translation>მოდულის განახლების შეცდომა</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1075"/>
-      <source>Error updating module </source>
-      <translation>მოდულის განახლების შეცდომა </translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="1078"/>
       <source>Please fix manually</source>
       <translation>გთხოვთ ხელით გაასწოროთ</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1075"/>
+      <source>Error updating module </source>
+      <translation>მოდულის განახლების შეცდომა </translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1220"/>
@@ -795,13 +795,38 @@
       <location filename="AddonManager.py" line="766"/>
       <source>Could not find addon &apos;{}&apos; to select
 </source>
-      <translation type="unfinished">Could not find addon &apos;{}&apos; to select
+      <translation>ასარჩევი განახლება ნაპოვნი არაა&apos;{}&apos;
 </translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="243"/>
       <source>Checking for updates...</source>
       <translation>განახლების შემოწმება...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation>{} განახლების გადატარება</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="577"/>
+      <source>No updates available</source>
+      <translation>განახლებები არაა ხელმისაწვდომი</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="915"/>
+      <source>Too many to list</source>
+      <translation>მეტისმეტად ბევრ ელემენტს ამატებთ სიაში</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="893"/>
+      <source>Missing Requirement</source>
+      <translation>არასაკმარისი პირობები</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1079"/>
+      <source>Press OK to install anyway.</source>
+      <translation type="unfinished">Press OK to install anyway.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="86"/>
@@ -879,16 +904,6 @@
       <translation>საჭიროა გადატვირთვა</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation>{} განახლების გადატარება</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="577"/>
-      <source>No updates available</source>
-      <translation>განახლებები არაა ხელმისაწვდომი</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="774"/>
       <source>All packages updates failed. Packages:</source>
       <translation>ყველა პაკეტის განახლების შეცდომა. ესენია:</translation>
@@ -897,16 +912,6 @@
       <location filename="AddonManager.py" line="786"/>
       <source>Failed packages:</source>
       <translation>წარუმატებელი პაკეტები:</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="915"/>
-      <source>Too many to list</source>
-      <translation>მეტისმეტად ბევრ ელემენტს ამატებთ სიაში</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="893"/>
-      <source>Missing Requirement</source>
-      <translation>არასაკმარისი პირობები</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="964"/>

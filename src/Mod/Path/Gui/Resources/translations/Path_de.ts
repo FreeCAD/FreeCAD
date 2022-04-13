@@ -716,16 +716,6 @@ nur unwesentlich.</translation>
       <translation>Ausdruck für die Stufenhöhe (StepDown) von neuen Operationen.</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="73"/>
-      <source>Start pocketing at center or boundary</source>
-      <translation>Taschenfräsen im Mittelpunkt oder am Rand der Tasche starten</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Percent of cutter diameter to step over on each pass</source>
-      <translation>Pfadüberlappung als Prozentsatz des Werkzeugdurchmessers</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="71"/>
       <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
       <translation>Die Richtung, die das Werkzeug um das Modell nehmen soll: im Uhrzeigersinn (CW) oder entgegen des Uhrzeigersinns (CCW)</translation>
@@ -734,6 +724,16 @@ nur unwesentlich.</translation>
       <location filename="PathPocketBase.py" line="72"/>
       <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
       <translation>Zusätzlicher Versatz, der zur Operation hinzugefügt wird. Richtung ist abhängig von der Operation.</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="73"/>
+      <source>Start pocketing at center or boundary</source>
+      <translation>Taschenfräsen im Mittelpunkt oder am Rand der Tasche starten</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Percent of cutter diameter to step over on each pass</source>
+      <translation>Pfadüberlappung als Prozentsatz des Werkzeugdurchmessers</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="75"/>
@@ -1572,16 +1572,6 @@ nur unwesentlich.</translation>
   <context>
     <name>PathJob</name>
     <message>
-      <location filename="PathJobGui.py" line="1258"/>
-      <source>Unsupported stock object %s</source>
-      <translation>Nicht unterstütztes Materialkörper-Objekt %s</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1274"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>Nicht unterstützter Materialkörpertyp %s (%d)</translation>
-    </message>
-    <message>
       <location filename="PathJobGui.py" line="387"/>
       <source>Stock not from Base bound box!</source>
       <translation>Maerialkörper nicht aus einer mit der Basis verbunden Box!</translation>
@@ -1595,6 +1585,16 @@ nur unwesentlich.</translation>
       <location filename="PathJobGui.py" line="525"/>
       <source>Stock not a cylinder!</source>
       <translation>Materialkörper ist kein Zylinder!</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1258"/>
+      <source>Unsupported stock object %s</source>
+      <translation>Nicht unterstütztes Materialkörper-Objekt %s</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1274"/>
+      <source>Unsupported stock type %s (%d)</source>
+      <translation>Nicht unterstützter Materialkörpertyp %s (%d)</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="112"/>
@@ -1740,16 +1740,16 @@ nur unwesentlich.</translation>
       <translation>Ausgangsposition</translation>
     </message>
     <message>
-      <location filename="PathOpGui.py" line="855"/>
-      <source>Heights</source>
-      <translation>Höhen</translation>
-    </message>
-    <message>
       <location filename="PathOpGui.py" line="848"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>Die endgültige Tiefe kann für diese Operation nicht verändert werden.
 Sollte dies nötig sein, so wählen Sie bitte eine andere Operation aus.</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>Höhen</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="869"/>
@@ -3260,7 +3260,7 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="gcode_pre.py" line="229"/>
       <source>No job object</source>
-      <translation type="unfinished">No job object</translation>
+      <translation>Kein Job-Objekt</translation>
     </message>
   </context>
   <context>
@@ -3334,12 +3334,12 @@ Abbruch der OP-Erstellung</translation>
     <message>
       <location filename="PathInspect.py" line="260"/>
       <source>Inspect Path Commands</source>
-      <translation type="unfinished">Inspect Path Commands</translation>
+      <translation>Pfadbefehle untersuchen</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="264"/>
       <source>Inspects the contents of a Path object</source>
-      <translation type="unfinished">Inspects the contents of a Path object</translation>
+      <translation>Prüft den Inhalt eines Pfad-Objekts</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="260"/>
@@ -3633,11 +3633,6 @@ Abbruch der OP-Erstellung</translation>
       <translation>Versetzen</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="71"/>
-      <source>Spiral</source>
-      <translation>Spirale</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="72"/>
       <source>ZigZagOffset</source>
       <translation>ZickZack mit Versatz</translation>
@@ -3648,14 +3643,19 @@ Abbruch der OP-Erstellung</translation>
       <translation>Linie</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Grid</source>
-      <translation>Raster</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Triangle</source>
       <translation>Dreieck</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="71"/>
+      <source>Spiral</source>
+      <translation>Spirale</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Grid</source>
+      <translation>Raster</translation>
     </message>
     <message>
       <location filename="PathPocketGui.py" line="46"/>

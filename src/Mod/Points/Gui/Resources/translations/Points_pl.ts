@@ -9,7 +9,7 @@
     </message>
     <message>
       <source>Convert to points...</source>
-      <translation>Konwertuj na punkty...</translation>
+      <translation>Konwertuj na punkty ...</translation>
     </message>
     <message>
       <source>Convert to points</source>
@@ -54,7 +54,7 @@
     </message>
     <message>
       <source>Merge point clouds</source>
-      <translation>Scalanie chmur punktów</translation>
+      <translation>Scal chmury punktów</translation>
     </message>
     <message>
       <source>Merge several point clouds into one</source>

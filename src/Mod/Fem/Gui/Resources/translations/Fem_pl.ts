@@ -876,7 +876,7 @@
     <message>
       <location filename="../../Command.cpp" line="683"/>
       <source>Constraint plane rotation</source>
-      <translation>Wiązanie utrzymujące węzły na płaskiej powierzchni (MPC Plane)</translation>
+      <translation>Zdefiniuj obrót w płaszczyźnie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="684"/>
@@ -966,7 +966,7 @@
     <message>
       <location filename="../../Command.cpp" line="904"/>
       <source>Constraint transform</source>
-      <translation>Wiązanie przekształcenia</translation>
+      <translation>Zdefiniuj odkształcenie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="905"/>
@@ -3834,7 +3834,7 @@ Obiekt wyników FreeCAD: Zaimportowane dane zostaną przekonwetowane na obiekt w
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="500"/>
       <source>Constraint transform</source>
-      <translation>Wiązanie przekształcenia</translation>
+      <translation>Zdefiniuj odkształcenie</translation>
     </message>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="260"/>
@@ -4055,7 +4055,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/ResultHints.ui" line="220"/>
       <source>max. principal stress vector: s3x, s3y, s3z</source>
-      <translation>wektor I naprężenia głównego: s3x, s3y, s3z</translation>
+      <translation>maksymalny wektor naprężeń głównych: s3x, s3y, s3z</translation>
     </message>
   </context>
   <context>
@@ -4404,7 +4404,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="50"/>
       <source>Select multiple face(s), click Add or Remove</source>
-      <translation>Wybierz wiele ściana(y), kliknij przycisk Dodaj lub Usuń</translation>
+      <translation>Wybierz wiele ścian, kliknij przycisk Dodaj lub Usuń</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="59"/>
@@ -4454,7 +4454,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="225"/>
       <source>Rotations are only valid for Beam and Shell elements.</source>
-      <translation>Obroty są poprawne tylko dla elementów belek i powłok.</translation>
+      <translation>Obrót jest właściwy tylko dla elementów belek i powłok.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="240"/>
@@ -4482,7 +4482,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="20"/>
       <source>Select multiple face(s), click Add or Remove</source>
-      <translation>Wybierz wiele ściana(y), kliknij przycisk Dodaj lub Usuń</translation>
+      <translation>Wybierz wiele ścian, kliknij przycisk Dodaj lub Usuń</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="29"/>
@@ -4515,7 +4515,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="84"/>
       <source>Select multiple face(s), click Add or Remove</source>
-      <translation>Wybierz wiele ściana(y), kliknij przycisk Dodaj lub Usuń</translation>
+      <translation>Wybierz wiele ścian, kliknij przycisk Dodaj lub Usuń</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="93"/>
@@ -4619,7 +4619,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="38"/>
       <source>Select multiple face(s), click Add or Remove</source>
-      <translation>Wybierz wiele ściana(y), kliknij przycisk Dodaj lub Usuń</translation>
+      <translation>Wybierz wiele ścian, kliknij przycisk Dodaj lub Usuń</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="47"/>
@@ -4764,7 +4764,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="20"/>
       <source>Select multiple face(s), click Add or Remove</source>
-      <translation>Wybierz wiele ściana(y), kliknij przycisk Dodaj lub Usuń</translation>
+      <translation>Wybierz wiele ścian, kliknij przycisk Dodaj lub Usuń</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="29"/>
@@ -4802,7 +4802,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="20"/>
       <source>Select multiple face(s), click Add or Remove</source>
-      <translation>Wybierz wiele ściana(y), kliknij przycisk Dodaj lub Usuń</translation>
+      <translation>Wybierz wiele ścian, kliknij przycisk Dodaj lub Usuń</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="29"/>
@@ -4840,7 +4840,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="20"/>
       <source>Select multiple face(s), click Add or Remove</source>
-      <translation>Wybierz wiele ściana(y), kliknij przycisk Dodaj lub Usuń</translation>
+      <translation>Wybierz wiele ścian, kliknij przycisk Dodaj lub Usuń</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="29"/>

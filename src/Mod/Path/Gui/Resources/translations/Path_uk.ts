@@ -714,16 +714,6 @@
       <translation type="unfinished">Expression used for StepDown of new operations.</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="73"/>
-      <source>Start pocketing at center or boundary</source>
-      <translation type="unfinished">Start pocketing at center or boundary</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Percent of cutter diameter to step over on each pass</source>
-      <translation type="unfinished">Percent of cutter diameter to step over on each pass</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="71"/>
       <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
       <translation type="unfinished">The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</translation>
@@ -732,6 +722,16 @@
       <location filename="PathPocketBase.py" line="72"/>
       <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
       <translation type="unfinished">Extra offset to apply to the operation. Direction is operation dependent.</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="73"/>
+      <source>Start pocketing at center or boundary</source>
+      <translation type="unfinished">Start pocketing at center or boundary</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Percent of cutter diameter to step over on each pass</source>
+      <translation type="unfinished">Percent of cutter diameter to step over on each pass</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="75"/>
@@ -1299,12 +1299,12 @@
     <message>
       <location filename="PathDeburr.py" line="185"/>
       <source>CW</source>
-      <translation type="unfinished">CW</translation>
+      <translation>за годинниковою стрілкою</translation>
     </message>
     <message>
       <location filename="PathDeburr.py" line="186"/>
       <source>CCW</source>
-      <translation type="unfinished">CCW</translation>
+      <translation>проти годинникової стрілки</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="114"/>
@@ -1570,16 +1570,6 @@
   <context>
     <name>PathJob</name>
     <message>
-      <location filename="PathJobGui.py" line="1258"/>
-      <source>Unsupported stock object %s</source>
-      <translation type="unfinished">Unsupported stock object %s</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1274"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation type="unfinished">Unsupported stock type %s (%d)</translation>
-    </message>
-    <message>
       <location filename="PathJobGui.py" line="387"/>
       <source>Stock not from Base bound box!</source>
       <translation type="unfinished">Stock not from Base bound box!</translation>
@@ -1593,6 +1583,16 @@
       <location filename="PathJobGui.py" line="525"/>
       <source>Stock not a cylinder!</source>
       <translation type="unfinished">Stock not a cylinder!</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1258"/>
+      <source>Unsupported stock object %s</source>
+      <translation type="unfinished">Unsupported stock object %s</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1274"/>
+      <source>Unsupported stock type %s (%d)</source>
+      <translation type="unfinished">Unsupported stock type %s (%d)</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="112"/>
@@ -1738,16 +1738,16 @@
       <translation type="unfinished">Base Location</translation>
     </message>
     <message>
-      <location filename="PathOpGui.py" line="855"/>
-      <source>Heights</source>
-      <translation>Висоти</translation>
-    </message>
-    <message>
       <location filename="PathOpGui.py" line="848"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation type="unfinished">FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</translation>
+    </message>
+    <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>Висоти</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="869"/>
@@ -1993,7 +1993,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathProfile.py" line="196"/>
       <source>CW</source>
-      <translation type="unfinished">CW</translation>
+      <translation>за годинниковою стрілкою</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="91"/>
@@ -2008,7 +2008,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathProfile.py" line="197"/>
       <source>CCW</source>
-      <translation type="unfinished">CCW</translation>
+      <translation>проти годинникової стрілки</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="200"/>
@@ -3258,7 +3258,7 @@ Aborting op creation</translation>
     <message>
       <location filename="gcode_pre.py" line="229"/>
       <source>No job object</source>
-      <translation type="unfinished">No job object</translation>
+      <translation>Немає об’єкта завдання</translation>
     </message>
   </context>
   <context>
@@ -3276,12 +3276,12 @@ Aborting op creation</translation>
     <message>
       <location filename="PathHelix.py" line="72"/>
       <source>CW</source>
-      <translation type="unfinished">CW</translation>
+      <translation>за годинниковою стрілкою</translation>
     </message>
     <message>
       <location filename="PathHelix.py" line="73"/>
       <source>CCW</source>
-      <translation type="unfinished">CCW</translation>
+      <translation>проти годинникової стрілки</translation>
     </message>
   </context>
   <context>
@@ -3332,12 +3332,12 @@ Aborting op creation</translation>
     <message>
       <location filename="PathInspect.py" line="260"/>
       <source>Inspect Path Commands</source>
-      <translation type="unfinished">Inspect Path Commands</translation>
+      <translation>Перевірити команди Path</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="264"/>
       <source>Inspects the contents of a Path object</source>
-      <translation type="unfinished">Inspects the contents of a Path object</translation>
+      <translation>Перевіряє вміст об’єкта Path</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="260"/>
@@ -3631,11 +3631,6 @@ Aborting op creation</translation>
       <translation>Зміщення</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="71"/>
-      <source>Spiral</source>
-      <translation>Спіраль</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="72"/>
       <source>ZigZagOffset</source>
       <translation type="unfinished">ZigZagOffset</translation>
@@ -3646,14 +3641,19 @@ Aborting op creation</translation>
       <translation>Лінія</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Grid</source>
-      <translation>Сітка</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Triangle</source>
       <translation>Трикутник</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="71"/>
+      <source>Spiral</source>
+      <translation>Спіраль</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Grid</source>
+      <translation>Сітка</translation>
     </message>
     <message>
       <location filename="PathPocketGui.py" line="46"/>
@@ -6497,14 +6497,14 @@ Aborting op creation</translation>
       <location filename="../panels/PageOpHelixEdit.ui" line="98"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="104"/>
       <source>CW</source>
-      <translation type="unfinished">CW</translation>
+      <translation>за годинниковою стрілкою</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="153"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="103"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="109"/>
       <source>CCW</source>
-      <translation type="unfinished">CCW</translation>
+      <translation>проти годинникової стрілки</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="188"/>

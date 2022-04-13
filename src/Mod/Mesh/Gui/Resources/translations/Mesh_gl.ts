@@ -701,7 +701,7 @@
     </message>
     <message>
       <source>Segment</source>
-      <translation type="unfinished">Segment</translation>
+      <translation>Segmento</translation>
     </message>
     <message>
       <source>Delete</source>
@@ -728,11 +728,11 @@
     </message>
     <message>
       <source>Full</source>
-      <translation type="unfinished">Full</translation>
+      <translation>Cheo</translation>
     </message>
     <message>
       <source>Absolute number</source>
-      <translation type="unfinished">Absolute number</translation>
+      <translation>Número absoluto</translation>
     </message>
     <message>
       <source>Tolerance</source>
@@ -740,7 +740,7 @@
     </message>
     <message>
       <source>Absolute number (Maximum: %1)</source>
-      <translation type="unfinished">Absolute number (Maximum: %1)</translation>
+      <translation>Número absoluto (Máximo: %1)</translation>
     </message>
   </context>
   <context>
@@ -1289,7 +1289,7 @@ to a smoother appearance.
     </message>
     <message>
       <source>Frontal</source>
-      <translation type="unfinished">Frontal</translation>
+      <translation>Frontal</translation>
     </message>
     <message>
       <source>Frontal Quad</source>
@@ -1305,11 +1305,11 @@ to a smoother appearance.
     </message>
     <message>
       <source>Running gmsh...</source>
-      <translation type="unfinished">Running gmsh...</translation>
+      <translation>Executando gmsh...</translation>
     </message>
     <message>
       <source>Failed to start</source>
-      <translation type="unfinished">Failed to start</translation>
+      <translation>Non se puido iniciar</translation>
     </message>
     <message>
       <source>Error</source>

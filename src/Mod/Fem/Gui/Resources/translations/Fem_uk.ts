@@ -469,12 +469,12 @@
     <message>
       <location filename="commands.py" line="773"/>
       <source>FEM mesh from shape by Gmsh</source>
-      <translation type="unfinished">FEM mesh from shape by Gmsh</translation>
+      <translation>FEM сітка з фігур за допомогою Gmsh</translation>
     </message>
     <message>
       <location filename="commands.py" line="777"/>
       <source>Create a FEM mesh from a shape by Gmsh mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a shape by Gmsh mesher</translation>
+      <translation>Створення сітки МСЕ з фігур за допомогою Gmsh mesher</translation>
     </message>
   </context>
   <context>
@@ -482,12 +482,12 @@
     <message>
       <location filename="commands.py" line="818"/>
       <source>FEM mesh group</source>
-      <translation type="unfinished">FEM mesh group</translation>
+      <translation>Група сітки МСЕ</translation>
     </message>
     <message>
       <location filename="commands.py" line="822"/>
       <source>Creates a FEM mesh group</source>
-      <translation type="unfinished">Creates a FEM mesh group</translation>
+      <translation>Створює групу сітки МСЕ</translation>
     </message>
   </context>
   <context>
@@ -495,7 +495,7 @@
     <message>
       <location filename="commands.py" line="835"/>
       <source>FEM mesh from shape by Netgen</source>
-      <translation type="unfinished">FEM mesh from shape by Netgen</translation>
+      <translation>FEM сітка з фігур за допомогою Netgen</translation>
     </message>
     <message>
       <location filename="commands.py" line="839"/>
@@ -508,7 +508,7 @@
     <message>
       <location filename="commands.py" line="880"/>
       <source>FEM mesh region</source>
-      <translation type="unfinished">FEM mesh region</translation>
+      <translation>Область сітки МСЕ</translation>
     </message>
     <message>
       <location filename="commands.py" line="884"/>
@@ -5441,7 +5441,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="65"/>
       <source>Solve</source>
-      <translation type="unfinished">Solve</translation>
+      <translation>Розв’язати</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="66"/>

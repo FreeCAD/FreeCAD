@@ -1913,7 +1913,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="88"/>
       <source>Mode:</source>
-      <translation type="unfinished">Mode:</translation>
+      <translation>Режим:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="96"/>
@@ -2364,8 +2364,9 @@ or select an edge as reference</source>
       <location filename="../../TaskPadParameters.ui" line="102"/>
       <source>Use custom vector for pad direction, otherwise
 the sketch plane's normal vector will be used</source>
-      <translation type="unfinished">Use custom vector for pad direction, otherwise
-the sketch plane's normal vector will be used</translation>
+      <translation>Використовуйте вибраний вектор для напряму 
+видавлювання, інакше використовується вектор 
+нормалі площини ескізу</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="115"/>
@@ -3897,9 +3898,10 @@ This feature is broken and can't be edited.</source>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
-      <translation type="unfinished">Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
-If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
-Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</translation>
+      <translation>Примітка: Якщо ви оберете перенести, ви не зможете редагувати файл в старих версіях FreeCAD.
+Якщо ви відмовляєтеся мігрувати, ви не зможете використовувати нові функції PartDesign, такі як 
+Тіла(Bodies) і Деталі(Parts). Ви також не зможете використовувати свої деталі в робочому 
+середовищі Складання. Ви зможете мігрувати у будь-який момент за допомогою 'Part Design -&gt; Migrate'.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="166"/>
@@ -4353,7 +4355,7 @@ Only available for holes without thread</source>
       <location filename="../../TaskHoleParameters.ui" line="285"/>
       <location filename="../../TaskHoleParameters.cpp" line="582"/>
       <source>Wide</source>
-      <translation type="unfinished">Wide</translation>
+      <translation>Wide (макс. допуск)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="299"/>
@@ -4505,7 +4507,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="593"/>
       <source>Loose</source>
-      <translation type="unfinished">Loose</translation>
+      <translation>Loose (макс. допуск)</translation>
     </message>
   </context>
   <context>
@@ -4526,12 +4528,12 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>&amp;Sketch</source>
-      <translation type="unfinished">&amp;Sketch</translation>
+      <translation>&amp;Ескіз</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>&amp;Part Design</source>
-      <translation type="unfinished">&amp;Part Design</translation>
+      <translation>&amp;Part Design</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>

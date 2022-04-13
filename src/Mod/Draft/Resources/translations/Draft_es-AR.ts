@@ -742,14 +742,14 @@ Esta propiedad es de solo lectura, así que el número depende de los puntos con
       <translation>Escala del patrón usado por este objeto</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>La forma de este objeto</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation>Rotación del patrón usado por este objeto</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>La forma de este objeto</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>

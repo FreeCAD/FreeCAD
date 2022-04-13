@@ -7607,7 +7607,7 @@ Möchten Sie die Datei mit einem anderen Namen speichern?</translation>
     </message>
     <message>
       <source>Documentation for users on the FreeCAD website</source>
-      <translation>Benutzerdokumentation auf der FreeCAD-Website</translation>
+      <translation>Benutzerdokumentation auf der FreeCAD-Webseite</translation>
     </message>
   </context>
   <context>
@@ -8635,7 +8635,7 @@ Möchten Sie die Datei mit einem anderen Namen speichern?</translation>
     </message>
     <message>
       <source>Toggle navigation/Edit mode</source>
-      <translation>Navigations/Editier-Modus</translation>
+      <translation>Navigations-/Editier-Modus</translation>
     </message>
     <message>
       <source>Toggle between navigation and edit mode</source>

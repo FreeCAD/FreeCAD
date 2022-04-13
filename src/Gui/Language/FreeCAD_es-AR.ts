@@ -6120,11 +6120,11 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Skip recomputes</source>
-      <translation>Saltar recalculado</translation>
+      <translation>Saltar recálculo</translation>
     </message>
     <message>
       <source>Enable or disable recomputations of document</source>
-      <translation>Activar o desactivar el recalculado del documento</translation>
+      <translation>Activar o desactivar el recálculo del documento</translation>
     </message>
     <message>
       <source>Mark to recompute</source>
@@ -6188,7 +6188,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
-      <translation>Activar o desactivar el recalculado del objeto de edición cuando 'saltar recalculado' está activado</translation>
+      <translation>Activar o desactivar el recálculo del objeto de edición cuando 'saltar recálculo' está habilitado</translation>
     </message>
     <message>
       <source>Recompute object</source>

@@ -740,14 +740,14 @@ This property is read-only, as the number depends on the points contained within
       <translation>Масштабований паттерн (повторюване зображення), який використовується цим об'єктом</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Форма цього об'єкта</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation>Масштабований паттерн (повторюване зображення), який використовується цим об'єктом</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Форма цього об'єкта</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
@@ -4112,7 +4112,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="make_orthoarray.py" line="424"/>
       <source>Rectangular array</source>
-      <translation type="unfinished">Rectangular array</translation>
+      <translation>Прямокутний масив</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="501"/>
@@ -5322,7 +5322,7 @@ https://github. om/yorikvanhavre/Draft-dxf-імпортер
     <message>
       <location filename="gui_splines.py" line="183"/>
       <source>Create B-spline</source>
-      <translation type="unfinished">Create B-spline</translation>
+      <translation>Створити B-сплайн</translation>
     </message>
     <message>
       <location filename="gui_selectplane.py" line="147"/>
@@ -7028,7 +7028,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draft.ui" line="372"/>
       <source>Construction Geometry</source>
-      <translation type="unfinished">Construction Geometry</translation>
+      <translation>Допоміжна геометрія</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="380"/>

@@ -3115,7 +3115,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="InitGui.py" line="71"/>
       <source>Structure tools</source>
-      <translation type="unfinished">Structure tools</translation>
+      <translation>Ferramentas de estrutura</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="85"/>
@@ -3155,7 +3155,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="InitGui.py" line="181"/>
       <source>Creation</source>
-      <translation type="unfinished">Creation</translation>
+      <translation>Creación</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="185"/>
@@ -3165,7 +3165,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="InitGui.py" line="189"/>
       <source>Modification</source>
-      <translation type="unfinished">Modification</translation>
+      <translation>Modificación</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="192"/>
@@ -3697,7 +3697,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="1325"/>
       <source>Select tool...</source>
-      <translation type="unfinished">Select tool...</translation>
+      <translation>Escoller ferramenta...</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1192"/>
@@ -4666,7 +4666,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="233"/>
       <source>Structural System</source>
-      <translation type="unfinished">Structural System</translation>
+      <translation>Sistema Estrutural</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="236"/>
@@ -4679,7 +4679,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="196"/>
       <source>Multiple Structures</source>
-      <translation type="unfinished">Multiple Structures</translation>
+      <translation>Estruturas Múltiples</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="199"/>
@@ -4689,7 +4689,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="233"/>
       <source>Structural System</source>
-      <translation type="unfinished">Structural System</translation>
+      <translation>Sistema Estrutural</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="236"/>
@@ -4709,7 +4709,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="1472"/>
       <source>Structure tools</source>
-      <translation type="unfinished">Structure tools</translation>
+      <translation>Ferramentas de estrutura</translation>
     </message>
   </context>
   <context>
@@ -4717,7 +4717,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="1472"/>
       <source>Structure tools</source>
-      <translation type="unfinished">Structure tools</translation>
+      <translation>Ferramentas de estrutura</translation>
     </message>
   </context>
   <context>
@@ -4725,7 +4725,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="196"/>
       <source>Multiple Structures</source>
-      <translation type="unfinished">Multiple Structures</translation>
+      <translation>Estruturas Múltiples</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="199"/>
@@ -4849,7 +4849,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="71"/>
       <source>Structure tools</source>
-      <translation type="unfinished">Structure tools</translation>
+      <translation>Ferramentas de estrutura</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="85"/>
@@ -4914,7 +4914,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="181"/>
       <source>Creation</source>
-      <translation type="unfinished">Creation</translation>
+      <translation>Creación</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="185"/>
@@ -4924,7 +4924,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="189"/>
       <source>Modification</source>
-      <translation type="unfinished">Modification</translation>
+      <translation>Modificación</translation>
     </message>
   </context>
   <context>
@@ -4937,7 +4937,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="124"/>
       <source>Creation</source>
-      <translation type="unfinished">Creation</translation>
+      <translation>Creación</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="127"/>
@@ -4947,7 +4947,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="130"/>
       <source>Modification</source>
-      <translation type="unfinished">Modification</translation>
+      <translation>Modificación</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="132"/>
@@ -5020,7 +5020,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../ui/ArchMaterial.ui" line="139"/>
       <source>Section Color</source>
-      <translation type="unfinished">Section Color</translation>
+      <translation>Cor da sección</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="163"/>
@@ -5284,7 +5284,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="183"/>
       <source>Add selection</source>
-      <translation type="unfinished">Add selection</translation>
+      <translation>Engadir á selección</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="190"/>
@@ -6068,7 +6068,7 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="14"/>
       <source>IFC import</source>
-      <translation type="unfinished">IFC import</translation>
+      <translation>Importar IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="41"/>
@@ -6455,7 +6455,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="14"/>
       <source>IFC export</source>
-      <translation type="unfinished">IFC export</translation>
+      <translation>Exportar IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="35"/>
@@ -6488,17 +6488,17 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="91"/>
       <source>Standard model</source>
-      <translation type="unfinished">Standard model</translation>
+      <translation>Modelo estándar</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="96"/>
       <source>Structural analysis</source>
-      <translation type="unfinished">Structural analysis</translation>
+      <translation>Análise estrutural</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="101"/>
       <source>Standard + structural</source>
-      <translation type="unfinished">Standard + structural</translation>
+      <translation>Estándar + estrutural</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="111"/>
@@ -6689,17 +6689,17 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="361"/>
       <source>IFC file units</source>
-      <translation type="unfinished">IFC file units</translation>
+      <translation>Unidades de ficheiros IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="383"/>
       <source>Metric</source>
-      <translation type="unfinished">Metric</translation>
+      <translation>Métrica</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="388"/>
       <source>Imperial</source>
-      <translation type="unfinished">Imperial</translation>
+      <translation>Imperial</translation>
     </message>
   </context>
 </TS>

@@ -739,14 +739,14 @@ This property is read-only, as the number depends on the points contained within
       <translation>Масштабирование штриховки, используемой этим объектом</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Форма этого объекта</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation>Угол наклона штриховки, используемой этим объектом</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Форма этого объекта</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
@@ -2022,12 +2022,12 @@ If other objects are selected they are ignored.</source>
     <message>
       <location filename="gui_hatch.py" line="41"/>
       <source>Create hatches on selected faces</source>
-      <translation type="unfinished">Create hatches on selected faces</translation>
+      <translation>Создать штриховку на выбранных поверхностях</translation>
     </message>
     <message>
       <location filename="gui_hatch.py" line="42"/>
       <source>Creates hatches on the faces of a selected object</source>
-      <translation type="unfinished">Creates hatches on the faces of a selected object</translation>
+      <translation>Создает штриховку на поверхности выделенного объекта</translation>
     </message>
   </context>
   <context>
@@ -2042,9 +2042,7 @@ If other objects are selected they are ignored.</source>
       <source>Heal faulty Draft objects saved with an earlier version of the program.
 If an object is selected it will try to heal that object in particular,
 otherwise it will try to heal all objects in the active document.</source>
-      <translation type="unfinished">Heal faulty Draft objects saved with an earlier version of the program.
-If an object is selected it will try to heal that object in particular,
-otherwise it will try to heal all objects in the active document.</translation>
+      <translation>Исправить объекты чертежа сохраненные в более ранней версии программы. Если выбран объект, то будет исправлен именно он, в противном случае будут исправлены все объекты в активном документе.</translation>
     </message>
   </context>
   <context>
@@ -2058,8 +2056,8 @@ otherwise it will try to heal all objects in the active document.</translation>
       <location filename="gui_join.py" line="69"/>
       <source>Joins the selected lines or polylines into a single object.
 The lines must share a common point at the start or at the end for the operation to succeed.</source>
-      <translation type="unfinished">Joins the selected lines or polylines into a single object.
-The lines must share a common point at the start or at the end for the operation to succeed.</translation>
+      <translation>Объединяет выделенные линии или полилинии в один объект.
+Линии должны иметь общую точку в начале или в конце для успешной операции.</translation>
     </message>
   </context>
   <context>
@@ -2102,8 +2100,8 @@ will be used to provide information to the label.</translation>
       <location filename="gui_layers.py" line="55"/>
       <source>Adds a layer to the document.
 Objects added to this layer can share the same visual properties such as line color, line width, and shape color.</source>
-      <translation type="unfinished">Adds a layer to the document.
-Objects added to this layer can share the same visual properties such as line color, line width, and shape color.</translation>
+      <translation>Добавляет слой к документу.
+Добавленные в этот слой объекты могут иметь одинаковые визуальные свойства, такие как цвет линии, ширина линии и цвет фигуры.</translation>
     </message>
   </context>
   <context>

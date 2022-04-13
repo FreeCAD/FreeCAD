@@ -21,7 +21,7 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="753"/>
       <source>Apply the changes to the current cell</source>
-      <translation type="unfinished">Apply the changes to the current cell</translation>
+      <translation>Застосувати зміни до поточної комірки</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="755"/>
@@ -31,7 +31,7 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="757"/>
       <source>Deletes the contents of the current cell</source>
-      <translation type="unfinished">Deletes the contents of the current cell</translation>
+      <translation>Видаляє вміст поточної комірки</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="759"/>
@@ -41,22 +41,22 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="761"/>
       <source>Updates the values handled by controllers</source>
-      <translation type="unfinished">Updates the values handled by controllers</translation>
+      <translation>Оновлює значення, які обробляються контролерами</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="907"/>
       <source>Create Spreadsheet</source>
-      <translation type="unfinished">Create Spreadsheet</translation>
+      <translation>Створити таблицю</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="933"/>
       <source>Add controller</source>
-      <translation type="unfinished">Add controller</translation>
+      <translation>Додати контролер</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="973"/>
       <source>Add property controller</source>
-      <translation type="unfinished">Add property controller</translation>
+      <translation>Додати контролер властивостей</translation>
     </message>
   </context>
   <context>
@@ -64,12 +64,12 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="919"/>
       <source>Add controller</source>
-      <translation type="unfinished">Add controller</translation>
+      <translation>Додати контролер</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="922"/>
       <source>Adds a cell controller to a selected spreadsheet</source>
-      <translation type="unfinished">Adds a cell controller to a selected spreadsheet</translation>
+      <translation>Додає контролер комірки до вибраної електронної таблиці</translation>
     </message>
   </context>
   <context>
@@ -82,7 +82,7 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="905"/>
       <source>Adds a spreadsheet object to the active document</source>
-      <translation type="unfinished">Adds a spreadsheet object to the active document</translation>
+      <translation>Додає об’єкт електронної таблиці до активного документа</translation>
     </message>
   </context>
   <context>
@@ -90,12 +90,12 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="944"/>
       <source>Add property controller</source>
-      <translation type="unfinished">Add property controller</translation>
+      <translation>Додати контролер властивостей</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="947"/>
       <source>Adds a property controller to a selected spreadsheet</source>
-      <translation type="unfinished">Adds a property controller to a selected spreadsheet</translation>
+      <translation>Додає контролер властивостей до вибраної електронної таблиці</translation>
     </message>
   </context>
   <context>
@@ -125,7 +125,7 @@
     </message>
     <message>
       <source>Bottom-align contents of selected cells</source>
-      <translation>Вирівняти вміст виділених клітинок по нижньому краю</translation>
+      <translation>Вирівняти вміст виділених комірок по нижньому краю</translation>
     </message>
   </context>
   <context>
@@ -140,7 +140,7 @@
     </message>
     <message>
       <source>Center-align contents of selected cells</source>
-      <translation>Вирівняти по центру вміст виділених клітинок</translation>
+      <translation>Вирівняти по центру вміст виділених комірок</translation>
     </message>
   </context>
   <context>
@@ -155,7 +155,7 @@
     </message>
     <message>
       <source>Left-align contents of selected cells</source>
-      <translation>Вирівняти ліворуч вміст виділених клітинок</translation>
+      <translation>Вирівняти ліворуч вміст виділених комірок</translation>
     </message>
   </context>
   <context>
@@ -170,7 +170,7 @@
     </message>
     <message>
       <source>Right-align contents of selected cells</source>
-      <translation>Вирівняти праворуч вміст виділених клітинок</translation>
+      <translation>Вирівняти праворуч вміст виділених комірок</translation>
     </message>
   </context>
   <context>
@@ -185,7 +185,7 @@
     </message>
     <message>
       <source>Top-align contents of selected cells</source>
-      <translation>Вирівняти вміст виділених клітинок по верхньому краю</translation>
+      <translation>Вирівняти вміст виділених комірок по верхньому краю</translation>
     </message>
   </context>
   <context>
@@ -200,7 +200,7 @@
     </message>
     <message>
       <source>Vertically center-align contents of selected cells</source>
-      <translation type="unfinished">Vertically center-align contents of selected cells</translation>
+      <translation>Вирівняти вміст виділених комірок вертикально по центру</translation>
     </message>
   </context>
   <context>
@@ -241,7 +241,7 @@
     </message>
     <message>
       <source>Merge cells</source>
-      <translation>Об'єднати клітинки</translation>
+      <translation>Об'єднати комірки</translation>
     </message>
     <message>
       <source>Merge selected cells</source>
@@ -271,7 +271,7 @@
     </message>
     <message>
       <source>Split cell</source>
-      <translation>Розділити клітинку</translation>
+      <translation>Розділити комірку</translation>
     </message>
     <message>
       <source>Split previously merged cells</source>
@@ -334,59 +334,59 @@
     <name>Command</name>
     <message>
       <source>Merge cells</source>
-      <translation>Об'єднати клітинки</translation>
+      <translation>Об'єднати комірки</translation>
     </message>
     <message>
       <source>Split cell</source>
-      <translation>Розділити клітинку</translation>
+      <translation>Розділити комірку</translation>
     </message>
     <message>
       <source>Left-align cell</source>
-      <translation type="unfinished">Left-align cell</translation>
+      <translation>Вирівнювання ліворуч</translation>
     </message>
     <message>
       <source>Center cell</source>
-      <translation type="unfinished">Center cell</translation>
+      <translation>Вирівнювання по центру</translation>
     </message>
     <message>
       <source>Right-align cell</source>
-      <translation type="unfinished">Right-align cell</translation>
+      <translation>Вирівнювання праворуч</translation>
     </message>
     <message>
       <source>Top-align cell</source>
-      <translation type="unfinished">Top-align cell</translation>
+      <translation>Вирівнювання по верхньому краю</translation>
     </message>
     <message>
       <source>Bottom-align cell</source>
-      <translation type="unfinished">Bottom-align cell</translation>
+      <translation>Вирівнювання по нижньому краю</translation>
     </message>
     <message>
       <source>Vertically center cells</source>
-      <translation type="unfinished">Vertically center cells</translation>
+      <translation>Вирівнювання вертикально по центру</translation>
     </message>
     <message>
       <source>Set bold text</source>
-      <translation type="unfinished">Set bold text</translation>
+      <translation>Виділення тексту напівжирним стилем</translation>
     </message>
     <message>
       <source>Set italic text</source>
-      <translation type="unfinished">Set italic text</translation>
+      <translation>Виділення тексту курсивом</translation>
     </message>
     <message>
       <source>Set underline text</source>
-      <translation type="unfinished">Set underline text</translation>
+      <translation>Виділення тексту підкреслюванням</translation>
     </message>
     <message>
       <source>Create Spreadsheet</source>
-      <translation type="unfinished">Create Spreadsheet</translation>
+      <translation>Створити таблицю</translation>
     </message>
     <message>
       <source>Set cell properties</source>
-      <translation type="unfinished">Set cell properties</translation>
+      <translation>Зміна властивостей комірок</translation>
     </message>
     <message>
       <source>Edit cell</source>
-      <translation type="unfinished">Edit cell</translation>
+      <translation>Редагувати комірку</translation>
     </message>
     <message>
       <source>Insert rows</source>
@@ -402,22 +402,22 @@
     </message>
     <message>
       <source>Clear cell(s)</source>
-      <translation type="unfinished">Clear cell(s)</translation>
+      <translation>Очистити комірку(и)</translation>
     </message>
     <message>
       <source>Set foreground color</source>
-      <translation type="unfinished">Set foreground color</translation>
+      <translation>Встановити колір переднього плану</translation>
     </message>
     <message>
       <source>Set background color</source>
-      <translation type="unfinished">Set background color</translation>
+      <translation>Встановити фоновий колір</translation>
     </message>
   </context>
   <context>
     <name>PropertiesDialog</name>
     <message>
       <source>Cell properties</source>
-      <translation>Властивості клітинки</translation>
+      <translation>Властивості комірки</translation>
     </message>
     <message>
       <source>&amp;Color</source>
@@ -493,7 +493,7 @@
     </message>
     <message>
       <source>Alias for this cell</source>
-      <translation>Псевдонім для цієї клітинки</translation>
+      <translation>Псевдонім для цієї комірки</translation>
     </message>
   </context>
   <context>
@@ -524,11 +524,11 @@
     </message>
     <message>
       <source>Set cell(s) background color</source>
-      <translation>Встановити фоновий колір клітинки(ок)</translation>
+      <translation>Встановити фоновий колір комірки(ок)</translation>
     </message>
     <message>
       <source>Sets the Spreadsheet cell(s) background color</source>
-      <translation>Встановити фоновий колір клітинки(ок) таблиці</translation>
+      <translation>Встановити фоновий колір комірки(ок) таблиці</translation>
     </message>
     <message>
       <source>Spreadsheet</source>
@@ -537,8 +537,8 @@
     <message>
       <source>Spreadsheet does not support range selection when pasting.
 Please select one cell only.</source>
-      <translation type="unfinished">Spreadsheet does not support range selection when pasting.
-Please select one cell only.</translation>
+      <translation>Електронна таблиця не підтримує вибір діапазону під час вставки.
+Будь ласка, виберіть лише одну комірку.</translation>
     </message>
     <message>
       <source>Copy &amp; Paste failed</source>
@@ -546,13 +546,13 @@ Please select one cell only.</translation>
     </message>
     <message>
       <source>Alias contains invalid characters!</source>
-      <translation type="unfinished">Alias contains invalid characters!</translation>
+      <translation>Псевдонім містить некоректні символи!</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Зверніться до комірки за псевдонімом, наприклад
+Spreadsheet.my_alias_name замість Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -638,17 +638,17 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
     <message>
       <source>&amp;Content:</source>
-      <translation type="unfinished">&amp;Content:</translation>
+      <translation>&amp;Зміст:</translation>
     </message>
     <message>
       <source>&amp;Alias:</source>
-      <translation type="unfinished">&amp;Alias:</translation>
+      <translation>&amp;Псевдонім:</translation>
     </message>
     <message>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
-      <translation type="unfinished">Refer to cell by alias, for example
-Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
+      <translation>Зверніться до комірки за псевдонімом, наприклад
+Spreadsheet.my_alias_name замість Spreadsheet.B1</translation>
     </message>
   </context>
   <context>
@@ -659,11 +659,11 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
     <message>
       <source>Import/Export Settings</source>
-      <translation type="unfinished">Import/Export Settings</translation>
+      <translation>Параметри Імпорт/Експорт</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Символ, що використовується для розділення рядків, зазвичай це одинарні лапки (') або подвійні лапки (&amp;quot;). Має бути один символ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>"</source>
@@ -671,11 +671,11 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
     <message>
       <source>Delimiter Character: </source>
-      <translation type="unfinished">Delimiter Character: </translation>
+      <translation>Символ розділювача: </translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Символ "Escape", як правило, зворотний слеш (\), який використовується для позначення спеціальних символів, які не друкуються, напр. \t = вкладка. Має бути один символ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>\</source>
@@ -683,15 +683,15 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
     <message>
       <source>Escape Character: </source>
-      <translation type="unfinished">Escape Character: </translation>
+      <translation>Символ "Escape": </translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Символ для позначення роздільника полів. За замовчуванням це символ табулювання, але також часто використовуються коми (,) і крапка з комою (;). Виберіть зі списку або введіть свій власний у поле. Має бути один символ або слова &lt;span style=" font-style:italic;"&gt;табуляція&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;кома&lt;/span&gt; або &lt;span style =" font-style:italic;"&gt;крапка з комою&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <source>tab</source>
-      <translation type="unfinished">tab</translation>
+      <translation>tab</translation>
     </message>
     <message>
       <source>;</source>
@@ -703,7 +703,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
     <message>
       <source>Quote Character: </source>
-      <translation type="unfinished">Quote Character: </translation>
+      <translation>Символ лапок: </translation>
     </message>
   </context>
   <context>
@@ -721,74 +721,74 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</translation>
     </message>
     <message numerus="yes">
       <source>Insert %n row(s) above</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n row(s) above</numerusform>
-        <numerusform>Insert %n row(s) above</numerusform>
-        <numerusform>Insert %n row(s) above</numerusform>
-        <numerusform>Insert %n row(s) above</numerusform>
+      <translation>
+        <numerusform>Вставити %n рядок(ів) вище</numerusform>
+        <numerusform>Вставити %n рядків вище</numerusform>
+        <numerusform>Вставити %n рядків вище</numerusform>
+        <numerusform>Вставити %n рядок(ків) вище</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n row(s) below</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n row(s) below</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
-        <numerusform>Insert %n row(s) below</numerusform>
+      <translation>
+        <numerusform>Вставити %n рядок нижче</numerusform>
+        <numerusform>Вставити %n рядків нижче</numerusform>
+        <numerusform>Вставити %n рядків нижче</numerusform>
+        <numerusform>Вставити %n рядок(ків) нижче</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n non-contiguous rows</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous rows</numerusform>
-        <numerusform>Insert %n non-contiguous rows</numerusform>
-        <numerusform>Insert %n non-contiguous rows</numerusform>
-        <numerusform>Insert %n non-contiguous rows</numerusform>
+      <translation>
+        <numerusform>Вставити %n несуміжний рядок</numerusform>
+        <numerusform>Вставити %n несуміжних рядків</numerusform>
+        <numerusform>Вставити %n несуміжних рядків</numerusform>
+        <numerusform>Вставити %n несуміжний(х) рядок(ів)</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Remove row(s)</source>
-      <translation type="unfinished">
-        <numerusform>Remove row(s)</numerusform>
-        <numerusform>Remove row(s)</numerusform>
-        <numerusform>Remove row(s)</numerusform>
-        <numerusform>Remove row(s)</numerusform>
+      <translation>
+        <numerusform>Видалити рядок</numerusform>
+        <numerusform>Видалити декілька рядків</numerusform>
+        <numerusform>Видалити рядки</numerusform>
+        <numerusform>Видалити рядок(ки)</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n column(s) left</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n column(s) left</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
-        <numerusform>Insert %n column(s) left</numerusform>
+      <translation>
+        <numerusform>Вставити %n стовпець ліворуч</numerusform>
+        <numerusform>Вставити %n стовпця ліворуч</numerusform>
+        <numerusform>Вставити %n стовпців ліворуч</numerusform>
+        <numerusform>Вставити %n стовпець(і) ліворуч</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n column(s) right</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n column(s) right</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
+      <translation>
+        <numerusform>Вставити %n стовпець праворуч</numerusform>
+        <numerusform>Вставити %n стовпця праворуч</numerusform>
+        <numerusform>Вставити %n стовпців праворуч</numerusform>
+        <numerusform>Вставити %n стовпець(і) праворуч</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n non-contiguous columns</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous columns</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
-        <numerusform>Insert %n non-contiguous columns</numerusform>
+      <translation>
+        <numerusform>Вставити %n несуміжний стовпець</numerusform>
+        <numerusform>Вставити %n несуміжних стовпців</numerusform>
+        <numerusform>Вставити %n несуміжних стовпців</numerusform>
+        <numerusform>Вставити %n несуміжний(х) стовпець(ів)</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Remove column(s)</source>
-      <translation type="unfinished">
-        <numerusform>Remove column(s)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
-        <numerusform>Remove column(s)</numerusform>
+      <translation>
+        <numerusform>Видалити стовпець</numerusform>
+        <numerusform>Видалити стовпці</numerusform>
+        <numerusform>Видалити стовпці</numerusform>
+        <numerusform>Видалити стовпець(і)</numerusform>
       </translation>
     </message>
   </context>

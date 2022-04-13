@@ -484,7 +484,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>There is currently no active view to complete the operation</source>
-      <translation>Actualment hi ha cap visualització activa per completar l'operació</translation>
+      <translation>Actualment no hi ha cap visualització activa per completar l'operació</translation>
     </message>
   </context>
   <context>

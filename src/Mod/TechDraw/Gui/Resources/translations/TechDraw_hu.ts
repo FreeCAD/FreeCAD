@@ -426,7 +426,7 @@
     </message>
     <message>
       <source>Save Dxf File</source>
-      <translation>Dxf-fájl mentése</translation>
+      <translation>DXF-fájl mentése</translation>
     </message>
     <message>
       <source>Dxf (*.dxf)</source>
@@ -911,7 +911,7 @@
     </message>
     <message>
       <source>ClipGroupAdd</source>
-      <translation>KivágásCsopoortHozzáadás</translation>
+      <translation>Szeletcsoport hozzáadása</translation>
     </message>
     <message>
       <source>ClipGroupRemove</source>
@@ -919,7 +919,7 @@
     </message>
     <message>
       <source>Create Symbol</source>
-      <translation>Szimbólum létrehozása</translation>
+      <translation>Rajzjel létrehozása</translation>
     </message>
     <message>
       <source>Create DraftView</source>
@@ -2945,7 +2945,7 @@ Szeretné folytatni?</translation>
     </message>
     <message>
       <source>Save Dxf File</source>
-      <translation>Dxf-fájl mentése</translation>
+      <translation>DXF-fájl mentése</translation>
     </message>
     <message>
       <source>Dxf (*.dxf)</source>
