@@ -3798,6 +3798,8 @@ void TopoShape::getPoints(std::vector<Base::Vector3d> &Points,
                     Points.push_back(Base::convertTo<Base::Vector3d>(p));
                     gp_Dir normal;
                     if (GeomLib::NormEstim(aSurf, p2d, Precision::Confusion(), normal) <= 1) {
+                        if (face.Orientation() == TopAbs_REVERSED)
+                            normal.Reverse();
                         Normals.push_back(Base::convertTo<Base::Vector3d>(normal));
                     }
                     else {
