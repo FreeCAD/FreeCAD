@@ -269,6 +269,7 @@ bool ViewProviderFemPostFunction::findScaleFactor(double& scale) const
     if (bbox.hasVolume()) {
         float dx, dy, dz;
         bbox.getSize(dx, dy, dz);
+        // we want the manipulator to have 20 % if the max size of the object
         scale = 0.2 * std::max(std::max(dx, dy), dz);
         return true;
     }
