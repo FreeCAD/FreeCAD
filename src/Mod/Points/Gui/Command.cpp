@@ -30,6 +30,7 @@
 #endif
 
 #include <Base/Exception.h>
+#include <Base/Interpreter.h>
 #include <Base/Matrix.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
@@ -212,59 +213,43 @@ void CmdPointsConvert::activated(int iMsg)
 
     Gui::WaitCursor wc;
     openCommand(QT_TRANSLATE_NOOP("Command", "Convert to points"));
-    std::vector<App::DocumentObject*> geoObject = getSelection().getObjectsOfType(Base::Type::fromName("App::GeoFeature"));
+    std::vector<App::GeoFeature*> geoObject = getSelection().getObjectsOfType<App::GeoFeature>();
 
-    bool addedPoints = false;
-    for (std::vector<App::DocumentObject*>::iterator it = geoObject.begin(); it != geoObject.end(); ++it) {
-        Base::Placement globalPlacement = static_cast<App::GeoFeature*>(*it)->globalPlacement();
-        Base::Placement localPlacement = static_cast<App::GeoFeature*>(*it)->Placement.getValue();
-        localPlacement = globalPlacement * localPlacement.inverse();
-        const App::PropertyComplexGeoData* prop = static_cast<App::GeoFeature*>(*it)->getPropertyOfGeometry();
-        if (prop) {
-            const Data::ComplexGeoData* data = prop->getComplexData();
-            std::vector<Base::Vector3d> vertexes;
-            std::vector<Base::Vector3d> normals;
-            data->getPoints(vertexes, normals, static_cast<float>(tol));
-            if (!vertexes.empty()) {
-                Points::Feature* fea = nullptr;
-                if (vertexes.size() == normals.size()) {
-                    fea = static_cast<Points::Feature*>(Base::Type::fromName("Points::FeatureCustom").createInstance());
-                    if (!fea) {
-                        Base::Console().Error("Failed to create instance of 'Points::FeatureCustom'\n");
-                        continue;
-                    }
-                    Points::PropertyNormalList* prop = static_cast<Points::PropertyNormalList*>
-                        (fea->addDynamicProperty("Points::PropertyNormalList", "Normal"));
-                    if (prop) {
-                        std::vector<Base::Vector3f> normf;
-                        normf.resize(normals.size());
-                        std::transform(normals.begin(), normals.end(), normf.begin(), Base::toVector<float, double>);
-                        prop->setValues(normf);
-                    }
-                }
-                else {
-                    fea = new Points::Feature;
-                }
-
-                Points::PointKernel kernel;
-                kernel.reserve(vertexes.size());
-                for (std::vector<Base::Vector3d>::iterator pt = vertexes.begin(); pt != vertexes.end(); ++pt)
-                    kernel.push_back(*pt);
-                fea->Points.setValue(kernel);
-                fea->Placement.setValue(localPlacement);
-
-                App::Document* doc = (*it)->getDocument();
-                doc->addObject(fea, "Points");
-                fea->purgeTouched();
-                addedPoints = true;
+    auto run_python = [](const std::vector<App::GeoFeature*>& geoObject, double tol) -> bool {
+        Py::List list;
+        for (auto it : geoObject) {
+            const App::PropertyComplexGeoData* prop = it->getPropertyOfGeometry();
+            if (prop) {
+                list.append(Py::asObject(it->getPyObject()));
             }
         }
-    }
 
-    if (addedPoints)
-        commitCommand();
-    else
+        if (list.size() > 0) {
+            PyObject* module = PyImport_ImportModule("pointscommands.commands");
+            if (!module) {
+                throw Py::Exception();
+            }
+
+            Py::Module commands(module, true);
+            commands.callMemberFunction("make_points_from_geometry", Py::TupleN(list, Py::Float(tol)));
+            return true;
+        }
+
+        return false;
+    };
+
+    Base::PyGILStateLocker lock;
+    try {
+        if (run_python(geoObject, tol))
+            commitCommand();
+        else
+            abortCommand();
+    }
+    catch (const Py::Exception&) {
         abortCommand();
+        Base::PyException e;
+        e.ReportException();
+    }
 }
 
 bool CmdPointsConvert::isActive()
