@@ -565,8 +565,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="addonmanager_workers.py" line="915"/>
+        <source>Retrieving macro description...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="addonmanager_workers.py" line="653"/>
+        <source>Retrieving info from git</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="addonmanager_workers.py" line="873"/>
         <source>Error: Unable to locate zip from</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="addonmanager_workers.py" line="656"/>
+        <source>Retrieving info from wiki</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -580,33 +595,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="addonmanager_workers.py" line="915"/>
-        <source>Retrieving macro description...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="addonmanager_workers.py" line="653"/>
-        <source>Retrieving info from git</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="addonmanager_workers.py" line="656"/>
-        <source>Retrieving info from wiki</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="addonmanager_workers.py" line="1013"/>
         <source>Error updating module</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="addonmanager_workers.py" line="1075"/>
-        <source>Error updating module </source>
+        <location filename="addonmanager_workers.py" line="1078"/>
+        <source>Please fix manually</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="addonmanager_workers.py" line="1078"/>
-        <source>Please fix manually</source>
+        <location filename="addonmanager_workers.py" line="1075"/>
+        <source>Error updating module </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -796,6 +796,31 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="AddonManager.py" line="773"/>
+        <source>Apply {} update(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="AddonManager.py" line="577"/>
+        <source>No updates available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="AddonManager.py" line="915"/>
+        <source>Too many to list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="AddonManager.py" line="893"/>
+        <source>Missing Requirement</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="AddonManager.py" line="1079"/>
+        <source>Press OK to install anyway.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="AddonManager.py" line="86"/>
         <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
         <translation type="unfinished"></translation>
@@ -871,16 +896,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="AddonManager.py" line="773"/>
-        <source>Apply {} update(s)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="AddonManager.py" line="577"/>
-        <source>No updates available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="AddonManager.py" line="774"/>
         <source>All packages updates failed. Packages:</source>
         <translation type="unfinished"></translation>
@@ -888,16 +903,6 @@
     <message>
         <location filename="AddonManager.py" line="786"/>
         <source>Failed packages:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="AddonManager.py" line="915"/>
-        <source>Too many to list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="AddonManager.py" line="893"/>
-        <source>Missing Requirement</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
