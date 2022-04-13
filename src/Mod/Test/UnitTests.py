@@ -181,3 +181,6 @@ class UnitBasicCases(unittest.TestCase):
             FreeCAD.Units.toNumber(1023, 'gg', 2)
         with self.assertRaises(ValueError):
             FreeCAD.Units.toNumber(1023, 's', 2)
+
+    def testIssue6735(self):
+        FreeCAD.Units.Quantity("1400.0 N/mm^2")
