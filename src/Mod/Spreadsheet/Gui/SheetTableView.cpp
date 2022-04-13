@@ -938,6 +938,12 @@ void SheetTableView::mousePressEvent(QMouseEvent* event)
     QTableView::mousePressEvent(event);
 }
 
+void SheetTableView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+{
+    Gui::getMainWindow()->updateActions();
+    QTableView::selectionChanged(selected, deselected);
+}
+
 void SheetTableView::edit ( const QModelIndex & index )
 {
     currentEditIndex = index;
