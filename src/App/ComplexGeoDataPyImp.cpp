@@ -176,7 +176,7 @@ PyObject* ComplexGeoDataPy::getPoints(PyObject *args)
     Py::List normal;
     for (std::vector<Base::Vector3d>::const_iterator it = normals.begin();
          it != normals.end(); ++it) {
-        vertex.append(Py::asObject(new Base::VectorPy(*it)));
+        normal.append(Py::asObject(new Base::VectorPy(*it)));
     }
     tuple.setItem(1, normal);
     return Py::new_reference_to(tuple);
