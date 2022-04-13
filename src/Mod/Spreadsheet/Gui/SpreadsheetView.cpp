@@ -483,6 +483,11 @@ QModelIndexList SheetView::selectedIndexes() const
     return ui->cells->selectionModel()->selectedIndexes();
 }
 
+QModelIndexList SheetView::selectedIndexesRaw() const
+{
+    return ui->cells->selectedIndexesRaw();
+}
+
 void SpreadsheetGui::SheetView::select(App::CellAddress cell, QItemSelectionModel::SelectionFlags flags)
 {
     ui->cells->selectionModel()->select(model->index(cell.row(), cell.col()), flags);

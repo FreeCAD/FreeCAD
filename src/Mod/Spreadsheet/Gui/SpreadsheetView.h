@@ -81,6 +81,7 @@ public:
     std::vector<App::Range> selectedRanges() const;
 
     QModelIndexList selectedIndexes() const;
+    QModelIndexList selectedIndexesRaw() const;
 
     void select(App::CellAddress cell, QItemSelectionModel::SelectionFlags flags);
 

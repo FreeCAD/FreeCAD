@@ -162,7 +162,10 @@ bool CmdSpreadsheetSplitCell::isActive()
             Sheet * sheet = sheetView->getSheet();
 
             if (current.isValid())
-                return sheet->isMergedCell(CellAddress(current.row(), current.column()));
+            {
+                return (sheetView->selectedIndexesRaw().size() == 1 &&
+                    sheet->isMergedCell(CellAddress(current.row(), current.column())));
+            }
         }
     }
     return false;
