@@ -105,9 +105,11 @@ bool CmdSpreadsheetMergeCells::isActive()
 {
     if (getActiveGuiDocument()) {
         Gui::MDIView* activeWindow = Gui::getMainWindow()->activeWindow();
-        if (activeWindow && freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow))
-            return true;
+        SpreadsheetGui::SheetView * sheetView = freecad_dynamic_cast<SpreadsheetGui::SheetView>(activeWindow);
 
+        if (sheetView) {
+            return (sheetView->selectedIndexesRaw().size() > 1);
+        }
     }
     return false;
 }
