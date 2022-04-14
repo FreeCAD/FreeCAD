@@ -789,103 +789,600 @@ private:
         try {
             Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch box"));
 
-            //create geometries
-            Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
-            std::vector<Part::Geometry*> geometriesToAdd = getRectangleGeometries();
-            if (constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                Part::GeomPoint* point = new Part::GeomPoint();
-                point->setPoint(Base::Vector3d(center.x, center.y, 0.));
-                Sketcher::GeometryFacade::setConstruction(point, true);
-                geometriesToAdd.push_back(point);
+            if (radius > Precision::Confusion()) {
+                int a = signX * signY > 0. ? 2 : 1;
+                int b = signX * signY > 0. ? 1 : 2;
 
-            }
+                double start = 0;
+                double end = M_PI / 2;
+                if (signX > 0 && signY > 0) {
+                    start = -M_PI;
+                    end = -M_PI / 2;
+                }
+                else if (signX > 0 && signY < 0) {
+                    start = M_PI / 2;
+                    end = M_PI;
+                }
+                else if (signX < 0 && signY > 0) {
+                    start = -M_PI / 2;
+                    end = 0;
+                }
 
-            centerPointId = firstCurve + geometriesToAdd.size() - 1;
+                if (fabs(thickness) > Precision::Confusion()) {
+                    constructionPointOneId = firstCurve + 16;
+                    constructionPointTwoId = firstCurve + 17;
+                    if (constructionMethod() == ConstructionMethod::CenterAndCorner) {
+                        if (radiusFrame < Precision::Confusion()) { // case where inner rectangle is a normal rectangle.
+                            centerPointId = firstCurve + 17;
+                            Gui::Command::doCommand(Gui::Command::Doc,
+                                "geoList = []\n"
+                                "constrGeoList = []\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                                "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                                "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                                "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "constrGeoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "constrGeoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "constrGeoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "constrGeoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "constrGeoList.append(Part.Point(App.Vector(%f,%f,0)))\n"
+                                "constrGeoList.append(Part.Point(App.Vector(%f,%f,0)))\n"
+                                "%s.addGeometry(geoList,%s)\n"
+                                "%s.addGeometry(constrGeoList, True)\n"
+                                "conList = []\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Horizontal', %i))\n"
+                                "conList.append(Sketcher.Constraint('Horizontal', %i))\n"
+                                "conList.append(Sketcher.Constraint('Vertical', %i))\n"
+                                "conList.append(Sketcher.Constraint('Vertical', %i))\n"
+                                "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
 
-            if (fabs(thickness) > Precision::Confusion()) {
-                //Create construction lines. Not needed for round corner rectangle.
-                if (radius < Precision::Confusion() || (radiusFrame < Precision::Confusion() && radius > Precision::Confusion())) {
-                    Part::GeomLineSegment* line1 = new Part::GeomLineSegment();
-                    Part::GeomLineSegment* line2 = new Part::GeomLineSegment();
-                    Part::GeomLineSegment* line3 = new Part::GeomLineSegment();
-                    Part::GeomLineSegment* line4 = new Part::GeomLineSegment();
-                    if (radius < Precision::Confusion()) {
-                        line1->setPoints(Base::Vector3d(firstCorner.x, firstCorner.y, 0.), Base::Vector3d(firstCornerFrame.x, firstCornerFrame.y, 0.));
-                        line2->setPoints(Base::Vector3d(secondCorner.x, secondCorner.y, 0.), Base::Vector3d(secondCornerFrame.x, secondCornerFrame.y, 0.));
-                        line3->setPoints(Base::Vector3d(thirdCorner.x, thirdCorner.y, 0.), Base::Vector3d(thirdCornerFrame.x, thirdCornerFrame.y, 0.));
-                        line4->setPoints(Base::Vector3d(fourthCorner.x, fourthCorner.y, 0.), Base::Vector3d(fourthCornerFrame.x, fourthCornerFrame.y, 0.));
+                                "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+
+                                "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,3))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,3))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,3))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,3))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+
+                                "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
+                                "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
+                                "conList.append(Sketcher.Constraint('Vertical',%i))\n"
+                                "conList.append(Sketcher.Constraint('Vertical',%i))\n"
+                                "conList.append(Sketcher.Constraint('Perpendicular',%i,%i))\n"
+                                "conList.append(Sketcher.Constraint('Perpendicular',%i,%i))\n"
+                                "conList.append(Sketcher.Constraint('Perpendicular',%i,%i))\n"
+
+                                "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i))\n"
+                                "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i))\n"
+                                "conList.append(Sketcher.Constraint('Symmetric',%i,1,%i,1,%i,1))\n"
+                                "%s.addConstraint(conList)\n"
+                                "del geoList, constrGeoList, conList\n",
+                                firstCorner.x + signX * radius, firstCorner.y, secondCorner.x - signX * radius, secondCorner.y, // line 1
+                                secondCorner.x, secondCorner.y + signY * radius, thirdCorner.x, thirdCorner.y - signY * radius, // line 2
+                                thirdCorner.x - signX * radius, thirdCorner.y, fourthCorner.x + signX * radius, fourthCorner.y, // line 3
+                                fourthCorner.x, fourthCorner.y - signY * radius, firstCorner.x, firstCorner.y + signY * radius, // line 4
+
+                                firstCorner.x + signX * radius, firstCorner.y + signY * radius, radius,   // arc 1
+                                start, end,
+                                secondCorner.x - signX * radius, secondCorner.y + signY * radius, radius, // arc 2
+                                (signX * signY > 0) ? end - 2 * M_PI : end - M_PI, (signX * signY > 0) ? end - 1.5 * M_PI : end - 0.5 * M_PI,
+                                thirdCorner.x - signX * radius, thirdCorner.y - signY * radius, radius,   // arc 3
+                                end - 1.5 * M_PI, end - M_PI,
+                                fourthCorner.x + signX * radius, fourthCorner.y - signY * radius, radius, // arc 4
+                                (signX * signY > 0) ? end - M_PI : end - 2 * M_PI, (signX * signY > 0) ? end - 0.5 * M_PI : end - 1.5 * M_PI,
+
+                                firstCornerFrame.x + signX * radiusFrame, firstCornerFrame.y, secondCornerFrame.x - signX * radiusFrame, secondCornerFrame.y, // frame line 1
+                                secondCornerFrame.x, secondCornerFrame.y + signY * radiusFrame, thirdCornerFrame.x, thirdCornerFrame.y - signY * radiusFrame, // frame line 2
+                                thirdCornerFrame.x - signX * radiusFrame, thirdCornerFrame.y, fourthCornerFrame.x + signX * radiusFrame, fourthCornerFrame.y, // frame line 3
+                                fourthCornerFrame.x, fourthCornerFrame.y - signY * radiusFrame, firstCornerFrame.x, firstCornerFrame.y + signY * radiusFrame, // frame line 4
+
+                                firstCorner.x + signX * radius, firstCorner.y + signY * radius, firstCornerFrame.x, firstCornerFrame.y,     //construction line 1
+                                secondCorner.x - signX * radius, secondCorner.y + signY * radius, secondCornerFrame.x, secondCornerFrame.y, //construction line 2
+                                thirdCorner.x - signX * radius, thirdCorner.y - signY * radius, thirdCornerFrame.x, thirdCornerFrame.y,     //construction line 3
+                                fourthCorner.x + signX * radius, fourthCorner.y - signY * radius, fourthCornerFrame.x, fourthCornerFrame.y, //construction line 4
+
+                                thirdCorner.x, thirdCorner.y,  // construction point for auto constraint
+                                center.x, center.y, //center point
+
+                                Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
+                                geometryCreationMode == Construction ? "True" : "False", // geometry as construction or not
+                                Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
+
+                                firstCurve, firstCurve + 4, a,     // tangent 1
+                                firstCurve, firstCurve + 5, b,     // tangent 2
+                                firstCurve + 1, firstCurve + 5, a, // tangent 3
+                                firstCurve + 1, firstCurve + 6, b, // tangent 4
+                                firstCurve + 2, firstCurve + 6, a, // tangent 5
+                                firstCurve + 2, firstCurve + 7, b, // tangent 6
+                                firstCurve + 3, firstCurve + 7, a, // tangent 7
+                                firstCurve + 3, firstCurve + 4, b, // tangent 8
+                                firstCurve, // horizontal constraint
+                                firstCurve + 2, // horizontal constraint
+                                firstCurve + 1, // vertical constraint
+                                firstCurve + 3, // vertical constraint
+                                firstCurve + 4, firstCurve + 5, // equal  1
+                                firstCurve + 5, firstCurve + 6, // equal  2
+                                firstCurve + 6, firstCurve + 7, // equal  3
+
+                                firstCurve + 8, firstCurve + 9, // coincident5
+                                firstCurve + 9, firstCurve + 10, // coincident6
+                                firstCurve + 10, firstCurve + 11, // coincident7
+                                firstCurve + 11, firstCurve + 8, // coincident8
+
+                                firstCurve + 12, firstCurve + 4, // coincident1-support
+                                firstCurve + 12, firstCurve + 8, // coincident2-support
+                                firstCurve + 13, firstCurve + 5, // coincident3-support
+                                firstCurve + 13, firstCurve + 9, // coincident4-support
+                                firstCurve + 14, firstCurve + 6, // coincident5-support
+                                firstCurve + 14, firstCurve + 10, // coincident6-support
+                                firstCurve + 15, firstCurve + 7, // coincident7-support
+                                firstCurve + 15, firstCurve + 11, // coincident8-support
+
+                                firstCurve + 8, // horizontal1
+                                firstCurve + 10, // horizontal2
+                                firstCurve + 9, // vertical1
+                                firstCurve + 11, // vertical2
+                                firstCurve + 12, firstCurve + 13, // Perpendicular of support lines
+                                firstCurve + 13, firstCurve + 14, // Perpendicular of support lines
+                                firstCurve + 14, firstCurve + 15, // Perpendicular of support lines
+
+                                constructionPointOneId, firstCurve + 1, // point on object constraint
+                                constructionPointOneId, firstCurve + 2, // point on object constraint
+                                firstCurve, firstCurve + 2, centerPointId, // Symmetric
+                                Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
+                        }
+                        else {
+                            centerPointId = firstCurve + 17;
+                            Gui::Command::doCommand(Gui::Command::Doc,
+                                "geoList = []\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                                "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                                "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                                "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                                "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                                "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                                "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                                "geoList.append(Part.Point(App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.Point(App.Vector(%f,%f,0)))\n"
+                                "%s.addGeometry(geoList,%s)\n"
+                                "conList = []\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Horizontal', %i))\n"
+                                "conList.append(Sketcher.Constraint('Horizontal', %i))\n"
+                                "conList.append(Sketcher.Constraint('Vertical', %i))\n"
+                                "conList.append(Sketcher.Constraint('Vertical', %i))\n"
+                                "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,3,%i,3))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,3,%i,3))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,3,%i,3))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,3,%i,3))\n"
+                                "conList.append(Sketcher.Constraint('Horizontal', %i))\n"
+                                "conList.append(Sketcher.Constraint('Horizontal', %i))\n"
+                                "conList.append(Sketcher.Constraint('Vertical', %i))\n"
+                                "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i))\n"
+                                "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i))\n"
+                                "conList.append(Sketcher.Constraint('Symmetric',%i,1,%i,1,%i,1))\n"
+                                "%s.addConstraint(conList)\n"
+                                "del geoList, conList\n",
+                                firstCorner.x + signX * radius, firstCorner.y, secondCorner.x - signX * radius, secondCorner.y, // line 1
+                                secondCorner.x, secondCorner.y + signY * radius, thirdCorner.x, thirdCorner.y - signY * radius, // line 2
+                                thirdCorner.x - signX * radius, thirdCorner.y, fourthCorner.x + signX * radius, fourthCorner.y, // line 3
+                                fourthCorner.x, fourthCorner.y - signY * radius, firstCorner.x, firstCorner.y + signY * radius, // line 4
+
+                                firstCorner.x + signX * radius, firstCorner.y + signY * radius, radius,   // arc 1
+                                start, end,
+                                secondCorner.x - signX * radius, secondCorner.y + signY * radius, radius, // arc 2
+                                (signX * signY > 0) ? end - 2 * M_PI : end - M_PI, (signX * signY > 0) ? end - 1.5 * M_PI : end - 0.5 * M_PI,
+                                thirdCorner.x - signX * radius, thirdCorner.y - signY * radius, radius,   // arc 3
+                                end - 1.5 * M_PI, end - M_PI,
+                                fourthCorner.x + signX * radius, fourthCorner.y - signY * radius, radius, // arc 4
+                                (signX * signY > 0) ? end - M_PI : end - 2 * M_PI, (signX * signY > 0) ? end - 0.5 * M_PI : end - 1.5 * M_PI,
+
+                                firstCornerFrame.x + signX * radiusFrame, firstCornerFrame.y, secondCornerFrame.x - signX * radiusFrame, secondCornerFrame.y, // frame line 1
+                                secondCornerFrame.x, secondCornerFrame.y + signY * radiusFrame, thirdCornerFrame.x, thirdCornerFrame.y - signY * radiusFrame, // frame line 2
+                                thirdCornerFrame.x - signX * radiusFrame, thirdCornerFrame.y, fourthCornerFrame.x + signX * radiusFrame, fourthCornerFrame.y, // frame line 3
+                                fourthCornerFrame.x, fourthCornerFrame.y - signY * radiusFrame, firstCornerFrame.x, firstCornerFrame.y + signY * radiusFrame, // frame line 4
+
+                                firstCornerFrame.x + signX * radiusFrame, firstCornerFrame.y + signY * radiusFrame, radiusFrame,   // frame arc 1
+                                start, end,
+                                secondCornerFrame.x - signX * radiusFrame, secondCornerFrame.y + signY * radiusFrame, radiusFrame, // frame arc 2
+                                (signX * signY > 0) ? end - 2 * M_PI : end - M_PI, (signX * signY > 0) ? end - 1.5 * M_PI : end - 0.5 * M_PI,
+                                thirdCornerFrame.x - signX * radiusFrame, thirdCornerFrame.y - signY * radiusFrame, radiusFrame,   // frame arc 3
+                                end - 1.5 * M_PI, end - M_PI,
+                                fourthCornerFrame.x + signX * radiusFrame, fourthCornerFrame.y - signY * radiusFrame, radiusFrame, // frame arc 4
+                                (signX * signY > 0) ? end - M_PI : end - 2 * M_PI, (signX * signY > 0) ? end - 0.5 * M_PI : end - 1.5 * M_PI,
+
+                                thirdCorner.x, thirdCorner.y,  // construction point for auto constraint
+                                center.x, center.y, //center point
+
+                                Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
+                                geometryCreationMode == Construction ? "True" : "False", // geometry as construction or not
+
+                                firstCurve, firstCurve + 4, a,     // tangent 1
+                                firstCurve, firstCurve + 5, b,     // tangent 2
+                                firstCurve + 1, firstCurve + 5, a, // tangent 3
+                                firstCurve + 1, firstCurve + 6, b, // tangent 4
+                                firstCurve + 2, firstCurve + 6, a, // tangent 5
+                                firstCurve + 2, firstCurve + 7, b, // tangent 6
+                                firstCurve + 3, firstCurve + 7, a, // tangent 7
+                                firstCurve + 3, firstCurve + 4, b, // tangent 8
+                                firstCurve, // horizontal constraint
+                                firstCurve + 2, // horizontal constraint
+                                firstCurve + 1, // vertical constraint
+                                firstCurve + 3, // vertical constraint
+                                firstCurve + 4, firstCurve + 5, // equal  1
+                                firstCurve + 5, firstCurve + 6, // equal  2
+                                firstCurve + 6, firstCurve + 7, // equal  3
+
+                                firstCurve + 8, firstCurve + 12, a,    // tangent 1 frame
+                                firstCurve + 8, firstCurve + 13, b,    // tangent 2 frame
+                                firstCurve + 9, firstCurve + 13, a,    // tangent 3 frame
+                                firstCurve + 9, firstCurve + 14, b,    // tangent 4 frame
+                                firstCurve + 10, firstCurve + 14, a,   // tangent 5 frame
+                                firstCurve + 10, firstCurve + 15, b,   // tangent 6 frame
+                                firstCurve + 11, firstCurve + 15, a,   // tangent 7 frame
+                                firstCurve + 11, firstCurve + 12, b,   // tangent 8 frame
+                                firstCurve + 4, firstCurve + 12,    // coincidence center of circles 1
+                                firstCurve + 5, firstCurve + 13,    // coincidence center of circles 2
+                                firstCurve + 6, firstCurve + 14,    // coincidence center of circles 3
+                                firstCurve + 7, firstCurve + 15,    // coincidence center of circles 4
+                                firstCurve + 8, // horizontal constraint
+                                firstCurve + 10, // horizontal constraint
+                                firstCurve + 9, // vertical constraint
+
+                                constructionPointOneId, firstCurve + 1, // point on object constraint
+                                constructionPointOneId, firstCurve + 2, // point on object constraint
+                                firstCurve, firstCurve + 2, centerPointId, // Symmetric
+                                Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
+                        }
                     }
                     else {
-                        line1->setPoints(arc1Center, Base::Vector3d(firstCornerFrame.x, firstCornerFrame.y, 0.));
-                        line2->setPoints(arc2Center, Base::Vector3d(secondCornerFrame.x, secondCornerFrame.y, 0.));
-                        line3->setPoints(arc3Center, Base::Vector3d(thirdCornerFrame.x, thirdCornerFrame.y, 0.));
-                        line4->setPoints(arc4Center, Base::Vector3d(fourthCornerFrame.x, fourthCornerFrame.y, 0.));
+                        if (radiusFrame < Precision::Confusion()) { // case where inner rectangle is a normal rectangle.
+                            centerPointId = firstCurve + 17;
+                            Gui::Command::doCommand(Gui::Command::Doc,
+                                "geoList = []\n"
+                                "constrGeoList = []\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                                "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                                "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                                "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "constrGeoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "constrGeoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "constrGeoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "constrGeoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "constrGeoList.append(Part.Point(App.Vector(%f,%f,0)))\n"
+                                "constrGeoList.append(Part.Point(App.Vector(%f,%f,0)))\n"
+                                "%s.addGeometry(geoList,%s)\n"
+                                "%s.addGeometry(constrGeoList, True)\n"
+                                "conList = []\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Horizontal', %i))\n"
+                                "conList.append(Sketcher.Constraint('Horizontal', %i))\n"
+                                "conList.append(Sketcher.Constraint('Vertical', %i))\n"
+                                "conList.append(Sketcher.Constraint('Vertical', %i))\n"
+                                "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
+
+                                "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+
+                                "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,3))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,3))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,3))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,3))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+
+                                "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
+                                "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
+                                "conList.append(Sketcher.Constraint('Vertical',%i))\n"
+                                "conList.append(Sketcher.Constraint('Vertical',%i))\n"
+                                "conList.append(Sketcher.Constraint('Perpendicular',%i,%i))\n"
+                                "conList.append(Sketcher.Constraint('Perpendicular',%i,%i))\n"
+                                "conList.append(Sketcher.Constraint('Perpendicular',%i,%i))\n"
+
+                                "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i))\n"
+                                "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i))\n"
+                                "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i))\n"
+                                "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i))\n"
+                                "%s.addConstraint(conList)\n"
+                                "del geoList, constrGeoList, conList\n",
+                                firstCorner.x + signX * radius, firstCorner.y, secondCorner.x - signX * radius, secondCorner.y, // line 1
+                                secondCorner.x, secondCorner.y + signY * radius, thirdCorner.x, thirdCorner.y - signY * radius, // line 2
+                                thirdCorner.x - signX * radius, thirdCorner.y, fourthCorner.x + signX * radius, fourthCorner.y, // line 3
+                                fourthCorner.x, fourthCorner.y - signY * radius, firstCorner.x, firstCorner.y + signY * radius, // line 4
+
+                                firstCorner.x + signX * radius, firstCorner.y + signY * radius, radius,   // arc 1
+                                start, end,
+                                secondCorner.x - signX * radius, secondCorner.y + signY * radius, radius, // arc 2
+                                (signX * signY > 0) ? end - 2 * M_PI : end - M_PI, (signX * signY > 0) ? end - 1.5 * M_PI : end - 0.5 * M_PI,
+                                thirdCorner.x - signX * radius, thirdCorner.y - signY * radius, radius,   // arc 3
+                                end - 1.5 * M_PI, end - M_PI,
+                                fourthCorner.x + signX * radius, fourthCorner.y - signY * radius, radius, // arc 4
+                                (signX * signY > 0) ? end - M_PI : end - 2 * M_PI, (signX * signY > 0) ? end - 0.5 * M_PI : end - 1.5 * M_PI,
+
+                                firstCornerFrame.x + signX * radiusFrame, firstCornerFrame.y, secondCornerFrame.x - signX * radiusFrame, secondCornerFrame.y, // frame line 1
+                                secondCornerFrame.x, secondCornerFrame.y + signY * radiusFrame, thirdCornerFrame.x, thirdCornerFrame.y - signY * radiusFrame, // frame line 2
+                                thirdCornerFrame.x - signX * radiusFrame, thirdCornerFrame.y, fourthCornerFrame.x + signX * radiusFrame, fourthCornerFrame.y, // frame line 3
+                                fourthCornerFrame.x, fourthCornerFrame.y - signY * radiusFrame, firstCornerFrame.x, firstCornerFrame.y + signY * radiusFrame, // frame line 4
+
+                                firstCorner.x + signX * radius, firstCorner.y + signY * radius, firstCornerFrame.x, firstCornerFrame.y,     //construction line 1
+                                secondCorner.x - signX * radius, secondCorner.y + signY * radius, secondCornerFrame.x, secondCornerFrame.y, //construction line 2
+                                thirdCorner.x - signX * radius, thirdCorner.y - signY * radius, thirdCornerFrame.x, thirdCornerFrame.y,     //construction line 3
+                                fourthCorner.x + signX * radius, fourthCorner.y - signY * radius, fourthCornerFrame.x, fourthCornerFrame.y, //construction line 4
+
+                                firstCorner.x, firstCorner.y,  // construction point for auto constraint
+                                thirdCorner.x, thirdCorner.y,  // construction point for auto constraint
+
+                                Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
+                                geometryCreationMode == Construction ? "True" : "False", // geometry as construction or not
+                                Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
+
+                                firstCurve, firstCurve + 4, a,     // tangent 1
+                                firstCurve, firstCurve + 5, b,     // tangent 2
+                                firstCurve + 1, firstCurve + 5, a, // tangent 3
+                                firstCurve + 1, firstCurve + 6, b, // tangent 4
+                                firstCurve + 2, firstCurve + 6, a, // tangent 5
+                                firstCurve + 2, firstCurve + 7, b, // tangent 6
+                                firstCurve + 3, firstCurve + 7, a, // tangent 7
+                                firstCurve + 3, firstCurve + 4, b, // tangent 8
+                                firstCurve, // horizontal constraint
+                                firstCurve + 2, // horizontal constraint
+                                firstCurve + 1, // vertical constraint
+                                firstCurve + 3, // vertical constraint
+                                firstCurve + 4, firstCurve + 5, // equal  1
+                                firstCurve + 5, firstCurve + 6, // equal  2
+                                firstCurve + 6, firstCurve + 7, // equal  3
+
+                                firstCurve + 8, firstCurve + 9, // coincident5
+                                firstCurve + 9, firstCurve + 10, // coincident6
+                                firstCurve + 10, firstCurve + 11, // coincident7
+                                firstCurve + 11, firstCurve + 8, // coincident8
+
+                                firstCurve + 12, firstCurve + 4, // coincident1-support
+                                firstCurve + 12, firstCurve + 8, // coincident2-support
+                                firstCurve + 13, firstCurve + 5, // coincident3-support
+                                firstCurve + 13, firstCurve + 9, // coincident4-support
+                                firstCurve + 14, firstCurve + 6, // coincident5-support
+                                firstCurve + 14, firstCurve + 10, // coincident6-support
+                                firstCurve + 15, firstCurve + 7, // coincident7-support
+                                firstCurve + 15, firstCurve + 11, // coincident8-support
+
+                                firstCurve + 8, // horizontal1
+                                firstCurve + 10, // horizontal2
+                                firstCurve + 9, // vertical1
+                                firstCurve + 11, // vertical2
+                                firstCurve + 12, firstCurve + 13, // Perpendicular of support lines
+                                firstCurve + 13, firstCurve + 14, // Perpendicular of support lines
+                                firstCurve + 14, firstCurve + 15, // Perpendicular of support lines
+
+                                constructionPointOneId, firstCurve, // point on object constraint
+                                constructionPointOneId, firstCurve + 3, // point on object constraint
+                                constructionPointTwoId, firstCurve + 1, // point on object constraint
+                                constructionPointTwoId, firstCurve + 2, // point on object constraint
+                                Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
+                        }
+                        else {
+                            Gui::Command::doCommand(Gui::Command::Doc,
+                                "geoList = []\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                                "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                                "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                                "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                                "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                                "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                                "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                                "geoList.append(Part.Point(App.Vector(%f,%f,0)))\n"
+                                "geoList.append(Part.Point(App.Vector(%f,%f,0)))\n"
+                                "%s.addGeometry(geoList,%s)\n"
+                                "conList = []\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Horizontal', %i))\n"
+                                "conList.append(Sketcher.Constraint('Horizontal', %i))\n"
+                                "conList.append(Sketcher.Constraint('Vertical', %i))\n"
+                                "conList.append(Sketcher.Constraint('Vertical', %i))\n"
+                                "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,3,%i,3))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,3,%i,3))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,3,%i,3))\n"
+                                "conList.append(Sketcher.Constraint('Coincident',%i,3,%i,3))\n"
+                                "conList.append(Sketcher.Constraint('Horizontal', %i))\n"
+                                "conList.append(Sketcher.Constraint('Horizontal', %i))\n"
+                                "conList.append(Sketcher.Constraint('Vertical', %i))\n"
+                                "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i))\n"
+                                "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i))\n"
+                                "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i))\n"
+                                "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i))\n"
+                                "%s.addConstraint(conList)\n"
+                                "del geoList, conList\n",
+                                firstCorner.x + signX * radius, firstCorner.y, secondCorner.x - signX * radius, secondCorner.y, // line 1
+                                secondCorner.x, secondCorner.y + signY * radius, thirdCorner.x, thirdCorner.y - signY * radius, // line 2
+                                thirdCorner.x - signX * radius, thirdCorner.y, fourthCorner.x + signX * radius, fourthCorner.y, // line 3
+                                fourthCorner.x, fourthCorner.y - signY * radius, firstCorner.x, firstCorner.y + signY * radius, // line 4
+
+                                firstCorner.x + signX * radius, firstCorner.y + signY * radius, radius,   // arc 1
+                                start, end,
+                                secondCorner.x - signX * radius, secondCorner.y + signY * radius, radius, // arc 2
+                                (signX * signY > 0) ? end - 2 * M_PI : end - M_PI, (signX * signY > 0) ? end - 1.5 * M_PI : end - 0.5 * M_PI,
+                                thirdCorner.x - signX * radius, thirdCorner.y - signY * radius, radius,   // arc 3
+                                end - 1.5 * M_PI, end - M_PI,
+                                fourthCorner.x + signX * radius, fourthCorner.y - signY * radius, radius, // arc 4
+                                (signX * signY > 0) ? end - M_PI : end - 2 * M_PI, (signX * signY > 0) ? end - 0.5 * M_PI : end - 1.5 * M_PI,
+
+                                firstCornerFrame.x + signX * radiusFrame, firstCornerFrame.y, secondCornerFrame.x - signX * radiusFrame, secondCornerFrame.y, // frame line 1
+                                secondCornerFrame.x, secondCornerFrame.y + signY * radiusFrame, thirdCornerFrame.x, thirdCornerFrame.y - signY * radiusFrame, // frame line 2
+                                thirdCornerFrame.x - signX * radiusFrame, thirdCornerFrame.y, fourthCornerFrame.x + signX * radiusFrame, fourthCornerFrame.y, // frame line 3
+                                fourthCornerFrame.x, fourthCornerFrame.y - signY * radiusFrame, firstCornerFrame.x, firstCornerFrame.y + signY * radiusFrame, // frame line 4
+
+                                firstCornerFrame.x + signX * radiusFrame, firstCornerFrame.y + signY * radiusFrame, radiusFrame,   // frame arc 1
+                                start, end,
+                                secondCornerFrame.x - signX * radiusFrame, secondCornerFrame.y + signY * radiusFrame, radiusFrame, // frame arc 2
+                                (signX * signY > 0) ? end - 2 * M_PI : end - M_PI, (signX * signY > 0) ? end - 1.5 * M_PI : end - 0.5 * M_PI,
+                                thirdCornerFrame.x - signX * radiusFrame, thirdCornerFrame.y - signY * radiusFrame, radiusFrame,   // frame arc 3
+                                end - 1.5 * M_PI, end - M_PI,
+                                fourthCornerFrame.x + signX * radiusFrame, fourthCornerFrame.y - signY * radiusFrame, radiusFrame, // frame arc 4
+                                (signX * signY > 0) ? end - M_PI : end - 2 * M_PI, (signX * signY > 0) ? end - 0.5 * M_PI : end - 1.5 * M_PI,
+
+                                firstCorner.x, firstCorner.y, // construction point for auto constraint
+                                thirdCorner.x, thirdCorner.y,  // construction point for auto constraint
+
+                                Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
+                                geometryCreationMode == Construction ? "True" : "False", // geometry as construction or not
+
+                                firstCurve, firstCurve + 4, a,     // tangent 1
+                                firstCurve, firstCurve + 5, b,     // tangent 2
+                                firstCurve + 1, firstCurve + 5, a, // tangent 3
+                                firstCurve + 1, firstCurve + 6, b, // tangent 4
+                                firstCurve + 2, firstCurve + 6, a, // tangent 5
+                                firstCurve + 2, firstCurve + 7, b, // tangent 6
+                                firstCurve + 3, firstCurve + 7, a, // tangent 7
+                                firstCurve + 3, firstCurve + 4, b, // tangent 8
+                                firstCurve, // horizontal constraint
+                                firstCurve + 2, // horizontal constraint
+                                firstCurve + 1, // vertical constraint
+                                firstCurve + 3, // vertical constraint
+                                firstCurve + 4, firstCurve + 5, // equal  1
+                                firstCurve + 5, firstCurve + 6, // equal  2
+                                firstCurve + 6, firstCurve + 7, // equal  3
+
+                                firstCurve + 8, firstCurve + 12, a,    // tangent 1 frame
+                                firstCurve + 8, firstCurve + 13, b,    // tangent 2 frame
+                                firstCurve + 9, firstCurve + 13, a,    // tangent 3 frame
+                                firstCurve + 9, firstCurve + 14, b,    // tangent 4 frame
+                                firstCurve + 10, firstCurve + 14, a,   // tangent 5 frame
+                                firstCurve + 10, firstCurve + 15, b,   // tangent 6 frame
+                                firstCurve + 11, firstCurve + 15, a,   // tangent 7 frame
+                                firstCurve + 11, firstCurve + 12, b,   // tangent 8 frame
+                                firstCurve + 4, firstCurve + 12,    // coincidence center of circles 1
+                                firstCurve + 5, firstCurve + 13,    // coincidence center of circles 2
+                                firstCurve + 6, firstCurve + 14,    // coincidence center of circles 3
+                                firstCurve + 7, firstCurve + 15,    // coincidence center of circles 4
+                                firstCurve + 8, // horizontal constraint
+                                firstCurve + 10, // horizontal constraint
+                                firstCurve + 9, // vertical constraint
+
+                                constructionPointOneId, firstCurve, // point on object constraint
+                                constructionPointOneId, firstCurve + 3, // point on object constraint
+                                constructionPointTwoId, firstCurve + 1, // point on object constraint
+                                constructionPointTwoId, firstCurve + 2, // point on object constraint
+                                Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
+                        }
                     }
-                    Sketcher::GeometryFacade::setConstruction(line1, true);
-                    Sketcher::GeometryFacade::setConstruction(line2, true);
-                    Sketcher::GeometryFacade::setConstruction(line3, true);
-                    Sketcher::GeometryFacade::setConstruction(line4, true);
-                    geometriesToAdd.push_back(line1);
-                    geometriesToAdd.push_back(line2);
-                    geometriesToAdd.push_back(line3);
-                    geometriesToAdd.push_back(line4);
                 }
-            }
-
-            Obj->addGeometry(std::move(geometriesToAdd));
-
-
-            if (constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d,%d)) ",
-                    firstCurve + 1, 2, firstCurve + 3, 2, centerPointId, 1);
-            }
-
-            int a = signX * signY > 0. ? 2 : 1;
-            int b = signX * signY > 0. ? 1 : 2;
-            if (radius > Precision::Confusion()) {
-                Gui::Command::doCommand(Gui::Command::Doc,
-                    "conList = []\n"
-                    "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
-                    "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
-                    "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
-                    "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
-                    "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
-                    "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
-                    "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
-                    "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
-                    "conList.append(Sketcher.Constraint('Horizontal', %i))\n"
-                    "conList.append(Sketcher.Constraint('Horizontal', %i))\n"
-                    "conList.append(Sketcher.Constraint('Vertical', %i))\n"
-                    "conList.append(Sketcher.Constraint('Vertical', %i))\n"
-                    "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
-                    "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
-                    "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
-                    "%s.addConstraint(conList)\n"
-                    "del conList\n",
-                    firstCurve, firstCurve + 4, a,     // tangent 1
-                    firstCurve, firstCurve + 5, b,    // tangent 2
-                    firstCurve + 1, firstCurve + 5, a, // tangent 3
-                    firstCurve + 1, firstCurve + 6, b, // tangent 4
-                    firstCurve + 2, firstCurve + 6, a, // tangent 5
-                    firstCurve + 2, firstCurve + 7, b, // tangent 6
-                    firstCurve + 3, firstCurve + 7, a, // tangent 7
-                    firstCurve + 3, firstCurve + 4, b, // tangent 8
-                    firstCurve, // horizontal constraint
-                    firstCurve + 2, // horizontal constraint
-                    firstCurve + 1, // vertical constraint
-                    firstCurve + 3, // vertical constraint
-                    firstCurve + 4, firstCurve + 5, // equal  1
-                    firstCurve + 5, firstCurve + 6, // equal  2
-                    firstCurve + 6, firstCurve + 7, // equal  3
-                    Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
-
-                constructionPointOneId = firstCurve + 9;
-                constructionPointTwoId = firstCurve + 8;
-                if (fabs(thickness) > Precision::Confusion()) {
-                    constructionPointOneId += 8;
-                    constructionPointTwoId += 8; //+8 in both case because if the 4 arcs are lost then we need 4 construction lines instead.
-                    if (radiusFrame > Precision::Confusion()) {
+                else {
+                    constructionPointOneId = firstCurve + 8;
+                    constructionPointTwoId = firstCurve + 9;
+                    if (constructionMethod() == ConstructionMethod::CenterAndCorner) {
+                        centerPointId = firstCurve + 9;
                         Gui::Command::doCommand(Gui::Command::Doc,
+                            "geoList = []\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                            "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                            "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                            "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                            "geoList.append(Part.Point(App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.Point(App.Vector(%f,%f,0)))\n"
+                            "%s.addGeometry(geoList,%s)\n"
                             "conList = []\n"
                             "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
                             "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
@@ -895,212 +1392,422 @@ private:
                             "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
                             "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
                             "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
-                            "conList.append(Sketcher.Constraint('Coincident',%i,3,%i,3))\n"
-                            "conList.append(Sketcher.Constraint('Coincident',%i,3,%i,3))\n"
-                            "conList.append(Sketcher.Constraint('Coincident',%i,3,%i,3))\n"
-                            "conList.append(Sketcher.Constraint('Coincident',%i,3,%i,3))\n"
                             "conList.append(Sketcher.Constraint('Horizontal', %i))\n"
                             "conList.append(Sketcher.Constraint('Horizontal', %i))\n"
                             "conList.append(Sketcher.Constraint('Vertical', %i))\n"
+                            "conList.append(Sketcher.Constraint('Vertical', %i))\n"
+                            "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
+                            "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
+                            "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
+                            "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i))\n"
+                            "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i))\n"
+                            "conList.append(Sketcher.Constraint('Symmetric',%i,1,%i,1,%i,1))\n"
                             "%s.addConstraint(conList)\n"
-                            "del conList\n",
-                            firstCurve + 8, firstCurve + 12, a,    // tangent 1
-                            firstCurve + 8, firstCurve + 13, b,    // tangent 2
-                            firstCurve + 9, firstCurve + 13, a,    // tangent 3
-                            firstCurve + 9, firstCurve + 14, b,    // tangent 4
-                            firstCurve + 10, firstCurve + 14, a,   // tangent 5
-                            firstCurve + 10, firstCurve + 15, b,   // tangent 6
-                            firstCurve + 11, firstCurve + 15, a,   // tangent 7
-                            firstCurve + 11, firstCurve + 12, b,   // tangent 8
-                            firstCurve + 4, firstCurve + 12,    // coincidence 1
-                            firstCurve + 5, firstCurve + 13,    // coincidence 2
-                            firstCurve + 6, firstCurve + 14,    // coincidence 3
-                            firstCurve + 7, firstCurve + 15,    // coincidence 4
-                            firstCurve + 8, // horizontal constraint
-                            firstCurve + 10, // horizontal constraint
-                            firstCurve + 9, // vertical constraint
+                            "del geoList, conList\n",
+                            firstCorner.x + signX * radius, firstCorner.y, secondCorner.x - signX * radius, secondCorner.y, // line 1
+                            secondCorner.x, secondCorner.y + signY * radius, thirdCorner.x, thirdCorner.y - signY * radius, // line 2
+                            thirdCorner.x - signX * radius, thirdCorner.y, fourthCorner.x + signX * radius, fourthCorner.y, // line 3
+                            fourthCorner.x, fourthCorner.y - signY * radius, firstCorner.x, firstCorner.y + signY * radius, // line 4
+
+                            firstCorner.x + signX * radius, firstCorner.y + signY * radius, radius,   // arc 1
+                            start, end,
+                            secondCorner.x - signX * radius, secondCorner.y + signY * radius, radius, // arc 2
+                            (signX * signY > 0) ? end - 2 * M_PI : end - M_PI, (signX * signY > 0) ? end - 1.5 * M_PI : end - 0.5 * M_PI,
+                            thirdCorner.x - signX * radius, thirdCorner.y - signY * radius, radius,   // arc 3
+                            end - 1.5 * M_PI, end - M_PI,
+                            fourthCorner.x + signX * radius, fourthCorner.y - signY * radius, radius, // arc 4
+                            (signX * signY > 0) ? end - M_PI : end - 2 * M_PI, (signX * signY > 0) ? end - 0.5 * M_PI : end - 1.5 * M_PI,
+                            thirdCorner.x, thirdCorner.y,  // construction point for auto constraint
+                            center.x, center.y, //center point
+
+                            Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
+                            geometryCreationMode == Construction ? "True" : "False", // geometry as construction or not
+
+                            firstCurve, firstCurve + 4, a,     // tangent 1
+                            firstCurve, firstCurve + 5, b,     // tangent 2
+                            firstCurve + 1, firstCurve + 5, a, // tangent 3
+                            firstCurve + 1, firstCurve + 6, b, // tangent 4
+                            firstCurve + 2, firstCurve + 6, a, // tangent 5
+                            firstCurve + 2, firstCurve + 7, b, // tangent 6
+                            firstCurve + 3, firstCurve + 7, a, // tangent 7
+                            firstCurve + 3, firstCurve + 4, b, // tangent 8
+                            firstCurve, // horizontal constraint
+                            firstCurve + 2, // horizontal constraint
+                            firstCurve + 1, // vertical constraint
+                            firstCurve + 3, // vertical constraint
+                            firstCurve + 4, firstCurve + 5, // equal  1
+                            firstCurve + 5, firstCurve + 6, // equal  2
+                            firstCurve + 6, firstCurve + 7, // equal  3
+                            constructionPointOneId, firstCurve + 1, // point on object constraint
+                            constructionPointOneId, firstCurve + 2, // point on object constraint
+                            firstCurve, firstCurve + 2, centerPointId, // Symmetric
                             Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
                     }
-                    else { //case where inner rectangle lost its arcs.Gui::Command::doCommand(Gui::Command::Doc,
+                    else {
                         Gui::Command::doCommand(Gui::Command::Doc,
+                            "geoList = []\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                            "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                            "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                            "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
+                            "geoList.append(Part.Point(App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.Point(App.Vector(%f,%f,0)))\n"
+                            "%s.addGeometry(geoList,%s)\n"
                             "conList = []\n"
-                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-
-                            "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,3))\n"
-                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-                            "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,3))\n"
-                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-                            "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,3))\n"
-                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-                            "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,3))\n"
-                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-
-                            "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
-                            "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
-                            "conList.append(Sketcher.Constraint('Vertical',%i))\n"
-                            "conList.append(Sketcher.Constraint('Vertical',%i))\n"
-                            "conList.append(Sketcher.Constraint('Perpendicular',%i,%i))\n"
-                            "conList.append(Sketcher.Constraint('Perpendicular',%i,%i))\n"
-                            "conList.append(Sketcher.Constraint('Perpendicular',%i,%i))\n"
+                            "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                            "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                            "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                            "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                            "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                            "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                            "conList.append(Sketcher.Constraint('Tangent', %i, 1, %i, %i))\n"
+                            "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, %i))\n"
+                            "conList.append(Sketcher.Constraint('Horizontal', %i))\n"
+                            "conList.append(Sketcher.Constraint('Horizontal', %i))\n"
+                            "conList.append(Sketcher.Constraint('Vertical', %i))\n"
+                            "conList.append(Sketcher.Constraint('Vertical', %i))\n"
+                            "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
+                            "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
+                            "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
+                            "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i))\n"
+                            "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i))\n"
+                            "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i))\n"
+                            "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i))\n"
                             "%s.addConstraint(conList)\n"
-                            "del conList\n",
-                            firstCurve + 8, firstCurve + 9, // coincident5
-                            firstCurve + 9, firstCurve + 10, // coincident6
-                            firstCurve + 10, firstCurve + 11, // coincident7
-                            firstCurve + 11, firstCurve + 8, // coincident8
+                            "del geoList, conList\n",
+                            firstCorner.x + signX * radius, firstCorner.y, secondCorner.x - signX * radius, secondCorner.y, // line 1
+                            secondCorner.x, secondCorner.y + signY * radius, thirdCorner.x, thirdCorner.y - signY * radius, // line 2
+                            thirdCorner.x - signX * radius, thirdCorner.y, fourthCorner.x + signX * radius, fourthCorner.y, // line 3
+                            fourthCorner.x, fourthCorner.y - signY * radius, firstCorner.x, firstCorner.y + signY * radius, // line 4
 
-                            centerPointId + 1, firstCurve + 4, // coincident1-support
-                            centerPointId + 1, firstCurve + 8, // coincident2-support
-                            centerPointId + 2, firstCurve + 5, // coincident3-support
-                            centerPointId + 2, firstCurve + 9, // coincident4-support
-                            centerPointId + 3, firstCurve + 6, // coincident5-support
-                            centerPointId + 3, firstCurve + 10, // coincident6-support
-                            centerPointId + 4, firstCurve + 7, // coincident7-support
-                            centerPointId + 4, firstCurve + 11, // coincident8-support
+                            firstCorner.x + signX * radius, firstCorner.y + signY * radius, radius,   // arc 1
+                            start, end,
+                            secondCorner.x - signX * radius, secondCorner.y + signY * radius, radius, // arc 2
+                            (signX* signY > 0) ? end - 2 * M_PI : end - M_PI, (signX* signY > 0) ? end - 1.5 * M_PI : end - 0.5 * M_PI,
+                            thirdCorner.x - signX * radius, thirdCorner.y - signY * radius, radius,   // arc 3
+                            end - 1.5 * M_PI, end - M_PI,
+                            fourthCorner.x + signX * radius, fourthCorner.y - signY * radius, radius, // arc 4
+                            (signX* signY > 0) ? end - M_PI : end - 2 * M_PI, (signX* signY > 0) ? end - 0.5 * M_PI : end - 1.5 * M_PI,
 
-                            firstCurve + 8, // horizontal1
-                            firstCurve + 10, // horizontal2
-                            firstCurve + 9, // vertical1
-                            firstCurve + 11, // vertical2
-                            centerPointId + 1, centerPointId + 2, // Perpendicular of support lines
-                            centerPointId + 2, centerPointId + 3, // Perpendicular of support lines
-                            centerPointId + 3, centerPointId + 4, // Perpendicular of support lines
+                            firstCorner.x, firstCorner.y, // point at StartPos
+                            thirdCorner.x, thirdCorner.y,     // point at EndPos
+                            Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
+                            geometryCreationMode == Construction ? "True" : "False", // geometry as construction or not
+
+                            firstCurve, firstCurve + 4, a,     // tangent 1
+                            firstCurve, firstCurve + 5, b,     // tangent 2
+                            firstCurve + 1, firstCurve + 5, a, // tangent 3
+                            firstCurve + 1, firstCurve + 6, b, // tangent 4
+                            firstCurve + 2, firstCurve + 6, a, // tangent 5
+                            firstCurve + 2, firstCurve + 7, b, // tangent 6
+                            firstCurve + 3, firstCurve + 7, a, // tangent 7
+                            firstCurve + 3, firstCurve + 4, b, // tangent 8
+                            firstCurve, // horizontal constraint
+                            firstCurve + 2, // horizontal constraint
+                            firstCurve + 1, // vertical constraint
+                            firstCurve + 3, // vertical constraint
+                            firstCurve + 4, firstCurve + 5, // equal  1
+                            firstCurve + 5, firstCurve + 6, // equal  2
+                            firstCurve + 6, firstCurve + 7, // equal  3
+                            constructionPointOneId, firstCurve, // point on object constraint
+                            constructionPointOneId, firstCurve + 3, // point on object constraint
+                            constructionPointTwoId, firstCurve + 1, // point on object constraint
+                            constructionPointTwoId, firstCurve + 2, // point on object constraint
                             Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
                     }
-                }
-
-                if (constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                    // now add construction geometry - one point used to take suggested constraints
-                    Gui::Command::doCommand(Gui::Command::Doc,
-                        "geoList = []\n"
-                        "geoList.append(Part.Point(App.Vector(%f, %f, 0)))\n"
-                        "%s.addGeometry(geoList, True)\n" // geometry as construction
-                        "conList = []\n"
-                        "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i, ))\n"
-                        "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i, ))\n"
-                        "%s.addConstraint(conList)\n"
-                        "del geoList, conList\n",
-                        thirdCorner.x, thirdCorner.y,     // point at EndPos
-                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
-                        constructionPointOneId, firstCurve + 1, // point on object constraint
-                        constructionPointOneId, firstCurve + 2, // point on object constraint
-                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
-                }
-                else {
-                    // now add construction geometry - two points used to take suggested constraints
-                    Gui::Command::doCommand(Gui::Command::Doc,
-                        "geoList = []\n"
-                        "geoList.append(Part.Point(App.Vector(%f, %f, 0)))\n"
-                        "geoList.append(Part.Point(App.Vector(%f, %f, 0)))\n"
-                        "%s.addGeometry(geoList, True)\n" // geometry as construction
-                        "conList = []\n"
-                        "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i, ))\n"
-                        "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i, ))\n"
-                        "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i, ))\n"
-                        "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i, ))\n"
-                        "%s.addConstraint(conList)\n"
-                        "del geoList, conList\n",
-                        firstCorner.x, firstCorner.y, // point at StartPos
-                        thirdCorner.x, thirdCorner.y,     // point at EndPos
-                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
-                        constructionPointTwoId, firstCurve, // point on object constraint
-                        constructionPointTwoId, firstCurve + 3, // point on object constraint
-                        constructionPointOneId, firstCurve + 1, // point on object constraint
-                        constructionPointOneId, firstCurve + 2, // point on object constraint
-                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
                 }
             }
             else {
                 if (fabs(thickness) > Precision::Confusion()) {
-                    Gui::Command::doCommand(Gui::Command::Doc,
-                        "conList = []\n"
-                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                    if (constructionMethod() == ConstructionMethod::CenterAndCorner) {
+                        centerPointId = firstCurve + 12;
 
-                        "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,1))\n"
-                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-                        "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,1))\n"
-                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-                        "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,1))\n"
-                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-                        "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,1))\n"
-                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                        Gui::Command::doCommand(Gui::Command::Doc,
+                            "geoList = []\n"
+                            "constrGeoList = []\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "constrGeoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "constrGeoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "constrGeoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "constrGeoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "constrGeoList.append(Part.Point(App.Vector(%f,%f,0)))\n"
+                            "%s.addGeometry(geoList,%s)\n"
+                            "%s.addGeometry(constrGeoList, True)\n"
 
-                        "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
-                        "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
-                        "conList.append(Sketcher.Constraint('Vertical',%i))\n"
-                        "conList.append(Sketcher.Constraint('Vertical',%i))\n"
-                        "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
-                        "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
-                        "conList.append(Sketcher.Constraint('Vertical',%i))\n"
-                        "conList.append(Sketcher.Constraint('Vertical',%i))\n"
-                        "conList.append(Sketcher.Constraint('Perpendicular',%i,%i))\n"
-                        "conList.append(Sketcher.Constraint('Perpendicular',%i,%i))\n"
-                        "conList.append(Sketcher.Constraint('Perpendicular',%i,%i))\n"
-                        "%s.addConstraint(conList)\n"
-                        "del conList\n",
-                        firstCurve, firstCurve + 1, // coincident1
-                        firstCurve + 1, firstCurve + 2, // coincident2
-                        firstCurve + 2, firstCurve + 3, // coincident3
-                        firstCurve + 3, firstCurve, // coincident4
-                        firstCurve + 4, firstCurve + 5, // coincident5
-                        firstCurve + 5, firstCurve + 6, // coincident6
-                        firstCurve + 6, firstCurve + 7, // coincident7
-                        firstCurve + 7, firstCurve + 4, // coincident8
+                            "conList = []\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
 
-                        centerPointId + 1, firstCurve, // coincident1-support
-                        centerPointId + 1, firstCurve + 4, // coincident2-support
-                        centerPointId + 2, firstCurve + 1, // coincident3-support
-                        centerPointId + 2, firstCurve + 5, // coincident4-support
-                        centerPointId + 3, firstCurve + 2, // coincident5-support
-                        centerPointId + 3, firstCurve + 6, // coincident6-support
-                        centerPointId + 4, firstCurve + 3, // coincident7-support
-                        centerPointId + 4, firstCurve + 7, // coincident8-support
+                            "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
 
-                        firstCurve, // horizontal1
-                        firstCurve + 2, // horizontal2
-                        firstCurve + 1, // vertical1
-                        firstCurve + 3, // vertical2
-                        firstCurve + 4, // horizontal3
-                        firstCurve + 6, // horizontal4
-                        firstCurve + 5, // vertical3
-                        firstCurve + 7, // vertical4
-                        centerPointId + 1, centerPointId + 2, // Perpendicular of support lines
-                        centerPointId + 2, centerPointId + 3, // Perpendicular of support lines
-                        centerPointId + 3, centerPointId + 4, // Perpendicular of support lines
-                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
+                            "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
+                            "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
+                            "conList.append(Sketcher.Constraint('Vertical',%i))\n"
+                            "conList.append(Sketcher.Constraint('Vertical',%i))\n"
+                            "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
+                            "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
+                            "conList.append(Sketcher.Constraint('Vertical',%i))\n"
+                            "conList.append(Sketcher.Constraint('Vertical',%i))\n"
+                            "conList.append(Sketcher.Constraint('Perpendicular',%i,%i))\n"
+                            "conList.append(Sketcher.Constraint('Perpendicular',%i,%i))\n"
+                            "conList.append(Sketcher.Constraint('Perpendicular',%i,%i))\n"
+                            "conList.append(Sketcher.Constraint('Symmetric',%i,2,%i,1,%i,1))\n"
+                            "%s.addConstraint(conList)\n"
+                            "del geoList, constrGeoList, conList\n",
+
+                            firstCorner.x + signX * radius, firstCorner.y, secondCorner.x - signX * radius, secondCorner.y, // line 1
+                            secondCorner.x, secondCorner.y + signY * radius, thirdCorner.x, thirdCorner.y - signY * radius, // line 2
+                            thirdCorner.x - signX * radius, thirdCorner.y, fourthCorner.x + signX * radius, fourthCorner.y, // line 3
+                            fourthCorner.x, fourthCorner.y - signY * radius, firstCorner.x, firstCorner.y + signY * radius, // line 4
+                            firstCornerFrame.x + signX * radiusFrame, firstCornerFrame.y, secondCornerFrame.x - signX * radiusFrame, secondCornerFrame.y, // frame line 1
+                            secondCornerFrame.x, secondCornerFrame.y + signY * radiusFrame, thirdCornerFrame.x, thirdCornerFrame.y - signY * radiusFrame, // frame line 2
+                            thirdCornerFrame.x - signX * radiusFrame, thirdCornerFrame.y, fourthCornerFrame.x + signX * radiusFrame, fourthCornerFrame.y, // frame line 3
+                            fourthCornerFrame.x, fourthCornerFrame.y - signY * radiusFrame, firstCornerFrame.x, firstCornerFrame.y + signY * radiusFrame, // frame line 4
+                            firstCorner.x, firstCorner.y, firstCornerFrame.x, firstCornerFrame.y, // construction line 1
+                            secondCorner.x, secondCorner.y, secondCornerFrame.x, secondCornerFrame.y, // construction line 2
+                            thirdCorner.x, thirdCorner.y, thirdCornerFrame.x, thirdCornerFrame.y,// construction line 3
+                            fourthCorner.x, fourthCorner.y, fourthCornerFrame.x, fourthCornerFrame.y,// construction line 4
+                            center.x, center.y, //center point
+                            Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
+                            geometryCreationMode == Construction ? "True" : "False", // geometry as construction or not
+                            Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
+
+                            firstCurve, firstCurve + 1, // coincident1
+                            firstCurve + 1, firstCurve + 2, // coincident2
+                            firstCurve + 2, firstCurve + 3, // coincident3
+                            firstCurve + 3, firstCurve, // coincident4
+                            firstCurve + 4, firstCurve + 5, // coincident5
+                            firstCurve + 5, firstCurve + 6, // coincident6
+                            firstCurve + 6, firstCurve + 7, // coincident7
+                            firstCurve + 7, firstCurve + 4, // coincident8
+
+                            firstCurve + 8, firstCurve, // coincident1-support
+                            firstCurve + 8, firstCurve + 4, // coincident2-support
+                            firstCurve + 9, firstCurve + 1, // coincident3-support
+                            firstCurve + 9, firstCurve + 5, // coincident4-support
+                            firstCurve + 10, firstCurve + 2, // coincident5-support
+                            firstCurve + 10, firstCurve + 6, // coincident6-support
+                            firstCurve + 11, firstCurve + 3, // coincident7-support
+                            firstCurve + 11, firstCurve + 7, // coincident8-support
+
+                            firstCurve, // horizontal1
+                            firstCurve + 2, // horizontal2
+                            firstCurve + 1, // vertical1
+                            firstCurve + 3, // vertical2
+                            firstCurve + 4, // horizontal3
+                            firstCurve + 6, // horizontal4
+                            firstCurve + 5, // vertical3
+                            firstCurve + 7, // vertical4
+                            firstCurve + 8, firstCurve + 9, // Perpendicular of support lines
+                            firstCurve + 9, firstCurve + 10, // Perpendicular of support lines
+                            firstCurve + 10, firstCurve + 11, // Perpendicular of support lines
+                            firstCurve + 1, firstCurve, centerPointId, // Symmetric
+                            Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
+                    }
+                    else {
+                        Gui::Command::doCommand(Gui::Command::Doc,
+                            "geoList = []\n"
+                            "constrGeoList = []\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "constrGeoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "constrGeoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "constrGeoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "constrGeoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "%s.addGeometry(geoList,%s)\n"
+                            "%s.addGeometry(constrGeoList, True)\n"
+                            "conList = []\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+
+                            "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,1,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+
+                            "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
+                            "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
+                            "conList.append(Sketcher.Constraint('Vertical',%i))\n"
+                            "conList.append(Sketcher.Constraint('Vertical',%i))\n"
+                            "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
+                            "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
+                            "conList.append(Sketcher.Constraint('Vertical',%i))\n"
+                            "conList.append(Sketcher.Constraint('Vertical',%i))\n"
+                            "conList.append(Sketcher.Constraint('Perpendicular',%i,%i))\n"
+                            "conList.append(Sketcher.Constraint('Perpendicular',%i,%i))\n"
+                            "conList.append(Sketcher.Constraint('Perpendicular',%i,%i))\n"
+                            "%s.addConstraint(conList)\n"
+                            "del geoList, conList\n",
+
+                            firstCorner.x + signX * radius, firstCorner.y, secondCorner.x - signX * radius, secondCorner.y, // line 1
+                            secondCorner.x, secondCorner.y + signY * radius, thirdCorner.x, thirdCorner.y - signY * radius, // line 2
+                            thirdCorner.x - signX * radius, thirdCorner.y, fourthCorner.x + signX * radius, fourthCorner.y, // line 3
+                            fourthCorner.x, fourthCorner.y - signY * radius, firstCorner.x, firstCorner.y + signY * radius, // line 4
+                            firstCornerFrame.x + signX * radiusFrame, firstCornerFrame.y, secondCornerFrame.x - signX * radiusFrame, secondCornerFrame.y, // frame line 1
+                            secondCornerFrame.x, secondCornerFrame.y + signY * radiusFrame, thirdCornerFrame.x, thirdCornerFrame.y - signY * radiusFrame, // frame line 2
+                            thirdCornerFrame.x - signX * radiusFrame, thirdCornerFrame.y, fourthCornerFrame.x + signX * radiusFrame, fourthCornerFrame.y, // frame line 3
+                            fourthCornerFrame.x, fourthCornerFrame.y - signY * radiusFrame, firstCornerFrame.x, firstCornerFrame.y + signY * radiusFrame, // frame line 4
+                            firstCorner.x, firstCorner.y, firstCornerFrame.x, firstCornerFrame.y, // construction line 1
+                            secondCorner.x, secondCorner.y, secondCornerFrame.x, secondCornerFrame.y, // construction line 2
+                            thirdCorner.x, thirdCorner.y, thirdCornerFrame.x, thirdCornerFrame.y,// construction line 3
+                            fourthCorner.x, fourthCorner.y, fourthCornerFrame.x, fourthCornerFrame.y,// construction line 4
+
+                            Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
+                            geometryCreationMode == Construction ? "True" : "False", // geometry as construction or not
+                            Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
+
+                            firstCurve, firstCurve + 1, // coincident1
+                            firstCurve + 1, firstCurve + 2, // coincident2
+                            firstCurve + 2, firstCurve + 3, // coincident3
+                            firstCurve + 3, firstCurve, // coincident4
+                            firstCurve + 4, firstCurve + 5, // coincident5
+                            firstCurve + 5, firstCurve + 6, // coincident6
+                            firstCurve + 6, firstCurve + 7, // coincident7
+                            firstCurve + 7, firstCurve + 4, // coincident8
+
+                            firstCurve + 8, firstCurve, // coincident1-support
+                            firstCurve + 8, firstCurve + 4, // coincident2-support
+                            firstCurve + 9, firstCurve + 1, // coincident3-support
+                            firstCurve + 9, firstCurve + 5, // coincident4-support
+                            firstCurve + 10, firstCurve + 2, // coincident5-support
+                            firstCurve + 10, firstCurve + 6, // coincident6-support
+                            firstCurve + 11, firstCurve + 3, // coincident7-support
+                            firstCurve + 11, firstCurve + 7, // coincident8-support
+
+                            firstCurve, // horizontal1
+                            firstCurve + 2, // horizontal2
+                            firstCurve + 1, // vertical1
+                            firstCurve + 3, // vertical2
+                            firstCurve + 4, // horizontal3
+                            firstCurve + 6, // horizontal4
+                            firstCurve + 5, // vertical3
+                            firstCurve + 7, // vertical4
+                            firstCurve + 8, firstCurve + 9, // Perpendicular of support lines
+                            firstCurve + 9, firstCurve + 10, // Perpendicular of support lines
+                            firstCurve + 10, firstCurve + 11, // Perpendicular of support lines
+                            Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
+
+                    }
                 }
                 else {
-                    Gui::Command::doCommand(Gui::Command::Doc,
-                        "conList = []\n"
-                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-                        "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
-                        "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
-                        "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
-                        "conList.append(Sketcher.Constraint('Vertical',%i))\n"
-                        "conList.append(Sketcher.Constraint('Vertical',%i))\n"
-                        "%s.addConstraint(conList)\n"
-                        "del conList\n",
-                        firstCurve, firstCurve + 1, // coincident1
-                        firstCurve + 1, firstCurve + 2, // coincident2
-                        firstCurve + 2, firstCurve + 3, // coincident3
-                        firstCurve + 3, firstCurve, // coincident4
-                        firstCurve, // horizontal1
-                        firstCurve + 2, // horizontal2
-                        firstCurve + 1, // vertical1
-                        firstCurve + 3, // vertical2
-                        Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
+                    if (constructionMethod() == ConstructionMethod::CenterAndCorner) {
+                        centerPointId = firstCurve + 4;
+
+                        Gui::Command::doCommand(Gui::Command::Doc,
+                            "geoList = []\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.Point(App.Vector(%f,%f,0)))\n"
+                            "%s.addGeometry(geoList,%s)\n"
+                            "conList = []\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
+                            "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
+                            "conList.append(Sketcher.Constraint('Vertical',%i))\n"
+                            "conList.append(Sketcher.Constraint('Vertical',%i))\n"
+                            "conList.append(Sketcher.Constraint('Symmetric',%i,2,%i,1,%i,1))\n"
+                            "%s.addConstraint(conList)\n"
+                            "del geoList, conList\n",
+                            firstCorner.x + signX * radius, firstCorner.y, secondCorner.x - signX * radius, secondCorner.y, // line 1
+                            secondCorner.x, secondCorner.y + signY * radius, thirdCorner.x, thirdCorner.y - signY * radius, // line 2
+                            thirdCorner.x - signX * radius, thirdCorner.y, fourthCorner.x + signX * radius, fourthCorner.y, // line 3
+                            fourthCorner.x, fourthCorner.y - signY * radius, firstCorner.x, firstCorner.y + signY * radius, // line 4
+                            center.x, center.y, //center point
+                            Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
+                            geometryCreationMode == Construction ? "True" : "False", // geometry as construction or not
+
+                            firstCurve, firstCurve + 1, // coincident1
+                            firstCurve + 1, firstCurve + 2, // coincident2
+                            firstCurve + 2, firstCurve + 3, // coincident3
+                            firstCurve + 3, firstCurve, // coincident4
+                            firstCurve, // horizontal1
+                            firstCurve + 2, // horizontal2
+                            firstCurve + 1, // vertical1
+                            firstCurve + 3, // vertical2
+                            firstCurve + 1, firstCurve, centerPointId, // Symmetric
+                            Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
+                    }
+                    else {
+                        Gui::Command::doCommand(Gui::Command::Doc,
+                            "geoList = []\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                            "%s.addGeometry(geoList,%s)\n"
+                            "conList = []\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
+                            "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
+                            "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
+                            "conList.append(Sketcher.Constraint('Vertical',%i))\n"
+                            "conList.append(Sketcher.Constraint('Vertical',%i))\n"
+                            "%s.addConstraint(conList)\n"
+                            "del geoList, conList\n",
+                            firstCorner.x + signX * radius, firstCorner.y, secondCorner.x - signX * radius, secondCorner.y, // line 1
+                            secondCorner.x, secondCorner.y + signY * radius, thirdCorner.x, thirdCorner.y - signY * radius, // line 2
+                            thirdCorner.x - signX * radius, thirdCorner.y, fourthCorner.x + signX * radius, fourthCorner.y, // line 3
+                            fourthCorner.x, fourthCorner.y - signY * radius, firstCorner.x, firstCorner.y + signY * radius, // line 4
+                            Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
+                            geometryCreationMode == Construction ? "True" : "False", // geometry as construction or not
+
+                            firstCurve, firstCurve + 1, // coincident1
+                            firstCurve + 1, firstCurve + 2, // coincident2
+                            firstCurve + 2, firstCurve + 3, // coincident3
+                            firstCurve + 3, firstCurve, // coincident4
+                            firstCurve, // horizontal1
+                            firstCurve + 2, // horizontal2
+                            firstCurve + 1, // vertical1
+                            firstCurve + 3, // vertical2
+                            Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
+                    }
                 }
             }
 
@@ -1119,12 +1826,12 @@ private:
             // add auto constraints at the start of the first side
             if (radius > Precision::Confusion()) {
                 if (!sugConstraints[0].empty()) {
-                    DrawSketchHandler::createAutoConstraints(sugConstraints[0], constructionPointTwoId, Sketcher::PointPos::start);
+                    DrawSketchHandler::createAutoConstraints(sugConstraints[0], constructionPointOneId, Sketcher::PointPos::start);
                     sugConstraints[0].clear();
                 }
 
                 if (!sugConstraints[1].empty()) {
-                    DrawSketchHandler::createAutoConstraints(sugConstraints[1], constructionPointOneId, Sketcher::PointPos::start);
+                    DrawSketchHandler::createAutoConstraints(sugConstraints[1], constructionPointTwoId, Sketcher::PointPos::start);
                     sugConstraints[1].clear();
                 }
             }
@@ -1434,15 +2141,17 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doEnforceWid
         if (dHandler->constructionMethod() == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal) {
             if (toolWidget->isParameterSet(WParameter::Third)) {
                 double length = toolWidget->getParameter(WParameter::Third);
-                if (onSketchPos.x - dHandler->firstCorner.x < 0) {
+                if ((onSketchPos.x - dHandler->firstCorner.x) * length < 0) {
                     length = -length;
+                    toolWidget->updateVisualValue(WParameter::Third, length);
                 }
                 onSketchPos.x = dHandler->firstCorner.x + length;
             }
             if (toolWidget->isParameterSet(WParameter::Fourth)) {
                 double width = toolWidget->getParameter(WParameter::Fourth);
-                if (onSketchPos.y - dHandler->firstCorner.y < 0) {
+                if ((onSketchPos.y - dHandler->firstCorner.y) * width < 0) {
                     width = -width;
+                    toolWidget->updateVisualValue(WParameter::Fourth, width);
                 }
                 onSketchPos.y = dHandler->firstCorner.y + width;
             }
@@ -1491,10 +2200,10 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptWidgetP
     {
         if (dHandler->constructionMethod() == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal) {
             if (!toolWidget->isParameterSet(WParameter::Third))
-                toolWidget->updateVisualValue(WParameter::Third, fabs(onSketchPos.x - dHandler->firstCorner.x));
+                toolWidget->updateVisualValue(WParameter::Third, onSketchPos.x - dHandler->firstCorner.x);
 
             if (!toolWidget->isParameterSet(WParameter::Fourth))
-                toolWidget->updateVisualValue(WParameter::Fourth, fabs(onSketchPos.y - dHandler->firstCorner.y));
+                toolWidget->updateVisualValue(WParameter::Fourth, onSketchPos.y - dHandler->firstCorner.y);
         }
         else {
             if (!toolWidget->isParameterSet(WParameter::Third))
@@ -1550,8 +2259,8 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doChangeDraw
             handler->updateDataAndDrawToPosition(prevCursorPosition); // draw curve to cursor with suggested constraints
 
             if (toolWidget->isParameterSet(WParameter::Third) &&
-                toolWidget->isParameterSet(WParameter::Fourth) &&
-                dHandler->constructionMethod() == DrawSketchHandlerRectangle::ConstructionMethod::CenterAndCorner ) {
+                toolWidget->isParameterSet(WParameter::Fourth)) {
+
                 if (dHandler->roundCorners || dHandler->makeFrame) {
                     handler->setState(SelectMode::SeekThird);
                 }
@@ -1627,38 +2336,38 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::addConstrain
 
     using namespace Sketcher;
 
-    int firstCornerId = firstCurve;
-    if (dHandler->constructionMethod() == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal) {
-         if (dHandler->radius > Precision::Confusion())
-            firstCornerId = dHandler->constructionPointTwoId;
+    int firstPointId = firstCurve;
+    if (handler->constructionMethod() == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal) {
+        if (dHandler->radius > Precision::Confusion())
+            firstPointId = dHandler->constructionPointOneId;
     }
     else {
-        firstCornerId = dHandler->centerPointId;
+        firstPointId = dHandler->centerPointId;
     }
 
     if (x0set && y0set && x0 == 0. && y0 == 0.) {
-        ConstraintToAttachment(GeoElementId(firstCornerId, PointPos::start), GeoElementId::RtPnt,
+        ConstraintToAttachment(GeoElementId(firstPointId, PointPos::start), GeoElementId::RtPnt,
             x0, handler->sketchgui->getObject());
     }
     else {
         if (x0set)
-            ConstraintToAttachment(GeoElementId(firstCornerId, PointPos::start), GeoElementId::VAxis,
+            ConstraintToAttachment(GeoElementId(firstPointId, PointPos::start), GeoElementId::VAxis,
                 x0, handler->sketchgui->getObject());
 
         if (y0set)
-            ConstraintToAttachment(GeoElementId(firstCornerId, PointPos::start), GeoElementId::HAxis,
+            ConstraintToAttachment(GeoElementId(firstPointId, PointPos::start), GeoElementId::HAxis,
                 y0, handler->sketchgui->getObject());
     }
 
     if (lengthSet)
         Gui::cmdAppObjectArgs(handler->sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
-            firstCurve + 1, 1, firstCurve + 3, 2, length);
+            firstCurve + 1, 1, firstCurve + 3, 2, fabs(length));
 
     if (widthSet)
         Gui::cmdAppObjectArgs(handler->sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
-            firstCurve, 1, firstCurve + 2, 2, width);
+            firstCurve, 1, firstCurve + 2, 2, fabs(width));
 
-    if (radiusSet)
+    if (radiusSet && radius > Precision::Confusion())
         Gui::cmdAppObjectArgs(handler->sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
             firstCurve + 5, radius);
 
