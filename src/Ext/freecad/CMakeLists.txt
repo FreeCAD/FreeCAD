@@ -1,6 +1,8 @@
+# still use the deprecated distutils package
+# see: https://forum.freecad.org/viewtopic.php?f=10&t=67985
 EXECUTE_PROCESS(COMMAND ${PYTHON_EXECUTABLE} -c 
-"from distutils.sysconfig import get_python_lib; print(get_python_lib(plat_specific=True))"
-OUTPUT_VARIABLE python_libs OUTPUT_STRIP_TRAILING_WHITESPACE )
+    "from distutils.sysconfig import get_python_lib; print(get_python_lib(plat_specific=True))"
+    OUTPUT_VARIABLE python_libs OUTPUT_STRIP_TRAILING_WHITESPACE)
 SET(PYTHON_MAIN_DIR ${python_libs})
 
 set(NAMESPACE_DIR "${CMAKE_BINARY_DIR}/Ext/freecad")
