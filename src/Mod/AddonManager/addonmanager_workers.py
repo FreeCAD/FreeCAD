@@ -1665,12 +1665,14 @@ class UpdateAllWorker(QtCore.QThread):
             worker.wait()
 
     def on_success(self, repo: Addon) -> None:
+        FreeCAD.Console.PrintLog(f"Successfully updated {repo.name}\n")
         self.progress_made.emit(
             len(self.repos) - self.repo_queue.qsize(), len(self.repos)
         )
         self.success.emit(repo)
 
     def on_failure(self, repo: Addon) -> None:
+        FreeCAD.Console.PrintLog(f"Failed to update {repo.name}\n")
         self.progress_made.emit(
             len(self.repos) - self.repo_queue.qsize(), len(self.repos)
         )
@@ -1695,8 +1697,10 @@ class UpdateSingleWorker(QtCore.QThread):
             except queue.Empty:
                 return
             if repo.repo_type == Addon.Kind.MACRO:
+                FreeCAD.Console.PrintLog(f"Updating macro '{repo.name}'...\n")
                 self.update_macro(repo)
             else:
+                FreeCAD.Console.PrintLog(f"Updating addon '{repo.name}'...\n")
                 self.update_package(repo)
             self.repo_queue.task_done()
 
