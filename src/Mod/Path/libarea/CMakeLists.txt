@@ -165,6 +165,8 @@ SET_BIN_DIR(area area /Mod/Path)
 SET_PYTHON_PREFIX_SUFFIX(area)
 
 # this figures out where to install the Python modules
+# still use the deprecated distutils package
+# see: https://forum.freecad.org/viewtopic.php?f=10&t=67985
 execute_process(
     COMMAND python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())"
     OUTPUT_VARIABLE Python_site_packages
