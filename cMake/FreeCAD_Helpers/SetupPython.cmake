@@ -1,6 +1,5 @@
 macro(SetupPython)
 # -------------------------------- Python --------------------------------
-
     # For building on OS X
     if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND NOT BUILD_WITH_CONDA)
 
@@ -69,7 +68,7 @@ macro(SetupPython)
         # Ask Python to tell us it's include directory, if nobody else has
         if(NOT DEFINED PYTHON_INCLUDE_DIR)
             execute_process(COMMAND ${PYTHON_EXECUTABLE} -c
-             "from distutils.sysconfig import get_python_inc;print(get_python_inc())"
+                "from sysconfig import get_path; print(get_path(\"include\"))"
                             OUTPUT_VARIABLE PYTHON_INCLUDE_DIR
                             RESULT_VARIABLE PYTHON_INCLUDE_DIR_RESULT
                             ERROR_QUIET)
@@ -82,7 +81,7 @@ macro(SetupPython)
         if(NOT DEFINED PYTHON_LIBRARY)
             # Get the library path
             execute_process(COMMAND "${PYTHON_EXECUTABLE}" -c
-          "from distutils import sysconfig;print(sysconfig.get_config_var('LIBDIR'))"
+                "from sysconfig import get_config_var;print(get_config_var(\"LIBDIR\"))"
                             OUTPUT_VARIABLE PYTHON_LIBRARY_DIR
                             RESULT_VARIABLE PYTHON_LIBRARY_DIR_RESULT
                             ERROR_QUIET)
