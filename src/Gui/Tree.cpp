@@ -153,6 +153,11 @@ TreeParams* TreeParams::Instance() {
     return instance;
 }
 
+bool TreeParams::getTreeViewStretchDescription() const
+{
+    return handle->GetBool("TreeViewStretchDescription", false);
+}
+
 //////////////////////////////////////////////////////////////////////////////////////
 struct Stats {
 #define DEFINE_STATS \
@@ -526,7 +531,7 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
 
     // make sure to show a horizontal scrollbar if needed
     this->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
-    this->header()->setStretchLastSection(false);
+    this->header()->setStretchLastSection(TreeParams::Instance()->getTreeViewStretchDescription());
 
     // Add the first main label
     this->rootItem = new QTreeWidgetItem(this);
