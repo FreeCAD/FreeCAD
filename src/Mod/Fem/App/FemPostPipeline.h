@@ -58,6 +58,7 @@ public:
     //load data from files
     static bool canRead(Base::FileInfo file);
     void read(Base::FileInfo file);
+    void scale(double s);
 
     //load from results
     void load(FemResultObject* res);

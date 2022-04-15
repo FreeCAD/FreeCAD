@@ -149,6 +149,11 @@ void FemPostPipeline::read(Base::FileInfo File) {
         throw Base::FileException("Unknown extension");
 }
 
+void FemPostPipeline::scale(double s)
+{
+    Data.scale(s);
+}
+
 void FemPostPipeline::onChanged(const Property* prop)
 {
     if (prop == &Filter || prop == &Mode) {
