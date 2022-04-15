@@ -63,8 +63,6 @@ typedef const vtkIdType* vtkIdTypePtr;
 typedef vtkIdType* vtkIdTypePtr;
 #endif
 
-const char* ViewProviderFemPostObject::ScaleEnums[] = { "1", "1000", nullptr };
-
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostObject, Gui::ViewProviderDocumentObject)
 
 ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(false)
@@ -73,9 +71,6 @@ ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(
     ADD_PROPERTY_TYPE(Field, ((long)0), "Coloring", App::Prop_None, "Select the field used for calculating the color");
     ADD_PROPERTY_TYPE(VectorMode, ((long)0), "Coloring", App::Prop_None, "Select what to show for a vector field");
     ADD_PROPERTY(Transparency, (0));
-    ADD_PROPERTY_TYPE(Scale, (0L), "Base", (App::PropertyType)(App::Prop_None), "Scale factor of the mesh");
-    Scale.setEnums(ScaleEnums);
-    Scale.setReadOnly(true);
 
     sPixmap = "fem-femmesh-from-shape";
 
@@ -426,33 +421,11 @@ void ViewProviderFemPostObject::WritePointData(vtkPoints* points, vtkDataArray* 
     if (!points)
         return;
 
-    // we must inherit the Scale of parent meshes (for example for clip filters)
-    auto parents = pcObject->getInList();
-    if (!parents.empty()) {
-        for (auto itParents = parents.begin(); itParents != parents.end(); ++itParents) {
-            if ((*itParents)->getTypeId() == Base::Type::fromName("Fem::FemPostPipeline")) {
-                auto vpObject = dynamic_cast<FemGui::ViewProviderFemPostObject*>(
-                    Gui::Application::Instance->getViewProvider(*itParents));
-                if (vpObject) {
-                    auto propScale = Base::freecad_dynamic_cast<App::PropertyEnumeration>(
-                        vpObject->getPropertyByName("Scale"));
-                    if (propScale) {
-                        if (propScale->getValue() != Scale.getValue()) {
-                            Scale.setValue(propScale->getValue());
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     m_coordinates->point.setNum(points->GetNumberOfPoints());
     SbVec3f* pnts = m_coordinates->point.startEditing();
-    double scale = (strcmp(Scale.getValueAsString(), "1") == 0) ? 1.0 : 1000.0;
     for (int i = 0; i < points->GetNumberOfPoints(); i++) {
         double* p = points->GetPoint(i);
-        pnts[i].setValue(p[0] * scale, p[1] * scale, p[2] * scale);
+        pnts[i].setValue(p[0], p[1], p[2]);
     }
     m_coordinates->point.finishEditing();
 
@@ -593,9 +566,6 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop) {
     }
     else if (prop == &Transparency) {
         WriteTransparency();
-    }
-    else if (prop == &Scale) {
-        update3D();
     }
 
     ViewProviderDocumentObject::onChanged(prop);

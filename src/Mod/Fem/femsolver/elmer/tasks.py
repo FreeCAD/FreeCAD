@@ -161,6 +161,7 @@ class Results(run.Results):
             self._createResults()
         postPath = self._getResultFile()
         self.solver.ElmerResult.read(postPath)
+        self.solver.ElmerResult.scale(1000)
         self.solver.ElmerResult.getLastPostObject().touch()
         self.solver.Document.recompute()
 
@@ -169,8 +170,6 @@ class Results(run.Results):
             "Fem::FemPostPipeline", self.solver.Name + "Result")
         self.solver.ElmerResult.Label = self.solver.Label + "Result"
         self.analysis.addObject(self.solver.ElmerResult)
-        # set the scale to 1 (meaning factor 1000) to scale the mesh back for display
-        self.solver.ElmerResult.ViewObject.Scale = 1
         # to assure the user sees something, set the default to Surface
         self.solver.ElmerResult.ViewObject.DisplayMode = "Surface"
 
