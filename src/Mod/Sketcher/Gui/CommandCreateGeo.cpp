@@ -603,7 +603,7 @@ using DrawSketchHandlerRectangleBase = DrawSketchDefaultWidgetHandler<  DrawSket
                                                                         StateMachines::FourSeekEnd,
                                                                         /*PEditCurveSize =*/ 5,
                                                                         /*PAutoConstraintSize =*/ 2,
-                                                                        /*WidgetParametersT =*/WidgetParameters<4, 4>,
+                                                                        /*WidgetParametersT =*/WidgetParameters<6, 6>,
                                                                         /*WidgetCheckboxesT =*/WidgetCheckboxes<2, 2>,
                                                                         /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
                                                                         ConstructionMethods::RectangleConstructionMethod,
