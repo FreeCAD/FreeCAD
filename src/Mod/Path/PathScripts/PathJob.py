@@ -105,6 +105,7 @@ Notification = NotificationClass()
 
 class ObjectJob:
     def __init__(self, obj, models, templateFile=None):
+        FreeCAD.pathCancelExecution = []
         self.obj = obj
         self.tooltip = None
         self.tooltipArgs = None
@@ -483,6 +484,7 @@ class ObjectJob:
                     ops.Label = label
 
     def onDocumentRestored(self, obj):
+        FreeCAD.pathCancelExecution = []
         self.setupBaseModel(obj)
         self.fixupOperations(obj)
         self.setupSetupSheet(obj)
