@@ -422,8 +422,6 @@ void ViewProviderFemPostObject::update3D() {
 void ViewProviderFemPostObject::WritePointData(vtkPoints* points, vtkDataArray* normals, vtkDataArray* tcoords) {
 
     Q_UNUSED(tcoords);
-    double* p;
-    int i;
 
     if (!points)
         return;
@@ -449,23 +447,22 @@ void ViewProviderFemPostObject::WritePointData(vtkPoints* points, vtkDataArray* 
         }
     }
 
-    m_coordinates->point.startEditing();
     m_coordinates->point.setNum(points->GetNumberOfPoints());
+    SbVec3f* pnts = m_coordinates->point.startEditing();
     double scale = (strcmp(Scale.getValueAsString(), "1") == 0) ? 1.0 : 1000.0;
-    for (i = 0; i < points->GetNumberOfPoints(); i++) {
-        p = points->GetPoint(i);
-        m_coordinates->point.set1Value(i, p[0] * scale, p[1] * scale, p[2] * scale);
+    for (int i = 0; i < points->GetNumberOfPoints(); i++) {
+        double* p = points->GetPoint(i);
+        pnts[i].setValue(p[0] * scale, p[1] * scale, p[2] * scale);
     }
     m_coordinates->point.finishEditing();
 
     // write out the point normal data
     if (normals) {
-
-        m_normals->vector.startEditing();
         m_normals->vector.setNum(normals->GetNumberOfTuples());
-        for (i = 0; i < normals->GetNumberOfTuples(); i++) {
-            p = normals->GetTuple(i);
-            m_normals->vector.set1Value(i, SbVec3f(p[0], p[1], p[2]));
+        SbVec3f* dirs = m_normals->vector.startEditing();
+        for (int i = 0; i < normals->GetNumberOfTuples(); i++) {
+            double* p = normals->GetTuple(i);
+            dirs[i].setValue(p[0], p[1], p[2]);
         }
         m_normals->vector.finishEditing();
 
