@@ -848,7 +848,7 @@ def RtoIJ(startpoint, command):
 # Helper functions to manage cancellation of `execute()` method in ops and dressups
 def cancelAllOps(job):
     """cancelAllOps()... Method to flag all operations, including their bases, as cancelled for execution."""
-    PathLog.debug("doNotRecomputeOps")
+    # PathLog.debug("cancelAllOps()")
     if not hasattr(FreeCAD, "pathCancelExecution"):
         FreeCAD.pathCancelExecution = []
     for op in job.Proxy.allOperations():
@@ -864,12 +864,11 @@ def isOperationCancelled(obj):
             # Reset cancel flag if direct child of Operations group
             idx = cancelList.index(obj.Name)
             cancelList.pop(idx)
-        PathLog.info(f"{obj.Name} cancelled")
+        PathLog.debug(f"{obj.Name} cancelled")
         return True
 
     # Reset cancel names
     FreeCAD.pathCancelExecution = []
-    # PathLog.debug(f"{obj.Name} not cancelled")
     return False
 
 
@@ -907,7 +906,6 @@ def isDressupCancelled(obj):
 
         if not clearObjName and not replaceBaseName:
             PathLog.error(f"{obj.Name} intermediate dressup error")
-            print(f"{cancelList}")
             return False
 
     # Update `pathCancelExecution` list items
@@ -926,10 +924,9 @@ def isDressupCancelled(obj):
             cancel = True
 
     if cancel:
-        PathLog.debug(f"   {obj.Name} cancelled")
+        PathLog.debug(f"{obj.Name} cancelled")
         return True
 
-    # PathLog.debug(f"   {obj.Name} not cancelled")
     FreeCAD.pathCancelExecution = []  # Reset cancel names
     return False
 
