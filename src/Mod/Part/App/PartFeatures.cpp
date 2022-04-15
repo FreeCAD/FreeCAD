@@ -711,16 +711,21 @@ Reverse::Reverse()
 
 App::DocumentObjectExecReturn* Reverse::execute(void)
 {
-    Part::Feature* source = Source.getValue<Part::Feature*>();
-    if (!source)
+    App::DocumentObject* source = Source.getValue<App::DocumentObject*>();
+    Part::TopoShape topoShape = Part::Feature::getShape(source);
+    if (topoShape.isNull())
         return new App::DocumentObjectExecReturn("No part object linked.");
 
     try {
-        TopoDS_Shape myShape = source->Shape.getValue();
-        if (!myShape.IsNull())
+        TopoDS_Shape myShape = topoShape.getShape();
+        if (!myShape.IsNull()){
             this->Shape.setValue(myShape.Reversed());
-        this->Placement.setValue(source->Placement.getValue());
-        return App::DocumentObject::StdReturn;
+            Base::Placement p;
+            p.fromMatrix(topoShape.getTransform());
+            this->Placement.setValue(p);
+            return App::DocumentObject::StdReturn;
+        }
+        return new App::DocumentObjectExecReturn("Shape is null.");
     }
     catch (Standard_Failure & e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

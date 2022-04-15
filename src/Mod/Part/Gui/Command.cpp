@@ -1264,7 +1264,7 @@ void CmdPartReverseShape::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType
-        (Part::Feature::getClassTypeId());
+        (App::DocumentObject::getClassTypeId());
     openCommand(QT_TRANSLATE_NOOP("Command", "Reverse"));
     for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
         const TopoDS_Shape& shape = Part::Feature::getShape(*it);
@@ -1302,8 +1302,7 @@ void CmdPartReverseShape::activated(int iMsg)
 
 bool CmdPartReverseShape::isActive(void)
 {
-    return Gui::Selection().countObjectsOfType
-        (Part::Feature::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink) > 0;
+    return PartGui::getShapesFromSelection().size() > 0;
 }
 
 //===========================================================================
