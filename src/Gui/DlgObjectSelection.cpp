@@ -95,6 +95,14 @@ void DlgObjectSelection::init(const std::vector<App::DocumentObject*> &objs,
     ui->checkBoxAutoDeps->setChecked(hGrp->GetBool("ObjectSelectionAutoDeps", true));
     connect(ui->checkBoxAutoDeps, SIGNAL(toggled(bool)), this, SLOT(onAutoDeps(bool)));
 
+    ui->checkBoxShowDeps->setChecked(hGrp->GetBool("ObjectSelectionShowDeps", false));
+    QObject::connect(ui->checkBoxShowDeps, &QCheckBox::toggled,
+        [this](bool checked) {
+            hGrp->SetBool("ObjectSelectionShowDeps", checked);
+            onShowDeps();
+        });
+    QMetaObject::invokeMethod(this, "onShowDeps", Qt::QueuedConnection);
+
     // make sure to show a horizontal scrollbar if needed
     ui->depList->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     ui->depList->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
@@ -659,6 +667,19 @@ void DlgObjectSelection::onAutoDeps(bool checked)
             setCheckState(i, state);
     }
     onItemSelectionChanged();
+}
+
+void DlgObjectSelection::onShowDeps()
+{
+    bool checked = ui->checkBoxShowDeps->isChecked();
+    auto sizes = ui->vsplitter->sizes();
+    if (!checked && sizes[1] > 0)
+        sizes[1] = 0;
+    else if (checked && (sizes[0] == 0 || sizes[1] == 0))
+        sizes[0] = sizes[1] = this->width()/2;
+    else
+        return;
+    ui->vsplitter->setSizes(sizes);
 }
 
 #include "moc_DlgObjectSelection.cpp"
