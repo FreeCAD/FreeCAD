@@ -414,8 +414,10 @@ class ObjectDressup:
                 {
                     "X": p0.x,
                     "Y": p0.y,
+                    "Z": p0.z,
                     "I": offsetvector.x,
                     "J": offsetvector.y,
+                    "K": offsetvector.z,
                     "F": horizFeed,
                 },
             )  # add G2/G3 move
@@ -518,7 +520,15 @@ class ObjectDressup:
         if obj.StyleOff == "Arc":
             arcmove = Path.Command(
                 arcdir,
-                {"X": leadend.x, "Y": leadend.y, "I": IJ.x, "J": IJ.y, "F": horizFeed},
+                {
+                    "X": leadend.x,
+                    "Y": leadend.y,
+                    "Z": leadend.z,
+                    "I": IJ.x,
+                    "J": IJ.y,
+                    "K": IJ.z,
+                    "F": horizFeed,
+                },
             )  # add G2/G3 move
             results.append(arcmove)
             if obj.ExtendLeadOut != 0:
