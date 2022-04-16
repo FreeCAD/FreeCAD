@@ -332,7 +332,8 @@ void ViewProviderFemPostObject::update3D() {
 
     // write out point data if any
     WritePointData(points, normals, tcoords);
-    bool ResetColorBarRange = true;
+    WriteTransparency();
+    bool ResetColorBarRange = false;
     WriteColorData(ResetColorBarRange);
 
     // write out polys if any
@@ -490,14 +491,17 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
 
     m_material->diffuseColor.setNum(pd->GetNumberOfPoints());
     SbColor* diffcol = m_material->diffuseColor.startEditing();
+
+    float overallTransp = Transparency.getValue() / 100.0f;
     m_material->transparency.setNum(pd->GetNumberOfPoints());
     float* transp = m_material->transparency.startEditing();
 
     for (int i = 0; i < pd->GetNumberOfPoints(); i++) {
 
         double value = 0;
-        if (component >= 0)
+        if (component >= 0) {
             value = data->GetComponent(i, component);
+        }
         else {
             for (int j = 0; j < data->GetNumberOfComponents(); ++j)
                 value += std::pow(data->GetComponent(i, j), 2);
@@ -507,7 +511,7 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
 
         App::Color c = m_colorBar->getColor(value);
         diffcol[i].setValue(c.r, c.g, c.b);
-        transp[i] = c.a;
+        transp[i] = std::max(c.a, overallTransp);
     }
 
     m_material->diffuseColor.finishEditing();
@@ -523,7 +527,10 @@ void ViewProviderFemPostObject::WriteTransparency() {
 
     float trans = float(Transparency.getValue()) / 100.0;
     m_material->transparency.setValue(trans);
-    update3D();
+
+    // In order to apply the transparency changes the shape nodes must be touched
+    m_faces->touch();
+    m_triangleStrips->touch();
 }
 
 void ViewProviderFemPostObject::updateData(const App::Property* p) {
