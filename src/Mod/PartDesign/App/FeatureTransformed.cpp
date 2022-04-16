@@ -53,8 +53,6 @@ using namespace PartDesign;
 
 namespace PartDesign {
 
-const char* Transformed::OverlapEnums[] = { "Detect", "Overlap mode", "Non-overlap mode", nullptr};
-
 PROPERTY_SOURCE(PartDesign::Transformed, PartDesign::Feature)
 
 Transformed::Transformed()
@@ -64,8 +62,6 @@ Transformed::Transformed()
     Placement.setStatus(App::Property::ReadOnly, true);
 
     ADD_PROPERTY_TYPE(Refine,(0),"Part Design",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
-    ADD_PROPERTY_TYPE(Overlap, (0L), "Transform", App::Prop_None, "Feature overlapping behaviour");
-    Overlap.setEnums(OverlapEnums);
 
     //init Refine property
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
@@ -169,8 +165,6 @@ short Transformed::mustExecute() const
 
 App::DocumentObjectExecReturn *Transformed::execute(void)
 {
-    std::string overlapMode = Overlap.getValueAsString();
-
     std::vector<App::DocumentObject*> originals = Originals.getValues();
     if (originals.empty()) // typically InsideMultiTransform
         return App::DocumentObject::StdReturn;
@@ -267,13 +261,6 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
             shapes.emplace_back(shape);
         }
-
-#ifdef FC_DEBUG
-        if (overlapMode == "Overlap mode")
-            Base::Console().Message("Transformed: Overlapping feature mode (fusing tool shapes)\n");
-        else
-            Base::Console().Message("Transformed: Non-Overlapping feature mode (compound of tool shapes)\n");
-#endif
 
         TopTools_ListOfShape shapeArguments;
         shapeArguments.Append(current);
