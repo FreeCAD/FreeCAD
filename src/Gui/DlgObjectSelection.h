@@ -102,6 +102,7 @@ private Q_SLOTS:
     void onAutoDeps(bool);
     void onItemExpanded(QTreeWidgetItem *item);
     void onUseOriginalsBtnClicked();
+    void onShowDeps();
 
 private:
     QTreeWidgetItem *getItem(App::DocumentObject *obj,
