@@ -325,7 +325,7 @@ TopoDS_Shape ShapeExtractor::stripInfiniteShapes(TopoDS_Shape inShape)
         }
         builder.Add(comp, s);
     }
-    return comp;
+    return TopoDS_Shape(std::move(comp));
 }
 
 bool ShapeExtractor::is2dObject(App::DocumentObject* obj)
