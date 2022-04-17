@@ -171,6 +171,10 @@ protected:
         ConstructionMode = static_cast<ConstructionMethodT>(0);
     }
 
+    void initConstructionMethod(ConstructionMethodT mode) {
+        ConstructionMode = mode;
+    }
+
     // Cyclically iterate construction methods
     ConstructionMethodT getNextMethod() const {
         auto modeint = static_cast<int>(ConstructionMode);
