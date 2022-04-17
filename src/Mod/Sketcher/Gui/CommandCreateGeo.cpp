@@ -4878,12 +4878,14 @@ private:
     }
 
     void drawCursorToPosition(Base::Vector2d position) {
-        float length = (position - BSplinePoles.back()).Length();
-        float angle = (position - BSplinePoles.back()).GetAngle(Base::Vector2d(1.f,0.f));
+        if (!BSplinePoles.empty()) {
+            float length = (position - BSplinePoles.back()).Length();
+            float angle = (position - BSplinePoles.back()).GetAngle(Base::Vector2d(1.f,0.f));
 
-        SbString text;
-        text.sprintf(" (%.1f,%.1fdeg)", length, (angle != -FLOAT_MAX) ? angle * 180 / M_PI : 0);
-        setPositionText(position, text);
+            SbString text;
+            text.sprintf(" (%.1f,%.1fdeg)", length, (angle != -FLOAT_MAX) ? angle * 180 / M_PI : 0);
+            setPositionText(position, text);
+        }
     }
 
     void eraseEditCurve() {
