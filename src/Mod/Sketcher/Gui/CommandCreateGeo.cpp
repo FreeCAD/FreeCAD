@@ -612,6 +612,7 @@ using DrawSketchHandlerRectangleBase = DrawSketchDefaultWidgetHandler<  DrawSket
 class DrawSketchHandlerRectangle: public DrawSketchHandlerRectangleBase
 {
     friend DrawSketchHandlerRectangleBase; // allow DrawSketchHandlerRectangleBase specialisations access DrawSketchHandlerRectangle private members
+
 public:
 
     DrawSketchHandlerRectangle(ConstructionMethod constrMethod = ConstructionMethod::Diagonal) :
@@ -1871,12 +1872,30 @@ private:
     }
 
     virtual QString getCrosshairCursorSVGName() const override {
-        if (roundCorners && !makeFrame)
-            return QString::fromLatin1("Sketcher_Pointer_Oblong");
-        else if (makeFrame)
-            return QString::fromLatin1("Sketcher_CreateFrame");
-        else
-            return QString::fromLatin1("Sketcher_Pointer_Create_Box");
+        if(!roundCorners && !makeFrame) {
+            if(constructionMethod() == ConstructionMethod::CenterAndCorner)
+                return QString::fromLatin1("Sketcher_Pointer_Create_Box_Center");
+            else
+                return QString::fromLatin1("Sketcher_Pointer_Create_Box");
+        }
+        else if (roundCorners && !makeFrame) {
+            if(constructionMethod() == ConstructionMethod::CenterAndCorner)
+                return QString::fromLatin1("Sketcher_Pointer_Oblong_Center");
+            else
+                return QString::fromLatin1("Sketcher_Pointer_Oblong");
+        }
+        else if (!roundCorners && makeFrame) {
+            if(constructionMethod() == ConstructionMethod::CenterAndCorner)
+                return QString::fromLatin1("Sketcher_Pointer_Create_Frame_Center");
+            else
+                return QString::fromLatin1("Sketcher_Pointer_Create_Frame");
+        }
+        else { // both roundCorners and makeFrame
+            if(constructionMethod() == ConstructionMethod::CenterAndCorner)
+                return QString::fromLatin1("Sketcher_Pointer_Oblong_Frame_Center");
+            else
+                return QString::fromLatin1("Sketcher_Pointer_Oblong_Frame");
+        }
     }
 
     //reimplement because if not radius then it's 2 steps
@@ -1891,6 +1910,35 @@ private:
         }
         else {
             this->moveToNextMode();
+        }
+    }
+
+    virtual void registerPressedKey(bool pressed, int key) override {
+
+        if (key == SoKeyboardEvent::M && pressed && !this->isLastState()) {
+            if(roundCorners && makeFrame) { // both checkbox => next construction method
+                roundCorners = false;
+                makeFrame = false;
+                toolWidgetManager.adaptWidgetParameters(); // update checkboxes to match new handler state
+                this->iterateToNextConstructionMethod();
+            }
+            else if (roundCorners) { // roundCorners only => next makeFrame only
+                makeFrame = true;
+                roundCorners = false;
+                updateCursor();
+                toolWidgetManager.adaptWidgetParameters(); // update checkboxes to match new handler state
+            }
+            else if (makeFrame) { // makeFrame only => next both makeframe and roundcorners
+                makeFrame = true;
+                roundCorners = true;
+                updateCursor();
+                toolWidgetManager.adaptWidgetParameters(); // update checkboxes to match new handler state
+            }
+            else { // no checkbox => roundCorners
+                roundCorners = true;
+                updateCursor();
+                toolWidgetManager.adaptWidgetParameters(); // update checkboxes to match new handler state
+            }
         }
     }
 
@@ -2054,6 +2102,14 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::configureToo
     if(!init) { // Code to be executed only upon initialisation
         QStringList names = {QStringLiteral("Diagonal corners"), QStringLiteral("Center and corner")};
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
+
+        toolWidget->setComboboxPrefEntry(WCombobox::FirstCombo, "ToolWidget_Rectangle_LastMethod");
+        toolWidget->restoreComboboxPref(WCombobox::FirstCombo);
+        syncHandlerToConstructionMethodCombobox();
+
+        toolWidget->setCheckboxPrefEntry(WCheckbox::FirstBox, "ToolWidget_Rectangle_RoundedCorners");
+
+        toolWidget->setCheckboxPrefEntry(WCheckbox::SecondBox, "ToolWidget_Rectangle_Frame");
     }
 
     if(dHandler->constructionMethod() == DrawSketchHandlerRectangle::ConstructionMethod::Diagonal){
@@ -2071,16 +2127,27 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::configureToo
 
     toolWidget->setParameterLabel(WParameter::Fifth, QApplication::translate("TaskSketcherTool_p5_rectangle", "Corner radius"));
     toolWidget->setCheckboxLabel(WCheckbox::FirstBox, QApplication::translate("TaskSketcherTool_c1_rectangle", "Rounded corners"));
-    if (!toolWidget->getCheckboxChecked(WCheckbox::FirstBox)) {
+    toolWidget->restoreCheckBoxPref(WCheckbox::FirstBox);
+
+    bool roundedcornercheckbox = syncHandlerToCheckbox(WCheckbox::FirstBox, dHandler->roundCorners);
+
+    if (!roundedcornercheckbox ) {
         toolWidget->setParameterVisible(WParameter::Fifth, false);
     }
 
     toolWidget->setParameterLabel(WParameter::Sixth, QApplication::translate("TaskSketcherTool_p6_rectangle", "Thickness"));
     toolWidget->setCheckboxLabel(WCheckbox::SecondBox, QApplication::translate("TaskSketcherTool_c2_rectangle", "Frame"));
-    toolWidget->setCheckboxLabel(WCheckbox::SecondBox, QApplication::translate("TaskSketcherTool_c2_rectangle", "Frame"));
-    if (!toolWidget->getCheckboxChecked(WCheckbox::SecondBox)) {
+    toolWidget->restoreCheckBoxPref(WCheckbox::SecondBox);
+
+    bool framecheckbox = syncHandlerToCheckbox(WCheckbox::SecondBox, dHandler->makeFrame);
+
+    if (!framecheckbox) {
         toolWidget->setParameterVisible(WParameter::Sixth, false);
     }
+
+    handler->updateCursor();
+
+
 }
 
 template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptDrawingToParameterChange(int parameterindex, double value) {
@@ -2186,6 +2253,14 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doEnforceWid
 }
 
 template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptWidgetParameters(Base::Vector2d onSketchPos) {
+
+    if(syncCheckboxToHandler(WCheckbox::FirstBox, dHandler->roundCorners))
+        return;
+
+    if(syncCheckboxToHandler(WCheckbox::SecondBox, dHandler->makeFrame))
+        return;
+
+
     switch (handler->state()) {
     case SelectMode::SeekFirst:
     {
