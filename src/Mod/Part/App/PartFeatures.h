@@ -41,6 +41,7 @@ public:
     App::PropertyEnumeration Orientation;
     App::PropertyLinkSub Curve1;
     App::PropertyLinkSub Curve2;
+    App::PropertyBool ResetPlacement;
 
     /** @name methods override feature */
     //@{
