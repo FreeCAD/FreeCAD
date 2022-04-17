@@ -14,8 +14,6 @@
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-  
-  
    <item>
     <layout class="QHBoxLayout" name="comboLayout1">
      <item>
@@ -26,9 +24,15 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBox1">
+      <widget class="Gui::PrefComboBox" name="comboBox1">
        <property name="currentIndex">
         <number>0</number>
+       </property>
+       <property name="prefEntry">
+        <cstring></cstring>
+       </property>
+       <property name="prefPath">
+        <cstring>Mod/Sketcher/General</cstring>
        </property>
       </widget>
      </item>
@@ -44,9 +48,15 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBox2">
+      <widget class="Gui::PrefComboBox" name="comboBox2">
        <property name="currentIndex">
         <number>0</number>
+       </property>
+       <property name="prefEntry">
+        <cstring></cstring>
+       </property>
+       <property name="prefPath">
+        <cstring>Mod/Sketcher/General</cstring>
        </property>
       </widget>
      </item>
@@ -62,15 +72,20 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBox3">
+      <widget class="Gui::PrefComboBox" name="comboBox3">
        <property name="currentIndex">
         <number>0</number>
+       </property>
+       <property name="prefEntry">
+        <cstring></cstring>
+       </property>
+       <property name="prefPath">
+        <cstring>Mod/Sketcher/General</cstring>
        </property>
       </widget>
      </item>
     </layout>
    </item>
-  
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
@@ -92,7 +107,6 @@
      </item>
     </layout>
    </item>
-   
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout2">
      <item>
@@ -113,8 +127,7 @@
       </widget>
      </item>
     </layout>
-   </item> 
-   
+   </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout3">
      <item>
@@ -136,9 +149,8 @@
      </item>
     </layout>
    </item>
-	
    <item>
-	<layout class="QHBoxLayout" name="horizontalLayout4">
+    <layout class="QHBoxLayout" name="horizontalLayout4">
      <item>
       <widget class="QLabel" name="label4">
        <property name="text">
@@ -158,9 +170,8 @@
      </item>
     </layout>
    </item>
-   
    <item>
-	<layout class="QHBoxLayout" name="horizontalLayout5">
+    <layout class="QHBoxLayout" name="horizontalLayout5">
      <item>
       <widget class="QLabel" name="label5">
        <property name="text">
@@ -180,9 +191,8 @@
      </item>
     </layout>
    </item>
-   
    <item>
-	<layout class="QHBoxLayout" name="horizontalLayout6">
+    <layout class="QHBoxLayout" name="horizontalLayout6">
      <item>
       <widget class="QLabel" name="label6">
        <property name="text">
@@ -202,30 +212,28 @@
      </item>
     </layout>
    </item>
-      
    <item>
     <widget class="Gui::PrefCheckBox" name="checkBoxTS1">
      <property name="enabled">
       <bool>true</bool>
      </property>
-        <property name="toolTip">
-         <string>Checkbox 1 toolTip</string>
-        </property>
-        <property name="text">
-         <string>Checkbox 1</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring></cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Sketcher/General</cstring>
-        </property>
+     <property name="toolTip">
+      <string>Checkbox 1 toolTip</string>
+     </property>
+     <property name="text">
+      <string>Checkbox 1</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <property name="prefEntry">
+      <cstring></cstring>
+     </property>
+     <property name="prefPath">
+      <cstring>Mod/Sketcher/General</cstring>
+     </property>
     </widget>
    </item>
-   
    <item>
     <widget class="Gui::PrefCheckBox" name="checkBoxTS2">
      <property name="enabled">
@@ -240,15 +248,14 @@
      <property name="checked">
       <bool>false</bool>
      </property>
-        <property name="prefEntry" stdset="0">
-         <cstring></cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Sketcher/General</cstring>
-        </property>
+     <property name="prefEntry">
+      <cstring></cstring>
+     </property>
+     <property name="prefPath">
+      <cstring>Mod/Sketcher/General</cstring>
+     </property>
     </widget>
    </item>
-   
    <item>
     <widget class="Gui::PrefCheckBox" name="checkBoxTS3">
      <property name="enabled">
@@ -263,15 +270,14 @@
      <property name="checked">
       <bool>false</bool>
      </property>
-        <property name="prefEntry" stdset="0">
-         <cstring></cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Sketcher/General</cstring>
-        </property>
+     <property name="prefEntry">
+      <cstring></cstring>
+     </property>
+     <property name="prefPath">
+      <cstring>Mod/Sketcher/General</cstring>
+     </property>
     </widget>
    </item>
-   
    <item>
     <widget class="Gui::PrefCheckBox" name="checkBoxTS4">
      <property name="enabled">
@@ -286,29 +292,27 @@
      <property name="checked">
       <bool>false</bool>
      </property>
-        <property name="prefEntry" stdset="0">
-         <cstring></cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Sketcher/General</cstring>
-        </property>
+     <property name="prefEntry">
+      <cstring></cstring>
+     </property>
+     <property name="prefPath">
+      <cstring>Mod/Sketcher/General</cstring>
+     </property>
     </widget>
    </item>
-   
-   	<item>
-	  <widget class="QLabel" name="notice">
-	   <property name="text">
-		<string></string>
-	   </property>
-	   <property name="maximumSize">
-		<size>
-		 <width>400</width>
-		 <height>500</height>
-		</size>
-	   </property>
-	  </widget>
-	 </item>
-
+   <item>
+    <widget class="QLabel" name="notice">
+     <property name="maximumSize">
+      <size>
+       <width>400</width>
+       <height>500</height>
+      </size>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -319,6 +323,11 @@
   </customwidget>
   <customwidget>
    <class>Gui::PrefCheckBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
    <extends>QWidget</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>

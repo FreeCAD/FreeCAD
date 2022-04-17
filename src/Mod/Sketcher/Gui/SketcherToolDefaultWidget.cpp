@@ -36,6 +36,7 @@
 #include <Gui/WaitCursor.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/PrefWidgets.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <Base/Exception.h>
@@ -575,6 +576,28 @@ void SketcherToolDefaultWidget::setCheckboxPrefEntry(int checkboxindex, const st
     }
 }
 
+void SketcherToolDefaultWidget::restoreCheckBoxPref(int checkboxindex)
+{
+    if (checkboxindex < nCheckbox) {
+        getCheckBox(checkboxindex)->onRestore();
+    }
+}
+
+void SketcherToolDefaultWidget::setComboboxPrefEntry(int comboboxindex, const std::string & prefEntry)
+{
+    if (comboboxindex < nCombobox) {
+        QByteArray byteArray(prefEntry.c_str(), prefEntry.length());
+        getComboBox(comboboxindex)->setEntryName(byteArray);
+    }
+}
+
+void SketcherToolDefaultWidget::restoreComboboxPref(int comboboxindex)
+{
+    if (comboboxindex < nCombobox) {
+        getComboBox(comboboxindex)->onRestore();
+    }
+}
+
 bool SketcherToolDefaultWidget::isCheckBoxPrefEntryEmpty(int checkboxindex)
 {
     return getCheckBox(checkboxindex)->entryName().size() == 0;
@@ -585,16 +608,19 @@ void SketcherToolDefaultWidget::comboBox1_currentIndexChanged(int val) {
     if (!blockParameterSlots) {
         signalComboboxSelectionChanged(Combobox::FirstCombo, val);
     }
+    ui->comboBox1->onSave();
 }
 void SketcherToolDefaultWidget::comboBox2_currentIndexChanged(int val) {
     if (!blockParameterSlots) {
         signalComboboxSelectionChanged(Combobox::SecondCombo, val);
     }
+    ui->comboBox2->onSave();
 }
 void SketcherToolDefaultWidget::comboBox3_currentIndexChanged(int val) {
     if (!blockParameterSlots) {
         signalComboboxSelectionChanged(Combobox::ThirdCombo, val);
     }
+    ui->comboBox3->onSave();
 }
 
 void SketcherToolDefaultWidget::initNComboboxes(int ncombobox)
@@ -635,7 +661,7 @@ void SketcherToolDefaultWidget::setComboboxElements(int comboboxindex, const QSt
     }
 }
 
-QComboBox* SketcherToolDefaultWidget::getComboBox(int comboboxindex)
+Gui::PrefComboBox* SketcherToolDefaultWidget::getComboBox(int comboboxindex)
 {
     switch (comboboxindex) {
     case Combobox::FirstCombo:

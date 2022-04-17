@@ -41,6 +41,8 @@ class ViewProvider;
 class PrefQuantitySpinBox;
 class PrefCheckBox;
 class View3DInventorViewer;
+
+class PrefComboBox;
 }
 
 namespace SketcherGui {
@@ -155,6 +157,7 @@ public:
     void setCheckboxLabel(int checkboxindex, const QString& string);
     bool getCheckboxChecked(int checkboxindex);
     void setCheckboxPrefEntry(int checkboxindex, const std::string & prefEntry);
+    void restoreCheckBoxPref(int checkboxindex);
 
     void initNComboboxes(int ncombobox);
     void setComboboxVisible(int comboboxindex, bool visible);
@@ -162,6 +165,8 @@ public:
     void setComboboxLabel(int comboboxindex, const QString& string);
     int getComboboxIndex(int comboboxindex);
     void setComboboxElements(int comboboxindex, const QStringList& names);
+    void setComboboxPrefEntry(int comboboxindex, const std::string & prefEntry);
+    void restoreComboboxPref(int comboboxindex);
 
     template<typename F>
     boost::signals2::connection registerParameterValueChanged(F&& f) {
@@ -203,7 +208,7 @@ private:
     QLabel * getParameterLabel(int parameterindex);
     Gui::PrefQuantitySpinBox * getParameterSpinBox(int parameterindex);
     Gui::PrefCheckBox* getCheckBox(int checkboxindex);
-    QComboBox* getComboBox(int comboboxindex);
+    Gui::PrefComboBox* getComboBox(int comboboxindex);
     QLabel* getComboBoxLabel(int comboboxindex);
 
     void setParameterFontStyle(int parameterindex, FontStyle fontStyle);
