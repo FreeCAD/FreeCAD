@@ -81,7 +81,7 @@ public:
             return false;
         }
         try {
-            TopoDS_Shape sub = part.getSubShape(sSubName);
+            TopoDS_Shape sub = Part::Feature::getTopoShape(pObj, sSubName, true /*need element*/).getShape();
             if (!sub.IsNull() && sub.ShapeType() == TopAbs_EDGE) {
                 const TopoDS_Edge& edge = TopoDS::Edge(sub);
                 BRepAdaptor_Curve adapt(edge);

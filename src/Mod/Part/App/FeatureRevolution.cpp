@@ -94,7 +94,7 @@ bool Revolution::fetchAxisLink(const App::PropertyLinkSub &axisLink,
 
     TopoDS_Shape axEdge;
     if (axisLink.getSubValues().size() > 0  &&  axisLink.getSubValues()[0].length() > 0){
-        axEdge = Feature::getTopoShape(linked).getSubShape(axisLink.getSubValues()[0].c_str());
+        axEdge = Feature::getTopoShape(linked, axisLink.getSubValues()[0].c_str(), true /*need element*/).getShape();
     } else {
         axEdge = Feature::getShape(linked);
     }
