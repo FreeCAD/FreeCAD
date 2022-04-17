@@ -244,6 +244,10 @@ private:
             finishWidgetChanged();
         }
 
+        void adaptWidgetParameters() {
+            adaptWidgetParameters(lastWidgetEnforcedPosition);
+        }
+
         //@}
 
         /** @name functions which MUST be specialised */
@@ -849,6 +853,34 @@ private:
 
                 lastWidgetEnforcedPosition = simulatedCursorPosition; // store enforced cursor position.
             }
+
+            /// returns the status to which the handler was updated
+            bool syncHandlerToCheckbox(int checkboxindex, bool & handlerboolean) {
+                bool status = toolWidget->getCheckboxChecked(checkboxindex);
+                handlerboolean = status;
+
+                return status;
+            }
+
+            /// returns true if checkbox was changed, and false if no sync was necessary
+            bool syncCheckboxToHandler(int checkboxindex, bool handlerboolean) {
+                bool status = toolWidget->getCheckboxChecked(checkboxindex);
+                if(handlerboolean != status) {
+                    toolWidget->setCheckboxChecked(checkboxindex, handlerboolean);
+                    return true;
+                }
+
+                return false;
+            }
+
+            void syncHandlerToConstructionMethodCombobox() {
+
+                if constexpr (PFirstComboboxIsConstructionMethod == true) {
+                    auto constructionmethod = toolWidget->getComboboxIndex(WCombobox::FirstCombo);
+
+                    handler->initConstructionMethod(static_cast<ConstructionMethodT>(constructionmethod));
+                }
+            }
         //@}
      };
 
@@ -932,7 +964,7 @@ private:
     }
     //@}
 
-private:
+protected:
     ToolWidgetManager toolWidgetManager;
 };
 
