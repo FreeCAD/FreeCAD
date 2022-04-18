@@ -41,8 +41,11 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 LOG_MODULE = PathLog.thisModule()
 
-PathLog.setLevel(PathLog.Level.INFO, LOG_MODULE)
-
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 translate = FreeCAD.Qt.translate
 
@@ -50,7 +53,6 @@ translate = FreeCAD.Qt.translate
 class _TempObject:
     Path = None
     Name = "Fixture"
-    InList = []
     Label = "Fixture"
 
 
@@ -216,6 +218,167 @@ class CommandPathPost:
         else:
             return (True, "", filename)
 
+    def buildPostList(self, job):
+        """
+        Parses the job and returns the list(s) of objects to be written by the post
+        Postlist is a list of lists.  Each sublist is intended to be a separate file
+        """
+        orderby = job.OrderOutputBy
+
+        fixturelist = []
+        for f in job.Fixtures:
+            # create an object to serve as the fixture path
+            fobj = _TempObject()
+            fobj.Label = f
+            c1 = Path.Command(f)
+            c2 = Path.Command(
+                "G0 Z"
+                + str(
+                    job.Stock.Shape.BoundBox.ZMax
+                    + job.SetupSheet.ClearanceHeightOffset.Value
+                )
+            )
+            fobj.Path = Path.Path([c1, c2])
+            # fobj.InList.append(job)
+            fixturelist.append(fobj)
+
+        postlist = []
+
+        if orderby == "Fixture":
+            PathLog.debug("Ordering by Fixture")
+            # Order by fixture means all operations and tool changes will be completed in one
+            # fixture before moving to the next.
+
+            for f in fixturelist:
+                scratchpad = [(f, None)]
+
+                # Now generate the gcode
+                for obj in job.Operations.Group:
+                    if not PathUtil.opProperty(obj, "Active"):
+                        continue
+                    tc = PathUtil.toolControllerForOp(obj)
+                    scratchpad.append((obj, tc))
+
+                sublist = []
+                temptool = None
+                for item in scratchpad:
+                    if item[1] in [temptool, None]:
+                        sublist.append(item[0])
+                    else:
+                        sublist.append(item[1])
+                        temptool = item[1]
+                        sublist.append(item[0])
+                postlist.append(sublist)
+
+        elif orderby == "Tool":
+            PathLog.debug("Ordering by Tool")
+            # Order by tool means tool changes are minimized.
+            # all operations with the current tool are processed in the current
+            # fixture before moving to the next fixture.
+
+            currTool = None
+
+            # Now generate the gcode
+            curlist = []  # list of ops for tool, will repeat for each fixture
+            # sublist = []  # list of ops for output splitting
+
+            for idx, obj in enumerate(job.Operations.Group):
+
+                # check if the operation is active
+                active = PathUtil.opProperty(obj, "Active")
+
+                tc = PathUtil.toolControllerForOp(obj)
+
+                if not active:  # pass on any inactive ops
+                    continue
+
+                if tc is None:
+                    curlist.append((obj, None))
+                    continue
+
+                if tc == currTool:
+                    curlist.append((obj, tc))
+
+                if tc != currTool and currTool is None:  # first TC
+                    currTool = tc
+                    curlist.append((obj, tc))
+                    continue
+
+                if tc != currTool and currTool is not None:  # TC changed
+                    if tc.ToolNumber == currTool.ToolNumber:  # Same tool /diff params
+                        curlist.append((obj, tc))
+                        currTool = tc
+                    else:  # Actual Toolchange
+                        # dump current state to postlist
+                        sublist = []
+                        t = None
+                        for fixture in fixturelist:
+                            sublist.append(fixture)
+                            for item in curlist:
+                                if item[1] == t:
+                                    sublist.append(item[0])
+                                else:
+                                    sublist.append(item[1])
+                                    t = item[1]
+                                    sublist.append(item[0])
+
+                        postlist.append(sublist)
+
+                        # set up for next tool group
+                        currTool = tc
+                        curlist = [(obj, tc)]
+
+            # flush remaining curlist to output
+            sublist = []
+            t = None
+            for fixture in fixturelist:
+                sublist.append(fixture)
+                for item in curlist:
+                    if item[1] == t:
+                        sublist.append(item[0])
+                    else:
+                        sublist.append(item[1])
+                        t = item[1]
+                        sublist.append(item[0])
+            postlist.append(sublist)
+
+        elif orderby == "Operation":
+            PathLog.debug("Ordering by Operation")
+            # Order by operation means ops are done in each fixture in
+            # sequence.
+            currTool = None
+            # firstFixture = True
+
+            # Now generate the gcode
+            for obj in job.Operations.Group:
+                scratchpad = []
+                tc = PathUtil.toolControllerForOp(obj)
+                if not PathUtil.opProperty(obj, "Active"):
+                    continue
+
+                PathLog.debug("obj: {}".format(obj.Name))
+                for f in fixturelist:
+
+                    scratchpad.append((f, None))
+                    scratchpad.append((obj, tc))
+
+                sublist = []
+                temptool = None
+                for item in scratchpad:
+                    if item[1] in [temptool, None]:
+                        sublist.append(item[0])
+                    else:
+                        sublist.append(item[1])
+                        temptool = item[1]
+                        sublist.append(item[0])
+                postlist.append(sublist)
+
+        if job.SplitOutput:
+            return postlist
+        else:
+            finalpostlist = [item for slist in postlist for item in slist]
+            return [finalpostlist]
+
     def Activated(self):
         PathLog.track()
         FreeCAD.ActiveDocument.openTransaction("Post Process the Selected path(s)")
@@ -265,150 +428,14 @@ class CommandPathPost:
 
         PathLog.debug("about to postprocess job: {}".format(job.Name))
 
-        wcslist = job.Fixtures
-        orderby = job.OrderOutputBy
-        split = job.SplitOutput
-
-        postlist = []
-
-        if orderby == "Fixture":
-            PathLog.debug("Ordering by Fixture")
-            # Order by fixture means all operations and tool changes will be completed in one
-            # fixture before moving to the next.
-
-            currTool = None
-            for index, f in enumerate(wcslist):
-                # create an object to serve as the fixture path
-                fobj = _TempObject()
-                c1 = Path.Command(f)
-                fobj.Path = Path.Path([c1])
-                if index != 0:
-                    c2 = Path.Command(
-                        "G0 Z"
-                        + str(
-                            job.Stock.Shape.BoundBox.ZMax
-                            + job.SetupSheet.ClearanceHeightOffset.Value
-                        )
-                    )
-                    fobj.Path.addCommands(c2)
-                fobj.InList.append(job)
-                sublist = [fobj]
-
-                # Now generate the gcode
-                for obj in job.Operations.Group:
-                    tc = PathUtil.toolControllerForOp(obj)
-                    if tc is not None and PathUtil.opProperty(obj, "Active"):
-                        if tc.ToolNumber != currTool or split is True:
-                            sublist.append(tc)
-                            PathLog.debug("Appending TC: {}".format(tc.Name))
-                            currTool = tc.ToolNumber
-                    sublist.append(obj)
-                postlist.append(sublist)
-
-        elif orderby == "Tool":
-            PathLog.debug("Ordering by Tool")
-            # Order by tool means tool changes are minimized.
-            # all operations with the current tool are processed in the current
-            # fixture before moving to the next fixture.
-
-            currTool = None
-            fixturelist = []
-            for f in wcslist:
-                # create an object to serve as the fixture path
-                fobj = _TempObject()
-                c1 = Path.Command(f)
-                c2 = Path.Command(
-                    "G0 Z"
-                    + str(
-                        job.Stock.Shape.BoundBox.ZMax
-                        + job.SetupSheet.ClearanceHeightOffset.Value
-                    )
-                )
-                fobj.Path = Path.Path([c1, c2])
-                fobj.InList.append(job)
-                fixturelist.append(fobj)
-
-            # Now generate the gcode
-            curlist = []  # list of ops for tool, will repeat for each fixture
-            sublist = []  # list of ops for output splitting
-
-            for idx, obj in enumerate(job.Operations.Group):
-
-                # check if the operation is active
-                active = PathUtil.opProperty(obj, "Active")
-
-                tc = PathUtil.toolControllerForOp(obj)
-                if tc is None or tc.ToolNumber == currTool and active:
-                    curlist.append(obj)
-                elif (
-                    tc.ToolNumber != currTool and currTool is None and active
-                ):  # first TC
-                    sublist.append(tc)
-                    curlist.append(obj)
-                    currTool = tc.ToolNumber
-                elif (
-                    tc.ToolNumber != currTool and currTool is not None and active
-                ):  # TC
-                    for fixture in fixturelist:
-                        sublist.append(fixture)
-                        sublist.extend(curlist)
-                    postlist.append(sublist)
-                    sublist = [tc]
-                    curlist = [obj]
-                    currTool = tc.ToolNumber
-
-                if idx == len(job.Operations.Group) - 1:  # Last operation.
-                    for fixture in fixturelist:
-                        sublist.append(fixture)
-                        sublist.extend(curlist)
-                    postlist.append(sublist)
-
-        elif orderby == "Operation":
-            PathLog.debug("Ordering by Operation")
-            # Order by operation means ops are done in each fixture in
-            # sequence.
-            currTool = None
-            firstFixture = True
-
-            # Now generate the gcode
-            for obj in job.Operations.Group:
-                if PathUtil.opProperty(obj, "Active"):
-                    sublist = []
-                    PathLog.debug("obj: {}".format(obj.Name))
-                    for f in wcslist:
-                        fobj = _TempObject()
-                        c1 = Path.Command(f)
-                        fobj.Path = Path.Path([c1])
-                        if not firstFixture:
-                            c2 = Path.Command(
-                                "G0 Z"
-                                + str(
-                                    job.Stock.Shape.BoundBox.ZMax
-                                    + job.SetupSheet.ClearanceHeightOffset.Value
-                                )
-                            )
-                            fobj.Path.addCommands(c2)
-                        fobj.InList.append(job)
-                        sublist.append(fobj)
-                        firstFixture = False
-                        tc = PathUtil.toolControllerForOp(obj)
-                        if tc is not None:
-                            if job.SplitOutput or (tc.ToolNumber != currTool):
-                                sublist.append(tc)
-                                currTool = tc.ToolNumber
-                        sublist.append(obj)
-                    postlist.append(sublist)
+        postlist = self.buildPostList(job)
 
         fail = True
         rc = ""
-        if split:
-            for slist in postlist:
-                (fail, rc, filename) = self.exportObjectsWith(slist, job)
-                if fail:
-                    break
-        else:
-            finalpostlist = [item for slist in postlist for item in slist]
-            (fail, rc, filename) = self.exportObjectsWith(finalpostlist, job)
+        for slist in postlist:
+            (fail, rc, filename) = self.exportObjectsWith(slist, job)
+            if fail:
+                break
 
         self.subpart = 1
 
