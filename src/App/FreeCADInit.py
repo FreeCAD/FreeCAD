@@ -104,6 +104,10 @@ def InitApplications():
     LibPyDir = os.path.realpath(LibPyDir)
     if (os.path.exists(LibPyDir)):
         libpaths.append(LibPyDir)
+    LibFcDir = FreeCAD.getLibraryDir()
+    LibFcDir = os.path.realpath(LibFcDir)
+    if (os.path.exists(LibFcDir) and not LibFcDir in libpaths):
+        libpaths.append(LibFcDir)
     AddPath = FreeCAD.ConfigGet("AdditionalModulePaths").split(";")
     HomeMod = FreeCAD.getUserAppDataDir()+"Mod"
     HomeMod = os.path.realpath(HomeMod)
