@@ -8,6 +8,7 @@
 # Allow these packages to be installed:
 aiofiles
 autobahn
+beautifulsoup4
 ezdxf
 gmsh
 gmsh-dev
@@ -26,10 +27,14 @@ py-slvs
 pycollada
 pygit2
 pynastran
+qtrangeslider
 requests
 rhino3dm
+scikit-image
 scipy
+trimesh
 xlrd
 xlutils
 xlwt
 PyYAML
+openexr
