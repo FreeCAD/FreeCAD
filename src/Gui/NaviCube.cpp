@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <algorithm>
 # include <cfloat>
 # ifdef FC_OS_WIN32
 #  include <windows.h>
@@ -1566,7 +1567,6 @@ bool NaviCubeImplementation::inDragZone(short x, short y) {
 	return abs(dx)<limit && abs(dy)<limit;
 }
 
-
 bool NaviCubeImplementation::mouseMoved(short x, short y) {
 	setHilite(pickFace(x, y));
 
@@ -1575,8 +1575,11 @@ bool NaviCubeImplementation::mouseMoved(short x, short y) {
 			m_Dragging = true;
 		if (m_Dragging) {
 			setHilite(0);
-			m_CubeWidgetPosX = x;
-			m_CubeWidgetPosY = y;
+			int width = this->m_View3DInventorViewer->width();
+			int height = this->m_View3DInventorViewer->height();
+			int len = m_CubeWidgetSize / 2;
+			m_CubeWidgetPosX = std::min(std::max(static_cast<int>(x), len), width - len);
+			m_CubeWidgetPosY = std::min(std::max(static_cast<int>(y), len), height - len);
 			this->m_View3DInventorViewer->getSoRenderManager()->scheduleRedraw();
 			return true;
 		}
