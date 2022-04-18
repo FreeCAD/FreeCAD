@@ -19,6 +19,7 @@ msgpack
 numpy
 ocp
 olefile
+openexr
 openpyxl
 pandas
 pillow
@@ -37,4 +38,3 @@ xlrd
 xlutils
 xlwt
 PyYAML
-openexr
