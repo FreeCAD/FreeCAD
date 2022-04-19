@@ -1212,6 +1212,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 		float rotStepAngle = 360.0f / step;
 		ParameterGrp::handle hGrpNavi = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
 		bool toNearest = hGrpNavi->GetBool("NaviRotateToNearest", true);
+		bool applyRotation = true;
 
 		SbRotation viewRot = CurrentViewRot;
 
@@ -1543,10 +1544,12 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 			break;
 		case TEX_VIEW_MENU_FACE :
 			handleMenu();
+			applyRotation = false;
 			break;
 		}
 
-		rotateView(viewRot);
+		if (applyRotation)
+			rotateView(viewRot);
 	}
 	return true;
 }
