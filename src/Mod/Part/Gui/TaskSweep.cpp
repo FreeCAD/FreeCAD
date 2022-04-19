@@ -79,7 +79,7 @@ public:
     {
     public:
         EdgeSelection()
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)nullptr)
+            : Gui::SelectionFilterGate(nullPointer())
         {
         }
         bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName)

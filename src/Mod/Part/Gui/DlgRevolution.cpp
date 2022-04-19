@@ -68,7 +68,7 @@ public:
     bool canSelect;
 
     EdgeSelection()
-        : Gui::SelectionFilterGate((Gui::SelectionFilter*)nullptr)
+        : Gui::SelectionFilterGate(nullPointer())
     {
         canSelect = false;
     }

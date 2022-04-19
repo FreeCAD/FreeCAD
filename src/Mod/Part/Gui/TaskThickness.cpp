@@ -71,7 +71,7 @@ public:
         const App::DocumentObject* object;
     public:
         FaceSelection(const App::DocumentObject* obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)nullptr), object(obj)
+            : Gui::SelectionFilterGate(nullPointer()), object(obj)
         {
         }
         bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName)

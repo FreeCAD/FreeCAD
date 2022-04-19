@@ -5688,7 +5688,7 @@ namespace SketcherGui {
         App::DocumentObject* object;
     public:
         FilletSelection(App::DocumentObject* obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)nullptr), object(obj)
+            : Gui::SelectionFilterGate(nullPointer()), object(obj)
         {}
 
         bool allow(App::Document * /*pDoc*/, App::DocumentObject *pObj, const char *sSubName)
@@ -6101,7 +6101,7 @@ namespace SketcherGui {
         App::DocumentObject* object;
     public:
         TrimmingSelection(App::DocumentObject* obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)nullptr), object(obj)
+            : Gui::SelectionFilterGate(nullPointer()), object(obj)
         {}
 
         bool allow(App::Document * /*pDoc*/, App::DocumentObject *pObj, const char *sSubName)
@@ -6264,7 +6264,7 @@ namespace SketcherGui {
         App::DocumentObject* object;
     public:
         ExtendSelection(App::DocumentObject* obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)nullptr)
+            : Gui::SelectionFilterGate(nullPointer())
             , object(obj)
             , disabled(false)
         {}
@@ -6579,7 +6579,7 @@ namespace SketcherGui {
         App::DocumentObject* object;
     public:
         SplittingSelection(App::DocumentObject* obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)nullptr), object(obj)
+            : Gui::SelectionFilterGate(nullPointer()), object(obj)
         {}
 
         bool allow(App::Document * /*pDoc*/, App::DocumentObject *pObj, const char *sSubName)
@@ -6697,7 +6697,7 @@ namespace SketcherGui {
         App::DocumentObject* object;
     public:
         ExternalSelection(App::DocumentObject* obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)nullptr), object(obj)
+            : Gui::SelectionFilterGate(nullPointer()), object(obj)
         {}
 
         bool allow(App::Document *pDoc, App::DocumentObject *pObj, const char *sSubName)
@@ -6884,7 +6884,7 @@ namespace SketcherGui {
         App::DocumentObject* object;
     public:
         CarbonCopySelection(App::DocumentObject* obj)
-        : Gui::SelectionFilterGate((Gui::SelectionFilter*)nullptr), object(obj)
+        : Gui::SelectionFilterGate(nullPointer()), object(obj)
         {}
 
         bool allow(App::Document *pDoc, App::DocumentObject *pObj, const char *sSubName)

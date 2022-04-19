@@ -172,7 +172,7 @@ namespace PartGui {
         App::DocumentObject*& object;
     public:
         EdgeFaceSelection(App::DocumentObject*& obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)nullptr), allowEdge(true), object(obj)
+            : Gui::SelectionFilterGate(nullPointer()), allowEdge(true), object(obj)
         {
         }
         void selectEdges()

@@ -188,7 +188,7 @@ class SectionsPanel::ShapeSelection : public Gui::SelectionFilterGate
 {
 public:
     ShapeSelection(SectionsPanel::SelectionMode& mode, Surface::Sections* editedObject)
-        : Gui::SelectionFilterGate(static_cast<Gui::SelectionFilter*>(nullptr))
+        : Gui::SelectionFilterGate(nullPointer())
         , mode(mode)
         , editedObject(editedObject)
     {

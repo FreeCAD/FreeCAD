@@ -140,7 +140,7 @@ class GeomFillSurface::EdgeSelection : public Gui::SelectionFilterGate
 {
 public:
     EdgeSelection(bool appendEdges, Surface::GeomFillSurface* editedObject)
-        : Gui::SelectionFilterGate(static_cast<Gui::SelectionFilter*>(nullptr))
+        : Gui::SelectionFilterGate(nullPointer())
         , appendEdges(appendEdges)
         , editedObject(editedObject)
     {
