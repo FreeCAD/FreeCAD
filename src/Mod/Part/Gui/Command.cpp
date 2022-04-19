@@ -2484,7 +2484,8 @@ void CmdBoxSelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     PartGui::BoxSelection* sel = new PartGui::BoxSelection();
-    sel->start();
+    sel->setAutoDelete(true);
+    sel->start(TopAbs_FACE);
 }
 
 bool CmdBoxSelection::isActive(void)
