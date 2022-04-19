@@ -44,6 +44,7 @@ public:
 
 private Q_SLOTS:
     void on_createButton_clicked();
+    void on_selectButton_clicked();
     void switchMode(int);
 
 private:

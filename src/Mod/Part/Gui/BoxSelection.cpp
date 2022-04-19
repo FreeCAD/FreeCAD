@@ -84,6 +84,8 @@ public:
 };
 
 BoxSelection::BoxSelection()
+    : autodelete(false)
+    , shapeEnum(TopAbs_SHAPE)
 {
 
 }
@@ -91,6 +93,16 @@ BoxSelection::BoxSelection()
 BoxSelection::~BoxSelection()
 {
 
+}
+
+void BoxSelection::setAutoDelete(bool on)
+{
+    autodelete = on;
+}
+
+bool BoxSelection::isAutoDelete() const
+{
+    return autodelete;
 }
 
 void BoxSelection::selectionCallback(void * ud, SoEventCallback * cb)
@@ -129,40 +141,61 @@ void BoxSelection::selectionCallback(void * ud, SoEventCallback * cb)
             if (!vp->isVisible())
                 continue;
             const TopoDS_Shape& shape = it->Shape.getValue();
-            self->addFacesToSelection(doc->getName(), it->getNameInDocument(), proj, polygon, shape);
+            self->addShapeToSelection(doc->getName(), it->getNameInDocument(), proj, polygon, shape, self->shapeEnum);
         }
         view->redraw();
     }
 
     Gui::Selection().rmvSelectionGate();
-    delete self;
+
+    if (self->isAutoDelete()) {
+        delete self;
+    }
 }
 
-void BoxSelection::addFacesToSelection(const char* doc, const char* obj,
+const char* BoxSelection::nameFromShapeType(TopAbs_ShapeEnum type) const
+{
+    switch (type) {
+    case TopAbs_FACE:
+        return "Face";
+    case TopAbs_EDGE:
+        return "Edge";
+    case TopAbs_VERTEX:
+        return "Vertex";
+    default:
+        return nullptr;
+    }
+}
+
+void BoxSelection::addShapeToSelection(const char* doc, const char* obj,
                                        const Gui::ViewVolumeProjection& proj,
                                        const Base::Polygon2d& polygon,
-                                       const TopoDS_Shape& shape)
+                                       const TopoDS_Shape& shape,
+                                       TopAbs_ShapeEnum subtype)
 {
     try {
-        TopTools_IndexedMapOfShape M;
+        const char* subname = nameFromShapeType(subtype);
+        if (!subname)
+            return;
 
-        TopExp_Explorer xp_face(shape,TopAbs_FACE);
-        while (xp_face.More()) {
-            M.Add(xp_face.Current());
-            xp_face.Next();
+        TopTools_IndexedMapOfShape M;
+        TopExp_Explorer xp(shape, subtype);
+        while (xp.More()) {
+            M.Add(xp.Current());
+            xp.Next();
         }
 
         for (Standard_Integer k = 1; k <= M.Extent(); k++) {
-            const TopoDS_Shape& face = M(k);
+            const TopoDS_Shape& subshape = M(k);
 
-            TopExp_Explorer xp_vertex(face,TopAbs_VERTEX);
+            TopExp_Explorer xp_vertex(subshape, TopAbs_VERTEX);
             while (xp_vertex.More()) {
                 gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(xp_vertex.Current()));
                 Base::Vector3d pt2d;
                 pt2d = proj(Base::Vector3d(p.X(), p.Y(), p.Z()));
                 if (polygon.Contains(Base::Vector2d(pt2d.x, pt2d.y))) {
                     std::stringstream str;
-                    str << "Face" << k;
+                    str << subname << k;
                     Gui::Selection().addSelection(doc, obj, str.str().c_str());
                     break;
                 }
@@ -174,7 +207,7 @@ void BoxSelection::addFacesToSelection(const char* doc, const char* obj,
     }
 }
 
-void BoxSelection::start()
+void BoxSelection::start(TopAbs_ShapeEnum shape)
 {
     Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
     if (view) {
@@ -186,8 +219,7 @@ void BoxSelection::start()
             // called immediately
             SoNode* root = viewer->getSceneGraph();
             static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
-
-            Gui::Selection().addSelectionGate(new FaceSelectionGate);
+            shapeEnum = shape;
         }
     }
 }
