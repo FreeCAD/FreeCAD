@@ -2324,7 +2324,7 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doEnforceWid
 
 template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptWidgetParameters(Base::Vector2d onSketchPos) {
 
-    // If checkboxes need synchronisation (they were changed by the DSH, e.g. by using 'M' to switch construction method), syncronise them and return.
+    // If checkboxes need synchronisation (they were changed by the DSH, e.g. by using 'M' to switch construction method), synchronise them and return.
     if(syncCheckboxToHandler(WCheckbox::FirstBox, dHandler->roundCorners))
         return;
 
