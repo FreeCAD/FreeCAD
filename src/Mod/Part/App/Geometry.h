@@ -376,6 +376,8 @@ public:
     void setAngleXU(double angle);
     bool isReversed() const;
 
+    Base::Vector3d getAxisDirection(void) const;
+
     virtual unsigned int getMemSize(void) const = 0;
     virtual PyObject *getPyObject(void) = 0;
 
@@ -442,6 +444,8 @@ public:
      * \brief setCenter
      */
     void setCenter(const Base::Vector3d& Center);
+
+    Base::Vector3d getAxisDirection(void) const;
 
     virtual void getRange(double& u, double& v, bool emulateCCWXY) const = 0;
     virtual void setRange(double u, double v, bool emulateCCWXY) = 0;
