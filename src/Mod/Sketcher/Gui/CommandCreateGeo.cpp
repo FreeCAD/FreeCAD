@@ -2155,9 +2155,27 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptDrawing
         switch(parameterindex) {
             case WParameter::First:
                 dHandler->firstCorner.x = value;
+                dHandler->fourthCorner.x = value;
                 break;
             case WParameter::Second:
                 dHandler->firstCorner.y = value;
+                dHandler->secondCorner.y = value;
+                break;
+            case WParameter::Third:
+                dHandler->length = value;
+                dHandler->thirdCorner.x = dHandler->firstCorner.x + dHandler->length;
+                dHandler->secondCorner.x = dHandler->thirdCorner.x;
+                break;
+            case WParameter::Fourth:
+                dHandler->width = value;
+                dHandler->thirdCorner.y = dHandler->firstCorner.y + dHandler->width;
+                dHandler->fourthCorner.y = dHandler->thirdCorner.y;
+                break;
+            case WParameter::Fifth:
+                dHandler->radius = value;
+                break;
+            case WParameter::Sixth:
+                dHandler->thickness = value;
                 break;
         }
     }
@@ -2165,9 +2183,37 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::adaptDrawing
         switch(parameterindex) {
             case WParameter::First:
                 dHandler->center.x = value;
+                dHandler->firstCorner.x = value - dHandler->length / 2;
+                dHandler->secondCorner.x = value + dHandler->length / 2;
+                dHandler->thirdCorner.x = value + dHandler->length / 2;
+                dHandler->fourthCorner.x = value - dHandler->length / 2;
                 break;
             case WParameter::Second:
                 dHandler->center.y = value;
+                dHandler->firstCorner.y = value - dHandler->width / 2;
+                dHandler->secondCorner.y = value - dHandler->width / 2;
+                dHandler->thirdCorner.y = value + dHandler->width / 2;
+                dHandler->fourthCorner.y = value + dHandler->width / 2;
+                break;
+            case WParameter::Third:
+                dHandler->length = value;
+                dHandler->firstCorner.x = dHandler->center.x + dHandler->length/2;
+                dHandler->thirdCorner.x = dHandler->center.x - dHandler->length/2;
+                dHandler->secondCorner.x = dHandler->thirdCorner.x;
+                dHandler->fourthCorner.x = dHandler->firstCorner.x;
+                break;
+            case WParameter::Fourth:
+                dHandler->width = value;
+                dHandler->firstCorner.y = dHandler->center.y + dHandler->width / 2;
+                dHandler->thirdCorner.y = dHandler->center.y - dHandler->width / 2;
+                dHandler->secondCorner.y = dHandler->firstCorner.y;
+                dHandler->fourthCorner.y = dHandler->thirdCorner.y;
+                break;
+            case WParameter::Fifth:
+                dHandler->radius = value;
+                break;
+            case WParameter::Sixth:
+                dHandler->thickness = value;
                 break;
         }
     }
@@ -2237,12 +2283,36 @@ template <> void DrawSketchHandlerRectangleBase::ToolWidgetManager::doEnforceWid
     break;
     case SelectMode::SeekThird:
     {
-        if (toolWidget->isParameterSet(WParameter::Fifth)) {
-            double radius = toolWidget->getParameter(WParameter::Fifth);
-            if(dHandler->firstCorner.x - dHandler->thirdCorner.x > 0.)
-                onSketchPos.x = dHandler->firstCorner.x - radius;
+        if (dHandler->roundCorners) {
+            if (toolWidget->isParameterSet(WParameter::Fifth)) {
+                double radius = toolWidget->getParameter(WParameter::Fifth);
+                if (dHandler->firstCorner.x - dHandler->thirdCorner.x > 0.)
+                    onSketchPos.x = dHandler->firstCorner.x - radius;
+                else
+                    onSketchPos.x = dHandler->firstCorner.x + radius;
+                onSketchPos.y = dHandler->firstCorner.y;
+            }
+        }
+        else {
+            if (toolWidget->isParameterSet(WParameter::Sixth)) {
+                double thickness = toolWidget->getParameter(WParameter::Sixth);
+                if (dHandler->firstCorner.x - dHandler->thirdCorner.x > 0.)
+                    onSketchPos.x = dHandler->firstCorner.x + thickness;
+                else
+                    onSketchPos.x = dHandler->firstCorner.x - thickness;
+                onSketchPos.y = dHandler->firstCorner.y;
+            }
+        }
+    }
+    break;
+    case SelectMode::SeekFourth:
+    {
+        if (toolWidget->isParameterSet(WParameter::Sixth)) {
+            double thickness = toolWidget->getParameter(WParameter::Sixth);
+            if (dHandler->firstCorner.x - dHandler->thirdCorner.x > 0.)
+                onSketchPos.x = dHandler->firstCorner.x + thickness;
             else
-                onSketchPos.x = dHandler->firstCorner.x + radius;
+                onSketchPos.x = dHandler->firstCorner.x - thickness;
             onSketchPos.y = dHandler->firstCorner.y;
         }
     }
