@@ -1800,6 +1800,14 @@ void GeomConic::setCenter(const Base::Vector3d& Center)
     }
 }
 
+Base::Vector3d GeomConic::getAxisDirection(void) const
+{
+    Handle(Geom_Conic) conic =  Handle(Geom_Conic)::DownCast(handle());
+    gp_Ax1 axis = conic->Axis();
+    const gp_Dir& dir = axis.Direction();
+    return Base::Vector3d( dir.X(),dir.Y(),dir.Z());
+}
+
 /*!
  * \brief GeomConic::getAngleXU
  * \return The angle between ellipse's major axis (in direction to focus1) and
@@ -2047,6 +2055,15 @@ void GeomArcOfConic::setLocation(const Base::Vector3d& Center)
 
        THROWM(Base::CADKernelError,e.GetMessageString())
     }
+}
+
+Base::Vector3d GeomArcOfConic::getAxisDirection(void) const
+{
+    Handle(Geom_TrimmedCurve) curve =  Handle(Geom_TrimmedCurve)::DownCast(handle());
+    Handle(Geom_Conic) conic = Handle(Geom_Conic)::DownCast(curve->BasisCurve());
+    gp_Ax1 axis = conic->Axis();
+    const gp_Dir& dir = axis.Direction();
+    return Base::Vector3d( dir.X(),dir.Y(),dir.Z());
 }
 
 /*!
