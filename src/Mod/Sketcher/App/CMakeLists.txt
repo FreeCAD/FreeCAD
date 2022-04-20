@@ -64,6 +64,8 @@ SET(Features_SRCS
     SketchAnalysis.h
     SketchAnalysis.cpp
     Analyse.h
+    PythonConverter.cpp
+    PythonConverter.h
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 
