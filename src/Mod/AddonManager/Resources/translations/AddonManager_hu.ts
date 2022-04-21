@@ -568,24 +568,9 @@
       <translation>Kérem először telepítse a hiányzó összetevőket.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="915"/>
-      <source>Retrieving macro description...</source>
-      <translation>Makró leírásának lekérése...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="653"/>
-      <source>Retrieving info from git</source>
-      <translation>Információ beolvasása git-ből</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="873"/>
       <source>Error: Unable to locate zip from</source>
       <translation>Hiba: Nem található a zip formátum</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="656"/>
-      <source>Retrieving info from wiki</source>
-      <translation>Információ beolvasása wiki-ből</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="880"/>
@@ -598,19 +583,34 @@
       <translation>Sikeresen telepítve</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="915"/>
+      <source>Retrieving macro description...</source>
+      <translation>Makró leírásának lekérése...</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="653"/>
+      <source>Retrieving info from git</source>
+      <translation>Információ beolvasása git-ből</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="656"/>
+      <source>Retrieving info from wiki</source>
+      <translation>Információ beolvasása wiki-ből</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="1013"/>
       <source>Error updating module</source>
       <translation>Modul frissítési hiba</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1078"/>
-      <source>Please fix manually</source>
-      <translation>Kérem javítsa manuálisan</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="1075"/>
       <source>Error updating module </source>
       <translation>Hiba a modul frissítésekor </translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1078"/>
+      <source>Please fix manually</source>
+      <translation>Kérem javítsa manuálisan</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1220"/>
@@ -824,11 +824,6 @@
       <translation>Hiányzó követelmény</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="1079"/>
-      <source>Press OK to install anyway.</source>
-      <translation type="unfinished">Press OK to install anyway.</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>Az itt telepíthető bővítmények hivatalosan nem részei a FreeCAD-nek, és azokat nem vizsgáljfelül a FreeCAD csapata. Győződjön meg róla, hogy ismeri, amit telepíteni akar!</translation>
@@ -912,6 +907,11 @@
       <location filename="AddonManager.py" line="786"/>
       <source>Failed packages:</source>
       <translation>Sikertelen csomagok:</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1079"/>
+      <source>Press OK to install anyway.</source>
+      <translation>Nyomja meg az OK gombot a mindenképpen telepítéshez.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="964"/>

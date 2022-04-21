@@ -714,16 +714,6 @@
       <translation type="unfinished">Expression used for StepDown of new operations.</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="71"/>
-      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
-      <translation>ツールパスが部品の周りを移動する時の方向: 時計回り (CW) または 反時計回り (CCW)</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="72"/>
-      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
-      <translation>工程に適用する追加オフセット。方向は工程に依存して変わります。</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="73"/>
       <source>Start pocketing at center or boundary</source>
       <translation>中心または境界へのポケット作成を開始</translation>
@@ -732,6 +722,16 @@
       <location filename="PathPocketBase.py" line="74"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>工具直径に対する経路同士の重なり率（％）</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="71"/>
+      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
+      <translation>ツールパスが部品の周りを移動する時の方向: 時計回り (CW) または 反時計回り (CCW)</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="72"/>
+      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
+      <translation>工程に適用する追加オフセット。方向は工程に依存して変わります。</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="75"/>
@@ -1570,6 +1570,16 @@
   <context>
     <name>PathJob</name>
     <message>
+      <location filename="PathJobGui.py" line="1258"/>
+      <source>Unsupported stock object %s</source>
+      <translation>サポートされていないストックオブジェクト %s</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1274"/>
+      <source>Unsupported stock type %s (%d)</source>
+      <translation>サポートされていないストックタイプ %s (%d)</translation>
+    </message>
+    <message>
       <location filename="PathJobGui.py" line="387"/>
       <source>Stock not from Base bound box!</source>
       <translation>ストックが基本バウンディングボックスから開始していません!</translation>
@@ -1583,16 +1593,6 @@
       <location filename="PathJobGui.py" line="525"/>
       <source>Stock not a cylinder!</source>
       <translation>ストックが円筒ではありません!</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1258"/>
-      <source>Unsupported stock object %s</source>
-      <translation>サポートされていないストックオブジェクト %s</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1274"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>サポートされていないストックタイプ %s (%d)</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="112"/>
@@ -1738,16 +1738,16 @@
       <translation>ベース位置</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>高さ</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="848"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>この操作のためにFinalDepthを変更することができません。
 FinalDepthを手動で設定する必要がある場合は別の操作を選択してください。</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="855"/>
-      <source>Heights</source>
-      <translation>高さ</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="869"/>
@@ -3631,6 +3631,11 @@ Aborting op creation</translation>
       <translation>オフセット</translation>
     </message>
     <message>
+      <location filename="PathPocketBase.py" line="71"/>
+      <source>Spiral</source>
+      <translation>渦巻</translation>
+    </message>
+    <message>
       <location filename="PathPocketBase.py" line="72"/>
       <source>ZigZagOffset</source>
       <translation type="unfinished">ZigZagOffset</translation>
@@ -3644,11 +3649,6 @@ Aborting op creation</translation>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Triangle</source>
       <translation>三角形</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="71"/>
-      <source>Spiral</source>
-      <translation>渦巻</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="74"/>

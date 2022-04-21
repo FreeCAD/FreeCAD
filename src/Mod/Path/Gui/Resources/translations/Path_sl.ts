@@ -714,16 +714,6 @@
       <translation>Izraz uporabljen za spust pri novih dejanjih.</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="71"/>
-      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
-      <translation>Smer, po kateri naj gre pot orodja okoli dela v SUK (smeri urinega kazalca) ali NSUK (nasprotni smeri urinega kazalca)</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="72"/>
-      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
-      <translation>Pri opravilih naj se uporabi dodaten odmik. Smer je odvisna od opravila.</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="73"/>
       <source>Start pocketing at center or boundary</source>
       <translation>Začni dolbsti ugrez na sredini ali robu</translation>
@@ -732,6 +722,16 @@
       <location filename="PathPocketBase.py" line="74"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>Zmik pri vsakem prehodu, izražen v deležu premera rezalnika</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="71"/>
+      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
+      <translation>Smer, po kateri naj gre pot orodja okoli dela v SUK (smeri urinega kazalca) ali NSUK (nasprotni smeri urinega kazalca)</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="72"/>
+      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
+      <translation>Pri opravilih naj se uporabi dodaten odmik. Smer je odvisna od opravila.</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="75"/>
@@ -1570,6 +1570,16 @@
   <context>
     <name>PathJob</name>
     <message>
+      <location filename="PathJobGui.py" line="1258"/>
+      <source>Unsupported stock object %s</source>
+      <translation>Nepodprt predmet surovca %s</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1274"/>
+      <source>Unsupported stock type %s (%d)</source>
+      <translation>Nepodprta vrsta surovca %s (%d)</translation>
+    </message>
+    <message>
       <location filename="PathJobGui.py" line="387"/>
       <source>Stock not from Base bound box!</source>
       <translation>Surovec ni iz mejnega kvadra osnove!</translation>
@@ -1583,16 +1593,6 @@
       <location filename="PathJobGui.py" line="525"/>
       <source>Stock not a cylinder!</source>
       <translation>Surovec ni valj!</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1258"/>
-      <source>Unsupported stock object %s</source>
-      <translation>Nepodprt predmet surovca %s</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1274"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>Nepodprta vrsta surovca %s (%d)</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="112"/>
@@ -1738,16 +1738,16 @@
       <translation>Položaj Osnove</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>Višine</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="848"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>KončnaGlobina ne more biti spremenjena za to opravilo.
 Če je potrebno nastaviti KončnoDolžino ročno, prosim izberi drugo opravilo.</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="855"/>
-      <source>Heights</source>
-      <translation>Višine</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="869"/>
@@ -3631,6 +3631,11 @@ Prekinitev ustvarjanja opravila</translation>
       <translation>Odmik</translation>
     </message>
     <message>
+      <location filename="PathPocketBase.py" line="71"/>
+      <source>Spiral</source>
+      <translation>Viba</translation>
+    </message>
+    <message>
       <location filename="PathPocketBase.py" line="72"/>
       <source>ZigZagOffset</source>
       <translation>CikcakOdmik</translation>
@@ -3644,11 +3649,6 @@ Prekinitev ustvarjanja opravila</translation>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Triangle</source>
       <translation>Trikotnik</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="71"/>
-      <source>Spiral</source>
-      <translation>Viba</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="74"/>

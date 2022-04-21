@@ -21,7 +21,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="83"/>
       <source>&amp;Start</source>
-      <translation>&amp;Principiar</translation>
+      <translation>&amp;Comezar</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="86"/>
@@ -86,7 +86,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="249"/>
       <source>Run:</source>
-      <translation>Executado:</translation>
+      <translation>Executar:</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="259"/>

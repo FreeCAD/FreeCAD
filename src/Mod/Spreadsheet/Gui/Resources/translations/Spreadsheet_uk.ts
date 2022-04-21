@@ -51,7 +51,7 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="933"/>
       <source>Add controller</source>
-      <translation>Додати контролер</translation>
+      <translation>Додати формулу</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="973"/>
@@ -64,7 +64,7 @@
     <message>
       <location filename="Spreadsheet_legacy.py" line="919"/>
       <source>Add controller</source>
-      <translation>Додати контролер</translation>
+      <translation>Додати формулу</translation>
     </message>
     <message>
       <location filename="Spreadsheet_legacy.py" line="922"/>

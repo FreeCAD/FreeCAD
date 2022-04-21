@@ -381,7 +381,7 @@
     <message>
       <location filename="ArchSchedule.py" line="96"/>
       <source>The description column</source>
-      <translation>说明栏</translation>
+      <translation>描述列</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="98"/>
@@ -1431,7 +1431,7 @@
     <message>
       <location filename="ArchSite.py" line="641"/>
       <source>An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one</source>
-      <translation type="unfinished">An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one</translation>
+      <translation>此场所位置可选的 EPW 文件。请参阅场所文档以了解如何获取一个</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="835"/>
@@ -1591,7 +1591,7 @@
     <message>
       <location filename="ArchRoof.py" line="278"/>
       <source>The list of thicknesses of the roof segments</source>
-      <translation type="unfinished">The list of thicknesses of the roof segments</translation>
+      <translation>屋顶段厚度列表</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="283"/>
@@ -1611,17 +1611,17 @@
     <message>
       <location filename="ArchRoof.py" line="298"/>
       <source>The total length of the ridges and hips of the roof</source>
-      <translation type="unfinished">The total length of the ridges and hips of the roof</translation>
+      <translation>屋顶的脊和斜脊的总长度</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="304"/>
       <source>The total length of the borders of the roof</source>
-      <translation type="unfinished">The total length of the borders of the roof</translation>
+      <translation>屋顶边的总长度</translation>
     </message>
     <message>
       <location filename="ArchRoof.py" line="310"/>
       <source>Specifies if the direction of the roof should be flipped</source>
-      <translation type="unfinished">Specifies if the direction of the roof should be flipped</translation>
+      <translation>指定屋顶方向是否翻转</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1321"/>
@@ -1631,27 +1631,27 @@
     <message>
       <location filename="ArchStructure.py" line="678"/>
       <source>The computed length of the extrusion path</source>
-      <translation type="unfinished">The computed length of the extrusion path</translation>
+      <translation>拉伸路径的计算长度</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="680"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">Start offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>沿挤压路径开始端偏移距离(正值：扩张，负值：剪切)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="680"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim</source>
-      <translation type="unfinished">Start offset distance along the extrusion path (positive: extend, negative: trim</translation>
+      <translation>沿挤压路径开始端偏移距离(正值：扩张，负值：剪切</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="682"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>沿挤压路径末端偏移距离(正值：扩张，负值：剪切)</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="682"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim</source>
-      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim</translation>
+      <translation>沿挤压路径末端偏移距离(正值：扩张，负值：剪切</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="684"/>
@@ -2390,12 +2390,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchMaterial.py" line="914"/>
       <source>Total thickness</source>
-      <translation type="unfinished">Total thickness</translation>
+      <translation>总厚度</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="928"/>
       <source>depends on the object</source>
-      <translation type="unfinished">depends on the object</translation>
+      <translation>依赖对象</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="293"/>
@@ -2415,7 +2415,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchSchedule.py" line="562"/>
       <source>Unable to recognize that file type</source>
-      <translation type="unfinished">Unable to recognize that file type</translation>
+      <translation>无法识别该文件类型</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="1024"/>
@@ -2625,7 +2625,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchSectionPlane.py" line="1507"/>
       <source>Remove highlighted objects from the list above</source>
-      <translation type="unfinished">Remove highlighted objects from the list above</translation>
+      <translation>从上述的列表中删除高亮显示的对象</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1508"/>
@@ -2635,7 +2635,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchSectionPlane.py" line="1509"/>
       <source>Add selected object(s) to the scope of this section plane</source>
-      <translation type="unfinished">Add selected object(s) to the scope of this section plane</translation>
+      <translation>将所选对象添加到本节平面的范围</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1510"/>
@@ -2655,7 +2655,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchSectionPlane.py" line="1513"/>
       <source>Rotates the plane along the X axis</source>
-      <translation type="unfinished">Rotates the plane along the X axis</translation>
+      <translation>沿X轴旋转平面</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1514"/>
@@ -2665,7 +2665,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchSectionPlane.py" line="1515"/>
       <source>Rotates the plane along the Y axis</source>
-      <translation type="unfinished">Rotates the plane along the Y axis</translation>
+      <translation>沿Y轴旋转平面</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1516"/>
@@ -2675,7 +2675,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchSectionPlane.py" line="1517"/>
       <source>Rotates the plane along the Z axis</source>
-      <translation type="unfinished">Rotates the plane along the Z axis</translation>
+      <translation>沿Z轴旋转平面</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="1518"/>
@@ -2685,7 +2685,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchSectionPlane.py" line="1519"/>
       <source>Resizes the plane to fit the objects in the list above</source>
-      <translation type="unfinished">Resizes the plane to fit the objects in the list above</translation>
+      <translation>调整平面尺寸以适应上面列表中的对象</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="511"/>
@@ -2695,7 +2695,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchSectionPlane.py" line="1521"/>
       <source>Centers the plane on the objects in the list above</source>
-      <translation type="unfinished">Centers the plane on the objects in the list above</translation>
+      <translation>将上述列表对象平面居中</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="151"/>
@@ -2810,17 +2810,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchTruss.py" line="65"/>
       <source>Truss</source>
-      <translation type="unfinished">Truss</translation>
+      <translation>桁架</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="113"/>
       <source>Please select only one base object or none</source>
-      <translation type="unfinished">Please select only one base object or none</translation>
+      <translation>请只选择一个基对象或不选</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="125"/>
       <source>Create Truss</source>
-      <translation type="unfinished">Create Truss</translation>
+      <translation>创建桁架</translation>
     </message>
     <message>
       <location filename="importSHP.py" line="71"/>
@@ -2850,7 +2850,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="importSHP.py" line="145"/>
       <source>Error: Unable to download from:</source>
-      <translation type="unfinished">Error: Unable to download from:</translation>
+      <translation>错误：无法从以下位置下载：</translation>
     </message>
     <message>
       <location filename="importSHP.py" line="157"/>
@@ -2900,7 +2900,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchWindow.py" line="303"/>
       <source>No window found. Cannot continue.</source>
-      <translation type="unfinished">No window found. Cannot continue.</translation>
+      <translation>未找到窗口，不能继续。</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="327"/>
@@ -3115,7 +3115,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="InitGui.py" line="71"/>
       <source>Structure tools</source>
-      <translation type="unfinished">Structure tools</translation>
+      <translation>结构工具</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="85"/>
@@ -3341,12 +3341,12 @@ Site creation aborted.</translation>
     <message>
       <location filename="ArchWall.py" line="342"/>
       <source>First point of wall</source>
-      <translation type="unfinished">First point of wall</translation>
+      <translation>墙的第一点</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="341"/>
       <source>Next point</source>
-      <translation type="unfinished">Next point</translation>
+      <translation>下一点</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="472"/>
@@ -3376,7 +3376,7 @@ Site creation aborted.</translation>
     <message>
       <location filename="ArchWall.py" line="509"/>
       <source>Alignment</source>
-      <translation type="unfinished">Alignment</translation>
+      <translation>对齐</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="511"/>
@@ -3391,7 +3391,7 @@ Site creation aborted.</translation>
     <message>
       <location filename="ArchStructure.py" line="493"/>
       <source>Con&amp;tinue</source>
-      <translation type="unfinished">Con&amp;tinue</translation>
+      <translation>继续&amp;t</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="528"/>
@@ -3442,13 +3442,10 @@ Floor object is not allowed to accept Site, Building, or Floor objects.
 Site, Building, and Floor objects will be removed from the selection.
 
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
-
-Floor object is not allowed to accept Site, Building, or Floor objects.
-
-Site, Building, and Floor objects will be removed from the selection.
-
-You can change that in the preferences.</translation>
+      <translation>除场所、建筑、楼层对象以外，任何东西都可以放在楼层对象中。
+不允许楼层对象接受场所或建筑对象。
+场所、建筑物和楼层对象将从所选中对象中删除。
+您可以在 "首选项" 中更改该选项。</translation>
     </message>
     <message>
       <location filename="ArchFloor.py" line="154"/>
@@ -3572,12 +3569,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="433"/>
       <source>Beam</source>
-      <translation type="unfinished">Beam</translation>
+      <translation>梁</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="434"/>
       <source>Column</source>
-      <translation type="unfinished">Column</translation>
+      <translation>柱</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="205"/>
@@ -3597,7 +3594,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="256"/>
       <source>Please select at least an axis object</source>
-      <translation type="unfinished">Please select at least an axis object</translation>
+      <translation>请至少选择一个轴对象</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="345"/>
@@ -3607,22 +3604,22 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="326"/>
       <source>First point of the beam</source>
-      <translation type="unfinished">First point of the beam</translation>
+      <translation>梁的第一点</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="328"/>
       <source>Base point of column</source>
-      <translation type="unfinished">Base point of column</translation>
+      <translation>柱的基点</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="428"/>
       <source>Structure options</source>
-      <translation type="unfinished">Structure options</translation>
+      <translation>结构选项</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="432"/>
       <source>Drawing mode</source>
-      <translation type="unfinished">Drawing mode</translation>
+      <translation>绘图模式</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="487"/>
@@ -3697,7 +3694,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="1325"/>
       <source>Select tool...</source>
-      <translation type="unfinished">Select tool...</translation>
+      <translation>选择工具...</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1192"/>
@@ -4128,12 +4125,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchCutPlane.py" line="80"/>
       <source>Cut with line</source>
-      <translation type="unfinished">Cut with line</translation>
+      <translation>通过线段进行裁剪</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="83"/>
       <source>Cut an object with a line</source>
-      <translation type="unfinished">Cut an object with a line</translation>
+      <translation>通过直线裁剪对象</translation>
     </message>
   </context>
   <context>
@@ -4141,12 +4138,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchCutPlane.py" line="79"/>
       <source>Cut with a line</source>
-      <translation type="unfinished">Cut with a line</translation>
+      <translation>通过直线进行裁剪</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="82"/>
       <source>Cut an object with a line with normal workplane</source>
-      <translation type="unfinished">Cut an object with a line with normal workplane</translation>
+      <translation>通过法平面内直线裁剪对象</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="100"/>
@@ -4177,7 +4174,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchFence.py" line="388"/>
       <source>Fence</source>
-      <translation type="unfinished">Fence</translation>
+      <translation>栅栏</translation>
     </message>
     <message>
       <location filename="ArchFence.py" line="391"/>
@@ -4523,7 +4520,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchReference.py" line="737"/>
       <source>External reference</source>
-      <translation type="unfinished">External reference</translation>
+      <translation>外部引用</translation>
     </message>
     <message>
       <location filename="ArchReference.py" line="741"/>
@@ -4709,7 +4706,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="1472"/>
       <source>Structure tools</source>
-      <translation type="unfinished">Structure tools</translation>
+      <translation>结构工具</translation>
     </message>
   </context>
   <context>
@@ -4717,7 +4714,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="1472"/>
       <source>Structure tools</source>
-      <translation type="unfinished">Structure tools</translation>
+      <translation>结构工具</translation>
     </message>
   </context>
   <context>
@@ -4777,7 +4774,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchTruss.py" line="82"/>
       <source>Truss</source>
-      <translation type="unfinished">Truss</translation>
+      <translation>桁架</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="86"/>
@@ -4821,17 +4818,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="113"/>
       <source>Draft creation tools</source>
-      <translation type="unfinished">Draft creation tools</translation>
+      <translation>草图创建工具</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="114"/>
       <source>Draft annotation tools</source>
-      <translation type="unfinished">Draft annotation tools</translation>
+      <translation>草图批注工具</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="115"/>
       <source>Draft modification tools</source>
-      <translation type="unfinished">Draft modification tools</translation>
+      <translation>草图修改工具</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="149"/>
@@ -4849,7 +4846,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="71"/>
       <source>Structure tools</source>
-      <translation type="unfinished">Structure tools</translation>
+      <translation>结构工具</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="85"/>
@@ -4884,17 +4881,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="162"/>
       <source>Draft creation tools</source>
-      <translation type="unfinished">Draft creation tools</translation>
+      <translation>草图创建工具</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="165"/>
       <source>Draft annotation tools</source>
-      <translation type="unfinished">Draft annotation tools</translation>
+      <translation>草图批注工具</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="168"/>
       <source>Draft modification tools</source>
-      <translation type="unfinished">Draft modification tools</translation>
+      <translation>草图修改工具</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="177"/>
@@ -5314,7 +5311,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="22"/>
       <source>BimServer URL:</source>
-      <translation type="unfinished">BimServer URL:</translation>
+      <translation>Bim服务器 URL:</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="36"/>
@@ -5339,7 +5336,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="14"/>
       <source>IFC properties editor</source>
-      <translation type="unfinished">IFC properties editor</translation>
+      <translation>IFC 属性编辑器</translation>
     </message>
     <message>
       <location filename="../ui/DialogIfcProperties.ui" line="22"/>
@@ -5463,7 +5460,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="59"/>
       <source>Total thickness</source>
-      <translation type="unfinished">Total thickness</translation>
+      <translation>总厚度</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="68"/>
@@ -5656,7 +5653,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="188"/>
       <source>By default, new objects will have their "Move with host" property set to False, which means they won't move when their host object is moved.</source>
-      <translation type="unfinished">By default, new objects will have their "Move with host" property set to False, which means they won't move when their host object is moved.</translation>
+      <translation>默认情况下，新对象将设置为“与主对象一起移动”属性为 False ，这意味着当他们的主对象移动时，他们不会移动。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="191"/>
@@ -5666,7 +5663,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="207"/>
       <source>Set "Move base" property to True by default</source>
-      <translation type="unfinished">Set "Move base" property to True by default</translation>
+      <translation>默认情况下，将“移动基点”属性设置为 True</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="223"/>
@@ -5676,12 +5673,12 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="226"/>
       <source>Use material color as shape color</source>
-      <translation type="unfinished">Use material color as shape color</translation>
+      <translation>使用材料颜色作为形状颜色</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="260"/>
       <source>IFC version</source>
-      <translation type="unfinished">IFC version</translation>
+      <translation>IFC 版本</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="280"/>
@@ -5691,12 +5688,12 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="290"/>
       <source>IFC4</source>
-      <translation type="unfinished">IFC4</translation>
+      <translation>IFC4</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="295"/>
       <source>IFC2X3</source>
-      <translation type="unfinished">IFC2X3</translation>
+      <translation>IFC2X3</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="308"/>
@@ -6268,7 +6265,7 @@ they will be treated as one.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="386"/>
       <source>Allow invalid shapes</source>
-      <translation type="unfinished">Allow invalid shapes</translation>
+      <translation>允许无效形状</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="401"/>
@@ -6445,7 +6442,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-dae.ui" line="290"/>
       <source>Allow quadrilateral faces</source>
-      <translation type="unfinished">Allow quadrilateral faces</translation>
+      <translation>允许四边面</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="293"/>
@@ -6455,7 +6452,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="14"/>
       <source>IFC export</source>
-      <translation type="unfinished">IFC export</translation>
+      <translation>IFC 导出</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="35"/>
@@ -6466,7 +6463,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="41"/>
       <source>Show this dialog when exporting</source>
-      <translation type="unfinished">Show this dialog when exporting</translation>
+      <translation>导入时显示此对话框</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="65"/>
@@ -6475,30 +6472,30 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
 - Standard model: solid objects.
 - Structural analysis: wireframe model for structural calculations.
 - Standard + structural: both types of models.</source>
-      <translation type="unfinished">The type of objects that you wish to export:
-- Standard model: solid objects.
-- Structural analysis: wireframe model for structural calculations.
-- Standard + structural: both types of models.</translation>
+      <translation>您想要导出的对象类型：
+- 标准模型：实体对象。
+- 结构分析：用于结构计算的线框模型。
+- 标准+结构：两种模型全选。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="71"/>
       <source>Export type</source>
-      <translation type="unfinished">Export type</translation>
+      <translation>导出类型</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="91"/>
       <source>Standard model</source>
-      <translation type="unfinished">Standard model</translation>
+      <translation>标准模型</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="96"/>
       <source>Structural analysis</source>
-      <translation type="unfinished">Structural analysis</translation>
+      <translation>结构分析</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="101"/>
       <source>Standard + structural</source>
-      <translation type="unfinished">Standard + structural</translation>
+      <translation>标准 + 结构</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="111"/>
@@ -6580,8 +6577,7 @@ Note: The serializer is still an experimental feature!</translation>
       <location filename="../ui/preferences-ifc-export.ui" line="221"/>
       <source>All FreeCAD object properties will be stored inside the exported objects,
 allowing to recreate a full parametric model on reimport.</source>
-      <translation type="unfinished">All FreeCAD object properties will be stored inside the exported objects,
-allowing to recreate a full parametric model on reimport.</translation>
+      <translation>所有 FreeCAD 对象属性都将存储到导出的对象中, 这样在 重新导入时可以重新创建完整的参数化模型。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="225"/>
@@ -6592,8 +6588,7 @@ allowing to recreate a full parametric model on reimport.</translation>
       <location filename="../ui/preferences-ifc-export.ui" line="238"/>
       <source>When possible, similar entities will be used only once in the file if possible.
 This can reduce the file size a lot, but will make it less easily readable.</source>
-      <translation type="unfinished">When possible, similar entities will be used only once in the file if possible.
-This can reduce the file size a lot, but will make it less easily readable.</translation>
+      <translation>在可能的情况下, 类似的实体将仅在文件中使用一次。这可以减少大量的文件大小, 但可阅读性变差.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="242"/>
@@ -6699,7 +6694,7 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="388"/>
       <source>Imperial</source>
-      <translation type="unfinished">Imperial</translation>
+      <translation>英制</translation>
     </message>
   </context>
 </TS>

@@ -281,17 +281,17 @@
     <message>
       <location filename="ArchSite.py" line="635"/>
       <source>The type of this object</source>
-      <translation>O tipo desde obxecto</translation>
+      <translation>O tipo deste obxecto</translation>
     </message>
     <message>
       <location filename="ArchIFC.py" line="73"/>
       <source>IFC properties of this object</source>
-      <translation>IFC propiedades deste obxecto</translation>
+      <translation>Propiedades IFC deste obxecto</translation>
     </message>
     <message>
       <location filename="ArchIFC.py" line="297"/>
       <source>Description of IFC attributes are not yet implemented</source>
-      <translation>Descrición dos atributos IFC aínda non estando implementados</translation>
+      <translation>A descrición dos atributos IFC aínda non está implementada</translation>
     </message>
     <message>
       <location filename="ArchFence.py" line="62"/>
@@ -301,7 +301,7 @@
     <message>
       <location filename="ArchFence.py" line="66"/>
       <source>A single fence post</source>
-      <translation>Un único fito de valado</translation>
+      <translation>Un só poste do valado</translation>
     </message>
     <message>
       <location filename="ArchFence.py" line="70"/>
@@ -311,12 +311,12 @@
     <message>
       <location filename="ArchFence.py" line="74"/>
       <source>The number of sections the fence is built of</source>
-      <translation>O número de seccións que farán o valado</translation>
+      <translation>O número de seccións das que está construída o valado</translation>
     </message>
     <message>
       <location filename="ArchFence.py" line="79"/>
       <source>The number of posts used to build the fence</source>
-      <translation>O número de fitos usados ao facer o valado</translation>
+      <translation>O número de postes empregados para construír o valado</translation>
     </message>
     <message>
       <location filename="ArchFence.py" line="269"/>
@@ -751,17 +751,17 @@
     <message>
       <location filename="ArchTruss.py" line="188"/>
       <source>The direction of the rods</source>
-      <translation type="unfinished">The direction of the rods</translation>
+      <translation>A dirección das varas</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="192"/>
       <source>The diameter or side of the rods</source>
-      <translation type="unfinished">The diameter or side of the rods</translation>
+      <translation>O diámetro ou lado das varas</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="196"/>
       <source>The number of rod sections</source>
-      <translation type="unfinished">The number of rod sections</translation>
+      <translation>O número de seccións de varas</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="200"/>
@@ -771,7 +771,7 @@
     <message>
       <location filename="ArchTruss.py" line="203"/>
       <source>How to draw the rods</source>
-      <translation type="unfinished">How to draw the rods</translation>
+      <translation>Como debuxar as varas</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="538"/>
@@ -1146,7 +1146,7 @@
     <message>
       <location filename="ArchRebar.py" line="205"/>
       <source>The rebar mark</source>
-      <translation type="unfinished">The rebar mark</translation>
+      <translation>A marca da armadura</translation>
     </message>
     <message>
       <location filename="ArchRebar.py" line="500"/>
@@ -1166,7 +1166,7 @@
     <message>
       <location filename="ArchCurtainWall.py" line="179"/>
       <source>The number of vertical mullions</source>
-      <translation type="unfinished">The number of vertical mullions</translation>
+      <translation>Número de parteluces verticais</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="183"/>
@@ -1226,7 +1226,7 @@
     <message>
       <location filename="ArchCurtainWall.py" line="231"/>
       <source>The number of diagonal mullions</source>
-      <translation type="unfinished">The number of diagonal mullions</translation>
+      <translation>Número de montantes diagonais</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="235"/>
@@ -1241,12 +1241,12 @@
     <message>
       <location filename="ArchCurtainWall.py" line="242"/>
       <source>The number of panels</source>
-      <translation type="unfinished">The number of panels</translation>
+      <translation>O número de paneis</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="246"/>
       <source>The thickness of the panels</source>
-      <translation type="unfinished">The thickness of the panels</translation>
+      <translation>O espesor dos paneis</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="250"/>
@@ -1286,7 +1286,7 @@
     <message>
       <location filename="ArchReference.py" line="106"/>
       <source>Fuse objects of same material</source>
-      <translation type="unfinished">Fuse objects of same material</translation>
+      <translation>Fundir obxectos do mesmo material</translation>
     </message>
     <message>
       <location filename="ArchReference.py" line="385"/>
@@ -2390,12 +2390,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchMaterial.py" line="914"/>
       <source>Total thickness</source>
-      <translation type="unfinished">Total thickness</translation>
+      <translation>Espesor total</translation>
     </message>
     <message>
       <location filename="ArchMaterial.py" line="928"/>
       <source>depends on the object</source>
-      <translation type="unfinished">depends on the object</translation>
+      <translation>depende do obxecto</translation>
     </message>
     <message>
       <location filename="ArchSchedule.py" line="293"/>
@@ -2415,7 +2415,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchSchedule.py" line="562"/>
       <source>Unable to recognize that file type</source>
-      <translation type="unfinished">Unable to recognize that file type</translation>
+      <translation>Non se puido recoñecer ese tipo de ficheiro</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="1024"/>
@@ -2810,37 +2810,37 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchTruss.py" line="65"/>
       <source>Truss</source>
-      <translation type="unfinished">Truss</translation>
+      <translation>Armadura</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="113"/>
       <source>Please select only one base object or none</source>
-      <translation type="unfinished">Please select only one base object or none</translation>
+      <translation>Escolla só un obxecto base ou ningún</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="125"/>
       <source>Create Truss</source>
-      <translation type="unfinished">Create Truss</translation>
+      <translation>Facer armadura</translation>
     </message>
     <message>
       <location filename="importSHP.py" line="71"/>
       <source>Shapes elevation</source>
-      <translation type="unfinished">Shapes elevation</translation>
+      <translation>Formas de elevación</translation>
     </message>
     <message>
       <location filename="importSHP.py" line="72"/>
       <source>Choose which field provides shapes elevations:</source>
-      <translation type="unfinished">Choose which field provides shapes elevations:</translation>
+      <translation>Escolla que campo proporciona elevacións de formas:</translation>
     </message>
     <message>
       <location filename="importSHP.py" line="113"/>
       <source>No shape found in this file</source>
-      <translation type="unfinished">No shape found in this file</translation>
+      <translation>Non se atopou ningunha forma neste ficheiro</translation>
     </message>
     <message>
       <location filename="importSHP.py" line="138"/>
       <source>Shapefile module not found</source>
-      <translation type="unfinished">Shapefile module not found</translation>
+      <translation>Non se atopou o módulo do ficheiro de forma</translation>
     </message>
     <message>
       <location filename="importSHP.py" line="139"/>
@@ -2850,27 +2850,27 @@ Building creation aborted.</translation>
     <message>
       <location filename="importSHP.py" line="145"/>
       <source>Error: Unable to download from:</source>
-      <translation type="unfinished">Error: Unable to download from:</translation>
+      <translation>Erro: non se pode descargar dende:</translation>
     </message>
     <message>
       <location filename="importSHP.py" line="157"/>
       <source>Could not download shapefile module. Aborting.</source>
-      <translation type="unfinished">Could not download shapefile module. Aborting.</translation>
+      <translation>Non se puido descargar o módulo do ficheiro de forma. Abortando.</translation>
     </message>
     <message>
       <location filename="importSHP.py" line="160"/>
       <source>Shapefile module not downloaded. Aborting.</source>
-      <translation type="unfinished">Shapefile module not downloaded. Aborting.</translation>
+      <translation>Non se descargou o módulo de ficheiro de forma. Abortando.</translation>
     </message>
     <message>
       <location filename="importSHP.py" line="163"/>
       <source>Shapefile module not found. Aborting.</source>
-      <translation type="unfinished">Shapefile module not found. Aborting.</translation>
+      <translation>Non se atopou o módulo do ficheiro de forma. Abortando.</translation>
     </message>
     <message>
       <location filename="importSHP.py" line="164"/>
       <source>The shapefile library can be downloaded from the following URL and installed in your macros folder:</source>
-      <translation type="unfinished">The shapefile library can be downloaded from the following URL and installed in your macros folder:</translation>
+      <translation>A biblioteca de ficheiros de formas pódese descargar dende o seguinte URL e instalarse no cartafol de macros:</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="82"/>
@@ -2890,17 +2890,17 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchWindow.py" line="290"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
-      <translation type="unfinished">Window not based on sketch. Window not aligned or resized.</translation>
+      <translation>A xanela non está baseada no debuxo. A xanela non está aliñada nin redimensionada.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="300"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
-      <translation type="unfinished">No Width and/or Height constraint in window sketch. Window not resized.</translation>
+      <translation>Sen restricións de ancho e/ou alto no debuxo da xanela. Non cambiou o tamaño da xanela.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="303"/>
       <source>No window found. Cannot continue.</source>
-      <translation type="unfinished">No window found. Cannot continue.</translation>
+      <translation>Non se atopou ningunha xanela. Non se pode continuar.</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="327"/>
@@ -2925,7 +2925,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchWindow.py" line="1173"/>
       <source>This window has no defined opening</source>
-      <translation type="unfinished">This window has no defined opening</translation>
+      <translation>Esta xanela non ten abertura definida</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="1660"/>
@@ -3020,12 +3020,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchWindow.py" line="1662"/>
       <source>Invert opening direction</source>
-      <translation type="unfinished">Invert opening direction</translation>
+      <translation>Inverte a dirección de apertura</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="1663"/>
       <source>Invert hinge position</source>
-      <translation type="unfinished">Invert hinge position</translation>
+      <translation>Inverte a posición da bisagra</translation>
     </message>
     <message>
       <location filename="ArchFrame.py" line="48"/>
@@ -3130,7 +3130,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="InitGui.py" line="94"/>
       <source>Rebar tools</source>
-      <translation type="unfinished">Rebar tools</translation>
+      <translation>Ferramentas de armadura</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="99"/>
@@ -3145,7 +3145,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="InitGui.py" line="143"/>
       <source>Arch</source>
-      <translation type="unfinished">Arch</translation>
+      <translation>Arco</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="177"/>
@@ -3260,12 +3260,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchCurtainWall.py" line="83"/>
       <source>Curtain Wall</source>
-      <translation type="unfinished">Curtain Wall</translation>
+      <translation>Muro cortina</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="144"/>
       <source>Create Curtain Wall</source>
-      <translation type="unfinished">Create Curtain Wall</translation>
+      <translation>Crear muro cortina</translation>
     </message>
     <message>
       <location filename="ArchReference.py" line="748"/>
@@ -3275,12 +3275,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="ArchProfile.py" line="134"/>
       <source>Create profile</source>
-      <translation type="unfinished">Create profile</translation>
+      <translation>Crear perfil</translation>
     </message>
     <message>
       <location filename="ArchProfile.py" line="142"/>
       <source>Profile settings</source>
-      <translation type="unfinished">Profile settings</translation>
+      <translation>Axustes do perfil</translation>
     </message>
     <message>
       <location filename="ArchProfile.py" line="188"/>
@@ -3582,7 +3582,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="205"/>
       <source>Create Structures From Selection</source>
-      <translation type="unfinished">Create Structures From Selection</translation>
+      <translation>Crear estruturas a partir da selección</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="222"/>
@@ -3692,7 +3692,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchStructure.py" line="1186"/>
       <source>Extrusion Tools</source>
-      <translation type="unfinished">Extrusion Tools</translation>
+      <translation>Ferramentas de extrusión</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="1325"/>
@@ -4115,7 +4115,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchCurtainWall.py" line="101"/>
       <source>Curtain Wall</source>
-      <translation type="unfinished">Curtain Wall</translation>
+      <translation>Muro cortina</translation>
     </message>
     <message>
       <location filename="ArchCurtainWall.py" line="105"/>
@@ -4128,12 +4128,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchCutPlane.py" line="80"/>
       <source>Cut with line</source>
-      <translation type="unfinished">Cut with line</translation>
+      <translation>Cortar con liña</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="83"/>
       <source>Cut an object with a line</source>
-      <translation type="unfinished">Cut an object with a line</translation>
+      <translation>Cortar un obxecto cunha liña</translation>
     </message>
   </context>
   <context>
@@ -4141,7 +4141,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchCutPlane.py" line="79"/>
       <source>Cut with a line</source>
-      <translation type="unfinished">Cut with a line</translation>
+      <translation>Cortar cunha liña</translation>
     </message>
     <message>
       <location filename="ArchCutPlane.py" line="82"/>
@@ -4510,7 +4510,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="137"/>
       <source>Rebar tools</source>
-      <translation type="unfinished">Rebar tools</translation>
+      <translation>Ferramentas de armadura</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="142"/>
@@ -4777,7 +4777,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="ArchTruss.py" line="82"/>
       <source>Truss</source>
-      <translation type="unfinished">Truss</translation>
+      <translation>Armadura</translation>
     </message>
     <message>
       <location filename="ArchTruss.py" line="86"/>
@@ -4874,7 +4874,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="InitGui.py" line="145"/>
       <source>Rebar tools</source>
-      <translation type="unfinished">Rebar tools</translation>
+      <translation>Ferramentas de armadura</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="112"/>
@@ -5463,7 +5463,7 @@ Leave blank to use all objects from the document</translation>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="59"/>
       <source>Total thickness</source>
-      <translation type="unfinished">Total thickness</translation>
+      <translation>Espesor total</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="68"/>
@@ -6268,7 +6268,7 @@ they will be treated as one.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="386"/>
       <source>Allow invalid shapes</source>
-      <translation type="unfinished">Allow invalid shapes</translation>
+      <translation>Permitir formas non válidas</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="401"/>
@@ -6410,7 +6410,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-dae.ui" line="194"/>
       <source>Maximum number of segments per edge</source>
-      <translation type="unfinished">Maximum number of segments per edge</translation>
+      <translation>Número máximo de segmentos por bordo</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="217"/>
@@ -6420,12 +6420,12 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-dae.ui" line="224"/>
       <source>Number of segments per radius</source>
-      <translation type="unfinished">Number of segments per radius</translation>
+      <translation>Número de segmentos por raio</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="247"/>
       <source>Allow a second order mesh</source>
-      <translation type="unfinished">Allow a second order mesh</translation>
+      <translation>Permitir unha malla de segundo orde</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="250"/>
@@ -6445,7 +6445,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-dae.ui" line="290"/>
       <source>Allow quadrilateral faces</source>
-      <translation type="unfinished">Allow quadrilateral faces</translation>
+      <translation>Permitir caras cuadriláterais</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="293"/>
@@ -6466,7 +6466,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="41"/>
       <source>Show this dialog when exporting</source>
-      <translation type="unfinished">Show this dialog when exporting</translation>
+      <translation>Mostra este diálogo ao exportar</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="65"/>
@@ -6483,7 +6483,7 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="71"/>
       <source>Export type</source>
-      <translation type="unfinished">Export type</translation>
+      <translation>Tipo de exportación</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="91"/>

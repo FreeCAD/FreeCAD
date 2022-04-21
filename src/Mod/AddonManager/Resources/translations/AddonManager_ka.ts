@@ -568,24 +568,9 @@
       <translation>გთხოვთ ჯერ დააყენოთ კომპონენტები, რომლებიც აკლია.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="915"/>
-      <source>Retrieving macro description...</source>
-      <translation>მაკროს აღწერის მიღება...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="653"/>
-      <source>Retrieving info from git</source>
-      <translation>ინფორმაციის git-დან მიღება</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="873"/>
       <source>Error: Unable to locate zip from</source>
       <translation>Zip ფაილის მოძებნის შეცდომა</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="656"/>
-      <source>Retrieving info from wiki</source>
-      <translation>ინფორმაციის wiki-დან მიღება</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="880"/>
@@ -598,19 +583,34 @@
       <translation>დაყენება წარმატებულია</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="915"/>
+      <source>Retrieving macro description...</source>
+      <translation>მაკროს აღწერის მიღება...</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="653"/>
+      <source>Retrieving info from git</source>
+      <translation>ინფორმაციის git-დან მიღება</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="656"/>
+      <source>Retrieving info from wiki</source>
+      <translation>ინფორმაციის wiki-დან მიღება</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="1013"/>
       <source>Error updating module</source>
       <translation>მოდულის განახლების შეცდომა</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1078"/>
-      <source>Please fix manually</source>
-      <translation>გთხოვთ ხელით გაასწოროთ</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="1075"/>
       <source>Error updating module </source>
       <translation>მოდულის განახლების შეცდომა </translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1078"/>
+      <source>Please fix manually</source>
+      <translation>გთხოვთ ხელით გაასწოროთ</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1220"/>
@@ -824,11 +824,6 @@
       <translation>არასაკმარისი პირობები</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="1079"/>
-      <source>Press OK to install anyway.</source>
-      <translation type="unfinished">Press OK to install anyway.</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>დამატებები, რომლებიც შეიძლება დაინსტალირდეს აქედან, ოფიციალურად არ არის FreeCAD-ის ნაწილი და არ მოწმდება FreeCAD გუნდის მიერ. დარწმუნდით, რომ იცით რას აყენებთ!</translation>
@@ -912,6 +907,11 @@
       <location filename="AddonManager.py" line="786"/>
       <source>Failed packages:</source>
       <translation>წარუმატებელი პაკეტები:</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1079"/>
+      <source>Press OK to install anyway.</source>
+      <translation>დააწექით "დიახ"-ს ნებისმიერ შემთხვევაში დასაყენებლად.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="964"/>

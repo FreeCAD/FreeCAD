@@ -141,7 +141,7 @@
     <name>CmdRaytracingWriteView</name>
     <message>
       <source>No perspective camera</source>
-      <translation>Ningunha cámara de perspectiva</translation>
+      <translation>Ningunha perspectiva de cámara</translation>
     </message>
     <message>
       <source>The current view camera is not perspective and thus resulting in a POV-Ray image that may look different than what was expected.
@@ -204,15 +204,15 @@ Queres continuar?</translation>
     </message>
     <message>
       <source>Create a Raytracing project to insert a view.</source>
-      <translation>Crear un proxecto Raytracing para inserir una vista.</translation>
+      <translation>Crear un proxecto Trazado de raios para inserir una vista.</translation>
     </message>
     <message>
       <source>Select a Raytracing project to insert the view.</source>
-      <translation>Escolme un proxecto Raytracing para inserir a vista.</translation>
+      <translation>Escolme un proxecto Trazado de raios para inserir a vista.</translation>
     </message>
     <message>
       <source>Select one Raytracing project object.</source>
-      <translation>Escolme un obxecto de proxecto Raytracing.</translation>
+      <translation>Escolme un obxecto de proxecto Trazado de raios.</translation>
     </message>
     <message>
       <source>Luxrender</source>
@@ -399,7 +399,7 @@ Queres continuar?</translation>
     <name>Workbench</name>
     <message>
       <source>&amp;Raytracing</source>
-      <translation>&amp;Raytracing</translation>
+      <translation>&amp;Trazado de raios</translation>
     </message>
   </context>
 </TS>

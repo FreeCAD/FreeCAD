@@ -573,24 +573,9 @@
       <translation>Proszę najpierw zainstalować brakujące komponenty.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="915"/>
-      <source>Retrieving macro description...</source>
-      <translation>Pobieranie opisu makrodefinicji ...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="653"/>
-      <source>Retrieving info from git</source>
-      <translation>Pobieranie informacji z git</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="873"/>
       <source>Error: Unable to locate zip from</source>
       <translation>Błąd: nie można znaleźć pliku Zip z</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="656"/>
-      <source>Retrieving info from wiki</source>
-      <translation>Pobieranie informacji z Wiki</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="880"/>
@@ -603,19 +588,34 @@
       <translation>Zainstalowano pomyślnie</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="915"/>
+      <source>Retrieving macro description...</source>
+      <translation>Pobieranie opisu makrodefinicji ...</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="653"/>
+      <source>Retrieving info from git</source>
+      <translation>Pobieranie informacji z git</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="656"/>
+      <source>Retrieving info from wiki</source>
+      <translation>Pobieranie informacji z Wiki</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="1013"/>
       <source>Error updating module</source>
       <translation>Wystąpił błąd podczas aktualizacji modułu</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1078"/>
-      <source>Please fix manually</source>
-      <translation>Proszę naprawić ręcznie</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="1075"/>
       <source>Error updating module </source>
       <translation>Błąd aktualizacji modułu </translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1078"/>
+      <source>Please fix manually</source>
+      <translation>Proszę naprawić ręcznie</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1220"/>
@@ -819,7 +819,7 @@
     <message>
       <location filename="AddonManager.py" line="773"/>
       <source>Apply {} update(s)</source>
-      <translation>Zastosuj {} aktualizacje</translation>
+      <translation>Wykonaj {} aktualizacje</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="577"/>
@@ -835,11 +835,6 @@
       <location filename="AddonManager.py" line="893"/>
       <source>Missing Requirement</source>
       <translation>Brakujące wymagania</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="1079"/>
-      <source>Press OK to install anyway.</source>
-      <translation type="unfinished">Press OK to install anyway.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="86"/>
@@ -925,6 +920,11 @@
       <location filename="AddonManager.py" line="786"/>
       <source>Failed packages:</source>
       <translation>Pakiety uszkodzone:</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1079"/>
+      <source>Press OK to install anyway.</source>
+      <translation>Naciśnij przycisk OK, aby pomimo to zainstalować.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="964"/>

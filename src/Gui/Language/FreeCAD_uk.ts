@@ -472,7 +472,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>OK</source>
-      <translation>Гаразд</translation>
+      <translation>Підтвердити</translation>
     </message>
     <message>
       <source/>
@@ -524,7 +524,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>FreeCAD would not be possible without the contributions of</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+      <translation>FreeCAD не був би можливим без внесків</translation>
     </message>
     <message>
       <source>Individuals</source>
@@ -1504,7 +1504,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>How many files should be listed in recent files list</source>
-      <translation type="unfinished">How many files should be listed in recent files list</translation>
+      <translation>Скільки файлів має бути перераховано у списку нещодавніх файлів</translation>
     </message>
     <message>
       <source>Background of the main window will consist of tiles of a special image.
@@ -2510,11 +2510,11 @@ will be shown at the lower left corner in opened files</source>
     </message>
     <message>
       <source>If checked, application will remember which workbench is active for each tab of the viewport</source>
-      <translation type="unfinished">If checked, application will remember which workbench is active for each tab of the viewport</translation>
+      <translation>Якщо встановлено, то додаток буде пам'ятати, який верстак буде активним для кожної вкладки viewport</translation>
     </message>
     <message>
       <source>Remember active workbench by tab</source>
-      <translation type="unfinished">Remember active workbench by tab</translation>
+      <translation>Запам'ятати активний верстак вкладкою</translation>
     </message>
     <message>
       <source>Rendering</source>
@@ -2531,20 +2531,20 @@ can be rendered directly by GPU.
 Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
 report this setting as enabled when seeking support on the FreeCAD forums</source>
-      <translation type="unfinished">If selected, Vertex Buffer Objects (VBO) will be used.
-A VBO is an OpenGL feature that provides methods for uploading
-vertex data (position, normal vector, color, etc.) to the graphics card.
-VBOs offer substantial performance gains because the data resides
-in the graphics memory rather than the system memory and so it
-can be rendered directly by GPU. 
+      <translation>Якщо вибрано, будуть використовуватися Vertex Buffer Object (VBO).
+VBO є функцією OpenGL, яка забезпечує методи завантаження
+даних про вершини (позиція, вектор нормалі, колір тощо) на графічну карту.
+VBO пропонують значне підвищення продуктивності через те що дані розміщуються
+в графічній, а не в системній пам'яті, і таким чином
+можуть бути візуалізовані безпосередньо через GPU. 
 
-Note: Sometimes this feature may lead to a host of different
-issues ranging from graphical anomalies to GPU crash bugs. Remember to
-report this setting as enabled when seeking support on the FreeCAD forums</translation>
+Примітка: Іноді ця функція може призвести до різноманітних
+проблем від графічних аномалій до помилок GPU через аварії. Не забувайте
+повідомляти про це налаштування як ввімкнене, коли шукаєте підтримку на форумах FreeCAD</translation>
     </message>
     <message>
       <source>Use OpenGL VBO (Vertex Buffer Object)</source>
-      <translation type="unfinished">Use OpenGL VBO (Vertex Buffer Object)</translation>
+      <translation>Використовувати OpenGL VBO (Vertex Buffer Object)</translation>
     </message>
     <message>
       <source>Render cache</source>
@@ -2634,7 +2634,7 @@ opening or creation</translation>
     </message>
     <message>
       <source>Show axis cross by default</source>
-      <translation type="unfinished">Show axis cross by default</translation>
+      <translation>Показати перетин осей за замовчуванням</translation>
     </message>
     <message>
       <source>Pick radius (px):</source>
@@ -2644,17 +2644,17 @@ opening or creation</translation>
       <source>Area for picking elements in 3D view.
 Larger value eases to pick things, but can make small features impossible to select.
                </source>
-      <translation type="unfinished">Area for picking elements in 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
+      <translation>Область для обирання елементів у 3D вигляді.
+Великі значення полегшують вибір речей, але можуть зробити неможливим виділення дрібних елементів.
                </translation>
     </message>
     <message>
       <source>This option is useful for troubleshooting graphics card and driver problems.
 
 Changing this option requires a restart of the application.</source>
-      <translation type="unfinished">This option is useful for troubleshooting graphics card and driver problems.
+      <translation>Цей параметр є корисним для усунення неполадок графічних карт та драйверів.
 
-Changing this option requires a restart of the application.</translation>
+Зміна цього параметра вимагає перезапуску програми.</translation>
     </message>
     <message>
       <source>Use software OpenGL</source>
@@ -2662,7 +2662,7 @@ Changing this option requires a restart of the application.</translation>
     </message>
     <message>
       <source>What kind of multisample anti-aliasing is used</source>
-      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+      <translation>Який тип багато вибіркове згладжування використано</translation>
     </message>
     <message>
       <source>Eye-to-eye distance used for stereo projections.
@@ -4420,7 +4420,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>OK</source>
-      <translation>Гаразд</translation>
+      <translation>Підтвердити</translation>
     </message>
     <message>
       <source>Translation:</source>
@@ -8324,7 +8324,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Recomputes the current active document</source>
-      <translation>Перераховує поточного активного документ</translation>
+      <translation>Переобчислює активний документ</translation>
     </message>
   </context>
   <context>

@@ -4140,7 +4140,7 @@ Par défaut : %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="369"/>
       <source>When closing a sketch, move camera back to where it was before the sketch was opened.</source>
-      <translation>A la fermeture d'une esquisse, ramène la caméra où elle était avant son ouverture.</translation>
+      <translation>À la fermeture d'une esquisse, ramène la caméra là où elle était avant son ouverture.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="372"/>

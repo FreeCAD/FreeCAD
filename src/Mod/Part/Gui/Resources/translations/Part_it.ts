@@ -2890,7 +2890,7 @@ della proiezione.</translation>
     <message>
       <location filename="../../Command.cpp" line="1123"/>
       <source>Part Import Curve Net</source>
-      <translation type="unfinished">Part Import Curve Net</translation>
+      <translation>Importa Parte Curve Net</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1240"/>
@@ -3844,8 +3844,7 @@ all'interno della proprietà Posizionamento.</translation>
       <location filename="../../DlgImportExportStep.ui" line="222"/>
       <source>If checked, no Compound merge will be done
 during file reading (slower but higher details).</source>
-      <translation type="unfinished">If checked, no Compound merge will be done
-during file reading (slower but higher details).</translation>
+      <translation>Selezionando questa opzione, durante la lettura del file non viene eseguita nessuna unione di composti (importazione più lenta, ma con maggiori dettagli).</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="226"/>
@@ -3855,12 +3854,12 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="242"/>
       <source>Select this to use App::LinkGroup as group container, or else use App::Part.</source>
-      <translation type="unfinished">Select this to use App::LinkGroup as group container, or else use App::Part.</translation>
+      <translation>Selezionare questa opzione per utilizzare App::LinkGroup come contenitore di gruppo, oppure utilizzare App::Part.</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="245"/>
       <source>Use LinkGroup</source>
-      <translation type="unfinished">Use LinkGroup</translation>
+      <translation>Usa LinkGroup</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="258"/>
@@ -3885,7 +3884,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="290"/>
       <source>Expand compound shape with multiple solids</source>
-      <translation type="unfinished">Expand compound shape with multiple solids</translation>
+      <translation>Espande la forma composta con più solidi</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="293"/>
@@ -3901,7 +3900,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="322"/>
       <source>Do not use instance name. Useful for some legacy STEP file with non-meaningful auto generated instance names.</source>
-      <translation type="unfinished">Do not use instance name. Useful for some legacy STEP file with non-meaningful auto generated instance names.</translation>
+      <translation>Non usare il nome dell'istanza. Utile per alcuni file STEP legacy con nomi di istanza auto generati non significativi.</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="325"/>
@@ -3943,9 +3942,9 @@ during file reading (slower but higher details).</translation>
       <source>This parameter indicates whether parametric curves (curves in parametric space of surface)
 should be written into the STEP file. This parameter can be set to off in order to minimize
 the size of the resulting STEP file.</source>
-      <translation type="unfinished">This parameter indicates whether parametric curves (curves in parametric space of surface)
-should be written into the STEP file. This parameter can be set to off in order to minimize
-the size of the resulting STEP file.</translation>
+      <translation>Questo parametro indica se le curve parametriche (curve nello spazio parametrico della superficie)
+devono essere scritte nel file STEP. Questo parametro può essere impostato su off per minimizzare
+la dimensione del file STEP risultante.</translation>
     </message>
   </context>
   <context>
@@ -4871,12 +4870,12 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="252"/>
       <source>Bounding box font size</source>
-      <translation type="unfinished">Bounding box font size</translation>
+      <translation>Dimensione carattere box di delimitazione</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="259"/>
       <source>The font size of bounding boxes in the 3D view</source>
-      <translation type="unfinished">The font size of bounding boxes in the 3D view</translation>
+      <translation>La dimensione del carattere dei box di delimitazione nella vista 3D</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="293"/>
@@ -4884,10 +4883,10 @@ the size of the resulting STEP file.</translation>
 If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">Bottom side of surface will be rendered the same way than top.
-If not checked, it depends on the option "Backlight color"
-(preferences section Display -&gt; 3D View); either the backlight color
-will be used or black.</translation>
+      <translation>Il lato inferiore della superficie sarà reso allo stesso modo del lato superiore.
+Se non selezionato, dipende dall'opzione "Abilita il colore di retroilluminazione"
+(sezione preferenze Vista -&gt; Visualizzazione 3D). Sarà usato il colore della retroilluminazione
+o il nero.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="299"/>
@@ -5360,23 +5359,23 @@ dell'oggetto da allegare.</translation>
       <source>Rotation around the y-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
-      <translation type="unfinished">Rotation around the y-axis
-Note: The placement is expressed in local coordinate system
-of object being attached.</translation>
+      <translation>Rotazione attorno all'asse y
+Nota: il posizionamento è espresso nel sistema di coordinate locali
+dell'oggetto da associare.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="340"/>
       <source>Rotation around the z-axis
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
-      <translation type="unfinished">Rotation around the z-axis
-Note: The placement is expressed in local coordinate system
-of object being attached.</translation>
+      <translation>Rotazione attorno all'asse z
+Nota: il posizionamento è espresso nel sistema di coordinate locali
+dell'oggetto da associare.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="364"/>
       <source>Flip side of attachment and offset</source>
-      <translation type="unfinished">Flip side of attachment and offset</translation>
+      <translation>Capovolge il lato dell'associazione e offset</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="367"/>
@@ -5441,7 +5440,7 @@ of object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="750"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
-      <translation type="unfinished">Not editable because rotation of AttachmentOffset is bound by expressions.</translation>
+      <translation>Non modificabile perché la rotazione di AttachmentOffset è vincolata da espressioni.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="816"/>
@@ -5481,22 +5480,22 @@ of object being attached.</translation>
       <location filename="../../TaskCheckGeometry.cpp" line="1081"/>
       <source>Skip this settings page and run the geometry check automatically.
 Default: false</source>
-      <translation type="unfinished">Skip this settings page and run the geometry check automatically.
-Default: false</translation>
+      <translation>Salta questa pagina delle impostazioni ed esegui il controllo della geometria automaticamente.
+Predefinito: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1090"/>
       <source>Run BOP check</source>
-      <translation type="unfinished">Run BOP check</translation>
+      <translation>Esegui controllo BOP</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1091"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always 
 mean the checked object is unusable.  Default: false</source>
-      <translation type="unfinished">Extra boolean operations check that can sometimes find errors that
-the standard BRep geometry check misses. These errors do not always 
-mean the checked object is unusable.  Default: false</translation>
+      <translation>Le operazioni extra booleane controllano che a volte possano trovare errori che
+il controllo della geometria BRep standard non funziona. Questi errori non sempre 
+significano che l'oggetto controllato è inutilizzabile. Predefinito: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1101"/>
@@ -5518,7 +5517,7 @@ ma più stabile. Predefinito: false</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1112"/>
       <source>Log errors to report view.  Default: true</source>
-      <translation type="unfinished">Log errors to report view.  Default: true</translation>
+      <translation>Registra errori nella report view. Predefinito: true</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1119"/>
@@ -5529,8 +5528,8 @@ ma più stabile. Predefinito: false</translation>
       <location filename="../../TaskCheckGeometry.cpp" line="1120"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
-      <translation type="unfinished">Expand shape content.  Changes will take effect next time you use 
-the check geometry tool.  Default: false</translation>
+      <translation>Mostra il contenuto della forma avanzata. Le modifiche avranno effetto la prossima volta che userai 
+lo strumento della geometria di controllo. Predefinito: false</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1129"/>
@@ -5548,8 +5547,8 @@ lo strumento della geometria di controllo. Predefinito: false</translation>
       <location filename="../../TaskCheckGeometry.cpp" line="1138"/>
       <source>
 Individual BOP Checks:</source>
-      <translation type="unfinished">
-Individual BOP Checks:</translation>
+      <translation>
+Controlli BOP individuali:</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1141"/>

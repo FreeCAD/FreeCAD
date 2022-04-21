@@ -447,7 +447,7 @@
     <message>
       <location filename="commands.py" line="719"/>
       <source>Clear FEM mesh</source>
-      <translation>Effacer le maillage MÉF</translation>
+      <translation>Effacer le maillage FEM</translation>
     </message>
     <message>
       <location filename="commands.py" line="723"/>
@@ -1049,7 +1049,7 @@
     <message>
       <location filename="../../Command.cpp" line="1252"/>
       <source>Region clip filter</source>
-      <translation>Filtre d'écrêtage des régions</translation>
+      <translation>Filtre d'écrêtage selon une région</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1253"/>
@@ -1103,7 +1103,7 @@
     <message>
       <location filename="../../Command.cpp" line="1304"/>
       <source>Line clip filter</source>
-      <translation>Filtre d'écrêtage de ligne</translation>
+      <translation>Filtre d'écrêtage selon une ligne</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1305"/>
@@ -1121,7 +1121,7 @@
     <message>
       <location filename="../../Command.cpp" line="1330"/>
       <source>Data at point clip filter</source>
-      <translation>Données au filtre d'écrêtage du point</translation>
+      <translation>Données du filtre d'écrêtage du point</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1331"/>
@@ -1197,7 +1197,7 @@
     <message>
       <location filename="../../Command.cpp" line="1652"/>
       <source>Post pipeline from result</source>
-      <translation>Poster le pipeline depuis le résultat</translation>
+      <translation>Afficher le pipeline à partir du résultat</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1653"/>
@@ -1243,7 +1243,7 @@
     <message>
       <location filename="../../Command.cpp" line="1441"/>
       <source>Warp filter</source>
-      <translation>Filtre warp</translation>
+      <translation>Filtre de visualisation des déformations</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1442"/>
@@ -1583,7 +1583,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="359"/>
       <source>Spooles</source>
-      <translation type="unfinished">Spooles</translation>
+      <translation>SPOOLES</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="364"/>
@@ -2886,7 +2886,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="427"/>
       <source>Clip region, choose implicit function</source>
-      <translation>Région de coupe, choisissez une fonction implicite</translation>
+      <translation>Région d'écrêtage, choisissez une fonction implicite</translation>
     </message>
   </context>
   <context>
@@ -2934,7 +2934,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="930"/>
       <source>Scalar clip options</source>
-      <translation type="unfinished">Scalar clip options</translation>
+      <translation>Options de l'écrêtage scalaire</translation>
     </message>
   </context>
   <context>
@@ -2942,7 +2942,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="1038"/>
       <source>Warp options</source>
-      <translation>Options de pliage</translation>
+      <translation>Options de la déformation</translation>
     </message>
   </context>
   <context>
@@ -4957,7 +4957,7 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../TaskPostClip.ui" line="73"/>
       <source>Inside Out</source>
-      <translation>A l'envers</translation>
+      <translation>Inverser</translation>
     </message>
     <message>
       <location filename="../../TaskPostClip.ui" line="80"/>
@@ -5171,7 +5171,7 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="108"/>
       <source>Clip scalar</source>
-      <translation type="unfinished">Clip scalar</translation>
+      <translation>Ecrêtage scalaire</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="121"/>
@@ -5191,7 +5191,7 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="209"/>
       <source>Clip inside out</source>
-      <translation type="unfinished">Clip inside out</translation>
+      <translation>Inverser l'écrêtage</translation>
     </message>
   </context>
   <context>
@@ -5209,7 +5209,7 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../TaskPostWarpVector.ui" line="42"/>
       <source>warp vectors</source>
-      <translation>vecteurs déformation</translation>
+      <translation>vecteurs de déformation</translation>
     </message>
     <message>
       <location filename="../../TaskPostWarpVector.ui" line="98"/>

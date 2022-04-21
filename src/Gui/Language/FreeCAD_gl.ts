@@ -2351,7 +2351,7 @@ on-screen while displaying the log message</translation>
     </message>
     <message>
       <source>Show report view on log message</source>
-      <translation type="unfinished">Show report view on log message</translation>
+      <translation>Mostrar a vista do informe na mensaxe de rexistro</translation>
     </message>
     <message>
       <source>Font color for normal messages in Report view panel</source>
@@ -2387,11 +2387,11 @@ from Python console to Report view panel</translation>
     </message>
     <message>
       <source>Include a timecode for each entry</source>
-      <translation type="unfinished">Include a timecode for each entry</translation>
+      <translation>Inclúe un código de tempo para cada entrada</translation>
     </message>
     <message>
       <source>Normal messages will be recorded</source>
-      <translation type="unfinished">Normal messages will be recorded</translation>
+      <translation>As mensaxes normais gravaranse</translation>
     </message>
     <message>
       <source>Record normal messages</source>
@@ -2547,11 +2547,11 @@ report this setting as enabled when seeking support on the FreeCAD forums</trans
     </message>
     <message>
       <source>Use OpenGL VBO (Vertex Buffer Object)</source>
-      <translation type="unfinished">Use OpenGL VBO (Vertex Buffer Object)</translation>
+      <translation>Empregar OpenGL VBO (Vertex Buffer Object)</translation>
     </message>
     <message>
       <source>Render cache</source>
-      <translation type="unfinished">Render cache</translation>
+      <translation>Renderizar caché</translation>
     </message>
     <message>
       <source>'Render Caching' is another way to say 'Rendering Acceleration'.
@@ -2579,7 +2579,7 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>Centralized</source>
-      <translation type="unfinished">Centralized</translation>
+      <translation>Centralizado</translation>
     </message>
     <message>
       <source>Transparent objects:</source>
@@ -2591,11 +2591,11 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>One pass</source>
-      <translation type="unfinished">One pass</translation>
+      <translation>Unha pasada</translation>
     </message>
     <message>
       <source>Backface pass</source>
-      <translation type="unfinished">Backface pass</translation>
+      <translation>Pase de cara posterior</translation>
     </message>
     <message>
       <source>Size of vertices in the Sketcher workbench</source>
@@ -2603,7 +2603,7 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>Eye to eye distance for stereo modes</source>
-      <translation type="unfinished">Eye to eye distance for stereo modes</translation>
+      <translation>Distancia entre ollos para os modos estéreo</translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2611,15 +2611,15 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>Backlight color</source>
-      <translation type="unfinished">Backlight color</translation>
+      <translation>Cor da luz de fondo</translation>
     </message>
     <message>
       <source>Intensity</source>
-      <translation type="unfinished">Intensity</translation>
+      <translation>Intensidade</translation>
     </message>
     <message>
       <source>Intensity of the backlight</source>
-      <translation type="unfinished">Intensity of the backlight</translation>
+      <translation>Intensidade de luz de fondo</translation>
     </message>
     <message>
       <source>Objects will be projected in orthographic projection</source>
@@ -2637,7 +2637,7 @@ opening or creation</translation>
     </message>
     <message>
       <source>Show axis cross by default</source>
-      <translation type="unfinished">Show axis cross by default</translation>
+      <translation>Mostrar a cruz do eixe por defecto</translation>
     </message>
     <message>
       <source>Pick radius (px):</source>
@@ -3283,18 +3283,18 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Framebuffer (custom)</source>
-      <translation type="unfinished">Framebuffer (custom)</translation>
+      <translation>Memoria temporal de fotogramas (personalizada)</translation>
     </message>
     <message>
       <source>Framebuffer (as is)</source>
-      <translation type="unfinished">Framebuffer (as is)</translation>
+      <translation>Memoria temporal de fotogramas (tal como está)</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
       <source>Workbench Name</source>
-      <translation type="unfinished">Workbench Name</translation>
+      <translation>Nome do espazo de traballo</translation>
     </message>
     <message>
       <source>Autoload?</source>
@@ -6846,7 +6846,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Paste</source>
-      <translation>Colar</translation>
+      <translation>Pegar</translation>
     </message>
     <message>
       <source>Expression error</source>
@@ -8297,11 +8297,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Recent macros</source>
-      <translation type="unfinished">Recent macros</translation>
+      <translation>Macros recentes</translation>
     </message>
     <message>
       <source>Recent macro list</source>
-      <translation type="unfinished">Recent macro list</translation>
+      <translation>Listaxe de macros recentes</translation>
     </message>
   </context>
   <context>
@@ -8376,7 +8376,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Save all opened document</source>
-      <translation type="unfinished">Save all opened document</translation>
+      <translation>Garda todos os documentos abertos</translation>
     </message>
   </context>
   <context>
@@ -8447,7 +8447,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>&amp;Bounding box</source>
-      <translation type="unfinished">&amp;Bounding box</translation>
+      <translation>&amp;Carcasa</translation>
     </message>
     <message>
       <source>Show selection bounding box</source>
@@ -8758,11 +8758,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Collapse selected item</source>
-      <translation type="unfinished">Collapse selected item</translation>
+      <translation>Contraer o elemento escollido</translation>
     </message>
     <message>
       <source>Collapse currently selected tree items</source>
-      <translation type="unfinished">Collapse currently selected tree items</translation>
+      <translation>Contraer os elementos da árbore escollidos agora</translation>
     </message>
   </context>
   <context>
@@ -8773,11 +8773,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Expand selected item</source>
-      <translation type="unfinished">Expand selected item</translation>
+      <translation>Expande o elemento escollido</translation>
     </message>
     <message>
       <source>Expand currently selected tree items</source>
-      <translation type="unfinished">Expand currently selected tree items</translation>
+      <translation>Expande os elementos da árbore escollidos agora</translation>
     </message>
   </context>
   <context>
@@ -8788,11 +8788,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Select all instances</source>
-      <translation type="unfinished">Select all instances</translation>
+      <translation>Escoller instancias</translation>
     </message>
     <message>
       <source>Select all instances of the current selected object</source>
-      <translation type="unfinished">Select all instances of the current selected object</translation>
+      <translation>Escoller todas as instancias do obxecto escollido agora</translation>
     </message>
   </context>
   <context>
@@ -8803,11 +8803,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>TreeView actions</source>
-      <translation type="unfinished">TreeView actions</translation>
+      <translation>Accións de vista en árbore</translation>
     </message>
     <message>
       <source>TreeView behavior options and actions</source>
-      <translation type="unfinished">TreeView behavior options and actions</translation>
+      <translation>Opcións e accións de comportamento da vista en árbore</translation>
     </message>
   </context>
   <context>
@@ -9013,7 +9013,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Set to default home view</source>
-      <translation type="unfinished">Set to default home view</translation>
+      <translation>Establece a vista de inicio predeterminada</translation>
     </message>
   </context>
   <context>
@@ -9159,11 +9159,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Restore saved camera</source>
-      <translation type="unfinished">Restore saved camera</translation>
+      <translation>Restaurar a cámara gardada</translation>
     </message>
     <message>
       <source>Restore saved camera settings</source>
-      <translation type="unfinished">Restore saved camera settings</translation>
+      <translation>Restaurar a configuración da cámara gardada</translation>
     </message>
   </context>
   <context>
@@ -9193,7 +9193,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Rotate the view by 90° counter-clockwise</source>
-      <translation type="unfinished">Rotate the view by 90° counter-clockwise</translation>
+      <translation>Xira a vista 90° no sentido antihorario</translation>
     </message>
   </context>
   <context>
@@ -9208,7 +9208,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Rotate the view by 90° clockwise</source>
-      <translation type="unfinished">Rotate the view by 90° clockwise</translation>
+      <translation>Xira a vista 90° no sentido das agullas do reloxo</translation>
     </message>
   </context>
   <context>
@@ -9219,11 +9219,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Save current camera</source>
-      <translation type="unfinished">Save current camera</translation>
+      <translation>Garda a camara actual</translation>
     </message>
     <message>
       <source>Save current camera settings</source>
-      <translation type="unfinished">Save current camera settings</translation>
+      <translation>Garda a configuración actual da cámara</translation>
     </message>
   </context>
   <context>
@@ -9395,11 +9395,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Initiate dragging</source>
-      <translation type="unfinished">Initiate dragging</translation>
+      <translation>Iniciar o arrastre</translation>
     </message>
     <message>
       <source>Initiate dragging of current selected tree items</source>
-      <translation type="unfinished">Initiate dragging of current selected tree items</translation>
+      <translation>Inicia o arrastre dos elementos actuais da árbore escollida</translation>
     </message>
   </context>
   <context>
@@ -9485,7 +9485,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Sync placement</source>
-      <translation type="unfinished">Sync placement</translation>
+      <translation>Sincronizar a colocación</translation>
     </message>
     <message>
       <source>Auto adjust placement on drag and drop objects across coordinate systems</source>
@@ -9515,7 +9515,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Sync view</source>
-      <translation type="unfinished">Sync view</translation>
+      <translation>Vista sincronizada</translation>
     </message>
     <message>
       <source>Auto switch to the 3D view containing the selected item</source>
@@ -9637,9 +9637,9 @@ Would you like to save the file with a different name?</translation>
 
 Are you sure you want to continue?
 </source>
-      <translation type="unfinished">The following referencing objects might break.
+      <translation>Os seguintes obxectos que fan referencia poden romper.
 
-Are you sure you want to continue?
+De verdade quere seguir?
 </translation>
     </message>
     <message>
@@ -9648,7 +9648,7 @@ Are you sure you want to continue?
     </message>
     <message>
       <source>These items are selected for deletion, but are not in the active document.</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
+      <translation>Hai elementos escolmados para borrar, pero non están no documento activo.</translation>
     </message>
   </context>
   <context>

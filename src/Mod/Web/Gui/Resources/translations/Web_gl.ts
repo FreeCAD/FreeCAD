@@ -61,7 +61,7 @@
     </message>
     <message>
       <source>Stop loading</source>
-      <translation>Deteren a carga</translation>
+      <translation>Deter a carga</translation>
     </message>
   </context>
   <context>

@@ -1578,7 +1578,7 @@ to a smoother appearance.
     </message>
     <message>
       <source>Normal</source>
-      <translation>Звичайне</translation>
+      <translation>Звичайна</translation>
     </message>
     <message>
       <source>Axis</source>

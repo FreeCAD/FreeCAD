@@ -562,7 +562,7 @@ or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is sp
     <message>
       <location filename="shapestring.py" line="59"/>
       <source>Fill letters with faces</source>
-      <translation>Заповніть літери поверхнями</translation>
+      <translation>Заповніть літери гранями</translation>
     </message>
     <message>
       <location filename="draftlink.py" line="99"/>
@@ -636,7 +636,7 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="shape2dview.py" line="75"/>
       <source>The indices of the faces to be projected in Individual Faces mode</source>
-      <translation>Індекси поверхонь, які мають бути спроектовані у режимі Individual Faces</translation>
+      <translation>Індекси граней для проєкції в режимі Individual Faces (Окремі Грані)</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="80"/>
@@ -657,7 +657,8 @@ This property is read-only, as the number depends on the points contained within
       <location filename="shape2dview.py" line="98"/>
       <source>For Cutlines and Cutfaces modes, 
                     this leaves the faces at the cut location</source>
-      <translation>Для режимів обрізки ліній та обрізки граней це залишає грані в місці вирізу</translation>
+      <translation>Для режимів обрізки ліній та обрізки граней, 
+                    це залишає грані в місці вирізу</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="105"/>
@@ -720,6 +721,11 @@ This property is read-only, as the number depends on the points contained within
       <translation>Площа цього об'єкту</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Форма цього об'єкта</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>Базовий об'єкт використовується цим об’єктом</translation>
@@ -745,14 +751,9 @@ This property is read-only, as the number depends on the points contained within
       <translation>Масштабований паттерн (повторюване зображення), який використовується цим об'єктом</translation>
     </message>
     <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Форма цього об'єкта</translation>
-    </message>
-    <message>
       <location filename="hatch.py" line="67"/>
       <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
-      <translation>Якщо встановлено False, штрих застосовується як до поверхонь, без перекладу (це може призвести до неправильних результатів для поверхонь, відмінних від XY)</translation>
+      <translation>Якщо встановлено False, штрихування застосовується до граней без перетворення (це може призвести до неправильних результатів для граней, розміщених не на осі XY)</translation>
     </message>
     <message>
       <location filename="bezcurve.py" line="46"/>
@@ -890,7 +891,7 @@ Otherwise the copies will have the same orientation as the original Base object.
     <message>
       <location filename="facebinder.py" line="43"/>
       <source>Linked faces</source>
-      <translation>Зв'язані поверхні</translation>
+      <translation>Пов'язані грані</translation>
     </message>
     <message>
       <location filename="facebinder.py" line="46"/>
@@ -990,7 +991,7 @@ they will only be editable by changing the style through the 'Annotation style e
     <message>
       <location filename="wire.py" line="85"/>
       <source>Create a face if this object is closed</source>
-      <translation>Створити грань, якщо цей об'єкт замкнений</translation>
+      <translation>Створити грань, якщо об'єкт замкнений</translation>
     </message>
     <message>
       <location filename="wire.py" line="89"/>
@@ -1384,7 +1385,7 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="gui_fillets.py" line="68"/>
       <source>Creates a fillet between two selected wires or edges.</source>
-      <translation>Створює скруглення між двома вибраними каркасом або ребром.</translation>
+      <translation>Створює скруглення між двома вибраними ламаними або ребрами.</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="90"/>
@@ -1911,9 +1912,9 @@ CTRL для прив'язки, SHIFT до обмеження, ALT для виб�
       <source>Downgrades the selected objects into simpler shapes.
 The result of the operation depends on the types of objects, which may be able to be downgraded several times in a row.
 For example, it explodes the selected polylines into simpler faces, wires, and then edges. It can also subtract faces.</source>
-      <translation>Знижує обрані об'єкти у простіші форми.
+      <translation>Перетворює обрані об'єкти у простіші форми.
 Результат операції залежить від типів об'єктів, які можуть бути понижені кілька разів поспіль.
-Наприклад, він вибухає обрані полілінії до простіших поверхонь, сітки і потім країв. Також можна віднімати поверхні.</translation>
+Наприклад, команда перетворює обрані полілінії до простіших ліній, граней, ребер. Також може відняти грані.</translation>
     </message>
   </context>
   <context>
@@ -2003,7 +2004,7 @@ on supported nodes and on supported objects.</source>
     <message>
       <location filename="gui_fillets.py" line="67"/>
       <source>Creates a fillet between two selected wires or edges.</source>
-      <translation>Створює скруглення між двома вибраними каркасом або ребром.</translation>
+      <translation>Створює скруглення між двома вибраними ламаними або ребрами.</translation>
     </message>
   </context>
   <context>
@@ -2031,12 +2032,12 @@ If other objects are selected they are ignored.</source>
     <message>
       <location filename="gui_hatch.py" line="41"/>
       <source>Create hatches on selected faces</source>
-      <translation>Створити штрихування на вибраних поверхнях</translation>
+      <translation>Створити штрихування на вибраних гранях</translation>
     </message>
     <message>
       <location filename="gui_hatch.py" line="42"/>
       <source>Creates hatches on the faces of a selected object</source>
-      <translation>Створює штрихи на поверхні обраного об'єкту</translation>
+      <translation>Створює штрихування на гранях обраного об'єкта</translation>
     </message>
   </context>
   <context>
@@ -2089,15 +2090,15 @@ if any.
 
 If many objects or many subelements are selected, only the first one in each case
 will be used to provide information to the label.</source>
-      <translation>Створює етикетку, необов'язково прикріплену до обраного об'єкту чи піделементу.
+      <translation>Створює мітку, опціонально прикріплену до вибраного об'єкта або елемента.
 
-Спочатку виберіть вершину, ребро або поверхню об'єкта, а потім назвіть цю команду,
-А потім поставили позицію виносної лінії та текстової мітки.
-Етикетки зможуть відображати інформацію про цей об'єкт і про вибрану допоміжну інформацію,
-якщо така є яка.
+Спочатку виберіть вершину, ребро або грань об'єкта, потім викличте цю команду,
+та встановіть позицію лінії виноски та текстову мітку.
+Мітка буде відображати інформацію про цей об'єкт, та про виділений піделемент,
+якщо такий є.
 
-Якщо вибрано багато об'єктів або багато субелементів, тільки перший у кожному випадку
-буде використовуватись для надання інформації мітці.</translation>
+Якщо вибрано багато об'єктів або багато піделементів, лише перший у кожному конкретному випадку
+буде використовуватися для надання інформації про мітку.</translation>
     </message>
   </context>
   <context>
@@ -2440,7 +2441,7 @@ those that are at the same level as this object, including the upper group that 
       <location filename="gui_selectplane.py" line="67"/>
       <source>Select the face of solid body to create a working plane on which to sketch Draft objects.
 You may also select a three vertices or a Working Plane Proxy.</source>
-      <translation>Виберіть поверхню твердого тіла, щоб створити робочу площину, на якій буде створено об'єкт ескізу.
+      <translation>Виберіть грань твердого тіла, щоб створити робочу площину, на якій буде створено об'єкт ескізу.
 Також можна вибрати три вершини або робочу площину проксі.</translation>
     </message>
   </context>
@@ -2471,8 +2472,8 @@ The initial projection direction is the negative of the current active view dire
 You can select individual faces to project, or the entire solid, and also include hidden lines.
 These projections can be used to create technical drawings with the TechDraw Workbench.</source>
       <translation>Створює двовимірну проекцію вибраних об’єктів на площині XY.
-Початковий напрямок проекції - є протилежним поточному напрямку активного огляду.
-Ви можете вибрати окремі поверхні для проектування або цілі суцільні, а також включити приховані лінії.
+Початковий напрямок проекції - є протилежним поточному напрямку активного виду.
+Ви можете вибрати окремі грані для проектування або тіло повністю, а також включити приховані лінії.
 Ці проекції можна використовувати для створення технічних креслень з допомогою робочого середовища TechDraw.</translation>
     </message>
   </context>
@@ -2854,7 +2855,8 @@ This is intended to be used with closed shapes and solids, and doesn't affect op
       <location filename="gui_trimex.py" line="82"/>
       <source>Trims or extends the selected object, or extrudes single faces.
 CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</source>
-      <translation>Обрізати або подовжити обраний об'єкт чи видавити окрему поверхню. CTRL - прив'язка, SHIFT - обмежити поточним сегментом або нормаллю, ALT - інвертувати.</translation>
+      <translation>Обрізати або розтягнути обраний об'єкт чи видавити окрему грань. 
+CTRL - прив'язка, SHIFT - обмежити поточним сегментом або нормаллю, ALT - інвертувати.</translation>
     </message>
   </context>
   <context>
@@ -2870,10 +2872,10 @@ CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</sour
 The result of the operation depends on the types of objects, which may be able to be upgraded several times in a row.
 For example, it can join the selected objects into one, convert simple edges into parametric polylines,
 convert closed edges into filled faces and parametric polygons, and merge faces into a single face.</source>
-      <translation>Оновлює вибрані об’єкти до більш складних форм.
+      <translation>Перетворює вибрані об’єкти до більш складних форм.
 Результат операції залежить від типів об’єктів, які можна оновлювати кілька разів поспіль.
 Наприклад, він може об’єднати вибрані об’єкти в один, перетворити прості ребра в параметричні полілінії,
-перетворювати закриті ребра в заповнені грані та параметричні багатокутники та об’єднувати грані в одну грань.</translation>
+перетворювати закриті ребра в заповнені грані та параметричні багатокутники та об’єднувати грані в одну.</translation>
     </message>
   </context>
   <context>
@@ -3384,7 +3386,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="DraftGui.py" line="807"/>
       <source>Create text</source>
-      <translation>Створення тексту</translation>
+      <translation>Створити текст</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="808"/>
@@ -4312,7 +4314,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="utils.py" line="658"/>
       <source>Face</source>
-      <translation>Поверхня</translation>
+      <translation>Грань</translation>
     </message>
     <message>
       <location filename="utils.py" line="663"/>
@@ -4776,7 +4778,7 @@ https://github. om/yorikvanhavre/Draft-dxf-імпортер
     <message>
       <location filename="gui_facebinders.py" line="71"/>
       <source>Select faces from existing objects</source>
-      <translation>Оберіть поверхні з існуючих об'єктів</translation>
+      <translation>Оберіть грані серед наявних об'єктів</translation>
     </message>
     <message>
       <location filename="gui_lineslope.py" line="64"/>
@@ -7043,7 +7045,7 @@ Note that this is not fully supported, and many object will be not editable with
     <message>
       <location filename="../ui/preferences-draft.ui" line="390"/>
       <source>Construction</source>
-      <translation>Конструкція</translation>
+      <translation>Допоміжна</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="407"/>

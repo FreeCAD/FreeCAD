@@ -568,24 +568,9 @@
       <translation>Instalatu falta diren osagaiak.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="915"/>
-      <source>Retrieving macro description...</source>
-      <translation>Makroen deskribapena atzitzen...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="653"/>
-      <source>Retrieving info from git</source>
-      <translation>Informazioa atzitzen git biltegitik</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="873"/>
       <source>Error: Unable to locate zip from</source>
       <translation>Errorea: Ezin izan da ZIP fitxategia aurkitu</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="656"/>
-      <source>Retrieving info from wiki</source>
-      <translation>Informazioa atzitzen wikitik</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="880"/>
@@ -598,19 +583,34 @@
       <translation>Ongi instalatu da</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="915"/>
+      <source>Retrieving macro description...</source>
+      <translation>Makroen deskribapena atzitzen...</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="653"/>
+      <source>Retrieving info from git</source>
+      <translation>Informazioa atzitzen git biltegitik</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="656"/>
+      <source>Retrieving info from wiki</source>
+      <translation>Informazioa atzitzen wikitik</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="1013"/>
       <source>Error updating module</source>
       <translation>Errorea modulua eguneratzean</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1078"/>
-      <source>Please fix manually</source>
-      <translation>Konpondu eskuz</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="1075"/>
       <source>Error updating module </source>
       <translation>Errorea modulua eguneratzan </translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1078"/>
+      <source>Please fix manually</source>
+      <translation>Konpondu eskuz</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1220"/>
@@ -824,11 +824,6 @@
       <translation>Falta den eskakizuna</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="1079"/>
-      <source>Press OK to install anyway.</source>
-      <translation type="unfinished">Press OK to install anyway.</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>Hemen instalatu daitezkeen makroak ez dira FreeCADen makro ofizialak eta FreeCAD taldeak ez ditu gainbegiratzen. Ziurtatu badakizula zer ari zaren instalatzen!</translation>
@@ -912,6 +907,11 @@
       <location filename="AddonManager.py" line="786"/>
       <source>Failed packages:</source>
       <translation>Huts egin duten paketeak:</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1079"/>
+      <source>Press OK to install anyway.</source>
+      <translation>Sakatu 'Ados' instalatzeko.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="964"/>

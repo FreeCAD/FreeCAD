@@ -1085,7 +1085,7 @@
     <message>
       <location filename="../../Command.cpp" line="1278"/>
       <source>Function cut filter</source>
-      <translation type="unfinished">Function cut filter</translation>
+      <translation>Funktion Schnitt-Filter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1279"/>
@@ -1502,7 +1502,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="176"/>
       <source>Split writing of  *.inp</source>
-      <translation type="unfinished">Split writing of  *.inp</translation>
+      <translation>*.inp beim Schreiben aufteilen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="192"/>
@@ -1592,7 +1592,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="369"/>
       <source>Iterative Cholesky</source>
-      <translation type="unfinished">Iterative Cholesky</translation>
+      <translation>Iterativer Cholesky</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="399"/>
@@ -1746,13 +1746,13 @@ for means volumes for a volume mesh and faces for a shell mesh.
 
 FEM: Only FEM elements will be exported. This means only edges
 not belonging to faces and faces not belonging to volumes.</source>
-      <translation type="unfinished">All: All elements will be exported.
+      <translation>All: Alle Elemente werden exportiert.
 
-Highest: Only the highest elements will be exported. This means
-for means volumes for a volume mesh and faces for a shell mesh.
+Höchste: Nur die höchsten Elemente werden exportiert. Dies bedeutet
+für Volumes für ein Volumennetz und Flächen für ein Hüllennetz.
 
-FEM: Only FEM elements will be exported. This means only edges
-not belonging to faces and faces not belonging to volumes.</translation>
+FEM: Es werden nur FEM-Elemente exportiert. Das bedeutet, dass
+nur Kanten exportiert werden, die nicht zu Flächen und Flächen die nicht zu Volumen gehören.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="82"/>
@@ -1795,7 +1795,7 @@ not belonging to faces and faces not belonging to volumes.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="51"/>
       <source>sdfsdfsdfds</source>
-      <translation type="unfinished">sdfsdfsdfds</translation>
+      <translation>sdfsdfsdfds</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="54"/>
@@ -1805,7 +1805,7 @@ not belonging to faces and faces not belonging to volumes.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="75"/>
       <source>Let the application manage (create, delete) the working directories for all solver. Use temporary directories.</source>
-      <translation type="unfinished">Let the application manage (create, delete) the working directories for all solver. Use temporary directories.</translation>
+      <translation>Lasse die Anwendung die Arbeitsverzeichnisse für alle Solver verwalten (erstellen, löschen). Es werden temporäre Verzeichnisse verwenden.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="101"/>
@@ -1815,7 +1815,7 @@ not belonging to faces and faces not belonging to volumes.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="119"/>
       <source>Create a directory in the same folder in which the FCStd file of the document is located. Use Subfolder for each solver (e.g. for a file ./mydoc.FCStd and a solver with the label Elmer002 use ./mydoc/Elmer002).</source>
-      <translation type="unfinished">Create a directory in the same folder in which the FCStd file of the document is located. Use Subfolder for each solver (e.g. for a file ./mydoc.FCStd and a solver with the label Elmer002 use ./mydoc/Elmer002).</translation>
+      <translation>Erstellt ein Verzeichnis im selben Ordner, in dem sich die FCStd-Datei des Dokuments befindet. Verwendet einen Unterordner für jeden Solver (z.B. für eine Datei ./mydoc.FCStd und einen Solver mit dem Label Elmer002 ./mydoc/Elmer002).</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="145"/>
@@ -2807,7 +2807,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="157"/>
       <source>Constraint update error</source>
-      <translation type="unfinished">Constraint update error</translation>
+      <translation>Aktualisierungsfehler der Einschränkung</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="157"/>
@@ -2864,7 +2864,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="319"/>
       <source>Only transformable faces can be selected! Apply displacement constraint to surface first then apply constraint to surface</source>
-      <translation type="unfinished">Only transformable faces can be selected! Apply displacement constraint to surface first then apply constraint to surface</translation>
+      <translation>Nur umwandelbare Flächen können ausgewählt werden! Zuerst die Verschiebung auf die Oberfläche anwenden und dann erst auf Oberfläche beschränken</translation>
     </message>
   </context>
   <context>
@@ -2888,7 +2888,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="1179"/>
       <source>Function cut, choose implicit function</source>
-      <translation type="unfinished">Function cut, choose implicit function</translation>
+      <translation>Funktionsschnitt, implizite Funktion wählen</translation>
     </message>
   </context>
   <context>
@@ -2896,7 +2896,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="549"/>
       <source>Data along a line options</source>
-      <translation type="unfinished">Data along a line options</translation>
+      <translation>Optionen für Daten entlang einer Linie</translation>
     </message>
   </context>
   <context>
@@ -2904,7 +2904,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="766"/>
       <source>Data at point options</source>
-      <translation type="unfinished">Data at point options</translation>
+      <translation>Daten an Punkt Optionen</translation>
     </message>
   </context>
   <context>
@@ -3118,7 +3118,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../ui/Material.ui" line="523"/>
       <source>Vol Expansion Coeff</source>
-      <translation type="unfinished">Vol Expansion Coeff</translation>
+      <translation>Volumenausdehnungskoeffizient</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="542"/>
@@ -3313,7 +3313,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="582"/>
       <source>Gate valve closing coefficient</source>
-      <translation type="unfinished">Gate valve closing coefficient</translation>
+      <translation>Schließkoeffizient des Absperrschiebers</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="613"/>
@@ -3353,7 +3353,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="651"/>
       <source>Head Loss[mm]</source>
-      <translation type="unfinished">Head Loss[mm]</translation>
+      <translation>Druckverlust [mm]</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="759"/>
@@ -3363,12 +3363,12 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="780"/>
       <source>Cross section form factor</source>
-      <translation type="unfinished">Cross section form factor</translation>
+      <translation>Querschnitt Formfaktor</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="829"/>
       <source>Gas Section Parameter</source>
-      <translation type="unfinished">Gas Section Parameter</translation>
+      <translation>Gasbereich Parameter</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="843"/>
@@ -3421,7 +3421,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../ui/ConstraintSectionPrint.ui" line="14"/>
       <source>SectionPrint parameter</source>
-      <translation type="unfinished">SectionPrint parameter</translation>
+      <translation>Abschnitt Druckparameter</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="14"/>
@@ -3448,12 +3448,12 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="30"/>
       <source>Potential Constant</source>
-      <translation type="unfinished">Potential Constant</translation>
+      <translation>Potenzial Konstante</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="40"/>
       <source>Farfield / Electric infinity</source>
-      <translation type="unfinished">Farfield / Electric infinity</translation>
+      <translation>Fernfeld / Elektrische Unendlichkeit</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="49"/>
@@ -3518,7 +3518,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="14"/>
       <source>Shell thickness parameter</source>
-      <translation type="unfinished">Shell thickness parameter</translation>
+      <translation>Parameter Hüllen stärke</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="77"/>
@@ -3782,7 +3782,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="418"/>
       <source>Constraint Contact</source>
-      <translation type="unfinished">Constraint Contact</translation>
+      <translation>Einschränkung Flächenkontakt</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="585"/>
@@ -3797,7 +3797,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="886"/>
       <source>Constraint fluid boundary</source>
-      <translation type="unfinished">Constraint fluid boundary</translation>
+      <translation>Einschränkung Flüssigkeitsgrenze</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="397"/>
@@ -3860,7 +3860,7 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
     <message>
       <location filename="../ui/ResultShow.ui" line="30"/>
       <source>Displacement Magnitude</source>
-      <translation type="unfinished">Displacement Magnitude</translation>
+      <translation>Größe der Verschiebung</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="37"/>
@@ -3974,11 +3974,11 @@ FreeCAD-Ergebnisobjekt: Die importierten Daten werden in ein FreeCAD FEM-Ergebni
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;"&gt;
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-family:'Ubuntu';"&gt;P1-P3 # Stress intensity stress equation. Available values are numpy array format. Calculation np.function can be used on available values. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
+      <translation>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//DE" "http://www.w3.org/TR/REC-html40/strict. td"&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
-p, li { white-space: pre-wrap; }
+p, li { white-space: pre-wrapp; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-family:'Ubuntu';"&gt;P1-P3 # Stress intensity stress equation. Available values are numpy array format. Calculation np.function can be used on available values. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-family:'Ubuntu';"&gt;P1-P3 # Belastungsintensität Belastungsgleichung. Verfügbare Werte sind im Numpy-Array-Format. Die Berechnung np.function kann für die verfügbaren Werte verwendet werden. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="14"/>
@@ -4053,7 +4053,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/ResultHints.ui" line="210"/>
       <source>Mohr Coulomb: mc</source>
-      <translation type="unfinished">Mohr Coulomb: mc</translation>
+      <translation>Mohr Coulomb: mc</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="220"/>
@@ -4106,7 +4106,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/SolverCalculix.ui" line="98"/>
       <source>Buckling</source>
-      <translation type="unfinished">Buckling</translation>
+      <translation>Knickung</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculix.ui" line="110"/>
@@ -4304,7 +4304,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="62"/>
       <source>Other pulley diameter</source>
-      <translation type="unfinished">Other pulley diameter</translation>
+      <translation>Weitere Rollendurchmesser</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="86"/>
@@ -4610,7 +4610,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="460"/>
       <source>HT coeff</source>
-      <translation type="unfinished">HT coeff</translation>
+      <translation>HT-Koeff</translation>
     </message>
   </context>
   <context>
@@ -4688,7 +4688,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="50"/>
       <source>Surface Convection</source>
-      <translation type="unfinished">Surface Convection</translation>
+      <translation>Oberflächenkonvektion</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="57"/>
@@ -4699,7 +4699,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="77"/>
       <source>Film coefficient</source>
-      <translation type="unfinished">Film coefficient</translation>
+      <translation>Filmkoeffizient</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="84"/>
@@ -5097,7 +5097,7 @@ Normalenvektors der Fläche wird als Richtung verwendet</translation>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="130"/>
       <source>Magnitute</source>
-      <translation type="unfinished">Magnitute</translation>
+      <translation>Magnitude</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="135"/>

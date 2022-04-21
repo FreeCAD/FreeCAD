@@ -722,6 +722,11 @@ Tę właściwość można tylko przeglądać, ponieważ liczba jest zależna od 
       <translation>Powierzchnia tego obiektu</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Kształt tego obiektu</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>Obiekt podstawowy używany przez ten obiekt</translation>
@@ -745,11 +750,6 @@ Tę właściwość można tylko przeglądać, ponieważ liczba jest zależna od 
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation>Obrót wzoru używanego przez ten obiekt</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Kształt tego obiektu</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>

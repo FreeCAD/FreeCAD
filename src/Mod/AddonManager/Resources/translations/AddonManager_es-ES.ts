@@ -568,24 +568,9 @@
       <translation>Por favor, instale los componentes que faltan primero.</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="915"/>
-      <source>Retrieving macro description...</source>
-      <translation>Recuperando descripción de macro...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="653"/>
-      <source>Retrieving info from git</source>
-      <translation>Recuperando información de git</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="873"/>
       <source>Error: Unable to locate zip from</source>
       <translation>Error: No se puede localizar zip desde</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="656"/>
-      <source>Retrieving info from wiki</source>
-      <translation>Recuperando información de wiki</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="880"/>
@@ -598,19 +583,34 @@
       <translation>Se ha instalado correctamente</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="915"/>
+      <source>Retrieving macro description...</source>
+      <translation>Recuperando descripción de macro...</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="653"/>
+      <source>Retrieving info from git</source>
+      <translation>Recuperando información de git</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="656"/>
+      <source>Retrieving info from wiki</source>
+      <translation>Recuperando información de wiki</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="1013"/>
       <source>Error updating module</source>
       <translation>Error al actualizar el módulo</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1078"/>
-      <source>Please fix manually</source>
-      <translation>Por favor, corregir manualmente</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="1075"/>
       <source>Error updating module </source>
       <translation>Error al actualizar el módulo </translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1078"/>
+      <source>Please fix manually</source>
+      <translation>Por favor, corregir manualmente</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1220"/>
@@ -824,11 +824,6 @@
       <translation>Requisitos faltantes</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="1079"/>
-      <source>Press OK to install anyway.</source>
-      <translation type="unfinished">Press OK to install anyway.</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>Los complementos que se pueden instalar aquí no son oficialmente parte de FreeCAD, y no han sido revisados por el equipo de FreeCAD. ¡Asegúrese de que sabe lo que está instalando!</translation>
@@ -912,6 +907,11 @@
       <location filename="AddonManager.py" line="786"/>
       <source>Failed packages:</source>
       <translation>Paquetes fallados:</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1079"/>
+      <source>Press OK to install anyway.</source>
+      <translation type="unfinished">Press OK to install anyway.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="964"/>

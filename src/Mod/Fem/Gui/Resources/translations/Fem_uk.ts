@@ -440,7 +440,7 @@
     <message>
       <location filename="commands.py" line="706"/>
       <source>Creates a FEM mesh boundary layer</source>
-      <translation type="unfinished">Creates a FEM mesh boundary layer</translation>
+      <translation>Створює граничний шар сітки МСЕ</translation>
     </message>
   </context>
   <context>
@@ -448,12 +448,12 @@
     <message>
       <location filename="commands.py" line="719"/>
       <source>Clear FEM mesh</source>
-      <translation type="unfinished">Clear FEM mesh</translation>
+      <translation>Очистити сітку МСЕ</translation>
     </message>
     <message>
       <location filename="commands.py" line="723"/>
       <source>Clear the Mesh of a FEM mesh object</source>
-      <translation type="unfinished">Clear the Mesh of a FEM mesh object</translation>
+      <translation>Очистити сітку об'єкту МСЕ сітки</translation>
     </message>
   </context>
   <context>
@@ -500,7 +500,7 @@
     <message>
       <location filename="commands.py" line="839"/>
       <source>Create a FEM mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation type="unfinished">Create a FEM mesh from a solid or face shape by Netgen internal mesher</translation>
+      <translation>Створіть сітку МСЕ з твердої форми або форми обличчя за допомогою внутрішньої сітки Netgen</translation>
     </message>
   </context>
   <context>
@@ -513,7 +513,7 @@
     <message>
       <location filename="commands.py" line="884"/>
       <source>Creates a FEM mesh region</source>
-      <translation type="unfinished">Creates a FEM mesh region</translation>
+      <translation>Створює область сітки МСЕ</translation>
     </message>
   </context>
   <context>
@@ -526,7 +526,7 @@
     <message>
       <location filename="commands.py" line="902"/>
       <source>Shows and visualizes selected result data</source>
-      <translation type="unfinished">Shows and visualizes selected result data</translation>
+      <translation>Відображення та візуалізація вибраних даних результату</translation>
     </message>
   </context>
   <context>
@@ -539,7 +539,7 @@
     <message>
       <location filename="commands.py" line="922"/>
       <source>Purges all results from active analysis</source>
-      <translation type="unfinished">Purges all results from active analysis</translation>
+      <translation>Видаляє всі результати активного аналізу</translation>
     </message>
   </context>
   <context>
@@ -547,12 +547,12 @@
     <message>
       <location filename="commands.py" line="980"/>
       <source>Solver CalculiX (new framework)</source>
-      <translation type="unfinished">Solver CalculiX (new framework)</translation>
+      <translation>Розв'язувач CalculiX (новий фреймворк)</translation>
     </message>
     <message>
       <location filename="commands.py" line="985"/>
       <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
-      <translation type="unfinished">Creates a FEM solver CalculiX new framework (less result error handling)</translation>
+      <translation>Створює МСЕ-розв'язувач нового фреймворку CalculiX (менше обробки помилок результату)</translation>
     </message>
   </context>
   <context>
@@ -560,12 +560,12 @@
     <message>
       <location filename="commands.py" line="939"/>
       <source>Solver CalculiX Standard</source>
-      <translation type="unfinished">Solver CalculiX Standard</translation>
+      <translation>Розв’язувач CalculiX Стандартний</translation>
     </message>
     <message>
       <location filename="commands.py" line="944"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation type="unfinished">Creates a standard FEM solver CalculiX with ccx tools</translation>
+      <translation>Створює стандартний метод FEM для розв'язувача CalculiX з інструментами ccx</translation>
     </message>
   </context>
   <context>
@@ -573,7 +573,7 @@
     <message>
       <location filename="commands.py" line="999"/>
       <source>Solver job control</source>
-      <translation type="unfinished">Solver job control</translation>
+      <translation>Керування завданнями розв'язувача</translation>
     </message>
     <message>
       <location filename="commands.py" line="1004"/>
@@ -697,12 +697,12 @@
     <message>
       <location filename="commands.py" line="939"/>
       <source>Solver CalculiX Standard</source>
-      <translation type="unfinished">Solver CalculiX Standard</translation>
+      <translation>Розв’язувач CalculiX Стандартний</translation>
     </message>
     <message>
       <location filename="commands.py" line="944"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation type="unfinished">Creates a standard FEM solver CalculiX with ccx tools</translation>
+      <translation>Створює стандартний метод FEM для розв'язувача CalculiX з інструментами ccx</translation>
     </message>
   </context>
   <context>
@@ -1764,7 +1764,7 @@ not belonging to faces and faces not belonging to volumes.</translation>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="92"/>
       <source>All</source>
-      <translation>Все</translation>
+      <translation>Вся</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="97"/>
@@ -3700,7 +3700,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../PlaneWidget.ui" line="115"/>
       <source>Normal</source>
-      <translation>Звичайне</translation>
+      <translation>Звичайна</translation>
     </message>
   </context>
   <context>

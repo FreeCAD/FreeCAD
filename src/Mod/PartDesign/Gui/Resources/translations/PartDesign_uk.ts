@@ -152,7 +152,7 @@
     <message>
       <location filename="../../CommandBody.cpp" line="91"/>
       <source>Create a new body and make it active</source>
-      <translation>Створити нове тіло і зробити його активним</translation>
+      <translation>Створює нове тіло і робить його активним</translation>
     </message>
   </context>
   <context>
@@ -165,7 +165,7 @@
     <message>
       <location filename="../../Command.cpp" line="2559"/>
       <source>Boolean operation</source>
-      <translation>Логічна операція</translation>
+      <translation>Булева операція</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2560"/>
@@ -476,7 +476,7 @@
     <message>
       <location filename="../../Command.cpp" line="490"/>
       <source>Create a new sketch</source>
-      <translation>Створення нового ескізу</translation>
+      <translation>Створює новий ескіз</translation>
     </message>
   </context>
   <context>
@@ -489,12 +489,12 @@
     <message>
       <location filename="../../Command.cpp" line="1230"/>
       <source>Pad</source>
-      <translation>Панель</translation>
+      <translation>Видавлювання</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1231"/>
       <source>Pad a selected sketch</source>
-      <translation>Панель обраного ескізу</translation>
+      <translation>Видавлює обраний ескіз</translation>
     </message>
   </context>
   <context>
@@ -1913,7 +1913,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="88"/>
       <source>Mode:</source>
-      <translation>Режим:</translation>
+      <translation>Режим геометрії:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="96"/>
@@ -2094,7 +2094,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="115"/>
       <source>OK</source>
-      <translation>Гаразд</translation>
+      <translation>Підтвердити</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="124"/>
@@ -2200,7 +2200,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="70"/>
       <source>OK</source>
-      <translation>Гаразд</translation>
+      <translation>Підтвердити</translation>
     </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="79"/>
@@ -2413,7 +2413,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadParameters.ui" line="227"/>
       <source>Offset to face</source>
-      <translation>Зміщення до поверхні</translation>
+      <translation>Зміщення до грані</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="234"/>
@@ -2433,7 +2433,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadParameters.ui" line="259"/>
       <source>Reverses pad direction</source>
-      <translation>Змінює напрямок панелі</translation>
+      <translation>Змінює напрямок видавлювання</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="262"/>
@@ -2450,7 +2450,7 @@ measured along the specified direction</source>
       <location filename="../../TaskPadParameters.cpp" line="143"/>
       <location filename="../../TaskPadParameters.cpp" line="729"/>
       <source>Face</source>
-      <translation>Поверхня</translation>
+      <translation>Грань</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="308"/>
@@ -2460,13 +2460,13 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="59"/>
       <source>Pad parameters</source>
-      <translation>Панель параметрів</translation>
+      <translation>Параметри видавлювання</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="66"/>
       <location filename="../../TaskPadParameters.cpp" line="715"/>
       <source>No face selected</source>
-      <translation>Не обрано жодної поверхні</translation>
+      <translation>Не обрано жодної грані</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="155"/>
@@ -2753,7 +2753,7 @@ measured along the specified direction</source>
       <location filename="../../TaskPocketParameters.cpp" line="107"/>
       <location filename="../../TaskPocketParameters.cpp" line="464"/>
       <source>Face</source>
-      <translation>Поверхня</translation>
+      <translation>Грань</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.ui" line="127"/>
@@ -2769,7 +2769,7 @@ measured along the specified direction</source>
       <location filename="../../TaskPocketParameters.cpp" line="64"/>
       <location filename="../../TaskPocketParameters.cpp" line="449"/>
       <source>No face selected</source>
-      <translation>Не обрано жодної поверхні</translation>
+      <translation>Не обрано жодної грані</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="120"/>
@@ -2841,7 +2841,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="121"/>
       <source>OK</source>
-      <translation>Гаразд</translation>
+      <translation>Підтвердити</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="130"/>
@@ -2969,7 +2969,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="81"/>
       <source>OK</source>
-      <translation>Гаразд</translation>
+      <translation>Підтвердити</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="90"/>
@@ -3015,7 +3015,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskSketchBasedParameters.cpp" line="167"/>
       <source>Face</source>
-      <translation>Поверхня</translation>
+      <translation>Грань</translation>
     </message>
   </context>
   <context>
@@ -3707,7 +3707,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../TaskSketchBasedParameters.cpp" line="85"/>
       <source>Face</source>
-      <translation>Поверхня</translation>
+      <translation>Грань</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="130"/>
@@ -3821,7 +3821,7 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderPad.cpp" line="54"/>
       <source>Edit pad</source>
-      <translation>Панель редагування</translation>
+      <translation>Редагувати видавлювання</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPipe.cpp" line="87"/>
@@ -4127,7 +4127,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="35"/>
       <source>Face</source>
-      <translation>Поверхня</translation>
+      <translation>Грань</translation>
     </message>
     <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="49"/>
@@ -4502,7 +4502,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="591"/>
       <source>Normal</source>
-      <translation>Звичайне</translation>
+      <translation>Звичайна</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="593"/>

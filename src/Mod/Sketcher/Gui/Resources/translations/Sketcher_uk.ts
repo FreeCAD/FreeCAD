@@ -84,12 +84,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6936"/>
       <source>Carbon copy</source>
-      <translation type="unfinished">Carbon copy</translation>
+      <translation>Копія</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6937"/>
       <source>Copies the geometry of another sketch</source>
-      <translation>Копіювати геометрію іншого ескізу</translation>
+      <translation>Копіює геометрію іншого ескізу</translation>
     </message>
   </context>
   <context>
@@ -161,7 +161,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="5791"/>
       <source>Constrain an arc or a circle</source>
-      <translation>Обмежити дугу чи коло</translation>
+      <translation>Створює обмеження для дуги чи кола</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5896"/>
@@ -202,7 +202,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2391"/>
       <source>Create an arc in the sketcher</source>
-      <translation>Створити дугу в ескізі</translation>
+      <translation>Створює дугу на ескізі</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2468"/>
@@ -225,7 +225,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5027"/>
       <source>Create a B-spline in the sketch</source>
-      <translation>Створити B-сплайн в ескізі</translation>
+      <translation>Створює B-сплайн на ескізі</translation>
     </message>
   </context>
   <context>
@@ -233,12 +233,12 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5336"/>
       <source>Create circle</source>
-      <translation>Створення кола</translation>
+      <translation>Створити коло</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5337"/>
       <source>Create a circle in the sketcher</source>
-      <translation>Створити коло в ескізі</translation>
+      <translation>Створює коло на ескізі</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5414"/>
@@ -261,7 +261,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4450"/>
       <source>Create a conic in the sketch</source>
-      <translation>Створити в ескізі конус</translation>
+      <translation>Створює конус на ескізі</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4555"/>
@@ -299,7 +299,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5914"/>
       <source>Create a fillet between two lines</source>
-      <translation>Створи заокруглення між двома лініями</translation>
+      <translation>Створює заокруглення між двома лініями</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5989"/>
@@ -322,7 +322,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1097"/>
       <source>Creates a rectangle in the sketch</source>
-      <translation>Створити в ескізі прямокутник</translation>
+      <translation>Створює прямокутник на ескізі</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1180"/>
@@ -350,7 +350,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7580"/>
       <source>Create a regular polygon in the sketcher</source>
-      <translation>Створити правильний багатокутник на ескізі</translation>
+      <translation>Створює правильний багатокутник на ескізі</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7695"/>
@@ -429,12 +429,12 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="5934"/>
       <source>Constrain angle</source>
-      <translation>Кут обмеження</translation>
+      <translation>Кутове обмеження</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5935"/>
       <source>Fix the angle of a line or the angle between two lines</source>
-      <translation>Задати нахил лінії або кут між двома лініями</translation>
+      <translation>Задає кут нахилу лінії або кут між двома лініями</translation>
     </message>
   </context>
   <context>
@@ -455,12 +455,12 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2109"/>
       <source>Constrain coincident</source>
-      <translation>Обмеження збігів</translation>
+      <translation>Обмеження збігу</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2110"/>
       <source>Create a coincident constraint on the selected item</source>
-      <translation>Створити обмеження збігів (коінцидентності) для обраних елементів</translation>
+      <translation>Створює обмеження збігу для обраних елементів</translation>
     </message>
   </context>
   <context>
@@ -473,7 +473,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="5211"/>
       <source>Fix the diameter of a circle or an arc</source>
-      <translation>Задати діаметр кола або дуги</translation>
+      <translation>Задає діаметр кола або дуги</translation>
     </message>
   </context>
   <context>
@@ -486,7 +486,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2316"/>
       <source>Fix a length of a line or the distance between a line and a vertex</source>
-      <translation>Задати довжину лінії або відстань між лінією та вершиною</translation>
+      <translation>Задає довжину лінії або відстань між лінією та вершиною</translation>
     </message>
   </context>
   <context>
@@ -499,7 +499,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2913"/>
       <source>Fix the horizontal distance between two points or line ends</source>
-      <translation>Задати вертикальну відстань між двома точками або кінцями ліній</translation>
+      <translation>Задає відстань по горизонталі між двома точками або кінцями відрізку</translation>
     </message>
   </context>
   <context>
@@ -512,7 +512,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="3167"/>
       <source>Fix the vertical distance between two points or line ends</source>
-      <translation>Задати вертикальну відстань між двома точками або кінцями ліній</translation>
+      <translation>Задає відстань по вертикалі між двома точками або кінцями відрізку</translation>
     </message>
   </context>
   <context>
@@ -520,12 +520,12 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="6461"/>
       <source>Constrain equal</source>
-      <translation>Обмеження по еквівалентності</translation>
+      <translation>Еквівалентне обмеження</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6462"/>
       <source>Create an equality constraint between two lines or between circles and arcs</source>
-      <translation>Створити обмеження еквівалентності між двома лініями, або між колами і дугами</translation>
+      <translation>Створює обмеження еквівалентності між двома лініями, колами або дугами</translation>
     </message>
   </context>
   <context>
@@ -538,7 +538,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="1099"/>
       <source>Create a horizontal constraint on the selected item</source>
-      <translation>Створити обмеження по горизонталі для вибраного елементу</translation>
+      <translation>Створює обмеження горизонтальності для вибраного елементу</translation>
     </message>
   </context>
   <context>
@@ -559,14 +559,14 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="1570"/>
       <source>Constrain lock</source>
-      <translation>Обмеження блокування</translation>
+      <translation>Обмеження фіксації</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1571"/>
       <source>Lock constraint: create both a horizontal and a vertical distance constraint
 on the selected vertex</source>
-      <translation>Зафіксувати обмеження: створити як горизонтальне, так і вертикальне обмеження відстані
-на вибраній вершині</translation>
+      <translation>Фіксуюче обмеження: створює горизонтальне та вертикальне 
+обмеження відстані для вибраної вершини</translation>
     </message>
   </context>
   <context>
@@ -579,7 +579,7 @@ on the selected vertex</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3413"/>
       <source>Create a parallel constraint between two lines</source>
-      <translation>Створити паралельне обмеження між двома лініями</translation>
+      <translation>Створює обмеження паралельності між двома лініями</translation>
     </message>
   </context>
   <context>
@@ -587,12 +587,12 @@ on the selected vertex</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3562"/>
       <source>Constrain perpendicular</source>
-      <translation>Обмеження за перпендикулярністю</translation>
+      <translation>Перпендикулярне обмеження</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3563"/>
       <source>Create a perpendicular constraint between two lines</source>
-      <translation>Створити обмеження за перпендикулярністю між двома лініями</translation>
+      <translation>Створює обмеження перпендикулярності між двома лініями</translation>
     </message>
   </context>
   <context>
@@ -600,12 +600,12 @@ on the selected vertex</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2664"/>
       <source>Constrain point onto object</source>
-      <translation>Обмежити точки об'єктом</translation>
+      <translation>Зафіксувати точку на об'єкті</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2665"/>
       <source>Fix a point onto an object</source>
-      <translation>Зафіксувати точку на об'єкті</translation>
+      <translation>Фіксує точку на об'єкті</translation>
     </message>
   </context>
   <context>
@@ -645,7 +645,8 @@ on the selected vertex</source>
       <location filename="../../CommandConstraints.cpp" line="6979"/>
       <source>Create a refraction law (Snell's law) constraint between two endpoints of rays
 and an edge as an interface.</source>
-      <translation>Створити обмеження за законом заломлення (закон Снеліуса) між двома точками променя та ребром як межею.</translation>
+      <translation>Створює обмеження за законом заломлення (закон Снеліуса) між 
+двома кінцевими точками променя та ребром як границею розділу середовищ.</translation>
     </message>
   </context>
   <context>
@@ -653,13 +654,14 @@ and an edge as an interface.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6678"/>
       <source>Constrain symmetrical</source>
-      <translation>Обмеження за симетрією</translation>
+      <translation>Симетричне обмеження</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6679"/>
       <source>Create a symmetry constraint between two points
 with respect to a line or a third point</source>
-      <translation>Створити обмеження за симетрією між двома точками відносно лінії або третьої точки</translation>
+      <translation>Створює обмеження симетричності між двома 
+точками відносно лінії або третьої точки</translation>
     </message>
   </context>
   <context>
@@ -667,12 +669,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4200"/>
       <source>Constrain tangent</source>
-      <translation>Дотичне обмеження</translation>
+      <translation>Обмеження дотичності</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4201"/>
       <source>Create a tangent constraint between two entities</source>
-      <translation>Створити дотичне обмеження між двома об'ектами</translation>
+      <translation>Створює обмеження дотичності між двома об'єктами</translation>
     </message>
   </context>
   <context>
@@ -685,7 +687,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1337"/>
       <source>Create a vertical constraint on the selected item</source>
-      <translation>Створити обмеження по вертикалі для вибраного елементу</translation>
+      <translation>Створює обмеження вертикальності для вибраного елементу</translation>
     </message>
   </context>
   <context>
@@ -724,7 +726,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2364"/>
       <source>Create an arc by its end points and a point along the arc</source>
-      <translation>Створити дугу за кінцевими точками та точкою вздовж дуги</translation>
+      <translation>Створює дугу за кінцевими точками та точкою на дузі</translation>
     </message>
   </context>
   <context>
@@ -737,7 +739,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5310"/>
       <source>Create a circle by 3 perimeter points</source>
-      <translation>Створити коло за трьома точками периметра</translation>
+      <translation>Створює коло за трьома точками периметра</translation>
     </message>
   </context>
   <context>
@@ -745,12 +747,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2094"/>
       <source>Create arc by center</source>
-      <translation>Створити дугу по центру</translation>
+      <translation>Створити дугу за центром</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2095"/>
       <source>Create an arc by its center and by its end points</source>
-      <translation>Створити дугу за центром та кінцевими точками</translation>
+      <translation>Створює дугу за центром та кінцевими точками</translation>
     </message>
   </context>
   <context>
@@ -763,7 +765,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="3777"/>
       <source>Create an arc of ellipse in the sketch</source>
-      <translation>Створити в ескізі дугу еліпса</translation>
+      <translation>Створює дугу еліпса на ескізі</translation>
     </message>
   </context>
   <context>
@@ -776,7 +778,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4120"/>
       <source>Create an arc of hyperbola in the sketch</source>
-      <translation>Створити дугу гіперболи у ескізі</translation>
+      <translation>Створює дугу гіперболи на ескізі</translation>
     </message>
   </context>
   <context>
@@ -789,7 +791,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4418"/>
       <source>Create an arc of parabola in the sketch</source>
-      <translation>Створити дугу параболи в ескізі</translation>
+      <translation>Створює дугу параболи на ескізі</translation>
     </message>
   </context>
   <context>
@@ -802,7 +804,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4952"/>
       <source>Create a B-spline via control points in the sketch.</source>
-      <translation>Створити B-сплайн за допомогою контрольних точок ескізу.</translation>
+      <translation>Створює B-сплайн за допомогою контрольних точок ескізу.</translation>
     </message>
   </context>
   <context>
@@ -810,12 +812,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2624"/>
       <source>Create circle</source>
-      <translation>Створення кола</translation>
+      <translation>Створити коло</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2625"/>
       <source>Create a circle in the sketch</source>
-      <translation>Створення кола в ескізі</translation>
+      <translation>Створює коло на ескізі</translation>
     </message>
   </context>
   <context>
@@ -823,12 +825,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5573"/>
       <source>Create draft line</source>
-      <translation>Створення допоміжної лінії</translation>
+      <translation>Створити допоміжну лінію</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5574"/>
       <source>Create a draft line in the sketch</source>
-      <translation>Створення допоміжної лінії в ескізі</translation>
+      <translation>Створює допоміжну лінію на ескізі</translation>
     </message>
   </context>
   <context>
@@ -841,7 +843,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="3450"/>
       <source>Create an ellipse by 3 points in the sketch</source>
-      <translation>Створити в ескізі еліпс за 3 точками</translation>
+      <translation>Створює еліпс за 3 точками на ескізі</translation>
     </message>
   </context>
   <context>
@@ -849,12 +851,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="3419"/>
       <source>Create ellipse by center</source>
-      <translation>Створити еліпс по центру</translation>
+      <translation>Створити еліпс за центром</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="3420"/>
       <source>Create an ellipse by center in the sketch</source>
-      <translation>Створити в ескізі еліпс по центру</translation>
+      <translation>Створює еліпс за центром та двома радіусами</translation>
     </message>
   </context>
   <context>
@@ -880,7 +882,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7495"/>
       <source>Create a heptagon in the sketch</source>
-      <translation>Створити в ескізі семикутник</translation>
+      <translation>Створює семикутник на ескізі</translation>
     </message>
   </context>
   <context>
@@ -893,7 +895,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7468"/>
       <source>Create a hexagon in the sketch</source>
-      <translation>Створити в ескізі шестикутник</translation>
+      <translation>Створює шестикутник на ескізі</translation>
     </message>
   </context>
   <context>
@@ -901,12 +903,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="385"/>
       <source>Create line</source>
-      <translation>Створення лінії</translation>
+      <translation>Створити лінію</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="386"/>
       <source>Create a line in the sketch</source>
-      <translation>Створення лінії в ескізі</translation>
+      <translation>Створює лінію на ескізі</translation>
     </message>
   </context>
   <context>
@@ -914,12 +916,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1053"/>
       <source>Create rounded rectangle</source>
-      <translation>Створити прямокутник з заокругленими кутами</translation>
+      <translation>Створити прямокутник із заокругленими кутами</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1054"/>
       <source>Create a rounded rectangle in the sketch</source>
-      <translation>Створити в ескізі прямокутник з заокругленими кутами</translation>
+      <translation>Створює прямокутник із заокругленими кутами на ескізі</translation>
     </message>
   </context>
   <context>
@@ -932,7 +934,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7522"/>
       <source>Create an octagon in the sketch</source>
-      <translation>Створити в ескізі восьмикутник</translation>
+      <translation>Створює восьмикутник на ескізі</translation>
     </message>
   </context>
   <context>
@@ -945,7 +947,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7440"/>
       <source>Create a pentagon in the sketch</source>
-      <translation>Створити в ескізі п’ятикутник</translation>
+      <translation>Створює п’ятикутник на ескізі</translation>
     </message>
   </context>
   <context>
@@ -958,7 +960,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4996"/>
       <source>Create a periodic B-spline via control points in the sketch.</source>
-      <translation>Створити періодичний B-сплайн за допомогою контрольних точок ескізу.</translation>
+      <translation>Створює періодичний B-сплайн за допомогою контрольних точок ескізу.</translation>
     </message>
   </context>
   <context>
@@ -966,12 +968,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5516"/>
       <source>Create point</source>
-      <translation>Створення точки</translation>
+      <translation>Створити точку</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5517"/>
       <source>Create a point in the sketch</source>
-      <translation>Створення точки в ескізі</translation>
+      <translation>Створює точку на ескізі</translation>
     </message>
   </context>
   <context>
@@ -992,12 +994,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1851"/>
       <source>Create polyline</source>
-      <translation>Створення полілінії</translation>
+      <translation>Створити полілінію</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1852"/>
       <source>Create a polyline in the sketch. 'M' Key cycles behaviour</source>
-      <translation>Створити ламану лінію у ескізі. Клавіша 'M' циклічна зміна режиму</translation>
+      <translation>Створює ламану лінію на ескізі. Циклічна зміна режиму - клавіша 'M'</translation>
     </message>
   </context>
   <context>
@@ -1010,7 +1012,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="689"/>
       <source>Create a rectangle in the sketch</source>
-      <translation>Створіть прямокутник в ескізі</translation>
+      <translation>Створює прямокутник на ескізі</translation>
     </message>
   </context>
   <context>
@@ -1018,12 +1020,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="729"/>
       <source>Create centered rectangle</source>
-      <translation>Створити прямокутник по центру</translation>
+      <translation>Створити прямокутник за центром</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="730"/>
       <source>Create a centered rectangle in the sketch</source>
-      <translation>Створити прямокутник по центру в ескізі</translation>
+      <translation>Створює прямокутник за центром на ескізі</translation>
     </message>
   </context>
   <context>
@@ -1036,7 +1038,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7549"/>
       <source>Create a regular polygon in the sketch</source>
-      <translation>Створити правильний багатокутник на ескізі</translation>
+      <translation>Створює правильний багатокутник на ескізі</translation>
     </message>
   </context>
   <context>
@@ -1049,7 +1051,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7193"/>
       <source>Create a slot in the sketch</source>
-      <translation>Створити паз в ескізі</translation>
+      <translation>Створює паз на ескізі</translation>
     </message>
   </context>
   <context>
@@ -1062,7 +1064,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7413"/>
       <source>Create a square in the sketch</source>
-      <translation>Створити квадрат в ескізі</translation>
+      <translation>Створює квадрат на ескізі</translation>
     </message>
   </context>
   <context>
@@ -1070,12 +1072,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5545"/>
       <source>Create text</source>
-      <translation>Створення тексту</translation>
+      <translation>Створити текст</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5546"/>
       <source>Create text in the sketch</source>
-      <translation>Створення тексту в ескізі</translation>
+      <translation>Створює текст на ескізі</translation>
     </message>
   </context>
   <context>
@@ -1088,7 +1090,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7386"/>
       <source>Create an equilateral triangle in the sketch</source>
-      <translation>Створити рівнобічний трикутник в ескізі</translation>
+      <translation>Створює рівнобічний трикутник на ескізі</translation>
     </message>
   </context>
   <context>
@@ -1166,7 +1168,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6458"/>
       <source>Extend an edge with respect to the picked position</source>
-      <translation>Продовжити ребро до ближчої точки перетину</translation>
+      <translation>Продовжує ребро до найближчої точки перетину</translation>
     </message>
   </context>
   <context>
@@ -1179,7 +1181,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6761"/>
       <source>Create an edge linked to an external geometry</source>
-      <translation>Створити ребро, яке прив’язане на зовнішню геометрію</translation>
+      <translation>Створює ребро, яке прив’язане до зовнішньої геометрії</translation>
     </message>
   </context>
   <context>
@@ -1496,7 +1498,7 @@ This will clear the 'Support' property, if any.</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6577"/>
       <source>Splits an edge into two while preserving constraints</source>
-      <translation>Розділити ребро на два зі збереженням обмежень</translation>
+      <translation>Ділить ребро на два зі збереженням обмежень</translation>
     </message>
   </context>
   <context>
@@ -1556,12 +1558,12 @@ This will clear the 'Support' property, if any.</source>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="74"/>
       <source>Toggle construction geometry</source>
-      <translation>Перемкнути допоміжну геометрію</translation>
+      <translation>Ввімкнути/вимкнути допоміжну геометрію</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="75"/>
       <source>Toggles the toolbar or selected geometry to/from construction mode</source>
-      <translation>Перемкнути панель інструментів або обрану геометрію в/з режиму конструювання</translation>
+      <translation>Активує/деактивує панель інструментів або обрану геометрію в/з режим(у) конструювання</translation>
     </message>
   </context>
   <context>
@@ -1569,7 +1571,7 @@ This will clear the 'Support' property, if any.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7603"/>
       <source>Toggle driving/reference constraint</source>
-      <translation>Перемкнути обмеження на допоміжні/основні</translation>
+      <translation>Переключити обмеження між допоміжними/основними</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7604"/>
@@ -1588,7 +1590,7 @@ into driving or reference mode</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="6144"/>
       <source>Trim an edge with respect to the picked position</source>
-      <translation>Обрізати ребро відповідно до обраної позиції</translation>
+      <translation>Обрізає ребро до найближчої точки перетину</translation>
     </message>
   </context>
   <context>
@@ -1889,7 +1891,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7688"/>
       <source>Toggle constraint to driving/reference</source>
-      <translation>Перемкнути обмеження на допоміжні/основні</translation>
+      <translation>Перемикнути обмеження між допоміжними/основними</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7772"/>
@@ -1904,7 +1906,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../Command.cpp" line="239"/>
       <source>Create a new sketch</source>
-      <translation>Створення нового ескізу</translation>
+      <translation>Створює новий ескіз</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="489"/>
@@ -2082,7 +2084,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1198"/>
       <source>Create symmetric geometry</source>
-      <translation>Створення симетричної геометрії</translation>
+      <translation>Створити симетричну геометрію</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1341"/>
@@ -3003,7 +3005,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandConstraints.cpp" line="6992"/>
       <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second to n2, and datum value sets the ratio n2/n1.</source>
       <comment>Constraint_SnellsLaw</comment>
-      <translation type="unfinished">Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second to n2, and datum value sets the ratio n2/n1.</translation>
+      <translation>Виберіть два кінці ліній, які будуть виконувати роль променів, і ребро, що представляє межу. Перша обрана точка відповідає індексу n1, друга n2, а опорне значення визначається співвідношення n2 / n1.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7008"/>
@@ -3018,7 +3020,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandConstraints.cpp" line="7040"/>
       <source>Cannot create constraint with external geometry only.</source>
-      <translation>Неможливо створити обмеження тільки з зовнішньою геометрією.</translation>
+      <translation>Неможливо створити обмеження з використанням тільки зовнішньої геометрії.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7047"/>
@@ -3028,7 +3030,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../CommandConstraints.cpp" line="7057"/>
       <source>SnellsLaw on B-spline edge is currently unsupported.</source>
-      <translation type="unfinished">SnellsLaw on B-spline edge is currently unsupported.</translation>
+      <translation>SnellsLaw на ребрі B-сплайна наразі не підтримується.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7162"/>
@@ -3784,7 +3786,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="88"/>
       <source>Creating line</source>
-      <translation type="unfinished">Creating line</translation>
+      <translation>Створюваний елемент</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="95"/>
@@ -3926,7 +3928,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="604"/>
       <source>Color of dimensional driving constraints</source>
-      <translation type="unfinished">Color of dimensional driving constraints</translation>
+      <translation>Колір габаритних обмежень</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="624"/>
@@ -3936,7 +3938,7 @@ Requires to re-enter edit mode to take effect.</source>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="631"/>
       <source>Color of reference constraints in edit mode</source>
-      <translation type="unfinished">Color of reference constraints in edit mode</translation>
+      <translation>Колір посилань на обмеження у режимі редагування</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsColors.ui" line="651"/>
@@ -4351,7 +4353,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="45"/>
       <source>All</source>
-      <translation>Все</translation>
+      <translation>Вся</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="50"/>
@@ -4516,7 +4518,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="295"/>
       <source>Controls widget list behaviour</source>
-      <translation type="unfinished">Controls widget list behaviour</translation>
+      <translation>Керує поведінкою списку віджетів</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstrains.ui" line="298"/>
@@ -4592,17 +4594,17 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="69"/>
       <source>Mode:</source>
-      <translation>Режим:</translation>
+      <translation>Режим геометрії:</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="89"/>
       <source>All</source>
-      <translation>Все</translation>
+      <translation>Вся</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="94"/>
       <source>Normal</source>
-      <translation>Звичайне</translation>
+      <translation>Звичайна</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="99"/>
@@ -4616,12 +4618,12 @@ However, no constraints linking to the endpoints were found.</translation>
       <location filename="../../TaskSketcherElements.cpp" line="781"/>
       <location filename="../../TaskSketcherElements.cpp" line="785"/>
       <source>Construction</source>
-      <translation>Конструкція</translation>
+      <translation>Допоміжна</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="104"/>
       <source>External</source>
-      <translation>Зовнішній</translation>
+      <translation>Зовнішня</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="133"/>
@@ -5141,7 +5143,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandConstraints.cpp" line="5901"/>
       <location filename="../../CommandConstraints.cpp" line="5902"/>
       <source>Fix the diameter of a circle or an arc</source>
-      <translation>Задати діаметр кола або дуги</translation>
+      <translation>Задає діаметр кола або дуги</translation>
     </message>
   </context>
   <context>
@@ -5149,7 +5151,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
     <message>
       <location filename="../../CommandConstraints.cpp" line="5906"/>
       <source>Fix the radius/diameter of a circle or an arc</source>
-      <translation>Задати радіус/діаметр кола або дуги</translation>
+      <translation>Задає радіус/діаметр кола або дуги</translation>
     </message>
   </context>
   <context>
@@ -5158,7 +5160,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandConstraints.cpp" line="5897"/>
       <location filename="../../CommandConstraints.cpp" line="5898"/>
       <source>Fix the radius of a circle or an arc</source>
-      <translation>Задати радіус кола або дуги</translation>
+      <translation>Задає радіус кола або дуги</translation>
     </message>
   </context>
   <context>
@@ -5166,7 +5168,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
     <message>
       <location filename="../../CommandConstraints.cpp" line="5905"/>
       <source>Fix the radius/diameter of a circle or an arc</source>
-      <translation>Задати радіус/діаметр кола або дуги</translation>
+      <translation>Задає радіус/діаметр кола або дуги</translation>
     </message>
   </context>
   <context>
@@ -5184,7 +5186,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandCreateGeo.cpp" line="2473"/>
       <location filename="../../CommandCreateGeo.cpp" line="2474"/>
       <source>Create an arc by its end points and a point along the arc</source>
-      <translation>Створити дугу за кінцевими точками та точкою вздовж дуги</translation>
+      <translation>Створює дугу за кінцевими точками та точкою на дузі</translation>
     </message>
   </context>
   <context>
@@ -5202,7 +5204,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandCreateGeo.cpp" line="2469"/>
       <location filename="../../CommandCreateGeo.cpp" line="2470"/>
       <source>Create an arc by its center and by its end points</source>
-      <translation>Створити дугу за центром та кінцевими точками</translation>
+      <translation>Створює дугу за центром та кінцевими точками</translation>
     </message>
   </context>
   <context>
@@ -5211,7 +5213,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandCreateGeo.cpp" line="4564"/>
       <location filename="../../CommandCreateGeo.cpp" line="4565"/>
       <source>Create an arc of ellipse by its center, major radius, and endpoints</source>
-      <translation>Створити дугу еліпса по її центру, великому радіусу та кінцевих точках</translation>
+      <translation>Створює дугу еліпса за її центром, великому радіусу та кінцевими точками</translation>
     </message>
   </context>
   <context>
@@ -5220,7 +5222,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandCreateGeo.cpp" line="4568"/>
       <location filename="../../CommandCreateGeo.cpp" line="4569"/>
       <source>Create an arc of hyperbola by its center, major radius, and endpoints</source>
-      <translation>Створити дугу гіперболи по її центрі, великому радіусу та кінцевих точках</translation>
+      <translation>Створює дугу гіперболи за її центром, великому радіусу та кінцевими точками</translation>
     </message>
   </context>
   <context>
@@ -5252,7 +5254,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandCreateGeo.cpp" line="5415"/>
       <location filename="../../CommandCreateGeo.cpp" line="5416"/>
       <source>Create a circle by its center and by a rim point</source>
-      <translation>Створити коло по його центру та точкою радіусу</translation>
+      <translation>Створює коло за його центром та точкою периметра</translation>
     </message>
   </context>
   <context>
@@ -5261,7 +5263,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandCreateGeo.cpp" line="4560"/>
       <location filename="../../CommandCreateGeo.cpp" line="4561"/>
       <source>Create a ellipse by periapsis, apoapsis, and minor radius</source>
-      <translation>Створити еліпс за периапсисом, апоапсисом і малим радіусом</translation>
+      <translation>Створює еліпс за периапсисом, апоапсисом і малим радіусом</translation>
     </message>
   </context>
   <context>
@@ -5288,7 +5290,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandCreateGeo.cpp" line="7712"/>
       <location filename="../../CommandCreateGeo.cpp" line="7713"/>
       <source>Create a heptagon by its center and by one corner</source>
-      <translation>Створити семикутник по його центру та одному куту</translation>
+      <translation>Створює семикутник за його центром та одному куту</translation>
     </message>
   </context>
   <context>
@@ -5297,7 +5299,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandCreateGeo.cpp" line="7708"/>
       <location filename="../../CommandCreateGeo.cpp" line="7709"/>
       <source>Create a hexagon by its center and by one corner</source>
-      <translation>Створити шестикутник по його центру та одному куту</translation>
+      <translation>Створює шестикутник за його центром та одному куту</translation>
     </message>
   </context>
   <context>
@@ -5314,7 +5316,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandCreateGeo.cpp" line="7716"/>
       <location filename="../../CommandCreateGeo.cpp" line="7717"/>
       <source>Create an octagon by its center and by one corner</source>
-      <translation>Створити восьмикутник по його центру та одному куту</translation>
+      <translation>Створює восьмикутник за його центром та одному куту</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="7720"/>
@@ -5329,7 +5331,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandCreateGeo.cpp" line="7704"/>
       <location filename="../../CommandCreateGeo.cpp" line="7705"/>
       <source>Create a pentagon by its center and by one corner</source>
-      <translation>Створити п'ятикутник по його центру та одному куту</translation>
+      <translation>Створює п'ятикутник за його центром та одному куту</translation>
     </message>
   </context>
   <context>
@@ -5354,7 +5356,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1185"/>
       <source>Create a centered rectangle</source>
-      <translation>Створити прямокутник по центру</translation>
+      <translation>Створити прямокутник за центром</translation>
     </message>
   </context>
   <context>
@@ -5363,7 +5365,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandCreateGeo.cpp" line="7700"/>
       <location filename="../../CommandCreateGeo.cpp" line="7701"/>
       <source>Create a square by its center and by one corner</source>
-      <translation>Створити квадрат по його центру та одному куту</translation>
+      <translation>Створює квадрат за його центром та одному куту</translation>
     </message>
   </context>
   <context>
@@ -5372,7 +5374,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
       <location filename="../../CommandCreateGeo.cpp" line="7696"/>
       <location filename="../../CommandCreateGeo.cpp" line="7697"/>
       <source>Create an equilateral triangle by its center and by one corner</source>
-      <translation>Створити рівнобічний трикутник по його центру та одному куту</translation>
+      <translation>Створює рівнобічний трикутник за його центром та одному куту</translation>
     </message>
   </context>
   <context>
@@ -5429,7 +5431,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
     <message>
       <location filename="../../Command.cpp" line="613"/>
       <source>Sketch attachment</source>
-      <translation>Вкладений ескіз</translation>
+      <translation>Прив'язка ескізу</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="615"/>
@@ -5470,7 +5472,7 @@ Select the method to attach this sketch to selected objects.</source>
     <message>
       <location filename="../../Command.cpp" line="180"/>
       <source>Sketch attachment</source>
-      <translation>Вкладений ескіз</translation>
+      <translation>Прив'язка ескізу</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="181"/>

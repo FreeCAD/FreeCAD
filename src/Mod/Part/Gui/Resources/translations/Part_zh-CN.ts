@@ -2497,7 +2497,7 @@ into its X, Y, and Z components.</translation>
     <message>
       <location filename="../../Command.cpp" line="1642"/>
       <source>Utility to offset in 3D</source>
-      <translation type="unfinished">Utility to offset in 3D</translation>
+      <translation>3D 偏移工具</translation>
     </message>
   </context>
   <context>
@@ -2546,7 +2546,7 @@ into its X, Y, and Z components.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="180"/>
       <source>Create points object from mesh</source>
-      <translation type="unfinished">Create points object from mesh</translation>
+      <translation>从网格中创建点对象</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="181"/>
@@ -2582,7 +2582,7 @@ into its X, Y, and Z components.</translation>
     <message>
       <location filename="../../Command.cpp" line="2449"/>
       <source>Create projection on surface...</source>
-      <translation type="unfinished">Create projection on surface...</translation>
+      <translation>在表面创建投影...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2450"/>
@@ -2842,7 +2842,7 @@ of projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="301"/>
       <source>Create transformed copy</source>
-      <translation type="unfinished">Create transformed copy</translation>
+      <translation>创建转换的副本</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="302"/>
@@ -2886,7 +2886,7 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1017"/>
       <source>Import Part</source>
-      <translation type="unfinished">Import Part</translation>
+      <translation>导入部件</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1123"/>
@@ -3050,7 +3050,7 @@ of projection.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="152"/>
       <source>In y-direction:</source>
-      <translation type="unfinished">In y-direction:</translation>
+      <translation>Y方向</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="171"/>
@@ -3067,17 +3067,17 @@ of projection.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="216"/>
       <source>Around x-axis:</source>
-      <translation type="unfinished">Around x-axis:</translation>
+      <translation>环绕x轴：</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="229"/>
       <source>Around y-axis:</source>
-      <translation type="unfinished">Around y-axis:</translation>
+      <translation>环绕y轴：</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="242"/>
       <source>Around z-axis:</source>
-      <translation type="unfinished">Around z-axis:</translation>
+      <translation>环绕z轴：</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="280"/>
@@ -3704,7 +3704,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="106"/>
       <source>Blank entities will not be imported</source>
-      <translation type="unfinished">Blank entities will not be imported</translation>
+      <translation>空实体,将不被导入</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="109"/>
@@ -3762,7 +3762,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="67"/>
       <source>Export invisible objects</source>
-      <translation type="unfinished">Export invisible objects</translation>
+      <translation>导出不可见对象</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="80"/>
@@ -3792,7 +3792,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="126"/>
       <source>Use legacy exporter</source>
-      <translation type="unfinished">Use legacy exporter</translation>
+      <translation>使用旧版导出器</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="139"/>
@@ -5317,7 +5317,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="152"/>
       <source>In y-direction:</source>
-      <translation type="unfinished">In y-direction:</translation>
+      <translation>Y方向</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="171"/>
@@ -5336,17 +5336,17 @@ of object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="224"/>
       <source>Around x-axis:</source>
-      <translation type="unfinished">Around x-axis:</translation>
+      <translation>环绕x轴：</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="237"/>
       <source>Around y-axis:</source>
-      <translation type="unfinished">Around y-axis:</translation>
+      <translation>环绕y轴：</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="250"/>
       <source>Around z-axis:</source>
-      <translation type="unfinished">Around z-axis:</translation>
+      <translation>环绕z轴：</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="286"/>

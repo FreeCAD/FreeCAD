@@ -299,11 +299,11 @@
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
-      <translation type="unfinished">Enter an expression...</translation>
+      <translation>請輸入表示式...</translation>
     </message>
     <message>
       <source>Expression: </source>
-      <translation type="unfinished">Expression: </translation>
+      <translation>表示式： </translation>
     </message>
   </context>
   <context>
@@ -524,7 +524,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>FreeCAD would not be possible without the contributions of</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+      <translation>沒有這些人的貢獻 FreeCAD 將不可能成真</translation>
     </message>
     <message>
       <source>Individuals</source>
@@ -2006,7 +2006,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Can't find the text: %1</source>
-      <translation type="unfinished">Can't find the text: %1</translation>
+      <translation>找不到文字：%1</translation>
     </message>
   </context>
   <context>
@@ -2142,7 +2142,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Program version:</source>
-      <translation type="unfinished">Program version:</translation>
+      <translation>程式版本：</translation>
     </message>
   </context>
   <context>
@@ -2216,7 +2216,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>Filter by type</source>
-      <translation type="unfinished">Filter by type</translation>
+      <translation>依類型過濾</translation>
     </message>
     <message>
       <source>Sync sub-object selection</source>

@@ -6,42 +6,42 @@
     <message>
       <location filename="CommandMoveView.py" line="47"/>
       <source>Move View</source>
-      <translation type="unfinished">Move View</translation>
+      <translation>Mover vista</translation>
     </message>
     <message>
       <location filename="CommandMoveView.py" line="50"/>
       <source>Move a View to a new Page</source>
-      <translation type="unfinished">Move a View to a new Page</translation>
+      <translation>Mover unha vista a unha nova páxina</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="47"/>
       <source>Move View to a different Page</source>
-      <translation type="unfinished">Move View to a different Page</translation>
+      <translation>Mover unha vista a unha nova páxina</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="74"/>
       <source>Select View to move from list.</source>
-      <translation type="unfinished">Select View to move from list.</translation>
+      <translation>Escolla Ver para moverse pola lista.</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="75"/>
       <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
+      <translation>Escoller Vista</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="93"/>
       <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
+      <translation>Escoller Dende a Páxina.</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="113"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>Escoller Paxina</translation>
     </message>
     <message>
       <location filename="TaskMoveView.py" line="112"/>
       <source>Select To Page.</source>
-      <translation type="unfinished">Select To Page.</translation>
+      <translation>Escoller a Paxina.</translation>
     </message>
   </context>
   <context>
@@ -49,47 +49,47 @@
     <message>
       <location filename="CommandShareView.py" line="47"/>
       <source>Share View</source>
-      <translation type="unfinished">Share View</translation>
+      <translation>Compartir Vista</translation>
     </message>
     <message>
       <location filename="CommandShareView.py" line="50"/>
       <source>Share a View on a second Page</source>
-      <translation type="unfinished">Share a View on a second Page</translation>
+      <translation>Compartir unha vista nunha segunda páxina</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="46"/>
       <source>Share View with another Page</source>
-      <translation type="unfinished">Share View with another Page</translation>
+      <translation>Compartir a vista con outra páxina</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="47"/>
       <source>View to share</source>
-      <translation type="unfinished">View to share</translation>
+      <translation>Ver para compartir</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="74"/>
       <source>Select View to share from list.</source>
-      <translation type="unfinished">Select View to share from list.</translation>
+      <translation>Escolla Ver para compartir desde a lista.</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="75"/>
       <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
+      <translation>Escoller Vista</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="93"/>
       <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
+      <translation>Escoller Dende a Páxina.</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="113"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>Escoller Paxina</translation>
     </message>
     <message>
       <location filename="TaskShareView.py" line="112"/>
       <source>Select To Page.</source>
-      <translation type="unfinished">Select To Page.</translation>
+      <translation>Escoller a Paxina.</translation>
     </message>
   </context>
   <context>
@@ -97,70 +97,70 @@
     <message>
       <location filename="CommandCopyView.py" line="47"/>
       <source>Copy View</source>
-      <translation type="unfinished">Copy View</translation>
+      <translation>Vista de copia</translation>
     </message>
     <message>
       <location filename="CommandCopyView.py" line="50"/>
       <source>Copy a View to a second Page</source>
-      <translation type="unfinished">Copy a View to a second Page</translation>
+      <translation>Copia unha vista nunha segunda páxina</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="46"/>
       <source>Copy View to a second Page</source>
-      <translation type="unfinished">Copy View to a second Page</translation>
+      <translation>Copiar vista nunha segunda páxina</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="73"/>
       <source>Select View to copy from list.</source>
-      <translation type="unfinished">Select View to copy from list.</translation>
+      <translation>Escoller vista para copiar da lista.</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="74"/>
       <source>Select View</source>
-      <translation type="unfinished">Select View</translation>
+      <translation>Escoller Vista</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="92"/>
       <source>Select From Page.</source>
-      <translation type="unfinished">Select From Page.</translation>
+      <translation>Escoller Dende a Páxina.</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="111"/>
       <source>Select To Page.</source>
-      <translation type="unfinished">Select To Page.</translation>
+      <translation>Escoller a Paxina.</translation>
     </message>
     <message>
       <location filename="TaskCopyView.py" line="112"/>
       <source>Select Page</source>
-      <translation type="unfinished">Select Page</translation>
+      <translation>Escoller Paxina</translation>
     </message>
   </context>
   <context>
     <name>Cmd2LineCenterLine</name>
     <message>
       <source>Add Centerline between 2 Lines</source>
-      <translation type="unfinished">Add Centerline between 2 Lines</translation>
+      <translation>Engade unha liña central entre 2 liñas</translation>
     </message>
   </context>
   <context>
     <name>Cmd2PointCenterLine</name>
     <message>
       <source>Add Centerline between 2 Points</source>
-      <translation type="unfinished">Add Centerline between 2 Points</translation>
+      <translation>Engade a liña central entre 2 puntos</translation>
     </message>
   </context>
   <context>
     <name>CmdMidpoints</name>
     <message>
       <source>Add Midpoint Vertices</source>
-      <translation type="unfinished">Add Midpoint Vertices</translation>
+      <translation>Engadir vértices de medio punto</translation>
     </message>
   </context>
   <context>
     <name>CmdQuadrants</name>
     <message>
       <source>Add Quadrant Vertices</source>
-      <translation type="unfinished">Add Quadrant Vertices</translation>
+      <translation>Engadir vértices de cuadrante</translation>
     </message>
   </context>
   <context>
@@ -171,7 +171,7 @@
     </message>
     <message>
       <source>Add Centerline between 2 Lines</source>
-      <translation type="unfinished">Add Centerline between 2 Lines</translation>
+      <translation>Engade unha liña central entre 2 liñas</translation>
     </message>
   </context>
   <context>
@@ -182,7 +182,7 @@
     </message>
     <message>
       <source>Add Centerline between 2 Points</source>
-      <translation type="unfinished">Add Centerline between 2 Points</translation>
+      <translation>Engade a liña central entre 2 puntos</translation>
     </message>
   </context>
   <context>
@@ -374,7 +374,7 @@
     </message>
     <message>
       <source>Insert Detail View</source>
-      <translation type="unfinished">Insert Detail View</translation>
+      <translation>Inserir vista de detalle</translation>
     </message>
   </context>
   <context>
@@ -385,7 +385,7 @@
     </message>
     <message>
       <source>Insert Diameter Dimension</source>
-      <translation type="unfinished">Insert Diameter Dimension</translation>
+      <translation>Inserir Dimensión do diámetro</translation>
     </message>
   </context>
   <context>
@@ -396,7 +396,7 @@
     </message>
     <message>
       <source>Insert Dimension</source>
-      <translation type="unfinished">Insert Dimension</translation>
+      <translation>Inserir Dimensión</translation>
     </message>
   </context>
   <context>
@@ -422,11 +422,11 @@
     </message>
     <message>
       <source>Export Page as DXF</source>
-      <translation type="unfinished">Export Page as DXF</translation>
+      <translation>Exportar páxinas coma DXF</translation>
     </message>
     <message>
       <source>Save Dxf File</source>
-      <translation type="unfinished">Save Dxf File</translation>
+      <translation>Gardar ficheiro Dxf</translation>
     </message>
     <message>
       <source>Dxf (*.dxf)</source>
@@ -441,7 +441,7 @@
     </message>
     <message>
       <source>Export Page as SVG</source>
-      <translation type="unfinished">Export Page as SVG</translation>
+      <translation>Exporta páxina como SVG</translation>
     </message>
   </context>
   <context>
@@ -629,7 +629,7 @@
     </message>
     <message>
       <source>Select an Image File</source>
-      <translation>Seleciona un Arquivo Imaxe</translation>
+      <translation>Escolla un Arquivo de imaxe</translation>
     </message>
     <message>
       <source>Image (*.png *.jpg *.jpeg)</source>
@@ -688,7 +688,7 @@
     </message>
     <message>
       <source>Add Midpoint Vertices</source>
-      <translation type="unfinished">Add Midpoint Vertices</translation>
+      <translation>Engadir vértices de medio punto</translation>
     </message>
   </context>
   <context>
@@ -744,7 +744,7 @@
     </message>
     <message>
       <source>Add Quadrant Vertices</source>
-      <translation type="unfinished">Add Quadrant Vertices</translation>
+      <translation>Engadir vértices de cuadrante</translation>
     </message>
   </context>
   <context>
@@ -943,7 +943,7 @@
     </message>
     <message>
       <source>Add Quadrant Vertices</source>
-      <translation type="unfinished">Add Quadrant Vertices</translation>
+      <translation>Engadir vértices de cuadrante</translation>
     </message>
     <message>
       <source>Create Annotation</source>
@@ -1086,11 +1086,11 @@
     </message>
     <message>
       <source>Paste (CTRL+V)</source>
-      <translation>Colar (CTRL+V)</translation>
+      <translation>Pegar (CTRL+V)</translation>
     </message>
     <message>
       <source>Paste</source>
-      <translation>Colar</translation>
+      <translation>Pegar</translation>
     </message>
     <message>
       <source>Link (CTRL+L)</source>
@@ -2946,7 +2946,7 @@ Quere seguir?</translation>
     </message>
     <message>
       <source>Save Dxf File</source>
-      <translation type="unfinished">Save Dxf File</translation>
+      <translation>Gardar ficheiro Dxf</translation>
     </message>
     <message>
       <source>Dxf (*.dxf)</source>

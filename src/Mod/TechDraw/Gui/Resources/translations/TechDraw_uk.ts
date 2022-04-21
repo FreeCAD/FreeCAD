@@ -1882,11 +1882,11 @@ the top and left view border</translation>
     </message>
     <message>
       <source>Flips the sides</source>
-      <translation type="unfinished">Flips the sides</translation>
+      <translation>Перевернути сторони</translation>
     </message>
     <message>
       <source>Flip Sides</source>
-      <translation type="unfinished">Flip Sides</translation>
+      <translation>Перевернути Сторони</translation>
     </message>
     <message>
       <source>Text before other side symbol</source>
@@ -2311,7 +2311,7 @@ Each unit is approx. 0.1 mm wide</translation>
     </message>
     <message>
       <source>Normal</source>
-      <translation>Звичайне</translation>
+      <translation>Звичайна</translation>
     </message>
     <message>
       <source>Normal line color</source>
@@ -3992,7 +3992,7 @@ using the given X/Y Spacing</translation>
     </message>
     <message>
       <source>All</source>
-      <translation>Все</translation>
+      <translation>Вся</translation>
     </message>
     <message>
       <source>Geometry</source>

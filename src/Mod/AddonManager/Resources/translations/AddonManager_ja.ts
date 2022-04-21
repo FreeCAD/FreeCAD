@@ -566,24 +566,9 @@
       <translation>先ずは、見当たらないコンポーネントをインストールしてください。</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="915"/>
-      <source>Retrieving macro description...</source>
-      <translation>マクロの説明を取得しています...</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="653"/>
-      <source>Retrieving info from git</source>
-      <translation>Gitからの情報を取り込み中</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="873"/>
       <source>Error: Unable to locate zip from</source>
       <translation>エラー: ZIP ファイルを以下から配置できません。</translation>
-    </message>
-    <message>
-      <location filename="addonmanager_workers.py" line="656"/>
-      <source>Retrieving info from wiki</source>
-      <translation>Wikiからの情報を取得しています</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="880"/>
@@ -596,19 +581,34 @@
       <translation>インストールが完了しました</translation>
     </message>
     <message>
+      <location filename="addonmanager_workers.py" line="915"/>
+      <source>Retrieving macro description...</source>
+      <translation>マクロの説明を取得しています...</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="653"/>
+      <source>Retrieving info from git</source>
+      <translation>Gitからの情報を取り込み中</translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="656"/>
+      <source>Retrieving info from wiki</source>
+      <translation>Wikiからの情報を取得しています</translation>
+    </message>
+    <message>
       <location filename="addonmanager_workers.py" line="1013"/>
       <source>Error updating module</source>
       <translation>モジュールの更新に失敗しました</translation>
     </message>
     <message>
-      <location filename="addonmanager_workers.py" line="1078"/>
-      <source>Please fix manually</source>
-      <translation>手動で修正してください</translation>
-    </message>
-    <message>
       <location filename="addonmanager_workers.py" line="1075"/>
       <source>Error updating module </source>
       <translation>モジュールの更新に失敗しました </translation>
+    </message>
+    <message>
+      <location filename="addonmanager_workers.py" line="1078"/>
+      <source>Please fix manually</source>
+      <translation>手動で修正してください</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1220"/>
@@ -818,11 +818,6 @@
       <translation>不足している要件</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="1079"/>
-      <source>Press OK to install anyway.</source>
-      <translation type="unfinished">Press OK to install anyway.</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>ここからインストールできますアドオンは、FreeCAD公式の一部ではないゆえにFreeCADチームによってレビューがなされていない。あなたが何をインストールしようとしているかを確認して下さい！</translation>
@@ -906,6 +901,11 @@
       <location filename="AddonManager.py" line="786"/>
       <source>Failed packages:</source>
       <translation>失敗したパッケージ:</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="1079"/>
+      <source>Press OK to install anyway.</source>
+      <translation type="unfinished">Press OK to install anyway.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="964"/>

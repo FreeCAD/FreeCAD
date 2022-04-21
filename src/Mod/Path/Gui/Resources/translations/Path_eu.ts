@@ -714,16 +714,6 @@
       <translation>Eragiketa berrien beheratzerako erabilitako adierazpena.</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="71"/>
-      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
-      <translation>Tresna-bideak piezaren inguruan izan behar duen norabidea: erlojuaren noranzkoan (CW), edo aurka (CCW)</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="72"/>
-      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
-      <translation>Eragiketari aplikatuko zaion desplazamendu gehigarria. Norabidea eragiketaren menpekoa da.</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="73"/>
       <source>Start pocketing at center or boundary</source>
       <translation>Hasi poltsaren sorrera erdian edo mugan</translation>
@@ -732,6 +722,16 @@
       <location filename="PathPocketBase.py" line="74"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>Pasaldi bakoitzean ebakigailu-diametroaren zein ehuneko gainditu behar den</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="71"/>
+      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
+      <translation>Tresna-bideak piezaren inguruan izan behar duen norabidea: erlojuaren noranzkoan (CW), edo aurka (CCW)</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="72"/>
+      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
+      <translation>Eragiketari aplikatuko zaion desplazamendu gehigarria. Norabidea eragiketaren menpekoa da.</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="75"/>
@@ -1569,6 +1569,16 @@
   <context>
     <name>PathJob</name>
     <message>
+      <location filename="PathJobGui.py" line="1258"/>
+      <source>Unsupported stock object %s</source>
+      <translation>Onartzen ez den %s objektu gordina</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1274"/>
+      <source>Unsupported stock type %s (%d)</source>
+      <translation>Onartzen ez den %s objektu gordina (%d)</translation>
+    </message>
+    <message>
       <location filename="PathJobGui.py" line="387"/>
       <source>Stock not from Base bound box!</source>
       <translation>Pieza gordinak ez dauka oinarriaren muga-kutxa!</translation>
@@ -1582,16 +1592,6 @@
       <location filename="PathJobGui.py" line="525"/>
       <source>Stock not a cylinder!</source>
       <translation>Pieza gordina ez da zilindro bat!</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1258"/>
-      <source>Unsupported stock object %s</source>
-      <translation>Onartzen ez den %s objektu gordina</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1274"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>Onartzen ez den %s objektu gordina (%d)</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="112"/>
@@ -1737,16 +1737,16 @@
       <translation>Oinarri-kokapena</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>Altuerak</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="848"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>Azken sakonera ezin da aldatu eragiketa honetarako.
 Azken sakonera eskuz ezartzea beharrezkoa bada, hautatu beste eragiketa mota bat.</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="855"/>
-      <source>Heights</source>
-      <translation>Altuerak</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="869"/>
@@ -3630,6 +3630,11 @@ Aukeren sorrera abortatzen</translation>
       <translation>Desplazamendua</translation>
     </message>
     <message>
+      <location filename="PathPocketBase.py" line="71"/>
+      <source>Spiral</source>
+      <translation>Espirala</translation>
+    </message>
+    <message>
       <location filename="PathPocketBase.py" line="72"/>
       <source>ZigZagOffset</source>
       <translation>ZigZag desplazamendua</translation>
@@ -3643,11 +3648,6 @@ Aukeren sorrera abortatzen</translation>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Triangle</source>
       <translation>Triangelua</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="71"/>
-      <source>Spiral</source>
-      <translation>Espirala</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="74"/>

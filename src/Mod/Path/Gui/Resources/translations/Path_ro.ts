@@ -714,16 +714,6 @@
       <translation type="unfinished">Expression used for StepDown of new operations.</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="71"/>
-      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
-      <translation type="unfinished">The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="72"/>
-      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
-      <translation>Se aplică un decalaj suplimentar la operaţiunea. Direcţia este dependentă de operație.</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="73"/>
       <source>Start pocketing at center or boundary</source>
       <translation>Începe frezarea buzunarului din centru sau de la margine</translation>
@@ -732,6 +722,16 @@
       <location filename="PathPocketBase.py" line="74"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>Avansul în procente din diametrul sculei tăietor la fiecare trecere</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="71"/>
+      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
+      <translation type="unfinished">The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="72"/>
+      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
+      <translation>Se aplică un decalaj suplimentar la operaţiunea. Direcţia este dependentă de operație.</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="75"/>
@@ -1570,6 +1570,16 @@
   <context>
     <name>PathJob</name>
     <message>
+      <location filename="PathJobGui.py" line="1258"/>
+      <source>Unsupported stock object %s</source>
+      <translation>Tipul obiectului piesei de bază nu este acceptat%</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1274"/>
+      <source>Unsupported stock type %s (%d)</source>
+      <translation>Tip de semifabricat %s (%d) de Neacceptat</translation>
+    </message>
+    <message>
       <location filename="PathJobGui.py" line="387"/>
       <source>Stock not from Base bound box!</source>
       <translation>Piesa de prelucrat nu vine din cadrul obiectului de bază!</translation>
@@ -1583,16 +1593,6 @@
       <location filename="PathJobGui.py" line="525"/>
       <source>Stock not a cylinder!</source>
       <translation>Brutul nu un cilindru!</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1258"/>
-      <source>Unsupported stock object %s</source>
-      <translation>Tipul obiectului piesei de bază nu este acceptat%</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1274"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>Tip de semifabricat %s (%d) de Neacceptat</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="112"/>
@@ -1738,16 +1738,16 @@
       <translation>Amplasamentul de bază</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>Înălţimi</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="848"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation type="unfinished">FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="855"/>
-      <source>Heights</source>
-      <translation>Înălţimi</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="869"/>
@@ -3631,6 +3631,11 @@ Aborting op creation</translation>
       <translation>Compensare</translation>
     </message>
     <message>
+      <location filename="PathPocketBase.py" line="71"/>
+      <source>Spiral</source>
+      <translation>Spirală</translation>
+    </message>
+    <message>
       <location filename="PathPocketBase.py" line="72"/>
       <source>ZigZagOffset</source>
       <translation type="unfinished">ZigZagOffset</translation>
@@ -3644,11 +3649,6 @@ Aborting op creation</translation>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Triangle</source>
       <translation>Triunghi</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="71"/>
-      <source>Spiral</source>
-      <translation>Spirală</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="74"/>

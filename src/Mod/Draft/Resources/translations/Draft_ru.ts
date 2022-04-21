@@ -719,6 +719,11 @@ This property is read-only, as the number depends on the points contained within
       <translation>Площадь объекта</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Форма этого объекта</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>Базовый объект, используется данным объектом</translation>
@@ -742,11 +747,6 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation>Угол наклона штриховки, используемой этим объектом</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Форма этого объекта</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
@@ -2078,15 +2078,15 @@ if any.
 
 If many objects or many subelements are selected, only the first one in each case
 will be used to provide information to the label.</source>
-      <translation type="unfinished">Creates a label, optionally attached to a selected object or subelement.
+      <translation>Создает метку, опционально прикрепленную к выбранному объекту или подэлементу.
 
-First select a vertex, an edge, or a face of an object, then call this command,
-and then set the position of the leader line and the textual label.
-The label will be able to display information about this object, and about the selected subelement,
-if any.
+Сначала выберите вершину, край или грань объекта, затем вызовите эту команду,
+и установите позицию линии выноски и текстовую метку.
+Метка сможет отображать информацию об этом объекте, и о выбранном подэлементе,
+если таковые имеются.
 
-If many objects or many subelements are selected, only the first one in each case
-will be used to provide information to the label.</translation>
+Если выбрано много объектов или много подэлементов, только первый в каждом конкретном случае
+будет использоваться для предоставления информации о метке.</translation>
     </message>
   </context>
   <context>
@@ -2174,9 +2174,9 @@ CTRL для привязки, SHIFT для ограничения.</translation>
       <source>Offsets of the selected object.
 It can also create an offset copy of the original object.
 CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</source>
-      <translation type="unfinished">Offsets of the selected object.
-It can also create an offset copy of the original object.
-CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</translation>
+      <translation>Смещение выбранного объекта.
+Это также может создать оффсетную копию исходного объекта.
+CTRL для привязки, SHIFT для ограничения. Удерживайте ALT и нажмите для создания копии каждым щелчком.</translation>
     </message>
   </context>
   <context>
@@ -2203,16 +2203,16 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="gui_patharray.py" line="73"/>
       <source>Path array</source>
-      <translation type="unfinished">Path array</translation>
+      <translation>Массив путей</translation>
     </message>
     <message>
       <location filename="gui_patharray.py" line="76"/>
       <source>Creates copies of the selected object along a selected path.
 First select the object, and then select the path.
 The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</source>
-      <translation type="unfinished">Creates copies of the selected object along a selected path.
-First select the object, and then select the path.
-The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</translation>
+      <translation>Создает копии выбранного объекта по выбранному пути.
+Сначала выберите объект и затем выберите путь.
+Путь может быть полилинией, B-сплайном, Безье кривой, или даже краями других объектов.</translation>
     </message>
   </context>
   <context>
@@ -2220,14 +2220,14 @@ The path can be a polyline, B-spline, Bezier curve, or even edges from other obj
     <message>
       <location filename="gui_patharray.py" line="163"/>
       <source>Path Link array</source>
-      <translation type="unfinished">Path Link array</translation>
+      <translation>Массив ссылок путей</translation>
     </message>
     <message>
       <location filename="gui_patharray.py" line="166"/>
       <source>Like the PathArray tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
-      <translation type="unfinished">Like the PathArray tool, but creates a 'Link array' instead.
-A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</translation>
+      <translation>Аналогичен инструменту PathArray, но вместо путей создает ''.
+'Массив ссылок' более эффективен при обработке большого количества копий, только нельзя использовать опцию 'Fuse'.</translation>
     </message>
   </context>
   <context>
@@ -2916,7 +2916,7 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="importAirfoilDAT.py" line="186"/>
       <source>Did not find enough coordinates</source>
-      <translation type="unfinished">Did not find enough coordinates</translation>
+      <translation>Недостаточно координат</translation>
     </message>
   </context>
   <context>
@@ -3555,7 +3555,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="2047"/>
       <source>Autogroup:</source>
-      <translation type="unfinished">Autogroup:</translation>
+      <translation>Автогруппировка:</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="2374"/>
@@ -5246,7 +5246,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="gui_patharray.py" line="143"/>
       <source>Path array</source>
-      <translation type="unfinished">Path array</translation>
+      <translation>Массив путей</translation>
     </message>
     <message>
       <location filename="gui_pathtwistedarray.py" line="101"/>

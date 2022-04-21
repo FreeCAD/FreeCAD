@@ -623,7 +623,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>Adjust to view direction</source>
-      <translation>Adatta alla direzione della vista</translation>
+      <translation>Orienta in direzione della vista</translation>
     </message>
     <message>
       <source>Direction</source>

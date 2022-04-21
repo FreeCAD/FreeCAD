@@ -121,7 +121,7 @@
     </message>
     <message>
       <source>Check solid mesh</source>
-      <translation>Verificar a malla do sólido</translation>
+      <translation>Verificar o sólido da malla</translation>
     </message>
     <message>
       <source>Checks whether the mesh is a solid</source>
@@ -185,7 +185,7 @@
     </message>
     <message>
       <source>Fill holes of the mesh</source>
-      <translation>Reencher furados da malla</translation>
+      <translation>Reencher furados na malla</translation>
     </message>
   </context>
   <context>
@@ -391,7 +391,7 @@
     </message>
     <message>
       <source>Mark a component to remove it from the mesh</source>
-      <translation>Marca un compoñente para o rexeitar da malla</translation>
+      <translation>Marque un compoñente para eliminalo da malla</translation>
     </message>
   </context>
   <context>
@@ -406,7 +406,7 @@
     </message>
     <message>
       <source>Remove topologic independent components from the mesh</source>
-      <translation>Remove compoñentes topolóxicos independentes da malla</translation>
+      <translation>Elimina os compoñentes topolóxicos independentes da malla</translation>
     </message>
   </context>
   <context>
@@ -466,7 +466,7 @@
     </message>
     <message>
       <source>Create mesh segments from best-fit surfaces</source>
-      <translation>Crea segmentos de malla das superficies que mellor axustan</translation>
+      <translation>Crea segmentos de malla das superficies que mellor se axustan</translation>
     </message>
   </context>
   <context>
@@ -763,7 +763,7 @@
     </message>
     <message>
       <source>Number of faces:</source>
-      <translation>Cantidade de faces:</translation>
+      <translation>Número de caras:</translation>
     </message>
     <message>
       <source>Number of edges:</source>
@@ -787,7 +787,7 @@
     </message>
     <message>
       <source>Duplicated faces</source>
-      <translation>Faces duplicadas</translation>
+      <translation>Caras duplicadas</translation>
     </message>
     <message>
       <source>Duplicated points</source>
@@ -795,15 +795,15 @@
     </message>
     <message>
       <source>Non-manifolds</source>
-      <translation>Non-multiplicidades</translation>
+      <translation>Non-multiplicidade</translation>
     </message>
     <message>
       <source>Degenerated faces</source>
-      <translation>Faces dexeneradas</translation>
+      <translation>Caras dexeneradas</translation>
     </message>
     <message>
       <source>Face indices</source>
-      <translation>Índices de face</translation>
+      <translation>Índices da cara</translation>
     </message>
     <message>
       <source>Self-intersections</source>
@@ -815,7 +815,7 @@
     </message>
     <message>
       <source>All above tests together</source>
-      <translation>Tódolos tests na cima xuntos</translation>
+      <translation>Xuntar tódolos test na cima</translation>
     </message>
     <message>
       <source>Repetitive repair</source>
@@ -867,7 +867,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Non-manifolds</source>
-      <translation>Non-multiplicidades</translation>
+      <translation>Non-multiplicidade</translation>
     </message>
     <message>
       <source>Cannot remove non-manifolds</source>
@@ -919,7 +919,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Duplicated faces</source>
-      <translation>Faces duplicadas</translation>
+      <translation>Caras duplicadas</translation>
     </message>
     <message>
       <source>No duplicated points</source>
@@ -1107,7 +1107,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
       <source>Export AMF files using compression</source>
-      <translation>Exportar ficheiros AMF usando compresión</translation>
+      <translation>Exportar ficheiros AMF empregando compresión</translation>
     </message>
     <message>
       <source>Width:</source>
@@ -1417,7 +1417,7 @@ to a smoother appearance.
     </message>
     <message>
       <source>Kill</source>
-      <translation type="unfinished">Kill</translation>
+      <translation>Matar</translation>
     </message>
     <message>
       <source>Time:</source>
@@ -1617,7 +1617,7 @@ to a smoother appearance.
     </message>
     <message>
       <source>Use a brush tool to select the area</source>
-      <translation>Use unha ferramenta brocha para escolmar a área</translation>
+      <translation>Empregue unha ferramenta brocha para escolmar a área</translation>
     </message>
     <message>
       <source>Clears completely the selected area</source>
@@ -1686,7 +1686,7 @@ Por favor visite http://www.openscad.org/index.html para instalalo.</translation
     </message>
     <message>
       <source>Binary Mesh</source>
-      <translation>Binario de malla</translation>
+      <translation>Malla binaria</translation>
     </message>
     <message>
       <source>Alias Mesh</source>
@@ -1698,7 +1698,7 @@ Por favor visite http://www.openscad.org/index.html para instalalo.</translation
     </message>
     <message>
       <source>Inventor V2.1 ASCII</source>
-      <translation type="unfinished">Inventor V2.1 ASCII</translation>
+      <translation>Inventor V2.1 ASCII</translation>
     </message>
     <message>
       <source>Stanford Polygon</source>
@@ -1734,7 +1734,7 @@ Por favor visite http://www.openscad.org/index.html para instalalo.</translation
     </message>
     <message>
       <source>WebGL/X3D</source>
-      <translation type="unfinished">WebGL/X3D</translation>
+      <translation>WebGL/X3D</translation>
     </message>
     <message>
       <source>VRML V2.0</source>
@@ -1810,7 +1810,7 @@ Por favor visite http://www.openscad.org/index.html para instalalo.</translation
     </message>
     <message>
       <source>Display segments</source>
-      <translation type="unfinished">Display segments</translation>
+      <translation>Amosar segmentos</translation>
     </message>
     <message>
       <source>Leave info mode</source>
@@ -1834,7 +1834,7 @@ Por favor visite http://www.openscad.org/index.html para instalalo.</translation
     </message>
     <message>
       <source>Clear selected faces</source>
-      <translation>Baleirar faces escolmadas</translation>
+      <translation>Limpar faces escolmadas</translation>
     </message>
     <message>
       <source>Annotation</source>

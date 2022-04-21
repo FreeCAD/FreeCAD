@@ -723,6 +723,11 @@ This property is read-only, as the number depends on the points contained within
       <translation>A área deste obxecto</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>A forma desde obxecto</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation type="unfinished">The base object used by this object</translation>
@@ -746,11 +751,6 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="64"/>
       <source>The pattern rotation used by this object</source>
       <translation type="unfinished">The pattern rotation used by this object</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>A forma desde obxecto</translation>
     </message>
     <message>
       <location filename="hatch.py" line="67"/>
@@ -2637,7 +2637,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="163"/>
       <source>Midpoint</source>
-      <translation type="unfinished">Midpoint</translation>
+      <translation>Punto medio</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="166"/>
@@ -3486,17 +3486,17 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="1249"/>
       <source>Local u0394X</source>
-      <translation type="unfinished">Local u0394X</translation>
+      <translation>Local u0394X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1250"/>
       <source>Local u0394Y</source>
-      <translation type="unfinished">Local u0394Y</translation>
+      <translation>Local u0394Y</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1251"/>
       <source>Local u0394Z</source>
-      <translation type="unfinished">Local u0394Z</translation>
+      <translation>Local u0394Z</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1253"/>
@@ -3516,17 +3516,17 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="1257"/>
       <source>Global u0394X</source>
-      <translation type="unfinished">Global u0394X</translation>
+      <translation>Global u0394X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1258"/>
       <source>Global u0394Y</source>
-      <translation type="unfinished">Global u0394Y</translation>
+      <translation>Global u0394Y</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1259"/>
       <source>Global u0394Z</source>
-      <translation type="unfinished">Global u0394Z</translation>
+      <translation>Global u0394Z</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1261"/>
@@ -3571,7 +3571,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="2047"/>
       <source>Autogroup:</source>
-      <translation type="unfinished">Autogroup:</translation>
+      <translation>Auto-agrupar:</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="2374"/>
@@ -3753,7 +3753,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="mirror.py" line="113"/>
       <source>mirrored</source>
-      <translation type="unfinished">mirrored</translation>
+      <translation>reflectido</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="238"/>
@@ -4539,12 +4539,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="task_orthoarray.py" line="348"/>
       <source>Fuse:</source>
-      <translation type="unfinished">Fuse:</translation>
+      <translation>Fundir:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="362"/>
       <source>Create Link array:</source>
-      <translation type="unfinished">Create Link array:</translation>
+      <translation>Crear unha ligazón a unha matriz:</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="332"/>
@@ -4639,7 +4639,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="task_orthoarray.py" line="382"/>
       <source>Interval X:</source>
-      <translation type="unfinished">Interval X:</translation>
+      <translation>Intervalo X:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="385"/>
@@ -4649,7 +4649,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="task_orthoarray.py" line="387"/>
       <source>Interval Y:</source>
-      <translation type="unfinished">Interval Y:</translation>
+      <translation>Intervalo Y:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="390"/>
@@ -4659,7 +4659,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="task_orthoarray.py" line="392"/>
       <source>Interval Z:</source>
-      <translation type="unfinished">Interval Z:</translation>
+      <translation>Intervalo Z:</translation>
     </message>
     <message>
       <location filename="task_shapestring.py" line="58"/>
@@ -4731,12 +4731,12 @@ Para permitir o FreeCAD a descarga destas bibliotecas, responda Si.</translation
     <message>
       <location filename="gui_lines.py" line="167"/>
       <source>Create Line</source>
-      <translation type="unfinished">Create Line</translation>
+      <translation>Facer liña</translation>
     </message>
     <message>
       <location filename="gui_lines.py" line="189"/>
       <source>Create Wire</source>
-      <translation type="unfinished">Create Wire</translation>
+      <translation>Crear arame</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="140"/>
@@ -4751,7 +4751,7 @@ Para permitir o FreeCAD a descarga destas bibliotecas, responda Si.</translation
     <message>
       <location filename="gui_lines.py" line="356"/>
       <source>Convert to Wire</source>
-      <translation type="unfinished">Convert to Wire</translation>
+      <translation>Converter en Arame</translation>
     </message>
     <message>
       <location filename="gui_edit_draft_objects.py" line="569"/>

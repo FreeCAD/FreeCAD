@@ -714,16 +714,6 @@
       <translation>Expression utilisée pour la valeur StepDown dans les nouvelles opérations.</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="71"/>
-      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
-      <translation>Direction du parcours d’outils autour de la pièce en sens horaire (CW) ou anti-horaire (CCW)</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="72"/>
-      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
-      <translation>Décalage supplémentaire à appliquer à l’opération. Direction est opération dépendante.</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="73"/>
       <source>Start pocketing at center or boundary</source>
       <translation>Débuter la création de la poche au centre ou sur la limite</translation>
@@ -732,6 +722,16 @@
       <location filename="PathPocketBase.py" line="74"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>Avance en pourcentage du diamètre de l'outil à chaque passe</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="71"/>
+      <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
+      <translation>Direction du parcours d’outils autour de la pièce en sens horaire (CW) ou anti-horaire (CCW)</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="72"/>
+      <source>Extra offset to apply to the operation. Direction is operation dependent.</source>
+      <translation>Décalage supplémentaire à appliquer à l’opération. Direction est opération dépendante.</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="75"/>
@@ -1570,6 +1570,16 @@
   <context>
     <name>PathJob</name>
     <message>
+      <location filename="PathJobGui.py" line="1258"/>
+      <source>Unsupported stock object %s</source>
+      <translation>Objet brut " %s " non pris en charge</translation>
+    </message>
+    <message>
+      <location filename="PathJobGui.py" line="1274"/>
+      <source>Unsupported stock type %s (%d)</source>
+      <translation>Type de brut " %s (%d) " non pris en charge</translation>
+    </message>
+    <message>
       <location filename="PathJobGui.py" line="387"/>
       <source>Stock not from Base bound box!</source>
       <translation>Le brut ne tient pas dans les bases de la boîte englobante!</translation>
@@ -1583,16 +1593,6 @@
       <location filename="PathJobGui.py" line="525"/>
       <source>Stock not a cylinder!</source>
       <translation>Le brut n'est pas un cylindre !</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1258"/>
-      <source>Unsupported stock object %s</source>
-      <translation>Objet brut " %s " non pris en charge</translation>
-    </message>
-    <message>
-      <location filename="PathJobGui.py" line="1274"/>
-      <source>Unsupported stock type %s (%d)</source>
-      <translation>Type de brut " %s (%d) " non pris en charge</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="112"/>
@@ -1738,16 +1738,16 @@
       <translation>Emplacement de base</translation>
     </message>
     <message>
+      <location filename="PathOpGui.py" line="855"/>
+      <source>Heights</source>
+      <translation>Hauteur</translation>
+    </message>
+    <message>
       <location filename="PathOpGui.py" line="848"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>FinalDepth ne peut pas être modifiée pour cette opération. 
 S'il est nécessaire de fixer FinalDepth manuellement, veuillez sélectionner une opération différente.</translation>
-    </message>
-    <message>
-      <location filename="PathOpGui.py" line="855"/>
-      <source>Heights</source>
-      <translation>Hauteur</translation>
     </message>
     <message>
       <location filename="PathOpGui.py" line="869"/>
@@ -3258,7 +3258,7 @@ Abandon de la création</translation>
     <message>
       <location filename="gcode_pre.py" line="229"/>
       <source>No job object</source>
-      <translation>Aucune tâche définie</translation>
+      <translation>Aucun objet tâche</translation>
     </message>
   </context>
   <context>
@@ -3440,7 +3440,7 @@ Abandon de la création</translation>
     <message>
       <location filename="PathJobGui.py" line="1610"/>
       <source>This job has no base model.</source>
-      <translation type="unfinished">This job has no base model.</translation>
+      <translation>Ce travail n'a pas de modèle de base.</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="1617"/>
@@ -3631,6 +3631,11 @@ Abandon de la création</translation>
       <translation>Décalage</translation>
     </message>
     <message>
+      <location filename="PathPocketBase.py" line="71"/>
+      <source>Spiral</source>
+      <translation>Spirale</translation>
+    </message>
+    <message>
       <location filename="PathPocketBase.py" line="72"/>
       <source>ZigZagOffset</source>
       <translation type="unfinished">ZigZagOffset</translation>
@@ -3644,11 +3649,6 @@ Abandon de la création</translation>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Triangle</source>
       <translation>Triangle</translation>
-    </message>
-    <message>
-      <location filename="PathPocketBase.py" line="71"/>
-      <source>Spiral</source>
-      <translation>Spirale</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="74"/>
