@@ -1357,16 +1357,16 @@ class archDimTracker(Tracker):
         self.string = self.dimnode.string
         self.view = Draft.get3DView()
         self.camera = self.view.getCameraNode()
-        self.plane = FreeCAD.DraftWorkingPlane
         self.setMode(mode)
         self.setString()
         super().__init__(children=[self.transform, self.dimnode], name="archDimTracker")
 
     def setString(self, text=None):
         """Set the dim string to the given value or auto value."""
+        plane = FreeCAD.DraftWorkingPlane
         p1 = Vector(self.pnts.getValues()[0].getValue())
         p2 = Vector(self.pnts.getValues()[-1].getValue())
-        self.norm.setValue(self.plane.getNormal())
+        self.norm.setValue(plane.getNormal())
         # set the offset sign to prevent the dim line from intersecting the curve near the cursor
         sign_dx = math.copysign(1, (p2.sub(p1)).x)
         sign_dy = math.copysign(1, (p2.sub(p1)).y)
@@ -1381,7 +1381,7 @@ class archDimTracker(Tracker):
             self.Distance = (p2.sub(p1)).Length
 
         text = FreeCAD.Units.Quantity(self.Distance, FreeCAD.Units.Length).UserString
-        self.matrix.setValue(*self.plane.getPlacement().Matrix.transposed().A)
+        self.matrix.setValue(*plane.getPlacement().Matrix.transposed().A)
         self.string.setValue(text.encode('utf8'))
         # change the text position to external depending on the distance and scale values
         volume = self.camera.getViewVolume()
@@ -1404,10 +1404,11 @@ class archDimTracker(Tracker):
 
     def p1(self, point=None):
         """Set or get the first point of the dim."""
+        plane = FreeCAD.DraftWorkingPlane
         if point:
-            p1_proj = self.plane.projectPoint(point)
-            p1_proj_u = (p1_proj - self.plane.position).dot(self.plane.u.normalize())
-            p1_proj_v = (p1_proj - self.plane.position).dot(self.plane.v.normalize())
+            p1_proj = plane.projectPoint(point)
+            p1_proj_u = (p1_proj - plane.position).dot(plane.u.normalize())
+            p1_proj_v = (p1_proj - plane.position).dot(plane.v.normalize())
             self.pnts.set1Value(0, p1_proj_u, p1_proj_v, 0)
             self.setString()
         else:
@@ -1415,10 +1416,11 @@ class archDimTracker(Tracker):
 
     def p2(self, point=None):
         """Set or get the second point of the dim."""
+        plane = FreeCAD.DraftWorkingPlane
         if point:
-            p2_proj = self.plane.projectPoint(point)
-            p2_proj_u = (p2_proj - self.plane.position).dot(self.plane.u.normalize())
-            p2_proj_v = (p2_proj - self.plane.position).dot(self.plane.v.normalize())
+            p2_proj = plane.projectPoint(point)
+            p2_proj_u = (p2_proj - plane.position).dot(plane.u.normalize())
+            p2_proj_v = (p2_proj - plane.position).dot(plane.v.normalize())
             self.pnts.set1Value(1, p2_proj_u, p2_proj_v, 0)
             self.setString()
         else:

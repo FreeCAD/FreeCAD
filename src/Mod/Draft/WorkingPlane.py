@@ -126,7 +126,9 @@ class Plane:
 
     def copy(self):
         """Return a new plane that is a copy of the present object."""
-        return plane(u=self.u, v=self.v, w=self.axis, pos=self.position)
+        p = plane(u=self.u, v=self.v, w=self.axis, pos=self.position)
+        p.weak = self.weak
+        return p
 
     def offsetToPoint(self, p, direction=None):
         """Return the signed distance from a point to the plane.
@@ -1277,6 +1279,34 @@ class Plane:
             norm = proj.cross(self.u)
             return DraftVecUtils.angle(self.u, proj, norm)
 
+    def getParameters(self):
+        """Return a dictionary with the data which define the plane:
+        `u`, `v`, `axis`, `weak`.
+
+        Returns
+        -------
+        dict
+            dictionary of the form:
+            {"position":position, "u":x, "v":v, "axis":axis, "weak":weak}
+        """
+        return {"position":self.position, "u":self.u, "v":self.v, "axis":self.axis, "weak":self.weak}
+
+    def setFromParameters(self, data):
+        """Set the plane according to data.
+
+        Parameters
+        ----------
+        data: dict
+            dictionary of the form:
+            {"position":position, "u":x, "v":v, "axis":axis, "weak":weak}
+       """
+        self.position = data["position"]
+        self.u = data["u"]
+        self.v = data["v"]
+        self.axis = data["axis"]
+        self.weak = data["weak"]
+
+        return None
 
 plane = Plane
 
