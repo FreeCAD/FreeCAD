@@ -133,7 +133,7 @@ class Line(gui_base_original.Creator):
         """
         self.removeTemporaryObject()
         if self.oldWP:
-            App.DraftWorkingPlane = self.oldWP
+            App.DraftWorkingPlane.setFromParameters(self.oldWP)
             if hasattr(Gui, "Snapper"):
                 Gui.Snapper.setGrid()
                 Gui.Snapper.restack()
@@ -262,7 +262,7 @@ class Line(gui_base_original.Creator):
                 v = self.node[-2].sub(self.node[-1])
                 v = v.negative()
                 if not self.oldWP:
-                    self.oldWP = App.DraftWorkingPlane.copy()
+                    self.oldWP = App.DraftWorkingPlane.getParameters()
                 App.DraftWorkingPlane.alignToPointAndAxis(p, n, upvec=v)
                 if hasattr(Gui, "Snapper"):
                     Gui.Snapper.setGrid()
