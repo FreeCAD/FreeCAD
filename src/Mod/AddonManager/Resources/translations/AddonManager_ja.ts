@@ -798,6 +798,26 @@
       <translation>アップデートを確認中…</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation>{} アップデートを適用</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="577"/>
+      <source>No updates available</source>
+      <translation>利用可能なアップデートはありません</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="915"/>
+      <source>Too many to list</source>
+      <translation>リストするには多すぎます</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="893"/>
+      <source>Missing Requirement</source>
+      <translation>不足している要件</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>ここからインストールできますアドオンは、FreeCAD公式の一部ではないゆえにFreeCADチームによってレビューがなされていない。あなたが何をインストールしようとしているかを確認して下さい！</translation>
@@ -873,16 +893,6 @@
       <translation>再起動が必要です</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation>{} アップデートを適用</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="577"/>
-      <source>No updates available</source>
-      <translation>利用可能なアップデートはありません</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="774"/>
       <source>All packages updates failed. Packages:</source>
       <translation>すべてのパッケージの更新に失敗しました。 パッケージ:</translation>
@@ -893,14 +903,9 @@
       <translation>失敗したパッケージ:</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="915"/>
-      <source>Too many to list</source>
-      <translation>リストするには多すぎます</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="893"/>
-      <source>Missing Requirement</source>
-      <translation>不足している要件</translation>
+      <location filename="AddonManager.py" line="1079"/>
+      <source>Press OK to install anyway.</source>
+      <translation type="unfinished">Press OK to install anyway.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="964"/>

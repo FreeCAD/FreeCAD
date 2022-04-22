@@ -1762,14 +1762,15 @@ QIcon ViewProviderLink::getIcon() const {
 
 QPixmap ViewProviderLink::getOverlayPixmap() const {
     auto ext = getLinkExtension();
+    int px = 12 * getMainWindow()->devicePixelRatioF();
     if(ext && ext->getLinkedObjectProperty() && ext->_getElementCountValue())
-        return BitmapFactory().pixmap("LinkArrayOverlay");
+        return BitmapFactory().pixmapFromSvg("LinkArrayOverlay", QSizeF(px,px));
     else if(hasSubElement)
-        return BitmapFactory().pixmap("LinkSubElement");
+        return BitmapFactory().pixmapFromSvg("LinkSubElement", QSizeF(px,px));
     else if(hasSubName)
-        return BitmapFactory().pixmap("LinkSubOverlay");
+        return BitmapFactory().pixmapFromSvg("LinkSubOverlay", QSizeF(px,px));
     else
-        return BitmapFactory().pixmap("LinkOverlay");
+        return BitmapFactory().pixmapFromSvg("LinkOverlay", QSizeF(px,px));
 }
 
 void ViewProviderLink::onChanged(const App::Property* prop) {

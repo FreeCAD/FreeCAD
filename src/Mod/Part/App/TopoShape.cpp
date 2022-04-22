@@ -990,6 +990,10 @@ void TopoShape::exportIges(const char *filename) const
 void TopoShape::exportStep(const char *filename) const
 {
     try {
+        // Fixes issue #6282
+        // Do not write out any assembly information when using the simplified STEP export
+        Interface_Static::SetIVal("write.step.assembly", 0);
+
         // write step file
         STEPControl_Writer aWriter;
 
@@ -2963,6 +2967,11 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
             }
             offsetShape = mkOffset.Shape();
 
+            // Replace OffsetCurve with B-Spline
+            if (!offsetShape.IsNull()) {
+                offsetShape = mkOffset.Replace(GeomAbs_OffsetCurve, offsetShape);
+            }
+
             if (offsetShape.IsNull())
                 throw Base::CADKernelError("makeOffset2D: result of offsetting is null!");
 
@@ -3789,6 +3798,8 @@ void TopoShape::getPoints(std::vector<Base::Vector3d> &Points,
                     Points.push_back(Base::convertTo<Base::Vector3d>(p));
                     gp_Dir normal;
                     if (GeomLib::NormEstim(aSurf, p2d, Precision::Confusion(), normal) <= 1) {
+                        if (face.Orientation() == TopAbs_REVERSED)
+                            normal.Reverse();
                         Normals.push_back(Base::convertTo<Base::Vector3d>(normal));
                     }
                     else {

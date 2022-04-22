@@ -626,7 +626,7 @@ on the selected vertex</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4908"/>
       <source>Constrain radius or weight</source>
-      <translation type="unfinished">Constrain radius or weight</translation>
+      <translation>约束半径和权重</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4909"/>
@@ -660,8 +660,7 @@ and an edge as an interface.</translation>
       <location filename="../../CommandConstraints.cpp" line="6679"/>
       <source>Create a symmetry constraint between two points
 with respect to a line or a third point</source>
-      <translation type="unfinished">Create a symmetry constraint between two points
-with respect to a line or a third point</translation>
+      <translation>对两点作关于一条直线或第三点的对称约束</translation>
     </message>
   </context>
   <context>
@@ -921,7 +920,7 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1054"/>
       <source>Create a rounded rectangle in the sketch</source>
-      <translation type="unfinished">Create a rounded rectangle in the sketch</translation>
+      <translation>在草图中创建一个圆角四边形</translation>
     </message>
   </context>
   <context>
@@ -1124,12 +1123,12 @@ with respect to a line or a third point</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2148"/>
       <source>Delete all constraints</source>
-      <translation type="unfinished">Delete all constraints</translation>
+      <translation>删除所有约束</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2149"/>
       <source>Delete all constraints in the sketch</source>
-      <translation type="unfinished">Delete all constraints in the sketch</translation>
+      <translation>删除草图中的所有约束</translation>
     </message>
   </context>
   <context>
@@ -1265,7 +1264,7 @@ then call this command, then choose the desired sketch.</translation>
     <message>
       <location filename="../../Command.cpp" line="879"/>
       <source>Select at least two sketches.</source>
-      <translation type="unfinished">Select at least two sketches.</translation>
+      <translation>请选择至少两个草图</translation>
     </message>
   </context>
   <context>
@@ -1337,12 +1336,12 @@ as mirroring reference.</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2212"/>
       <source>Remove axes alignment</source>
-      <translation type="unfinished">Remove axes alignment</translation>
+      <translation>移除轴对齐</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2213"/>
       <source>Modifies constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</source>
-      <translation type="unfinished">Modifies constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</translation>
+      <translation>修改删除轴对齐约束，以保留所选部分的约束关系</translation>
     </message>
   </context>
   <context>
@@ -1356,8 +1355,8 @@ as mirroring reference.</source>
       <location filename="../../Command.cpp" line="382"/>
       <source>Place the selected sketch on one of the global coordinate planes.
 This will clear the 'Support' property, if any.</source>
-      <translation type="unfinished">Place the selected sketch on one of the global coordinate planes.
-This will clear the 'Support' property, if any.</translation>
+      <translation>将选中的草图放置在某个全球坐标平面上。
+如果有“支持”属性的话，将予以清除。</translation>
     </message>
   </context>
   <context>
@@ -1370,7 +1369,7 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="931"/>
       <source>Show all internal geometry or hide unused internal geometry</source>
-      <translation type="unfinished">Show all internal geometry or hide unused internal geometry</translation>
+      <translation>显示所有内部几何体或隐藏未使用的内部几何体</translation>
     </message>
   </context>
   <context>
@@ -1379,7 +1378,7 @@ This will clear the 'Support' property, if any.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="671"/>
       <location filename="../../CommandSketcherTools.cpp" line="672"/>
       <source>Select conflicting constraints</source>
-      <translation type="unfinished">Select conflicting constraints</translation>
+      <translation>选择相冲突的约束</translation>
     </message>
   </context>
   <context>
@@ -1387,7 +1386,7 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="302"/>
       <source>Select associated constraints</source>
-      <translation type="unfinished">Select associated constraints</translation>
+      <translation>选择关联的约束</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="303"/>
@@ -1400,12 +1399,12 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="723"/>
       <source>Select associated geometry</source>
-      <translation type="unfinished">Select associated geometry</translation>
+      <translation>选择关联的几何体</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="724"/>
       <source>Select the geometrical elements associated with the selected constraints</source>
-      <translation type="unfinished">Select the geometrical elements associated with the selected constraints</translation>
+      <translation>选择与所选约束相关的几何元素</translation>
     </message>
   </context>
   <context>
@@ -1426,12 +1425,12 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="466"/>
       <source>Select horizontal axis</source>
-      <translation type="unfinished">Select horizontal axis</translation>
+      <translation>选择水平轴</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="467"/>
       <source>Select the local horizontal axis of the sketch</source>
-      <translation type="unfinished">Select the local horizontal axis of the sketch</translation>
+      <translation>选择草图的局部水平轴</translation>
     </message>
   </context>
   <context>
@@ -1440,7 +1439,7 @@ This will clear the 'Support' property, if any.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="563"/>
       <location filename="../../CommandSketcherTools.cpp" line="564"/>
       <source>Select malformed constraints</source>
-      <translation type="unfinished">Select malformed constraints</translation>
+      <translation>选择流型的约束</translation>
     </message>
   </context>
   <context>
@@ -1453,7 +1452,7 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="377"/>
       <source>Select the local origin point of the sketch</source>
-      <translation type="unfinished">Select the local origin point of the sketch</translation>
+      <translation>选择草图的局部原点</translation>
     </message>
   </context>
   <context>
@@ -1462,7 +1461,7 @@ This will clear the 'Support' property, if any.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="617"/>
       <location filename="../../CommandSketcherTools.cpp" line="618"/>
       <source>Select partially redundant constraints</source>
-      <translation type="unfinished">Select partially redundant constraints</translation>
+      <translation>选择部分冗余约束</translation>
     </message>
   </context>
   <context>
@@ -1471,7 +1470,7 @@ This will clear the 'Support' property, if any.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="509"/>
       <location filename="../../CommandSketcherTools.cpp" line="510"/>
       <source>Select redundant constraints</source>
-      <translation type="unfinished">Select redundant constraints</translation>
+      <translation>选择冗余约束</translation>
     </message>
   </context>
   <context>
@@ -1484,7 +1483,7 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="423"/>
       <source>Select the local vertical axis of the sketch</source>
-      <translation type="unfinished">Select the local vertical axis of the sketch</translation>
+      <translation>选择草图的局部垂直轴</translation>
     </message>
   </context>
   <context>
@@ -1544,7 +1543,7 @@ This will clear the 'Support' property, if any.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7730"/>
       <source>Activate/deactivate constraint</source>
-      <translation type="unfinished">Activate/deactivate constraint</translation>
+      <translation>激活/停用约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7731"/>
@@ -1712,43 +1711,43 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="2384"/>
       <location filename="../../CommandConstraints.cpp" line="2516"/>
       <source>Add distance from horizontal axis constraint</source>
-      <translation type="unfinished">Add distance from horizontal axis constraint</translation>
+      <translation>从水平轴约束添加距离</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2392"/>
       <location filename="../../CommandConstraints.cpp" line="2523"/>
       <source>Add distance from vertical axis constraint</source>
-      <translation type="unfinished">Add distance from vertical axis constraint</translation>
+      <translation>从垂直轴约束添加距离</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2400"/>
       <location filename="../../CommandConstraints.cpp" line="2530"/>
       <source>Add point to point distance constraint</source>
-      <translation type="unfinished">Add point to point distance constraint</translation>
+      <translation>添加点到点距离约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2435"/>
       <location filename="../../CommandConstraints.cpp" line="2605"/>
       <source>Add point to line Distance constraint</source>
-      <translation type="unfinished">Add point to line Distance constraint</translation>
+      <translation>添加点到线距离约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2469"/>
       <location filename="../../CommandConstraints.cpp" line="2562"/>
       <source>Add length constraint</source>
-      <translation type="unfinished">Add length constraint</translation>
+      <translation>添加长度约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2751"/>
       <location filename="../../CommandConstraints.cpp" line="2839"/>
       <source>Add point on object constraint</source>
-      <translation type="unfinished">Add point on object constraint</translation>
+      <translation>添加对象上点约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3013"/>
       <location filename="../../CommandConstraints.cpp" line="3115"/>
       <source>Add point to point horizontal distance constraint</source>
-      <translation type="unfinished">Add point to point horizontal distance constraint</translation>
+      <translation>添加点到点水平距离约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3044"/>
@@ -1759,7 +1758,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="3262"/>
       <location filename="../../CommandConstraints.cpp" line="3364"/>
       <source>Add point to point vertical distance constraint</source>
-      <translation type="unfinished">Add point to point vertical distance constraint</translation>
+      <translation>添加点到点垂直距离约束</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3292"/>
@@ -1915,7 +1914,7 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../Command.cpp" line="644"/>
       <source>Attach sketch</source>
-      <translation type="unfinished">Attach sketch</translation>
+      <translation>附加草图</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="649"/>
@@ -1935,22 +1934,22 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="137"/>
       <source>Toggle draft from/to draft</source>
-      <translation type="unfinished">Toggle draft from/to draft</translation>
+      <translation>切换到草稿/从草稿切换</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="320"/>
       <source>Add sketch line</source>
-      <translation type="unfinished">Add sketch line</translation>
+      <translation>添加草绘线</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="538"/>
       <source>Add sketch box</source>
-      <translation type="unfinished">Add sketch box</translation>
+      <translation>添加草绘盒</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="575"/>
       <source>Add centered sketch box</source>
-      <translation type="unfinished">Add centered sketch box</translation>
+      <translation>添加居中草绘盒</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="901"/>

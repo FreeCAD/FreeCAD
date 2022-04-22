@@ -846,7 +846,7 @@
     <message>
       <location filename="PathArray.py" line="169"/>
       <source>Seed value for jitter randomness</source>
-      <translation type="unfinished">Seed value for jitter randomness</translation>
+      <translation>Semenska vrednost za naključnost trepetanja</translation>
     </message>
     <message>
       <location filename="PathPropertyBag.py" line="77"/>
@@ -2972,17 +2972,17 @@ Prekinitev ustvarjanja opravila</translation>
     <message>
       <location filename="PathDressupRampEntry.py" line="133"/>
       <source>RampMethod1</source>
-      <translation type="unfinished">RampMethod1</translation>
+      <translation>NačinSpuščanja1</translation>
     </message>
     <message>
       <location filename="PathDressupRampEntry.py" line="134"/>
       <source>RampMethod2</source>
-      <translation type="unfinished">RampMethod2</translation>
+      <translation>NačinSpuščanja2</translation>
     </message>
     <message>
       <location filename="PathDressupRampEntry.py" line="135"/>
       <source>RampMethod3</source>
-      <translation type="unfinished">RampMethod3</translation>
+      <translation>NačinSpuščanja2</translation>
     </message>
     <message>
       <location filename="PathDressupRampEntry.py" line="136"/>
@@ -3002,7 +3002,7 @@ Prekinitev ustvarjanja opravila</translation>
     <message>
       <location filename="PathDressupRampEntry.py" line="148"/>
       <source>Ramp Feed Rate</source>
-      <translation type="unfinished">Ramp Feed Rate</translation>
+      <translation>Podajalna hitrost pri spuščanju</translation>
     </message>
     <message>
       <location filename="PathDressupRampEntry.py" line="151"/>
@@ -3258,7 +3258,7 @@ Prekinitev ustvarjanja opravila</translation>
     <message>
       <location filename="gcode_pre.py" line="229"/>
       <source>No job object</source>
-      <translation type="unfinished">No job object</translation>
+      <translation>Ni opravilnega predmeta</translation>
     </message>
   </context>
   <context>
@@ -3332,12 +3332,12 @@ Prekinitev ustvarjanja opravila</translation>
     <message>
       <location filename="PathInspect.py" line="260"/>
       <source>Inspect Path Commands</source>
-      <translation type="unfinished">Inspect Path Commands</translation>
+      <translation>Preverjanje ukazov poti</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="264"/>
       <source>Inspects the contents of a Path object</source>
-      <translation type="unfinished">Inspects the contents of a Path object</translation>
+      <translation>Preveri vsebino Pótnega predmeta</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="260"/>
@@ -3646,14 +3646,14 @@ Prekinitev ustvarjanja opravila</translation>
       <translation>Črta</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Grid</source>
-      <translation>Mreža</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Triangle</source>
       <translation>Trikotnik</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Grid</source>
+      <translation>Mreža</translation>
     </message>
     <message>
       <location filename="PathPocketGui.py" line="46"/>

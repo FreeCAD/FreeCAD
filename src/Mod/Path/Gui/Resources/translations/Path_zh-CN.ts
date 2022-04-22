@@ -3645,14 +3645,14 @@ Aborting op creation</translation>
       <translation>线</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Grid</source>
-      <translation>网格</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Triangle</source>
       <translation>三角形</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Grid</source>
+      <translation>网格</translation>
     </message>
     <message>
       <location filename="PathPocketGui.py" line="46"/>
@@ -9408,7 +9408,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="639"/>
       <source>Alignment</source>
-      <translation type="unfinished">Alignment</translation>
+      <translation>对齐</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="645"/>

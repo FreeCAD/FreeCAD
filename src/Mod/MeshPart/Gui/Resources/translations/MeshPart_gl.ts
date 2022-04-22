@@ -324,7 +324,7 @@ The smallest value is 0.</translation>
     </message>
     <message>
       <source>Estimate</source>
-      <translation type="unfinished">Estimate</translation>
+      <translation>Estimación</translation>
     </message>
     <message>
       <source>Netgen</source>
@@ -416,7 +416,7 @@ A value in the range of 0.2-10.</translation>
     </message>
     <message>
       <source>gmsh</source>
-      <translation type="unfinished">gmsh</translation>
+      <translation>gmsh</translation>
     </message>
     <message>
       <source>No active document</source>
@@ -470,11 +470,11 @@ Select a different shape, please.</translation>
     </message>
     <message>
       <source>Below</source>
-      <translation type="unfinished">Below</translation>
+      <translation>Abaixo</translation>
     </message>
     <message>
       <source>Above</source>
-      <translation type="unfinished">Above</translation>
+      <translation>Arriba</translation>
     </message>
     <message>
       <source>Split</source>

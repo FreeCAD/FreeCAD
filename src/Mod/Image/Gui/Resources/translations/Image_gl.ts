@@ -73,7 +73,7 @@
     <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Create ImagePlane</source>
-      <translation type="unfinished">Create ImagePlane</translation>
+      <translation>Crear plano de imaxe</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
       <location filename="../../GLImageBox.cpp" line="335"/>
       <location filename="../../OpenGLImageBox.cpp" line="393"/>
       <source>Undefined type of colour space for image viewing</source>
-      <translation>Tipo de espazo en color non definido para a visualización da imaxe</translation>
+      <translation>Non hai definido un espazo de cor para a visualización da imaxe</translation>
     </message>
   </context>
   <context>

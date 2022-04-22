@@ -3645,14 +3645,14 @@ Aborting op creation</translation>
       <translation>Garis</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Grid</source>
-      <translation>Kisi</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Triangle</source>
       <translation>Segi tiga</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Grid</source>
+      <translation>Kisi</translation>
     </message>
     <message>
       <location filename="PathPocketGui.py" line="46"/>

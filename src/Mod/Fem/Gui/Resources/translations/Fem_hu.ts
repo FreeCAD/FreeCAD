@@ -223,7 +223,7 @@
     <message>
       <location filename="commands.py" line="325"/>
       <source>Creates a FEM fluid section for 1D flow</source>
-      <translation>Létrehoz egy végeselemes folyadékszakaszt az 1D áramláshoz</translation>
+      <translation>Létrehoz egy VEM folyadékszakaszt az 1D áramláshoz</translation>
     </message>
   </context>
   <context>
@@ -288,7 +288,7 @@
     <message>
       <location filename="commands.py" line="461"/>
       <source>Creates a FEM equation for electric forces</source>
-      <translation>Létrehoz egy végeselemes módszerű elektromos erő egyenletet</translation>
+      <translation>Létrehoz egy VEM egyenletet az elektromos erők számára</translation>
     </message>
   </context>
   <context>
@@ -327,7 +327,7 @@
     <message>
       <location filename="commands.py" line="444"/>
       <source>Creates a FEM equation for flux</source>
-      <translation>Létrehoz egy végeselemes módszerű áramlási egyenletet a fluxushoz</translation>
+      <translation>Létrehoz egy VEM egyenletet a fluxushoz</translation>
     </message>
   </context>
   <context>

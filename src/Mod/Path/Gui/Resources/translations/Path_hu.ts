@@ -1234,7 +1234,7 @@
     <message>
       <location filename="PathOp.py" line="782"/>
       <source>Tool Error</source>
-      <translation>Munkaeszköz hiba</translation>
+      <translation>Szerszám hiba</translation>
     </message>
     <message>
       <location filename="PathOp.py" line="798"/>
@@ -3260,7 +3260,7 @@ Az op-létrehozás megszakítása</translation>
     <message>
       <location filename="gcode_pre.py" line="229"/>
       <source>No job object</source>
-      <translation type="unfinished">No job object</translation>
+      <translation>Nincs munka tárgy</translation>
     </message>
   </context>
   <context>
@@ -3334,12 +3334,12 @@ Az op-létrehozás megszakítása</translation>
     <message>
       <location filename="PathInspect.py" line="260"/>
       <source>Inspect Path Commands</source>
-      <translation type="unfinished">Inspect Path Commands</translation>
+      <translation>Elérésiút parancsok vizsgálata</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="264"/>
       <source>Inspects the contents of a Path object</source>
-      <translation type="unfinished">Inspects the contents of a Path object</translation>
+      <translation>Útvonal tárgy tartalmának vizsgálata</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="260"/>
@@ -3427,7 +3427,7 @@ Az op-létrehozás megszakítása</translation>
     <message>
       <location filename="PathJobGui.py" line="1596"/>
       <source>Please add one.</source>
-      <translation type="unfinished">Please add one.</translation>
+      <translation>Kérlek add hozzá egyet.</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="1597"/>
@@ -3442,12 +3442,12 @@ Az op-létrehozás megszakítása</translation>
     <message>
       <location filename="PathJobGui.py" line="1610"/>
       <source>This job has no base model.</source>
-      <translation type="unfinished">This job has no base model.</translation>
+      <translation>Ennek a munkának nincs alap modellje.</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="1617"/>
       <source>This job has no tool.</source>
-      <translation type="unfinished">This job has no tool.</translation>
+      <translation>Ennek a munkának nincs eszköze.</translation>
     </message>
     <message>
       <location filename="PathJob.py" line="257"/>
@@ -3648,14 +3648,14 @@ Az op-létrehozás megszakítása</translation>
       <translation>Vonal</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Grid</source>
-      <translation>Rács</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Triangle</source>
       <translation>Háromszög</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Grid</source>
+      <translation>Rács</translation>
     </message>
     <message>
       <location filename="PathPocketGui.py" line="46"/>

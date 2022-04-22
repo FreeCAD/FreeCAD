@@ -55,7 +55,7 @@ class FillingVertexPanel::VertexSelection : public Gui::SelectionFilterGate
 {
 public:
     VertexSelection(FillingVertexPanel::SelectionMode& mode, Surface::Filling* editedObject)
-        : Gui::SelectionFilterGate(static_cast<Gui::SelectionFilter*>(nullptr))
+        : Gui::SelectionFilterGate(nullPointer())
         , mode(mode)
         , editedObject(editedObject)
     {

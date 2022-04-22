@@ -6,7 +6,7 @@
     <message>
       <location filename="OpenSCADUtils.py" line="710"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
-      <translation type="unfinished">OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</translation>
+      <translation>Il file OpenSCAD contiene sia forme 2D che 3D. Questo non è supportato in questo importatore, tutte le forme devono avere la stessa dimensionalità.</translation>
     </message>
     <message>
       <location filename="OpenSCADUtils.py" line="622"/>
@@ -21,7 +21,7 @@
     <message>
       <location filename="importCSG.py" line="1341"/>
       <source>Press OK</source>
-      <translation>Premere OK</translation>
+      <translation>Premi OK</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="102"/>

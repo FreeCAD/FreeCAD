@@ -297,7 +297,7 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
     if(!subname || !subname[0]) {
         // No subname reference is given, we try to extract one from the current
         // selection in order to obtain the correct transformation matrix below
-        auto sels = Gui::Selection().getCompleteSelection(false);
+        auto sels = Gui::Selection().getCompleteSelection(ResolveMode::NoResolve);
         App::DocumentObject *parentObj = nullptr;
         for(auto &sel : sels) {
             if(!sel.pObject || !sel.pObject->getNameInDocument())
@@ -2231,7 +2231,7 @@ Gui::MDIView* Document::getViewOfNode(SoNode* node) const
     return nullptr;
 }
 
-Gui::MDIView* Document::getViewOfViewProvider(Gui::ViewProvider* vp) const
+Gui::MDIView* Document::getViewOfViewProvider(const Gui::ViewProvider* vp) const
 {
     return getViewOfNode(vp->getRoot());
 }

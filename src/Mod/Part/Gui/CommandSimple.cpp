@@ -189,12 +189,15 @@ CmdPartSimpleCopy::CmdPartSimpleCopy()
 static void _copyShape(const char *cmdName, bool resolve,bool needElement=false, bool refine=false) {
     Gui::WaitCursor wc;
     Gui::Command::openCommand(cmdName);
-    for(auto &sel : Gui::Selection().getSelectionEx("*",App::DocumentObject::getClassTypeId(),resolve)) {
+    for(auto &sel : Gui::Selection().getSelectionEx("*", App::DocumentObject::getClassTypeId(),
+                                                    resolve ? Gui::ResolveMode::OldStyleElement : Gui::ResolveMode::NoResolve)) {
         std::map<std::string,App::DocumentObject*> subMap;
         auto obj = sel.getObject();
-        if(!obj) continue;
-        if(resolve || !sel.hasSubNames())
+        if (!obj)
+            continue;
+        if (resolve || !sel.hasSubNames()) {
             subMap.emplace("",obj);
+        }
         else {
             for(const auto &sub : sel.getSubNames()) {
                 const char *element = nullptr;
@@ -215,8 +218,9 @@ static void _copyShape(const char *cmdName, bool resolve,bool needElement=false,
                     "App.ActiveDocument.addObject('Part::Feature','%s').Shape=__shape\n"
                     "App.ActiveDocument.ActiveObject.Label=%s.Label\n",
                         parentName.c_str(), v.first.c_str(),
-                        needElement?"True":"False", refine?"True":"False",
-                        needElement?".copy()":"", 
+                        needElement ? "True" : "False",
+                        refine ? "True" : "False",
+                        needElement ? ".copy()" : "",
                         v.second->getNameInDocument(), 
                         Gui::Command::getObjectCmd(v.second).c_str());
             auto newObj = App::GetApplication().getActiveDocument()->getActiveObject();

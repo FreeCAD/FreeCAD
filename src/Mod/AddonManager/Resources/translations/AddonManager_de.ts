@@ -120,7 +120,7 @@
     <message>
       <location filename="package_details.py" line="510"/>
       <source>No URL or wiki page provided by this macro</source>
-      <translation type="unfinished">No URL or wiki page provided by this macro</translation>
+      <translation>Keine URL oder Wiki-Seite von diesem Makro bereitgestellt</translation>
     </message>
     <message>
       <location filename="package_details.py" line="563"/>
@@ -191,7 +191,7 @@
       <location filename="package_details.py" line="800"/>
       <source>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</source>
       <translation type="unfinished">
-        <numerusform>QtWebEngine Python-Bindungen nicht installiert -- benutze die Rückfallebene von README-Display. Siehe Ausgabefenster für Details und Installationsanweisungen.</numerusform>
+        <numerusform>QtWebEngine Python ist nicht installiert -- Benutze bitte die alternative vom README. Details und Installationsanweisungen sind im Ausgabefenster zu finden.</numerusform>
         <numerusform>QtWebEngine Python bindings not installed -- using fallback README display. See Report View for details and installation instructions.</numerusform>
       </translation>
     </message>
@@ -631,7 +631,7 @@ Bitte FreeCAD neu starten, um die Änderungen zu übernehmen.</translation>
     <message>
       <location filename="addonmanager_workers.py" line="1611"/>
       <source>Downloaded package.xml for {}</source>
-      <translation>package.xml heruntergeladen für {}</translation>
+      <translation>Package.xml heruntergeladen für {}</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="1641"/>
@@ -796,13 +796,32 @@ Bitte FreeCAD neu starten, um die Änderungen zu übernehmen.</translation>
       <location filename="AddonManager.py" line="766"/>
       <source>Could not find addon &apos;{}&apos; to select
 </source>
-      <translation type="unfinished">Could not find addon &apos;{}&apos; to select
-</translation>
+      <translation>Add-on &apos; konnte nicht gefunden werden, {}&apos; um auszuwählen</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="243"/>
       <source>Checking for updates...</source>
       <translation>Nach Updates suchen...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation>{} Update(s) anwenden</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="577"/>
+      <source>No updates available</source>
+      <translation>Keine Aktualisierungen verfügbar</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="915"/>
+      <source>Too many to list</source>
+      <translation>Zu viele zum Auflisten</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="893"/>
+      <source>Missing Requirement</source>
+      <translation>Fehlende Voraussetzung</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="86"/>
@@ -817,7 +836,7 @@ Bitte FreeCAD neu starten, um die Änderungen zu übernehmen.</translation>
     <message>
       <location filename="AddonManager.py" line="204"/>
       <source>You must restart FreeCAD for changes to take effect. Press Ok to restart FreeCAD now, or Cancel to restart later.</source>
-      <translation>Sie müssen FreeCAD neu starten, um die Änderungen anzuwenden. Drücken Sie Ok, um FreeCAD jetzt neu zu starten, oder Abbrechen, um später neu zu starten.</translation>
+      <translation>FreeCAD muss neu gestartet werden, damit die Änderungen wirksam werden. Ok drücken, um FreeCAD jetzt neu zu starten oder Abbrechen, um später neu zu starten.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="241"/>
@@ -852,7 +871,7 @@ Bitte FreeCAD neu starten, um die Änderungen zu übernehmen.</translation>
     <message>
       <location filename="AddonManager.py" line="494"/>
       <source>Addon successfully removed. Please restart FreeCAD</source>
-      <translation>Das Addon wurde erfolgreich entfernt. Bitte starten Sie FreeCAD neu</translation>
+      <translation>Das Addon wurde erfolgreich entfernt. Bitte FreeCAD neu starten</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="496"/>
@@ -880,16 +899,6 @@ Bitte FreeCAD neu starten, um die Änderungen zu übernehmen.</translation>
       <translation>Neustart erforderlich</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation>{} Update(s) anwenden</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="577"/>
-      <source>No updates available</source>
-      <translation>Keine Aktualisierungen verfügbar</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="774"/>
       <source>All packages updates failed. Packages:</source>
       <translation>Alle Paketaktualisierungen sind fehlgeschlagen. Pakete:</translation>
@@ -900,14 +909,9 @@ Bitte FreeCAD neu starten, um die Änderungen zu übernehmen.</translation>
       <translation>Fehlgeschlagene Pakete:</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="915"/>
-      <source>Too many to list</source>
-      <translation>Zu viele zum Auflisten</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="893"/>
-      <source>Missing Requirement</source>
-      <translation>Fehlende Voraussetzung</translation>
+      <location filename="AddonManager.py" line="1079"/>
+      <source>Press OK to install anyway.</source>
+      <translation>OK drücken, um trotzdem zu installieren.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="964"/>

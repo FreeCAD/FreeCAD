@@ -122,7 +122,7 @@
     <message>
       <location filename="package_details.py" line="510"/>
       <source>No URL or wiki page provided by this macro</source>
-      <translation type="unfinished">No URL or wiki page provided by this macro</translation>
+      <translation>Цей макрос не надає URL-адреси чи вікі-сторінки</translation>
     </message>
     <message>
       <location filename="package_details.py" line="563"/>
@@ -317,7 +317,7 @@
     <message>
       <location filename="package_list.py" line="569"/>
       <source>All</source>
-      <translation>Все</translation>
+      <translation>Вся</translation>
     </message>
     <message>
       <location filename="package_list.py" line="572"/>
@@ -357,7 +357,7 @@
     <message>
       <location filename="package_list.py" line="585"/>
       <source>OK</source>
-      <translation>Гаразд</translation>
+      <translation>Підтвердити</translation>
     </message>
     <message>
       <location filename="addonmanager_workers.py" line="115"/>
@@ -806,13 +806,33 @@
       <location filename="AddonManager.py" line="766"/>
       <source>Could not find addon &apos;{}&apos; to select
 </source>
-      <translation type="unfinished">Could not find addon &apos;{}&apos; to select
+      <translation>Не вдалося знайти доповнення &apos;{}&apos; для вибору
 </translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="243"/>
       <source>Checking for updates...</source>
       <translation>Перевірка наявності оновлень...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation>Застосувати {} оновлення</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="577"/>
+      <source>No updates available</source>
+      <translation type="unfinished">No updates available</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="915"/>
+      <source>Too many to list</source>
+      <translation>Забагато для списку</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="893"/>
+      <source>Missing Requirement</source>
+      <translation>Відсутні необхідні складники</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="86"/>
@@ -890,16 +910,6 @@
       <translation type="unfinished">Restart required</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation>Застосувати {} оновлення</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="577"/>
-      <source>No updates available</source>
-      <translation type="unfinished">No updates available</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="774"/>
       <source>All packages updates failed. Packages:</source>
       <translation type="unfinished">All packages updates failed. Packages:</translation>
@@ -910,14 +920,9 @@
       <translation type="unfinished">Failed packages:</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="915"/>
-      <source>Too many to list</source>
-      <translation>Забагато для списку</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="893"/>
-      <source>Missing Requirement</source>
-      <translation>Відсутні необхідні складники</translation>
+      <location filename="AddonManager.py" line="1079"/>
+      <source>Press OK to install anyway.</source>
+      <translation>Натисніть OK, щоб встановити у будь-якому випадку.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="964"/>

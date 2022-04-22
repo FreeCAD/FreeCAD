@@ -51,12 +51,12 @@
     <message>
       <location filename="PathWaterline.py" line="124"/>
       <source>Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.</source>
-      <translation type="unfinished">Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.</translation>
+      <translation>Менші значення дають більшу точність, але суттєво збільшують час обробки.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="126"/>
       <source>Smaller values yield a finer, more accurate the mesh. Smaller values do not increase processing time much.</source>
-      <translation type="unfinished">Smaller values yield a finer, more accurate the mesh. Smaller values do not increase processing time much.</translation>
+      <translation>Менші значення дають більшу точність, але суттєво збільшують час обробки.</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="129"/>
@@ -1299,12 +1299,12 @@
     <message>
       <location filename="PathDeburr.py" line="185"/>
       <source>CW</source>
-      <translation type="unfinished">CW</translation>
+      <translation>за годинниковою стрілкою</translation>
     </message>
     <message>
       <location filename="PathDeburr.py" line="186"/>
       <source>CCW</source>
-      <translation type="unfinished">CCW</translation>
+      <translation>проти годинникової стрілки</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="114"/>
@@ -1935,7 +1935,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathFeatureExtensionsGui.py" line="176"/>
       <source>Normal</source>
-      <translation>Звичайне</translation>
+      <translation>Звичайна</translation>
     </message>
     <message>
       <location filename="PathFeatureExtensionsGui.py" line="177"/>
@@ -1993,7 +1993,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathProfile.py" line="196"/>
       <source>CW</source>
-      <translation type="unfinished">CW</translation>
+      <translation>за годинниковою стрілкою</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="91"/>
@@ -2008,7 +2008,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathProfile.py" line="197"/>
       <source>CCW</source>
-      <translation type="unfinished">CCW</translation>
+      <translation>проти годинникової стрілки</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="200"/>
@@ -3258,7 +3258,7 @@ Aborting op creation</translation>
     <message>
       <location filename="gcode_pre.py" line="229"/>
       <source>No job object</source>
-      <translation type="unfinished">No job object</translation>
+      <translation>Немає об’єкта завдання</translation>
     </message>
   </context>
   <context>
@@ -3276,12 +3276,12 @@ Aborting op creation</translation>
     <message>
       <location filename="PathHelix.py" line="72"/>
       <source>CW</source>
-      <translation type="unfinished">CW</translation>
+      <translation>за годинниковою стрілкою</translation>
     </message>
     <message>
       <location filename="PathHelix.py" line="73"/>
       <source>CCW</source>
-      <translation type="unfinished">CCW</translation>
+      <translation>проти годинникової стрілки</translation>
     </message>
   </context>
   <context>
@@ -3332,12 +3332,12 @@ Aborting op creation</translation>
     <message>
       <location filename="PathInspect.py" line="260"/>
       <source>Inspect Path Commands</source>
-      <translation type="unfinished">Inspect Path Commands</translation>
+      <translation>Перевірити команди Path</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="264"/>
       <source>Inspects the contents of a Path object</source>
-      <translation type="unfinished">Inspects the contents of a Path object</translation>
+      <translation>Перевіряє вміст об’єкта Path</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="260"/>
@@ -3526,7 +3526,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathMillFaceGui.py" line="91"/>
       <source>Face</source>
-      <translation>Поверхня</translation>
+      <translation>Грань</translation>
     </message>
     <message>
       <location filename="PathMillFaceGui.py" line="94"/>
@@ -3646,14 +3646,14 @@ Aborting op creation</translation>
       <translation>Лінія</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Grid</source>
-      <translation>Сітка</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Triangle</source>
       <translation>Трикутник</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Grid</source>
+      <translation>Сітка</translation>
     </message>
     <message>
       <location filename="PathPocketGui.py" line="46"/>
@@ -4375,7 +4375,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathSurfaceGui.py" line="231"/>
       <source>3D Surface</source>
-      <translation type="unfinished">3D Surface</translation>
+      <translation>3D Поверхня</translation>
     </message>
     <message>
       <location filename="PathSurfaceGui.py" line="232"/>
@@ -5286,7 +5286,7 @@ Aborting op creation</translation>
     <message>
       <location filename="PathMillFaceGui.py" line="46"/>
       <source>Face</source>
-      <translation>Поверхня</translation>
+      <translation>Грань</translation>
     </message>
     <message>
       <location filename="PathMillFaceGui.py" line="47"/>
@@ -6497,14 +6497,14 @@ Aborting op creation</translation>
       <location filename="../panels/PageOpHelixEdit.ui" line="98"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="104"/>
       <source>CW</source>
-      <translation type="unfinished">CW</translation>
+      <translation>за годинниковою стрілкою</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="153"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="103"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="109"/>
       <source>CCW</source>
-      <translation type="unfinished">CCW</translation>
+      <translation>проти годинникової стрілки</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="188"/>

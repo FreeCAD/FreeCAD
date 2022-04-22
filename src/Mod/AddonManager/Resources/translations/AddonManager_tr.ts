@@ -804,6 +804,26 @@
       <translation>Güncellemeler kontrol ediliyor...</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation>{} Güncellemeyi(leri) Uygula</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="577"/>
+      <source>No updates available</source>
+      <translation>Güncelleme yok</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="915"/>
+      <source>Too many to list</source>
+      <translation>Listelemek için çok fazla</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="893"/>
+      <source>Missing Requirement</source>
+      <translation>Eksik Gereklilik</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>Yüklenebilecek eklentiler FreeCAD'in resmi bir parçası değildir ve FreeCAD takımı tarafından incelenmemektedir. Ne yüklediğinizi bildiğinizden emin olun!</translation>
@@ -879,16 +899,6 @@
       <translation>Yeniden başlatma gerekli</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation>{} Güncellemeyi(leri) Uygula</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="577"/>
-      <source>No updates available</source>
-      <translation>Güncelleme yok</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="774"/>
       <source>All packages updates failed. Packages:</source>
       <translation>Tüm paket güncellemeleri başarısız. Paketler:</translation>
@@ -899,14 +909,9 @@
       <translation>Başarısız paketler:</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="915"/>
-      <source>Too many to list</source>
-      <translation>Listelemek için çok fazla</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="893"/>
-      <source>Missing Requirement</source>
-      <translation>Eksik Gereklilik</translation>
+      <location filename="AddonManager.py" line="1079"/>
+      <source>Press OK to install anyway.</source>
+      <translation type="unfinished">Press OK to install anyway.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="964"/>

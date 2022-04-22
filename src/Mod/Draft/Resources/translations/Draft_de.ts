@@ -720,6 +720,11 @@ Diese Eigenschaft ist nur lesbar, da die Zahl von den Punkten im 'Punkt Objekt' 
       <translation>Bereich dieses Objekts</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Die Form dieses Objekts</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>Das von diesem Objekt verwendete Basisobjekt</translation>
@@ -738,11 +743,6 @@ Diese Eigenschaft ist nur lesbar, da die Zahl von den Punkten im 'Punkt Objekt' 
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>Maßstab des für dieses Objekt verwendeten Musters</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Die Form dieses Objekts</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -3583,17 +3583,17 @@ Nicht verfügbar, wenn die Option "Primitive Teile verwenden" aktiviert ist</tra
     <message>
       <location filename="importDWG.py" line="295"/>
       <source>Converting:</source>
-      <translation>Konvertierung:</translation>
+      <translation>Umwandlung:</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="228"/>
       <source>Conversion successful</source>
-      <translation>Konvertierung erfolgreich</translation>
+      <translation>Umwandlung erfolgreich</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="231"/>
       <source>Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</source>
-      <translation>Fehler bei der DWG-Konvertierung. Versuchen Sie, die DWG-Datei in einen Verzeichnispfad ohne Leerzeichen und nicht-englische Zeichen zu verschieben oder versuchen Sie, in einer niedrigeren DWG-Version zu speichern.</translation>
+      <translation>Fehler bei der DWG-Umwandlung. Versuchen Sie, die DWG-Datei in einen Verzeichnispfad ohne Leerzeichen und nicht-englische Zeichen zu verschieben oder versuchen Sie, in einer niedrigeren DWG-Version zu speichern.</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="300"/>
@@ -5680,12 +5680,12 @@ Der endgültige Winkel ist der Basiswinkel plus dieser Betrag.</translation>
     <message>
       <location filename="importDWG.py" line="233"/>
       <source>Conversion successful</source>
-      <translation>Konvertierung erfolgreich</translation>
+      <translation>Umwandlung erfolgreich</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="277"/>
       <source>Converting:</source>
-      <translation>Konvertierung:</translation>
+      <translation>Umwandlung:</translation>
     </message>
   </context>
   <context>

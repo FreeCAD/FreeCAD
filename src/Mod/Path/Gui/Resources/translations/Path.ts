@@ -3641,13 +3641,13 @@ Aborting op creation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PathPocketBase.py" line="74"/>
-        <source>Grid</source>
+        <location filename="PathPocketBase.py" line="75"/>
+        <source>Triangle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="PathPocketBase.py" line="75"/>
-        <source>Triangle</source>
+        <location filename="PathPocketBase.py" line="74"/>
+        <source>Grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

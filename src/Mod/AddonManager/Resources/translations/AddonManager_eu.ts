@@ -120,7 +120,7 @@
     <message>
       <location filename="package_details.py" line="510"/>
       <source>No URL or wiki page provided by this macro</source>
-      <translation type="unfinished">No URL or wiki page provided by this macro</translation>
+      <translation>Makro honek ez du URLrik edo wiki-orririk</translation>
     </message>
     <message>
       <location filename="package_details.py" line="563"/>
@@ -795,13 +795,33 @@
       <location filename="AddonManager.py" line="766"/>
       <source>Could not find addon &apos;{}&apos; to select
 </source>
-      <translation type="unfinished">Could not find addon &apos;{}&apos; to select
+      <translation>Ez da aurkitu &apos;{}&apos; gehigarria
 </translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="243"/>
       <source>Checking for updates...</source>
       <translation>Eguneraketak bilatzen...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation>Aplikatu {} eguneratze</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="577"/>
+      <source>No updates available</source>
+      <translation>Ez dago eguneraketarik eskuragarri</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="915"/>
+      <source>Too many to list</source>
+      <translation>Gehiegi zerrendatzeko</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="893"/>
+      <source>Missing Requirement</source>
+      <translation>Falta den eskakizuna</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="86"/>
@@ -879,16 +899,6 @@
       <translation>Berrabiaraztea beharrezkoa da</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation>Aplikatu {} eguneratze</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="577"/>
-      <source>No updates available</source>
-      <translation>Ez dago eguneraketarik eskuragarri</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="774"/>
       <source>All packages updates failed. Packages:</source>
       <translation>Pakete guztien eguneratzeak huts egin du. Paketeak:</translation>
@@ -899,14 +909,9 @@
       <translation>Huts egin duten paketeak:</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="915"/>
-      <source>Too many to list</source>
-      <translation>Gehiegi zerrendatzeko</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="893"/>
-      <source>Missing Requirement</source>
-      <translation>Falta den eskakizuna</translation>
+      <location filename="AddonManager.py" line="1079"/>
+      <source>Press OK to install anyway.</source>
+      <translation>Sakatu 'Ados' instalatzeko.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="964"/>

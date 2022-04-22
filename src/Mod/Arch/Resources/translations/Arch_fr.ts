@@ -3147,7 +3147,7 @@ Création du bâtiment abandonnée.</translation>
     <message>
       <location filename="InitGui.py" line="177"/>
       <source>&amp;Arch</source>
-      <translation>&amp;Architecture</translation>
+      <translation>&amp;Arch</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="181"/>
@@ -4487,7 +4487,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="ArchRebar.py" line="108"/>
       <source>Creates a Reinforcement bar from the selected face of solid object and/or a sketch</source>
-      <translation type="unfinished">Creates a Reinforcement bar from the selected face of solid object and/or a sketch</translation>
+      <translation>Crée une barre de renforcement à partir de la face de l'objet solide sélectionné et/ou d'une esquisse</translation>
     </message>
     <message>
       <location filename="ArchRebar.py" line="108"/>
@@ -4889,7 +4889,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="InitGui.py" line="177"/>
       <source>&amp;Arch</source>
-      <translation>&amp;Architecture</translation>
+      <translation>&amp;Arch</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="193"/>
@@ -4922,7 +4922,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
     <message>
       <location filename="InitGui.py" line="121"/>
       <source>&amp;Arch</source>
-      <translation>&amp;Architecture</translation>
+      <translation>&amp;Arch</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="124"/>

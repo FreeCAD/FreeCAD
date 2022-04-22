@@ -120,7 +120,7 @@
     <message>
       <location filename="package_details.py" line="510"/>
       <source>No URL or wiki page provided by this macro</source>
-      <translation type="unfinished">No URL or wiki page provided by this macro</translation>
+      <translation>Tällä makrolla ei ole URL-osoitetta tai wikisivua</translation>
     </message>
     <message>
       <location filename="package_details.py" line="563"/>
@@ -795,13 +795,33 @@
       <location filename="AddonManager.py" line="766"/>
       <source>Could not find addon &apos;{}&apos; to select
 </source>
-      <translation type="unfinished">Could not find addon &apos;{}&apos; to select
+      <translation>Lisäosaa &apos;{}&apos; ei löytynyt valittavaksi
 </translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="243"/>
       <source>Checking for updates...</source>
       <translation>Tarkistetaan päivityksiä...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation type="unfinished">Apply {} update(s)</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="577"/>
+      <source>No updates available</source>
+      <translation>Ei päivityksiä saatavilla</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="915"/>
+      <source>Too many to list</source>
+      <translation>Liian monta listattavaksi</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="893"/>
+      <source>Missing Requirement</source>
+      <translation type="unfinished">Missing Requirement</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="86"/>
@@ -879,16 +899,6 @@
       <translation>Uudelleenkäynnistys vaaditaan</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation type="unfinished">Apply {} update(s)</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="577"/>
-      <source>No updates available</source>
-      <translation>Ei päivityksiä saatavilla</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="774"/>
       <source>All packages updates failed. Packages:</source>
       <translation type="unfinished">All packages updates failed. Packages:</translation>
@@ -899,14 +909,9 @@
       <translation type="unfinished">Failed packages:</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="915"/>
-      <source>Too many to list</source>
-      <translation>Liian monta listattavaksi</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="893"/>
-      <source>Missing Requirement</source>
-      <translation type="unfinished">Missing Requirement</translation>
+      <location filename="AddonManager.py" line="1079"/>
+      <source>Press OK to install anyway.</source>
+      <translation type="unfinished">Press OK to install anyway.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="964"/>

@@ -410,6 +410,7 @@ public:
     static std::string getUserAppDataDir();
     static std::string getUserMacroDir();
     static std::string getResourceDir();
+    static std::string getLibraryDir();
     static std::string getHelpDir();
     //@}
 
@@ -519,6 +520,7 @@ private:
     static PyObject* sChangeExportModule(PyObject *self,PyObject *args);
     static PyObject* sGetExportType     (PyObject *self,PyObject *args);
     static PyObject* sGetResourcePath   (PyObject *self,PyObject *args);
+    static PyObject* sGetLibraryPath    (PyObject *self,PyObject *args);
     static PyObject* sGetTempPath       (PyObject *self,PyObject *args);
     static PyObject* sGetUserCachePath  (PyObject *self,PyObject *args);
     static PyObject* sGetUserConfigPath (PyObject *self,PyObject *args);

@@ -3258,7 +3258,7 @@ Aborting op creation</translation>
     <message>
       <location filename="gcode_pre.py" line="229"/>
       <source>No job object</source>
-      <translation type="unfinished">No job object</translation>
+      <translation>Ei työobjektia</translation>
     </message>
   </context>
   <context>
@@ -3332,12 +3332,12 @@ Aborting op creation</translation>
     <message>
       <location filename="PathInspect.py" line="260"/>
       <source>Inspect Path Commands</source>
-      <translation type="unfinished">Inspect Path Commands</translation>
+      <translation>Tarkasta polun komennot</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="264"/>
       <source>Inspects the contents of a Path object</source>
-      <translation type="unfinished">Inspects the contents of a Path object</translation>
+      <translation>Tarkastaa polkuobjektin sisällön</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="260"/>
@@ -3646,14 +3646,14 @@ Aborting op creation</translation>
       <translation>Viiva</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Grid</source>
-      <translation>Ruudukko</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Triangle</source>
       <translation>Kolmio</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Grid</source>
+      <translation>Ruudukko</translation>
     </message>
     <message>
       <location filename="PathPocketGui.py" line="46"/>

@@ -796,6 +796,26 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="AddonManager.py" line="773"/>
+        <source>Apply {} update(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="AddonManager.py" line="577"/>
+        <source>No updates available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="AddonManager.py" line="915"/>
+        <source>Too many to list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="AddonManager.py" line="893"/>
+        <source>Missing Requirement</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="AddonManager.py" line="86"/>
         <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
         <translation type="unfinished"></translation>
@@ -871,16 +891,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="AddonManager.py" line="773"/>
-        <source>Apply {} update(s)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="AddonManager.py" line="577"/>
-        <source>No updates available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="AddonManager.py" line="774"/>
         <source>All packages updates failed. Packages:</source>
         <translation type="unfinished"></translation>
@@ -891,13 +901,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="AddonManager.py" line="915"/>
-        <source>Too many to list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="AddonManager.py" line="893"/>
-        <source>Missing Requirement</source>
+        <location filename="AddonManager.py" line="1079"/>
+        <source>Press OK to install anyway.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

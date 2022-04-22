@@ -716,6 +716,11 @@ This property is read-only, as the number depends on the points contained within
       <translation>该物体的面积</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>此对象的形状</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation type="unfinished">The base object used by this object</translation>
@@ -734,11 +739,6 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation type="unfinished">The pattern scale used by this object</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>此对象的形状</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -1408,17 +1408,17 @@ from menu Tools -&gt; Addon Manager</source>
     <message>
       <location filename="init_tools.py" line="145"/>
       <source>Draft creation tools</source>
-      <translation type="unfinished">Draft creation tools</translation>
+      <translation>草图创建工具</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="148"/>
       <source>Draft annotation tools</source>
-      <translation type="unfinished">Draft annotation tools</translation>
+      <translation>草图批注工具</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="151"/>
       <source>Draft modification tools</source>
-      <translation type="unfinished">Draft modification tools</translation>
+      <translation>草图修改工具</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="166"/>
@@ -2940,17 +2940,17 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="InitGui.py" line="104"/>
       <source>Draft creation tools</source>
-      <translation type="unfinished">Draft creation tools</translation>
+      <translation>草图创建工具</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="107"/>
       <source>Draft annotation tools</source>
-      <translation type="unfinished">Draft annotation tools</translation>
+      <translation>草图批注工具</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="110"/>
       <source>Draft modification tools</source>
-      <translation type="unfinished">Draft modification tools</translation>
+      <translation>草图修改工具</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="113"/>

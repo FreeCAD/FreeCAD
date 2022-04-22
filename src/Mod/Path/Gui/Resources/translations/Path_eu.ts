@@ -3257,7 +3257,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="gcode_pre.py" line="229"/>
       <source>No job object</source>
-      <translation type="unfinished">No job object</translation>
+      <translation>Ez dago lan-objekturik</translation>
     </message>
   </context>
   <context>
@@ -3331,12 +3331,12 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="PathInspect.py" line="260"/>
       <source>Inspect Path Commands</source>
-      <translation type="unfinished">Inspect Path Commands</translation>
+      <translation>Ikuskatu bideen komandoak</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="264"/>
       <source>Inspects the contents of a Path object</source>
-      <translation type="unfinished">Inspects the contents of a Path object</translation>
+      <translation>Bide objektu baten edukiak ikuskatzen ditu</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="260"/>
@@ -3645,14 +3645,14 @@ Aukeren sorrera abortatzen</translation>
       <translation>Lerroa</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Grid</source>
-      <translation>Sareta</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Triangle</source>
       <translation>Triangelua</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Grid</source>
+      <translation>Sareta</translation>
     </message>
     <message>
       <location filename="PathPocketGui.py" line="46"/>

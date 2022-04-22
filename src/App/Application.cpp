@@ -1139,6 +1139,16 @@ std::string Application::getResourceDir()
 #endif
 }
 
+std::string Application::getLibraryDir()
+{
+#ifdef LIBRARYDIR
+    std::string path(LIBRARYDIR);
+    return mConfig["AppHomePath"] + path;
+#else
+    return mConfig["AppHomePath"] + "lib";
+#endif
+}
+
 std::string Application::getHelpDir()
 {
 #ifdef DOCDIR

@@ -655,7 +655,7 @@
     </message>
     <message>
       <source>Add Leaderline to View</source>
-      <translation>Insérer une ligne d'attache à la vue</translation>
+      <translation>Insérer une ligne de référence à la vue</translation>
     </message>
   </context>
   <context>

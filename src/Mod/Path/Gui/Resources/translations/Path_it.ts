@@ -1982,12 +1982,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathProfile.py" line="209"/>
       <source>Outside</source>
-      <translation type="unfinished">Outside</translation>
+      <translation>Esterno</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="210"/>
       <source>Inside</source>
-      <translation type="unfinished">Inside</translation>
+      <translation>Interno</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="196"/>
@@ -2042,7 +2042,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathProfile.py" line="622"/>
       <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
-      <translation type="unfinished">Check edge selection and Final Depth requirements for profiling open edge(s).</translation>
+      <translation>Controllare la selezione degli spigoli e la Profondità Finale richiesta per la profilatora di spigolo/i aperto/i.</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="663"/>
@@ -2566,12 +2566,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathAdaptive.py" line="918"/>
       <source>Outside</source>
-      <translation type="unfinished">Outside</translation>
+      <translation>Esterno</translation>
     </message>
     <message>
       <location filename="PathAdaptive.py" line="919"/>
       <source>Inside</source>
-      <translation type="unfinished">Inside</translation>
+      <translation>Interno</translation>
     </message>
     <message>
       <location filename="PathAdaptive.py" line="922"/>
@@ -3195,12 +3195,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathDrilling.py" line="76"/>
       <source>Drill Tip</source>
-      <translation type="unfinished">Drill Tip</translation>
+      <translation>Estremità della Punta</translation>
     </message>
     <message>
       <location filename="PathDrilling.py" line="77"/>
       <source>2x Drill Tip</source>
-      <translation type="unfinished">2x Drill Tip</translation>
+      <translation>2x Estremità della Punta</translation>
     </message>
     <message>
       <location filename="PathDrillingGui.py" line="149"/>
@@ -3257,7 +3257,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="gcode_pre.py" line="229"/>
       <source>No job object</source>
-      <translation type="unfinished">No job object</translation>
+      <translation>Nessun oggetto lavorazione</translation>
     </message>
   </context>
   <context>
@@ -3331,12 +3331,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathInspect.py" line="260"/>
       <source>Inspect Path Commands</source>
-      <translation type="unfinished">Inspect Path Commands</translation>
+      <translation>Ispeziona comandi dei percorsi</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="264"/>
       <source>Inspects the contents of a Path object</source>
-      <translation type="unfinished">Inspects the contents of a Path object</translation>
+      <translation>Ispeziona il contenuto di un oggetto percorso</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="260"/>
@@ -3582,7 +3582,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathMillFace.py" line="71"/>
       <source>Perimeter</source>
-      <translation type="unfinished">Perimeter</translation>
+      <translation>Perimetro</translation>
     </message>
     <message>
       <location filename="PathMillFace.py" line="72"/>
@@ -3602,7 +3602,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathPocketBase.py" line="61"/>
       <source>Climb</source>
-      <translation type="unfinished">Climb</translation>
+      <translation>Salita</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="62"/>
@@ -3622,7 +3622,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathPocketBase.py" line="69"/>
       <source>ZigZag</source>
-      <translation type="unfinished">ZigZag</translation>
+      <translation>ZigZag</translation>
     </message>
     <message>
       <location filename="PathPocketBase.py" line="70"/>
@@ -3645,14 +3645,14 @@ Interruzione creazione op</translation>
       <translation>Linea</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Grid</source>
-      <translation>Griglia</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Triangle</source>
       <translation>Triangolo</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Grid</source>
+      <translation>Griglia</translation>
     </message>
     <message>
       <location filename="PathPocketGui.py" line="46"/>
@@ -4078,7 +4078,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathSlot.py" line="259"/>
       <source>ZigZag</source>
-      <translation type="unfinished">ZigZag</translation>
+      <translation>ZigZag</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="262"/>
@@ -4093,7 +4093,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathSlot.py" line="266"/>
       <source>Start to End</source>
-      <translation type="unfinished">Start to End</translation>
+      <translation>Inizia alla fine</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="267"/>
@@ -4103,7 +4103,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathSlot.py" line="282"/>
       <source>Center of Mass</source>
-      <translation type="unfinished">Center of Mass</translation>
+      <translation>Centro di Massa</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="284"/>
@@ -4113,22 +4113,22 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathSlot.py" line="287"/>
       <source>Lowest Point</source>
-      <translation type="unfinished">Lowest Point</translation>
+      <translation>Punto Più Basso</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="288"/>
       <source>Highest Point</source>
-      <translation type="unfinished">Highest Point</translation>
+      <translation>Punto Più Alto</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="277"/>
       <source>Long Edge</source>
-      <translation type="unfinished">Long Edge</translation>
+      <translation>Lato Lungo</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="278"/>
       <source>Short Edge</source>
-      <translation type="unfinished">Short Edge</translation>
+      <translation>Bordo Corto</translation>
     </message>
     <message>
       <location filename="PathSlot.py" line="289"/>
@@ -4259,7 +4259,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathSurface.py" line="461"/>
       <source>CenterOfBoundBox</source>
-      <translation type="unfinished">CenterOfBoundBox</translation>
+      <translation>CentroScatolaDelimitante</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="462"/>
@@ -4279,7 +4279,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathSurface.py" line="467"/>
       <source>Climb</source>
-      <translation type="unfinished">Climb</translation>
+      <translation>Salita</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="470"/>
@@ -4309,7 +4309,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathSurface.py" line="475"/>
       <source>ZigZag</source>
-      <translation type="unfinished">ZigZag</translation>
+      <translation>ZigZag</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="496"/>
@@ -4349,7 +4349,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathSurface.py" line="491"/>
       <source>Only</source>
-      <translation type="unfinished">Only</translation>
+      <translation>Solo</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="492"/>
@@ -4359,7 +4359,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathSurface.py" line="493"/>
       <source>Last</source>
-      <translation type="unfinished">Last</translation>
+      <translation>Ultimo</translation>
     </message>
     <message>
       <location filename="PathSurface.py" line="500"/>
@@ -4392,22 +4392,22 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathThreadMilling.py" line="193"/>
       <source>Custom External</source>
-      <translation type="unfinished">Custom External</translation>
+      <translation>Personalizzato Esterno</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="197"/>
       <source>Custom Internal</source>
-      <translation type="unfinished">Custom Internal</translation>
+      <translation>Personalizzato Interno</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="201"/>
       <source>Imperial External (2A)</source>
-      <translation type="unfinished">Imperial External (2A)</translation>
+      <translation>Imperiale Esterno (2A)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="205"/>
       <source>Imperial External (3A)</source>
-      <translation type="unfinished">Imperial External (3A)</translation>
+      <translation>Imperiale Esterno (3A)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="207"/>
@@ -4422,7 +4422,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathThreadMilling.py" line="209"/>
       <source>Imperial Internal (2B)</source>
-      <translation type="unfinished">Imperial Internal (2B)</translation>
+      <translation>Imperiale Interno (2B)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="210"/>
@@ -4432,22 +4432,22 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathThreadMilling.py" line="213"/>
       <source>Imperial Internal (3B)</source>
-      <translation type="unfinished">Imperial Internal (3B)</translation>
+      <translation>Imperiale Interno (3B)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="217"/>
       <source>Metric External (4G6G)</source>
-      <translation type="unfinished">Metric External (4G6G)</translation>
+      <translation>Metrico Esterno (4G6G)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="221"/>
       <source>Metric External (6G)</source>
-      <translation type="unfinished">Metric External (6G)</translation>
+      <translation>Metrico Esterno (6G)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="225"/>
       <source>Metric Internal (6H)</source>
-      <translation type="unfinished">Metric Internal (6H)</translation>
+      <translation>Metrico Interno (6H)</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="215"/>
@@ -4462,7 +4462,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathThreadMilling.py" line="219"/>
       <source>Climb</source>
-      <translation type="unfinished">Climb</translation>
+      <translation>Salita</translation>
     </message>
     <message>
       <location filename="PathThreadMilling.py" line="220"/>
@@ -4741,7 +4741,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathWaterline.py" line="99"/>
       <source>Experimental</source>
-      <translation type="unfinished">Experimental</translation>
+      <translation>Sperimentale</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="102"/>
@@ -4761,7 +4761,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathWaterline.py" line="107"/>
       <source>CenterOfBoundBox</source>
-      <translation type="unfinished">CenterOfBoundBox</translation>
+      <translation>CentroScatolaDelimitante</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="108"/>
@@ -4806,7 +4806,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathWaterline.py" line="131"/>
       <source>ZigZag</source>
-      <translation type="unfinished">ZigZag</translation>
+      <translation>ZigZag</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="121"/>
@@ -4816,7 +4816,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="PathWaterline.py" line="122"/>
       <source>Climb</source>
-      <translation type="unfinished">Climb</translation>
+      <translation>Salita</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="125"/>
@@ -5603,7 +5603,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="32"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a template to be used for the job.&lt;/p&gt;&lt;p&gt;In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.json and place it in the macro or the path directory (see preferences) in order to be selectable from this list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a template to be used for the job.&lt;/p&gt;&lt;p&gt;In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.json and place it in the macro or the path directory (see preferences) in order to be selectable from this list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seleziona un modello da usare per il lavoro.&lt;/p&gt;&lt;p&gt;Nel caso in cui non ci siano modelli è possibile crearne uno attraverso il menu a comparsa di un lavoro esistente. Nominare il file job_*.json e posizionarlo nella macro o nella directory del percorso (vedi preferenze) per essere selezionabile da questo elenco.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="42"/>
@@ -5653,7 +5653,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="48"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled tool controller definitions are stored in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled tool controller definitions are stored in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Se abilitate le definizioni del controller strumenti vengono memorizzate nel modello.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="51"/>
@@ -5663,12 +5663,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="60"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check all tool controllers which should be included in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check all tool controllers which should be included in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controlla tutti i controller strumenti che dovrebbero essere inclusi nel modello.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="70"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include values of the SetupSheet in the template.&lt;/p&gt;&lt;p&gt;Any values of the SetupSheet that are changed from their default are preselected. If this field not selected the current SetupSheet was not modified.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include values of the SetupSheet in the template.&lt;/p&gt;&lt;p&gt;Any values of the SetupSheet that are changed from their default are preselected. If this field not selected the current SetupSheet was not modified.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Abilita per includere valori dalla SetupSheet nel modello.&lt;/p&gt;&lt;p&gt;Qualsiasi valore della SetupSheet modificato rispetto al valore di default viene selezionato. Se questo campo non è selezionato la attuale SetupSheet non è stata modificata.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="73"/>
@@ -5678,22 +5678,22 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="82"/>
       <source>Operation Depths</source>
-      <translation type="unfinished">Operation Depths</translation>
+      <translation>Profondità operativa</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="92"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default heights for operations in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default heights for operations in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Abilita per includere le altezze predefinite per le operazioni nel modello.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="95"/>
       <source>Operation Heights</source>
-      <translation type="unfinished">Operation Heights</translation>
+      <translation>Altezze operativa</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="105"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default rapid tool speeds in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default rapid tool speeds in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Abilita per includere le velocità rapide predefinite della punta nel modello.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="108"/>
@@ -5708,7 +5708,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="125"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default coolant mode in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to include the default coolant mode in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Abilita per includere la modalità di raffreddamento predefinita nel modello.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="128"/>
@@ -5733,7 +5733,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="156"/>
       <source>Extent</source>
-      <translation type="unfinished">Extent</translation>
+      <translation>Estensione</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="166"/>
@@ -5763,7 +5763,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/DlgSelectPostProcessor.ui" line="14"/>
       <source>Post Processor</source>
-      <translation type="unfinished">Post Processor</translation>
+      <translation>Post Processore</translation>
     </message>
     <message>
       <location filename="../panels/DlgSelectPostProcessor.ui" line="42"/>
@@ -5773,17 +5773,17 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="14"/>
       <source>Tool Controller Editor</source>
-      <translation type="unfinished">Tool Controller Editor</translation>
+      <translation>Editor Controllore Strumenti</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="29"/>
       <source>Controller</source>
-      <translation type="unfinished">Controller</translation>
+      <translation>Controllore</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="35"/>
       <source>Controller Name /  Tool Number</source>
-      <translation type="unfinished">Controller Name /  Tool Number</translation>
+      <translation>Nome Controller / Numero Utensile</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="67"/>
@@ -5798,12 +5798,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="125"/>
       <source>Horiz Rapid</source>
-      <translation type="unfinished">Horiz Rapid</translation>
+      <translation>Mov Orizz Rapido</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="154"/>
       <source>Vert Rapid</source>
-      <translation type="unfinished">Vert Rapid</translation>
+      <translation>Mov Vert Rapido</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="186"/>
@@ -5828,7 +5828,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/DlgToolControllerEdit.ui" line="293"/>
       <source>Any modifications only affect this ToolController!</source>
-      <translation type="unfinished">Any modifications only affect this ToolController!</translation>
+      <translation>Qualsiasi modifica incide solo questo ToolController!</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolEdit.ui" line="14"/>
@@ -5863,7 +5863,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="51"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The type of the property value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The type of the property value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Il tipo del valore della proprietà.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="58"/>
@@ -5873,7 +5873,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="65"/>
       <source>val1,val2,val3,...</source>
-      <translation type="unfinished">val1,val2,val3,...</translation>
+      <translation>val1,val2,val3,...</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="72"/>
@@ -5883,12 +5883,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="82"/>
       <source>Enums</source>
-      <translation type="unfinished">Enums</translation>
+      <translation>Enumerazioni</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="89"/>
       <source>ToolTip</source>
-      <translation type="unfinished">ToolTip</translation>
+      <translation>PuntaUtensile</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="117"/>
@@ -5903,12 +5903,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="14"/>
       <source>Library Manager</source>
-      <translation type="unfinished">Library Manager</translation>
+      <translation>Gestione Libreria</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="35"/>
       <source>Create Toolbit</source>
-      <translation type="unfinished">Create Toolbit</translation>
+      <translation>Crea Punta utensile</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="52"/>
@@ -5918,7 +5918,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="55"/>
       <source>Add Existing</source>
-      <translation type="unfinished">Add Existing</translation>
+      <translation>Aggiungi Esistente</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="72"/>
@@ -5953,7 +5953,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="269"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the current Library&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the current Library&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Salva l'attuale Libreria&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="272"/>
@@ -5972,7 +5972,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/DlgTCChooser.ui" line="23"/>
       <source>Choose a Tool Controller</source>
-      <translation type="unfinished">Choose a Tool Controller</translation>
+      <translation>Scegliere un Tool Controller</translation>
     </message>
     <message>
       <location filename="../panels/DlgTCChooser.ui" line="29"/>
@@ -5982,7 +5982,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/DlgToolCopy.ui" line="23"/>
       <source>Copy Selected Tools</source>
-      <translation type="unfinished">Copy Selected Tools</translation>
+      <translation>Copia gli Strumenti Selezionati</translation>
     </message>
     <message>
       <location filename="../panels/DlgToolCopy.ui" line="29"/>
@@ -6000,12 +6000,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="20"/>
       <source>Processor</source>
-      <translation type="unfinished">Processor</translation>
+      <translation>Processore</translation>
     </message>
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="33"/>
       <source>Arguments</source>
-      <translation type="unfinished">Arguments</translation>
+      <translation>Argomenti</translation>
     </message>
   </context>
   <context>
@@ -6041,7 +6041,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="20"/>
       <source>Boundary Body</source>
-      <translation type="unfinished">Boundary Body</translation>
+      <translation>Corpo Vincolante</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="38"/>
@@ -6051,12 +6051,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="45"/>
       <source>Create Box</source>
-      <translation type="unfinished">Create Box</translation>
+      <translation>Crea Box</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="50"/>
       <source>Create Cylinder</source>
-      <translation type="unfinished">Create Cylinder</translation>
+      <translation>Crea Cilindro</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="55"/>
@@ -6066,7 +6066,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="60"/>
       <source>Use Existing Solid</source>
-      <translation type="unfinished">Use Existing Solid</translation>
+      <translation>Usa Solido Esistente</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="87"/>
@@ -6081,7 +6081,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="107"/>
       <source>Ext. X</source>
-      <translation type="unfinished">Ext. X</translation>
+      <translation>Est. X</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="120"/>
@@ -6091,7 +6091,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="127"/>
       <source>Ext. Y</source>
-      <translation type="unfinished">Ext. Y</translation>
+      <translation>Est. Y</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="134"/>
@@ -6101,7 +6101,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="141"/>
       <source>Ext. Z</source>
-      <translation type="unfinished">Ext. Z</translation>
+      <translation>Est. Z</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="148"/>
@@ -6121,12 +6121,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="175"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the Cylinder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the Cylinder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Raggio del Cilindro.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="182"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of the Cylinder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of the Cylinder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Altezza del Cilindro.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="189"/>
@@ -6152,12 +6152,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="223"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Length of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Length of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lunghezza del Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="230"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Altezza del Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="237"/>
@@ -6172,7 +6172,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="260"/>
       <source>Constrained to Inside</source>
-      <translation type="unfinished">Constrained to Inside</translation>
+      <translation>Vincolato all'Interno</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="30"/>
@@ -6202,7 +6202,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="63"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clears list of base geometries.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clears list of base geometries.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cancella la lista delle geometrie di base.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="66"/>
@@ -6213,12 +6213,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="73"/>
       <source>All objects will be processed using the same operation properties</source>
-      <translation type="unfinished">All objects will be processed using the same operation properties</translation>
+      <translation>Tutti gli oggetti saranno processati usando le stesse proprietà per l'operazione</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="95"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select one or more features in the 3d view and press 'Add' to add them as the base items for this operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Selected features can be deleted entirely.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select one or more features in the 3d view and press 'Add' to add them as the base items for this operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Selected features can be deleted entirely.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seleziona una o più caratteristiche nella vista 3D e premi 'Aggiungi' per aggiungerle come elementi base per questa operazione.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Le caratteristiche selezionate possono essere eliminate.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="105"/>
@@ -6228,17 +6228,17 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="118"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of operations with Base Geometry in current Job.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of operations with Base Geometry in current Job.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lista di perazioni con Geometria di Base nel Lavoro corrente.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="22"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table of hole features and the determined radius of the associated hole.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;You can add feature for processing by selecting them and then pressing Add. If a feature is accidentally added to the list it can be removed through Remove and will no longer be processed.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Reset deletes all current items from the list and fills the list with all circular holes eligible for the operation from the model. You can again refine the list afterwards by enabling/disabling, removing and adding features.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table of hole features and the determined radius of the associated hole.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;You can add feature for processing by selecting them and then pressing Add. If a feature is accidentally added to the list it can be removed through Remove and will no longer be processed.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Reset deletes all current items from the list and fills the list with all circular holes eligible for the operation from the model. You can again refine the list afterwards by enabling/disabling, removing and adding features.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tabella di elementi foro e il raggio determinato dei fori associati.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Puoi aggiungere elementi da processare selezionandoli e premendo 'Aggiungi'. Se un elemento è aggiunto accidentalmente alla lista può essere rimosso usando 'Rimuovi' e non verrà più processato.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Resettare elimina tutti gli oggetti correnti dalla lista e riempie la lista con fori circolari idonei per l'operazione dal modello. Puoi ancora affinare la lista attivando/disattivando, rimuovendo e aggiungendo elementi.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="29"/>
       <source>Feature</source>
-      <translation type="unfinished">Feature</translation>
+      <translation>Caratteristica</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="34"/>
@@ -6259,7 +6259,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="52"/>
       <source>All objects will be processed using the same operation properties.</source>
-      <translation type="unfinished">All objects will be processed using the same operation properties.</translation>
+      <translation>Tutti gli oggetti saranno elaborati utilizzando le stesse proprietà operative.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="65"/>
@@ -6269,12 +6269,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="75"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add selected items from 3d view to the list of base geometries.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add selected items from 3d view to the list of base geometries.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aggiungi gli elementi selezionati dalla vista 3D alla lista delle geometrie di base.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of locations to be processed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of locations to be processed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Elenco delle posizioni da elaborare.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="24"/>
@@ -6291,12 +6291,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="40"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected location from the list. The operation is no longer applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected location from the list. The operation is no longer applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rimuovere la posizione selezionata dalla lista. L'operazione non viene più applicata.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="50"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Edit selected location.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Edit selected location.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Modifica la posizione selezionata.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="53"/>
@@ -6306,18 +6306,18 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="60"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a dialog to add arbitrary locations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a dialog to add arbitrary locations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apre una finestra di dialogo per aggiungere posizioni arbitrarie.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="70"/>
       <source>All locations will be processed using the same operation properties.</source>
-      <translation type="unfinished">All locations will be processed using the same operation properties.</translation>
+      <translation>Tutte le posizioni saranno elaborate utilizzando le stesse proprietà operative.</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="39"/>
       <location filename="../panels/SetupGlobal.ui" line="36"/>
       <source>Start Depth</source>
-      <translation type="unfinished">Start Depth</translation>
+      <translation>Profondità Iniziale</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="46"/>
@@ -6361,7 +6361,7 @@ Interruzione creazione op</translation>
       <location filename="../panels/PageDepthsEdit.ui" line="144"/>
       <location filename="../panels/SetupGlobal.ui" line="50"/>
       <source>Final Depth</source>
-      <translation type="unfinished">Final Depth</translation>
+      <translation>Profondità Finale</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="163"/>
@@ -6382,17 +6382,17 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="80"/>
       <source>Min Diameter</source>
-      <translation type="unfinished">Min Diameter</translation>
+      <translation>Diametro Minimo</translation>
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="100"/>
       <source>Max Diameter</source>
-      <translation type="unfinished">Max Diameter</translation>
+      <translation>Diametro Massimo</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="24"/>
       <source>Safe Height</source>
-      <translation type="unfinished">Safe Height</translation>
+      <translation>Altezza Sicura</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="31"/>
@@ -6464,7 +6464,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="62"/>
       <source>G Gode</source>
-      <translation type="unfinished">G Gode</translation>
+      <translation>G Gode</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="53"/>
@@ -6488,7 +6488,7 @@ Interruzione creazione op</translation>
       <location filename="../panels/PageOpDeburrEdit.ui" line="138"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="100"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The direction in which the profile is performed, clockwise or counter clockwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The direction in which the profile is performed, clockwise or counter clockwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;La direzione in cui la profilatura viene eseguita, in senso orario o antiorario.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="141"/>
@@ -6508,12 +6508,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="188"/>
       <source>W =</source>
-      <translation type="unfinished">W =</translation>
+      <translation>W =</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="195"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Width of chamfer cut.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Width of chamfer cut.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Larghezza del taglio dello smusso.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="198"/>
@@ -6533,22 +6533,22 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="215"/>
       <source>h = </source>
-      <translation type="unfinished">h = </translation>
+      <translation>h = </translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="222"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extra depth of tool immersion.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extra depth of tool immersion.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Profondità aggiuntiva di immersione della punta.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="282"/>
       <source>Join:</source>
-      <translation type="unfinished">Join:</translation>
+      <translation>Unisci:</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="289"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Round joint&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Round joint&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Giunto arrotondato&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="308"/>
@@ -6563,7 +6563,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="72"/>
       <source>Time</source>
-      <translation type="unfinished">Time</translation>
+      <translation>Tempo</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="79"/>
@@ -6580,17 +6580,17 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="92"/>
       <source>Drill Tip</source>
-      <translation type="unfinished">Drill Tip</translation>
+      <translation>Estremità della Punta</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="97"/>
       <source>2x Drill Tip</source>
-      <translation type="unfinished">2x Drill Tip</translation>
+      <translation>2x Estremità della Punta</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="108"/>
       <source>Retract</source>
-      <translation type="unfinished">Retract</translation>
+      <translation>Ritira</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="136"/>
@@ -6605,12 +6605,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="153"/>
       <source>Extend Depth</source>
-      <translation type="unfinished">Extend Depth</translation>
+      <translation>Estendi Profondità</translation>
     </message>
     <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="63"/>
       <source>Start at Vertex</source>
-      <translation type="unfinished">Start at Vertex</translation>
+      <translation>Inizia dal vertice</translation>
     </message>
     <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="70"/>
@@ -6626,7 +6626,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="63"/>
       <source>Start from</source>
-      <translation type="unfinished">Start from</translation>
+      <translation>Inizia da</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="70"/>
@@ -6637,13 +6637,13 @@ Interruzione creazione op</translation>
       <location filename="../panels/PageOpHelixEdit.ui" line="74"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="79"/>
       <source>Inside</source>
-      <translation type="unfinished">Inside</translation>
+      <translation>Interno</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="79"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="74"/>
       <source>Outside</source>
-      <translation type="unfinished">Outside</translation>
+      <translation>Esterno</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="94"/>
@@ -6663,17 +6663,17 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="22"/>
       <source>Click to disable Extensions</source>
-      <translation type="unfinished">Click to disable Extensions</translation>
+      <translation>Clicca per disabilitare le Estensioni</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="35"/>
       <source>Ignore Edges and Wires</source>
-      <translation type="unfinished">Ignore Edges and Wires</translation>
+      <translation>Ignora bordi e polilinee</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="50"/>
       <source>---</source>
-      <translation type="unfinished">---</translation>
+      <translation>---</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="75"/>
@@ -6683,22 +6683,22 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="78"/>
       <source>Extend Corners</source>
-      <translation type="unfinished">Extend Corners</translation>
+      <translation>Estendi gli Angoli</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="88"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the extent of the dimension -the default value is half the tool diameter.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the extent of the dimension -the default value is half the tool diameter.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Imposta la dimensione della dimensione -il valore predefinito è la metà del diametro dello strumento.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="101"/>
       <source>Default Length</source>
-      <translation type="unfinished">Default Length</translation>
+      <translation>Lunghezza Predefinita</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="108"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected all potential extensions are visualised. Enabled extensions in purple and not enabled extensions in yellow.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected all potential extensions are visualised. Enabled extensions in purple and not enabled extensions in yellow.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Se selezionato tutte le potenziali estensioni sono visualizzate. Estensioni abilitate in viola e non abilitate in giallo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="111"/>
@@ -6753,7 +6753,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="77"/>
       <source>Perimeter</source>
-      <translation type="unfinished">Perimeter</translation>
+      <translation>Perimetro</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="82"/>
@@ -6770,7 +6770,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="106"/>
       <source>Cut Mode</source>
-      <translation type="unfinished">Cut Mode</translation>
+      <translation>Modalità di Taglio</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="113"/>
@@ -6781,7 +6781,7 @@ Interruzione creazione op</translation>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="117"/>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="214"/>
       <source>Climb</source>
-      <translation type="unfinished">Climb</translation>
+      <translation>Salita</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="122"/>
@@ -6804,7 +6804,7 @@ Interruzione creazione op</translation>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="224"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="195"/>
       <source>ZigZag</source>
-      <translation type="unfinished">ZigZag</translation>
+      <translation>ZigZag</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="154"/>
@@ -6892,12 +6892,12 @@ Interruzione creazione op</translation>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="140"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="331"/>
       <source>Use Start Point</source>
-      <translation type="unfinished">Use Start Point</translation>
+      <translation>Usa Punto Iniziale</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="269"/>
       <source>Clear Edges</source>
-      <translation type="unfinished">Clear Edges</translation>
+      <translation>Cancella Bordi</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="52"/>
@@ -6922,12 +6922,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="101"/>
       <source>Y Offset</source>
-      <translation type="unfinished">Y Offset</translation>
+      <translation>Y Offset</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="115"/>
       <source>X Offset</source>
-      <translation type="unfinished">X Offset</translation>
+      <translation>X Offset</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="132"/>
@@ -6972,7 +6972,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="137"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if this operation should use a starting point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if this operation should use a starting point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Verifica se questa operazione dovrebbe utilizzare un punto di partenza.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="147"/>
@@ -6982,7 +6982,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="150"/>
       <source>Process Holes</source>
-      <translation type="unfinished">Process Holes</translation>
+      <translation>Processa Fori</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="157"/>
@@ -6992,7 +6992,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="160"/>
       <source>Use Compensation</source>
-      <translation type="unfinished">Use Compensation</translation>
+      <translation>Usa Compensazione</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="167"/>
@@ -7002,7 +7002,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="170"/>
       <source>Process Circles</source>
-      <translation type="unfinished">Process Circles</translation>
+      <translation>Processa Cerchi</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="177"/>
@@ -7012,7 +7012,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="180"/>
       <source>Process Perimeter</source>
-      <translation type="unfinished">Process Perimeter</translation>
+      <translation>Processa Perimetro</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="80"/>
@@ -7023,7 +7023,7 @@ Interruzione creazione op</translation>
       <location filename="../panels/PageOpSlotEdit.ui" line="87"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="169"/>
       <source>Center of Mass</source>
-      <translation type="unfinished">Center of Mass</translation>
+      <translation>Centro di Massa</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="92"/>
@@ -7035,23 +7035,23 @@ Interruzione creazione op</translation>
       <location filename="../panels/PageOpSlotEdit.ui" line="97"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="179"/>
       <source>Lowest Point</source>
-      <translation type="unfinished">Lowest Point</translation>
+      <translation>Punto Più Basso</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="102"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="184"/>
       <source>Highest Point</source>
-      <translation type="unfinished">Highest Point</translation>
+      <translation>Punto Più Alto</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="107"/>
       <source>Long Edge</source>
-      <translation type="unfinished">Long Edge</translation>
+      <translation>Lato Lungo</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="112"/>
       <source>Short Edge</source>
-      <translation type="unfinished">Short Edge</translation>
+      <translation>Bordo Corto</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="117"/>
@@ -7077,12 +7077,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="222"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;No Base Geometry selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;No Base Geometry selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nessuna Geometria Base selezionata.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="228"/>
       <source>No Base Geometry selected.</source>
-      <translation type="unfinished">No Base Geometry selected.</translation>
+      <translation>Nessuna Geometria di Base selezionata.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="241"/>
@@ -7129,7 +7129,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="356"/>
       <source>Start to End</source>
-      <translation type="unfinished">Start to End</translation>
+      <translation>Inizia alla fine</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="361"/>
@@ -7139,7 +7139,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="369"/>
       <source>Path Orientation</source>
-      <translation type="unfinished">Path Orientation</translation>
+      <translation>Orientamento Percorso</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="381"/>
@@ -7170,7 +7170,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="401"/>
       <source>Reverse cut direction</source>
-      <translation type="unfinished">Reverse cut direction</translation>
+      <translation>Invertire la direzione di taglio</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="63"/>
@@ -7222,7 +7222,7 @@ Interruzione creazione op</translation>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="134"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="64"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the overall boundary for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the overall boundary for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seleziona il limite complessivo per l'operazione.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="143"/>
@@ -7248,7 +7248,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="170"/>
       <source>Only</source>
-      <translation type="unfinished">Only</translation>
+      <translation>Solo</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="175"/>
@@ -7258,7 +7258,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="180"/>
       <source>Last</source>
-      <translation type="unfinished">Last</translation>
+      <translation>Ultimo</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="188"/>
@@ -7379,12 +7379,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="37"/>
       <source>Left Hand</source>
-      <translation type="unfinished">Left Hand</translation>
+      <translation>Mano Sinistra</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="42"/>
       <source>Right Hand</source>
-      <translation type="unfinished">Right Hand</translation>
+      <translation>Mano Destra</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="50"/>
@@ -7400,7 +7400,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="63"/>
       <source>Metric - internal</source>
-      <translation type="unfinished">Metric - internal</translation>
+      <translation>Metrico - interno</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="68"/>
@@ -7410,17 +7410,17 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="79"/>
       <source>Fit</source>
-      <translation type="unfinished">Fit</translation>
+      <translation>Adatta</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="99"/>
       <source>Major Diameter</source>
-      <translation type="unfinished">Major Diameter</translation>
+      <translation>Diametro Maggiore</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="113"/>
       <source>Minor Diameter</source>
-      <translation type="unfinished">Minor Diameter</translation>
+      <translation>Diametro Minore</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="127"/>
@@ -7430,7 +7430,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="148"/>
       <source>TPI</source>
-      <translation type="unfinished">TPI</translation>
+      <translation>TPI</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="183"/>
@@ -7492,7 +7492,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="125"/>
       <source>Experimental</source>
-      <translation type="unfinished">Experimental</translation>
+      <translation>Sperimentale</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="149"/>
@@ -7502,12 +7502,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="273"/>
       <source>Algorithm</source>
-      <translation type="unfinished">Algorithm</translation>
+      <translation>Algoritmo</translation>
     </message>
     <message>
       <location filename="../panels/PointEdit.ui" line="14"/>
       <source>Point Edit</source>
-      <translation type="unfinished">Point Edit</translation>
+      <translation>Modifica Punto</translation>
     </message>
     <message>
       <location filename="../panels/PointEdit.ui" line="23"/>
@@ -7532,12 +7532,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/PropertyBag.ui" line="55"/>
       <source>Modify...</source>
-      <translation type="unfinished">Modify...</translation>
+      <translation>Modifica...</translation>
     </message>
     <message>
       <location filename="../panels/PropertyBag.ui" line="62"/>
       <source>Add...</source>
-      <translation type="unfinished">Add...</translation>
+      <translation>Aggiungi...</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="14"/>
@@ -7597,7 +7597,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="132"/>
       <source>Expression</source>
-      <translation type="unfinished">Expression</translation>
+      <translation>Espressione</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="142"/>
@@ -7642,7 +7642,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/ToolEditor.ui" line="36"/>
       <source>Display Name</source>
-      <translation type="unfinished">Display Name</translation>
+      <translation>Nome Visualizzato</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="57"/>
@@ -7665,7 +7665,7 @@ Interruzione creazione op</translation>
       <location filename="../panels/ToolEditor.ui" line="237"/>
       <location filename="../panels/ToolEditor.ui" line="277"/>
       <source>0.00</source>
-      <translation type="unfinished">0.00</translation>
+      <translation>0.00</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="87"/>
@@ -7697,7 +7697,7 @@ Interruzione creazione op</translation>
       <location filename="../panels/ToolEditor.ui" line="161"/>
       <location filename="../panels/ToolEditor.ui" line="254"/>
       <source>180°</source>
-      <translation type="unfinished">180°</translation>
+      <translation>180°</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="164"/>
@@ -7708,27 +7708,27 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../panels/ToolEditor.ui" line="196"/>
       <source>D = </source>
-      <translation type="unfinished">D = </translation>
+      <translation>D = </translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="213"/>
       <source>d =</source>
-      <translation type="unfinished">d =</translation>
+      <translation>d =</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="230"/>
       <source>H =</source>
-      <translation type="unfinished">H =</translation>
+      <translation>H =</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="247"/>
       <source>α = </source>
-      <translation type="unfinished">α = </translation>
+      <translation>α = </translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="267"/>
       <source>S = </source>
-      <translation type="unfinished">S = </translation>
+      <translation>S = </translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="308"/>
@@ -7748,7 +7748,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="33"/>
       <source>Default Width</source>
-      <translation type="unfinished">Default Width</translation>
+      <translation>Larghezza Predefinita</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="40"/>
@@ -7763,12 +7763,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="66"/>
       <source>Default Angle</source>
-      <translation type="unfinished">Default Angle</translation>
+      <translation>Angolo Predefinito</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="73"/>
       <source>Default Height</source>
-      <translation type="unfinished">Default Height</translation>
+      <translation>Altezza Predefinita</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="80"/>
@@ -7778,7 +7778,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="87"/>
       <source>Default Radius</source>
-      <translation type="unfinished">Default Radius</translation>
+      <translation>Raggio Predefinito</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="97"/>
@@ -7858,23 +7858,23 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="115"/>
       <source>Default Curve Accuracy</source>
-      <translation type="unfinished">Default Curve Accuracy</translation>
+      <translation>Precisione Curva Predefinita</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="150"/>
       <location filename="../preferences/PathJob.ui" line="265"/>
       <source>Post Processor</source>
-      <translation type="unfinished">Post Processor</translation>
+      <translation>Post Processore</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="162"/>
       <source>Output File</source>
-      <translation type="unfinished">Output File</translation>
+      <translation>File Output</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="174"/>
       <source>Default Path</source>
-      <translation type="unfinished">Default Path</translation>
+      <translation>Percorso Predefinito</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="193"/>
@@ -7904,47 +7904,47 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="246"/>
       <source>Overwrite existing file</source>
-      <translation type="unfinished">Overwrite existing file</translation>
+      <translation>Sovrascrivi file esistente</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="251"/>
       <source>Append Unique ID on conflict</source>
-      <translation type="unfinished">Append Unique ID on conflict</translation>
+      <translation>Aggiungi ID univoco al conflitto</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="274"/>
       <source>Post Processors Selection </source>
-      <translation type="unfinished">Post Processors Selection </translation>
+      <translation>Selezione Post Processori </translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="284"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;It doesn't seem there are any post processor scripts installed. Please add some into your macro directory and make sure the file name ends with &amp;quot;_post.py&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;It doesn't seem there are any post processor scripts installed. Please add some into your macro directory and make sure the file name ends with &amp;quot;_post.py&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sembra che non ci siano script post processor installati. Si prega di aggiungere alcuni nella directory macro e assicurarsi che il nome del file termina con &amp;quot;_post. y&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="291"/>
       <source>Default Post Processor</source>
-      <translation type="unfinished">Default Post Processor</translation>
+      <translation>Post Processor Predefinito</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="298"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select one of the post processors as the default.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select one of the post processors as the default.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seleziona uno dei post processori come predefinito.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="301"/>
       <source>DefaultPostProcessor</source>
-      <translation type="unfinished">DefaultPostProcessor</translation>
+      <translation>Post-Processore Predefinito</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="304"/>
       <source>Mod/Path</source>
-      <translation type="unfinished">Mod/Path</translation>
+      <translation>Mod/Percorso</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="311"/>
       <source>Default Arguments</source>
-      <translation type="unfinished">Default Arguments</translation>
+      <translation>Argomenti Predefiniti</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="318"/>
@@ -7954,7 +7954,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="356"/>
       <source>Setup</source>
-      <translation type="unfinished">Setup</translation>
+      <translation>Configurazione</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="362"/>
@@ -7964,12 +7964,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="381"/>
       <source>Create Box</source>
-      <translation type="unfinished">Create Box</translation>
+      <translation>Crea Box</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="386"/>
       <source>Create Cylinder</source>
-      <translation type="unfinished">Create Cylinder</translation>
+      <translation>Crea Cilindro</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="391"/>
@@ -7979,17 +7979,17 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="418"/>
       <source>Ext. X</source>
-      <translation type="unfinished">Ext. X</translation>
+      <translation>Est. X</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="435"/>
       <source>Ext. Y</source>
-      <translation type="unfinished">Ext. Y</translation>
+      <translation>Est. Y</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="445"/>
       <source>Ext. Z</source>
-      <translation type="unfinished">Ext. Z</translation>
+      <translation>Est. Z</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="473"/>
@@ -8040,12 +8040,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="639"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Legacy Tools have no accurate shape representation and are stored in the user preferences of FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Legacy Tools have no accurate shape representation and are stored in the user preferences of FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gli strumenti legacy non hanno una rappresentazione precisa della forma e sono memorizzati nelle preferenze utente di FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="642"/>
       <source>Use Legacy Tools</source>
-      <translation type="unfinished">Use Legacy Tools</translation>
+      <translation>Usa Strumenti Legacy</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="649"/>
@@ -8055,7 +8055,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="652"/>
       <source>Store Absolute Paths</source>
-      <translation type="unfinished">Store Absolute Paths</translation>
+      <translation>Memorizza Percorsi Assoluti</translation>
     </message>
   </context>
   <context>
@@ -8072,7 +8072,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="14"/>
       <source>GUI</source>
-      <translation type="unfinished">GUI</translation>
+      <translation>GUI</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="23"/>
@@ -8152,7 +8152,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="352"/>
       <source>UI Settings</source>
-      <translation type="unfinished">UI Settings</translation>
+      <translation>Impostazioni UI</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="361"/>
@@ -8187,7 +8187,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="416"/>
       <source>Classic</source>
-      <translation type="unfinished">Classic</translation>
+      <translation>Classico</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="421"/>
@@ -8222,7 +8222,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../preferences/Advanced.ui" line="29"/>
       <source>Suppress all missing speeds warning</source>
-      <translation type="unfinished">Suppress all missing speeds warning</translation>
+      <translation>Sopprimi tutti gli avvisi di velocità mancanti</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="45"/>
@@ -8242,12 +8242,12 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../preferences/Advanced.ui" line="67"/>
       <source>Suppress selection mode warning</source>
-      <translation type="unfinished">Suppress selection mode warning</translation>
+      <translation>Sopprimi avviso modalità selezione</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="92"/>
       <source>Open CAMlib</source>
-      <translation type="unfinished">Open CAMlib</translation>
+      <translation>Apri CAMlib</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="116"/>
@@ -8257,12 +8257,12 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'Sans'; font-size:16pt; font-weight:400; font-style:normal;"&gt;
 &lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;If openCAMlib is installed with its python interface it can be used by some additional 3d operations.&lt;/p&gt;
 &lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Changing this value requires a restart of FreeCAD to take effect.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
+      <translation>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict. td"&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'Sans'; font-size:16pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;If openCAMlib is installed with its python interface it can be used by some additional 3d operations.&lt;/p&gt;
-&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Changing this value requires a restart of FreeCAD to take effect.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Se openCAMlib è installato con la sua interfaccia python, può essere utilizzato con alcune ulteriori operazioni 3d.&lt;/p&gt;
+&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;La modifica di questo valore richiede il riavvio di FreeCAD per avere effetto.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="128"/>
@@ -8277,7 +8277,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../preferences/Advanced.ui" line="144"/>
       <source>Suppress openCAMlib warning</source>
-      <translation type="unfinished">Suppress openCAMlib warning</translation>
+      <translation>Sopprimere avviso openCAMlib</translation>
     </message>
   </context>
   <context>
@@ -8323,7 +8323,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="50"/>
       <source>Axis Mapping</source>
-      <translation type="unfinished">Axis Mapping</translation>
+      <translation>Mappatura Assi</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="57"/>
@@ -8333,37 +8333,37 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="64"/>
       <source>X-&gt;A</source>
-      <translation type="unfinished">X-&gt;A</translation>
+      <translation>X-&gt;A</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="69"/>
       <source>Y-&gt;A</source>
-      <translation type="unfinished">Y-&gt;A</translation>
+      <translation>Y-&gt;A</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="74"/>
       <source>X-&gt;B</source>
-      <translation type="unfinished">X-&gt;B</translation>
+      <translation>X-&gt;B</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="79"/>
       <source>Y-&gt;B</source>
-      <translation type="unfinished">Y-&gt;B</translation>
+      <translation>Y-&gt;B</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="84"/>
       <source>X-&gt;C</source>
-      <translation type="unfinished">X-&gt;C</translation>
+      <translation>X-&gt;C</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="89"/>
       <source>Y-&gt;C</source>
-      <translation type="unfinished">Y-&gt;C</translation>
+      <translation>Y-&gt;C</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="14"/>
       <source>Dogbones</source>
-      <translation type="unfinished">Dogbones</translation>
+      <translation>Ossa di cane</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="35"/>
@@ -8430,7 +8430,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DogboneEdit.ui" line="107"/>
       <source>Incision          </source>
-      <translation type="unfinished">Incision          </translation>
+      <translation>Incisione          </translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="114"/>
@@ -8440,7 +8440,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DogboneEdit.ui" line="121"/>
       <source>adaptive</source>
-      <translation type="unfinished">adaptive</translation>
+      <translation>adattivo</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="126"/>
@@ -8558,7 +8558,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="201"/>
       <source>Extend Out:</source>
-      <translation type="unfinished">Extend Out:</translation>
+      <translation>Estendi Fuori:</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="222"/>
@@ -8568,12 +8568,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="272"/>
       <source>Length / Radius:</source>
-      <translation type="unfinished">Length / Radius:</translation>
+      <translation>Lunghezza / Raggio:</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="299"/>
       <source>Radius / Center:</source>
-      <translation type="unfinished">Radius / Center:</translation>
+      <translation>Raggio / Centro:</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="324"/>
@@ -8583,7 +8583,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="336"/>
       <source>Keep Tool Down</source>
-      <translation type="unfinished">Keep Tool Down</translation>
+      <translation>Mantieni lo Strumento Giù</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="343"/>
@@ -8603,7 +8603,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="364"/>
       <source>Use Machine CRC</source>
-      <translation type="unfinished">Use Machine CRC</translation>
+      <translation>Usa Macchina CRC</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="14"/>
@@ -8613,7 +8613,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="29"/>
       <source>Add...</source>
-      <translation type="unfinished">Add...</translation>
+      <translation>Aggiungi...</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="39"/>
@@ -8623,7 +8623,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="49"/>
       <source>Edit...</source>
-      <translation type="unfinished">Edit...</translation>
+      <translation>Modifica...</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="59"/>
@@ -8643,7 +8643,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="86"/>
       <source>Angle            </source>
-      <translation type="unfinished">Angle            </translation>
+      <translation>Angolo            </translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="93"/>
@@ -8668,18 +8668,18 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="146"/>
       <source>Copy From</source>
-      <translation type="unfinished">Copy From</translation>
+      <translation>Copia Da</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="155"/>
       <location filename="../panels/HoldingTagsEdit.ui" line="181"/>
       <source>Replace All</source>
-      <translation type="unfinished">Replace All</translation>
+      <translation>Sostituisci Tutto</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="165"/>
       <source>Auto Generate</source>
-      <translation type="unfinished">Auto Generate</translation>
+      <translation>Generazione Automatica</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="20"/>
@@ -8694,22 +8694,22 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="51"/>
       <source>Drag to reorder, then update.</source>
-      <translation type="unfinished">Drag to reorder, then update.</translation>
+      <translation>Trascinare per riordinare, quindi aggiornare.</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="67"/>
       <source>Add item selected in window.</source>
-      <translation type="unfinished">Add item selected in window.</translation>
+      <translation>Aggiungi elemento selezionato nella finestra.</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="70"/>
       <source>add</source>
-      <translation type="unfinished">add</translation>
+      <translation>aggiungi</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="77"/>
       <source>Remove Item selected in list, then update.</source>
-      <translation type="unfinished">Remove Item selected in list, then update.</translation>
+      <translation>Rimuovi l'elemento selezionato nell'elenco, quindi aggiorna.</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="80"/>
@@ -8719,7 +8719,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="87"/>
       <source>Update the path with the removed and reordered items.</source>
-      <translation type="unfinished">Update the path with the removed and reordered items.</translation>
+      <translation>Aggiorna il percorso con gli elementi rimossi e riordinati.</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="90"/>
@@ -8739,12 +8739,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="136"/>
       <source>Start Depth</source>
-      <translation type="unfinished">Start Depth</translation>
+      <translation>Profondità Iniziale</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="150"/>
       <source>Final Depth</source>
-      <translation type="unfinished">Final Depth</translation>
+      <translation>Profondità Finale</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="164"/>
@@ -8764,7 +8764,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="214"/>
       <source>Safe Height</source>
-      <translation type="unfinished">Safe Height</translation>
+      <translation>Altezza Sicura</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="228"/>
@@ -8794,7 +8794,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="299"/>
       <source>Algorithm</source>
-      <translation type="unfinished">Algorithm</translation>
+      <translation>Algoritmo</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="307"/>
@@ -8837,12 +8837,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="14"/>
       <source>Path Simulator</source>
-      <translation type="unfinished">Path Simulator</translation>
+      <translation>Simulatore di Percorso</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="35"/>
       <source>Stop running simulation</source>
-      <translation type="unfinished">Stop running simulation</translation>
+      <translation>Interrompi la simulazione in esecuzione</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="38"/>
@@ -8852,7 +8852,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="55"/>
       <source>Activate / resume simulation</source>
-      <translation type="unfinished">Activate / resume simulation</translation>
+      <translation>Attiva / riprendi la simulazione</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="58"/>
@@ -8862,32 +8862,32 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="75"/>
       <source>Pause simulation</source>
-      <translation type="unfinished">Pause simulation</translation>
+      <translation>Pausa simulazione</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="78"/>
       <source>Pause</source>
-      <translation type="unfinished">Pause</translation>
+      <translation>Pausa</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="95"/>
       <source>Single step simulation</source>
-      <translation type="unfinished">Single step simulation</translation>
+      <translation>Simulazione a singolo passo</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="98"/>
       <source>Step</source>
-      <translation type="unfinished">Step</translation>
+      <translation>Passo</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="115"/>
       <source>Run simulation till end without animation</source>
-      <translation type="unfinished">Run simulation till end without animation</translation>
+      <translation>Esegui la simulazione fino alla fine senza animazione</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="118"/>
       <source>Fast Forward</source>
-      <translation type="unfinished">Fast Forward</translation>
+      <translation>Avanti Veloce</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="180"/>
@@ -8897,12 +8897,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="209"/>
       <source>G/s</source>
-      <translation type="unfinished">G/s</translation>
+      <translation>G/s</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="229"/>
       <source>Accuracy:</source>
-      <translation type="unfinished">Accuracy:</translation>
+      <translation>Precisione:</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="261"/>
@@ -8912,7 +8912,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="278"/>
       <source>Job:</source>
-      <translation type="unfinished">Job:</translation>
+      <translation>Lavoro:</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="300"/>
@@ -8950,12 +8950,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="61"/>
       <source>Display Name</source>
-      <translation type="unfinished">Display Name</translation>
+      <translation>Nome Visualizzato</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="68"/>
       <source>Shape File</source>
-      <translation type="unfinished">Shape File</translation>
+      <translation>File della Forma</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="96"/>
@@ -8990,7 +8990,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="138"/>
       <source>0 °</source>
-      <translation type="unfinished">0 °</translation>
+      <translation>0 °</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="141"/>
@@ -9005,7 +9005,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="155"/>
       <source>0 mm</source>
-      <translation type="unfinished">0 mm</translation>
+      <translation>0 mm</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="158"/>
@@ -9020,7 +9020,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="198"/>
       <source>Attributes</source>
-      <translation type="unfinished">Attributes</translation>
+      <translation>Attributi</translation>
     </message>
   </context>
   <context>
@@ -9028,27 +9028,27 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="20"/>
       <source>Tool Library</source>
-      <translation type="unfinished">Tool Library</translation>
+      <translation>Libreria Strumenti</translation>
     </message>
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="28"/>
       <source>Import...</source>
-      <translation type="unfinished">Import...</translation>
+      <translation>Importa...</translation>
     </message>
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="35"/>
       <source>Export...</source>
-      <translation type="unfinished">Export...</translation>
+      <translation>Esporta...</translation>
     </message>
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="71"/>
       <source>Tool Tables</source>
-      <translation type="unfinished">Tool Tables</translation>
+      <translation>Tabelle Strumenti</translation>
     </message>
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="234"/>
       <source>New Tool</source>
-      <translation type="unfinished">New Tool</translation>
+      <translation>Nuovo Strumento</translation>
     </message>
     <message>
       <location filename="../panels/ToolLibraryEditor.ui" line="257"/>
@@ -9091,7 +9091,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="20"/>
       <source>Tool Selector</source>
-      <translation type="unfinished">Tool Selector</translation>
+      <translation>Selettore Strumenti</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="30"/>
@@ -9111,7 +9111,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/ToolBitSelector.ui" line="104"/>
       <source>Add To Job</source>
-      <translation type="unfinished">Add To Job</translation>
+      <translation>Aggiungi al Lavoro</translation>
     </message>
   </context>
   <context>
@@ -9156,7 +9156,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="120"/>
       <source>Template Export</source>
-      <translation type="unfinished">Template Export</translation>
+      <translation>Esportazione Modello</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="130"/>
@@ -9166,7 +9166,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="136"/>
       <source>Output File</source>
-      <translation type="unfinished">Output File</translation>
+      <translation>File Output</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="143"/>
@@ -9188,12 +9188,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="177"/>
       <source>Processor</source>
-      <translation type="unfinished">Processor</translation>
+      <translation>Processore</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="187"/>
       <source>Arguments</source>
-      <translation type="unfinished">Arguments</translation>
+      <translation>Argomenti</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="200"/>
@@ -9223,7 +9223,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="228"/>
       <source>Systems</source>
-      <translation type="unfinished">Systems</translation>
+      <translation>Sistemi</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="235"/>
@@ -9238,82 +9238,82 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="273"/>
       <source>G53</source>
-      <translation type="unfinished">G53</translation>
+      <translation>G53</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="281"/>
       <source>G54</source>
-      <translation type="unfinished">G54</translation>
+      <translation>G54</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="289"/>
       <source>G55</source>
-      <translation type="unfinished">G55</translation>
+      <translation>G55</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="297"/>
       <source>G56</source>
-      <translation type="unfinished">G56</translation>
+      <translation>G56</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="305"/>
       <source>G57</source>
-      <translation type="unfinished">G57</translation>
+      <translation>G57</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="313"/>
       <source>G58</source>
-      <translation type="unfinished">G58</translation>
+      <translation>G58</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="321"/>
       <source>G59</source>
-      <translation type="unfinished">G59</translation>
+      <translation>G59</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="329"/>
       <source>G59.1</source>
-      <translation type="unfinished">G59.1</translation>
+      <translation>G59.1</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="337"/>
       <source>G59.2</source>
-      <translation type="unfinished">G59.2</translation>
+      <translation>G59.2</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="345"/>
       <source>G59.3</source>
-      <translation type="unfinished">G59.3</translation>
+      <translation>G59,3</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="353"/>
       <source>G59.4</source>
-      <translation type="unfinished">G59.4</translation>
+      <translation>G59,4</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="361"/>
       <source>G59.5</source>
-      <translation type="unfinished">G59.5</translation>
+      <translation>G59.5</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="369"/>
       <source>G59.6</source>
-      <translation type="unfinished">G59.6</translation>
+      <translation>G59,6</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="377"/>
       <source>G59.7</source>
-      <translation type="unfinished">G59.7</translation>
+      <translation>G59.7</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="385"/>
       <source>G59.8</source>
-      <translation type="unfinished">G59.8</translation>
+      <translation>G59.8</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="393"/>
       <source>G59.9</source>
-      <translation type="unfinished">G59.9</translation>
+      <translation>G59.9</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="404"/>
@@ -9333,7 +9333,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="421"/>
       <source>Setup</source>
-      <translation type="unfinished">Setup</translation>
+      <translation>Configurazione</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="439"/>
@@ -9348,12 +9348,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="467"/>
       <source>Create Box</source>
-      <translation type="unfinished">Create Box</translation>
+      <translation>Crea Box</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="472"/>
       <source>Create Cylinder</source>
-      <translation type="unfinished">Create Cylinder</translation>
+      <translation>Crea Cilindro</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="477"/>
@@ -9363,7 +9363,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="482"/>
       <source>Use Existing Solid</source>
-      <translation type="unfinished">Use Existing Solid</translation>
+      <translation>Usa Solido Esistente</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="490"/>
@@ -9373,17 +9373,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="528"/>
       <source>Ext. X</source>
-      <translation type="unfinished">Ext. X</translation>
+      <translation>Est. X</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="545"/>
       <source>Ext. Y</source>
-      <translation type="unfinished">Ext. Y</translation>
+      <translation>Est. Y</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="555"/>
       <source>Ext. Z</source>
-      <translation type="unfinished">Ext. Z</translation>
+      <translation>Est. Z</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="583"/>
@@ -9424,17 +9424,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="659"/>
       <source>Set Origin</source>
-      <translation type="unfinished">Set Origin</translation>
+      <translation>Imposta Origine</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="666"/>
       <source>Move to Origin</source>
-      <translation type="unfinished">Move to Origin</translation>
+      <translation>Sposta in Origine</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="676"/>
       <source>Set</source>
-      <translation type="unfinished">Set</translation>
+      <translation>Imposta</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="682"/>
@@ -9449,22 +9449,22 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="696"/>
       <source>Z-Axis</source>
-      <translation type="unfinished">Z-Axis</translation>
+      <translation>Asse Z</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="703"/>
       <source>Y=0</source>
-      <translation type="unfinished">Y=0</translation>
+      <translation>Y=0</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="710"/>
       <source>Z=0</source>
-      <translation type="unfinished">Z=0</translation>
+      <translation>Z=0</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="717"/>
       <source>X=0</source>
-      <translation type="unfinished">X=0</translation>
+      <translation>X=0</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="724"/>
@@ -9474,12 +9474,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="734"/>
       <source>Move - XY</source>
-      <translation type="unfinished">Move - XY</translation>
+      <translation>Sposta - XY</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="892"/>
       <source>Rotate - XY</source>
-      <translation type="unfinished">Rotate - XY</translation>
+      <translation>Ruota - XY</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="926"/>
@@ -9490,7 +9490,7 @@ p, li { white-space: pre-wrap; }
       <location filename="../panels/PathEdit.ui" line="1010"/>
       <location filename="../panels/PathEdit.ui" line="1293"/>
       <source>Default Values</source>
-      <translation type="unfinished">Default Values</translation>
+      <translation>Valori Predefiniti</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1016"/>
@@ -9500,7 +9500,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1022"/>
       <source>Start Depth</source>
-      <translation type="unfinished">Start Depth</translation>
+      <translation>Profondità Iniziale</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1029"/>
@@ -9510,7 +9510,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1036"/>
       <source>Final Depth</source>
-      <translation type="unfinished">Final Depth</translation>
+      <translation>Profondità Finale</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1043"/>
@@ -9565,7 +9565,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1118"/>
       <source>Expression</source>
-      <translation type="unfinished">Expression</translation>
+      <translation>Espressione</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1128"/>
@@ -9596,7 +9596,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1217"/>
       <source>Nr.</source>
-      <translation type="unfinished">Nr.</translation>
+      <translation>Nr.</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1222"/>
@@ -9652,7 +9652,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1381"/>
       <source>Active Tool </source>
-      <translation type="unfinished">Active Tool </translation>
+      <translation>Strumento Attivo </translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1496"/>

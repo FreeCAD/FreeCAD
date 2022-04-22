@@ -3646,14 +3646,14 @@ Aborting op creation</translation>
       <translation>Guhit</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Grid</source>
-      <translation>Grid</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Triangle</source>
       <translation>Tatlong pánulukan</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Grid</source>
+      <translation>Grid</translation>
     </message>
     <message>
       <location filename="PathPocketGui.py" line="46"/>

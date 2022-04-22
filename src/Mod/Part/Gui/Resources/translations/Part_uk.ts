@@ -264,13 +264,13 @@ Do you want to continue?</source>
       <location filename="../../TaskAttacher.cpp" line="73"/>
       <location filename="../../TaskAttacher.cpp" line="109"/>
       <source>No reference selected</source>
-      <translation>Не вибрано жодного орієнтиру</translation>
+      <translation>Не вибрано орієнтира</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="82"/>
       <location filename="../../TaskCheckGeometry.cpp" line="86"/>
       <source>Face</source>
-      <translation>Поверхня</translation>
+      <translation>Грань</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="85"/>
@@ -658,7 +658,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="314"/>
       <source>Face</source>
       <comment>Attacher reference type</comment>
-      <translation>Поверхня</translation>
+      <translation>Грань</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="316"/>
@@ -1155,7 +1155,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="127"/>
       <source>Translate origin</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Перемістити початок координат</translation>
+      <translation>Перемістити початок системи координат</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="128"/>
@@ -1352,7 +1352,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="52"/>
       <source>Translate origin</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Перемістити початок координат</translation>
+      <translation>Перемістити початок системи координат</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="53"/>
@@ -2262,7 +2262,7 @@ into its X, Y, and Z components.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="48"/>
       <source>Create a Cylinder</source>
-      <translation>Створення циліндру</translation>
+      <translation>Створити циліндр</translation>
     </message>
   </context>
   <context>
@@ -2563,7 +2563,7 @@ into its X, Y, and Z components.</translation>
     <message>
       <location filename="../../Command.cpp" line="219"/>
       <source>Create primitives...</source>
-      <translation>Створення примітивів ...</translation>
+      <translation>Створити примітиві...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="220"/>
@@ -2736,7 +2736,7 @@ of projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="59"/>
       <source>Create a Cylinder</source>
-      <translation>Створення циліндру</translation>
+      <translation>Створити циліндр</translation>
     </message>
   </context>
   <context>
@@ -2976,7 +2976,7 @@ of projection.</translation>
       <location filename="../../TaskShapeBuilder.cpp" line="333"/>
       <location filename="../../TaskShapeBuilder.cpp" line="385"/>
       <source>Face</source>
-      <translation>Поверхня</translation>
+      <translation>Грань</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="448"/>
@@ -3034,7 +3034,7 @@ of projection.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="101"/>
       <source>Attachment mode:</source>
-      <translation type="unfinished">Attachment mode:</translation>
+      <translation>Режим приєднання:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="124"/>
@@ -3044,12 +3044,12 @@ of projection.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
       <source>In x-direction:</source>
-      <translation>У напрямку х:</translation>
+      <translation>У напрямку осі X:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="152"/>
       <source>In y-direction:</source>
-      <translation>У напрямку y:</translation>
+      <translation>У напрямку осі Y:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="171"/>
@@ -3061,7 +3061,7 @@ of projection.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="184"/>
       <source>In z-direction:</source>
-      <translation type="unfinished">In z-direction:</translation>
+      <translation>У напрямку осі Z:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="216"/>
@@ -3102,7 +3102,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="367"/>
       <source>Flip sides</source>
-      <translation type="unfinished">Flip sides</translation>
+      <translation>Перевернути сторони</translation>
     </message>
   </context>
   <context>
@@ -3163,12 +3163,12 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="14"/>
       <source>Boolean Operation</source>
-      <translation>Логічна операція</translation>
+      <translation>Булева операція</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="20"/>
       <source>Boolean operation</source>
-      <translation>Логічна операція</translation>
+      <translation>Булева операція</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="32"/>
@@ -5303,7 +5303,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="101"/>
       <source>Attachment mode:</source>
-      <translation type="unfinished">Attachment mode:</translation>
+      <translation>Режим приєднання:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
@@ -5314,12 +5314,12 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
       <source>In x-direction:</source>
-      <translation>У напрямку х:</translation>
+      <translation>У напрямку осі X:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="152"/>
       <source>In y-direction:</source>
-      <translation>У напрямку y:</translation>
+      <translation>У напрямку осі Y:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="171"/>
@@ -5327,13 +5327,13 @@ the sketch plane's normal vector will be used</translation>
       <location filename="../../TaskAttacher.ui" line="269"/>
       <source>Note: The placement is expressed in local coordinate system
 of object being attached.</source>
-      <translation type="unfinished">Note: The placement is expressed in local coordinate system
-of object being attached.</translation>
+      <translation>Примітка. Розміщення виражено в локальній системі 
+координат об’єкта, що приєднується.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="188"/>
       <source>In z-direction:</source>
-      <translation type="unfinished">In z-direction:</translation>
+      <translation>У напрямку осі Z:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="224"/>
@@ -5385,7 +5385,7 @@ of object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="367"/>
       <source>Flip sides</source>
-      <translation type="unfinished">Flip sides</translation>
+      <translation>Перевернути сторони</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="318"/>
@@ -5405,7 +5405,7 @@ of object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="327"/>
       <source>Not attached</source>
-      <translation>Не під'єднано</translation>
+      <translation>Прив'язка відсутня</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="331"/>
@@ -5415,12 +5415,12 @@ of object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="335"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation>Зміщення прикріплення (неактивний - не приєднано):</translation>
+      <translation>Зміщення приєднання (поля не активні - не приєднано):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="627"/>
       <source>Face</source>
-      <translation>Поверхня</translation>
+      <translation>Грань</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="632"/>
@@ -5440,7 +5440,7 @@ of object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="703"/>
       <source>Reference%1</source>
-      <translation>Посилання%1</translation>
+      <translation>Орієнтир%1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="750"/>
@@ -5450,7 +5450,7 @@ of object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="816"/>
       <source>Reference combinations:</source>
-      <translation>Комбінації виносок:</translation>
+      <translation>Комбінації орієнтирів:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="833"/>
@@ -5460,7 +5460,7 @@ of object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="838"/>
       <source>%1 (add more references)</source>
-      <translation>%1 (додати більше виносок)</translation>
+      <translation>%1 (додати більше орієнтирів)</translation>
     </message>
   </context>
   <context>

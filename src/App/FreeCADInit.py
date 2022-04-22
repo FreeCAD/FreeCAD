@@ -104,6 +104,10 @@ def InitApplications():
     LibPyDir = os.path.realpath(LibPyDir)
     if (os.path.exists(LibPyDir)):
         libpaths.append(LibPyDir)
+    LibFcDir = FreeCAD.getLibraryDir()
+    LibFcDir = os.path.realpath(LibFcDir)
+    if (os.path.exists(LibFcDir) and not LibFcDir in libpaths):
+        libpaths.append(LibFcDir)
     AddPath = FreeCAD.ConfigGet("AdditionalModulePaths").split(";")
     HomeMod = FreeCAD.getUserAppDataDir()+"Mod"
     HomeMod = os.path.realpath(HomeMod)
@@ -892,10 +896,7 @@ App.Units.KinematicViscosity           = App.Units.Unit(2,0,-1)
 App.Units.VacuumPermittivity           = App.Units.Unit(-3,-1,4,2)
 
 # Add an enum for the different unit schemes
-if sys.version_info.major < 3:
-    IntEnum = object
-else:
-    from enum import IntEnum
+from enum import IntEnum
 
 # The values must match with that of the
 # C++ enum class UnitSystem

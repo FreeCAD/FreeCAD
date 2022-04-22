@@ -863,7 +863,7 @@
     <message>
       <location filename="../../Command.cpp" line="2575"/>
       <source>Create Boolean</source>
-      <translation type="unfinished">Create Boolean</translation>
+      <translation>Použít booleovské operace</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="193"/>
@@ -1078,7 +1078,7 @@ Please select a body from below, or create a new body.</translation>
     <message>
       <location filename="../../DlgActiveBody.ui" line="36"/>
       <source>Create new body</source>
-      <translation type="unfinished">Create new body</translation>
+      <translation>Vytvořit nové těleso</translation>
     </message>
   </context>
   <context>
@@ -2333,7 +2333,7 @@ click again to end selection</translation>
     <message>
       <location filename="../../TaskPadParameters.ui" line="65"/>
       <source>Direction/edge:</source>
-      <translation type="unfinished">Direction/edge:</translation>
+      <translation>Směr/hrana:</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="72"/>
@@ -3196,12 +3196,12 @@ click again to end selection</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="200"/>
       <source>Create an additive box by its width, height, and length</source>
-      <translation type="unfinished">Create an additive box by its width, height, and length</translation>
+      <translation>Vytvořit přidaný kvádr pomocí jeho šířky, výšky a délky</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="204"/>
       <source>Create an additive cylinder by its radius, height, and angle</source>
-      <translation type="unfinished">Create an additive cylinder by its radius, height, and angle</translation>
+      <translation>Vytvořit přídaný válec pomocí jeho poloměru, výšky a úhlu</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="208"/>
@@ -3915,7 +3915,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../DlgActiveBody.cpp" line="55"/>
       <source>Please select</source>
-      <translation type="unfinished">Please select</translation>
+      <translation>Vyberte, prosím</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="362"/>

@@ -10,6 +10,7 @@ aiofiles
 autobahn
 ezdxf
 gmsh
+gmsh-dev
 lxml
 markdown
 matplotlib

@@ -78,6 +78,8 @@ PyMethodDef Application::Methods[] = {
      "Get the name of the module that can export the filetype"},
     {"getResourceDir", (PyCFunction) Application::sGetResourcePath, METH_VARARGS,
      "Get the root directory of all resources"},
+    {"getLibraryDir", (PyCFunction) Application::sGetLibraryPath, METH_VARARGS,
+     "Get the directory of all extension modules"},
     {"getTempPath", (PyCFunction) Application::sGetTempPath, METH_VARARGS,
      "Get the root directory of cached files"},
     {"getUserCachePath", (PyCFunction) Application::sGetUserCachePath, METH_VARARGS,
@@ -644,6 +646,15 @@ PyObject* Application::sGetResourcePath(PyObject * /*self*/, PyObject *args)
         return nullptr;
 
     Py::String datadir(Application::getResourceDir(),"utf-8");
+    return Py::new_reference_to(datadir);
+}
+
+PyObject* Application::sGetLibraryPath(PyObject * /*self*/, PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    Py::String datadir(Application::getLibraryDir(),"utf-8");
     return Py::new_reference_to(datadir);
 }
 

@@ -729,7 +729,7 @@
     </message>
     <message>
       <source>Insert Projection Group</source>
-      <translation>Wstaw grupę rzutowania</translation>
+      <translation>Wstaw grupę rzutów</translation>
     </message>
     <message>
       <source>Insert multiple linked views of drawable object(s)</source>
@@ -1886,7 +1886,7 @@ górnej i lewej krawędzi</translation>
     </message>
     <message>
       <source>Flip Sides</source>
-      <translation>Odwróć strony</translation>
+      <translation>Odwróć</translation>
     </message>
     <message>
       <source>Text before other side symbol</source>
@@ -1903,12 +1903,12 @@ górnej i lewej krawędzi</translation>
     <message>
       <source>Adds the &apos;Field Weld&apos; symbol (flag)
 at the kink in the leader line</source>
-      <translation>Dodaj symbol &apos;Pola spoiny&apos; (flaga)
+      <translation>Dodaj symbol &apos;spawać na miejscu&apos; (flaga)
 na węźle w linii odniesienia</translation>
     </message>
     <message>
       <source>Field Weld</source>
-      <translation>Spoina pachwinowa</translation>
+      <translation>Spawać na montażu</translation>
     </message>
     <message>
       <source>Adds the &apos;All Around&apos; symbol (circle)
@@ -1918,7 +1918,7 @@ na węźle w linii odniesienia</translation>
     </message>
     <message>
       <source>All Around</source>
-      <translation>Wszystkie dookoła</translation>
+      <translation>Spoina dookoła</translation>
     </message>
     <message>
       <source>Offsets the lower symbol to indicate alternating welds</source>

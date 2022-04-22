@@ -878,6 +878,8 @@ PyObject* TopoShapeFacePy::cutHoles(PyObject *args)
 Py::Object TopoShapeFacePy::getSurface() const
 {
     const TopoDS_Face& f = TopoDS::Face(getTopoShapePtr()->getShape());
+    if (f.IsNull())
+        return Py::None();
     BRepAdaptor_Surface adapt(f);
     Base::PyObjectBase* surface = nullptr;
     switch(adapt.GetType())

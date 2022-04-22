@@ -46,6 +46,7 @@
 
 
 #include "PartFeatures.h"
+#include <App/Link.h>
 
 
 using namespace Part;
@@ -82,20 +83,21 @@ App::DocumentObjectExecReturn* RuledSurface::getShape(const App::PropertyLinkSub
                                                       TopoDS_Shape& shape) const
 {
     App::DocumentObject* obj = link.getValue();
-    if (!(obj && obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
+    const Part::TopoShape part = Part::Feature::getTopoShape(obj);
+    if (part.isNull()) {
         return new App::DocumentObjectExecReturn("No shape linked.");
+    }
 
     // if no explicit sub-shape is selected use the whole part
     const std::vector<std::string>& element = link.getSubValues();
     if (element.empty()) {
-        shape = static_cast<Part::Feature*>(obj)->Shape.getValue();
+        shape = part.getShape();
         return nullptr;
     }
     else if (element.size() != 1) {
         return new App::DocumentObjectExecReturn("Not exactly one sub-shape linked.");
     }
 
-    const Part::TopoShape& part = static_cast<Part::Feature*>(obj)->Shape.getValue();
     if (!part.getShape().IsNull()) {
         if (!element[0].empty()) {
             shape = part.getSubShape(element[0].c_str());
@@ -709,16 +711,21 @@ Reverse::Reverse()
 
 App::DocumentObjectExecReturn* Reverse::execute(void)
 {
-    Part::Feature* source = Source.getValue<Part::Feature*>();
-    if (!source)
+    App::DocumentObject* source = Source.getValue<App::DocumentObject*>();
+    Part::TopoShape topoShape = Part::Feature::getShape(source);
+    if (topoShape.isNull())
         return new App::DocumentObjectExecReturn("No part object linked.");
 
     try {
-        TopoDS_Shape myShape = source->Shape.getValue();
-        if (!myShape.IsNull())
+        TopoDS_Shape myShape = topoShape.getShape();
+        if (!myShape.IsNull()){
             this->Shape.setValue(myShape.Reversed());
-        this->Placement.setValue(source->Placement.getValue());
-        return App::DocumentObject::StdReturn;
+            Base::Placement p;
+            p.fromMatrix(topoShape.getTransform());
+            this->Placement.setValue(p);
+            return App::DocumentObject::StdReturn;
+        }
+        return new App::DocumentObjectExecReturn("Shape is null.");
     }
     catch (Standard_Failure & e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());

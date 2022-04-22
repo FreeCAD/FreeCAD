@@ -161,12 +161,13 @@ void SoFCColorGradient::setRange(float fMin, float fMax, int prec)
     // otherwise output "normal" (fixed notation)
 
     SoMFString label;
-    std::ios::fmtflags flags = (std::ios::fixed | std::ios::showpoint | std::ios::showpos);
     float eps = std::pow(10.0f, static_cast<float>(-prec));
+    float value_min = std::min<float>(fabs(fMin), fabs(fMax));
+    float value_max = std::max<float>(fabs(fMin), fabs(fMax));
 
-    if ( ( (std::min<float>(fabs(fMin), fabs(fMax)) < eps) && (std::min<float>(fabs(fMin), fabs(fMax)) != 0.0f) )
-        || (std::max<float>(fabs(fMin), fabs(fMax)) > 1e4) )
-        flags = (std::ios::scientific | std::ios::showpoint | std::ios::showpos);
+    bool scientific = (value_min < eps && value_min > 0.0f) || value_max > 1e4;
+    std::ios::fmtflags flags = scientific ? (std::ios::scientific | std::ios::showpoint | std::ios::showpos)
+                                          : (std::ios::fixed | std::ios::showpoint | std::ios::showpos);
 
     // write the labels
     int i = 0;

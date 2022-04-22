@@ -153,6 +153,11 @@ TreeParams* TreeParams::Instance() {
     return instance;
 }
 
+bool TreeParams::getTreeViewStretchDescription() const
+{
+    return handle->GetBool("TreeViewStretchDescription", false);
+}
+
 //////////////////////////////////////////////////////////////////////////////////////
 struct Stats {
 #define DEFINE_STATS \
@@ -429,9 +434,13 @@ QWidget* TreeWidgetEditDelegate::createEditor(
 // ---------------------------------------------------------------------------
 
 TreeWidget::TreeWidget(const char* name, QWidget* parent)
-    : QTreeWidget(parent), SelectionObserver(true, 0), contextItem(nullptr)
-    , searchObject(nullptr), searchDoc(nullptr), searchContextDoc(nullptr)
-    , editingItem(nullptr), currentDocItem(nullptr)
+    : QTreeWidget(parent), SelectionObserver(true, ResolveMode::NoResolve)
+    , contextItem(nullptr)
+    , searchObject(nullptr)
+    , searchDoc(nullptr)
+    , searchContextDoc(nullptr)
+    , editingItem(nullptr)
+    , currentDocItem(nullptr)
     , myName(name)
 {
     Instances.insert(this);
@@ -522,7 +531,7 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
 
     // make sure to show a horizontal scrollbar if needed
     this->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
-    this->header()->setStretchLastSection(false);
+    this->header()->setStretchLastSection(TreeParams::Instance()->getTreeViewStretchDescription());
 
     // Add the first main label
     this->rootItem = new QTreeWidgetItem(this);
@@ -763,7 +772,8 @@ void TreeWidget::itemSearch(const QString& text, bool select) {
         }
         scrollToItem(item);
         Selection().setPreselect(obj->getDocument()->getName(),
-            obj->getNameInDocument(), subname.c_str(), 0, 0, 0, 2);
+            obj->getNameInDocument(), subname.c_str(), 0, 0, 0,
+            SelectionChanges::MsgSource::TreeView);
         if (select) {
             Gui::Selection().selStackPush();
             Gui::Selection().clearSelection();
@@ -2722,7 +2732,7 @@ void TreeWidget::onPreSelectTimer() {
     else if (!obj->redirectSubName(ss, parent, nullptr))
         ss << obj->getNameInDocument() << '.';
     Selection().setPreselect(parent->getDocument()->getName(), parent->getNameInDocument(),
-        ss.str().c_str(), 0, 0, 0, 2);
+        ss.str().c_str(), 0, 0, 0, SelectionChanges::MsgSource::TreeView);
 }
 
 void TreeWidget::onItemCollapsed(QTreeWidgetItem* item)
@@ -2752,7 +2762,7 @@ void TreeWidget::scrollItemToTop()
 
         tree->_updateStatus(false);
 
-        if (doc && Gui::Selection().hasSelection(doc->getDocument()->getName(), false)) {
+        if (doc && Gui::Selection().hasSelection(doc->getDocument()->getName(), ResolveMode::NoResolve)) {
             auto it = tree->DocumentMap.find(doc);
             if (it != tree->DocumentMap.end()) {
                 bool lock = tree->blockSelection(true);
@@ -4419,7 +4429,7 @@ DocumentObjectItem* DocumentItem::findItem(
 }
 
 void DocumentItem::selectItems(SelectionReason reason) {
-    const auto& sels = Selection().getSelection(pDocument->getDocument()->getName(), false);
+    const auto& sels = Selection().getSelection(pDocument->getDocument()->getName(), ResolveMode::NoResolve);
 
     bool sync = (sels.size() > 50 || reason == SR_SELECT) ? false : true;
 

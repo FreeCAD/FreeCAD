@@ -547,7 +547,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Select one Page object.</source>
-      <translation>Wybierz jeden obiekt Strony.</translation>
+      <translation>Wybierz jeden obiekt Strona.</translation>
     </message>
     <message>
       <source>All Files</source>

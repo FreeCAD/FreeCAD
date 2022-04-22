@@ -4497,7 +4497,7 @@ Ha Futás = 0, akkor a futás kiszámítása úgy történik, hogy a magasság m
     <message>
       <location filename="ArchRebar.py" line="108"/>
       <source>Creates a Reinforcement bar from the selected face of solid object and/or a sketch</source>
-      <translation type="unfinished">Creates a Reinforcement bar from the selected face of solid object and/or a sketch</translation>
+      <translation>Megerősítő sáv létrehozása a kijelölt szilárdtest-tárgyból és/vagy vázlatból</translation>
     </message>
     <message>
       <location filename="ArchRebar.py" line="108"/>

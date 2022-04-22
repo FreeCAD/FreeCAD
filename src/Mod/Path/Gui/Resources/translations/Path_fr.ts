@@ -376,7 +376,7 @@
     <message>
       <location filename="PathDressupAxisMap.py" line="63"/>
       <source>The input mapping axis</source>
-      <translation>L’axe d’entrée de mappage</translation>
+      <translation>L'axe d'application d'entrée</translation>
     </message>
     <message>
       <location filename="PathDressupAxisMap.py" line="69"/>
@@ -1359,7 +1359,7 @@
     <message>
       <location filename="InitGui.py" line="159"/>
       <source>&amp;Path</source>
-      <translation>&amp;Parcours</translation>
+      <translation>&amp;Path</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="159"/>
@@ -2702,7 +2702,7 @@ Abandon de la création</translation>
     <message>
       <location filename="PathDressupAxisMap.py" line="54"/>
       <source>The input mapping axis</source>
-      <translation>L’axe d’entrée de mappage</translation>
+      <translation>L'axe d'application d'entrée</translation>
     </message>
     <message>
       <location filename="PathDressupAxisMap.py" line="55"/>
@@ -2712,7 +2712,7 @@ Abandon de la création</translation>
     <message>
       <location filename="PathDressupAxisMap.py" line="245"/>
       <source>Axis Map Dress-up</source>
-      <translation>Mappage des axes</translation>
+      <translation>Placage des axes</translation>
     </message>
     <message>
       <location filename="PathDressupAxisMap.py" line="249"/>
@@ -3163,7 +3163,7 @@ Abandon de la création</translation>
     <message>
       <location filename="PathDressupZCorrect.py" line="304"/>
       <source>Z Depth Correction Dress-up</source>
-      <translation>Habillage de la correction de profondeur Z</translation>
+      <translation>Correction de la profondeur Z</translation>
     </message>
     <message>
       <location filename="PathDressupZCorrect.py" line="308"/>
@@ -3258,7 +3258,7 @@ Abandon de la création</translation>
     <message>
       <location filename="gcode_pre.py" line="229"/>
       <source>No job object</source>
-      <translation type="unfinished">No job object</translation>
+      <translation>Aucun objet tâche</translation>
     </message>
   </context>
   <context>
@@ -3332,12 +3332,12 @@ Abandon de la création</translation>
     <message>
       <location filename="PathInspect.py" line="260"/>
       <source>Inspect Path Commands</source>
-      <translation type="unfinished">Inspect Path Commands</translation>
+      <translation>Inspecter les commandes de trajectoire</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="264"/>
       <source>Inspects the contents of a Path object</source>
-      <translation type="unfinished">Inspects the contents of a Path object</translation>
+      <translation>Inspecte le contenu d'un objet Chemin</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="260"/>
@@ -3440,7 +3440,7 @@ Abandon de la création</translation>
     <message>
       <location filename="PathJobGui.py" line="1610"/>
       <source>This job has no base model.</source>
-      <translation type="unfinished">This job has no base model.</translation>
+      <translation>Ce travail n'a pas de modèle de base.</translation>
     </message>
     <message>
       <location filename="PathJobGui.py" line="1617"/>
@@ -3646,14 +3646,14 @@ Abandon de la création</translation>
       <translation>Ligne</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Grid</source>
-      <translation>Grille</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Triangle</source>
       <translation>Triangle</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Grid</source>
+      <translation>Grille</translation>
     </message>
     <message>
       <location filename="PathPocketGui.py" line="46"/>
@@ -3782,7 +3782,7 @@ Abandon de la création</translation>
     <message>
       <location filename="PathSanity.py" line="108"/>
       <source>Check the path job for common errors</source>
-      <translation>Vérifier le travail path pour les erreurs courantes</translation>
+      <translation>Vérifier la tâche d'usinage pour les erreurs courantes</translation>
     </message>
     <message>
       <location filename="PathSanity.py" line="225"/>
@@ -4704,7 +4704,7 @@ Abandon de la création</translation>
     <message>
       <location filename="InitGui.py" line="241"/>
       <source>&amp;Path</source>
-      <translation>&amp;Parcours</translation>
+      <translation>&amp;Path</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="209"/>

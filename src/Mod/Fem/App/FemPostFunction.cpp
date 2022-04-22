@@ -96,6 +96,11 @@ void FemPostPlaneFunction::onChanged(const Property* prop) {
     Fem::FemPostFunction::onChanged(prop);
 }
 
+void FemPostPlaneFunction::onDocumentRestored() {
+    // This is to notify the view provider that the document has been fully restored
+    Normal.touch();
+}
+
 
 
 

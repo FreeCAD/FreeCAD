@@ -720,6 +720,11 @@ Propietate hau irakurtzeko soilik da, kopuru hori 'Puntu-objektua' elementuak di
       <translation>Objektuaren area</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Objektu honen forma</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>Objektu honek darabilen oinarri-objektua</translation>
@@ -738,11 +743,6 @@ Propietate hau irakurtzeko soilik da, kopuru hori 'Puntu-objektua' elementuak di
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>Objektu honek darabilen eredu-eskala</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Objektu honen forma</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>

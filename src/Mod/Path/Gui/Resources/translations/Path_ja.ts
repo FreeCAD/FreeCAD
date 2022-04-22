@@ -3646,14 +3646,14 @@ Aborting op creation</translation>
       <translation>直線</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Grid</source>
-      <translation>グリッド</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Triangle</source>
       <translation>三角形</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Grid</source>
+      <translation>グリッド</translation>
     </message>
     <message>
       <location filename="PathPocketGui.py" line="46"/>

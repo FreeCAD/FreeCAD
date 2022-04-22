@@ -605,7 +605,7 @@ namespace SketcherGui {
         App::DocumentObject* object;
     public:
         GenericConstraintSelection(App::DocumentObject* obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)nullptr)
+            : Gui::SelectionFilterGate(nullPointer())
             , object(obj), allowedSelTypes(0)
         {}
 

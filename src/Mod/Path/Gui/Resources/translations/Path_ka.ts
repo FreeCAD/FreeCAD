@@ -96,7 +96,7 @@
     <message>
       <location filename="PathWaterline.py" line="144"/>
       <source>Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</source>
-      <translation type="unfinished">Select the algorithm to use: OCL Dropcutter*, or Experimental (Not OCL based).</translation>
+      <translation>გამოსაყენებელ ალგორითმად აირჩიეთ OCL Dropcutter*-ი ან ექსპერიმენტალური (არა-OCL-ზე ბაზირებული).</translation>
     </message>
     <message>
       <location filename="PathWaterline.py" line="146"/>
@@ -2043,7 +2043,7 @@ Aborting op creation</source>
     <message>
       <location filename="PathProfile.py" line="622"/>
       <source>Check edge selection and Final Depth requirements for profiling open edge(s).</source>
-      <translation type="unfinished">Check edge selection and Final Depth requirements for profiling open edge(s).</translation>
+      <translation>ღია წიბოების პროფილირებისთვის წიბოს არჩევანისა და საბოლოო სიღრმის მოთხოვნების შემოწმება.</translation>
     </message>
     <message>
       <location filename="PathProfile.py" line="663"/>
@@ -3258,7 +3258,7 @@ Aborting op creation</source>
     <message>
       <location filename="gcode_pre.py" line="229"/>
       <source>No job object</source>
-      <translation type="unfinished">No job object</translation>
+      <translation>დავალების ობიექტის გარეშე</translation>
     </message>
   </context>
   <context>
@@ -3332,12 +3332,12 @@ Aborting op creation</source>
     <message>
       <location filename="PathInspect.py" line="260"/>
       <source>Inspect Path Commands</source>
-      <translation type="unfinished">Inspect Path Commands</translation>
+      <translation>ტრაექტორიის ბრძანებების გადახედვა</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="264"/>
       <source>Inspects the contents of a Path object</source>
-      <translation type="unfinished">Inspects the contents of a Path object</translation>
+      <translation>ტრაექტორიის ობიექტის შემცველობის გადამოწმება</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="260"/>
@@ -3646,14 +3646,14 @@ Aborting op creation</source>
       <translation>ხაზი</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Grid</source>
-      <translation>ბადე</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Triangle</source>
       <translation>სამკუთხედი</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Grid</source>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="PathPocketGui.py" line="46"/>

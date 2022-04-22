@@ -65,7 +65,6 @@ public:
     static void createTaperedPrismOffset(TopoDS_Wire sourceWire,
                                          const gp_Vec& translation,
                                          double offset,
-                                         int numEdges,
                                          bool isSecond,
                                          TopoDS_Wire& result);
 };

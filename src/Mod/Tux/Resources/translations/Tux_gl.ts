@@ -36,7 +36,7 @@
     <message>
       <location filename="NavigationIndicatorGui.py" line="69"/>
       <source>Page Up or Page Down key.</source>
-      <translation>Tecla Page Up ou Page Down.</translation>
+      <translation>Tecla Av Páx ou Ret Páx.</translation>
     </message>
     <message>
       <location filename="NavigationIndicatorGui.py" line="70"/>

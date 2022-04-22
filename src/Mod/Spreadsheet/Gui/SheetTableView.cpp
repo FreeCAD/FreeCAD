@@ -274,6 +274,11 @@ std::vector<Range> SheetTableView::selectedRanges() const
     return result;
 }
 
+QModelIndexList SheetTableView::selectedIndexesRaw() const
+{
+    return selectedIndexes();
+}
+
 void SheetTableView::insertRows()
 {
     assert(sheet != nullptr);
@@ -938,6 +943,12 @@ void SheetTableView::mousePressEvent(QMouseEvent* event)
     QTableView::mousePressEvent(event);
 }
 
+void SheetTableView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+{
+    Gui::getMainWindow()->updateActions();
+    QTableView::selectionChanged(selected, deselected);
+}
+
 void SheetTableView::edit ( const QModelIndex & index )
 {
     currentEditIndex = index;
@@ -960,8 +971,9 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent *)
         actionCut->setEnabled(true);
         actionCopy->setEnabled(true);
         actionDel->setEnabled(true);
-        actionSplit->setEnabled(true);
-        actionMerge->setEnabled(true);
+        actionSplit->setEnabled(selectedIndexesRaw().size() == 1 &&
+            sheet->isMergedCell(CellAddress(currentIndex().row(),currentIndex().column())));
+        actionMerge->setEnabled(selectedIndexesRaw().size() > 1);
     }
 
     auto ranges = selectedRanges();

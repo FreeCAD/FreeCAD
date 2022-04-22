@@ -2161,7 +2161,8 @@ class DraftToolBar:
 
     def toggleAngle(self,b):
         self.alock = self.angleLock.isChecked()
-        if b:
+        self.update_cartesian_coords()
+        if self.alock:
             if not self.globalMode:
                 angle_vec = FreeCAD.DraftWorkingPlane.getGlobalRot(self.angle)
             else:

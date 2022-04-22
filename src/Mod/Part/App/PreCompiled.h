@@ -80,6 +80,7 @@
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/exception.hpp>
 
+#include <boost/regex.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
 #include "OpenCascadeAll.h"

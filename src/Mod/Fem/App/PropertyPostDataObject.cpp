@@ -67,6 +67,51 @@ PropertyPostDataObject::~PropertyPostDataObject()
 {
 }
 
+void PropertyPostDataObject::scaleDataObject(vtkDataObject* dataObject, double s)
+{
+    auto scalePoints = [](vtkPoints* points, double s) {
+        for (vtkIdType i = 0; i < points->GetNumberOfPoints(); i++) {
+            double xyz[3];
+            points->GetPoint(i, xyz);
+            for (int j = 0; j < 3; j++)
+                xyz[j] *= s;
+            points->SetPoint(i, xyz);
+        }
+    };
+
+    if (dataObject->GetDataObjectType() == VTK_POLY_DATA) {
+        vtkPolyData* dataSet = vtkPolyData::SafeDownCast(dataObject);
+        scalePoints(dataSet->GetPoints(), s);
+    }
+    else if (dataObject->GetDataObjectType() == VTK_STRUCTURED_GRID) {
+        vtkStructuredGrid* dataSet = vtkStructuredGrid::SafeDownCast(dataObject);
+        scalePoints(dataSet->GetPoints(), s);
+    }
+    else if (dataObject->GetDataObjectType() == VTK_UNSTRUCTURED_GRID) {
+        vtkUnstructuredGrid* dataSet = vtkUnstructuredGrid::SafeDownCast(dataObject);
+        scalePoints(dataSet->GetPoints(), s);
+    }
+    else if (dataObject->GetDataObjectType() == VTK_MULTIBLOCK_DATA_SET) {
+        vtkMultiBlockDataSet* dataSet = vtkMultiBlockDataSet::SafeDownCast(dataObject);
+        for (unsigned int i = 0; i < dataSet->GetNumberOfBlocks(); i++)
+            scaleDataObject(dataSet->GetBlock(i), s);
+    }
+    else if (dataObject->GetDataObjectType() == VTK_MULTIPIECE_DATA_SET) {
+        vtkMultiPieceDataSet* dataSet = vtkMultiPieceDataSet::SafeDownCast(dataObject);
+        for (unsigned int i = 0; i < dataSet->GetNumberOfPieces(); i++)
+            scaleDataObject(dataSet->GetPiece(i), s);
+    }
+}
+
+void PropertyPostDataObject::scale(double s)
+{
+    if (m_dataObject) {
+        aboutToSetValue();
+        scaleDataObject(m_dataObject, s);
+        hasSetValue();
+    }
+}
+
 void PropertyPostDataObject::setValue(const vtkSmartPointer<vtkDataObject>& ds)
 {
     aboutToSetValue();
@@ -75,8 +120,9 @@ void PropertyPostDataObject::setValue(const vtkSmartPointer<vtkDataObject>& ds)
         createDataObjectByExternalType(ds);
         m_dataObject->DeepCopy(ds);
     }
-    else
+    else {
         m_dataObject = nullptr;
+    }
 
     hasSetValue();
 }

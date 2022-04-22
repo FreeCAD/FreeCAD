@@ -29,6 +29,7 @@
 
 # imports the one and only
 import FreeCAD, FreeCADGui
+from enum import IntEnum
 
 # shortcuts
 Gui = FreeCADGui
@@ -36,6 +37,16 @@ Gui = FreeCADGui
 # this is to keep old code working
 Gui.listCommands = Gui.Command.listAll
 Gui.isCommandActive = lambda cmd: Gui.Command.get(cmd).isActive()
+
+# The values must match with that of the
+# C++ enum class ResolveMode
+class ResolveMode(IntEnum):
+    NoResolve = 0
+    OldStyleElement = 1
+    NewStyleElement = 2
+    FollowLink = 3
+
+Gui.Selection.ResolveMode = ResolveMode
 
 # Important definitions
 class Workbench:

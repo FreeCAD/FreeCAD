@@ -11,7 +11,7 @@
     <message>
       <location filename="InvoluteGearFeature.py" line="61"/>
       <source>Creates or edit the involute gear definition.</source>
-      <translation type="unfinished">Creates or edit the involute gear definition.</translation>
+      <translation>Crear o editar la precisiòd de l'eïna definida.</translation>
     </message>
   </context>
   <context>
@@ -24,7 +24,7 @@
     <message>
       <location filename="SprocketFeature.py" line="66"/>
       <source>Creates or edit the sprocket definition.</source>
-      <translation type="unfinished">Creates or edit the sprocket definition.</translation>
+      <translation>Crear o editar la precisiò del avanç.</translation>
     </message>
   </context>
   <context>
@@ -32,12 +32,12 @@
     <message>
       <location filename="WizardShaft.py" line="211"/>
       <source>Shaft design wizard...</source>
-      <translation type="unfinished">Shaft design wizard...</translation>
+      <translation>Assistent de disseny d'engranatges...</translation>
     </message>
     <message>
       <location filename="WizardShaft.py" line="212"/>
       <source>Start the shaft design wizard</source>
-      <translation type="unfinished">Start the shaft design wizard</translation>
+      <translation>Inicia l'assistent de dissenyar eixos</translation>
     </message>
   </context>
   <context>
@@ -45,42 +45,42 @@
     <message>
       <location filename="WizardShaftTable.py" line="43"/>
       <source>Length [mm]</source>
-      <translation type="unfinished">Length [mm]</translation>
+      <translation>Longitud [mm]</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="44"/>
       <source>Diameter [mm]</source>
-      <translation type="unfinished">Diameter [mm]</translation>
+      <translation>Diametre [mm]</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="45"/>
       <source>Inner diameter [mm]</source>
-      <translation type="unfinished">Inner diameter [mm]</translation>
+      <translation>Diàmetre interior [mm]</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="46"/>
       <source>Constraint type</source>
-      <translation type="unfinished">Constraint type</translation>
+      <translation>Tipus de restricciò</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="47"/>
       <source>Start edge type</source>
-      <translation type="unfinished">Start edge type</translation>
+      <translation>Tipus d'aresta inicial</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="48"/>
       <source>Start edge size</source>
-      <translation type="unfinished">Start edge size</translation>
+      <translation>Mida d'aresta inicial</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="49"/>
       <source>End edge type</source>
-      <translation type="unfinished">End edge type</translation>
+      <translation>Tipus d'aresta final</translation>
     </message>
     <message>
       <location filename="WizardShaftTable.py" line="53"/>
       <source>End edge size</source>
-      <translation type="unfinished">End edge size</translation>
+      <translation>Tamany d'aresta final</translation>
     </message>
   </context>
   <context>
@@ -1068,14 +1068,14 @@
       <source>To create a new PartDesign object, there must be an active Body object in the document.
 
 Please select a body from below, or create a new body.</source>
-      <translation type="unfinished">To create a new PartDesign object, there must be an active Body object in the document.
+      <translation>Per crear un nou objecte PartDesign ha d'existir un objecte cos actiu en el document.
 
-Please select a body from below, or create a new body.</translation>
+Si us plau, seleccionar un cos desde abaix, o crear un nou cos.</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.ui" line="36"/>
       <source>Create new body</source>
-      <translation type="unfinished">Create new body</translation>
+      <translation>Crear un nou cos</translation>
     </message>
   </context>
   <context>
@@ -2330,20 +2330,20 @@ clica altre cop per finalitzar la selecció</translation>
     <message>
       <location filename="../../TaskPadParameters.ui" line="65"/>
       <source>Direction/edge:</source>
-      <translation type="unfinished">Direction/edge:</translation>
+      <translation>Direcciò/aresta:</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="72"/>
       <source>Either along the sketch normal
 or select an edge as reference</source>
-      <translation type="unfinished">Either along the sketch normal
-or select an edge as reference</translation>
+      <translation>Al llarg del croquis normal
+o seleccionar una aresta com referència</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="77"/>
       <location filename="../../TaskPadParameters.cpp" line="698"/>
       <source>Sketch normal</source>
-      <translation type="unfinished">Sketch normal</translation>
+      <translation>Croquis normal</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="82"/>
@@ -2361,8 +2361,8 @@ or select an edge as reference</translation>
       <location filename="../../TaskPadParameters.ui" line="102"/>
       <source>Use custom vector for pad direction, otherwise
 the sketch plane's normal vector will be used</source>
-      <translation type="unfinished">Use custom vector for pad direction, otherwise
-the sketch plane's normal vector will be used</translation>
+      <translation>Usar un vector personalitzat per la direcció de l'extrusió, cas contrari
+es farà servir el vector normal del plànol de croquis</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.ui" line="115"/>
@@ -2654,7 +2654,7 @@ mesurada al llarg de la direcció especificada</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="447"/>
       <source>No active body</source>
-      <translation type="unfinished">No active body</translation>
+      <translation>Cap cos actiu</translation>
     </message>
   </context>
   <context>
@@ -3044,8 +3044,8 @@ clica altre cop per finalitzar la selecció</translation>
       <location filename="../../TaskThicknessParameters.ui" line="52"/>
       <source>- select an item to highlight it
 - double-click on an item to see the features</source>
-      <translation type="unfinished">- select an item to highlight it
-- double-click on an item to see the features</translation>
+      <translation>- seleccionar un element per ressaltar-ho
+- fer doble clic en un element per veure les característiques</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="65"/>
@@ -3193,12 +3193,12 @@ clica altre cop per finalitzar la selecció</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="200"/>
       <source>Create an additive box by its width, height, and length</source>
-      <translation type="unfinished">Create an additive box by its width, height, and length</translation>
+      <translation>Crear una caixa aditiva per la seva ampladaa, alçada i longitud</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="204"/>
       <source>Create an additive cylinder by its radius, height, and angle</source>
-      <translation type="unfinished">Create an additive cylinder by its radius, height, and angle</translation>
+      <translation>Crear un cilindre aditiu per el seu radi, alçada i angle</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="208"/>
@@ -3302,17 +3302,17 @@ clica altre cop per finalitzar la selecció</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="950"/>
       <source>Move tip</source>
-      <translation type="unfinished">Move tip</translation>
+      <translation>Mou punta</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="951"/>
       <source>The moved feature appears after the currently set tip.</source>
-      <translation type="unfinished">The moved feature appears after the currently set tip.</translation>
+      <translation>La característica moguda apareix després de la punta configurada en aquest moment.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="952"/>
       <source>Do you want the last feature to be the new tip?</source>
-      <translation type="unfinished">Do you want the last feature to be the new tip?</translation>
+      <translation>Vol que la darrera característica sigui la nova punta?</translation>
     </message>
   </context>
   <context>
@@ -3914,7 +3914,7 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../TaskPadParameters.cpp" line="362"/>
       <source>Sketch normal</source>
-      <translation type="unfinished">Sketch normal</translation>
+      <translation>Croquis normal</translation>
     </message>
   </context>
   <context>

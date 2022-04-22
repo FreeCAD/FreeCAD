@@ -524,7 +524,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>FreeCAD would not be possible without the contributions of</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+      <translation>如果没有以下贡献者的帮助，FreeCAD 项目不可能成立</translation>
     </message>
     <message>
       <source>Individuals</source>
@@ -746,11 +746,11 @@ In this case the prefix will be automatically trimmed when shown in the property
 However, the property is still used in a script with the full name, like 'obj.Group_Name'.
 
 If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
-      <translation type="unfinished">Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
-In this case the prefix will be automatically trimmed when shown in the property editor.
-However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+      <translation>属性名称前加上组名前缀，以“组名_属性名”的形式来避免与现有属性冲突。
+这样，当在属性编辑器中显示时前缀将自动隐藏。
+但在脚本中该属性中仍然是全名，例如'obj.Group_name'。
 
-If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</translation>
+如果没有勾选，那么属性必须是唯一的命名，并且它是像'obj.name'一样被访问的。</translation>
     </message>
     <message>
       <source>Prefix group name</source>
@@ -1509,8 +1509,8 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source>Background of the main window will consist of tiles of a special image.
 See the FreeCAD Wiki for details about the image.</source>
-      <translation type="unfinished">Background of the main window will consist of tiles of a special image.
-See the FreeCAD Wiki for details about the image.</translation>
+      <translation>主窗口的背景将由特殊图像的平铺显示。
+请参阅FreeCAD Wiki 了解图像的详细信息。</translation>
     </message>
     <message>
       <source>Style sheet how user interface will look like</source>
@@ -1773,27 +1773,27 @@ Note: your changes will be applied when you next switch workbenches
     </message>
     <message>
       <source>Walkthrough, dialog 1 of 2</source>
-      <translation type="unfinished">Walkthrough, dialog 1 of 2</translation>
+      <translation>遍历，对话框1 / 2</translation>
     </message>
     <message>
       <source>Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</source>
-      <translation type="unfinished">Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</translation>
+      <translation>顺序执行以下指令：填充缺失的字段 (可选) 然后单击添加，然后关闭</translation>
     </message>
     <message>
       <source>Walkthrough, dialog 1 of 1</source>
-      <translation type="unfinished">Walkthrough, dialog 1 of 1</translation>
+      <translation>遍历，对话框1 / 1</translation>
     </message>
     <message>
       <source>Walkthrough, dialog 2 of 2</source>
-      <translation type="unfinished">Walkthrough, dialog 2 of 2</translation>
+      <translation>遍历，对话框2 / 2</translation>
     </message>
     <message>
       <source>Walkthrough instructions: Click right arrow button (-&gt;), then Close.</source>
-      <translation type="unfinished">Walkthrough instructions: Click right arrow button (-&gt;), then Close.</translation>
+      <translation>顺序执行以下指令：点击右箭头按钮 (-&gt;)，然后关闭。</translation>
     </message>
     <message>
       <source>Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</source>
-      <translation type="unfinished">Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</translation>
+      <translation>顺序执行以下指令：点击新建，然后右箭头按钮 (-&gt;)，然后关闭。</translation>
     </message>
   </context>
   <context>
@@ -2234,7 +2234,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
-      <translation type="unfinished">If enabled, then 3D view selection will be synchronized with full object hierarchy.</translation>
+      <translation>如果启用，则3D 视图选择将与完整对象层级同步.</translation>
     </message>
   </context>
   <context>
@@ -2374,19 +2374,19 @@ from Python console to Report view panel</translation>
     </message>
     <message>
       <source>Include a timecode for each report</source>
-      <translation type="unfinished">Include a timecode for each report</translation>
+      <translation>为每份报告包含一个时间码</translation>
     </message>
     <message>
       <source>Include a timecode for each entry</source>
-      <translation type="unfinished">Include a timecode for each entry</translation>
+      <translation>每个条目包含一个时间码</translation>
     </message>
     <message>
       <source>Normal messages will be recorded</source>
-      <translation type="unfinished">Normal messages will be recorded</translation>
+      <translation>正常消息将被记录</translation>
     </message>
     <message>
       <source>Record normal messages</source>
-      <translation type="unfinished">Record normal messages</translation>
+      <translation>记录正常消息</translation>
     </message>
   </context>
   <context>
@@ -3029,7 +3029,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Creative Commons Attribution</source>
-      <translation type="unfinished">Creative Commons Attribution</translation>
+      <translation>创建通用属性</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-ShareAlike</source>
@@ -3053,14 +3053,14 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>URL describing more about the license</source>
-      <translation type="unfinished">URL describing more about the license</translation>
+      <translation>更多关于许可证的 URL</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsDocumentImp</name>
     <message>
       <source>The format of the date to use.</source>
-      <translation type="unfinished">The format of the date to use.</translation>
+      <translation>要使用的日期格式。</translation>
     </message>
     <message>
       <source>Default</source>
@@ -6206,11 +6206,11 @@ Do you want to specify another directory?</source>
     <name>Gui::VectorListEditor</name>
     <message>
       <source>Vectors</source>
-      <translation type="unfinished">Vectors</translation>
+      <translation>矢量</translation>
     </message>
     <message>
       <source>Table</source>
-      <translation type="unfinished">Table</translation>
+      <translation>表格</translation>
     </message>
     <message>
       <source>...</source>
@@ -6811,19 +6811,19 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Dependency error</source>
-      <translation type="unfinished">Dependency error</translation>
+      <translation>依赖关系错误</translation>
     </message>
     <message>
       <source>Copy selected</source>
-      <translation type="unfinished">Copy selected</translation>
+      <translation>复制所选项</translation>
     </message>
     <message>
       <source>Copy active document</source>
-      <translation type="unfinished">Copy active document</translation>
+      <translation>复制活动文档</translation>
     </message>
     <message>
       <source>Copy all documents</source>
-      <translation type="unfinished">Copy all documents</translation>
+      <translation>复制所有文档</translation>
     </message>
     <message>
       <source>Paste</source>
@@ -6845,7 +6845,7 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Simple group</source>
-      <translation type="unfinished">Simple group</translation>
+      <translation>简单组</translation>
     </message>
     <message>
       <source>Group with links</source>
@@ -6857,7 +6857,7 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Create link group failed</source>
-      <translation type="unfinished">Create link group failed</translation>
+      <translation>创建链接组失败</translation>
     </message>
     <message>
       <source>Create link failed</source>
@@ -6907,7 +6907,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>Save dependent files</source>
-      <translation type="unfinished">Save dependent files</translation>
+      <translation>保存依赖文件</translation>
     </message>
     <message>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
@@ -6915,7 +6915,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>Failed to save document</source>
-      <translation type="unfinished">Failed to save document</translation>
+      <translation>保存文档失败</translation>
     </message>
     <message>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
@@ -6980,8 +6980,7 @@ Please check report view for more...</translation>
     <message>
       <source>
 Document: </source>
-      <translation type="unfinished">
-Document: </translation>
+      <translation>文档: </translation>
     </message>
     <message>
       <source>
@@ -7003,7 +7002,7 @@ Document: </translation>
     </message>
     <message>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
-      <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
+      <translation>加载文件时出现严重错误。有些数据可能已被修改或根本没有恢复。 保存项目很可能导致数据丢失。</translation>
     </message>
     <message>
       <source>Workbenches</source>
@@ -7019,7 +7018,7 @@ Physical path: </source>
     </message>
     <message>
       <source>Could not save document</source>
-      <translation type="unfinished">Could not save document</translation>
+      <translation>无法保存文档</translation>
     </message>
     <message>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
@@ -7035,7 +7034,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Document not saved</source>
-      <translation type="unfinished">Document not saved</translation>
+      <translation>文档未保存.</translation>
     </message>
     <message>
       <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
@@ -8825,7 +8824,7 @@ Would you like to save the file with a different name?</translation>
     <name>StdCmdUserEditMode</name>
     <message>
       <source>Edit mode</source>
-      <translation type="unfinished">Edit mode</translation>
+      <translation>编辑模式</translation>
     </message>
     <message>
       <source>Defines behavior when editing an object from tree</source>

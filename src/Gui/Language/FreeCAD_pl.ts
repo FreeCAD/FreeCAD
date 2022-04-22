@@ -68,7 +68,7 @@
     </message>
     <message>
       <source>&lt;empty&gt;</source>
-      <translation>(pusty)</translation>
+      <translation>&lt;pusty&gt;</translation>
     </message>
     <message>
       <source>Angle</source>

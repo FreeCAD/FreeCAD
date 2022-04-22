@@ -683,7 +683,7 @@ Spreadsheet.my_alias_name代替Spreadsheet.B1</translation>
     </message>
     <message>
       <source>Escape Character: </source>
-      <translation type="unfinished">Escape Character: </translation>
+      <translation>Escape 字符</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -703,7 +703,7 @@ Spreadsheet.my_alias_name代替Spreadsheet.B1</translation>
     </message>
     <message>
       <source>Quote Character: </source>
-      <translation type="unfinished">Quote Character: </translation>
+      <translation>引号字符</translation>
     </message>
   </context>
   <context>
@@ -721,50 +721,50 @@ Spreadsheet.my_alias_name代替Spreadsheet.B1</translation>
     </message>
     <message numerus="yes">
       <source>Insert %n row(s) above</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n row(s) above</numerusform>
+      <translation>
+        <numerusform>在上方插入 %n 行</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n row(s) below</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n row(s) below</numerusform>
+      <translation>
+        <numerusform>下方插入 %n 行</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n non-contiguous rows</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous rows</numerusform>
+      <translation>
+        <numerusform>插入 %n 行非连续行</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Remove row(s)</source>
-      <translation type="unfinished">
-        <numerusform>Remove row(s)</numerusform>
+      <translation>
+        <numerusform>删除行</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n column(s) left</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n column(s) left</numerusform>
+      <translation>
+        <numerusform>在左侧插入 N 列</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n column(s) right</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n column(s) right</numerusform>
+      <translation>
+        <numerusform>在右侧插入 N 列</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Insert %n non-contiguous columns</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n non-contiguous columns</numerusform>
+      <translation>
+        <numerusform>插入 %n 列非连续列</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>Remove column(s)</source>
-      <translation type="unfinished">
-        <numerusform>Remove column(s)</numerusform>
+      <translation>
+        <numerusform>删除列</numerusform>
       </translation>
     </message>
   </context>

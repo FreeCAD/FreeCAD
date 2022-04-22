@@ -56,7 +56,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="366"/>
       <source>Save</source>
-      <translation type="unfinished">Save</translation>
+      <translation>Gardar</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="367"/>

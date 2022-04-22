@@ -3262,7 +3262,7 @@ Przerwanie procesu tworzenia</translation>
     <message>
       <location filename="gcode_pre.py" line="229"/>
       <source>No job object</source>
-      <translation type="unfinished">No job object</translation>
+      <translation>Brak obiektu zadania</translation>
     </message>
   </context>
   <context>
@@ -3336,12 +3336,12 @@ Przerwanie procesu tworzenia</translation>
     <message>
       <location filename="PathInspect.py" line="260"/>
       <source>Inspect Path Commands</source>
-      <translation type="unfinished">Inspect Path Commands</translation>
+      <translation>Przeglądaj polecenia ścieżki</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="264"/>
       <source>Inspects the contents of a Path object</source>
-      <translation type="unfinished">Inspects the contents of a Path object</translation>
+      <translation>Sprawdza treść obiektu Path</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="260"/>
@@ -3650,14 +3650,14 @@ Przerwanie procesu tworzenia</translation>
       <translation>Linia</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Grid</source>
-      <translation>Siatka</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Triangle</source>
       <translation>Trójkąt</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Grid</source>
+      <translation>Siatka</translation>
     </message>
     <message>
       <location filename="PathPocketGui.py" line="46"/>

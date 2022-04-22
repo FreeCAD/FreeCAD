@@ -3257,7 +3257,7 @@ Abortando la creación de la op</translation>
     <message>
       <location filename="gcode_pre.py" line="229"/>
       <source>No job object</source>
-      <translation type="unfinished">No job object</translation>
+      <translation>Inexistente objeto de trabajo</translation>
     </message>
   </context>
   <context>
@@ -3331,12 +3331,12 @@ Abortando la creación de la op</translation>
     <message>
       <location filename="PathInspect.py" line="260"/>
       <source>Inspect Path Commands</source>
-      <translation type="unfinished">Inspect Path Commands</translation>
+      <translation>Inspeccione Ruta de Comandos</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="264"/>
       <source>Inspects the contents of a Path object</source>
-      <translation type="unfinished">Inspects the contents of a Path object</translation>
+      <translation>Inspecciona el contenido de un objeto de Ruta</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="260"/>
@@ -3645,14 +3645,14 @@ Abortando la creación de la op</translation>
       <translation>Línea</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Grid</source>
-      <translation>Rejilla</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Triangle</source>
       <translation>Triángulo</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Grid</source>
+      <translation>Rejilla</translation>
     </message>
     <message>
       <location filename="PathPocketGui.py" line="46"/>

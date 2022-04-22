@@ -301,14 +301,14 @@ If it is a radius or diameter dimension
 it will be a point that lies on the arc.</source>
       <translation>Punkt końcowy linii wymiarowej.
 
-Jeśli jest to promień lub wymiar średnicy, będzie to punkt leżący na łuku.</translation>
+Jeśli jest to promień lub wymiar średnicy, będzie nim punkt leżący na łuku.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="259"/>
       <source>The direction of the dimension line.
 If this remains '(0,0,0)', the direction will be calculated automatically.</source>
       <translation>Kierunek linii wymiarowej.
-Jeśli pozostanie to '(0,0,0)', kierunek będzie obliczany automatycznie.</translation>
+Jeśli pozostanie to "(0,0,0)", kierunek będzie obliczany automatycznie.</translation>
     </message>
     <message>
       <location filename="dimension.py" line="276"/>
@@ -322,10 +322,10 @@ is the radius or diameter, depending on the 'Diameter' property.</source>
       <translation>Wartość pomiaru.
 
 Ta właściwość jest tylko do odczytu, ponieważ wartość jest obliczana
-z właściwości 'Start' i 'Koniec'.
+z właściwości "Start" i "Koniec".
 
-Jeśli 'Połączona geometria' jest łukiem lub kołem, to 'Odległość'
-jest promieniem lub średnicą, w zależności od właściwości 'średnica'.</translation>
+Jeśli "Połączona geometria" jest łukiem lub kołem, to "Odległość"
+jest promieniem lub średnicą, w zależności od właściwości "średnica".</translation>
     </message>
     <message>
       <location filename="dimension.py" line="287"/>
@@ -516,8 +516,8 @@ and the object defined in 'Target'.
 The 'Custom Text' is displayed only if 'Label Type' is set to 'Custom'.</source>
       <translation>Tekst wyświetlany przez tę etykietę.
 
-Ta właściwość jest tylko do odczytu, ponieważ ostateczny tekst zależy od 'Etykiety',
-i obiektu zdefiniowanego w 'Target'.
+Ta właściwość jest tylko do odczytu, ponieważ ostateczny tekst zależy od "Etykiety",
+i obiektu zdefiniowanego w "Target".
 Tekst niestandardowy jest wyświetlany tylko wtedy, gdy "Typ etykiety" jest ustawiony na "Własny".</translation>
     </message>
     <message>
@@ -533,11 +533,11 @@ or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is sp
       <translation>Typ informacji wyświetlanych przez tę etykietę.
 
 Jeśli wybrano opcję "Własny", zostanie użyta zawartość "Niestandardowego tekstu".
-Dla innych typów, ciąg będzie obliczany automatycznie na podstawie obiektu zdefiniowanego w 'Target'.
-'Tag' i 'Materiał' działają tylko dla obiektów, które mają te właściwości, jak obiekty Arch.
+Dla innych typów, ciąg znaków będzie obliczany automatycznie na podstawie obiektu zdefiniowanego w "Target".
+"Tag" i "Materiał" działają tylko dla obiektów, które mają te właściwości, jak obiekty Architektury.
 
-Dla 'Pozycji', 'Długości' i 'Powierzchni' te właściwości zostaną wydobyte z głównego obiektu w 'Target',
-lub z subelement 'VertexN', 'EdgeN' lub 'FaceN', jeśli jest określony.</translation>
+Dla wartości "Pozycjz", "Długość" i "Powierzchnia" te właściwości zostaną wydobyte z głównego obiektu w "Target",
+lub z elementu podrzędnego "VertexN", "EdgeN" lub "FaceN", jeśli jest określony.</translation>
     </message>
     <message>
       <location filename="shapestring.py" line="47"/>
@@ -722,6 +722,11 @@ Tę właściwość można tylko przeglądać, ponieważ liczba jest zależna od 
       <translation>Powierzchnia tego obiektu</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Kształt tego obiektu</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>Obiekt podstawowy używany przez ten obiekt</translation>
@@ -740,11 +745,6 @@ Tę właściwość można tylko przeglądać, ponieważ liczba jest zależna od 
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>Skala wzoru używana przez ten obiekt</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Kształt tego obiektu</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -1753,7 +1753,7 @@ CTRL, aby przyciągnąć, SHIFT, aby utworzyć wiązanie.</translation>
     <message>
       <location filename="gui_beziers.py" line="475"/>
       <source>BÃ©zier tools</source>
-      <translation>Krzywe Béziera</translation>
+      <translation>Narzędzia krzywych Béziera</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="475"/>
@@ -2997,7 +2997,7 @@ Następnie można go użyć do zapisania innej pozycji ujęcia widoku i stanów 
     <message>
       <location filename="init_tools.py" line="58"/>
       <source>BÃ©zier tools</source>
-      <translation>Krzywe Béziera</translation>
+      <translation>Narzędzia krzywych Béziera</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="58"/>
@@ -4359,7 +4359,7 @@ Opcja jest niedostępna, jeśli opcja preferencji Rysunku Roboczego "używaj ele
     <message>
       <location filename="utils.py" line="977"/>
       <source>Wrong input: unknown document.</source>
-      <translation>Nieprawidłowy wpis: nieznany dokument.</translation>
+      <translation>Nieprawidłowe dane wejściowe: dokument niedostępny.</translation>
     </message>
     <message>
       <location filename="utils.py" line="1055"/>

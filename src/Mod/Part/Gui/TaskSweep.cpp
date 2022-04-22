@@ -56,6 +56,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/Link.h>
 #include <Mod/Part/App/PartFeature.h>
 
 
@@ -78,44 +79,46 @@ public:
     {
     public:
         EdgeSelection()
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)nullptr)
+            : Gui::SelectionFilterGate(nullPointer())
         {
         }
         bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName)
         {
-            if (pObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-                if (!sSubName || sSubName[0] == '\0') {
-                    // If selecting again the same edge the passed sub-element is empty. If the whole
-                    // shape is an edge or wire we can use it completely.
-                    const TopoDS_Shape& shape = static_cast<Part::Feature*>(pObj)->Shape.getValue();
-                    if (!shape.IsNull()) {
-                        // a single edge
-                        if (shape.ShapeType() == TopAbs_EDGE) {
-                            return true;
-                        }
-                        // a single wire
-                        if (shape.ShapeType() == TopAbs_WIRE) {
-                            return true;
-                        }
-                        // a compound of only edges or wires
-                        if (shape.ShapeType() == TopAbs_COMPOUND) {
-                            TopoDS_Iterator it(shape);
-                            for (; it.More(); it.Next()) {
-                                if (it.Value().IsNull())
-                                    return false;
-                                if ((it.Value().ShapeType() != TopAbs_EDGE) &&
+            if (!sSubName || sSubName[0] == '\0') {
+                // If selecting again the same edge the passed sub-element is empty. If the whole
+                // shape is an edge or wire we can use it completely.
+                Part::TopoShape topoShape = Part::Feature::getTopoShape(pObj);
+                if (topoShape.isNull()) {
+                    return false;
+                }
+                const TopoDS_Shape shape = topoShape.getShape();
+                if (!shape.IsNull()) {
+                    // a single edge
+                    if (shape.ShapeType() == TopAbs_EDGE) {
+                        return true;
+                    }
+                    // a single wire
+                    if (shape.ShapeType() == TopAbs_WIRE) {
+                        return true;
+                    }
+                    // a compound of only edges or wires
+                    if (shape.ShapeType() == TopAbs_COMPOUND) {
+                        TopoDS_Iterator it(shape);
+                        for (; it.More(); it.Next()) {
+                            if (it.Value().IsNull())
+                                return false;
+                            if ((it.Value().ShapeType() != TopAbs_EDGE) &&
                                     (it.Value().ShapeType() != TopAbs_WIRE))
-                                    return false;
-                            }
-
-                            return true;
+                                return false;
                         }
+
+                        return true;
                     }
                 }
-                else {
-                    std::string element(sSubName);
-                    return element.substr(0,4) == "Edge";
-                }
+            }
+            else {
+                std::string element(sSubName);
+                return element.substr(0,4) == "Edge";
             }
 
             return false;
@@ -159,10 +162,14 @@ void SweepWidget::findShapes()
         return;
     d->document = activeDoc->getName();
 
-    std::vector<Part::Feature*> objs = activeDoc->getObjectsOfType<Part::Feature>();
+    std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
-    for (std::vector<Part::Feature*>::iterator it = objs.begin(); it!=objs.end(); ++it) {
-        TopoDS_Shape shape = (*it)->Shape.getValue();
+    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it!=objs.end(); ++it) {
+        Part::TopoShape topoShape = Part::Feature::getTopoShape(*it);
+        if (topoShape.isNull()) {
+            continue;
+        }
+        TopoDS_Shape shape = topoShape.getShape();
         if (shape.IsNull()) continue;
 
         // also allow compounds with a single face, wire or vertex or
@@ -217,13 +224,13 @@ void SweepWidget::findShapes()
 bool SweepWidget::isPathValid(const Gui::SelectionObject& sel) const
 {
     const App::DocumentObject* path = sel.getObject();
-    if (!(path && path->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
-        return false;
     const std::vector<std::string>& sub = sel.getSubNames();
 
-
     TopoDS_Shape pathShape;
-    const Part::TopoShape& shape = static_cast<const Part::Feature*>(path)->Shape.getValue();
+    const Part::TopoShape& shape = Part::Feature::getTopoShape(path);
+    if (shape.isNull()){
+        return false;
+    }
     if (!sub.empty()) {
         try {
             BRepBuilderAPI_MakeWire mkWire;
@@ -276,23 +283,38 @@ bool SweepWidget::accept()
 {
     if (d->ui.buttonPath->isChecked())
         return false;
-    Gui::SelectionFilter edgeFilter  ("SELECT Part::Feature SUBELEMENT Edge COUNT 1..");
-    Gui::SelectionFilter partFilter  ("SELECT Part::Feature COUNT 1");
-    bool matchEdge = edgeFilter.match();
-    bool matchPart = partFilter.match();
-    if (!matchEdge && !matchPart) {
-        QMessageBox::critical(this, tr("Sweep path"), tr("Select one or more connected edges you want to sweep along."));
-        return false;
-    }
-
-    // get the selected object
+    const App::DocumentObject* docobj = nullptr;
     std::string selection;
+    const std::vector<Gui::SelectionObject> selobjs = Gui::Selection().getSelectionEx();
+    std::vector<Part::TopoShape> subShapes;
+    Part::TopoShape topoShape = Part::TopoShape();
     std::string spineObject, spineLabel;
-    const std::vector<Gui::SelectionObject>& result = matchEdge
-        ? edgeFilter.Result[0] : partFilter.Result[0];
-    selection = result.front().getAsPropertyLinkSubString();
-    spineObject = result.front().getFeatName();
-    spineLabel = result.front().getObject()->Label.getValue();
+
+    bool ok = true;
+    if (selobjs.size() == 1) {
+        selection = selobjs[0].getAsPropertyLinkSubString();
+        const std::vector<std::string>& subnames = selobjs[0].getSubNames();
+        docobj = selobjs[0].getObject();
+        spineObject = selobjs[0].getFeatName();
+        spineLabel = docobj->Label.getValue();
+        topoShape = Part::Feature::getTopoShape(docobj);
+        if (!topoShape.isNull()) {
+            for (std::vector<std::string>::const_iterator it = subnames.begin(); it != subnames.end(); ++it) {
+                subShapes.push_back(topoShape.getSubShape(subnames[0].c_str()));
+            }
+            for (std::vector<Part::TopoShape>::iterator it = subShapes.begin(); it != subShapes.end(); ++it) {
+                TopoDS_Shape dsShape = (*it).getShape();
+                if (dsShape.IsNull() || dsShape.ShapeType() != TopAbs_EDGE) { //only edge selection allowed
+                    ok = false;
+                }
+            }
+        } else { //could be not a part::feature or app:link to non-part::feature or app::part without a visible part::feature
+            ok = false;
+        }
+
+    } else { //not just one object selected
+        ok = false;
+    }
 
     QString list, solid, frenet;
     if (d->ui.checkSolid->isChecked())
@@ -310,6 +332,10 @@ bool SweepWidget::accept()
     int count = d->ui.selector->selectedTreeWidget()->topLevelItemCount();
     if (count < 1) {
         QMessageBox::critical(this, tr("Too few elements"), tr("At least one edge or wire is required."));
+        return false;
+    }
+    if (!ok) {
+        QMessageBox::critical(this, tr("Invalid selection"), tr("Select one or more edges from a single object."));
         return false;
     }
     for (int i=0; i<count; i++) {

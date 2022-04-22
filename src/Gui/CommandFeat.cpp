@@ -144,7 +144,8 @@ bool StdCmdSendToPythonConsole::isActive(void)
 void StdCmdSendToPythonConsole::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    const std::vector<Gui::SelectionObject> &sels = Gui::Selection().getSelectionEx("*",App::DocumentObject::getClassTypeId(),true,false);
+    const std::vector<Gui::SelectionObject> &sels = Gui::Selection().getSelectionEx("*", App::DocumentObject::getClassTypeId(),
+                                                                                    ResolveMode::OldStyleElement, false);
     if (sels.empty())
         return;
     const App::DocumentObject *obj = sels[0].getObject();

@@ -25,7 +25,7 @@ import PathScripts
 import PathScripts.post
 import PathScripts.PathProfileContour
 import PathScripts.PathJob
-import PathScripts.PathPost
+import PathScripts.PathPost as PathPost
 import PathScripts.PathToolController
 import PathScripts.PathUtil
 import PathScripts.PostUtils as PostUtils
@@ -324,3 +324,303 @@ class TestPathPostImport(unittest.TestCase):
             ]
         )
         self.assertTrue(gcodeByToolNumberList[1][1] == 2)
+
+
+class OutputOrderingTestCases(unittest.TestCase):
+    def setUp(self):
+        testfile = FreeCAD.getHomePath() + "Mod/Path/PathTests/boxtest.fcstd"
+        self.doc = FreeCAD.open(testfile)
+        self.job = FreeCAD.ActiveDocument.getObject("Job001")
+
+    def tearDown(self):
+        FreeCAD.closeDocument("boxtest")
+
+    def test010(self):
+        # Basic postprocessing:
+
+        self.job.Fixtures = ["G54"]
+        self.job.SplitOutput = False
+        self.job.OrderOutputBy = "Fixture"
+
+        cpp = PathPost.CommandPathPost
+        self.postlist = cpp.buildPostList(self, self.job)
+
+        outlist = [i.Label for i in self.postlist[0]]
+
+        self.assertTrue(len(self.postlist) == 1)
+        expected = [
+            "G54",
+            "T1",
+            "FirstOp-(T1)",
+            "SecondOp-(T1)",
+            "T2",
+            "ThirdOp-(T2)",
+            "T1",
+            "FourthOp-(T1)",
+            "T3",
+            "FifthOp-(T3)",
+        ]
+        self.assertListEqual(outlist, expected)
+
+    def test020(self):
+        # Multiple Fixtures
+
+        self.job.Fixtures = ["G54", "G55"]
+        self.job.SplitOutput = False
+        self.job.OrderOutputBy = "Fixture"
+
+        cpp = PathPost.CommandPathPost
+        self.postlist = cpp.buildPostList(self, self.job)
+
+        self.assertTrue(len(self.postlist) == 1)
+
+        outlist = [i.Label for i in self.postlist[0]]
+        expected = [
+            "G54",
+            "T1",
+            "FirstOp-(T1)",
+            "SecondOp-(T1)",
+            "T2",
+            "ThirdOp-(T2)",
+            "T1",
+            "FourthOp-(T1)",
+            "T3",
+            "FifthOp-(T3)",
+            "G55",
+            "T1",
+            "FirstOp-(T1)",
+            "SecondOp-(T1)",
+            "T2",
+            "ThirdOp-(T2)",
+            "T1",
+            "FourthOp-(T1)",
+            "T3",
+            "FifthOp-(T3)",
+        ]
+
+        self.assertListEqual(outlist, expected)
+
+    def test030(self):
+        # Multiple Fixtures - Split output
+
+        self.job.Fixtures = ["G54", "G55"]
+        self.job.SplitOutput = True
+        self.job.OrderOutputBy = "Fixture"
+
+        cpp = PathPost.CommandPathPost
+        self.postlist = cpp.buildPostList(self, self.job)
+
+        self.assertTrue(len(self.postlist) == 2)
+
+        outlist = [i.Label for i in self.postlist[0]]
+        print(outlist)
+
+        expected = [
+            "G54",
+            "T1",
+            "FirstOp-(T1)",
+            "SecondOp-(T1)",
+            "T2",
+            "ThirdOp-(T2)",
+            "T1",
+            "FourthOp-(T1)",
+            "T3",
+            "FifthOp-(T3)",
+        ]
+        self.assertListEqual(outlist, expected)
+
+        expected = [
+            "G55",
+            "T1",
+            "FirstOp-(T1)",
+            "SecondOp-(T1)",
+            "T2",
+            "ThirdOp-(T2)",
+            "T1",
+            "FourthOp-(T1)",
+            "T3",
+            "FifthOp-(T3)",
+        ]
+        outlist = [i.Label for i in self.postlist[1]]
+        self.assertListEqual(outlist, expected)
+
+    def test040(self):
+        # Order by 'Tool'
+
+        self.job.Fixtures = ["G54", "G55"]
+        self.job.SplitOutput = False
+        self.job.OrderOutputBy = "Tool"
+
+        cpp = PathPost.CommandPathPost
+        self.postlist = cpp.buildPostList(self, self.job)
+        outlist = [i.Label for i in self.postlist[0]]
+
+        self.assertTrue(len(self.postlist) == 1)
+        expected = [
+            "G54",
+            "T1",
+            "FirstOp-(T1)",
+            "SecondOp-(T1)",
+            "T2",
+            "ThirdOp-(T2)",
+            "T1",
+            "FourthOp-(T1)",
+            "G55",
+            "FirstOp-(T1)",
+            "SecondOp-(T1)",
+            "T2",
+            "ThirdOp-(T2)",
+            "T1",
+            "FourthOp-(T1)",
+            "G54",
+            "T3",
+            "FifthOp-(T3)",
+            "G55",
+            "FifthOp-(T3)",
+        ]
+
+        self.assertListEqual(outlist, expected)
+
+    def test050(self):
+        # Order by 'Tool' and split
+
+        self.job.Fixtures = ["G54", "G55"]
+        self.job.SplitOutput = True
+        self.job.OrderOutputBy = "Tool"
+
+        cpp = PathPost.CommandPathPost
+        self.postlist = cpp.buildPostList(self, self.job)
+        outlist = [i.Label for i in self.postlist[0]]
+
+        expected = [
+            "G54",
+            "T1",
+            "FirstOp-(T1)",
+            "SecondOp-(T1)",
+            "T2",
+            "ThirdOp-(T2)",
+            "T1",
+            "FourthOp-(T1)",
+            "G55",
+            "FirstOp-(T1)",
+            "SecondOp-(T1)",
+            "T2",
+            "ThirdOp-(T2)",
+            "T1",
+            "FourthOp-(T1)",
+        ]
+        self.assertListEqual(outlist, expected)
+
+        outlist = [i.Label for i in self.postlist[1]]
+
+        expected = [
+            "G54",
+            "T3",
+            "FifthOp-(T3)",
+            "G55",
+            "FifthOp-(T3)",
+        ]
+        self.assertListEqual(outlist, expected)
+
+    def test060(self):
+        # Order by 'Operation'
+
+        self.job.Fixtures = ["G54", "G55"]
+        self.job.SplitOutput = False
+        self.job.OrderOutputBy = "Operation"
+
+        cpp = PathPost.CommandPathPost
+        self.postlist = cpp.buildPostList(self, self.job)
+        outlist = [i.Label for i in self.postlist[0]]
+
+        self.assertTrue(len(self.postlist) == 1)
+        expected = [
+            "G54",
+            "T1",
+            "FirstOp-(T1)",
+            "G55",
+            "FirstOp-(T1)",
+            "G54",
+            "T1",
+            "SecondOp-(T1)",
+            "G55",
+            "SecondOp-(T1)",
+            "G54",
+            "T2",
+            "ThirdOp-(T2)",
+            "G55",
+            "ThirdOp-(T2)",
+            "G54",
+            "T1",
+            "FourthOp-(T1)",
+            "G55",
+            "FourthOp-(T1)",
+            "G54",
+            "T3",
+            "FifthOp-(T3)",
+            "G55",
+            "FifthOp-(T3)",
+        ]
+
+        self.assertListEqual(outlist, expected)
+
+    def test070(self):
+        # Order by 'Operation' and split
+
+        self.job.Fixtures = ["G54", "G55"]
+        self.job.SplitOutput = True
+        self.job.OrderOutputBy = "Operation"
+
+        cpp = PathPost.CommandPathPost
+        self.postlist = cpp.buildPostList(self, self.job)
+        self.assertTrue(len(self.postlist) == 5)
+
+        outlist = [i.Label for i in self.postlist[0]]
+        expected = [
+            "G54",
+            "T1",
+            "FirstOp-(T1)",
+            "G55",
+            "FirstOp-(T1)",
+        ]
+        self.assertListEqual(outlist, expected)
+
+        outlist = [i.Label for i in self.postlist[1]]
+        expected = [
+            "G54",
+            "T1",
+            "SecondOp-(T1)",
+            "G55",
+            "SecondOp-(T1)",
+        ]
+        self.assertListEqual(outlist, expected)
+
+        outlist = [i.Label for i in self.postlist[2]]
+        expected = [
+            "G54",
+            "T2",
+            "ThirdOp-(T2)",
+            "G55",
+            "ThirdOp-(T2)",
+        ]
+        self.assertListEqual(outlist, expected)
+
+        outlist = [i.Label for i in self.postlist[3]]
+        expected = [
+            "G54",
+            "T1",
+            "FourthOp-(T1)",
+            "G55",
+            "FourthOp-(T1)",
+        ]
+        self.assertListEqual(outlist, expected)
+
+        outlist = [i.Label for i in self.postlist[4]]
+        expected = [
+            "G54",
+            "T3",
+            "FifthOp-(T3)",
+            "G55",
+            "FifthOp-(T3)",
+        ]
+        self.assertListEqual(outlist, expected)

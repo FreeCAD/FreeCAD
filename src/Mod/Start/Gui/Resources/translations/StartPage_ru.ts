@@ -36,7 +36,7 @@
     <message>
       <location filename="TranslationTexts.py" line="48"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
-      <translation>Отрегулировать количество последних файлов, отображаемых здесь, можно в меню Правка-&gt; предпочтения-&gt; Общие-&gt; размер списка последних файлов</translation>
+      <translation>Отрегулировать количество последних файлов, отображаемых здесь, можно в меню Правка -&gt; Настройки -&gt; Общие -&gt; Размер списка последних файлов</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="49"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="TranslationTexts.py" line="51"/>
       <source>User hub</source>
-      <translation>Пользовательский уголок</translation>
+      <translation>Центр пользователя</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="52"/>
@@ -61,7 +61,7 @@
     <message>
       <location filename="TranslationTexts.py" line="53"/>
       <source>Power users hub</source>
-      <translation>Уголок опытных пользователей</translation>
+      <translation>Центр опытных пользователей</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="54"/>
@@ -71,7 +71,7 @@
     <message>
       <location filename="TranslationTexts.py" line="55"/>
       <source>Developers hub</source>
-      <translation>Уголок разработчиков</translation>
+      <translation>Центр разработчиков</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="56"/>
@@ -86,7 +86,7 @@
     <message>
       <location filename="TranslationTexts.py" line="58"/>
       <source>The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</source>
-      <translation>Руководство пользователя FreeCAD - это еще один, более последовательный способ представления информации, содержащейся в этой вики. Оно составлено для чтения, как книга, и будет постепенно знакомить вас со многими другими страницами из уголков выше.Также доступна &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt; электронная версия книги &lt;/a&gt;.</translation>
+      <translation>Руководство пользователя FreeCAD - это еще один, более последовательный способ представления информации, содержащейся в этой вики. Оно составлено для чтения, как книга, и будет постепенно знакомить вас со многими другими страницами из центров выше. Также доступна &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt; электронная версия книги &lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="59"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="TranslationTexts.py" line="60"/>
       <source>These are the help pages of all the workbenches currently installed on this computer.</source>
-      <translation>Это страницы справки всех верстаков, установленных на этом компьютере в настоящее время.</translation>
+      <translation>Это страницы справки для всех верстаков, установленных сейчас на этом компьютере.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="61"/>
@@ -126,7 +126,7 @@
     <message>
       <location filename="TranslationTexts.py" line="66"/>
       <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
-      <translation>Ниже перечислен список доступных дополнительных верстаков, которые могут быть добавлены в ваш FreeCAD. Просматривайте и устанавливайте их из меню Инструменты-&gt; менеджер дополнений. Вы можете узнать больше о любом из них, нажав на ссылки ниже.</translation>
+      <translation>Ниже перечислен список доступных дополнительных верстаков, которые могут быть добавлены в ваш FreeCAD. Просматривайте и устанавливайте их из меню Инструменты -&gt; Менеджер дополнений. Вы можете узнать больше о любом из них, нажав на ссылки ниже.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="67"/>
@@ -136,7 +136,7 @@
     <message>
       <location filename="TranslationTexts.py" line="68"/>
       <source>Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</source>
-      <translation>Не удалось получить информацию из GitHub. &lt;a href="EnableDownload.py"&gt;предоставьте для FreeCAD доступ в Интернет&lt;/a&gt; и перезагрузите стартовую страницу.</translation>
+      <translation>Не удалось получить информацию из GitHub. &lt;a href="EnableDownload.py"&gt;Предоставьте для FreeCAD доступ в Интернет&lt;/a&gt; и перезагрузите стартовую страницу.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="69"/>
@@ -156,7 +156,7 @@
     <message>
       <location filename="TranslationTexts.py" line="72"/>
       <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
-      <translation>Можно настроить пользовательскую папку для отображения здесь в меню Правка-&gt; Настройки-&gt; Start-&gt; Показать дополнительную папку</translation>
+      <translation>Можно настроить пользовательскую папку для отображения здесь в меню Правка -&gt; Настройки -&gt; Start -&gt; Показать дополнительную папку</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="73"/>
@@ -191,7 +191,7 @@
     <message>
       <location filename="TranslationTexts.py" line="79"/>
       <source>To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</source>
-      <translation>Чтобы открыть любую из этих ссылок в вашем интернет браузере, щелкните правой кнопкой мыши-&gt; открыть во внешнем браузере</translation>
+      <translation>Чтобы открыть любую из этих ссылок в вашем интернет браузере, щелкните правой кнопкой мыши -&gt; Открыть во внешнем браузере</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="80"/>
@@ -232,7 +232,7 @@
     <message>
       <location filename="../../Command.cpp" line="46"/>
       <source>Start Page</source>
-      <translation>Стартовая страница</translation>
+      <translation>Стартовая Страница</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="47"/>
@@ -302,7 +302,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="134"/>
       <source>Shows a notepad next to the file thumbnails, where you can keep notes across sessions</source>
-      <translation type="unfinished">Shows a notepad next to the file thumbnails, where you can keep notes across sessions</translation>
+      <translation>Показывает блокнот рядом с эскизами файлов, где Вы можете хранить заметки между сессиями FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="153"/>
@@ -332,7 +332,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="229"/>
       <source>in FreeCAD</source>
-      <translation>в FreeCAD</translation>
+      <translation>во FreeCAD</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="248"/>
@@ -362,7 +362,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="319"/>
       <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation type="unfinished">If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</translation>
+      <translation>Если этот флажок установлен и в стиле указаны общие предпочтения, он будет использоваться и переопределит цвета ниже</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="338"/>
@@ -432,7 +432,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="532"/>
       <source>The font family to use on the start page. Can be a font name or a comma-separated series of fallback fonts</source>
-      <translation>Шрифт, используемый на стартовой странице. Может быть имя шрифта или разделённый запятыми список резервных шрифтов</translation>
+      <translation>Семейство шрифтов, используемых на стартовой странице. Может быть имя шрифта или разделённый запятыми список запасных шрифтов</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="538"/>

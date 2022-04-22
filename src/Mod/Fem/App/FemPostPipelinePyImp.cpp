@@ -51,6 +51,16 @@ PyObject* FemPostPipelinePy::read(PyObject *args)
     return nullptr;
 }
 
+PyObject* FemPostPipelinePy::scale(PyObject *args)
+{
+    double scale;
+    if (PyArg_ParseTuple(args, "d", &scale)) {
+        getFemPostPipelinePtr()->scale(scale);
+        Py_Return;
+    }
+    return nullptr;
+}
+
 PyObject* FemPostPipelinePy::load(PyObject *args)
 {
     PyObject* py;

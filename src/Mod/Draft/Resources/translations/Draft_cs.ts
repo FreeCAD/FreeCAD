@@ -715,6 +715,11 @@ Tato vlastnost je pouze pro čtení, protože počet prvků závisí na bodech o
       <translation>Plocha tohoto objektu</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation type="unfinished">The shape of this object</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation type="unfinished">The base object used by this object</translation>
@@ -733,11 +738,6 @@ Tato vlastnost je pouze pro čtení, protože počet prvků závisí na bodech o
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation type="unfinished">The pattern scale used by this object</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation type="unfinished">The shape of this object</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>

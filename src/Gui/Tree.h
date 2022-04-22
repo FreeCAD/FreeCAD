@@ -510,6 +510,7 @@ public:
     TreeParams();
     void OnChange(Base::Subject<const char*> &, const char* sReason);
     static TreeParams *Instance();
+    bool getTreeViewStretchDescription() const;
 
 #define FC_TREEPARAM_DEFS \
     FC_TREEPARAM_DEF2(SyncSelection,bool,Bool,true) \

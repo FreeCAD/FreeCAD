@@ -718,6 +718,11 @@ Bu özellik salt okunurdur, çünkü sayı 'Nokta Nesnesi'nde bulunan noktalara 
       <translation>Bu nesnenin alanı</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>Bu nesnenin şekli</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>Bu nesnenin kullandığı temel alınan nesne</translation>
@@ -736,11 +741,6 @@ Bu özellik salt okunurdur, çünkü sayı 'Nokta Nesnesi'nde bulunan noktalara 
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>Bu nesnenin kullandığı desen ölçeği</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>Bu nesnenin şekli</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>

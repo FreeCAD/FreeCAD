@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <sstream>
+# include <boost/regex.hpp>
 # include <BRepMesh_IncrementalMesh.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
@@ -2268,33 +2269,33 @@ PyObject* TopoShapePy::getElement(PyObject *args)
     char* input;
     if (!PyArg_ParseTuple(args, "s", &input))
         return nullptr;
-    std::string name(input);
+
+    boost::regex ex("^(Face|Edge|Vertex)[1-9][0-9]*$");
 
     try {
-        if (name.size() > 4 && name.substr(0,4) == "Face" && name[4]>=48 && name[4]<=57) {
+        if (boost::regex_match(input, ex)) {
             std::unique_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
                 (getTopoShapePtr()->getSubElementByName(input)));
-            TopoDS_Shape Shape = s->Shape;
-            return new TopoShapeFacePy(new TopoShape(Shape));
-        }
-        else if (name.size() > 4 && name.substr(0,4) == "Edge" && name[4]>=48 && name[4]<=57) {
-            std::unique_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
-                (getTopoShapePtr()->getSubElementByName(input)));
-            TopoDS_Shape Shape = s->Shape;
-            return new TopoShapeEdgePy(new TopoShape(Shape));
-        }
-        else if (name.size() > 6 && name.substr(0,6) == "Vertex" && name[6]>=48 && name[6]<=57) {
-            std::unique_ptr<Part::ShapeSegment> s(static_cast<Part::ShapeSegment*>
-                (getTopoShapePtr()->getSubElementByName(input)));
-            TopoDS_Shape Shape = s->Shape;
-            return new TopoShapeVertexPy(new TopoShape(Shape));
+            TopoDS_Shape shape = s->Shape;
+            switch (shape.ShapeType()) {
+            case TopAbs_FACE:
+                return new TopoShapeFacePy(new TopoShape(shape));
+            case TopAbs_EDGE:
+                return new TopoShapeEdgePy(new TopoShape(shape));
+            case TopAbs_VERTEX:
+                return new TopoShapeVertexPy(new TopoShape(shape));
+            default:
+                break;
+            }
         }
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return nullptr;
     }
+
+    PyErr_SetString(PyExc_ValueError, "Invalid subelement name");
+
     return nullptr;
 }
 

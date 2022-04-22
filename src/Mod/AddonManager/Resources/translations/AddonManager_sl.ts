@@ -122,7 +122,7 @@
     <message>
       <location filename="package_details.py" line="510"/>
       <source>No URL or wiki page provided by this macro</source>
-      <translation type="unfinished">No URL or wiki page provided by this macro</translation>
+      <translation>Ta makro ne ponuja nobenega spletnega naslova ali wiki strani</translation>
     </message>
     <message>
       <location filename="package_details.py" line="563"/>
@@ -807,13 +807,33 @@
       <location filename="AddonManager.py" line="766"/>
       <source>Could not find addon &apos;{}&apos; to select
 </source>
-      <translation type="unfinished">Could not find addon &apos;{}&apos; to select
+      <translation>Dodatka &apos;{}&apos; za označitev ni mogoče najti
 </translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="243"/>
       <source>Checking for updates...</source>
       <translation>Preverjam za posodobitve...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation>Uporabi {} posodobitve</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="577"/>
+      <source>No updates available</source>
+      <translation>Na voljo ni novih posodobitev</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="915"/>
+      <source>Too many to list</source>
+      <translation>Preveč za navedbo</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="893"/>
+      <source>Missing Requirement</source>
+      <translation>Neizpolnjen pogoj</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="86"/>
@@ -891,16 +911,6 @@
       <translation>Potreben ponovni zagon</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation>Uporabi {} posodobitve</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="577"/>
-      <source>No updates available</source>
-      <translation>Na voljo ni novih posodobitev</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="774"/>
       <source>All packages updates failed. Packages:</source>
       <translation>Posodobitve vseh paketov spodletele. Paketi:</translation>
@@ -911,14 +921,9 @@
       <translation>Spodleteli paketi:</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="915"/>
-      <source>Too many to list</source>
-      <translation>Preveč za navedbo</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="893"/>
-      <source>Missing Requirement</source>
-      <translation>Neizpolnjen pogoj</translation>
+      <location filename="AddonManager.py" line="1079"/>
+      <source>Press OK to install anyway.</source>
+      <translation>Pritisnite V redu, če želite vseeno namestiti.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="964"/>

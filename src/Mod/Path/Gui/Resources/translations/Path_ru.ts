@@ -3257,7 +3257,7 @@ Aborting op creation</source>
     <message>
       <location filename="gcode_pre.py" line="229"/>
       <source>No job object</source>
-      <translation type="unfinished">No job object</translation>
+      <translation>Нет рабочих объектов</translation>
     </message>
   </context>
   <context>
@@ -3331,12 +3331,12 @@ Aborting op creation</source>
     <message>
       <location filename="PathInspect.py" line="260"/>
       <source>Inspect Path Commands</source>
-      <translation type="unfinished">Inspect Path Commands</translation>
+      <translation>Инспектировать команды пути</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="264"/>
       <source>Inspects the contents of a Path object</source>
-      <translation type="unfinished">Inspects the contents of a Path object</translation>
+      <translation>Проверяет содержимое объекта Пути</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="260"/>
@@ -3645,14 +3645,14 @@ Aborting op creation</source>
       <translation>Линия</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Grid</source>
-      <translation>Сетка</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Triangle</source>
       <translation>Треугольник</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Grid</source>
+      <translation>Сетка</translation>
     </message>
     <message>
       <location filename="PathPocketGui.py" line="46"/>

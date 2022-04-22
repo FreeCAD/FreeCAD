@@ -11,7 +11,7 @@
     <message>
       <location filename="MeshFlatteningCommand.py" line="82"/>
       <source>Find a flat representation of a mesh.</source>
-      <translation type="unfinished">Find a flat representation of a mesh.</translation>
+      <translation>Trova una rappresentazione piatta di una mesh.</translation>
     </message>
     <message>
       <location filename="MeshFlatteningCommand.py" line="79"/>

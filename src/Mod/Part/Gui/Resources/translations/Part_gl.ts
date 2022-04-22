@@ -92,7 +92,7 @@ It will create a 'Compound Filter' for each shape.</translation>
     <message>
       <location filename="SplitFeatures.py" line="188"/>
       <source>Boolean fragments</source>
-      <translation type="unfinished">Boolean fragments</translation>
+      <translation>Fragmentos booleanos</translation>
     </message>
     <message>
       <location filename="SplitFeatures.py" line="197"/>
@@ -576,7 +576,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDimension.cpp" line="1481"/>
       <source>Reset selection</source>
-      <translation type="unfinished">Reset selection</translation>
+      <translation>Reinicializar seleccion</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1485"/>
@@ -591,7 +591,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDimension.cpp" line="1495"/>
       <source>Clear all dimensions</source>
-      <translation type="unfinished">Clear all dimensions</translation>
+      <translation>Borrar todas as dimensións</translation>
     </message>
     <message>
       <location filename="../../ViewProviderExt.cpp" line="977"/>
@@ -1192,7 +1192,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="136"/>
       <source>Object's YZ</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Object's YZ</translation>
+      <translation>Objectos YZ</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="137"/>
@@ -2871,7 +2871,7 @@ of projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="508"/>
       <source>Fusion</source>
-      <translation type="unfinished">Fusion</translation>
+      <translation>Fusión</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="921"/>
@@ -3913,7 +3913,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="360"/>
       <source>Single document</source>
-      <translation type="unfinished">Single document</translation>
+      <translation>Documento Individual</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportStep.ui" line="365"/>
@@ -4516,7 +4516,7 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="116"/>
       <source>Solid depth</source>
-      <translation type="unfinished">Solid depth</translation>
+      <translation>Profundidade sólida</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="141"/>
@@ -4526,7 +4526,7 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="147"/>
       <source>Get current camera direction</source>
-      <translation type="unfinished">Get current camera direction</translation>
+      <translation>Obtén a dirección actual da cámara</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="156"/>
@@ -4792,7 +4792,7 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="34"/>
       <source>Shape color</source>
-      <translation type="unfinished">Shape color</translation>
+      <translation>Cor da forma</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="41"/>
@@ -4807,7 +4807,7 @@ the size of the resulting STEP file.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="64"/>
       <source>Random</source>
-      <translation type="unfinished">Random</translation>
+      <translation>Aleatorio</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="83"/>
@@ -5510,7 +5510,7 @@ but more stable.  Default: false</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1111"/>
       <source>Log errors</source>
-      <translation type="unfinished">Log errors</translation>
+      <translation>Rexistro de erros</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1112"/>
@@ -5591,7 +5591,7 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1173"/>
       <source>  Continuity</source>
-      <translation type="unfinished">  Continuity</translation>
+      <translation>  Continuidade</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1174"/>
@@ -5641,12 +5641,12 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1269"/>
       <source>Run check</source>
-      <translation type="unfinished">Run check</translation>
+      <translation>Executar comprobación</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1275"/>
       <source>Results</source>
-      <translation type="unfinished">Results</translation>
+      <translation>Resultados</translation>
     </message>
   </context>
   <context>
@@ -5654,12 +5654,12 @@ Individual BOP Checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="383"/>
       <source>Check Geometry Results</source>
-      <translation type="unfinished">Check Geometry Results</translation>
+      <translation>Comprobar os resultados xeométricos</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="402"/>
       <source>Check is running...</source>
-      <translation type="unfinished">Check is running...</translation>
+      <translation>A comprobación está en execución...</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="426"/>
@@ -5902,7 +5902,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="14"/>
       <source>Tube</source>
-      <translation type="unfinished">Tube</translation>
+      <translation>Tubo</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="23"/>

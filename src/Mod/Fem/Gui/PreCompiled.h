@@ -150,12 +150,14 @@
 #include <Inventor/manips/SoTransformerManip.h>
 #include <Inventor/manips/SoTransformBoxManip.h>
 #include <Inventor/manips/SoHandleBoxManip.h>
+#include <Inventor/manips/SoJackManip.h>
 #include <Inventor/manips/SoTabBoxManip.h>
 #include <Inventor/engines/SoDecomposeMatrix.h>
 #include <Inventor/draggers/SoCenterballDragger.h>
 #include <Inventor/draggers/SoTransformerDragger.h>
 #include <Inventor/draggers/SoTransformBoxDragger.h>
 #include <Inventor/draggers/SoHandleBoxDragger.h>
+#include <Inventor/draggers/SoJackDragger.h>
 
 #include <Inventor/nodes/SoIndexedPointSet.h>
 #include <Inventor/nodes/SoIndexedTriangleStripSet.h>

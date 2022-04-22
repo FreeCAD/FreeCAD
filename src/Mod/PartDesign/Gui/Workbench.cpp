@@ -555,8 +555,17 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_Boolean"
           << "Separator"
           << "PartDesign_Migrate"
-          << "PartDesign_Sprocket"
-          << "PartDesign_InvoluteGear";
+          << "PartDesign_Sprocket";
+
+    // For 0.13 a couple of python packages like numpy, matplotlib and others
+    // are not deployed with the installer on Windows. Thus, the WizardShaft is
+    // not deployed either hence the check for the existence of the command.
+    if (Gui::Application::Instance->commandManager().getCommandByName("PartDesign_InvoluteGear")) {
+        *part << "PartDesign_InvoluteGear";
+    }
+    if (Gui::Application::Instance->commandManager().getCommandByName("PartDesign_WizardShaft")) {
+        *part << "Separator" << "PartDesign_WizardShaft";
+    }
 
     // use Part's measure features also for PartDesign
     Gui::MenuItem* measure = new Gui::MenuItem;
@@ -579,16 +588,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
         Gui::MenuItem* face = new Gui::MenuItem();
         face->setCommand("Part_ColorPerFace");
         view->insertItem(appr, face);
-    }
-
-    // For 0.13 a couple of python packages like numpy, matplotlib and others
-    // are not deployed with the installer on Windows. Thus, the WizardShaft is
-    // not deployed either hence the check for the existence of the command.
-    if (Gui::Application::Instance->commandManager().getCommandByName("PartDesign_InvoluteGear")) {
-        *part << "PartDesign_InvoluteGear";
-    }
-    if (Gui::Application::Instance->commandManager().getCommandByName("PartDesign_WizardShaft")) {
-        *part << "Separator" << "PartDesign_WizardShaft";
     }
 
     // Replace the "Duplicate selection" menu item with a replacement that is compatible with Body

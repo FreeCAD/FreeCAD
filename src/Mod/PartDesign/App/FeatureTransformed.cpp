@@ -53,8 +53,6 @@ using namespace PartDesign;
 
 namespace PartDesign {
 
-const char* Transformed::OverlapEnums[] = { "Detect", "Overlap mode", "Non-overlap mode", nullptr};
-
 PROPERTY_SOURCE(PartDesign::Transformed, PartDesign::Feature)
 
 Transformed::Transformed()
@@ -64,8 +62,6 @@ Transformed::Transformed()
     Placement.setStatus(App::Property::ReadOnly, true);
 
     ADD_PROPERTY_TYPE(Refine,(0),"Part Design",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
-    ADD_PROPERTY_TYPE(Overlap, (0L), "Transform", App::Prop_None, "Feature overlapping behaviour");
-    Overlap.setEnums(OverlapEnums);
 
     //init Refine property
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
@@ -169,9 +165,6 @@ short Transformed::mustExecute() const
 
 App::DocumentObjectExecReturn *Transformed::execute(void)
 {
-    std::string overlapMode = Overlap.getValueAsString();
-    bool overlapDetectionMode = overlapMode == "Detect";
-
     std::vector<App::DocumentObject*> originals = Originals.getValues();
     if (originals.empty()) // typically InsideMultiTransform
         return App::DocumentObject::StdReturn;
@@ -226,7 +219,6 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
     for (std::vector<App::DocumentObject*>::const_iterator o = originals.begin(); o != originals.end(); ++o)
     {
         // Extract the original shape and determine whether to cut or to fuse
-        TopoDS_Shape shape;
         Part::TopoShape fuseShape;
         Part::TopoShape cutShape;
 
@@ -248,23 +240,19 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
         TopoDS_Shape current = support;
 
-        BRep_Builder builder;
-        TopoDS_Compound compShape;
-        builder.MakeCompound(compShape);
         std::vector<TopoDS_Shape> shapes;
-        bool overlapping = false;
 
         std::vector<gp_Trsf>::const_iterator transformIter = transformations.begin();
 
         // First transformation is skipped since it should not be part of the toolShape.
-        transformIter++;
+        ++transformIter;
 
         for (; transformIter != transformations.end(); ++transformIter) {
             // Make an explicit copy of the shape because the "true" parameter to BRepBuilderAPI_Transform
             // seems to be pretty broken
             BRepBuilderAPI_Copy copy(origShape);
 
-            shape = copy.Shape();
+            TopoDS_Shape shape = copy.Shape();
 
             BRepBuilderAPI_Transform mkTrf(shape, *transformIter, false); // No need to copy, now
             if (!mkTrf.IsDone())
@@ -272,30 +260,19 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             shape = mkTrf.Shape();
 
             shapes.emplace_back(shape);
-            builder.Add(compShape, shape);
-
-            if (overlapDetectionMode)
-                overlapping =  overlapping || (countSolids(TopoShape(origShape).fuse(shape))==1);
-
         }
 
-        TopoDS_Shape toolShape;
-
-
-#ifdef FC_DEBUG
-        if (overlapping || overlapMode == "Overlap mode")
-            Base::Console().Message("Transformed: Overlapping feature mode (fusing tool shapes)\n");
-        else
-            Base::Console().Message("Transformed: Non-Overlapping feature mode (compound of tool shapes)\n");
-#endif
-
-        if (overlapping || overlapMode == "Overlap mode")
-            toolShape = TopoShape(shape).fuse(shapes, Precision::Confusion());
-        else
-            toolShape = compShape;
+        TopTools_ListOfShape shapeArguments;
+        shapeArguments.Append(current);
+        TopTools_ListOfShape shapeTools;
+        for (auto shape : shapes)
+            shapeTools.Append(shape);
 
         if (!fuseShape.isNull()) {
-            std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(new BRepAlgoAPI_Fuse(current, toolShape));
+            std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(new BRepAlgoAPI_Fuse());
+            mkBool->SetArguments(shapeArguments);
+            mkBool->SetTools(shapeTools);
+            mkBool->Build();
             if (!mkBool->IsDone()) {
                 std::stringstream error;
                 error << "Boolean operation failed";
@@ -303,7 +280,10 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             }
             current = mkBool->Shape();
         } else {
-            std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(new BRepAlgoAPI_Cut(current, toolShape));
+            std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(new BRepAlgoAPI_Cut());
+            mkBool->SetArguments(shapeArguments);
+            mkBool->SetTools(shapeTools);
+            mkBool->Build();
             if (!mkBool->IsDone()) {
                 std::stringstream error;
                 error << "Boolean operation failed";

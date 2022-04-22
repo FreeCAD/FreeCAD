@@ -63,8 +63,6 @@ typedef const vtkIdType* vtkIdTypePtr;
 typedef vtkIdType* vtkIdTypePtr;
 #endif
 
-const char* ViewProviderFemPostObject::ScaleEnums[] = { "1", "1000", nullptr };
-
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostObject, Gui::ViewProviderDocumentObject)
 
 ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(false)
@@ -73,9 +71,6 @@ ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(
     ADD_PROPERTY_TYPE(Field, ((long)0), "Coloring", App::Prop_None, "Select the field used for calculating the color");
     ADD_PROPERTY_TYPE(VectorMode, ((long)0), "Coloring", App::Prop_None, "Select what to show for a vector field");
     ADD_PROPERTY(Transparency, (0));
-    ADD_PROPERTY_TYPE(Scale, (0L), "Base", (App::PropertyType)(App::Prop_None), "Scale factor of the mesh");
-    Scale.setEnums(ScaleEnums);
-    Scale.setReadOnly(true);
 
     sPixmap = "fem-femmesh-from-shape";
 
@@ -337,7 +332,8 @@ void ViewProviderFemPostObject::update3D() {
 
     // write out point data if any
     WritePointData(points, normals, tcoords);
-    bool ResetColorBarRange = true;
+    WriteTransparency();
+    bool ResetColorBarRange = false;
     WriteColorData(ResetColorBarRange);
 
     // write out polys if any
@@ -422,50 +418,25 @@ void ViewProviderFemPostObject::update3D() {
 void ViewProviderFemPostObject::WritePointData(vtkPoints* points, vtkDataArray* normals, vtkDataArray* tcoords) {
 
     Q_UNUSED(tcoords);
-    double* p;
-    int i;
 
     if (!points)
         return;
 
-    // we must inherit the Scale of parent meshes (for example for clip filters)
-    auto parents = pcObject->getInList();
-    if (!parents.empty()) {
-        for (auto itParents = parents.begin(); itParents != parents.end(); ++itParents) {
-            if ((*itParents)->getTypeId() == Base::Type::fromName("Fem::FemPostPipeline")) {
-                auto vpObject = dynamic_cast<FemGui::ViewProviderFemPostObject*>(
-                    Gui::Application::Instance->getViewProvider(*itParents));
-                if (vpObject) {
-                    auto propScale = Base::freecad_dynamic_cast<App::PropertyEnumeration>(
-                        vpObject->getPropertyByName("Scale"));
-                    if (propScale) {
-                        if (propScale->getValue() != Scale.getValue()) {
-                            Scale.setValue(propScale->getValue());
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    m_coordinates->point.startEditing();
     m_coordinates->point.setNum(points->GetNumberOfPoints());
-    double scale = (strcmp(Scale.getValueAsString(), "1") == 0) ? 1.0 : 1000.0;
-    for (i = 0; i < points->GetNumberOfPoints(); i++) {
-        p = points->GetPoint(i);
-        m_coordinates->point.set1Value(i, p[0] * scale, p[1] * scale, p[2] * scale);
+    SbVec3f* pnts = m_coordinates->point.startEditing();
+    for (int i = 0; i < points->GetNumberOfPoints(); i++) {
+        double* p = points->GetPoint(i);
+        pnts[i].setValue(p[0], p[1], p[2]);
     }
     m_coordinates->point.finishEditing();
 
     // write out the point normal data
     if (normals) {
-
-        m_normals->vector.startEditing();
         m_normals->vector.setNum(normals->GetNumberOfTuples());
-        for (i = 0; i < normals->GetNumberOfTuples(); i++) {
-            p = normals->GetTuple(i);
-            m_normals->vector.set1Value(i, SbVec3f(p[0], p[1], p[2]));
+        SbVec3f* dirs = m_normals->vector.startEditing();
+        for (int i = 0; i < normals->GetNumberOfTuples(); i++) {
+            double* p = normals->GetTuple(i);
+            dirs[i].setValue(p[0], p[1], p[2]);
         }
         m_normals->vector.finishEditing();
 
@@ -520,14 +491,17 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
 
     m_material->diffuseColor.setNum(pd->GetNumberOfPoints());
     SbColor* diffcol = m_material->diffuseColor.startEditing();
+
+    float overallTransp = Transparency.getValue() / 100.0f;
     m_material->transparency.setNum(pd->GetNumberOfPoints());
     float* transp = m_material->transparency.startEditing();
 
     for (int i = 0; i < pd->GetNumberOfPoints(); i++) {
 
         double value = 0;
-        if (component >= 0)
+        if (component >= 0) {
             value = data->GetComponent(i, component);
+        }
         else {
             for (int j = 0; j < data->GetNumberOfComponents(); ++j)
                 value += std::pow(data->GetComponent(i, j), 2);
@@ -537,7 +511,7 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange) {
 
         App::Color c = m_colorBar->getColor(value);
         diffcol[i].setValue(c.r, c.g, c.b);
-        transp[i] = c.a;
+        transp[i] = std::max(c.a, overallTransp);
     }
 
     m_material->diffuseColor.finishEditing();
@@ -553,7 +527,10 @@ void ViewProviderFemPostObject::WriteTransparency() {
 
     float trans = float(Transparency.getValue()) / 100.0;
     m_material->transparency.setValue(trans);
-    update3D();
+
+    // In order to apply the transparency changes the shape nodes must be touched
+    m_faces->touch();
+    m_triangleStrips->touch();
 }
 
 void ViewProviderFemPostObject::updateData(const App::Property* p) {
@@ -596,9 +573,6 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop) {
     }
     else if (prop == &Transparency) {
         WriteTransparency();
-    }
-    else if (prop == &Scale) {
-        update3D();
     }
 
     ViewProviderDocumentObject::onChanged(prop);
@@ -721,7 +695,7 @@ bool ViewProviderFemPostObject::onDelete(const std::vector<std::string>&)
 
 bool ViewProviderFemPostObject::canDelete(App::DocumentObject* obj) const
 {
-    // deletions of objects from a FemPostObject don't necesarily destroy anything
+    // deletions of objects from a FemPostObject don't necessarily destroy anything
     // thus we can pass this action
     // we can warn the user if necessary in the object's ViewProvider in the onDelete() function
     Q_UNUSED(obj)

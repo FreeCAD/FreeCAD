@@ -223,6 +223,10 @@
         <file>LinkArray.svg</file>
         <file>LinkElement.svg</file>
         <file>LinkGroup.svg</file>
+        <file>LinkOverlay.svg</file>
+        <file>LinkArrayOverlay.svg</file>
+        <file>LinkSubOverlay.svg</file>
+        <file>LinkSubElement.svg</file>
         <file>LinkOverlay.xpm</file>
         <file>LinkArrayOverlay.xpm</file>
         <file>LinkSubOverlay.xpm</file>

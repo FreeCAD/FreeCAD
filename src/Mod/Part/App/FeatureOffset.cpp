@@ -26,6 +26,7 @@
 
 
 #include "FeatureOffset.h"
+#include <App/Link.h>
 
 
 using namespace Part;
@@ -131,8 +132,14 @@ short Offset2D::mustExecute() const
 App::DocumentObjectExecReturn *Offset2D::execute(void)
 {
     App::DocumentObject* source = Source.getValue();
-    if (!(source && source->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
+
+    if (!source) {
+       return new App::DocumentObjectExecReturn("No source shape linked.");
+    }
+    const TopoShape shape = Part::Feature::getTopoShape(source);
+    if (shape.isNull()) {
         return new App::DocumentObjectExecReturn("No source shape linked.");
+    }
     double offset = Value.getValue();
     short mode = (short)Mode.getValue();
     short join = (short)Join.getValue();
@@ -140,7 +147,7 @@ App::DocumentObjectExecReturn *Offset2D::execute(void)
     bool inter = Intersection.getValue();
     if (mode == 2)
         return new App::DocumentObjectExecReturn("Mode 'Recto-Verso' is not supported for 2D offset.");
-    const TopoShape& shape = static_cast<Part::Feature*>(source)->Shape.getShape();
+
     this->Shape.setValue(shape.makeOffset2D(offset, join, fill, mode == 0, inter));
     return App::DocumentObject::StdReturn;
 }

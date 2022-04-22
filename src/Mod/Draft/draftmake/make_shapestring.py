@@ -33,7 +33,7 @@ import draftutils.gui_utils as gui_utils
 from draftobjects.shapestring import ShapeString
 
 if App.GuiUp:
-    from draftviewproviders.view_base import ViewProviderDraft
+    from draftviewproviders.view_shapestring import ViewProviderShapeString
 
 
 def make_shapestring(String, FontFile, Size=100, Tracking=0):
@@ -60,7 +60,7 @@ def make_shapestring(String, FontFile, Size=100, Tracking=0):
     obj.Tracking = Tracking
 
     if App.GuiUp:
-        ViewProviderDraft(obj.ViewObject)
+        ViewProviderShapeString(obj.ViewObject)
         gui_utils.format_object(obj)
         obrep = obj.ViewObject
         if "PointSize" in obrep.PropertiesList: obrep.PointSize = 1 # hide the segment end points

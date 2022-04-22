@@ -4518,7 +4518,7 @@ plus de 90 : rayon du trou plus grand à la base</translation>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>&amp;Part Design</source>
-      <translation>&amp;Conception de pièces</translation>
+      <translation>&amp;Part Design</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>

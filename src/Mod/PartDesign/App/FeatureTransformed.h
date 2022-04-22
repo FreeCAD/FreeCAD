@@ -50,7 +50,6 @@ public:
     App::PropertyLinkList Originals;
 
     App::PropertyBool Refine;
-    App::PropertyEnumeration Overlap;
 
     /**
      * Returns the BaseFeature property's object(if any) otherwise return first original,
@@ -98,7 +97,6 @@ protected:
     static TopoDS_Shape getRemainingSolids(const TopoDS_Shape&);
 
 private:
-    static const char* OverlapEnums[];
 };
 
 } //namespace PartDesign

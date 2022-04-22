@@ -460,7 +460,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="2110"/>
       <source>Create a coincident constraint on the selected item</source>
-      <translation>Crea una restricción coincidente en el elemento seleccionado</translation>
+      <translation>Crea una restricción coincidente de los elementos seleccionados</translation>
     </message>
   </context>
   <context>
@@ -4637,12 +4637,12 @@ Sin embargo, no se encontraron restricciones que vinculen a los puntos finales.<
     <message>
       <location filename="../../TaskSketcherElements.ui" line="146"/>
       <source>Only the type 'Edge' will be available for the list</source>
-      <translation>Sólo el tipo 'Borde' estará disponible para la lista</translation>
+      <translation>Solo el tipo 'Arista' estará disponible para la lista</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="149"/>
       <source>Auto-switch to Edge</source>
-      <translation>Cambiar automáticamente al Borde</translation>
+      <translation>Cambiar automáticamente a Arista</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="259"/>
@@ -4652,7 +4652,7 @@ Sin embargo, no se encontraron restricciones que vinculen a los puntos finales.<
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="280"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;%1&amp;quot;: multiple selection&lt;/p&gt;&lt;p&gt;&amp;quot;%2&amp;quot;: switch to next valid type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;%1&amp;quot;: selección multiple&lt;/p&gt;&lt;p&gt;&amp;quot;%2&amp;quot;: cambiar al siguiente tipo válido&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;%1&amp;quot;: selección múltiple&lt;/p&gt;&lt;p&gt;&amp;quot;%2&amp;quot;: cambiar al siguiente tipo válido&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="749"/>
@@ -4861,7 +4861,7 @@ Los puntos deben establecerse más cerca de una quinta parte del tamaño de la c
       <location filename="../../TaskSketcherValidation.ui" line="83"/>
       <location filename="../../TaskSketcherValidation.ui" line="113"/>
       <source>Fix</source>
-      <translation>Arreglar</translation>
+      <translation>Reparar</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="60"/>
@@ -5523,7 +5523,7 @@ Do you want to detach it from the support?</source>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="61"/>
       <source>Executes a recomputation of active document after every sketch action</source>
-      <translation>Ejecuta un recalculado del documento activo después de cada acción de croquis</translation>
+      <translation>Ejecuta un recálculo del documento activo después de cada acción de croquis</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="64"/>
@@ -5533,7 +5533,7 @@ Do you want to detach it from the support?</source>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="80"/>
       <source>Forces recomputation of active document</source>
-      <translation>Fuerza el recalculado del documento activo</translation>
+      <translation>Fuerza el recálculo del documento activo</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="83"/>

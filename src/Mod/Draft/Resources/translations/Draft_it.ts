@@ -714,6 +714,11 @@ Questa proprietà è di sola lettura, poiché il numero dipende dai punti conten
       <translation>L'area di questo oggetto</translation>
     </message>
     <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>La forma di questo oggetto</translation>
+    </message>
+    <message>
       <location filename="hatch.py" line="52"/>
       <source>The base object used by this object</source>
       <translation>L'oggetto base usato da questo oggetto</translation>
@@ -732,11 +737,6 @@ Questa proprietà è di sola lettura, poiché il numero dipende dai punti conten
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation>La scala del motivo usata da questo oggetto</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>La forma di questo oggetto</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -4291,7 +4291,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</sourc
     <message>
       <location filename="utils.py" line="652"/>
       <source>Wires:</source>
-      <translation type="unfinished">Wires:</translation>
+      <translation>Cavi:</translation>
     </message>
     <message>
       <location filename="utils.py" line="653"/>

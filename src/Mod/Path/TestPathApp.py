@@ -39,6 +39,7 @@ from PathTests.TestPathLog import TestPathLog
 from PathTests.TestPathOpTools import TestPathOpTools
 
 # from PathTests.TestPathPost import PathPostTestCases
+from PathTests.TestPathPost import OutputOrderingTestCases
 from PathTests.TestPathPost import TestPathPostUtils
 from PathTests.TestPathPost import TestPathPostImport
 from PathTests.TestPathPreferences import TestPathPreferences

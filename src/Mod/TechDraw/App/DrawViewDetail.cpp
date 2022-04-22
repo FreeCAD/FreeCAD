@@ -517,7 +517,7 @@ TopoDS_Shape DrawViewDetail::projectEdgesOntoFace(TopoDS_Shape edgeShape, TopoDS
         BRepTools::Write(edges, "DVDEdges.brep");            //debug
     }
 
-    return edges;
+    return TopoDS_Shape(std::move(edges));
 }
 
 //we don't want to paint detail highlights on top of detail views,

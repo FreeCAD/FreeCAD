@@ -120,7 +120,7 @@
     <message>
       <location filename="package_details.py" line="510"/>
       <source>No URL or wiki page provided by this macro</source>
-      <translation type="unfinished">No URL or wiki page provided by this macro</translation>
+      <translation>Ez a makró nem ad meg URL-címet vagy wikilapot</translation>
     </message>
     <message>
       <location filename="package_details.py" line="563"/>
@@ -795,13 +795,33 @@
       <location filename="AddonManager.py" line="766"/>
       <source>Could not find addon &apos;{}&apos; to select
 </source>
-      <translation type="unfinished">Could not find addon &apos;{}&apos; to select
+      <translation>Nem található a kijelölni kívánt &apos;{}&apos; bővítmény
 </translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="243"/>
       <source>Checking for updates...</source>
       <translation>Frissítés keresése...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation>{} frissítés(ek) alkalmazása</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="577"/>
+      <source>No updates available</source>
+      <translation>Nem állnak rendelkezésre frissítések</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="915"/>
+      <source>Too many to list</source>
+      <translation>Túl sok a listázáshoz</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="893"/>
+      <source>Missing Requirement</source>
+      <translation>Hiányzó követelmény</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="86"/>
@@ -879,16 +899,6 @@
       <translation>Újraindítás szükséges</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation>{} frissítés(ek) alkalmazása</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="577"/>
-      <source>No updates available</source>
-      <translation>Nem állnak rendelkezésre frissítések</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="774"/>
       <source>All packages updates failed. Packages:</source>
       <translation>Az összes csomag frissítése nem sikerült. Csomagok:</translation>
@@ -899,14 +909,9 @@
       <translation>Sikertelen csomagok:</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="915"/>
-      <source>Too many to list</source>
-      <translation>Túl sok a listázáshoz</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="893"/>
-      <source>Missing Requirement</source>
-      <translation>Hiányzó követelmény</translation>
+      <location filename="AddonManager.py" line="1079"/>
+      <source>Press OK to install anyway.</source>
+      <translation>Nyomja meg az OK gombot a mindenképpen telepítéshez.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="964"/>

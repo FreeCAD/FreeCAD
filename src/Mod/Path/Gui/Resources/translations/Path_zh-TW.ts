@@ -3258,7 +3258,9 @@ Aborting op creation</source>
     <message>
       <location filename="gcode_pre.py" line="229"/>
       <source>No job object</source>
-      <translation type="unfinished">No job object</translation>
+      <translation>Path_Gcode_pre
+gcode_pre.py:229
+檔案: Path.ts</translation>
     </message>
   </context>
   <context>
@@ -3332,12 +3334,17 @@ Aborting op creation</source>
     <message>
       <location filename="PathInspect.py" line="260"/>
       <source>Inspect Path Commands</source>
-      <translation type="unfinished">Inspect Path Commands</translation>
+      <translation>Path_Inspect
+PathInspect.py:260
+檔案: Path.ts</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="264"/>
       <source>Inspects the contents of a Path object</source>
-      <translation type="unfinished">Inspects the contents of a Path object</translation>
+      <translation>Path_Inspect
+PathInspect.py:264
+檔案: Path.ts
+</translation>
     </message>
     <message>
       <location filename="PathInspect.py" line="260"/>
@@ -3646,14 +3653,14 @@ Aborting op creation</source>
       <translation>線</translation>
     </message>
     <message>
-      <location filename="PathPocketBase.py" line="74"/>
-      <source>Grid</source>
-      <translation>格線</translation>
-    </message>
-    <message>
       <location filename="PathPocketBase.py" line="75"/>
       <source>Triangle</source>
       <translation>三角形</translation>
+    </message>
+    <message>
+      <location filename="PathPocketBase.py" line="74"/>
+      <source>Grid</source>
+      <translation>格線</translation>
     </message>
     <message>
       <location filename="PathPocketGui.py" line="46"/>

@@ -101,6 +101,7 @@ private Q_SLOTS:
     void checkItemChanged();
     void onAutoDeps(bool);
     void onItemExpanded(QTreeWidgetItem *item);
+    void onUseOriginalsBtnClicked();
 
 private:
     QTreeWidgetItem *getItem(App::DocumentObject *obj,
@@ -124,7 +125,10 @@ private:
     std::map<App::SubObjectT, QTreeWidgetItem*> depMap;
     std::map<App::SubObjectT, QTreeWidgetItem*> inMap;
     std::map<App::SubObjectT, Qt::CheckState> itemChanged;
-    QTreeWidgetItem *allItem = nullptr;
+    QTreeWidgetItem *allItem = nullptr;    
+    
+    QPushButton* useOriginalsBtn;
+    bool returnOriginals = false;
 
     QTimer timer;
     ParameterGrp::handle hGrp;

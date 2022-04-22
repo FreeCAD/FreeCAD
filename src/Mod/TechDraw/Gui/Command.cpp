@@ -320,8 +320,8 @@ void CmdTechDrawView::activated(int iMsg)
     std::vector<App::DocumentObject*> xShapes;
     App::DocumentObject* partObj = nullptr;
     std::string faceName;
-    int resolve = 1;                                //mystery
-    bool single = false;                            //mystery
+    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement;  //mystery
+    bool single = false;                                           //mystery
     auto selection = getSelection().getSelectionEx(nullptr,
                                                    App::DocumentObject::getClassTypeId(),
                                                    resolve,
@@ -599,8 +599,8 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
     std::vector<App::DocumentObject*> xShapes;
     App::DocumentObject* partObj = nullptr;
     std::string faceName;
-    int resolve = 1;                                //mystery
-    bool single = false;                            //mystery
+    Gui::ResolveMode resolve = Gui::ResolveMode::OldStyleElement; //mystery
+    bool single = false;                                          //mystery
     auto selection = getSelection().getSelectionEx(nullptr,
                                                    App::DocumentObject::getClassTypeId(),
                                                    resolve,

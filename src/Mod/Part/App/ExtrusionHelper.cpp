@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepAlgoAPI_Cut.hxx>
@@ -40,11 +39,13 @@
 # include <TopoDS.hxx>
 #endif
 
-#include "ExtrusionHelper.h"
 #include <Base/Console.h>
 #include <Base/Exception.h>
 
+#include "ExtrusionHelper.h"
+#include "BRepOffsetAPI_MakeOffsetFix.h"
 #include "FeatureExtrusion.h"
+
 
 using namespace Part;
 
@@ -153,16 +154,16 @@ void ExtrusionHelper::makeDraft(const TopoDS_Shape& shape,
                 // create an offset copy of the wire
                 if (!isInnerWire[rows]) {
                     // this is an outer wire
-                    createTaperedPrismOffset(TopoDS::Wire(singleWire), vecRev, distanceRev, numEdges, true, offsetWire);
+                    createTaperedPrismOffset(TopoDS::Wire(singleWire), vecRev, distanceRev, true, offsetWire);
                 }
                 else {
                     // there is an OCC bug with single-edge wires (circles), see inside createTaperedPrismOffset
                     if (numEdges > 1 || !isPartDesign)
                         // inner wires must get the negated offset
-                        createTaperedPrismOffset(TopoDS::Wire(singleWire), vecRev, -distanceRev, numEdges, true, offsetWire);
+                        createTaperedPrismOffset(TopoDS::Wire(singleWire), vecRev, -distanceRev, true, offsetWire);
                     else
-                        // these wires must not get the negated offset
-                        createTaperedPrismOffset(TopoDS::Wire(singleWire), vecRev, distanceRev, numEdges, true, offsetWire);
+                        // circles in PartDesign must not get the negated offset
+                        createTaperedPrismOffset(TopoDS::Wire(singleWire), vecRev, distanceRev, true, offsetWire);
                 }
                 if (offsetWire.IsNull())
                     return;
@@ -201,16 +202,16 @@ void ExtrusionHelper::makeDraft(const TopoDS_Shape& shape,
                 // create an offset copy of the wire
                 if (!isInnerWire[rows]) {
                     // this is an outer wire
-                    createTaperedPrismOffset(TopoDS::Wire(singleWire), vecFwd, distanceFwd, numEdges, false, offsetWire);
+                    createTaperedPrismOffset(TopoDS::Wire(singleWire), vecFwd, distanceFwd, false, offsetWire);
                 }
                 else {
                     // there is an OCC bug with single-edge wires (circles), see inside createTaperedPrismOffset
                     if (numEdges > 1 || !isPartDesign)
                         // inner wires must get the negated offset
-                        createTaperedPrismOffset(TopoDS::Wire(singleWire), vecFwd, -distanceFwd, numEdges, false, offsetWire);
+                        createTaperedPrismOffset(TopoDS::Wire(singleWire), vecFwd, -distanceFwd, false, offsetWire);
                     else
-                        // these wires must not get the negated offset
-                        createTaperedPrismOffset(TopoDS::Wire(singleWire), vecFwd, distanceFwd, numEdges, false, offsetWire);
+                        // circles in PartDesign must not get the negated offset
+                        createTaperedPrismOffset(TopoDS::Wire(singleWire), vecFwd, distanceFwd, false, offsetWire);
                 }
                 if (offsetWire.IsNull())
                     return;
@@ -411,7 +412,6 @@ void ExtrusionHelper::checkInnerWires(std::vector<bool>& isInnerWire, const gp_D
 void ExtrusionHelper::createTaperedPrismOffset(TopoDS_Wire sourceWire,
                                                const gp_Vec& translation,
                                                double offset,
-                                               int numEdges,
                                                bool isSecond,
                                                TopoDS_Wire& result) {
 
@@ -419,6 +419,8 @@ void ExtrusionHelper::createTaperedPrismOffset(TopoDS_Wire sourceWire,
     // then this placement must be reset because otherwise
     // BRepOffsetAPI_MakeOffset shows weird behaviour by applying the placement, see
     // https://dev.opencascade.org/content/brepoffsetapimakeoffset-wire-and-face-odd-occt-740
+    // therefore we use here the workaround of BRepOffsetAPI_MakeOffsetFix and not BRepOffsetAPI_MakeOffset
+
     gp_Trsf tempTransform;
     tempTransform.SetTranslation(translation);
     TopLoc_Location loc(tempTransform);
@@ -427,22 +429,8 @@ void ExtrusionHelper::createTaperedPrismOffset(TopoDS_Wire sourceWire,
     TopoDS_Shape offsetShape;
     if (fabs(offset) > Precision::Confusion()) {
         TopLoc_Location edgeLocation;
-        if (numEdges == 1) {
-            // create a new wire from the input wire to determine its location
-            // to reset the location after the offset operation
-            BRepBuilderAPI_MakeWire mkWire;
-            TopExp_Explorer xp(sourceWire, TopAbs_EDGE);
-            while (xp.More()) {
-                TopoDS_Edge edge = TopoDS::Edge(xp.Current());
-                edgeLocation = edge.Location();
-                edge.Location(TopLoc_Location());
-                mkWire.Add(edge);
-                xp.Next();
-            }
-            movedSourceWire = mkWire.Wire();
-        }
         // create the offset shape
-        BRepOffsetAPI_MakeOffset mkOffset;
+        BRepOffsetAPI_MakeOffsetFix mkOffset;
         mkOffset.Init(GeomAbs_Arc);
         mkOffset.Init(GeomAbs_Intersection);
         mkOffset.AddWire(movedSourceWire);
@@ -455,12 +443,6 @@ void ExtrusionHelper::createTaperedPrismOffset(TopoDS_Wire sourceWire,
         }
         if (!mkOffset.IsDone()) {
             Standard_Failure::Raise("Extrusion: Offset could not be created");
-        }
-        if (numEdges == 1) {
-            // we need to move the offset wire first back to its original position
-            offsetShape.Move(edgeLocation);
-            // now apply the translation
-            offsetShape = offsetShape.Moved(loc);
         }
     }
     else {

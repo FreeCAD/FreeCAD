@@ -151,6 +151,15 @@ class PartTestBSplineCurve(unittest.TestCase):
         self.assertEqual(Spreadsheet.C2, Units.Quantity('8 mm'))
         App.closeDocument("Issue2876")
 
+    def testSubElements(self):
+        box = Part.makeBox(1, 1, 1)
+        with self.assertRaises(ValueError):
+            box.getElement("InvalidName")
+        with self.assertRaises(ValueError):
+            box.getElement("Face6_abc")
+        with self.assertRaises(Part.OCCError):
+            box.getElement("Face7")
+
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument("PartTest")

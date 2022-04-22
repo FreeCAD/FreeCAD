@@ -355,7 +355,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
     App::DocumentObject *parent = nullptr;
     std::string parentSub;
     std::map<App::DocumentObject *, std::vector<std::string> > values;
-    for (auto &sel : Gui::Selection().getCompleteSelection(0)) {
+    for (auto &sel : Gui::Selection().getCompleteSelection(Gui::ResolveMode::NoResolve)) {
         if (!sel.pObject) continue;
         auto &subs = values[sel.pObject];
         if (sel.SubName && sel.SubName[0])

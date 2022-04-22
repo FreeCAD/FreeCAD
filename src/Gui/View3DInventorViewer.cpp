@@ -293,19 +293,37 @@ public:
 // *************************************************************************
 
 View3DInventorViewer::View3DInventorViewer(QWidget* parent, const QtGLWidget* sharewidget)
-    : Quarter::SoQTQuarterAdaptor(parent, sharewidget), SelectionObserver(false,0),
-      editViewProvider(nullptr), navigation(nullptr),
-      renderType(Native), framebuffer(nullptr), axisCross(nullptr), axisGroup(nullptr), editing(false), redirected(false),
-      allowredir(false), overrideMode("As Is"), _viewerPy(nullptr)
+    : Quarter::SoQTQuarterAdaptor(parent, sharewidget)
+    , SelectionObserver(false, ResolveMode::NoResolve)
+    , editViewProvider(nullptr)
+    , navigation(nullptr)
+    , renderType(Native)
+    , framebuffer(nullptr)
+    , axisCross(nullptr)
+    , axisGroup(nullptr)
+    , editing(false)
+    , redirected(false)
+    , allowredir(false)
+    , overrideMode("As Is")
+    , _viewerPy(nullptr)
 {
     init();
 }
 
 View3DInventorViewer::View3DInventorViewer(const QtGLFormat& format, QWidget* parent, const QtGLWidget* sharewidget)
-    : Quarter::SoQTQuarterAdaptor(format, parent, sharewidget), SelectionObserver(false,0),
-      editViewProvider(nullptr), navigation(nullptr),
-      renderType(Native), framebuffer(nullptr), axisCross(nullptr), axisGroup(nullptr), editing(false), redirected(false),
-      allowredir(false), overrideMode("As Is"), _viewerPy(nullptr)
+    : Quarter::SoQTQuarterAdaptor(format, parent, sharewidget)
+    , SelectionObserver(false, ResolveMode::NoResolve)
+    , editViewProvider(nullptr)
+    , navigation(nullptr)
+    , renderType(Native)
+    , framebuffer(nullptr)
+    , axisCross(nullptr)
+    , axisGroup(nullptr)
+    , editing(false)
+    , redirected(false)
+    , allowredir(false)
+    , overrideMode("As Is")
+    , _viewerPy(nullptr)
 {
     init();
 }
@@ -646,7 +664,7 @@ void View3DInventorViewer::setDocument(Gui::Document* pcDocument)
     selectionRoot->pcDocument = pcDocument;
 
     if(pcDocument) {
-        const auto &sels = Selection().getSelection(pcDocument->getDocument()->getName(),0);
+        const auto &sels = Selection().getSelection(pcDocument->getDocument()->getName(), ResolveMode::NoResolve);
         for(auto &sel : sels) {
             SelectionChanges Chng(SelectionChanges::ShowSelection,
                     sel.DocName,sel.FeatName,sel.SubName);
@@ -875,7 +893,7 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges &_Reason)
             Reason.Type = SelectionChanges::RmvSelection;
         // fall through
     case SelectionChanges::SetPreselect:
-        if(Reason.SubType!=2) // 2 means it is triggered from tree view
+        if(Reason.SubType != SelectionChanges::MsgSource::TreeView)
             break;
         // fall through
     case SelectionChanges::RmvPreselect:
@@ -2695,9 +2713,7 @@ void View3DInventorViewer::toggleClippingPlane(int toggle, bool beforeEditing,
     if(!noManip) {
         SoClipPlaneManip* clip = new SoClipPlaneManip;
         pcClipPlane = clip;
-        SoGetBoundingBoxAction action(this->getSoRenderManager()->getViewportRegion());
-        action.apply(this->getSoRenderManager()->getSceneGraph());
-        SbBox3f box = action.getBoundingBox();
+        SbBox3f box = getBoundingBox();
 
         if (!box.isEmpty()) {
             // adjust to overall bounding box of the scene
@@ -2864,9 +2880,7 @@ void View3DInventorViewer::animatedViewAll(int steps, int ms)
     SbVec3f campos = cam->position.getValue();
     SbRotation camrot = cam->orientation.getValue();
     SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
-    SoGetBoundingBoxAction action(vp);
-    action.apply(this->getSoRenderManager()->getSceneGraph());
-    SbBox3f box = action.getBoundingBox();
+    SbBox3f box = getBoundingBox();
 
 #if (COIN_MAJOR_VERSION >= 3)
     float aspectRatio = vp.getViewportAspectRatio();
@@ -2949,12 +2963,17 @@ void View3DInventorViewer::boxZoom(const SbBox2s& box)
     navigation->boxZoom(box);
 }
 
-void View3DInventorViewer::viewAll()
+SbBox3f View3DInventorViewer::getBoundingBox() const
 {
     SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
     SoGetBoundingBoxAction action(vp);
     action.apply(this->getSoRenderManager()->getSceneGraph());
-    SbBox3f box = action.getBoundingBox();
+    return action.getBoundingBox();
+}
+
+void View3DInventorViewer::viewAll()
+{
+    SbBox3f box = getBoundingBox();
 
     if (box.isEmpty())
         return;
@@ -3022,9 +3041,7 @@ void View3DInventorViewer::viewAll(float factor)
             group->mode = SoSkipBoundingGroup::EXCLUDE_BBOX;
         }
 
-        SoGetBoundingBoxAction action(this->getSoRenderManager()->getViewportRegion());
-        action.apply(this->getSoRenderManager()->getSceneGraph());
-        SbBox3f box = action.getBoundingBox();
+        SbBox3f box = getBoundingBox();
         float minx,miny,minz,maxx,maxy,maxz;
         box.getBounds(minx,miny,minz,maxx,maxy,maxz);
 
@@ -3058,7 +3075,7 @@ void View3DInventorViewer::viewAll(float factor)
 void View3DInventorViewer::viewSelection()
 {
     Base::BoundBox3d bbox;
-    for(auto &sel : Selection().getSelection(nullptr,0)) {
+    for(auto &sel : Selection().getSelection(nullptr, ResolveMode::NoResolve)) {
         auto vp = Application::Instance->getViewProvider(sel.pObject);
         if(!vp)
             continue;

@@ -141,11 +141,11 @@
     </message>
     <message>
       <source>Ignore lines starting with:</source>
-      <translation>Ignorar liñas que principian con:</translation>
+      <translation>Ignorar liñas que comezan por:</translation>
     </message>
     <message>
       <source>Cluster by lines starting with:</source>
-      <translation>Agrupación de liñas que principian con:</translation>
+      <translation>Agrupar por liñas que comezan por:</translation>
     </message>
     <message>
       <source>First line:</source>

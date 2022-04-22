@@ -120,7 +120,7 @@
     <message>
       <location filename="package_details.py" line="510"/>
       <source>No URL or wiki page provided by this macro</source>
-      <translation type="unfinished">No URL or wiki page provided by this macro</translation>
+      <translation>No hay URL o página wiki proporcionada por esta macro</translation>
     </message>
     <message>
       <location filename="package_details.py" line="563"/>
@@ -698,9 +698,9 @@
       <location filename="change_branch.py" line="261"/>
       <source>Kind</source>
       <comment>Table header for git ref type (e.g. either Tag or Branch)</comment>
-      <translation type="unfinished">
-        <numerusform>Kind</numerusform>
-        <numerusform>Kind</numerusform>
+      <translation>
+        <numerusform>Tipo</numerusform>
+        <numerusform>Clase</numerusform>
       </translation>
     </message>
     <message>
@@ -795,13 +795,33 @@
       <location filename="AddonManager.py" line="766"/>
       <source>Could not find addon &apos;{}&apos; to select
 </source>
-      <translation type="unfinished">Could not find addon &apos;{}&apos; to select
+      <translation>No se pudo encontrar el complemento &apos;{}&apos; para seleccionar
 </translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="243"/>
       <source>Checking for updates...</source>
       <translation>Buscando actualizaciones...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation>Aplicar {} actualización(es)</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="577"/>
+      <source>No updates available</source>
+      <translation>No hay actualizaciones disponibles</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="915"/>
+      <source>Too many to list</source>
+      <translation>Demasiado para enlistar</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="893"/>
+      <source>Missing Requirement</source>
+      <translation>Requisitos faltantes</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="86"/>
@@ -879,16 +899,6 @@
       <translation>Es necesario reiniciar</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation>Aplicar {} actualización(es)</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="577"/>
-      <source>No updates available</source>
-      <translation>No hay actualizaciones disponibles</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="774"/>
       <source>All packages updates failed. Packages:</source>
       <translation>Fallo al actualizar todos los paquetes. Paquetes:</translation>
@@ -899,14 +909,9 @@
       <translation>Paquetes fallados:</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="915"/>
-      <source>Too many to list</source>
-      <translation>Demasiado para enlistar</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="893"/>
-      <source>Missing Requirement</source>
-      <translation>Requisitos faltantes</translation>
+      <location filename="AddonManager.py" line="1079"/>
+      <source>Press OK to install anyway.</source>
+      <translation type="unfinished">Press OK to install anyway.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="964"/>

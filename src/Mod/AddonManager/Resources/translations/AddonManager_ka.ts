@@ -120,7 +120,7 @@
     <message>
       <location filename="package_details.py" line="510"/>
       <source>No URL or wiki page provided by this macro</source>
-      <translation type="unfinished">No URL or wiki page provided by this macro</translation>
+      <translation>მაკრო არ შეიცავს ბმულს ან wiki-ის გვერდს</translation>
     </message>
     <message>
       <location filename="package_details.py" line="563"/>
@@ -795,13 +795,33 @@
       <location filename="AddonManager.py" line="766"/>
       <source>Could not find addon &apos;{}&apos; to select
 </source>
-      <translation type="unfinished">Could not find addon &apos;{}&apos; to select
+      <translation>ასარჩევი განახლება ნაპოვნი არაა&apos;{}&apos;
 </translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="243"/>
       <source>Checking for updates...</source>
       <translation>განახლების შემოწმება...</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation>{} განახლების გადატარება</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="577"/>
+      <source>No updates available</source>
+      <translation>განახლებები არაა ხელმისაწვდომი</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="915"/>
+      <source>Too many to list</source>
+      <translation>მეტისმეტად ბევრ ელემენტს ამატებთ სიაში</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="893"/>
+      <source>Missing Requirement</source>
+      <translation>არასაკმარისი პირობები</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="86"/>
@@ -879,16 +899,6 @@
       <translation>საჭიროა გადატვირთვა</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation>{} განახლების გადატარება</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="577"/>
-      <source>No updates available</source>
-      <translation>განახლებები არაა ხელმისაწვდომი</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="774"/>
       <source>All packages updates failed. Packages:</source>
       <translation>ყველა პაკეტის განახლების შეცდომა. ესენია:</translation>
@@ -899,14 +909,9 @@
       <translation>წარუმატებელი პაკეტები:</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="915"/>
-      <source>Too many to list</source>
-      <translation>მეტისმეტად ბევრ ელემენტს ამატებთ სიაში</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="893"/>
-      <source>Missing Requirement</source>
-      <translation>არასაკმარისი პირობები</translation>
+      <location filename="AddonManager.py" line="1079"/>
+      <source>Press OK to install anyway.</source>
+      <translation>დააწექით "დიახ"-ს ნებისმიერ შემთხვევაში დასაყენებლად.</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="964"/>

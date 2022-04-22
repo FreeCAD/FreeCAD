@@ -38,8 +38,9 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Base/Interpreter.h>
 #include <Base/UnitsApi.h>
+#include <App/Link.h>
+#include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -62,23 +63,25 @@ public:
     bool canSelect;
 
     EdgeSelection()
-        : Gui::SelectionFilterGate((Gui::SelectionFilter*)nullptr)
+        : Gui::SelectionFilterGate(nullPointer())
     {
         canSelect = false;
     }
     bool allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* sSubName)
     {
         this->canSelect = false;
-        if (!pObj->isDerivedFrom(Part::Feature::getClassTypeId()))
-            return false;
+
         if (!sSubName || sSubName[0] == '\0')
             return false;
         std::string element(sSubName);
         if (element.substr(0,4) != "Edge")
             return false;
-        Part::Feature* fea = static_cast<Part::Feature*>(pObj);
+        Part::TopoShape part = Part::Feature::getTopoShape(pObj);
+        if (part.isNull()) {
+            return false;
+        }
         try {
-            TopoDS_Shape sub = fea->Shape.getShape().getSubShape(sSubName);
+            TopoDS_Shape sub = part.getSubShape(sSubName);
             if (!sub.IsNull() && sub.ShapeType() == TopAbs_EDGE) {
                 const TopoDS_Edge& edge = TopoDS::Edge(sub);
                 BRepAdaptor_Curve adapt(edge);
@@ -112,6 +115,8 @@ DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WindowFlags fl)
 
     Gui::ItemViewSelection sel(ui->treeWidget);
     sel.applyFrom(Gui::Selection().getObjectsOfType(Part::Feature::getClassTypeId()));
+    sel.applyFrom(Gui::Selection().getObjectsOfType(App::Link::getClassTypeId()));
+    sel.applyFrom(Gui::Selection().getObjectsOfType(App::Part::getClassTypeId()));
 
     this->on_DirMode_changed();
     ui->spinLenFwd->selectAll();
@@ -317,27 +322,28 @@ void DlgExtrusion::fetchDir()
 void DlgExtrusion::autoSolid()
 {
     try{
-        App::DocumentObject &dobj = this->getShapeToExtrude();
-        if (dobj.isDerivedFrom(Part::Feature::getClassTypeId())){
-            Part::Feature &feature = static_cast<Part::Feature&>(dobj);
-            TopoDS_Shape sh = feature.Shape.getValue();
-            if (sh.IsNull())
+        App::DocumentObject* dobj = &this->getShapeToExtrude();
+        Part::TopoShape shape = Part::Feature::getTopoShape(dobj);
+        if (shape.isNull()) {
+            return;
+        }
+        TopoDS_Shape sh = shape.getShape();
+        if (sh.IsNull())
+            return;
+        ShapeExtend_Explorer xp;
+        Handle(TopTools_HSequenceOfShape) leaves = xp.SeqFromCompound(sh, /*recursive= */Standard_True);
+        int cntClosedWires = 0;
+        for(int i = 0; i < leaves->Length(); i++){
+            const TopoDS_Shape &leaf = leaves->Value(i+1);
+            if (leaf.IsNull())
                 return;
-            ShapeExtend_Explorer xp;
-            Handle(TopTools_HSequenceOfShape) leaves = xp.SeqFromCompound(sh, /*recursive= */Standard_True);
-            int cntClosedWires = 0;
-            for(int i = 0; i < leaves->Length(); i++){
-                const TopoDS_Shape &leaf = leaves->Value(i+1);
-                if (leaf.IsNull())
-                    return;
-                if (leaf.ShapeType() == TopAbs_WIRE || leaf.ShapeType() == TopAbs_EDGE){
-                    if (BRep_Tool::IsClosed(leaf)){
-                        cntClosedWires++;
-                    }
+            if (leaf.ShapeType() == TopAbs_WIRE || leaf.ShapeType() == TopAbs_EDGE){
+                if (BRep_Tool::IsClosed(leaf)){
+                    cntClosedWires++;
                 }
             }
-            ui->chkSolid->setChecked( cntClosedWires == leaves->Length() );
         }
+        ui->chkSolid->setChecked( cntClosedWires == leaves->Length() );
     } catch(...) {
 
     }
@@ -352,10 +358,15 @@ void DlgExtrusion::findShapes()
     this->document = activeDoc->getName();
     this->label = activeDoc->Label.getValue();
 
-    std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType
-        (Part::Feature::getClassTypeId());
+    std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
+
     for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it!=objs.end(); ++it) {
-        const TopoDS_Shape& shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
+        Part::TopoShape topoShape = Part::Feature::getTopoShape(*it);
+        if (topoShape.isNull()) {
+            continue;
+        }
+        TopoDS_Shape shape = topoShape.getShape();
+        if (shape.IsNull()) continue;
         if (canExtrude(shape)) {
             QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
             item->setText(0, QString::fromUtf8((*it)->Label.getValue()));
@@ -429,7 +440,7 @@ void DlgExtrusion::apply()
         for (App::DocumentObject* sourceObj: objects) {
             assert(sourceObj);
 
-            if (!sourceObj->isDerivedFrom(Part::Feature::getClassTypeId())){
+            if (Part::Feature::getTopoShape(sourceObj).isNull()){
                 FC_ERR("Object " << sourceObj->getFullName() 
                         << " is not Part object (has no OCC shape). Can't extrude it.");
                 continue;

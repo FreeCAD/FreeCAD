@@ -533,7 +533,7 @@ reverse()
         </UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="reversed">
+    <Methode Name="reversed" Const="true">
       <Documentation>
         <UserDocu>Reverses the orientation of a copy of this shape.
 reversed() -> Shape

@@ -645,8 +645,7 @@ on the selected vertex</source>
       <location filename="../../CommandConstraints.cpp" line="6979"/>
       <source>Create a refraction law (Snell's law) constraint between two endpoints of rays
 and an edge as an interface.</source>
-      <translation type="unfinished">Create a refraction law (Snell's law) constraint between two endpoints of rays
-and an edge as an interface.</translation>
+      <translation>Создать ограничение по закону преломления (закон Снелла) между двумя конечными точками лучей и ребром в качестве интерфейса.</translation>
     </message>
   </context>
   <context>
@@ -1234,14 +1233,14 @@ with respect to a line or a third point</source>
       <source>Set the 'Support' of a sketch.
 First select the supporting geometry, for example, a face or an edge of a solid object,
 then call this command, then choose the desired sketch.</source>
-      <translation type="unfinished">Set the 'Support' of a sketch.
-First select the supporting geometry, for example, a face or an edge of a solid object,
-then call this command, then choose the desired sketch.</translation>
+      <translation>Установите 'Поддержку' эскиза.
+Сначала выберите поддерживающую геометрию, например, грань или ребро твердотельного объекта,
+вызовите эту команду, а затем выберите нужный эскиз.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="561"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
-      <translation type="unfinished">Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</translation>
+      <translation>Некоторые из выбранных объектов зависят от эскиза, который будет отображен. Циклические зависимости не допускаются.</translation>
     </message>
   </context>
   <context>
@@ -1254,7 +1253,7 @@ then call this command, then choose the desired sketch.</translation>
     <message>
       <location filename="../../Command.cpp" line="865"/>
       <source>Create a new sketch from merging two or more selected sketches.</source>
-      <translation type="unfinished">Create a new sketch from merging two or more selected sketches.</translation>
+      <translation>Создать новый эскиз из слияния двух или более выбранных эскизов.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="878"/>

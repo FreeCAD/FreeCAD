@@ -21,12 +21,12 @@
     <message>
       <location filename="fillet.py" line="71"/>
       <source>Radius to use to fillet the corner.</source>
-      <translation type="unfinished">Radius to use to fillet the corner.</translation>
+      <translation>Raio a usar para o chafrán arredondado dos recunchos.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="169"/>
       <source>The base object that will be duplicated</source>
-      <translation type="unfinished">The base object that will be duplicated</translation>
+      <translation>O obxecto de base que debe ser duplicado</translation>
     </message>
     <message>
       <location filename="array.py" line="98"/>
@@ -47,32 +47,32 @@
     <message>
       <location filename="array.py" line="122"/>
       <source>Number of copies in X direction</source>
-      <translation type="unfinished">Number of copies in X direction</translation>
+      <translation>Cantidade de copias en dirección X</translation>
     </message>
     <message>
       <location filename="array.py" line="131"/>
       <source>Number of copies in Y direction</source>
-      <translation type="unfinished">Number of copies in Y direction</translation>
+      <translation>Cantidade de copias en dirección Y</translation>
     </message>
     <message>
       <location filename="array.py" line="140"/>
       <source>Number of copies in Z direction</source>
-      <translation type="unfinished">Number of copies in Z direction</translation>
+      <translation>Cantidade de copias en dirección Z</translation>
     </message>
     <message>
       <location filename="array.py" line="150"/>
       <source>Distance and orientation of intervals in X direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in X direction</translation>
+      <translation>Distancia e orientación dos intervalos na dirección X</translation>
     </message>
     <message>
       <location filename="array.py" line="160"/>
       <source>Distance and orientation of intervals in Y direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Y direction</translation>
+      <translation>Distancia e orientación dos intervalos na dirección Y</translation>
     </message>
     <message>
       <location filename="array.py" line="170"/>
       <source>Distance and orientation of intervals in Z direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Z direction</translation>
+      <translation>Distancia e orientación dos intervalos na dirección Z</translation>
     </message>
     <message>
       <location filename="array.py" line="185"/>
@@ -113,7 +113,7 @@ Leave this property empty to be able to set 'Axis' and 'Center' manually.</trans
     <message>
       <location filename="array.py" line="260"/>
       <source>Distance between circular layers</source>
-      <translation type="unfinished">Distance between circular layers</translation>
+      <translation>Distancia circular entre capas</translation>
     </message>
     <message>
       <location filename="array.py" line="270"/>
@@ -150,7 +150,7 @@ This property is read-only, as the number depends on the parameters of the array
     <message>
       <location filename="block.py" line="43"/>
       <source>The components of this block</source>
-      <translation type="unfinished">The components of this block</translation>
+      <translation>Os compoñentes deste bloque</translation>
     </message>
     <message>
       <location filename="hatch.py" line="46"/>
@@ -160,47 +160,47 @@ This property is read-only, as the number depends on the parameters of the array
     <message>
       <location filename="rectangle.py" line="46"/>
       <source>Length of the rectangle</source>
-      <translation type="unfinished">Length of the rectangle</translation>
+      <translation>Lonxitude do rectángulo</translation>
     </message>
     <message>
       <location filename="rectangle.py" line="49"/>
       <source>Height of the rectangle</source>
-      <translation type="unfinished">Height of the rectangle</translation>
+      <translation>Altura do rectángulo</translation>
     </message>
     <message>
       <location filename="wire.py" line="77"/>
       <source>Radius to use to fillet the corners</source>
-      <translation type="unfinished">Radius to use to fillet the corners</translation>
+      <translation>Raio a usar para o chafrán arredondado dos recunchos</translation>
     </message>
     <message>
       <location filename="wire.py" line="81"/>
       <source>Size of the chamfer to give to the corners</source>
-      <translation type="unfinished">Size of the chamfer to give to the corners</translation>
+      <translation>Tamaño do chafrán para dar ós cantos</translation>
     </message>
     <message>
       <location filename="ellipse.py" line="58"/>
       <source>Create a face</source>
-      <translation type="unfinished">Create a face</translation>
+      <translation>Crear unha cara</translation>
     </message>
     <message>
       <location filename="rectangle.py" line="61"/>
       <source>Horizontal subdivisions of this rectangle</source>
-      <translation type="unfinished">Horizontal subdivisions of this rectangle</translation>
+      <translation>Subdivisións horizontais deste rectángulo</translation>
     </message>
     <message>
       <location filename="rectangle.py" line="64"/>
       <source>Vertical subdivisions of this rectangle</source>
-      <translation type="unfinished">Vertical subdivisions of this rectangle</translation>
+      <translation>Subdivisións verticais deste rectángulo</translation>
     </message>
     <message>
       <location filename="wire.py" line="93"/>
       <source>The area of this object</source>
-      <translation type="unfinished">The area of this object</translation>
+      <translation>A área deste obxecto</translation>
     </message>
     <message>
       <location filename="pathtwistedarray.py" line="86"/>
       <source>The base object that will be duplicated.</source>
-      <translation type="unfinished">The base object that will be duplicated.</translation>
+      <translation>O obxecto de base que debe ser duplicado.</translation>
     </message>
     <message>
       <location filename="patharray.py" line="177"/>
@@ -386,7 +386,7 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="circle.py" line="45"/>
       <source>Start angle of the arc</source>
-      <translation type="unfinished">Start angle of the arc</translation>
+      <translation>Ángulo de principio do arco</translation>
     </message>
     <message>
       <location filename="circle.py" line="50"/>
@@ -398,7 +398,7 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="circle.py" line="54"/>
       <source>Radius of the circle</source>
-      <translation type="unfinished">Radius of the circle</translation>
+      <translation>Raio do círculo</translation>
     </message>
     <message>
       <location filename="polygon.py" line="48"/>
@@ -408,32 +408,32 @@ It is a list of strings; each element in the list will be displayed in its own l
     <message>
       <location filename="polygon.py" line="52"/>
       <source>Radius of the control circle</source>
-      <translation type="unfinished">Radius of the control circle</translation>
+      <translation>Raio do círculo de control</translation>
     </message>
     <message>
       <location filename="polygon.py" line="56"/>
       <source>How the polygon must be drawn from the control circle</source>
-      <translation type="unfinished">How the polygon must be drawn from the control circle</translation>
+      <translation>Como debe ser trazado o polígono respecto do círculo de control</translation>
     </message>
     <message>
       <location filename="point.py" line="45"/>
       <source>X Location</source>
-      <translation type="unfinished">X Location</translation>
+      <translation>Localización X</translation>
     </message>
     <message>
       <location filename="point.py" line="48"/>
       <source>Y Location</source>
-      <translation type="unfinished">Y Location</translation>
+      <translation>Localización Y</translation>
     </message>
     <message>
       <location filename="point.py" line="51"/>
       <source>Z Location</source>
-      <translation type="unfinished">Z Location</translation>
+      <translation>Localización Z</translation>
     </message>
     <message>
       <location filename="layer.py" line="59"/>
       <source>The objects that are part of this layer</source>
-      <translation type="unfinished">The objects that are part of this layer</translation>
+      <translation>Os obxectos que forman parte desta capa</translation>
     </message>
     <message>
       <location filename="label.py" line="65"/>
@@ -543,12 +543,12 @@ or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is sp
     <message>
       <location filename="shapestring.py" line="47"/>
       <source>Text string</source>
-      <translation type="unfinished">Text string</translation>
+      <translation>Cadea de texto</translation>
     </message>
     <message>
       <location filename="shapestring.py" line="50"/>
       <source>Font file name</source>
-      <translation type="unfinished">Font file name</translation>
+      <translation>Nome do ficheiro de fontes</translation>
     </message>
     <message>
       <location filename="shapestring.py" line="53"/>
@@ -558,7 +558,7 @@ or from the subelement 'VertexN', 'EdgeN', or 'FaceN', respectively, if it is sp
     <message>
       <location filename="shapestring.py" line="56"/>
       <source>Inter-character spacing</source>
-      <translation type="unfinished">Inter-character spacing</translation>
+      <translation>Espazado entre caracteres</translation>
     </message>
     <message>
       <location filename="shapestring.py" line="59"/>
@@ -617,17 +617,17 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="bspline.py" line="67"/>
       <source>Parameterization factor</source>
-      <translation type="unfinished">Parameterization factor</translation>
+      <translation>Factor paramétrico</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="57"/>
       <source>The base object this 2D view must represent</source>
-      <translation type="unfinished">The base object this 2D view must represent</translation>
+      <translation>O obxecto base que esta visión 2D debe representar</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="62"/>
       <source>The projection vector of this object</source>
-      <translation type="unfinished">The projection vector of this object</translation>
+      <translation>A proxección vectorial deste obxecto</translation>
     </message>
     <message>
       <location filename="shape2dview.py" line="68"/>
@@ -720,7 +720,12 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="ellipse.py" line="61"/>
       <source>Area of this object</source>
-      <translation type="unfinished">Area of this object</translation>
+      <translation>A área deste obxecto</translation>
+    </message>
+    <message>
+      <location filename="hatch.py" line="49"/>
+      <source>The shape of this object</source>
+      <translation>A forma desde obxecto</translation>
     </message>
     <message>
       <location filename="hatch.py" line="52"/>
@@ -741,11 +746,6 @@ This property is read-only, as the number depends on the points contained within
       <location filename="hatch.py" line="61"/>
       <source>The pattern scale used by this object</source>
       <translation type="unfinished">The pattern scale used by this object</translation>
-    </message>
-    <message>
-      <location filename="hatch.py" line="49"/>
-      <source>The shape of this object</source>
-      <translation>A forma desde obxecto</translation>
     </message>
     <message>
       <location filename="hatch.py" line="64"/>
@@ -785,7 +785,7 @@ This property is read-only, as the number depends on the points contained within
     <message>
       <location filename="bezcurve.py" line="66"/>
       <source>The length of this object</source>
-      <translation type="unfinished">The length of this object</translation>
+      <translation>A lonxitude deste obxecto</translation>
     </message>
     <message>
       <location filename="patharray.py" line="192"/>
@@ -883,7 +883,7 @@ Otherwise the copies will have the same orientation as the original Base object.
     <message>
       <location filename="drawingview.py" line="118"/>
       <source>Line Style</source>
-      <translation type="unfinished">Line Style</translation>
+      <translation>Estilo da liña</translation>
     </message>
     <message>
       <location filename="drawingview.py" line="127"/>
@@ -1155,22 +1155,22 @@ beyond the dimension line</translation>
     <message>
       <location filename="view_base.py" line="116"/>
       <source>Defines the size of the SVG pattern.</source>
-      <translation type="unfinished">Defines the size of the SVG pattern.</translation>
+      <translation>Define o tamaño do patrón do SVG.</translation>
     </message>
     <message>
       <location filename="view_label.py" line="73"/>
       <source>The size of the text</source>
-      <translation type="unfinished">The size of the text</translation>
+      <translation>Tamaño do texto</translation>
     </message>
     <message>
       <location filename="view_label.py" line="82"/>
       <source>The font of the text</source>
-      <translation type="unfinished">The font of the text</translation>
+      <translation>Fonte do texto</translation>
     </message>
     <message>
       <location filename="view_label.py" line="118"/>
       <source>The vertical alignment of the text</source>
-      <translation type="unfinished">The vertical alignment of the text</translation>
+      <translation>Aliñamento vertical do texto</translation>
     </message>
     <message>
       <location filename="view_label.py" line="101"/>
@@ -1288,27 +1288,27 @@ beyond the dimension line</translation>
     <message>
       <location filename="task_scale.py" line="134"/>
       <source>X factor</source>
-      <translation type="unfinished">X factor</translation>
+      <translation>Factor X</translation>
     </message>
     <message>
       <location filename="task_scale.py" line="135"/>
       <source>Y factor</source>
-      <translation type="unfinished">Y factor</translation>
+      <translation>Factor Y</translation>
     </message>
     <message>
       <location filename="task_scale.py" line="136"/>
       <source>Z factor</source>
-      <translation type="unfinished">Z factor</translation>
+      <translation>Factor Z</translation>
     </message>
     <message>
       <location filename="task_scale.py" line="137"/>
       <source>Uniform scaling</source>
-      <translation type="unfinished">Uniform scaling</translation>
+      <translation>Escalada uniforme</translation>
     </message>
     <message>
       <location filename="task_scale.py" line="138"/>
       <source>Working plane orientation</source>
-      <translation type="unfinished">Working plane orientation</translation>
+      <translation>Orientación do plano de traballo</translation>
     </message>
     <message>
       <location filename="task_scale.py" line="139"/>
@@ -1347,32 +1347,32 @@ dende menú de Ferramentas -&gt; Xestión de complementos</translation>
     <message>
       <location filename="gui_lineslope.py" line="91"/>
       <source>Slope</source>
-      <translation type="unfinished">Slope</translation>
+      <translation>Pendente</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="273"/>
       <source>Save style</source>
-      <translation type="unfinished">Save style</translation>
+      <translation>Gardar estilo</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="274"/>
       <source>Name of this new style:</source>
-      <translation type="unfinished">Name of this new style:</translation>
+      <translation>Nome do novo estilo:</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="281"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>Aviso</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="282"/>
       <source>Name exists. Overwrite?</source>
-      <translation type="unfinished">Name exists. Overwrite?</translation>
+      <translation>O nome xa existe. Sobrescribir?</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="317"/>
       <source>Error: json module not found. Unable to save style</source>
-      <translation type="unfinished">Error: json module not found. Unable to save style</translation>
+      <translation>Erro: Non existe o modulo Son. Imposible gardar o estilo</translation>
     </message>
     <message>
       <location filename="gui_hatch.py" line="48"/>
@@ -1392,12 +1392,12 @@ dende menú de Ferramentas -&gt; Xestión de complementos</translation>
     <message>
       <location filename="gui_fillets.py" line="90"/>
       <source>Delete original objects</source>
-      <translation type="unfinished">Delete original objects</translation>
+      <translation>Eliminar os obxectos orixinais</translation>
     </message>
     <message>
       <location filename="gui_fillets.py" line="96"/>
       <source>Create chamfer</source>
-      <translation type="unfinished">Create chamfer</translation>
+      <translation>Crear bisel</translation>
     </message>
     <message>
       <location filename="gui_offset.py" line="329"/>
@@ -1407,7 +1407,7 @@ dende menú de Ferramentas -&gt; Xestión de complementos</translation>
     <message>
       <location filename="init_tools.py" line="48"/>
       <source>Arc tools</source>
-      <translation type="unfinished">Arc tools</translation>
+      <translation>Ferramentas de Arco</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="56"/>
@@ -1442,12 +1442,12 @@ dende menú de Ferramentas -&gt; Xestión de complementos</translation>
     <message>
       <location filename="init_tools.py" line="170"/>
       <source>&amp;Modification</source>
-      <translation type="unfinished">&amp;Modification</translation>
+      <translation>&amp;Modificación</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="172"/>
       <source>&amp;Utilities</source>
-      <translation type="unfinished">&amp;Utilities</translation>
+      <translation>&amp;Utilidades</translation>
     </message>
     <message>
       <location filename="gui_arrays.py" line="65"/>
@@ -1520,7 +1520,7 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="view_layer.py" line="407"/>
       <source>Add new layer</source>
-      <translation type="unfinished">Add new layer</translation>
+      <translation>Engadir nova capa</translation>
     </message>
   </context>
   <context>
@@ -1528,7 +1528,7 @@ The array can be turned into a polar or a circular array by changing its type.</
     <message>
       <location filename="gui_groups.py" line="365"/>
       <source>Add to Construction group</source>
-      <translation type="unfinished">Add to Construction group</translation>
+      <translation>Engadir a un grupo de construción</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="367"/>
@@ -1558,7 +1558,7 @@ It creates a construction group if it doesn't exist.</translation>
     <message>
       <location filename="gui_line_add_delete.py" line="57"/>
       <source>Add point</source>
-      <translation type="unfinished">Add point</translation>
+      <translation>Engadir punto</translation>
     </message>
     <message>
       <location filename="gui_line_add_delete.py" line="60"/>
@@ -1632,7 +1632,7 @@ CTRL to snap, SHIFT to constrain.</translation>
     <message>
       <location filename="gui_arcs.py" line="600"/>
       <source>Arc tools</source>
-      <translation type="unfinished">Arc tools</translation>
+      <translation>Ferramentas de Arco</translation>
     </message>
     <message>
       <location filename="gui_arcs.py" line="603"/>
@@ -2151,7 +2151,7 @@ A 'Link array' is more efficient when handling many copies but the 'Fuse' option
     <message>
       <location filename="gui_mirror.py" line="63"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>Simetría</translation>
     </message>
     <message>
       <location filename="gui_mirror.py" line="66"/>
@@ -2413,7 +2413,7 @@ CTRL to snap, SHIFT to constrain, ALT to copy.</translation>
     <message>
       <location filename="gui_groups.py" line="189"/>
       <source>Select group</source>
-      <translation type="unfinished">Select group</translation>
+      <translation>Escoller grupo</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="192"/>
@@ -2437,7 +2437,7 @@ those that are at the same level as this object, including the upper group that 
     <message>
       <location filename="gui_selectplane.py" line="65"/>
       <source>SelectPlane</source>
-      <translation type="unfinished">SelectPlane</translation>
+      <translation>Seleccionar plano</translation>
     </message>
     <message>
       <location filename="gui_selectplane.py" line="67"/>
@@ -2452,12 +2452,12 @@ You may also select a three vertices or a Working Plane Proxy.</translation>
     <message>
       <location filename="gui_setstyle.py" line="55"/>
       <source>Set style</source>
-      <translation type="unfinished">Set style</translation>
+      <translation>Activar estilo</translation>
     </message>
     <message>
       <location filename="gui_setstyle.py" line="57"/>
       <source>Sets default styles</source>
-      <translation type="unfinished">Sets default styles</translation>
+      <translation>Activar estilos por defecto</translation>
     </message>
   </context>
   <context>
@@ -2559,7 +2559,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="526"/>
       <source>Show dimensions</source>
-      <translation type="unfinished">Show dimensions</translation>
+      <translation>Amosar dimensions</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="529"/>
@@ -2572,7 +2572,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="313"/>
       <source>Endpoint</source>
-      <translation type="unfinished">Endpoint</translation>
+      <translation>Punto final</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="316"/>
@@ -2585,7 +2585,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="404"/>
       <source>Extension</source>
-      <translation type="unfinished">Extension</translation>
+      <translation>Extensión</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="407"/>
@@ -2637,7 +2637,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="163"/>
       <source>Midpoint</source>
-      <translation type="unfinished">Midpoint</translation>
+      <translation>Punto medio</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="166"/>
@@ -2702,7 +2702,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="495"/>
       <source>Special</source>
-      <translation type="unfinished">Special</translation>
+      <translation>Especial</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="498"/>
@@ -2715,7 +2715,7 @@ straight Draft lines that are drawn in the XY plane. Selected objects that aren'
     <message>
       <location filename="gui_snaps.py" line="559"/>
       <source>Working plane</source>
-      <translation type="unfinished">Working plane</translation>
+      <translation>Plano de traballo</translation>
     </message>
     <message>
       <location filename="gui_snaps.py" line="562"/>
@@ -2982,17 +2982,17 @@ Then you can use it to save a different camera position and objects' states any 
     <message>
       <location filename="InitGui.py" line="124"/>
       <source>&amp;Modification</source>
-      <translation type="unfinished">&amp;Modification</translation>
+      <translation>&amp;Modificación</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="127"/>
       <source>&amp;Utilities</source>
-      <translation type="unfinished">&amp;Utilities</translation>
+      <translation>&amp;Utilidades</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="50"/>
       <source>Arc tools</source>
-      <translation type="unfinished">Arc tools</translation>
+      <translation>Ferramentas de Arco</translation>
     </message>
     <message>
       <location filename="init_tools.py" line="58"/>
@@ -3486,17 +3486,17 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="1249"/>
       <source>Local u0394X</source>
-      <translation type="unfinished">Local u0394X</translation>
+      <translation>Local u0394X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1250"/>
       <source>Local u0394Y</source>
-      <translation type="unfinished">Local u0394Y</translation>
+      <translation>Local u0394Y</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1251"/>
       <source>Local u0394Z</source>
-      <translation type="unfinished">Local u0394Z</translation>
+      <translation>Local u0394Z</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1253"/>
@@ -3516,17 +3516,17 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="1257"/>
       <source>Global u0394X</source>
-      <translation type="unfinished">Global u0394X</translation>
+      <translation>Global u0394X</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1258"/>
       <source>Global u0394Y</source>
-      <translation type="unfinished">Global u0394Y</translation>
+      <translation>Global u0394Y</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1259"/>
       <source>Global u0394Z</source>
-      <translation type="unfinished">Global u0394Z</translation>
+      <translation>Global u0394Z</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="1261"/>
@@ -3571,7 +3571,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="DraftGui.py" line="2047"/>
       <source>Autogroup:</source>
-      <translation type="unfinished">Autogroup:</translation>
+      <translation>Auto-agrupar:</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="2374"/>
@@ -3596,7 +3596,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="importDWG.py" line="286"/>
       <source>LibreDWG error</source>
-      <translation type="unfinished">LibreDWG error</translation>
+      <translation>Erro LibreDWG</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="295"/>
@@ -3606,7 +3606,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="importDWG.py" line="228"/>
       <source>Conversion successful</source>
-      <translation type="unfinished">Conversion successful</translation>
+      <translation>Conversión rematada</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="231"/>
@@ -3621,7 +3621,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="importDWG.py" line="310"/>
       <source>QCAD error</source>
-      <translation type="unfinished">QCAD error</translation>
+      <translation>Erro QCAD</translation>
     </message>
     <message>
       <location filename="make_sketch.py" line="139"/>
@@ -3753,7 +3753,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="mirror.py" line="113"/>
       <source>mirrored</source>
-      <translation type="unfinished">mirrored</translation>
+      <translation>reflectido</translation>
     </message>
     <message>
       <location filename="downgrade.py" line="238"/>
@@ -3818,7 +3818,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_arc_3points.py" line="130"/>
       <source>Points:</source>
-      <translation type="unfinished">Points:</translation>
+      <translation>Puntos:</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="131"/>
@@ -3873,7 +3873,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_arc_3points.py" line="197"/>
       <source>Support:</source>
-      <translation type="unfinished">Support:</translation>
+      <translation>Soporte:</translation>
     </message>
     <message>
       <location filename="make_arc_3points.py" line="198"/>
@@ -3883,7 +3883,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_fillet.py" line="145"/>
       <source>length:</source>
-      <translation type="unfinished">length:</translation>
+      <translation>lonxitude:</translation>
     </message>
     <message>
       <location filename="make_fillet.py" line="132"/>
@@ -3898,7 +3898,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_fillet.py" line="145"/>
       <source>Segment</source>
-      <translation type="unfinished">Segment</translation>
+      <translation>Segmento</translation>
     </message>
     <message>
       <location filename="make_fillet.py" line="165"/>
@@ -4018,7 +4018,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_layer.py" line="69"/>
       <source>Layers</source>
-      <translation type="unfinished">Layers</translation>
+      <translation>Capas</translation>
     </message>
     <message>
       <location filename="gui_layers.py" line="47"/>
@@ -4119,7 +4119,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="make_orthoarray.py" line="424"/>
       <source>Rectangular array</source>
-      <translation type="unfinished">Rectangular array</translation>
+      <translation>Matriz rectangular</translation>
     </message>
     <message>
       <location filename="make_orthoarray.py" line="501"/>
@@ -4224,7 +4224,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="view_layer.py" line="358"/>
       <source>Activate this layer</source>
-      <translation type="unfinished">Activate this layer</translation>
+      <translation>Activar esta capa</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="364"/>
@@ -4239,7 +4239,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="view_layer.py" line="469"/>
       <source>Add new layer</source>
-      <translation type="unfinished">Add new layer</translation>
+      <translation>Engadir nova capa</translation>
     </message>
     <message>
       <location filename="view_layer.py" line="454"/>
@@ -4294,7 +4294,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="utils.py" line="650"/>
       <source>Solids:</source>
-      <translation type="unfinished">Solids:</translation>
+      <translation>Sólidos:</translation>
     </message>
     <message>
       <location filename="utils.py" line="651"/>
@@ -4304,7 +4304,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="utils.py" line="652"/>
       <source>Wires:</source>
-      <translation type="unfinished">Wires:</translation>
+      <translation>Arames:</translation>
     </message>
     <message>
       <location filename="utils.py" line="653"/>
@@ -4329,7 +4329,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="utils.py" line="699"/>
       <source>different types</source>
-      <translation type="unfinished">different types</translation>
+      <translation>Tipos diferentes</translation>
     </message>
     <message>
       <location filename="utils.py" line="709"/>
@@ -4369,7 +4369,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="utils.py" line="1059"/>
       <source>Please use </source>
-      <translation type="unfinished">Please use </translation>
+      <translation>Por favor empregue </translation>
     </message>
     <message>
       <location filename="utils.py" line="1059"/>
@@ -4514,7 +4514,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="task_orthoarray.py" line="379"/>
       <source>Object:</source>
-      <translation type="unfinished">Object:</translation>
+      <translation>Obxecto:</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="203"/>
@@ -4539,17 +4539,17 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="task_orthoarray.py" line="348"/>
       <source>Fuse:</source>
-      <translation type="unfinished">Fuse:</translation>
+      <translation>Fundir:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="362"/>
       <source>Create Link array:</source>
-      <translation type="unfinished">Create Link array:</translation>
+      <translation>Crear unha ligazón a unha matriz:</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="332"/>
       <source>Number of elements:</source>
-      <translation type="unfinished">Number of elements:</translation>
+      <translation>Numero de elementos:</translation>
     </message>
     <message>
       <location filename="task_polararray.py" line="333"/>
@@ -4559,12 +4559,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="task_circulararray.py" line="388"/>
       <source>Center of rotation:</source>
-      <translation type="unfinished">Center of rotation:</translation>
+      <translation>Centro de rotación:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="400"/>
       <source>Aborted:</source>
-      <translation type="unfinished">Aborted:</translation>
+      <translation>Abortado:</translation>
     </message>
     <message>
       <location filename="task_circulararray.py" line="222"/>
@@ -4639,17 +4639,17 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="task_orthoarray.py" line="382"/>
       <source>Interval X:</source>
-      <translation type="unfinished">Interval X:</translation>
+      <translation>Intervalo X:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="385"/>
       <source>Number of Y elements:</source>
-      <translation type="unfinished">Number of Y elements:</translation>
+      <translation>Numero de elementos Y:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="387"/>
       <source>Interval Y:</source>
-      <translation type="unfinished">Interval Y:</translation>
+      <translation>Intervalo Y:</translation>
     </message>
     <message>
       <location filename="task_orthoarray.py" line="390"/>
@@ -4659,7 +4659,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
     <message>
       <location filename="task_orthoarray.py" line="392"/>
       <source>Interval Z:</source>
-      <translation type="unfinished">Interval Z:</translation>
+      <translation>Intervalo Z:</translation>
     </message>
     <message>
       <location filename="task_shapestring.py" line="58"/>
@@ -4731,12 +4731,12 @@ Para permitir o FreeCAD a descarga destas bibliotecas, responda Si.</translation
     <message>
       <location filename="gui_lines.py" line="167"/>
       <source>Create Line</source>
-      <translation type="unfinished">Create Line</translation>
+      <translation>Facer liña</translation>
     </message>
     <message>
       <location filename="gui_lines.py" line="189"/>
       <source>Create Wire</source>
-      <translation type="unfinished">Create Wire</translation>
+      <translation>Crear arame</translation>
     </message>
     <message>
       <location filename="gui_splines.py" line="140"/>
@@ -4751,7 +4751,7 @@ Para permitir o FreeCAD a descarga destas bibliotecas, responda Si.</translation
     <message>
       <location filename="gui_lines.py" line="356"/>
       <source>Convert to Wire</source>
-      <translation type="unfinished">Convert to Wire</translation>
+      <translation>Converter en Arame</translation>
     </message>
     <message>
       <location filename="gui_edit_draft_objects.py" line="569"/>
@@ -4836,12 +4836,12 @@ Para permitir o FreeCAD a descarga destas bibliotecas, responda Si.</translation
     <message>
       <location filename="gui_annotationstyleeditor.py" line="316"/>
       <source>JSON file (*.json)</source>
-      <translation type="unfinished">JSON file (*.json)</translation>
+      <translation>Ficheiro JSON (*.json)</translation>
     </message>
     <message>
       <location filename="gui_annotationstyleeditor.py" line="314"/>
       <source>Save styles file</source>
-      <translation type="unfinished">Save styles file</translation>
+      <translation>Gardar ficheiro de estilos</translation>
     </message>
     <message>
       <location filename="gui_upgrade.py" line="85"/>
@@ -4891,7 +4891,7 @@ Para permitir o FreeCAD a descarga destas bibliotecas, responda Si.</translation
     <message>
       <location filename="gui_togglemodes.py" line="93"/>
       <source>Construction mode</source>
-      <translation type="unfinished">Construction mode</translation>
+      <translation>Modo construción</translation>
     </message>
     <message>
       <location filename="gui_togglemodes.py" line="125"/>
@@ -5026,7 +5026,7 @@ Para permitir o FreeCAD a descarga destas bibliotecas, responda Si.</translation
     <message>
       <location filename="gui_mirror.py" line="123"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>Simetría</translation>
     </message>
     <message>
       <location filename="gui_mirror.py" line="204"/>
@@ -5086,17 +5086,17 @@ Para permitir o FreeCAD a descarga destas bibliotecas, responda Si.</translation
     <message>
       <location filename="gui_snapper.py" line="1543"/>
       <source>(ON)</source>
-      <translation type="unfinished">(ON)</translation>
+      <translation>(ACENDIDO)</translation>
     </message>
     <message>
       <location filename="gui_snapper.py" line="1546"/>
       <source>(OFF)</source>
-      <translation type="unfinished">(OFF)</translation>
+      <translation>(APAGADO)</translation>
     </message>
     <message>
       <location filename="gui_shape2dview.py" line="109"/>
       <source>Create 2D view</source>
-      <translation type="unfinished">Create 2D view</translation>
+      <translation>Crear vista 2D</translation>
     </message>
     <message>
       <location filename="gui_beziers.py" line="332"/>
@@ -5181,17 +5181,17 @@ Para permitir o FreeCAD a descarga destas bibliotecas, responda Si.</translation
     <message>
       <location filename="gui_rectangles.py" line="125"/>
       <source>Create Plane</source>
-      <translation type="unfinished">Create Plane</translation>
+      <translation>Crear Plano</translation>
     </message>
     <message>
       <location filename="gui_rectangles.py" line="142"/>
       <source>Create Rectangle</source>
-      <translation type="unfinished">Create Rectangle</translation>
+      <translation>Crear Rectángulo</translation>
     </message>
     <message>
       <location filename="gui_draft2sketch.py" line="66"/>
       <source>Select an object to convert.</source>
-      <translation type="unfinished">Select an object to convert.</translation>
+      <translation>Escoller un obxecto a converter.</translation>
     </message>
     <message>
       <location filename="gui_draft2sketch.py" line="99"/>
@@ -5221,7 +5221,7 @@ Para permitir o FreeCAD a descarga destas bibliotecas, responda Si.</translation
     <message>
       <location filename="gui_labels.py" line="157"/>
       <source>Create Label</source>
-      <translation type="unfinished">Create Label</translation>
+      <translation>Crear etiqueta</translation>
     </message>
     <message>
       <location filename="gui_labels.py" line="218"/>
@@ -5431,7 +5431,7 @@ Para permitir o FreeCAD a descarga destas bibliotecas, responda Si.</translation
     <message>
       <location filename="gui_groups.py" line="183"/>
       <source>Select group</source>
-      <translation type="unfinished">Select group</translation>
+      <translation>Escoller grupo</translation>
     </message>
     <message>
       <location filename="gui_groups.py" line="193"/>
@@ -5603,17 +5603,17 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="gui_lineops.py" line="92"/>
       <source>Finish line</source>
-      <translation type="unfinished">Finish line</translation>
+      <translation>Liña de meta</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="118"/>
       <source>Close line</source>
-      <translation type="unfinished">Close line</translation>
+      <translation>Pechar liña</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="144"/>
       <source>Undo line</source>
-      <translation type="unfinished">Undo line</translation>
+      <translation>Desfacer liña</translation>
     </message>
   </context>
   <context>
@@ -5660,7 +5660,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="gui_lineops.py" line="124"/>
       <source>Close Line</source>
-      <translation type="unfinished">Close Line</translation>
+      <translation>Pechar liña</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="125"/>
@@ -5673,7 +5673,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="gui_lineops.py" line="98"/>
       <source>Finish line</source>
-      <translation type="unfinished">Finish line</translation>
+      <translation>Liña de meta</translation>
     </message>
     <message>
       <location filename="gui_lineops.py" line="99"/>
@@ -5699,7 +5699,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="importDWG.py" line="233"/>
       <source>Conversion successful</source>
-      <translation type="unfinished">Conversion successful</translation>
+      <translation>Conversión rematada</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="277"/>
@@ -5717,7 +5717,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
       <source>Style name</source>
-      <translation type="unfinished">Style name</translation>
+      <translation>Nome do estilo</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
@@ -5727,7 +5727,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="50"/>
       <source>Add new...</source>
-      <translation type="unfinished">Add new...</translation>
+      <translation>Engadir novo...</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="79"/>
@@ -5783,7 +5783,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="183"/>
       <source>Line spacing</source>
-      <translation type="unfinished">Line spacing</translation>
+      <translation>Espazo entre liñas</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="190"/>
@@ -5821,7 +5821,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="258"/>
       <source>Decimals</source>
-      <translation type="unfinished">Decimals</translation>
+      <translation>Decimais</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="265"/>
@@ -5843,12 +5843,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="278"/>
       <source>Show unit</source>
-      <translation type="unfinished">Show unit</translation>
+      <translation>Amosar unidades</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="331"/>
       <source>Line and arrows</source>
-      <translation type="unfinished">Line and arrows</translation>
+      <translation>Liñas e frechas</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="337"/>
@@ -5892,7 +5892,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="370"/>
       <source>Show lines</source>
-      <translation type="unfinished">Show lines</translation>
+      <translation>Mostrar liñas</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="377"/>
@@ -6110,7 +6110,7 @@ Negative values will result in copies produced in the negative direction.</trans
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="49"/>
       <source>Z intervals</source>
-      <translation type="unfinished">Z intervals</translation>
+      <translation>Intervalos Z</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="57"/>
@@ -6189,7 +6189,7 @@ Negative values will result in copies produced in the negative direction.</trans
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="189"/>
       <source>X intervals</source>
-      <translation type="unfinished">X intervals</translation>
+      <translation>Intervalos X</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="265"/>
@@ -6208,7 +6208,7 @@ Negative values will result in copies produced in the negative direction.</trans
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="280"/>
       <source>Y intervals</source>
-      <translation type="unfinished">Y intervals</translation>
+      <translation>Intervalos Y</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="356"/>
@@ -6225,7 +6225,7 @@ The number must be at least 1 in each direction.</translation>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="370"/>
       <source>Number of elements</source>
-      <translation type="unfinished">Number of elements</translation>
+      <translation>Numero de elementos</translation>
     </message>
   </context>
   <context>
@@ -6322,7 +6322,7 @@ It must be at least 2.</translation>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="212"/>
       <source>Number of elements</source>
-      <translation type="unfinished">Number of elements</translation>
+      <translation>Numero de elementos</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="235"/>
@@ -6568,7 +6568,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="244"/>
       <source>Center view</source>
-      <translation type="unfinished">Center view</translation>
+      <translation>Vista centrada</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="251"/>
@@ -6578,12 +6578,12 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="254"/>
       <source>Previous</source>
-      <translation type="unfinished">Previous</translation>
+      <translation>Anterior</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="14"/>
       <source>Style settings</source>
-      <translation type="unfinished">Style settings</translation>
+      <translation>Configuración de estilo</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="22"/>
@@ -6608,7 +6608,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="66"/>
       <source>The color of faces</source>
-      <translation type="unfinished">The color of faces</translation>
+      <translation>A cor das caras</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="73"/>
@@ -6628,12 +6628,12 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="94"/>
       <source>The color of lines</source>
-      <translation type="unfinished">The color of lines</translation>
+      <translation>A cor das liñas</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="101"/>
       <source>The line style</source>
-      <translation type="unfinished">The line style</translation>
+      <translation>A liña de estilo</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="105"/>
@@ -6693,7 +6693,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="169"/>
       <source>Shape color</source>
-      <translation type="unfinished">Shape color</translation>
+      <translation>Cor da forma</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="176"/>
@@ -6703,7 +6703,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="183"/>
       <source>The transparency of faces</source>
-      <translation type="unfinished">The transparency of faces</translation>
+      <translation>A transparencia das caras</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="186"/>
@@ -6748,7 +6748,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="237"/>
       <source>Text font</source>
-      <translation type="unfinished">Text font</translation>
+      <translation>Fonte para texto</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="244"/>
@@ -6763,7 +6763,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="264"/>
       <source>Text size</source>
-      <translation type="unfinished">Text size</translation>
+      <translation>Tamaño do texto</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="271"/>
@@ -6793,7 +6793,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="318"/>
       <source>Show unit</source>
-      <translation type="unfinished">Show unit</translation>
+      <translation>Amosar unidades</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="325"/>
@@ -6823,7 +6823,7 @@ value by using the [ and ] keys while drawing</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="363"/>
       <source>Line spacing</source>
-      <translation type="unfinished">Line spacing</translation>
+      <translation>Espazo entre liñas</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="370"/>

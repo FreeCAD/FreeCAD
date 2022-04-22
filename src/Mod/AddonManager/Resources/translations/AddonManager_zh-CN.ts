@@ -690,7 +690,7 @@
       <location filename="change_branch.py" line="178"/>
       <source>Tag</source>
       <comment>git terminology</comment>
-      <translation type="unfinished">Tag</translation>
+      <translation>标记：</translation>
     </message>
     <message numerus="yes">
       <location filename="change_branch.py" line="261"/>
@@ -798,6 +798,26 @@
       <translation>正在检查更新...</translation>
     </message>
     <message>
+      <location filename="AddonManager.py" line="773"/>
+      <source>Apply {} update(s)</source>
+      <translation>应用 {} 更新(s)</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="577"/>
+      <source>No updates available</source>
+      <translation>没有可用的更新</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="915"/>
+      <source>Too many to list</source>
+      <translation>因数据过多而无法列出</translation>
+    </message>
+    <message>
+      <location filename="AddonManager.py" line="893"/>
+      <source>Missing Requirement</source>
+      <translation>缺少要求</translation>
+    </message>
+    <message>
       <location filename="AddonManager.py" line="86"/>
       <source>The addons that can be installed here are not officially part of FreeCAD, and are not reviewed by the FreeCAD team. Make sure you know what you are installing!</source>
       <translation>在此安装的插件不是 FreeCAD 的官方内容，也未经 FreeCAD 团队审核。请确保您知道您所安装的内容！</translation>
@@ -873,16 +893,6 @@
       <translation>需要重启</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="773"/>
-      <source>Apply {} update(s)</source>
-      <translation>应用 {} 更新(s)</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="577"/>
-      <source>No updates available</source>
-      <translation>没有可用的更新</translation>
-    </message>
-    <message>
       <location filename="AddonManager.py" line="774"/>
       <source>All packages updates failed. Packages:</source>
       <translation>所有软件包更新失败。软件包：</translation>
@@ -893,14 +903,9 @@
       <translation>错误的软件包</translation>
     </message>
     <message>
-      <location filename="AddonManager.py" line="915"/>
-      <source>Too many to list</source>
-      <translation>因数据过多而无法列出</translation>
-    </message>
-    <message>
-      <location filename="AddonManager.py" line="893"/>
-      <source>Missing Requirement</source>
-      <translation>缺少要求</translation>
+      <location filename="AddonManager.py" line="1079"/>
+      <source>Press OK to install anyway.</source>
+      <translation>按“确定”安装。</translation>
     </message>
     <message>
       <location filename="AddonManager.py" line="964"/>

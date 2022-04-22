@@ -299,11 +299,11 @@
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
-      <translation type="unfinished">Enter an expression...</translation>
+      <translation>Inserir unha expresión...</translation>
     </message>
     <message>
       <source>Expression: </source>
-      <translation type="unfinished">Expression: </translation>
+      <translation>Expresión: </translation>
     </message>
   </context>
   <context>
@@ -507,7 +507,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>This software uses open source components whose copyright and other proprietary rights belong to their respective owners:</source>
-      <translation>Este software usa compoñentes de código aberto dos que os dereito de autor e outros dereitos propietarios pertencen ós seus respectivos donos:</translation>
+      <translation>Este software usa compoñentes de código aberto dos que os dereitos de autor e outros dereitos propietarios pertencen ós seus respectivos donos:</translation>
     </message>
     <message>
       <source>License</source>
@@ -524,17 +524,17 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>FreeCAD would not be possible without the contributions of</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+      <translation>FreeCAD non sería posible sen as contribucións de</translation>
     </message>
     <message>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
-      <translation type="unfinished">Individuals</translation>
+      <translation>Individuos</translation>
     </message>
     <message>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
-      <translation type="unfinished">Organizations</translation>
+      <translation>Organizacións</translation>
     </message>
   </context>
   <context>
@@ -754,7 +754,7 @@ Se non marca esta opción, entón a propiedade debe nomearse de forma única, e 
     </message>
     <message>
       <source>Prefix group name</source>
-      <translation>Nome do grupo de prefixo</translation>
+      <translation>Prefixo do nome do grupo</translation>
     </message>
   </context>
   <context>
@@ -1433,7 +1433,7 @@ Se non marca esta opción, entón a propiedade debe nomearse de forma única, e 
     </message>
     <message>
       <source>Font family to be used for selected code type</source>
-      <translation>Tipo de letra que se usará o tipo de código seleccionado</translation>
+      <translation>Tipo de letra que empregara o tipo de código escollido</translation>
     </message>
     <message>
       <source>Color:</source>
@@ -1441,7 +1441,7 @@ Se non marca esta opción, entón a propiedade debe nomearse de forma única, e 
     </message>
     <message>
       <source>Code lines will be numbered</source>
-      <translation type="unfinished">Code lines will be numbered</translation>
+      <translation>As liñas de código estarán numeradas</translation>
     </message>
   </context>
   <context>
@@ -1955,7 +1955,7 @@ Por favor, especifique outro directorio.</translation>
     </message>
     <message>
       <source>Find...</source>
-      <translation>Buscar...</translation>
+      <translation>Procurar...</translation>
     </message>
     <message>
       <source>Sorted</source>
@@ -1967,7 +1967,7 @@ Por favor, especifique outro directorio.</translation>
     </message>
     <message>
       <source>Type in a group name to find it</source>
-      <translation>Escriba o nome dun grupo para encontralo</translation>
+      <translation>Escriba o nome dun grupo para atopalo</translation>
     </message>
     <message>
       <source>Search Group</source>
@@ -1982,7 +1982,7 @@ Por favor, especifique outro directorio.</translation>
     </message>
     <message>
       <source>Find what:</source>
-      <translation>Atopar o que:</translation>
+      <translation>Que atopar:</translation>
     </message>
     <message>
       <source>Look at</source>
@@ -2014,7 +2014,7 @@ Por favor, especifique outro directorio.</translation>
     </message>
     <message>
       <source>Can't find the text: %1</source>
-      <translation>Non atopado o texto: %1</translation>
+      <translation>O texto: %1 non foi atopado</translation>
     </message>
   </context>
   <context>
@@ -2351,7 +2351,7 @@ on-screen while displaying the log message</translation>
     </message>
     <message>
       <source>Show report view on log message</source>
-      <translation type="unfinished">Show report view on log message</translation>
+      <translation>Mostrar a vista do informe na mensaxe de rexistro</translation>
     </message>
     <message>
       <source>Font color for normal messages in Report view panel</source>
@@ -2387,11 +2387,11 @@ from Python console to Report view panel</translation>
     </message>
     <message>
       <source>Include a timecode for each entry</source>
-      <translation type="unfinished">Include a timecode for each entry</translation>
+      <translation>Inclúe un código de tempo para cada entrada</translation>
     </message>
     <message>
       <source>Normal messages will be recorded</source>
-      <translation type="unfinished">Normal messages will be recorded</translation>
+      <translation>As mensaxes normais gravaranse</translation>
     </message>
     <message>
       <source>Record normal messages</source>
@@ -2521,7 +2521,7 @@ will be shown at the lower left corner in opened files</translation>
     </message>
     <message>
       <source>Rendering</source>
-      <translation type="unfinished">Rendering</translation>
+      <translation>Renderización</translation>
     </message>
     <message>
       <source>If selected, Vertex Buffer Objects (VBO) will be used.
@@ -2547,11 +2547,11 @@ report this setting as enabled when seeking support on the FreeCAD forums</trans
     </message>
     <message>
       <source>Use OpenGL VBO (Vertex Buffer Object)</source>
-      <translation type="unfinished">Use OpenGL VBO (Vertex Buffer Object)</translation>
+      <translation>Empregar OpenGL VBO (Vertex Buffer Object)</translation>
     </message>
     <message>
       <source>Render cache</source>
-      <translation type="unfinished">Render cache</translation>
+      <translation>Renderizar caché</translation>
     </message>
     <message>
       <source>'Render Caching' is another way to say 'Rendering Acceleration'.
@@ -2575,15 +2575,15 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>Distributed</source>
-      <translation type="unfinished">Distributed</translation>
+      <translation>Distribución</translation>
     </message>
     <message>
       <source>Centralized</source>
-      <translation type="unfinished">Centralized</translation>
+      <translation>Centralizado</translation>
     </message>
     <message>
       <source>Transparent objects:</source>
-      <translation type="unfinished">Transparent objects:</translation>
+      <translation>Obxectos transparentes:</translation>
     </message>
     <message>
       <source>Render types of transparent objects</source>
@@ -2591,11 +2591,11 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>One pass</source>
-      <translation type="unfinished">One pass</translation>
+      <translation>Unha pasada</translation>
     </message>
     <message>
       <source>Backface pass</source>
-      <translation type="unfinished">Backface pass</translation>
+      <translation>Pase de cara posterior</translation>
     </message>
     <message>
       <source>Size of vertices in the Sketcher workbench</source>
@@ -2603,7 +2603,7 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>Eye to eye distance for stereo modes</source>
-      <translation type="unfinished">Eye to eye distance for stereo modes</translation>
+      <translation>Distancia entre ollos para os modos estéreo</translation>
     </message>
     <message>
       <source>Backlight is enabled with the defined color</source>
@@ -2611,15 +2611,15 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>Backlight color</source>
-      <translation type="unfinished">Backlight color</translation>
+      <translation>Cor da luz de fondo</translation>
     </message>
     <message>
       <source>Intensity</source>
-      <translation type="unfinished">Intensity</translation>
+      <translation>Intensidade</translation>
     </message>
     <message>
       <source>Intensity of the backlight</source>
-      <translation type="unfinished">Intensity of the backlight</translation>
+      <translation>Intensidade de luz de fondo</translation>
     </message>
     <message>
       <source>Objects will be projected in orthographic projection</source>
@@ -2637,7 +2637,7 @@ opening or creation</translation>
     </message>
     <message>
       <source>Show axis cross by default</source>
-      <translation type="unfinished">Show axis cross by default</translation>
+      <translation>Mostrar a cruz do eixe por defecto</translation>
     </message>
     <message>
       <source>Pick radius (px):</source>
@@ -2661,7 +2661,7 @@ Changing this option requires a restart of the application.</translation>
     </message>
     <message>
       <source>Use software OpenGL</source>
-      <translation type="unfinished">Use software OpenGL</translation>
+      <translation>Usa software OpenGL</translation>
     </message>
     <message>
       <source>What kind of multisample anti-aliasing is used</source>
@@ -2995,7 +2995,7 @@ get date suffix according to the specified format</translation>
     </message>
     <message>
       <source>Date format</source>
-      <translation type="unfinished">Date format</translation>
+      <translation>Formato de data</translation>
     </message>
     <message>
       <source>Allow objects to have same label/name</source>
@@ -3031,35 +3031,35 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Default company name to use for new files</source>
-      <translation type="unfinished">Default company name to use for new files</translation>
+      <translation>Nome da empresa a se usar para novos documentos</translation>
     </message>
     <message>
       <source>Default license for new documents</source>
-      <translation type="unfinished">Default license for new documents</translation>
+      <translation>A licenza por defecto para os novos documentos</translation>
     </message>
     <message>
       <source>Creative Commons Attribution</source>
-      <translation type="unfinished">Creative Commons Attribution</translation>
+      <translation>Recoñecemento Creative Commons</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-ShareAlike</source>
-      <translation type="unfinished">Creative Commons Attribution-ShareAlike</translation>
+      <translation>Creative Commons Recoñecemento-Compartir igual</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NoDerivatives</source>
-      <translation type="unfinished">Creative Commons Attribution-NoDerivatives</translation>
+      <translation>Creative Commons Recoñecemento - Sen obra derivada</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NonCommercial</source>
-      <translation type="unfinished">Creative Commons Attribution-NonCommercial</translation>
+      <translation>Creative Commons Recoñecemento - Non comercial</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NonCommercial-ShareAlike</source>
-      <translation type="unfinished">Creative Commons Attribution-NonCommercial-ShareAlike</translation>
+      <translation>Creative Commons Recoñecemento - Non comercial-Compartir igual</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-NonCommercial-NoDerivatives</source>
-      <translation type="unfinished">Creative Commons Attribution-NonCommercial-NoDerivatives</translation>
+      <translation>Creative Commons Recoñecemento - Non comercial - Sen obra derivada</translation>
     </message>
     <message>
       <source>URL describing more about the license</source>
@@ -3283,26 +3283,26 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Framebuffer (custom)</source>
-      <translation type="unfinished">Framebuffer (custom)</translation>
+      <translation>Memoria temporal de fotogramas (personalizada)</translation>
     </message>
     <message>
       <source>Framebuffer (as is)</source>
-      <translation type="unfinished">Framebuffer (as is)</translation>
+      <translation>Memoria temporal de fotogramas (tal como está)</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
       <source>Workbench Name</source>
-      <translation type="unfinished">Workbench Name</translation>
+      <translation>Nome do espazo de traballo</translation>
     </message>
     <message>
       <source>Autoload?</source>
-      <translation type="unfinished">Autoload?</translation>
+      <translation>Cargar automaticamente?</translation>
     </message>
     <message>
       <source>Load Now</source>
-      <translation type="unfinished">Load Now</translation>
+      <translation>Cargar agora</translation>
     </message>
     <message>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -3321,7 +3321,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Autoload</source>
-      <translation type="unfinished">Autoload</translation>
+      <translation>Cargar automaticamente</translation>
     </message>
     <message>
       <source>If checked</source>
@@ -3337,11 +3337,11 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Loaded</source>
-      <translation type="unfinished">Loaded</translation>
+      <translation>Cargado</translation>
     </message>
     <message>
       <source>Load now</source>
-      <translation type="unfinished">Load now</translation>
+      <translation>Cargar agora</translation>
     </message>
   </context>
   <context>
@@ -3631,19 +3631,19 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Rotation mode</source>
-      <translation type="unfinished">Rotation mode</translation>
+      <translation>Modo de rotación</translation>
     </message>
     <message>
       <source>Window center</source>
-      <translation type="unfinished">Window center</translation>
+      <translation>Centro da fiestra</translation>
     </message>
     <message>
       <source>Drag at cursor</source>
-      <translation type="unfinished">Drag at cursor</translation>
+      <translation>Arrastra o cursor</translation>
     </message>
     <message>
       <source>Object center</source>
-      <translation type="unfinished">Object center</translation>
+      <translation>Centro do obxecto</translation>
     </message>
     <message>
       <source>Rotates to nearest possible state when clicking a cube face</source>
@@ -3655,7 +3655,7 @@ Mouse tilting is not disabled by this setting.</translation>
     </message>
     <message>
       <source>Cube size</source>
-      <translation type="unfinished">Cube size</translation>
+      <translation>Tamaño do cubo</translation>
     </message>
     <message>
       <source>Size of the navigation cube</source>
@@ -3799,7 +3799,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>FEM (mm, N, sec)</source>
-      <translation type="unfinished">FEM (mm, N, sec)</translation>
+      <translation>FEM (mm, N, sec)</translation>
     </message>
   </context>
   <context>
@@ -3838,7 +3838,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Object being edited</source>
-      <translation>Obxecto sendo editado</translation>
+      <translation>O obxecto está sendo editado</translation>
     </message>
     <message>
       <source>Active container</source>
@@ -3866,7 +3866,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Bottom color</source>
-      <translation type="unfinished">Bottom color</translation>
+      <translation>Cor inferior</translation>
     </message>
     <message>
       <source>Background will have selected color gradient</source>
@@ -3874,7 +3874,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Top color</source>
-      <translation type="unfinished">Top color</translation>
+      <translation>Cor superior</translation>
     </message>
     <message>
       <source>Tree view</source>
@@ -3956,7 +3956,7 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>Decimals:</source>
-      <translation type="unfinished">Decimals:</translation>
+      <translation>Decimais:</translation>
     </message>
     <message>
       <source>Decimals for the Quantity</source>
@@ -3964,15 +3964,15 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>Unit category:</source>
-      <translation type="unfinished">Unit category:</translation>
+      <translation>Categoría da unidade:</translation>
     </message>
     <message>
       <source>Unit category for the Quantity</source>
-      <translation type="unfinished">Unit category for the Quantity</translation>
+      <translation>Categoría de unidade para a Cantidade</translation>
     </message>
     <message>
       <source>Copy the result into the clipboard</source>
-      <translation type="unfinished">Copy the result into the clipboard</translation>
+      <translation>Copia o resultado no portapapeis</translation>
     </message>
   </context>
   <context>
@@ -3983,7 +3983,7 @@ The preference system is the one set in the general preferences.</translation>
     </message>
     <message>
       <source>unknown unit:</source>
-      <translation type="unfinished">unknown unit:</translation>
+      <translation>unidade descoñecida:</translation>
     </message>
   </context>
   <context>
@@ -4365,7 +4365,7 @@ A columna 'Estado' amosa se é posible recuperar o documento.</translation>
     </message>
     <message>
       <source>Do you really want to remove this parameter group?</source>
-      <translation type="unfinished">Do you really want to remove this parameter group?</translation>
+      <translation>Quere de verdade desbotar este grupo de parámetros?</translation>
     </message>
   </context>
   <context>
@@ -5477,7 +5477,7 @@ No lado dereito escolléronse %2.</translation>
     </message>
     <message>
       <source>Auto expand</source>
-      <translation type="unfinished">Auto expand</translation>
+      <translation>Expansión automática</translation>
     </message>
   </context>
   <context>
@@ -5588,7 +5588,7 @@ Quere saír sen gardar os seus datos?</translation>
     </message>
     <message>
       <source>Save history</source>
-      <translation type="unfinished">Save history</translation>
+      <translation>Gardar historial</translation>
     </message>
     <message>
       <source>Saves Python history across %1 sessions</source>
@@ -5776,7 +5776,7 @@ Quere especificar outro directorio?</translation>
     <name>Gui::TaskElementColors</name>
     <message>
       <source>Set element color</source>
-      <translation type="unfinished">Set element color</translation>
+      <translation>Establecer a cor do elemento</translation>
     </message>
     <message>
       <source>TextLabel</source>
@@ -5784,7 +5784,7 @@ Quere especificar outro directorio?</translation>
     </message>
     <message>
       <source>Recompute after commit</source>
-      <translation type="unfinished">Recompute after commit</translation>
+      <translation>Recalcular despois da confirmación</translation>
     </message>
     <message>
       <source>Remove</source>
@@ -5796,15 +5796,15 @@ Quere especificar outro directorio?</translation>
     </message>
     <message>
       <source>Remove all</source>
-      <translation type="unfinished">Remove all</translation>
+      <translation>Eliminar todo</translation>
     </message>
     <message>
       <source>Hide</source>
-      <translation type="unfinished">Hide</translation>
+      <translation>Agochar</translation>
     </message>
     <message>
       <source>Box select</source>
-      <translation type="unfinished">Box select</translation>
+      <translation>Caixa de selección</translation>
     </message>
     <message>
       <source>On-top when selected</source>
@@ -5953,7 +5953,7 @@ Quere especificar outro directorio?</translation>
     </message>
     <message>
       <source>Korean</source>
-      <translation type="unfinished">Korean</translation>
+      <translation>Coreano</translation>
     </message>
     <message>
       <source>Russian</source>
@@ -5973,7 +5973,7 @@ Quere especificar outro directorio?</translation>
     </message>
     <message>
       <source>Portuguese, Brazilian</source>
-      <translation type="unfinished">Portuguese, Brazilian</translation>
+      <translation>Portugués, Brasil</translation>
     </message>
     <message>
       <source>Portuguese</source>
@@ -6057,15 +6057,15 @@ Quere especificar outro directorio?</translation>
     </message>
     <message>
       <source>Arabic</source>
-      <translation type="unfinished">Arabic</translation>
+      <translation>Árabe</translation>
     </message>
     <message>
       <source>Vietnamese</source>
-      <translation type="unfinished">Vietnamese</translation>
+      <translation>Vietnamita</translation>
     </message>
     <message>
       <source>Bulgarian</source>
-      <translation type="unfinished">Bulgarian</translation>
+      <translation>Búlgaro</translation>
     </message>
     <message>
       <source>Greek</source>
@@ -6073,7 +6073,7 @@ Quere especificar outro directorio?</translation>
     </message>
     <message>
       <source>Spanish, Argentina</source>
-      <translation type="unfinished">Spanish, Argentina</translation>
+      <translation>Español, Arxentina</translation>
     </message>
   </context>
   <context>
@@ -6170,39 +6170,39 @@ Quere especificar outro directorio?</translation>
     </message>
     <message>
       <source>Show hidden items</source>
-      <translation type="unfinished">Show hidden items</translation>
+      <translation>Mostrar elementos ocultos</translation>
     </message>
     <message>
       <source>Show hidden tree view items</source>
-      <translation type="unfinished">Show hidden tree view items</translation>
+      <translation>Mostrar arbore de elementos ocultos</translation>
     </message>
     <message>
       <source>Hide item</source>
-      <translation type="unfinished">Hide item</translation>
+      <translation>Ocultar elemento</translation>
     </message>
     <message>
       <source>Hide the item in tree</source>
-      <translation type="unfinished">Hide the item in tree</translation>
+      <translation>Ocultar o elemento na árbore</translation>
     </message>
     <message>
       <source>Close document</source>
-      <translation type="unfinished">Close document</translation>
+      <translation>Pechar o documento</translation>
     </message>
     <message>
       <source>Close the document</source>
-      <translation type="unfinished">Close the document</translation>
+      <translation>Pecha o documento</translation>
     </message>
     <message>
       <source>Reload document</source>
-      <translation type="unfinished">Reload document</translation>
+      <translation>Recargar o documento</translation>
     </message>
     <message>
       <source>Reload a partially loaded document</source>
-      <translation type="unfinished">Reload a partially loaded document</translation>
+      <translation>Volve cargar un documento parcialmente cargado</translation>
     </message>
     <message>
       <source>Allow partial recomputes</source>
-      <translation type="unfinished">Allow partial recomputes</translation>
+      <translation>Permitir recálculos parciais</translation>
     </message>
     <message>
       <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
@@ -6210,15 +6210,15 @@ Quere especificar outro directorio?</translation>
     </message>
     <message>
       <source>Recompute object</source>
-      <translation type="unfinished">Recompute object</translation>
+      <translation>Recalcular obxecto</translation>
     </message>
     <message>
       <source>Recompute the selected object</source>
-      <translation type="unfinished">Recompute the selected object</translation>
+      <translation>Recalcular o obxecto seleccionado</translation>
     </message>
     <message>
       <source> (but must be executed)</source>
-      <translation type="unfinished"> (but must be executed)</translation>
+      <translation> (pero debe ser executado)</translation>
     </message>
   </context>
   <context>
@@ -6846,7 +6846,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Paste</source>
-      <translation>Colar</translation>
+      <translation>Pegar</translation>
     </message>
     <message>
       <source>Expression error</source>
@@ -6864,7 +6864,7 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Simple group</source>
-      <translation type="unfinished">Simple group</translation>
+      <translation>Grupo sinxelo</translation>
     </message>
     <message>
       <source>Group with links</source>
@@ -6904,7 +6904,7 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Invalid name</source>
-      <translation type="unfinished">Invalid name</translation>
+      <translation>Nome non válido</translation>
     </message>
     <message>
       <source>The property name or group name must only contain alpha numericals,
@@ -7005,8 +7005,8 @@ Document: </translation>
     <message>
       <source>
   Path: </source>
-      <translation type="unfinished">
-  Path: </translation>
+      <translation>
+Camiño: </translation>
     </message>
     <message>
       <source>Identical physical path</source>
@@ -7038,7 +7038,7 @@ Physical path: </translation>
     </message>
     <message>
       <source>Could not save document</source>
-      <translation type="unfinished">Could not save document</translation>
+      <translation>Non se puido gardar o documento</translation>
     </message>
     <message>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
@@ -7054,7 +7054,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Document not saved</source>
-      <translation type="unfinished">Document not saved</translation>
+      <translation>O documento non se pode gardar</translation>
     </message>
     <message>
       <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
@@ -7895,7 +7895,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Unlink</source>
-      <translation type="unfinished">Unlink</translation>
+      <translation>Desligar</translation>
     </message>
     <message>
       <source>Strip on level of link</source>
@@ -8297,11 +8297,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Recent macros</source>
-      <translation type="unfinished">Recent macros</translation>
+      <translation>Macros recentes</translation>
     </message>
     <message>
       <source>Recent macro list</source>
-      <translation type="unfinished">Recent macro list</translation>
+      <translation>Listaxe de macros recentes</translation>
     </message>
   </context>
   <context>
@@ -8372,11 +8372,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Save All</source>
-      <translation type="unfinished">Save All</translation>
+      <translation>Gardar todo</translation>
     </message>
     <message>
       <source>Save all opened document</source>
-      <translation type="unfinished">Save all opened document</translation>
+      <translation>Garda todos os documentos abertos</translation>
     </message>
   </context>
   <context>
@@ -8432,7 +8432,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>&amp;Back</source>
-      <translation type="unfinished">&amp;Back</translation>
+      <translation>Volver</translation>
     </message>
     <message>
       <source>Go back to previous selection</source>
@@ -8447,7 +8447,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>&amp;Bounding box</source>
-      <translation type="unfinished">&amp;Bounding box</translation>
+      <translation>&amp;Carcasa</translation>
     </message>
     <message>
       <source>Show selection bounding box</source>
@@ -8462,7 +8462,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>&amp;Forward</source>
-      <translation type="unfinished">&amp;Forward</translation>
+      <translation>&amp;Adiante</translation>
     </message>
     <message>
       <source>Repeat the backed selection</source>
@@ -8507,7 +8507,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>&amp;Send to Python Console</source>
-      <translation type="unfinished">&amp;Send to Python Console</translation>
+      <translation>&amp;Enviar a consola de Python</translation>
     </message>
     <message>
       <source>Sends the selected object to the Python console</source>
@@ -8582,7 +8582,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Add text document</source>
-      <translation type="unfinished">Add text document</translation>
+      <translation>Engadir documento de texto</translation>
     </message>
     <message>
       <source>Add text document to active document</source>
@@ -8758,11 +8758,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Collapse selected item</source>
-      <translation type="unfinished">Collapse selected item</translation>
+      <translation>Contraer o elemento escollido</translation>
     </message>
     <message>
       <source>Collapse currently selected tree items</source>
-      <translation type="unfinished">Collapse currently selected tree items</translation>
+      <translation>Contraer os elementos da árbore escollidos agora</translation>
     </message>
   </context>
   <context>
@@ -8773,11 +8773,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Expand selected item</source>
-      <translation type="unfinished">Expand selected item</translation>
+      <translation>Expande o elemento escollido</translation>
     </message>
     <message>
       <source>Expand currently selected tree items</source>
-      <translation type="unfinished">Expand currently selected tree items</translation>
+      <translation>Expande os elementos da árbore escollidos agora</translation>
     </message>
   </context>
   <context>
@@ -8788,11 +8788,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Select all instances</source>
-      <translation type="unfinished">Select all instances</translation>
+      <translation>Escoller instancias</translation>
     </message>
     <message>
       <source>Select all instances of the current selected object</source>
-      <translation type="unfinished">Select all instances of the current selected object</translation>
+      <translation>Escoller todas as instancias do obxecto escollido agora</translation>
     </message>
   </context>
   <context>
@@ -8803,11 +8803,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>TreeView actions</source>
-      <translation type="unfinished">TreeView actions</translation>
+      <translation>Accións de vista en árbore</translation>
     </message>
     <message>
       <source>TreeView behavior options and actions</source>
-      <translation type="unfinished">TreeView behavior options and actions</translation>
+      <translation>Opcións e accións de comportamento da vista en árbore</translation>
     </message>
   </context>
   <context>
@@ -8844,7 +8844,7 @@ Would you like to save the file with a different name?</translation>
     <name>StdCmdUserEditMode</name>
     <message>
       <source>Edit mode</source>
-      <translation type="unfinished">Edit mode</translation>
+      <translation>Modo de edición</translation>
     </message>
     <message>
       <source>Defines behavior when editing an object from tree</source>
@@ -9009,11 +9009,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Home</source>
-      <translation type="unfinished">Home</translation>
+      <translation>Orixe</translation>
     </message>
     <message>
       <source>Set to default home view</source>
-      <translation type="unfinished">Set to default home view</translation>
+      <translation>Establece a vista de inicio predeterminada</translation>
     </message>
   </context>
   <context>
@@ -9159,11 +9159,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Restore saved camera</source>
-      <translation type="unfinished">Restore saved camera</translation>
+      <translation>Restaurar a cámara gardada</translation>
     </message>
     <message>
       <source>Restore saved camera settings</source>
-      <translation type="unfinished">Restore saved camera settings</translation>
+      <translation>Restaurar a configuración da cámara gardada</translation>
     </message>
   </context>
   <context>
@@ -9193,7 +9193,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Rotate the view by 90° counter-clockwise</source>
-      <translation type="unfinished">Rotate the view by 90° counter-clockwise</translation>
+      <translation>Xira a vista 90° no sentido antihorario</translation>
     </message>
   </context>
   <context>
@@ -9208,7 +9208,7 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Rotate the view by 90° clockwise</source>
-      <translation type="unfinished">Rotate the view by 90° clockwise</translation>
+      <translation>Xira a vista 90° no sentido das agullas do reloxo</translation>
     </message>
   </context>
   <context>
@@ -9219,11 +9219,11 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>Save current camera</source>
-      <translation type="unfinished">Save current camera</translation>
+      <translation>Garda a camara actual</translation>
     </message>
     <message>
       <source>Save current camera settings</source>
-      <translation type="unfinished">Save current camera settings</translation>
+      <translation>Garda a configuración actual da cámara</translation>
     </message>
   </context>
   <context>
@@ -9384,22 +9384,22 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Vista en árbore</translation>
     </message>
   </context>
   <context>
     <name>StdTreeDrag</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Vista en árbore</translation>
     </message>
     <message>
       <source>Initiate dragging</source>
-      <translation type="unfinished">Initiate dragging</translation>
+      <translation>Iniciar o arrastre</translation>
     </message>
     <message>
       <source>Initiate dragging of current selected tree items</source>
-      <translation type="unfinished">Initiate dragging of current selected tree items</translation>
+      <translation>Inicia o arrastre dos elementos actuais da árbore escollida</translation>
     </message>
   </context>
   <context>
@@ -9410,22 +9410,22 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Vista en árbore</translation>
     </message>
     <message>
       <source>Multi document</source>
-      <translation type="unfinished">Multi document</translation>
+      <translation>Múltiple Documento</translation>
     </message>
   </context>
   <context>
     <name>StdTreePreSelection</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Vista en árbore</translation>
     </message>
     <message>
       <source>Pre-selection</source>
-      <translation type="unfinished">Pre-selection</translation>
+      <translation>Preselección</translation>
     </message>
     <message>
       <source>Preselect the object in 3D view when mouse over the tree item</source>
@@ -9436,7 +9436,7 @@ Would you like to save the file with a different name?</translation>
     <name>StdTreeRecordSelection</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Vista en árbore</translation>
     </message>
     <message>
       <source>Record selection</source>
@@ -9451,7 +9451,7 @@ Would you like to save the file with a different name?</translation>
     <name>StdTreeSelection</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Vista en árbore</translation>
     </message>
     <message>
       <source>Go to selection</source>
@@ -9470,22 +9470,22 @@ Would you like to save the file with a different name?</translation>
     </message>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Vista en árbore</translation>
     </message>
     <message>
       <source>Single document</source>
-      <translation type="unfinished">Single document</translation>
+      <translation>Documento Individual</translation>
     </message>
   </context>
   <context>
     <name>StdTreeSyncPlacement</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Vista en árbore</translation>
     </message>
     <message>
       <source>Sync placement</source>
-      <translation type="unfinished">Sync placement</translation>
+      <translation>Sincronizar a colocación</translation>
     </message>
     <message>
       <source>Auto adjust placement on drag and drop objects across coordinate systems</source>
@@ -9496,11 +9496,11 @@ Would you like to save the file with a different name?</translation>
     <name>StdTreeSyncSelection</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Vista en árbore</translation>
     </message>
     <message>
       <source>Sync selection</source>
-      <translation type="unfinished">Sync selection</translation>
+      <translation>Sincronizar selección</translation>
     </message>
     <message>
       <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
@@ -9511,11 +9511,11 @@ Would you like to save the file with a different name?</translation>
     <name>StdTreeSyncView</name>
     <message>
       <source>TreeView</source>
-      <translation type="unfinished">TreeView</translation>
+      <translation>Vista en árbore</translation>
     </message>
     <message>
       <source>Sync view</source>
-      <translation type="unfinished">Sync view</translation>
+      <translation>Vista sincronizada</translation>
     </message>
     <message>
       <source>Auto switch to the 3D view containing the selected item</source>
@@ -9637,9 +9637,9 @@ Would you like to save the file with a different name?</translation>
 
 Are you sure you want to continue?
 </source>
-      <translation type="unfinished">The following referencing objects might break.
+      <translation>Os seguintes obxectos que fan referencia poden romper.
 
-Are you sure you want to continue?
+De verdade quere seguir?
 </translation>
     </message>
     <message>
@@ -9648,7 +9648,7 @@ Are you sure you want to continue?
     </message>
     <message>
       <source>These items are selected for deletion, but are not in the active document.</source>
-      <translation type="unfinished">These items are selected for deletion, but are not in the active document.</translation>
+      <translation>Hai elementos escolmados para borrar, pero non están no documento activo.</translation>
     </message>
   </context>
   <context>

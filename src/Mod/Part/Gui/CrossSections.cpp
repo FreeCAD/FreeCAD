@@ -58,6 +58,7 @@
 #include <Gui/Document.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <App/Link.h>
 #include <Base/Sequencer.h>
 #include <Base/UnitsApi.h>
 
@@ -194,8 +195,14 @@ void CrossSections::accept()
 
 void CrossSections::apply()
 {
-    std::vector<App::DocumentObject*> obj = Gui::Selection().
-        getObjectsOfType(Part::Feature::getClassTypeId());
+    std::vector<App::DocumentObject*> docobjs = Gui::Selection().
+            getObjectsOfType(App::DocumentObject::getClassTypeId());
+    std::vector<App::DocumentObject*> obj;
+    for (std::vector<App::DocumentObject*>::iterator it = docobjs.begin(); it != docobjs.end(); ++it){
+        if (!Part::Feature::getTopoShape(*it).isNull()) {
+            obj.push_back((*it));
+        }
+    }
 
     std::vector<double> d;
     if (ui->sectionsBox->isChecked())
