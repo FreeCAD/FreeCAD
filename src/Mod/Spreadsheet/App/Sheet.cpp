@@ -1081,12 +1081,14 @@ short Sheet::mustExecute(void) const
 void Sheet::clear(CellAddress address, bool /*all*/)
 {
     Cell * cell = getCell(address);
+    if (!cell)
+        return;
     std::string addr = address.toString();
     Property * prop = props.getDynamicPropertyByName(addr.c_str());
 
     // Remove alias, if defined
     std::string aliasStr;
-    if (cell && cell->getAlias(aliasStr))
+    if (cell->getAlias(aliasStr))
         this->removeDynamicProperty(aliasStr.c_str());
 
     cells.clear(address);
