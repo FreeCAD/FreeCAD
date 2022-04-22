@@ -1005,7 +1005,7 @@ class Snapper:
         snaps = []
         if self.isEnabled("Intersection"):
             # get the stored objects to calculate intersections
-            for o in self.lastObj[:-1]:
+            for o in self.lastObj:
                 obj = App.ActiveDocument.getObject(o)
                 if obj:
                     if obj.isDerivedFrom("Part::Feature") or (Draft.getType(obj) == "Axis"):
