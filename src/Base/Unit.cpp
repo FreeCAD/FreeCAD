@@ -436,7 +436,9 @@ QString Unit::getTypeString() const
         return QString::fromLatin1("Mass");
     if (*this == Unit::Angle)
         return QString::fromLatin1("Angle");
-    if (*this == Unit::Density)
+    if(*this == Unit::AngleOfFriction             )
+        return QString::fromLatin1("AngleOfFriction");
+    if(*this == Unit::Density)
         return QString::fromLatin1("Density");
     if (*this == Unit::TimeSpan)
         return QString::fromLatin1("TimeSpan");
@@ -480,7 +482,17 @@ QString Unit::getTypeString() const
         return QString::fromLatin1("LuminousIntensity");
     if (*this == Unit::Pressure)
         return QString::fromLatin1("Pressure");
-    if (*this == Unit::Force)
+    if(*this == Unit::ShearModulus)
+        return QString::fromLatin1("ShearModulus");
+    if(*this == Unit::Stress)
+        return QString::fromLatin1("Stress");
+    if(*this == Unit::UltimateTensileStrength     )
+        return QString::fromLatin1("UltimateTensileStrength");
+    if(*this == Unit::YieldStrength)
+        return QString::fromLatin1("YieldStrength");
+    if(*this == Unit::YoungsModulus)
+        return QString::fromLatin1("YoungsModulus");
+    if(*this == Unit::Force)
         return QString::fromLatin1("Force");
     if (*this == Unit::Work)
         return QString::fromLatin1("Work");
