@@ -1511,6 +1511,7 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend) {
                     Base::Vector3d P0 = genLine->points.at(0);
                     Base::Vector3d P1 = genLine->points.at(1);
                     bool isCenterLine = false;
+                    TechDraw::CenterLine* centerEdge = nullptr;
                     if (baseGeo->cosmetic) {
                         std::string uniTag = baseGeo->getCosmeticTag();
                         int oldStyle = 1;
@@ -1527,11 +1528,7 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend) {
                         }
                         else if (baseGeo->source() == 2) {
                             isCenterLine = true;
-                            auto centerEdge = objFeat->getCenterLine(uniTag);
-                            oldStyle = centerEdge->m_format.m_style;
-                            oldWeight = centerEdge->m_format.m_weight;
-                            oldColor = centerEdge->m_format.m_color;
-                            objFeat->removeCenterLine(toDelete);
+                            centerEdge = objFeat->getCenterLine(uniTag);
                         }
                         double scale = objFeat->getScale();
                         Base::Vector3d direction = (P1 - P0).Normalize();
@@ -1548,17 +1545,14 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend) {
                         startPt.y = -startPt.y;
                         endPt.y = -endPt.y;
                         if (isCenterLine) {
-                            std::string lineTag = objFeat->addCenterLine(startPt / scale, endPt / scale);
-                            TechDraw::CenterLine* lineEdge = objFeat->getCenterLine(lineTag);
-                            _setLineAttributes(lineEdge, oldStyle, oldWeight, oldColor);
+                            centerEdge->m_extendBy += activeDimAttributes.getLineStretch();
+                            objFeat->refreshCLGeoms();
                         } else {
                             std::string lineTag = objFeat->addCosmeticEdge(startPt / scale, endPt / scale);
                             TechDraw::CosmeticEdge* lineEdge = objFeat->getCosmeticEdge(lineTag);
                             _setLineAttributes(lineEdge, oldStyle, oldWeight, oldColor);
+                            objFeat->refreshCEGeoms();
                         }
-//                        cmd->getSelection().clearSelection();
-                        objFeat->refreshCEGeoms();
-                        objFeat->refreshCLGeoms();
                         objFeat->requestPaint();
                     }
                 }
