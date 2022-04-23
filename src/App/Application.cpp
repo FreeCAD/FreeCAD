@@ -457,7 +457,7 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
         names.reserve(DocMap.size());
         std::map<string,Document*>::const_iterator pos;
         for (pos = DocMap.begin();pos != DocMap.end();++pos) {
-            names.push_back(pos->second->Label.getValue());
+            names.emplace_back(pos->second->Label.getValue());
         }
 
         if (!names.empty())
@@ -519,7 +519,7 @@ Document* Application::newDocument(const char * Name, const char * UserName, boo
 
 bool Application::closeDocument(const char* name)
 {
-    map<string,Document*>::iterator pos = DocMap.find( name );
+    auto pos = DocMap.find( name );
     if (pos == DocMap.end()) // no such document
         return false;
 
@@ -544,7 +544,7 @@ bool Application::closeDocument(const char* name)
     return true;
 }
 
-void Application::closeAllDocuments(void)
+void Application::closeAllDocuments()
 {
     Base::FlagToggler<bool> flag(_isClosingAll);
     std::map<std::string,Document*>::iterator pos;
@@ -566,9 +566,9 @@ App::Document* Application::getDocument(const char *Name) const
 
 const char * Application::getDocumentName(const App::Document* doc) const
 {
-    for (std::map<std::string,Document*>::const_iterator it = DocMap.begin(); it != DocMap.end(); ++it)
-        if (it->second == doc)
-            return it->first.c_str();
+    for (const auto & it : DocMap)
+        if (it.second == doc)
+            return it.first.c_str();
 
     return nullptr;
 }
@@ -576,15 +576,15 @@ const char * Application::getDocumentName(const App::Document* doc) const
 std::vector<App::Document*> Application::getDocuments() const
 {
     std::vector<App::Document*> docs;
-    for (std::map<std::string,Document*>::const_iterator it = DocMap.begin(); it != DocMap.end(); ++it)
-        docs.push_back(it->second);
+    for (const auto & it : DocMap)
+        docs.push_back(it.second);
     return docs;
 }
 
 std::string Application::getUniqueDocumentName(const char *Name, bool tempDoc) const
 {
     if (!Name || *Name == '\0')
-        return std::string();
+        return {};
     std::string CleanName = Base::Tools::getIdentifier(Name);
 
     // name in use?
@@ -617,9 +617,9 @@ int Application::addPendingDocument(const char *FileName, const char *objName, b
     if(!_docReloadAttempts[FileName].emplace(objName).second)
         return -1;
     auto ret =  _pendingDocMap.emplace(FileName,std::vector<std::string>());
-    ret.first->second.push_back(objName);
+    ret.first->second.emplace_back(objName);
     if(ret.second) {
-        _pendingDocs.push_back(ret.first->first.c_str());
+        _pendingDocs.emplace_back(ret.first->first.c_str());
         return 1;
     }
     return -1;
@@ -668,7 +668,7 @@ public:
 Document* Application::openDocument(const char * FileName, bool createView) {
     std::vector<std::string> filenames(1,FileName);
     auto docs = openDocuments(filenames, nullptr, nullptr, nullptr, createView);
-    if(docs.size())
+    if(!docs.empty())
         return docs.front();
     return nullptr;
 }
@@ -679,7 +679,7 @@ Document *Application::getDocumentByPath(const char *path, PathMatchMode checkCa
     if(DocFileMap.empty()) {
         for(const auto &v : DocMap) {
             const auto &file = v.second->FileName.getStrValue();
-            if(file.size())
+            if(!file.empty())
                 DocFileMap[FileInfo(file.c_str()).filePath()] = v.second;
         }
     }
@@ -733,7 +733,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
     _allowPartial = !hGrp->GetBool("NoPartialLoading",false);
 
     for (auto &name : filenames)
-        _pendingDocs.push_back(name.c_str());
+        _pendingDocs.emplace_back(name.c_str());
 
     std::map<DocumentT, DocTiming> timings;
 
@@ -869,7 +869,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
             FC_TIME_INIT(t1);
             // Finalize document restoring with the correct order
             if(doc->afterRestore(true)) {
-                openedDocs.push_back(doc);
+                openedDocs.emplace_back(doc);
                 it = docs.erase(it);
             } else {
                 ++it;
@@ -880,7 +880,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 // 'touched' object requires recomputation. And an object may
                 // become touched during restoring if externally linked
                 // document time stamp mismatches with the stamp saved.
-                _pendingDocs.push_back(doc->FileName.getValue());
+                _pendingDocs.emplace_back(doc->FileName.getValue());
                 _pendingDocMap.erase(doc->FileName.getValue());
             }
             FC_DURATION_PLUS(timing.d2,t1);
@@ -903,10 +903,10 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
 
     for (auto &doc : openedDocs) {
         auto &timing = timings[doc];
-        FC_DURATION_LOG(timing.d1, doc.getDocumentName() << " restore");
-        FC_DURATION_LOG(timing.d2, doc.getDocumentName() << " postprocess");
+        FC_DURATION_LOG(timing.d1, doc.getDocumentName() << " restore")
+        FC_DURATION_LOG(timing.d2, doc.getDocumentName() << " postprocess")
     }
-    FC_TIME_LOG(t,"total");
+    FC_TIME_LOG(t,"total")
     _isRestoring = false;
 
     signalFinishOpenDocument();
@@ -952,8 +952,8 @@ Document* Application::openDocumentPrivate(const char * FileName,
                         // objects. To partially solve this problem, we do not
                         // close and reopen the document immediately here, but
                         // add it to _pendingDocsReopen to delay reloading.
-                        for(auto obj : doc->getObjects())
-                            objNames.push_back(obj->getNameInDocument());
+                        for(auto obj2 : doc->getObjects())
+                            objNames.emplace_back(obj2->getNameInDocument());
                         _pendingDocMap[doc->FileName.getValue()] = std::move(objNames);
                         break;
                     }
@@ -993,7 +993,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
     try {
         // read the document
         newDoc->restore(File.filePath().c_str(),true,objNames);
-        if(DocFileMap.size())
+        if(!DocFileMap.empty())
             DocFileMap[FileInfo(newDoc->FileName.getValue()).filePath()] = newDoc;
         return newDoc;
     }
@@ -1014,7 +1014,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
     }
 }
 
-Document* Application::getActiveDocument(void) const
+Document* Application::getActiveDocument() const
 {
     return _pActiveDoc;
 }
@@ -1209,33 +1209,33 @@ bool Application::hasLinksTo(const DocumentObject *obj) const {
     return !getLinksTo(obj,0,1).empty();
 }
 
-ParameterManager & Application::GetSystemParameter(void)
+ParameterManager & Application::GetSystemParameter()
 {
     return *_pcSysParamMngr;
 }
 
-ParameterManager & Application::GetUserParameter(void)
+ParameterManager & Application::GetUserParameter()
 {
     return *_pcUserParamMngr;
 }
 
 ParameterManager * Application::GetParameterSet(const char* sName) const
 {
-    std::map<std::string,ParameterManager *>::const_iterator it = mpcPramManager.find(sName);
+    auto it = mpcPramManager.find(sName);
     if ( it != mpcPramManager.end() )
         return it->second;
     else
         return nullptr;
 }
 
-const std::map<std::string,ParameterManager *> & Application::GetParameterSetList(void) const
+const std::map<std::string,ParameterManager *> & Application::GetParameterSetList() const
 {
     return mpcPramManager;
 }
 
 void Application::AddParameterSet(const char* sName)
 {
-    std::map<std::string,ParameterManager *>::const_iterator it = mpcPramManager.find(sName);
+    auto it = mpcPramManager.find(sName);
     if ( it != mpcPramManager.end() )
         return;
     mpcPramManager[sName] = new ParameterManager();
@@ -1243,7 +1243,7 @@ void Application::AddParameterSet(const char* sName)
 
 void Application::RemoveParameterSet(const char* sName)
 {
-    std::map<std::string,ParameterManager *>::iterator it = mpcPramManager.find(sName);
+    auto it = mpcPramManager.find(sName);
     // Must not delete user or system parameter
     if ( it == mpcPramManager.end() || it->second == _pcUserParamMngr || it->second == _pcSysParamMngr )
         return;
@@ -1266,7 +1266,7 @@ Base::Reference<ParameterGrp>  Application::GetParameterGroupByPath(const char* 
     cName.erase(0,pos+1);
 
     // test if name is valid
-    std::map<std::string,ParameterManager *>::iterator It = mpcPramManager.find(cTemp.c_str());
+    auto It = mpcPramManager.find(cTemp);
     if (It == mpcPramManager.end())
         throw Base::ValueError("Application::GetParameterGroupByPath() unknown parameter set name specified");
 
@@ -1315,15 +1315,15 @@ void Application::changeImportModule(const char* Type, const char* OldModuleName
 std::vector<std::string> Application::getImportModules(const char* Type) const
 {
     std::vector<std::string> modules;
-    for (std::vector<FileTypeItem>::const_iterator it = _mImportTypes.begin(); it != _mImportTypes.end(); ++it) {
-        const std::vector<std::string>& types = it->types;
-        for (std::vector<std::string>::const_iterator jt = types.begin(); jt != types.end(); ++jt) {
+    for (const auto & _mImportType : _mImportTypes) {
+        const std::vector<std::string>& types = _mImportType.types;
+        for (const auto & type : types) {
 #ifdef __GNUC__
-            if (strcasecmp(Type,jt->c_str()) == 0)
+            if (strcasecmp(Type,type.c_str()) == 0)
 #else
             if (_stricmp(Type,jt->c_str()) == 0)
 #endif
-                modules.push_back(it->module);
+                modules.push_back(_mImportType.module);
         }
     }
 
@@ -1333,8 +1333,8 @@ std::vector<std::string> Application::getImportModules(const char* Type) const
 std::vector<std::string> Application::getImportModules() const
 {
     std::vector<std::string> modules;
-    for (std::vector<FileTypeItem>::const_iterator it = _mImportTypes.begin(); it != _mImportTypes.end(); ++it)
-        modules.push_back(it->module);
+    for (const auto & _mImportType : _mImportTypes)
+        modules.push_back(_mImportType.module);
     std::sort(modules.begin(), modules.end());
     modules.erase(std::unique(modules.begin(), modules.end()), modules.end());
     return modules;
@@ -1343,23 +1343,23 @@ std::vector<std::string> Application::getImportModules() const
 std::vector<std::string> Application::getImportTypes(const char* Module) const
 {
     std::vector<std::string> types;
-    for (std::vector<FileTypeItem>::const_iterator it = _mImportTypes.begin(); it != _mImportTypes.end(); ++it) {
+    for (const auto & _mImportType : _mImportTypes) {
 #ifdef __GNUC__
-        if (strcasecmp(Module,it->module.c_str()) == 0)
+        if (strcasecmp(Module,_mImportType.module.c_str()) == 0)
 #else
         if (_stricmp(Module,it->module.c_str()) == 0)
 #endif
-            types.insert(types.end(), it->types.begin(), it->types.end());
+            types.insert(types.end(), _mImportType.types.begin(), _mImportType.types.end());
     }
 
     return types;
 }
 
-std::vector<std::string> Application::getImportTypes(void) const
+std::vector<std::string> Application::getImportTypes() const
 {
     std::vector<std::string> types;
-    for (std::vector<FileTypeItem>::const_iterator it = _mImportTypes.begin(); it != _mImportTypes.end(); ++it) {
-        types.insert(types.end(), it->types.begin(), it->types.end());
+    for (const auto & _mImportType : _mImportTypes) {
+        types.insert(types.end(), _mImportType.types.begin(), _mImportType.types.end());
     }
 
     std::sort(types.begin(), types.end());
@@ -1371,26 +1371,26 @@ std::vector<std::string> Application::getImportTypes(void) const
 std::map<std::string, std::string> Application::getImportFilters(const char* Type) const
 {
     std::map<std::string, std::string> moduleFilter;
-    for (std::vector<FileTypeItem>::const_iterator it = _mImportTypes.begin(); it != _mImportTypes.end(); ++it) {
-        const std::vector<std::string>& types = it->types;
-        for (std::vector<std::string>::const_iterator jt = types.begin(); jt != types.end(); ++jt) {
+    for (const auto & _mImportType : _mImportTypes) {
+        const std::vector<std::string>& types = _mImportType.types;
+        for (const auto & type : types) {
 #ifdef __GNUC__
-            if (strcasecmp(Type,jt->c_str()) == 0)
+            if (strcasecmp(Type,type.c_str()) == 0)
 #else
             if (_stricmp(Type,jt->c_str()) == 0)
 #endif
-                moduleFilter[it->filter] = it->module;
+                moduleFilter[_mImportType.filter] = _mImportType.module;
         }
     }
 
     return moduleFilter;
 }
 
-std::map<std::string, std::string> Application::getImportFilters(void) const
+std::map<std::string, std::string> Application::getImportFilters() const
 {
     std::map<std::string, std::string> filter;
-    for (std::vector<FileTypeItem>::const_iterator it = _mImportTypes.begin(); it != _mImportTypes.end(); ++it) {
-        filter[it->filter] = it->module;
+    for (const auto & _mImportType : _mImportTypes) {
+        filter[_mImportType.filter] = _mImportType.module;
     }
 
     return filter;
@@ -1438,15 +1438,15 @@ void Application::changeExportModule(const char* Type, const char* OldModuleName
 std::vector<std::string> Application::getExportModules(const char* Type) const
 {
     std::vector<std::string> modules;
-    for (std::vector<FileTypeItem>::const_iterator it = _mExportTypes.begin(); it != _mExportTypes.end(); ++it) {
-        const std::vector<std::string>& types = it->types;
-        for (std::vector<std::string>::const_iterator jt = types.begin(); jt != types.end(); ++jt) {
+    for (const auto & _mExportType : _mExportTypes) {
+        const std::vector<std::string>& types = _mExportType.types;
+        for (const auto & type : types) {
 #ifdef __GNUC__
-            if (strcasecmp(Type,jt->c_str()) == 0)
+            if (strcasecmp(Type,type.c_str()) == 0)
 #else
             if (_stricmp(Type,jt->c_str()) == 0)
 #endif
-                modules.push_back(it->module);
+                modules.push_back(_mExportType.module);
         }
     }
 
@@ -1456,8 +1456,8 @@ std::vector<std::string> Application::getExportModules(const char* Type) const
 std::vector<std::string> Application::getExportModules() const
 {
     std::vector<std::string> modules;
-    for (std::vector<FileTypeItem>::const_iterator it = _mExportTypes.begin(); it != _mExportTypes.end(); ++it)
-        modules.push_back(it->module);
+    for (const auto & _mExportType : _mExportTypes)
+        modules.push_back(_mExportType.module);
     std::sort(modules.begin(), modules.end());
     modules.erase(std::unique(modules.begin(), modules.end()), modules.end());
     return modules;
@@ -1466,23 +1466,23 @@ std::vector<std::string> Application::getExportModules() const
 std::vector<std::string> Application::getExportTypes(const char* Module) const
 {
     std::vector<std::string> types;
-    for (std::vector<FileTypeItem>::const_iterator it = _mExportTypes.begin(); it != _mExportTypes.end(); ++it) {
+    for (const auto & _mExportType : _mExportTypes) {
 #ifdef __GNUC__
-        if (strcasecmp(Module,it->module.c_str()) == 0)
+        if (strcasecmp(Module,_mExportType.module.c_str()) == 0)
 #else
         if (_stricmp(Module,it->module.c_str()) == 0)
 #endif
-            types.insert(types.end(), it->types.begin(), it->types.end());
+            types.insert(types.end(), _mExportType.types.begin(), _mExportType.types.end());
     }
 
     return types;
 }
 
-std::vector<std::string> Application::getExportTypes(void) const
+std::vector<std::string> Application::getExportTypes() const
 {
     std::vector<std::string> types;
-    for (std::vector<FileTypeItem>::const_iterator it = _mExportTypes.begin(); it != _mExportTypes.end(); ++it) {
-        types.insert(types.end(), it->types.begin(), it->types.end());
+    for (const auto & _mExportType : _mExportTypes) {
+        types.insert(types.end(), _mExportType.types.begin(), _mExportType.types.end());
     }
 
     std::sort(types.begin(), types.end());
@@ -1494,26 +1494,26 @@ std::vector<std::string> Application::getExportTypes(void) const
 std::map<std::string, std::string> Application::getExportFilters(const char* Type) const
 {
     std::map<std::string, std::string> moduleFilter;
-    for (std::vector<FileTypeItem>::const_iterator it = _mExportTypes.begin(); it != _mExportTypes.end(); ++it) {
-        const std::vector<std::string>& types = it->types;
-        for (std::vector<std::string>::const_iterator jt = types.begin(); jt != types.end(); ++jt) {
+    for (const auto & _mExportType : _mExportTypes) {
+        const std::vector<std::string>& types = _mExportType.types;
+        for (const auto & type : types) {
 #ifdef __GNUC__
-            if (strcasecmp(Type,jt->c_str()) == 0)
+            if (strcasecmp(Type,type.c_str()) == 0)
 #else
             if (_stricmp(Type,jt->c_str()) == 0)
 #endif
-                moduleFilter[it->filter] = it->module;
+                moduleFilter[_mExportType.filter] = _mExportType.module;
         }
     }
 
     return moduleFilter;
 }
 
-std::map<std::string, std::string> Application::getExportFilters(void) const
+std::map<std::string, std::string> Application::getExportFilters() const
 {
     std::map<std::string, std::string> filter;
-    for (std::vector<FileTypeItem>::const_iterator it = _mExportTypes.begin(); it != _mExportTypes.end(); ++it) {
-        filter[it->filter] = it->module;
+    for (const auto & _mExportType : _mExportTypes) {
+        filter[_mExportType.filter] = _mExportType.module;
     }
 
     return filter;
@@ -1590,7 +1590,7 @@ void Application::slotBeforeRecompute(const Document& doc)
 
 void Application::slotOpenTransaction(const Document& d, string s)
 {
-    this->signalOpenTransaction(d, s);
+    this->signalOpenTransaction(d, std::move(s));
 }
 
 void Application::slotCommitTransaction(const Document& d)
@@ -1645,7 +1645,7 @@ void Application::cleanupUnits()
     }
 }
 
-void Application::destruct(void)
+void Application::destruct()
 {
     // saving system parameter
     Console().Log("Saving system parameter...\n");
@@ -1658,17 +1658,17 @@ void Application::destruct(void)
 
     // now save all other parameter files
     std::map<std::string,ParameterManager *>& paramMgr = _pcSingleton->mpcPramManager;
-    for (std::map<std::string,ParameterManager *>::iterator it = paramMgr.begin(); it != paramMgr.end(); ++it) {
-        if ((it->second != _pcSysParamMngr) && (it->second != _pcUserParamMngr)) {
-            if (it->second->HasSerializer()) {
-                Console().Log("Saving %s...\n", it->first.c_str());
-                it->second->SaveDocument();
-                Console().Log("Saving %s...done\n", it->first.c_str());
+    for (auto & it : paramMgr) {
+        if ((it.second != _pcSysParamMngr) && (it.second != _pcUserParamMngr)) {
+            if (it.second->HasSerializer()) {
+                Console().Log("Saving %s...\n", it.first.c_str());
+                it.second->SaveDocument();
+                Console().Log("Saving %s...done\n", it.first.c_str());
             }
         }
 
         // clean up
-        delete it->second;
+        delete it.second;
     }
 
     paramMgr.clear();
@@ -1695,7 +1695,7 @@ void Application::destruct(void)
     ParameterManager::Terminate();
 }
 
-void Application::destructObserver(void)
+void Application::destructObserver()
 {
     if ( _pConsoleObserverFile ) {
         Console().DetachObserver(_pConsoleObserverFile);
@@ -2215,18 +2215,12 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
             args.back() += av[i];
         }
         else {
-            args.push_back(av[i]);
+            args.emplace_back(av[i]);
         }
-        if (strcmp(av[i],"-style") == 0) {
-            merge = true;
-        }
-        else if (strcmp(av[i],"-stylesheet") == 0) {
-            merge = true;
-        }
-        else if (strcmp(av[i],"-session") == 0) {
-            merge = true;
-        }
-        else if (strcmp(av[i],"-graphicssystem") == 0) {
+        if (strcmp(av[i],"-style") == 0
+            || strcmp(av[i],"-stylesheet") == 0
+            || strcmp(av[i],"-session") == 0
+            || strcmp(av[i],"-graphicssystem") == 0) {
             merge = true;
         }
     }
@@ -2290,10 +2284,10 @@ void parseProgramOptions(int ac, char ** av, const string& exe, variables_map& v
         // Split the file content
         char_separator<char> sep(" \n\r");
         tokenizer<char_separator<char> > tok(ss.str(), sep);
-        vector<string> args;
-        copy(tok.begin(), tok.end(), back_inserter(args));
+        vector<string> args2;
+        copy(tok.begin(), tok.end(), back_inserter(args2));
         // Parse the file and store the options
-        store( boost::program_options::command_line_parser(args).
+        store( boost::program_options::command_line_parser(args2).
                options(cmdline_options).positional(p).extra_parser(customSyntax).run(), vm);
     }
 }
@@ -2330,29 +2324,29 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
     if (vm.count("module-path")) {
         vector<string> Mods = vm["module-path"].as< vector<string> >();
         string temp;
-        for (vector<string>::const_iterator It= Mods.begin();It != Mods.end();++It)
-            temp += *It + ";";
+        for (auto & Mod : Mods)
+            temp += Mod + ";";
         temp.erase(temp.end()-1);
         mConfig["AdditionalModulePaths"] = temp;
     }
 
     if (vm.count("python-path")) {
         vector<string> Paths = vm["python-path"].as< vector<string> >();
-        for (vector<string>::const_iterator It= Paths.begin();It != Paths.end();++It)
-            Base::Interpreter().addPythonPath(It->c_str());
+        for (auto & Path : Paths)
+            Base::Interpreter().addPythonPath(Path.c_str());
     }
 
     if (vm.count("input-file")) {
         vector<string> files(vm["input-file"].as< vector<string> >());
         int OpenFileCount=0;
-        for (vector<string>::const_iterator It = files.begin();It != files.end();++It) {
+        for (auto & file : files) {
 
             //cout << "Input files are: "
             //     << vm["input-file"].as< vector<string> >() << "\n";
 
             std::ostringstream temp;
             temp << "OpenFile" << OpenFileCount;
-            mConfig[temp.str()] = *It;
+            mConfig[temp.str()] = file;
             OpenFileCount++;
         }
         std::ostringstream buffer;
@@ -2405,8 +2399,8 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
 
     if (vm.count("dump-config")) {
         std::stringstream str;
-        for (std::map<std::string,std::string>::iterator it=mConfig.begin(); it != mConfig.end(); ++it) {
-            str << it->first << "=" << it->second << std::endl;
+        for (auto & it : mConfig) {
+            str << it.first << "=" << it.second << std::endl;
         }
         throw Base::ProgramInformation(str.str());
     }
@@ -2618,7 +2612,7 @@ void Application::SaveEnv(const char* s)
         mConfig[s] = c;
 }
 
-void Application::initApplication(void)
+void Application::initApplication()
 {
     // interpreter and Init script ==========================================================
     // register scripts
@@ -2684,8 +2678,8 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
 {
     std::list<std::string> processed;
     Base::Console().Log("Init: Processing command line files\n");
-    for (std::list<std::string>::const_iterator it = files.begin(); it != files.end(); ++it) {
-        Base::FileInfo file(*it);
+    for (const auto & it : files) {
+        Base::FileInfo file(it);
 
         Base::Console().Log("Init:     Processing file: %s\n",file.filePath().c_str());
 
@@ -2693,22 +2687,22 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
             if (file.hasExtension("fcstd") || file.hasExtension("std")) {
                 // try to open
                 Application::_pcSingleton->openDocument(file.filePath().c_str());
-                processed.push_back(*it);
+                processed.push_back(it);
             }
             else if (file.hasExtension("fcscript") || file.hasExtension("fcmacro")) {
                 Base::Interpreter().runFile(file.filePath().c_str(), true);
-                processed.push_back(*it);
+                processed.push_back(it);
             }
             else if (file.hasExtension("py")) {
                 try {
                     Base::Interpreter().addPythonPath(file.dirPath().c_str());
                     Base::Interpreter().loadModule(file.fileNamePure().c_str());
-                    processed.push_back(*it);
+                    processed.push_back(it);
                 }
                 catch (const PyException&) {
                     // if loading the module does not work, try just running the script (run in __main__)
                     Base::Interpreter().runFile(file.filePath().c_str(),true);
-                    processed.push_back(*it);
+                    processed.push_back(it);
                 }
             }
             else {
@@ -2722,7 +2716,7 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                     Base::Interpreter().runStringArg("import %s",mods.front().c_str());
                     Base::Interpreter().runStringArg("%s.open(u\"%s\")",mods.front().c_str(),
                             escapedstr.c_str());
-                    processed.push_back(*it);
+                    processed.push_back(it);
                     Base::Console().Log("Command line open: %s.open(u\"%s\")\n",mods.front().c_str(),escapedstr.c_str());
                 }
                 else if (file.exists()) {
@@ -2744,7 +2738,7 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
     return processed; // successfully processed files
 }
 
-void Application::processCmdLineFiles(void)
+void Application::processCmdLineFiles()
 {
     // process files passed to command line
     std::list<std::string> files = getCmdLineFiles();
@@ -2765,7 +2759,7 @@ void Application::processCmdLineFiles(void)
     }
 
     const std::map<std::string,std::string>& cfg = Application::Config();
-    std::map<std::string,std::string>::const_iterator it = cfg.find("SaveFile");
+    auto it = cfg.find("SaveFile");
     if (it != cfg.end()) {
         std::string output = it->second;
         output = Base::Tools::escapeEncodeFilename(output);
@@ -2822,12 +2816,12 @@ void Application::logStatus()
         boost::posix_time::second_clock::local_time());
     Console().Log("Time = %s\n", time_str.c_str());
 
-    for (std::map<std::string,std::string>::iterator It = mConfig.begin();It!= mConfig.end();++It) {
-        Console().Log("%s = %s\n",It->first.c_str(),It->second.c_str());
+    for (auto & It : mConfig) {
+        Console().Log("%s = %s\n",It.first.c_str(),It.second.c_str());
     }
 }
 
-void Application::LoadParameters(void)
+void Application::LoadParameters()
 {
     // Init parameter sets ===========================================================
     //
@@ -2866,7 +2860,7 @@ void Application::LoadParameters(void)
         if (_pcUserParamMngr->LoadOrCreateDocument() && !(mConfig["Verbose"] == "Strict")) {
             // The user parameter file doesn't exist. When an alternative parameter file is offered
             // this will be used.
-            std::map<std::string, std::string>::iterator it = mConfig.find("UserParameterTemplate");
+            auto it = mConfig.find("UserParameterTemplate");
             if (it != mConfig.end()) {
                 QString path = QString::fromUtf8(it->second.c_str());
                 if (QDir(path).isRelative()) {
@@ -3263,6 +3257,7 @@ std::string Application::FindHomePath(const char* sCall)
 #include <mach-o/dyld.h>
 #include <string>
 #include <cstdlib>
+#include <utility>
 #include <sys/param.h>
 
 std::string Application::FindHomePath(const char* call)
@@ -3274,7 +3269,7 @@ std::string Application::FindHomePath(const char* call)
         uint32_t sz = 0;
         char *buf;
 
-        _NSGetExecutablePath(NULL, &sz); //function only returns "sz" if first arg is to small to hold value
+        _NSGetExecutablePath(nullptr, &sz); //function only returns "sz" if first arg is to small to hold value
         buf = new char[++sz];
 
         if (_NSGetExecutablePath(buf, &sz) == 0) {
