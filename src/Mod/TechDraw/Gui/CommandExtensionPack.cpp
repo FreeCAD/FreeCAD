@@ -88,6 +88,7 @@ namespace TechDrawGui {
     void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge);
     void _setLineAttributes(TechDraw::CenterLine* cosEdge);
     void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight, App::Color color);
+    void _setLineAttributes(TechDraw::CenterLine* cosEdge, int style, float weight, App::Color color);
     float _getAngle(Base::Vector3d center, Base::Vector3d point);
     std::vector<Base::Vector3d> _getVertexPoints(std::vector<std::string> SubNames, TechDraw::DrawViewPart* objFeat);
     bool _checkSel(Gui::Command* cmd,
@@ -1509,6 +1510,7 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend) {
                     TechDraw::GenericPtr genLine = std::static_pointer_cast<TechDraw::Generic>(baseGeo);
                     Base::Vector3d P0 = genLine->points.at(0);
                     Base::Vector3d P1 = genLine->points.at(1);
+                    bool isCenterLine = false;
                     if (baseGeo->cosmetic) {
                         std::string uniTag = baseGeo->getCosmeticTag();
                         int oldStyle = 1;
@@ -1524,6 +1526,7 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend) {
                             objFeat->removeCosmeticEdge(toDelete);
                         }
                         else if (baseGeo->source() == 2) {
+                            isCenterLine = true;
                             auto centerEdge = objFeat->getCenterLine(uniTag);
                             oldStyle = centerEdge->m_format.m_style;
                             oldWeight = centerEdge->m_format.m_weight;
@@ -1544,10 +1547,16 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend) {
                         }
                         startPt.y = -startPt.y;
                         endPt.y = -endPt.y;
-                        std::string lineTag = objFeat->addCosmeticEdge(startPt / scale, endPt / scale);
-                        TechDraw::CosmeticEdge* lineEdge = objFeat->getCosmeticEdge(lineTag);
-                        _setLineAttributes(lineEdge, oldStyle, oldWeight, oldColor);
-                        cmd->getSelection().clearSelection();
+                        if (isCenterLine) {
+                            std::string lineTag = objFeat->addCenterLine(startPt / scale, endPt / scale);
+                            TechDraw::CenterLine* lineEdge = objFeat->getCenterLine(lineTag);
+                            _setLineAttributes(lineEdge, oldStyle, oldWeight, oldColor);
+                        } else {
+                            std::string lineTag = objFeat->addCosmeticEdge(startPt / scale, endPt / scale);
+                            TechDraw::CosmeticEdge* lineEdge = objFeat->getCosmeticEdge(lineTag);
+                            _setLineAttributes(lineEdge, oldStyle, oldWeight, oldColor);
+                        }
+//                        cmd->getSelection().clearSelection();
                         objFeat->refreshCEGeoms();
                         objFeat->refreshCLGeoms();
                         objFeat->requestPaint();
@@ -2036,6 +2045,13 @@ namespace TechDrawGui {
 
     void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight, App::Color color) {
         // set line attributes of a cosmetic edge
+        cosEdge->m_format.m_style = style;
+        cosEdge->m_format.m_weight = weight;
+        cosEdge->m_format.m_color = color;
+    }
+
+    void _setLineAttributes(TechDraw::CenterLine* cosEdge, int style, float weight, App::Color color) {
+        // set line attributes of a centerline
         cosEdge->m_format.m_style = style;
         cosEdge->m_format.m_weight = weight;
         cosEdge->m_format.m_color = color;
