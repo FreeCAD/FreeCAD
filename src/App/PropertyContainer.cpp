@@ -341,7 +341,7 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
         // type and the behaviour would be undefined.
         try {
             auto prop = getPropertyByName(PropName.c_str());
-            if(!prop)
+            if(!prop || prop->getContainer() != this)
                 prop = dynamicProps.restore(*this,PropName.c_str(),TypeName.c_str(),reader);
 
             decltype(Property::StatusBits) status;
