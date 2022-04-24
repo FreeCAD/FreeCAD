@@ -224,6 +224,7 @@ class ShapeStringTaskPanelEdit(ShapeStringTaskPanel):
     def reject(self):
 
         self.vobj.Document.resetEdit()
+        self.platWinDialog("Restore")
 
         return True
 
