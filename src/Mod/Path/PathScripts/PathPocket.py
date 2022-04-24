@@ -206,12 +206,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             base[0].Shape, subshape=shape, depthparams=self.depthparams
                         )
                         rawRemovalShape = env.cut(base[0].Shape)
-                        faceExtrusions = [
-                            f.extrude(FreeCAD.Vector(0.0, 0.0, 1.0)) for f in Faces
-                        ]
-                        obj.removalshape = _identifyRemovalSolids(
-                            rawRemovalShape, faceExtrusions
-                        )
+                        obj.removalshape = _identifyRemovalSolids(rawRemovalShape)
+                        # obj.removalshape.tessellate(0.05)
                         removalshapes.append(
                             (obj.removalshape, False, "3DPocket")
                         )  # (shape, isHole, detail)
@@ -227,10 +223,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             base[0].Shape, subshape=shape, depthparams=self.depthparams
                         )
                         rawRemovalShape = env.cut(base[0].Shape)
-                        faceExtrusions = [shape.extrude(FreeCAD.Vector(0.0, 0.0, 1.0))]
-                        obj.removalshape = _identifyRemovalSolids(
-                            rawRemovalShape, faceExtrusions
-                        )
+                        obj.removalshape = _identifyRemovalSolids(rawRemovalShape)
                         removalshapes.append((obj.removalshape, False, "3DPocket"))
 
         else:  # process the job base object as a whole
@@ -544,7 +537,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 avgCom
             )  # effectively treats avgCom as origin for each face.
             mag = math.sqrt(
-                adjCom.x**2 + adjCom.y**2
+                adjCom.x ** 2 + adjCom.y ** 2
             )  # adjCom.Length without Z values
             drctn = 0.0
             # Determine direction of vector
@@ -879,13 +872,16 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         return (zmin, zmax)
 
 
-def _identifyRemovalSolids(sourceShape, commonShapes):
-    """_identifyRemovalSolids(sourceShape, commonShapes)
-    Loops through solids in sourceShape to identify commonality with solids in commonShapes.
-    The sourceShape solids with commonality are returned as Part.Compound shape."""
-    common = Part.makeCompound(commonShapes)
-    removalSolids = [s for s in sourceShape.Solids if s.common(common).Volume > 0.0]
-    return Part.makeCompound(removalSolids)
+def _identifyRemovalSolids(sourceShape):
+    """_identifyRemovalSolids(sourceShape)
+    Return Part.Compound of sourceShape solids that are above model."""
+    return Part.makeCompound(
+        [
+            s
+            for s in sourceShape.Solids
+            if PathGeom.isRoughly(s.BoundBox.ZMax, sourceShape.BoundBox.ZMax)
+        ]
+    )
 
 
 def _extrudeBaseDown(base):
