@@ -884,35 +884,6 @@ def _identifyRemovalSolids(sourceShape):
     )
 
 
-def _extrudeBaseDown(base):
-    """_extrudeBaseDown(base)
-    Extrudes and fuses all non-vertical faces downward to a level 1.0 mm below base ZMin."""
-    allExtrusions = list()
-    zMin = base.Shape.BoundBox.ZMin
-    bbFace = PathGeom.makeBoundBoxFace(base.Shape.BoundBox, offset=5.0)
-    bbFace.translate(
-        FreeCAD.Vector(0.0, 0.0, float(int(base.Shape.BoundBox.ZMin - 5.0)))
-    )
-    direction = FreeCAD.Vector(0.0, 0.0, -1.0)
-
-    # Make projections of each non-vertical face and extrude it
-    for f in base.Shape.Faces:
-        fbb = f.BoundBox
-        if not PathGeom.isRoughly(f.normalAt(0, 0).z, 0.0):
-            pp = bbFace.makeParallelProjection(f.Wires[0], direction)
-            face = Part.Face(Part.Wire(pp.Edges))
-            face.translate(FreeCAD.Vector(0.0, 0.0, fbb.ZMin))
-            ext = face.extrude(FreeCAD.Vector(0.0, 0.0, zMin - fbb.ZMin - 1.0))
-            allExtrusions.append(ext)
-
-    # Fuse all extrusions together
-    seed = allExtrusions.pop()
-    fusion = seed.fuse(allExtrusions)
-    fusion.translate(FreeCAD.Vector(0.0, 0.0, zMin - fusion.BoundBox.ZMin - 1.0))
-
-    return fusion.cut(base.Shape)
-
-
 def SetupProperties():
     return PathPocketBase.SetupProperties() + ["HandleMultipleFeatures"]
 
