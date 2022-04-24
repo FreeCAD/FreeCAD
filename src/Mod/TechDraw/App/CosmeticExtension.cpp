@@ -281,7 +281,8 @@ std::string CosmeticExtension::addCenterLine(Base::Vector3d start,
                                                Base::Vector3d end)
 {
 //    Base::Console().Message("CEx::addCenterLine(%s)\n",
- //                           DrawUtil::formatVector(pos).c_str());
+//                            DrawUtil::formatVector(start).c_str(),
+//                            DrawUtil::formatVector(end).c_str());
     std::vector<CenterLine*> cLines = CenterLines.getValues();
     TechDraw::CenterLine* cl = new TechDraw::CenterLine(start, end);
     cLines.push_back(cl);

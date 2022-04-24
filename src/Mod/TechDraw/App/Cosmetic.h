@@ -210,6 +210,14 @@ public:
                                          int mode = 0,
                                          bool flip = false);
     TechDraw::BaseGeomPtr scaledGeometry(TechDraw::DrawViewPart* partFeat);
+
+    static std::pair<Base::Vector3d, Base::Vector3d> calcEndPointsNoRef(
+                                                          Base::Vector3d start,
+                                                          Base::Vector3d end,
+                                                          double scale,
+                                                          double ext,
+                                                          double hShift, double vShift,
+                                                          double rotate);
     static std::pair<Base::Vector3d, Base::Vector3d> calcEndPoints(
                                           TechDraw::DrawViewPart* partFeat,
                                           std::vector<std::string> faceNames,

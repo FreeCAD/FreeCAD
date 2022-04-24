@@ -954,7 +954,7 @@ DocumentObjectExecReturn *Sheet::execute(void)
         FC_LOG("recomputing " << getFullName());
         for(auto &pos : make_order) {
             const auto &addr = VertexIndexList[pos];
-            FC_LOG(addr.toString());
+            FC_TRACE(addr.toString());
             recomputeCell(addr);
         }
     } catch (std::exception &) {
