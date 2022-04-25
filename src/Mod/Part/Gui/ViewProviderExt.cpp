@@ -75,6 +75,7 @@
 #include <Base/TimeInfo.h>
 #include <Base/Tools.h>
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/regex.hpp>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
 #include <Gui/Selection.h>
@@ -507,28 +508,28 @@ std::string ViewProviderPartExt::getElement(const SoDetail* detail) const
 
 SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
 {
-    std::string element = subelement;
-    std::string::size_type pos = element.find_first_of("0123456789");
-    int index = -1;
-    if (pos != std::string::npos) {
-        index = std::atoi(element.substr(pos).c_str());
-        element = element.substr(0,pos);
-    }
-
+    std::string element;
+    int index;
     SoDetail* detail = nullptr;
-    if (index < 0)
-        return detail;
-    if (element == "Face") {
-        detail = new SoFaceDetail();
-        static_cast<SoFaceDetail*>(detail)->setPartIndex(index - 1);
-    }
-    else if (element == "Edge") {
-        detail = new SoLineDetail();
-        static_cast<SoLineDetail*>(detail)->setLineIndex(index - 1);
-    }
-    else if (element == "Vertex") {
-        detail = new SoPointDetail();
-        static_cast<SoPointDetail*>(detail)->setCoordinateIndex(index + nodeset->startIndex.getValue() - 1);
+    boost::regex ex("^(Face|Edge|Vertex)([1-9][0-9]*)$");
+    boost::cmatch what;
+
+    if (boost::regex_match(subelement, what, ex)) {
+        element = what[1].str();
+        index = std::atoi(what[2].str().c_str());
+
+        if (element == "Face") {
+            detail = new SoFaceDetail();
+            static_cast<SoFaceDetail*>(detail)->setPartIndex(index - 1);
+        }
+        else if (element == "Edge") {
+            detail = new SoLineDetail();
+            static_cast<SoLineDetail*>(detail)->setLineIndex(index - 1);
+        }
+        else if (element == "Vertex") {
+            detail = new SoPointDetail();
+            static_cast<SoPointDetail*>(detail)->setCoordinateIndex(index + nodeset->startIndex.getValue() - 1);
+        }
     }
 
     return detail;
