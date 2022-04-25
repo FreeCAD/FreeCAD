@@ -818,7 +818,6 @@ void TreeWidget::_updateStatus(bool delay) {
     int timeout = TreeParams::Instance()->StatusTimeout();
     if (timeout < 0)
         timeout = 1;
-    FC_LOG("delay update status");
     statusTimer->start(timeout);
 }
 

@@ -356,19 +356,20 @@ void PropertySheet::copyCells(Base::Writer& writer, const std::vector<Range>& ra
     writer.Stream() << "<Cells count=\"" << ranges.size() << "\">" << std::endl;
     writer.incInd();
     for (auto range : ranges) {
+        auto r = range;
+        int count = 0;
+        do {
+            auto cell = getValue(*r);
+            if(cell && cell->isUsed())
+                ++count;
+        }while(r.next());
         writer.Stream() << writer.ind() << "<Range from=\"" << range.fromCellString()
-            << "\" to=\"" << range.toCellString() << "\" count=\"" << range.size() << "\">" << std::endl;
+            << "\" to=\"" << range.toCellString() << "\" count=\"" << count << "\">" << std::endl;
         writer.incInd();
         do {
             auto cell = getValue(*range);
             if (cell && cell->isUsed()) {
                 cell->save(writer);
-            }
-            else {
-                // The cell is empty, so when it's pasted it needs to clear the existing contents
-                writer.Stream() << writer.ind() << "<Cell "
-                    << "address=\"" << (*range).toString() << "\" "
-                    << "content = \"\" />";
             }
         } while (range.next());
         writer.decInd();
@@ -432,7 +433,6 @@ void PropertySheet::pasteCells(XMLReader &reader, Range dstRange) {
                         if(!dst.isValid())
                             continue;
                         owner->clear(dst);
-                        owner->cellUpdated(dst);
                     }
                 }
                 range.next();
@@ -479,7 +479,6 @@ void PropertySheet::pasteCells(XMLReader &reader, Range dstRange) {
                             recomputeDependencies(dst);
                     }
                     dirty.insert(dst);
-                    owner->cellUpdated(dst);
                 }
             }
         }
@@ -492,11 +491,11 @@ void PropertySheet::pasteCells(XMLReader &reader, Range dstRange) {
                         if(!dst.isValid())
                             continue;
                         owner->clear(dst);
-                        owner->cellUpdated(dst);
                     }
                 }
             }while(range.next());
         }
+        owner->rangeUpdated(Range(from, to));
     }
     signaller.tryInvoke();
 }

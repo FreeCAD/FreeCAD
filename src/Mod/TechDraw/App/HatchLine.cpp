@@ -317,7 +317,8 @@ std::vector<PATLineSpec> PATLineSpec::getSpecsForPattern(std::string& parmFile, 
     if (status) {
         lineSpecs = loadPatternDef(inFile);
     } else {
-        Base::Console().Message( "Could not find pattern: %s\n",parmName.c_str() );
+        //this message can come up when changing PAT file or pattern name
+        Base::Console().Log( "Could not find pattern: %s\n",parmName.c_str() );
         return result;
     }
 
@@ -331,6 +332,7 @@ std::vector<PATLineSpec> PATLineSpec::getSpecsForPattern(std::string& parmFile, 
 
 bool  PATLineSpec::findPatternStart(std::ifstream& inFile, std::string& parmName)
 {
+//    Base::Console().Message("HL::findPatternStart() - parmName: %s\n", parmName.c_str());
     bool result = false;
     while ( inFile.good() ){
          std::string line;

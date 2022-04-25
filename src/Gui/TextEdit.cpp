@@ -228,8 +228,6 @@ TextEditor::TextEditor(QWidget* parent)
     setFont(serifFont);
 
     ParameterGrp::handle hPrefGrp = getWindowParameter();
-    // set default to 4 characters
-    hPrefGrp->SetInt( "TabSize", 4 );
     hPrefGrp->Attach( this );
 
     // set colors and font

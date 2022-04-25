@@ -683,10 +683,12 @@ void Sheet::updateProperty(CellAddress key)
         else {
             std::string s;
 
-            if (cell->getStringContent(s))
+            if (cell->getStringContent(s) && !s.empty())
                 output.reset(new StringExpression(this, s));
-            else
-                output.reset(new StringExpression(this, ""));
+            else {
+                this->removeDynamicProperty(key.toString().c_str());
+                return;
+            }
         }
 
         /* Eval returns either NumberExpression or StringExpression, or
@@ -952,7 +954,7 @@ DocumentObjectExecReturn *Sheet::execute(void)
         FC_LOG("recomputing " << getFullName());
         for(auto &pos : make_order) {
             const auto &addr = VertexIndexList[pos];
-            FC_LOG(addr.toString());
+            FC_TRACE(addr.toString());
             recomputeCell(addr);
         }
     } catch (std::exception &) {
@@ -1079,12 +1081,14 @@ short Sheet::mustExecute(void) const
 void Sheet::clear(CellAddress address, bool /*all*/)
 {
     Cell * cell = getCell(address);
+    if (!cell)
+        return;
     std::string addr = address.toString();
     Property * prop = props.getDynamicPropertyByName(addr.c_str());
 
     // Remove alias, if defined
     std::string aliasStr;
-    if (cell && cell->getAlias(aliasStr))
+    if (cell->getAlias(aliasStr))
         this->removeDynamicProperty(aliasStr.c_str());
 
     cells.clear(address);

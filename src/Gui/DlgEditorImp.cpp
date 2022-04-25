@@ -29,6 +29,7 @@
 #include "DlgEditorImp.h"
 #include "ui_DlgEditor.h"
 #include "PythonEditor.h"
+#include "Tools.h"
 
 
 using namespace Gui;
@@ -169,6 +170,17 @@ void DlgSettingsEditorImp::on_colorButton_changed()
     pythonSyntax->setColor( d->colormap[index].first, col );
 }
 
+void DlgSettingsEditorImp::setEditorTabWidth(int tabWidth)
+{
+    QFontMetrics metric(font());
+    int fontSize = QtTools::horizontalAdvance(metric, QLatin1Char('0'));
+#if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
+    ui->textEdit1->setTabStopWidth(tabWidth * fontSize);
+#else
+    ui->textEdit1->setTabStopDistance(tabWidth * fontSize);
+#endif
+}
+
 void DlgSettingsEditorImp::saveSettings()
 {
     ui->EnableLineNumber->onSave();
@@ -188,6 +200,8 @@ void DlgSettingsEditorImp::saveSettings()
 
     hGrp->SetInt( "FontSize", ui->fontSize->value() );
     hGrp->SetASCII( "Font", ui->fontFamily->currentText().toLatin1() );
+
+    setEditorTabWidth(ui->tabSize->value());
 }
 
 void DlgSettingsEditorImp::loadSettings()
@@ -200,6 +214,7 @@ void DlgSettingsEditorImp::loadSettings()
     ui->radioTabs->onRestore();
     ui->radioSpaces->onRestore();
 
+    setEditorTabWidth(ui->tabSize->value());
     ui->textEdit1->setPlainText(QString::fromLatin1(
         "# Short Python sample\n"
         "import sys\n"
