@@ -64,6 +64,9 @@ public:
 
     App::PropertyBool        FlipArrowheads;
 
+    App::PropertyFloat GapFactorISO;
+    App::PropertyFloat GapFactorASME;
+
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);
     virtual bool useNewSelectionModel(void) const {return false;}

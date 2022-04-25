@@ -297,7 +297,6 @@ private:
     double getDefaultIsoDimensionLineSpacing() const;
     double getDefaultIsoReferenceLineOverhang() const;
     double getDefaultAsmeHorizontalLeaderLength() const;
-    double getDefaultAsmeExtensionLineGap() const;
 
 /*    QGIView* m_parent;      //for edit dialog set up eventually*/
 

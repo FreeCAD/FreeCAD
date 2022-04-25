@@ -73,7 +73,12 @@ static int         mattingStyle();
 
 static std::string svgFile();
 static std::string patFile();
+
 static std::string bitmapFill(void);
+
+static double      ISOGap();
+static double      ASMEGap();
+
 };
 
 } //end namespace TechDraw

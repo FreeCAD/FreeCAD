@@ -1567,11 +1567,20 @@ void QGIViewDimension::drawDistanceExecutive(const Base::Vector2d &startPoint, c
         arrowCount = 0;
     }
 
+    auto vp = static_cast<ViewProviderDimension*>(getViewProvider(getViewObject()));
+    assert(vp);
+
     if (arrowCount > 0 && renderExtent >= ViewProviderDimension::REND_EXTENT_REDUCED) {
         double gapSize = 0.0;
         if (standardStyle == ViewProviderDimension::STD_STYLE_ASME_REFERENCING
             || standardStyle == ViewProviderDimension::STD_STYLE_ASME_INLINED) {
-            gapSize = getDefaultAsmeExtensionLineGap();
+            double factor = vp->GapFactorASME.getValue();
+            gapSize = Rez::appX(m_lineWidth * factor);
+        }
+        if (standardStyle == ViewProviderDimension::STD_STYLE_ISO_REFERENCING
+            || standardStyle == ViewProviderDimension::STD_STYLE_ISO_ORIENTED) {
+            double factor = vp->GapFactorISO.getValue();
+            gapSize = Rez::appX(m_lineWidth * factor);
         }
 
         Base::Vector2d extensionOrigin;
@@ -1745,12 +1754,22 @@ void QGIViewDimension::drawDistanceOverride(const Base::Vector2d &startPoint, co
         arrowCount = 0;
     }
 
+    auto vp = static_cast<ViewProviderDimension*>(getViewProvider(getViewObject()));
+    assert(vp);
+
     if (arrowCount > 0 && renderExtent >= ViewProviderDimension::REND_EXTENT_REDUCED) {
         double gapSize = 0.0;
         if (standardStyle == ViewProviderDimension::STD_STYLE_ASME_REFERENCING
             || standardStyle == ViewProviderDimension::STD_STYLE_ASME_INLINED) {
-            gapSize = getDefaultAsmeExtensionLineGap();
+            double factor = vp->GapFactorASME.getValue();
+            gapSize = Rez::appX(m_lineWidth * factor);
         }
+        if (standardStyle == ViewProviderDimension::STD_STYLE_ISO_REFERENCING
+            || standardStyle == ViewProviderDimension::STD_STYLE_ISO_ORIENTED) {
+            double factor = vp->GapFactorISO.getValue();
+            gapSize = Rez::appX(m_lineWidth * factor);
+        }
+
 
         Base::Vector2d extensionOrigin;
         Base::Vector2d extensionTarget(computeExtensionLinePoints(endPoint, endCross, lineAngle + M_PI_2,
@@ -2307,12 +2326,22 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension *dimension, ViewPro
         arrowCount = 0;
     }
 
+    auto vp = static_cast<ViewProviderDimension*>(getViewProvider(getViewObject()));
+    assert(vp);
+
     if (arrowCount > 0 && renderExtent >= ViewProviderDimension::REND_EXTENT_REDUCED) {
         double gapSize = 0.0;
         if (standardStyle == ViewProviderDimension::STD_STYLE_ASME_REFERENCING
             || standardStyle == ViewProviderDimension::STD_STYLE_ASME_INLINED) {
-            gapSize = getDefaultAsmeExtensionLineGap();
+            double factor = vp->GapFactorASME.getValue();
+            gapSize = Rez::appX(m_lineWidth * factor);
         }
+        if (standardStyle == ViewProviderDimension::STD_STYLE_ISO_REFERENCING
+            || standardStyle == ViewProviderDimension::STD_STYLE_ISO_ORIENTED) {
+            double factor = vp->GapFactorISO.getValue();
+            gapSize = Rez::appX(m_lineWidth * factor);
+        }
+
 
         Base::Vector2d extensionOrigin;
         Base::Vector2d extensionTarget(computeExtensionLinePoints(endPoint,
@@ -2490,12 +2519,6 @@ double QGIViewDimension::getDefaultAsmeHorizontalLeaderLength() const
 {
     // Not specified by ASME Y14.5M, this is a best guess
     return Rez::appX(m_lineWidth*12);
-}
-
-double QGIViewDimension::getDefaultAsmeExtensionLineGap() const
-{
-    // Not specified by ASME Y14.5M, this is a best guess
-    return Rez::appX(m_lineWidth*6.0);
 }
 
 //frame, border, caption are never shown in QGIVD, so shouldn't be in bRect
