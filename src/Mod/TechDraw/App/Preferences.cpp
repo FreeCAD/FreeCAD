@@ -319,3 +319,21 @@ std::string Preferences::bitmapFill(void)
     }
     return result;
 }
+
+double Preferences::ISOGap()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                         .GetGroup("BaseApp")->GetGroup("Preferences")->
+                                         GetGroup("Mod/TechDraw/Dimensions");
+    double factor = hGrp->GetFloat("ISOGap", 8.0);
+    return factor;
+}
+
+double Preferences::ASMEGap()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                         .GetGroup("BaseApp")->GetGroup("Preferences")->
+                                         GetGroup("Mod/TechDraw/Dimensions");
+    double factor = hGrp->GetFloat("ASMEGap", 6.0);
+    return factor;
+}
