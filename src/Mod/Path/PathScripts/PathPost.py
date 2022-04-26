@@ -298,6 +298,7 @@ class CommandPathPost:
 
                 if tc == currTool:
                     curlist.append((obj, tc))
+                    continue
 
                 if tc != currTool and currTool is None:  # first TC
                     currTool = tc
