@@ -303,6 +303,17 @@ public:
     virtual ~HLRBRepModule() {}
 };
 
+class ShapeFixModule : public Py::ExtensionModule<ShapeFixModule>
+{
+public:
+    ShapeFixModule() : Py::ExtensionModule<ShapeFixModule>("ShapeFix")
+    {
+        initialize("This is a module working with the ShapeFix framework."); // register with Python
+    }
+
+    virtual ~ShapeFixModule() {}
+};
+
 class ShapeUpgradeModule : public Py::ExtensionModule<ShapeUpgradeModule>
 {
 public:
@@ -332,6 +343,7 @@ class Module : public Py::ExtensionModule<Module>
     Geom2dModule geom2d;
     GeomPlateModule geomPlate;
     HLRBRepModule HLRBRep;
+    ShapeFixModule shapeFix;
     ShapeUpgradeModule shapeUpgrade;
     ChFi2dModule chFi2d;
 public:
@@ -559,6 +571,7 @@ public:
         PyModule_AddObject(m_module, "Geom2d", geom2d.module().ptr());
         PyModule_AddObject(m_module, "GeomPlate", geomPlate.module().ptr());
         PyModule_AddObject(m_module, "HLRBRep", HLRBRep.module().ptr());
+        PyModule_AddObject(m_module, "ShapeFix", shapeFix.module().ptr());
         PyModule_AddObject(m_module, "ShapeUpgrade", shapeUpgrade.module().ptr());
         PyModule_AddObject(m_module, "ChFi2d", chFi2d.module().ptr());
     }

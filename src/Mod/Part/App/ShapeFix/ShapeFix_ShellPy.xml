@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="ShapeFix_RootPy"
+      Name="ShapeFix_ShellPy"
+      PythonName="Part.ShapeFix.Shell"
+      Twin="ShapeFix_Shell"
+      TwinPointer="ShapeFix_Shell"
+      Include="ShapeFix_Shell.hxx"
+      Namespace="Part"
+      FatherInclude="Mod/Part/App/ShapeFix/ShapeFix_RootPy.h"
+      FatherNamespace="Part"
+      Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>Root class for fixing operations</UserDocu>
+    </Documentation>
+    <Methode Name="init">
+      <Documentation>
+        <UserDocu>Initializes by shell</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="perform">
+      <Documentation>
+        <UserDocu>Iterates on subshapes and performs fixes</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="shell">
+      <Documentation>
+        <UserDocu>Returns fixed shell (or subset of oriented faces)</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="shape">
+      <Documentation>
+        <UserDocu>In case of multiconnexity returns compound of fixed shells and one shell otherwise</UserDocu>
+      </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>

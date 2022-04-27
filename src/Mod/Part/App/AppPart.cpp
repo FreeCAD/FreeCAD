@@ -99,7 +99,9 @@
 #include "Mod/Part/App/PlanePy.h"
 #include "Mod/Part/App/PointPy.h"
 #include <Mod/Part/App/PrecisionPy.h>
-#include "Mod/Part/App/RectangularTrimmedSurfacePy.h"
+#include <Mod/Part/App/RectangularTrimmedSurfacePy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_RootPy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_ShellPy.h>
 #include <Mod/Part/App/ShapeUpgrade/UnifySameDomainPy.h>
 #include "Mod/Part/App/SpherePy.h"
 #include "Mod/Part/App/SurfaceOfExtrusionPy.h"
@@ -336,6 +338,11 @@ PyMOD_INIT_FUNC(Part)
     Base::Interpreter().addType(&Part::BuildPlateSurfacePy::Type, geomPlate, "BuildPlateSurface");
     Base::Interpreter().addType(&Part::CurveConstraintPy::Type, geomPlate, "CurveConstraint");
     Base::Interpreter().addType(&Part::PointConstraintPy::Type, geomPlate, "PointConstraint");
+
+    // ShapeFix sub-module
+    PyObject* shapeFix(module.getAttr("ShapeFix").ptr());
+    Base::Interpreter().addType(&Part::ShapeFix_RootPy::Type, shapeFix, "Root");
+    Base::Interpreter().addType(&Part::ShapeFix_ShellPy::Type, shapeFix, "Shell");
 
     // ShapeUpgrade sub-module
     PyObject* shapeUpgrade(module.getAttr("ShapeUpgrade").ptr());
