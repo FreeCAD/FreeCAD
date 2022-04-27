@@ -4372,9 +4372,14 @@ TopoShape &TopoShape::makeGTransform(const TopoShape &shape,
     mat.SetValue(2,4,rclTrf[1][3]);
     mat.SetValue(3,4,rclTrf[2][3]);
 
-    // geometric transformation
-    BRepBuilderAPI_GTransform mkTrf(shape.getShape(), mat, copy);
-    _Shape = mkTrf.Shape();
+    try {
+        // geometric transformation
+        BRepBuilderAPI_GTransform mkTrf(shape.getShape(), mat, copy);
+        _Shape = mkTrf.Shape();
+    }
+    catch (const Standard_Failure& e) {
+        Base::Console().Error("TopoShape::makeGTransform failed: %s\n", e.GetMessageString());
+    }
     return *this;
 }
 
