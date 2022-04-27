@@ -98,6 +98,7 @@ file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/BRepFeat)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Geom2d)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/GeomPlate)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/HLRBRep)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/ShapeFix)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/ShapeUpgrade)
 
 generate_from_xml(BRepFeat/MakePrismPy)
@@ -128,6 +129,9 @@ generate_from_xml(HLRBRep/HLRBRep_AlgoPy)
 generate_from_xml(HLRBRep/HLRToShapePy)
 generate_from_xml(HLRBRep/HLRBRep_PolyAlgoPy)
 generate_from_xml(HLRBRep/PolyHLRToShapePy)
+
+generate_from_xml(ShapeFix/ShapeFix_RootPy)
+generate_from_xml(ShapeFix/ShapeFix_ShellPy)
 
 generate_from_xml(ShapeUpgrade/UnifySameDomainPy)
 
@@ -398,6 +402,16 @@ SET(HLRBRepPy_SRCS
 )
 SOURCE_GROUP("HLRBRep" FILES ${HLRBRepPy_SRCS})
 
+# ShapeFix wrappers
+SET(ShapeFixPy_SRCS
+    ShapeFix/ShapeFix_RootPy.xml
+    ShapeFix/ShapeFix_RootPyImp.cpp
+    ShapeFix/ShapeFix_ShellPy.xml
+    ShapeFix/ShapeFix_ShellPyImp.cpp
+)
+
+SOURCE_GROUP("ShapeFix" FILES ${ShapeFixPy_SRCS})
+
 # ShapeUpgrade wrappers
 SET(ShapeUpgradePy_SRCS
     ShapeUpgrade/UnifySameDomainPy.xml
@@ -414,6 +428,7 @@ SET(Part_SRCS
     ${Geom2dPy_SRCS}
     ${GeomPlatePy_SRCS}
     ${HLRBRepPy_SRCS}
+    ${ShapeFixPy_SRCS}
     ${ShapeUpgradePy_SRCS}
     Attacher.cpp
     Attacher.h
