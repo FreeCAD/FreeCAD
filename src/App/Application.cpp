@@ -1321,7 +1321,7 @@ std::vector<std::string> Application::getImportModules(const char* Type) const
 #ifdef __GNUC__
             if (strcasecmp(Type,type.c_str()) == 0)
 #else
-            if (_stricmp(Type,jt->c_str()) == 0)
+            if (_stricmp(Type,type.c_str()) == 0)
 #endif
                 modules.push_back(_mImportType.module);
         }
@@ -1347,7 +1347,7 @@ std::vector<std::string> Application::getImportTypes(const char* Module) const
 #ifdef __GNUC__
         if (strcasecmp(Module,_mImportType.module.c_str()) == 0)
 #else
-        if (_stricmp(Module,it->module.c_str()) == 0)
+        if (_stricmp(Module,_mImportType.module.c_str()) == 0)
 #endif
             types.insert(types.end(), _mImportType.types.begin(), _mImportType.types.end());
     }
@@ -1377,7 +1377,7 @@ std::map<std::string, std::string> Application::getImportFilters(const char* Typ
 #ifdef __GNUC__
             if (strcasecmp(Type,type.c_str()) == 0)
 #else
-            if (_stricmp(Type,jt->c_str()) == 0)
+            if (_stricmp(Type,type.c_str()) == 0)
 #endif
                 moduleFilter[_mImportType.filter] = _mImportType.module;
         }
@@ -1444,7 +1444,7 @@ std::vector<std::string> Application::getExportModules(const char* Type) const
 #ifdef __GNUC__
             if (strcasecmp(Type,type.c_str()) == 0)
 #else
-            if (_stricmp(Type,jt->c_str()) == 0)
+            if (_stricmp(Type,type.c_str()) == 0)
 #endif
                 modules.push_back(_mExportType.module);
         }
@@ -1470,7 +1470,7 @@ std::vector<std::string> Application::getExportTypes(const char* Module) const
 #ifdef __GNUC__
         if (strcasecmp(Module,_mExportType.module.c_str()) == 0)
 #else
-        if (_stricmp(Module,it->module.c_str()) == 0)
+        if (_stricmp(Module,_mExportType.module.c_str()) == 0)
 #endif
             types.insert(types.end(), _mExportType.types.begin(), _mExportType.types.end());
     }
@@ -1500,7 +1500,7 @@ std::map<std::string, std::string> Application::getExportFilters(const char* Typ
 #ifdef __GNUC__
             if (strcasecmp(Type,type.c_str()) == 0)
 #else
-            if (_stricmp(Type,jt->c_str()) == 0)
+            if (_stricmp(Type,type.c_str()) == 0)
 #endif
                 moduleFilter[_mExportType.filter] = _mExportType.module;
         }
@@ -1658,7 +1658,7 @@ void Application::destruct()
 
     // now save all other parameter files
     std::map<std::string,ParameterManager *>& paramMgr = _pcSingleton->mpcPramManager;
-    for (auto & it : paramMgr) {
+    for (const auto & it : paramMgr) {
         if ((it.second != _pcSysParamMngr) && (it.second != _pcUserParamMngr)) {
             if (it.second->HasSerializer()) {
                 Console().Log("Saving %s...\n", it.first.c_str());
@@ -2324,7 +2324,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
     if (vm.count("module-path")) {
         vector<string> Mods = vm["module-path"].as< vector<string> >();
         string temp;
-        for (auto & Mod : Mods)
+        for (const auto & Mod : Mods)
             temp += Mod + ";";
         temp.erase(temp.end()-1);
         mConfig["AdditionalModulePaths"] = temp;
@@ -2332,14 +2332,14 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
 
     if (vm.count("python-path")) {
         vector<string> Paths = vm["python-path"].as< vector<string> >();
-        for (auto & Path : Paths)
+        for (const auto & Path : Paths)
             Base::Interpreter().addPythonPath(Path.c_str());
     }
 
     if (vm.count("input-file")) {
         vector<string> files(vm["input-file"].as< vector<string> >());
         int OpenFileCount=0;
-        for (auto & file : files) {
+        for (const auto & file : files) {
 
             //cout << "Input files are: "
             //     << vm["input-file"].as< vector<string> >() << "\n";
@@ -2399,7 +2399,7 @@ void processProgramOptions(const variables_map& vm, std::map<std::string,std::st
 
     if (vm.count("dump-config")) {
         std::stringstream str;
-        for (auto & it : mConfig) {
+        for (const auto & it : mConfig) {
             str << it.first << "=" << it.second << std::endl;
         }
         throw Base::ProgramInformation(str.str());
@@ -2816,7 +2816,7 @@ void Application::logStatus()
         boost::posix_time::second_clock::local_time());
     Console().Log("Time = %s\n", time_str.c_str());
 
-    for (auto & It : mConfig) {
+    for (const auto & It : mConfig) {
         Console().Log("%s = %s\n",It.first.c_str(),It.second.c_str());
     }
 }
