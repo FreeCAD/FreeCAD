@@ -77,6 +77,7 @@
 #include "MDIViewPy.h"
 #include "SoFCDB.h"
 #include "Selection.h"
+#include "SoFCOffscreenRenderer.h"
 #include "SplitView3DInventor.h"
 #include "TaskView/TaskView.h"
 #include "TaskView/TaskDialogPython.h"
@@ -456,6 +457,10 @@ Application::Application(bool GUIenabled)
             break;
         Py_DECREF(descr);
     }
+
+    SoQtOffscreenRendererPy::init_type();
+    Base::Interpreter().addType(SoQtOffscreenRendererPy::type_object(),
+        module,"SoQtOffscreenRenderer");
 
     App::Application::Config()["COIN_VERSION"] = COIN_VERSION;
 

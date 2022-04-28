@@ -31,6 +31,8 @@
 #include <QStringList>
 #include <QtOpenGL.h>
 
+#include <CXX/Extensions.hxx>
+
 
 namespace Gui {
 
@@ -144,6 +146,40 @@ private:
     int numSamples;
     GLenum texFormat;
     QImage glImage;
+};
+
+class SoQtOffscreenRendererPy : public Py::PythonExtension<SoQtOffscreenRendererPy>
+{
+public:
+    static void init_type();
+
+    SoQtOffscreenRendererPy(const SbViewportRegion&);
+    ~SoQtOffscreenRendererPy();
+
+    Py::Object repr();
+
+    Py::Object setViewportRegion(const Py::Tuple&);
+    Py::Object getViewportRegion(const Py::Tuple&);
+
+    Py::Object setBackgroundColor(const Py::Tuple&);
+    Py::Object getBackgroundColor(const Py::Tuple&);
+
+    Py::Object setNumPasses(const Py::Tuple&);
+    Py::Object getNumPasses(const Py::Tuple&);
+
+    Py::Object setInternalTextureFormat(const Py::Tuple&);
+    Py::Object getInternalTextureFormat(const Py::Tuple&);
+
+    Py::Object render(const Py::Tuple&);
+
+    Py::Object writeToImage(const Py::Tuple&);
+    Py::Object getWriteImageFiletypeInfo(const Py::Tuple&);
+
+private:
+    static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
+
+private:
+    SoQtOffscreenRenderer renderer;
 };
 
 } // namespace Gui

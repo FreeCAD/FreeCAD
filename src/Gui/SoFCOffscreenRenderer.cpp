@@ -49,6 +49,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Exception.h>
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 
 #include "SoFCOffscreenRenderer.h"
 #include "BitmapFactory.h"
@@ -741,3 +742,180 @@ QStringList SoQtOffscreenRenderer::getWriteImageFiletypeInfo() const
 
 #undef PRIVATE
 #undef PUBLIC
+
+// ---------------------------------------------------------------
+
+void SoQtOffscreenRendererPy::init_type()
+{
+    behaviors().name("SoQtOffscreenRenderer");
+    behaviors().doc("Python interface for SoQtOffscreenRenderer");
+    behaviors().set_tp_new(PyMake);
+
+    // you must have overwritten the virtual functions
+    behaviors().supportRepr();
+    behaviors().supportGetattr();
+    behaviors().supportSetattr();
+    behaviors().readyType();
+
+    add_varargs_method("setViewportRegion",&SoQtOffscreenRendererPy::setViewportRegion,"setViewportRegion(int, int)");
+    add_varargs_method("getViewportRegion",&SoQtOffscreenRendererPy::getViewportRegion,"getViewportRegion() -> tuple");
+    add_varargs_method("setBackgroundColor",&SoQtOffscreenRendererPy::setBackgroundColor,"setBackgroundColor(float, float, float, [float])");
+    add_varargs_method("getBackgroundColor",&SoQtOffscreenRendererPy::getBackgroundColor,"getBackgroundColor() -> tuple");
+    add_varargs_method("setNumPasses",&SoQtOffscreenRendererPy::setNumPasses,"setNumPasses(int)");
+    add_varargs_method("getNumPasses",&SoQtOffscreenRendererPy::getNumPasses,"getNumPasses() -> int");
+    add_varargs_method("setInternalTextureFormat",&SoQtOffscreenRendererPy::setInternalTextureFormat,"setInternalTextureFormat(int)");
+    add_varargs_method("getInternalTextureFormat",&SoQtOffscreenRendererPy::getInternalTextureFormat,"getInternalTextureFormat() -> int");
+    add_varargs_method("render",&SoQtOffscreenRendererPy::render,"render(node)");
+    add_varargs_method("writeToImage",&SoQtOffscreenRendererPy::writeToImage,"writeToImage(string)");
+    add_varargs_method("getWriteImageFiletypeInfo",&SoQtOffscreenRendererPy::getWriteImageFiletypeInfo,"getWriteImageFiletypeInfo() -> tuple");
+}
+
+PyObject *SoQtOffscreenRendererPy::PyMake(struct _typeobject * /*type*/, PyObject * args, PyObject * /*kwds*/)
+{
+    short w, h;
+    if (!PyArg_ParseTuple(args, "hh", &w, &h))
+        return nullptr;
+
+    return new SoQtOffscreenRendererPy(SbViewportRegion(w, h));
+}
+
+SoQtOffscreenRendererPy::SoQtOffscreenRendererPy(const SbViewportRegion& vpr)
+  : renderer(vpr)
+{
+}
+
+SoQtOffscreenRendererPy::~SoQtOffscreenRendererPy()
+{
+}
+
+Py::Object SoQtOffscreenRendererPy::repr()
+{
+    std::stringstream s;
+    s << "<SoQtOffscreenRenderer at " << this << ">";
+    return Py::String(s.str());
+}
+
+Py::Object SoQtOffscreenRendererPy::setViewportRegion(const Py::Tuple& args)
+{
+    short w, h;
+    if (!PyArg_ParseTuple(args.ptr(), "hh", &w, &h))
+        throw Py::Exception();
+
+    renderer.setViewportRegion(SbViewportRegion(w, h));
+    return Py::None();
+}
+
+Py::Object SoQtOffscreenRendererPy::getViewportRegion(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    const SbViewportRegion& vpr = renderer.getViewportRegion();
+    SbVec2s size = vpr.getWindowSize();
+    return Py::TupleN(Py::Long(size[0]), Py::Long(size[1]));
+}
+
+Py::Object SoQtOffscreenRendererPy::setBackgroundColor(const Py::Tuple& args)
+{
+    float r, g, b, a = 1.0f;
+    if (!PyArg_ParseTuple(args.ptr(), "fff|f", &r, &g, &b, &a))
+        throw Py::Exception();
+
+    renderer.setBackgroundColor(SbColor4f(r, g, b, a));
+    return Py::None();
+}
+
+Py::Object SoQtOffscreenRendererPy::getBackgroundColor(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    SbColor4f color = renderer.getBackgroundColor();
+    return Py::TupleN(Py::Float(color[0]), Py::Float(color[1]), Py::Float(color[2]), Py::Float(color[3]));
+}
+
+Py::Object SoQtOffscreenRendererPy::setNumPasses(const Py::Tuple& args)
+{
+    int num;
+    if (!PyArg_ParseTuple(args.ptr(), "i", &num))
+        throw Py::Exception();
+
+    renderer.setNumPasses(num);
+    return Py::None();
+}
+
+Py::Object SoQtOffscreenRendererPy::getNumPasses(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    int num = renderer.getNumPasses();
+    return Py::Long(num);
+}
+
+Py::Object SoQtOffscreenRendererPy::setInternalTextureFormat(const Py::Tuple& args)
+{
+    unsigned int format;
+    if (!PyArg_ParseTuple(args.ptr(), "I", &format))
+        throw Py::Exception();
+
+    renderer.setInternalTextureFormat(format);
+    return Py::None();
+}
+
+Py::Object SoQtOffscreenRendererPy::getInternalTextureFormat(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    unsigned long format = renderer.internalTextureFormat();
+    return Py::Long(format);
+}
+
+Py::Object SoQtOffscreenRendererPy::render(const Py::Tuple& args)
+{
+    PyObject* proxy;
+    if (!PyArg_ParseTuple(args.ptr(), "O", &proxy))
+        throw Py::Exception();
+
+    try {
+        void* ptr = nullptr;
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", proxy, &ptr, 0);
+        SoNode* node = reinterpret_cast<SoNode*>(ptr);
+        bool ok = false;
+        if (node) {
+            ok = renderer.render(node);
+        }
+        return Py::Boolean(ok);
+    }
+    catch (const Base::Exception& e) {
+        e.setPyException();
+        throw Py::Exception();
+    }
+}
+
+Py::Object SoQtOffscreenRendererPy::writeToImage(const Py::Tuple& args)
+{
+    const char* filename;
+    if (!PyArg_ParseTuple(args.ptr(), "s", &filename))
+        throw Py::Exception();
+
+    QImage img;
+    renderer.writeToImage(img);
+    img.save(QString::fromUtf8(filename));
+    return Py::None();
+}
+
+Py::Object SoQtOffscreenRendererPy::getWriteImageFiletypeInfo(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+
+    QStringList list = renderer.getWriteImageFiletypeInfo();
+    Py::Tuple tuple(list.size());
+    for (int i = 0; i < list.size(); i++) {
+        tuple.setItem(i, Py::String(list[i].toStdString()));
+    }
+
+    return tuple;
+}
