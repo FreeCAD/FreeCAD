@@ -3179,7 +3179,7 @@ void TopoShape::transformGeometry(const Base::Matrix4D &rclMat)
     *this = makeGTransform(rclMat);
 }
 
-TopoDS_Shape TopoShape::transformGShape(const Base::Matrix4D& rclTrf) const
+TopoDS_Shape TopoShape::transformGShape(const Base::Matrix4D& rclTrf, bool copy) const
 {
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Cannot transform null shape");
@@ -3199,7 +3199,7 @@ TopoDS_Shape TopoShape::transformGShape(const Base::Matrix4D& rclTrf) const
     mat.SetValue(3,4,rclTrf[2][3]);
 
     // geometric transformation
-    BRepBuilderAPI_GTransform mkTrf(this->_Shape, mat);
+    BRepBuilderAPI_GTransform mkTrf(this->_Shape, mat, copy);
     return mkTrf.Shape();
 }
 
@@ -4354,32 +4354,9 @@ TopoShape &TopoShape::makeTransform(const TopoShape &shape, const gp_Trsf &trsf,
     return *this;
 }
 
-TopoShape &TopoShape::makeGTransform(const TopoShape &shape,
-        const Base::Matrix4D &rclTrf, const char *op, bool copy)
+TopoShape &TopoShape::makeGTransform(const TopoShape &shape, const Base::Matrix4D &rclTrf, const char *op, bool copy)
 {
-    (void)op;
-    gp_GTrsf mat;
-    mat.SetValue(1,1,rclTrf[0][0]);
-    mat.SetValue(2,1,rclTrf[1][0]);
-    mat.SetValue(3,1,rclTrf[2][0]);
-    mat.SetValue(1,2,rclTrf[0][1]);
-    mat.SetValue(2,2,rclTrf[1][1]);
-    mat.SetValue(3,2,rclTrf[2][1]);
-    mat.SetValue(1,3,rclTrf[0][2]);
-    mat.SetValue(2,3,rclTrf[1][2]);
-    mat.SetValue(3,3,rclTrf[2][2]);
-    mat.SetValue(1,4,rclTrf[0][3]);
-    mat.SetValue(2,4,rclTrf[1][3]);
-    mat.SetValue(3,4,rclTrf[2][3]);
-
-    try {
-        // geometric transformation
-        BRepBuilderAPI_GTransform mkTrf(shape.getShape(), mat, copy);
-        _Shape = mkTrf.Shape();
-    }
-    catch (const Standard_Failure& e) {
-        Base::Console().Error("TopoShape::makeGTransform failed: %s\n", e.GetMessageString());
-    }
+    std::ignore = op;
+    _Shape = shape.transformGShape(rclTrf, copy);
     return *this;
 }
-

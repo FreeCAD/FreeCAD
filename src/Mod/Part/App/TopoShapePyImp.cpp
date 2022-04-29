@@ -1374,16 +1374,16 @@ PyObject*  TopoShapePy::mirror(PyObject *args)
 PyObject*  TopoShapePy::transformGeometry(PyObject *args)
 {
     PyObject *obj;
-    if (!PyArg_ParseTuple(args, "O!", &(Base::MatrixPy::Type),&obj))
+    PyObject *cpy = Py_False;
+    if (!PyArg_ParseTuple(args, "O!|O!", &(Base::MatrixPy::Type), &obj, &PyBool_Type, &cpy))
         return nullptr;
 
-    Base::Matrix4D mat = static_cast<Base::MatrixPy*>(obj)->value();
     try {
-        TopoDS_Shape shape = this->getTopoShapePtr()->transformGShape(mat);
+        Base::Matrix4D mat = static_cast<Base::MatrixPy*>(obj)->value();
+        TopoDS_Shape shape = this->getTopoShapePtr()->transformGShape(mat, PyObject_IsTrue(cpy) ? true : false);
         return new TopoShapePy(new TopoShape(shape));
     }
     catch (Standard_Failure& e) {
-
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
         return nullptr;
     }
