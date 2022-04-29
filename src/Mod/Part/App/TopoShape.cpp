@@ -4315,10 +4315,15 @@ bool TopoShape::_makeTransform(const TopoShape &shape,
         const Base::Matrix4D &rclTrf, const char *op, bool checkScale, bool copy)
 {
     if(checkScale) {
-        auto type = rclTrf.hasScale();
-        if (type != Base::ScaleType::Uniform && type != Base::ScaleType::NoScaling) {
-            makeGTransform(shape,rclTrf,op,copy);
-            return true;
+        try {
+            auto type = rclTrf.hasScale();
+            if (type != Base::ScaleType::Uniform && type != Base::ScaleType::NoScaling) {
+                makeGTransform(shape,rclTrf,op,copy);
+                return true;
+            }
+        }
+        catch (const Standard_Failure& e) {
+            Base::Console().Warning("TopoShape::makeGTransform failed: %s\n", e.GetMessageString());
         }
     }
     makeTransform(shape,convert(rclTrf),op,copy);
