@@ -3173,10 +3173,15 @@ TopoDS_Shape TopoShape::makeThickSolid(const TopTools_ListOfShape& remFace,
 
 void TopoShape::transformGeometry(const Base::Matrix4D &rclMat)
 {
-    if (this->_Shape.IsNull())
-        Standard_Failure::Raise("Cannot transform null shape");
+    try {
+        if (this->_Shape.IsNull())
+            Standard_Failure::Raise("Cannot transform null shape");
 
-    *this = makeGTransform(rclMat);
+        *this = makeGTransform(rclMat);
+    }
+    catch (const Standard_Failure& e) {
+        throw Base::CADKernelError(e.GetMessageString());
+    }
 }
 
 TopoDS_Shape TopoShape::transformGShape(const Base::Matrix4D& rclTrf, bool copy) const
