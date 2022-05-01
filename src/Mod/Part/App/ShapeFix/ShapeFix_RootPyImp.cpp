@@ -45,8 +45,11 @@ PyObject *ShapeFix_RootPy::PyMake(struct _typeobject *, PyObject *, PyObject *) 
 }
 
 // constructor method
-int ShapeFix_RootPy::PyInit(PyObject* /*args*/, PyObject* /*kwds*/)
+int ShapeFix_RootPy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
+    if (!PyArg_ParseTuple(args, ""))
+        return -1;
+
     return 0;
 }
 

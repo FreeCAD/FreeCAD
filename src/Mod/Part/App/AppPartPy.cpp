@@ -58,6 +58,8 @@
 # include <Interface_Static.hxx>
 # include <NCollection_List.hxx>
 # include <Precision.hxx>
+# include <ShapeFix.hxx>
+# include <ShapeBuild_ReShape.hxx>
 # include <ShapeUpgrade_ShellSewing.hxx>
 # include <Standard_ConstructionError.hxx>
 # include <Standard_DomainError.hxx>
@@ -308,10 +310,87 @@ class ShapeFixModule : public Py::ExtensionModule<ShapeFixModule>
 public:
     ShapeFixModule() : Py::ExtensionModule<ShapeFixModule>("ShapeFix")
     {
+        add_varargs_method("sameParameter",&ShapeFixModule::sameParameter,
+            "sameParameter(shape, enforce, prec=0.0)"
+        );
+        add_varargs_method("encodeRegularity",&ShapeFixModule::encodeRegularity,
+            "encodeRegularity(shape, tolerance = 1e-10)\n"
+        );
+        add_varargs_method("removeSmallEdges",&ShapeFixModule::removeSmallEdges,
+            "removeSmallEdges(shape, tolerance, ReShapeContext)\n"
+            "Removes edges which are less than given tolerance from shape"
+        );
+        add_varargs_method("fixVertexPosition",&ShapeFixModule::fixVertexPosition,
+            "fixVertexPosition(shape, tolerance, ReShapeContext)\n"
+            "Fix position of the vertices having tolerance more tnan specified one"
+        );
+        add_varargs_method("leastEdgeSize",&ShapeFixModule::leastEdgeSize,
+            "leastEdgeSize(shape)\n"
+            "Calculate size of least edge"
+        );
         initialize("This is a module working with the ShapeFix framework."); // register with Python
     }
 
     virtual ~ShapeFixModule() {}
+
+private:
+    Py::Object sameParameter(const Py::Tuple& args)
+    {
+        PyObject* shape;
+        PyObject* enforce;
+        double prec = 0.0;
+        if (!PyArg_ParseTuple(args.ptr(), "O!O!|d", &TopoShapePy::Type, &shape, &PyBool_Type, &enforce, &prec))
+            throw Py::Exception();
+
+        TopoDS_Shape sh = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
+        bool ok = ShapeFix::SameParameter(sh, PyObject_IsTrue(enforce) ? Standard_True : Standard_False, prec);
+        return Py::Boolean(ok);
+    }
+    Py::Object encodeRegularity(const Py::Tuple& args)
+    {
+        PyObject* shape;
+        double tolang = 1.0e-10;
+        if (!PyArg_ParseTuple(args.ptr(), "O!|d", &TopoShapePy::Type, &shape, &tolang))
+            throw Py::Exception();
+
+        TopoDS_Shape sh = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
+        ShapeFix::EncodeRegularity(sh, tolang);
+        return Py::None();
+    }
+    Py::Object removeSmallEdges(const Py::Tuple& args)
+    {
+        PyObject* shape;
+        double tol;
+        if (!PyArg_ParseTuple(args.ptr(), "O!d", &TopoShapePy::Type, &shape, &tol))
+            throw Py::Exception();
+
+        TopoDS_Shape sh = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
+        Handle(ShapeBuild_ReShape) reshape = new ShapeBuild_ReShape();
+        TopoShape res = ShapeFix::RemoveSmallEdges(sh, tol, reshape);
+        return Py::asObject(res.getPyObject());
+    }
+    Py::Object fixVertexPosition(const Py::Tuple& args)
+    {
+        PyObject* shape;
+        double tol;
+        if (!PyArg_ParseTuple(args.ptr(), "O!d", &TopoShapePy::Type, &shape, &tol))
+            throw Py::Exception();
+
+        TopoDS_Shape sh = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
+        Handle(ShapeBuild_ReShape) reshape = new ShapeBuild_ReShape();
+        bool ok = ShapeFix::FixVertexPosition(sh, tol, reshape);
+        return Py::Boolean(ok);
+    }
+    Py::Object leastEdgeSize(const Py::Tuple& args)
+    {
+        PyObject* shape;
+        if (!PyArg_ParseTuple(args.ptr(), "O!", &TopoShapePy::Type, &shape))
+            throw Py::Exception();
+
+        TopoDS_Shape sh = static_cast<TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
+        double len = ShapeFix::LeastEdgeSize(sh);
+        return Py::Float(len);
+    }
 };
 
 class ShapeUpgradeModule : public Py::ExtensionModule<ShapeUpgradeModule>
