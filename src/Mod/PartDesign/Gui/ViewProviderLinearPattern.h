@@ -34,6 +34,7 @@ class PartDesignGuiExport ViewProviderLinearPattern : public ViewProviderTransfo
 public:
     ViewProviderLinearPattern()
         { featureName = std::string("LinearPattern");
+          menuName = QObject::tr("LinearPattern parameters");
           sPixmap = "PartDesign_LinearPattern.svg"; }
 
 protected:

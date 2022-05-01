@@ -56,7 +56,7 @@ using namespace Gui;
 
 TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, bool selectEdges, bool selectFaces, QWidget *parent)
     : TaskBox(Gui::BitmapFactory().pixmap((std::string("PartDesign_") + DressUpView->featureName()).c_str()),
-              QString::fromLatin1((DressUpView->featureName() + " parameters").c_str()),
+              DressUpView->menuName,
               true,
               parent)
     , proxy(nullptr)

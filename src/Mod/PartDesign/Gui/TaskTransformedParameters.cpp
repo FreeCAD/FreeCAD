@@ -54,7 +54,7 @@ using namespace Gui;
 
 TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *TransformedView, QWidget *parent)
     : TaskBox(Gui::BitmapFactory().pixmap((std::string("PartDesign_") + TransformedView->featureName).c_str()),
-              QString::fromLatin1((TransformedView->featureName + " parameters").c_str()), true, parent)
+              TransformedView->menuName, true, parent)
     , proxy(nullptr)
     , TransformedView(TransformedView)
     , parentTask(nullptr)

@@ -34,6 +34,7 @@ class PartDesignGuiExport ViewProviderMirrored : public ViewProviderTransformed
 public:
     ViewProviderMirrored() {
         featureName = std::string("Mirrored");
+        menuName = QObject::tr("Mirrored parameters");
         sPixmap = "PartDesign_Mirrored.svg";
     }
 
