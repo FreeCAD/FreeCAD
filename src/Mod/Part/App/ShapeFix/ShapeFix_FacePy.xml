@@ -22,7 +22,7 @@
     </Methode>
     <Methode Name="clearModes">
       <Documentation>
-        <UserDocu>Iterates on subshapes and performs fixes</UserDocu>
+        <UserDocu>Sets all modes to default</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="add">
