@@ -137,6 +137,7 @@ generate_from_xml(HLRBRep/HLRBRep_PolyAlgoPy)
 generate_from_xml(HLRBRep/PolyHLRToShapePy)
 
 generate_from_xml(ShapeFix/ShapeFix_RootPy)
+generate_from_xml(ShapeFix/ShapeFix_FacePy)
 generate_from_xml(ShapeFix/ShapeFix_ShellPy)
 
 generate_from_xml(ShapeUpgrade/UnifySameDomainPy)
@@ -425,6 +426,8 @@ SOURCE_GROUP("HLRBRep" FILES ${HLRBRepPy_SRCS})
 SET(ShapeFixPy_SRCS
     ShapeFix/ShapeFix_RootPy.xml
     ShapeFix/ShapeFix_RootPyImp.cpp
+    ShapeFix/ShapeFix_FacePy.xml
+    ShapeFix/ShapeFix_FacePyImp.cpp
     ShapeFix/ShapeFix_ShellPy.xml
     ShapeFix/ShapeFix_ShellPyImp.cpp
 )

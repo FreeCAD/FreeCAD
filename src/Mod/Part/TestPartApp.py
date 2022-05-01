@@ -394,3 +394,99 @@ class PartTestRuledSurface(unittest.TestCase):
 
     def tearDown(self):
         FreeCAD.closeDocument(self.Doc.Name)
+
+class PartTestShapeFix(unittest.TestCase):
+    def testShapeFix_Root(self):
+        with self.assertRaises(TypeError):
+            Part.ShapeFix.Root([])
+
+        fix = Part.ShapeFix.Root()
+        print (fix)
+
+        fix.Precision = 0.0
+        self.assertEqual(fix.Precision, 0.0)
+
+        fix.MinTolerance = 0.0
+        self.assertEqual(fix.MinTolerance, 0.0)
+
+        fix.MaxTolerance = 0.5
+        self.assertEqual(fix.MaxTolerance, 0.5)
+
+        self.assertEqual(fix.limitTolerance(0.25), 0.25)
+
+    def testShapeFix_Face(self):
+        surface = Part.Plane()
+        face = surface.toShape(-1, 1, -1, 1)
+
+        Part.ShapeFix.Face()
+        Part.ShapeFix.Face(surface, 0.00001, True)
+        with self.assertRaises(TypeError):
+            Part.ShapeFix.Face([])
+
+        fix = Part.ShapeFix.Face(face)
+        print (fix)
+
+        fix.fixOrientation()
+        fix.fixAddNaturalBound()
+        fix.fixMissingSeam()
+        fix.fixSmallAreaWire(True)
+        fix.fixLoopWire()
+        fix.fixIntersectingWires()
+        fix.fixWiresTwoCoincidentEdges()
+        fix.fixPeriodicDegenerated()
+        fix.perform()
+
+        fix.add(face.OuterWire)
+        current = fix.face()
+        result = fix.result()
+
+        fix.FixWireMode = True
+        self.assertEqual(fix.FixWireMode, True)
+
+        fix.FixOrientationMode = True
+        self.assertEqual(fix.FixOrientationMode, True)
+
+        fix.FixAddNaturalBoundMode = True
+        self.assertEqual(fix.FixAddNaturalBoundMode, True)
+
+        fix.FixMissingSeamMode = True
+        self.assertEqual(fix.FixMissingSeamMode, True)
+
+        fix.FixSmallAreaWireMode = True
+        self.assertEqual(fix.FixSmallAreaWireMode, True)
+
+        fix.RemoveSmallAreaFaceMode = True
+        self.assertEqual(fix.RemoveSmallAreaFaceMode, True)
+
+        fix.FixIntersectingWiresMode = True
+        self.assertEqual(fix.FixIntersectingWiresMode, True)
+
+        fix.FixLoopWiresMode = True
+        self.assertEqual(fix.FixLoopWiresMode, True)
+
+        fix.FixSplitFaceMode = True
+        self.assertEqual(fix.FixSplitFaceMode, True)
+
+        fix.AutoCorrectPrecisionMode = True
+        self.assertEqual(fix.AutoCorrectPrecisionMode, True)
+
+        fix.FixPeriodicDegeneratedMode = True
+        self.assertEqual(fix.FixPeriodicDegeneratedMode, True)
+
+        fix.clearModes()
+
+    def testShapeFix_Shell(self):
+        surface = Part.Plane()
+        face = surface.toShape(-1, 1, -1, 1)
+        shell = Part.Shell([face])
+
+        Part.ShapeFix.Shell()
+        with self.assertRaises(TypeError):
+            Part.ShapeFix.Face([])
+
+        fix = Part.ShapeFix.Shell(shell)
+        fix.init(shell)
+        print (fix)
+        fix.perform()
+        fix.shell()
+        fix.shape()
