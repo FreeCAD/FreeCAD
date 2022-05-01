@@ -88,6 +88,15 @@ PyObject* ShapeFix_ShellPy::shell(PyObject *args)
     return shape.getPyObject();
 }
 
+PyObject* ShapeFix_ShellPy::numberOfShells(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    int num = getShapeFix_ShellPtr()->NbShells();
+    return Py::new_reference_to(Py::Long(num));
+}
+
 PyObject* ShapeFix_ShellPy::shape(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
@@ -95,6 +104,61 @@ PyObject* ShapeFix_ShellPy::shape(PyObject *args)
 
     TopoShape shape = getShapeFix_ShellPtr()->Shape();
     return shape.getPyObject();
+}
+
+PyObject* ShapeFix_ShellPy::errorFaces(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    TopoShape shape = getShapeFix_ShellPtr()->ErrorFaces();
+    return shape.getPyObject();
+}
+
+PyObject* ShapeFix_ShellPy::fixFaceOrientation(PyObject *args)
+{
+    PyObject* shell;
+    PyObject* multiConex = Py_True;
+    PyObject* nonManifold = Py_False;
+    if (!PyArg_ParseTuple(args, "O!|O!O!", &TopoShapeShellPy::Type, &shell,
+                                           &PyBool_Type, &multiConex,
+                                           &PyBool_Type, &nonManifold))
+        return nullptr;
+
+    bool ok = getShapeFix_ShellPtr()->FixFaceOrientation(TopoDS::Shell(static_cast<TopoShapePy*>(shell)->getTopoShapePtr()->getShape()),
+                                                         PyObject_IsTrue(multiConex) ? Standard_True : Standard_False,
+                                                         PyObject_IsTrue(nonManifold) ? Standard_True : Standard_False);
+    return Py::new_reference_to(Py::Boolean(ok));
+}
+
+PyObject* ShapeFix_ShellPy::setNonManifoldFlag(PyObject *args)
+{
+    PyObject* nonManifold;
+    if (!PyArg_ParseTuple(args, "O!", &PyBool_Type, &nonManifold))
+        return nullptr;
+
+    getShapeFix_ShellPtr()->SetNonManifoldFlag(PyObject_IsTrue(nonManifold) ? Standard_True : Standard_False);
+    Py_Return;
+}
+
+Py::Boolean ShapeFix_ShellPy::getFixFaceMode() const
+{
+    return Py::Boolean(getShapeFix_ShellPtr()->FixFaceMode());
+}
+
+void ShapeFix_ShellPy::setFixFaceMode(Py::Boolean arg)
+{
+    getShapeFix_ShellPtr()->FixFaceMode() = arg;
+}
+
+Py::Boolean ShapeFix_ShellPy::getFixOrientationMode() const
+{
+    return Py::Boolean(getShapeFix_ShellPtr()->FixOrientationMode());
+}
+
+void ShapeFix_ShellPy::setFixOrientationMode(Py::Boolean arg)
+{
+    getShapeFix_ShellPtr()->FixOrientationMode() = arg;
 }
 
 PyObject *ShapeFix_ShellPy::getCustomAttributes(const char* /*attr*/) const

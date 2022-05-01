@@ -490,3 +490,16 @@ class PartTestShapeFix(unittest.TestCase):
         fix.perform()
         fix.shell()
         fix.shape()
+
+        fix.setNonManifoldFlag(True)
+        fix.fixFaceOrientation(shell)
+
+        self.assertEqual(len(fix.errorFaces().Faces), 0)
+
+        self.assertEqual(fix.numberOfShells(), 1)
+
+        fix.FixFaceMode = True
+        self.assertEqual(fix.FixFaceMode, True)
+
+        fix.FixOrientationMode = True
+        self.assertEqual(fix.FixOrientationMode, True)
