@@ -40,7 +40,7 @@
 using namespace App;
 
 // returns a string which represent the object e.g. when printed in python
-std::string DocumentObjectPy::representation(void) const
+std::string DocumentObjectPy::representation() const
 {
     DocumentObject* object = this->getDocumentObjectPtr();
     std::stringstream str;
@@ -48,7 +48,7 @@ std::string DocumentObjectPy::representation(void) const
     return str.str();
 }
 
-Py::String DocumentObjectPy::getName(void) const
+Py::String DocumentObjectPy::getName() const
 {
     DocumentObject* object = this->getDocumentObjectPtr();
     const char* internal = object->getNameInDocument();
@@ -58,12 +58,12 @@ Py::String DocumentObjectPy::getName(void) const
     return Py::String(std::string(internal));
 }
 
-Py::String DocumentObjectPy::getFullName(void) const
+Py::String DocumentObjectPy::getFullName() const
 {
     return Py::String(getDocumentObjectPtr()->getFullName());
 }
 
-Py::Object DocumentObjectPy::getDocument(void) const
+Py::Object DocumentObjectPy::getDocument() const
 {
     DocumentObject* object = this->getDocumentObjectPtr();
     Document* doc = object->getDocument();
@@ -90,8 +90,14 @@ PyObject*  DocumentObjectPy::addProperty(PyObject *args)
         PyMem_Free(sDoc);
     }
 
-    getDocumentObjectPtr()->addDynamicProperty(sType,sName,sGroup,sDocStr.c_str(),attr,
-            PyObject_IsTrue(ro) ? true : false, PyObject_IsTrue(hd) ? true : false);
+    getDocumentObjectPtr()->addDynamicProperty(
+        sType,
+        sName,
+        sGroup,
+        sDocStr.c_str(),
+        attr,
+        PyObject_IsTrue(ro) != 0,
+        PyObject_IsTrue(hd) != 0);
 
     return Py::new_reference_to(this);
 }
@@ -114,11 +120,11 @@ PyObject*  DocumentObjectPy::supportedProperties(PyObject *args)
     std::vector<Base::Type> ary;
     Base::Type::getAllDerivedFrom(App::Property::getClassTypeId(), ary);
     Py::List res;
-    for (std::vector<Base::Type>::iterator it = ary.begin(); it != ary.end(); ++it) {
-        Base::BaseClass *data = static_cast<Base::BaseClass*>(it->createInstance());
+    for (auto & it : ary) {
+        auto *data = static_cast<Base::BaseClass*>(it.createInstance());
         if (data) {
             delete data;
-            res.append(Py::String(it->getName()));
+            res.append(Py::String(it.getName()));
         }
     }
     return Py::new_reference_to(res);
@@ -161,7 +167,7 @@ PyObject*  DocumentObjectPy::enforceRecompute(PyObject * args)
     Py_Return;
 }
 
-Py::List DocumentObjectPy::getState(void) const
+Py::List DocumentObjectPy::getState() const
 {
     DocumentObject* object = this->getDocumentObjectPtr();
     Py::List list;
@@ -200,7 +206,7 @@ Py::List DocumentObjectPy::getState(void) const
     return list;
 }
 
-Py::Object DocumentObjectPy::getViewObject(void) const
+Py::Object DocumentObjectPy::getViewObject() const
 {
     try {
         PyObject *dict = PySys_GetObject("modules");
@@ -248,25 +254,25 @@ Py::Object DocumentObjectPy::getViewObject(void) const
     }
 }
 
-Py::List DocumentObjectPy::getInList(void) const
+Py::List DocumentObjectPy::getInList() const
 {
     Py::List ret;
     std::vector<DocumentObject*> list = getDocumentObjectPtr()->getInList();
 
-    for (std::vector<DocumentObject*>::iterator It=list.begin();It!=list.end();++It)
-        ret.append(Py::Object((*It)->getPyObject(), true));
+    for (const auto & It : list)
+        ret.append(Py::Object(It->getPyObject(), true));
 
     return ret;
 }
 
-Py::List DocumentObjectPy::getInListRecursive(void) const
+Py::List DocumentObjectPy::getInListRecursive() const
 {
     Py::List ret;
     try {
         std::vector<DocumentObject*> list = getDocumentObjectPtr()->getInListRecursive();
 
-        for (std::vector<DocumentObject*>::iterator It = list.begin(); It != list.end(); ++It)
-            ret.append(Py::Object((*It)->getPyObject(), true));
+        for (const auto & It : list)
+            ret.append(Py::Object(It->getPyObject(), true));
  
     }
     catch (const Base::Exception& e) {
@@ -275,26 +281,26 @@ Py::List DocumentObjectPy::getInListRecursive(void) const
     return ret;    
 }
 
-Py::List DocumentObjectPy::getOutList(void) const
+Py::List DocumentObjectPy::getOutList() const
 {
     Py::List ret;
     std::vector<DocumentObject*> list = getDocumentObjectPtr()->getOutList();
 
-    for (std::vector<DocumentObject*>::iterator It=list.begin();It!=list.end();++It)
-        ret.append(Py::Object((*It)->getPyObject(), true));
+    for (const auto & It : list)
+        ret.append(Py::Object(It->getPyObject(), true));
 
     return ret;
 }
 
-Py::List DocumentObjectPy::getOutListRecursive(void) const
+Py::List DocumentObjectPy::getOutListRecursive() const
 {
     Py::List ret;
     try {
         std::vector<DocumentObject*> list = getDocumentObjectPtr()->getOutListRecursive();
 
         // create the python list for the output
-        for (std::vector<DocumentObject*>::iterator It = list.begin(); It != list.end(); ++It)
-            ret.append(Py::Object((*It)->getPyObject(), true));
+        for (const auto & It : list)
+            ret.append(Py::Object(It->getPyObject(), true));
     }
     catch (const Base::Exception& e) {
         throw Py::IndexError(e.what());
@@ -435,7 +441,7 @@ PyObject* DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
     std::vector<std::string> subs;
     bool single=true;
     if (PyUnicode_Check(obj)) {
-        subs.push_back(PyUnicode_AsUTF8(obj));
+        subs.emplace_back(PyUnicode_AsUTF8(obj));
     }
     else if (PySequence_Check(obj)) {
         single=false;
@@ -443,7 +449,7 @@ PyObject* DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
         for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
             PyObject* item = (*it).ptr();
             if (PyUnicode_Check(item)) {
-                subs.push_back(PyUnicode_AsUTF8(item));
+                subs.emplace_back(PyUnicode_AsUTF8(item));
             }
             else {
                 PyErr_SetString(PyExc_TypeError, "non-string object in sequence");
@@ -463,7 +469,7 @@ PyObject* DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
         Py::Object obj;
         Py::Object pyObj;
         Base::Matrix4D mat;
-        SubInfo(const Base::Matrix4D &mat) : sobj(nullptr), mat(mat){}
+        explicit SubInfo(const Base::Matrix4D &mat) : sobj(nullptr), mat(mat){}
     };
 
     Base::Matrix4D mat;
@@ -570,7 +576,7 @@ PyObject*  DocumentObjectPy::getSubObjects(PyObject *args) {
         for(size_t i=0;i<names.size();++i)
             pyObjs.setItem(i,Py::String(names[i]));
         return Py::new_reference_to(pyObjs);
-    }PY_CATCH;
+    }PY_CATCH
 }
 
 PyObject*  DocumentObjectPy::getLinkedObject(PyObject *args, PyObject *keywds)
@@ -608,7 +614,7 @@ PyObject*  DocumentObjectPy::getLinkedObject(PyObject *args, PyObject *keywds)
             return Py::new_reference_to(ret);
         }
         return Py::new_reference_to(pyObj);
-    } PY_CATCH;
+    } PY_CATCH
 }
 
 PyObject*  DocumentObjectPy::isElementVisible(PyObject *args)
@@ -618,7 +624,7 @@ PyObject*  DocumentObjectPy::isElementVisible(PyObject *args)
         return nullptr;
     PY_TRY {
         return Py_BuildValue("h", getDocumentObjectPtr()->isElementVisible(element));
-    } PY_CATCH;
+    } PY_CATCH
 }
 
 PyObject*  DocumentObjectPy::setElementVisible(PyObject *args)
@@ -629,7 +635,7 @@ PyObject*  DocumentObjectPy::setElementVisible(PyObject *args)
         return nullptr;
     PY_TRY {
         return Py_BuildValue("h", getDocumentObjectPtr()->setElementVisible(element,PyObject_IsTrue(visible)));
-    } PY_CATCH;
+    } PY_CATCH
 }
 
 PyObject*  DocumentObjectPy::hasChildElement(PyObject *args)
@@ -638,7 +644,7 @@ PyObject*  DocumentObjectPy::hasChildElement(PyObject *args)
         return nullptr;
     PY_TRY {
         return Py_BuildValue("O", getDocumentObjectPtr()->hasChildElement()?Py_True:Py_False);
-    } PY_CATCH;
+    } PY_CATCH
 }
 
 PyObject*  DocumentObjectPy::getParentGroup(PyObject *args)
@@ -680,7 +686,7 @@ PyObject*  DocumentObjectPy::getParentGeoFeatureGroup(PyObject *args)
 Py::Boolean DocumentObjectPy::getMustExecute() const
 {
     try {
-        return Py::Boolean(getDocumentObjectPtr()->mustExecute()?true:false);
+        return {getDocumentObjectPtr()->mustExecute() != 0};
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -698,7 +704,7 @@ PyObject*  DocumentObjectPy::getPathsByOutList(PyObject *args)
                 (o)->getDocumentObjectPtr();
         auto array = getDocumentObjectPtr()->getPathsByOutList(target);
         Py::List list;
-        for (auto it : array) {
+        for (const auto &it : array) {
             Py::List path;
             for (auto jt : it) {
                 path.append(Py::asObject(jt->getPyObject()));
@@ -712,7 +718,7 @@ PyObject*  DocumentObjectPy::getPathsByOutList(PyObject *args)
     }
 }
 
-PyObject *DocumentObjectPy::getCustomAttributes(const char* attr) const
+PyObject *DocumentObjectPy::getCustomAttributes(const char* attr)
 {
     // Dynamic property is now directly supported in PropertyContainer. So we
     // can comment out here and let PropertyContainerPy handle it.
@@ -801,7 +807,7 @@ Py::Int DocumentObjectPy::getID() const {
 }
 
 Py::Boolean DocumentObjectPy::getRemoving() const {
-    return Py::Boolean(getDocumentObjectPtr()->testStatus(ObjectStatus::Remove));
+    return {getDocumentObjectPtr()->testStatus(ObjectStatus::Remove)};
 }
 
 PyObject *DocumentObjectPy::resolve(PyObject *args)
@@ -822,7 +828,7 @@ PyObject *DocumentObjectPy::resolve(PyObject *args)
         ret.setItem(2,Py::String(elementName.c_str()));
         ret.setItem(3,Py::String(subElement?subElement:""));
         return Py::new_reference_to(ret);
-    } PY_CATCH;
+    } PY_CATCH
 
     Py_Return;
 }
@@ -844,7 +850,7 @@ PyObject *DocumentObjectPy::resolveSubElement(PyObject *args)
         ret.setItem(1,Py::String(elementName.first));
         ret.setItem(2,Py::String(elementName.second));
         return Py::new_reference_to(ret);
-    } PY_CATCH;
+    } PY_CATCH
 
     Py_Return;
 }
@@ -880,6 +886,6 @@ Py::Boolean DocumentObjectPy::getNoTouch() const {
     return Py::Boolean(getDocumentObjectPtr()->testStatus(ObjectStatus::NoTouch));
 }
 
-void DocumentObjectPy::setNoTouch(Py::Boolean value) {
+void DocumentObjectPy::setNoTouch(const Py::Boolean& value) {
     getDocumentObjectPtr()->setStatus(ObjectStatus::NoTouch,value.isTrue());
 }

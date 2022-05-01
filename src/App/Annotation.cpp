@@ -37,8 +37,7 @@ Annotation::Annotation()
 }
 
 Annotation::~Annotation()
-{
-}
+= default;
 
 // --------------------------------------------------
 
@@ -53,5 +52,4 @@ AnnotationLabel::AnnotationLabel()
 }
 
 AnnotationLabel::~AnnotationLabel()
-{
-}
+= default;
