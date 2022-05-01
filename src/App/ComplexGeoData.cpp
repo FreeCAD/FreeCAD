@@ -50,8 +50,7 @@ ComplexGeoData::ComplexGeoData()
 }
 
 ComplexGeoData::~ComplexGeoData()
-{
-}
+= default;
 
 Data::Segment* ComplexGeoData::getSubElementByName(const char* name) const
 {
@@ -130,7 +129,8 @@ Base::Vector3d ComplexGeoData::getPointFromLineIntersection(const Base::Vector3f
 
 void ComplexGeoData::getPoints(std::vector<Base::Vector3d> &Points,
                                std::vector<Base::Vector3d> &Normals,
-                               float Accuracy, uint16_t flags) const
+                               float Accuracy,
+                               uint16_t flags) const
 {
     (void)Points;
     (void)Normals;
@@ -140,7 +140,8 @@ void ComplexGeoData::getPoints(std::vector<Base::Vector3d> &Points,
 
 void ComplexGeoData::getLines(std::vector<Base::Vector3d> &Points,
                               std::vector<Line> &lines,
-                              float Accuracy, uint16_t flags) const
+                              float Accuracy,
+                              uint16_t flags) const
 {
     (void)Points;
     (void)lines;
@@ -150,7 +151,8 @@ void ComplexGeoData::getLines(std::vector<Base::Vector3d> &Points,
 
 void ComplexGeoData::getFaces(std::vector<Base::Vector3d> &Points,
                               std::vector<Facet> &faces,
-                              float Accuracy, uint16_t flags) const
+                              float Accuracy,
+                              uint16_t flags) const
 {
     (void)Points;
     (void)faces;
@@ -176,7 +178,7 @@ const char *ComplexGeoData::isMappedElement(const char *name) {
 
 std::string ComplexGeoData::newElementName(const char *name) {
     if(!name)
-        return std::string();
+        return {};
     const char *dot = strrchr(name,'.');
     if(!dot || dot==name)
         return name;
@@ -194,7 +196,7 @@ std::string ComplexGeoData::newElementName(const char *name) {
 
 std::string ComplexGeoData::oldElementName(const char *name) {
     if(!name)
-        return std::string();
+        return {};
     const char *dot = strrchr(name,'.');
     if(!dot || dot==name)
         return name;
@@ -212,10 +214,10 @@ std::string ComplexGeoData::oldElementName(const char *name) {
 
 std::string ComplexGeoData::noElementName(const char *name) {
     if(!name)
-        return std::string();
+        return {};
     auto element = findElementName(name);
     if(element)
-        return std::string(name,element-name);
+        return std::string(name,element - name);
     return name;
 }
 

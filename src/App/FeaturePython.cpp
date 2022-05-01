@@ -212,7 +212,7 @@ void FeaturePythonImp::onChanged(const Property* prop)
 
 void FeaturePythonImp::onDocumentRestored()
 {
-    _FC_PY_CALL_CHECK(onDocumentRestored,return);
+    _FC_PY_CALL_CHECK(onDocumentRestored,return)
 
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -235,7 +235,7 @@ void FeaturePythonImp::onDocumentRestored()
 bool FeaturePythonImp::getSubObject(DocumentObject *&ret, const char *subname,
     PyObject **pyObj, Base::Matrix4D *_mat, bool transform, int depth) const
 {
-    FC_PY_CALL_CHECK(getSubObject);
+    FC_PY_CALL_CHECK(getSubObject)
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(6);
@@ -243,7 +243,7 @@ bool FeaturePythonImp::getSubObject(DocumentObject *&ret, const char *subname,
         if(!subname) subname = "";
         args.setItem(1,Py::String(subname));
         args.setItem(2,Py::Int(pyObj?2:1));
-        Base::MatrixPy *pyMat = new Base::MatrixPy(new Base::Matrix4D);
+        auto *pyMat = new Base::MatrixPy(new Base::Matrix4D);
         if(_mat) *pyMat->getMatrixPtr() = *_mat;
         args.setItem(3,Py::asObject(pyMat));
         args.setItem(4,Py::Boolean(transform));
@@ -293,7 +293,7 @@ bool FeaturePythonImp::getSubObject(DocumentObject *&ret, const char *subname,
 }
 
 bool FeaturePythonImp::getSubObjects(std::vector<std::string> &ret, int reason) const {
-    FC_PY_CALL_CHECK(getSubObjects);
+    FC_PY_CALL_CHECK(getSubObjects)
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(2);
@@ -305,8 +305,8 @@ bool FeaturePythonImp::getSubObjects(std::vector<std::string> &ret, int reason) 
         if(!res.isSequence())
             throw Py::TypeError("getSubObjects expects return type of tuple");
         Py::Sequence seq(res);
-        for(Py_ssize_t i=0;i<seq.length();++i) {
-            Py::Object name(seq[i].ptr());
+        for(const auto && i : seq) {
+            Py::Object name(i.ptr());
             if(!name.isString())
                 throw Py::TypeError("getSubObjects expects string in returned sequence");
             ret.push_back(name.as_string());
@@ -327,13 +327,13 @@ bool FeaturePythonImp::getSubObjects(std::vector<std::string> &ret, int reason) 
 bool FeaturePythonImp::getLinkedObject(DocumentObject *&ret, bool recurse,
         Base::Matrix4D *_mat, bool transform, int depth) const
 {
-    FC_PY_CALL_CHECK(getLinkedObject);
+    FC_PY_CALL_CHECK(getLinkedObject)
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(5);
         args.setItem(0, Py::Object(object->getPyObject(), true));
         args.setItem(1,Py::Boolean(recurse));
-        Base::MatrixPy *pyMat = new Base::MatrixPy(new Base::Matrix4D);
+        auto *pyMat = new Base::MatrixPy(new Base::Matrix4D);
         if(_mat) *pyMat->getMatrixPtr() = *_mat;
         args.setItem(2,Py::asObject(pyMat));
         args.setItem(3,Py::Boolean(transform));
@@ -374,7 +374,7 @@ bool FeaturePythonImp::getLinkedObject(DocumentObject *&ret, bool recurse,
     }
 }
 
-PyObject *FeaturePythonImp::getPyObject(void)
+PyObject *FeaturePythonImp::getPyObject()
 {
     // ref counter is set to 1
     return new FeaturePythonPyT<DocumentObjectPy>(object);
@@ -383,7 +383,7 @@ PyObject *FeaturePythonImp::getPyObject(void)
 FeaturePythonImp::ValueT
 FeaturePythonImp::hasChildElement() const
 {
-    _FC_PY_CALL_CHECK(hasChildElement,return(NotImplemented));
+    _FC_PY_CALL_CHECK(hasChildElement,return(NotImplemented))
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
@@ -404,7 +404,7 @@ FeaturePythonImp::hasChildElement() const
 }
 
 int FeaturePythonImp::isElementVisible(const char *element) const {
-    _FC_PY_CALL_CHECK(isElementVisible,return(-2));
+    _FC_PY_CALL_CHECK(isElementVisible,return(-2))
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(2);
@@ -424,7 +424,7 @@ int FeaturePythonImp::isElementVisible(const char *element) const {
 }
 
 int FeaturePythonImp::setElementVisible(const char *element, bool visible) {
-    _FC_PY_CALL_CHECK(setElementVisible,return(-2));
+    _FC_PY_CALL_CHECK(setElementVisible,return(-2))
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(3);
@@ -446,7 +446,7 @@ int FeaturePythonImp::setElementVisible(const char *element, bool visible) {
 
 std::string FeaturePythonImp::getViewProviderName()
 {
-    _FC_PY_CALL_CHECK(getViewProviderName,return(std::string()));
+    _FC_PY_CALL_CHECK(getViewProviderName,return(std::string()))
     Base::PyGILStateLocker lock;
     try {
         Py::TupleN args(Py::Object(object->getPyObject(), true));
@@ -458,13 +458,13 @@ std::string FeaturePythonImp::getViewProviderName()
         e.ReportException();
     }
 
-    return std::string();
+    return {};
 }
 
 FeaturePythonImp::ValueT
 FeaturePythonImp::canLinkProperties() const
 {
-    _FC_PY_CALL_CHECK(canLinkProperties,return(NotImplemented));
+    _FC_PY_CALL_CHECK(canLinkProperties,return(NotImplemented))
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
@@ -486,7 +486,7 @@ FeaturePythonImp::canLinkProperties() const
 FeaturePythonImp::ValueT
 FeaturePythonImp::allowDuplicateLabel() const
 {
-    _FC_PY_CALL_CHECK(allowDuplicateLabel,return(NotImplemented));
+    _FC_PY_CALL_CHECK(allowDuplicateLabel,return(NotImplemented))
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
@@ -507,7 +507,7 @@ FeaturePythonImp::allowDuplicateLabel() const
 }
 
 int FeaturePythonImp::canLoadPartial() const {
-    _FC_PY_CALL_CHECK(canLoadPartial,return(-1));
+    _FC_PY_CALL_CHECK(canLoadPartial,return(-1))
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
@@ -531,7 +531,7 @@ FeaturePythonImp::redirectSubName(std::ostringstream &ss,
                                   App::DocumentObject *topParent,
                                   App::DocumentObject *child) const
 {
-    _FC_PY_CALL_CHECK(redirectSubName,return(NotImplemented));
+    _FC_PY_CALL_CHECK(redirectSubName,return(NotImplemented))
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(4);
@@ -560,7 +560,7 @@ FeaturePythonImp::redirectSubName(std::ostringstream &ss,
 
 bool FeaturePythonImp::editProperty(const char *name)
 {
-    _FC_PY_CALL_CHECK(editProperty,return false);
+    _FC_PY_CALL_CHECK(editProperty,return false)
     Base::PyGILStateLocker lock;
     try {
         Py::Tuple args(1);
@@ -584,10 +584,10 @@ bool FeaturePythonImp::editProperty(const char *name)
 
 namespace App {
 PROPERTY_SOURCE_TEMPLATE(App::FeaturePython, App::DocumentObject)
-template<> const char* App::FeaturePython::getViewProviderName(void) const {
+template<> const char* App::FeaturePython::getViewProviderName() const {
     return "Gui::ViewProviderPythonFeature";
 }
-template<> PyObject* App::FeaturePython::getPyObject(void) {
+template<> PyObject* App::FeaturePython::getPyObject() {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
         PythonObject = Py::Object(new FeaturePythonPyT<DocumentObjectPy>(this),true);
@@ -602,7 +602,7 @@ template class AppExport FeaturePythonT<DocumentObject>;
 
 namespace App {
 PROPERTY_SOURCE_TEMPLATE(App::GeometryPython, App::GeoFeature)
-template<> const char* App::GeometryPython::getViewProviderName(void) const {
+template<> const char* App::GeometryPython::getViewProviderName() const {
     return "Gui::ViewProviderPythonGeometry";
 }
 // explicit template instantiation

@@ -43,7 +43,7 @@ using namespace Base;
 // returns a string which represent the object e.g. when printed in python
 std::string ComplexGeoDataPy::representation() const
 {
-    return std::string("<ComplexGeoData object>");
+    return {"<ComplexGeoData object>"};
 }
 
 PyObject* ComplexGeoDataPy::getElementTypes(PyObject *args)
@@ -96,17 +96,15 @@ PyObject* ComplexGeoDataPy::getFacesFromSubElement(PyObject *args)
 
     Py::Tuple tuple(2);
     Py::List vertex;
-    for (std::vector<Base::Vector3d>::const_iterator it = points.begin();
-        it != points.end(); ++it)
-        vertex.append(Py::asObject(new Base::VectorPy(*it)));
+    for (auto & point : points)
+        vertex.append(Py::asObject(new Base::VectorPy(point)));
     tuple.setItem(0, vertex);
     Py::List facet;
-    for (std::vector<Data::ComplexGeoData::Facet>::const_iterator
-        it = facets.begin(); it != facets.end(); ++it) {
+    for (auto & it : facets) {
         Py::Tuple f(3);
-        f.setItem(0,Py::Int(int(it->I1)));
-        f.setItem(1,Py::Int(int(it->I2)));
-        f.setItem(2,Py::Int(int(it->I3)));
+        f.setItem(0,Py::Int(int(it.I1)));
+        f.setItem(1,Py::Int(int(it.I2)));
+        f.setItem(2,Py::Int(int(it.I3)));
         facet.append(f);
     }
     tuple.setItem(1, facet);
@@ -133,16 +131,14 @@ PyObject* ComplexGeoDataPy::getLinesFromSubElement(PyObject *args)
 
     Py::Tuple tuple(2);
     Py::List vertex;
-    for (std::vector<Base::Vector3d>::const_iterator it = points.begin();
-        it != points.end(); ++it)
-        vertex.append(Py::asObject(new Base::VectorPy(*it)));
+    for (const auto & point : points)
+        vertex.append(Py::asObject(new Base::VectorPy(point)));
     tuple.setItem(0, vertex);
     Py::List line;
-    for (std::vector<Data::ComplexGeoData::Line>::const_iterator
-        it = lines.begin(); it != lines.end(); ++it) {
+    for (const auto & it : lines) {
         Py::Tuple l(2);
-        l.setItem(0,Py::Int((int)it->I1));
-        l.setItem(1,Py::Int((int)it->I2));
+        l.setItem(0,Py::Int((int)it.I1));
+        l.setItem(1,Py::Int((int)it.I2));
         line.append(l);
     }
     tuple.setItem(1, line);
@@ -167,16 +163,14 @@ PyObject* ComplexGeoDataPy::getPoints(PyObject *args)
 
     Py::Tuple tuple(2);
     Py::List vertex;
-    for (std::vector<Base::Vector3d>::const_iterator it = points.begin();
-         it != points.end(); ++it) {
-        vertex.append(Py::asObject(new Base::VectorPy(*it)));
+    for (const auto & point : points) {
+        vertex.append(Py::asObject(new Base::VectorPy(point)));
     }
     tuple.setItem(0, vertex);
 
     Py::List normal;
-    for (std::vector<Base::Vector3d>::const_iterator it = normals.begin();
-         it != normals.end(); ++it) {
-        normal.append(Py::asObject(new Base::VectorPy(*it)));
+    for (const auto & it : normals) {
+        normal.append(Py::asObject(new Base::VectorPy(it)));
     }
     tuple.setItem(1, normal);
     return Py::new_reference_to(tuple);
@@ -200,16 +194,14 @@ PyObject* ComplexGeoDataPy::getLines(PyObject *args)
 
     Py::Tuple tuple(2);
     Py::List vertex;
-    for (std::vector<Base::Vector3d>::const_iterator it = points.begin();
-        it != points.end(); ++it)
-        vertex.append(Py::asObject(new Base::VectorPy(*it)));
+    for (const auto & point : points)
+        vertex.append(Py::asObject(new Base::VectorPy(point)));
     tuple.setItem(0, vertex);
     Py::List line;
-    for (std::vector<Data::ComplexGeoData::Line>::const_iterator
-        it = lines.begin(); it != lines.end(); ++it) {
+    for (const auto & it : lines) {
         Py::Tuple l(2);
-        l.setItem(0,Py::Int((int)it->I1));
-        l.setItem(1,Py::Int((int)it->I2));
+        l.setItem(0,Py::Int((int)it.I1));
+        l.setItem(1,Py::Int((int)it.I2));
         line.append(l);
     }
     tuple.setItem(1, line);
