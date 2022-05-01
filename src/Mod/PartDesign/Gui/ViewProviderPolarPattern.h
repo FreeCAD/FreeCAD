@@ -34,6 +34,7 @@ class PartDesignGuiExport ViewProviderPolarPattern : public ViewProviderTransfor
 public:
     ViewProviderPolarPattern() {
         featureName = std::string("PolarPattern");
+        menuName = QObject::tr("PolarPattern parameters");
         sPixmap = "PartDesign_PolarPattern.svg";
     }
 

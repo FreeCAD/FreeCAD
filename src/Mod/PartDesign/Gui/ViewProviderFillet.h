@@ -36,7 +36,8 @@ class PartDesignGuiExport ViewProviderFillet : public ViewProviderDressUp
 public:
     /// constructor
     ViewProviderFillet()
-        { sPixmap = "PartDesign_Fillet.svg"; }
+        { sPixmap = "PartDesign_Fillet.svg";
+          menuName = QObject::tr("Fillet parrameters"); }
 
     /// return "Fillet"
     virtual const std::string & featureName() const;

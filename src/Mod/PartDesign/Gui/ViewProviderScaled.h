@@ -34,6 +34,7 @@ class PartDesignGuiExport ViewProviderScaled : public ViewProviderTransformed
 public:
     ViewProviderScaled() {
         featureName = std::string("Scaled");
+        menuName = QObject::tr("Scaled parameters");
         sPixmap = "PartDesign_Scaled.svg";
     }
 

@@ -36,7 +36,8 @@ class PartDesignGuiExport ViewProviderThickness : public ViewProviderDressUp
 public:
     /// constructor
     ViewProviderThickness()
-        { sPixmap = "PartDesign_Thickness.svg"; }
+        { sPixmap = "PartDesign_Thickness.svg";
+          menuName = QObject::tr("Thickness parameters"); }
 
     /// return "Thickness"
     virtual const std::string & featureName() const;

@@ -37,7 +37,8 @@ class PartDesignGuiExport ViewProviderDraft : public ViewProviderDressUp
 public:
     /// constructor
     ViewProviderDraft()
-        { sPixmap = "PartDesign_Draft.svg"; }
+        { sPixmap = "PartDesign_Draft.svg";
+          menuName = QObject::tr("Draft parameters"); }
 
     /// return "Draft"
     virtual const std::string & featureName() const;

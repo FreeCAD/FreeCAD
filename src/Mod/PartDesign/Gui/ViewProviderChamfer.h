@@ -36,7 +36,8 @@ class PartDesignGuiExport ViewProviderChamfer : public ViewProviderDressUp
 public:
     /// constructor
     ViewProviderChamfer()
-        { sPixmap = "PartDesign_Chamfer.svg"; }
+        { sPixmap = "PartDesign_Chamfer.svg";
+          menuName = QObject::tr("Chamfer parameters");}
 
     /// return "Chamfer"
     virtual const std::string & featureName() const;

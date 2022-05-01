@@ -34,6 +34,7 @@ class PartDesignGuiExport ViewProviderMultiTransform : public ViewProviderTransf
 public:
     ViewProviderMultiTransform() {
         featureName = std::string("MultiTransform");
+        menuName = QObject::tr("MultiTransform parameters");
         sPixmap = "PartDesign_MultiTransform.svg";
     }
 
