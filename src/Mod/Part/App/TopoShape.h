@@ -281,7 +281,7 @@ public:
     /** @name Manipulation*/
     //@{
     void transformGeometry(const Base::Matrix4D &rclMat);
-    TopoDS_Shape transformGShape(const Base::Matrix4D&) const;
+    TopoDS_Shape transformGShape(const Base::Matrix4D&, bool copy = false) const;
     bool transformShape(const Base::Matrix4D&, bool copy, bool checkScale=false);
     TopoDS_Shape mirror(const gp_Ax2&) const;
     TopoDS_Shape toNurbs() const;

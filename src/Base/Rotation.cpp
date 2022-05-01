@@ -172,10 +172,14 @@ void Rotation::getValue(Matrix4D & matrix) const
 {
     // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
     //
-    const double x = this->quat[0];
-    const double y = this->quat[1];
-    const double z = this->quat[2];
-    const double w = this->quat[3];
+    const double l = sqrt(this->quat[0] * this->quat[0] +
+                          this->quat[1] * this->quat[1] +
+                          this->quat[2] * this->quat[2] +
+                          this->quat[3] * this->quat[3]);
+    const double x = this->quat[0] / l;
+    const double y = this->quat[1] / l;
+    const double z = this->quat[2] / l;
+    const double w = this->quat[3] / l;
 
     matrix[0][0] = 1.0-2.0*(y*y+z*z);
     matrix[0][1] = 2.0*(x*y-z*w);

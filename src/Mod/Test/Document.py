@@ -415,6 +415,21 @@ class DocumentBasicCases(unittest.TestCase):
     obj = self.Doc.addObject("App::Origin")
     self.Doc.removeObject(obj.Name)
 
+  def testSamePropertyOfLinkAndLinkedObject(self):
+    # See also https://github.com/FreeCAD/FreeCAD/pull/6787
+    test = self.Doc.addObject("App::FeaturePython", "Python")
+    link = self.Doc.addObject("App::Link", "Link")
+    test.addProperty("App::PropertyFloat", "Test")
+    link.addProperty("App::PropertyFloat", "Test")
+    link.LinkedObject = test
+    # saving and restoring
+    SaveName = tempfile.gettempdir() + os.sep + "CreateTest.FCStd"
+    self.Doc.saveAs(SaveName)
+    FreeCAD.closeDocument("CreateTest")
+    self.Doc = FreeCAD.open(SaveName)
+    self.assertIn("Test", self.Doc.Python.PropertiesList)
+    self.assertIn("Test", self.Doc.Link.PropertiesList)
+
   def tearDown(self):
     #closing doc
     FreeCAD.closeDocument("CreateTest")
