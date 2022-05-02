@@ -50,7 +50,7 @@ public:
      * current active transaction until it reaches zero. It does not have any
      * effect on aborting transaction, though.
      */
-    AutoTransaction(const char *name=nullptr, bool tmpName=false);
+    explicit AutoTransaction(const char *name=nullptr, bool tmpName=false);
 
     /** Destructor
      *
@@ -95,7 +95,7 @@ public:
     /** Constructor
      * @param lock: whether to activate the lock
      */
-    TransactionLocker(bool lock=true);
+    explicit TransactionLocker(bool lock=true);
 
     /** Destructor
      * Unlock the transaction is this locker is active

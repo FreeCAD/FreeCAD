@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
+#include <memory>
 # include <sstream>
 #endif
 
@@ -116,15 +117,15 @@ Data::Segment* MeshObject::getSubElement(const char* Type, unsigned long n) cons
 {
     std::string element(Type);
     if (element == "Mesh" && n == 0) {
-        MeshSegment* segm = new MeshSegment();
+        auto* segm = new MeshSegment();
         segm->mesh = new MeshObject(*this);
         return segm;
     }
     else if (element == "Segment" && n < countSegments()) {
-        MeshSegment* segm = new MeshSegment();
+        auto* segm = new MeshSegment();
         segm->mesh = new MeshObject(*this);
         const Segment& faces = getSegment(n);
-        segm->segment.reset(new Segment(static_cast<MeshObject*>(segm->mesh), faces.getIndices(), false));
+        segm->segment = std::make_unique<Segment>(static_cast<MeshObject*>(segm->mesh), faces.getIndices(), false);
         return segm;
     }
 
@@ -137,7 +138,7 @@ void MeshObject::getFacesFromSubElement(const Data::Segment* element,
                                         std::vector<Facet> &faces) const
 {
     if (element && element->getTypeId() == MeshSegment::getClassTypeId()) {
-        const MeshSegment* segm = static_cast<const MeshSegment*>(element);
+        const auto* segm = static_cast<const MeshSegment*>(element);
         if (segm->segment) {
             Base::Reference<MeshObject> submesh(segm->mesh->meshFromSegment(segm->segment->getIndices()));
             submesh->getFaces(points, faces, 0.0f);
@@ -304,7 +305,8 @@ MeshPoint MeshObject::getPoint(PointIndex index) const
 
 void MeshObject::getPoints(std::vector<Base::Vector3d> &Points,
                            std::vector<Base::Vector3d> &Normals,
-                           float /*Accuracy*/, uint16_t /*flags*/) const
+                           float /*Accuracy*/,
+                           uint16_t /*flags*/) const
 {
     Base::Matrix4D mat = _Mtrx;
 
@@ -337,8 +339,10 @@ Mesh::Facet MeshObject::getFacet(FacetIndex index) const
     return face;
 }
 
-void MeshObject::getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &Topo,
-                          float /*Accuracy*/, uint16_t /*flags*/) const
+void MeshObject::getFaces(std::vector<Base::Vector3d> &Points,
+                          std::vector<Facet> &Topo,
+                          float /*Accuracy*/,
+                          uint16_t /*flags*/) const
 {
     unsigned long ctpoints = _kernel.CountPoints();
     Points.reserve(ctpoints);

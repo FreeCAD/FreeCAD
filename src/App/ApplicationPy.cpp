@@ -104,9 +104,9 @@ PyMethodDef Application::Methods[] = {
      "* If no module is given it will be determined by the file extension.\n"
      "* If more than one module can load a file the first one will be taken.\n"
      "* If no module exists to load the file an exception will be raised."},
-    {"open",   reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( Application::sOpenDocument )), METH_VARARGS|METH_KEYWORDS,
+    {"open",   reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) ()>( Application::sOpenDocument )), METH_VARARGS|METH_KEYWORDS,
      "See openDocument(string)"},
-    {"openDocument",   reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( Application::sOpenDocument )), METH_VARARGS|METH_KEYWORDS,
+    {"openDocument",   reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) ()>( Application::sOpenDocument )), METH_VARARGS|METH_KEYWORDS,
      "openDocument(filepath,hidden=False) -> object\n"
      "Create a document and load the project file into the document.\n\n"
      "filepath: file path to an existing file. If the file doesn't exist\n"
@@ -116,7 +116,7 @@ PyMethodDef Application::Methods[] = {
 //  {"saveDocument",   (PyCFunction) Application::sSaveDocument, METH_VARARGS,
 //   "saveDocument(string) -- Save the document to a file."},
 //  {"saveDocumentAs", (PyCFunction) Application::sSaveDocumentAs, METH_VARARGS},
-    {"newDocument",    reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) (void)>( Application::sNewDocument )), METH_VARARGS|METH_KEYWORDS,
+    {"newDocument",    reinterpret_cast<PyCFunction>(reinterpret_cast<void (*) ()>( Application::sNewDocument )), METH_VARARGS|METH_KEYWORDS,
      "newDocument(name, label=None, hidden=False, temp=False) -> object\n"
      "Create a new document with a given name.\n\n"
      "name: unique document name which is checked automatically.\n"
@@ -281,7 +281,7 @@ PyObject* Application::sNewDocument(PyObject * /*self*/, PyObject *args, PyObjec
         PyMem_Free(docName);
         PyMem_Free(usrName);
         return doc->getPyObject();
-    }PY_CATCH;
+    }PY_CATCH
 }
 
 PyObject* Application::sSetActiveDocument(PyObject * /*self*/, PyObject *args)
@@ -317,7 +317,7 @@ PyObject* Application::sCloseDocument(PyObject * /*self*/, PyObject *args)
         return nullptr;
     }
 
-    if (GetApplication().closeDocument(pstr) == false) {
+    if (!GetApplication().closeDocument(pstr)) {
         PyErr_Format(PyExc_RuntimeError, "Closing the document '%s' failed", pstr);
         return nullptr;
     }
@@ -333,7 +333,7 @@ PyObject* Application::sSaveDocument(PyObject * /*self*/, PyObject *args)
 
     Document* doc = GetApplication().getDocument(pDoc);
     if ( doc ) {
-        if ( doc->save() == false ) {
+        if (!doc->save()) {
             PyErr_Format(Base::PyExc_FC_GeneralError, "Cannot save document '%s'", pDoc);
             return nullptr;
         }
@@ -402,7 +402,7 @@ PyObject* Application::sGetParam(PyObject * /*self*/, PyObject *args)
 
     PY_TRY {
         return GetPyObject(GetApplication().GetParameterGroupByPath(pstr));
-    }PY_CATCH;
+    }PY_CATCH
 }
 
 PyObject* Application::sSaveParameter(PyObject * /*self*/, PyObject *args)
@@ -429,7 +429,7 @@ PyObject* Application::sSaveParameter(PyObject * /*self*/, PyObject *args)
         param->SaveDocument();
         Py_INCREF(Py_None);
         return Py_None;
-    }PY_CATCH;
+    }PY_CATCH
 }
 
 
@@ -439,9 +439,9 @@ PyObject* Application::sGetConfig(PyObject * /*self*/, PyObject *args)
 
     if (!PyArg_ParseTuple(args, "s", &pstr))
         return nullptr;
-    const std::map<std::string, std::string>& Map = GetApplication().Config();
 
-    std::map<std::string, std::string>::const_iterator it = Map.find(pstr);
+    const std::map<std::string, std::string>& Map = GetApplication().Config();
+    auto it = Map.find(pstr);
     if (it != Map.end()) {
         return Py_BuildValue("s",it->second.c_str());
     }
@@ -457,9 +457,8 @@ PyObject* Application::sDumpConfig(PyObject * /*self*/, PyObject *args)
         return nullptr;
 
     PyObject *dict = PyDict_New();
-    for (std::map<std::string,std::string>::iterator It= GetApplication()._mConfig.begin();
-         It!=GetApplication()._mConfig.end();++It) {
-        PyDict_SetItemString(dict,It->first.c_str(), PyUnicode_FromString(It->second.c_str()));
+    for (const auto & It : GetApplication()._mConfig) {
+        PyDict_SetItemString(dict,It.first.c_str(), PyUnicode_FromString(It.second.c_str()));
     }
     return dict;
 }
@@ -546,8 +545,8 @@ PyObject* Application::sGetImportType(PyObject * /*self*/, PyObject *args)
     if (psKey) {
         Py::List list;
         std::vector<std::string> modules = GetApplication().getImportModules(psKey);
-        for (std::vector<std::string>::iterator it = modules.begin(); it != modules.end(); ++it) {
-            list.append(Py::String(*it));
+        for (const auto & module : modules) {
+            list.append(Py::String(module));
         }
 
         return Py::new_reference_to(list);
@@ -555,20 +554,20 @@ PyObject* Application::sGetImportType(PyObject * /*self*/, PyObject *args)
     else {
         Py::Dict dict;
         std::vector<std::string> types = GetApplication().getImportTypes();
-        for (std::vector<std::string>::iterator it = types.begin(); it != types.end(); ++it) {
-            std::vector<std::string> modules = GetApplication().getImportModules(it->c_str());
+        for (const auto & type : types) {
+            std::vector<std::string> modules = GetApplication().getImportModules(type.c_str());
             if (modules.empty()) {
-                dict.setItem(it->c_str(), Py::None());
+                dict.setItem(type.c_str(), Py::None());
             }
             else if (modules.size() == 1) {
-                dict.setItem(it->c_str(), Py::String(modules.front()));
+                dict.setItem(type.c_str(), Py::String(modules.front()));
             }
             else {
                 Py::List list;
-                for (std::vector<std::string>::iterator jt = modules.begin(); jt != modules.end(); ++jt) {
-                    list.append(Py::String(*jt));
+                for (const auto & module : modules) {
+                    list.append(Py::String(module));
                 }
-                dict.setItem(it->c_str(), list);
+                dict.setItem(type.c_str(), list);
             }
         }
 
@@ -610,8 +609,8 @@ PyObject* Application::sGetExportType(PyObject * /*self*/, PyObject *args)
     if (psKey) {
         Py::List list;
         std::vector<std::string> modules = GetApplication().getExportModules(psKey);
-        for (std::vector<std::string>::iterator it = modules.begin(); it != modules.end(); ++it) {
-            list.append(Py::String(*it));
+        for (const auto & module : modules) {
+            list.append(Py::String(module));
         }
 
         return Py::new_reference_to(list);
@@ -619,20 +618,20 @@ PyObject* Application::sGetExportType(PyObject * /*self*/, PyObject *args)
     else {
         Py::Dict dict;
         std::vector<std::string> types = GetApplication().getExportTypes();
-        for (std::vector<std::string>::iterator it = types.begin(); it != types.end(); ++it) {
-            std::vector<std::string> modules = GetApplication().getExportModules(it->c_str());
+        for (const auto & type : types) {
+            std::vector<std::string> modules = GetApplication().getExportModules(type.c_str());
             if (modules.empty()) {
-                dict.setItem(it->c_str(), Py::None());
+                dict.setItem(type.c_str(), Py::None());
             }
             else if (modules.size() == 1) {
-                dict.setItem(it->c_str(), Py::String(modules.front()));
+                dict.setItem(type.c_str(), Py::String(modules.front()));
             }
             else {
                 Py::List list;
-                for (std::vector<std::string>::iterator jt = modules.begin(); jt != modules.end(); ++jt) {
-                    list.append(Py::String(*jt));
+                for (const auto & module : modules) {
+                    list.append(Py::String(module));
                 }
-                dict.setItem(it->c_str(), list);
+                dict.setItem(type.c_str(), list);
             }
         }
 
@@ -739,7 +738,7 @@ PyObject* Application::sListDocuments(PyObject * /*self*/, PyObject *args)
         PyObject *pKey;
         Base::PyObjectBase* pValue;
 
-        std::vector<Document*> docs = GetApplication().getDocuments();;
+        std::vector<Document*> docs = GetApplication().getDocuments();
         if(PyObject_IsTrue(sort))
             docs = Document::getDependentDocuments(docs,true);
 
@@ -753,7 +752,7 @@ PyObject* Application::sListDocuments(PyObject * /*self*/, PyObject *args)
         }
 
         return pDict;
-    } PY_CATCH;
+    } PY_CATCH
 }
 
 PyObject* Application::sAddDocObserver(PyObject * /*self*/, PyObject *args)
@@ -764,7 +763,7 @@ PyObject* Application::sAddDocObserver(PyObject * /*self*/, PyObject *args)
     PY_TRY {
         DocumentObserverPython::addObserver(Py::Object(o));
         Py_Return;
-    } PY_CATCH;
+    } PY_CATCH
 }
 
 PyObject* Application::sRemoveDocObserver(PyObject * /*self*/, PyObject *args)
@@ -775,7 +774,7 @@ PyObject* Application::sRemoveDocObserver(PyObject * /*self*/, PyObject *args)
     PY_TRY {
         DocumentObserverPython::removeObserver(Py::Object(o));
         Py_Return;
-    } PY_CATCH;
+    } PY_CATCH
 }
 
 PyObject *Application::sSetLogLevel(PyObject * /*self*/, PyObject *args)
@@ -802,7 +801,7 @@ PyObject *Application::sSetLogLevel(PyObject * /*self*/, PyObject *args)
                 l = FC_LOGLEVEL_DEFAULT;
             else {
                 Py_Error(PyExc_ValueError,
-                        "Unknown Log Level (use 'Default', 'Error', 'Warning', 'Message', 'Log', 'Trace' or an integer)");
+                        "Unknown Log Level (use 'Default', 'Error', 'Warning', 'Message', 'Log', 'Trace' or an integer)")
                 return nullptr;
             }
         }else
@@ -820,7 +819,7 @@ PyObject *Application::sSetLogLevel(PyObject * /*self*/, PyObject *args)
             *Base::Console().GetLogLevel(tag) = l;
         Py_INCREF(Py_None);
         return Py_None;
-    }PY_CATCH;
+    }PY_CATCH
 }
 
 PyObject *Application::sGetLogLevel(PyObject * /*self*/, PyObject *args)
@@ -860,7 +859,7 @@ PyObject *Application::sGetLogLevel(PyObject * /*self*/, PyObject *args)
         // default:
         //     return Py_BuildValue("i",l);
         // }
-    } PY_CATCH;
+    } PY_CATCH
 }
 
 PyObject *Application::sCheckLinkDepth(PyObject * /*self*/, PyObject *args)
@@ -871,7 +870,7 @@ PyObject *Application::sCheckLinkDepth(PyObject * /*self*/, PyObject *args)
 
     PY_TRY {
         return Py::new_reference_to(Py::Int(GetApplication().checkLinkDepth(depth,false)));
-    }PY_CATCH;
+    }PY_CATCH
 }
 
 PyObject *Application::sGetLinksTo(PyObject * /*self*/, PyObject *args)
@@ -897,7 +896,7 @@ PyObject *Application::sGetLinksTo(PyObject * /*self*/, PyObject *args)
         for(auto o : links)
             ret.setItem(i++,Py::Object(o->getPyObject(),true));
         return Py::new_reference_to(ret);
-    }PY_CATCH;
+    }PY_CATCH
 }
 
 PyObject *Application::sGetDependentObjects(PyObject * /*self*/, PyObject *args)
@@ -910,12 +909,12 @@ PyObject *Application::sGetDependentObjects(PyObject * /*self*/, PyObject *args)
     std::vector<App::DocumentObject*> objs;
     if (PySequence_Check(obj)) {
         Py::Sequence seq(obj);
-        for (Py_ssize_t i=0;i<seq.size();++i) {
-            if(!PyObject_TypeCheck(seq[i].ptr(),&DocumentObjectPy::Type)) {
+        for (const auto && i : seq) {
+            if(!PyObject_TypeCheck(i.ptr(),&DocumentObjectPy::Type)) {
                 PyErr_SetString(PyExc_TypeError, "Expect element in sequence to be of type document object");
                 return nullptr;
             }
-            objs.push_back(static_cast<DocumentObjectPy*>(seq[i].ptr())->getDocumentObjectPtr());
+            objs.push_back(static_cast<DocumentObjectPy*>(i.ptr())->getDocumentObjectPtr());
         }
     }
     else if(!PyObject_TypeCheck(obj,&DocumentObjectPy::Type)) {
@@ -934,7 +933,7 @@ PyObject *Application::sGetDependentObjects(PyObject * /*self*/, PyObject *args)
         for(size_t i=0;i<ret.size();++i)
             tuple.setItem(i,Py::Object(ret[i]->getPyObject(),true));
         return Py::new_reference_to(tuple);
-    } PY_CATCH;
+    } PY_CATCH
 }
 
 
@@ -948,7 +947,7 @@ PyObject *Application::sSetActiveTransaction(PyObject * /*self*/, PyObject *args
     PY_TRY {
         Py::Int ret(GetApplication().setActiveTransaction(name,PyObject_IsTrue(persist)));
         return Py::new_reference_to(ret);
-    }PY_CATCH;
+    }PY_CATCH
 }
 
 PyObject *Application::sGetActiveTransaction(PyObject * /*self*/, PyObject *args)
@@ -965,7 +964,7 @@ PyObject *Application::sGetActiveTransaction(PyObject * /*self*/, PyObject *args
         ret.setItem(0,Py::String(name));
         ret.setItem(1,Py::Int(id));
         return Py::new_reference_to(ret);
-    }PY_CATCH;
+    }PY_CATCH
 }
 
 PyObject *Application::sCloseActiveTransaction(PyObject * /*self*/, PyObject *args)
@@ -978,7 +977,7 @@ PyObject *Application::sCloseActiveTransaction(PyObject * /*self*/, PyObject *ar
     PY_TRY {
         GetApplication().closeActiveTransaction(PyObject_IsTrue(abort),id);
         Py_Return;
-    } PY_CATCH;
+    } PY_CATCH
 }
 
 PyObject *Application::sCheckAbort(PyObject * /*self*/, PyObject *args)

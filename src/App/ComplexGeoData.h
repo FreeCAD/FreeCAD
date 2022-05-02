@@ -53,7 +53,7 @@ class AppExport Segment: public Base::BaseClass
     TYPESYSTEM_HEADER();
 
 public:
-    virtual ~Segment(){}
+    ~Segment() override= default;
     virtual std::string getName() const=0;
 };
 
@@ -75,7 +75,7 @@ public:
     /// Constructor
     ComplexGeoData();
     /// Destructor
-    virtual ~ComplexGeoData();
+    ~ComplexGeoData() override;
 
     /** @name Subelement management */
     //@{
@@ -144,16 +144,29 @@ public:
     virtual Base::Vector3d getPointFromLineIntersection(
         const Base::Vector3f& base,
         const Base::Vector3f& dir) const;
+
     /** Get points from object with given accuracy */
-    virtual void getPoints(std::vector<Base::Vector3d> &Points,
+    virtual void getPoints(
+        std::vector<Base::Vector3d> &Points,
         std::vector<Base::Vector3d> &Normals,
-        float Accuracy, uint16_t flags=0) const;
+        float Accuracy,
+        uint16_t flags=0) const;
+
     /** Get lines from object with given accuracy */
-    virtual void getLines(std::vector<Base::Vector3d> &Points,std::vector<Line> &lines,
-        float Accuracy, uint16_t flags=0) const;
+    virtual void getLines(
+        std::vector<Base::Vector3d> &Points,
+        std::vector<Line> &lines,
+        float Accuracy,
+        uint16_t flags=0
+        ) const;
+
     /** Get faces from object with given accuracy */
-    virtual void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &faces,
-        float Accuracy, uint16_t flags=0) const;
+    virtual void getFaces(
+        std::vector<Base::Vector3d> &Points,
+        std::vector<Facet> &faces,
+        float Accuracy,
+        uint16_t flags=0
+        ) const;
     /** Get the center of gravity
      * If this method is implemented then true is returned and the center of gravity.
      * The default implementation only returns false.
