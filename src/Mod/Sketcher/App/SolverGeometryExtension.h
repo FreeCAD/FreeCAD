@@ -26,6 +26,10 @@
 #include <Mod/Part/App/GeometryExtension.h>
 #include <Mod/Sketcher/SketcherGlobal.h>
 
+#include "GeoEnum.h"
+
+#include <Base/Exception.h>
+
 namespace Sketcher
 {
 
@@ -45,36 +49,244 @@ public:
         NumParameterStatus
     };
 
+    class PointParameterStatus {
+    public:
+        PointParameterStatus(ParameterStatus status) {setStatus(status);}
+        PointParameterStatus(ParameterStatus statusx, ParameterStatus statusy) {setStatus(statusx, statusy);}
+
+        PointParameterStatus(const PointParameterStatus &) = default;
+        PointParameterStatus & operator=(const PointParameterStatus &) = default;
+        PointParameterStatus(PointParameterStatus &&) = default;
+        PointParameterStatus & operator=(PointParameterStatus &&) = default;
+
+        ParameterStatus getStatus() const { return (xstatus == Independent && ystatus == Independent)?Independent:Dependent;}
+        ParameterStatus getStatusx() const { return xstatus;}
+        ParameterStatus getStatusy() const { return ystatus;}
+
+        bool isXDoF() {return xstatus == Dependent;}
+        bool isYDoF() {return ystatus == Dependent;}
+
+        int getDoFs() {
+            bool xfree = isXDoF();
+            bool yfree = isYDoF();
+
+            if(xfree && yfree)
+                return 2;
+            else if(xfree || yfree)
+                return 1;
+            else
+                return 0;
+        }
+
+        void setStatus(ParameterStatus status) {xstatus=status; ystatus=status;}
+        void setStatus(ParameterStatus statusx, ParameterStatus statusy) {xstatus=statusx; ystatus=statusy;}
+        void setStatusx(ParameterStatus statusx) {xstatus=statusx;}
+        void setStatusy(ParameterStatus statusy) {ystatus=statusy;}
+
+    private:
+        ParameterStatus xstatus;
+        ParameterStatus ystatus;
+    };
+
+    class EdgeParameterStatus
+    {
+    public:
+        EdgeParameterStatus() = default;
+
+        void init(int nparams) { pstatus.resize(nparams, ParameterStatus::Dependent);}
+
+        ParameterStatus getStatus() const {
+            return std::all_of(pstatus.begin(), pstatus.end(), [](const auto & v){ return v == Independent;})?Independent:Dependent;
+        }
+
+        void setStatus(ParameterStatus status) { std::fill(pstatus.begin(), pstatus.end(), status);}
+
+        void setStatus(int index, ParameterStatus status) {
+            if(index > int(pstatus.size()))
+                pstatus.resize(index+1,ParameterStatus::Dependent);
+
+            pstatus.at(index) = status;
+
+        };
+
+    protected:
+        std::vector<ParameterStatus> pstatus;
+
+    };
+
+    class Point : public EdgeParameterStatus
+    {
+    public:
+        Point() = default;
+    };
+
+    class Line : public EdgeParameterStatus
+    {
+    public:
+        Line() = default;
+    };
+
+    class Arc : public EdgeParameterStatus
+    {
+    public:
+        Arc() = default;
+
+        ParameterStatus getRadiusStatus() const {return pstatus[0];}
+        ParameterStatus getStartParameter() const {return pstatus[1];}
+        ParameterStatus getEndParameter() const {return pstatus[2];}
+    };
+
+    class Circle : public EdgeParameterStatus
+    {
+    public:
+        Circle() = default;
+
+        ParameterStatus getRadiusStatus() const {return pstatus[0];}
+        bool isRadiusDoF() const {return pstatus[0] == Dependent;}
+    };
+
+    class ArcOfEllipse : public EdgeParameterStatus
+    {
+    public:
+        ArcOfEllipse() = default;
+
+        ParameterStatus getFocusXStatus() const {return pstatus[0];}
+        ParameterStatus getFocusYStatus() const {return pstatus[1];}
+        ParameterStatus getFocusMinorRadiusStatus() const {return pstatus[2];}
+        ParameterStatus getStartParameter() const {return pstatus[3];}
+        ParameterStatus getEndParameter() const {return pstatus[4];}
+
+        bool isFocusDoF() const {return pstatus[0] == Dependent || pstatus[1] == Dependent;}
+        bool isMinorRadiusDoF() const {return (pstatus[2] == Dependent);}
+    };
+
+    class Ellipse : public EdgeParameterStatus
+    {
+    public:
+        Ellipse() = default;
+
+        ParameterStatus getFocusXStatus() const {return pstatus[0];}
+        ParameterStatus getFocusYStatus() const {return pstatus[1];}
+        ParameterStatus getFocusMinorRadiusStatus() const {return pstatus[2];}
+
+        bool isFocusDoF() const {return pstatus[0] == Dependent || pstatus[1] == Dependent;}
+        bool isMinorRadiusDoF() const {return (pstatus[2] == Dependent);}
+    };
+
+    class ArcOfHyperbola : public EdgeParameterStatus
+    {
+    public:
+        ArcOfHyperbola() = default;
+
+        ParameterStatus getFocusXStatus() const {return pstatus[0];}
+        ParameterStatus getFocusYStatus() const {return pstatus[1];}
+        ParameterStatus getFocusMinorRadiusStatus() const {return pstatus[2];}
+        ParameterStatus getStartParameter() const {return pstatus[3];}
+        ParameterStatus getEndParameter() const {return pstatus[4];}
+    };
+
+    class ArcOfParabola : public EdgeParameterStatus
+    {
+    public:
+        ArcOfParabola() = default;
+
+        ParameterStatus getFocusXStatus() const {return pstatus[0];}
+        ParameterStatus getFocusYStatus() const {return pstatus[1];}
+    };
+
+    class BSpline : public EdgeParameterStatus
+    {
+    public:
+        BSpline() = default;
+
+        ParameterStatus getPoleXStatus(int poleindex) const
+        {
+            int npoles = pstatus.size() / 3;
+
+            if(poleindex < npoles)
+                return pstatus[poleindex*2];
+
+            THROWM(Base::IndexError, "Pole index out of range")
+
+        }
+
+        ParameterStatus getPoleYStatus(int poleindex) const
+        {
+            int npoles = pstatus.size() / 3;
+
+            if(poleindex < npoles)
+                return pstatus[poleindex*2+1];
+
+            THROWM(Base::IndexError, "Pole index out of range")
+
+        }
+
+        ParameterStatus getWeightStatus(int weightindex) const
+        {
+            int nweights = pstatus.size() / 3;
+
+            if(weightindex < nweights)
+                return pstatus[nweights*2 + weightindex];
+
+            THROWM(Base::IndexError, "Weight index out of range")
+        }
+    };
+
+
     SolverGeometryExtension();
-    SolverGeometryExtension(long cid);
     virtual ~SolverGeometryExtension() override = default;
 
     virtual std::unique_ptr<Part::GeometryExtension> copy(void) const override;
 
     virtual PyObject *getPyObject(void) override;
 
-    SolverStatus getGeometry() const  {return ( Edge == Independent &&
-                                                Start == Independent &&
-                                                End == Independent &&
-                                                Mid == Independent) ? FullyConstraint : NotFullyConstraint;}
+    virtual void notifyAttachment(Part::Geometry * geo) override;
 
-    ParameterStatus getEdge() const  {return Edge;}
-    void setEdge(ParameterStatus status) {Edge = status;}
+    SolverStatus getGeometry() const  {return ( Edge.getStatus() == Independent &&
+                                                Start.getStatus() == Independent &&
+                                                End.getStatus() == Independent &&
+                                                Mid.getStatus() == Independent) ? FullyConstraint : NotFullyConstraint;}
 
-    ParameterStatus getStart() const  {return Start;}
-    void setStart(ParameterStatus status) {Start = status;}
+    ParameterStatus getEdge() const  {return Edge.getStatus();}
+    Point & getPoint();
+    Line & getLine();
+    Arc & getArc();
+    Circle & getCircle();
+    ArcOfEllipse & getArcOfEllipse();
+    Ellipse & getEllipse();
+    ArcOfHyperbola & getArcOfHyperbola();
+    ArcOfParabola & getArcOfParabola();
+    BSpline & getBSpline();
+    EdgeParameterStatus getEdgeParameters() {return Edge;}
+    void setEdge(ParameterStatus status) {Edge.setStatus(status);}
+    void setEdge(int paramindex, ParameterStatus status) {Edge.setStatus(paramindex,status);}
 
-    ParameterStatus getMid() const  {return Mid;}
-    void setMid(ParameterStatus status) {Mid = status;}
+    ParameterStatus getStart() const  {return Start.getStatus();}
+    PointParameterStatus getStartPoint() const {return Start;}
+    void setStart(ParameterStatus xstatus, ParameterStatus ystatus) {Start.setStatus(xstatus,ystatus);}
+    void setStartx(ParameterStatus xstatus) {Start.setStatusx(xstatus);}
+    void setStarty(ParameterStatus ystatus) {Start.setStatusy(ystatus);}
 
-    ParameterStatus getEnd() const  {return End;}
-    void setEnd(ParameterStatus status) {End = status;}
+    ParameterStatus getMid() const  {return Mid.getStatus();}
+    PointParameterStatus getMidPoint() const {return Mid;}
+    void setMid(ParameterStatus xstatus, ParameterStatus ystatus) {Mid.setStatus(xstatus,ystatus);}
+    void setMidx(ParameterStatus xstatus) {Mid.setStatusx(xstatus);}
+    void setMidy(ParameterStatus ystatus) {Mid.setStatusy(ystatus);}
+
+    ParameterStatus getEnd() const  {return End.getStatus();}
+    PointParameterStatus getEndPoint() const {return End;}
+
+    void setEnd(ParameterStatus xstatus, ParameterStatus ystatus) {End.setStatus(xstatus,ystatus);}
+    void setEndx(ParameterStatus xstatus) {End.setStatusx(xstatus);}
+    void setEndy(ParameterStatus ystatus) {End.setStatusy(ystatus);}
+
+    PointParameterStatus getPoint(Sketcher::PointPos pos) const;
 
     void init(ParameterStatus status) {
-        Edge = status;
-        Start = status;
-        Mid = status;
-        End = status;
+        Edge.setStatus(status);
+        Start.setStatus(status);
+        Mid.setStatus(status);
+        End.setStatus(status);
     }
 
 protected:
@@ -83,11 +295,16 @@ protected:
 private:
     SolverGeometryExtension(const SolverGeometryExtension&) = default;
 
+    void ensureType(const Base::Type & type);
+
 private:
-    ParameterStatus    Edge;
-    ParameterStatus    Start;
-    ParameterStatus    Mid;
-    ParameterStatus    End;
+    EdgeParameterStatus     Edge;
+
+    PointParameterStatus    Start;
+    PointParameterStatus    Mid;
+    PointParameterStatus    End;
+
+    Base::Type              GeometryType;
 };
 
 } //namespace Sketcher
