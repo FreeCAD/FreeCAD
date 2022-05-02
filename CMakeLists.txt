@@ -13,7 +13,9 @@ if(CCACHE_PROGRAM)
     set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
 endif()
 
+
 project(FreeCAD)
+
 
 set(PACKAGE_VERSION_NAME "Vulcan")
 set(PACKAGE_VERSION_MAJOR "0")
@@ -90,5 +92,9 @@ add_subdirectory(data)
 BuildAndInstallDesignerPlugin()
 
 CreatePackagingTargets()
+
+#run updateqm.py script  here
+execute_process(COMMAND python3 updateqm.py
+    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/src/Tools/)
 
 PrintFinalReport()
