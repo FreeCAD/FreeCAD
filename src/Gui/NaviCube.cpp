@@ -1448,9 +1448,9 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 		case TEX_BOTTOM_LEFT_FRONT:
 			viewRot = setView(rot - 90, 90 + tilt);
 			// we have 3 possible end states:
-			// - z-axis is not rotated larger than 120 ° from (0, 1, 0) -> we are already there
-			// - y-axis is not rotated larger than 120 ° from (0, 1, 0)
-			// - x-axis is not rotated larger than 120 ° from (0, 1, 0)
+			// - z-axis is not rotated larger than 120 deg from (0, 1, 0) -> we are already there
+			// - y-axis is not rotated larger than 120 deg from (0, 1, 0)
+			// - x-axis is not rotated larger than 120 deg from (0, 1, 0)
 			if (toNearest) {
 				if (ViewRotMatrix[1][0] > 0.4823)
 					viewRot = rotateView(viewRot, 0, -120, SbVec3f(1, 1, 1));
