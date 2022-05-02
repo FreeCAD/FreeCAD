@@ -1578,8 +1578,9 @@ bool NaviCubeImplementation::mouseMoved(short x, short y) {
 			m_Dragging = true;
 		if (m_Dragging) {
 			setHilite(0);
-			int width = this->m_View3DInventorViewer->width();
-			int height = this->m_View3DInventorViewer->height();
+			SbVec2s view = m_View3DInventorViewer->getSoRenderManager()->getSize();
+			int width = view[0];
+			int height = view[1];
 			int len = m_CubeWidgetSize / 2;
 			m_CubeWidgetPosX = std::min(std::max(static_cast<int>(x), len), width - len);
 			m_CubeWidgetPosY = std::min(std::max(static_cast<int>(y), len), height - len);
