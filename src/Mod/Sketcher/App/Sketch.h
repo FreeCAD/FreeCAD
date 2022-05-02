@@ -36,7 +36,8 @@
 
 namespace Sketcher
 {
-
+    // Forward declarations
+    class SolverGeometryExtension;
 
 class SketcherExport Sketch :public Base::Persistence
 {
@@ -116,6 +117,8 @@ public:
     inline const std::vector<int> &getMalformedConstraints(void) const { return MalformedConstraints; }
 public:
     std::set < std::pair< int, Sketcher::PointPos>> getDependencyGroup(int geoId, PointPos pos) const;
+
+    std::shared_ptr<SolverGeometryExtension> getSolverExtension(int geoId) const;
 
 
 public:
@@ -441,10 +444,13 @@ protected:
 
     std::vector<double *> pDependentParametersList;
 
+    // map of geoIds to corresponding solverextensions. This is useful when solved geometry is NOT to be assigned to the SketchObject
+    std::vector<std::shared_ptr<SolverGeometryExtension>> solverExtensions;
+
     std::vector < std::set < std::pair< int, Sketcher::PointPos>>> pDependencyGroups;
 
-    // this map is intended to convert a parameter (double *) into a GeoId/PointPos pair
-    std::map<double *, std::pair<int,Sketcher::PointPos>> param2geoelement;
+    // this map is intended to convert a parameter (double *) into a GeoId/PointPos and parameter number
+    std::map<double *, std::tuple<int, Sketcher::PointPos, int>> param2geoelement;
 
     // solving parameters
     std::vector<double*> Parameters;    // with memory allocation
