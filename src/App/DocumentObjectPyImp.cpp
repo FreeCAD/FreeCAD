@@ -718,7 +718,7 @@ PyObject*  DocumentObjectPy::getPathsByOutList(PyObject *args)
     }
 }
 
-PyObject *DocumentObjectPy::getCustomAttributes(const char* attr)
+PyObject *DocumentObjectPy::getCustomAttributes(const char* attr) const
 {
     // Dynamic property is now directly supported in PropertyContainer. So we
     // can comment out here and let PropertyContainerPy handle it.
@@ -886,6 +886,6 @@ Py::Boolean DocumentObjectPy::getNoTouch() const {
     return Py::Boolean(getDocumentObjectPtr()->testStatus(ObjectStatus::NoTouch));
 }
 
-void DocumentObjectPy::setNoTouch(const Py::Boolean& value) {
+void DocumentObjectPy::setNoTouch(Py::Boolean value) {
     getDocumentObjectPtr()->setStatus(ObjectStatus::NoTouch,value.isTrue());
 }

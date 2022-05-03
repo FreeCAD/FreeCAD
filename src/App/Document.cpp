@@ -495,7 +495,7 @@ void Document::exportGraphviz(std::ostream& out) const
                 }
                 if(!sgraph) {
                     if(docObj->isDerivedFrom(OriginFeature::getClassTypeId()))
-                        sgraph = GraphList[dynamic_cast<OriginFeature*>(docObj)->getOrigin()];
+                        sgraph = GraphList[static_cast<OriginFeature*>(docObj)->getOrigin()];
                 }
             }
             if(!sgraph)
@@ -2987,15 +2987,15 @@ void Document::getLinksTo(std::set<DocumentObject*> &links,
     std::map<const App::DocumentObject*, std::vector<App::DocumentObject*> > linkMap;
 
     for(auto o : !objs.empty()?objs:d->objectArray) {
-        if (o == obj) continue;
+        if(o == obj) continue;
         auto linked = o;
-        if (options & GetLinkArrayElement) {
-            linked = o->getLinkedObject(true, nullptr, Prop_Output | Prop_Hidden, 0);
+        if(options & GetLinkArrayElement) {
+            linked = o->getLinkedObject(false);
         } else {
             auto ext = o->getExtensionByType<LinkBaseExtension>(true);
             linked = ext
                 ? ext->getTrueLinkedObject(false, nullptr, 0, true)
-                : o->getLinkedObject(false, nullptr, false, 0);
+                : o->getLinkedObject(false);
         }
         if(linked && linked!=o) {
             if(options & GetLinkRecursive)
