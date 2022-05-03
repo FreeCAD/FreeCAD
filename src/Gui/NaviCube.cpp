@@ -436,9 +436,9 @@ void NaviCubeShared::getParams()
 
 void NaviCubeShared::deinit(QOpenGLContext *ctx)
 {
-    // QOpenGLTexture insists on being destoryed only under the original
+    // QOpenGLTexture insists on being destroyed only under the original
     // context that created itself, or else just refuse to delete even if the
-    // context is being destoryed (which is kind of absurd IMO). So we'll have
+    // context is being destroyed (which is kind of absurd IMO). So we'll have
     // to remember the original context, and deinit it here and let it be
     // recreated in another context.
     if (ctx && ctx != m_Context)
@@ -1453,7 +1453,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
         m_hGrp->SetInt("OffsetX", m_CubeWidgetOffsetX);
         m_hGrp->SetInt("OffsetY", m_CubeWidgetOffsetY);
     } else {
-        // get the curent view
+        // get the current view
         SbMatrix ViewRotMatrix;
         SbRotation CurrentViewRot = m_View3DInventorViewer->getCameraOrientation();
         CurrentViewRot.getValue(ViewRotMatrix);
