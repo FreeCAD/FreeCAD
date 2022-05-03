@@ -38,21 +38,31 @@
 # include <Inventor/events/SoLocation2Event.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 #include <QApplication>
+#include <QCheckBox>
 #include <QCursor>
+#include <QDialog>
+#include <QDialogButtonBox>
+#include <QDoubleSpinBox>
+#include <QFontDialog>
+#include <QHBoxLayout>
 #include <QImage>
 #include <QMenu>
 #include <QOpenGLTexture>
-#include <QPainterPath>
+#include <QSpinBox>
 #include <QTimer>
+#include <QPainterPath>
+#include <QPointer>
 #endif
 
 #include <Base/Tools.h>
 #include <Eigen/Dense>
 
 #include "NaviCube.h"
+#include "Action.h"
 #include "Application.h"
 #include "Command.h"
 #include "MainWindow.h"
+#include "Widgets.h"
 
 #include "View3DInventorViewer.h"
 #include "View3DInventor.h"
@@ -215,9 +225,12 @@ public:
 	bool initNaviCube();
 	void addFace(float gap, const Vector3f&, const Vector3f&, int, int, int, bool flag=false);
 
+    void setColors(QWidget *parent);
+    void setLabels(QWidget *parent);
     QFont getLabelFont();
     void saveLabelFont(const QFont &);
 
+    void setAxisLabels(QWidget *parent);
     QFont getAxisLabelFont();
     void saveAxisLabelFont(const QFont &);
 
@@ -288,6 +301,11 @@ public:
 	vector<ColorInfo> m_colors;
 
     QMenu m_Menu;
+    QPointer<QDialog> m_DlgColors;
+    QPointer<QDialog> m_DlgLabels;
+    QPointer<QFontDialog> m_DlgFont;
+    QPointer<QDialog> m_DlgAxisLabels;
+    QPointer<QFontDialog> m_DlgAxisFont;
     static double m_BorderWidth;
 };
 
@@ -1865,8 +1883,6 @@ bool NaviCubeImplementation::processSoEvent(const SoEvent* ev) {
 
 
 void NaviCubeShared::handleMenu(QWidget *parent) {
-    (void)parent;
-
     if (!m_Menu.actions().isEmpty()) {
         m_Menu.popup(QCursor::pos());
         return;
@@ -1894,8 +1910,404 @@ void NaviCubeShared::handleMenu(QWidget *parent) {
                 cmd->addTo(&m_Menu);
         }
     }
+    m_Menu.addSeparator();
+
+    QCheckBox *checkboxRotate;
+    auto action = Gui::Action::addCheckBox(
+                                &m_Menu,
+                                QObject::tr("Rotate to nearest"),
+                                QObject::tr("Rotates to nearest possible state when clicking a cube face"),
+                                QIcon(),
+                                m_RotateToNearest,
+                                &checkboxRotate);
+    QObject::connect(action, &QAction::toggled, [this](bool checked) {
+        m_hGrp->SetBool("NaviRotateToNearest", checked);
+    });
+
+    auto subMenu = m_Menu.addMenu(QObject::tr("Auto hide"));
+
+    QCheckBox *checkboxAutoHideButton;
+    action = Gui::Action::addCheckBox(
+                                subMenu,
+                                QObject::tr("Buttons"),
+                                QObject::tr("Auto hide navigation buttons on mouse leave"),
+                                QIcon(),
+                                m_AutoHideButton,
+                                &checkboxAutoHideButton);
+    QObject::connect(action, &QAction::toggled, [this](bool checked) {
+        m_hGrp->SetBool("AutoHideButton", checked);
+    });
+
+    QCheckBox *checkboxAutoHideCube;
+    action = Gui::Action::addCheckBox(
+                                subMenu,
+                                QObject::tr("Navigation cube"),
+                                QObject::tr("Auto hide navigation cube on mouse leave"),
+                                QIcon(),
+                                m_AutoHideCube,
+                                &checkboxAutoHideCube);
+    QObject::connect(action, &QAction::toggled, [this](bool checked) {
+        m_hGrp->SetBool("AutoHideCube", checked);
+    });
+
+    auto spinBoxAutoHide = new QSpinBox;
+    spinBoxAutoHide->setMinimum(0);
+    spinBoxAutoHide->setMaximum(9999);
+    spinBoxAutoHide->setSingleStep(1);
+    spinBoxAutoHide->setValue(m_AutoHideTimeout);
+    Gui::Action::addWidget(&m_Menu, QObject::tr("Auto hide timeout"),
+                           QString(), spinBoxAutoHide);
+    QObject::connect(spinBoxAutoHide, QOverload<int>::of(&QSpinBox::valueChanged), [this](int value) {
+        m_hGrp->SetInt("AutoHideTimeout", value);
+    });
+
+    QCheckBox *checkboxShowCS;
+    action = Gui::Action::addCheckBox(
+                                &m_Menu,
+                                QObject::tr("Show coordinate system"),
+                                QString(),
+                                QIcon(),
+                                m_ShowCS,
+                                &checkboxShowCS);
+    QObject::connect(action, &QAction::toggled, [this](bool checked) {
+        m_hGrp->SetBool("ShowCS", checked);
+    });
+
+    auto spinBoxSize = new QSpinBox;
+    spinBoxSize->setMinimum(10);
+    spinBoxSize->setMaximum(1024);
+    spinBoxSize->setSingleStep(10);
+    spinBoxSize->setValue(m_CubeWidgetSize);
+    Gui::Action::addWidget(&m_Menu, QObject::tr("Cube size"),
+            QObject::tr("Size of the navigation cube"), spinBoxSize);
+    QObject::connect(spinBoxSize, QOverload<int>::of(&QSpinBox::valueChanged), [this](int value) {
+        m_hGrp->SetInt("CubeSize", value);
+    });
+
+    auto spinBoxSteps = new QSpinBox;
+    spinBoxSteps->setMinimum(4);
+    spinBoxSteps->setMaximum(36);
+    spinBoxSteps->setValue(m_StepByTurn);
+    Gui::Action::addWidget(&m_Menu, QObject::tr("Steps by turn"),
+            QObject::tr("Number of steps by turn when using arrows (default = 8 : step angle = 360/8 = 45 deg)"),
+            spinBoxSteps);
+    QObject::connect(spinBoxSteps, QOverload<int>::of(&QSpinBox::valueChanged), [this](int value) {
+
+        m_hGrp->SetInt("NaviStepByTurn", value);
+    });
+
+    auto spinBoxWidth = new QDoubleSpinBox;
+    spinBoxWidth->setMinimum(0.);
+    spinBoxWidth->setMaximum(10.);
+    spinBoxWidth->setSingleStep(0.5);
+    spinBoxWidth->setValue(m_BorderWidth);
+    Gui::Action::addWidget(&m_Menu, QObject::tr("Border width"),
+            QObject::tr("Cube face border line width"), spinBoxWidth);
+    QObject::connect(spinBoxWidth, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+    [this](double value) {
+        m_hGrp->SetFloat("BorderWidth", value);
+    });
+
+    QObject::connect(&m_Menu, &QMenu::aboutToShow,
+    [=](){
+        { QSignalBlocker blocker(checkboxRotate); checkboxRotate->setChecked(m_RotateToNearest); }
+        { QSignalBlocker blocker(checkboxAutoHideCube); checkboxAutoHideCube->setChecked(m_AutoHideCube); }
+        { QSignalBlocker blocker(checkboxAutoHideButton); checkboxAutoHideButton->setChecked(m_AutoHideButton); }
+        { QSignalBlocker blocker(spinBoxAutoHide); spinBoxAutoHide->setValue(m_AutoHideTimeout); }
+        { QSignalBlocker blocker(checkboxShowCS); checkboxShowCS->setChecked(m_ShowCS); }
+        { QSignalBlocker blocker(spinBoxSize); spinBoxSize->setValue(m_CubeWidgetSize); }
+        { QSignalBlocker blocker(spinBoxSteps); spinBoxSteps->setValue(m_StepByTurn); }
+        { QSignalBlocker blocker(spinBoxWidth); spinBoxWidth->setValue(m_BorderWidth); }
+    });
+
+    action = m_Menu.addAction(QObject::tr("Colors..."));
+    action->setToolTip(QObject::tr("Change navigation cube face colors"));
+    QObject::connect(action, &QAction::triggered, [parent]() {
+        NaviCube::setColors(parent);
+    });
+
+    action = m_Menu.addAction(QObject::tr("Labels..."));
+    action->setToolTip(QObject::tr("Change navigation cube labels"));
+    QObject::connect(action, &QAction::triggered, [parent]() {
+        NaviCube::setLabels(parent);
+    });
+
+    action = m_Menu.addAction(QObject::tr("Axis labels..."));
+    action->setToolTip(QObject::tr("Change coordinate system axis labels"));
+    QObject::connect(action, &QAction::triggered, [parent]() {
+        NaviCubeShared::instance()->setAxisLabels(parent);
+    });
 
     m_Menu.popup(QCursor::pos());
+}
+
+void NaviCube::setLabels(QWidget *parent)
+{
+    NaviCubeShared::instance()->setLabels(parent);
+}
+
+void NaviCubeShared::setLabels(QWidget *parent)
+{
+    if (m_DlgLabels) {
+        m_DlgLabels->setParent(parent);
+        m_DlgLabels->show();
+        return;
+    }
+
+    auto layout = new QVBoxLayout;
+    layout->setSizeConstraint(QLayout::SetFixedSize);
+    m_DlgLabels = new QDialog(parent);
+    QDialog &dlg = *m_DlgLabels;
+    dlg.setAttribute(Qt::WA_DeleteOnClose);
+    dlg.setLayout(layout);
+    dlg.setWindowTitle(QObject::tr("Navigation Cube Labels"));
+    auto grid = new QGridLayout;
+    layout->addLayout(grid);
+    auto buttons = new QDialogButtonBox(
+            QDialogButtonBox::Ok|QDialogButtonBox::Cancel, Qt::Horizontal);
+    QObject::connect(buttons, SIGNAL(accepted()), &dlg, SLOT(accept()));
+    QObject::connect(buttons, SIGNAL(rejected()), &dlg, SLOT(reject()));
+    layout->addWidget(buttons);
+    int row = 0;
+    std::vector<std::string> labels;
+    for (auto &info : m_labels) {
+        grid->addWidget(new QLabel(QObject::tr(info.title)), row, 0);
+        labels.push_back(m_hGrp->GetASCII(info.name));
+        auto edit = new QLineEdit;
+        if (labels.back().empty())
+            edit->setText(QObject::tr(info.def));
+        else
+            edit->setText(QString::fromUtf8(labels.back().c_str()));
+        auto timer = new QTimer(edit);
+        timer->setSingleShot(true);
+        QObject::connect(edit, &QLineEdit::textEdited, [timer]() {
+            timer->start(500);
+        });
+        QObject::connect(timer, &QTimer::timeout, [this, edit, info]() {
+            QString t = edit->text();
+            if (t.isEmpty())
+                m_hGrp->RemoveASCII(info.name);
+            else
+                m_hGrp->SetASCII(info.name, t.toUtf8().constData());
+        });
+        grid->addWidget(edit, row++, 1);
+    }
+
+    QFont font = getLabelFont();
+    auto fontButton = new QPushButton(QObject::tr("Label font"));
+    fontButton->setFont(font);
+    grid->addWidget(fontButton, row++, 0, 1, 2);
+    QObject::connect(fontButton, &QPushButton::clicked, [this, &dlg, fontButton]() {
+        if (this->m_DlgFont) {
+            this->m_DlgFont->show();
+            return;
+        }
+        QFont curFont(getLabelFont());
+        auto fontDlg = new QFontDialog(&dlg);
+        fontDlg->setAttribute(Qt::WA_DeleteOnClose);
+        // fontDlg->setOption(QFontDialog::DontUseNativeDialog);
+        fontDlg->setCurrentFont(curFont);
+        this->m_DlgFont = fontDlg;
+        QObject::connect(fontDlg, &QFontDialog::currentFontChanged, [this, fontButton](const QFont &f) {
+            saveLabelFont(f);
+            fontButton->setFont(getLabelFont());
+        });
+        QObject::connect(fontDlg, &QFontDialog::finished, [this, curFont, fontButton](int result) {
+            if (result == QDialog::Rejected) {
+                saveLabelFont(curFont);
+                fontButton->setFont(getLabelFont());
+            }
+        });
+        fontDlg->show();
+    });
+
+    auto checkbox = new QCheckBox(QObject::tr("Auto scale"));
+    checkbox->setToolTip(QObject::tr("Auto scale font pixel size based on navigation cube size.\n"
+                                     "If disabled, then use the selected font point size.\n"));
+    bool autoSize = m_hGrp->GetBool("FontAutoSize", true);
+    checkbox->setChecked(autoSize);
+    grid->addWidget(checkbox, row, 0);
+    QObject::connect(checkbox, &QCheckBox::toggled, [this, fontButton](bool checked) {
+        m_hGrp->SetBool("FontAutoSize", checked);
+        fontButton->setFont(getLabelFont());
+    });
+
+    auto spinBoxScale = new QDoubleSpinBox;
+    grid->addWidget(spinBoxScale, row++, 1);
+    spinBoxScale->setValue(m_hGrp->GetFloat("FontScale", 0.22));
+    spinBoxScale->setMinimum(0.1);
+    spinBoxScale->setSingleStep(0.01);
+    QObject::connect(spinBoxScale, QOverload<double>::of(&QDoubleSpinBox::valueChanged),
+        [this, fontButton](double value) {
+            m_hGrp->SetFloat("FontScale", value);
+            fontButton->setFont(getLabelFont());
+        });
+
+    grid->addWidget(new QLabel(QObject::tr("Font stretch")), row, 0);
+    auto spinBoxStretch = new QSpinBox;
+    grid->addWidget(spinBoxStretch, row++, 1);
+    spinBoxStretch->setValue(font.stretch());
+    QObject::connect(spinBoxStretch, QOverload<int>::of(&QSpinBox::valueChanged),
+        [this, fontButton](int value) {
+            m_hGrp->SetInt("FontStretch", value);
+            fontButton->setFont(getLabelFont());
+        });
+
+    auto self = this->shared_from_this();
+    QObject::connect(&dlg, &QDialog::finished, [self, labels, font, autoSize](int result) {
+        if (result == QDialog::Rejected) {
+            int i=0;
+            for (auto &info : self->m_labels) {
+                if (labels[i].empty())
+                    self->m_hGrp->RemoveASCII(info.name);
+                else
+                    self->m_hGrp->SetASCII(info.name, labels[i].c_str());
+                ++i;
+            }
+            self->saveLabelFont(font);
+            self->m_hGrp->SetBool("FontAutoSize", autoSize);
+        }
+    });
+
+    m_DlgLabels->show();
+}
+
+void NaviCubeShared::setAxisLabels(QWidget *parent)
+{
+    if (m_DlgAxisLabels) {
+        m_DlgAxisLabels->setParent(parent);
+        m_DlgAxisLabels->show();
+        return;
+    }
+
+    auto layout = new QVBoxLayout;
+    layout->setSizeConstraint(QLayout::SetFixedSize);
+    m_DlgAxisLabels = new QDialog(parent);
+    QDialog &dlg = *m_DlgAxisLabels;
+    dlg.setAttribute(Qt::WA_DeleteOnClose);
+    dlg.setLayout(layout);
+    dlg.setWindowTitle(QObject::tr("Navigation Cube Axis Labels"));
+    auto grid = new QGridLayout;
+    layout->addLayout(grid);
+    auto buttons = new QDialogButtonBox(
+            QDialogButtonBox::Ok|QDialogButtonBox::Cancel, Qt::Horizontal);
+    QObject::connect(buttons, SIGNAL(accepted()), &dlg, SLOT(accept()));
+    QObject::connect(buttons, SIGNAL(rejected()), &dlg, SLOT(reject()));
+    layout->addWidget(buttons);
+    int row = 0;
+    std::vector<std::string> labels;
+    for (auto &info : m_AxisLabels) {
+        grid->addWidget(new QLabel(QObject::tr(info.title)), row, 0);
+        labels.push_back(m_hGrp->GetASCII(info.name, info.def));
+        auto edit = new QLineEdit;
+        edit->setText(QString::fromUtf8(labels.back().c_str()));
+        auto timer = new QTimer(edit);
+        timer->setSingleShot(true);
+        QObject::connect(edit, &QLineEdit::textEdited, [timer]() {
+            timer->start(500);
+        });
+        QObject::connect(timer, &QTimer::timeout, [this, edit, info]() {
+            QString t = edit->text();
+            m_hGrp->SetASCII(info.name, t.toUtf8().constData());
+        });
+        grid->addWidget(edit, row++, 1);
+    }
+
+    QFont font = getAxisLabelFont();
+    auto fontButton = new QPushButton(QObject::tr("Label font"));
+    fontButton->setFont(font);
+    grid->addWidget(fontButton, row++, 0, 1, 2);
+    QObject::connect(fontButton, &QPushButton::clicked, [this, &dlg, fontButton]() {
+        if (this->m_DlgAxisFont) {
+            this->m_DlgAxisFont->show();
+            return;
+        }
+        QFont curFont(getAxisLabelFont());
+        auto fontDlg = new QFontDialog(&dlg);
+        fontDlg->setAttribute(Qt::WA_DeleteOnClose);
+        fontDlg->setCurrentFont(curFont);
+        this->m_DlgAxisFont = fontDlg;
+        QObject::connect(fontDlg, &QFontDialog::currentFontChanged, [this, fontButton](const QFont &f) {
+            saveAxisLabelFont(f);
+            fontButton->setFont(getAxisLabelFont());
+        });
+        QObject::connect(fontDlg, &QFontDialog::finished, [this, curFont, fontButton](int result) {
+            if (result == QDialog::Rejected) {
+                saveAxisLabelFont(curFont);
+                fontButton->setFont(getAxisLabelFont());
+            }
+        });
+        fontDlg->show();
+    });
+
+    auto self = this->shared_from_this();
+    QObject::connect(&dlg, &QDialog::finished, [self, labels, font](int result) {
+        if (result == QDialog::Rejected) {
+            int i=0;
+            for (auto &info : self->m_AxisLabels) {
+                if (labels[i] == info.def)
+                    self->m_hGrp->RemoveASCII(info.name);
+                else
+                    self->m_hGrp->SetASCII(info.name, labels[i].c_str());
+                ++i;
+            }
+            self->saveAxisLabelFont(font);
+        }
+    });
+
+    m_DlgAxisLabels->show();
+}
+
+void NaviCube::setColors(QWidget *parent)
+{
+    NaviCubeShared::instance()->setColors(parent);
+}
+
+void NaviCubeShared::setColors(QWidget *parent)
+{
+    if (m_DlgColors) {
+        m_DlgColors->setParent(parent);
+        m_DlgColors->show();
+        return;
+    }
+
+    m_DlgColors = new QDialog(parent);
+    QDialog &dlg = *m_DlgColors;
+    dlg.setAttribute(Qt::WA_DeleteOnClose);
+    auto layout = new QVBoxLayout;
+    layout->setSizeConstraint(QLayout::SetFixedSize);
+    dlg.setLayout(layout);
+    dlg.setWindowTitle(QObject::tr("Navigation Cube Colors"));
+    auto grid = new QGridLayout;
+    layout->addLayout(grid);
+    auto buttons = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel, Qt::Horizontal);
+    QObject::connect(buttons, SIGNAL(accepted()), &dlg, SLOT(accept()));
+    QObject::connect(buttons, SIGNAL(rejected()), &dlg, SLOT(reject()));
+    layout->addWidget(buttons);
+    int row = 0;
+    std::vector<QColor> colors;
+    for (auto &info : m_colors) {
+        colors.push_back(info.color);
+        grid->addWidget(new QLabel(QObject::tr(info.title)), row, 0);
+        ColorButton *button = new ColorButton(nullptr);
+        button->setAllowTransparency(true);
+        button->setAutoChangeColor(true);
+        button->setColor(info.color);
+        QObject::connect(button, &ColorButton::changed, [this, button, info]() {
+            m_hGrp->SetUnsigned(info.name, button->color().rgba());
+        });
+        grid->addWidget(button, row, 1);
+        ++row;
+    }
+    auto self = this->shared_from_this();
+    QObject::connect(&dlg, &QDialog::finished, [self, colors](int result) {
+        if (result == QDialog::Rejected) {
+            int i=0;
+            for (auto &info : self->m_colors)
+                self->m_hGrp->SetUnsigned(info.name, colors[i++].rgba());
+        }
+    });
+    m_DlgColors->show();
 }
 
 QFont NaviCubeShared::getLabelFont()

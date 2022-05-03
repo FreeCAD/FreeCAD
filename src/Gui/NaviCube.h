@@ -47,6 +47,8 @@ public:
 	bool processSoEvent(const SoEvent* ev);
 	void setCorner(Corner);
     static int getNaviCubeSize();
+    static void setColors(QWidget *parent);
+    static void setLabels(QWidget *parent);
 private:
 	NaviCubeImplementation* m_NaviCubeImplementation;
 };
