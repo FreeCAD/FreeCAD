@@ -101,16 +101,18 @@ PyObject*  PropertyContainerPy::getTypeOfProperty(PyObject *args)
     }
 
     short Type =  prop->getType();
-    if (Type & Prop_Hidden)
-        ret.append(Py::String("Hidden"));
     if (Type & Prop_ReadOnly)
         ret.append(Py::String("ReadOnly"));
+    if (Type & Prop_Transient)
+        ret.append(Py::String("Transient"));
+    if (Type & Prop_Hidden)
+        ret.append(Py::String("Hidden"));
     if (Type & Prop_Output)
         ret.append(Py::String("Output"));
     if (Type & Prop_NoRecompute)
         ret.append(Py::String("NoRecompute"));
-    if (Type & Prop_Transient)
-        ret.append(Py::String("Transient"));
+    if (Type & Prop_NoPersist)
+        ret.append(Py::String("NoPersist"));
 
     return Py::new_reference_to(ret);
 }
