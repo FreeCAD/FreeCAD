@@ -33,6 +33,9 @@
 # include <QTimer>
 # include <QToolBar>
 # include <QToolButton>
+# include <QCheckBox>
+# include <QWidgetAction>
+# include <QHBoxLayout>
 #endif
 
 #include <Base/Exception.h>
@@ -214,6 +217,92 @@ QString Action::whatsThis() const
 void Action::setMenuRole(QAction::MenuRole menuRole)
 {
     _action->setMenuRole(menuRole);
+}
+
+QAction *
+Action::addCheckBox(QMenu *menu,
+                    const QString &txt,
+                    bool checked,
+                    QCheckBox **checkbox,
+                    const QString &tooltip,
+                    const QIcon &icon)
+{
+    return addCheckBox(menu, txt, tooltip, icon, checked, checkbox);
+}
+
+QAction *
+Action::addCheckBox(QMenu *menu,
+                    const QString &txt,
+                    const QString &tooltip,
+                    const QIcon &icon,
+                    bool checked,
+                    QCheckBox **_checkbox)
+{
+    auto checkbox = new QCheckBox;
+    checkbox->setText(txt);
+    checkbox->setChecked(checked);
+    checkbox->setIcon(icon);
+    if (_checkbox) *_checkbox = checkbox;
+    auto action = addWidget(menu, txt, tooltip, checkbox, false);
+    action->setCheckable(true);
+    action->setChecked(checked);
+    menu->addAction(action);
+    QObject::connect(checkbox, SIGNAL(toggled(bool)), action, SLOT(setChecked(bool)));
+    QObject::connect(checkbox, SIGNAL(toggled(bool)), action, SIGNAL(toggled(bool)));
+    return action;
+}
+
+class MenuFocusEventFilter: public QObject {
+public:
+    MenuFocusEventFilter(QMenu *menu, QAction *action, QWidget *focusWidget=nullptr)
+        :QObject(menu)
+        ,menu(menu), action(action), focusWidget(focusWidget)
+    {}
+
+    bool eventFilter(QObject *, QEvent *e) {
+        if (e->type() == QEvent::Enter) {
+            menu->setActiveAction(action);
+            if (focusWidget)
+                focusWidget->setFocus();
+        }
+        return false;
+    }
+
+    QMenu *menu;
+    QAction *action;
+    QWidget *focusWidget;
+};
+
+QAction *
+Action::addWidget(QMenu *menu,
+                  const QString &txt,
+                  const QString &tooltip,
+                  QWidget *w,
+                  bool needLabel)
+{
+    QWidgetAction *wa = new QWidgetAction(menu);
+    QWidget *widget = new QWidget(menu);
+    QHBoxLayout *layout = new QHBoxLayout(widget);
+    widget->setLayout(layout);
+    if (needLabel) {
+        QLabel *label = new QLabel(widget);
+        label->installEventFilter(new MenuFocusEventFilter(menu, wa));
+        label->setText(txt);
+        layout->addWidget(label);
+    }
+    layout->addWidget(w);
+    layout->setContentsMargins(4,0,4,0);
+    widget->setFocusProxy(w);
+    widget->setFocusPolicy(Qt::TabFocus);
+    w->installEventFilter(new MenuFocusEventFilter(menu, wa, w));
+    w->setFocusPolicy(Qt::TabFocus);
+    wa->setDefaultWidget(widget);
+    wa->setToolTip(tooltip);
+    wa->setStatusTip(tooltip);
+    wa->setVisible(true);
+    wa->setText(txt);
+    menu->addAction(wa);
+    return wa;
 }
 
 // --------------------------------------------------------------------

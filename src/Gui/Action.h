@@ -29,6 +29,8 @@
 #include <QComboBox>
 #include <QKeySequence>
 
+class QCheckBox;
+
 namespace Gui
 {
 class Command;
@@ -74,6 +76,26 @@ public:
     QAction *action() const {
         return _action;
     }
+
+    static QAction *addCheckBox(QMenu *menu,
+                                const QString &txt,
+                                const QString &tooltip = QString(),
+                                const QIcon &icon = QIcon(),
+                                bool checked = false,
+                                QCheckBox **checkbox = nullptr);
+
+    static QAction *addCheckBox(QMenu *menu,
+                                const QString &txt,
+                                bool checked,
+                                QCheckBox **checkbox = nullptr,
+                                const QString &tooltip = QString(),
+                                const QIcon &icon = QIcon());
+
+    static QAction *addWidget(QMenu *menu,
+                              const QString &txt,
+                              const QString &tooltip,
+                              QWidget *widget,
+                              bool needLable = true);
 
 public Q_SLOTS:
     virtual void onActivated ();
