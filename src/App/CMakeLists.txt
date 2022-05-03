@@ -128,10 +128,8 @@ SET(FreeCADApp_XML_SRCS
 )
 SOURCE_GROUP("XML" FILES ${FreeCADApp_XML_SRCS})
 
-qt5_add_resources(FreeCADApp_QRC_SRCS Resources/App.qrc)
 # The document stuff
 SET(Document_CPP_SRCS
-    ${FreeCADApp_QRC_SRCS}
     Annotation.cpp
     Document.cpp
     DocumentObject.cpp

@@ -55,7 +55,7 @@
 #include "Importer.h"
 #include "FeatureMeshImport.h"
 #include <Mod/Mesh/App/MeshPy.h>
-
+#include <QObject>
 using namespace Mesh;
 using namespace MeshCore;
 

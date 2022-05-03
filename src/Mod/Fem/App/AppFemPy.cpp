@@ -53,6 +53,7 @@
 
 #include <Base/Vector3D.h>
 #include <Mod/Part/App/OCCError.h>
+#include <QObject>
 
 namespace Fem {
 class Module : public Py::ExtensionModule<Module>

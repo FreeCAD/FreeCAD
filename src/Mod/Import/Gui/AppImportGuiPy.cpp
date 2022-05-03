@@ -103,6 +103,7 @@
 #include <Mod/Part/App/ImportStep.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/ProgressIndicator.h>
+#include <QObject>
 
 #include <TDataStd.hxx>
 #include <TDataStd_Integer.hxx>

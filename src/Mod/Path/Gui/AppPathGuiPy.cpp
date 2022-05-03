@@ -27,6 +27,7 @@
 
 #include <QDir>
 #include <QFileInfo>
+#include <QObject>
 
 #include <Base/Console.h>
 #include <Base/VectorPy.h>

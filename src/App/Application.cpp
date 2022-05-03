@@ -51,6 +51,7 @@
 #include <QProcessEnvironment>
 #include <QStandardPaths>
 #include <LibraryVersions.h>
+#include <QObject>
 
 #include <App/MaterialPy.h>
 #include <App/MetadataPy.h>
