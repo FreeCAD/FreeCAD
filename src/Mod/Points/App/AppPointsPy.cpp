@@ -45,7 +45,7 @@
 #include "PointsAlgos.h"
 #include "Structured.h"
 #include "Properties.h"
-
+#include <QObject>
 namespace Points {
 class Module : public Py::ExtensionModule<Module>
 {
@@ -112,8 +112,8 @@ private:
             }
 
             reader->read(EncodedName);
-
-            App::Document* pcDoc = App::GetApplication().newDocument("Unnamed");
+            QString newDocumentName = QObject::tr("Unnamed");
+            App::Document* pcDoc = App::GetApplication().newDocument(qUtf8Printable(newDocumentName));
 
             Points::Feature* pcFeature = nullptr;
             if (reader->hasProperties()) {

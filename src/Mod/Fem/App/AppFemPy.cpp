@@ -123,7 +123,8 @@ private:
         mesh->read(EncodedName.c_str());
         Base::FileInfo file(EncodedName.c_str());
         // create new document and add Import feature
-        App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
+        QString newDocumentName = QObject::tr("Unnamed");
+        App::Document *pcDoc = App::GetApplication().newDocument(qUtf8Printable(newDocumentName));
         FemMeshObject *pcFeature = static_cast<FemMeshObject *>
             (pcDoc->addObject("Fem::FemMeshObject", file.fileNamePure().c_str()));
         pcFeature->Label.setValue(file.fileNamePure().c_str());

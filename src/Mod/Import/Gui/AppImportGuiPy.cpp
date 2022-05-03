@@ -411,7 +411,7 @@ private:
         std::string Utf8Name = std::string(Name);
         PyMem_Free(Name);
         std::string name8bit = Part::encodeFilename(Utf8Name);
-
+        QString newDocumentName = QObject::tr("Unnamed");
         try {
             //Base::Console().Log("Insert in Part with %s",Name);
             Base::FileInfo file(Utf8Name.c_str());
@@ -421,7 +421,7 @@ private:
                 pcDoc = App::GetApplication().getDocument(DocName);
             }
             if (!pcDoc) {
-                pcDoc = App::GetApplication().newDocument("Unnamed");
+                pcDoc = App::GetApplication().newDocument(qUtf8Printable(newDocumentName));
             }
 
             Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();
