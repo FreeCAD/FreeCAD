@@ -363,6 +363,20 @@ class DocumentBasicCases(unittest.TestCase):
     o2.Placement = FreeCAD.Placement()
     self.assertEqual(o1.Link, o3)
 
+  def testProp_NonePropertyLink(self):
+    obj1 = self.Doc.addObject("App::FeaturePython", "Obj1")
+    obj2 = self.Doc.addObject("App::FeaturePython", "Obj2")
+    obj1.addProperty("App::PropertyLink", "Link", "Base", "Link to another feature", FreeCAD.PropertyType.Prop_None, False, False)
+    obj1.Link = obj2
+    self.assertEqual(obj1.MustExecute, True)
+
+  def testProp_OutputPropertyLink(self):
+    obj1 = self.Doc.addObject("App::FeaturePython", "Obj1")
+    obj2 = self.Doc.addObject("App::FeaturePython", "Obj2")
+    obj1.addProperty("App::PropertyLink", "Link", "Base", "Link to another feature", FreeCAD.PropertyType.Prop_Output, False, False)
+    obj1.Link = obj2
+    self.assertEqual(obj1.MustExecute, False)
+
   def testNotification_Issue2902Part2(self):
     o = self.Doc.addObject("App::FeatureTest","test")
 
