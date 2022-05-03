@@ -51,7 +51,7 @@
          <cstring>NaviStepByTurn</cstring>
         </property>
         <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
+         <cstring>NaviCube</cstring>
         </property>
        </widget>
       </item>
