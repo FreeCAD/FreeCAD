@@ -108,22 +108,22 @@ void ViewProviderDatum::attach(App::DocumentObject *obj)
     if (o->getTypeId() == PartDesign::Plane::getClassTypeId()) {
         datumType = QString::fromLatin1("Plane");
         datumText = QObject::tr("Plane");
-        datumMenuText = QObject::tr("Datum Plane parameters");
+        datumMenuText = tr("Datum Plane parameters");
     }
     else if (o->getTypeId() == PartDesign::Line::getClassTypeId()) {
         datumType = QString::fromLatin1("Line");
         datumText = QObject::tr("Line");
-        datumMenuText = QObject::tr("Datum Line parameters");
+        datumMenuText = tr("Datum Line parameters");
     }
     else if (o->getTypeId() == PartDesign::Point::getClassTypeId()) {
         datumType = QString::fromLatin1("Point");
         datumText = QObject::tr("Point");
-        datumMenuText = QObject::tr("Datum Point parameters");
+        datumMenuText = tr("Datum Point parameters");
     }
     else if (o->getTypeId() == PartDesign::CoordinateSystem::getClassTypeId()) {
         datumType = QString::fromLatin1("CoordinateSystem");
         datumText = QObject::tr("Coordinate System");
-        datumMenuText = QObject::tr("Local Coordinate System parameters");
+        datumMenuText = tr("Local Coordinate System parameters");
     }
 
     SoShapeHints* hints = new SoShapeHints();
