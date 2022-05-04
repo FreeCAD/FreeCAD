@@ -583,6 +583,30 @@ class PartTestShapeFix(unittest.TestCase):
         fix.FixOrientationMode = True
         self.assertEqual(fix.FixOrientationMode, True)
 
+    def testShapeFix_Solid(self):
+        box = Part.makeBox(1, 1, 1)
+        with self.assertRaises(TypeError):
+            Part.ShapeFix.Solid([])
+
+        fix = Part.ShapeFix.Solid()
+        fix.init(box)
+        print (fix)
+
+        fix.perform()
+        fix.solid()
+        fix.shape()
+        fix.fixShellTool()
+        fix.solidFromShell(box.Shells[0])
+
+        fix.FixShellMode = True
+        self.assertEqual(fix.FixShellMode, True)
+
+        fix.FixShellOrientationMode = True
+        self.assertEqual(fix.FixShellOrientationMode, True)
+
+        fix.CreateOpenSolidMode = True
+        self.assertEqual(fix.CreateOpenSolidMode, True)
+
     def testShapeFix_Wire(self):
         with self.assertRaises(TypeError):
             Part.ShapeFix.Wire([])

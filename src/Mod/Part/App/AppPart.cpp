@@ -105,6 +105,7 @@
 #include <Mod/Part/App/ShapeFix/ShapeFix_FacePy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_ShapePy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_ShellPy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_SolidPy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_WirePy.h>
 #include <Mod/Part/App/ShapeUpgrade/UnifySameDomainPy.h>
 #include "Mod/Part/App/SpherePy.h"
@@ -350,6 +351,7 @@ PyMOD_INIT_FUNC(Part)
     Base::Interpreter().addType(&Part::ShapeFix_FacePy::Type, shapeFix, "Face");
     Base::Interpreter().addType(&Part::ShapeFix_ShapePy::Type, shapeFix, "Shape");
     Base::Interpreter().addType(&Part::ShapeFix_ShellPy::Type, shapeFix, "Shell");
+    Base::Interpreter().addType(&Part::ShapeFix_SolidPy::Type, shapeFix, "Solid");
     Base::Interpreter().addType(&Part::ShapeFix_WirePy::Type, shapeFix, "Wire");
 
     // ShapeUpgrade sub-module

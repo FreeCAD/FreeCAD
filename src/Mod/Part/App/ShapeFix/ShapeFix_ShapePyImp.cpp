@@ -32,7 +32,7 @@
 #include "ShapeFix/ShapeFix_WirePy.h"
 #include "ShapeFix/ShapeFix_FacePy.h"
 #include "ShapeFix/ShapeFix_ShellPy.h"
-//#include "ShapeFix/ShapeFix_SolidPy.h"
+#include "ShapeFix/ShapeFix_SolidPy.h"
 #include <Mod/Part/App/TopoShapePy.h>
 
 using namespace Part;
@@ -98,7 +98,9 @@ PyObject* ShapeFix_ShapePy::fixSolidTool(PyObject *args)
         return nullptr;
 
     Handle(ShapeFix_Solid) tool = getShapeFix_ShapePtr()->FixSolidTool();
-    Py_Return;
+    ShapeFix_SolidPy* solid = new ShapeFix_SolidPy(nullptr);
+    solid->setHandle(tool);
+    return solid;
 }
 
 PyObject* ShapeFix_ShapePy::fixShellTool(PyObject *args)
