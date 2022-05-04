@@ -107,6 +107,7 @@
 #include <Mod/Part/App/ShapeFix/ShapeFix_ShapePy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_ShellPy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_SolidPy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_SplitCommonVertexPy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_WirePy.h>
 #include <Mod/Part/App/ShapeUpgrade/UnifySameDomainPy.h>
 #include "Mod/Part/App/SpherePy.h"
@@ -355,6 +356,7 @@ PyMOD_INIT_FUNC(Part)
     Base::Interpreter().addType(&Part::ShapeFix_SolidPy::Type, shapeFix, "Solid");
     Base::Interpreter().addType(&Part::ShapeFix_WirePy::Type, shapeFix, "Wire");
     Base::Interpreter().addType(&Part::ShapeFix_EdgeConnectPy::Type, shapeFix, "EdgeConnect");
+    Base::Interpreter().addType(&Part::ShapeFix_SplitCommonVertexPy::Type, shapeFix, "SplitCommonVertex");
 
     // ShapeUpgrade sub-module
     PyObject* shapeUpgrade(module.getAttr("ShapeUpgrade").ptr());
