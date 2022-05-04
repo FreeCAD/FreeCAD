@@ -128,7 +128,7 @@ Must be used in couple and before FixMissingSeam routine
     </Methode>
     <Methode Name="result">
       <Documentation>
-        <UserDocu>Returns resulting shape (Face or Shell if splitted)
+        <UserDocu>Returns resulting shape (Face or Shell if split)
 To be used instead of face() if FixMissingSeam involved
 </UserDocu>
       </Documentation>
