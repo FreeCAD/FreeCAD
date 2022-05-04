@@ -102,6 +102,7 @@
 #include <Mod/Part/App/RectangularTrimmedSurfacePy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_RootPy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_EdgePy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_EdgeConnectPy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_FacePy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_ShapePy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_ShellPy.h>
@@ -353,6 +354,7 @@ PyMOD_INIT_FUNC(Part)
     Base::Interpreter().addType(&Part::ShapeFix_ShellPy::Type, shapeFix, "Shell");
     Base::Interpreter().addType(&Part::ShapeFix_SolidPy::Type, shapeFix, "Solid");
     Base::Interpreter().addType(&Part::ShapeFix_WirePy::Type, shapeFix, "Wire");
+    Base::Interpreter().addType(&Part::ShapeFix_EdgeConnectPy::Type, shapeFix, "EdgeConnect");
 
     // ShapeUpgrade sub-module
     PyObject* shapeUpgrade(module.getAttr("ShapeUpgrade").ptr());
