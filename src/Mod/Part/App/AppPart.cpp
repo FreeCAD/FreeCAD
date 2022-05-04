@@ -112,6 +112,7 @@
 #include <Mod/Part/App/ShapeFix/ShapeFix_SolidPy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_SplitCommonVertexPy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_WirePy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_WireVertexPy.h>
 #include <Mod/Part/App/ShapeUpgrade/UnifySameDomainPy.h>
 #include "Mod/Part/App/SpherePy.h"
 #include "Mod/Part/App/SurfaceOfExtrusionPy.h"
@@ -358,6 +359,7 @@ PyMOD_INIT_FUNC(Part)
     Base::Interpreter().addType(&Part::ShapeFix_ShellPy::Type, shapeFix, "Shell");
     Base::Interpreter().addType(&Part::ShapeFix_SolidPy::Type, shapeFix, "Solid");
     Base::Interpreter().addType(&Part::ShapeFix_WirePy::Type, shapeFix, "Wire");
+    Base::Interpreter().addType(&Part::ShapeFix_WireVertexPy::Type, shapeFix, "WireVertex");
     Base::Interpreter().addType(&Part::ShapeFix_EdgeConnectPy::Type, shapeFix, "EdgeConnect");
     Base::Interpreter().addType(&Part::ShapeFix_FaceConnectPy::Type, shapeFix, "FaceConnect");
     Base::Interpreter().addType(&Part::ShapeFix_FreeBoundsPy::Type, shapeFix, "FreeBounds");
