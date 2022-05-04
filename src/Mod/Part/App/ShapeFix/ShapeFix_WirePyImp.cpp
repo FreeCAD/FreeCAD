@@ -23,18 +23,19 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Quaternion.hxx>
 # include <ShapeFix_Wire.hxx>
 # include <TopoDS.hxx>
 #endif
 
 #include "ShapeFix/ShapeFix_WirePy.h"
 #include "ShapeFix/ShapeFix_WirePy.cpp"
+#include "ShapeFix/ShapeFix_EdgePy.h"
 #include <Base/PlacementPy.h>
 #include <Mod/Part/App/GeometrySurfacePy.h>
 #include <Mod/Part/App/TopoShapeFacePy.h>
 #include <Mod/Part/App/TopoShapeWirePy.h>
 #include "OCCError.h"
+#include "Tools.h"
 
 using namespace Part;
 
@@ -100,8 +101,10 @@ PyObject* ShapeFix_WirePy::fixEdgeTool(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
 
-    //Handle(ShapeFix_Edge) tool = getShapeFix_WirePtr()->FixEdgeTool();
-    Py_Return;
+    Handle(ShapeFix_Edge) tool = getShapeFix_WirePtr()->FixEdgeTool();
+    ShapeFix_EdgePy* edge = new ShapeFix_EdgePy(nullptr);
+    edge->setHandle(tool);
+    return edge;
 }
 
 PyObject* ShapeFix_WirePy::clearModes(PyObject *args)
@@ -155,15 +158,7 @@ PyObject* ShapeFix_WirePy::setSurface(PyObject *args)
     Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast(static_cast<GeometrySurfacePy*>(surface)->getGeomSurfacePtr()->handle());
     if (plm) {
         Base::Placement* pm = static_cast<Base::PlacementPy*>(plm)->getPlacementPtr();
-        Base::Rotation r = pm->getRotation();
-        double q1, q2, q3, q4;
-        r.getValue(q1, q2, q3, q4);
-        Base::Vector3d t = pm->getPosition();
-
-        gp_Trsf trf;
-        trf.SetTranslation(gp_Vec(t.x, t.y, t.z));
-        trf.SetRotation(gp_Quaternion(q1, q2, q3, q4));
-        TopLoc_Location loc(trf);
+        TopLoc_Location loc = Tools::fromPlacement(*pm);
         getShapeFix_WirePtr()->SetSurface(surf, loc);
     }
     else {

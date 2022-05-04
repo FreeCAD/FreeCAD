@@ -28,7 +28,7 @@
 
 #include "ShapeFix/ShapeFix_ShapePy.h"
 #include "ShapeFix/ShapeFix_ShapePy.cpp"
-//#include "ShapeFix/ShapeFix_EdgePy.h"
+#include "ShapeFix/ShapeFix_EdgePy.h"
 #include "ShapeFix/ShapeFix_WirePy.h"
 #include "ShapeFix/ShapeFix_FacePy.h"
 #include "ShapeFix/ShapeFix_ShellPy.h"
@@ -139,8 +139,10 @@ PyObject* ShapeFix_ShapePy::fixEdgeTool(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
 
-    //Handle(ShapeFix_Edge) tool = getShapeFix_ShapePtr()->FixEdgeTool();
-    Py_Return;
+    Handle(ShapeFix_Edge) tool = getShapeFix_ShapePtr()->FixEdgeTool();
+    ShapeFix_EdgePy* edge = new ShapeFix_EdgePy(nullptr);
+    edge->setHandle(tool);
+    return edge;
 }
 
 Py::Boolean ShapeFix_ShapePy::getFixSolidMode() const

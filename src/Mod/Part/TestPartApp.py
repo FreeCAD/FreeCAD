@@ -454,6 +454,43 @@ class PartTestShapeFix(unittest.TestCase):
 
         fix.perform()
 
+    def testShapeFix_Edge(self):
+        surface = Part.Plane()
+        face = surface.toShape(-1, 1, -1, 1)
+
+        with self.assertRaises(TypeError):
+            Part.ShapeFix.Edge([])
+
+        wirefix = Part.ShapeFix.Wire(face.OuterWire, face, 1e-7)
+        fix = wirefix.fixEdgeTool()
+        print (fix)
+
+        fix.fixRemovePCurve(face.Edge1, face)
+        fix.fixRemovePCurve(face.Edge1, face.Surface, face.Placement)
+        with self.assertRaises(TypeError):
+            fix.fixRemovePCurve(face)
+
+        fix.fixRemoveCurve3d(face.Edge1)
+        fix.fixAddCurve3d(face.Edge1)
+
+        fix.fixAddPCurve(face.Edge1, face, False)
+        fix.fixAddPCurve(face.Edge1, face.Surface, face.Placement, False)
+        with self.assertRaises(TypeError):
+            fix.fixAddPCurve(face)
+
+        fix.fixVertexTolerance(face.Edge1)
+        fix.fixVertexTolerance(face.Edge1, face)
+
+        fix.fixReversed2d(face.Edge1, face)
+        fix.fixReversed2d(face.Edge1, face.Surface, face.Placement)
+        with self.assertRaises(TypeError):
+            fix.fixReversed2d(face)
+
+        fix.fixSameParameter(face.Edge1)
+        fix.fixSameParameter(face.Edge1, face)
+        with self.assertRaises(TypeError):
+            fix.fixSameParameter(face)
+
     def testShapeFix_Face(self):
         surface = Part.Plane()
         face = surface.toShape(-1, 1, -1, 1)
