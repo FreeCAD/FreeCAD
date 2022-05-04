@@ -25,8 +25,13 @@
 #ifndef _PreComp_
 # include <Precision.hxx>
 # include <Standard_Failure.hxx>
+# include <Standard_Version.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Solid.hxx>
+#endif
+
+#if OCC_VERSION_HEX >= 0x070500
+# include <Message_ProgressRange.hxx>
 #endif
 
 #include "ShapeFix/ShapeFix_SolidPy.h"
