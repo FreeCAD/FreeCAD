@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="ShapeFix_RootPy"
+      Name="ShapeFix_SolidPy"
+      PythonName="Part.ShapeFix.Solid"
+      Twin="ShapeFix_Solid"
+      TwinPointer="ShapeFix_Solid"
+      Include="ShapeFix_Solid.hxx"
+      Namespace="Part"
+      FatherInclude="Mod/Part/App/ShapeFix/ShapeFix_RootPy.h"
+      FatherNamespace="Part"
+      Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>Root class for fixing operations</UserDocu>
+    </Documentation>
+    <Methode Name="init">
+      <Documentation>
+        <UserDocu>Initializes by solid</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="perform">
+      <Documentation>
+        <UserDocu>Iterates on subshapes and performs fixes</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="solidFromShell">
+      <Documentation>
+        <UserDocu>Calls MakeSolid and orients the solid to be not infinite</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="solid">
+      <Documentation>
+        <UserDocu>Returns resulting solid</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="shape">
+      <Documentation>
+        <UserDocu>In case of multiconnexity returns compound of fixed solids
+else returns one solid</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixShellTool">
+      <Documentation>
+        <UserDocu>Returns tool for fixing shells</UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="FixShellMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Mode for applying fixes of ShapeFix_Shell</UserDocu>
+      </Documentation>
+      <Parameter Name="FixShellMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="FixShellOrientationMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Mode for applying analysis and fixes of
+orientation of shells in the solid</UserDocu>
+      </Documentation>
+      <Parameter Name="FixShellOrientationMode" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="CreateOpenSolidMode" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Mode for creation of solids</UserDocu>
+      </Documentation>
+      <Parameter Name="CreateOpenSolidMode" Type="Boolean"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>
