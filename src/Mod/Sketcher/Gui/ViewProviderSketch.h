@@ -712,6 +712,10 @@ private:
     void drawEditMarkers(const std::vector<Base::Vector2d> &EditMarkers, unsigned int augmentationlevel = 0);
     /// set the pick style of the sketch coordinate axes
     void setAxisPickStyle(bool on);
+
+    void moveCursorToSketchPoint(Base::Vector2d point);
+
+    void preselectAtPoint(Base::Vector2d point);
     //@}
 
 private:

@@ -400,6 +400,62 @@ void ViewProviderSketch::setAxisPickStyle(bool on)
     editCoinManager->setAxisPickStyle(on);
 }
 
+void ViewProviderSketch::moveCursorToSketchPoint(Base::Vector2d point) {
+
+    SbVec3f sbpoint(point.x,point.y,0.f);
+
+    Gui::MDIView *mdi = this->getActiveView();
+    Gui::View3DInventor *view = qobject_cast<Gui::View3DInventor*>(mdi);
+
+    if (!view)
+        return;
+
+    Gui::View3DInventorViewer* viewer = view->getViewer();
+
+    SbVec2s screencoords = viewer->getPointOnScreen(sbpoint);
+
+    short x,y; screencoords.getValue(x,y);
+
+    short height = viewer->getGLWidget()->height(); // Coin3D origin bottom left, QT origin top left
+
+    QPoint newPos = viewer->getGLWidget()->mapToGlobal(QPoint(x,height-y));
+
+
+    // QScreen *screen = view->windowHandle()->screen();
+    //QScreen *screen = QGuiApplication::primaryScreen();
+
+    //QCursor::setPos(screen, newPos);
+    QCursor::setPos(newPos);
+}
+
+void ViewProviderSketch::preselectAtPoint(Base::Vector2d point)
+{
+    if (Mode != STATUS_SELECT_Point &&
+        Mode != STATUS_SELECT_Edge &&
+        Mode != STATUS_SELECT_Constraint &&
+        Mode != STATUS_SKETCH_DragPoint &&
+        Mode != STATUS_SKETCH_DragCurve &&
+        Mode != STATUS_SKETCH_DragConstraint &&
+        Mode != STATUS_SKETCH_UseRubberBand) {
+
+        SbVec3f sbpoint(point.x,point.y,0.f);
+
+        Gui::MDIView *mdi = this->getActiveView();
+        Gui::View3DInventor *view = qobject_cast<Gui::View3DInventor*>(mdi);
+
+        if (!view)
+            return;
+
+        Gui::View3DInventorViewer* viewer = view->getViewer();
+
+        SbVec2s screencoords = viewer->getPointOnScreen(sbpoint);
+
+        std::unique_ptr<SoPickedPoint> Point(this->getPointOnRay(screencoords, viewer));
+
+        detectAndShowPreselection(Point.get(), screencoords);
+    }
+}
+
 // **********************************************************************************
 
 bool ViewProviderSketch::keyPressed(bool pressed, int key)
