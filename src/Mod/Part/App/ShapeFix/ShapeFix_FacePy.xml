@@ -20,6 +20,11 @@
         <UserDocu>Initializes by face</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="fixWireTool">
+      <Documentation>
+        <UserDocu>Returns tool for fixing wires</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="clearModes">
       <Documentation>
         <UserDocu>Sets all modes to default</UserDocu>

@@ -222,6 +222,46 @@ class PartTestShapeFix(unittest.TestCase):
 
         self.assertEqual(fix.limitTolerance(0.25), 0.25)
 
+    def testShapeFix_Shape(self):
+        surface = Part.Plane()
+        face = surface.toShape(-1, 1, -1, 1)
+
+        with self.assertRaises(TypeError):
+            Part.ShapeFix.Shape([])
+
+        fix = Part.ShapeFix.Shape(face)
+        fix.init(face)
+        print (fix)
+        fix.shape()
+        fix.fixSolidTool()
+        fix.fixShellTool()
+        fix.fixFaceTool()
+        fix.fixWireTool()
+        fix.fixEdgeTool()
+
+        fix.FixSolidMode = True
+        self.assertEqual(fix.FixSolidMode, True)
+
+        fix.FixFreeShellMode = True
+        self.assertEqual(fix.FixFreeShellMode, True)
+
+        fix.FixFreeFaceMode = True
+        self.assertEqual(fix.FixFreeFaceMode, True)
+
+        fix.FixFreeWireMode = True
+        self.assertEqual(fix.FixFreeWireMode, True)
+
+        fix.FixSameParameterMode = True
+        self.assertEqual(fix.FixSameParameterMode, True)
+
+        fix.FixVertexPositionMode = True
+        self.assertEqual(fix.FixVertexPositionMode, True)
+
+        fix.FixVertexTolMode = True
+        self.assertEqual(fix.FixVertexTolMode, True)
+
+        fix.perform()
+
     def testShapeFix_Face(self):
         surface = Part.Plane()
         face = surface.toShape(-1, 1, -1, 1)
@@ -247,6 +287,7 @@ class PartTestShapeFix(unittest.TestCase):
         fix.add(face.OuterWire)
         current = fix.face()
         result = fix.result()
+        fix.fixWireTool()
 
         fix.FixWireMode = True
         self.assertEqual(fix.FixWireMode, True)
@@ -298,6 +339,7 @@ class PartTestShapeFix(unittest.TestCase):
         fix.perform()
         fix.shell()
         fix.shape()
+        fix.fixFaceTool()
 
         fix.setNonManifoldFlag(True)
         fix.fixFaceOrientation(shell)
@@ -327,6 +369,7 @@ class PartTestShapeFix(unittest.TestCase):
         fix.setFace(face)
         fix.setMaxTailAngle(math.pi)
         fix.setMaxTailWidth(10.0)
+        fix.fixEdgeTool()
 
         self.assertEqual(fix.isLoaded(), True)
         self.assertEqual(fix.isReady(), True)

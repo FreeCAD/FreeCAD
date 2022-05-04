@@ -11,7 +11,7 @@
       FatherInclude="Base/PyObjectBase.h"
       FatherNamespace="Base"
       Constructor="true"
-      Delete="true">
+      Delete="false">
     <Documentation>
       <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
       <UserDocu>Root class for fixing operations</UserDocu>
@@ -39,5 +39,15 @@
       </Documentation>
       <Parameter Name="MaxTolerance" Type="Float"/>
     </Attribute>
+    <ClassDeclarations>
+private:
+    Handle(ShapeFix_Root) hRoot;
+
+public:
+    void setHandle(Handle(ShapeFix_Root) handle) {
+        setTwinPointer(handle.get());
+        hRoot = handle;
+    }
+    </ClassDeclarations>
   </PythonExport>
 </GenerateModel>

@@ -28,6 +28,7 @@
 
 #include "ShapeFix/ShapeFix_FacePy.h"
 #include "ShapeFix/ShapeFix_FacePy.cpp"
+#include "ShapeFix/ShapeFix_WirePy.h"
 #include <Mod/Part/App/GeometrySurfacePy.h>
 #include <Mod/Part/App/TopoShapeFacePy.h>
 #include <Mod/Part/App/TopoShapeWirePy.h>
@@ -43,7 +44,7 @@ std::string ShapeFix_FacePy::representation() const
 PyObject *ShapeFix_FacePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
     // create a new instance of ShapeFix_FacePy
-    return new ShapeFix_FacePy(new ShapeFix_Face);
+    return new ShapeFix_FacePy(nullptr);
 }
 
 // constructor method
@@ -51,6 +52,7 @@ int ShapeFix_FacePy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
     PyObject* face = nullptr;
     if (PyArg_ParseTuple(args, "|O!", &TopoShapeFacePy::Type, &face)) {
+        setHandle(new ShapeFix_Face());
         if (face) {
             getShapeFix_FacePtr()->Init(TopoDS::Face(static_cast<TopoShapePy*>(face)->getTopoShapePtr()->getShape()));
         }
@@ -62,6 +64,7 @@ int ShapeFix_FacePy::PyInit(PyObject* args, PyObject* /*kwds*/)
     double prec;
     PyObject* fwd = Py_True;
     if (PyArg_ParseTuple(args, "O!d|O!", &GeometrySurfacePy::Type, &face, &prec, &PyBool_Type, &fwd)) {
+        setHandle(new ShapeFix_Face());
         if (face) {
             Handle(Geom_Surface) surf = Handle(Geom_Surface)::DownCast(static_cast<GeometrySurfacePy*>(face)->getGeomSurfacePtr()->handle());
             getShapeFix_FacePtr()->Init(surf, prec, PyObject_IsTrue(fwd) ? Standard_True : Standard_False);
@@ -75,7 +78,7 @@ int ShapeFix_FacePy::PyInit(PyObject* args, PyObject* /*kwds*/)
         "-- Surface, Precision, [Forward=True}\n"
         "   Precision is a Float\n"
         "   If Forward is the orientation will be FORWARD or REVERSED otherwise"
-       );
+    );
     return -1;
 }
 
@@ -106,6 +109,17 @@ PyObject* ShapeFix_FacePy::init(PyObject *args)
         "   If Forward is the orientation will be FORWARD or REVERSED otherwise"
        );
     return nullptr;
+}
+
+PyObject* ShapeFix_FacePy::fixWireTool(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    Handle(ShapeFix_Wire) tool = getShapeFix_FacePtr()->FixWireTool();
+    ShapeFix_WirePy* wire = new ShapeFix_WirePy(nullptr);
+    wire->setHandle(tool);
+    return wire;
 }
 
 PyObject* ShapeFix_FacePy::clearModes(PyObject *args)

@@ -46,7 +46,7 @@ std::string ShapeFix_WirePy::representation() const
 
 PyObject *ShapeFix_WirePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    return new ShapeFix_WirePy(new ShapeFix_Wire);
+    return new ShapeFix_WirePy(nullptr);
 }
 
 // constructor method
@@ -54,6 +54,7 @@ int ShapeFix_WirePy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
     if (PyArg_ParseTuple(args, "")) {
         // Nothing needs to be done
+        setHandle(new ShapeFix_Wire);
         return 0;
     }
 
@@ -63,6 +64,7 @@ int ShapeFix_WirePy::PyInit(PyObject* args, PyObject* /*kwds*/)
     double prec;
     if (PyArg_ParseTuple(args, "O!O!d", &TopoShapeWirePy::Type, &wire,
                                         &TopoShapeFacePy::Type, &face, &prec)) {
+        setHandle(new ShapeFix_Wire);
         TopoDS_Shape w = static_cast<TopoShapePy*>(wire)->getTopoShapePtr()->getShape();
         TopoDS_Shape f = static_cast<TopoShapePy*>(face)->getTopoShapePtr()->getShape();
         getShapeFix_WirePtr()->Init(TopoDS::Wire(w), TopoDS::Face(f), prec);
@@ -90,6 +92,15 @@ PyObject* ShapeFix_WirePy::init(PyObject *args)
     TopoDS_Shape f = static_cast<TopoShapePy*>(face)->getTopoShapePtr()->getShape();
     getShapeFix_WirePtr()->Init(TopoDS::Wire(w), TopoDS::Face(f), prec);
 
+    Py_Return;
+}
+
+PyObject* ShapeFix_WirePy::fixEdgeTool(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    //Handle(ShapeFix_Edge) tool = getShapeFix_WirePtr()->FixEdgeTool();
     Py_Return;
 }
 

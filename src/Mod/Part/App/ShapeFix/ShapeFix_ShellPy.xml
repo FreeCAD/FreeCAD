@@ -20,6 +20,11 @@
         <UserDocu>Initializes by shell</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="fixFaceTool">
+      <Documentation>
+        <UserDocu>Returns tool for fixing faces</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="perform">
       <Documentation>
         <UserDocu>Iterates on subshapes and performs fixes</UserDocu>
