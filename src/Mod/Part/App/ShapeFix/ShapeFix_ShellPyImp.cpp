@@ -30,6 +30,7 @@
 
 #include "ShapeFix/ShapeFix_ShellPy.h"
 #include "ShapeFix/ShapeFix_ShellPy.cpp"
+#include "ShapeFix/ShapeFix_FacePy.h"
 #include <Mod/Part/App/TopoShapeShellPy.h>
 
 using namespace Part;
@@ -43,7 +44,7 @@ std::string ShapeFix_ShellPy::representation() const
 PyObject *ShapeFix_ShellPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
     // create a new instance of ShapeFix_RootPy
-    return new ShapeFix_ShellPy(new ShapeFix_Shell);
+    return new ShapeFix_ShellPy(nullptr);
 }
 
 // constructor method
@@ -53,6 +54,7 @@ int ShapeFix_ShellPy::PyInit(PyObject* args, PyObject* /*kwds*/)
     if (!PyArg_ParseTuple(args, "|O!", &TopoShapeShellPy::Type, &shell))
         return -1;
 
+    setHandle(new ShapeFix_Shell);
     if (shell) {
         getShapeFix_ShellPtr()->Init(TopoDS::Shell(static_cast<TopoShapePy*>(shell)->getTopoShapePtr()->getShape()));
     }
@@ -68,6 +70,17 @@ PyObject* ShapeFix_ShellPy::init(PyObject *args)
 
     getShapeFix_ShellPtr()->Init(TopoDS::Shell(static_cast<TopoShapePy*>(shell)->getTopoShapePtr()->getShape()));
     Py_Return;
+}
+
+PyObject* ShapeFix_ShellPy::fixFaceTool(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return nullptr;
+
+    Handle(ShapeFix_Face) tool = getShapeFix_ShellPtr()->FixFaceTool();
+    ShapeFix_FacePy* face = new ShapeFix_FacePy(nullptr);
+    face->setHandle(tool);
+    return face;
 }
 
 PyObject* ShapeFix_ShellPy::perform(PyObject *args)

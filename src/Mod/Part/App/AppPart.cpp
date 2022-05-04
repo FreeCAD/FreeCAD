@@ -102,6 +102,7 @@
 #include <Mod/Part/App/RectangularTrimmedSurfacePy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_RootPy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_FacePy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_ShapePy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_ShellPy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_WirePy.h>
 #include <Mod/Part/App/ShapeUpgrade/UnifySameDomainPy.h>
@@ -345,6 +346,7 @@ PyMOD_INIT_FUNC(Part)
     PyObject* shapeFix(module.getAttr("ShapeFix").ptr());
     Base::Interpreter().addType(&Part::ShapeFix_RootPy::Type, shapeFix, "Root");
     Base::Interpreter().addType(&Part::ShapeFix_FacePy::Type, shapeFix, "Face");
+    Base::Interpreter().addType(&Part::ShapeFix_ShapePy::Type, shapeFix, "Shape");
     Base::Interpreter().addType(&Part::ShapeFix_ShellPy::Type, shapeFix, "Shell");
     Base::Interpreter().addType(&Part::ShapeFix_WirePy::Type, shapeFix, "Wire");
 

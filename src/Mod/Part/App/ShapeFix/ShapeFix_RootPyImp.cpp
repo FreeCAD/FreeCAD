@@ -41,7 +41,7 @@ std::string ShapeFix_RootPy::representation() const
 PyObject *ShapeFix_RootPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
     // create a new instance of ShapeFix_RootPy
-    return new ShapeFix_RootPy(new ShapeFix_Root);
+    return new ShapeFix_RootPy(nullptr);
 }
 
 // constructor method
@@ -50,6 +50,7 @@ int ShapeFix_RootPy::PyInit(PyObject* args, PyObject* /*kwds*/)
     if (!PyArg_ParseTuple(args, ""))
         return -1;
 
+    setHandle(new ShapeFix_Root);
     return 0;
 }
 
