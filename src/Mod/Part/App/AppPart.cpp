@@ -105,6 +105,7 @@
 #include <Mod/Part/App/ShapeFix/ShapeFix_EdgeConnectPy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_FacePy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_FaceConnectPy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_FreeBoundsPy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_ShapePy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_ShapeTolerancePy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_ShellPy.h>
@@ -359,6 +360,7 @@ PyMOD_INIT_FUNC(Part)
     Base::Interpreter().addType(&Part::ShapeFix_WirePy::Type, shapeFix, "Wire");
     Base::Interpreter().addType(&Part::ShapeFix_EdgeConnectPy::Type, shapeFix, "EdgeConnect");
     Base::Interpreter().addType(&Part::ShapeFix_FaceConnectPy::Type, shapeFix, "FaceConnect");
+    Base::Interpreter().addType(&Part::ShapeFix_FreeBoundsPy::Type, shapeFix, "FreeBounds");
     Base::Interpreter().addType(&Part::ShapeFix_ShapeTolerancePy::Type, shapeFix, "ShapeTolerance");
     Base::Interpreter().addType(&Part::ShapeFix_SplitCommonVertexPy::Type, shapeFix, "SplitCommonVertex");
 

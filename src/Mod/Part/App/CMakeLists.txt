@@ -145,6 +145,7 @@ generate_from_xml(ShapeFix/ShapeFix_SolidPy)
 generate_from_xml(ShapeFix/ShapeFix_WirePy)
 generate_from_xml(ShapeFix/ShapeFix_EdgeConnectPy)
 generate_from_xml(ShapeFix/ShapeFix_FaceConnectPy)
+generate_from_xml(ShapeFix/ShapeFix_FreeBoundsPy)
 generate_from_xml(ShapeFix/ShapeFix_ShapeTolerancePy)
 generate_from_xml(ShapeFix/ShapeFix_SplitCommonVertexPy)
 
@@ -450,6 +451,8 @@ SET(ShapeFixPy_SRCS
     ShapeFix/ShapeFix_EdgeConnectPyImp.cpp
     ShapeFix/ShapeFix_FaceConnectPy.xml
     ShapeFix/ShapeFix_FaceConnectPyImp.cpp
+    ShapeFix/ShapeFix_FreeBoundsPy.xml
+    ShapeFix/ShapeFix_FreeBoundsPyImp.cpp
     ShapeFix/ShapeFix_ShapeTolerancePy.xml
     ShapeFix/ShapeFix_ShapeTolerancePyImp.cpp
     ShapeFix/ShapeFix_SplitCommonVertexPy.xml
