@@ -25,6 +25,7 @@
 #define PART_TOOLS_H
 
 #include <Base/Converter.h>
+#include <Base/Placement.h>
 #include <gp_Pnt.hxx>
 #include <gp_Vec.hxx>
 #include <gp_Dir.hxx>
@@ -206,7 +207,7 @@ public:
      * \param done
      */
     static void getNormal(const Handle(Geom_Surface)& surf, double u, double v, const Standard_Real tol, gp_Dir& dir, Standard_Boolean& done);
-     /* \brief getNormal
+    /*! \brief getNormal
      * Returns the normal at the given parameters on the face and the state of the calculation.
      * The orientation is taken into account
      * \param face
@@ -217,6 +218,12 @@ public:
      * \param done
      */
     static void getNormal(const TopoDS_Face& face, double u, double v, const Standard_Real tol, gp_Dir& dir, Standard_Boolean& done);
+    /*!
+     * \brief fromPlacement
+     * Converts a placement into a TopLoc_Location
+     * \return TopLoc_Location
+     */
+    static TopLoc_Location fromPlacement(const Base::Placement&);
 };
 
 } //namespace Part
