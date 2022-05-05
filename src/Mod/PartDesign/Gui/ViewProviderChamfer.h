@@ -31,13 +31,14 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderChamfer : public ViewProviderDressUp
 {
+    Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderChamfer)
     PROPERTY_HEADER(PartDesignGui::ViewProviderChamfer);
 
 public:
     /// constructor
     ViewProviderChamfer()
         { sPixmap = "PartDesign_Chamfer.svg";
-          menuName = QObject::tr("Chamfer parameters");}
+          menuName = tr("Chamfer parameters");}
 
     /// return "Chamfer"
     virtual const std::string & featureName() const;

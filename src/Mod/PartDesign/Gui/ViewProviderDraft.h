@@ -32,13 +32,14 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderDraft : public ViewProviderDressUp
 {
+    Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderDraft)
     PROPERTY_HEADER(PartDesignGui::ViewProviderDraft);
 
 public:
     /// constructor
     ViewProviderDraft()
         { sPixmap = "PartDesign_Draft.svg";
-          menuName = QObject::tr("Draft parameters"); }
+          menuName = tr("Draft parameters"); }
 
     /// return "Draft"
     virtual const std::string & featureName() const;

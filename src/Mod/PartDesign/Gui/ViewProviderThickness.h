@@ -31,13 +31,14 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderThickness : public ViewProviderDressUp
 {
+    Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderThickness);
     PROPERTY_HEADER(PartDesignGui::ViewProviderThickness);
 
 public:
     /// constructor
     ViewProviderThickness()
         { sPixmap = "PartDesign_Thickness.svg";
-          menuName = QObject::tr("Thickness parameters"); }
+          menuName = tr("Thickness parameters"); }
 
     /// return "Thickness"
     virtual const std::string & featureName() const;
