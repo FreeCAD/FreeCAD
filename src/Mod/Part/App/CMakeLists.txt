@@ -143,6 +143,7 @@ generate_from_xml(ShapeFix/ShapeFix_ShapePy)
 generate_from_xml(ShapeFix/ShapeFix_ShellPy)
 generate_from_xml(ShapeFix/ShapeFix_SolidPy)
 generate_from_xml(ShapeFix/ShapeFix_WirePy)
+generate_from_xml(ShapeFix/ShapeFix_WireframePy)
 generate_from_xml(ShapeFix/ShapeFix_WireVertexPy)
 generate_from_xml(ShapeFix/ShapeFix_EdgeConnectPy)
 generate_from_xml(ShapeFix/ShapeFix_FaceConnectPy)
@@ -449,6 +450,8 @@ SET(ShapeFixPy_SRCS
     ShapeFix/ShapeFix_SolidPyImp.cpp
     ShapeFix/ShapeFix_WirePy.xml
     ShapeFix/ShapeFix_WirePyImp.cpp
+    ShapeFix/ShapeFix_WireframePy.xml
+    ShapeFix/ShapeFix_WireframePyImp.cpp
     ShapeFix/ShapeFix_WireVertexPy.xml
     ShapeFix/ShapeFix_WireVertexPyImp.cpp
     ShapeFix/ShapeFix_EdgeConnectPy.xml
