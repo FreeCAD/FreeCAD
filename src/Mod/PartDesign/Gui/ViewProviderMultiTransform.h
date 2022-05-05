@@ -30,11 +30,12 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderMultiTransform : public ViewProviderTransformed
 {
+    Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderMultiTransform);
     PROPERTY_HEADER(PartDesignGui::ViewProviderMultiTransform);
 public:
     ViewProviderMultiTransform() {
         featureName = std::string("MultiTransform");
-        menuName = QObject::tr("MultiTransform parameters");
+        menuName = tr("MultiTransform parameters");
         sPixmap = "PartDesign_MultiTransform.svg";
     }
 
