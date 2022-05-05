@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="ShapeFix_RootPy"
+      Name="ShapeFix_WireframePy"
+      PythonName="Part.ShapeFix.Wireframe"
+      Twin="ShapeFix_Wireframe"
+      TwinPointer="ShapeFix_Wireframe"
+      Include="ShapeFix_Wireframe.hxx"
+      Namespace="Part"
+      FatherInclude="Mod/Part/App/ShapeFix/ShapeFix_RootPy.h"
+      FatherNamespace="Part"
+      Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>Provides methods for fixing wireframe of shape</UserDocu>
+    </Documentation>
+    <Methode Name="clearStatuses">
+      <Documentation>
+        <UserDocu>Clears all statuses</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="load">
+      <Documentation>
+        <UserDocu>Loads a shape, resets statuses</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixWireGaps">
+      <Documentation>
+        <UserDocu>Fixes gaps between ends of curves of adjacent edges</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixSmallEdges">
+      <Documentation>
+        <UserDocu>Fixes small edges in shape by merging adjacent edges</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="shape">
+      <Documentation>
+          <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Attribute Name="ModeDropSmallEdges" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Returns mode managing removing small edges</UserDocu>
+      </Documentation>
+      <Parameter Name="ModeDropSmallEdges" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="LimitAngle" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Limit angle for merging edges</UserDocu>
+      </Documentation>
+      <Parameter Name="LimitAngle" Type="Float"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>
