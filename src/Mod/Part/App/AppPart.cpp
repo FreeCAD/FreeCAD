@@ -106,6 +106,7 @@
 #include <Mod/Part/App/ShapeFix/ShapeFix_FacePy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_FaceConnectPy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_FixSmallFacePy.h>
+#include <Mod/Part/App/ShapeFix/ShapeFix_FixSmallSolidPy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_FreeBoundsPy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_ShapePy.h>
 #include <Mod/Part/App/ShapeFix/ShapeFix_ShapeTolerancePy.h>
@@ -367,6 +368,7 @@ PyMOD_INIT_FUNC(Part)
     Base::Interpreter().addType(&Part::ShapeFix_EdgeConnectPy::Type, shapeFix, "EdgeConnect");
     Base::Interpreter().addType(&Part::ShapeFix_FaceConnectPy::Type, shapeFix, "FaceConnect");
     Base::Interpreter().addType(&Part::ShapeFix_FixSmallFacePy::Type, shapeFix, "FixSmallFace");
+    Base::Interpreter().addType(&Part::ShapeFix_FixSmallSolidPy::Type, shapeFix, "FixSmallSolid");
     Base::Interpreter().addType(&Part::ShapeFix_FreeBoundsPy::Type, shapeFix, "FreeBounds");
     Base::Interpreter().addType(&Part::ShapeFix_ShapeTolerancePy::Type, shapeFix, "ShapeTolerance");
     Base::Interpreter().addType(&Part::ShapeFix_SplitCommonVertexPy::Type, shapeFix, "SplitCommonVertex");
