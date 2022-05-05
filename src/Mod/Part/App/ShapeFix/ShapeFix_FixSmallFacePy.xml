@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="ShapeFix_RootPy"
+      Name="ShapeFix_FixSmallFacePy"
+      PythonName="Part.ShapeFix.FixSmallFace"
+      Twin="ShapeFix_FixSmallFace"
+      TwinPointer="ShapeFix_FixSmallFace"
+      Include="ShapeFix_FixSmallFace.hxx"
+      Namespace="Part"
+      FatherInclude="Mod/Part/App/ShapeFix/ShapeFix_RootPy.h"
+      FatherNamespace="Part"
+      Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>Class for fixing operations on faces</UserDocu>
+    </Documentation>
+    <Methode Name="init">
+      <Documentation>
+        <UserDocu>Initializes by shape</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="perform">
+      <Documentation>
+        <UserDocu>Fixing case of spot face</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixSpotFace">
+      <Documentation>
+        <UserDocu>Fixing case of spot face, if tol = -1 used local tolerance</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="replaceVerticesInCaseOfSpot">
+      <Documentation>
+        <UserDocu>Compute average vertex and replacing vertices by new one</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeFacesInCaseOfSpot">
+      <Documentation>
+        <UserDocu>Remove spot face from compound</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixStripFace">
+      <Documentation>
+          <UserDocu>Fixing case of strip face, if tol = -1 used local tolerance</UserDocu>
+      </Documentation>
+    </Methode>
+    <!--<Methode Name="replaceInCaseOfStrip">
+      <Documentation>
+          <UserDocu>Replace vertices and edges</UserDocu>
+      </Documentation>
+    </Methode>-->
+    <Methode Name="removeFacesInCaseOfStrip">
+      <Documentation>
+          <UserDocu>Remove strip face from compound</UserDocu>
+      </Documentation>
+    </Methode>
+    <!--<Methode Name="computeSharedEdgeForStripFace">
+      <Documentation>
+          <UserDocu>Compute average edge for strip face</UserDocu>
+      </Documentation>
+    </Methode>-->
+    <Methode Name="fixSplitFace">
+      <Documentation>
+          <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <!--<Methode Name="splitOneFace">
+      <Documentation>
+          <UserDocu>Compute data for face splitting</UserDocu>
+      </Documentation>
+    </Methode>-->
+    <Methode Name="fixFace">
+      <Documentation>
+          <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixShape">
+      <Documentation>
+          <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="shape">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <!--<Methode Name="fixPinFace">
+      <Documentation>
+        <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>-->
+  </PythonExport>
+</GenerateModel>
