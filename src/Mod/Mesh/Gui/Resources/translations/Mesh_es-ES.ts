@@ -1383,10 +1383,6 @@ a una apariencia poco realista para superficies curvas mientras que si se usa el
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
-      <source>Remesh by gmsh</source>
-      <translation>Remallar mediante gmsh</translation>
-    </message>
-    <message>
       <source>Remeshing Parameter</source>
       <translation>Parámetro de Remallado</translation>
     </message>
@@ -1425,6 +1421,10 @@ a una apariencia poco realista para superficies curvas mientras que si se usa el
     <message>
       <source>Clear</source>
       <translation>Limpiar</translation>
+    </message>
+    <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
     </message>
   </context>
   <context>
@@ -1838,6 +1838,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <source>Annotation</source>
       <translation>Anotación</translation>
     </message>
+    <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1856,6 +1860,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     <message>
       <source>Mesh tools</source>
       <translation>Herramientas de la malla</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Corte</translation>
     </message>
   </context>
 </TS>

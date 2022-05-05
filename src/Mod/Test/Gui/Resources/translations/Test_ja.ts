@@ -4,110 +4,89 @@
   <context>
     <name>TestGui::UnitTest</name>
     <message>
-      <location filename="../../UnitTest.ui" line="17"/>
       <source>FreeCAD UnitTest</source>
       <translation>FreeCAD UnitTest</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="32"/>
-      <source>Failures and errors</source>
-      <translation>障害およびエラー</translation>
-    </message>
-    <message>
-      <location filename="../../UnitTest.ui" line="48"/>
-      <source>Description</source>
-      <translation>説明</translation>
-    </message>
-    <message>
-      <location filename="../../UnitTest.ui" line="83"/>
-      <source>&amp;Start</source>
-      <translation>開始（&amp;S）</translation>
-    </message>
-    <message>
-      <location filename="../../UnitTest.ui" line="86"/>
-      <source>Alt+S</source>
-      <translation>Alt+S</translation>
-    </message>
-    <message>
-      <location filename="../../UnitTest.ui" line="115"/>
-      <source>&amp;Help</source>
-      <translation>ヘルプ(&amp;H)</translation>
-    </message>
-    <message>
-      <location filename="../../UnitTest.ui" line="118"/>
-      <source>F1</source>
-      <translation>F1</translation>
-    </message>
-    <message>
-      <location filename="../../UnitTest.ui" line="128"/>
-      <source>&amp;About</source>
-      <translation>FreeCADについて &amp;A</translation>
-    </message>
-    <message>
-      <location filename="../../UnitTest.ui" line="131"/>
-      <source>Alt+A</source>
-      <translation>Alt+A</translation>
-    </message>
-    <message>
-      <location filename="../../UnitTest.ui" line="141"/>
-      <source>&amp;Close</source>
-      <translation>閉じる(&amp;C)</translation>
-    </message>
-    <message>
-      <location filename="../../UnitTest.ui" line="144"/>
-      <source>Alt+C</source>
-      <translation>Alt+C</translation>
-    </message>
-    <message>
-      <location filename="../../UnitTest.ui" line="162"/>
-      <source>Idle</source>
-      <translation>待機中</translation>
-    </message>
-    <message>
-      <location filename="../../UnitTest.ui" line="169"/>
-      <source>Progress</source>
-      <translation>進捗状況</translation>
-    </message>
-    <message>
-      <location filename="../../UnitTest.ui" line="198"/>
-      <source>Remaining:</source>
-      <translation>残り:</translation>
-    </message>
-    <message>
-      <location filename="../../UnitTest.ui" line="215"/>
-      <source>Errors:</source>
-      <translation>エラー:</translation>
-    </message>
-    <message>
-      <location filename="../../UnitTest.ui" line="232"/>
-      <source>Failures:</source>
-      <translation>障害:</translation>
-    </message>
-    <message>
-      <location filename="../../UnitTest.ui" line="249"/>
-      <source>Run:</source>
-      <translation>実行:</translation>
-    </message>
-    <message>
-      <location filename="../../UnitTest.ui" line="259"/>
       <source>Test</source>
       <translation>テスト</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="271"/>
       <source>Select test name:</source>
       <translation>テスト名を選択:</translation>
+    </message>
+    <message>
+      <source>&amp;Start</source>
+      <translation>開始（&amp;S）</translation>
+    </message>
+    <message>
+      <source>Alt+S</source>
+      <translation>Alt+S</translation>
+    </message>
+    <message>
+      <source>&amp;Help</source>
+      <translation>ヘルプ(&amp;H)</translation>
+    </message>
+    <message>
+      <source>F1</source>
+      <translation>F1</translation>
+    </message>
+    <message>
+      <source>&amp;About</source>
+      <translation>FreeCADについて &amp;A</translation>
+    </message>
+    <message>
+      <source>Alt+A</source>
+      <translation>Alt+A</translation>
+    </message>
+    <message>
+      <source>&amp;Close</source>
+      <translation>閉じる(&amp;C)</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt+C</translation>
+    </message>
+    <message>
+      <source>Progress</source>
+      <translation>進捗状況</translation>
+    </message>
+    <message>
+      <source>Run:</source>
+      <translation>実行:</translation>
+    </message>
+    <message>
+      <source>Failures:</source>
+      <translation>障害:</translation>
+    </message>
+    <message>
+      <source>Errors:</source>
+      <translation>エラー:</translation>
+    </message>
+    <message>
+      <source>Remaining:</source>
+      <translation>残り:</translation>
+    </message>
+    <message>
+      <source>Failures and errors</source>
+      <translation>障害およびエラー</translation>
+    </message>
+    <message>
+      <source>Description</source>
+      <translation>説明</translation>
+    </message>
+    <message>
+      <source>Idle</source>
+      <translation>待機中</translation>
     </message>
   </context>
   <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="152"/>
       <source>Help</source>
       <translation>ヘルプ</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="152"/>
       <source>Enter the name of a callable object which, when called, will return a TestCase.
 Click 'start', and the test thus produced will be run.
 
@@ -117,12 +96,10 @@ Double click on an error in the tree view to see more information about it, incl
 ツリービューでエラーをダブルクリックすると、スタックトレースなどの詳細情報が表示されます。</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="164"/>
       <source>About FreeCAD UnitTest</source>
       <translation>FreeCAD ユニットテストについて</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="164"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>

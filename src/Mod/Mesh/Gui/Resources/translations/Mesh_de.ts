@@ -1382,10 +1382,6 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
-      <source>Remesh by gmsh</source>
-      <translation>Neuvernetzung durch gmsh</translation>
-    </message>
-    <message>
       <source>Remeshing Parameter</source>
       <translation>Wiedervernetzungs-Parameter</translation>
     </message>
@@ -1424,6 +1420,10 @@ Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translati
     <message>
       <source>Clear</source>
       <translation>Löschen</translation>
+    </message>
+    <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
     </message>
   </context>
   <context>
@@ -1838,6 +1838,10 @@ Bitte besuchen Sie http://www.openscad.org/index.html, um es zu installieren.</t
       <source>Annotation</source>
       <translation>Anmerkung</translation>
     </message>
+    <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1856,6 +1860,10 @@ Bitte besuchen Sie http://www.openscad.org/index.html, um es zu installieren.</t
     <message>
       <source>Mesh tools</source>
       <translation>Netz-Werkzeuge</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Schneiden</translation>
     </message>
   </context>
 </TS>

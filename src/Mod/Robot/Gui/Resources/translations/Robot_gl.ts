@@ -43,7 +43,7 @@
     </message>
     <message>
       <source>Create a new empty trajectory</source>
-      <translation type="unfinished">Create a new empty trajectory</translation>
+      <translation>Crea unha nova traxectoria baleira</translation>
     </message>
   </context>
   <context>
@@ -241,7 +241,7 @@
     </message>
     <message>
       <source>Simulate a trajectory</source>
-      <translation>Simular una traxectoria</translation>
+      <translation>Simular unha traxectoria</translation>
     </message>
     <message>
       <source>Run a simulation on a trajectory</source>
@@ -381,7 +381,7 @@
     </message>
     <message>
       <source>No robot files installed</source>
-      <translation>No hai ficheiros de robot instalados</translation>
+      <translation>Non hai ficheiros de robot instalados</translation>
     </message>
     <message>
       <source>Please visit %1 and copy the files to %2</source>
@@ -762,7 +762,7 @@
     </message>
     <message>
       <source>Continues</source>
-      <translation>Continuas</translation>
+      <translation>Continuar</translation>
     </message>
     <message>
       <source>Discontinues</source>

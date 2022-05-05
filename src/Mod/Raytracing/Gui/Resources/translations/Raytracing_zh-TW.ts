@@ -252,7 +252,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Rendered image</source>
-      <translation>算繪影像</translation>
+      <translation>渲染影像</translation>
     </message>
     <message>
       <source>Lux project file missing</source>
@@ -287,7 +287,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Render</source>
-      <translation>算繪</translation>
+      <translation>渲染</translation>
     </message>
     <message>
       <source>POV-Ray executable:</source>
@@ -299,7 +299,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>The POV-Ray parameters to be passed to the render.</source>
-      <translation>POV-Ray 參數傳被送至算繪器</translation>
+      <translation>POV-Ray 參數傳被送至渲染器</translation>
     </message>
     <message>
       <source>+P +A</source>
@@ -311,7 +311,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>The width of the rendered image</source>
-      <translation>算繪影像之寬度</translation>
+      <translation>渲染影像之寬度</translation>
     </message>
     <message>
       <source> +H : </source>
@@ -319,7 +319,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>The height of the rendered image</source>
-      <translation>算繪影像之高度</translation>
+      <translation>渲染影像之高度</translation>
     </message>
     <message>
       <source>Luxrender executable:</source>
@@ -362,7 +362,7 @@ Do you want to continue?</source>
     <name>RaytracingGui::DlgSettingsRayImp</name>
     <message>
       <source>The path to the POV-Ray executable, if you want to render from %1</source>
-      <translation>若您想要執行算繪 %1, 請輸入 POV-Ray 執行檔之路徑.</translation>
+      <translation>若您想要執行渲染 %1, 請輸入 POV-Ray 執行檔之路徑.</translation>
     </message>
   </context>
   <context>

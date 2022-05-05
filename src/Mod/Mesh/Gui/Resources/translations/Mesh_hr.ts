@@ -1387,10 +1387,6 @@ vodi do uglađenijeg izgleda.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
-      <source>Remesh by gmsh</source>
-      <translation>Ponovo umrežavanje sa gmsh</translation>
-    </message>
-    <message>
       <source>Remeshing Parameter</source>
       <translation>Parametar ponovnog umrežavanja</translation>
     </message>
@@ -1429,6 +1425,10 @@ vodi do uglađenijeg izgleda.
     <message>
       <source>Clear</source>
       <translation>Brisanje</translation>
+    </message>
+    <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
     </message>
   </context>
   <context>
@@ -1843,6 +1843,10 @@ Posjetite http://www.openscad.org/index.html da biste ga instalirali.</translati
       <source>Annotation</source>
       <translation>Anotacija</translation>
     </message>
+    <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1861,6 +1865,10 @@ Posjetite http://www.openscad.org/index.html da biste ga instalirali.</translati
     <message>
       <source>Mesh tools</source>
       <translation>Alati mreže</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Rezanje</translation>
     </message>
   </context>
 </TS>

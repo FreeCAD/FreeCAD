@@ -399,7 +399,7 @@
     </message>
     <message>
       <source>All</source>
-      <translation>Вся</translation>
+      <translation>Всі</translation>
     </message>
     <message>
       <source>Clear</source>

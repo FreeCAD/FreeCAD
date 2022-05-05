@@ -1385,10 +1385,6 @@ Avec l'ombrage à plat les normales de surface ne sont pas définies par un somm
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
-      <source>Remesh by gmsh</source>
-      <translation>Remaillage par gmsh</translation>
-    </message>
-    <message>
       <source>Remeshing Parameter</source>
       <translation>Paramètre de remaillage</translation>
     </message>
@@ -1427,6 +1423,10 @@ Avec l'ombrage à plat les normales de surface ne sont pas définies par un somm
     <message>
       <source>Clear</source>
       <translation>Effacer</translation>
+    </message>
+    <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
     </message>
   </context>
   <context>
@@ -1841,6 +1841,10 @@ Merci de visiter http://www.openscad.org/index.html pour l'installer.</translati
       <source>Annotation</source>
       <translation>Annotation</translation>
     </message>
+    <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1859,6 +1863,10 @@ Merci de visiter http://www.openscad.org/index.html pour l'installer.</translati
     <message>
       <source>Mesh tools</source>
       <translation>Outils de maillage</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Coupe</translation>
     </message>
   </context>
 </TS>

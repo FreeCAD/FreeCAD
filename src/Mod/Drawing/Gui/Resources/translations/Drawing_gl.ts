@@ -13,7 +13,7 @@
     </message>
     <message>
       <source>Inserts an Annotation view in the active drawing</source>
-      <translation>Insire un apuntamento no debuxo actual</translation>
+      <translation>Insire un Apuntamento no debuxo actual</translation>
     </message>
   </context>
   <context>
@@ -24,7 +24,7 @@
     </message>
     <message>
       <source>&amp;Clip</source>
-      <translation>&amp;Clip</translation>
+      <translation>&amp;Recortar</translation>
     </message>
     <message>
       <source>Inserts a clip group in the active drawing</source>

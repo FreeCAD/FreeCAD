@@ -1386,10 +1386,6 @@ to a smoother appearance.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
-      <source>Remesh by gmsh</source>
-      <translation type="unfinished">Remesh by gmsh</translation>
-    </message>
-    <message>
       <source>Remeshing Parameter</source>
       <translation type="unfinished">Remeshing Parameter</translation>
     </message>
@@ -1428,6 +1424,10 @@ to a smoother appearance.
     <message>
       <source>Clear</source>
       <translation>Xóa</translation>
+    </message>
+    <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
     </message>
   </context>
   <context>
@@ -1842,6 +1842,10 @@ Vui lòng truy cập http://www.openscad.org/index.html để cài đặt.</tran
       <source>Annotation</source>
       <translation>Chú thích</translation>
     </message>
+    <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1860,6 +1864,10 @@ Vui lòng truy cập http://www.openscad.org/index.html để cài đặt.</tran
     <message>
       <source>Mesh tools</source>
       <translation>Công cụ lưới</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Cắt</translation>
     </message>
   </context>
 </TS>
