@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="ShapeFix_RootPy"
+      Name="ShapeFix_FixSmallSolidPy"
+      PythonName="Part.ShapeFix.FixSmallSolid"
+      Twin="ShapeFix_FixSmallSolid"
+      TwinPointer="ShapeFix_FixSmallSolid"
+      Include="ShapeFix_FixSmallSolid.hxx"
+      Namespace="Part"
+      FatherInclude="Mod/Part/App/ShapeFix/ShapeFix_RootPy.h"
+      FatherNamespace="Part"
+      Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>Fixing solids with small size</UserDocu>
+    </Documentation>
+    <Methode Name="setFixMode">
+      <Documentation>
+        <UserDocu>
+Set working mode for operator:
+- theMode = 0 use both WidthFactorThreshold and VolumeThreshold parameters
+- theMode = 1 use only WidthFactorThreshold parameter
+- theMode = 2 use only VolumeThreshold parameter
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setVolumeThreshold">
+      <Documentation>
+        <UserDocu>Set or clear volume threshold for small solids</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setWidthFactorThreshold">
+      <Documentation>
+        <UserDocu>Set or clear width factor threshold for small solids</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="remove">
+      <Documentation>
+        <UserDocu>Remove small solids from the given shape</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="merge">
+      <Documentation>
+        <UserDocu>Merge small solids in the given shape to adjacent non-small ones</UserDocu>
+      </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>
