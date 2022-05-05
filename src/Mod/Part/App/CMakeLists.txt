@@ -143,6 +143,7 @@ generate_from_xml(ShapeFix/ShapeFix_FaceConnectPy)
 generate_from_xml(ShapeFix/ShapeFix_FreeBoundsPy)
 generate_from_xml(ShapeFix/ShapeFix_ShapeTolerancePy)
 generate_from_xml(ShapeFix/ShapeFix_SplitCommonVertexPy)
+generate_from_xml(ShapeFix/ShapeFix_SplitToolPy)
 
 generate_from_xml(ShapeUpgrade/UnifySameDomainPy)
 
@@ -441,6 +442,8 @@ SET(ShapeFixPy_SRCS
     ShapeFix/ShapeFix_ShapeTolerancePyImp.cpp
     ShapeFix/ShapeFix_SplitCommonVertexPy.xml
     ShapeFix/ShapeFix_SplitCommonVertexPyImp.cpp
+    ShapeFix/ShapeFix_SplitToolPy.xml
+    ShapeFix/ShapeFix_SplitToolPyImp.cpp
 )
 
 SOURCE_GROUP("ShapeFix" FILES ${ShapeFixPy_SRCS})
