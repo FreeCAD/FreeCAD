@@ -1647,6 +1647,7 @@ Document::~Document()
     for (auto it = d->objectMap.begin(); it != d->objectMap.end(); ++it) {
         it->second->setStatus(ObjectStatus::Destroy, true);
         delete(it->second);
+        it->second = nullptr;
     }
 
     // Remark: The API of Py::Object has been changed to set whether the wrapper owns the passed
