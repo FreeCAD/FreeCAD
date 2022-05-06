@@ -985,8 +985,8 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent *)
 QString SheetTableView::toHtml() const
 {
     auto cells = sheet->getCells()->getNonEmptyCells();
-    int rowCount = 1;
-    int colCount = 1;
+    int rowCount = 0;
+    int colCount = 0;
     for (const auto& it : cells) {
         rowCount = std::max(rowCount, it.row());
         colCount = std::max(colCount, it.col());
