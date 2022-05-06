@@ -287,6 +287,7 @@ SET(PathTests_SRCS
     PathTests/TestPathDeburr.py
     PathTests/TestPathDepthParams.py
     PathTests/TestPathDressupDogbone.py
+    PathTests/TestPathDressupDogboneII.py
     PathTests/TestPathDressupHoldingTags.py
     PathTests/TestPathDrillGenerator.py
     PathTests/TestPathDrillable.py
