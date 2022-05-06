@@ -470,7 +470,7 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
         factor = 1000.0;
     }
     else if (unit == Unit::DynamicViscosity) {
-        unitString = QString::fromLatin1("kg/(m*s)");
+        unitString = QString::fromLatin1("Pa*s");
         factor = 0.001;
     }
     else if (unit == Unit::KinematicViscosity) {
