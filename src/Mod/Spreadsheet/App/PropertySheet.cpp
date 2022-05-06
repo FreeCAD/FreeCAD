@@ -152,13 +152,27 @@ bool PropertySheet::isValidAlias(const std::string &candidate)
         return false;
 }
 
-std::set<CellAddress> PropertySheet::getUsedCells() const
+std::vector<CellAddress> PropertySheet::getUsedCells() const
 {
-    std::set<CellAddress> usedSet;
+    std::vector<CellAddress> usedSet;
 
     for (std::map<CellAddress, Cell*>::const_iterator i = data.begin(); i != data.end(); ++i) {
         if (i->second->isUsed())
-            usedSet.insert(i->first);
+            usedSet.push_back(i->first);
+    }
+
+    return usedSet;
+}
+
+std::vector<CellAddress> PropertySheet::getNonEmptyCells() const
+{
+    std::vector<CellAddress> usedSet;
+
+    std::string str;
+    for (std::map<CellAddress, Cell*>::const_iterator i = data.begin(); i != data.end(); ++i) {
+        str.clear();
+        if (i->second->isUsed() && i->second->getStringContent(str) && !str.empty())
+            usedSet.push_back(i->first);
     }
 
     return usedSet;
@@ -178,7 +192,7 @@ void PropertySheet::setDirty(CellAddress address)
 void PropertySheet::setDirty()
 {
     AtomicPropertyChange signaller(*this);
-    for(auto &address : getUsedCells()) {
+    for(auto &address : getNonEmptyCells()) {
         auto cell = cellAt(address);
         std::string content;
         if(cell && cell->getStringContent(content,false)) {

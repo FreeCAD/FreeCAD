@@ -274,8 +274,8 @@ bool Sheet::exportToFile(const std::string &filename, char delimiter, char quote
     if (!file.is_open())
         return false;
 
-    std::set<CellAddress> usedCells = cells.getUsedCells();
-    std::set<CellAddress>::const_iterator i = usedCells.begin();
+    auto usedCells = cells.getNonEmptyCells();
+    auto i = usedCells.begin();
 
     while (i != usedCells.end()) {
         Property * prop = getProperty(*i);
@@ -1184,12 +1184,8 @@ int Sheet::getRowHeight(int row) const
 std::vector<std::string> Sheet::getUsedCells() const
 {
     std::vector<std::string> usedCells;
-
-    // Insert int usedSet
-    std::set<CellAddress> usedSet = cells.getUsedCells();
-
-    for (std::set<CellAddress>::const_iterator i = usedSet.begin(); i != usedSet.end(); ++i)
-        usedCells.push_back(i->toString());
+    for (const auto &addr : cells.getUsedCells())
+        usedCells.push_back(addr.toString());
 
     return usedCells;
 }
