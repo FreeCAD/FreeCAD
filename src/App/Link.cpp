@@ -476,9 +476,9 @@ void LinkBaseExtension::setOnChangeCopyObject(
 
     const char *key = flags.testFlag(OnChangeCopyOptions::ApplyAll) ? "*" : parent->getNameInDocument();
     if (external)
-        prop->setValue(key, exclude ? nullptr : "+");
+        prop->setValue(key, exclude ? "" : "+");
     else
-        prop->setValue(key, exclude ? "-" : nullptr);
+        prop->setValue(key, exclude ? "-" : "");
 }
 
 // The purpose of this function is to synchronize the mutated copy to the
