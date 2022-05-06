@@ -197,7 +197,7 @@ void Origin::OriginExtension::initExtension(ExtensionContainer* obj) {
 }
 
 bool Origin::OriginExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname,
-                                                    PyObject **, Base::Matrix4D *, bool, int) const {
+                                                    PyObject **pyobj, Base::Matrix4D *mat, bool, int depth) const {
     if (!subname || subname[0] == '\0') {
         return false;
     }
@@ -217,6 +217,9 @@ bool Origin::OriginExtension::extensionGetSubObject(DocumentObject *&ret, const 
 
     try {
         ret = obj->getOriginFeature(name.c_str());
+        if (!ret)
+            return false;
+        ret = ret->getSubObject(subname + name.size() + 1, pyobj, mat, true, depth+1);
         return true;
     }
     catch (const Base::Exception& e) {
