@@ -1080,21 +1080,19 @@ short Sheet::mustExecute(void) const
 
 void Sheet::clear(CellAddress address, bool /*all*/)
 {
-    Cell * cell = getCell(address);
-    if (!cell)
-        return;
+    if (auto cell = getCell(address)) {
+        // Remove alias, if defined
+        std::string aliasStr;
+        if (cell->getAlias(aliasStr))
+            this->removeDynamicProperty(aliasStr.c_str());
+        cells.clear(address);
+    }
+
     std::string addr = address.toString();
-    Property * prop = props.getDynamicPropertyByName(addr.c_str());
-
-    // Remove alias, if defined
-    std::string aliasStr;
-    if (cell->getAlias(aliasStr))
-        this->removeDynamicProperty(aliasStr.c_str());
-
-    cells.clear(address);
-
-    propAddress.erase(prop);
-    this->removeDynamicProperty(addr.c_str());
+    if (auto prop = props.getDynamicPropertyByName(addr.c_str())) {
+        propAddress.erase(prop);
+        this->removeDynamicProperty(addr.c_str());
+    }
 }
 
 /**
