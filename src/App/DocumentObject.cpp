@@ -693,7 +693,7 @@ void DocumentObject::setDocument(App::Document* doc)
 
 bool DocumentObject::removeDynamicProperty(const char* name)
 {
-    if (!_pDoc) 
+    if (!_pDoc || testStatus(ObjectStatus::Destroy)) 
         return false;
 
     Property* prop = getDynamicPropertyByName(name);
