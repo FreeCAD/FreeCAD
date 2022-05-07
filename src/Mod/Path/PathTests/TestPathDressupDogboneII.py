@@ -53,13 +53,19 @@ class Instruction (object):
             else:
                 self.param = param
 
+    def setPositionBegin(self, begin):
+        self.begin = begin
+
     def positionBegin(self):
         '''positionBegin() ... returns a Vector of the begin position'''
         return self.begin
 
     def positionEnd(self):
         '''positionEnd() ... returns a Vector of the end position'''
-        return FreeCAD.Vector(self.x(begin.x), self.y(begin.y), self.z(begin.z))
+        return FreeCAD.Vector(self.x(self.begin.x), self.y(self.begin.y), self.z(self.begin.z))
+
+    def isMove(self):
+        return False
 
     def x(self, default=0):
         return self.param.get('X', default)
@@ -86,6 +92,10 @@ class Instruction (object):
         '''xyEnd() ... internal convenience function'''
         return FreeCAD.Vector(self.x(self.begin.x), self.y(self.begin.y), 0)
 
+    def __repr__(self):
+        return f"{self.cmd}{self.param}"
+
+
 class MoveStraight (Instruction):
 
     def anglesOfTangents(self):
@@ -96,6 +106,9 @@ class MoveStraight (Instruction):
             return (0, 0)
         a = PathGeom.getAngle(end - begin)
         return (a, a)
+
+    def isMove(self):
+        return True
 
 class MoveArc (Instruction):
 
@@ -111,6 +124,9 @@ class MoveArc (Instruction):
         # direction of the arc
         return (normalizeAngle(s0 + self.arcDirection()), normalizeAngle(s1 + self.arcDirection()))
 
+    def isMove(self):
+        return True
+
 class MoveArcCW (MoveArc):
     def arcDirection(self):
         return -PI/2
@@ -119,30 +135,62 @@ class MoveArcCCW (MoveArc):
     def arcDirection(self):
         return PI/2
 
-def INSTR(s, c, x, y, z=None, i=None, j=None, k=None):
-    if len(s) == 1:
-        s = FreeCAD.Vector(s[0], 0, 0)
-    elif len(s) == 2:
-        s = FreeCAD.Vector(s[0], s[1], 0)
-    else:
-        s = FreeCAD.Vector(s[0], s[1], s[2])
 
-    def upd(d, l, v):
-        if not v is None:
-            d[l] = v
+class Maneuver (object):
+    '''A series of instructions and moves'''
 
-    param = {'X': x, 'Y': y}
-    upd(param, 'Z', z)
-    upd(param, 'I', i)
-    upd(param, 'J', j)
-    upd(param, 'K', k)
-    if c in CmdMoveStraight:
-        return MoveStraight(s, c, param)
-    if c in PathGeom.CmdMoveCW:
-        return MoveArcCW(s, c, param)
-    if c in PathGeom.CmdMoveCCW:
-        return MoveArcCCW(s, c, param)
-    return Instruction(s, c, param)
+    def __init__(self, begin=None, instr=None):
+        self.instr = instr if instr else []
+        self.setPositionBegin(begin if begin else FreeCAD.Vector(0, 0, 0))
+
+    def setPositionBegin(self, begin):
+        self.begin = begin
+        for i in self.instr:
+            i.setPositionBegin(begin)
+            begin = i.positionEnd()
+
+    def positionBegin(self):
+        return self.begin
+
+    def moves(self):
+        return [instr for instr in self.instr if instr.isMove()]
+
+    def __repr__(self):
+        if self.instr:
+            return '\n'.join([str(i) for i in self.instr]) + '\n'
+        return ''
+
+    @classmethod
+    def InstructionFromCommand(cls, cmd, begin=None):
+        if not begin:
+            begin = FreeCAD.Vector(0, 0, 0)
+
+        if cmd.Name in CmdMoveStraight:
+            return MoveStraight(begin, cmd.Name, cmd.Parameters)
+        if cmd.Name in PathGeom.CmdMoveCW:
+            return MoveArcCW(begin, cmd.Name, cmd.Parameters)
+        if cmd.Name in PathGeom.CmdMoveCCW:
+            return MoveArcCCW(begin, cmd.Name, cmd.Parameters)
+        return Instruction(begin, cmd.Name, cmd.Parameters)
+
+    @classmethod
+    def FromPath(cls, path, begin=None):
+        maneuver = Maneuver(begin)
+        instr = []
+        begin = maneuver.positionBegin()
+        for cmd in path.Commands:
+            i = cls.InstructionFromCommand(cmd, begin)
+            instr.append(i)
+            begin = i.positionEnd()
+        maneuver.instr = instr
+        return maneuver
+
+    @classmethod
+    def FromGCode(cls, gcode, begin=None):
+        return cls.FromPath(Path.Path(gcode), begin)
+
+def INSTR(gcode, begin=None):
+    return Maneuver.FromGCode(gcode, begin).instr[0]
 
 def G1(s, x, y):
     return INSTR(s, 'G1', x, y)
@@ -167,24 +215,60 @@ class TestDressupDogboneII(PathTestBase):
         self.assertRoughly(t0[1], t1[1])
 
     def test00(self):
+        """Verify G0 instruction construction"""
+        self.assertEqual(str(Maneuver.FromGCode('')), '')
+        self.assertEqual(len(Maneuver.FromGCode('').instr), 0)
+
+        self.assertEqual(str(Maneuver.FromGCode('G0')), 'G0{}\n')
+        self.assertEqual(str(Maneuver.FromGCode('G0X3')), "G0{'X': 3.0}\n")
+        self.assertEqual(str(Maneuver.FromGCode('G0X3Y7')), "G0{'X': 3.0, 'Y': 7.0}\n")
+        self.assertEqual(str(Maneuver.FromGCode('G0X3Y7\nG0Z0')), "G0{'X': 3.0, 'Y': 7.0}\nG0{'Z': 0.0}\n")
+        self.assertEqual(len(Maneuver.FromGCode('G0X3Y7').instr), 1)
+        self.assertEqual(len(Maneuver.FromGCode('G0X3Y7\nG0Z0').instr), 2)
+        self.assertEqual(type(Maneuver.FromGCode('G0X3Y7').instr[0]), MoveStraight)
+
+    def test01(self):
+        """Verify G1 instruction construction"""
+        self.assertEqual(str(Maneuver.FromGCode('G1')), 'G1{}\n')
+        self.assertEqual(str(Maneuver.FromGCode('G1X3')), "G1{'X': 3.0}\n")
+        self.assertEqual(str(Maneuver.FromGCode('G1X3Y7')), "G1{'X': 3.0, 'Y': 7.0}\n")
+        self.assertEqual(str(Maneuver.FromGCode('G1X3Y7\nG1Z0')), "G1{'X': 3.0, 'Y': 7.0}\nG1{'Z': 0.0}\n")
+        self.assertEqual(len(Maneuver.FromGCode('G1X3Y7').instr), 1)
+        self.assertEqual(len(Maneuver.FromGCode('G1X3Y7\nG1Z0').instr), 2)
+        self.assertEqual(type(Maneuver.FromGCode('G1X3Y7').instr[0]), MoveStraight)
+
+    def test02(self):
+        """Verify G2 instruction construction"""
+        self.assertEqual(str(Maneuver.FromGCode('G2X2Y2I1')), "G2{'I': 1.0, 'X': 2.0, 'Y': 2.0}\n")
+        self.assertEqual(len(Maneuver.FromGCode('G2X2Y2I1').instr), 1)
+        self.assertEqual(type(Maneuver.FromGCode('G2X2Y2I1').instr[0]), MoveArcCW)
+
+    def test03(self):
+        """Verify G3 instruction construction"""
+        self.assertEqual(str(Maneuver.FromGCode('G3X2Y2I1')), "G3{'I': 1.0, 'X': 2.0, 'Y': 2.0}\n")
+        self.assertEqual(len(Maneuver.FromGCode('G3X2Y2I1').instr), 1)
+        self.assertEqual(type(Maneuver.FromGCode('G3X2Y2I1').instr[0]), MoveArcCCW)
+
+
+    def test10(self):
         """Get tangents of moves."""
 
-        self.assertTangents(TAN(G1((0, 0),  0,  0)), (0, 0)) # by declaration
-        self.assertTangents(TAN(G1((0, 0),  1,  0)), (0, 0))
-        self.assertTangents(TAN(G1((0, 0), -1,  0)), (PI, PI))
-        self.assertTangents(TAN(G1((0, 0),  0,  1)), (PI/2,  PI/2))
-        self.assertTangents(TAN(G1((0, 0),  0, -1)), (-PI/2,  -PI/2))
-        self.assertTangents(TAN(G1((0, 0),  1,  1)), (PI/4,  PI/4))
-        self.assertTangents(TAN(G1((0, 0), -1,  1)), (3*PI/4,  3*PI/4))
-        self.assertTangents(TAN(G1((0, 0), -1, -1)), (-3*PI/4,  -3*PI/4))
-        self.assertTangents(TAN(G1((0, 0),  1, -1)), (-PI/4,  -PI/4))
+        self.assertTangents(TAN(INSTR('G1 X0  Y0')), (0, 0)) # by declaration
+        self.assertTangents(TAN(INSTR('G1 X1  Y0')), (0, 0))
+        self.assertTangents(TAN(INSTR('G1 X-1 Y0')), (PI, PI))
+        self.assertTangents(TAN(INSTR('G1 X0  Y1')), (PI/2,  PI/2))
+        self.assertTangents(TAN(INSTR('G1 X0  Y-1')), (-PI/2,  -PI/2))
+        self.assertTangents(TAN(INSTR('G1 X1  Y1')), (PI/4,  PI/4))
+        self.assertTangents(TAN(INSTR('G1 X-1 Y1')), (3*PI/4,  3*PI/4))
+        self.assertTangents(TAN(INSTR('G1 X-1 Y -1')), (-3*PI/4,  -3*PI/4))
+        self.assertTangents(TAN(INSTR('G1 X1  Y-1')), (-PI/4,  -PI/4))
 
-        self.assertTangents(TAN(G2((0, 0),  2,  0,  1,  0)), (PI/2, -PI/2))
-        self.assertTangents(TAN(G2((0, 0),  2,  2,  1,  1)), (3*PI/4, -PI/4))
-        self.assertTangents(TAN(G2((0, 0),  0, -2,  0, -1)), (0, -PI))
+        self.assertTangents(TAN(INSTR('G2 X2  Y0  I1 J0')), (PI/2, -PI/2))
+        self.assertTangents(TAN(INSTR('G2 X2  Y2  I1 J1')), (3*PI/4, -PI/4))
+        self.assertTangents(TAN(INSTR('G2 X0  Y-2 I0 J-1')), (0, -PI))
 
-        self.assertTangents(TAN(G3((0, 0),  2,  0,  1,  0)), (-PI/2, PI/2))
-        self.assertTangents(TAN(G3((0, 0),  2,  2,  1,  1)), (-PI/4, 3*PI/4))
-        self.assertTangents(TAN(G3((0, 0),  0, -2,  0, -1)), (PI, 0))
+        self.assertTangents(TAN(INSTR('G3 X2  Y0  I1 J0')), (-PI/2, PI/2))
+        self.assertTangents(TAN(INSTR('G3 X2  Y2  I1 J1')), (-PI/4, 3*PI/4))
+        self.assertTangents(TAN(INSTR('G3 X0  Y-2 I0 J-1')), (PI, 0))
 
 
