@@ -26,6 +26,8 @@
 # include <QDir>
 # include <QIcon>
 # include <QWidget>
+# include <QGraphicsItem>
+# include <QGraphicsObject>
 #endif
 
 #include <QMetaType>
@@ -368,7 +370,7 @@ QObject* PythonWrapper::toQObject(const Py::Object& pyobject)
 QGraphicsItem* PythonWrapper::toQGraphicsItem(PyObject* pyPtr)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-    PyTypeObject* type = getPyTypeObjectForTypeName<QObject>();
+    PyTypeObject* type = getPyTypeObjectForTypeName<QGraphicsItem>();
     if (type) {
         if (Shiboken::Object::checkType(pyPtr)) {
             SbkObject* sbkobject = reinterpret_cast<SbkObject*>(pyPtr);
@@ -381,6 +383,26 @@ QGraphicsItem* PythonWrapper::toQGraphicsItem(PyObject* pyPtr)
     //
     void* ptr = qt_getCppPointer(Py::asObject(pyPtr), "shiboken2", "getCppPointer");
     return reinterpret_cast<QGraphicsItem*>(ptr);
+#endif
+    return nullptr;
+}
+
+QGraphicsObject* PythonWrapper::toQGraphicsObject(PyObject* pyPtr)
+{
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+    PyTypeObject* type = getPyTypeObjectForTypeName<QGraphicsObject>();
+    if (type) {
+        if (Shiboken::Object::checkType(pyPtr)) {
+            SbkObject* sbkobject = reinterpret_cast<SbkObject*>(pyPtr);
+            void* cppobject = Shiboken::Object::cppPointer(sbkobject, type);
+            return reinterpret_cast<QGraphicsObject*>(cppobject);
+        }
+    }
+#else
+    // Access shiboken2/PySide2 via Python
+    //
+    void* ptr = qt_getCppPointer(Py::asObject(pyPtr), "shiboken2", "getCppPointer");
+    return reinterpret_cast<QGraphicsObject*>(ptr);
 #endif
     return nullptr;
 }
