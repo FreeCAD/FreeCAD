@@ -156,19 +156,25 @@ SET(PathScripts_post_SRCS
     PathScripts/post/__init__.py
     PathScripts/post/centroid_post.py
     PathScripts/post/comparams_post.py
-    PathScripts/post/dynapath_post.py
     PathScripts/post/dxf_post.py
+    PathScripts/post/dynapath_post.py
     PathScripts/post/example_pre.py
+    PathScripts/post/fablin_post.py
+    PathScripts/post/fanuc_post.py
     PathScripts/post/gcode_pre.py
     PathScripts/post/grbl_post.py
+    PathScripts/post/heidenhain_post.py
     PathScripts/post/jtech_post.py
+    PathScripts/post/KineticNCBeamicon2_post.py
     PathScripts/post/linuxcnc_post.py
     PathScripts/post/mach3_mach4_post.py
+    PathScripts/post/marlin_post.py
     PathScripts/post/nccad_post.py
     PathScripts/post/opensbp_post.py
     PathScripts/post/opensbp_pre.py
     PathScripts/post/philips_post.py
     PathScripts/post/rml_post.py
+    PathScripts/post/rrf_post.py
     PathScripts/post/slic3r_pre.py
     PathScripts/post/smoothie_post.py
     PathScripts/post/uccnc_post.py

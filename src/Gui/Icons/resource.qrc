@@ -259,4 +259,7 @@
     <qresource prefix="/icons/FreeCAD-default/scalable">
         <file>Std_ViewScreenShot.svg</file>
     </qresource>
+    <qresource prefix="/doc">
+        <file alias="CONTRIBUTORS">../../Doc/CONTRIBUTORS</file>
+    </qresource>
 </RCC>

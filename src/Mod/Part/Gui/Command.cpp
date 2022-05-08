@@ -277,7 +277,8 @@ bool hasShapesInSelection()
     bool hasShapes = false;
     std::vector<App::DocumentObject*> docobjs = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
     for (std::vector<App::DocumentObject*>::iterator it = docobjs.begin(); it != docobjs.end(); ++it) {
-        if (!Part::Feature::getTopoShape(*it).isNull()) {
+        // Only check for the existence of a shape but don't perform a transformation
+        if (!Part::Feature::getTopoShape(*it, nullptr, false, nullptr, nullptr, true, false, false).isNull()) {
             hasShapes = true;
             break;
         }
@@ -1302,7 +1303,7 @@ void CmdPartReverseShape::activated(int iMsg)
 
 bool CmdPartReverseShape::isActive(void)
 {
-    return PartGui::getShapesFromSelection().size() > 0;
+    return PartGui::hasShapesInSelection();
 }
 
 //===========================================================================

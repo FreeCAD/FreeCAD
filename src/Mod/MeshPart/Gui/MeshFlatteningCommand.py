@@ -117,3 +117,6 @@ try:
 except ImportError:
     App.Console.PrintLog("flatmesh-commands are not available\n")
     App.Console.PrintLog("flatmesh needs pybind11 as build dependency\n")
+except AttributeError:
+    # Can happen when running FreeCAD in headless mode
+    pass

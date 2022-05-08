@@ -1580,9 +1580,15 @@ class ObjectSurface(PathOp.ObjectOp):
                     for i in range(0, lenAdjPrts):
                         prt = ADJPRTS[i]
                         lenPrt = len(prt)
-                        if prt == "BRK" and prtsHasCmds is True:
-                            nxtStart = ADJPRTS[i + 1][0]
-                            prtsCmds.append(Path.Command("N (--Break)", {}))
+                        if prt == "BRK" and prtsHasCmds:
+                            if i + 1 < lenAdjPrts:
+                                nxtStart = ADJPRTS[i + 1][0]
+                                prtsCmds.append(Path.Command("N (--Break)", {}))
+                            else:
+                                # Transition straight up to Safe Height if no more parts
+                                nxtStart = FreeCAD.Vector(
+                                    last.x, last.y, obj.SafeHeight.Value
+                                )
                             prtsCmds.extend(
                                 self._stepTransitionCmds(
                                     obj, last, nxtStart, safePDC, tolrnc
@@ -2097,7 +2103,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 hlim = bb.XMax
 
         # Compute max radius of stock, as it rotates, and rotational clearance & safe heights
-        self.bbRadius = math.sqrt(hlim**2 + vlim**2)
+        self.bbRadius = math.sqrt(hlim ** 2 + vlim ** 2)
         self.clearHeight = self.bbRadius + JOB.SetupSheet.ClearanceHeightOffset.Value
         self.safeHeight = self.bbRadius + JOB.SetupSheet.ClearanceHeightOffset.Value
 

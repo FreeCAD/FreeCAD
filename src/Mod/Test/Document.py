@@ -363,6 +363,44 @@ class DocumentBasicCases(unittest.TestCase):
     o2.Placement = FreeCAD.Placement()
     self.assertEqual(o1.Link, o3)
 
+  def testProp_NonePropertyLink(self):
+    obj1 = self.Doc.addObject("App::FeaturePython", "Obj1")
+    obj2 = self.Doc.addObject("App::FeaturePython", "Obj2")
+    obj1.addProperty("App::PropertyLink", "Link", "Base", "Link to another feature", FreeCAD.PropertyType.Prop_None, False, False)
+    obj1.Link = obj2
+    self.assertEqual(obj1.MustExecute, True)
+
+  def testProp_OutputPropertyLink(self):
+    obj1 = self.Doc.addObject("App::FeaturePython", "Obj1")
+    obj2 = self.Doc.addObject("App::FeaturePython", "Obj2")
+    obj1.addProperty("App::PropertyLink", "Link", "Base", "Link to another feature", FreeCAD.PropertyType.Prop_Output, False, False)
+    obj1.Link = obj2
+    self.assertEqual(obj1.MustExecute, False)
+
+  def testAttributeOfDynamicProperty(self):
+    obj = self.Doc.addObject("App::FeaturePython", "Obj")
+    # Prop_NoPersist is the enum with the highest value
+    max_value = FreeCAD.PropertyType.Prop_NoPersist
+    list_of_types = []
+    for i in range(0, max_value + 1):
+      obj.addProperty("App::PropertyString", "String" + str(i), "", "", i)
+      list_of_types.append(obj.getTypeOfProperty("String" + str(i)))
+
+    # saving and restoring
+    SaveName = tempfile.gettempdir() + os.sep + "CreateTest.FCStd"
+    self.Doc.saveAs(SaveName)
+    FreeCAD.closeDocument("CreateTest")
+    self.Doc = FreeCAD.open(SaveName)
+
+    obj = self.Doc.ActiveObject
+    for i in range(0, max_value):
+      types = obj.getTypeOfProperty("String" + str(i))
+      self.assertEqual(list_of_types[i], types)
+
+    # A property with flag Prop_NoPersist won't be saved to the file
+    with self.assertRaises(AttributeError):
+      obj.getTypeOfProperty("String" + str(max_value))
+
   def testNotification_Issue2902Part2(self):
     o = self.Doc.addObject("App::FeatureTest","test")
 

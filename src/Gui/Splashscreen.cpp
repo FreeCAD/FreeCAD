@@ -383,8 +383,7 @@ public:
 
 void AboutDialog::showCredits()
 {
-    QString creditsFileURL = QString::fromLatin1("%1/CONTRIBUTORS")
-        .arg(QString::fromUtf8(App::Application::getHelpDir().c_str()));
+    auto creditsFileURL = QLatin1String(":/doc/CONTRIBUTORS");
     QFile creditsFile(creditsFileURL);
 
     if (!creditsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {

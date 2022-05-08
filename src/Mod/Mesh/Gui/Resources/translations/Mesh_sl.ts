@@ -1386,10 +1386,6 @@ s Phongovim senčenjem doseže gladkejši videz.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
-      <source>Remesh by gmsh</source>
-      <translation>Preploskovljenje z Gmsh-jem</translation>
-    </message>
-    <message>
       <source>Remeshing Parameter</source>
       <translation>Določilka preploskovljenja</translation>
     </message>
@@ -1428,6 +1424,10 @@ s Phongovim senčenjem doseže gladkejši videz.
     <message>
       <source>Clear</source>
       <translation>Počisti</translation>
+    </message>
+    <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
     </message>
   </context>
   <context>
@@ -1842,6 +1842,10 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
       <source>Annotation</source>
       <translation>Opis</translation>
     </message>
+    <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1860,6 +1864,10 @@ Za namestitev obiščite http://www.openscad.org/index.html.</translation>
     <message>
       <source>Mesh tools</source>
       <translation>Orodja za ploskovja</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Prerez</translation>
     </message>
   </context>
 </TS>

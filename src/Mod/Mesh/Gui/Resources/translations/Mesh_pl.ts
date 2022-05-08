@@ -1386,10 +1386,6 @@ do gładszego wyglądu.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
-      <source>Remesh by gmsh</source>
-      <translation>Ponów tworzenie siatki przez Gmsh</translation>
-    </message>
-    <message>
       <source>Remeshing Parameter</source>
       <translation>Parametr ponownego tworzenia siatki</translation>
     </message>
@@ -1428,6 +1424,10 @@ do gładszego wyglądu.
     <message>
       <source>Clear</source>
       <translation>Wyczyść</translation>
+    </message>
+    <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
     </message>
   </context>
   <context>
@@ -1842,6 +1842,10 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
       <source>Annotation</source>
       <translation>Adnotacja</translation>
     </message>
+    <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1860,6 +1864,10 @@ Odwiedź http://www.openscad.org/index.html żeby go zainstalować.</translation
     <message>
       <source>Mesh tools</source>
       <translation>Narzędzia siatki</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Cięcie</translation>
     </message>
   </context>
 </TS>

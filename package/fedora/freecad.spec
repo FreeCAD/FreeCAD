@@ -341,5 +341,4 @@ fi
 
 %files data
 %{_datadir}/%{name}/
-%{_docdir}/%{name}/CONTRIBUTORS
 %{_docdir}/%{name}/LICENSE.html

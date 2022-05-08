@@ -86,13 +86,13 @@
       <source>Base</source>
       <translation>Основа</translation>
     </message>
+    <message>
+      <source>Enum</source>
+      <translation type="unfinished">Enum</translation>
+    </message>
   </context>
   <context>
     <name>CmdTestConsoleOutput</name>
-    <message>
-      <source>Standard-Test</source>
-      <translation>Стандартний тест</translation>
-    </message>
     <message>
       <source>Test console output</source>
       <translation>Перевірка виводу консолі</translation>
@@ -101,20 +101,12 @@
   <context>
     <name>CmdViewMeasureClearAll</name>
     <message>
-      <source>Measure</source>
-      <translation>Вимірювання</translation>
-    </message>
-    <message>
       <source>Clear measurement</source>
       <translation>Очистити результат вимірювання</translation>
     </message>
   </context>
   <context>
     <name>CmdViewMeasureToggleAll</name>
-    <message>
-      <source>Measure</source>
-      <translation>Вимірювання</translation>
-    </message>
     <message>
       <source>Toggle measurement</source>
       <translation>Перемкнути вимірювання</translation>
@@ -193,6 +185,73 @@
     <message>
       <source>Measure distance</source>
       <translation>Виміряти відстань</translation>
+    </message>
+    <message>
+      <source>Toggle array elements</source>
+      <translation type="unfinished">Toggle array elements</translation>
+    </message>
+  </context>
+  <context>
+    <name>CommandGroup</name>
+    <message>
+      <source>File</source>
+      <translation>Файл</translation>
+    </message>
+    <message>
+      <source>Edit</source>
+      <translation>Правка</translation>
+    </message>
+    <message>
+      <source>Help</source>
+      <translation>Довідка</translation>
+    </message>
+    <message>
+      <source>Link</source>
+      <translation>Посилання</translation>
+    </message>
+    <message>
+      <source>Tools</source>
+      <translation>Інструменти</translation>
+    </message>
+    <message>
+      <source>View</source>
+      <translation>Перегляд</translation>
+    </message>
+    <message>
+      <source>Window</source>
+      <translation>Вікно</translation>
+    </message>
+    <message>
+      <source>Standard</source>
+      <translation>Стандартно</translation>
+    </message>
+    <message>
+      <source>Macros</source>
+      <translation>Макроси</translation>
+    </message>
+    <message>
+      <source>Macro</source>
+      <translation>Макрос</translation>
+    </message>
+    <message>
+      <source>Structure</source>
+      <translation>Структура</translation>
+    </message>
+    <message>
+      <source>Standard-Test</source>
+      <translation>Стандартний тест</translation>
+    </message>
+    <message>
+      <source>Standard-View</source>
+      <translation>Стандартні вигляди</translation>
+    </message>
+    <message>
+      <source>TreeView</source>
+      <translation>У вигляді дерева</translation>
+    </message>
+    <message>
+      <source>Measure</source>
+      <translation>Вимірювання</translation>
     </message>
   </context>
   <context>
@@ -312,6 +371,10 @@
       <source>none</source>
       <translation>немає</translation>
     </message>
+    <message>
+      <source>Press a keyboard shortcut</source>
+      <translation type="unfinished">Press a keyboard shortcut</translation>
+    </message>
   </context>
   <context>
     <name>Gui::ActionSelector</name>
@@ -410,13 +473,6 @@
       <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
       <translation>Прокрутіть середню кнопку мишки або клікніть і рухайте мишку вверх або вниз утримуючи нажатою середню кнопку</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui::Command</name>
-    <message>
-      <source>Standard</source>
-      <translation>Стандартно</translation>
     </message>
   </context>
   <context>
@@ -529,12 +585,31 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <source>Individuals</source>
       <extracomment>Header for the list of individual people in the Credits list.</extracomment>
-      <translation type="unfinished">Individuals</translation>
+      <translation>Персони</translation>
     </message>
     <message>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
       <translation>Організації</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::ApplicationCache</name>
+    <message>
+      <source>Cache directory</source>
+      <translation type="unfinished">Cache directory</translation>
+    </message>
+    <message>
+      <source>The cache directory %1 exceeds the size of %2.</source>
+      <translation type="unfinished">The cache directory %1 exceeds the size of %2.</translation>
+    </message>
+    <message>
+      <source>Do you want to clear it now?</source>
+      <translation type="unfinished">Do you want to clear it now?</translation>
+    </message>
+    <message>
+      <source>Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</source>
+      <translation type="unfinished">Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</translation>
     </message>
   </context>
   <context>
@@ -619,7 +694,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>View</source>
-      <translation>Вигляд</translation>
+      <translation>Перегляд</translation>
     </message>
     <message>
       <source>Adjust to view direction</source>
@@ -754,7 +829,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
     <message>
       <source>Prefix group name</source>
-      <translation type="unfinished">Prefix group name</translation>
+      <translation>Префікс імені групи</translation>
     </message>
   </context>
   <context>
@@ -808,6 +883,32 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source>Icon folders...</source>
       <translation>Папки з піктограмами...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCreateNewPreferencePack</name>
+    <message>
+      <source>Create New Preference Pack</source>
+      <translation type="unfinished">Create New Preference Pack</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>Назва</translation>
+    </message>
+    <message>
+      <source>Property group templates</source>
+      <translation type="unfinished">Property group templates</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCreateNewPreferencePackImp</name>
+    <message>
+      <source>Pack already exists</source>
+      <translation type="unfinished">Pack already exists</translation>
+    </message>
+    <message>
+      <source>A preference pack with that name already exists. Do you want to overwrite it?</source>
+      <translation type="unfinished">A preference pack with that name already exists. Do you want to overwrite it?</translation>
     </message>
   </context>
   <context>
@@ -874,14 +975,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source>Macros</source>
       <translation>Макроси</translation>
-    </message>
-    <message>
-      <source>No macro</source>
-      <translation>Без макросів</translation>
-    </message>
-    <message>
-      <source>No macros found.</source>
-      <translation>Макросів не знайдено.</translation>
     </message>
     <message>
       <source>Macro not found</source>
@@ -1443,6 +1536,14 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <source>Code lines will be numbered</source>
       <translation>Рядки коду буде пронумеровано</translation>
     </message>
+    <message>
+      <source>The cursor shape will be a block</source>
+      <translation type="unfinished">The cursor shape will be a block</translation>
+    </message>
+    <message>
+      <source>Enable block cursor</source>
+      <translation type="unfinished">Enable block cursor</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgGeneral</name>
@@ -1491,14 +1592,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>Таблиця стилів:</translation>
     </message>
     <message>
-      <source>Python console</source>
-      <translation>Консоль python</translation>
-    </message>
-    <message>
-      <source>Enable word wrap</source>
-      <translation>Увімкнути перенос слова</translation>
-    </message>
-    <message>
       <source>Language of the application's user interface</source>
       <translation>Мова інтерфейсу користувача програми</translation>
     </message>
@@ -1519,8 +1612,8 @@ See the FreeCAD Wiki for details about the image.</source>
     <message>
       <source>Choose your preference for toolbar icon size. You can adjust
 this according to your screen size or personal taste</source>
-      <translation type="unfinished">Choose your preference for toolbar icon size. You can adjust
-this according to your screen size or personal taste</translation>
+      <translation>Оберіть ваші пераметри для розміру значка панелі інструментів. Ви можете налаштувати це
+у відповідності до розміру екрану або на власний смак</translation>
     </message>
     <message>
       <source>Tree view mode:</source>
@@ -1542,21 +1635,75 @@ this according to your screen size or personal taste</translation>
       <source>A Splash screen is a small loading window that is shown
 when FreeCAD is launching. If this option is checked, FreeCAD will
 display the splash screen</source>
-      <translation type="unfinished">A Splash screen is a small loading window that is shown
-when FreeCAD is launching. If this option is checked, FreeCAD will
-display the splash screen</translation>
+      <translation>Екран, що спливає - це маленьке вікно, яке показується
+при запуску FreeCAD. Якщо ця позначено ця опція відмічена, то FreeCAD буде
+показувати екран, що спливає</translation>
     </message>
     <message>
       <source>Choose which workbench will be activated and shown
 after FreeCAD launches</source>
-      <translation type="unfinished">Choose which workbench will be activated and shown
-after FreeCAD launches</translation>
+      <translation>Оберіть, яке робоче середовище буде активовано і показано
+після запуску FreeCAD</translation>
     </message>
     <message>
-      <source>Words will be wrapped when they exceed available
-horizontal space in Python console</source>
-      <translation type="unfinished">Words will be wrapped when they exceed available
-horizontal space in Python console</translation>
+      <source>Number format:</source>
+      <translation type="unfinished">Number format:</translation>
+    </message>
+    <message>
+      <source>Operating system</source>
+      <translation>Операційна система</translation>
+    </message>
+    <message>
+      <source>Selected language</source>
+      <translation type="unfinished">Selected language</translation>
+    </message>
+    <message>
+      <source>C/POSIX</source>
+      <translation type="unfinished">C/POSIX</translation>
+    </message>
+    <message>
+      <source>If enabled, numerical keypad decimal separator will be substituted with locale separator</source>
+      <translation type="unfinished">If enabled, numerical keypad decimal separator will be substituted with locale separator</translation>
+    </message>
+    <message>
+      <source>Substitute decimal separator (needs restart)</source>
+      <translation type="unfinished">Substitute decimal separator (needs restart)</translation>
+    </message>
+    <message>
+      <source>Preference packs</source>
+      <translation type="unfinished">Preference packs</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>Назва</translation>
+    </message>
+    <message>
+      <source>Type</source>
+      <translation>Тип</translation>
+    </message>
+    <message>
+      <source>Load</source>
+      <translation>Завантажити</translation>
+    </message>
+    <message>
+      <source>Save new...</source>
+      <translation type="unfinished">Save new...</translation>
+    </message>
+    <message>
+      <source>Manage...</source>
+      <translation type="unfinished">Manage...</translation>
+    </message>
+    <message>
+      <source>Revert...</source>
+      <translation type="unfinished">Revert...</translation>
+    </message>
+    <message>
+      <source>The text cursor will be blinking</source>
+      <translation type="unfinished">The text cursor will be blinking</translation>
+    </message>
+    <message>
+      <source>Enable cursor blinking</source>
+      <translation type="unfinished">Enable cursor blinking</translation>
     </message>
   </context>
   <context>
@@ -1587,15 +1734,35 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>Combo View</source>
-      <translation>Комбінований вигляд</translation>
+      <translation>Комбінований Перегляд</translation>
     </message>
     <message>
       <source>TreeView and PropertyView</source>
-      <translation type="unfinished">TreeView and PropertyView</translation>
+      <translation>TreeView та PropertyView</translation>
     </message>
     <message>
       <source>Both</source>
       <translation>Обидві</translation>
+    </message>
+    <message>
+      <source>Manage preference packs</source>
+      <translation type="unfinished">Manage preference packs</translation>
+    </message>
+    <message>
+      <source>Preference Pack Name</source>
+      <translation type="unfinished">Preference Pack Name</translation>
+    </message>
+    <message>
+      <source>Tags</source>
+      <translation>Мітки</translation>
+    </message>
+    <message>
+      <source>Apply</source>
+      <translation>Застосувати</translation>
+    </message>
+    <message>
+      <source>Apply the %1 preference pack</source>
+      <translation type="unfinished">Apply the %1 preference pack</translation>
     </message>
   </context>
   <context>
@@ -1667,12 +1834,20 @@ horizontal space in Python console</translation>
       <translation>Створити копію</translation>
     </message>
     <message>
-      <source>Addons...</source>
-      <translation>Додатки...</translation>
-    </message>
-    <message>
       <source>Toolbar</source>
       <translation>Панель інструментів</translation>
+    </message>
+    <message>
+      <source>Launch a guide on how to set up a macro in a custom global toolbar.</source>
+      <translation type="unfinished">Launch a guide on how to set up a macro in a custom global toolbar.</translation>
+    </message>
+    <message>
+      <source>Open Addon Manager where macros created by the community and other addons can be downloaded.</source>
+      <translation type="unfinished">Open Addon Manager where macros created by the community and other addons can be downloaded.</translation>
+    </message>
+    <message>
+      <source>Download</source>
+      <translation>Завантажити</translation>
     </message>
   </context>
   <context>
@@ -2055,6 +2230,48 @@ Specify another directory, please.</source>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgPreferencePackManagement</name>
+    <message>
+      <source>Manage Preference Packs</source>
+      <translation type="unfinished">Manage Preference Packs</translation>
+    </message>
+    <message>
+      <source>Open Addon Manager...</source>
+      <translation type="unfinished">Open Addon Manager...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgPreferencePackManagementImp</name>
+    <message>
+      <source>User-Saved Preference Packs</source>
+      <translation type="unfinished">User-Saved Preference Packs</translation>
+    </message>
+    <message>
+      <source>Built-In Preference Packs</source>
+      <translation type="unfinished">Built-In Preference Packs</translation>
+    </message>
+    <message>
+      <source>Toggle visibility of built-in preference pack '%1'</source>
+      <translation type="unfinished">Toggle visibility of built-in preference pack '%1'</translation>
+    </message>
+    <message>
+      <source>Delete user-saved preference pack '%1'</source>
+      <translation type="unfinished">Delete user-saved preference pack '%1'</translation>
+    </message>
+    <message>
+      <source>Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</source>
+      <translation type="unfinished">Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</translation>
+    </message>
+    <message>
+      <source>Delete saved preference pack?</source>
+      <translation type="unfinished">Delete saved preference pack?</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to delete the preference pack named '%1'? This cannot be undone.</source>
+      <translation type="unfinished">Are you sure you want to delete the preference pack named '%1'? This cannot be undone.</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgPreferences</name>
     <message>
       <source>Preferences</source>
@@ -2396,6 +2613,28 @@ from Python console to Report view panel</source>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgRevertToBackupConfig</name>
+    <message>
+      <source>Revert to Backup Config</source>
+      <translation type="unfinished">Revert to Backup Config</translation>
+    </message>
+    <message>
+      <source>WARNING: this process will undo any preference changes made since the specified date, and will also reset your Recent files and Macros to their state on that date.</source>
+      <translation type="unfinished">WARNING: this process will undo any preference changes made since the specified date, and will also reset your Recent files and Macros to their state on that date.</translation>
+    </message>
+    <message>
+      <source>Available backup files:</source>
+      <translation type="unfinished">Available backup files:</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgRevertToBackupConfigImp</name>
+    <message>
+      <source>No selection in dialog, cannot load backup file</source>
+      <translation type="unfinished">No selection in dialog, cannot load backup file</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgRunExternal</name>
     <message>
       <source>Running external program</source>
@@ -2672,6 +2911,20 @@ bounding box size of the 3D object that is currently displayed.</source>
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</translation>
     </message>
+    <message>
+      <source>Relative size :   </source>
+      <translation type="unfinished">Relative size :   </translation>
+    </message>
+    <message>
+      <source>Size of main coordinate system representation
+in the corner -- in % of height/width of viewport</source>
+      <translation type="unfinished">Size of main coordinate system representation
+in the corner -- in % of height/width of viewport</translation>
+    </message>
+    <message>
+      <source>%</source>
+      <translation>%</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -2706,6 +2959,69 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <source>15px</source>
       <translation>15px</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsCacheDirectory</name>
+    <message>
+      <source>Cache</source>
+      <translation type="unfinished">Cache</translation>
+    </message>
+    <message>
+      <source>Cache directory</source>
+      <translation type="unfinished">Cache directory</translation>
+    </message>
+    <message>
+      <source>Location:</source>
+      <translation type="unfinished">Location:</translation>
+    </message>
+    <message>
+      <source>Check periodically at program start:</source>
+      <translation type="unfinished">Check periodically at program start:</translation>
+    </message>
+    <message>
+      <source>Always</source>
+      <translation type="unfinished">Always</translation>
+    </message>
+    <message>
+      <source>Daily</source>
+      <translation type="unfinished">Daily</translation>
+    </message>
+    <message>
+      <source>Weekly</source>
+      <translation type="unfinished">Weekly</translation>
+    </message>
+    <message>
+      <source>Monthly</source>
+      <translation type="unfinished">Monthly</translation>
+    </message>
+    <message>
+      <source>Yearly</source>
+      <translation type="unfinished">Yearly</translation>
+    </message>
+    <message>
+      <source>Never</source>
+      <translation type="unfinished">Never</translation>
+    </message>
+    <message>
+      <source>Cache size limit:</source>
+      <translation type="unfinished">Cache size limit:</translation>
+    </message>
+    <message>
+      <source>Check now...</source>
+      <translation type="unfinished">Check now...</translation>
+    </message>
+    <message>
+      <source>Notify the user if the cache size exceeds the specified limit</source>
+      <translation type="unfinished">Notify the user if the cache size exceeds the specified limit</translation>
+    </message>
+    <message>
+      <source>Unknown</source>
+      <translation>Невідомо</translation>
+    </message>
+    <message>
+      <source>Current cache size: %1</source>
+      <translation type="unfinished">Current cache size: %1</translation>
     </message>
   </context>
   <context>
@@ -2745,10 +3061,6 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <source>Alt+R</source>
       <translation>Alt+R</translation>
-    </message>
-    <message>
-      <source>Out &amp;invisible</source>
-      <translation>З прозорого</translation>
     </message>
     <message>
       <source>Alt+I</source>
@@ -2801,6 +3113,40 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <source>Color-gradient settings</source>
       <translation>Налаштування кольору градієнта</translation>
+    </message>
+    <message>
+      <source>Color gradient is used with its full color range</source>
+      <translation type="unfinished">Color gradient is used with its full color range</translation>
+    </message>
+    <message>
+      <source>Color gradient starts from the zero value</source>
+      <translation type="unfinished">Color gradient starts from the zero value</translation>
+    </message>
+    <message>
+      <source>Data outside the specified min-max range
+will be displayed in gray</source>
+      <translation type="unfinished">Data outside the specified min-max range
+will be displayed in gray</translation>
+    </message>
+    <message>
+      <source>Data outside the specified min-max range
+will be displayed with transparency</source>
+      <translation type="unfinished">Data outside the specified min-max range
+will be displayed with transparency</translation>
+    </message>
+    <message>
+      <source>Out &amp;transparent</source>
+      <translation type="unfinished">Out &amp;transparent</translation>
+    </message>
+    <message>
+      <source>Number of labels besides the color bar</source>
+      <translation type="unfinished">Number of labels besides the color bar</translation>
+    </message>
+    <message>
+      <source>Number of decimals for labels
+besides the color bar</source>
+      <translation type="unfinished">Number of decimals for labels
+besides the color bar</translation>
     </message>
   </context>
   <context>
@@ -3307,7 +3653,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     </message>
     <message>
       <source>Available Workbenches</source>
-      <translation type="unfinished">Available Workbenches</translation>
+      <translation>Доступні робочі середовища</translation>
     </message>
   </context>
   <context>
@@ -3521,10 +3867,6 @@ Turntable: the part will be rotated around the z-axis.</translation>
       <translation>Трекбол</translation>
     </message>
     <message>
-      <source>New document scale</source>
-      <translation>Масштаб нового документа</translation>
-    </message>
-    <message>
       <source>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</source>
       <translation type="unfinished">Sets camera zoom for new documents.
@@ -3663,6 +4005,47 @@ Mouse tilting is not disabled by this setting.</translation>
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
       <translation type="unfinished">How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+    </message>
+    <message>
+      <source>Camera zoom</source>
+      <translation type="unfinished">Camera zoom</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsPythonConsole</name>
+    <message>
+      <source>Python console</source>
+      <translation>Консоль python</translation>
+    </message>
+    <message>
+      <source>Settings</source>
+      <translation>Параметри</translation>
+    </message>
+    <message>
+      <source>Words will be wrapped when they exceed available
+horizontal space in Python console</source>
+      <translation type="unfinished">Words will be wrapped when they exceed available
+horizontal space in Python console</translation>
+    </message>
+    <message>
+      <source>Enable word wrap</source>
+      <translation>Увімкнути перенос слова</translation>
+    </message>
+    <message>
+      <source>The cursor shape will be a block</source>
+      <translation type="unfinished">The cursor shape will be a block</translation>
+    </message>
+    <message>
+      <source>Enable block cursor</source>
+      <translation type="unfinished">Enable block cursor</translation>
+    </message>
+    <message>
+      <source>Saves Python history across sessions</source>
+      <translation type="unfinished">Saves Python history across sessions</translation>
+    </message>
+    <message>
+      <source>Save history</source>
+      <translation>Зберегти історію</translation>
     </message>
   </context>
   <context>
@@ -3932,12 +4315,6 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
       <translation>Результат</translation>
     </message>
     <message>
-      <source>List of last used calculations 
-To add a calculation press Return in the value input field</source>
-      <translation type="unfinished">List of last used calculations 
-To add a calculation press Return in the value input field</translation>
-    </message>
-    <message>
       <source>Quantity</source>
       <translation>Кількість</translation>
     </message>
@@ -3970,6 +4347,12 @@ The preference system is the one set in the general preferences.</translation>
     <message>
       <source>Copy the result into the clipboard</source>
       <translation>Скопіювати результат в буфер обміну</translation>
+    </message>
+    <message>
+      <source>List of last used calculations.
+To add a calculation press Return in the value input field</source>
+      <translation type="unfinished">List of last used calculations.
+To add a calculation press Return in the value input field</translation>
     </message>
   </context>
   <context>
@@ -4120,10 +4503,6 @@ The preference system is the one set in the general preferences.</translation>
       <translation>Ви дійсно бажаєте видалити всі тимчасові каталоги?</translation>
     </message>
     <message>
-      <source>Finished</source>
-      <translation>Завершено</translation>
-    </message>
-    <message>
       <source>Transient directories deleted.</source>
       <translation>Тимчасові каталоги видалені.</translation>
     </message>
@@ -4138,6 +4517,10 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
       <translation>При видаленні всіх тимчасових каталогів, ви не зможете відновити після цього будь-які файли.</translation>
+    </message>
+    <message>
+      <source>Transient deleted</source>
+      <translation type="unfinished">Transient deleted</translation>
     </message>
   </context>
   <context>
@@ -4668,32 +5051,12 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Вибрані об'єкти містять інші залежності. Будь ласка, виберіть, які об'єкти експортувати. Всі залежності вибираються автоматично за замовчуванням.</translation>
     </message>
     <message>
-      <source>Dependency</source>
-      <translation>Залежність</translation>
-    </message>
-    <message>
       <source>Document</source>
       <translation>Документ</translation>
     </message>
     <message>
       <source>Name</source>
       <translation>Назва</translation>
-    </message>
-    <message>
-      <source>State</source>
-      <translation>Стан</translation>
-    </message>
-    <message>
-      <source>Hierarchy</source>
-      <translation>Ієрархія</translation>
-    </message>
-    <message>
-      <source>Selected</source>
-      <translation>Вибрано</translation>
-    </message>
-    <message>
-      <source>Partial</source>
-      <translation>Частково</translation>
     </message>
     <message>
       <source>&amp;Use Original Selections</source>
@@ -4704,6 +5067,26 @@ The 'Status' column shows whether the document could be recovered.</source>
 originally selected prior to opening this dialog</source>
       <translation type="unfinished">Ignore dependencies and proceed with objects
 originally selected prior to opening this dialog</translation>
+    </message>
+    <message>
+      <source>Auto select depending objects</source>
+      <translation type="unfinished">Auto select depending objects</translation>
+    </message>
+    <message>
+      <source>Depending on</source>
+      <translation type="unfinished">Depending on</translation>
+    </message>
+    <message>
+      <source>Depended by</source>
+      <translation type="unfinished">Depended by</translation>
+    </message>
+    <message>
+      <source>Selections</source>
+      <translation>Виділення</translation>
+    </message>
+    <message>
+      <source>All</source>
+      <translation>Всі</translation>
     </message>
   </context>
   <context>
@@ -4725,7 +5108,7 @@ originally selected prior to opening this dialog</translation>
     <name>Gui::DockWnd::ComboView</name>
     <message>
       <source>Combo View</source>
-      <translation>Комбінований вигляд</translation>
+      <translation>Комбінований Перегляд</translation>
     </message>
     <message>
       <source>Model</source>
@@ -4798,8 +5181,8 @@ originally selected prior to opening this dialog</translation>
       <translation>Помилки</translation>
     </message>
     <message>
-      <source>Show report view on</source>
-      <translation>Показати вид звіт в</translation>
+      <source>Show output window on</source>
+      <translation type="unfinished">Show output window on</translation>
     </message>
   </context>
   <context>
@@ -5246,6 +5629,18 @@ Do you want to save the document now?</source>
       <translation>Щоб прив'язати зовнішні об'єкти, документ повинен бути збережений хоча б один раз.
 Зберегти документ зараз?</translation>
     </message>
+    <message>
+      <source>Help addon needed!</source>
+      <translation type="unfinished">Help addon needed!</translation>
+    </message>
+    <message>
+      <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
+      <translation type="unfinished">The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</translation>
+    </message>
+    <message>
+      <source>Open Addon Manager</source>
+      <translation type="unfinished">Open Addon Manager</translation>
+    </message>
   </context>
   <context>
     <name>Gui::ManualAlignment</name>
@@ -5353,6 +5748,13 @@ How do you want to proceed?</source>
     </message>
   </context>
   <context>
+    <name>Gui::ModifierLineEdit</name>
+    <message>
+      <source>Press modifier keys</source>
+      <translation type="unfinished">Press modifier keys</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::NetworkRetriever</name>
     <message>
       <source>Download started...</source>
@@ -5376,6 +5778,25 @@ How do you want to proceed?</source>
     <message>
       <source>Press CTRL and left mouse button</source>
       <translation>Натисніть CTRL та ліву кнопку миші</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::OpenSCADNavigationStyle</name>
+    <message>
+      <source>Press left mouse button</source>
+      <translation>Натиснути ліву кнопку миші</translation>
+    </message>
+    <message>
+      <source>Press right mouse button and move mouse</source>
+      <translation type="unfinished">Press right mouse button and move mouse</translation>
+    </message>
+    <message>
+      <source>Press left mouse button and move mouse</source>
+      <translation type="unfinished">Press left mouse button and move mouse</translation>
+    </message>
+    <message>
+      <source>Press middle mouse button or SHIFT and right mouse button</source>
+      <translation type="unfinished">Press middle mouse button or SHIFT and right mouse button</translation>
     </message>
   </context>
   <context>
@@ -5471,6 +5892,14 @@ How do you want to proceed?</source>
       <source>Auto expand</source>
       <translation>Розгортати автоматично</translation>
     </message>
+    <message>
+      <source>Rename property group</source>
+      <translation type="unfinished">Rename property group</translation>
+    </message>
+    <message>
+      <source>Group name:</source>
+      <translation type="unfinished">Group name:</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
@@ -5487,7 +5916,7 @@ How do you want to proceed?</source>
     <name>Gui::PropertyView</name>
     <message>
       <source>View</source>
-      <translation>Вигляд</translation>
+      <translation>Перегляд</translation>
     </message>
     <message>
       <source>Data</source>
@@ -5627,6 +6056,10 @@ Do you want to exit without saving your data?</source>
       <source>The file '%1' cannot be opened.</source>
       <translation>Файл '%1' не може бути відкритий.</translation>
     </message>
+    <message>
+      <source>none</source>
+      <translation>немає</translation>
+    </message>
   </context>
   <context>
     <name>Gui::RevitNavigationStyle</name>
@@ -5648,6 +6081,25 @@ Do you want to exit without saving your data?</source>
     </message>
   </context>
   <context>
+    <name>Gui::SearchBar</name>
+    <message>
+      <source>Previous</source>
+      <translation>Попередня</translation>
+    </message>
+    <message>
+      <source>Next</source>
+      <translation type="unfinished">Next</translation>
+    </message>
+    <message>
+      <source>Case sensitive</source>
+      <translation type="unfinished">Case sensitive</translation>
+    </message>
+    <message>
+      <source>Whole words</source>
+      <translation type="unfinished">Whole words</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::SelectModule</name>
     <message>
       <source>Select module</source>
@@ -5665,10 +6117,6 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::StdCmdDescription</name>
     <message>
-      <source>Help</source>
-      <translation>Довідка</translation>
-    </message>
-    <message>
       <source>Des&amp;cription</source>
       <translation>Опис</translation>
     </message>
@@ -5679,10 +6127,6 @@ Do you want to exit without saving your data?</source>
   </context>
   <context>
     <name>Gui::StdCmdDownloadOnlineHelp</name>
-    <message>
-      <source>Help</source>
-      <translation>Довідка</translation>
-    </message>
     <message>
       <source>Download online help</source>
       <translation>Завантажити довідку з інтернету</translation>
@@ -5722,10 +6166,6 @@ Do you want to specify another directory?</source>
   </context>
   <context>
     <name>Gui::StdCmdPythonHelp</name>
-    <message>
-      <source>Tools</source>
-      <translation>Інструменти</translation>
-    </message>
     <message>
       <source>Automatic python modules documentation</source>
       <translation>Автоматичне документування модуля python</translation>
@@ -5888,6 +6328,25 @@ Do you want to specify another directory?</source>
     <message>
       <source>Edit text</source>
       <translation>Редагувати текст</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::TinkerCADNavigationStyle</name>
+    <message>
+      <source>Press left mouse button</source>
+      <translation>Натиснути ліву кнопку миші</translation>
+    </message>
+    <message>
+      <source>Press middle mouse button</source>
+      <translation>Натиснути середню кнопку миші</translation>
+    </message>
+    <message>
+      <source>Press right mouse button</source>
+      <translation type="unfinished">Press right mouse button</translation>
+    </message>
+    <message>
+      <source>Scroll middle mouse button</source>
+      <translation>Прокручування середньою кнопкою миші</translation>
     </message>
   </context>
   <context>
@@ -6067,6 +6526,10 @@ Do you want to specify another directory?</source>
       <source>Spanish, Argentina</source>
       <translation type="unfinished">Spanish, Argentina</translation>
     </message>
+    <message>
+      <source>Georgian</source>
+      <translation type="unfinished">Georgian</translation>
+    </message>
   </context>
   <context>
     <name>Gui::TreeDockWidget</name>
@@ -6211,6 +6674,14 @@ Do you want to specify another directory?</source>
     <message>
       <source> (but must be executed)</source>
       <translation> (але має бути виконано)</translation>
+    </message>
+    <message>
+      <source>Add dependent objects to selection</source>
+      <translation type="unfinished">Add dependent objects to selection</translation>
+    </message>
+    <message>
+      <source>Adds all dependent objects to the selection</source>
+      <translation type="unfinished">Adds all dependent objects to the selection</translation>
     </message>
   </context>
   <context>
@@ -6394,7 +6865,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Property view</source>
-      <translation>Властивості вигляду</translation>
+      <translation>Перегляд Властивостей</translation>
     </message>
     <message>
       <source>Selection view</source>
@@ -6402,11 +6873,11 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Report view</source>
-      <translation>Вигляд звіту</translation>
+      <translation>Перегляд звіту</translation>
     </message>
     <message>
       <source>Combo View</source>
-      <translation>Комбінований вигляд</translation>
+      <translation>Комбінований Перегляд</translation>
     </message>
     <message>
       <source>Toolbox</source>
@@ -6690,24 +7161,6 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>Документ не може бути закритим в даний час.</translation>
     </message>
     <message>
-      <source>No OpenGL</source>
-      <translation>Без OpenGL</translation>
-    </message>
-    <message>
-      <source>This system does not support OpenGL</source>
-      <translation>Ця система не підтримує OpenGL</translation>
-    </message>
-    <message>
-      <source>Help</source>
-      <translation>Довідка</translation>
-    </message>
-    <message>
-      <source>Unable to load documentation.
-In order to load it Qt 4.4 or higher is required.</source>
-      <translation>Неможливо завантажити документацію.
-Щоб завантажити це потрібно Qt 4.4 або вище.</translation>
-    </message>
-    <message>
       <source>Exporting PDF...</source>
       <translation>Експорт в PDF ...</translation>
     </message>
@@ -6982,26 +7435,6 @@ Choose 'Abort' to abort</translation>
       <translation>Ви впевнені, що бажаєте продовжити?</translation>
     </message>
     <message>
-      <source>
-
-Please check report view for more...</source>
-      <translation type="unfinished">
-
-Please check report view for more...</translation>
-    </message>
-    <message>
-      <source>
-Document: </source>
-      <translation>
-Документ: </translation>
-    </message>
-    <message>
-      <source>
-  Path: </source>
-      <translation>
-  Шлях: </translation>
-    </message>
-    <message>
       <source>Identical physical path</source>
       <translation type="unfinished">Identical physical path</translation>
     </message>
@@ -7020,14 +7453,6 @@ Document: </source>
     <message>
       <source>Workbenches</source>
       <translation>Робочі середовища</translation>
-    </message>
-    <message>
-      <source>
-
-Physical path: </source>
-      <translation type="unfinished">
-
-Physical path: </translation>
     </message>
     <message>
       <source>Could not save document</source>
@@ -7061,6 +7486,102 @@ Would you like to save the file with a different name?</translation>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
       <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
     </message>
+    <message>
+      <source>Please check report view for more...</source>
+      <translation type="unfinished">Please check report view for more...</translation>
+    </message>
+    <message>
+      <source>Physical path:</source>
+      <translation type="unfinished">Physical path:</translation>
+    </message>
+    <message>
+      <source>Document:</source>
+      <translation type="unfinished">Document:</translation>
+    </message>
+    <message>
+      <source>Path:</source>
+      <translation>Шлях:</translation>
+    </message>
+    <message>
+      <source>Edit %1</source>
+      <translation>Редагувати %1</translation>
+    </message>
+    <message>
+      <source>Setup configurable object</source>
+      <translation type="unfinished">Setup configurable object</translation>
+    </message>
+    <message>
+      <source>Select which object to copy or exclude when configuration changes.All external linked object are excluded by default.</source>
+      <translation type="unfinished">Select which object to copy or exclude when configuration changes.All external linked object are excluded by default.</translation>
+    </message>
+    <message>
+      <source>Please select which objects to copy when the configuration is changed</source>
+      <translation type="unfinished">Please select which objects to copy when the configuration is changed</translation>
+    </message>
+    <message>
+      <source>Apply to all</source>
+      <translation type="unfinished">Apply to all</translation>
+    </message>
+    <message>
+      <source>Apply the setting to all links. Or, uncheck this
+option to apply only to this link.</source>
+      <translation type="unfinished">Apply the setting to all links. Or, uncheck this
+option to apply only to this link.</translation>
+    </message>
+    <message>
+      <source>Copy on change</source>
+      <translation type="unfinished">Copy on change</translation>
+    </message>
+    <message>
+      <source>Enable</source>
+      <translation>Увімкнути</translation>
+    </message>
+    <message>
+      <source>Enable auto copy of linked object when its configuration is changed</source>
+      <translation type="unfinished">Enable auto copy of linked object when its configuration is changed</translation>
+    </message>
+    <message>
+      <source>Tracking</source>
+      <translation>Відстеження</translation>
+    </message>
+    <message>
+      <source>Copy the linked object when its configuration is changed.
+Also auto redo the copy if the original linked object is changed.
+</source>
+      <translation type="unfinished">Copy the linked object when its configuration is changed.
+Also auto redo the copy if the original linked object is changed.
+</translation>
+    </message>
+    <message>
+      <source>Disable copy on change</source>
+      <translation type="unfinished">Disable copy on change</translation>
+    </message>
+    <message>
+      <source>Rerefresh configurable object</source>
+      <translation type="unfinished">Rerefresh configurable object</translation>
+    </message>
+    <message>
+      <source>Synchronize the original configurable source object by
+creating a new deep copy. Note that any changes made to
+the current copy will be lost.
+</source>
+      <translation type="unfinished">Synchronize the original configurable source object by
+creating a new deep copy. Note that any changes made to
+the current copy will be lost.
+</translation>
+    </message>
+    <message>
+      <source>Toggle array elements</source>
+      <translation type="unfinished">Toggle array elements</translation>
+    </message>
+    <message>
+      <source>Change whether show each link array element as individual objects</source>
+      <translation type="unfinished">Change whether show each link array element as individual objects</translation>
+    </message>
+    <message>
+      <source>Transform at the origin of the placement</source>
+      <translation type="unfinished">Transform at the origin of the placement</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
@@ -7076,10 +7597,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdBoxElementSelection</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Box element selection</source>
       <translation type="unfinished">Box element selection</translation>
     </message>
@@ -7087,20 +7604,12 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdBoxSelection</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Box selection</source>
       <translation>Прямокутник виділення</translation>
     </message>
   </context>
   <context>
     <name>StdCmdAbout</name>
-    <message>
-      <source>Help</source>
-      <translation>Довідка</translation>
-    </message>
     <message>
       <source>&amp;About %1</source>
       <translation>Про %1</translation>
@@ -7113,10 +7622,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdAboutQt</name>
     <message>
-      <source>Help</source>
-      <translation>Довідка</translation>
-    </message>
-    <message>
       <source>About &amp;Qt</source>
       <translation>Про &amp;Qt</translation>
     </message>
@@ -7127,10 +7632,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdActivateNextWindow</name>
-    <message>
-      <source>Window</source>
-      <translation>Вікно</translation>
-    </message>
     <message>
       <source>Ne&amp;xt</source>
       <translation>Далі</translation>
@@ -7143,10 +7644,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdActivatePrevWindow</name>
     <message>
-      <source>Window</source>
-      <translation>Вікно</translation>
-    </message>
-    <message>
       <source>Pre&amp;vious</source>
       <translation>Назад</translation>
     </message>
@@ -7157,10 +7654,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdAlignment</name>
-    <message>
-      <source>Edit</source>
-      <translation>Правка</translation>
-    </message>
     <message>
       <source>Alignment...</source>
       <translation>Вирівнювання...</translation>
@@ -7173,10 +7666,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdArrangeIcons</name>
     <message>
-      <source>Window</source>
-      <translation>Вікно</translation>
-    </message>
-    <message>
       <source>Arrange &amp;Icons</source>
       <translation>Організувати &amp;Ікони</translation>
     </message>
@@ -7188,20 +7677,12 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdAxisCross</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Toggle axis cross</source>
       <translation>Показати/приховати початок координат</translation>
     </message>
   </context>
   <context>
     <name>StdCmdCascadeWindows</name>
-    <message>
-      <source>Window</source>
-      <translation>Вікно</translation>
-    </message>
     <message>
       <source>&amp;Cascade</source>
       <translation>&amp;Каскадом</translation>
@@ -7214,10 +7695,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdCloseActiveWindow</name>
     <message>
-      <source>Window</source>
-      <translation>Вікно</translation>
-    </message>
-    <message>
       <source>Cl&amp;ose</source>
       <translation>Зак&amp;рити</translation>
     </message>
@@ -7228,10 +7705,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdCloseAllWindows</name>
-    <message>
-      <source>Window</source>
-      <translation>Вікно</translation>
-    </message>
     <message>
       <source>Close Al&amp;l</source>
       <translation>Закрити всі</translation>
@@ -7244,10 +7717,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdCommandLine</name>
     <message>
-      <source>Tools</source>
-      <translation>Інструменти</translation>
-    </message>
-    <message>
       <source>Start command &amp;line...</source>
       <translation>Запуск командного рядка...</translation>
     </message>
@@ -7258,10 +7727,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdCopy</name>
-    <message>
-      <source>Edit</source>
-      <translation>Правка</translation>
-    </message>
     <message>
       <source>C&amp;opy</source>
       <translation>Копіювати</translation>
@@ -7274,10 +7739,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdCut</name>
     <message>
-      <source>Edit</source>
-      <translation>Правка</translation>
-    </message>
-    <message>
       <source>&amp;Cut</source>
       <translation>Вирізати</translation>
     </message>
@@ -7288,10 +7749,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdDelete</name>
-    <message>
-      <source>Edit</source>
-      <translation>Правка</translation>
-    </message>
     <message>
       <source>&amp;Delete</source>
       <translation>Видалити</translation>
@@ -7304,10 +7761,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdDemoMode</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>View turntable...</source>
       <translation>Відкрити програвач ...</translation>
     </message>
@@ -7319,10 +7772,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdDependencyGraph</name>
     <message>
-      <source>Tools</source>
-      <translation>Інструменти</translation>
-    </message>
-    <message>
       <source>Dependency graph...</source>
       <translation>Графік залежності...</translation>
     </message>
@@ -7333,10 +7782,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdDlgCustomize</name>
-    <message>
-      <source>Tools</source>
-      <translation>Інструменти</translation>
-    </message>
     <message>
       <source>Cu&amp;stomize...</source>
       <translation>Власні установки...</translation>
@@ -7356,17 +7801,9 @@ Would you like to save the file with a different name?</translation>
       <source>Opens a dialog to let you execute a recorded macro</source>
       <translation>Відкриває діалогове вікно, щоб виконати записаний макрос</translation>
     </message>
-    <message>
-      <source>Macro</source>
-      <translation>Макрос</translation>
-    </message>
   </context>
   <context>
     <name>StdCmdDlgMacroExecuteDirect</name>
-    <message>
-      <source>Macro</source>
-      <translation>Макрос</translation>
-    </message>
     <message>
       <source>Execute macro</source>
       <translation>Виконати макрос</translation>
@@ -7386,17 +7823,9 @@ Would you like to save the file with a different name?</translation>
       <source>Opens a dialog to record a macro</source>
       <translation>Відкриває діалогове вікно для запису макросів</translation>
     </message>
-    <message>
-      <source>Macro</source>
-      <translation>Макрос</translation>
-    </message>
   </context>
   <context>
     <name>StdCmdDlgParameter</name>
-    <message>
-      <source>Tools</source>
-      <translation>Інструменти</translation>
-    </message>
     <message>
       <source>E&amp;dit parameters ...</source>
       <translation>Редагування параметрів ...</translation>
@@ -7409,10 +7838,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdDlgPreferences</name>
     <message>
-      <source>Tools</source>
-      <translation>Інструменти</translation>
-    </message>
-    <message>
       <source>&amp;Preferences ...</source>
       <translation>&amp;Установки ...</translation>
     </message>
@@ -7423,10 +7848,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdDockViewMenu</name>
-    <message>
-      <source>View</source>
-      <translation>Вигляд</translation>
-    </message>
     <message>
       <source>Panels</source>
       <translation>Панелі</translation>
@@ -7439,10 +7860,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdDrawStyle</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Draw style</source>
       <translation>Стиль малювання</translation>
     </message>
@@ -7454,10 +7871,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdDuplicateSelection</name>
     <message>
-      <source>Edit</source>
-      <translation>Правка</translation>
-    </message>
-    <message>
       <source>Duplicate selection</source>
       <translation>Дублювання виділеного</translation>
     </message>
@@ -7468,10 +7881,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdEdit</name>
-    <message>
-      <source>Edit</source>
-      <translation>Правка</translation>
-    </message>
     <message>
       <source>Toggle &amp;Edit mode</source>
       <translation>Переключити режим &amp;Редагувати</translation>
@@ -7487,10 +7896,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdExport</name>
-    <message>
-      <source>File</source>
-      <translation>Файл</translation>
-    </message>
     <message>
       <source>&amp;Export...</source>
       <translation>&amp;Експорт...</translation>
@@ -7511,20 +7916,12 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdExpression</name>
     <message>
-      <source>Edit</source>
-      <translation>Правка</translation>
-    </message>
-    <message>
       <source>Expression actions</source>
       <translation type="unfinished">Expression actions</translation>
     </message>
   </context>
   <context>
     <name>StdCmdFeatRecompute</name>
-    <message>
-      <source>File</source>
-      <translation>Файл</translation>
-    </message>
     <message>
       <source>&amp;Recompute</source>
       <translation>&amp;Перерахувати</translation>
@@ -7537,10 +7934,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdFreeCADDonation</name>
     <message>
-      <source>Help</source>
-      <translation>Довідка</translation>
-    </message>
-    <message>
       <source>Donate</source>
       <translation>Допомогти</translation>
     </message>
@@ -7551,10 +7944,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdFreeCADFAQ</name>
-    <message>
-      <source>Help</source>
-      <translation>Довідка</translation>
-    </message>
     <message>
       <source>FreeCAD FAQ</source>
       <translation>Часті питання по FreeCAD</translation>
@@ -7571,10 +7960,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdFreeCADForum</name>
     <message>
-      <source>Help</source>
-      <translation>Довідка</translation>
-    </message>
-    <message>
       <source>FreeCAD Forum</source>
       <translation>Форум FreeCAD</translation>
     </message>
@@ -7589,10 +7974,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdFreeCADPowerUserHub</name>
-    <message>
-      <source>Help</source>
-      <translation>Довідка</translation>
-    </message>
     <message>
       <source>Python scripting documentation</source>
       <translation>Документація зі сценаріїв Python</translation>
@@ -7609,10 +7990,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdFreeCADUserHub</name>
     <message>
-      <source>Help</source>
-      <translation>Довідка</translation>
-    </message>
-    <message>
       <source>Users documentation</source>
       <translation>Документація користувача</translation>
     </message>
@@ -7623,10 +8000,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdFreeCADWebsite</name>
-    <message>
-      <source>Help</source>
-      <translation>Довідка</translation>
-    </message>
     <message>
       <source>FreeCAD Website</source>
       <translation>Сайт FreeCAD</translation>
@@ -7639,10 +8012,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdFreezeViews</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Freeze display</source>
       <translation>Замороження дисплею</translation>
     </message>
@@ -7653,10 +8022,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdGroup</name>
-    <message>
-      <source>Structure</source>
-      <translation>Структура</translation>
-    </message>
     <message>
       <source>Create group</source>
       <translation>Створити групу</translation>
@@ -7669,10 +8034,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdHideObjects</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Hide all objects</source>
       <translation>Сховати всі об'єкти</translation>
     </message>
@@ -7684,10 +8045,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdHideSelection</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Hide selection</source>
       <translation>Сховати вибране</translation>
     </message>
@@ -7698,10 +8055,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdImport</name>
-    <message>
-      <source>File</source>
-      <translation>Файл</translation>
-    </message>
     <message>
       <source>&amp;Import...</source>
       <translation>&amp;Імпорт...</translation>
@@ -7722,20 +8075,12 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdLinkActions</name>
     <message>
-      <source>View</source>
-      <translation>Вигляд</translation>
-    </message>
-    <message>
       <source>Link actions</source>
       <translation type="unfinished">Link actions</translation>
     </message>
   </context>
   <context>
     <name>StdCmdLinkImport</name>
-    <message>
-      <source>Link</source>
-      <translation>Посилання</translation>
-    </message>
     <message>
       <source>Import links</source>
       <translation>Імпорт посилань</translation>
@@ -7748,10 +8093,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdLinkImportAll</name>
     <message>
-      <source>Link</source>
-      <translation>Посилання</translation>
-    </message>
-    <message>
       <source>Import all links</source>
       <translation>Імпортувати всі посилання</translation>
     </message>
@@ -7762,10 +8103,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdLinkMake</name>
-    <message>
-      <source>Link</source>
-      <translation>Посилання</translation>
-    </message>
     <message>
       <source>Make link</source>
       <translation>Створити посилання</translation>
@@ -7778,10 +8115,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdLinkMakeGroup</name>
     <message>
-      <source>Link</source>
-      <translation>Посилання</translation>
-    </message>
-    <message>
       <source>Make link group</source>
       <translation>Створити групу посилань</translation>
     </message>
@@ -7792,10 +8125,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdLinkMakeRelative</name>
-    <message>
-      <source>Link</source>
-      <translation>Посилання</translation>
-    </message>
     <message>
       <source>Make sub-link</source>
       <translation>Створити вкладене посилання</translation>
@@ -7808,10 +8137,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdLinkReplace</name>
     <message>
-      <source>Link</source>
-      <translation>Посилання</translation>
-    </message>
-    <message>
       <source>Replace with link</source>
       <translation type="unfinished">Replace with link</translation>
     </message>
@@ -7822,10 +8147,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdLinkSelectActions</name>
-    <message>
-      <source>View</source>
-      <translation>Вигляд</translation>
-    </message>
     <message>
       <source>Link navigation</source>
       <translation type="unfinished">Link navigation</translation>
@@ -7838,10 +8159,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdLinkSelectAllLinks</name>
     <message>
-      <source>Link</source>
-      <translation>Посилання</translation>
-    </message>
-    <message>
       <source>Select all links</source>
       <translation>Вибрати всі посилання</translation>
     </message>
@@ -7852,10 +8169,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdLinkSelectLinked</name>
-    <message>
-      <source>Link</source>
-      <translation>Посилання</translation>
-    </message>
     <message>
       <source>Go to linked object</source>
       <translation>Перейти до зв'язаного об'єкта</translation>
@@ -7868,10 +8181,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdLinkSelectLinkedFinal</name>
     <message>
-      <source>Link</source>
-      <translation>Посилання</translation>
-    </message>
-    <message>
       <source>Go to the deepest linked object</source>
       <translation type="unfinished">Go to the deepest linked object</translation>
     </message>
@@ -7882,10 +8191,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdLinkUnlink</name>
-    <message>
-      <source>Link</source>
-      <translation>Посилання</translation>
-    </message>
     <message>
       <source>Unlink</source>
       <translation>Відв’язати</translation>
@@ -7898,10 +8203,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdMacroAttachDebugger</name>
     <message>
-      <source>Macro</source>
-      <translation>Макрос</translation>
-    </message>
-    <message>
       <source>Attach to remote debugger...</source>
       <translation type="unfinished">Attach to remote debugger...</translation>
     </message>
@@ -7912,10 +8213,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdMacroStartDebug</name>
-    <message>
-      <source>Macro</source>
-      <translation>Макрос</translation>
-    </message>
     <message>
       <source>Debug macro</source>
       <translation>Відлагодження макросу</translation>
@@ -7928,10 +8225,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdMacroStepInto</name>
     <message>
-      <source>Macro</source>
-      <translation>Макрос</translation>
-    </message>
-    <message>
       <source>Step into</source>
       <translation>Крок у</translation>
     </message>
@@ -7939,20 +8232,12 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdMacroStepOver</name>
     <message>
-      <source>Macro</source>
-      <translation>Макрос</translation>
-    </message>
-    <message>
       <source>Step over</source>
       <translation>Переступити</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMacroStopDebug</name>
-    <message>
-      <source>Macro</source>
-      <translation>Макрос</translation>
-    </message>
     <message>
       <source>Stop debugging</source>
       <translation>Зупинити налагодження</translation>
@@ -7965,10 +8250,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdMacroStopRecord</name>
     <message>
-      <source>Macro</source>
-      <translation>Макрос</translation>
-    </message>
-    <message>
       <source>S&amp;top macro recording</source>
       <translation>Зупинити запис макросу</translation>
     </message>
@@ -7980,20 +8261,12 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdMeasureDistance</name>
     <message>
-      <source>View</source>
-      <translation>Вигляд</translation>
-    </message>
-    <message>
       <source>Measure distance</source>
       <translation>Виміряти відстань</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMeasurementSimple</name>
-    <message>
-      <source>Tools</source>
-      <translation>Інструменти</translation>
-    </message>
     <message>
       <source>Measures distance between two selected objects</source>
       <translation>Виміряти відстань між двома обраними об'єктами</translation>
@@ -8005,10 +8278,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdMergeProjects</name>
-    <message>
-      <source>File</source>
-      <translation>Файл</translation>
-    </message>
     <message>
       <source>Merge project...</source>
       <translation>Злиття проекту ...</translation>
@@ -8028,10 +8297,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdNew</name>
-    <message>
-      <source>File</source>
-      <translation>Файл</translation>
-    </message>
     <message>
       <source>&amp;New</source>
       <translation>Новий</translation>
@@ -8059,10 +8324,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdOnlineHelpWebsite</name>
     <message>
-      <source>Help</source>
-      <translation>Довідка</translation>
-    </message>
-    <message>
       <source>Help Website</source>
       <translation>Сайт довідки</translation>
     </message>
@@ -8073,10 +8334,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdOpen</name>
-    <message>
-      <source>File</source>
-      <translation>Файл</translation>
-    </message>
     <message>
       <source>&amp;Open...</source>
       <translation>&amp;Відкрити...</translation>
@@ -8105,10 +8362,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdPart</name>
     <message>
-      <source>Structure</source>
-      <translation>Структура</translation>
-    </message>
-    <message>
       <source>Create part</source>
       <translation>Створення частини</translation>
     </message>
@@ -8119,10 +8372,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdPaste</name>
-    <message>
-      <source>Edit</source>
-      <translation>Правка</translation>
-    </message>
     <message>
       <source>&amp;Paste</source>
       <translation>&amp;Вставити</translation>
@@ -8135,10 +8384,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdPlacement</name>
     <message>
-      <source>Edit</source>
-      <translation>Правка</translation>
-    </message>
-    <message>
       <source>Placement...</source>
       <translation>Розташування...</translation>
     </message>
@@ -8149,10 +8394,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdPrint</name>
-    <message>
-      <source>File</source>
-      <translation>Файл</translation>
-    </message>
     <message>
       <source>&amp;Print...</source>
       <translation>&amp;Друк...</translation>
@@ -8165,10 +8406,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdPrintPdf</name>
     <message>
-      <source>File</source>
-      <translation>Файл</translation>
-    </message>
-    <message>
       <source>&amp;Export PDF...</source>
       <translation>&amp;Експорт до PDF...</translation>
     </message>
@@ -8179,10 +8416,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdPrintPreview</name>
-    <message>
-      <source>File</source>
-      <translation>Файл</translation>
-    </message>
     <message>
       <source>&amp;Print preview...</source>
       <translation>&amp;Попередній перегляд...</translation>
@@ -8199,10 +8432,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdProjectInfo</name>
     <message>
-      <source>File</source>
-      <translation>Файл</translation>
-    </message>
-    <message>
       <source>Project i&amp;nformation...</source>
       <translation>Інформація про проект...</translation>
     </message>
@@ -8213,10 +8442,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdProjectUtil</name>
-    <message>
-      <source>Tools</source>
-      <translation>Інструменти</translation>
-    </message>
     <message>
       <source>Project utility...</source>
       <translation>Утиліта проекту...</translation>
@@ -8229,10 +8454,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdPythonWebsite</name>
     <message>
-      <source>Help</source>
-      <translation>Довідка</translation>
-    </message>
-    <message>
       <source>Python Website</source>
       <translation>Сайт Python</translation>
     </message>
@@ -8243,10 +8464,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdQuit</name>
-    <message>
-      <source>File</source>
-      <translation>Файл</translation>
-    </message>
     <message>
       <source>E&amp;xit</source>
       <translation>Вихід</translation>
@@ -8259,20 +8476,12 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdRandomColor</name>
     <message>
-      <source>File</source>
-      <translation>Файл</translation>
-    </message>
-    <message>
       <source>Random color</source>
       <translation>Випадковий колір</translation>
     </message>
   </context>
   <context>
     <name>StdCmdRecentFiles</name>
-    <message>
-      <source>File</source>
-      <translation>Файл</translation>
-    </message>
     <message>
       <source>Recent files</source>
       <translation>Нещодавні файли</translation>
@@ -8285,10 +8494,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdRecentMacros</name>
     <message>
-      <source>Macro</source>
-      <translation>Макрос</translation>
-    </message>
-    <message>
       <source>Recent macros</source>
       <translation>Нещодавні макроси</translation>
     </message>
@@ -8299,10 +8504,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdRedo</name>
-    <message>
-      <source>Edit</source>
-      <translation>Правка</translation>
-    </message>
     <message>
       <source>&amp;Redo</source>
       <translation>Повторити</translation>
@@ -8315,10 +8516,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdRefresh</name>
     <message>
-      <source>Edit</source>
-      <translation>Правка</translation>
-    </message>
-    <message>
       <source>&amp;Refresh</source>
       <translation>Оновити</translation>
     </message>
@@ -8328,11 +8525,18 @@ Would you like to save the file with a different name?</translation>
     </message>
   </context>
   <context>
-    <name>StdCmdRevert</name>
+    <name>StdCmdReportBug</name>
     <message>
-      <source>File</source>
-      <translation>Файл</translation>
+      <source>Report a bug</source>
+      <translation type="unfinished">Report a bug</translation>
     </message>
+    <message>
+      <source>Report a bug or suggest a feature</source>
+      <translation type="unfinished">Report a bug or suggest a feature</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdRevert</name>
     <message>
       <source>Revert</source>
       <translation>Відмінити</translation>
@@ -8345,10 +8549,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdSave</name>
     <message>
-      <source>File</source>
-      <translation>Файл</translation>
-    </message>
-    <message>
       <source>&amp;Save</source>
       <translation>&amp;Зберегти</translation>
     </message>
@@ -8359,10 +8559,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdSaveAll</name>
-    <message>
-      <source>File</source>
-      <translation>Файл</translation>
-    </message>
     <message>
       <source>Save All</source>
       <translation>Зберегти Все</translation>
@@ -8375,10 +8571,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdSaveAs</name>
     <message>
-      <source>File</source>
-      <translation>Файл</translation>
-    </message>
-    <message>
       <source>Save &amp;As...</source>
       <translation>Зберегти як...</translation>
     </message>
@@ -8389,10 +8581,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdSaveCopy</name>
-    <message>
-      <source>File</source>
-      <translation>Файл</translation>
-    </message>
     <message>
       <source>Save a &amp;Copy...</source>
       <translation>Зберегти &amp;Копію...</translation>
@@ -8405,10 +8593,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdSceneInspector</name>
     <message>
-      <source>Tools</source>
-      <translation>Інструменти</translation>
-    </message>
-    <message>
       <source>Scene inspector...</source>
       <translation>Інспектор сцени...</translation>
     </message>
@@ -8419,10 +8603,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdSelBack</name>
-    <message>
-      <source>View</source>
-      <translation>Вигляд</translation>
-    </message>
     <message>
       <source>&amp;Back</source>
       <translation>&amp;Назад</translation>
@@ -8435,10 +8615,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdSelBoundingBox</name>
     <message>
-      <source>View</source>
-      <translation>Вигляд</translation>
-    </message>
-    <message>
       <source>&amp;Bounding box</source>
       <translation>&amp;Обмежувальна рамка</translation>
     </message>
@@ -8449,10 +8625,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdSelForward</name>
-    <message>
-      <source>View</source>
-      <translation>Вигляд</translation>
-    </message>
     <message>
       <source>&amp;Forward</source>
       <translation>&amp;Вперед</translation>
@@ -8465,10 +8637,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdSelectAll</name>
     <message>
-      <source>Edit</source>
-      <translation>Правка</translation>
-    </message>
-    <message>
       <source>Select &amp;All</source>
       <translation>Вибрати усе</translation>
     </message>
@@ -8479,10 +8647,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdSelectVisibleObjects</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
     <message>
       <source>Select visible objects</source>
       <translation>Виділити видимі об'єкти</translation>
@@ -8495,10 +8659,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdSendToPythonConsole</name>
     <message>
-      <source>Edit</source>
-      <translation>Правка</translation>
-    </message>
-    <message>
       <source>&amp;Send to Python Console</source>
       <translation type="unfinished">&amp;Send to Python Console</translation>
     </message>
@@ -8509,10 +8669,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdSetAppearance</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
     <message>
       <source>Appearance...</source>
       <translation>Зовнішній вигляд...</translation>
@@ -8525,10 +8681,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdShowObjects</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Show all objects</source>
       <translation>Показати всі об'єкти</translation>
     </message>
@@ -8539,10 +8691,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdShowSelection</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
     <message>
       <source>Show selection</source>
       <translation>Показати віділене</translation>
@@ -8555,10 +8703,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdStatusBar</name>
     <message>
-      <source>View</source>
-      <translation>Вигляд</translation>
-    </message>
-    <message>
       <source>Status bar</source>
       <translation>Рядок стану</translation>
     </message>
@@ -8569,10 +8713,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdTextDocument</name>
-    <message>
-      <source>Tools</source>
-      <translation>Інструменти</translation>
-    </message>
     <message>
       <source>Add text document</source>
       <translation>Додати текстовий документ</translation>
@@ -8585,10 +8725,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdTextureMapping</name>
     <message>
-      <source>Tools</source>
-      <translation>Інструменти</translation>
-    </message>
-    <message>
       <source>Texture mapping...</source>
       <translation>Відображення текстури...</translation>
     </message>
@@ -8599,10 +8735,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdTileWindows</name>
-    <message>
-      <source>Window</source>
-      <translation>Вікно</translation>
-    </message>
     <message>
       <source>&amp;Tile</source>
       <translation>Плитка</translation>
@@ -8615,20 +8747,12 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdToggleBreakpoint</name>
     <message>
-      <source>Macro</source>
-      <translation>Макрос</translation>
-    </message>
-    <message>
       <source>Toggle breakpoint</source>
       <translation>Поміняти точку зупинки</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleClipPlane</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
     <message>
       <source>Clipping plane</source>
       <translation>Площини обрізання</translation>
@@ -8641,10 +8765,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdToggleNavigation</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Toggle navigation/Edit mode</source>
       <translation>Перемкнути навігацію/Змінити режим</translation>
     </message>
@@ -8655,10 +8775,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdToggleObjects</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
     <message>
       <source>Toggle all objects</source>
       <translation>Перемкнути всі об'єкти</translation>
@@ -8671,10 +8787,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdToggleSelectability</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Toggle selectability</source>
       <translation>Перемикач можливостей вибору</translation>
     </message>
@@ -8685,10 +8797,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdToggleVisibility</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
     <message>
       <source>Toggle visibility</source>
       <translation>Перемикнути видимість</translation>
@@ -8701,10 +8809,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdToolBarMenu</name>
     <message>
-      <source>View</source>
-      <translation>Вигляд</translation>
-    </message>
-    <message>
       <source>Tool&amp;bars</source>
       <translation>Панелі інструментів</translation>
     </message>
@@ -8715,10 +8819,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdTransform</name>
-    <message>
-      <source>Edit</source>
-      <translation>Правка</translation>
-    </message>
     <message>
       <source>Transform...</source>
       <translation>Перетворення...</translation>
@@ -8731,10 +8831,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdTransformManip</name>
     <message>
-      <source>Edit</source>
-      <translation>Правка</translation>
-    </message>
-    <message>
       <source>Transform</source>
       <translation>Перетворення</translation>
     </message>
@@ -8745,10 +8841,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdTreeCollapse</name>
-    <message>
-      <source>View</source>
-      <translation>Вигляд</translation>
-    </message>
     <message>
       <source>Collapse selected item</source>
       <translation type="unfinished">Collapse selected item</translation>
@@ -8761,10 +8853,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdTreeExpand</name>
     <message>
-      <source>View</source>
-      <translation>Вигляд</translation>
-    </message>
-    <message>
       <source>Expand selected item</source>
       <translation type="unfinished">Expand selected item</translation>
     </message>
@@ -8775,10 +8863,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdTreeSelectAllInstances</name>
-    <message>
-      <source>View</source>
-      <translation>Вигляд</translation>
-    </message>
     <message>
       <source>Select all instances</source>
       <translation>Вибрати всі екземпляри</translation>
@@ -8791,10 +8875,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdTreeViewActions</name>
     <message>
-      <source>View</source>
-      <translation>Вигляд</translation>
-    </message>
-    <message>
       <source>TreeView actions</source>
       <translation type="unfinished">TreeView actions</translation>
     </message>
@@ -8806,10 +8886,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdUndo</name>
     <message>
-      <source>Edit</source>
-      <translation>Правка</translation>
-    </message>
-    <message>
       <source>&amp;Undo</source>
       <translation>&amp;Скасувати</translation>
     </message>
@@ -8820,10 +8896,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdUnitsCalculator</name>
-    <message>
-      <source>Tools</source>
-      <translation>Інструменти</translation>
-    </message>
     <message>
       <source>&amp;Units calculator...</source>
       <translation>Калькулятор одиниць...</translation>
@@ -8847,10 +8919,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdUserInterface</name>
     <message>
-      <source>View</source>
-      <translation>Вигляд</translation>
-    </message>
-    <message>
       <source>Dock views</source>
       <translation>Зафіксувати види</translation>
     </message>
@@ -8861,10 +8929,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdViewBottom</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
     <message>
       <source>Bottom</source>
       <translation>Внизу</translation>
@@ -8877,10 +8941,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdViewCreate</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Create new view</source>
       <translation>Створити новий вигляд</translation>
     </message>
@@ -8891,10 +8951,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdViewDimetric</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
     <message>
       <source>Dimetric</source>
       <translation>Диметрія</translation>
@@ -8907,10 +8963,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdViewExample1</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Inventor example #1</source>
       <translation>Винахідник Приклад #1</translation>
     </message>
@@ -8921,10 +8973,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdViewExample2</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
     <message>
       <source>Inventor example #2</source>
       <translation>Винахідник Приклад #2</translation>
@@ -8937,10 +8985,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdViewExample3</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Inventor example #3</source>
       <translation>Винахідник Приклад #3</translation>
     </message>
@@ -8951,10 +8995,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdViewFitAll</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
     <message>
       <source>Fit all</source>
       <translation>Вмістити все</translation>
@@ -8967,10 +9007,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdViewFitSelection</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Fit selection</source>
       <translation>Вмістити вибране</translation>
     </message>
@@ -8981,10 +9017,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdViewFront</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
     <message>
       <source>Front</source>
       <translation>Фронт</translation>
@@ -8997,10 +9029,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdViewHome</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Home</source>
       <translation>Домівка</translation>
     </message>
@@ -9011,10 +9039,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdViewIsometric</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
     <message>
       <source>Isometric</source>
       <translation>Ізометричний</translation>
@@ -9027,10 +9051,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Issue camera position</source>
       <translation>Вихідне положення камери</translation>
     </message>
@@ -9041,10 +9061,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdViewIvStereoInterleavedColumns</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
     <message>
       <source>Stereo Interleaved Columns</source>
       <translation>Формування стереозображення способом чередування стовпчиків</translation>
@@ -9057,10 +9073,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdViewIvStereoInterleavedRows</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Stereo Interleaved Rows</source>
       <translation>Формування стереозображення черезрядковим способом</translation>
     </message>
@@ -9071,10 +9083,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdViewIvStereoOff</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
     <message>
       <source>Stereo Off</source>
       <translation>Вимкнути стерео</translation>
@@ -9087,10 +9095,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdViewIvStereoQuadBuff</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Stereo quad buffer</source>
       <translation>Стереозображення, сформоване методом чотириразового буферування</translation>
     </message>
@@ -9101,10 +9105,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdViewIvStereoRedGreen</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
     <message>
       <source>Stereo red/cyan</source>
       <translation>Стерео червоно-блакитне</translation>
@@ -9117,10 +9117,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdViewLeft</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Left</source>
       <translation>Ліворуч</translation>
     </message>
@@ -9131,10 +9127,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdViewRear</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
     <message>
       <source>Rear</source>
       <translation>Тил</translation>
@@ -9147,10 +9139,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdViewRestoreCamera</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Restore saved camera</source>
       <translation>Відновити збережену камеру</translation>
     </message>
@@ -9161,10 +9149,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdViewRight</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
     <message>
       <source>Right</source>
       <translation>Направо</translation>
@@ -9177,10 +9161,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdViewRotateLeft</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Rotate Left</source>
       <translation>Повернути ліворуч</translation>
     </message>
@@ -9191,10 +9171,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdViewRotateRight</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
     <message>
       <source>Rotate Right</source>
       <translation>Повернути праворуч</translation>
@@ -9207,10 +9183,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdViewSaveCamera</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Save current camera</source>
       <translation>Зберегти поточну камеру</translation>
     </message>
@@ -9221,10 +9193,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdViewTop</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
     <message>
       <source>Top</source>
       <translation>Згори</translation>
@@ -9237,10 +9205,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdViewTrimetric</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Trimetric</source>
       <translation>Триметрія</translation>
     </message>
@@ -9251,10 +9215,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdViewVR</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
     <message>
       <source>FreeCAD-VR</source>
       <translation>FreeCAD-VR</translation>
@@ -9267,10 +9227,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdWhatsThis</name>
     <message>
-      <source>Help</source>
-      <translation>Довідка</translation>
-    </message>
-    <message>
       <source>&amp;What's This?</source>
       <translation>&amp;Що це?</translation>
     </message>
@@ -9281,10 +9237,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdCmdWindows</name>
-    <message>
-      <source>Window</source>
-      <translation>Вікно</translation>
-    </message>
     <message>
       <source>&amp;Windows...</source>
       <translation>Вікна...</translation>
@@ -9297,20 +9249,12 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdCmdWindowsMenu</name>
     <message>
-      <source>Window</source>
-      <translation>Вікно</translation>
-    </message>
-    <message>
       <source>Activates this window</source>
       <translation>Активувати це вікно</translation>
     </message>
   </context>
   <context>
     <name>StdCmdWorkbench</name>
-    <message>
-      <source>View</source>
-      <translation>Вигляд</translation>
-    </message>
     <message>
       <source>Workbench</source>
       <translation>Робочий простір</translation>
@@ -9323,10 +9267,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdMainFullscreen</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Fullscreen</source>
       <translation>На весь екран</translation>
     </message>
@@ -9338,10 +9278,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdOrthographicCamera</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Orthographic view</source>
       <translation>Ортогональний вигляд</translation>
     </message>
@@ -9352,10 +9288,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdPerspectiveCamera</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
     <message>
       <source>Perspective view</source>
       <translation>Перспектива</translation>
@@ -9375,17 +9307,9 @@ Would you like to save the file with a different name?</translation>
       <source>Expand active document and collapse all others</source>
       <translation>Разгорнути активный документ та згорнути усі інші</translation>
     </message>
-    <message>
-      <source>TreeView</source>
-      <translation>У вигляді дерева</translation>
-    </message>
   </context>
   <context>
     <name>StdTreeDrag</name>
-    <message>
-      <source>TreeView</source>
-      <translation>У вигляді дерева</translation>
-    </message>
     <message>
       <source>Initiate dragging</source>
       <translation type="unfinished">Initiate dragging</translation>
@@ -9402,20 +9326,12 @@ Would you like to save the file with a different name?</translation>
       <translation>Відображення усіх документів у вигляді дерева</translation>
     </message>
     <message>
-      <source>TreeView</source>
-      <translation>У вигляді дерева</translation>
-    </message>
-    <message>
       <source>Multi document</source>
       <translation>Мульти-документ</translation>
     </message>
   </context>
   <context>
     <name>StdTreePreSelection</name>
-    <message>
-      <source>TreeView</source>
-      <translation>У вигляді дерева</translation>
-    </message>
     <message>
       <source>Pre-selection</source>
       <translation>Попередній вибір</translation>
@@ -9428,10 +9344,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdTreeRecordSelection</name>
     <message>
-      <source>TreeView</source>
-      <translation>У вигляді дерева</translation>
-    </message>
-    <message>
       <source>Record selection</source>
       <translation>Записати вибір</translation>
     </message>
@@ -9442,10 +9354,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdTreeSelection</name>
-    <message>
-      <source>TreeView</source>
-      <translation>У вигляді дерева</translation>
-    </message>
     <message>
       <source>Go to selection</source>
       <translation>Перейти до вибраного</translation>
@@ -9462,20 +9370,12 @@ Would you like to save the file with a different name?</translation>
       <translation>Відображати тільки активний документ з дерева перегляду</translation>
     </message>
     <message>
-      <source>TreeView</source>
-      <translation>У вигляді дерева</translation>
-    </message>
-    <message>
       <source>Single document</source>
       <translation>Окремий документ</translation>
     </message>
   </context>
   <context>
     <name>StdTreeSyncPlacement</name>
-    <message>
-      <source>TreeView</source>
-      <translation>У вигляді дерева</translation>
-    </message>
     <message>
       <source>Sync placement</source>
       <translation type="unfinished">Sync placement</translation>
@@ -9488,10 +9388,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdTreeSyncSelection</name>
     <message>
-      <source>TreeView</source>
-      <translation>У вигляді дерева</translation>
-    </message>
-    <message>
       <source>Sync selection</source>
       <translation type="unfinished">Sync selection</translation>
     </message>
@@ -9502,10 +9398,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdTreeSyncView</name>
-    <message>
-      <source>TreeView</source>
-      <translation>У вигляді дерева</translation>
-    </message>
     <message>
       <source>Sync view</source>
       <translation type="unfinished">Sync view</translation>
@@ -9518,20 +9410,12 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdViewBoxZoom</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Box zoom</source>
       <translation>Поле маштабування</translation>
     </message>
   </context>
   <context>
     <name>StdViewDock</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
     <message>
       <source>Docked</source>
       <translation>Закріплено</translation>
@@ -9544,10 +9428,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Document window</source>
       <translation>Вікно документа</translation>
     </message>
@@ -9558,10 +9438,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdViewFullscreen</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
     <message>
       <source>Fullscreen</source>
       <translation>На весь екран</translation>
@@ -9574,10 +9450,6 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdViewScreenShot</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Save picture...</source>
       <translation>Зберегти зображення...</translation>
     </message>
@@ -9588,10 +9460,6 @@ Would you like to save the file with a different name?</translation>
   </context>
   <context>
     <name>StdViewUndock</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
     <message>
       <source>Undocked</source>
       <translation>Не закріплено</translation>
@@ -9604,20 +9472,12 @@ Would you like to save the file with a different name?</translation>
   <context>
     <name>StdViewZoomIn</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
-    <message>
       <source>Zoom In</source>
       <translation>Збільшити</translation>
     </message>
   </context>
   <context>
     <name>StdViewZoomOut</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Стандартні вигляди</translation>
-    </message>
     <message>
       <source>Zoom Out</source>
       <translation>Зменшити</translation>
@@ -9862,7 +9722,7 @@ Do you still want to proceed?</source>
     </message>
     <message>
       <source>View</source>
-      <translation>Вигляд</translation>
+      <translation>Перегляд</translation>
     </message>
     <message>
       <source>Special Ops</source>
@@ -9872,42 +9732,9 @@ Do you still want to proceed?</source>
       <source>Axonometric</source>
       <translation>Аксонометрія</translation>
     </message>
-  </context>
-  <context>
-    <name>testClass</name>
     <message>
-      <source>test</source>
-      <translation>Тест</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-size:20pt; font-weight:600;"&gt;iisTaskPanel&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;Created for Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-size:20pt; font-weight:600;"&gt;iisTaskPanel&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;Created for Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Choose the style of the Task Panel</source>
-      <translation>Виберіть стиль панелі завдань</translation>
-    </message>
-    <message>
-      <source>Default</source>
-      <translation>За замовчуванням</translation>
-    </message>
-    <message>
-      <source>Windows XP</source>
-      <translation>Windows XP</translation>
+      <source>Link actions</source>
+      <translation type="unfinished">Link actions</translation>
     </message>
   </context>
 </TS>

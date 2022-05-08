@@ -769,7 +769,7 @@ void SheetTableView::finishEditWithMove(int keyPressed, Qt::KeyboardModifiers mo
     {
         // End should take you to the last occupied cell in the current column
         // Ctrl-End takes you to the last cell in the sheet
-        auto usedCells = sheet->getCells()->getUsedCells();
+        auto usedCells = sheet->getCells()->getNonEmptyCells();
         for (const auto& cell : usedCells) {
             if (modifiers == Qt::NoModifier) {
                 if (cell.col() == targetColumn)
@@ -984,9 +984,9 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent *)
 
 QString SheetTableView::toHtml() const
 {
-    std::set<App::CellAddress> cells = sheet->getCells()->getUsedCells();
-    int rowCount = 1;
-    int colCount = 1;
+    auto cells = sheet->getCells()->getNonEmptyCells();
+    int rowCount = 0;
+    int colCount = 0;
     for (const auto& it : cells) {
         rowCount = std::max(rowCount, it.row());
         colCount = std::max(colCount, it.col());

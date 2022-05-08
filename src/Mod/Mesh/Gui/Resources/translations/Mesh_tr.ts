@@ -1384,10 +1384,6 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
-      <source>Remesh by gmsh</source>
-      <translation>Gmsh ile tekrar ağ ör</translation>
-    </message>
-    <message>
       <source>Remeshing Parameter</source>
       <translation>Tekrar Ağ Örme Değişkeni</translation>
     </message>
@@ -1426,6 +1422,10 @@ Yüz açısı &lt; kıvrım açısı ise, pürüzsüz gölgeleme kullanılır</t
     <message>
       <source>Clear</source>
       <translation>Temizle</translation>
+    </message>
+    <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
     </message>
   </context>
   <context>
@@ -1840,6 +1840,10 @@ Yüklemek için lütfen http://www.openscad.org/index.html adresini ziyaret edin
       <source>Annotation</source>
       <translation>Not</translation>
     </message>
+    <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1858,6 +1862,10 @@ Yüklemek için lütfen http://www.openscad.org/index.html adresini ziyaret edin
     <message>
       <source>Mesh tools</source>
       <translation>Kafes araçları</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Kesme</translation>
     </message>
   </context>
 </TS>

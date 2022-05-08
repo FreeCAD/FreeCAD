@@ -2282,7 +2282,7 @@ StdCmdViewIvStereoOff::StdCmdViewIvStereoOff()
 void StdCmdViewIvStereoOff::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui,"Gui.activeDocument().activeView().setStereoType(\"None\")");
+    doCommand(Command::Gui,"Gui.activeDocument().activeView().setStereoType(\"Mono\")");
 }
 
 bool StdCmdViewIvStereoOff::isActive(void)

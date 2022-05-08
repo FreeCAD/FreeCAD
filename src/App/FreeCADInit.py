@@ -922,6 +922,17 @@ class ScaleType(IntEnum):
 
 App.ScaleType = ScaleType
 
+class PropertyType(IntEnum):
+    Prop_None = 0
+    Prop_ReadOnly = 1
+    Prop_Transient = 2
+    Prop_Hidden = 4
+    Prop_Output = 8
+    Prop_NoRecompute = 16
+    Prop_NoPersist = 32
+
+App.PropertyType = PropertyType
+
 # clean up namespace
 del(InitApplications)
 del(test_ascii)

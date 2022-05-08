@@ -1385,10 +1385,6 @@ a uma aparência suavizada.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
-      <source>Remesh by gmsh</source>
-      <translation>Malha recriada por gmsh</translation>
-    </message>
-    <message>
       <source>Remeshing Parameter</source>
       <translation>Parâmetro de recriação da malha</translation>
     </message>
@@ -1427,6 +1423,10 @@ a uma aparência suavizada.
     <message>
       <source>Clear</source>
       <translation>Limpar</translation>
+    </message>
+    <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
     </message>
   </context>
   <context>
@@ -1841,6 +1841,10 @@ Favor visitar http://www.openscad.org/index.html para instalá-lo.</translation>
       <source>Annotation</source>
       <translation>Anotação</translation>
     </message>
+    <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1859,6 +1863,10 @@ Favor visitar http://www.openscad.org/index.html para instalá-lo.</translation>
     <message>
       <source>Mesh tools</source>
       <translation>Ferramentas de malha</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Corte</translation>
     </message>
   </context>
 </TS>

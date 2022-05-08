@@ -1385,10 +1385,6 @@ to a smoother appearance.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
-      <source>Remesh by gmsh</source>
-      <translation type="unfinished">Remesh by gmsh</translation>
-    </message>
-    <message>
       <source>Remeshing Parameter</source>
       <translation type="unfinished">Remeshing Parameter</translation>
     </message>
@@ -1427,6 +1423,10 @@ to a smoother appearance.
     <message>
       <source>Clear</source>
       <translation>Vyčistit</translation>
+    </message>
+    <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
     </message>
   </context>
   <context>
@@ -1841,6 +1841,10 @@ Prosím navštivte http://www.openscad.org/index.html a nainstalujte ho.</transl
       <source>Annotation</source>
       <translation>Vysvětlivka</translation>
     </message>
+    <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1859,6 +1863,10 @@ Prosím navštivte http://www.openscad.org/index.html a nainstalujte ho.</transl
     <message>
       <source>Mesh tools</source>
       <translation>Nástroje sítě</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Řez</translation>
     </message>
   </context>
 </TS>

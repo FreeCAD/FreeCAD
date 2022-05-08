@@ -1386,10 +1386,6 @@ sileämpään ulkonäköön.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
-      <source>Remesh by gmsh</source>
-      <translation>Uudista verkkopinta gmsh: llä</translation>
-    </message>
-    <message>
       <source>Remeshing Parameter</source>
       <translation>Verkkopinnan uudistuksen muuttujat</translation>
     </message>
@@ -1428,6 +1424,10 @@ sileämpään ulkonäköön.
     <message>
       <source>Clear</source>
       <translation>Tyhjennä</translation>
+    </message>
+    <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
     </message>
   </context>
   <context>
@@ -1842,6 +1842,10 @@ osoittweessa asentaaksesi ohjelman.</translation>
       <source>Annotation</source>
       <translation>Huomautus</translation>
     </message>
+    <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1860,6 +1864,10 @@ osoittweessa asentaaksesi ohjelman.</translation>
     <message>
       <source>Mesh tools</source>
       <translation>Verkkopintatyökalut</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Leikataan</translation>
     </message>
   </context>
 </TS>
