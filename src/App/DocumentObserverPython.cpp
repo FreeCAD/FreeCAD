@@ -44,8 +44,7 @@ void DocumentObserverPython::addObserver(const Py::Object& obj)
 void DocumentObserverPython::removeObserver(const Py::Object& obj)
 {
     DocumentObserverPython* obs=nullptr;
-    for (std::vector<DocumentObserverPython*>::iterator it =
-        _instances.begin(); it != _instances.end(); ++it) {
+    for (auto it =_instances.begin(); it != _instances.end(); ++it) {
         if ((*it)->inst == obj) {
             obs = *it;
             _instances.erase(it);
@@ -115,8 +114,7 @@ DocumentObserverPython::DocumentObserverPython(const Py::Object& obj) : inst(obj
 }
 
 DocumentObserverPython::~DocumentObserverPython()
-{
-}
+= default;
 
 void DocumentObserverPython::slotCreatedDocument(const App::Document& Doc)
 {

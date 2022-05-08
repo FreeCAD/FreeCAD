@@ -39,10 +39,10 @@
  * PropertyData in the extension chain, there is no parent property data.
  */
 EXTENSION_TYPESYSTEM_SOURCE_P(App::Extension)
-const App::PropertyData * App::Extension::extensionGetPropertyDataPtr(void){return &propertyData;}
-const App::PropertyData & App::Extension::extensionGetPropertyData(void) const{return propertyData;}
+const App::PropertyData * App::Extension::extensionGetPropertyDataPtr(){return &propertyData;}
+const App::PropertyData & App::Extension::extensionGetPropertyData() const{return propertyData;}
 App::PropertyData App::Extension::propertyData;
-void App::Extension::init(void){
+void App::Extension::init(){
 
     assert(Extension::classTypeId == Base::Type::badType() && "don't init() twice!");
 
@@ -54,8 +54,7 @@ void App::Extension::init(void){
 using namespace App;
 
 Extension::Extension()
-{
-}
+= default;
 
 Extension::~Extension()
 {
@@ -65,7 +64,7 @@ Extension::~Extension()
         // not to dec'ref the Python object any more.
         // But we must still invalidate the Python object because it need not to be
         // destructed right now because the interpreter can own several references to it.
-        Base::PyObjectBase* obj = (Base::PyObjectBase*)ExtensionPythonObject.ptr();
+        auto* obj = (Base::PyObjectBase*)ExtensionPythonObject.ptr();
         // Call before decrementing the reference counter, otherwise a heap error can occur
         obj->setInvalid();
     }
@@ -95,7 +94,7 @@ void Extension::initExtension(ExtensionContainer* obj) {
 }
 
 
-PyObject* Extension::getExtensionPyObject(void) {
+PyObject* Extension::getExtensionPyObject() {
 
     if (ExtensionPythonObject.is(Py::_None())){
         // ref counter is set to 1
@@ -116,7 +115,7 @@ std::string Extension::name() const {
     if (pos != std::string::npos)
         return temp.substr(pos+1);
     else
-        return std::string();
+        return {};
 }
 
 

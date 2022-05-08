@@ -114,16 +114,14 @@ FeatureTest::FeatureTest()
 }
 
 FeatureTest::~FeatureTest()
-{
+= default;
 
-}
-
-short FeatureTest::mustExecute(void) const
+short FeatureTest::mustExecute() const
 {
     return DocumentObject::mustExecute();
 }
 
-DocumentObjectExecReturn *FeatureTest::execute(void)
+DocumentObjectExecReturn *FeatureTest::execute()
 {
     /*
 doc=App.newDocument()
@@ -189,7 +187,7 @@ FeatureTestException::FeatureTestException()
     ADD_PROPERTY(ExceptionType,(Base::Exception::getClassTypeId().getKey())  );
 }
 
-DocumentObjectExecReturn *FeatureTestException::execute(void)
+DocumentObjectExecReturn *FeatureTestException::execute()
 {
     //ExceptionType;
     throw Base::RuntimeError("FeatureTestException::execute(): Testexception  ;-)");

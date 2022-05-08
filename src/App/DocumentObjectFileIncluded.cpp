@@ -36,6 +36,5 @@ DocumentObjectFileIncluded::DocumentObjectFileIncluded()
 }
 
 DocumentObjectFileIncluded::~DocumentObjectFileIncluded()
-{
-}
+= default;
 

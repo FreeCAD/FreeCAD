@@ -36,8 +36,7 @@ namespace sp = std::placeholders;
 
 
 DocumentT::DocumentT()
-{
-}
+= default;
 
 DocumentT::DocumentT(Document* doc)
 {
@@ -55,8 +54,7 @@ DocumentT::DocumentT(const DocumentT& doc)
 }
 
 DocumentT::~DocumentT()
-{
-}
+= default;
 
 void DocumentT::operator=(const DocumentT& doc)
 {
@@ -95,8 +93,7 @@ std::string DocumentT::getDocumentPython() const
 // -----------------------------------------------------------------------------
 
 DocumentObjectT::DocumentObjectT()
-{
-}
+= default;
 
 DocumentObjectT::DocumentObjectT(const DocumentObjectT &other)
 {
@@ -134,8 +131,7 @@ DocumentObjectT::DocumentObjectT(const char *docName, const char *objName)
 }
 
 DocumentObjectT::~DocumentObjectT()
-{
-}
+= default;
 
 DocumentObjectT &DocumentObjectT::operator=(const DocumentObjectT& obj)
 {
@@ -251,7 +247,7 @@ std::string DocumentObjectT::getPropertyPython() const
 {
     std::stringstream str;
     str << getObjectPython();
-    if (property.size())
+    if (!property.empty())
         str << '.' << property;
     return str.str();
 }
@@ -266,7 +262,7 @@ Property *DocumentObjectT::getProperty() const {
 // -----------------------------------------------------------------------------
 
 SubObjectT::SubObjectT()
-{}
+= default;
 
 SubObjectT::SubObjectT(const SubObjectT &other)
     :DocumentObjectT(other), subname(other.subname)
@@ -373,7 +369,7 @@ std::string SubObjectT::getNewElementName() const {
     std::pair<std::string, std::string> element;
     auto obj = getObject();
     if(!obj)
-        return std::string();
+        return {};
     GeoFeature::resolveElement(obj,subname.c_str(),element);
     return std::move(element.first);
 }
@@ -382,7 +378,7 @@ std::string SubObjectT::getOldElementName(int *index) const {
     std::pair<std::string, std::string> element;
     auto obj = getObject();
     if(!obj)
-        return std::string();
+        return {};
     GeoFeature::resolveElement(obj,subname.c_str(),element);
     if(!index)
         return std::move(element.second);
@@ -431,7 +427,7 @@ std::string SubObjectT::getObjectFullName(const char *docName) const
         ss << "#";
     }
     ss << getObjectName();
-    if (getObjectLabel().size() && getObjectLabel() != getObjectName())
+    if (!getObjectLabel().empty() && getObjectLabel() != getObjectName())
         ss << " (" << getObjectLabel() << ")";
     return ss.str();
 }
@@ -580,8 +576,7 @@ DocumentWeakPtrT::DocumentWeakPtrT(App::Document* doc) noexcept
 }
 
 DocumentWeakPtrT::~DocumentWeakPtrT()
-{
-}
+= default;
 
 void DocumentWeakPtrT::reset() noexcept
 {
@@ -660,9 +655,7 @@ DocumentObjectWeakPtrT::DocumentObjectWeakPtrT(App::DocumentObject* obj)
 }
 
 DocumentObjectWeakPtrT::~DocumentObjectWeakPtrT()
-{
-
-}
+= default;
 
 App::DocumentObject* DocumentObjectWeakPtrT::_get() const noexcept
 {
@@ -800,12 +793,10 @@ void DocumentObserver::slotRecomputedDocument(const Document& /*doc*/)
 // -----------------------------------------------------------------------------
 
 DocumentObjectObserver::DocumentObjectObserver()
-{
-}
+= default;
 
 DocumentObjectObserver::~DocumentObjectObserver()
-{
-}
+= default;
 
 DocumentObjectObserver::const_iterator DocumentObjectObserver::begin() const
 {
@@ -846,7 +837,7 @@ void DocumentObjectObserver::slotCreatedObject(const App::DocumentObject&)
 
 void DocumentObjectObserver::slotDeletedObject(const App::DocumentObject& Obj)
 {
-    std::set<App::DocumentObject*>::iterator it = _objects.find
+    auto it = _objects.find
         (const_cast<App::DocumentObject*>(&Obj));
     if (it != _objects.end())
         _objects.erase(it);

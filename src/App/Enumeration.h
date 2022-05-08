@@ -121,28 +121,28 @@ namespace App
             /*!
              * Returns NULL if the enumeration is invalid.
              */
-            const char * getCStr(void) const;
+            const char * getCStr() const;
 
             /// Return value as integer
             /*!
              * Returns -1 if the Enumeration isn't valid
              */
-            int getInt(void) const;
+            int getInt() const;
 
             /// get all possible enum values as vector of strings
-            std::vector<std::string> getEnumVector(void) const;
+            std::vector<std::string> getEnumVector() const;
 
             /// get pointer to the enum list
-            const char ** getEnums(void) const;
+            const char ** getEnums() const;
 
             /// Returns true if the instance is in a usable state
-            bool isValid(void) const;
+            bool isValid() const;
 
             /// Returns the highest usable integer value for this enum
             /*!
              * Returns -1 if the enumeration is not valid according to isValid()
              */
-            int maxValue(void) const {return _maxVal;}
+            int maxValue() const {return _maxVal;}
 
             /// Assignment operator
             Enumeration & operator=(const Enumeration &other);
@@ -160,16 +160,16 @@ namespace App
             bool operator==(const char *other) const;
         protected:
             /// Returns true if instance was not initialized via static string list
-            bool isCustom(void) const {return _ownEnumArray;}
+            bool isCustom() const {return _ownEnumArray;}
 
             /// Updates _maxVal
-            void findMaxVal(void);
+            void findMaxVal();
 
             /// De-allocates memory used in _EnumArray
             /*!
              * Important to not call this unless this Enumeration owns array.
              */
-            void tearDown(void);
+            void tearDown();
 
         private:
             /// Handle to C Strings of possible enumeration values

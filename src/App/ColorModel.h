@@ -266,8 +266,8 @@ public:
     void setCountColors (std::size_t usCt) {
         set(colorModel, fMin, fMax, usCt);
     }
-    void setRange (float fMin, float fMax) {
-        set(colorModel, fMin, fMax, ctColors);
+    void setRange (float ffMin, float ffMax) {
+        set(colorModel, ffMin, ffMax, ctColors);
     }
     void getRange (float &rfMin, float &rfMax) {
         rfMin = fMin; rfMax = fMax;
@@ -310,6 +310,7 @@ inline Color ColorField::getColor (float fVal) const
 {
     // if the value is outside or at the border of the range
     std::size_t ct = colorModel.getCountColors() - 1;
+
     if ( fVal <= fMin )
         return colorModel.colors[0];
     else if ( fVal >= fMax )
@@ -442,7 +443,7 @@ class AppExport ColorLegend
 public:
     ColorLegend ();
     ColorLegend (const ColorLegend &rclCL);
-    virtual ~ColorLegend () {}
+    virtual ~ColorLegend () = default;
 
     ColorLegend& operator = (const ColorLegend &rclCL);
     bool operator == (const ColorLegend &rclCL) const;

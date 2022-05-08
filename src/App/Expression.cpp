@@ -30,6 +30,7 @@
 # pragma clang diagnostic ignored "-Wdelete-non-virtual-dtor"
 #endif
 
+#include <memory>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/math/special_functions/round.hpp>
 #include <boost/math/special_functions/trunc.hpp>
@@ -455,7 +456,7 @@ App::any pyObjectToAny(Py::Object value, bool check) {
         return App::any(pyObjectWrap(pyvalue));
 
     if (PyObject_TypeCheck(pyvalue, &Base::QuantityPy::Type)) {
-        Base::QuantityPy * qp = static_cast<Base::QuantityPy*>(pyvalue);
+        auto * qp = static_cast<Base::QuantityPy*>(pyvalue);
         Base::Quantity * q = qp->getQuantityPtr();
 
         return App::any(*q);
@@ -935,7 +936,7 @@ public:
         :deps(deps)
     {}
 
-    virtual void visit(Expression &e) {
+    void visit(Expression &e) override {
         this->getIdentifiers(e,deps);
     }
 
@@ -959,7 +960,7 @@ public:
         :inList(inList),res(false)
     {}
 
-    virtual void visit(Expression &e) {
+    void visit(Expression &e) override {
         if(this->adjustLinks(e,inList))
             res = true;
     }
@@ -980,7 +981,7 @@ public:
         :subNameMap(subNameMap)
     {}
 
-    virtual void visit(Expression &e) {
+    void visit(Expression &e) override {
         this->importSubNames(e,subNameMap);
     }
 
@@ -1005,7 +1006,7 @@ ExpressionPtr Expression::importSubNames(const std::map<std::string,std::string>
                     continue;
                 std::string imported = PropertyLinkBase::tryImportSubName(
                                obj,key.second.c_str(),owner->getDocument(), nameMap);
-                if(imported.size())
+                if(!imported.empty())
                     subNameMap.emplace(std::move(key),std::move(imported));
             }
         }
@@ -1024,7 +1025,7 @@ public:
         :obj(obj),ref(ref),newLabel(newLabel)
     {}
 
-    virtual void visit(Expression &e) {
+    void visit(Expression &e) override {
         this->updateLabelReference(e,obj,ref,newLabel);
     }
 
@@ -1037,7 +1038,7 @@ ExpressionPtr Expression::updateLabelReference(
         App::DocumentObject *obj, const std::string &ref, const char *newLabel) const
 {
     if(ref.size()<=2)
-        return ExpressionPtr();
+        return {};
     std::vector<std::string> labels;
     for(auto &v : getIdentifiers())
         v.first.getDepLabels(labels);
@@ -1050,7 +1051,7 @@ ExpressionPtr Expression::updateLabelReference(
             return ExpressionPtr(expr);
         }
     }
-    return ExpressionPtr();
+    return {};
 }
 
 class ReplaceObjectExpressionVisitor : public ExpressionVisitor {
@@ -1086,7 +1087,7 @@ ExpressionPtr Expression::replaceObject(const DocumentObject *parent,
     const_cast<Expression*>(this)->visit(v);
 
     if(v.paths.empty())
-        return ExpressionPtr();
+        return {};
 
     // Now make a copy and do the actual replacement
     auto expr = copy();
@@ -1103,7 +1104,7 @@ App::any Expression::getValueAsAny() const {
 Py::Object Expression::getPyValue() const {
     try {
         Py::Object pyobj = _getPyValue();
-        if(components.size()) {
+        if(!components.empty()) {
             for(auto &c : components)
                 pyobj = c->get(this,pyobj);
         }
@@ -1437,7 +1438,7 @@ static Py::Object calc(const Expression *expr, int op,
             if(!res) EXPR_PY_THROW(expr);
             return Py::asObject(res);
         }
-        _BINARY_OP(Add);
+        _BINARY_OP(Add)
     }
     case OperatorExpression::POW: {
         PyObject *res;
@@ -1580,11 +1581,9 @@ void OperatorExpression::_toString(std::ostream &s, bool persistent,int) const
     if (right->priority() < priority()) // Check on operator priority first
         needsParens = true;
     else if (rightOperator == op) { // Equal priority?
-        if (!isRightAssociative())
+        if (!isRightAssociative() || !isCommutative())
             needsParens = true;
-        else if (!isCommutative())
-            needsParens = true;
-    }
+            }
     else if (right->priority() == priority()) {
         if (!isRightAssociative())
             needsParens = true;
@@ -1763,7 +1762,7 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
     case MAX:
     case CREATE:
     case MSCALE:
-        if (args.size() == 0)
+        if (args.empty())
             EXPR_THROW("Invalid number of arguments: at least one required.");
         break;
     case LIST:
@@ -1780,7 +1779,7 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
 
 FunctionExpression::~FunctionExpression()
 {
-    std::vector<Expression*>::iterator i = args.begin();
+    auto i = args.begin();
 
     while (i != args.end()) {
         delete *i;
@@ -1797,7 +1796,7 @@ FunctionExpression::~FunctionExpression()
 
 bool FunctionExpression::isTouched() const
 {
-    std::vector<Expression*>::const_iterator i = args.begin();
+    auto i = args.begin();
 
     while (i != args.end()) {
         if ((*i)->isTouched())
@@ -1812,7 +1811,7 @@ bool FunctionExpression::isTouched() const
 class Collector {
 public:
     Collector() : first(true) { }
-    virtual ~Collector() {}
+    virtual ~Collector() = default;
     virtual void collect(Quantity value) {
         if (first)
             q.setUnit(value.getUnit());
@@ -1829,7 +1828,7 @@ class SumCollector : public Collector {
 public:
     SumCollector() : Collector() { }
 
-    void collect(Quantity value) {
+    void collect(Quantity value) override {
         Collector::collect(value);
         q += value;
         first = false;
@@ -1841,14 +1840,14 @@ class AverageCollector : public Collector {
 public:
     AverageCollector() : Collector(), n(0) { }
 
-    void collect(Quantity value) {
+    void collect(Quantity value) override {
         Collector::collect(value);
         q += value;
         ++n;
         first = false;
     }
 
-    virtual Quantity getQuantity() const { return q/(double)n; }
+    Quantity getQuantity() const override { return q/(double)n; }
 
 private:
     unsigned int n;
@@ -1858,7 +1857,7 @@ class StdDevCollector : public Collector {
 public:
     StdDevCollector() : Collector(), n(0) { }
 
-    void collect(Quantity value) {
+    void collect(Quantity value) override {
         Collector::collect(value);
         if (first) {
             M2 = Quantity(0, value.getUnit() * value.getUnit());
@@ -1873,7 +1872,7 @@ public:
         first = false;
     }
 
-    virtual Quantity getQuantity() const {
+    Quantity getQuantity() const override {
         if (n < 2)
             throw ExpressionError("Invalid number of entries: at least two required.");
         else
@@ -1890,13 +1889,13 @@ class CountCollector : public Collector {
 public:
     CountCollector() : Collector(), n(0) { }
 
-    void collect(Quantity value) {
+    void collect(Quantity value) override {
         Collector::collect(value);
         ++n;
         first = false;
     }
 
-    virtual Quantity getQuantity() const { return Quantity(n); }
+    Quantity getQuantity() const override { return Quantity(n); }
 
 private:
     unsigned int n;
@@ -1906,7 +1905,7 @@ class MinCollector : public Collector {
 public:
     MinCollector() : Collector() { }
 
-    void collect(Quantity value) {
+    void collect(Quantity value) override {
         Collector::collect(value);
         if (first || value < q)
             q = value;
@@ -1918,7 +1917,7 @@ class MaxCollector : public Collector {
 public:
     MaxCollector() : Collector() { }
 
-    void collect(Quantity value) {
+    void collect(Quantity value) override {
         Collector::collect(value);
         if (first || value > q)
             q = value;
@@ -1933,22 +1932,22 @@ Py::Object FunctionExpression::evalAggregate(
 
     switch (f) {
     case SUM:
-        c.reset(new SumCollector);
+        c = std::make_unique<SumCollector>();
         break;
     case AVERAGE:
-        c.reset(new AverageCollector);
+        c = std::make_unique<AverageCollector>();
         break;
     case STDDEV:
-        c.reset(new StdDevCollector);
+        c = std::make_unique<StdDevCollector>();
         break;
     case COUNT:
-        c.reset(new CountCollector);
+        c = std::make_unique<CountCollector>();
         break;
     case MIN:
-        c.reset(new MinCollector);
+        c = std::make_unique<MinCollector>();
         break;
     case MAX:
-        c.reset(new MaxCollector);
+        c = std::make_unique<MaxCollector>();
         break;
     default:
         assert(false);
@@ -2159,7 +2158,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
 
         // All components of unit must be either zero or dividable by 2
         UnitSignature s = unit.getSignature();
-        if ( !((s.Length % 2) == 0) &&
+        if ((s.Length % 2) != 0 &&
               ((s.Mass % 2) == 0) &&
               ((s.Time % 2) == 0) &&
               ((s.ElectricCurrent % 2) == 0) &&
@@ -2328,8 +2327,8 @@ Expression *FunctionExpression::simplify() const
     std::vector<Expression*> a;
 
     // Try to simplify each argument to function
-    for (auto it = args.begin(); it != args.end(); ++it) {
-        Expression * v = (*it)->simplify();
+    for (const auto arg : args) {
+        Expression * v = arg->simplify();
 
         if (freecad_dynamic_cast<NumberExpression>(v))
             ++numerics;
@@ -2340,8 +2339,8 @@ Expression *FunctionExpression::simplify() const
         // All constants, then evaluation must also be constant
 
         // Clean-up
-        for (auto it = args.begin(); it != args.end(); ++it)
-            delete *it;
+        for (const auto arg : args)
+            delete arg;
 
         return eval();
     }
@@ -2359,81 +2358,81 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
 {
     switch (f) {
     case ACOS:
-        ss << "acos("; break;;
+        ss << "acos("; break;
     case ASIN:
-        ss << "asin("; break;;
+        ss << "asin("; break;
     case ATAN:
-        ss << "atan("; break;;
+        ss << "atan("; break;
     case ABS:
-        ss << "abs("; break;;
+        ss << "abs("; break;
     case EXP:
-        ss << "exp("; break;;
+        ss << "exp("; break;
     case LOG:
-        ss << "log("; break;;
+        ss << "log("; break;
     case LOG10:
-        ss << "log10("; break;;
+        ss << "log10("; break;
     case SIN:
-        ss << "sin("; break;;
+        ss << "sin("; break;
     case SINH:
-        ss << "sinh("; break;;
+        ss << "sinh("; break;
     case TAN:
-        ss << "tan("; break;;
+        ss << "tan("; break;
     case TANH:
-        ss << "tanh("; break;;
+        ss << "tanh("; break;
     case SQRT:
-        ss << "sqrt("; break;;
+        ss << "sqrt("; break;
     case COS:
-        ss << "cos("; break;;
+        ss << "cos("; break;
     case COSH:
-        ss << "cosh("; break;;
+        ss << "cosh("; break;
     case MOD:
-        ss << "mod("; break;;
+        ss << "mod("; break;
     case ATAN2:
-        ss << "atan2("; break;;
+        ss << "atan2("; break;
     case POW:
-        ss << "pow("; break;;
+        ss << "pow("; break;
     case HYPOT:
-        ss << "hypot("; break;;
+        ss << "hypot("; break;
     case CATH:
-        ss << "cath("; break;;
+        ss << "cath("; break;
     case ROUND:
-        ss << "round("; break;;
+        ss << "round("; break;
     case TRUNC:
-        ss << "trunc("; break;;
+        ss << "trunc("; break;
     case CEIL:
-        ss << "ceil("; break;;
+        ss << "ceil("; break;
     case FLOOR:
-        ss << "floor("; break;;
+        ss << "floor("; break;
     case SUM:
-        ss << "sum("; break;;
+        ss << "sum("; break;
     case COUNT:
-        ss << "count("; break;;
+        ss << "count("; break;
     case AVERAGE:
-        ss << "average("; break;;
+        ss << "average("; break;
     case STDDEV:
-        ss << "stddev("; break;;
+        ss << "stddev("; break;
     case MIN:
-        ss << "min("; break;;
+        ss << "min("; break;
     case MAX:
-        ss << "max("; break;;
+        ss << "max("; break;
     case LIST:
-        ss << "list("; break;;
+        ss << "list("; break;
     case TUPLE:
-        ss << "tuple("; break;;
+        ss << "tuple("; break;
     case MSCALE:
-        ss << "mscale("; break;;
+        ss << "mscale("; break;
     case MINVERT:
-        ss << "minvert("; break;;
+        ss << "minvert("; break;
     case CREATE:
-        ss << "create("; break;;
+        ss << "create("; break;
     case STR:
-        ss << "str("; break;;
+        ss << "str("; break;
     case HIDDENREF:
-        ss << "hiddenref("; break;;
+        ss << "hiddenref("; break;
     case HREF:
-        ss << "href("; break;;
+        ss << "href("; break;
     default:
-        ss << fname << "("; break;;
+        ss << fname << "("; break;
     }
     for (size_t i = 0; i < args.size(); ++i) {
         ss << args[i]->toString(persistent);
@@ -2451,7 +2450,7 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
 
 Expression *FunctionExpression::_copy() const
 {
-    std::vector<Expression*>::const_iterator i = args.begin();
+    auto i = args.begin();
     std::vector<Expression*> a;
 
     while (i != args.end()) {
@@ -2463,7 +2462,7 @@ Expression *FunctionExpression::_copy() const
 
 void FunctionExpression::_visit(ExpressionVisitor &v)
 {
-    std::vector<Expression*>::const_iterator i = args.begin();
+    auto i = args.begin();
 
     HiddenReference ref(f == HIDDENREF || f == HREF);
     while (i != args.end()) {
@@ -2485,8 +2484,7 @@ VariableExpression::VariableExpression(const DocumentObject *_owner, const Objec
 }
 
 VariableExpression::~VariableExpression()
-{
-}
+= default;
 
 /**
   * Determine if the expression is touched or not, i.e whether the Property object it
@@ -2524,7 +2522,7 @@ const Property * VariableExpression::getProperty() const
 
 void VariableExpression::addComponent(Component *c) {
     do {
-        if(components.size())
+        if(!components.empty())
             break;
         if(!c->e1 && !c->e2) {
             var << c->comp;
@@ -2847,7 +2845,7 @@ Py::Object ConditionalExpression::_getPyValue() const {
 Expression *ConditionalExpression::simplify() const
 {
     std::unique_ptr<Expression> e(condition->simplify());
-    NumberExpression * v = freecad_dynamic_cast<NumberExpression>(e.get());
+    auto * v = freecad_dynamic_cast<NumberExpression>(e.get());
 
     if (v == nullptr)
         return new ConditionalExpression(owner, condition->simplify(), trueExpr->simplify(), falseExpr->simplify());
@@ -3184,7 +3182,7 @@ static int column;
 
 // show the parser the lexer method
 #define yylex ExpressionParserlex
-int ExpressionParserlex(void);
+int ExpressionParserlex();
 
 // Parser, defined in ExpressionParser.y
 # define YYTOKENTYPE
@@ -3277,7 +3275,7 @@ std::vector<std::tuple<int, int, std::string> > tokenize(const std::string &str)
     column = 0;
     try {
         while ( (token  = ExpressionParserlex()) != 0)
-            result.push_back(std::make_tuple(token, ExpressionParser::last_column, yytext));
+            result.emplace_back(token, ExpressionParser::last_column, yytext);
     }
     catch (...) {
         // Ignore all exceptions
@@ -3353,11 +3351,11 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
     Expression * simplified = ScanResult->simplify();
 
     if (!unitExpression) {
-        OperatorExpression * fraction = freecad_dynamic_cast<OperatorExpression>(ScanResult);
+        auto * fraction = freecad_dynamic_cast<OperatorExpression>(ScanResult);
 
         if (fraction && fraction->getOperator() == OperatorExpression::DIV) {
-            NumberExpression * nom = freecad_dynamic_cast<NumberExpression>(fraction->getLeft());
-            UnitExpression * denom = freecad_dynamic_cast<UnitExpression>(fraction->getRight());
+            auto * nom = freecad_dynamic_cast<NumberExpression>(fraction->getLeft());
+            auto * denom = freecad_dynamic_cast<UnitExpression>(fraction->getRight());
 
             // If not initially a unit expression, but value is equal to 1, it means the expression is something like 1/unit
             if (denom && nom && essentiallyEqual(nom->getValue(), 1.0))
@@ -3367,7 +3365,7 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
     delete ScanResult;
 
     if (unitExpression) {
-        NumberExpression * num = freecad_dynamic_cast<NumberExpression>(simplified);
+        auto * num = freecad_dynamic_cast<NumberExpression>(simplified);
 
         if (num) {
            simplified = new UnitExpression(num->getOwner(), num->getQuantity());

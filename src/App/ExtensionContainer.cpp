@@ -36,9 +36,7 @@ using namespace App;
 
 TYPESYSTEM_SOURCE(App::ExtensionContainer, App::PropertyContainer)
 
-ExtensionContainer::ExtensionContainer() {
-
-}
+ExtensionContainer::ExtensionContainer() = default;
 
 ExtensionContainer::~ExtensionContainer() {
 
@@ -56,7 +54,7 @@ void ExtensionContainer::registerExtension(Base::Type extension, Extension* ext)
 
     //no duplicate extensions (including base classes)
     if(hasExtension(extension)) {
-        for(auto entry : _extensions) {
+        for(const auto &entry : _extensions) {
             if(entry.first == extension || entry.first.isDerivedFrom(extension)) {
                 _extensions.erase(entry.first);
                 break;
@@ -73,7 +71,7 @@ bool ExtensionContainer::hasExtension(Base::Type t, bool derived) const {
     bool found = _extensions.find(t) != _extensions.end();
     if(!found && derived) {
         //and for types derived from it, as they can be cast to the extension
-        for(auto entry : _extensions) {
+         for(const auto &entry : _extensions) {
             if(entry.first.isDerivedFrom(t))
                 return true;
         }
@@ -85,7 +83,7 @@ bool ExtensionContainer::hasExtension(Base::Type t, bool derived) const {
 bool ExtensionContainer::hasExtension(const std::string& name) const {
 
     //and for types derived from it, as they can be cast to the extension
-    for(auto entry : _extensions) {
+    for(const auto &entry : _extensions) {
         if(entry.second->name() == name)
             return true;
     }
@@ -98,7 +96,7 @@ Extension* ExtensionContainer::getExtension(Base::Type t, bool derived, bool no_
     auto result = _extensions.find(t);
     if((result == _extensions.end()) && derived) {
         //we need to check for derived types
-        for(auto entry : _extensions) {
+        for(const auto &entry : _extensions) {
             if(entry.first.isDerivedFrom(t))
                 return entry.second;
         }
@@ -126,7 +124,7 @@ bool ExtensionContainer::hasExtensions() const {
 Extension* ExtensionContainer::getExtension(const std::string& name) const {
 
     //and for types derived from it, as they can be cast to the extension
-    for(auto entry : _extensions) {
+    for(const auto &entry : _extensions) {
         if(entry.second->name() == name)
             return entry.second;
     }
@@ -137,7 +135,7 @@ std::vector< Extension* > ExtensionContainer::getExtensionsDerivedFrom(Base::Typ
 
     std::vector<Extension*> vec;
     //and for types derived from it, as they can be cast to the extension
-    for(auto entry : _extensions) {
+    for(const auto &entry : _extensions) {
         if(entry.first.isDerivedFrom(type))
             vec.push_back(entry.second);
     }
@@ -146,13 +144,13 @@ std::vector< Extension* > ExtensionContainer::getExtensionsDerivedFrom(Base::Typ
 
 void ExtensionContainer::getPropertyList(std::vector< Property* >& List) const {
     App::PropertyContainer::getPropertyList(List);
-    for(auto entry : _extensions)
+    for(const auto &entry : _extensions)
         entry.second->extensionGetPropertyList(List);
 }
 
 void ExtensionContainer::getPropertyMap(std::map< std::string, Property* >& Map) const {
     App::PropertyContainer::getPropertyMap(Map);
-    for(auto entry : _extensions)
+    for(const auto &entry : _extensions)
         entry.second->extensionGetPropertyMap(Map);
 }
 
@@ -161,10 +159,10 @@ Property* ExtensionContainer::getPropertyByName(const char* name) const {
     if(prop)
         return prop;
 
-    for(auto entry : _extensions) {
-        auto prop = entry.second->extensionGetPropertyByName(name);
-        if(prop)
-            return prop;
+    for(const auto &entry : _extensions) {
+        auto prop2 = entry.second->extensionGetPropertyByName(name);
+        if(prop2)
+            return prop2;
     }
 
     return nullptr;
@@ -176,7 +174,7 @@ short int ExtensionContainer::getPropertyType(const Property* prop) const {
     if(res != 0)
         return res;
 
-    for(auto entry : _extensions) {
+    for(const auto &entry : _extensions) {
         res = entry.second->extensionGetPropertyType(prop);
         if(res != 0)
             return res;
@@ -191,7 +189,7 @@ short int ExtensionContainer::getPropertyType(const char* name) const {
     if(res != 0)
         return res;
 
-    for(auto entry : _extensions) {
+    for(const auto &entry : _extensions) {
         res = entry.second->extensionGetPropertyType(name);
         if(res != 0)
             return res;
@@ -207,7 +205,7 @@ const char* ExtensionContainer::getPropertyName(const Property* prop) const {
     if(res != nullptr)
         return res;
 
-    for(auto entry : _extensions) {
+    for(const auto &entry : _extensions) {
         res = entry.second->extensionGetPropertyName(prop);
         if(res != nullptr)
             return res;
@@ -222,7 +220,7 @@ const char* ExtensionContainer::getPropertyGroup(const Property* prop) const {
     if(res != nullptr)
         return res;
 
-    for(auto entry : _extensions) {
+    for(const auto &entry : _extensions) {
         res = entry.second->extensionGetPropertyGroup(prop);
         if(res != nullptr)
             return res;
@@ -237,7 +235,7 @@ const char* ExtensionContainer::getPropertyGroup(const char* name) const {
     if(res != nullptr)
         return res;
 
-    for(auto entry : _extensions) {
+    for(const auto &entry : _extensions) {
         res = entry.second->extensionGetPropertyGroup(name);
         if(res != nullptr)
             return res;
@@ -253,7 +251,7 @@ const char* ExtensionContainer::getPropertyDocumentation(const Property* prop) c
     if(res != nullptr)
         return res;
 
-    for(auto entry : _extensions) {
+    for(const auto &entry : _extensions) {
         res = entry.second->extensionGetPropertyDocumentation(prop);
         if(res != nullptr)
             return res;
@@ -268,7 +266,7 @@ const char* ExtensionContainer::getPropertyDocumentation(const char* name) const
     if(res != nullptr)
         return res;
 
-    for(auto entry : _extensions) {
+    for(const auto &entry : _extensions) {
         res = entry.second->extensionGetPropertyDocumentation(name);
         if(res != nullptr)
             return res;
@@ -318,7 +316,7 @@ void ExtensionContainer::saveExtensions(Base::Writer& writer) const {
     //save dynamic extensions
     writer.incInd(); // indentation for 'Extensions'
     writer.Stream() << writer.ind() << "<Extensions Count=\"" << _extensions.size() << "\">" << std::endl;
-    for(auto entry : _extensions) {
+    for(const auto &entry : _extensions) {
 
         auto ext = entry.second;
         writer.incInd(); // indentation for 'Extension name'

@@ -40,8 +40,7 @@ using namespace App;
 
 
 DynamicProperty::DynamicProperty()
-{
-}
+= default;
 
 DynamicProperty::~DynamicProperty()
 {
@@ -189,7 +188,7 @@ Property* DynamicProperty::addDynamicProperty(PropertyContainer &pc, const char*
                 << pc.getFullName() << '.' << name << " of type " << type);
     }
 
-    Property* pcProperty = static_cast<Property*>(propInstance);
+    auto* pcProperty = static_cast<Property*>(propInstance);
 
     auto res = props.get<0>().emplace(pcProperty,name, nullptr, group, doc, attr, ro, hidden);
 
