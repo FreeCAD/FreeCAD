@@ -24,6 +24,7 @@
 #ifndef SKETCHER_CONSTRAINT_H
 #define SKETCHER_CONSTRAINT_H
 
+#include <array>
 
 #include <Base/Persistence.h>
 #include <Base/Quantity.h>
@@ -75,6 +76,7 @@ enum InternalAlignmentType {
     ParabolaFocus           = 8,
     BSplineControlPoint     = 9,
     BSplineKnotPoint        = 10,
+    NumInternalAlignmentType // must be the last item!
 };
 
 class SketcherExport Constraint : public Base::Persistence
@@ -121,6 +123,12 @@ public:
     /// utility function to swap the index in First/Second/Third of the provided constraint from the fromGeoId GeoId to toGeoId
     void substituteIndex(int fromGeoId, int toGeoId);
 
+    std::string typeToString() const {return typeToString(Type);}
+    static std::string typeToString(ConstraintType type);
+
+    std::string internalAlignmentTypeToString() const {return internalAlignmentTypeToString(AlignmentType);}
+    static std::string internalAlignmentTypeToString(InternalAlignmentType alignment);
+
     friend class PropertyConstraintList;
 
 private:
@@ -128,6 +136,17 @@ private:
 
 private:
     double Value;
+
+    constexpr static std::array<const char *,ConstraintType::NumConstraintTypes> type2str {
+        {   "None", "Horizontal", "Vertical","Parallel", "Tangent", "Distance", "DistanceX", "DistanceY", "Angle", "Perpendicular", "Radius",
+            "Equal", "PointOnObject", "Symmetric", "InternalAlignment", "SnellsLaw", "Block", "Diameter", "Weight"}
+    };
+
+    constexpr static std::array<const char *,InternalAlignmentType::NumInternalAlignmentType> internalAlignmentType2str {
+        {   "Undef", "EllipseMajorDiameter", "EllipseMinorDiameter", "EllipseFocus1", "EllipseFocus2", "HyperbolaMajor", "HyperbolaMinor",
+            "HyperbolaFocus", "ParabolaFocus", "BSplineControlPoint", "BSplineKnotPoint"}
+    };
+
 public:
     ConstraintType Type;
     InternalAlignmentType AlignmentType;
