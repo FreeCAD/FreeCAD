@@ -69,14 +69,14 @@ dragObject(obj)
 </UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="canDropObject">
+        <Methode Name="canDropObject" Keyword="true">
             <Documentation>
                 <UserDocu>check whether the child object can be added by dropping
 canDropObject(obj=None,owner=None,subname=None)
 </UserDocu>
             </Documentation>
         </Methode>
-        <Methode Name="dropObject">
+        <Methode Name="dropObject" Keyword="true">
             <Documentation>
                 <UserDocu>add a child object by dropping
 dropObject(obj,owner=None,subname=None)</UserDocu>
