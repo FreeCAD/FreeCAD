@@ -914,9 +914,17 @@ void Expression::getDepObjects(
     for(auto &v : getIdentifiers()) {
         bool hidden = v.second;
         const ObjectIdentifier &var = v.first;
-        for(auto &dep : var.getDep(false,labels)) {
+        std::vector<std::string> strings;
+        for(auto &dep : var.getDep(false, &strings)) {
             DocumentObject *obj = dep.first;
-            auto res = deps.insert(std::make_pair(obj,hidden));
+            if (obj->testStatus(ObjectStatus::Remove))
+                continue;
+
+            if (labels) {
+                std::copy(strings.begin(), strings.end(), std::back_inserter(*labels));
+            }
+
+            auto res = deps.insert(std::make_pair(obj, hidden));
             if(!hidden || res.second)
                 res.first->second = hidden;
         }
