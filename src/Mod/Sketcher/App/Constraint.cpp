@@ -228,3 +228,13 @@ void Constraint::substituteIndex(int fromGeoId, int toGeoId)
         this->Third = toGeoId;
     }
 }
+
+std::string Constraint::typeToString(ConstraintType type)
+{
+    return type2str[type];
+}
+
+std::string Constraint::internalAlignmentTypeToString(InternalAlignmentType alignment)
+{
+    return internalAlignmentType2str[alignment];
+}
