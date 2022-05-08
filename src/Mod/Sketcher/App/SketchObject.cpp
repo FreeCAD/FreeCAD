@@ -694,6 +694,24 @@ int SketchObject::setUpSketch()
         Constraints.touch();
 
     return lastDoF;
+}
+
+int SketchObject::diagnoseAdditionalConstraints(std::vector<Sketcher::Constraint *> additionalconstraints)
+{
+    auto objectconstraints = Constraints.getValues();
+
+    std::vector<Sketcher::Constraint *> allconstraints;
+    allconstraints.reserve(objectconstraints.size()+additionalconstraints.size());
+
+    std::copy(objectconstraints.begin(), objectconstraints.end(), back_inserter(allconstraints));
+    std::copy(additionalconstraints.begin(), additionalconstraints.end(), back_inserter(allconstraints));
+
+    lastDoF = solvedSketch.setUpSketch(getCompleteGeometry(), allconstraints,
+                                       getExternalGeometryCount());
+
+    retrieveSolverDiagnostics();
+
+    return lastDoF;
 
 }
 
