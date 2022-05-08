@@ -148,6 +148,14 @@ A positive kink angle represents a move to the left, and a negative angle repres
     def angle(self):
         return normalizeAngle(self.t1 - self.t0)
 
+    def position(self):
+        return self.m0.positionEnd()
+
+    def x(self):
+        return self.position().x
+
+    def y(self):
+        return self.position().y
 
 class Maneuver (object):
     '''A series of instructions and moves'''
@@ -167,20 +175,6 @@ class Maneuver (object):
 
     def getMoves(self):
         return [instr for instr in self.instr if instr.isMove()]
-
-    def kinks(self):
-        k = []
-        moves = self.getMoves()
-        if moves:
-            move0 = moves[0]
-            prev = move0
-            for m in moves[1:]:
-                k.append(Kink(prev, m))
-                prev = m
-            if PathGeom.pointsCoincide(move0.positionBegin(), prev.positionEnd()):
-                k.append(Kink(prev, move0))
-        return k
-
 
     def __repr__(self):
         if self.instr:
@@ -216,9 +210,32 @@ class Maneuver (object):
     def FromGCode(cls, gcode, begin=None):
         return cls.FromPath(Path.Path(gcode), begin)
 
+def createKinks(maneuver):
+    k = []
+    moves = maneuver.getMoves()
+    if moves:
+        move0 = moves[0]
+        prev = move0
+        for m in moves[1:]:
+            k.append(Kink(prev, m))
+            prev = m
+        if PathGeom.pointsCoincide(move0.positionBegin(), prev.positionEnd()):
+            k.append(Kink(prev, move0))
+    return k
+
+
+def findDogboneKinks(maneuver, threshold):
+    '''findDogboneKinks(maneuver, threshold) ... return all kinks fitting the criteria.
+A positive threshold angle returns all kinks on the right side, and a negative all kinks on the left side'''
+    if threshold > 0:
+        return [k for k in createKinks(maneuver) if k.angle() > threshold]
+    if threshold < 0:
+        return [k for k in createKinks(maneuver) if k.angle() < threshold]
+    # you asked for it ...
+    return createKinks(maneuver)
 
 def MNVR(gcode, begin=None):
-    return Maneuver.FromGCode(gcode, begin)
+    return Maneuver.FromGCode(gcode.replace('/', '\n'), begin)
 
 def INSTR(gcode, begin=None):
     return MNVR(gcode, begin).instr[0]
@@ -232,9 +249,13 @@ class TestDressupDogboneII(PathTestBase):
         self.assertRoughly(t0[0], t1[0])
         self.assertRoughly(t0[1], t1[1])
 
-    def assertKinks(self, maneuver, s1):
-        kinks = [f"{k.angle():4.2f}" for k in maneuver.kinks()]
-        self.assertEqual(f"[{', '.join(kinks)}]", s1)
+    def assertKinks(self, maneuver, s):
+        kinks = [f"{k.angle():4.2f}" for k in createKinks(maneuver)]
+        self.assertEqual(f"[{', '.join(kinks)}]", s)
+
+    def assertBones(self, maneuver, threshold, s):
+        bones = [f"({int(b.x())},{int(b.y())})" for b in findDogboneKinks(maneuver, threshold)]
+        self.assertEqual(f"[{', '.join(bones)}]", s)
 
     def test00(self):
         """Verify G0 instruction construction"""
@@ -312,5 +333,20 @@ class TestDressupDogboneII(PathTestBase):
         self.assertKinks(MNVR('G1X1\nG2Y2J1'), '[-3.14]')
         self.assertKinks(MNVR('G1X1\nG2Y2J1G1X0'), '[-3.14, 3.14]')
 
+    def test30(self):
+        """Verify dogbone detection"""
+        self.assertBones(MNVR('G1X1/G1Y1/G1X0/G1Y0'),  PI/4, '[(1,0), (1,1), (0,1), (0,0)]')
+        self.assertBones(MNVR('G1X1/G1Y1/G1X0/G1Y0'), -PI/4, '[]')
 
+        # no bones on flat angle
+        self.assertBones(MNVR('G1X1/G1X3Y1/G1X0/G1Y0'),  PI/4, '[(3,1), (0,1), (0,0)]')
+        self.assertBones(MNVR('G1X1/G1X3Y1/G1X0/G1Y0'), -PI/4, '[]')
+
+        # no bones on tangential arc
+        self.assertBones(MNVR('G1X1/G3Y2J1/G1X0/G1Y0'),  PI/4, '[(0,2), (0,0)]')
+        self.assertBones(MNVR('G1X1/G3Y2J1/G1X0/G1Y0'), -PI/4, '[]')
+
+        # a bone on perpendicular arc
+        self.assertBones(MNVR('G1X1/G3X3I1/G1Y1/G1X0/G1Y0'),  PI/4, '[(3,1), (0,1), (0,0)]')
+        self.assertBones(MNVR('G1X1/G3X3I1/G1Y1/G1X0/G1Y0'), -PI/4, '[(1,0)]')
 
