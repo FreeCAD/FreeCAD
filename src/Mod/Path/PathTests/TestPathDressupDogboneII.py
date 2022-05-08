@@ -99,7 +99,7 @@ class Instruction (object):
 class MoveStraight (Instruction):
 
     def anglesOfTangents(self):
-        '''angleOfTangents() ... return a tuple with the tangent angles at begin and end position'''
+        '''anglesOfTangents() ... return a tuple with the tangent angles at begin and end position'''
         begin = self.xyBegin()
         end = self.xyEnd()
         if end == begin:
@@ -113,7 +113,7 @@ class MoveStraight (Instruction):
 class MoveArc (Instruction):
 
     def anglesOfTangents(self):
-        '''angleOfTangents() ... return a tuple with the tangent angles at begin and end position'''
+        '''anglesOfTangents() ... return a tuple with the tangent angles at begin and end position'''
         begin = self.xyBegin()
         end = self.xyEnd()
         center = FreeCAD.Vector(self.begin.x + self.i(), self.begin.y + self.j(), 0)
@@ -135,6 +135,19 @@ class MoveArcCCW (MoveArc):
     def arcDirection(self):
         return PI/2
 
+class Kink (object):
+    '''A Kink represents the angle at which two moves connect.
+A positive kink angle represents a move to the left, and a negative angle represents a move to the right.'''
+
+    def __init__(self, m0, m1):
+        self.m0 = m0
+        self.m1 = m1
+        self.t0 = m0.anglesOfTangents()[1]
+        self.t1 = m1.anglesOfTangents()[0]
+
+    def angle(self):
+        return normalizeAngle(self.t1 - self.t0)
+
 
 class Maneuver (object):
     '''A series of instructions and moves'''
@@ -152,8 +165,22 @@ class Maneuver (object):
     def positionBegin(self):
         return self.begin
 
-    def moves(self):
+    def getMoves(self):
         return [instr for instr in self.instr if instr.isMove()]
+
+    def kinks(self):
+        k = []
+        moves = self.getMoves()
+        if moves:
+            move0 = moves[0]
+            prev = move0
+            for m in moves[1:]:
+                k.append(Kink(prev, m))
+                prev = m
+            if PathGeom.pointsCoincide(move0.positionBegin(), prev.positionEnd()):
+                k.append(Kink(prev, move0))
+        return k
+
 
     def __repr__(self):
         if self.instr:
@@ -189,30 +216,25 @@ class Maneuver (object):
     def FromGCode(cls, gcode, begin=None):
         return cls.FromPath(Path.Path(gcode), begin)
 
+
+def MNVR(gcode, begin=None):
+    return Maneuver.FromGCode(gcode, begin)
+
 def INSTR(gcode, begin=None):
-    return Maneuver.FromGCode(gcode, begin).instr[0]
-
-def G1(s, x, y):
-    return INSTR(s, 'G1', x, y)
-
-def G2(s, x, y, i, j):
-    return INSTR(s, 'G2', x, y, None, i, j)
-def G3(s, x, y, i, j):
-    return INSTR(s, 'G3', x, y, None, i, j)
-
-def POS(x, y, z=None):
-    return FreeCAD.Vector(x, y, 0 if z is None else z)
-
-def TAN(i):
-    return i.anglesOfTangents()
+    return MNVR(gcode, begin).instr[0]
 
 class TestDressupDogboneII(PathTestBase):
     """Unit tests for the Dogbone dressup."""
 
-    def assertTangents(self, t0, t1):
+    def assertTangents(self, instr, t1):
         """Assert that the two tangent angles are identical"""
+        t0 = instr.anglesOfTangents()
         self.assertRoughly(t0[0], t1[0])
         self.assertRoughly(t0[1], t1[1])
+
+    def assertKinks(self, maneuver, s1):
+        kinks = [f"{k.angle():4.2f}" for k in maneuver.kinks()]
+        self.assertEqual(f"[{', '.join(kinks)}]", s1)
 
     def test00(self):
         """Verify G0 instruction construction"""
@@ -251,24 +273,44 @@ class TestDressupDogboneII(PathTestBase):
 
 
     def test10(self):
-        """Get tangents of moves."""
+        """Verify tangents of moves."""
 
-        self.assertTangents(TAN(INSTR('G1 X0  Y0')), (0, 0)) # by declaration
-        self.assertTangents(TAN(INSTR('G1 X1  Y0')), (0, 0))
-        self.assertTangents(TAN(INSTR('G1 X-1 Y0')), (PI, PI))
-        self.assertTangents(TAN(INSTR('G1 X0  Y1')), (PI/2,  PI/2))
-        self.assertTangents(TAN(INSTR('G1 X0  Y-1')), (-PI/2,  -PI/2))
-        self.assertTangents(TAN(INSTR('G1 X1  Y1')), (PI/4,  PI/4))
-        self.assertTangents(TAN(INSTR('G1 X-1 Y1')), (3*PI/4,  3*PI/4))
-        self.assertTangents(TAN(INSTR('G1 X-1 Y -1')), (-3*PI/4,  -3*PI/4))
-        self.assertTangents(TAN(INSTR('G1 X1  Y-1')), (-PI/4,  -PI/4))
+        self.assertTangents(INSTR('G1 X0  Y0'), (0, 0)) # by declaration
+        self.assertTangents(INSTR('G1 X1  Y0'), (0, 0))
+        self.assertTangents(INSTR('G1 X-1 Y0'), (PI, PI))
+        self.assertTangents(INSTR('G1 X0  Y1'), (PI/2,  PI/2))
+        self.assertTangents(INSTR('G1 X0  Y-1'), (-PI/2,  -PI/2))
+        self.assertTangents(INSTR('G1 X1  Y1'), (PI/4,  PI/4))
+        self.assertTangents(INSTR('G1 X-1 Y1'), (3*PI/4,  3*PI/4))
+        self.assertTangents(INSTR('G1 X-1 Y -1'), (-3*PI/4,  -3*PI/4))
+        self.assertTangents(INSTR('G1 X1  Y-1'), (-PI/4,  -PI/4))
 
-        self.assertTangents(TAN(INSTR('G2 X2  Y0  I1 J0')), (PI/2, -PI/2))
-        self.assertTangents(TAN(INSTR('G2 X2  Y2  I1 J1')), (3*PI/4, -PI/4))
-        self.assertTangents(TAN(INSTR('G2 X0  Y-2 I0 J-1')), (0, -PI))
+        self.assertTangents(INSTR('G2 X2  Y0  I1 J0'), (PI/2, -PI/2))
+        self.assertTangents(INSTR('G2 X2  Y2  I1 J1'), (3*PI/4, -PI/4))
+        self.assertTangents(INSTR('G2 X0  Y-2 I0 J-1'), (0, -PI))
 
-        self.assertTangents(TAN(INSTR('G3 X2  Y0  I1 J0')), (-PI/2, PI/2))
-        self.assertTangents(TAN(INSTR('G3 X2  Y2  I1 J1')), (-PI/4, 3*PI/4))
-        self.assertTangents(TAN(INSTR('G3 X0  Y-2 I0 J-1')), (PI, 0))
+        self.assertTangents(INSTR('G3 X2  Y0  I1 J0'), (-PI/2, PI/2))
+        self.assertTangents(INSTR('G3 X2  Y2  I1 J1'), (-PI/4, 3*PI/4))
+        self.assertTangents(INSTR('G3 X0  Y-2 I0 J-1'), (PI, 0))
+
+
+    def test20(self):
+        """Verify kinks of maneuvers"""
+        self.assertKinks(MNVR('G1X1\nG1Y1'), '[1.57]')
+        self.assertKinks(MNVR('G1X1\nG1Y1\nG1X0'), '[1.57, 1.57]')
+        self.assertKinks(MNVR('G1X1\nG1Y1\nG1X0\nG1Y0'), '[1.57, 1.57, 1.57, 1.57]')
+
+        self.assertKinks(MNVR('G1Y1\nG1X1'), '[-1.57]')
+        self.assertKinks(MNVR('G1Y1\nG1X1\nG1Y0'), '[-1.57, -1.57]')
+        self.assertKinks(MNVR('G1Y1\nG1X1\nG1Y0\nG1X0'), '[-1.57, -1.57, -1.57, -1.57]')
+
+        # tangential arc moves
+        self.assertKinks(MNVR('G1X1\nG3Y2J1'), '[0.00]')
+        self.assertKinks(MNVR('G1X1\nG3Y2J1G1X0'), '[0.00, 0.00]')
+
+        # folding back arc moves
+        self.assertKinks(MNVR('G1X1\nG2Y2J1'), '[-3.14]')
+        self.assertKinks(MNVR('G1X1\nG2Y2J1G1X0'), '[-3.14, 3.14]')
+
 
 
