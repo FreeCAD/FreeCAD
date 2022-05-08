@@ -231,7 +231,7 @@ def repair_git_repo(repo_url: str, clone_dir: str) -> None:
         FreeCAD.Console.PrintLog(
             translate(
                 "AddonsInstaller",
-                "Outdated GitPython detected, consider upgrading with pip.",
+                "Outdated GitPython detected, consider upgrading with pip."
             )
             + "\n"
         )

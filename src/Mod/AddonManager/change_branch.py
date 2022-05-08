@@ -102,7 +102,7 @@ class ChangeBranchDialog(QtWidgets.QWidget):
                 translate("AddonsInstaller", "DANGER: Developer feature"),
                 translate(
                     "AddonsInstaller",
-                    "DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?",
+                    "DANGER: Switching branches is intended for developers and beta testers, and may result in broken, non-backwards compatible documents, instability, crashes, and/or the premature heat death of the universe. Are you sure you want to continue?"
                 ),
                 QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.Cancel,
                 QtWidgets.QMessageBox.Cancel,
@@ -115,7 +115,7 @@ class ChangeBranchDialog(QtWidgets.QWidget):
                     translate("AddonsInstaller", "There are local changes"),
                     translate(
                         "AddonsInstaller",
-                        "WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?",
+                        "WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?"
                     ),
                     QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.Cancel,
                     QtWidgets.QMessageBox.Cancel,
@@ -257,7 +257,7 @@ class ChangeBranchDialogModel(QtCore.QAbstractTableModel):
             return translate(
                 "AddonsInstaller",
                 "Kind",
-                "Table header for git ref type (e.g. either Tag or Branch)",
+                "Table header for git ref type (e.g. either Tag or Branch)"
             )
         elif section == 1:
             return translate(
@@ -267,19 +267,19 @@ class ChangeBranchDialogModel(QtCore.QAbstractTableModel):
             return translate(
                 "AddonsInstaller",
                 "Tracking",
-                "Table header for git remote tracking branch name name",
+                "Table header for git remote tracking branch name name"
             )
         elif section == 3:
             return translate(
                 "AddonsInstaller",
                 "Local updated",
-                "Table header for git update time of local branch",
+                "Table header for git update time of local branch"
             )
         elif section == 4:
             return translate(
                 "AddonsInstaller",
                 "Remote updated",
-                "Table header for git update time of remote branch",
+                "Table header for git update time of remote branch"
             )
         else:
             return None

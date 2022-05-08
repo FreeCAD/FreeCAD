@@ -61,7 +61,7 @@ except Exception:
     FreeCAD.Console.PrintWarning(
         translate(
             "AddonsInstaller",
-            "Addon Manager Warning: Could not import QtWebEngineWidgets, it seems to be missing from your system. Please use your system's package manager to install the python3-pyside2.qtwebengine* and python3-pyside2.qtwebchannel packages, and if possible alert your package creator to the missing dependency. Display of package README will be limited until this dependency is resolved.",
+            "Addon Manager Warning: Could not import QtWebEngineWidgets, it seems to be missing from your system. Please use your system's package manager to install the python3-pyside2.qtwebengine* and python3-pyside2.qtwebchannel packages, and if possible alert your package creator to the missing dependency. Display of package README will be limited until this dependency is resolved."
         )
         + "\n"
     )
@@ -202,7 +202,7 @@ class PackageDetails(QWidget):
                         "<b>"
                         + translate(
                             "AddonsInstaller",
-                            "On branch {}, update available to version",
+                            "On branch {}, update available to version"
                         ).format(repo.branch)
                         + " "
                     )
@@ -221,7 +221,7 @@ class PackageDetails(QWidget):
                         "<b>"
                         + translate(
                             "AddonsInstaller",
-                            "An update is available",
+                            "An update is available"
                         )
                         + ".</b>"
                     )
@@ -240,7 +240,7 @@ class PackageDetails(QWidget):
                     installed_version_string += (
                         translate(
                             "AddonsInstaller",
-                            "Git tag '{}' checked out, no updates possible",
+                            "Git tag '{}' checked out, no updates possible"
                         ).format(branch)
                         + "."
                     )
@@ -248,7 +248,7 @@ class PackageDetails(QWidget):
                     installed_version_string += (
                         translate(
                             "AddonsInstaller",
-                            "This is the latest version available for branch {}",
+                            "This is the latest version available for branch {}"
                         ).format(branch)
                         + "."
                     )
@@ -371,7 +371,7 @@ class PackageDetails(QWidget):
                 "<h2>"
                 + translate(
                     "AddonsInstaller",
-                    "WARNING: This addon is currently installed, but disabled. Use the 'enable' button to re-enable.",
+                    "WARNING: This addon is currently installed, but disabled. Use the 'enable' button to re-enable."
                 )
                 + "</h2>"
             )
@@ -637,7 +637,7 @@ class PackageDetails(QWidget):
             "<h3>"
             + translate(
                 "AddonsInstaller",
-                "This Addon will be enabled next time you restart FreeCAD.",
+                "This Addon will be enabled next time you restart FreeCAD."
             )
             + "</h3>"
         )
@@ -653,7 +653,7 @@ class PackageDetails(QWidget):
             "<h3>"
             + translate(
                 "AddonsInstaller",
-                "This Addon will be disabled next time you restart FreeCAD.",
+                "This Addon will be disabled next time you restart FreeCAD."
             )
             + "</h3>"
         )
@@ -667,7 +667,7 @@ class PackageDetails(QWidget):
             translate("AddonsInstaller", "Success"),
             translate(
                 "AddonsInstaller",
-                "Branch change succeeded, please restart to use the new version.",
+                "Branch change succeeded, please restart to use the new version."
             ),
         )
         # See if this branch has a package.xml file:
@@ -909,7 +909,7 @@ class Ui_PackageDetails(object):
             self.slowLoadLabel.setText(
                 QCoreApplication.translate(
                     "AddonsInstaller",
-                    "The page is taking a long time to load... showing the data we have so far...",
+                    "The page is taking a long time to load... showing the data we have so far..."
                 )
             )
 

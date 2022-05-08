@@ -118,7 +118,7 @@ class CommandAddonManager:
             FreeCAD.PrintWarning(
                 translate(
                     "AddonsInstaller",
-                    "Addon Manager installation problem: could not locate ALLOWED_PYTHON_PACKAGES.txt",
+                    "Addon Manager installation problem: could not locate ALLOWED_PYTHON_PACKAGES.txt"
                 )
                 + "\n"
             )
@@ -129,7 +129,7 @@ class CommandAddonManager:
             "MenuText": QT_TRANSLATE_NOOP("Std_AddonMgr", "&Addon manager"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Std_AddonMgr",
-                "Manage external workbenches, macros, and preference packs",
+                "Manage external workbenches, macros, and preference packs"
             ),
             "Group": "Tools",
         }
@@ -248,7 +248,7 @@ class CommandAddonManager:
                 translate("AddonsInstaller", "Missing dependency"),
                 translate(
                     "AddonsInstaller",
-                    "Could not import QtNetwork -- see Report View for details. Addon Manager unavailable.",
+                    "Could not import QtNetwork -- see Report View for details. Addon Manager unavailable."
                 ),
             )
 
@@ -380,7 +380,7 @@ class CommandAddonManager:
                             FreeCAD.Console.PrintWarning(
                                 translate(
                                     "AddonsInstaller",
-                                    "Worker process {} is taking a long time to stop...\n",
+                                    "Worker process {} is taking a long time to stop...\n"
                                 ).format(worker)
                             )
 
@@ -437,7 +437,7 @@ class CommandAddonManager:
             FreeCAD.Console.PrintMessage(
                 translate(
                     "AddonsInstaller",
-                    "Previous cache process was interrupted, restarting...\n",
+                    "Previous cache process was interrupted, restarting...\n"
                 )
             )
 
@@ -456,7 +456,7 @@ class CommandAddonManager:
             FreeCAD.Console.PrintMessage(
                 translate(
                     "AddonsInstaller",
-                    "Custom repo list changed, forcing recache...\n",
+                    "Custom repo list changed, forcing recache...\n"
                 )
             )
 
@@ -515,7 +515,7 @@ class CommandAddonManager:
             m.setText(
                 translate(
                     "AddonsInstaller",
-                    "You must restart FreeCAD for changes to take effect.",
+                    "You must restart FreeCAD for changes to take effect."
                 )
             )
             m.setIcon(m.Warning)
@@ -1034,7 +1034,7 @@ class CommandAddonManager:
                 "<p>"
                 + translate(
                     "AddonsInstaller",
-                    "This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:",
+                    "This addon requires Python packages that are not installed, and cannot be installed automatically. To use this workbench you must install the following Python packages manually:"
                 )
                 + "</p><ul>"
             )
@@ -1058,7 +1058,7 @@ class CommandAddonManager:
             FreeCAD.Console.PrintMessage(
                 translate(
                     "AddonsInstaller",
-                    "The following Python packages are allowed to be automatically installed",
+                    "The following Python packages are allowed to be automatically installed"
                 )
                 + ":\n"
             )
@@ -1078,14 +1078,14 @@ class CommandAddonManager:
             name = wbs[0]
             message = translate(
                 "AddonsInstaller",
-                "Addon '{}' requires '{}', which is not available in your copy of FreeCAD.",
+                "Addon '{}' requires '{}', which is not available in your copy of FreeCAD."
             ).format(addon_name, name)
         else:
             message = (
                 "<p>"
                 + translate(
                     "AddonsInstaller",
-                    "Addon '{}' requires the following workbenches, which are not available in your copy of FreeCAD:",
+                    "Addon '{}' requires the following workbenches, which are not available in your copy of FreeCAD:"
                 ).format(addon_name)
                 + "</p><ul>"
             )
@@ -1147,7 +1147,7 @@ class CommandAddonManager:
                 FreeCAD.Console.PrintWarning(
                     translate(
                         "AddonsInstaller",
-                        "Optional dependency on {} ignored because it is not in the allow-list\n",
+                        "Optional dependency on {} ignored because it is not in the allow-list\n"
                     ).format(dep)
                 )
         missing.python_optional = good_packages
@@ -1222,12 +1222,12 @@ class CommandAddonManager:
             translate("AddonsInstaller", "Cannot execute Python"),
             translate(
                 "AddonsInstaller",
-                "Failed to automatically locate your Python executable, or the path is set incorrectly. Please check the Addon Manager preferences setting for the path to Python.",
+                "Failed to automatically locate your Python executable, or the path is set incorrectly. Please check the Addon Manager preferences setting for the path to Python."
             )
             + "\n\n"
             + translate(
                 "AddonsInstaller",
-                "Dependencies could not be installed. Continue with installation of {} anyway?",
+                "Dependencies could not be installed. Continue with installation of {} anyway?"
             ).format(repo.name),
             QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
         )
@@ -1242,12 +1242,12 @@ class CommandAddonManager:
             translate("AddonsInstaller", "Cannot execute pip"),
             translate(
                 "AddonsInstaller",
-                "Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was: ",
+                "Failed to execute pip, which may be missing from your Python installation. Please ensure your system has pip installed and try again. The failed command was: "
             )
             + f"\n\n{command}\n\n"
             + translate(
                 "AddonsInstaller",
-                "Continue with installation of {} anyway?",
+                "Continue with installation of {} anyway?"
             ).format(repo.name),
             QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
         )
@@ -1324,7 +1324,7 @@ class CommandAddonManager:
             if not failed:
                 message = translate(
                     "AddonsInstaller",
-                    "Macro successfully installed. The macro is now available from the Macros dialog.",
+                    "Macro successfully installed. The macro is now available from the Macros dialog."
                 )
                 self.on_package_installed(repo, message)
             else:
@@ -1384,7 +1384,7 @@ class CommandAddonManager:
                 result = translate(
                     "AddonsInstaller",
                     "{} total, see Report view for list",
-                    "Describes the number of updates that were completed ('{}' is replaced by the number of updates)",
+                    "Describes the number of updates that were completed ('{}' is replaced by the number of updates)"
                 ).format(num_updates)
                 for repo in repos:
                     FreeCAD.Console.PrintMessage(f"{message}: {repo.name}\n")
@@ -1394,9 +1394,8 @@ class CommandAddonManager:
             message = (
                 translate(
                     "AddonsInstaller",
-                    "All packages were successfully updated",
+                    "All packages were successfully updated: \n"
                 )
-                + ": \n"
             )
             message += get_package_list(
                 translate("AddonsInstaller", "Succeeded"), self.subupdates_succeeded, 15
@@ -1412,12 +1411,12 @@ class CommandAddonManager:
             message = (
                 translate(
                     "AddonsInstaller",
-                    "Some packages updates failed.",
+                    "Some packages updates failed."
                 )
                 + "\n\n"
                 + translate(
                     "AddonsInstaller",
-                    "Succeeded",
+                    "Succeeded"
                 )
                 + ":\n"
             )
@@ -1547,7 +1546,7 @@ class CommandAddonManager:
                 if not temp_install_succeeded:
                     message = translate(
                         "AddonsInstaller",
-                        "Execution of macro failed. See console for failure details.",
+                        "Execution of macro failed. See console for failure details."
                     )
                     self.on_installation_failed(repo, message)
                     return
@@ -1608,7 +1607,7 @@ class CommandAddonManager:
                             FreeCAD.Console.PrintMessage(
                                 translate(
                                     "AddonsInstaller",
-                                    "Macro {} has local changes in the macros directory, so is not being removed by this uninstall process.\n",
+                                    "Macro {} has local changes in the macros directory, so is not being removed by this uninstall process.\n"
                                 ).format(macro_filename)
                             )
 
@@ -1622,7 +1621,7 @@ class CommandAddonManager:
                     FreeCAD.Console.PrintError(
                         translate(
                             "AddonsInstaller",
-                            "Execution of Addon's uninstall.py script failed. Proceeding with uninstall...",
+                            "Execution of Addon's uninstall.py script failed. Proceeding with uninstall..."
                         )
                         + "\n"
                     )
@@ -1639,7 +1638,7 @@ class CommandAddonManager:
                 self.dialog.textBrowserReadMe.setText(
                     translate(
                         "AddonsInstaller",
-                        "Unable to remove this addon with the Addon Manager.",
+                        "Unable to remove this addon with the Addon Manager."
                     )
                 )
 
@@ -1661,7 +1660,7 @@ class CommandAddonManager:
                 FreeCAD.Console.PrintMessage(
                     translate(
                         "AddonsInstaller",
-                        "Failed to uninstall {}. Please remove manually.",
+                        "Failed to uninstall {}. Please remove manually."
                     ).format(repo.name)
                     + "\n"
                 )

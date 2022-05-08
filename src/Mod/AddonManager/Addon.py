@@ -331,7 +331,7 @@ class Addon:
             FreeCAD.Console.PrintWarning(
                 translate(
                     "AddonsInstaller",
-                    "Addon Developer Warning: Repository URL set in package.xml file for addon {} ({}) does not match the URL it was fetched from ({})",
+                    "Addon Developer Warning: Repository URL set in package.xml file for addon {} ({}) does not match the URL it was fetched from ({})"
                 ).format(self.display_name, self.url, url)
                 + "\n"
             )
@@ -339,7 +339,7 @@ class Addon:
             FreeCAD.Console.PrintWarning(
                 translate(
                     "AddonsInstaller",
-                    "Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})",
+                    "Addon Developer Warning: Repository branch set in package.xml file for addon {} ({}) does not match the branch it was fetched from ({})"
                 ).format(self.display_name, self.branch, branch)
                 + "\n"
             )

@@ -87,7 +87,7 @@ except Exception:
         FreeCAD.Console.PrintError(
             translate(
                 "AddonsInstaller",
-                "Could not import QtNetwork -- it does not appear to be installed on your system. Please install the package 'python3-pyside2.qtnetwork' on your system and if possible contact your FreeCAD package maintainer to alert them to the missing dependency. The Addon Manager will not be available.",
+                "Could not import QtNetwork -- it does not appear to be installed on your system. Please install the package 'python3-pyside2.qtnetwork' on your system and if possible contact your FreeCAD package maintainer to alert them to the missing dependency. The Addon Manager will not be available."
             )
             + "\n"
         )
@@ -184,7 +184,7 @@ if HAVE_QTNETWORK:
                     FreeCAD.Console.PrintWarning(
                         translate(
                             "AddonsInstaller",
-                            "Parameter error: mutually exclusive proxy options set. Resetting to default.",
+                            "Parameter error: mutually exclusive proxy options set. Resetting to default."
                         )
                         + "\n"
                     )
@@ -199,7 +199,7 @@ if HAVE_QTNETWORK:
                     FreeCAD.Console.PrintWarning(
                         translate(
                             "AddonsInstaller",
-                            "Parameter error: user proxy indicated, but no proxy provided. Resetting to default.",
+                            "Parameter error: user proxy indicated, but no proxy provided. Resetting to default."
                         )
                         + "\n"
                     )
@@ -356,7 +356,7 @@ if HAVE_QTNETWORK:
                         FreeCAD.Console.PrintWarning(
                             translate(
                                 "AddonsInstaller",
-                                "Addon Manager: Unexpected {} response from server",
+                                "Addon Manager: Unexpected {} response from server"
                             ).format(code)
                             + "\n"
                         )

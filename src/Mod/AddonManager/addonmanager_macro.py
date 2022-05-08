@@ -171,7 +171,7 @@ class Macro(object):
                                 FreeCAD.Console.PrintLog(
                                     translate(
                                         "AddonsInstaller",
-                                        "In macro {}, string literal not found for {} element. Guessing at intent and using string from date element.",
+                                        "In macro {}, string literal not found for {} element. Guessing at intent and using string from date element."
                                     ).format(self.name, key)
                                     + "\n"
                                 )
@@ -181,7 +181,7 @@ class Macro(object):
                                 FreeCAD.Console.PrintLog(
                                     translate(
                                         "AddonsInstaller",
-                                        "In macro {}, string literal not found for {} element. Guessing at intent and using string representation of contents.",
+                                        "In macro {}, string literal not found for {} element. Guessing at intent and using string representation of contents."
                                     ).format(self.name, key)
                                     + "\n"
                                 )
@@ -199,7 +199,7 @@ class Macro(object):
                                         FreeCAD.Console.PrintError(
                                             translate(
                                                 "AddonsInstaller",
-                                                "Syntax error while reading {} from macro {}",
+                                                "Syntax error while reading {} from macro {}"
                                             ).format(key, self.name)
                                             + "\n"
                                         )
@@ -216,7 +216,7 @@ class Macro(object):
                         FreeCAD.Console.PrintError(
                             translate(
                                 "AddonsInstaller",
-                                "Syntax error while reading {} from macro {}",
+                                "Syntax error while reading {} from macro {}"
                             ).format(key, self.name)
                             + "\n"
                         )
@@ -243,7 +243,7 @@ class Macro(object):
             FreeCAD.Console.PrintWarning(
                 translate(
                     "AddonsInstaller",
-                    "Unable to open macro wiki page at {}",
+                    "Unable to open macro wiki page at {}"
                 ).format(url)
                 + "\n"
             )
@@ -260,7 +260,7 @@ class Macro(object):
                     FreeCAD.Console.PrintWarning(
                         translate(
                             "AddonsInstaller",
-                            "Unable to open macro code URL {rawcodeurl}",
+                            "Unable to open macro code URL {rawcodeurl}"
                         ).format(rawcodeurl)
                         + "\n"
                     )
@@ -293,7 +293,7 @@ class Macro(object):
             FreeCAD.Console.PrintWarning(
                 translate(
                     "AddonsInstaller",
-                    "Unable to retrieve a description from the wiki for macro {}",
+                    "Unable to retrieve a description from the wiki for macro {}"
                 ).format(self.name)
                 + "\n"
             )
@@ -420,7 +420,7 @@ class Macro(object):
                 warnings.append(
                     translate(
                         "AddonsInstaller",
-                        "Could not locate macro-specified file {} (should have been at {})",
+                        "Could not locate macro-specified file {} (should have been at {})"
                     ).format(other_file, src_file)
                 )
                 continue
