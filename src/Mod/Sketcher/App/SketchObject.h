@@ -211,6 +211,9 @@ public:
      */
     int setUpSketch();
 
+    /** Performs a full analysis of the addition of additional constraints without adding them to the sketch object */
+    int diagnoseAdditionalConstraints(std::vector<Sketcher::Constraint *> additionalconstraints);
+
     /** solves the sketch and updates the geometry, but not all the dependent features (does not recompute)
         When a recompute is necessary, recompute triggers execute() which solves the sketch and updates all dependent features
         When a solve only is necessary (e.g. DoF changed), solve() solves the sketch and
