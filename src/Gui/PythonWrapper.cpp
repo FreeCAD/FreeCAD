@@ -26,8 +26,6 @@
 # include <QDir>
 # include <QIcon>
 # include <QWidget>
-# include <QGraphicsItem>
-# include <QGraphicsObject>
 #endif
 
 #include <QMetaType>
@@ -114,6 +112,12 @@ PyTypeObject** SbkPySide2_QtWidgetsTypes=nullptr;
 # pragma clang diagnostic pop
 #elif defined (__GNUC__)
 # pragma GCC diagnostic pop
+#endif
+
+// Must be imported after PySide headers
+#ifndef _PreComp_
+# include <QGraphicsItem>
+# include <QGraphicsObject>
 #endif
 
 #include <App/Application.h>
