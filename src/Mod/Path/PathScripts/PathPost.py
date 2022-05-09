@@ -96,12 +96,7 @@ class DlgSelectPostProcessor:
 class CommandPathPost:
     subpart = 1
 
-    def resolveFileName(self, job):
-        path = PathPreferences.defaultOutputFile()
-        if job.PostProcessorOutputFile:
-            path = job.PostProcessorOutputFile
-        filename = path
-
+    def processFileNameSubstitutions(self, job, filename):
         if "%D" in filename:
             D = FreeCAD.ActiveDocument.FileName
             if D:
@@ -135,6 +130,15 @@ class CommandPathPost:
                 self.subpart += 1
             else:
                 filename = filename.replace("%s", "")
+        return filename
+
+    def resolveFileName(self, job):
+        path = PathPreferences.defaultOutputFile()
+        if job.PostProcessorOutputFile:
+            path = job.PostProcessorOutputFile
+        filename = self.processFileNameSubstitutions(job, path)
+        if filename is None:
+            return None
 
         policy = PathPreferences.defaultOutputPolicy()
 

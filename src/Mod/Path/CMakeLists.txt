@@ -220,13 +220,20 @@ SET(Tools_Shape_SRCS
 SET(PathTests_SRCS
     PathTests/__init__.py
     PathTests/boxtest.fcstd
+    PathTests/boxtest1.fcstd
     PathTests/Drilling_1.FCStd
     PathTests/PathTestUtils.py
     PathTests/test_adaptive.fcstd
     PathTests/test_centroid_00.ngc
+    PathTests/test_centroid_imperial_ref.ngc
+    PathTests/test_centroid_metric_ref.ngc
+    PathTests/test_centroid_other_way_ref.ngc
     PathTests/test_geomop.fcstd
     PathTests/test_holes00.fcstd
     PathTests/test_linuxcnc_00.ngc
+    PathTests/test_linuxcnc_imperial_ref.ngc
+    PathTests/test_linuxcnc_metric_ref.ngc
+    PathTests/test_linuxcnc_other_way_ref.ngc
     PathTests/TestPathAdaptive.py
     PathTests/TestPathCore.py
     PathTests/TestPathDeburr.py
