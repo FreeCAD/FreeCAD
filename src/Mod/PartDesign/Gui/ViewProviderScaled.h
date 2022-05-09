@@ -30,7 +30,7 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderScaled : public ViewProviderTransformed
 {
-    Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderScaled);
+    Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderScaled)
     PROPERTY_HEADER(PartDesignGui::ViewProviderScaled);
 public:
     ViewProviderScaled() {
