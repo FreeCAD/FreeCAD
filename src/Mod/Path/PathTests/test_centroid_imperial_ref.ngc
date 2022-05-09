@@ -1,0 +1,39 @@
+G90 G80 G40 G49
+;T1=_mm_Endmill
+;begin preamble
+G53 G00 G17
+G20
+;begin operation
+G54
+G0 Z0.3543
+;end operation: G54
+;begin operation
+;5mm Endmill001
+M6 T1
+M3 S123
+;end operation: 5mm Endmill001
+;begin operation
+;Profile
+;Compensated Tool Path. Diameter: 5.0
+G0 Z0.3543
+G0 X0.0000 Y0.0000
+G0 Y-0.0984
+G0 Y-0.0984 Z0.2756
+G1 X0.0000 Y-0.0984 Z-0.0394 F13.4
+G2 X-0.0984 Y0.0000 Z-0.0394 I0.0000 J0.0984 F5.5
+G1 X-0.0984 Y0.1181 Z-0.0394 F5.5
+G2 X0.0000 Y0.2165 Z-0.0394 I0.0984 J0.0000 F5.5
+G1 X0.1181 Y0.2165 Z-0.0394 F5.5
+G2 X0.2165 Y0.1181 Z-0.0394 I0.0000 J-0.0984 F5.5
+G1 X0.2165 Y0.0000 Z-0.0394 F5.5
+G2 X0.1181 Y-0.0984 Z-0.0394 I-0.0984 J0.0000 F5.5
+G1 X0.0000 Y-0.0984 Z-0.0394 F5.5
+G0 Z0.3543
+G0 Z0.3543
+;end operation: Profile
+;begin postamble
+M5
+M25
+G49 H0
+G90 G80 G40 G49
+M99

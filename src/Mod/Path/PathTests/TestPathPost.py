@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2022 Larry Woestman <LarryWoestman2@gmail.com>          *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,115 +21,140 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
-import PathScripts
-import PathScripts.post
-import PathScripts.PathProfileContour
-import PathScripts.PathJob
-import PathScripts.PathPost as PathPost
-import PathScripts.PathToolController
-import PathScripts.PathUtil
-import PathScripts.PostUtils as PostUtils
 import difflib
+import os
 import unittest
+
+import FreeCAD
 import Path
 
-WriteDebugOutput = False
+from PathScripts import PathLog
+from PathScripts import PathPost
+from PathScripts import PostUtils
+
+from PathScripts.PathPostProcessor import PostProcessor
+
+# If KEEP_DEBUG_OUTPUT is False, remove the gcode file after the test.
+# If KEEP_DEBUG_OUTPUT is True, then leave the gcode file behind so it
+# can be looked at easily.
+KEEP_DEBUG_OUTPUT = False
+
+PathPost.LOG_MODULE = PathLog.thisModule()
+
+PathLog.setLevel(PathLog.Level.INFO, PathPost.LOG_MODULE)
 
 
-class PathPostTestCases(unittest.TestCase):
+class TestPathPost(unittest.TestCase):
+    """Test some of the output of the postprocessors.
+
+    So far there are three tests each for the linuxcnc
+    and centroid postprocessors.
+    """
+
     def setUp(self):
-        testfile = FreeCAD.getHomePath() + "Mod/Path/PathTests/boxtest.fcstd"
-        self.doc = FreeCAD.open(testfile)
-        self.job = FreeCAD.ActiveDocument.getObject("Job")
-        self.postlist = []
-        currTool = None
-        for obj in self.job.Group:
-            if not isinstance(obj.Proxy, PathScripts.PathToolController.ToolController):
-                tc = PathScripts.PathUtil.toolControllerForOp(obj)
-                if tc is not None:
-                    if tc.ToolNumber != currTool:
-                        self.postlist.append(tc)
-                self.postlist.append(obj)
+        """Set up the postprocessor tests."""
+        pass
 
     def tearDown(self):
-        FreeCAD.closeDocument("boxtest")
+        """Tear down after the postprocessor tests."""
+        pass
 
-    def testLinuxCNC(self):
-        from PathScripts.post import linuxcnc_post as postprocessor
-
-        args = (
-            "--no-header --no-line-numbers --no-comments --no-show-editor --precision=2"
+    def test_postprocessors(self):
+        """Test the postprocessors."""
+        #
+        # The tests are performed in the order they are listed:
+        # one test performed on all of the postprocessors
+        # then the next test on all of the postprocessors, etc.
+        # You can comment out the tuples for tests that you don't want
+        # to use.
+        #
+        tests_to_perform = (
+            # (freecad_document, job_name, postprocessor_arguments, output_file_id)
+            #
+            # test in metric mode (default)
+            ("boxtest1", "Job", "--no-header --no-show-editor", "metric"),
+            # test in Imperial mode
+            ("boxtest1", "Job", "--no-header --no-show-editor --inches", "imperial"),
+            # test in metric, G55, M4, the other way around the part
+            ("boxtest1", "Job001", "--no-header --no-show-editor", "other_way"),
         )
-        gcode = postprocessor.export(self.postlist, "gcode.tmp", args)
-
-        referenceFile = (
-            FreeCAD.getHomePath() + "Mod/Path/PathTests/test_linuxcnc_00.ngc"
+        #
+        # The postprocessors to test.
+        # You can comment out any postprocessors that you don't want
+        # to test.
+        #
+        postprocessors_to_test = (
+            "centroid",
+            "linuxcnc",
         )
-        with open(referenceFile, "r") as fp:
-            refGCode = fp.read()
-
-        # Use if this test fails in order to have a real good look at the changes
-        if WriteDebugOutput:
-            with open("testLinuxCNC.tmp", "w") as fp:
-                fp.write(gcode)
-
-        if gcode != refGCode:
-            msg = "".join(
-                difflib.ndiff(gcode.splitlines(True), refGCode.splitlines(True))
-            )
-            self.fail("linuxcnc output doesn't match: " + msg)
-
-    def testLinuxCNCImperial(self):
-        from PathScripts.post import linuxcnc_post as postprocessor
-
-        args = "--no-header --no-line-numbers --no-comments --no-show-editor --precision=2 --inches"
-        gcode = postprocessor.export(self.postlist, "gcode.tmp", args)
-
-        referenceFile = (
-            FreeCAD.getHomePath() + "Mod/Path/PathTests/test_linuxcnc_10.ngc"
-        )
-        with open(referenceFile, "r") as fp:
-            refGCode = fp.read()
-
-        # Use if this test fails in order to have a real good look at the changes
-        if WriteDebugOutput:
-            with open("testLinuxCNCImplerial.tmp", "w") as fp:
-                fp.write(gcode)
-
-        if gcode != refGCode:
-            msg = "".join(
-                difflib.ndiff(gcode.splitlines(True), refGCode.splitlines(True))
-            )
-            self.fail("linuxcnc output doesn't match: " + msg)
-
-    def testCentroid(self):
-        from PathScripts.post import centroid_post as postprocessor
-
-        args = "--no-header --no-line-numbers --no-comments --no-show-editor --axis-precision=2 --feed-precision=2"
-        gcode = postprocessor.export(self.postlist, "gcode.tmp", args)
-
-        referenceFile = (
-            FreeCAD.getHomePath() + "Mod/Path/PathTests/test_centroid_00.ngc"
-        )
-        with open(referenceFile, "r") as fp:
-            refGCode = fp.read()
-
-        # Use if this test fails in order to have a real good look at the changes
-        if WriteDebugOutput:
-            with open("testCentroid.tmp", "w") as fp:
-                fp.write(gcode)
-
-        if gcode != refGCode:
-            msg = "".join(
-                difflib.ndiff(gcode.splitlines(True), refGCode.splitlines(True))
-            )
-            self.fail("linuxcnc output doesn't match: " + msg)
+        #
+        # Enough of the path to where the tests are stored so that
+        # they can be found by the python interpreter.
+        #
+        PATHTESTS_LOCATION = "Mod/Path/PathTests/"
+        #
+        # The following code tries to re-use an open FreeCAD document
+        # as much as possible.  It compares the current document with
+        # the document for the next test.  If the names are different
+        # then the current document is closed and the new document is
+        # opened.  The final document is closed at the end of the code.
+        #
+        current_document = ""
+        for (
+            freecad_document,
+            job_name,
+            postprocessor_arguments,
+            output_file_id,
+        ) in tests_to_perform:
+            if current_document != freecad_document:
+                if current_document != "":
+                    FreeCAD.closeDocument(current_document)
+                current_document = freecad_document
+                current_document_path = (
+                    FreeCAD.getHomePath() + PATHTESTS_LOCATION + current_document + ".fcstd"
+                )
+                FreeCAD.open(current_document_path)
+            job = FreeCAD.ActiveDocument.getObject(job_name)
+            # Create a list of lists of objects to be written by the postprocessor.
+            postlist = PathPost.CommandPathPost.buildPostList(self, job)
+            for postprocessor_id in postprocessors_to_test:
+                print(
+                    "\nRunning %s test on %s postprocessor:\n" % (output_file_id, postprocessor_id)
+                )
+                processor = PostProcessor.load(postprocessor_id)
+                output_file_pattern = "test_%s_%s.ngc" % (postprocessor_id, output_file_id)
+                output_file_path = FreeCAD.getHomePath() + PATHTESTS_LOCATION + output_file_pattern
+                for slist in postlist:
+                    output_filename = PathPost.CommandPathPost.processFileNameSubstitutions(
+                        self, job, output_file_path
+                    )
+                    file_path, extension = os.path.splitext(output_filename)
+                    reference_file_name = "%s%s%s" % (file_path, "_ref", extension)
+                    gcode = processor.export(slist, output_filename, postprocessor_arguments)
+                    with open(reference_file_name, "r") as fp:
+                        reference_gcode = fp.read()
+                    if gcode != reference_gcode:
+                        msg = "".join(
+                            difflib.ndiff(gcode.splitlines(True), reference_gcode.splitlines(True))
+                        )
+                        self.fail(postprocessor_id + " output doesn't match: " + msg)
+                    if not KEEP_DEBUG_OUTPUT:
+                        os.remove(output_filename)
+        if current_document != "":
+            FreeCAD.closeDocument(current_document)
 
 
 class TestPathPostUtils(unittest.TestCase):
-    def testSplitArcs(self):
+    """Test the utility functions in the PostUtils.py file."""
 
+    def testSplitArcs(self):
+        """
+        Tests the PostUtils.splitArcs function.
+
+        Returns
+        -------
+        None
+        """
         commands = [
             Path.Command("G1 X-7.5 Y5.0 Z0.0"),
             Path.Command("G2 I2.5 J0.0 K0.0 X-5.0 Y7.5 Z0.0"),
@@ -143,15 +169,11 @@ class TestPathPostUtils(unittest.TestCase):
 
         testpath = Path.Path(commands)
         self.assertTrue(len(testpath.Commands) == 9)
-        self.assertTrue(
-            len([c for c in testpath.Commands if c.Name in ["G2", "G3"]]) == 4
-        )
+        self.assertTrue(len([c for c in testpath.Commands if c.Name in ["G2", "G3"]]) == 4)
 
         results = PostUtils.splitArcs(testpath)
         # self.assertTrue(len(results.Commands) == 117)
-        self.assertTrue(
-            len([c for c in results.Commands if c.Name in ["G2", "G3"]]) == 0
-        )
+        self.assertTrue(len([c for c in results.Commands if c.Name in ["G2", "G3"]]) == 0)
 
 
 class TestPathPostImport(unittest.TestCase):
@@ -206,12 +228,8 @@ class TestPathPostImport(unittest.TestCase):
             len(opList) == 2,
             "Expected 2 Custom operations to be created from source g-code file, test_centroid_00.ngc",
         )
-        self.assertTrue(
-            opList[0].Name == "Custom", "Expected first operation to be Custom"
-        )
-        self.assertTrue(
-            opList[1].Name == "Custom001", "Expected second operation to be Custom001"
-        )
+        self.assertTrue(opList[0].Name == "Custom", "Expected first operation to be Custom")
+        self.assertTrue(opList[1].Name == "Custom001", "Expected second operation to be Custom001")
 
         if close:
             FreeCAD.closeDocument(doc.Name)
@@ -226,17 +244,11 @@ class TestPathPostImport(unittest.TestCase):
         op2 = doc.Job.Operations.Group[1]
 
         # Verify g-code sizes
-        self.assertTrue(
-            op1.Path.Size == 4, "Expected Custom g-code command count to be 4."
-        )
-        self.assertTrue(
-            op2.Path.Size == 60, "Expected Custom g-code command count to be 60."
-        )
+        self.assertTrue(op1.Path.Size == 4, "Expected Custom g-code command count to be 4.")
+        self.assertTrue(op2.Path.Size == 60, "Expected Custom g-code command count to be 60.")
 
         # Verify g-code commands
-        op1_code = (
-            "(Custom_test_centroid_00)\n(Begin Custom)\nG90 G49.000000\n(End Custom)\n"
-        )
+        op1_code = "(Custom_test_centroid_00)\n(Begin Custom)\nG90 G49.000000\n(End Custom)\n"
         op2_code = "(Custom001_test_centroid_00)\n(Begin Custom)\nG0 Z15.000000\nG90\nG0 Z15.000000\nG0 X10.000000 Y10.000000\nG0 Z10.000000\nG1 X10.000000 Y10.000000 Z9.000000\nG1 X10.000000 Y0.000000 Z9.000000\nG1 X0.000000 Y0.000000 Z9.000000\nG1 X0.000000 Y10.000000 Z9.000000\nG1 X10.000000 Y10.000000 Z9.000000\nG1 X10.000000 Y10.000000 Z8.000000\nG1 X10.000000 Y0.000000 Z8.000000\nG1 X0.000000 Y0.000000 Z8.000000\nG1 X0.000000 Y10.000000 Z8.000000\nG1 X10.000000 Y10.000000 Z8.000000\nG1 X10.000000 Y10.000000 Z7.000000\nG1 X10.000000 Y0.000000 Z7.000000\nG1 X0.000000 Y0.000000 Z7.000000\nG1 X0.000000 Y10.000000 Z7.000000\nG1 X10.000000 Y10.000000 Z7.000000\nG1 X10.000000 Y10.000000 Z6.000000\nG1 X10.000000 Y0.000000 Z6.000000\nG1 X0.000000 Y0.000000 Z6.000000\nG1 X0.000000 Y10.000000 Z6.000000\nG1 X10.000000 Y10.000000 Z6.000000\nG1 X10.000000 Y10.000000 Z5.000000\nG1 X10.000000 Y0.000000 Z5.000000\nG1 X0.000000 Y0.000000 Z5.000000\nG1 X0.000000 Y10.000000 Z5.000000\nG1 X10.000000 Y10.000000 Z5.000000\nG1 X10.000000 Y10.000000 Z4.000000\nG1 X10.000000 Y0.000000 Z4.000000\nG1 X0.000000 Y0.000000 Z4.000000\nG1 X0.000000 Y10.000000 Z4.000000\nG1 X10.000000 Y10.000000 Z4.000000\nG1 X10.000000 Y10.000000 Z3.000000\nG1 X10.000000 Y0.000000 Z3.000000\nG1 X0.000000 Y0.000000 Z3.000000\nG1 X0.000000 Y10.000000 Z3.000000\nG1 X10.000000 Y10.000000 Z3.000000\nG1 X10.000000 Y10.000000 Z2.000000\nG1 X10.000000 Y0.000000 Z2.000000\nG1 X0.000000 Y0.000000 Z2.000000\nG1 X0.000000 Y10.000000 Z2.000000\nG1 X10.000000 Y10.000000 Z2.000000\nG1 X10.000000 Y10.000000 Z1.000000\nG1 X10.000000 Y0.000000 Z1.000000\nG1 X0.000000 Y0.000000 Z1.000000\nG1 X0.000000 Y10.000000 Z1.000000\nG1 X10.000000 Y10.000000 Z1.000000\nG1 X10.000000 Y10.000000 Z0.000000\nG1 X10.000000 Y0.000000 Z0.000000\nG1 X0.000000 Y0.000000 Z0.000000\nG1 X0.000000 Y10.000000 Z0.000000\nG1 X10.000000 Y10.000000 Z0.000000\nG0 Z15.000000\nG90 G49.000000\n(End Custom)\n"
         code1 = op1.Path.toGCode()
         self.assertTrue(
