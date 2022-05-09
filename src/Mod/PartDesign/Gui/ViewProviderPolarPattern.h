@@ -30,7 +30,7 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderPolarPattern : public ViewProviderTransformed
 {
-    Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderPolarPattern);
+    Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderPolarPattern)
     PROPERTY_HEADER(PartDesignGui::ViewProviderPolarPattern);
 public:
     ViewProviderPolarPattern() {
