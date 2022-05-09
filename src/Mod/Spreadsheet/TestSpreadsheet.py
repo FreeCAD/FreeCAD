@@ -1264,6 +1264,18 @@ class SpreadsheetCases(unittest.TestCase):
         self.doc.recompute()
         self.doc.clearDocument()
 
+    def testFixPR6843(self):
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Sheet")
+        sheet.set("A5", "a")
+        sheet.set("A6", "b")
+        self.doc.recompute()
+        sheet.insertRows("6", 1)
+        self.doc.recompute()
+        self.assertEqual(sheet.A5, "a")
+        self.assertEqual(sheet.A7, "b")
+        with self.assertRaises(AttributeError):
+            self.assertEqual(sheet.A6, "")
+
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument(self.doc.Name)
