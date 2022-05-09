@@ -178,7 +178,7 @@ class Maneuver (object):
 
     def __repr__(self):
         if self.instr:
-            return '\n'.join([str(i) for i in self.instr]) + '\n'
+            return '\n'.join([str(i) for i in self.instr])
         return ''
 
     @classmethod
@@ -235,6 +235,8 @@ A positive threshold angle returns all kinks on the right side, and a negative a
     return createKinks(maneuver)
 
 def MNVR(gcode, begin=None):
+    # 'turns out the replace() isn't really necessary
+    # leave it here anyway for clarity
     return Maneuver.FromGCode(gcode.replace('/', '\n'), begin)
 
 def INSTR(gcode, begin=None):
@@ -262,33 +264,33 @@ class TestDressupDogboneII(PathTestBase):
         self.assertEqual(str(Maneuver.FromGCode('')), '')
         self.assertEqual(len(Maneuver.FromGCode('').instr), 0)
 
-        self.assertEqual(str(Maneuver.FromGCode('G0')), 'G0{}\n')
-        self.assertEqual(str(Maneuver.FromGCode('G0X3')), "G0{'X': 3.0}\n")
-        self.assertEqual(str(Maneuver.FromGCode('G0X3Y7')), "G0{'X': 3.0, 'Y': 7.0}\n")
-        self.assertEqual(str(Maneuver.FromGCode('G0X3Y7\nG0Z0')), "G0{'X': 3.0, 'Y': 7.0}\nG0{'Z': 0.0}\n")
+        self.assertEqual(str(Maneuver.FromGCode('G0')), 'G0{}')
+        self.assertEqual(str(Maneuver.FromGCode('G0X3')), "G0{'X': 3.0}")
+        self.assertEqual(str(Maneuver.FromGCode('G0X3Y7')), "G0{'X': 3.0, 'Y': 7.0}")
+        self.assertEqual(str(Maneuver.FromGCode('G0X3Y7/G0Z0')), "G0{'X': 3.0, 'Y': 7.0}\nG0{'Z': 0.0}")
         self.assertEqual(len(Maneuver.FromGCode('G0X3Y7').instr), 1)
-        self.assertEqual(len(Maneuver.FromGCode('G0X3Y7\nG0Z0').instr), 2)
+        self.assertEqual(len(Maneuver.FromGCode('G0X3Y7/G0Z0').instr), 2)
         self.assertEqual(type(Maneuver.FromGCode('G0X3Y7').instr[0]), MoveStraight)
 
     def test01(self):
         """Verify G1 instruction construction"""
-        self.assertEqual(str(Maneuver.FromGCode('G1')), 'G1{}\n')
-        self.assertEqual(str(Maneuver.FromGCode('G1X3')), "G1{'X': 3.0}\n")
-        self.assertEqual(str(Maneuver.FromGCode('G1X3Y7')), "G1{'X': 3.0, 'Y': 7.0}\n")
-        self.assertEqual(str(Maneuver.FromGCode('G1X3Y7\nG1Z0')), "G1{'X': 3.0, 'Y': 7.0}\nG1{'Z': 0.0}\n")
+        self.assertEqual(str(Maneuver.FromGCode('G1')), 'G1{}')
+        self.assertEqual(str(Maneuver.FromGCode('G1X3')), "G1{'X': 3.0}")
+        self.assertEqual(str(Maneuver.FromGCode('G1X3Y7')), "G1{'X': 3.0, 'Y': 7.0}")
+        self.assertEqual(str(Maneuver.FromGCode('G1X3Y7/G1Z0')), "G1{'X': 3.0, 'Y': 7.0}\nG1{'Z': 0.0}")
         self.assertEqual(len(Maneuver.FromGCode('G1X3Y7').instr), 1)
-        self.assertEqual(len(Maneuver.FromGCode('G1X3Y7\nG1Z0').instr), 2)
+        self.assertEqual(len(Maneuver.FromGCode('G1X3Y7/G1Z0').instr), 2)
         self.assertEqual(type(Maneuver.FromGCode('G1X3Y7').instr[0]), MoveStraight)
 
     def test02(self):
         """Verify G2 instruction construction"""
-        self.assertEqual(str(Maneuver.FromGCode('G2X2Y2I1')), "G2{'I': 1.0, 'X': 2.0, 'Y': 2.0}\n")
+        self.assertEqual(str(Maneuver.FromGCode('G2X2Y2I1')), "G2{'I': 1.0, 'X': 2.0, 'Y': 2.0}")
         self.assertEqual(len(Maneuver.FromGCode('G2X2Y2I1').instr), 1)
         self.assertEqual(type(Maneuver.FromGCode('G2X2Y2I1').instr[0]), MoveArcCW)
 
     def test03(self):
         """Verify G3 instruction construction"""
-        self.assertEqual(str(Maneuver.FromGCode('G3X2Y2I1')), "G3{'I': 1.0, 'X': 2.0, 'Y': 2.0}\n")
+        self.assertEqual(str(Maneuver.FromGCode('G3X2Y2I1')), "G3{'I': 1.0, 'X': 2.0, 'Y': 2.0}")
         self.assertEqual(len(Maneuver.FromGCode('G3X2Y2I1').instr), 1)
         self.assertEqual(type(Maneuver.FromGCode('G3X2Y2I1').instr[0]), MoveArcCCW)
 
@@ -317,21 +319,21 @@ class TestDressupDogboneII(PathTestBase):
 
     def test20(self):
         """Verify kinks of maneuvers"""
-        self.assertKinks(MNVR('G1X1\nG1Y1'), '[1.57]')
-        self.assertKinks(MNVR('G1X1\nG1Y1\nG1X0'), '[1.57, 1.57]')
-        self.assertKinks(MNVR('G1X1\nG1Y1\nG1X0\nG1Y0'), '[1.57, 1.57, 1.57, 1.57]')
+        self.assertKinks(MNVR('G1X1/G1Y1'), '[1.57]')
+        self.assertKinks(MNVR('G1X1/G1Y1/G1X0'), '[1.57, 1.57]')
+        self.assertKinks(MNVR('G1X1/G1Y1/G1X0/G1Y0'), '[1.57, 1.57, 1.57, 1.57]')
 
-        self.assertKinks(MNVR('G1Y1\nG1X1'), '[-1.57]')
-        self.assertKinks(MNVR('G1Y1\nG1X1\nG1Y0'), '[-1.57, -1.57]')
-        self.assertKinks(MNVR('G1Y1\nG1X1\nG1Y0\nG1X0'), '[-1.57, -1.57, -1.57, -1.57]')
+        self.assertKinks(MNVR('G1Y1/G1X1'), '[-1.57]')
+        self.assertKinks(MNVR('G1Y1/G1X1/G1Y0'), '[-1.57, -1.57]')
+        self.assertKinks(MNVR('G1Y1/G1X1/G1Y0/G1X0'), '[-1.57, -1.57, -1.57, -1.57]')
 
         # tangential arc moves
-        self.assertKinks(MNVR('G1X1\nG3Y2J1'), '[0.00]')
-        self.assertKinks(MNVR('G1X1\nG3Y2J1G1X0'), '[0.00, 0.00]')
+        self.assertKinks(MNVR('G1X1/G3Y2J1'), '[0.00]')
+        self.assertKinks(MNVR('G1X1/G3Y2J1G1X0'), '[0.00, 0.00]')
 
         # folding back arc moves
-        self.assertKinks(MNVR('G1X1\nG2Y2J1'), '[-3.14]')
-        self.assertKinks(MNVR('G1X1\nG2Y2J1G1X0'), '[-3.14, 3.14]')
+        self.assertKinks(MNVR('G1X1/G2Y2J1'), '[-3.14]')
+        self.assertKinks(MNVR('G1X1/G2Y2J1G1X0'), '[-3.14, 3.14]')
 
     def test30(self):
         """Verify dogbone detection"""
