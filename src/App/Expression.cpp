@@ -917,16 +917,17 @@ void Expression::getDepObjects(
         std::vector<std::string> strings;
         for(auto &dep : var.getDep(false, &strings)) {
             DocumentObject *obj = dep.first;
-            if (obj->testStatus(ObjectStatus::Remove))
-                continue;
+            if (!obj->testStatus(ObjectStatus::Remove)) {
+                if (labels) {
+                    std::copy(strings.begin(), strings.end(), std::back_inserter(*labels));
+                }
 
-            if (labels) {
-                std::copy(strings.begin(), strings.end(), std::back_inserter(*labels));
+                auto res = deps.insert(std::make_pair(obj, hidden));
+                if (!hidden || res.second)
+                    res.first->second = hidden;
             }
 
-            auto res = deps.insert(std::make_pair(obj, hidden));
-            if(!hidden || res.second)
-                res.first->second = hidden;
+            strings.clear();
         }
     }
 }
