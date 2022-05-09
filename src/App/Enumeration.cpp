@@ -151,7 +151,7 @@ void Enumeration::setEnums(const std::vector<std::string> &values)
     int i = 0;
     for (const auto & value : values) {
 #if defined (_MSC_VER)
-        _EnumArray[i++] = _strdup(it->c_str());
+        _EnumArray[i++] = _strdup(value.c_str());
 #else
         _EnumArray[i++] = strdup(value.c_str());
 #endif

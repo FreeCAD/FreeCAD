@@ -1583,7 +1583,7 @@ void OperatorExpression::_toString(std::ostream &s, bool persistent,int) const
     else if (rightOperator == op) { // Equal priority?
         if (!isRightAssociative() || !isCommutative())
             needsParens = true;
-            }
+    }
     else if (right->priority() == priority()) {
         if (!isRightAssociative())
             needsParens = true;
