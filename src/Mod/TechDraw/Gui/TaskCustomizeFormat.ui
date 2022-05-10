@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>489</width>
-    <height>601</height>
+    <height>611</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -27,14 +27,14 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <widget class="QLabel" name="label_GDT">
+     <property name="text">
+      <string>GD&amp;T</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QGridLayout" name="grid_GDT">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_GDT">
-       <property name="text">
-        <string>GD&amp;T</string>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="0">
       <widget class="QPushButton" name="pbA01">
        <property name="toolTip">
@@ -236,7 +236,7 @@
        </property>
       </widget>
      </item>
-    <item row="0" column="3">
+     <item row="0" column="3">
       <widget class="QPushButton" name="pbB04">
        <property name="font">
         <font>
@@ -401,7 +401,7 @@
        </property>
       </widget>
      </item>
-     </layout>
+    </layout>
    </item>
    <item>
     <widget class="QLabel" name="label_4">
@@ -493,7 +493,7 @@
        </property>
       </widget>
      </item>
-    <item row="0" column="2">
+     <item row="0" column="2">
       <widget class="QPushButton" name="pbD03">
        <property name="toolTip">
         <string>(Arc) Second</string>
@@ -513,7 +513,7 @@
        </property>
       </widget>
      </item>
-     </layout>
+    </layout>
    </item>
    <item>
     <widget class="QLabel" name="label">
@@ -678,7 +678,7 @@
        </property>
       </widget>
      </item>
-    <item row="1" column="0">
+     <item row="1" column="0">
       <widget class="QPushButton" name="pbF06">
        <property name="toolTip">
         <string>Small phi</string>
@@ -698,7 +698,7 @@
        </property>
       </widget>
      </item>
-     </layout>
+    </layout>
    </item>
    <item>
     <layout class="QGridLayout" name="grid_Format">
@@ -712,7 +712,7 @@
      <item row="0" column="1">
       <widget class="QLineEdit" name="leFormat"/>
      </item>
-    <item row="1" column="0">
+     <item row="1" column="0">
       <widget class="QLabel" name="lbPreview">
        <property name="text">
         <string>Preview:</string>
@@ -726,7 +726,7 @@
        </property>
       </widget>
      </item>
-     </layout>
+    </layout>
    </item>
   </layout>
  </widget>
