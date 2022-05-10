@@ -53,6 +53,9 @@ class Instruction (object):
             else:
                 self.param = param
 
+    def anglesOfTangents(self):
+        return (0, 0)
+
     def setPositionBegin(self, begin):
         self.begin = begin
 
@@ -99,8 +102,13 @@ class Instruction (object):
     def __repr__(self):
         return f"{self.cmd}{self.param}"
 
-    def strInt(self):
-        return f"{self.cmd}{dict([(k, int(v)) for k, v in self.param.items()])}"
+    def str(self, digits=2):
+        if digits == 0:
+            s = [f"{k}: {int(v)}" for k, v in self.param.items()]
+        else:
+            fmt = f"{{}}: {{:.{digits}}}"
+            s = [fmt.format(k, v) for k, v in self.param.items()]
+        return f"{self.cmd}{{{', '.join(s)}}}"
 
 class MoveStraight (Instruction):
 
@@ -186,6 +194,9 @@ class Kink (object):
 A positive kink angle represents a move to the left, and a negative angle represents a move to the right.'''
 
     def __init__(self, m0, m1):
+        if m1 is None:
+            m1 = m0[1]
+            m0 = m0[0]
         self.m0 = m0
         self.m1 = m1
         self.t0 = m0.anglesOfTangents()[1]
@@ -314,6 +325,32 @@ def generate_tbone_horizontal(kink, length):
 def generate_tbone_vertical(kink, length):
     return generate_tbone(kink, length, 'Y')
 
+def generate_tbone_on(kink, length, a):
+    if PathGeom.isRoughly(0, a) or PathGeom.isRoughly(abs(a), PI):
+        return generate_tbone_horizontal(kink, length)
+    if PathGeom.isRoughly(abs(a), PI/2):
+        return generate_tbone_vertical(kink, length)
+
+    if kink.angle() > 0:
+        length = -length
+
+    dx = length * math.cos(a)
+    dy = length * math.sin(a)
+    p0 = kink.position()
+
+    moveIn = MoveStraight(kink.position(), 'G1', {'X': p0.x + dx, 'Y': p0.y + dy})
+    moveOut = MoveStraight(moveIn.positionEnd(), 'G1', {'X': p0.x, 'Y': p0.y})
+
+    return Bone(kink, [moveIn, moveOut])
+
+def generate_tbone_on_short(kink, length):
+    if kink.m0.pathLength() < kink.m1.pathLength():
+        a = normalizeAngle(kink.m0.anglesOfTangents()[1] + PI/2)
+    else:
+        a = normalizeAngle(kink.m1.anglesOfTangents()[0] + PI/2)
+    return generate_tbone_on(kink, length, a)
+
+
 def MNVR(gcode, begin=None):
     # 'turns out the replace() isn't really necessary
     # leave it here anyway for clarity
@@ -321,6 +358,12 @@ def MNVR(gcode, begin=None):
 
 def INSTR(gcode, begin=None):
     return MNVR(gcode, begin).instr[0]
+
+def KINK(gcode, begin=None):
+    maneuver = MNVR(gcode, begin)
+    if len(maneuver.instr) != 2:
+        return None
+    return Kink(maneuver.instr[0], maneuver.instr[1])
 
 class TestDressupDogboneII(PathTestBase):
     """Unit tests for the Dogbone dressup."""
@@ -339,8 +382,8 @@ class TestDressupDogboneII(PathTestBase):
         bones = [f"({int(b.x())},{int(b.y())})" for b in findDogboneKinks(maneuver, threshold)]
         self.assertEqual(f"[{', '.join(bones)}]", s)
 
-    def assertBone(self, bone, s):
-        b = [i.strInt() for i in bone.instr]
+    def assertBone(self, bone, s, digits=0):
+        b = [i.str(digits) for i in bone.instr]
         self.assertEqual(f"[{', '.join(b)}]", s)
 
     def test00(self):
@@ -465,16 +508,16 @@ class TestDressupDogboneII(PathTestBase):
         p = k.position()
         self.assertEqual(f"({int(p.x)}, {int(p.y)})", "(1, 0)")
         bone = generate_tbone_horizontal(k, 1)
-        self.assertBone(bone, "[G1{'X': 2}, G1{'X': 1}]")
+        self.assertBone(bone, "[G1{X: 2}, G1{X: 1}]")
 
         # full loop CCW
         kinks = findDogboneKinks(MNVR('G1X1/G1Y1/G1X0/G1Y0'), PI/4)
         bones = [generate_tbone_horizontal(k, 1) for k in kinks]
         self.assertEqual(len(bones), 4)
-        self.assertBone(bones[0], "[G1{'X': 2}, G1{'X': 1}]")
-        self.assertBone(bones[1], "[G1{'X': 2}, G1{'X': 1}]")
-        self.assertBone(bones[2], "[G1{'X': -1}, G1{'X': 0}]")
-        self.assertBone(bones[3], "[G1{'X': -1}, G1{'X': 0}]")
+        self.assertBone(bones[0], "[G1{X: 2}, G1{X: 1}]")
+        self.assertBone(bones[1], "[G1{X: 2}, G1{X: 1}]")
+        self.assertBone(bones[2], "[G1{X: -1}, G1{X: 0}]")
+        self.assertBone(bones[3], "[G1{X: -1}, G1{X: 0}]")
 
         # single move left
         maneuver = MNVR('G1X1/G1Y-1')
@@ -484,30 +527,30 @@ class TestDressupDogboneII(PathTestBase):
         p = k.position()
         self.assertEqual(f"({int(p.x)}, {int(p.y)})", "(1, 0)")
         bone = generate_tbone_horizontal(k, 1)
-        self.assertBone(bone, "[G1{'X': 2}, G1{'X': 1}]")
+        self.assertBone(bone, "[G1{X: 2}, G1{X: 1}]")
 
         # full loop CW
         kinks = findDogboneKinks(MNVR('G1X1/G1Y-1/G1X0/G1Y0'), -PI/4)
         bones = [generate_tbone_horizontal(k, 1) for k in kinks]
         self.assertEqual(len(bones), 4)
-        self.assertBone(bones[0], "[G1{'X': 2}, G1{'X': 1}]")
-        self.assertBone(bones[1], "[G1{'X': 2}, G1{'X': 1}]")
-        self.assertBone(bones[2], "[G1{'X': -1}, G1{'X': 0}]")
-        self.assertBone(bones[3], "[G1{'X': -1}, G1{'X': 0}]")
+        self.assertBone(bones[0], "[G1{X: 2}, G1{X: 1}]")
+        self.assertBone(bones[1], "[G1{X: 2}, G1{X: 1}]")
+        self.assertBone(bones[2], "[G1{X: -1}, G1{X: 0}]")
+        self.assertBone(bones[3], "[G1{X: -1}, G1{X: 0}]")
 
         # bones on arcs
         kinks = findDogboneKinks(MNVR('G1X1/G3X3I1/G1Y1/G1X0/G1Y0'),  PI/4);
         bones = [generate_tbone_horizontal(k, 1) for k in kinks]
         self.assertEqual(len(bones), 3)
-        self.assertBone(bones[0], "[G1{'X': 4}, G1{'X': 3}]")
-        self.assertBone(bones[1], "[G1{'X': -1}, G1{'X': 0}]")
-        self.assertBone(bones[2], "[G1{'X': -1}, G1{'X': 0}]")
+        self.assertBone(bones[0], "[G1{X: 4}, G1{X: 3}]")
+        self.assertBone(bones[1], "[G1{X: -1}, G1{X: 0}]")
+        self.assertBone(bones[2], "[G1{X: -1}, G1{X: 0}]")
 
         # bones on arcs
         kinks = findDogboneKinks(MNVR('G1X1/G3X3I1/G1Y1/G1X0/G1Y0'),  -PI/4);
         bones = [generate_tbone_horizontal(k, 1) for k in kinks]
         self.assertEqual(len(bones), 1)
-        self.assertBone(bones[0], "[G1{'X': 2}, G1{'X': 1}]")
+        self.assertBone(bones[0], "[G1{X: 2}, G1{X: 1}]")
 
     def test50(self):
         """Verify vertical t-bone creation"""
@@ -521,16 +564,16 @@ class TestDressupDogboneII(PathTestBase):
         p = k.position()
         self.assertEqual(f"({int(p.x)}, {int(p.y)})", "(1, 0)")
         bone = generate_tbone_vertical(k, 1)
-        self.assertBone(bone, "[G1{'Y': -1}, G1{'Y': 0}]")
+        self.assertBone(bone, "[G1{Y: -1}, G1{Y: 0}]")
 
         # full loop CCW
         kinks = findDogboneKinks(MNVR('G1X1/G1Y1/G1X0/G1Y0'), PI/4)
         bones = [generate_tbone_vertical(k, 1) for k in kinks]
         self.assertEqual(len(bones), 4)
-        self.assertBone(bones[0], "[G1{'Y': -1}, G1{'Y': 0}]")
-        self.assertBone(bones[1], "[G1{'Y': 2}, G1{'Y': 1}]")
-        self.assertBone(bones[2], "[G1{'Y': 2}, G1{'Y': 1}]")
-        self.assertBone(bones[3], "[G1{'Y': -1}, G1{'Y': 0}]")
+        self.assertBone(bones[0], "[G1{Y: -1}, G1{Y: 0}]")
+        self.assertBone(bones[1], "[G1{Y: 2}, G1{Y: 1}]")
+        self.assertBone(bones[2], "[G1{Y: 2}, G1{Y: 1}]")
+        self.assertBone(bones[3], "[G1{Y: -1}, G1{Y: 0}]")
 
         # single move left
         maneuver = MNVR('G1X1/G1Y-1')
@@ -540,27 +583,70 @@ class TestDressupDogboneII(PathTestBase):
         p = k.position()
         self.assertEqual(f"({int(p.x)}, {int(p.y)})", "(1, 0)")
         bone = generate_tbone_vertical(k, 1)
-        self.assertBone(bone, "[G1{'Y': 1}, G1{'Y': 0}]")
+        self.assertBone(bone, "[G1{Y: 1}, G1{Y: 0}]")
 
         # full loop CW
         kinks = findDogboneKinks(MNVR('G1X1/G1Y-1/G1X0/G1Y0'), -PI/4)
         bones = [generate_tbone_vertical(k, 1) for k in kinks]
         self.assertEqual(len(bones), 4)
-        self.assertBone(bones[0], "[G1{'Y': 1}, G1{'Y': 0}]")
-        self.assertBone(bones[1], "[G1{'Y': -2}, G1{'Y': -1}]")
-        self.assertBone(bones[2], "[G1{'Y': -2}, G1{'Y': -1}]")
-        self.assertBone(bones[3], "[G1{'Y': 1}, G1{'Y': 0}]")
+        self.assertBone(bones[0], "[G1{Y: 1}, G1{Y: 0}]")
+        self.assertBone(bones[1], "[G1{Y: -2}, G1{Y: -1}]")
+        self.assertBone(bones[2], "[G1{Y: -2}, G1{Y: -1}]")
+        self.assertBone(bones[3], "[G1{Y: 1}, G1{Y: 0}]")
 
         # bones on arcs
         kinks = findDogboneKinks(MNVR('G1X1/G3X3I1/G1Y1/G1X0/G1Y0'),  PI/4);
         bones = [generate_tbone_vertical(k, 1) for k in kinks]
         self.assertEqual(len(bones), 3)
-        self.assertBone(bones[0], "[G1{'Y': 2}, G1{'Y': 1}]")
-        self.assertBone(bones[1], "[G1{'Y': 2}, G1{'Y': 1}]")
-        self.assertBone(bones[2], "[G1{'Y': -1}, G1{'Y': 0}]")
+        self.assertBone(bones[0], "[G1{Y: 2}, G1{Y: 1}]")
+        self.assertBone(bones[1], "[G1{Y: 2}, G1{Y: 1}]")
+        self.assertBone(bones[2], "[G1{Y: -1}, G1{Y: 0}]")
 
         # bones on arcs
         kinks = findDogboneKinks(MNVR('G1X1/G3X3I1/G1Y1/G1X0/G1Y0'),  -PI/4);
         bones = [generate_tbone_vertical(k, 1) for k in kinks]
         self.assertEqual(len(bones), 1)
-        self.assertBone(bones[0], "[G1{'Y': 1}, G1{'Y': 0}]")
+        self.assertBone(bones[0], "[G1{Y: 1}, G1{Y: 0}]")
+
+    def test60(self):
+        """Verify t-bones on edges"""
+
+        # horizontal short edge
+        bone = generate_tbone_on_short(KINK('G1X1/G1Y2'), 1)
+        self.assertBone(bone, "[G1{Y: -1}, G1{Y: 0}]")
+
+        bone = generate_tbone_on_short(KINK('G1X-1/G1Y2'), 1)
+        self.assertBone(bone, "[G1{Y: -1}, G1{Y: 0}]")
+
+        # vertical short edge
+        bone = generate_tbone_on_short(KINK('G1Y1/G1X2'), 1)
+        self.assertBone(bone, "[G1{X: -1}, G1{X: 0}]")
+
+        bone = generate_tbone_on_short(KINK('G1Y1/G1X-2'), 1)
+        self.assertBone(bone, "[G1{X: 1}, G1{X: 0}]")
+
+        # some other angle
+        bone = generate_tbone_on_short(KINK('G1X1Y1/G1Y-1'), 5)
+        self.assertBone(bone, "[G1{X: -2.5, Y: 4.5}, G1{X: 1.0, Y: 1.0}]", 2)
+
+        bone = generate_tbone_on_short(KINK('G1X-1Y-1/G1Y1'), 5)
+        self.assertBone(bone, "[G1{X: 2.5, Y: -4.5}, G1{X: -1.0, Y: -1.0}]", 2)
+
+        # some other angle
+        bone = generate_tbone_on_short(KINK('G1X2Y1/G1Y-3'), 5)
+        self.assertBone(bone, "[G1{X: -0.24, Y: 5.5}, G1{X: 2.0, Y: 1.0}]", 2)
+
+        bone = generate_tbone_on_short(KINK('G1X-2Y-1/G1Y3'), 5)
+        self.assertBone(bone, "[G1{X: 0.24, Y: -5.5}, G1{X: -2.0, Y: -1.0}]", 2)
+
+        # horizontal short edge - the 2nd
+        bone = generate_tbone_on_short(KINK('G1Y2/G1X1'), 1)
+        self.assertBone(bone, "[G1{Y: 3}, G1{Y: 2}]")
+        bone = generate_tbone_on_short(KINK('G1Y2/G1X-1'), 1)
+        self.assertBone(bone, "[G1{Y: 3}, G1{Y: 2}]")
+
+        bone = generate_tbone_on_short(KINK('G1Y-3/G1X2Y-2'), 5)
+        self.assertBone(bone, "[G1{X: 2.2, Y: -7.5}, G1{X: 0.0, Y: -3.0}]", 2)
+
+        bone = generate_tbone_on_short(KINK('G1Y3/G1X-2Y2'), 5)
+        self.assertBone(bone, "[G1{X: -2.2, Y: 7.5}, G1{X: 0.0, Y: 3.0}]", 2)
