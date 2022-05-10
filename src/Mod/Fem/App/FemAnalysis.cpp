@@ -20,17 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include "FemAnalysis.h"
 #include <App/DocumentObjectPy.h>
 #include <App/FeaturePythonPyImp.h>
-#include <Base/Placement.h>
 #include <Base/Uuid.h>
+
+#include "FemAnalysis.h"
+
 
 using namespace Fem;
 using namespace App;
@@ -41,16 +38,16 @@ PROPERTY_SOURCE(Fem::FemAnalysis, App::DocumentObjectGroup)
 FemAnalysis::FemAnalysis()
 {
     Base::Uuid id;
-    ADD_PROPERTY_TYPE(Uid,(id),0,App::Prop_None,"UUID of the Analysis");
+    ADD_PROPERTY_TYPE(Uid, (id), 0, App::Prop_None, "UUID of the Analysis");
 }
 
 FemAnalysis::~FemAnalysis()
 {
 }
 
-void FemAnalysis::handleChangedPropertyName(Base::XMLReader &reader,
-                                            const char * TypeName,
-                                            const char *PropName)
+void FemAnalysis::handleChangedPropertyName(Base::XMLReader& reader,
+                                            const char* TypeName,
+                                            const char* PropName)
 {
     Base::Type type = Base::Type::fromName(TypeName);
     if (Group.getClassTypeId() == type && strcmp(PropName, "Member") == 0) {
@@ -87,7 +84,7 @@ template<> const char* Fem::FemAnalysisPython::getViewProviderName(void) const {
 /// @endcond
 
 // explicit template instantiation
-template class AppFemExport FeaturePythonT<Fem::FemAnalysis>;
+template class FemExport FeaturePythonT<Fem::FemAnalysis>;
 }
 
 // ---------------------------------------------------------
@@ -101,11 +98,11 @@ template<> const char* Fem::FeaturePython::getViewProviderName(void) const {
 template<> PyObject* Fem::FeaturePython::getPyObject(void) {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new App::FeaturePythonPyT<App::DocumentObjectPy>(this),true);
+        PythonObject = Py::Object(new App::FeaturePythonPyT<App::DocumentObjectPy>(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
 // explicit template instantiation
-template class AppFemExport FeaturePythonT<Fem::DocumentObject>;
+template class FemExport FeaturePythonT<Fem::DocumentObject>;
 /// @endcond
 }

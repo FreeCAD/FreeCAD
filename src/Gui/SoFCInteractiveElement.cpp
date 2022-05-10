@@ -20,11 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include <Inventor/elements/SoOverrideElement.h>
+#ifndef _PreComp_
+# include <Inventor/elements/SoOverrideElement.h>
+#endif
+
 #include "SoFCInteractiveElement.h"
+
 
 using namespace Gui;
 
@@ -81,7 +84,7 @@ void SoGLWidgetElement::initClass(void)
 void SoGLWidgetElement::init(SoState * state)
 {
   inherited::init(state);
-  this->window = 0;
+  this->window = nullptr;
 }
 
 SoGLWidgetElement::~SoGLWidgetElement()
@@ -119,7 +122,7 @@ SbBool SoGLWidgetElement::matches(const SoElement * /*element*/) const
 
 SoElement * SoGLWidgetElement::copyMatchInfo(void) const
 {
-    return 0;
+    return nullptr;
 }
 
 // ---------------------------------
@@ -136,7 +139,7 @@ void SoGLRenderActionElement::initClass(void)
 void SoGLRenderActionElement::init(SoState * state)
 {
   inherited::init(state);
-  this->glRenderAction = 0;
+  this->glRenderAction = nullptr;
 }
 
 SoGLRenderActionElement::~SoGLRenderActionElement()
@@ -174,7 +177,7 @@ SbBool SoGLRenderActionElement::matches(const SoElement * /*element*/) const
 
 SoElement * SoGLRenderActionElement::copyMatchInfo(void) const
 {
-    return 0;
+    return nullptr;
 }
 
 // ---------------------------------
@@ -184,7 +187,7 @@ SO_NODE_SOURCE(SoGLWidgetNode)
 /*!
   Constructor.
 */
-SoGLWidgetNode::SoGLWidgetNode(void) : window(0)
+SoGLWidgetNode::SoGLWidgetNode(void) : window(nullptr)
 {
     SO_NODE_CONSTRUCTOR(SoGLWidgetNode);
 }
@@ -278,5 +281,5 @@ SbBool SoGLVBOActivatedElement::matches(const SoElement * /*element*/) const
 
 SoElement * SoGLVBOActivatedElement::copyMatchInfo(void) const
 {
-    return 0;
+    return nullptr;
 }

@@ -29,8 +29,8 @@
 # include <Inventor/nodes/SoCoordinate3.h>
 #endif
 
-#include <Mod/Part/Gui/SoBrepFaceSet.h>
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
+#include <Mod/Part/Gui/SoBrepFaceSet.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
 
 #include "ViewProviderDatumPlane.h"

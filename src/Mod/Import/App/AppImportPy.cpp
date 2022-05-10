@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #if defined(__MINGW32__)
 # define WNT // avoid conflict with GUID
 #endif
 #ifndef _PreComp_
-# include <Python.h>
 # include <climits>
 #if defined(__clang__)
 # pragma clang diagnostic push
@@ -135,12 +133,12 @@ private:
     Py::Object importer(const Py::Tuple& args, const Py::Dict &kwds)
     {
         char* Name;
-        char* DocName=0;
+        char* DocName=nullptr;
         PyObject *importHidden = Py_None;
         PyObject *merge = Py_None;
         PyObject *useLinkGroup = Py_None;
         int mode = -1;
-        static char* kwd_list[] = {"name", "docName","importHidden","merge","useLinkGroup","mode",0};
+        static char* kwd_list[] = {"name", "docName","importHidden","merge","useLinkGroup","mode",nullptr};
         if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "et|sOOOi", 
                     kwd_list,"utf-8",&Name,&DocName,&importHidden,&merge,&useLinkGroup,&mode))
             throw Py::Exception();
@@ -153,7 +151,7 @@ private:
             //Base::Console().Log("Insert in Part with %s",Name);
             Base::FileInfo file(Utf8Name.c_str());
 
-            App::Document *pcDoc = 0;
+            App::Document *pcDoc = nullptr;
             if (DocName) {
                 pcDoc = App::GetApplication().getDocument(DocName);
             }
@@ -234,7 +232,7 @@ private:
                 }
             }
             else {
-                throw Py::Exception(Base::BaseExceptionFreeCADError, "no supported file format");
+                throw Py::Exception(PyExc_IOError, "no supported file format");
             }
 
 #if 1
@@ -275,10 +273,11 @@ private:
             }
         }
         catch (Standard_Failure& e) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.GetMessageString());
+            throw Py::Exception(Base::PyExc_FC_GeneralError, e.GetMessageString());
         }
         catch (const Base::Exception& e) {
-            throw Py::RuntimeError(e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
 
         return Py::None();
@@ -290,7 +289,7 @@ private:
         PyObject *exportHidden = Py_None;
         PyObject *legacy = Py_None;
         PyObject *keepPlacement = Py_None;
-        static char* kwd_list[] = {"obj", "name", "exportHidden", "legacy", "keepPlacement",0};
+        static char* kwd_list[] = {"obj", "name", "exportHidden", "legacy", "keepPlacement",nullptr};
         if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "Oet|OOO",
                     kwd_list,&object,"utf-8",&Name,&exportHidden,&legacy,&keepPlacement))
             throw Py::Exception();
@@ -368,7 +367,7 @@ private:
                 //makeHeader.SetName(new TCollection_HAsciiString((Standard_CString)Utf8Name.c_str()));
                 makeHeader.SetAuthorValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Author", "Author").c_str()));
                 makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Company").c_str()));
-                makeHeader.SetOriginatingSystem(new TCollection_HAsciiString(App::GetApplication().getExecutableName()));
+                makeHeader.SetOriginatingSystem(new TCollection_HAsciiString(App::Application::getExecutableName().c_str()));
                 makeHeader.SetDescriptionValue(1, new TCollection_HAsciiString("FreeCAD Model"));
                 IFSelect_ReturnStatus ret = writer.Write(name8bit.c_str());
                 if (ret == IFSelect_RetError || ret == IFSelect_RetFail || ret == IFSelect_RetStop) {
@@ -395,10 +394,11 @@ private:
             hApp->Close(hDoc);
         }
         catch (Standard_Failure& e) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.GetMessageString());
+            throw Py::Exception(Base::PyExc_FC_GeneralError, e.GetMessageString());
         }
         catch (const Base::Exception& e) {
-            throw Py::RuntimeError(e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
 
         return Py::None();
@@ -407,7 +407,7 @@ private:
     Py::Object readDXF(const Py::Tuple& args)
     {
         char* Name;
-        const char* DocName=0;
+        const char* DocName=nullptr;
         const char* optionSource = nullptr;
         std::string defaultOptions = "User parameter:BaseApp/Preferences/Mod/Draft";
         bool IgnoreErrors=true;
@@ -780,7 +780,7 @@ static PyObject * importAssembly(PyObject *self, PyObject *args)
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace Import

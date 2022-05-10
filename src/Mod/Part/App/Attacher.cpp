@@ -62,6 +62,7 @@
 
 #include "Attacher.h"
 #include "AttachExtension.h"
+#include "Tools.h"
 #include <Base/Console.h>
 #include <App/OriginFeature.h>
 #include <App/Application.h>
@@ -132,7 +133,7 @@ const char* AttachEngine::eMapModeStrings[]= {
     "OYZ",
     "OYX",
 
-    NULL};
+    nullptr};
 
 //this list must be in sync with eRefType enum.
 //These strings are used only by Py interface of Attacher. Strings for use in Gui are in Mod/Part/Gui/AttacherTexts.cpp
@@ -160,7 +161,7 @@ const char* AttachEngine::eRefTypeStrings[]= {
     "Object",
     "Solid",
     "Wire",
-    NULL
+    nullptr
 };
 
 
@@ -432,7 +433,8 @@ eRefType AttachEngine::getShapeType(const TopoDS_Shape& sh)
     case TopAbs_COMPOUND:{
         const TopoDS_Compound &cmpd = TopoDS::Compound(sh);
         TopoDS_Iterator it (cmpd, Standard_False, Standard_False);//don't mess with placements, to hopefully increase speed
-        if (! it.More()) return rtAnything;//empty compound
+        if (! it.More())//empty compound
+            return rtAnything;
         const TopoDS_Shape &sh1 = it.Value();
         it.Next();
         if (it.More()){
@@ -1177,7 +1179,6 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
         if (vertex.IsNull())
             throw Base::ValueError("Null vertex in AttachEngine3D::calculateAttachedPlacement()!");
 
-        BRepAdaptor_Surface surf (face);
         Handle (Geom_Surface) hSurf = BRep_Tool::Surface(face);
         gp_Pnt p = BRep_Tool::Pnt(vertex);
 
@@ -1185,19 +1186,33 @@ Base::Placement AttachEngine3D::calculateAttachedPlacement(const Base::Placement
         double u, v;
         if (projector.NbPoints()==0)
             throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: projecting point onto surface failed.");
+
         projector.LowerDistanceParameters(u, v);
-
-        BRepLProp_SLProps prop(surf,u,v,1, Precision::Confusion());
-        SketchNormal = prop.Normal();
-
+        BRepAdaptor_Surface surf(face);
+        BRepLProp_SLProps prop(surf, u, v, 1, Precision::Confusion());
         gp_Dir dirX;
-        prop.TangentU(dirX); //if normal is defined, this should be defined too
+        Standard_Boolean done;
+
+        Tools::getNormal(face, u, v, Precision::Confusion(), SketchNormal, done);
+
+        if (!done)
+            throw Base::ValueError("AttachEngine3D::calculateAttachedPlacement: finding normal to surface at projected point failed.");
+
+        // if getNormal succeeds, at least one of the tangent is defined
+        if (prop.IsTangentUDefined()) {
+            prop.TangentU(dirX);
+            if (face.Orientation() == TopAbs_REVERSED)
+                dirX.Reverse();
+        }
+        // here the orientation of dirX is managed by SketchNormal orientation
+        else {
+            gp_Dir dirY;
+            prop.TangentV(dirY);
+            dirX = dirY.Crossed(SketchNormal);
+        }
+
         SketchXAxis = gp_Vec(dirX).Reversed();//yields upside-down sketches less often.
 
-        if (face.Orientation() == TopAbs_REVERSED) {
-            SketchNormal.Reverse();
-            SketchXAxis.Reverse();
-        }
         if (bThruVertex) {
             SketchBasePoint = p;
         } else {

@@ -2,6 +2,24 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ja" sourcelanguage="en">
   <context>
+    <name>MeshPart_FlatteningCommand</name>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="47"/>
+      <source>Unwrap Mesh</source>
+      <translation>メッシュを解く</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="80"/>
+      <source>Find a flat representation of a mesh.</source>
+      <translation>代表平面のメッシュを選んでください</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="79"/>
+      <source>Unwrap Face</source>
+      <translation>面を解く</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
       <location filename="../../Command.cpp" line="276"/>
@@ -260,7 +278,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
       <translation>続行</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="129"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="136"/>
       <source>Maximum curve degree</source>
       <translation>最大曲率</translation>
     </message>
@@ -288,24 +306,14 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
       <translation>標準</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="145"/>
-      <source>Mefisto</source>
-      <translation>Mefisto</translation>
-    </message>
-    <message>
-      <location filename="../../Tessellation.ui" line="206"/>
-      <source>Netgen</source>
-      <translation>Netgen</translation>
+      <location filename="../../Tessellation.ui" line="33"/>
+      <source>Use the standard mesher</source>
+      <translation>標準メッシャーを使用</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="41"/>
       <source>Surface deviation:</source>
       <translation>サーフェス偏差:</translation>
-    </message>
-    <message>
-      <location filename="../../Tessellation.ui" line="33"/>
-      <source>Use the standard mesher</source>
-      <translation>標準メッシャーを使用</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="48"/>
@@ -358,6 +366,11 @@ this feature (e.g. the format OBJ).</source>
       <translation>面の色で区分を設定</translation>
     </message>
     <message>
+      <location filename="../../Tessellation.ui" line="145"/>
+      <source>Mefisto</source>
+      <translation>Mefisto</translation>
+    </message>
+    <message>
       <location filename="../../Tessellation.ui" line="148"/>
       <source>Use the Mefisto mesher</source>
       <translation>Mefisto メッシャーを使用</translation>
@@ -378,6 +391,11 @@ The smallest value is 0.</source>
       <location filename="../../Tessellation.ui" line="183"/>
       <source>Estimate</source>
       <translation>推計</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="206"/>
+      <source>Netgen</source>
+      <translation>Netgen</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="209"/>
@@ -485,18 +503,32 @@ A value in the range of 0.2-10.</source>
       <translation>パネルを開いたままにする</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="62"/>
-      <source>gmsh</source>
-      <translation>gmsh</translation>
+      <location filename="../../Tessellation.cpp" line="63"/>
+      <source>Gmsh</source>
+      <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="213"/>
-      <location filename="../../Tessellation.cpp" line="219"/>
+      <location filename="../../Tessellation.cpp" line="214"/>
+      <location filename="../../Tessellation.cpp" line="220"/>
       <source>No active document</source>
       <translation>アクティブなドキュメントがありません</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="234"/>
+      <location filename="../../Tessellation.cpp" line="248"/>
+      <source>You have selected a body without tip.
+Either set the tip of the body or select a different shape, please.</source>
+      <translation>チップのないボディを選択しました。
+ボディの先端を設定するか、別の形を選択してください。</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.cpp" line="252"/>
+      <source>You have selected a shape without faces.
+Select a different shape, please.</source>
+      <translation>面のないシェイプを選択しました。
+別のシェイプを選択してください。</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.cpp" line="256"/>
       <source>Select a shape for meshing, first.</source>
       <translation>最初にメッシュにするシェイプを選択してください。</translation>
     </message>

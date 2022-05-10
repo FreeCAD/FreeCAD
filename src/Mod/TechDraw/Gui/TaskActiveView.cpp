@@ -23,17 +23,19 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-
-#endif // #ifndef _PreComp_
-
 #include <QApplication>
+#include <QPushButton>
 #include <QStatusBar>
 #include <QGraphicsScene>
 #include <QTemporaryFile>
+#endif // #ifndef _PreComp_
+
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
+
+#include <App/Document.h>
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -52,7 +54,6 @@
 
 #include <Mod/TechDraw/Gui/ui_TaskActiveView.h>
 
-#include "DrawGuiStd.h"
 #include "QGVPage.h"
 #include "QGIView.h"
 #include "Grabber3d.h"
@@ -72,12 +73,6 @@ TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat) :
     m_btnOK(nullptr),
     m_btnCancel(nullptr)
 {
-//    Base::Console().Message("TAV::TAV() - create mode\n");
-    if  (m_pageFeat == nullptr)  {
-        //should be caught in CMD caller
-        Base::Console().Error("TaskActiveView - bad parameters. Can not proceed.\n");
-        return;
-    }
     ui->setupUi(this);
 
     ui->qsbWidth->setUnit(Base::Unit::Length);
@@ -216,7 +211,7 @@ TaskDlgActiveView::TaskDlgActiveView(TechDraw::DrawPage* page)
 {
     widget  = new TaskActiveView(page);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_ActiveView"),
-                                             widget->windowTitle(), true, 0);
+                                             widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

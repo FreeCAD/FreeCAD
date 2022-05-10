@@ -20,37 +20,34 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <Inventor/nodes/SoGroup.h>
 # include <Inventor/nodes/SoTexture2.h>
 # include <QImage>
-# include <QMessageBox>
 # include <QImageReader>
 # include <QKeyEvent>
+# include <QMessageBox>
 #endif
 
 #include <Inventor/nodes/SoTextureCoordinateEnvironment.h>
-#include <QDialogButtonBox>
-
-#include <App/Application.h>
 
 #include "TextureMapping.h"
-#include "BitmapFactory.h"
 #include "ui_TextureMapping.h"
 #include "Application.h"
+#include "BitmapFactory.h"
 #include "Document.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
+
 
 using namespace Gui::Dialog;
 
 /* TRANSLATOR Gui::Dialog::TextureMapping */
 
 TextureMapping::TextureMapping(QWidget* parent, Qt::WindowFlags fl)
-  : QDialog(parent, fl), grp(0), tex(0), env(0)
+  : QDialog(parent, fl), grp(nullptr), tex(nullptr), env(nullptr)
 {
     ui = new Ui_TextureMapping();
     ui->setupUi(this);
@@ -181,7 +178,7 @@ void TextureMapping::on_checkEnv_toggled(bool b)
 TaskTextureMapping::TaskTextureMapping()
 {
     dialog = new TextureMapping();
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), dialog->windowTitle(), true, 0);
+    taskbox = new Gui::TaskView::TaskBox(QPixmap(), dialog->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(dialog);
     Content.push_back(taskbox);
 }

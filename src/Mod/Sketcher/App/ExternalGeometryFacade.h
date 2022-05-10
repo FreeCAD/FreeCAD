@@ -90,6 +90,9 @@ public:
     virtual bool testGeometryMode(int flag) const override { return getGeoExt()->testGeometryMode(flag); }
     virtual void setGeometryMode(int flag, bool v=true) override { getGeoExt()->setGeometryMode(flag, v); }
 
+    virtual int getGeometryLayerId() const override { return getGeoExt()->getGeometryLayerId();}
+    virtual void setGeometryLayerId(int geolayer) override { getGeoExt()->setGeometryLayerId(geolayer);}
+
     // Convenience accessor
     bool getBlocked() const { return this->testGeometryMode(GeometryMode::Blocked);}
     void setBlocked(bool status = true) {this->setGeometryMode(GeometryMode::Blocked, status);}
@@ -128,19 +131,19 @@ public:
 
     std::vector<std::weak_ptr<const Part::GeometryExtension>> getExtensions() const {return getGeo()->getExtensions();};
     bool hasExtension(Base::Type type) const {return getGeo()->hasExtension(type);};
-    bool hasExtension(std::string name) const {return getGeo()->hasExtension(name);};
+    bool hasExtension(const std::string & name) const {return getGeo()->hasExtension(name);};
     std::weak_ptr<const Part::GeometryExtension> getExtension(Base::Type type) const {return getGeo()->getExtension(type);};
-    std::weak_ptr<const Part::GeometryExtension> getExtension(std::string name) const {return getGeo()->getExtension(name);};
+    std::weak_ptr<const Part::GeometryExtension> getExtension(const std::string & name) const {return getGeo()->getExtension(name);};
     void setExtension(std::unique_ptr<Part::GeometryExtension> &&geo) {return getGeo()->setExtension(std::move(geo));};
     void deleteExtension(Base::Type type) {return getGeo()->deleteExtension(type);};
-    void deleteExtension(std::string name) {return getGeo()->deleteExtension(name);};
+    void deleteExtension(const std::string & name) {return getGeo()->deleteExtension(name);};
 
-    void mirror(Base::Vector3d point) {return getGeo()->mirror(point);};
-    void mirror(Base::Vector3d point, Base::Vector3d dir) {return getGeo()->mirror(point, dir);};
-    void rotate(Base::Placement plm) {return getGeo()->rotate(plm);};
-    void scale(Base::Vector3d vec, double scale) {return getGeo()->scale(vec, scale);};
-    void transform(Base::Matrix4D mat) {return getGeo()->transform(mat);};
-    void translate(Base::Vector3d vec) {return getGeo()->translate(vec);};
+    void mirror(const Base::Vector3d & point) {return getGeo()->mirror(point);};
+    void mirror(const Base::Vector3d & point, Base::Vector3d dir) {return getGeo()->mirror(point, dir);};
+    void rotate(const Base::Placement & plm) {return getGeo()->rotate(plm);};
+    void scale(const Base::Vector3d & vec, double scale) {return getGeo()->scale(vec, scale);};
+    void transform(const Base::Matrix4D & mat) {return getGeo()->transform(mat);};
+    void translate(const Base::Vector3d & vec) {return getGeo()->translate(vec);};
 
 private:
     void initExtensions(void);

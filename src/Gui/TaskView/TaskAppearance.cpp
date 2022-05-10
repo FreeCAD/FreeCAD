@@ -23,19 +23,16 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <algorithm>
-# include <boost_bind_bind.hpp>
-#endif
+#include <Base/Console.h>
+#include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Document.h>
+#include <Gui/ViewProvider.h>
+#include <Gui/WaitCursor.h>
 
 #include "ui_TaskAppearance.h"
 #include "TaskAppearance.h"
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
+
 
 using namespace Gui::TaskView;
 namespace bp = boost::placeholders;
@@ -205,7 +202,8 @@ void TaskAppearance::setDisplayModes(const std::vector<Gui::ViewProvider*>& view
         App::Property* prop = (*it)->getPropertyByName("DisplayMode");
         if (prop && prop->getTypeId() == App::PropertyEnumeration::getClassTypeId()) {
             App::PropertyEnumeration* display = static_cast<App::PropertyEnumeration*>(prop);
-            if (!display->getEnums()) return;
+            if (!display->getEnums())
+                return;
             const std::vector<std::string>& value = display->getEnumVector();
             if (it == views.begin()) {
                 for (std::vector<std::string>::const_iterator jt = value.begin(); jt != value.end(); ++jt)

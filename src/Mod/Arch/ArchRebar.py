@@ -78,6 +78,8 @@ def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="
         if FreeCAD.GuiUp:
             sketch.ViewObject.hide()
         obj.Host = None
+    elif baseobj and not sketch:
+        obj.Shape = baseobj.Shape
     if diameter:
         obj.Diameter = diameter
     else:
@@ -103,7 +105,7 @@ class _CommandRebar:
         return {'Pixmap'  : 'Arch_Rebar',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_Rebar","Custom Rebar"),
                 'Accel': "R, B",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Rebar","Creates a Reinforcement bar from the selected face of a structural object")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Rebar","Creates a Reinforcement bar from the selected face of solid object and/or a sketch")}
 
     def IsActive(self):
 
@@ -114,7 +116,8 @@ class _CommandRebar:
         sel = FreeCADGui.Selection.getSelectionEx()
         if sel:
             obj = sel[0].Object
-            if Draft.getType(obj) == "Structure":
+            if hasattr(obj,"Shape") and obj.Shape.Solids:
+                # this is our host object
                 if len(sel) > 1:
                     sk = sel[1].Object
                     if hasattr(sk,'Shape'):
@@ -231,12 +234,12 @@ class _Rebar(ArchComponent.Component):
 
     def getRebarData(self,obj):
 
-        if not obj.Host:
-            return
-        if Draft.getType(obj.Host) != "Structure":
-            return
-        if not obj.Host.Shape:
-            return
+        #if not obj.Host:
+        #    return
+        #if Draft.getType(obj.Host) != "Structure":
+        #    return
+        #if not obj.Host.Shape:
+        #    return
         if not obj.Base:
             return
         if not obj.Base.Shape:
@@ -247,14 +250,19 @@ class _Rebar(ArchComponent.Component):
             return
         if not obj.Amount:
             return
-        father = obj.Host
+        father = None
+        if obj.Host:
+            father = obj.Host
         wire = obj.Base.Shape.Wires[0]
+        axis = None
         if Draft.getType(obj.Base) == "Wire": # Draft Wires can have "wrong" placement
             import DraftGeomUtils
             axis = DraftGeomUtils.getNormal(obj.Base.Shape)
-        else:
+        if not axis:
             axis = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,-1))
-        size = (ArchCommands.projectToVector(father.Shape.copy(),axis)).Length
+        size = 0
+        if father:
+            size = (ArchCommands.projectToVector(father.Shape.copy(),axis)).Length
         if hasattr(obj,"Direction"):
             if not DraftVecUtils.isNull(obj.Direction):
                 axis = FreeCAD.Vector(obj.Direction)
@@ -269,7 +277,10 @@ class _Rebar(ArchComponent.Component):
                 wire = DraftGeomUtils.filletWire(wire,radius)
         wires = []
         if obj.Amount == 1:
-            offset = DraftVecUtils.scaleTo(axis,size/2)
+            if size and father:
+                offset = DraftVecUtils.scaleTo(axis,size/2)
+            else:
+                offset = FreeCAD.Vector()
             wire.translate(offset)
             wires.append(wire)
         else:
@@ -307,12 +318,13 @@ class _Rebar(ArchComponent.Component):
         if self.clone(obj):
             return
         if not obj.Base:
-            FreeCAD.Console.PrintError(
-                "No Base, return without a rebar shape for {}.\n"
-                .format(obj.Name)
-            )
+            # let pass without error so that object can receive a shape directly
+            #FreeCAD.Console.PrintError(
+            #    "No Base, return without a rebar shape for {}.\n"
+            #    .format(obj.Name)
+            #)
             return
-        if not obj.Base.Shape:
+        if not hasattr(obj.Base,"Shape") or (not obj.Base.Shape) or obj.Base.Shape.isNull():
             FreeCAD.Console.PrintError(
                 "No Shape in Base, return without a rebar shape for {}.\n"
                 .format(obj.Name)

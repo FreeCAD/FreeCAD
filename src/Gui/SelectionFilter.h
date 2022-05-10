@@ -109,6 +109,13 @@ public:
     virtual bool allow(App::Document*,App::DocumentObject*, const char*);
 
 protected:
+    static SelectionFilter* nullPointer() {
+        return nullptr;
+    }
+
+    static const char* nullString() {
+        return nullptr;
+    }
     SelectionFilterGate();
 
 protected:

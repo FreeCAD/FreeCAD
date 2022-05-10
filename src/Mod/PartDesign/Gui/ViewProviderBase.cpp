@@ -23,13 +23,11 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include <App/Document.h>
-#include "ViewProviderBase.h"
-#include <Mod/PartDesign/App/FeatureBase.h>
 #include <Gui/Command.h>
+#include <Mod/PartDesign/App/FeatureBase.h>
+
+#include "ViewProviderBase.h"
 
 
 using namespace PartDesignGui;

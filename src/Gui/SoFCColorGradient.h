@@ -20,14 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_SOFCCOLORGRADIENT_H
 #define GUI_SOFCCOLORGRADIENT_H
 
-#include <Inventor/nodes/SoSeparator.h>
-#include "SoFCColorBar.h"
-#include <App/ColorModel.h>
 #include <vector>
+#include <Inventor/SbBox2f.h>
+#include <Inventor/nodes/SoSeparator.h>
+
+#include "SoFCColorBar.h"
+
 
 class SoCoordinate3;
 class SoMFString;
@@ -41,9 +42,9 @@ class GuiExport SoFCColorGradient : public SoFCColorBarBase {
   SO_NODE_HEADER(Gui::SoFCColorGradient);
 
 public:
-  static void initClass(void);
-  static void finish(void);
-  SoFCColorGradient(void);
+  static void initClass();
+  static void finish();
+  SoFCColorGradient();
 
   /**
    * Sets the range of the colorbar from the maximum \a fMax to the minimum \a fMin.
@@ -62,14 +63,13 @@ public:
    */
   bool isVisible (float fVal) const;
   /** Returns the current minimum of the parameter range. */
-  float getMinValue (void) const { return _cColGrad.getMinValue(); }
+  float getMinValue () const { return _cColGrad.getMinValue(); }
   /** Returns the current maximum of the parameter range. */
-  float getMaxValue (void) const { return _cColGrad.getMaxValue(); }
+  float getMaxValue () const { return _cColGrad.getMaxValue(); }
   /**
    * Opens a dialog to customize the current settings of the color gradient bar.
-   * Returns true if the settings have been changed, false otherwise.
    */
-  bool customize();
+  void customize(SoFCColorBarBase*);
   /** Returns the name of the color bar. */
   const char* getColorBarName() const { return "Color Gradient"; }
 
@@ -81,29 +81,28 @@ protected:
 
   virtual ~SoFCColorGradient();
   /**
-   * Sets the color model of the underlying color gradient to \a tModel. \a tModel either can
-   * be \c TRIA, \c INVERSE_TRIA, \c GRAY or \c INVERSE_GRAY
+   * Sets the color model of the underlying color gradient to \a index.
    */
-  void setColorModel (App::ColorGradient::TColorModel tModel);
+  void setColorModel (std::size_t index);
   /**
    * Sets the color style of the underlying color gradient to \a tStyle. \a tStyle either can
    * be \c FLOW or \c ZERO_BASED
    */
-  void setColorStyle (App::ColorGradient::TStyle tStyle);
+  void setColorStyle (App::ColorBarStyle tStyle);
   /** Rebuild the gradient bar. */
   void rebuildGradient();
-  /** Returns a list of \a count labels within the ranhe [\a fMin, \a fMax].  */
+  /** Returns a list of \a count labels within the range [\a fMin, \a fMax].  */
   std::vector<float> getMarkerValues(float fMin, float fMax, int count) const;
 
 private:
   /** Sets the new labels. */
   void setMarkerLabel( const SoMFString& label );
+  void modifyPoints(const SbBox2f&);
 
 private:
   SoCoordinate3* coords;
   SoSeparator* labels;
-  float _fMaxX, _fMinX, _fMaxY, _fMinY;
-  bool  _bOutInvisible;
+  SbBox2f _bbox;
   int _precision;
   App::ColorGradient _cColGrad;
 };

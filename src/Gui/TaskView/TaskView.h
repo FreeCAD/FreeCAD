@@ -24,21 +24,13 @@
 #ifndef GUI_TASKVIEW_TASKVIEW_H
 #define GUI_TASKVIEW_TASKVIEW_H
 
-#define QSINT_ACTIONPANEL
-
-#include <map>
-#include <string>
 #include <vector>
-#include <boost_signals2.hpp>
 #include <QScrollArea>
 
-#if !defined (QSINT_ACTIONPANEL)
-#include <Gui/iisTaskPanel/include/iisTaskPanel>
-#else
 #include <Gui/QSint/include/QSint>
-#endif
 #include <Gui/Selection.h>
 #include "TaskWatcher.h"
+
 
 namespace App {
 class Property;
@@ -64,50 +56,29 @@ public:
     //~TaskContent();
 };
 
-#if !defined (QSINT_ACTIONPANEL)
-class GuiExport TaskGroup : public iisTaskGroup, public TaskContent
-{
-    Q_OBJECT
-
-public:
-    TaskGroup(QWidget *parent = 0);
-    ~TaskGroup();
-
-protected:
-    void actionEvent (QActionEvent*);
-};
-#else
 class GuiExport TaskGroup : public QSint::ActionBox, public TaskContent
 {
     Q_OBJECT
 
 public:
-    explicit TaskGroup(QWidget *parent = 0);
-    explicit TaskGroup(const QString & headerText, QWidget *parent = 0);
-    explicit TaskGroup(const QPixmap & icon, const QString & headerText, QWidget *parent = 0);
+    explicit TaskGroup(QWidget *parent = nullptr);
+    explicit TaskGroup(const QString & headerText, QWidget *parent = nullptr);
+    explicit TaskGroup(const QPixmap & icon, const QString & headerText, QWidget *parent = nullptr);
     ~TaskGroup();
 
 protected:
     void actionEvent (QActionEvent*);
 };
-#endif
 
 /// Father class of content with header and Icon
-#if !defined (QSINT_ACTIONPANEL)
-class GuiExport TaskBox : public iisTaskBox, public TaskContent
-#else
 class GuiExport TaskBox : public QSint::ActionGroup, public TaskContent
-#endif
 {
     Q_OBJECT
 
 public:
-#if !defined (QSINT_ACTIONPANEL)
-    TaskBox(const QPixmap &icon, const QString &title, bool expandable, QWidget *parent);
-#else
     /** Constructor. Creates TaskBox without header.
       */
-    explicit TaskBox(QWidget *parent = 0);
+    explicit TaskBox(QWidget *parent = nullptr);
 
     /** Constructor. Creates TaskBox with header's
         text set to \a title, but with no icon.
@@ -116,7 +87,7 @@ public:
       */
     explicit TaskBox(const QString& title,
                      bool expandable = true,
-                     QWidget *parent = 0);
+                     QWidget *parent = nullptr);
 
     /** Constructor. Creates TaskBox with header's
         text set to \a title and icon set to \a icon.
@@ -126,9 +97,9 @@ public:
     explicit TaskBox(const QPixmap& icon,
                      const QString& title,
                      bool expandable = true,
-                     QWidget *parent = 0);
+                     QWidget *parent = nullptr);
     virtual QSize minimumSizeHint() const;
-#endif
+
     ~TaskBox();
     void hideGroupBox();
     bool isGroupVisible() const;
@@ -141,17 +112,15 @@ private:
     bool wasShown;
 };
 
-#if defined (QSINT_ACTIONPANEL)
 class GuiExport TaskPanel : public QSint::ActionPanel
 {
     Q_OBJECT
 
 public:
-    explicit TaskPanel(QWidget *parent = 0);
+    explicit TaskPanel(QWidget *parent = nullptr);
     virtual ~TaskPanel();
     virtual QSize minimumSizeHint() const;
 };
-#endif
 
 /// Father class of content of a Free widget (without header and Icon), shut be an exception!
 class GuiExport TaskWidget : public QWidget, public TaskContent
@@ -159,7 +128,7 @@ class GuiExport TaskWidget : public QWidget, public TaskContent
     Q_OBJECT
 
 public:
-    TaskWidget(QWidget *parent=0);
+    TaskWidget(QWidget *parent=nullptr);
     ~TaskWidget();
 };
 
@@ -173,7 +142,7 @@ class GuiExport TaskView : public QScrollArea, public Gui::SelectionSingleton::O
     Q_OBJECT
 
 public:
-    TaskView(QWidget *parent = 0);
+    TaskView(QWidget *parent = nullptr);
     ~TaskView();
 
     /// Observer message from the Selection
@@ -215,11 +184,7 @@ protected:
 
     std::vector<TaskWatcher*> ActiveWatcher;
 
-#if !defined (QSINT_ACTIONPANEL)
-    iisTaskPanel* taskPanel;
-#else
     QSint::ActionPanel* taskPanel;
-#endif
     TaskDialog *ActiveDialog;
     TaskEditControl *ActiveCtrl;
 

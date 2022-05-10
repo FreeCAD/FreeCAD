@@ -20,32 +20,30 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
+from PySide import QtCore, QtGui
 import FreeCADGui
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathPropertyEditor as PathPropertyEditor
-import PathScripts.PathToolBit as PathToolBit
 import PathScripts.PathUtil as PathUtil
 import os
 import re
 
-from PySide import QtCore, QtGui
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 class _Delegate(QtGui.QStyledItemDelegate):
-    '''Handles the creation of an appropriate editing widget for a given property.'''
-    ObjectRole   = QtCore.Qt.UserRole + 1
+    """Handles the creation of an appropriate editing widget for a given property."""
+
+    ObjectRole = QtCore.Qt.UserRole + 1
     PropertyRole = QtCore.Qt.UserRole + 2
-    EditorRole   = QtCore.Qt.UserRole + 3
+    EditorRole = QtCore.Qt.UserRole + 3
 
     def createEditor(self, parent, option, index):
         editor = index.data(self.EditorRole)
@@ -64,14 +62,18 @@ class _Delegate(QtGui.QStyledItemDelegate):
         # called to update the model with the data from the widget
         editor = index.data(self.EditorRole)
         editor.setModelData(widget)
-        index.model().setData(index, PathUtil.getPropertyValueString(editor.obj, editor.prop), QtCore.Qt.DisplayRole)
+        index.model().setData(
+            index,
+            PathUtil.getPropertyValueString(editor.obj, editor.prop),
+            QtCore.Qt.DisplayRole,
+        )
 
 
 class ToolBitEditor(object):
-    '''UI and controller for editing a ToolBit.
+    """UI and controller for editing a ToolBit.
     The controller embeds the UI to the parentWidget which has to have a
     layout attached to it.
-    '''
+    """
 
     def __init__(self, tool, parentWidget=None, loadBitBody=True):
         PathLog.track()
@@ -84,7 +86,7 @@ class ToolBitEditor(object):
         self.tool = tool
         self.loadbitbody = loadBitBody
         if not tool.BitShape:
-            self.tool.BitShape = 'endmill.fcstd'
+            self.tool.BitShape = "endmill.fcstd"
 
         if self.loadbitbody:
             self.tool.Proxy.loadBitBody(self.tool)
@@ -107,7 +109,7 @@ class ToolBitEditor(object):
         # which aren't being needed anymore.
 
         def labelText(name):
-            return re.sub('([A-Z][a-z]+)', r' \1', re.sub('([A-Z]+)', r' \1', name))
+            return re.sub("([A-Z][a-z]+)", r" \1", re.sub("([A-Z]+)", r" \1", name))
 
         layout = self.form.bitParams.layout()
         ui = FreeCADGui.UiLoader()
@@ -125,12 +127,12 @@ class ToolBitEditor(object):
                 label.show()
                 qsb.show()
             else:
-                qsb    = ui.createWidget('Gui::QuantitySpinBox')
+                qsb = ui.createWidget("Gui::QuantitySpinBox")
                 editor = PathGui.QuantitySpinBox(qsb, tool, name)
-                label  = QtGui.QLabel(labelText(name))
+                label = QtGui.QLabel(labelText(name))
                 self.widgets.append((label, qsb, editor))
                 PathLog.debug("create row: {} [{}]  {}".format(nr, name, type(qsb)))
-                if hasattr(qsb, 'editingFinished'):
+                if hasattr(qsb, "editingFinished"):
                     qsb.editingFinished.connect(self.updateTool)
 
             if nr >= layout.rowCount():
@@ -156,10 +158,10 @@ class ToolBitEditor(object):
         PathLog.track()
 
         setup = True
-        if not hasattr(self, 'delegate'):
+        if not hasattr(self, "delegate"):
             self.delegate = _Delegate(self.form.attrTree)
             self.model = QtGui.QStandardItemModel(self.form.attrTree)
-            self.model.setHorizontalHeaderLabels(['Property', 'Value'])
+            self.model.setHorizontalHeaderLabels(["Property", "Value"])
         else:
             self.model.removeRows(0, self.model.rowCount())
             setup = False
@@ -175,13 +177,14 @@ class ToolBitEditor(object):
                 label.setEditable(False)
 
                 value = QtGui.QStandardItem()
-                value.setData(PathUtil.getPropertyValueString(tool, prop), QtCore.Qt.DisplayRole)
+                value.setData(
+                    PathUtil.getPropertyValueString(tool, prop), QtCore.Qt.DisplayRole
+                )
                 value.setData(tool, _Delegate.ObjectRole)
                 value.setData(prop, _Delegate.PropertyRole)
 
                 group.appendRow([label, value])
             self.model.appendRow(group)
-
 
         if setup:
             self.form.attrTree.setModel(self.model)
@@ -189,7 +192,7 @@ class ToolBitEditor(object):
         self.form.attrTree.expandAll()
         self.form.attrTree.resizeColumnToContents(0)
         self.form.attrTree.resizeColumnToContents(1)
-        #self.form.attrTree.collapseAll()
+        # self.form.attrTree.collapseAll()
 
     def accept(self):
         PathLog.track()
@@ -215,7 +218,7 @@ class ToolBitEditor(object):
             # editors fires an event and tries to access its old property, which
             # might not exist anymore.
             for lbl, qsb, editor in self.widgets:
-                editor.attachTo(self.tool, 'File')
+                editor.attachTo(self.tool, "File")
             self.tool.BitShape = shapePath
             self.setupTool(self.tool)
             self.form.toolName.setText(self.tool.Label)
@@ -260,7 +263,9 @@ class ToolBitEditor(object):
         path = self.tool.BitShape
         if not path:
             path = PathPreferences.lastPathToolShape()
-        foo = QtGui.QFileDialog.getOpenFileName(self.form, "Path - Tool Shape", path, "*.fcstd")
+        foo = QtGui.QFileDialog.getOpenFileName(
+            self.form, "Path - Tool Shape", path, "*.fcstd"
+        )
         if foo and foo[0]:
             PathPreferences.setLastPathToolShape(os.path.dirname(foo[0]))
             self.form.shapePath.setText(foo[0])

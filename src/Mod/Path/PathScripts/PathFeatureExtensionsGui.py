@@ -20,35 +20,39 @@
 # *                                                                         *
 # ***************************************************************************
 
+from PySide import QtCore, QtGui
+from pivy import coin
 import FreeCAD
 import FreeCADGui
+import PathScripts.PathFeatureExtensions as FeatureExtensions
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathGui as PathGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathOpGui as PathOpGui
-import PathScripts.PathFeatureExtensions as FeatureExtensions
-
-from PySide import QtCore, QtGui
-from pivy import coin
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
-Part = LazyLoader('Part', globals(), 'Part')
+
+Part = LazyLoader("Part", globals(), "Part")
 
 __title__ = "Path Feature Extensions UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "Extensions feature page controller."
 
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+translate = FreeCAD.Qt.translate
+
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
 
 class _Extension(object):
-    ColourEnabled = (1.0,  .5, 1.0)
-    ColourDisabled = (1.0, 1.0, .5)
+    ColourEnabled = (1.0, 0.5, 1.0)
+    ColourDisabled = (1.0, 1.0, 0.5)
     TransparencySelected = 0.0
     TransparencyDeselected = 0.7
 
@@ -152,7 +156,7 @@ class _Extension(object):
         if self.switch:
             self.switch.whichChild = coin.SO_SWITCH_NONE
 
-    def enable(self, ena = True):
+    def enable(self, ena=True):
         if ena:
             self.material.diffuseColor = self.ColourEnabled
         else:
@@ -173,10 +177,10 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
     DataSwitch = QtCore.Qt.ItemDataRole.UserRole + 2
 
     Direction = {
-            FeatureExtensions.Extension.DirectionNormal: translate('PathPocket', 'Normal'),
-            FeatureExtensions.Extension.DirectionX: translate('PathPocket', 'X'),
-            FeatureExtensions.Extension.DirectionY: translate('PathPocket', 'Y')
-            }
+        FeatureExtensions.Extension.DirectionNormal: translate("PathPocket", "Normal"),
+        FeatureExtensions.Extension.DirectionX: translate("PathPocket", "X"),
+        FeatureExtensions.Extension.DirectionY: translate("PathPocket", "Y"),
+    }
 
     def initPage(self, obj):
         self.setTitle("Extensions")
@@ -193,17 +197,19 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
         self.extensions = list()
 
-        self.defaultLength = PathGui.QuantitySpinBox(self.form.defaultLength, obj, 'ExtensionLengthDefault') # pylint: disable=attribute-defined-outside-init
+        self.defaultLength = PathGui.QuantitySpinBox(
+            self.form.defaultLength, obj, "ExtensionLengthDefault"
+        )
 
         self.form.extensionTree.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
         self.form.extensionTree.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
 
-        self.switch = coin.SoSwitch() # pylint: disable=attribute-defined-outside-init
+        self.switch = coin.SoSwitch()
         self.obj.ViewObject.RootNode.addChild(self.switch)
         self.switch.whichChild = coin.SO_SWITCH_ALL
 
-        self.model = QtGui.QStandardItemModel(self.form.extensionTree) # pylint: disable=attribute-defined-outside-init
-        self.model.setHorizontalHeaderLabels(['Base', 'Extension'])
+        self.model = QtGui.QStandardItemModel(self.form.extensionTree)
+        self.model.setHorizontalHeaderLabels(["Base", "Extension"])
 
         """
         # russ4262: This `if` block shows all available extensions upon edit of operation with any extension enabled.
@@ -216,7 +222,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         """
         self.form.showExtensions.setCheckState(QtCore.Qt.Unchecked)
 
-        self.blockUpdateData = False # pylint: disable=attribute-defined-outside-init
+        self.blockUpdateData = False
 
     def cleanupPage(self, obj):
         try:
@@ -226,8 +232,6 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
     def getForm(self):
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpPocketExtEdit.ui")
-        # Hide warning label by default
-        form.enableExtensionsWarning.hide()
         return form
 
     def forAllItemsCall(self, cb):
@@ -243,29 +247,31 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
     def currentExtensions(self):
         PathLog.debug("currentExtensions()")
         extensions = []
+
         def extractExtension(item, ext):
             if ext and ext.edge and item.checkState() == QtCore.Qt.Checked:
                 extensions.append(ext.ext)
+
         if self.form.enableExtensions.isChecked():
             self.forAllItemsCall(extractExtension)
-        PathLog.track('extensions', extensions)
+        PathLog.track("extensions", extensions)
         return extensions
 
     def updateProxyExtensions(self, obj):
         PathLog.debug("updateProxyExtensions()")
-        self.extensions = self.currentExtensions() # pylint: disable=attribute-defined-outside-init
+        self.extensions = self.currentExtensions()
         FeatureExtensions.setExtensions(obj, self.extensions)
 
     def getFields(self, obj):
         PathLog.track(obj.Label, self.model.rowCount(), self.model.columnCount())
-        self.blockUpdateData = True # pylint: disable=attribute-defined-outside-init
+        self.blockUpdateData = True
 
         if obj.ExtensionCorners != self.form.extendCorners.isChecked():
             obj.ExtensionCorners = self.form.extendCorners.isChecked()
         self.defaultLength.updateProperty()
 
         self.updateProxyExtensions(obj)
-        self.blockUpdateData = False # pylint: disable=attribute-defined-outside-init
+        self.blockUpdateData = False
 
     def setFields(self, obj):
         PathLog.track(obj.Label)
@@ -285,19 +291,12 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         Subroutine called inside `setFields()` to initialize Extensions efficiently."""
         if self.enabled:
             self.extensions = FeatureExtensions.getExtensions(obj)
-        elif len(obj.ExtensionFeature) > 0:  # latter test loads pre-existing extensions (editing of existing operation)
-            noEdges = True
-            for (__, __, subFeat) in FeatureExtensions.readObjExtensionFeature(obj):
-                if subFeat.startswith("Edge") or subFeat.startswith("Wire"):
-                    noEdges = False
-                    break
+        elif len(obj.ExtensionFeature) > 0:
             self.extensions = FeatureExtensions.getExtensions(obj)
             self.form.enableExtensions.setChecked(True)
-            if noEdges:
-                self._enableExtensions()
-            else:
-                self.form.includeEdges.setChecked(True)
-                self._includeEdgesAndWires()
+            self._includeEdgesAndWires()
+        else:
+            self.form.extensionEdit.setDisabled(True)
         self.setExtensions(self.extensions)
 
     def updateQuantitySpinBoxes(self, index=None):
@@ -311,11 +310,12 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
             self._enableExtensions()  # Recalculate extensions
 
     def createItemForBaseModel(self, base, sub, edges, extensions):
-        PathLog.track(base.Label, sub, '+', len(edges), len(base.Shape.getElement(sub).Edges))
+        PathLog.track(
+            base.Label, sub, "+", len(edges), len(base.Shape.getElement(sub).Edges)
+        )
         # PathLog.debug("createItemForBaseModel() label: {}, sub: {}, {}, edgeCnt: {}, subEdges: {}".format(base.Label, sub, '+', len(edges), len(base.Shape.getElement(sub).Edges)))
 
         extendCorners = self.form.extendCorners.isChecked()
-        includeEdges = self.form.includeEdges.isChecked()
         subShape = base.Shape.getElement(sub)
 
         def createSubItem(label, ext0):
@@ -340,58 +340,62 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         item.setSelectable(False)
 
         extensionEdges = {}
-        if includeEdges:
-            if self.useOutline == 1 and sub.startswith('Face'):
-                # Only show exterior extensions if `Use Outline` is True
-                subEdges = subShape.Wires[0].Edges
-            else:
-                # Show all exterior and interior extensions if `Use Outline` is False
-                subEdges = subShape.Edges
+        if self.useOutline == 1 and sub.startswith("Face"):
+            # Only show exterior extensions if `Use Outline` is True
+            subEdges = subShape.Wires[0].Edges
+        else:
+            # Show all exterior and interior extensions if `Use Outline` is False
+            subEdges = subShape.Edges
 
-            for edge in subEdges:
-                for (e, label) in edges:
-                    if edge.isSame(e):
-                        ext1 = self._cachedExtension(self.obj, base, sub, label)
-                        if ext1.isValid():
-                            extensionEdges[e] = label[4:]  # isolate edge number
-                            if not extendCorners:
-                                createSubItem(label, ext1)
+        for edge in subEdges:
+            for (e, label) in edges:
+                if edge.isSame(e):
+                    ext1 = self._cachedExtension(self.obj, base, sub, label)
+                    if ext1.isValid():
+                        extensionEdges[e] = label[4:]  # isolate edge number
+                        if not extendCorners:
+                            createSubItem(label, ext1)
 
-        if extendCorners and includeEdges:
+        if extendCorners:
+
             def edgesMatchShape(e0, e1):
                 flipped = PathGeom.flipEdge(e1)
                 if flipped:
-                    return PathGeom.edgesMatch(e0, e1) or PathGeom.edgesMatch(e0, flipped)
+                    return PathGeom.edgesMatch(e0, e1) or PathGeom.edgesMatch(
+                        e0, flipped
+                    )
                 else:
                     return PathGeom.edgesMatch(e0, e1)
 
             self.extensionEdges = extensionEdges
             PathLog.debug("extensionEdges.values(): {}".format(extensionEdges.values()))
-            for edgeList in Part.sortEdges(list(extensionEdges.keys())):  # Identify connected edges that form wires
+            for edgeList in Part.sortEdges(
+                list(extensionEdges.keys())
+            ):  # Identify connected edges that form wires
                 self.edgeList = edgeList
                 if len(edgeList) == 1:
-                    label = "Edge%s" % [extensionEdges[keyEdge] for keyEdge in extensionEdges.keys() if edgesMatchShape(keyEdge, edgeList[0])][0]
+                    label = (
+                        "Edge%s"
+                        % [
+                            extensionEdges[keyEdge]
+                            for keyEdge in extensionEdges.keys()
+                            if edgesMatchShape(keyEdge, edgeList[0])
+                        ][0]
+                    )
                 else:
-                    label = "Wire(%s)" % ','.join(sorted([extensionEdges[keyEdge] for e in edgeList for keyEdge in extensionEdges.keys() if edgesMatchShape(e, keyEdge)], key=lambda s: int(s))) # pylint: disable=unnecessary-lambda
+                    label = "Wire(%s)" % ",".join(
+                        sorted(
+                            [
+                                extensionEdges[keyEdge]
+                                for e in edgeList
+                                for keyEdge in extensionEdges.keys()
+                                if edgesMatchShape(e, keyEdge)
+                            ],
+                            key=lambda s: int(s),
+                        )
+                    )
                 ext2 = self._cachedExtension(self.obj, base, sub, label)
                 createSubItem(label, ext2)
-
-        # Only add these subItems for horizontally oriented faces, not edges or vertical faces (from vertical face loops)
-        if sub.startswith('Face') and PathGeom.isHorizontal(subShape):
-            # Add entry to extend outline of face
-            label = "Extend_" + sub
-            ext3 = self._cachedExtension(self.obj, base, sub, label)
-            createSubItem(label, ext3)
-
-            # Add entry for waterline at face
-            label = "Waterline_" + sub
-            ext4 = self._cachedExtension(self.obj, base, sub, label)
-            createSubItem(label, ext4)
-
-            # Add entry for avoid face
-            label = "Avoid_" + sub
-            ext5 = self._cachedExtension(self.obj, base, sub, label)
-            createSubItem(label, ext5)
 
         return item
 
@@ -406,8 +410,11 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self.form.extensionTree.blockSignals(True)
 
         # remember current visual state
-        if hasattr(self, 'selectionModel'):
-            selectedExtensions = [self.model.itemFromIndex(index).data(self.DataObject).ext for index in self.selectionModel.selectedIndexes()]
+        if hasattr(self, "selectionModel"):
+            selectedExtensions = [
+                self.model.itemFromIndex(index).data(self.DataObject).ext
+                for index in self.selectionModel.selectedIndexes()
+            ]
         else:
             selectedExtensions = []
         collapsedModels = []
@@ -420,14 +427,16 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
             for featureRow in range(model.rowCount()):
                 feature = model.child(featureRow, 0)
                 if not self.form.extensionTree.isExpanded(feature.index()):
-                    collapsedFeatures.append("%s.%s" % (modelName, feature.data(QtCore.Qt.EditRole)))
+                    collapsedFeatures.append(
+                        "%s.%s" % (modelName, feature.data(QtCore.Qt.EditRole))
+                    )
 
         # remove current extensions and all their visuals
         def removeItemSwitch(item, ext):
-            # pylint: disable=unused-argument
             ext.hide()
             if ext.root:
                 self.switch.removeChild(ext.root)
+
         self.forAllItemsCall(removeItemSwitch)
         self.model.clear()
 
@@ -435,14 +444,19 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         if self.enabled:
             for base in self.obj.Base:
                 show = False
-                edges = [(edge, "Edge%d" % (i + 1)) for i, edge in enumerate(base[0].Shape.Edges)]
+                edges = [
+                    (edge, "Edge%d" % (i + 1))
+                    for i, edge in enumerate(base[0].Shape.Edges)
+                ]
                 baseItem = QtGui.QStandardItem()
                 baseItem.setData(base[0].Label, QtCore.Qt.EditRole)
                 baseItem.setSelectable(False)
                 for sub in sorted(base[1]):
-                    if sub.startswith('Face') or True:
+                    if sub.startswith("Face"):
                         show = True
-                        baseItem.appendRow(self.createItemForBaseModel(base[0], sub, edges, extensions))
+                        baseItem.appendRow(
+                            self.createItemForBaseModel(base[0], sub, edges, extensions)
+                        )
                 if show:
                     self.model.appendRow(baseItem)
 
@@ -458,10 +472,10 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
                 self.form.extensionTree.setExpanded(model.index(), False)
             for featureRow in range(model.rowCount()):
                 feature = model.child(featureRow, 0)
-                featureName =  "%s.%s" % (modelName, feature.data(QtCore.Qt.EditRole))
+                featureName = "%s.%s" % (modelName, feature.data(QtCore.Qt.EditRole))
                 if featureName in collapsedFeatures:
                     self.form.extensionTree.setExpanded(feature.index(), False)
-        if hasattr(self, 'selectionModel') and selectedExtensions:
+        if hasattr(self, "selectionModel") and selectedExtensions:
             self.restoreSelection(selectedExtensions)
 
         self.form.extensionTree.blockSignals(False)
@@ -475,22 +489,22 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         if not self.blockUpdateData:
             if self.fieldsSet:
                 if self.form.enableExtensions.isChecked():
-                    if prop == 'ExtensionLengthDefault':
-                            self.updateQuantitySpinBoxes()
-                    elif prop == 'Base':
-                            self.extensionsReady = False
-                            self.setExtensions(FeatureExtensions.getExtensions(obj))
-                    elif prop == 'UseOutline':
-                            self._getUseOutlineState()  # Find `useOutline` checkbox and get its boolean value
-                            self._includeEdgesAndWires()
-                elif prop == 'Base':
+                    if prop == "ExtensionLengthDefault":
+                        self.updateQuantitySpinBoxes()
+                    elif prop == "Base":
                         self.extensionsReady = False
+                        self.setExtensions(FeatureExtensions.getExtensions(obj))
+                    elif prop == "UseOutline":
+                        self._getUseOutlineState()  # Find `useOutline` checkbox and get its boolean value
+                        self._includeEdgesAndWires()
+                elif prop == "Base":
+                    self.extensionsReady = False
 
     def restoreSelection(self, selection):
         PathLog.debug("restoreSelection()")
         PathLog.track()
         if 0 == self.model.rowCount():
-            PathLog.track('-')
+            PathLog.track("-")
             self.form.buttonClear.setEnabled(False)
             self.form.buttonDisable.setEnabled(False)
             self.form.buttonEnable.setEnabled(False)
@@ -507,7 +521,6 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
             FreeCADGui.Selection.clearSelection()
 
             def selectItem(item, ext):
-                # pylint: disable=unused-argument
                 for sel in selection:
                     if ext.base == sel.obj and ext.edge == sel.sub:
                         return True
@@ -515,7 +528,9 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
             def setSelectionVisuals(item, ext):
                 if selectItem(item, ext):
-                    self.selectionModel.select(item.index(), QtCore.QItemSelectionModel.Select)
+                    self.selectionModel.select(
+                        item.index(), QtCore.QItemSelectionModel.Select
+                    )
 
                 selected = self.selectionModel.isSelected(item.index())
                 if selected:
@@ -528,6 +543,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
                     ext.show()
                 else:
                     ext.hide()
+
             self.forAllItemsCall(setSelectionVisuals)
 
     def selectionChanged(self):
@@ -536,6 +552,7 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
     def extensionsClear(self):
         PathLog.debug("extensionsClear()")
+
         def disableItem(item, ext):
             item.setCheckState(QtCore.Qt.Unchecked)
             ext.disable()
@@ -572,16 +589,19 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
 
     def showHideExtension(self):
         if self.form.showExtensions.isChecked():
+
             def enableExtensionEdit(item, ext):
-                # pylint: disable=unused-argument
                 ext.show()
+
             self.forAllItemsCall(enableExtensionEdit)
         else:
+
             def disableExtensionEdit(item, ext):
                 if not self.selectionModel.isSelected(item.index()):
                     ext.hide()
+
             self.forAllItemsCall(disableExtensionEdit)
-        #self.setDirty()
+        # self.setDirty()
 
     def toggleExtensionCorners(self):
         PathLog.debug("toggleExtensionCorners()")
@@ -597,7 +617,6 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         signals = []
         signals.append(self.form.defaultLength.editingFinished)
         signals.append(self.form.enableExtensions.toggled)
-        signals.append(self.form.includeEdges.toggled)
         return signals
 
     def registerSignalHandlers(self, obj):
@@ -608,11 +627,10 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         self.form.buttonEnable.clicked.connect(self.extensionsEnable)
         self.form.defaultLength.editingFinished.connect(self.updateQuantitySpinBoxes)
         self.form.enableExtensions.toggled.connect(self._enableExtensions)
-        self.form.includeEdges.toggled.connect(self._includeEdgesAndWires)
 
         self.model.itemChanged.connect(self.updateItemEnabled)
 
-        self.selectionModel = self.form.extensionTree.selectionModel() # pylint: disable=attribute-defined-outside-init
+        self.selectionModel = self.form.extensionTree.selectionModel()
         self.selectionModel.selectionChanged.connect(self.selectionChanged)
         self.selectionChanged()
 
@@ -626,12 +644,14 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         if self.useOutlineCheckbox:
             self.useOutline = self.useOutlineCheckbox.isChecked()
 
-        if hasattr(self, 'parent'):
-            parent = getattr(self, 'parent')
-            if parent and hasattr(parent, 'featurePages'):
+        if hasattr(self, "parent"):
+            parent = getattr(self, "parent")
+            if parent and hasattr(parent, "featurePages"):
                 for page in parent.featurePages:
-                    if hasattr(page, 'panelTitle'):
-                        if page.panelTitle == 'Operation' and hasattr(page.form, 'useOutline'):
+                    if hasattr(page, "panelTitle"):
+                        if page.panelTitle == "Operation" and hasattr(
+                            page.form, "useOutline"
+                        ):
                             PathLog.debug("Found useOutline checkbox")
                             self.useOutlineCheckbox = page.form.useOutline
                             if page.form.useOutline.isChecked():
@@ -655,42 +675,10 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         The return value is a simple boolean to communicate whether or not Extensions
         are be enabled.
         """
-        enabled = True
+        enabled = False
 
-        if self.initialEdgeCount < 1:
-            self.initialEdgeCount = 0
-            for base in self.obj.Base:
-                for sub in sorted(base[1]):
-                    self.initialEdgeCount += len(base[0].Shape.getElement(sub).Edges)
-            if self.initialEdgeCount > self.edgeCountThreshold:
-                # Block signals
-                self.form.enableExtensions.blockSignals(True)
-                self.form.enableExtensionsWarning.blockSignals(True)
-                self.form.includeEdges.blockSignals(True)
-
-                # Make changes to form
-                msg = translate("PathPocketShape", 
-                                "Edge count greater than threshold of" + " " +
-                                str(self.edgeCountThreshold) + ":  " + 
-                                str(self.initialEdgeCount))
-                self.form.enableExtensionsWarning.setText(msg)
-                self.form.enableExtensions.setChecked(False)
-                self.form.enableExtensionsWarning.show()
-                msg = translate("PathFeatureExtensions", "Click to enable Extensions")
-                self.form.enableExtensions.setText(msg)
-                self.form.extensionEdit.setDisabled(True)
-                self.form.includeEdges.setChecked(False)
-                msg = translate("PathFeatureExtensions", "Click to include Edges/Wires")
-                self.form.includeEdges.setText(msg)
-
-                # Unblock signals
-                self.form.enableExtensions.blockSignals(False)
-                self.form.enableExtensionsWarning.blockSignals(False)
-                self.form.includeEdges.blockSignals(False)
-
-                enabled = False
-        elif not self.form.enableExtensions.isChecked():
-            enabled = False
+        if self.form.enableExtensions.isChecked():
+            enabled = True
 
         PathLog.debug("_autoEnableExtensions() is {}".format(enabled))
         self.enabled = enabled
@@ -706,15 +694,10 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         if self.form.enableExtensions.isChecked():
             self.enabled = True
             self.extensionsReady = False
-            msg = translate("PathFeatureExtensions", "Extensions enabled")
-            self.form.enableExtensions.setText(msg)
-            self.form.enableExtensionsWarning.hide()
             self.form.extensionEdit.setEnabled(True)
             self.extensions = FeatureExtensions.getExtensions(self.obj)
             self.setExtensions(self.extensions)
         else:
-            msg = translate("PathFeatureExtensions", "Click to enable Extensions")
-            self.form.enableExtensions.setText(msg)
             self.form.extensionEdit.setDisabled(True)
             self.enabled = False
 
@@ -725,12 +708,6 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
         """
         self._getUseOutlineState()  # Find `useOutline` checkbox and get its boolean value
         PathLog.debug("_includeEdgesAndWires()")
-        if self.form.includeEdges.isChecked():
-            msg = translate("PathFeatureExtensions", "Including Edges/Wires")
-            self.form.includeEdges.setText(msg)
-        else:
-            msg = translate("PathFeatureExtensions", "Click to include Edges/Wires")
-            self.form.includeEdges.setText(msg)
         self.extensionsReady = False
         self._enableExtensions()
 
@@ -755,14 +732,12 @@ class TaskPanelExtensionPage(PathOpGui.TaskPanelPage):
             return _ext
 
     def _resetCachedExtensions(self):
-        PathLog.error("_resetCachedExtensions()")
+        PathLog.debug("_resetCachedExtensions()")
         reset = dict()
-        # Keep waterline extensions as they will not change
-        for k in self.extensionsCache.keys():
-            if k.startswith("Waterline"):
-                reset[k] = self.extensionsCache[k]
         self.extensionsCache = reset
         self.extensionsReady = False
+
+
 # Eclass
 
 FreeCAD.Console.PrintLog("Loading PathFeatureExtensionsGui... done\n")

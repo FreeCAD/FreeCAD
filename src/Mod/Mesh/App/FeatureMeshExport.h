@@ -27,6 +27,9 @@
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyLinks.h>
+#ifndef MESH_GLOBAL_H
+#include <Mod/Mesh/MeshGlobal.h>
+#endif
 
 namespace Mesh
 {
@@ -45,14 +48,14 @@ public:
     App::PropertyLink   Source;
     App::PropertyString FileName;
     App::PropertyString Format;
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "MeshGui::ViewProviderExport";
     }
 
     /** @name methods override feature */
     //@{
     /// recalculate the Feature
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *execute();
     short mustExecute() const;
     //@}
 };

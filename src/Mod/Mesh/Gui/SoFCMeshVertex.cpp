@@ -91,7 +91,9 @@ SbBool SoSFMeshPointArray::readValue(SoInput *in)
     }
 
     value->resize(numtoread);
-    if (!this->readBinaryValues(in, numtoread)) { return FALSE; }
+    if (!this->readBinaryValues(in, numtoread)) {
+        return FALSE;
+    }
   }
 
   // ** ASCII format *******************************************************
@@ -112,7 +114,8 @@ SbBool SoSFMeshPointArray::readValue(SoInput *in)
           // makeRoom() makes sure the allocation strategy is decent.
           if (currentidx >= value->size()) value->resize(currentidx + 1);
 
-          if (!this->read1Value(in, currentidx++)) return FALSE;
+          if (!this->read1Value(in, currentidx++))
+              return FALSE;
 
           READ_VAL(c);
           if (c == ',') { READ_VAL(c); } // Treat trailing comma as whitespace.
@@ -135,7 +138,8 @@ SbBool SoSFMeshPointArray::readValue(SoInput *in)
     else {
       in->putBack(c);
       value->resize(1);
-      if (!this->read1Value(in, 0)) return FALSE;
+      if (!this->read1Value(in, 0))
+          return FALSE;
     }
   }
 

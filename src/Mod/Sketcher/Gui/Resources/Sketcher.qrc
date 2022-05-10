@@ -200,6 +200,7 @@
         <file>icons/pointers/Sketcher_Pointer_Create_Point.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Extension.svg</file>
         <file>icons/pointers/Sketcher_Pointer_External.svg</file>
+        <file>icons/pointers/Sketcher_Pointer_InsertKnot.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Oblong.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Regular_Polygon.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Slot.svg</file>
@@ -214,6 +215,7 @@
         <file>icons/splines/Sketcher_BSplineDegree.svg</file>
         <file>icons/splines/Sketcher_BSplineIncreaseDegree.svg</file>
         <file>icons/splines/Sketcher_BSplineIncreaseKnotMultiplicity.svg</file>
+        <file>icons/splines/Sketcher_BSplineInsertKnot.svg</file>
         <file>icons/splines/Sketcher_BSplineKnotMultiplicity.svg</file>
         <file>icons/splines/Sketcher_BSplinePoleWeight.svg</file>
         <file>icons/splines/Sketcher_BSplinePolygon.svg</file>
@@ -237,6 +239,9 @@
         <file>icons/tools/Sketcher_SelectRedundantConstraints.svg</file>
         <file>icons/tools/Sketcher_SelectVerticalAxis.svg</file>
         <file>icons/tools/Sketcher_Symmetry.svg</file>
+    </qresource>
+    <qresource>
+        <file>icons/dialogs/Sketcher_Settings.svg</file>
     </qresource>
     <qresource>
         <file>translations/Sketcher_af.qm</file>
@@ -276,5 +281,8 @@
         <file>translations/Sketcher_vi.qm</file>
         <file>translations/Sketcher_zh-CN.qm</file>
         <file>translations/Sketcher_zh-TW.qm</file>
+        <file>translations/Sketcher_es-AR.qm</file>
+        <file>translations/Sketcher_bg.qm</file>
+        <file>translations/Sketcher_ka.qm</file>
     </qresource>
 </RCC>

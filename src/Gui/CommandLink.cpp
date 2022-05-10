@@ -27,28 +27,25 @@
 # include <QMessageBox>
 #endif
 
-#include <boost/algorithm/string/predicate.hpp>
-#include "Command.h"
-#include "Action.h"
-#include "Application.h"
-#include "MainWindow.h"
-#include "Tree.h"
-#include "Document.h"
-#include "Selection.h"
-#include "WaitCursor.h"
-#include "BitmapFactory.h"
-#include "ViewProviderDocumentObject.h"
-
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
 #include <App/Application.h>
+#include <App/ComplexGeoData.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/DocumentObserver.h>
 #include <App/Link.h>
+#include <Base/Exception.h>
 
-FC_LOG_LEVEL_INIT("CommandLink",true,true)
+#include "Action.h"
+#include "Application.h"
+#include "Command.h"
+#include "Document.h"
+#include "MainWindow.h"
+#include "Selection.h"
+#include "Tree.h"
+#include "ViewProviderDocumentObject.h"
+#include "WaitCursor.h"
+
+
+FC_LOG_LEVEL_INIT("CommandLink", true, true)
 
 using namespace Gui;
 
@@ -76,7 +73,7 @@ protected:
 StdCmdLinkMakeGroup::StdCmdLinkMakeGroup()
   : Command("Std_LinkMakeGroup")
 {
-    sGroup        = QT_TR_NOOP("Link");
+    sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Make link group");
     sToolTipText  = QT_TR_NOOP("Create a group of links");
     sWhatsThis    = "Std_LinkMakeGroup";
@@ -207,7 +204,7 @@ DEF_STD_CMD_A(StdCmdLinkMake)
 StdCmdLinkMake::StdCmdLinkMake()
   : Command("Std_LinkMake")
 {
-    sGroup        = QT_TR_NOOP("Link");
+    sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Make link");
     sToolTipText  = QT_TR_NOOP("Create a link to the selected object(s)");
     sWhatsThis    = "Std_LinkMake";
@@ -270,7 +267,7 @@ DEF_STD_CMD_A(StdCmdLinkMakeRelative)
 StdCmdLinkMakeRelative::StdCmdLinkMakeRelative()
   : Command("Std_LinkMakeRelative")
 {
-    sGroup        = QT_TR_NOOP("Link");
+    sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Make sub-link");
     sToolTipText  = QT_TR_NOOP("Create a sub-object or sub-element link");
     sWhatsThis    = "Std_LinkMakeRelative";
@@ -280,7 +277,7 @@ StdCmdLinkMakeRelative::StdCmdLinkMakeRelative()
 }
 
 bool StdCmdLinkMakeRelative::isActive() {
-    return Selection().hasSubSelection(0,true);
+    return Selection().hasSubSelection(nullptr,true);
 }
 
 void StdCmdLinkMakeRelative::activated(int) {
@@ -293,7 +290,7 @@ void StdCmdLinkMakeRelative::activated(int) {
     try {
         std::map<std::pair<App::DocumentObject*,std::string>,
                  std::pair<App::DocumentObject*, std::vector<std::string> > > linkInfo;
-        for(auto &sel : Selection().getCompleteSelection(0)) {
+        for(auto &sel : Selection().getCompleteSelection(ResolveMode::NoResolve)) {
             if(!sel.pObject || !sel.pObject->getNameInDocument())
                 continue;
             auto key = std::make_pair(sel.pObject,
@@ -471,7 +468,8 @@ static bool linkConvertible(bool unlink) {
     int count = 0;
     for(auto &sel : TreeWidget::getSelection()) {
         auto parent = sel.parentVp;
-        if(!parent) return false;
+        if(!parent)
+            return false;
         auto obj = sel.vp->getObject();
         if(unlink) {
             auto linked = obj->getLinkedObject(false);
@@ -490,7 +488,7 @@ DEF_STD_CMD_A(StdCmdLinkReplace)
 StdCmdLinkReplace::StdCmdLinkReplace()
   : Command("Std_LinkReplace")
 {
-    sGroup        = QT_TR_NOOP("Link");
+    sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Replace with link");
     sToolTipText  = QT_TR_NOOP("Replace the selected object(s) with link");
     sWhatsThis    = "Std_LinkReplace";
@@ -514,7 +512,7 @@ DEF_STD_CMD_A(StdCmdLinkUnlink)
 StdCmdLinkUnlink::StdCmdLinkUnlink()
   : Command("Std_LinkUnlink")
 {
-    sGroup        = QT_TR_NOOP("Link");
+    sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Unlink");
     sToolTipText  = QT_TR_NOOP("Strip on level of link");
     sWhatsThis    = "Std_LinkUnlink";
@@ -538,7 +536,7 @@ DEF_STD_CMD_A(StdCmdLinkImport)
 StdCmdLinkImport::StdCmdLinkImport()
   : Command("Std_LinkImport")
 {
-    sGroup        = QT_TR_NOOP("Link");
+    sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Import links");
     sToolTipText  = QT_TR_NOOP("Import selected external link(s)");
     sWhatsThis    = "Std_LinkImport";
@@ -550,7 +548,7 @@ StdCmdLinkImport::StdCmdLinkImport()
 static std::map<App::Document*, std::vector<App::DocumentObject*> > getLinkImportSelections()
 {
     std::map<App::Document*, std::vector<App::DocumentObject*> > objMap;
-    for(auto &sel : Selection().getCompleteSelection(false)) {
+    for(auto &sel : Selection().getCompleteSelection(ResolveMode::NoResolve)) {
         auto obj = sel.pObject->resolve(sel.SubName);
         if(!obj || !obj->getNameInDocument())
             continue;
@@ -602,7 +600,7 @@ DEF_STD_CMD_A(StdCmdLinkImportAll)
 StdCmdLinkImportAll::StdCmdLinkImportAll()
   : Command("Std_LinkImportAll")
 {
-    sGroup        = QT_TR_NOOP("Link");
+    sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Import all links");
     sToolTipText  = QT_TR_NOOP("Import all links of the active document");
     sWhatsThis    = "Std_LinkImportAll";
@@ -643,7 +641,7 @@ DEF_STD_CMD_A(StdCmdLinkSelectLinked)
 StdCmdLinkSelectLinked::StdCmdLinkSelectLinked()
   : Command("Std_LinkSelectLinked")
 {
-    sGroup        = QT_TR_NOOP("Link");
+    sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Go to linked object");
     sToolTipText  = QT_TR_NOOP("Select the linked object and switch to its owner document");
     sWhatsThis    = "Std_LinkSelectLinked";
@@ -653,22 +651,22 @@ StdCmdLinkSelectLinked::StdCmdLinkSelectLinked()
     sAccel        = "S, G";
 }
 
-static App::DocumentObject *getSelectedLink(bool finalLink, std::string *subname=0) {
-    const auto &sels = Selection().getSelection("*",0,true);
+static App::DocumentObject *getSelectedLink(bool finalLink, std::string *subname=nullptr) {
+    const auto &sels = Selection().getSelection("*", ResolveMode::NoResolve, true);
     if(sels.empty())
-        return 0;
+        return nullptr;
     auto sobj = sels[0].pObject->getSubObject(sels[0].SubName);
     if(!sobj)
-        return 0;
+        return nullptr;
     auto vp = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(
             Application::Instance->getViewProvider(sobj));
     if(!vp)
-        return 0;
+        return nullptr;
 
     auto linkedVp = vp->getLinkedViewProvider(subname,finalLink);
     if(!linkedVp || linkedVp==vp) {
         if(sobj->getDocument()==sels[0].pObject->getDocument())
-            return 0;
+            return nullptr;
         for(const char *dot=strchr(sels[0].SubName,'.');dot;dot=strchr(dot+1,'.')) {
             std::string sub(sels[0].SubName,dot+1-sels[0].SubName);
             auto obj = sels[0].pObject->getSubObject(sub.c_str());
@@ -677,21 +675,21 @@ static App::DocumentObject *getSelectedLink(bool finalLink, std::string *subname
             obj = obj->getLinkedObject(true);
             if(obj->getDocument()!=sels[0].pObject->getDocument()) {
                 if(finalLink)
-                    return sobj==obj?0:sobj;
+                    return sobj==obj?nullptr:sobj;
                 if(subname)
                     *subname = std::string(dot+1);
                 return obj;
             }
         }
-        return finalLink?0:sobj;
+        return finalLink?nullptr:sobj;
     }
 
     if(finalLink && linkedVp == vp->getLinkedViewProvider())
-        return 0;
+        return nullptr;
 
     auto linked = linkedVp->getObject();
     if(!linked || !linked->getNameInDocument())
-        return 0;
+        return nullptr;
 
     if(subname && sels[0].pObject!=sobj && sels[0].SubName) {
         bool found = false;
@@ -736,7 +734,7 @@ static App::DocumentObject *getSelectedLink(bool finalLink, std::string *subname
 }
 
 bool StdCmdLinkSelectLinked::isActive() {
-    return getSelectedLink(false)!=0;
+    return getSelectedLink(false)!=nullptr;
 }
 
 void StdCmdLinkSelectLinked::activated(int)
@@ -770,7 +768,7 @@ DEF_STD_CMD_A(StdCmdLinkSelectLinkedFinal)
 StdCmdLinkSelectLinkedFinal::StdCmdLinkSelectLinkedFinal()
   : Command("Std_LinkSelectLinkedFinal")
 {
-    sGroup        = QT_TR_NOOP("Link");
+    sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Go to the deepest linked object");
     sToolTipText  = QT_TR_NOOP("Select the deepest linked object and switch to its owner document");
     sWhatsThis    = "Std_LinkSelectLinkedFinal";
@@ -781,7 +779,7 @@ StdCmdLinkSelectLinkedFinal::StdCmdLinkSelectLinkedFinal()
 }
 
 bool StdCmdLinkSelectLinkedFinal::isActive() {
-    return getSelectedLink(true)!=0;
+    return getSelectedLink(true)!=nullptr;
 }
 
 void StdCmdLinkSelectLinkedFinal::activated(int) {
@@ -804,7 +802,7 @@ DEF_STD_CMD_A(StdCmdLinkSelectAllLinks)
 StdCmdLinkSelectAllLinks::StdCmdLinkSelectAllLinks()
   : Command("Std_LinkSelectAllLinks")
 {
-    sGroup        = QT_TR_NOOP("Link");
+    sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Select all links");
     sToolTipText  = QT_TR_NOOP("Select all links to the current selected object");
     sWhatsThis    = "Std_LinkSelectAllLinks";
@@ -814,7 +812,7 @@ StdCmdLinkSelectAllLinks::StdCmdLinkSelectAllLinks()
 }
 
 bool StdCmdLinkSelectAllLinks::isActive() {
-    const auto &sels = Selection().getSelection("*",true,true);
+    const auto &sels = Selection().getSelection("*", ResolveMode::OldStyleElement, true);
     if(sels.empty())
         return false;
     return App::GetApplication().hasLinksTo(sels[0].pObject);
@@ -822,7 +820,7 @@ bool StdCmdLinkSelectAllLinks::isActive() {
 
 void StdCmdLinkSelectAllLinks::activated(int)
 {
-    auto sels = Selection().getSelection("*",true,true);
+    auto sels = Selection().getSelection("*", ResolveMode::OldStyleElement, true);
     if(sels.empty())
         return;
     Selection().selStackPush();
@@ -843,7 +841,7 @@ public:
     StdCmdLinkSelectActions()
         : GroupCommand("Std_LinkSelectActions")
     {
-        sGroup        = QT_TR_NOOP("View");
+        sGroup        = "View";
         sMenuText     = QT_TR_NOOP("Link navigation");
         sToolTipText  = QT_TR_NOOP("Link navigation actions");
         sWhatsThis    = "Std_LinkSelectActions";
@@ -869,7 +867,7 @@ public:
     StdCmdLinkActions()
         : GroupCommand("Std_LinkActions")
     {
-        sGroup        = QT_TR_NOOP("View");
+        sGroup        = "View";
         sMenuText     = QT_TR_NOOP("Link actions");
         sToolTipText  = QT_TR_NOOP("Link actions");
         sWhatsThis    = "Std_LinkActions";

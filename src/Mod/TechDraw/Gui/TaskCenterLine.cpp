@@ -26,12 +26,11 @@
 #include <cmath>
 #include <BRepBndLib.hxx>
 #include <Bnd_Box.hxx>
-
-#endif // #ifndef _PreComp_
-
 #include <QButtonGroup>
 #include <QStatusBar>
 #include <QGraphicsScene>
+#endif // #ifndef _PreComp_
+
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
@@ -56,7 +55,6 @@
 
 #include <Mod/TechDraw/Gui/ui_TaskCenterLine.h>
 
-#include "DrawGuiStd.h"
 #include "PreferencesGui.h"
 #include "QGVPage.h"
 #include "QGIView.h"
@@ -91,22 +89,18 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     ui->setupUi(this);
 
     m_geomIndex = DrawUtil::getIndexFromName(m_edgeName);
-    const std::vector<TechDraw::BaseGeom*> &geoms = partFeat->getEdgeGeometry();
-    BaseGeom* bg = geoms.at(m_geomIndex);
+    const TechDraw::BaseGeomPtrVector &geoms = partFeat->getEdgeGeometry();
+    BaseGeomPtr bg = geoms.at(m_geomIndex);
     std::string tag = bg->getCosmeticTag();
     m_cl = partFeat->getCenterLine(tag);
-    if (m_cl == nullptr) {         //checked by CommandAnnotate.  Should never happen.
-        Base::Console().Message("TCL::TCL() - no centerline found\n");
-    }
-    else {
-        m_type = m_cl->m_type;
-        m_mode = m_cl->m_mode;
-    }
+    //existence of m_cl is checked in CommandAnnotate
+    m_type = m_cl->m_type;
+   m_mode = m_cl->m_mode;
 
     setUiEdit();
     // connect the dialog objects
     setUiConnect();
-    // save the existing centerline to restore in in case the user rejects the changes
+    // save the existing centerline to restore in case the user rejects the changes
     orig_cl = *m_cl;
 }
 
@@ -128,12 +122,7 @@ TaskCenterLine::TaskCenterLine(TechDraw::DrawViewPart* partFeat,
     m_mode(0),           // 0 - vertical, 1 - horizontal, 2 - aligned
     m_editMode(editMode)
 {
-    if ( (m_basePage == nullptr) ||
-         (m_partFeat == nullptr) )  {
-        //should be caught in CMD caller
-        Base::Console().Error("TaskCenterLine - bad parameters.  Can not proceed.\n");
-        return;
-    }
+    //existence of page and feature are checked by isActive method of calling command
 
     ui->setupUi(this);
     std::string check = subNames.front();
@@ -530,7 +519,7 @@ TaskDlgCenterLine::TaskDlgCenterLine(TechDraw::DrawViewPart* partFeat,
 {
     widget  = new TaskCenterLine(partFeat,page,subNames, editMode);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_FaceCenterLine"),
-                                             widget->windowTitle(), true, 0);
+                                             widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
     setAutoCloseOnTransactionChange(true);
@@ -544,7 +533,7 @@ TaskDlgCenterLine::TaskDlgCenterLine(TechDraw::DrawViewPart* partFeat,
 {
     widget  = new TaskCenterLine(partFeat,page, edgeName, editMode);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_FaceCenterLine"),
-                                             widget->windowTitle(), true, 0);
+                                             widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
     setAutoCloseOnTransactionChange(true);

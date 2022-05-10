@@ -42,10 +42,29 @@
       <string>Contents</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_14">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_17">
         <property name="text">
-         <string>Show forum</string>
+         <string>Show notepad</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::PrefCheckBox" name="checkBox">
+        <property name="toolTip">
+         <string>Shows a notepad next to the file thumbnails, where you can keep notes across sessions</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::RightToLeft</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowNotes</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Start</cstring>
         </property>
        </widget>
       </item>
@@ -53,13 +72,6 @@
        <widget class="QLabel" name="label_9">
         <property name="text">
          <string>Show examples folder contents</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_10">
-        <property name="text">
-         <string>Show additional folder</string>
         </property>
        </widget>
       </item>
@@ -85,22 +97,10 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
-       <widget class="Gui::PrefCheckBox" name="checkBox_4">
-        <property name="toolTip">
-         <string>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</string>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::RightToLeft</enum>
-        </property>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_10">
         <property name="text">
-         <string/>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>ShowForum</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Start</cstring>
+         <string>Show additional folder</string>
         </property>
        </widget>
       </item>
@@ -121,17 +121,17 @@ By using ";;" to separate paths, you can add several folders here</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_17">
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_14">
         <property name="text">
-         <string>Show notepad</string>
+         <string>Show forum</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="Gui::PrefCheckBox" name="checkBox">
+      <item row="3" column="1">
+       <widget class="Gui::PrefCheckBox" name="checkBox_4">
         <property name="toolTip">
-         <string>Shows a notepad next to the file thumbnails, where you can keep notes across sessions</string>
+         <string>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -140,7 +140,7 @@ By using ";;" to separate paths, you can add several folders here</string>
          <string/>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>ShowNotes</cstring>
+         <cstring>ShowForum</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Start</cstring>
@@ -185,131 +185,10 @@ By using ";;" to separate paths, you can add several folders here</string>
       <string>Fonts and colors</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="6" column="1" alignment="Qt::AlignRight">
-       <widget class="Gui::PrefColorButton" name="colorButton_3">
-        <property name="maximumSize">
-         <size>
-          <width>60</width>
-          <height>60</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>The background of the main start page area</string>
-        </property>
-        <property name="color">
-         <color>
-          <red>255</red>
-          <green>255</green>
-          <blue>255</blue>
-         </color>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>PageColor</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Start</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_15">
         <property name="text">
-         <string>Background color</string>
-        </property>
-       </widget>
-      </item>
-      <item row="11" column="1">
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="Gui::PrefRadioButton" name="radioButton_2">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string>in FreeCAD</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>InBrowser</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Start</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefRadioButton" name="radioButton_1">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string>In external browser</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>InWeb</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Start</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_12">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>Background color down gradient</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1" alignment="Qt::AlignRight">
-       <widget class="Gui::PrefColorButton" name="colorButton_2">
-        <property name="maximumSize">
-         <size>
-          <width>60</width>
-          <height>60</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>The color of the version text</string>
-        </property>
-        <property name="color">
-         <color>
-          <red>255</red>
-          <green>251</green>
-          <blue>247</blue>
-         </color>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>BackgroundTextColor</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Start</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="0">
-       <widget class="QLabel" name="label_8">
-        <property name="text">
-         <string>Link color</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="Gui::PrefFileChooser" name="fileChooser_2">
-        <property name="toolTip">
-         <string>An optional image to display as background</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>BackgroundImage</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Start</cstring>
+         <string>Use FreeCAD style sheet</string>
         </property>
        </widget>
       </item>
@@ -332,109 +211,10 @@ By using ";;" to separate paths, you can add several folders here</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="0">
-       <widget class="QLabel" name="label_4">
+      <item row="1" column="0">
+       <widget class="QLabel" name="label">
         <property name="text">
-         <string>Page background color</string>
-        </property>
-       </widget>
-      </item>
-      <item row="7" column="1" alignment="Qt::AlignRight">
-       <widget class="Gui::PrefColorButton" name="colorButton_4">
-        <property name="maximumSize">
-         <size>
-          <width>60</width>
-          <height>60</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>The color of the text on the main pages</string>
-        </property>
-        <property name="color">
-         <color>
-          <red>0</red>
-          <green>0</green>
-          <blue>0</blue>
-         </color>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>PageTextColor</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Start</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Background image</string>
-        </property>
-       </widget>
-      </item>
-      <item row="7" column="0">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>Page text color</string>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="1" alignment="Qt::AlignRight">
-       <widget class="Gui::PrefColorButton" name="colorButton_6">
-        <property name="maximumSize">
-         <size>
-          <width>60</width>
-          <height>60</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>The color of the links</string>
-        </property>
-        <property name="color">
-         <color>
-          <red>0</red>
-          <green>0</green>
-          <blue>255</blue>
-         </color>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>LinkColor</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Start</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="8" column="1" alignment="Qt::AlignRight">
-       <widget class="Gui::PrefColorButton" name="colorButton_5">
-        <property name="maximumSize">
-         <size>
-          <width>60</width>
-          <height>60</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>The background color of the boxes inside the pages</string>
-        </property>
-        <property name="color">
-         <color>
-          <red>221</red>
-          <green>221</green>
-          <blue>221</blue>
-         </color>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>BoxColor</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Start</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="8" column="0">
-       <widget class="QLabel" name="label_6">
-        <property name="text">
-         <string>Box background color</string>
+         <string>Background color</string>
         </property>
        </widget>
       </item>
@@ -461,6 +241,16 @@ By using ";;" to separate paths, you can add several folders here</string>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Start</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_12">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Background color down gradient</string>
         </property>
        </widget>
       </item>
@@ -493,13 +283,23 @@ By using ";;" to separate paths, you can add several folders here</string>
         </property>
        </widget>
       </item>
-      <item row="11" column="0">
-       <widget class="QLabel" name="label_7">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Open links</string>
+         <string>Background image</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="Gui::PrefFileChooser" name="fileChooser_2">
+        <property name="toolTip">
+         <string>An optional image to display as background</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>BackgroundImage</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Start</cstring>
         </property>
        </widget>
       </item>
@@ -510,10 +310,161 @@ By using ";;" to separate paths, you can add several folders here</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_15">
+      <item row="5" column="1" alignment="Qt::AlignRight">
+       <widget class="Gui::PrefColorButton" name="colorButton_2">
+        <property name="maximumSize">
+         <size>
+          <width>60</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>The color of the version text</string>
+        </property>
+        <property name="color">
+         <color>
+          <red>255</red>
+          <green>251</green>
+          <blue>247</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>BackgroundTextColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Start</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Use FreeCAD style sheet</string>
+         <string>Page background color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1" alignment="Qt::AlignRight">
+       <widget class="Gui::PrefColorButton" name="colorButton_3">
+        <property name="maximumSize">
+         <size>
+          <width>60</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>The background of the main start page area</string>
+        </property>
+        <property name="color">
+         <color>
+          <red>255</red>
+          <green>255</green>
+          <blue>255</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>PageColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Start</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Page text color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1" alignment="Qt::AlignRight">
+       <widget class="Gui::PrefColorButton" name="colorButton_4">
+        <property name="maximumSize">
+         <size>
+          <width>60</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>The color of the text on the main pages</string>
+        </property>
+        <property name="color">
+         <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>PageTextColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Start</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Box background color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1" alignment="Qt::AlignRight">
+       <widget class="Gui::PrefColorButton" name="colorButton_5">
+        <property name="maximumSize">
+         <size>
+          <width>60</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>The background color of the boxes inside the pages</string>
+        </property>
+        <property name="color">
+         <color>
+          <red>221</red>
+          <green>221</green>
+          <blue>221</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>BoxColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Start</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="0">
+       <widget class="QLabel" name="label_8">
+        <property name="text">
+         <string>Link color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1" alignment="Qt::AlignRight">
+       <widget class="Gui::PrefColorButton" name="colorButton_6">
+        <property name="maximumSize">
+         <size>
+          <width>60</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>The color of the links</string>
+        </property>
+        <property name="color">
+         <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>255</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>LinkColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Start</cstring>
         </property>
        </widget>
       </item>
@@ -566,6 +517,55 @@ By using ";;" to separate paths, you can add several folders here</string>
         </item>
        </layout>
       </item>
+      <item row="11" column="0">
+       <widget class="QLabel" name="label_7">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Open links</string>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="Gui::PrefRadioButton" name="radioButton_2">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>in FreeCAD</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>InBrowser</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Start</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefRadioButton" name="radioButton_1">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>In external browser</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>InWeb</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Start</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
       <item row="12" column="0">
        <widget class="QLabel" name="label_18">
         <property name="text">
@@ -601,10 +601,24 @@ By using ";;" to separate paths, you can add several folders here</string>
       <string>Options</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <widget class="QLabel" name="autoModuleLabel">
+        <property name="text">
+         <string>Switch workbench after loading</string>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="1">
        <widget class="QComboBox" name="AutoloadModuleCombo">
         <property name="toolTip">
          <string>Choose which workbench to switch to after the program launches</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_11">
+        <property name="text">
+         <string>Close start page after loading</string>
         </property>
        </widget>
       </item>
@@ -624,20 +638,6 @@ By using ";;" to separate paths, you can add several folders here</string>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Start</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="autoModuleLabel">
-        <property name="text">
-         <string>Switch workbench after loading</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_11">
-        <property name="text">
-         <string>Close start page after loading</string>
         </property>
        </widget>
       </item>

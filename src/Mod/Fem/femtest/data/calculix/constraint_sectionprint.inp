@@ -3230,13 +3230,11 @@ Evolumes
 
 ***********************************************************
 ** Element sets for materials and FEM element type (solid, shell, beam, fluid)
-** written by write_element_sets_material_and_femelement_type function
 *ELSET,ELSET=MaterialSolid
 Evolumes
 
 ***********************************************************
 ** constraints fixed node sets
-** written by write_node_sets_constraints_fixed function
 ** ConstraintFixed
 *NSET,NSET=ConstraintFixed
 9,
@@ -3357,9 +3355,8 @@ Evolumes
 
 ***********************************************************
 ** constraints sectionprint surface sets
-** written by write_surfaces_constraints_sectionprint function
 ** ConstraintSectionPrint
-*SURFACE, NAME=SECTIONFACE1
+*SURFACE, NAME=SECTIONFACEConstraintSectionPrint
 811,S4
 872,S2
 880,S1
@@ -3391,29 +3388,25 @@ Evolumes
 
 ***********************************************************
 ** Materials
-** written by write_materials function
-** Young's modulus unit is MPa = N/mm2
+** see information about units at file end
 ** FreeCAD material name: CalculiX-Steel
 ** Material
 *MATERIAL, NAME=Material
 *ELASTIC
-210000, 0.300
+210000,0.3
 
 ***********************************************************
 ** Sections
-** written by write_femelementsets function
 *SOLID SECTION, ELSET=MaterialSolid, MATERIAL=Material
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
-** written by write_step_begin function
 *STEP
 *STATIC
 
 
 ***********************************************************
 ** Fixed Constraints
-** written by write_constraints_fixed function
 ** ConstraintFixed
 *BOUNDARY
 ConstraintFixed,1
@@ -3423,39 +3416,36 @@ ConstraintFixed,3
 
 ***********************************************************
 ** SectionPrint Constraints
-** written by write_constraints_sectionprint function
 ** ConstraintSectionPrint
-*SECTION PRINT, SURFACE=SECTIONFACE1, NAME=SECTIONPRINT1
+*SECTION PRINT, SURFACE=SECTIONFACEConstraintSectionPrint, NAME=SECTIONPRINTConstraintSectionPrint
 SOF, SOM, SOAREA
 
 ***********************************************************
 ** constraints pressure element face loads
-** written by write_constraints_pressure function
 ** ConstraintPressure
 *DLOAD
 ** ConstraintPressure: face load
-846,P3,100.0
-861,P1,100.0
-875,P4,100.0
-883,P3,100.0
-887,P1,100.0
-888,P1,100.0
-903,P1,100.0
-929,P4,100.0
-933,P3,100.0
-936,P1,100.0
-937,P1,100.0
-940,P1,100.0
-941,P1,100.0
-946,P4,100.0
-949,P2,100.0
-951,P4,100.0
-954,P3,100.0
-955,P4,100.0
+846,P3,100
+861,P1,100
+875,P4,100
+883,P3,100
+887,P1,100
+888,P1,100
+903,P1,100
+929,P4,100
+933,P3,100
+936,P1,100
+937,P1,100
+940,P1,100
+941,P1,100
+946,P4,100
+949,P2,100
+951,P4,100
+954,P3,100
+955,P4,100
 
 ***********************************************************
 ** Outputs --> frd file
-** written by write_outputs_types function
 *NODE FILE
 U
 *EL FILE
@@ -3467,12 +3457,10 @@ RF
 
 
 ***********************************************************
-** written by write_step_end function
 *END STEP 
 
 ***********************************************************
 ** CalculiX Input file
-** written by write_footer function
 **   written by    --> FreeCAD 0.19.21759 (Git)
 **   written on    --> Wed Jun 24 09:14:56 2020
 **   file name     --> 
@@ -3482,7 +3470,7 @@ RF
 ***********************************************************
 **  About units:
 **  See ccx manual, ccx does not know about any unit.
-**  Golden rule: The user must make sure that the numbers he provides have consistent units.
+**  Golden rule: The user must make sure that the numbers they provide have consistent units.
 **  The user is the FreeCAD calculix writer module ;-)
 **
 **  The unit system which is used at Guido Dhondt's company: mm, N, s, K
@@ -3496,9 +3484,9 @@ RF
 **
 **  This leads to:
 **  Force: N
-**  Pressure: N/mm^2
+**  Pressure: N/mm^2 == MPa (Young's Modulus has unit Pressure)
 **  Density: t/mm^3
 **  Gravity: mm/s^2
-**  Thermal conductivity: t*mm/K/s^3 (same as W/m/K)
-**  Specific Heat: mm^2/s^2/K (same as J/kg/K)
+**  Thermal conductivity: t*mm/K/s^3 == as W/m/K == kW/mm/K
+**  Specific Heat: mm^2/s^2/K = J/kg/K == kJ/t/K
 **

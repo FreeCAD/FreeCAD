@@ -84,7 +84,8 @@ bool ExternalGeometryExtension::getFlagsFromName(std::string str, ExternalGeomet
     auto pos = std::find_if(    ExternalGeometryExtension::flag2str.begin(),
                                 ExternalGeometryExtension::flag2str.end(),
                                 [str](const char * val) {
-                                    return strcmp(val,str.c_str())==0;}
+                                    return strcmp(val,str.c_str())==0;
+                                }
                                 );
 
     if( pos != ExternalGeometryExtension::flag2str.end()) {

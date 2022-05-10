@@ -43,7 +43,7 @@ PyMOD_INIT_FUNC(DraftUtils)
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
     PyObject* mod = DraftUtils::initModule();
     Base::Console().Log("Loading DraftUtils module... done\n");

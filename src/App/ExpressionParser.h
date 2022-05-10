@@ -25,8 +25,8 @@
 #ifndef EXPRESSION_PARSER_H
 #define EXPRESSION_PARSER_H
 
-#include <Base/Interpreter.h>
 #include "Expression.h"
+#include <Base/Quantity.h>
 
 namespace App {
 
@@ -71,7 +71,7 @@ struct AppExport Expression::Component {
 class  AppExport UnitExpression : public Expression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    UnitExpression(const App::DocumentObject *_owner = 0, const Base::Quantity & _quantity = Base::Quantity(), const std::string & _unitStr = std::string());
+    UnitExpression(const App::DocumentObject *_owner = nullptr, const Base::Quantity & _quantity = Base::Quantity(), const std::string & _unitStr = std::string());
 
     ~UnitExpression();
 
@@ -97,7 +97,7 @@ protected:
     virtual Py::Object _getPyValue() const override;
 
 protected:
-    mutable PyObject *cache = 0;
+    mutable PyObject *cache = nullptr;
 
 private:
     Base::Quantity quantity;
@@ -111,13 +111,13 @@ private:
 class AppExport NumberExpression : public UnitExpression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    NumberExpression(const App::DocumentObject *_owner = 0, const Base::Quantity & quantity = Base::Quantity());
+    NumberExpression(const App::DocumentObject *_owner = nullptr, const Base::Quantity & quantity = Base::Quantity());
 
     virtual Expression * simplify() const override;
 
     void negate();
 
-    bool isInteger(long *v=0) const;
+    bool isInteger(long *v=nullptr) const;
 
 protected:
     virtual Expression * _copy() const override;
@@ -127,7 +127,7 @@ protected:
 class AppExport ConstantExpression : public NumberExpression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    ConstantExpression(const App::DocumentObject *_owner = 0,
+    ConstantExpression(const App::DocumentObject *_owner = nullptr,
             const char *_name = "",
             const Base::Quantity &_quantity = Base::Quantity());
 
@@ -170,7 +170,7 @@ public:
         NEG,
         POS
     };
-    OperatorExpression(const App::DocumentObject *_owner = 0, Expression * _left = 0, Operator _op = NONE, Expression * _right = 0);
+    OperatorExpression(const App::DocumentObject *_owner = nullptr, Expression * _left = nullptr, Operator _op = NONE, Expression * _right = nullptr);
 
     virtual ~OperatorExpression();
 
@@ -209,7 +209,7 @@ protected:
 class AppExport ConditionalExpression : public Expression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    ConditionalExpression(const App::DocumentObject *_owner = 0, Expression * _condition = 0,Expression * _trueExpr = 0,  Expression * _falseExpr = 0);
+    ConditionalExpression(const App::DocumentObject *_owner = nullptr, Expression * _condition = nullptr,Expression * _trueExpr = nullptr,  Expression * _falseExpr = nullptr);
 
     virtual ~ConditionalExpression();
 
@@ -272,6 +272,9 @@ public:
         MSCALE, // matrix scale by vector
         MINVERT, // invert matrix/placement/rotation
         CREATE, // create new object of a given type
+        STR, // stringify
+        HIDDENREF, // hidden reference that has no dependency check
+        HREF, // deprecated alias of HIDDENREF
 
         // Aggregates
         AGGREGATES,
@@ -287,7 +290,7 @@ public:
         LAST,
     };
 
-    FunctionExpression(const App::DocumentObject *_owner = 0, Function _f = NONE,
+    FunctionExpression(const App::DocumentObject *_owner = nullptr, Function _f = NONE,
             std::string &&name = std::string(), std::vector<Expression *> _args = std::vector<Expression*>());
 
     virtual ~FunctionExpression();
@@ -297,6 +300,9 @@ public:
     virtual Expression * simplify() const override;
 
     static Py::Object evaluate(const Expression *owner, int type, const std::vector<Expression*> &args);
+
+    Function getFunction() const {return f;}
+    const std::vector<Expression*> &getArgs() const {return args;}
 
 protected:
     static Py::Object evalAggregate(const Expression *owner, int type, const std::vector<Expression*> &args);
@@ -321,7 +327,7 @@ protected:
 class AppExport VariableExpression : public UnitExpression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    VariableExpression(const App::DocumentObject *_owner = 0, const ObjectIdentifier& _var = ObjectIdentifier());
+    VariableExpression(const App::DocumentObject *_owner = nullptr, const ObjectIdentifier& _var = ObjectIdentifier());
 
     ~VariableExpression();
 
@@ -344,9 +350,7 @@ protected:
     virtual Py::Object _getPyValue() const override;
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
     virtual bool _isIndexable() const override;
-    virtual void _getDeps(ExpressionDeps &) const override;
-    virtual void _getDepObjects(std::set<App::DocumentObject*> &, std::vector<std::string> *) const override;
-    virtual void _getIdentifiers(std::set<App::ObjectIdentifier> &) const override;
+    virtual void _getIdentifiers(std::map<App::ObjectIdentifier,bool> &) const override;
     virtual bool _adjustLinks(const std::set<App::DocumentObject*> &, ExpressionVisitor &) override;
     virtual void _importSubNames(const ObjectIdentifier::SubNameMap &) override;
     virtual void _updateLabelReference(App::DocumentObject *, const std::string &, const char *) override;
@@ -371,7 +375,7 @@ class AppExport PyObjectExpression : public Expression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    PyObjectExpression(const App::DocumentObject *_owner=0, PyObject *pyobj=0, bool owned=false)
+    PyObjectExpression(const App::DocumentObject *_owner=nullptr, PyObject *pyobj=nullptr, bool owned=false)
         :Expression(_owner)
     {
         setPyValue(pyobj,owned);
@@ -389,7 +393,7 @@ protected:
     virtual Py::Object _getPyValue() const override;
 
 protected:
-    PyObject *pyObj = 0;
+    PyObject *pyObj = nullptr;
 };
 
 /**
@@ -400,7 +404,7 @@ protected:
 class AppExport StringExpression : public Expression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    StringExpression(const App::DocumentObject *_owner = 0, const std::string & _text = std::string());
+    StringExpression(const App::DocumentObject *_owner = nullptr, const std::string & _text = std::string());
     ~StringExpression();
 
     virtual Expression * simplify() const override;
@@ -414,13 +418,13 @@ protected:
 
 private:
     std::string text; /**< Text string */
-    mutable PyObject *cache = 0;
+    mutable PyObject *cache = nullptr;
 };
 
 class AppExport RangeExpression : public App::Expression {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    RangeExpression(const App::DocumentObject * _owner = 0, const std::string & begin = std::string(), const std::string & end = std::string());
+    RangeExpression(const App::DocumentObject * _owner = nullptr, const std::string & begin = std::string(), const std::string & end = std::string());
 
     virtual ~RangeExpression() { }
 
@@ -434,7 +438,7 @@ protected:
     virtual Expression * _copy() const override;
     virtual void _toString(std::ostream &ss, bool persistent, int indent) const override;
     virtual Py::Object _getPyValue() const override;
-    virtual void _getDeps(ExpressionDeps &) const override;
+    virtual void _getIdentifiers(std::map<App::ObjectIdentifier,bool> &) const override;
     virtual bool _renameObjectIdentifier(const std::map<ObjectIdentifier,ObjectIdentifier> &,
                                          const ObjectIdentifier &, ExpressionVisitor &) override;
     virtual void _moveCells(const CellAddress &, int, int, ExpressionVisitor &) override;
@@ -488,7 +492,7 @@ public:
   std::string string;
   std::pair<FunctionExpression::Function,std::string> func;
   ObjectIdentifier::String string_or_identifier;
-  semantic_type() : component(0), expr(0), ivalue(0), fvalue(0)
+  semantic_type() : component(nullptr), expr(nullptr), ivalue(0), fvalue(0)
                   , func({FunctionExpression::NONE, std::string()}) {}
 };
 

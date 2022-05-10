@@ -49,7 +49,7 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Tet10",
         "constraints": ["fixed", "force"],
-        "solvers": ["calculix"],
+        "solvers": ["calculix", "ccxtools"],
         "material": "nonlinear",
         "equation": "mechanical"
     }
@@ -143,15 +143,13 @@ def setup(doc=None, solvertype="ccxtools"):
     matprop["Name"] = "CalculiX-Steel"
     matprop["YoungsModulus"] = "210000 MPa"
     matprop["PoissonRatio"] = "0.30"
-    matprop["Density"] = "7900 kg/m^3"
     material_obj.Material = matprop
     analysis.addObject(material_obj)
 
     # nonlinear material
     name_nlm = "Material_nonlin"
     nonlinear_mat = ObjectsFem.makeMaterialMechanicalNonlinear(doc, material_obj, name_nlm)
-    nonlinear_mat.YieldPoint1 = '240.0, 0.0'
-    nonlinear_mat.YieldPoint2 = '270.0, 0.025'
+    nonlinear_mat.YieldPoints = ['240.0, 0.0', '270.0, 0.025']
     analysis.addObject(nonlinear_mat)
     # check solver attributes, Nonlinearity needs to be set to nonlinear
 

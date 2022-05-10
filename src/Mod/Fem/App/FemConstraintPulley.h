@@ -21,20 +21,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_CONSTRAINTPulley_H
 #define FEM_CONSTRAINTPulley_H
 
 #include <App/DocumentObject.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyGeo.h>
+#include <App/PropertyStandard.h>
 
 #include "FemConstraintGear.h"
+
 
 namespace Fem
 {
 
-class AppFemExport ConstraintPulley : public Fem::ConstraintGear
+class FemExport ConstraintPulley : public Fem::ConstraintGear
 {
     PROPERTY_HEADER(Fem::ConstraintPulley);
 

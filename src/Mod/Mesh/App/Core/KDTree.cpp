@@ -37,7 +37,7 @@ struct Point3d
 {
    typedef float value_type;
 
-   Point3d(const Base::Vector3f& f, unsigned long i) : p(f), i(i)
+   Point3d(const Base::Vector3f& f, PointIndex i) : p(f), i(i)
    {
    }
 
@@ -71,7 +71,7 @@ struct Point3d
    }
 
    Base::Vector3f p;
-   unsigned long i;
+   PointIndex i;
 };
 
 typedef KDTree::KDTree<3, Point3d> MyKDTree;
@@ -88,7 +88,7 @@ MeshKDTree::MeshKDTree() : d(new Private)
 
 MeshKDTree::MeshKDTree(const std::vector<Base::Vector3f>& points) : d(new Private)
 {
-    unsigned long index=0;
+    PointIndex index=0;
     for (std::vector<Base::Vector3f>::const_iterator it = points.begin(); it != points.end(); ++it) {
         d->kd_tree.insert(Point3d(*it, index++));
     }
@@ -96,7 +96,7 @@ MeshKDTree::MeshKDTree(const std::vector<Base::Vector3f>& points) : d(new Privat
 
 MeshKDTree::MeshKDTree(const MeshPointArray& points) : d(new Private)
 {
-    unsigned long index=0;
+    PointIndex index=0;
     for (MeshPointArray::_TConstIterator it = points.begin(); it != points.end(); ++it) {
         d->kd_tree.insert(Point3d(*it, index++));
     }
@@ -109,13 +109,13 @@ MeshKDTree::~MeshKDTree()
 
 void MeshKDTree::AddPoint(Base::Vector3f& point)
 {
-    unsigned long index=d->kd_tree.size();
+    PointIndex index=d->kd_tree.size();
     d->kd_tree.insert(Point3d(point, index));
 }
 
 void MeshKDTree::AddPoints(const std::vector<Base::Vector3f>& points)
 {
-    unsigned long index=d->kd_tree.size();
+    PointIndex index=d->kd_tree.size();
     for (std::vector<Base::Vector3f>::const_iterator it = points.begin(); it != points.end(); ++it) {
         d->kd_tree.insert(Point3d(*it, index++));
     }
@@ -123,7 +123,7 @@ void MeshKDTree::AddPoints(const std::vector<Base::Vector3f>& points)
 
 void MeshKDTree::AddPoints(const MeshPointArray& points)
 {
-    unsigned long index=d->kd_tree.size();
+    PointIndex index=d->kd_tree.size();
     for (MeshPointArray::_TConstIterator it = points.begin(); it != points.end(); ++it) {
         d->kd_tree.insert(Point3d(*it, index++));
     }
@@ -144,42 +144,42 @@ void MeshKDTree::Optimize()
     d->kd_tree.optimize();
 }
 
-unsigned long MeshKDTree::FindNearest(const Base::Vector3f& p, Base::Vector3f& n, float& dist) const
+PointIndex MeshKDTree::FindNearest(const Base::Vector3f& p, Base::Vector3f& n, float& dist) const
 {
     std::pair<MyKDTree::const_iterator, MyKDTree::distance_type> it =
         d->kd_tree.find_nearest(Point3d(p,0));
     if (it.first == d->kd_tree.end())
-        return ULONG_MAX;
-    unsigned long index = it.first->i;
+        return POINT_INDEX_MAX;
+    PointIndex index = it.first->i;
     n = it.first->p;
     dist = it.second;
     return index;
 }
 
-unsigned long MeshKDTree::FindNearest(const Base::Vector3f& p, float max_dist,
-                                      Base::Vector3f& n, float& dist) const
+PointIndex MeshKDTree::FindNearest(const Base::Vector3f& p, float max_dist,
+                                   Base::Vector3f& n, float& dist) const
 {
     std::pair<MyKDTree::const_iterator, MyKDTree::distance_type> it =
         d->kd_tree.find_nearest(Point3d(p,0), max_dist);
     if (it.first == d->kd_tree.end())
-        return ULONG_MAX;
-    unsigned long index = it.first->i;
+        return POINT_INDEX_MAX;
+    PointIndex index = it.first->i;
     n = it.first->p;
     dist = it.second;
     return index;
 }
 
-unsigned long MeshKDTree::FindExact(const Base::Vector3f& p) const
+PointIndex MeshKDTree::FindExact(const Base::Vector3f& p) const
 {
     MyKDTree::const_iterator it = 
         d->kd_tree.find_exact(Point3d(p,0));
     if (it == d->kd_tree.end())
-        return ULONG_MAX;
-    unsigned long index = it->i;
+        return POINT_INDEX_MAX;
+    PointIndex index = it->i;
     return index;
 }
 
-void MeshKDTree::FindInRange(const Base::Vector3f& p, float range, std::vector<unsigned long>& indices) const
+void MeshKDTree::FindInRange(const Base::Vector3f& p, float range, std::vector<PointIndex>& indices) const
 {
     std::vector<Point3d> v;
     d->kd_tree.find_within_range(Point3d(p,0), range, std::back_inserter(v));

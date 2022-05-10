@@ -46,7 +46,7 @@ PROPERTY_SOURCE(Fem::ConstraintForce, Fem::Constraint)
 ConstraintForce::ConstraintForce()
 {
     ADD_PROPERTY(Force,(0.0));
-    ADD_PROPERTY_TYPE(Direction,(0),"ConstraintForce",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(Direction,(nullptr),"ConstraintForce",(App::PropertyType)(App::Prop_None),
                       "Element giving direction of constraint");
     ADD_PROPERTY(Reversed,(0));
     ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintForce",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
@@ -99,7 +99,7 @@ void ConstraintForce::onChanged(const App::Property* prop)
         }
     } else if (prop == &NormalDirection) {
         // Set a default direction if no direction reference has been given
-        if (Direction.getValue() == NULL) {
+        if (Direction.getValue() == nullptr) {
             Base::Vector3d direction = NormalDirection.getValue();
             if (Reversed.getValue())
                 direction = -direction;

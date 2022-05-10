@@ -180,7 +180,7 @@ void  SurfaceOfRevolutionPy::setBasisCurve(Py::Object arg)
 
 PyObject *SurfaceOfRevolutionPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int SurfaceOfRevolutionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

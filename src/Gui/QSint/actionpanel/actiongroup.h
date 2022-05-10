@@ -8,9 +8,9 @@
 #ifndef ACTIONGROUP_H
 #define ACTIONGROUP_H
 
+#include <QBoxLayout>
 #include <QTimer>
 #include <QWidget>
-#include <QBoxLayout>
 #include "qsint_global.h"
 
 
@@ -43,7 +43,7 @@ class QSINT_EXPORT ActionGroup : public QWidget
 public:
     /** Constructor. Creates ActionGroup without header.
       */
-    explicit ActionGroup(QWidget *parent = 0);
+    explicit ActionGroup(QWidget *parent = nullptr);
 
     /** Constructor. Creates ActionGroup with header's
         text set to \a title, but with no icon.
@@ -52,7 +52,7 @@ public:
       */
     explicit ActionGroup(const QString& title,
                          bool expandable = true,
-                         QWidget *parent = 0);
+                         QWidget *parent = nullptr);
 
     /** Constructor. Creates ActionGroup with header's
         text set to \a title and icon set to \a icon.
@@ -62,7 +62,7 @@ public:
     explicit ActionGroup(const QPixmap& icon,
                          const QString& title,
                          bool expandable = true,
-                         QWidget *parent = 0);
+                         QWidget *parent = nullptr);
 
     /** Creates action item from the \a action and returns it.
 

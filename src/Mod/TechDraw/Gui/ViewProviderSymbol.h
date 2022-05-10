@@ -21,17 +21,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_VIEWPROVIDERSYMBOL_H
 #define DRAWINGGUI_VIEWPROVIDERSYMBOL_H
 
-#include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
+
 #include "ViewProviderDrawingView.h"
-#include "ViewProviderDrawingView.h"
+
 
 namespace TechDrawGui {
-
 
 class TechDrawGuiExport ViewProviderSymbol : public ViewProviderDrawingView
 {

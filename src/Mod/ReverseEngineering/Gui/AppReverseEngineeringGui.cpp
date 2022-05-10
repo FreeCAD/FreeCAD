@@ -20,20 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
 #include "Workbench.h"
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
+
 
 // use a different name to CreateCommand()
 void CreateReverseEngineeringCommands(void);
@@ -61,7 +59,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace ReverseEngineeringGui
@@ -72,7 +70,7 @@ PyMOD_INIT_FUNC(ReverseEngineeringGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
 
     // load dependent module
@@ -81,7 +79,7 @@ PyMOD_INIT_FUNC(ReverseEngineeringGui)
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
 
     PyObject* mod = ReverseEngineeringGui::initModule();

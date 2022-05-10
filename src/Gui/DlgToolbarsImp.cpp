@@ -20,11 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QInputDialog>
 # include <QHeaderView>
+# include <QInputDialog>
 # include <QMenu>
 # include <QMessageBox>
 # include <QToolBar>
@@ -36,11 +35,12 @@
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Command.h"
-#include "ToolBarManager.h"
 #include "MainWindow.h"
+#include "ToolBarManager.h"
 #include "Widgets.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"
+
 
 using namespace Gui::Dialog;
 
@@ -93,7 +93,7 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
 
     for (std::map<std::string,Command*>::iterator it = sCommands.begin(); it != sCommands.end(); ++it) {
         QLatin1String group(it->second->getGroupName());
-        QString text = qApp->translate(it->second->className(), it->second->getGroupName());
+        QString text = it->second->translatedGroupName();
         GroupMap::iterator jt;
         jt = std::find_if(groupMap.begin(), groupMap.end(), GroupMap_find(group));
         if (jt != groupMap.end()) {
@@ -642,7 +642,7 @@ void DlgCustomToolbars::changeEvent(QEvent *e)
             QVariant data = ui->categoryBox->itemData(i, Qt::UserRole);
             std::vector<Command*> aCmds = cCmdMgr.getGroupCommands(data.toByteArray());
             if (!aCmds.empty()) {
-                QString text = qApp->translate(aCmds[0]->className(), aCmds[0]->getGroupName());
+                QString text = aCmds[0]->translatedGroupName();
                 ui->categoryBox->setItemText(i, text);
             }
         }
@@ -821,7 +821,7 @@ void DlgCustomToolbarsImp::moveUpCustomCommand(const QString& name, const QByteA
             cmd = "Separator";
         }
         QList<QAction*> actions = bars.front()->actions();
-        QAction* before=0;
+        QAction* before=nullptr;
         for (QList<QAction*>::ConstIterator it = actions.begin(); it != actions.end(); ++it) {
             if ((*it)->data().toByteArray() == cmd) {
                 // if we move a separator then make sure to pick up the right one
@@ -831,7 +831,7 @@ void DlgCustomToolbarsImp::moveUpCustomCommand(const QString& name, const QByteA
                         continue;
                     }
                 }
-                if (before != 0) {
+                if (before != nullptr) {
                     QList<QAction*> group = getActionGroup(*it);
                     bars.front()->removeAction(*it);
                     bars.front()->insertAction(before, *it);

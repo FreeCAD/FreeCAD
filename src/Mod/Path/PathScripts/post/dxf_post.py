@@ -29,7 +29,7 @@ import importDXF
 import Path
 import PathScripts.PathLog as PathLog
 
-TOOLTIP = '''
+TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
 take a pseudo-gcode fragment outputted by a Path object, and output
 a dxf file.
@@ -41,23 +41,26 @@ Does NOT remove redundant lines.  If you have multiple step-downs in your
 operation, you'll get multiple redundant lines in your dxf.
 
 import dxf_post
-'''
+"""
 
-TOOLTIP_ARGS = '''
+TOOLTIP_ARGS = """
 Arguments for dxf:
-'''
+"""
 now = datetime.datetime.now()
 
 # # These globals set common customization preferences
 OUTPUT_HEADER = True
 
-
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
 
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ in ['__builtin__', 'io']:
+if open.__module__ in ["__builtin__", "io"]:
     pythonopen = open
 
 
@@ -89,10 +92,10 @@ def dxfWrite(objlist, filename):
 
 
 def parse(pathobj):
-    ''' accepts a Path object.  Returns a list of wires'''
+    """accepts a Path object.  Returns a list of wires"""
 
-    feedcommands = ['G01', 'G1', 'G2', 'G3', 'G02', 'G03']
-    rapidcommands = ['G0', 'G00']
+    feedcommands = PathGeom.CmdMove
+    rapidcommands = PathGeom.CmdMoveRapid
 
     edges = []
     objlist = []
@@ -100,10 +103,10 @@ def parse(pathobj):
     # Gotta start somewhere.  Assume 0,0,0
     curPoint = FreeCAD.Vector(0, 0, 0)
     for c in pathobj.Path.Commands:
-        PathLog.debug('{} -> {}'.format(curPoint, c))
-        if 'Z' in c.Parameters:
+        PathLog.debug("{} -> {}".format(curPoint, c))
+        if "Z" in c.Parameters:
             newparams = c.Parameters
-            newparams.pop('Z', None)
+            newparams.pop("Z", None)
             flatcommand = Path.Command(c.Name, newparams)
             c.Parameters = newparams
         else:
@@ -111,23 +114,25 @@ def parse(pathobj):
 
         # ignore gcode that isn't moving
         if flatcommand.Name not in feedcommands + rapidcommands:
-            PathLog.debug('non move')
+            PathLog.debug("non move")
             continue
 
         # ignore pure vertical feed and rapid
-        if (flatcommand.Parameters.get('X', curPoint.x) == curPoint.x
-                and flatcommand.Parameters.get('Y', curPoint.y) == curPoint.y):
-            PathLog.debug('vertical')
+        if (
+            flatcommand.Parameters.get("X", curPoint.x) == curPoint.x
+            and flatcommand.Parameters.get("Y", curPoint.y) == curPoint.y
+        ):
+            PathLog.debug("vertical")
             continue
 
         # feeding move.  Build an edge
         if flatcommand.Name in feedcommands:
             edges.append(PathGeom.edgeForCmd(flatcommand, curPoint))
-            PathLog.debug('feeding move')
+            PathLog.debug("feeding move")
 
         # update the curpoint
-        curPoint.x = flatcommand.Parameters['X']
-        curPoint.y = flatcommand.Parameters['Y']
+        curPoint.x = flatcommand.Parameters.get("X", curPoint.x)
+        curPoint.y = flatcommand.Parameters.get("Y", curPoint.y)
 
     if len(edges) > 0:
         candidates = Part.sortEdges(edges)

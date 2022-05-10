@@ -45,7 +45,7 @@ class DlgSettingsEditorImp : public PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsEditorImp( QWidget* parent = 0 );
+    DlgSettingsEditorImp( QWidget* parent = nullptr );
     ~DlgSettingsEditorImp();
 
 public:
@@ -60,6 +60,7 @@ protected Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e);
+    void setEditorTabWidth(int);
 
 private:
     std::unique_ptr<Ui_DlgEditorSettings> ui;

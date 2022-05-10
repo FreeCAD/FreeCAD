@@ -22,10 +22,10 @@
 # ***************************************************************************
 """Provides functions to repair certain objects created with old versions."""
 ## @package heal
-# \ingroup draftfuctions
+# \ingroup draftfunctions
 # \brief Provides functions to repair certain objects from old versions.
 
-## \addtogroup draftfuctions
+## \addtogroup draftfunctions
 # @{
 import FreeCAD as App
 import draftutils.utils as utils

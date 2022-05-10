@@ -143,18 +143,14 @@ TaskSmoothing::TaskSmoothing()
 {
     widget = new DlgSmoothing();
     Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), false, 0);
+        QPixmap(), widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 
     selection = new Selection();
-    selection->setObjects(Gui::Selection().getSelectionEx(0, Mesh::Feature::getClassTypeId()));
+    selection->setObjects(Gui::Selection().getSelectionEx(nullptr, Mesh::Feature::getClassTypeId()));
     Gui::Selection().clearSelection();
-#if !defined (QSINT_ACTIONPANEL)
-    Gui::TaskView::TaskGroup* tasksel = new Gui::TaskView::TaskGroup();
-#else
     Gui::TaskView::TaskBox* tasksel = new Gui::TaskView::TaskBox();
-#endif
     tasksel->groupLayout()->addWidget(selection);
     tasksel->hide();
     Content.push_back(tasksel);
@@ -180,7 +176,7 @@ bool TaskSmoothing::accept()
     bool hasSelection = false;
     for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
         Mesh::Feature* mesh = static_cast<Mesh::Feature*>(*it);
-        std::vector<unsigned long> selection;
+        std::vector<Mesh::FacetIndex> selection;
         if (widget->smoothSelection()) {
             // clear the selection before editing the mesh to avoid
             // to have coloured triangles when doing an 'undo'

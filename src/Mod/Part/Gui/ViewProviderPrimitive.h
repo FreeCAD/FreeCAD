@@ -47,9 +47,6 @@ protected:
     void unsetEdit(int ModNum);
 
 private:
-    void startDefaultEditMode();
-
-private:
     ViewProviderAttachExtension extension;
 };
 

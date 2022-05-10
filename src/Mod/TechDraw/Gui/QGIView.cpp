@@ -40,6 +40,7 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <App/Material.h>
 #include <Base/Console.h>
 #include <Gui/Selection.h>
@@ -68,6 +69,7 @@
 #include "QGTracker.h"
 
 #include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
@@ -118,8 +120,6 @@ QGIView::QGIView()
     m_lockWidth = (double) sizeLock.width();
     m_lockHeight = (double) sizeLock.height();
     m_lock->hide();
-
-    setCursor(Qt::ArrowCursor);
 }
 
 QGIView::~QGIView()
@@ -398,7 +398,7 @@ TechDraw::DrawView * QGIView::getViewObject() const
 
 void QGIView::setViewFeature(TechDraw::DrawView *obj)
 {
-    if(obj == 0)
+    if(obj == nullptr)
         return;
 
     viewObj = obj;
@@ -613,7 +613,7 @@ QGIView* QGIView::getQGIVByName(std::string name)
             }
         }
     }
-    return 0;
+    return nullptr;
 }
 
 /* static */

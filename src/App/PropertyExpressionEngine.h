@@ -29,7 +29,6 @@
 #include <boost_graph_adjacency_list.hpp>
 #include <boost/graph/topological_sort.hpp>
 #include <App/PropertyLinks.h>
-#include <App/Expression.h>
 #include <set>
 
 namespace Base {
@@ -43,6 +42,7 @@ class DocumentObject;
 class DocumentObjectExecReturn;
 class ObjectIdentifier;
 class Expression;
+using ExpressionPtr = std::unique_ptr<Expression>;
 
 class AppExport PropertyExpressionContainer : public App::PropertyXLinkContainer
 {
@@ -80,22 +80,26 @@ public:
     typedef boost::function<std::string (const App::ObjectIdentifier & path, std::shared_ptr<const App::Expression> expr)> ValidatorFunc;
 
     /**
-     * @brief The ExpressionInfo struct encapsulates an expression and a comment.
+     * @brief The ExpressionInfo struct encapsulates an expression.
      */
 
     struct ExpressionInfo {
         std::shared_ptr<App::Expression> expression; /**< The actual expression tree */
+        bool busy;
 
         ExpressionInfo(std::shared_ptr<App::Expression> expression = std::shared_ptr<App::Expression>()) {
             this->expression = expression;
+            this->busy = false;
         }
 
         ExpressionInfo(const ExpressionInfo & other) {
             expression = other.expression;
+            busy = other.busy;
         }
 
         ExpressionInfo & operator=(const ExpressionInfo & other) {
             expression = other.expression;
+            busy = other.busy;
             return *this;
         }
     };
@@ -138,7 +142,7 @@ public:
      * 
      * @param option: execution option, see ExecuteOption.
      */
-    DocumentObjectExecReturn * execute(ExecuteOption option=ExecuteAll, bool *touched=0);
+    DocumentObjectExecReturn * execute(ExecuteOption option=ExecuteAll, bool *touched=nullptr);
 
     void getPathsToDocumentObject(DocumentObject*, std::vector<App::ObjectIdentifier> & paths) const;
 
@@ -174,7 +178,12 @@ private:
 
     typedef boost::adjacency_list< boost::listS, boost::vecS, boost::directedS > DiGraph;
     typedef std::pair<int, int> Edge;
-    typedef boost::unordered_map<const App::ObjectIdentifier, ExpressionInfo> ExpressionMap;
+    // Note: use std::map instead of unordered_map to keep the binding order stable
+    #ifdef FC_OS_MACOSX
+    typedef std::map<App::ObjectIdentifier, ExpressionInfo> ExpressionMap;
+    #else
+    typedef std::map<const App::ObjectIdentifier, ExpressionInfo> ExpressionMap;
+    #endif
 
     std::vector<App::ObjectIdentifier> computeEvaluationOrder(ExecuteOption option);
 
@@ -185,6 +194,10 @@ private:
     void buildGraph(const ExpressionMap &exprs,
                 boost::unordered_map<int, App::ObjectIdentifier> &revNodes, 
                 DiGraph &g, ExecuteOption option=ExecuteAll) const;
+
+    void slotChangedObject(const App::DocumentObject &obj, const App::Property &prop);
+    void slotChangedProperty(const App::DocumentObject &obj, const App::Property &prop);
+    void updateHiddenReference(const std::string &key);
 
     bool running; /**< Boolean used to avoid loops */
     bool restoring = false;
@@ -200,6 +213,9 @@ private:
     };
     /**< Expressions are read from file to this map first before they are validated and inserted into the actual map */
     std::unique_ptr<std::vector<RestoredExpression> > restoredExpressions;
+
+    struct Private;
+    std::unique_ptr<Private> pimpl;
 
     friend class AtomicPropertyChange;
 

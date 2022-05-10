@@ -20,14 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TRANSLATOR_H
 #define GUI_TRANSLATOR_H
 
 #include <QObject>
-#include <string>
-#include <map>
 #include <list>
+#include <map>
+#include <string>
+
 
 class QDir;
 
@@ -66,6 +66,8 @@ public:
     std::string activeLanguage() const;
     /** Returns the locale (e.g. "de") to the given language name. */
     std::string locale(const std::string&) const;
+    /** Sets default Qt locale based on given language name **/
+    void setLocale(const std::string& = "") const;
     /** Returns a list of supported languages. */
     TStringList supportedLanguages() const;
     /** Returns a map of supported languages/locales. */
@@ -79,6 +81,7 @@ private:
     void removeTranslators();
     QStringList directories() const;
     void installQMFiles(const QDir& dir, const char* locale);
+    void updateLocaleChange() const;
 
 private:
     static Translator* _pcSingleton;

@@ -24,8 +24,8 @@
 #include "PreCompiled.h"
 
 #include "View.h"
-#include "Document.h"
 #include "Application.h"
+#include "Document.h"
 
 using namespace Gui;
 
@@ -69,7 +69,7 @@ void BaseView::onClose(void)
             _pcDocument->detachView(this);
     }
 
-    _pcDocument = 0;
+    _pcDocument = nullptr;
     bIsDetached = true;
 }
 
@@ -95,5 +95,5 @@ void BaseView::setDocument(Gui::Document* pcDocument)
 /// returns the document the view is attached to
 App::Document* BaseView::getAppDocument() const
 {
-    return _pcDocument ? _pcDocument->getDocument() : 0;
+    return _pcDocument ? _pcDocument->getDocument() : nullptr;
 }

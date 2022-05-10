@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH StdMeshers_ImportSource1D : implementaion of SMESH idl descriptions
+//  SMESH StdMeshers_ImportSource1D : implementation of SMESH idl descriptions
 //  File   : StdMeshers_ImportSource1D.cxx
 //  Module : SMESH
 //

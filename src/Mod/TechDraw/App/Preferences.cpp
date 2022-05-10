@@ -40,7 +40,7 @@
 #include "Preferences.h"
 
 //getters for parameters used in multiple places.
-//ensure this is in sync with preference page uis
+//ensure this is in sync with preference page user interfaces
 
 using namespace TechDraw;
 
@@ -232,4 +232,27 @@ std::string Preferences::lineGroupFile()
         Base::Console().Warning("Line Group File: %s is not readable\n", lgFileName.c_str());
     }
     return lgFileName;
+}
+
+std::string Preferences::formatSpec()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    return hGrp->GetASCII("formatSpec","%.2w");
+}
+
+int Preferences::altDecimals()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    return hGrp->GetInt("AltDecimals", 2);
+}
+
+int Preferences::mattingStyle()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                         GetGroup("BaseApp")->GetGroup("Preferences")->
+                                         GetGroup("Mod/TechDraw/Decorations");
+    int style = hGrp->GetInt("MattingStyle", 0);
+    return style;
 }

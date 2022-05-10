@@ -52,7 +52,7 @@ public:
     App::PropertyFloatConstraint   Turns;
     App::PropertyBool        LeftHanded;
     App::PropertyAngle       Angle;
-    App::PropertyLength      Growth;
+    App::PropertyDistance    Growth;
     App::PropertyEnumeration Mode;
     App::PropertyBool        Outside;
     App::PropertyBool        HasBeenEdited;
@@ -64,7 +64,7 @@ public:
 
     /** @name methods override feature */
     //@{
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn* execute(void);
     short mustExecute() const;
     /// returns the type name of the view provider
     const char* getViewProviderName(void) const {
@@ -80,7 +80,7 @@ protected:
     void updateAxis(void);
 
     /// generate helix and move it to the right location.
-    TopoDS_Shape generateHelixPath(void);
+    TopoDS_Shape generateHelixPath(double startOffset0 = 0.0);
 
     // project shape on plane. Used for detecting self intersection.
     TopoDS_Shape projectShape(const TopoDS_Shape& input, const gp_Ax2& plane);
@@ -88,11 +88,19 @@ protected:
     // center of profile bounding box
     Base::Vector3d getProfileCenterPoint();
 
-    // handle changed property
+    // handle changed property types for backward compatibility
     virtual void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop);
+
+    void onChanged(const App::Property* prop);
+
+    static const App::PropertyFloatConstraint::Constraints floatTurns;
+    static const App::PropertyAngle::Constraints floatAngle;
 
 private:
     static const char* ModeEnums[];
+
+    // Sets the read-only status bit for properties depending on the input mode.
+    void setReadWriteStatusForMode(HelixMode inputMode);
 };
 
 

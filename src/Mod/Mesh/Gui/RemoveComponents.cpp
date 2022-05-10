@@ -125,7 +125,8 @@ void RemoveComponents::on_cbDeselectComp_toggled(bool on)
 void RemoveComponents::deleteSelection()
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (!doc) return;
+    if (!doc)
+        return;
     // delete all selected faces
     doc->openCommand(QT_TRANSLATE_NOOP("Command", "Delete selection"));
     bool ok = meshSel.deleteSelection();
@@ -215,7 +216,7 @@ TaskRemoveComponents::TaskRemoveComponents()
 {
     widget = new RemoveComponents();
     taskbox = new Gui::TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), false, 0);
+        QPixmap(), widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

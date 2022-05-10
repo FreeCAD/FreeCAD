@@ -25,7 +25,6 @@
 #define GUI_ACTIONFUNCTION_H
 
 #include <QObject>
-#include <QPointer>
 #include <QVariant>
 #include <boost/function.hpp>
 
@@ -96,7 +95,7 @@ class GuiExport TimerFunction : public QObject
 
 public:
     /// Constructor
-    TimerFunction(QObject* = 0);
+    TimerFunction(QObject* = nullptr);
     virtual ~TimerFunction();
 
     void setFunction(boost::function<void()> func);

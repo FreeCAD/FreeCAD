@@ -20,20 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <QApplication>
+#include <QByteArray>
+#include <QDesktopServices>
+#include <QUrl>
+#endif
 
 #include <App/Document.h>
-#include <App/PropertyStandard.h>
 
 #include "DlgProjectInformationImp.h"
 #include "ui_DlgProjectInformation.h"
-#include "Document.h"
 
-#include <QApplication>
-#include <QByteArray>
-#include <QUrl>
-#include <QDesktopServices>
 
 using namespace Gui::Dialog;
 

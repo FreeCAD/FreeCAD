@@ -119,7 +119,7 @@ PyObject* DrawProjGroupPy::getXYPosition(PyObject* args)
 
 PyObject *DrawProjGroupPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DrawProjGroupPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

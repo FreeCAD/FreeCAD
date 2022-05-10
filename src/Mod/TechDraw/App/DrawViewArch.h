@@ -24,11 +24,11 @@
 #define _DrawViewArch_h_
 
 #include <App/DocumentObject.h>
-#include <Base/BoundBox.h>
-#include <App/FeaturePython.h>
 #include <App/PropertyLinks.h>
+#include <Base/BoundBox.h>
 
 #include "DrawViewSymbol.h"
+
 
 namespace TechDraw
 {

@@ -1,5 +1,4 @@
 #***************************************************************************
-#*                                                                         *
 #*   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -21,31 +20,29 @@
 #***************************************************************************
 
 
-# This is the start page template. It builds a HTML global variable that contains
-# the html code of the start page. It is built only once per FreeCAD session for now...
+# This is the start page template. It builds an HTML global variable that
+# contains the html code of the start page.
+# Note: It is built only once per FreeCAD session for now...
 
-import six
-import sys,os,FreeCAD,FreeCADGui,tempfile,time,zipfile,re
+import sys
+import os
+import tempfile
+import time
+import zipfile
+import re
+import FreeCAD
+import FreeCADGui
+import urllib.parse
 from . import TranslationTexts
-from PySide import QtCore,QtGui
+from PySide import QtCore, QtGui
 
 FreeCADGui.addLanguagePath(":/translations")
 FreeCADGui.updateLocale()
 
 iconprovider = QtGui.QFileIconProvider()
-iconbank = {} # to store already created icons so we don't overpollute the temp dir
-tempfolder = None # store icons inside a subfolder in temp dir
-defaulticon = None # store a default icon for problematic file types
-
-
-def encode(text):
-
-    "make sure we are always working with unicode in python2"
-
-    if six.PY2:
-        if not isinstance(text,six.text_type):
-            return text.decode("utf8")
-    return text
+iconbank = {}       # store pre-existing icons so we don't overpollute temp dir
+tempfolder = None   # store icons inside a subfolder in temp dir
+defaulticon = None  # store a default icon for problematic file types
 
 
 def gethexcolor(color):
@@ -110,7 +107,7 @@ def getInfo(filename):
         except Exception:
             # alternative method
             import hashlib
-            fhash = hashlib.md5(("file://"+path).encode("utf8")).hexdigest()
+            fhash = hashlib.md5(bytes(urllib.parse.quote("file://"+path,safe=":/"),"ascii")).hexdigest()
             thumb = os.path.join(os.path.expanduser("~"),".thumbnails","normal",fhash+".png")
         else:
             uri = gnomevfs.get_uri_from_local_path(path)
@@ -146,7 +143,11 @@ def getInfo(filename):
             files=zfile.namelist()
             # check for meta-file if it's really a FreeCAD document
             if files[0] == "Document.xml":
-                doc = str(zfile.read(files[0]))
+                try:
+                    doc = str(zfile.read(files[0]))
+                except OSError as e:
+                    print ("Fail to load corrupted FCStd file: '{0}' with this error: {1}".format(filename, str(e)))
+                    return None
                 doc = doc.replace("\n"," ")
                 r = re.findall("Property name=\"CreatedBy.*?String value=\"(.*?)\"/>",doc)
                 if r:
@@ -230,11 +231,12 @@ def getDefaultIcon():
 
 def buildCard(filename,method,arg=None):
 
-    "builds a html <li> element representing a file. method is a script + a keyword, for ex. url.py?key="
+    """builds an html <li> element representing a file. 
+    method is a script + a keyword, for ex. url.py?key="""
 
-    result = encode("")
+    result = ""
     if os.path.exists(filename) and isOpenableByFreeCAD(filename):
-        basename = encode(os.path.basename(filename))
+        basename = os.path.basename(filename)
         if not arg:
             arg = basename
         finfo = getInfo(filename)
@@ -242,17 +244,17 @@ def buildCard(filename,method,arg=None):
             image = finfo[0]
             size = finfo[1]
             author = finfo[2]
-            infostring = encode(TranslationTexts.T_CREATIONDATE+": "+finfo[3]+"\n")
-            infostring += encode(TranslationTexts.T_LASTMODIFIED+": "+finfo[4])
+            infostring = TranslationTexts.T_CREATIONDATE+": "+finfo[3] + "\n"
+            infostring += TranslationTexts.T_LASTMODIFIED+": "+finfo[4]
             if finfo[5]:
-                infostring += "\n\n" + encode(finfo[5])
+                infostring += "\n\n" + finfo[5]
             if size:
                 result += '<li class="icon">'
-                result += '<a href="'+method+arg+'" title="'+infostring+'">'
-                result += '<img src="file:///'+image.replace('\\','/')+'" alt="'+encode(basename)+'">'
+                result += '<a href="'+method+urllib.parse.quote(arg)+'" title="'+infostring+'">'
+                result += '<img src="file:///'+image.replace('\\','/')+'" alt="'+basename+'">'
                 result += '<div class="caption">'
-                result += '<h4>'+encode(basename)+'</h4>'
-                result += '<p>'+encode(author)+'</p>'
+                result += '<h4>'+basename+'</h4>'
+                result += '<p>'+author+'</p>'
                 result += '<p>'+size+'</p>'
                 result += '</div>'
                 result += '</a>'
@@ -287,7 +289,7 @@ def handle():
     else:
         html_filename = os.path.join(resources_dir, "StartPage.html")
     js_filename = os.path.join(resources_dir, "StartPage.js")
-    css_filename = os.path.join(resources_dir, "StartPage.css")
+    css_filename = p.GetString("CSSFile",os.path.join(resources_dir, "StartPage.css"))
     with open(html_filename, 'r') as f:
         HTML = f.read()
     with open(js_filename, 'r') as f:
@@ -296,7 +298,6 @@ def handle():
         CSS = f.read()
     HTML = HTML.replace("JS",JS)
     HTML = HTML.replace("CSS",CSS)
-    HTML = encode(HTML)
 
     # set the language
 
@@ -327,11 +328,11 @@ def handle():
                 if res:
                     f = QtCore.QFile(path)
                     if f.open(QtCore.QIODevice.ReadOnly | QtCore.QFile.Text):
-                        ALTCSS = encode(QtCore.QTextStream(f).readAll())
+                        ALTCSS = QtCore.QTextStream(f).readAll()
                         HTML = HTML.replace("<!--QSS-->","<style type=\"text/css\">"+ALTCSS+"</style>")
                 else:
                     with open(path, 'r') as f:
-                        ALTCSS = encode(f.read())
+                        ALTCSS = f.read()
                         HTML = HTML.replace("<!--QSS-->","<style type=\"text/css\">"+ALTCSS+"</style>")
 
     # turn tips off if needed
@@ -342,14 +343,14 @@ def handle():
     # get FreeCAD version
 
     v = FreeCAD.Version()
-    VERSIONSTRING = encode(TranslationTexts.T_VERSION + " " + v[0] + "." + v[1] + " " + TranslationTexts.T_BUILD + " " + v[2])
+    VERSIONSTRING = TranslationTexts.T_VERSION + " " + v[0] + "." + v[1] + " " + TranslationTexts.T_BUILD + " " + v[2]
     HTML = HTML.replace("VERSIONSTRING",VERSIONSTRING)
 
     # translate texts
 
     texts = [t for t in dir(TranslationTexts) if t.startswith("T_")]
     for text in texts:
-        HTML = HTML.replace(text,encode(getattr(TranslationTexts,text)))
+        HTML = HTML.replace(text,getattr(TranslationTexts,text))
 
     # build a "create new" icon with the FreeCAD background color gradient
 
@@ -372,43 +373,43 @@ def handle():
 
     rf = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/RecentFiles")
     rfcount = rf.GetInt("RecentFiles",0)
-    SECTION_RECENTFILES = encode("<h2>"+TranslationTexts.T_RECENTFILES+"</h2>")
+    SECTION_RECENTFILES = "<h2>"+TranslationTexts.T_RECENTFILES+"</h2>"
     SECTION_RECENTFILES += "<ul>"
     SECTION_RECENTFILES += '<li class="icon">'
-    SECTION_RECENTFILES += '<a href="LoadNew.py" title="'+encode(TranslationTexts.T_CREATENEW)+'">'
+    SECTION_RECENTFILES += '<a href="LoadNew.py" title="'+TranslationTexts.T_CREATENEW+'">'
     if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("NewFileGradient",False):
-        SECTION_RECENTFILES += '<img src="file:///'+encode(iconbank["createimg"]).replace('\\','/')+'" alt="'+encode(TranslationTexts.T_CREATENEW)+'">'
+        SECTION_RECENTFILES += '<img src="file:///'+iconbank["createimg"].replace('\\','/')+'" alt="'+TranslationTexts.T_CREATENEW+'">'
     else:
-        SECTION_RECENTFILES += '<img src="file:///'+os.path.join(resources_dir, "images/new_file_thumbnail.svg").replace('\\','/')+'" alt="'+encode(TranslationTexts.T_CREATENEW)+'">'
+        SECTION_RECENTFILES += '<img src="file:///'+os.path.join(resources_dir, "images/new_file_thumbnail.svg").replace('\\','/')+'" alt="'+TranslationTexts.T_CREATENEW+'">'
     SECTION_RECENTFILES += '<div class="caption">'
-    SECTION_RECENTFILES += '<h4>'+encode(TranslationTexts.T_CREATENEW)+'</h4>'
+    SECTION_RECENTFILES += '<h4>'+TranslationTexts.T_CREATENEW+'</h4>'
     SECTION_RECENTFILES += '</div>'
     SECTION_RECENTFILES += '</a>'
     SECTION_RECENTFILES += '</li>'
     for i in range(rfcount):
         filename = rf.GetString("MRU%d" % (i))
-        SECTION_RECENTFILES += encode(buildCard(filename,method="LoadMRU.py?MRU=",arg=str(i)))
+        SECTION_RECENTFILES += buildCard(filename,method="LoadMRU.py?MRU=",arg=str(i))
     SECTION_RECENTFILES += '</ul>'
     HTML = HTML.replace("SECTION_RECENTFILES",SECTION_RECENTFILES)
 
     # build SECTION_EXAMPLES
 
-    SECTION_EXAMPLES = encode("")
+    SECTION_EXAMPLES = ""
     if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetBool("ShowExamples",True):
-        SECTION_EXAMPLES = encode("<h2>"+TranslationTexts.T_EXAMPLES+"</h2>")
+        SECTION_EXAMPLES = "<h2>"+TranslationTexts.T_EXAMPLES+"</h2>"
         SECTION_EXAMPLES += "<ul>"
         examples_path = FreeCAD.getResourceDir()+"examples"
         if os.path.exists(examples_path):
             examples = os.listdir(examples_path)
             for basename in examples:
                 filename = FreeCAD.getResourceDir()+"examples"+os.sep+basename
-                SECTION_EXAMPLES += encode(buildCard(filename,method="LoadExample.py?filename="))
+                SECTION_EXAMPLES += buildCard(filename,method="LoadExample.py?filename=")
         SECTION_EXAMPLES += "</ul>"
     HTML = HTML.replace("SECTION_EXAMPLES",SECTION_EXAMPLES)
 
     # build SECTION_CUSTOM
 
-    SECTION_CUSTOM = encode("")
+    SECTION_CUSTOM = ""
     cfolders = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString("ShowCustomFolder","")
     if cfolders:
         dn = 0
@@ -418,14 +419,14 @@ def handle():
             if not os.path.exists(cfolder):
                 FreeCAD.Console.PrintWarning("Custom folder not found: %s" % cfolder)
             else:
-                SECTION_CUSTOM += encode("<h2>"+os.path.basename(os.path.normpath(cfolder))+"</h2>")
+                SECTION_CUSTOM += "<h2>"+os.path.basename(os.path.normpath(cfolder))+"</h2>"
                 SECTION_CUSTOM += "<ul>"
                 for basename in os.listdir(cfolder):
                     filename = os.path.join(cfolder,basename)
-                    SECTION_CUSTOM += encode(buildCard(filename,method="LoadCustom.py?filename="+str(dn)+"_"))
+                    SECTION_CUSTOM += buildCard(filename,method="LoadCustom.py?filename="+str(dn)+"_")
                 SECTION_CUSTOM += "</ul>"
                 # hide the custom section tooltip if custom section is set (users know about it if they enabled it)
-                HTML = HTML.replace("id=\"customtip\"","id=\"customtip\" style=\"display:none;\"")
+                HTML = HTML.replace("id=\"customtip\" class","id=\"customtip\" style=\"display:none;\" class")
                 dn += 1
     HTML = HTML.replace("SECTION_CUSTOM",SECTION_CUSTOM)
 
@@ -482,7 +483,7 @@ def handle():
             img = os.path.join(FreeCAD.getResourceDir(),"Mod",wn,"Resources","icons",wn+"Workbench.svg")
             if not os.path.exists(img):
                 w = FreeCADGui.listWorkbenches()[wb]
-                if hasattr(w,"Icon"):
+                if hasattr(w,"Icon") and w.Icon:
                     xpm = w.Icon
                     if "XPM" in xpm:
                         xpm = xpm.replace("\n        ","\n") # some XPMs have some indent that QT doesn't like
@@ -501,7 +502,7 @@ def handle():
         UL_WORKBENCHES += '<a href="https://www.freecadweb.org/wiki/'+wn+'_Workbench">'+wn.replace("ReverseEngineering","ReverseEng")+'</a>'
         UL_WORKBENCHES += '</li>'
     UL_WORKBENCHES += '</ul>'
-    HTML = HTML.replace("UL_WORKBENCHES",encode(UL_WORKBENCHES))
+    HTML = HTML.replace("UL_WORKBENCHES", UL_WORKBENCHES)
 
     # Detect additional addons that are not a workbench
 
@@ -541,7 +542,7 @@ def handle():
     SHADOW = "#888888"
     if QtGui.QColor(BASECOLOR).valueF() < 0.5: # dark page - we need to make darker shadows
         SHADOW = "#000000"
-    FONTFAMILY = encode(p.GetString("FontFamily","Arial,Helvetica,sans"))
+    FONTFAMILY = p.GetString("FontFamily","Arial,Helvetica,sans")
     if not FONTFAMILY:
         FONTFAMILY = "Arial,Helvetica,sans"
     FONTSIZE = p.GetInt("FontSize",13)

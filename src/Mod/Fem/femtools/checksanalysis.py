@@ -31,13 +31,14 @@ __url__ = "https://www.freecadweb.org"
 
 import FreeCAD
 
+from FreeCAD import Units
+
 from . import femutils
 from femsolver.calculix.solver import ANALYSIS_TYPES
 
 
-def check_analysismember(analysis, solver, mesh, member):
-    FreeCAD.Console.PrintMessage("Check prerequisites.\n")
-    from FreeCAD import Units
+def check_member_for_solver_calculix(analysis, solver, mesh, member):
+
     message = ""
 
     # solver
@@ -71,7 +72,7 @@ def check_analysismember(analysis, solver, mesh, member):
 
     # mesh
     if not mesh:
-        message += "No mesh object defined in the analysis\n"
+        message += "No mesh object defined in the analysis.\n"
     if mesh:
         if mesh.FemMesh.VolumeCount == 0 \
                 and mesh.FemMesh.FaceCount > 0 \
@@ -96,12 +97,12 @@ def check_analysismember(analysis, solver, mesh, member):
                 and mesh.FemMesh.EdgeCount == 0:
             message += (
                 "FEM mesh has neither volume nor shell or edge elements. "
-                "Provide a FEM mesh with elements!\n"
+                "Provide a FEM mesh with elements.\n"
             )
 
     # material linear and nonlinear
     if not member.mats_linear:
-        message += "No material object defined in the analysis\n"
+        message += "No material object defined in the analysis.\n"
     has_no_references = False
     for m in member.mats_linear:
         if len(m["Object"].References) == 0:
@@ -336,6 +337,14 @@ def check_analysismember(analysis, solver, mesh, member):
             if mesh.FemMesh.EdgeCount == 0:
                 message += (
                     "Beam sections defined but FEM mesh has no edge elements.\n"
+                )
+            if not (
+                hasattr(mesh, "Shape")
+                or hasattr(mesh, "Part")
+            ):
+                message += (
+                    "Mesh without geometry link. "
+                    "The mesh needs to know its geometry for the beam rotations.\n"
                 )
         if len(member.geos_beamrotation) > 1:
             message += (

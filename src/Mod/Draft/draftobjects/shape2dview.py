@@ -107,8 +107,7 @@ class Shape2DView(DraftObject):
             obj.SegmentLength = .05
         if not "VisibleOnly" in pl:
             _tip = QT_TRANSLATE_NOOP("App::Property",
-                    "If this is True, this object will be recomputed only if it is \
-                    visible")
+                    "If this is True, this object will include only visible objects")
             obj.addProperty("App::PropertyBool", "VisibleOnly",
                             "Draft", _tip)
             obj.VisibleOnly = False
@@ -127,6 +126,12 @@ class Shape2DView(DraftObject):
                     "If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property")
             obj.addProperty("App::PropertyBool", "Clip",
                             "Draft", _tip)
+        if not "AutoUpdate" in pl:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                    "This object will be recomputed only if this is True.")
+            obj.addProperty("App::PropertyBool", "AutoUpdate",
+                            "Draft", _tip)
+            obj.AutoUpdate = True
 
     def onDocumentRestored(self, obj):
 
@@ -135,9 +140,9 @@ class Shape2DView(DraftObject):
     def getProjected(self,obj,shape,direction):
 
         "returns projected edges from a shape and a direction"
-        import Part, Drawing, DraftGeomUtils
+        import Part, TechDraw, DraftGeomUtils
         edges = []
-        _groups = Drawing.projectEx(shape, direction)
+        _groups = TechDraw.projectEx(shape, direction)
         for g in _groups[0:5]:
             if g:
                 edges.append(g)
@@ -179,11 +184,8 @@ class Shape2DView(DraftObject):
         return nedges
 
     def execute(self,obj):
-        if hasattr(obj,"VisibleOnly"):
-            if obj.VisibleOnly:
-                if obj.ViewObject:
-                    if obj.ViewObject.Visibility == False:
-                        return False
+        if not getattr(obj,"AutoUpdate", True):
+            return True
         import Part, DraftGeomUtils
         obj.positionBySupport()
         pl = obj.Placement
@@ -207,12 +209,12 @@ class Shape2DView(DraftObject):
                         onlysolids = obj.Base.OnlySolids
                     if hasattr(obj,"OnlySolids"): # override base object
                         onlysolids = obj.OnlySolids
-                    import Arch, Part, Drawing
+                    import Arch
                     objs = groups.get_group_contents(objs, walls=True)
                     if getattr(obj,"VisibleOnly",True):
                         objs = gui_utils.remove_hidden(objs)
                     shapes = []
-                    if hasattr(obj,"FuseArch") and obj.FuseArch:
+                    if getattr(obj,"FuseArch", False):
                         shtypes = {}
                         for o in objs:
                             if utils.get_type(o) in ["Wall","Structure"]:
@@ -289,11 +291,11 @@ class Shape2DView(DraftObject):
                             if sh.Volume < 0:
                                 sh.reverse()
                             c = sh.section(cutp)
+                            if hasattr(obj,"InPlace"):
+                                if not obj.InPlace:
+                                    c = self.getProjected(obj, c, proj)
                             faces = []
                             if (obj.ProjectionMode == "Cutfaces") and (sh.ShapeType == "Solid"):
-                                if hasattr(obj,"InPlace"):
-                                    if not obj.InPlace:
-                                        c = self.getProjected(obj, c, proj)
                                 wires = DraftGeomUtils.findWires(c.Edges)
                                 for w in wires:
                                     if w.isClosed():

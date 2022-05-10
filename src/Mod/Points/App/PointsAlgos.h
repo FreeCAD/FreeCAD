@@ -115,6 +115,17 @@ private:
         Eigen::MatrixXd& data);
 };
 
+class E57Reader : public Reader
+{
+public:
+    E57Reader(const bool& Color, const bool& State, const float& Distance);
+    ~E57Reader();
+    void read(const std::string& filename);
+protected:
+    bool useColor, checkState;
+    float minDistance;
+};
+
 class Writer
 {
 public:
@@ -165,4 +176,4 @@ public:
 } // namespace Points
 
 
-#endif 
+#endif

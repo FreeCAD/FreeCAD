@@ -114,7 +114,9 @@ SbBool SoSFMeshFacetArray::readValue(SoInput *in)
     }
 
     value->resize(numtoread);
-    if (!this->readBinaryValues(in, numtoread)) { return FALSE; }
+    if (!this->readBinaryValues(in, numtoread)) {
+        return FALSE;
+    }
   }
 
   // ** ASCII format *******************************************************
@@ -135,7 +137,8 @@ SbBool SoSFMeshFacetArray::readValue(SoInput *in)
           // makeRoom() makes sure the allocation strategy is decent.
           if (currentidx >= value->size()) value->resize(currentidx + 1);
 
-          if (!this->read1Value(in, currentidx++)) return FALSE;
+          if (!this->read1Value(in, currentidx++))
+              return FALSE;
 
           READ_VAL(c);
           if (c == ',') { READ_VAL(c); } // Treat trailing comma as whitespace.
@@ -158,7 +161,8 @@ SbBool SoSFMeshFacetArray::readValue(SoInput *in)
     else {
       in->putBack(c);
       value->resize(1);
-      if (!this->read1Value(in, 0)) return FALSE;
+      if (!this->read1Value(in, 0))
+          return FALSE;
     }
   }
 
@@ -193,7 +197,7 @@ SbBool SoSFMeshFacetArray::read1Value(SoInput * in, unsigned long idx)
 {
   assert(idx < value->size());
   MeshCore::MeshFacet& v = (*value)[idx];
-  int32_t p0, p1, p2;
+  int32_t p0{}, p1{}, p2{};
   SbBool ret = (in->read(p0) && in->read(p1) && in->read(p2));
   if ( ret ) {
     v._aulPoints[0] = p0;
@@ -1046,7 +1050,8 @@ void SoFCMeshFaceSet::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &cente
  */
 void SoFCMeshFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  if (!this->shouldPrimitiveCount(action)) return;
+  if (!this->shouldPrimitiveCount(action))
+      return;
   SoState*  state = action->getState();
   const MeshCore::MeshFacetArray * coordIndex = SoFCMeshFacetElement::get(state);
   action->addNumTriangles(coordIndex->size());
@@ -1193,7 +1198,8 @@ void SoFCMeshOpenEdgeSet::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &c
  */
 void SoFCMeshOpenEdgeSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  if (!this->shouldPrimitiveCount(action)) return;
+  if (!this->shouldPrimitiveCount(action))
+      return;
   SoState*  state = action->getState();
   const MeshCore::MeshFacetArray * rFaces = SoFCMeshFacetElement::get(state);
   

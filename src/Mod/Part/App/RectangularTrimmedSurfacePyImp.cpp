@@ -123,7 +123,7 @@ Py::Object RectangularTrimmedSurfacePy::getBasisSurface() const
 
 PyObject *RectangularTrimmedSurfacePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int RectangularTrimmedSurfacePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

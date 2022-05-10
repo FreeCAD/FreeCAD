@@ -2,70 +2,70 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="zh-TW" sourcelanguage="en">
   <context>
-    <name>Image_Scaling</name>
+    <name>Dialog</name>
     <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="63"/>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="144"/>
       <source>Scale image plane</source>
-      <translation>縮放圖像平面</translation>
+      <translation>縮放影像平面</translation>
     </message>
     <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="65"/>
-      <source>Scales an image plane by defining a distance between two points</source>
-      <translation>縮放圖像平面經由定義兩點間的距離</translation>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="145"/>
+      <source>Distance [mm]</source>
+      <translation type="unfinished">Distance [mm]</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="146"/>
+      <source>Select first point</source>
+      <translation type="unfinished">Select first point</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="171"/>
+      <source>&lt;font color='red'&gt;Enter distance&lt;/font&gt;</source>
+      <translation type="unfinished">&lt;font color='red'&gt;Enter distance&lt;/font&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="174"/>
+      <source>&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</source>
+      <translation type="unfinished">&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="199"/>
+      <source>Select second point</source>
+      <translation type="unfinished">Select second point</translation>
+    </message>
+    <message>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="208"/>
+      <source>Select Image Plane and type distance</source>
+      <translation type="unfinished">Select Image Plane and type distance</translation>
     </message>
   </context>
   <context>
-    <name>Dialog</name>
+    <name>Image_Scaling</name>
     <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="134"/>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="62"/>
       <source>Scale image plane</source>
-      <translation>縮放圖像平面</translation>
+      <translation>縮放影像平面</translation>
     </message>
     <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="135"/>
-      <source>Distance [mm]</source>
-      <translation>距離[mm]</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="136"/>
-      <source>Select first point</source>
-      <translation>選擇第一個點</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="154"/>
-      <source>&lt;font color='red'&gt;Enter distance&lt;/font&gt;</source>
-      <translation>&lt;font color='red'&gt;輸入距離&lt;/font&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="157"/>
-      <source>&lt;font color='red'&gt;Select ImagePlane&lt;/font&gt;</source>
-      <translation>&lt;font color='red'&gt;撰擇圖型平面&lt;/font&gt;</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="182"/>
-      <source>Select second point</source>
-      <translation>選擇第二個點</translation>
-    </message>
-    <message>
-      <location filename="../../../ImageTools/_CommandImageScaling.py" line="191"/>
-      <source>Select Image Plane and type distance</source>
-      <translation>選擇圖像平面並輸入距離</translation>
+      <location filename="../../../ImageTools/_CommandImageScaling.py" line="64"/>
+      <source>Scales an image plane by defining a distance between two points</source>
+      <translation>透過定義兩個點之間的距離來縮放影像平面</translation>
     </message>
   </context>
   <context>
     <name>CmdCreateImagePlane</name>
     <message>
-      <location filename="../../Command.cpp" line="101"/>
+      <location filename="../../Command.cpp" line="100"/>
       <source>Image</source>
-      <translation>圖像</translation>
+      <translation>影像</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="102"/>
+      <location filename="../../Command.cpp" line="101"/>
       <source>Create image plane...</source>
       <translation>建立影像平面...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="103"/>
+      <location filename="../../Command.cpp" line="102"/>
       <source>Create a planar image in the 3D space</source>
       <translation>於3D空間建立平面影像</translation>
     </message>
@@ -73,19 +73,19 @@
   <context>
     <name>CmdImageOpen</name>
     <message>
-      <location filename="../../Command.cpp" line="53"/>
+      <location filename="../../Command.cpp" line="55"/>
       <source>Image</source>
-      <translation>圖像</translation>
+      <translation>影像</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="54"/>
+      <location filename="../../Command.cpp" line="56"/>
       <source>Open...</source>
       <translation>開啟...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="55"/>
+      <location filename="../../Command.cpp" line="57"/>
       <source>Open image view</source>
-      <translation>打開影像檢視</translation>
+      <translation>開啟影像檢視</translation>
     </message>
   </context>
   <context>
@@ -93,32 +93,38 @@
     <message>
       <location filename="../../Command.cpp" line="175"/>
       <source>Image</source>
-      <translation>圖像</translation>
+      <translation>影像</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="176"/>
       <source>Scale...</source>
-      <translation type="unfinished">Scale...</translation>
+      <translation>比例...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="177"/>
       <source>Image Scaling</source>
-      <translation>圖像縮放</translation>
+      <translation>影像縮放</translation>
+    </message>
+  </context>
+  <context>
+    <name>Command</name>
+    <message>
+      <location filename="../../Command.cpp" line="150"/>
+      <source>Create ImagePlane</source>
+      <translation>建立平面影像</translation>
     </message>
   </context>
   <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-      <location filename="../../GLImageBox.cpp" line="332"/>
-      <location filename="../../OpenGLImageBox.cpp" line="384"/>
+      <location filename="../../OpenGLImageBox.cpp" line="392"/>
       <source>Image pixel format</source>
       <translation>影像像素格式</translation>
     </message>
     <message>
-      <location filename="../../GLImageBox.cpp" line="333"/>
-      <location filename="../../OpenGLImageBox.cpp" line="385"/>
+      <location filename="../../OpenGLImageBox.cpp" line="393"/>
       <source>Undefined type of colour space for image viewing</source>
-      <translation>未定義色彩供圖片使用</translation>
+      <translation>未定義影像視圖的色彩模式</translation>
     </message>
   </context>
   <context>
@@ -162,60 +168,60 @@
   <context>
     <name>ImageGui::ImageView</name>
     <message>
-      <location filename="../../ImageView.cpp" line="111"/>
+      <location filename="../../ImageView.cpp" line="107"/>
       <source>&amp;Fit image</source>
-      <translation>符合圖片尺寸(&amp;F)</translation>
+      <translation>&amp;符合影像尺寸</translation>
+    </message>
+    <message>
+      <location filename="../../ImageView.cpp" line="109"/>
+      <source>Stretch the image to fit the view</source>
+      <translation>延伸影像符合視圖大小</translation>
     </message>
     <message>
       <location filename="../../ImageView.cpp" line="113"/>
-      <source>Stretch the image to fit the view</source>
-      <translation>延伸影像符合頁面大小</translation>
-    </message>
-    <message>
-      <location filename="../../ImageView.cpp" line="117"/>
       <source>&amp;1:1 scale</source>
       <translation>&amp;1:1 比例</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="119"/>
+      <location filename="../../ImageView.cpp" line="115"/>
       <source>Display the image at a 1:1 scale</source>
       <translation>在1:1的比例顯示影像</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="128"/>
+      <location filename="../../ImageView.cpp" line="124"/>
       <source>Standard</source>
       <translation>標準</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="146"/>
+      <location filename="../../ImageView.cpp" line="142"/>
       <source>Ready...</source>
       <translation>準備...</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="539"/>
+      <location filename="../../ImageView.cpp" line="543"/>
       <source>grey</source>
       <translation>灰色</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="540"/>
-      <location filename="../../ImageView.cpp" line="543"/>
-      <location filename="../../ImageView.cpp" line="553"/>
-      <location filename="../../ImageView.cpp" line="558"/>
-      <location filename="../../ImageView.cpp" line="568"/>
-      <location filename="../../ImageView.cpp" line="573"/>
-      <location filename="../../ImageView.cpp" line="584"/>
-      <location filename="../../ImageView.cpp" line="589"/>
-      <location filename="../../ImageView.cpp" line="600"/>
-      <location filename="../../ImageView.cpp" line="605"/>
+      <location filename="../../ImageView.cpp" line="544"/>
+      <location filename="../../ImageView.cpp" line="547"/>
+      <location filename="../../ImageView.cpp" line="557"/>
+      <location filename="../../ImageView.cpp" line="562"/>
+      <location filename="../../ImageView.cpp" line="572"/>
+      <location filename="../../ImageView.cpp" line="577"/>
+      <location filename="../../ImageView.cpp" line="588"/>
+      <location filename="../../ImageView.cpp" line="593"/>
+      <location filename="../../ImageView.cpp" line="604"/>
+      <location filename="../../ImageView.cpp" line="609"/>
       <source>zoom</source>
       <translation>縮放</translation>
     </message>
     <message>
-      <location filename="../../ImageView.cpp" line="543"/>
-      <location filename="../../ImageView.cpp" line="553"/>
-      <location filename="../../ImageView.cpp" line="568"/>
-      <location filename="../../ImageView.cpp" line="584"/>
-      <location filename="../../ImageView.cpp" line="600"/>
+      <location filename="../../ImageView.cpp" line="547"/>
+      <location filename="../../ImageView.cpp" line="557"/>
+      <location filename="../../ImageView.cpp" line="572"/>
+      <location filename="../../ImageView.cpp" line="588"/>
+      <location filename="../../ImageView.cpp" line="604"/>
       <source>outside image</source>
       <translation>外部影像</translation>
     </message>
@@ -223,30 +229,30 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="68"/>
-      <location filename="../../Command.cpp" line="115"/>
+      <location filename="../../Command.cpp" line="70"/>
+      <location filename="../../Command.cpp" line="114"/>
       <source>Images</source>
       <translation>影像</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="73"/>
-      <location filename="../../Command.cpp" line="120"/>
+      <location filename="../../Command.cpp" line="75"/>
+      <location filename="../../Command.cpp" line="119"/>
       <source>All files</source>
       <translation>所有檔案</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="75"/>
-      <location filename="../../Command.cpp" line="122"/>
+      <location filename="../../Command.cpp" line="77"/>
+      <location filename="../../Command.cpp" line="121"/>
       <source>Choose an image file to open</source>
       <translation>選擇要打開的影像檔</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="128"/>
+      <location filename="../../Command.cpp" line="127"/>
       <source>Error opening image</source>
       <translation>開啟圖像發生錯誤</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="129"/>
+      <location filename="../../Command.cpp" line="128"/>
       <source>Could not load the chosen image</source>
       <translation>無法載入選擇的圖像</translation>
     </message>
@@ -254,9 +260,9 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../Workbench.cpp" line="36"/>
+      <location filename="../../Workbench.cpp" line="32"/>
       <source>Image</source>
-      <translation>圖像</translation>
+      <translation>影像</translation>
     </message>
   </context>
 </TS>

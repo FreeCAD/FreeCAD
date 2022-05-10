@@ -23,22 +23,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskFemConstraintPlaneRotation_H
 #define GUI_TASKVIEW_TaskFemConstraintPlaneRotation_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Base/Quantity.h>
+#include <QObject>
 
 #include "TaskFemConstraint.h"
 #include "ViewProviderFemConstraintPlaneRotation.h"
 
-#include <QObject>
-#include <Base/Console.h>
-#include <App/DocumentObject.h>
-#include <QKeyEvent>
 
 class Ui_TaskFemConstraintPlaneRotation;
 
@@ -48,7 +40,7 @@ class TaskFemConstraintPlaneRotation : public TaskFemConstraint
     Q_OBJECT
 
 public:
-    TaskFemConstraintPlaneRotation(ViewProviderFemConstraintPlaneRotation *ConstraintView,QWidget *parent = 0);
+    TaskFemConstraintPlaneRotation(ViewProviderFemConstraintPlaneRotation *ConstraintView,QWidget *parent = nullptr);
     ~TaskFemConstraintPlaneRotation();
     const std::string getReferences() const;
 

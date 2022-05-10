@@ -44,7 +44,7 @@
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 
-
+#include "Cosmetic.h"
 #include "Geometry.h"
 #include "DrawViewPart.h"
 #include "DrawViewDimExtent.h"
@@ -68,9 +68,9 @@ DrawViewDimExtent::DrawViewDimExtent(void)
                                                                  //Cosmetic End points are stored in DVD::References2d
     App::PropertyLinkSubList       Source3d;                     //Part::Feature & SubElements  TBI
 
-    ADD_PROPERTY_TYPE(Source,(0,0),"",(App::PropertyType)(App::Prop_Output),"View (Edges) to dimension");
+    ADD_PROPERTY_TYPE(Source,(nullptr,nullptr),"",(App::PropertyType)(App::Prop_Output),"View (Edges) to dimension");
     Source.setScope(App::LinkScope::Global);
-    ADD_PROPERTY_TYPE(Source3d,(0,0),"",(App::PropertyType)(App::Prop_Output),"View (Edges) to dimension");   //TBI
+    ADD_PROPERTY_TYPE(Source3d,(nullptr,nullptr),"",(App::PropertyType)(App::Prop_Output),"View (Edges) to dimension");   //TBI
     Source3d.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(DirExtent ,(0),"",App::Prop_Output,"Horizontal / Vertical");
 
@@ -128,8 +128,8 @@ App::DocumentObjectExecReturn *DrawViewDimExtent::execute(void)
     Base::Vector3d refMin = endPoints.first;
     Base::Vector3d refMax = endPoints.second;
 
-    TechDraw::Vertex* v0 = nullptr;
-    TechDraw::Vertex* v1 = nullptr;
+    TechDraw::VertexPtr v0 = nullptr;
+    TechDraw::VertexPtr v1 = nullptr;
     std::vector<std::string> cTags = CosmeticTags.getValues();
     if (cTags.size() > 1) {
         v0 = dvp->getProjVertexByCosTag(cTags[0]);
@@ -184,8 +184,8 @@ pointPair DrawViewDimExtent::getPointsTwoVerts()
     pointPair result;
     result.first = Base::Vector3d(0.0, 0.0, 0.0);
     result.second = Base::Vector3d(0.0, 0.0, 0.0);
-    TechDraw::Vertex* v0 = nullptr;
-    TechDraw::Vertex* v1 = nullptr;
+    TechDraw::VertexPtr v0 = nullptr;
+    TechDraw::VertexPtr v1 = nullptr;
     TechDraw::DrawViewPart* dvp = getViewPart();
     if (dvp == nullptr) {
         return result;

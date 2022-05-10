@@ -23,18 +23,12 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <boost_bind_bind.hpp>
-#endif
-
-#include "DocumentObjectGroup.h"
-#include "DocumentObjectGroupPy.h"
-#include "GroupExtensionPy.h"
-#include "Document.h"
-#include "FeaturePythonPyImp.h"
-#include "GeoFeatureGroupExtension.h"
-#include <Base/Console.h>
 #include <Base/Tools.h>
+
+#include "Document.h"
+#include "GeoFeatureGroupExtension.h"
+#include "GroupExtensionPy.h"
+
 
 using namespace App;
 namespace bp = boost::placeholders;
@@ -52,7 +46,7 @@ GroupExtension::GroupExtension()
 {
     initExtensionType(GroupExtension::getExtensionClassTypeId());
     
-    EXTENSION_ADD_PROPERTY_TYPE(Group,(0),"Base",(App::PropertyType)(Prop_None),"List of referenced objects");
+    EXTENSION_ADD_PROPERTY_TYPE(Group,(nullptr),"Base",(App::PropertyType)(Prop_None),"List of referenced objects");
 
     EXTENSION_ADD_PROPERTY_TYPE(_GroupTouched, (false), "Base", 
             PropertyType(Prop_Hidden|Prop_Transient),0);
@@ -195,7 +189,7 @@ DocumentObject *GroupExtension::getObject(const char *Name) const
     DocumentObject* obj = getExtendedObject()->getDocument()->getObject(Name);
     if (obj && hasObject(obj))
         return obj;
-    return 0;
+    return nullptr;
 }
 
 bool GroupExtension::hasObject(const DocumentObject* obj, bool recursive) const

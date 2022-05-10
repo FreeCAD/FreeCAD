@@ -216,12 +216,17 @@
         <file>AddonManager.svg</file>
         <file>Group.svg</file>
         <file>Geofeaturegroup.svg</file>
+        <file>Geoassembly.svg</file>
         <file>Std_Axis.svg</file>
         <file>Std_Plane.svg</file>
         <file>Link.svg</file>
         <file>LinkArray.svg</file>
         <file>LinkElement.svg</file>
         <file>LinkGroup.svg</file>
+        <file>LinkOverlay.svg</file>
+        <file>LinkArrayOverlay.svg</file>
+        <file>LinkSubOverlay.svg</file>
+        <file>LinkSubElement.svg</file>
         <file>LinkOverlay.xpm</file>
         <file>LinkArrayOverlay.xpm</file>
         <file>LinkSubOverlay.xpm</file>
@@ -240,6 +245,10 @@
         <file>document-package.svg</file>
         <file>Std_Alignment.svg</file>
         <file>Std_DuplicateSelection.svg</file>
+        <file>Std_UserEditModeDefault.svg</file>
+        <file>Std_UserEditModeTransform.svg</file>
+        <file>Std_UserEditModeCutting.svg</file>
+        <file>Std_UserEditModeColor.svg</file>
     </qresource>
     <!-- Demonstrating support for an embedded icon theme -->
     <!-- See also http://permalink.gmane.org/gmane.comp.lib.qt.general/26374 -->
@@ -249,5 +258,8 @@
     </qresource>
     <qresource prefix="/icons/FreeCAD-default/scalable">
         <file>Std_ViewScreenShot.svg</file>
+    </qresource>
+    <qresource prefix="/doc">
+        <file alias="CONTRIBUTORS">../../Doc/CONTRIBUTORS</file>
     </qresource>
 </RCC>

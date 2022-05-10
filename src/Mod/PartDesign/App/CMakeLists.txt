@@ -14,7 +14,6 @@ include_directories(
     ${QT_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
     ${QT_INCLUDE_DIR}
 )
 link_directories(${OCC_LIBRARY_DIR})
@@ -87,6 +86,8 @@ SET(FeaturesDressUp_SRCS
 SOURCE_GROUP("DressUpFeatures" FILES ${FeaturesDressUp_SRCS})
 
 SET(FeaturesSketchBased_SRCS
+    FeatureExtrude.cpp
+    FeatureExtrude.h
     FeatureSketchBased.cpp
     FeatureSketchBased.h
     FeaturePad.cpp

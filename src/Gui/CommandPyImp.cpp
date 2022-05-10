@@ -31,7 +31,7 @@
 #include "MainWindow.h"
 #include "Selection.h"
 #include "Window.h"
-#include "WidgetFactory.h"
+#include "PythonWrapper.h"
 
 // inclusion of the generated files (generated out of AreaPy.xml)
 #include "CommandPy.h"
@@ -101,7 +101,7 @@ PyObject* CommandPy::listByShortcut(PyObject *args)
                re.setCaseSensitivity(Qt::CaseInsensitive);
                if (!re.isValid()){
                    std::stringstream str;
-                   str << "Invalid regular expression: " << shortcut_to_find;
+                   str << "Invalid regular expression:" << ' ' << shortcut_to_find;
                    throw Py::RuntimeError(str.str());
                }
 
@@ -140,7 +140,7 @@ PyObject* CommandPy::run(PyObject *args)
         Py_Return;
     }
     else {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command");
+        PyErr_Format(Base::PyExc_FC_GeneralError, "No such command");
         return nullptr;
     }
 }
@@ -158,7 +158,7 @@ PyObject* CommandPy::isActive(PyObject *args)
         PY_CATCH;
     }
     else {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command");
+        PyErr_Format(Base::PyExc_FC_GeneralError, "No such command");
         return nullptr;
     }
 }
@@ -174,7 +174,7 @@ PyObject* CommandPy::getShortcut(PyObject *args)
         return str;
     }
     else {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command");
+        PyErr_Format(Base::PyExc_FC_GeneralError, "No such command");
         return nullptr;
     }
 }
@@ -216,7 +216,7 @@ PyObject* CommandPy::setShortcut(PyObject *args)
         }
     }
     else {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command");
+        PyErr_Format(Base::PyExc_FC_GeneralError, "No such command");
         return nullptr;
     }
 }
@@ -248,7 +248,7 @@ PyObject* CommandPy::resetShortcut(PyObject *args)
         }
 
     } else {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command");
+        PyErr_Format(Base::PyExc_FC_GeneralError, "No such command");
         return nullptr;
     }
 }
@@ -286,7 +286,7 @@ PyObject* CommandPy::getInfo(PyObject *args)
         return pyList;
     }
     else {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command");
+        PyErr_Format(Base::PyExc_FC_GeneralError, "No such command");
         return nullptr;
     }
 }
@@ -316,17 +316,106 @@ PyObject* CommandPy::getAction(PyObject *args)
         return Py::new_reference_to(list);
     }
     else {
-        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command");
+        PyErr_Format(Base::PyExc_FC_GeneralError, "No such command");
         return nullptr;
+    }
+}
+
+
+PyObject* CommandPy::createCustomCommand(PyObject* args)
+{
+    const char* macroFile = nullptr;
+    const char* menuTxt = nullptr;
+    const char* tooltipTxt = nullptr;
+    const char* whatsthisTxt = nullptr;
+    const char* statustipTxt = nullptr;
+    const char* pixmapTxt = nullptr;
+    const char* shortcutTxt = nullptr;
+    if (!PyArg_ParseTuple(args, "s|zzzzzz", &macroFile, &menuTxt, &tooltipTxt, &whatsthisTxt, &statustipTxt, &pixmapTxt, &shortcutTxt))
+        return nullptr;
+
+    auto name = Application::Instance->commandManager().newMacroName();
+    CommandManager& commandManager = Application::Instance->commandManager();
+    MacroCommand* macro = new MacroCommand(name.c_str(), false);
+    commandManager.addCommand(macro);
+
+    macro->setScriptName(macroFile); 
+
+    if (menuTxt)
+        macro->setMenuText(menuTxt);
+
+    if (tooltipTxt)
+        macro->setToolTipText(tooltipTxt);
+
+    if (whatsthisTxt)
+        macro->setWhatsThis(whatsthisTxt);
+
+    if (statustipTxt)
+        macro->setStatusTip(statustipTxt);
+
+    if (pixmapTxt)
+        macro->setPixmap(pixmapTxt);
+
+    if (shortcutTxt)
+        macro->setAccel(shortcutTxt);
+
+    return PyUnicode_FromString(name.c_str());
+}
+
+PyObject* CommandPy::removeCustomCommand(PyObject* args)
+{
+    const char* actionName = nullptr;
+    if (!PyArg_ParseTuple(args, "s", &actionName))
+        return nullptr;
+
+    CommandManager& commandManager = Application::Instance->commandManager();
+    std::vector<Command*> macros = commandManager.getGroupCommands("Macros");
+
+    auto action = std::find_if(macros.begin(), macros.end(), [actionName](const Command* c) { 
+        return std::string(c->getName()) == std::string(actionName); 
+    });
+
+    if (action != macros.end()) {
+        commandManager.removeCommand(*action);
+        return Py::new_reference_to(Py::Boolean(true));
+    }
+    else {
+        return Py::new_reference_to(Py::Boolean(false));
+    }
+}
+
+PyObject* CommandPy::findCustomCommand(PyObject* args)
+{
+    const char* macroScriptName = nullptr;
+    if (!PyArg_ParseTuple(args, "s", &macroScriptName))
+        return nullptr;
+
+    CommandManager& commandManager = Application::Instance->commandManager();
+    std::vector<Command*> macros = commandManager.getGroupCommands("Macros");
+
+    auto action = std::find_if(macros.begin(), macros.end(), [macroScriptName](const Command* c) {
+        if (auto mc = dynamic_cast<const MacroCommand*>(c))
+            if (std::string(mc->getScriptName()) == std::string(macroScriptName))
+                return true;
+        return false;
+        });
+
+    if (action != macros.end()) {
+        return PyUnicode_FromString((*action)->getName());
+    }
+    else {
+        Py_INCREF(Py_None);
+        return Py_None;
     }
 }
 
 PyObject *CommandPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int CommandPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }
+

@@ -20,34 +20,30 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cmath>
-# include <float.h>
-# include <climits>
 # include <QCursor>
 # include <QTimer>
 # include <Inventor/nodes/SoCamera.h>
 #endif
 
+#include <Base/Tools.h>
+
 #include "DemoMode.h"
 #include "ui_DemoMode.h"
-
 #include "Application.h"
 #include "Command.h"
 #include "Document.h"
-#include "MainWindow.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
-#include <Base/Tools.h>
+
 
 using namespace Gui::Dialog;
 
 /* TRANSLATOR Gui::Dialog::DemoMode */
 
 DemoMode::DemoMode(QWidget* /*parent*/, Qt::WindowFlags fl)
-  : QDialog(nullptr, fl|Qt::WindowStaysOnTopHint), viewAxis(0,0,-1), ui(new Ui_DemoMode)
+  : QDialog(nullptr, fl | Qt::WindowStaysOnTopHint), viewAxis(0, 0, -1), ui(new Ui_DemoMode)
 {
     // create widgets
     ui->setupUi(this);
@@ -137,14 +133,15 @@ Gui::View3DInventor* DemoMode::activeView() const
 
 float DemoMode::getSpeed(int v) const
 {
-    float speed = (static_cast<float>(v))/50.0f; // let 2.0 be the maximum speed
+    float speed = (static_cast<float>(v)) / 50.0f; // let 2.0 be the maximum speed
     return speed;
 }
 
 SbVec3f DemoMode::getDirection(Gui::View3DInventor* view) const
 {
     SoCamera* cam = view->getViewer()->getSoRenderManager()->getCamera();
-    if (!cam) return this->viewAxis;
+    if (!cam)
+        return this->viewAxis;
     SbRotation rot = cam->orientation.getValue();
     SbRotation inv = rot.inverse();
     SbVec3f vec(this->viewAxis);
@@ -160,9 +157,10 @@ void DemoMode::on_angleSlider_valueChanged(int v)
     Gui::View3DInventor* view = activeView();
     if (view) {
         SoCamera* cam = view->getViewer()->getSoRenderManager()->getCamera();
-        if (!cam) return;
-        float angle = Base::toRadians<float>(/*90-v*/v-this->oldvalue);
-        SbRotation rot(SbVec3f(-1,0,0),angle);
+        if (!cam)
+            return;
+        float angle = Base::toRadians<float>(/*90-v*/v - this->oldvalue);
+        SbRotation rot(SbVec3f(-1, 0, 0), angle);
         reorientCamera(cam ,rot);
         this->oldvalue = v;
         if (view->getViewer()->isAnimating()) {
@@ -242,7 +240,7 @@ void DemoMode::on_fullscreen_toggled(bool on)
 
 void DemoMode::on_timeout_valueChanged(int v)
 {
-    timer->setInterval(v*1000);
+    timer->setInterval(v * 1000);
 }
 
 void DemoMode::onAutoPlay()

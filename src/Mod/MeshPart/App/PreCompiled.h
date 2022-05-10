@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,17 +26,6 @@
 
 #include <FCConfig.h>
 
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-# define MeshPartExport __declspec(dllexport)
-# define PartExport  __declspec(dllimport)
-# define MeshExport     __declspec(dllimport)
-#else // for Linux
-# define MeshPartExport
-# define PartExport 
-# define MeshExport   
-#endif
-
 #ifdef _MSC_VER
 # pragma warning(disable : 4244)
 # pragma warning(disable : 4275)
@@ -49,8 +38,8 @@
 // standard
 #include <iostream>
 #include <sstream>
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 #include <string>
 #include <map>
 #include <vector>
@@ -238,8 +227,6 @@
 #include <BndLib_Add3dCurve.hxx>
 #include <BRepPrimAPI_MakeBox.hxx>
 #include <BRepPrimAPI_MakeCylinder.hxx>
-
-#include <Python.h>
 
 #endif // _PreComp_
 #endif

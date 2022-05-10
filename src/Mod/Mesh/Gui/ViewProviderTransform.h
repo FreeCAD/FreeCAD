@@ -65,7 +65,7 @@ public:
   /// get the default display mode
   virtual const char* getDefaultDisplayMode() const;
   /// returns a list of all possible modes
-  virtual std::vector<std::string> getDisplayModes(void) const;
+  virtual std::vector<std::string> getDisplayModes() const;
   /// Update the Mesh representation
   virtual void updateData(const App::Property*);
 

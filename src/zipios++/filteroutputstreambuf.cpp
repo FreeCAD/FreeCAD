@@ -9,7 +9,7 @@ FilterOutputStreambuf::FilterOutputStreambuf( streambuf *outbuf, bool del_outbuf
   : _outbuf( outbuf),
     _del_outbuf( del_outbuf )
 {
-  if ( _outbuf == NULL ) {
+  if ( _outbuf == nullptr ) {
     // throw an exception
   }
 }

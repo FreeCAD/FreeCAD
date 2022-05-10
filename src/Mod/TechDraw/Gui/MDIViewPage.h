@@ -20,27 +20,28 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef TECHDRAWGUI_MDIVIEWPAGE_H
 #define TECHDRAWGUI_MDIVIEWPAGE_H
 
-#include "ViewProviderPage.h"
+#include <QPointF>
+#include <QPrinter>
 
 #include <Gui/MDIView.h>
+#include <Gui/MDIViewPy.h>
 #include <Gui/Selection.h>
 
-#include <QPrinter>
-#include <QGraphicsScene>
-#include <QPointF>
+#include "ViewProviderPage.h"
 
-#include <Mod/TechDraw/App/DrawPage.h>
 
 QT_BEGIN_NAMESPACE
 class QAction;
+class QGraphicsItem;
+class QGraphicsScene;
 class QTimer;
 QT_END_NAMESPACE
 
 namespace TechDraw {
+class DrawPage;
 class DrawTemplate;
 class DrawView;
 }
@@ -58,7 +59,7 @@ class TechDrawGuiExport MDIViewPage : public Gui::MDIView, public Gui::Selection
     TYPESYSTEM_HEADER();
 
 public:
-    MDIViewPage(ViewProviderPage *page, Gui::Document* doc, QWidget* parent = 0);
+    MDIViewPage(ViewProviderPage *page, Gui::Document* doc, QWidget* parent = nullptr);
     virtual ~MDIViewPage();
 
     void addChildrenToPage(void);
@@ -71,7 +72,7 @@ public:
     /// QGraphicsScene selection routines
     void selectQGIView(App::DocumentObject *obj, bool state);
     void clearSceneSelection();
-    void blockSelection(bool isBlocked);
+    void blockSceneSelection(bool isBlocked);
 
     void attachTemplate(TechDraw::DrawTemplate *obj);
     void updateTemplate(bool force = false);
@@ -96,7 +97,7 @@ public:
     PyObject* getPyObject();
     TechDraw::DrawPage * getPage() { return m_vpPage->getDrawPage(); }
 
-    QGVPage* getQGVPage(void) {return m_view;};
+    QGVPage* getQGVPage(void) {return m_view;}
 
     QGraphicsScene* m_scene;
 
@@ -171,6 +172,26 @@ private:
 
     QList<QGraphicsItem*> m_qgSceneSelected;        //items in selection order
     QList<QGIView *> deleteItems;
+};
+
+class MDIViewPagePy : public Py::PythonExtension<MDIViewPagePy>
+{
+public:
+    using BaseType = Py::PythonExtension<MDIViewPagePy>;
+    static void init_type();
+
+    MDIViewPagePy(MDIViewPage *mdi);
+    ~MDIViewPagePy();
+
+    Py::Object repr();
+    Py::Object getattr(const char *);
+    Py::Object getPage(const Py::Tuple&);
+    Py::Object cast_to_base(const Py::Tuple&);
+
+    MDIViewPage* getMDIViewPagePtr();
+
+protected:
+    Gui::MDIViewPy base;
 };
 
 

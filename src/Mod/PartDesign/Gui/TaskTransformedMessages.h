@@ -25,7 +25,6 @@
 #define GUI_TASKVIEW_TaskTransformedMessages_H
 
 #include <Gui/TaskView/TaskView.h>
-#include <boost_signals2.hpp>
 
 class Ui_TaskTransformedMessages;
 typedef boost::signals2::connection Connection;

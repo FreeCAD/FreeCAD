@@ -20,11 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
@@ -45,7 +41,7 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/WidgetFactory.h>   //for PythonWrappers
+#include <Gui/PythonWrapper.h>
 
 #include <Mod/Part/App/OCCError.h>
 #include <Mod/TechDraw/App/DrawPage.h>
@@ -54,6 +50,7 @@
 #include <Mod/TechDraw/App/DrawViewPy.h>  // generated from DrawViewPy.xml
 
 #include "MDIViewPage.h"
+#include "QGIView.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderDrawingView.h"
 #include "Grabber3d.h"
@@ -79,6 +76,9 @@ public:
         );
         add_varargs_method("addQGIToView",&Module::addQGIToView,
             "addQGIToView(View, QGraphicsItem) -- insert graphics item into view's graphic."
+        );
+        add_varargs_method("addQGObjToView", &Module::addQGObjToView,
+            "addQGObjToView(View, QGraphicsObject) -- insert graphics object into view's graphic. Use for QGraphicsItems that have QGraphicsObject as base class."
         );
         initialize("This is a module for displaying drawings"); // register with Python
     }
@@ -178,9 +178,9 @@ private:
         PyMem_Free(name);
         
         try {
-           App::DocumentObject* obj = 0;
-           Gui::ViewProvider* vp = 0;
-           MDIViewPage* mdi = 0;
+           App::DocumentObject* obj = nullptr;
+           Gui::ViewProvider* vp = nullptr;
+           MDIViewPage* mdi = nullptr;
            if (PyObject_TypeCheck(pageObj, &(App::DocumentObjectPy::Type))) {
                obj = static_cast<App::DocumentObjectPy*>(pageObj)->getDocumentObjectPtr();
                vp = Gui::Application::Instance->getViewProvider(obj);
@@ -204,7 +204,8 @@ private:
            }
         }
         catch (Base::Exception &e) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
 
         return Py::None();
@@ -223,9 +224,9 @@ private:
         PyMem_Free(name);
         
         try {
-           App::DocumentObject* obj = 0;
-           Gui::ViewProvider* vp = 0;
-           MDIViewPage* mdi = 0;
+           App::DocumentObject* obj = nullptr;
+           Gui::ViewProvider* vp = nullptr;
+           MDIViewPage* mdi = nullptr;
            if (PyObject_TypeCheck(pageObj, &(App::DocumentObjectPy::Type))) {
                obj = static_cast<App::DocumentObjectPy*>(pageObj)->getDocumentObjectPtr();
                vp = Gui::Application::Instance->getViewProvider(obj);
@@ -249,7 +250,8 @@ private:
            }
         }
         catch (Base::Exception &e) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
 
         return Py::None();
@@ -310,7 +312,8 @@ private:
            }
         }
         catch (Base::Exception &e) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
 
         PyObject* pyResult = nullptr;
@@ -327,8 +330,8 @@ private:
         } 
 
         try {
-           App::DocumentObject* obj = 0;
-           Gui::ViewProvider* vp = 0;
+           App::DocumentObject* obj = nullptr;
+           Gui::ViewProvider* vp = nullptr;
            QGIView* qgiv = nullptr;
            if (PyObject_TypeCheck(viewPy, &(TechDraw::DrawViewPy::Type))) {
                obj = static_cast<App::DocumentObjectPy*>(viewPy)->getDocumentObjectPtr();
@@ -356,16 +359,65 @@ private:
            }
         }
         catch (Base::Exception &e) {
-                throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
 
         return Py::None();
     }
- };
+
+
+//!use addQGObjToView for QGraphics items like QGraphicsSvgItem or QGraphicsTextItem that are
+//! derived from QGraphicsObject
+    Py::Object addQGObjToView(const Py::Tuple& args)
+    {
+        PyObject *viewPy = nullptr;
+        PyObject *qgiPy = nullptr;
+        if (!PyArg_ParseTuple(args.ptr(), "OO", &viewPy, &qgiPy)) {
+            throw Py::TypeError("expected (view, item)");
+        }
+
+        try {
+           App::DocumentObject* obj = nullptr;
+           Gui::ViewProvider* vp = nullptr;
+           QGIView* qgiv = nullptr;
+           if (PyObject_TypeCheck(viewPy, &(TechDraw::DrawViewPy::Type))) {
+               obj = static_cast<App::DocumentObjectPy*>(viewPy)->getDocumentObjectPtr();
+               vp = Gui::Application::Instance->getViewProvider(obj);
+               if (vp) {
+                   TechDrawGui::ViewProviderDrawingView* vpdv =
+                                dynamic_cast<TechDrawGui::ViewProviderDrawingView*>(vp);
+                   if (vpdv) {
+                       qgiv = vpdv->getQView();
+                       if (qgiv != nullptr) {
+                           Gui::PythonWrapper wrap;
+                           if (!wrap.loadCoreModule() ||
+                               !wrap.loadGuiModule() ||
+                               !wrap.loadWidgetsModule()) {
+                               PyErr_SetString(PyExc_RuntimeError, "Failed to load Python wrapper for Qt");
+                               return Py::None();
+                            }
+                            QGraphicsObject* item = wrap.toQGraphicsObject(qgiPy);
+                            if (item != nullptr) {
+                                qgiv->addArbitraryItem(item);
+                            }
+                        }
+                   }
+               }
+           }
+        }
+        catch (Base::Exception &e) {
+            e.setPyException();
+            throw Py::Exception();
+        }
+
+        return Py::None();
+    }
+};
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace TechDrawGui

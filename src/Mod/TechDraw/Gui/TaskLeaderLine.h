@@ -23,14 +23,12 @@
 #ifndef TECHDRAWGUI_TASKTEXTLEADER_H
 #define TECHDRAWGUI_TASKTEXTLEADER_H
 
-#include <App/DocumentObject.h>
 #include <Base/Vector3D.h>
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
-
-#include <Mod/TechDraw/Gui/ui_TaskLeaderLine.h>
+#include <Gui/TaskView/TaskView.h>
 
 #include "QGTracker.h"
+
 
 //TODO: make this a proper enum
 #define TRACKERPICK 0
@@ -39,12 +37,6 @@
 #define TRACKERCANCELEDIT 3
 #define TRACKERFINISHED 4
 #define TRACKERSAVE 5
-
-class Ui_TaskLeaderLine;
-
-namespace App {
-class DocumentObject;
-}
 
 namespace TechDraw
 {
@@ -64,6 +56,7 @@ class QGEPath;
 class QGMText;
 class QGILeaderLine;
 class ViewProviderLeader;
+class Ui_TaskLeaderLine;
 
 class TaskLeaderLine : public QWidget
 {

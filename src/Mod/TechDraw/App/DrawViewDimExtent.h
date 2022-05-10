@@ -22,13 +22,14 @@
 
 #ifndef _TechDraw_DrawViewDimExtent_h_
 #define _TechDraw_DrawViewDimExtent_h_
+
 #include <tuple>
 
-# include <App/DocumentObject.h>
-# include <App/FeaturePython.h>
-# include <App/PropertyLinks.h>
+#include <App/DocumentObject.h>
+#include <App/PropertyLinks.h>
 
 #include "DrawViewDimension.h"
+
 
 namespace TechDraw {
 

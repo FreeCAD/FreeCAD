@@ -36,7 +36,7 @@ PROPERTY_SOURCE(Fem::FemPostFunctionProvider, App::DocumentObject)
 
 FemPostFunctionProvider::FemPostFunctionProvider(void): DocumentObject() {
 
-    ADD_PROPERTY(Functions, (0));
+    ADD_PROPERTY(Functions, (nullptr));
 }
 
 FemPostFunctionProvider::~FemPostFunctionProvider() {
@@ -94,6 +94,11 @@ void FemPostPlaneFunction::onChanged(const Property* prop) {
     }
 
     Fem::FemPostFunction::onChanged(prop);
+}
+
+void FemPostPlaneFunction::onDocumentRestored() {
+    // This is to notify the view provider that the document has been fully restored
+    Normal.touch();
 }
 
 

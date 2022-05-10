@@ -59,11 +59,17 @@ def precision():
     return precisionInt  # return PARAMGRP.GetInt("precision", 6)
 
 
-def vec(edge):
-    """Return a vector from an edge or a Part.LineSegment."""
-    # if edge is not straight, you'll get strange results!
+def vec(edge, use_orientation = False):
+    """Return a vector from an edge or a Part.LineSegment.
+
+    If use_orientation is True, it takes into account the edges orientation.
+    If edge is not straight, you'll get strange results!
+    """
     if isinstance(edge, Part.Shape):
-        return edge.Vertexes[-1].Point.sub(edge.Vertexes[0].Point)
+        if use_orientation and isinstance(edge, Part.Edge) and edge.Orientation == "Reversed":
+            return edge.Vertexes[0].Point.sub(edge.Vertexes[-1].Point)
+        else:
+            return edge.Vertexes[-1].Point.sub(edge.Vertexes[0].Point)
     elif isinstance(edge, Part.LineSegment):
         return edge.EndPoint.sub(edge.StartPoint)
     else:
@@ -252,7 +258,7 @@ def geomType(edge):
             return "Ellipse"
         else:
             return "Unknown"
-    except TypeError:
+    except Exception: # catch all errors, no only TypeError
         return "Unknown"
 
 

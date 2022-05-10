@@ -23,11 +23,13 @@
 #ifndef MEASURE_MEASUREMENT_H
 #define MEASURE_MEASUREMENT_H
 
-#include <Base/BaseClass.h>
-#include <Base/Vector3D.h>
-
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
+
+#include <Base/BaseClass.h>
+#include <Base/Vector3D.h>
+#include <Mod/Measure/MeasureGlobal.h>
+
 
 class TopoDS_Shape;
 namespace Measure
@@ -84,7 +86,7 @@ public:
 protected:
   TopoDS_Shape getShape(App::DocumentObject *obj , const char *subName) const;
   MeasureType measureType;
-  Py::Object PythonObject;
+  Py::SmartPtr PythonObject;
 };
 
 

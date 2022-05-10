@@ -45,7 +45,7 @@ class DlgCustomKeyboardImp : public CustomizeActionPage
     Q_OBJECT
 
 public:
-    DlgCustomKeyboardImp( QWidget* parent = 0 );
+    DlgCustomKeyboardImp( QWidget* parent = nullptr );
     ~DlgCustomKeyboardImp();
 
 protected:

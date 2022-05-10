@@ -25,6 +25,7 @@
 #define DRAWINGGUI_DRAWINGVIEW_H
 
 #include <Gui/MDIView.h>
+#include <Mod/Drawing/DrawingGlobal.h>
 #include <QGraphicsView>
 #include <QPrinter>
 
@@ -50,7 +51,7 @@ class DrawingGuiExport SvgView : public QGraphicsView
 public:
     enum RendererType { Native, OpenGL, Image };
 
-    SvgView(QWidget *parent = 0);
+    SvgView(QWidget *parent = nullptr);
 
     void openFile(const QFile &file);
     void setRenderer(RendererType type = Native);
@@ -84,7 +85,7 @@ class DrawingGuiExport DrawingView : public Gui::MDIView
     Q_OBJECT
 
 public:
-    DrawingView(Gui::Document* doc, QWidget* parent = 0);
+    DrawingView(Gui::Document* doc, QWidget* parent = nullptr);
     virtual ~DrawingView();
 
 public Q_SLOTS:
@@ -107,11 +108,7 @@ protected:
     void contextMenuEvent(QContextMenuEvent *event);
     void closeEvent(QCloseEvent*);
     void findPrinterSettings(const QString&);
-#if QT_VERSION >= 0x050300
     QPageSize::PageSizeId getPageSize(int w, int h) const;
-#else
-    QPrinter::PageSize getPageSize(int w, int h) const;
-#endif
 
 private:
     QAction *m_nativeAction;
@@ -125,13 +122,8 @@ private:
     std::string m_objectName;
 
     QString m_currentPath;
-#if QT_VERSION >= 0x050300
     QPageLayout::Orientation m_orientation;
     QPageSize::PageSizeId m_pageSize;
-#else
-    QPrinter::Orientation m_orientation;
-    QPrinter::PageSize m_pageSize;
-#endif
 };
 
 } // namespace DrawingViewGui

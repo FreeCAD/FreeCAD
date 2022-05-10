@@ -25,9 +25,10 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 //**************************************************************************
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <boost/graph/boyer_myrvold_planar_test.hpp>
+#include <boost/graph/is_kuratowski_subgraph.hpp>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepBndLib.hxx>
 #include <Bnd_Box.hxx>

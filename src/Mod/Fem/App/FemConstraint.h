@@ -30,6 +30,7 @@
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyGeo.h>
+#include <Mod/Fem/FemGlobal.h>
 
 namespace Fem {
 
@@ -55,7 +56,7 @@ namespace Fem {
  *  and @ref Scale and the protected method @ref getPoints(points&, normals&,
  *  scale&).
  */
-class AppFemExport Constraint : public App::DocumentObject {
+class FemExport Constraint : public App::DocumentObject {
     PROPERTY_HEADER(Fem::Constraint);
 
 public:

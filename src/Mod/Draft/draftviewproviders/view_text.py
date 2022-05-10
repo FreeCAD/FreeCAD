@@ -160,12 +160,7 @@ class ViewProviderText(ViewProviderDraftAnnotation):
         if prop == "Text" and obj.Text:
             self.text2d.string.setValue("")
             self.text3d.string.setValue("")
-
-            if sys.version_info.major >= 3:
-                _list = [l for l in obj.Text if l]
-            else:
-                _list = [l.encode("utf8") for l in obj.Text if l]
-
+            _list = [l for l in obj.Text if l]
             self.text2d.string.setValues(_list)
             self.text3d.string.setValues(_list)
 
@@ -245,9 +240,13 @@ class ViewProviderText(ViewProviderDraftAnnotation):
 
     def createObject(self):
 
+        import FreeCAD
         import FreeCADGui
         if hasattr(self,"Object"):
-            txt = [t.replace("\"","\\\"") for t in self.text]
+            txt = self.text
+            if not txt:
+                self.finish()
+                return None
             # If the last element is an empty string "" we remove it
             if not txt[-1]:
                 txt.pop()

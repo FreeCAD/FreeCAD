@@ -307,7 +307,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="153"/>
       <source>Show tips</source>
-      <translation type="unfinished">Show tips</translation>
+      <translation>Näytä vihjeet</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="163"/>
@@ -427,7 +427,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="523"/>
       <source>Font family</source>
-      <translation type="unfinished">Font family</translation>
+      <translation>Fonttiperhe</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="532"/>

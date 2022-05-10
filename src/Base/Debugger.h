@@ -24,8 +24,11 @@
 #ifndef BASE_DEBUGGER_H
 #define BASE_DEBUGGER_H
 
-#include <QObject>
 #include <QEventLoop>
+#include <QObject>
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
 
 namespace Base {
 /**
@@ -55,7 +58,7 @@ class BaseExport Debugger : public QObject
     Q_OBJECT
 
 public:
-    Debugger(QObject* parent=0);
+    Debugger(QObject* parent=nullptr);
     ~Debugger();
 
     void attach();

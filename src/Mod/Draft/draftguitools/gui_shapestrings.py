@@ -38,7 +38,6 @@ They are more complex that simple text annotations.
 ## \addtogroup draftguitools
 # @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
-import sys
 
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -47,9 +46,9 @@ import DraftVecUtils
 import draftutils.utils as utils
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
-import drafttaskpanels.task_shapestring as task_shapestring
 import draftutils.todo as todo
 
+from drafttaskpanels.task_shapestring import ShapeStringTaskPanelCmd
 from draftutils.translate import translate
 from draftutils.messages import _msg, _err
 
@@ -64,7 +63,6 @@ class ShapeString(gui_base_original.Creator):
         """Set icon, menu and tooltip."""
 
         d = {'Pixmap': 'Draft_ShapeString',
-             'Accel': "S, S",
              'MenuText': QT_TRANSLATE_NOOP("Draft_ShapeString", "Shape from text"),
              'ToolTip': QT_TRANSLATE_NOOP("Draft_ShapeString", "Creates a shape from a text string by choosing a specific font and a placement.\nThe closed shapes can be used for extrusions and boolean operations.")}
         return d
@@ -72,7 +70,6 @@ class ShapeString(gui_base_original.Creator):
     def Activated(self):
         """Execute when the command is called."""
         super(ShapeString, self).Activated(name="ShapeString")
-        self.creator = gui_base_original.Creator
         if self.ui:
             self.ui.sourceCmd = self
             self.taskmode = utils.getParam("UiMode", 1)
@@ -83,8 +80,9 @@ class ShapeString(gui_base_original.Creator):
                     del self.task
                 except AttributeError:
                     pass
-                self.task = task_shapestring.ShapeStringTaskPanel()
-                self.task.sourceCmd = self
+                self.task = ShapeStringTaskPanelCmd(self)
+                self.call = self.view.addEventCallback("SoEvent", self.task.action)
+                _msg(translate("draft", "Pick ShapeString location point"))
                 todo.ToDo.delay(Gui.Control.showDialog, self.task)
             else:
                 self.dialog = None
@@ -106,13 +104,7 @@ class ShapeString(gui_base_original.Creator):
         #       + str(type(self.SString)))
 
         dquote = '"'
-        if sys.version_info.major < 3:
-            # Python2, string needs to be converted to unicode
-            String = ('u' + dquote
-                      + self.SString.encode('unicode_escape') + dquote)
-        else:
-            # Python3, string is already unicode
-            String = dquote + self.SString + dquote
+        String = dquote + self.SString + dquote
 
         # Size and tracking are numbers;
         # they are ASCII so this conversion should always work
@@ -123,7 +115,7 @@ class ShapeString(gui_base_original.Creator):
         try:
             qr, sup, points, fil = self.getStrings()
             Gui.addModule("Draft")
-            _cmd = 'Draft.makeShapeString'
+            _cmd = 'Draft.make_shapestring'
             _cmd += '('
             _cmd += 'String=' + String + ', '
             _cmd += 'FontFile=' + FFile + ', '

@@ -22,40 +22,32 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <assert.h>
+#include <cassert>
 #include <limits>
 #include <QApplication>
+#include <QGridLayout>
 #endif
 
-#include <QGridLayout>
-#include <QFontMetrics>
-
-#include <Gui/TaskView/TaskView.h>
-#include "QuantitySpinBox.h"
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProviderDragger.h>
-#include <Gui/SoFCCSysDragger.h>
-
+#include <App/Document.h>
+#include "Document.h" // must be before TaskCSysDragger.h
 #include "TaskCSysDragger.h"
+#include "Application.h"
+#include "BitmapFactory.h"
+#include "Command.h"
+#include "QuantitySpinBox.h"
+#include "SoFCCSysDragger.h"
+#include "ViewProviderDragger.h"
+#include "TaskView/TaskView.h"
+
 
 using namespace Gui;
 
 
-static double radiansToDegrees(const double &radiansIn)
-{
-  return radiansIn * (180.0 / M_PI);
-}
-
-static double degreesToRadains(const double &degreesIn)
+static double degreesToRadians(const double &degreesIn)
 {
   return degreesIn * (M_PI / 180.0);
 }
 
-static double lastTranslationIncrement = 1.0;
-static double lastRotationIncrement = degreesToRadains(15.0);
 
 TaskCSysDragger::TaskCSysDragger(Gui::ViewProviderDocumentObject* vpObjectIn, Gui::SoFCCSysDragger* draggerIn) :
   dragger(draggerIn)
@@ -79,7 +71,7 @@ void TaskCSysDragger::setupGui()
 {
   Gui::TaskView::TaskBox *incrementsBox = new Gui::TaskView::TaskBox(
       Gui::BitmapFactory().pixmap("button_valid"),
-      tr("Increments"), true, 0);
+      tr("Increments"), true, nullptr);
 
   QGridLayout *gridLayout = new QGridLayout();
   gridLayout->setColumnStretch(1, 1);
@@ -119,7 +111,7 @@ void TaskCSysDragger::onTIncrementSlot(double freshValue)
 
 void TaskCSysDragger::onRIncrementSlot(double freshValue)
 {
-  dragger->rotationIncrement.setValue(degreesToRadains(freshValue));
+  dragger->rotationIncrement.setValue(degreesToRadians(freshValue));
 }
 
 void TaskCSysDragger::open()
@@ -129,16 +121,20 @@ void TaskCSysDragger::open()
   Gui::Application::Instance->commandManager().getCommandByName("Std_PerspectiveCamera")->setEnabled(false);
 //   dragger->translationIncrement.setValue(lastTranslationIncrement);
 //   dragger->rotationIncrement.setValue(lastRotationIncrement);
+  ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/History/Dragger");
+  double lastTranslationIncrement = hGrp->GetFloat("LastTranslationIncrement", 1.0);
+  double lastRotationIncrement = hGrp->GetFloat("LastRotationIncrement", 15.0);
   tSpinBox->setValue(lastTranslationIncrement);
-  rSpinBox->setValue(radiansToDegrees(lastRotationIncrement));
+  rSpinBox->setValue(lastRotationIncrement);
 
   Gui::TaskView::TaskDialog::open();
 }
 
 bool TaskCSysDragger::accept()
 {
-  lastTranslationIncrement = dragger->translationIncrement.getValue();
-  lastRotationIncrement = dragger->rotationIncrement.getValue();
+  ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/History/Dragger");
+  hGrp->SetFloat("LastTranslationIncrement", tSpinBox->rawValue());
+  hGrp->SetFloat("LastRotationIncrement", rSpinBox->rawValue());
 
   App::DocumentObject* dObject = vpObject.getObject();
   if (dObject) {

@@ -22,36 +22,26 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-  #include <BRep_Builder.hxx>
-  #include <TopoDS_Compound.hxx>
-  # include <TopoDS_Shape.hxx>
-  # include <TopoDS_Face.hxx>
-  # include <TopoDS.hxx>
-  # include <TopExp_Explorer.hxx>
-  # include <gp_Pln.hxx>
-  # include <gp_Ax3.hxx>
-  # include <gp_Circ.hxx>
-  # include <gp_Elips.hxx>
-  # include <GCPnts_AbscissaPoint.hxx>
-  # include <BRepAdaptor_Surface.hxx>
-  # include <BRepAdaptor_Curve.hxx>
-  # include <BRepExtrema_DistShapeShape.hxx>
-  # include <GProp_GProps.hxx>
-  # include <GeomAPI_ExtremaCurveCurve.hxx>
-  # include <BRepGProp.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
+# include <BRepGProp.hxx>
+# include <GCPnts_AbscissaPoint.hxx>
+# include <gp_Circ.hxx>
+# include <gp_Lin.hxx>
+# include <GProp_GProps.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Shape.hxx>
 #endif
 
-
-#include <Base/Exception.h>
 #include <Base/Console.h>
-#include <Base/VectorPy.h>
+#include <Base/Exception.h>
 
-#include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "Measurement.h"
 #include "MeasurementPy.h"
+
 
 #ifndef M_PI
     #define M_PI    3.14159265358979323846 /* pi */

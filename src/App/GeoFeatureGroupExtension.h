@@ -25,10 +25,10 @@
 #ifndef APP_GeoFeatureGroup_H
 #define APP_GeoFeatureGroup_H
 
-#include <App/FeaturePython.h>
-
-#include "DocumentObjectGroup.h"
+#include "DocumentObject.h"
+#include "GroupExtension.h"
 #include "PropertyGeo.h"
+
 
 namespace App
 {
@@ -74,8 +74,8 @@ public:
 
     /** Returns the geo feature group which contains this object.
      * In case this object is not part of any geoFeatureGroup 0 is returned.
-     * Unlike DocumentObjectGroup::getGroupOfObject serches only for GeoFeatureGroups
-     * @param obj       the object to search for
+     * Unlike DocumentObjectGroup::getGroupOfObject searches only for GeoFeatureGroups
+     * @param obj the object to search for
      */
     static DocumentObject* getGroupOfObject(const DocumentObject* obj);
     

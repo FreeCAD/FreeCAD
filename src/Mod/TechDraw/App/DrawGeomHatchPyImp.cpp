@@ -42,7 +42,7 @@ std::string DrawGeomHatchPy::representation(void) const
 
 PyObject *DrawGeomHatchPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DrawGeomHatchPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

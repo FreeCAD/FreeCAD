@@ -1,28 +1,6 @@
-/***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+#line 2 "QuantityLexer.c"
 
-#line 1 "QuantityLexer.c"
-
-#line 3 "QuantityLexer.c"
+#line 4 "QuantityLexer.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -652,8 +630,27 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "QuantityParser.l"
 #line 2 "QuantityParser.l"
+/***************************************************************************
+ *   Copyright (c) 2013 Jürgen Riegel <juergen.riegel@web.de>              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
+
 /* Lexer for the FreeCAD  Units language   */
-/* (c) 2013 Juergen Riegel  LGPL           */
 
 /* use this file to generate the file 'QuantityLexer.c' using the program flex
  * the command for this operation is:
@@ -666,12 +663,12 @@ char *yytext;
  * on Win32. The C++ scanner uses STL streams instead. */
 #define YY_NO_UNISTD_H
 
-#line 666 "QuantityLexer.c"
+#line 667 "QuantityLexer.c"
 /*** Flex Declarations and Options ***/
 /* the manual says "somewhat more optimized" */
 /* no support for include files is planned */
 
-#line 671 "QuantityLexer.c"
+#line 672 "QuantityLexer.c"
 
 #define INITIAL 0
 #define C_COMMENT 1
@@ -683,7 +680,7 @@ char *yytext;
  */
 #include <unistd.h>
 #endif
-    
+
 #ifndef YY_EXTRA_TYPE
 #define YY_EXTRA_TYPE void *
 #endif
@@ -890,7 +887,7 @@ YY_DECL
 #line 56 "QuantityParser.l"
 
 
-#line 890 "QuantityLexer.c"
+#line 891 "QuantityLexer.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1719,7 +1716,7 @@ YY_RULE_SETUP
 #line 251 "QuantityParser.l"
 ECHO;
 	YY_BREAK
-#line 1719 "QuantityLexer.c"
+#line 1720 "QuantityLexer.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(C_COMMENT):
 	yyterminate();

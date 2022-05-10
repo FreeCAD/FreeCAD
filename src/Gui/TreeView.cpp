@@ -27,11 +27,11 @@
 #endif
 
 #include "TreeView.h"
-#include "DocumentModel.h"
 #include "Application.h"
 #include "Document.h"
-#include "MDIView.h"
+#include "DocumentModel.h"
 #include "MainWindow.h"
+#include "MDIView.h"
 #include "ViewProvider.h"
 
 using namespace Gui;
@@ -59,13 +59,14 @@ void TreeView::mouseDoubleClickEvent (QMouseEvent * event)
     QModelIndex index = indexAt(event->pos());
     if (!index.isValid() || index.internalPointer() == Application::Instance)
         return;
-    Base::BaseClass* item = 0;
+    Base::BaseClass* item = nullptr;
     item = static_cast<Base::BaseClass*>(index.internalPointer());
     if (item->getTypeId() == Document::getClassTypeId()) {
         QTreeView::mouseDoubleClickEvent(event);
         const Gui::Document* doc = static_cast<Gui::Document*>(item);
         MDIView *view = doc->getActiveView();
-        if (!view) return;
+        if (!view)
+            return;
         getMainWindow()->setActiveWindow(view);
     }
     else if (item->getTypeId().isDerivedFrom(ViewProvider::getClassTypeId())) {

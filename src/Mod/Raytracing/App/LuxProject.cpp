@@ -46,7 +46,7 @@ PROPERTY_SOURCE(Raytracing::LuxProject, App::DocumentObjectGroup)
 
 LuxProject::LuxProject(void)
 {
-    ADD_PROPERTY_TYPE(PageResult, (0), 0, App::Prop_Output, "Resulting Luxrender Scene file");
+    ADD_PROPERTY_TYPE(PageResult, (nullptr), 0, App::Prop_Output, "Resulting Luxrender Scene file");
     ADD_PROPERTY_TYPE(Template, (""), 0, App::Prop_None, "Template for the Luxrender project");
     ADD_PROPERTY_TYPE(Camera, (""), 0, App::Prop_None, "Camera settings");
 }

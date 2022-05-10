@@ -4,7 +4,11 @@
 #  Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>
 #  LGPL
 
-import FreeCAD, os, sys, unittest, Mesh
+import os
+import sys
+import io
+import FreeCAD, unittest, Mesh
+from FreeCAD import Base
 import time, tempfile, math
 # http://python-kurs.eu/threads.php
 try:
@@ -12,6 +16,7 @@ try:
 except Exception:
     import thread
 
+from os.path import join
 
 #---------------------------------------------------------------------------
 # define the functions to test the FreeCAD mesh module
@@ -44,6 +49,43 @@ class MeshTopoTestCases(unittest.TestCase):
     def testCollapseFacetsAll(self):
         planarMeshObject = Mesh.Mesh(self.planarMesh)
         planarMeshObject.collapseFacets(range(18))
+
+    def testCorruptedFacet(self):
+        v = FreeCAD.Vector
+        mesh = Mesh.Mesh()
+        mesh.addFacet(
+        v(1.0e1, -1.0e1, 1.0e1),
+        v(1.0e1, +1.0e1, 1.0e1),
+        v(0.0e0, 0.0e0, 1.0e1))
+
+        mesh.addFacet(
+        v(-1.0e1, -1.0e1, 1.0e1),
+        v(-1.0e1, +1.0e1, 1.0e1),
+        v(0e0, 0.0e0, 1.0e1))
+
+        mesh.addFacet(
+        v(+1.0e1, +1.0e1, 1.0e1),
+        v(-1.0e1, +1.0e1, 1.0e1),
+        v(.0e0, 0.0e0, 1.0e1))
+
+        mesh.addFacet(
+        v(+1.0e1, -1.0e1, 1.0e1),
+        v(-1.0e1, -1.0e1, 1.0e1),
+        v(.0e0, 0.0e0, 1.0e1))
+
+        mesh.addFacet(
+        v(-1.0e1, +1.0e1, 1.0e1),
+        v(+1.0e1, +1.0e1, 1.0e1),
+        v(+1.0e1, +1.0e1, 1.0e1))
+
+        mesh.addFacet(
+        v(+1.0e1, +1.0e1, 1.0e1),
+        v(+1.0e1, 00.0e1, 1.0e1),
+        v(+1.0e1, -1.0e1, 1.0e1))
+
+        self.assertEqual(mesh.CountFacets, 6)
+        mesh.fixIndices()
+        self.assertEqual(mesh.CountFacets, 5)
 
 
 class MeshSplitTestCases(unittest.TestCase):
@@ -150,6 +192,15 @@ class MeshSplitTestCases(unittest.TestCase):
         self.assertFalse(self.mesh.hasCorruptedFacets())
         self.assertTrue(self.mesh.isSolid())
 
+    def testFindNearest(self):
+        self.assertEqual(len(self.mesh.nearestFacetOnRay((-2,2,-6),(0,0,1))), 0)
+        self.assertEqual(len(self.mesh.nearestFacetOnRay((0.5,0.5,0.5),(0,0,1))), 1)
+        self.assertEqual(len(self.mesh.nearestFacetOnRay((0.5,0.5,0.5),(0,0,1),-math.pi/2)), 0)
+        self.assertEqual(len(self.mesh.nearestFacetOnRay((0.2,0.1,0.2),(0,0, 1))),
+                         len(self.mesh.nearestFacetOnRay((0.2,0.1,0.2),(0,0,-1))))
+        self.assertEqual(len(self.mesh.nearestFacetOnRay((0.2,0.1,0.2),(0,0, 1), math.pi/2)),
+                         len(self.mesh.nearestFacetOnRay((0.2,0.1,0.2),(0,0,-1), math.pi/2)))
+
 class MeshGeoTestCases(unittest.TestCase):
     def setUp(self):
         # set up a planar face with 2 triangles
@@ -167,7 +218,7 @@ class MeshGeoTestCases(unittest.TestCase):
         f1 = planarMeshObject.Facets[0]
         f2 = planarMeshObject.Facets[1]
         res=f1.intersect(f2)
-        self.failUnless(len(res) == 0)
+        self.assertTrue(len(res) == 0)
 
 
     def testIntersection2(self):
@@ -182,7 +233,189 @@ class MeshGeoTestCases(unittest.TestCase):
         f2 = planarMeshObject.Facets[1]
         # does definitely NOT intersect
         res=f1.intersect(f2)
-        self.failUnless(len(res) == 0)
+        self.assertTrue(len(res) == 0)
+
+    def testIntersectionOfTransformedMesh(self):
+        self.planarMesh.append( [0.0,10.0,10.0] )
+        self.planarMesh.append( [10.0,0.0,10.0] )
+        self.planarMesh.append( [10.0,10.0,10.0] )
+        self.planarMesh.append( [6.0,8.0,10.0] )
+        self.planarMesh.append( [16.0,8.0,10.0] )
+        self.planarMesh.append( [6.0,18.0,10.0] )
+        planarMeshObject = Mesh.Mesh(self.planarMesh)
+
+        mat = Base.Matrix()
+        mat.rotateX(1.0)
+        mat.rotateY(1.0)
+        mat.rotateZ(1.0)
+        planarMeshObject.transformGeometry(mat)
+
+        f1 = planarMeshObject.Facets[0]
+        f2 = planarMeshObject.Facets[1]
+        res=f1.intersect(f2)
+        self.assertEqual(len(res), 2)
+
+    def testIntersectionOfParallelTriangles(self):
+        self.planarMesh.append( [0.0,10.0,10.0] )
+        self.planarMesh.append( [10.0,0.0,10.0] )
+        self.planarMesh.append( [10.0,10.0,10.0] )
+        self.planarMesh.append( [6.0,8.0,10.1] )
+        self.planarMesh.append( [16.0,8.0,10.1] )
+        self.planarMesh.append( [6.0,18.0,10.1] )
+        planarMeshObject = Mesh.Mesh(self.planarMesh)
+
+        mat = Base.Matrix()
+        mat.rotateX(1.0)
+        mat.rotateY(1.0)
+        mat.rotateZ(1.0)
+        planarMeshObject.transformGeometry(mat)
+
+        f1 = planarMeshObject.Facets[0]
+        f2 = planarMeshObject.Facets[1]
+        res=f1.intersect(f2)
+        self.assertTrue(len(res) == 0)
+
+    def testIntersectionOnEdge(self):
+        self.planarMesh.append( [5.0, -1.9371663331985474, 0.49737977981567383] )
+        self.planarMesh.append( [4.0, -1.9371663331985474, 0.49737977981567383] )
+        self.planarMesh.append( [5.0, -1.9842294454574585, 0.25066646933555603] )
+        self.planarMesh.append( [4.6488823890686035, -1.7827962636947632, 0.4577442705631256] )
+        self.planarMesh.append( [4.524135112762451, -2.0620131492614746, 0.5294350385665894] )
+        self.planarMesh.append( [4.6488823890686035, -1.8261089324951172, 0.23069120943546295] )
+        planarMeshObject = Mesh.Mesh(self.planarMesh)
+        f1 = planarMeshObject.Facets[0]
+        f2 = planarMeshObject.Facets[1]
+        res = f1.intersect(f2)
+        self.assertEqual(len(res), 2)
+
+    def testIntersectionCoplanar(self):
+        self.planarMesh.append( [0.,10.,10.] )
+        self.planarMesh.append( [10.,0.,10.] )
+        self.planarMesh.append( [10.,10.,10.] )
+        self.planarMesh.append( [6.,8.,10.] )
+        self.planarMesh.append( [16.,8.,10.] )
+        self.planarMesh.append( [6.,18.,10.] )
+        planarMeshObject = Mesh.Mesh(self.planarMesh)
+        f1 = planarMeshObject.Facets[0]
+        f2 = planarMeshObject.Facets[1]
+        res = f1.intersect(f2)
+        self.assertTrue(len(res) == 2)
+
+    def testIntersectionOverlap(self):
+        self.planarMesh.append( [0.,0.,0.] )
+        self.planarMesh.append( [5.,0.,0.] )
+        self.planarMesh.append( [8.,5.,0.] )
+        self.planarMesh.append( [4.,0.,0.] )
+        self.planarMesh.append( [10.,0.,0.] )
+        self.planarMesh.append( [9.,5.,0.] )
+        planarMeshObject = Mesh.Mesh(self.planarMesh)
+        f1 = planarMeshObject.Facets[0]
+        f2 = planarMeshObject.Facets[1]
+        res = f1.intersect(f2)
+        self.assertTrue(len(res) == 2)
+
+    def testIntersectionOfIntersectingEdges(self):
+        self.planarMesh.append( [0.,10.,10.] )
+        self.planarMesh.append( [10.,0.,10.] )
+        self.planarMesh.append( [10.,10.,10.] )
+        self.planarMesh.append( [6.,8.,10.] )
+        self.planarMesh.append( [16.,8.,10.] )
+        self.planarMesh.append( [6.,18.,10.] )
+        planarMeshObject = Mesh.Mesh(self.planarMesh)
+
+        edge1 = planarMeshObject.Facets[0].getEdge(2)
+        edge2 = planarMeshObject.Facets[1].getEdge(2)
+        res = edge1.intersectWithEdge(edge2)
+        self.assertTrue(len(res) == 1)
+        self.assertEqual(res[0][0], 6.0)
+        self.assertEqual(res[0][1], 10.0)
+        self.assertEqual(res[0][2], 10.0)
+
+    def testIntersectionOfParallelEdges(self):
+        self.planarMesh.append( [0.,10.,10.] )
+        self.planarMesh.append( [10.,0.,10.] )
+        self.planarMesh.append( [10.,10.,10.] )
+        self.planarMesh.append( [6.,8.,10.] )
+        self.planarMesh.append( [16.,8.,10.] )
+        self.planarMesh.append( [6.,18.,10.] )
+        planarMeshObject = Mesh.Mesh(self.planarMesh)
+
+        edge1 = planarMeshObject.Facets[0].getEdge(2)
+        edge2 = planarMeshObject.Facets[1].getEdge(0)
+        res = edge1.intersectWithEdge(edge2)
+        self.assertTrue(len(res) == 0)
+
+    def testIntersectionOfCollinearEdges(self):
+        self.planarMesh.append( [0.,0.,0.] )
+        self.planarMesh.append( [6.,0.,0.] )
+        self.planarMesh.append( [3.,4.,0.] )
+        self.planarMesh.append( [7.,0.,0.] )
+        self.planarMesh.append( [13.,0.,0.] )
+        self.planarMesh.append( [10.,4.,0.] )
+        planarMeshObject = Mesh.Mesh(self.planarMesh)
+
+        edge1 = planarMeshObject.Facets[0].getEdge(0)
+        edge2 = planarMeshObject.Facets[1].getEdge(0)
+        res = edge1.intersectWithEdge(edge2)
+        self.assertTrue(len(res) == 0)
+
+    def testIntersectionOfWarpedEdges(self):
+        self.planarMesh.append( [0.,0.,0.] )
+        self.planarMesh.append( [6.,0.,0.] )
+        self.planarMesh.append( [3.,4.,0.] )
+        self.planarMesh.append( [2.,2.,1.] )
+        self.planarMesh.append( [8.,2.,1.] )
+        self.planarMesh.append( [5.,6.,1.] )
+        planarMeshObject = Mesh.Mesh(self.planarMesh)
+
+        edge1 = planarMeshObject.Facets[0].getEdge(1)
+        edge2 = planarMeshObject.Facets[1].getEdge(0)
+        res = edge1.intersectWithEdge(edge2)
+        self.assertTrue(len(res) == 0)
+
+    def testSelfIntersection(self):
+        s = b"""solid Simple
+facet normal 0.0e0 0.0e0 1.0e1
+    outer loop
+        vertex 0.0e1 0.0e1 1.0e1
+        vertex 0.0e1 +1.0e1 1.0e1
+        vertex +1.0e1 0.0e1 1.0e1
+    endloop
+endfacet
+facet normal 0.0e0 0.0e0 1.0e1
+    outer loop
+        vertex 0.0e1 +1.0e1 1.0e1
+        vertex +1.0e1 0.0e1 1.0e1
+        vertex 1.0e1 1.0e1 1.0e1
+    endloop
+endfacet
+facet normal 0.0e0 0.0e0 1.0e1
+    outer loop
+        vertex 0.0e1 0.0e1 1.0e1
+        vertex 0.0e1 +1.0e1 1.0e1
+        vertex -1.0e1 1.0e1 1.0e1
+    endloop
+endfacet
+facet normal 0.0e0 0.0e0 1.0e1
+    outer loop
+        vertex 0.0e1 0.0e1 1.0e1
+        vertex +1.0e1 0.0e1 1.0e1
+        vertex +1.0e1 -1.0e1 1.0e1
+    endloop
+endfacet
+facet normal 0.0e0 0.0e0 1.0e1
+    outer loop
+        vertex 0.6e1 0.8e1 1.0e1
+        vertex +1.6e1 0.8e1 1.0e1
+        vertex +0.6e1 1.8e1 1.0e1
+    endloop
+endfacet
+endsolid Simple"""
+        mesh = Mesh.Mesh()
+        data = io.BytesIO(s)
+        mesh.read(Stream=data, Format="AST")
+        self.assertTrue(mesh.hasSelfIntersections())
+
 
 class PivyTestCases(unittest.TestCase):
     def setUp(self):
@@ -208,11 +441,11 @@ class PivyTestCases(unittest.TestCase):
         rp.setRay(coin.SbVec3f(-16.05,16.0,16.0),coin.SbVec3f(0,-1,0))
         rp.apply(view.getSoRenderManager().getSceneGraph())
         pp=rp.getPickedPoint()
-        self.failUnless(pp != None)
+        self.assertTrue(pp != None)
         det=pp.getDetail()
-        self.failUnless(det.getTypeId() == coin.SoFaceDetail.getClassTypeId())
+        self.assertTrue(det.getTypeId() == coin.SoFaceDetail.getClassTypeId())
         det=coin.cast(det,str(det.getTypeId().getName()))
-        self.failUnless(det.getFaceIndex() == 1)
+        self.assertTrue(det.getFaceIndex() == 1)
 
     def testPrimitiveCount(self):
         if not FreeCAD.GuiUp:
@@ -231,8 +464,8 @@ class PivyTestCases(unittest.TestCase):
         view.setAxisCross(False)
         pc=coin.SoGetPrimitiveCountAction()
         pc.apply(view.getSceneGraph())
-        self.failUnless(pc.getTriangleCount() == 2)
-        #self.failUnless(pc.getPointCount() == 6)
+        self.assertTrue(pc.getTriangleCount() == 2)
+        #self.assertTrue(pc.getPointCount() == 6)
 
     def tearDown(self):
         #closing doc
@@ -243,15 +476,15 @@ class PivyTestCases(unittest.TestCase):
 def loadFile(name):
     #lock.acquire()
     mesh=Mesh.Mesh()
-    FreeCAD.Console.PrintMessage("Create mesh instance\n")
+    #FreeCAD.Console.PrintMessage("Create mesh instance\n")
     #lock.release()
     mesh.read(name)
-    FreeCAD.Console.PrintMessage("Mesh loaded successfully.\n")
+    #FreeCAD.Console.PrintMessage("Mesh loaded successfully.\n")
 
 def createMesh(r,s):
-    FreeCAD.Console.PrintMessage("Create sphere (%s,%s)...\n"%(r,s))
+    #FreeCAD.Console.PrintMessage("Create sphere (%s,%s)...\n"%(r,s))
     mesh=Mesh.createSphere(r,s)
-    FreeCAD.Console.PrintMessage("... destroy sphere\n")
+    #FreeCAD.Console.PrintMessage("... destroy sphere\n")
 
 class LoadMeshInThreadsCases(unittest.TestCase):
 
@@ -267,7 +500,7 @@ class LoadMeshInThreadsCases(unittest.TestCase):
         mesh=Mesh.createSphere(10.0,100) # a fine sphere
         name=tempfile.gettempdir() + os.sep + "mesh.stl"
         mesh.write(name)
-        FreeCAD.Console.PrintMessage("Write mesh to %s\n"%(name))
+        #FreeCAD.Console.PrintMessage("Write mesh to %s\n"%(name))
         #lock=thread.allocate_lock()
         for i in range(2):
             thread.start_new(loadFile,(name,))
@@ -295,9 +528,9 @@ class PolynomialFitCases(unittest.TestCase):
         v.append(FreeCAD.Vector(2,2,0.0))
         d = Mesh.polynomialFit(v)
         c = d["Coefficients"]
-        print ("Polynomial: f(x,y)=%f*x^2%+f*y^2%+f*x*y%+f*x%+f*y%+f" % (c[0],c[1],c[2],c[3],c[4],c[5]))
+        #print ("Polynomial: f(x,y)=%f*x^2%+f*y^2%+f*x*y%+f*x%+f*y%+f" % (c[0],c[1],c[2],c[3],c[4],c[5]))
         for i in d["Residuals"]:
-           self.failUnless(math.fabs(i) < 0.0001, "Too high residual %f" % math.fabs(i))
+           self.assertTrue(math.fabs(i) < 0.0001, "Too high residual %f" % math.fabs(i))
 
     def testFitExact(self):
         # symmetric
@@ -310,9 +543,9 @@ class PolynomialFitCases(unittest.TestCase):
         v.append(FreeCAD.Vector(2,1,0.0))
         d = Mesh.polynomialFit(v)
         c = d["Coefficients"]
-        print ("Polynomial: f(x,y)=%f*x^2%+f*y^2%+f*x*y%+f*x%+f*y%+f" % (c[0],c[1],c[2],c[3],c[4],c[5]))
+        #print ("Polynomial: f(x,y)=%f*x^2%+f*y^2%+f*x*y%+f*x%+f*y%+f" % (c[0],c[1],c[2],c[3],c[4],c[5]))
         for i in d["Residuals"]:
-           self.failUnless(math.fabs(i) < 0.0001, "Too high residual %f" % math.fabs(i))
+           self.assertTrue(math.fabs(i) < 0.0001, "Too high residual %f" % math.fabs(i))
 
     def testFitBad(self):
         # symmetric
@@ -328,9 +561,77 @@ class PolynomialFitCases(unittest.TestCase):
         v.append(FreeCAD.Vector(2,2,0.0))
         d = Mesh.polynomialFit(v)
         c = d["Coefficients"]
-        print ("Polynomial: f(x,y)=%f*x^2%+f*y^2%+f*x*y%+f*x%+f*y%+f" % (c[0],c[1],c[2],c[3],c[4],c[5]))
+        #print ("Polynomial: f(x,y)=%f*x^2%+f*y^2%+f*x*y%+f*x%+f*y%+f" % (c[0],c[1],c[2],c[3],c[4],c[5]))
         for i in d["Residuals"]:
-           self.failIf(math.fabs(i) < 0.0001, "Residual %f must be higher" % math.fabs(i))
+           self.assertFalse(math.fabs(i) < 0.0001, "Residual %f must be higher" % math.fabs(i))
+
+    def tearDown(self):
+        pass
+
+
+class NastranReader(unittest.TestCase):
+    def setUp(self):
+        self.test_dir = join(FreeCAD.getHomePath(), "Mod", "Mesh", "App", "TestData")
+
+    def testEightCharGRIDElement(self):
+        m = Mesh.read(f"{self.test_dir}/NASTRAN_Test_GRID_CQUAD4.bdf")
+        self.assertEqual(m.CountPoints,10)
+        self.assertEqual(m.CountFacets,8) # Quads split into two triangles
+
+    def testDelimitedGRIDElement(self):
+        m = Mesh.read(f"{self.test_dir}/NASTRAN_Test_Delimited_GRID_CQUAD4.bdf")
+        self.assertEqual(m.CountPoints,10)
+        self.assertEqual(m.CountFacets,8) # Quads split into two triangles
+
+    def testSixteenCharGRIDElement(self):
+        m = Mesh.read(f"{self.test_dir}/NASTRAN_Test_GRIDSTAR_CQUAD4.bdf")
+        self.assertEqual(m.CountPoints,4)
+        self.assertEqual(m.CountFacets,2) # Quads split into two triangles
+
+    def testCTRIA3Element(self):
+        m = Mesh.read(f"{self.test_dir}/NASTRAN_Test_GRID_CTRIA3.bdf")
+        self.assertEqual(m.CountPoints,3)
+        self.assertEqual(m.CountFacets,1)
+
+    def tearDown(self):
+        pass
+
+class MeshSubElement(unittest.TestCase):
+    def setUp(self):
+        self.mesh = Mesh.createBox(1.0, 1.0, 1.0)
+
+    def testCenterOfGravity(self):
+        c = self.mesh.CenterOfGravity
+        self.assertEqual(c, Base.Vector(0.0, 0.0, 0.0))
+
+    def testSubElements(self):
+        types = self.mesh.getElementTypes()
+        self.assertIn("Mesh", types)
+        self.assertIn("Segment", types)
+
+    def testCountSubElements(self):
+        self.assertEqual(self.mesh.countSubElements("Mesh"), 1)
+        self.assertEqual(self.mesh.countSubElements("Segment"), 0)
+
+    def testFacesFromSubElement(self):
+        element = self.mesh.getFacesFromSubElement("Mesh", 0)
+        self.assertIsInstance(element, tuple)
+        self.assertEqual(len(element), 2)
+        self.assertEqual(len(element[0]), 8)
+        self.assertEqual(len(element[1]), 12)
+
+    def testSegmentSubElement(self):
+        self.mesh.addSegment([0, 2, 4, 6, 8])
+        self.assertEqual(self.mesh.countSegments(), 1)
+        self.assertEqual(self.mesh.countSubElements("Segment"), 1)
+        element = self.mesh.getFacesFromSubElement("Segment", 0)
+        self.assertIsInstance(element, tuple)
+        self.assertEqual(len(element), 2)
+        self.assertEqual(len(element[0]), 7)
+        self.assertEqual(len(element[1]), 5)
+        segment = self.mesh.meshFromSegment(self.mesh.getSegment(0))
+        self.assertEqual(segment.CountPoints, 7)
+        self.assertEqual(segment.CountFacets, 5)
 
     def tearDown(self):
         pass

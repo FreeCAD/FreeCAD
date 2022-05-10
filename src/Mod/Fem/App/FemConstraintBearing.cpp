@@ -45,7 +45,7 @@ PROPERTY_SOURCE(Fem::ConstraintBearing, Fem::Constraint)
 
 ConstraintBearing::ConstraintBearing()
 {
-    ADD_PROPERTY_TYPE(Location,(0),"ConstraintBearing",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(Location,(nullptr),"ConstraintBearing",(App::PropertyType)(App::Prop_None),
                       "Element giving axial location of constraint");
     ADD_PROPERTY(Dist,(0.0));
     ADD_PROPERTY(AxialFree,(0));
@@ -80,7 +80,7 @@ void ConstraintBearing::onChanged(const App::Property* prop)
         Height.setValue(height);
         // Update base point
         base = base + axis * height/2;
-        if (Location.getValue() != NULL) {
+        if (Location.getValue() != nullptr) {
             base = getBasePoint(base, axis, Location, Dist.getValue());
         }
         BasePoint.setValue(base);

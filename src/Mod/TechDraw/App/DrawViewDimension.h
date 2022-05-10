@@ -22,14 +22,15 @@
 
 #ifndef _TechDraw_DrawViewDimension_h_
 #define _TechDraw_DrawViewDimension_h_
+
 #include <tuple>
 
-# include <App/DocumentObject.h>
-# include <App/FeaturePython.h>
-# include <App/PropertyLinks.h>
-# include <Base/UnitsApi.h>
+#include <App/DocumentObject.h>
+#include <App/PropertyLinks.h>
+#include <Base/UnitsApi.h>
 
 #include "DrawView.h"
+
 
 class TopoDS_Shape;
 
@@ -110,6 +111,10 @@ public:
     App::PropertyQuantityConstraint OverTolerance;
     App::PropertyQuantityConstraint UnderTolerance;
 
+    App::PropertyBool               AngleOverride;
+    App::PropertyAngle              LineAngle;
+    App::PropertyAngle              ExtensionAngle;
+
     enum RefType{
             invalidRef,
             oneEdge,
@@ -141,7 +146,9 @@ public:
     virtual std::string getFormattedToleranceValue(int partial);
     virtual std::pair<std::string, std::string> getFormattedToleranceValues(int partial = 0);
     virtual std::string getFormattedDimensionValue(int partial = 0);
-    virtual std::string formatValue(qreal value, QString qFormatSpec, int partial = 0);
+    virtual std::string formatValue(qreal value, QString qFormatSpec, int partial = 0, bool isDim = true);
+
+    virtual bool haveTolerance(void);
 
     virtual double getDimValue();
     QStringList getPrefixSuffixSpec(QString fSpec);

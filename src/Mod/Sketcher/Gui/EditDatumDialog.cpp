@@ -43,7 +43,7 @@
 #include "ViewProviderSketch.h"
 #include "ui_InsertDatum.h"
 #include "EditDatumDialog.h"
-#include "CommandConstraints.h"
+#include "Utils.h"
 
 
 using namespace SketcherGui;
@@ -91,6 +91,7 @@ void EditDatumDialog::exec(bool atCursor)
         }
         double datum = Constr->getValue();
 
+        ui_ins_datum->labelEdit->setEntryName(QByteArray("DatumValue"));
         if (Constr->Type == Sketcher::Angle) {
             datum = Base::toDegrees<double>(datum);
             dlg.setWindowTitle(tr("Insert angle"));

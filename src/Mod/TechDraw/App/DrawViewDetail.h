@@ -25,15 +25,11 @@
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
-#include <App/PropertyFile.h>
 #include <App/FeaturePython.h>
-#include <App/Material.h>
-
 #include <Base/Vector3D.h>
 
-#include <TopoDS_Compound.hxx>
-
 #include "DrawViewPart.h"
+
 
 class gp_Pln;
 class gp_Ax2;
@@ -75,6 +71,9 @@ public:
                     DrawViewPart* baseView,
                     DrawViewSection* sectionAlias);
     double getFudgeRadius(void);
+    TopoDS_Shape projectEdgesOntoFace(TopoDS_Shape edgeShape, TopoDS_Face projFace, gp_Dir projDir);
+
+    virtual std::vector<DrawViewDetail*> getDetailRefs() const override;
 
 protected:
     Base::Vector3d toR3(const gp_Ax2 fromSystem, const Base::Vector3d fromPoint);

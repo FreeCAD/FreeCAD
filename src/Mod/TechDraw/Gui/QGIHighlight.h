@@ -23,23 +23,17 @@
 #ifndef TECHDRAWGUI_QGIHIGHLIGHT_H
 #define TECHDRAWGUI_QGIHIGHLIGHT_H
 
+#include <QColor>
 #include <QFont>
-#include <QPointF>
-#include <QObject>
-#include <QGraphicsTextItem>
-#include <QGraphicsRectItem>
 #include <QGraphicsEllipseItem>
 #include <QGraphicsScene>
-#include <QGraphicsSceneEvent>
-#include <QPainterPath>
-#include <QColor>
-
-#include <Base/Vector3D.h>
+#include <QPointF>
 
 #include "QGIArrow.h"
 #include "QGCustomText.h"
 #include "QGCustomRect.h"
 #include "QGIDecoration.h"
+
 
 namespace TechDrawGui
 {
@@ -55,7 +49,7 @@ public:
 
     virtual void paint(QPainter * painter,
                        const QStyleOptionGraphicsItem * option, 
-                       QWidget * widget = 0 ) override;
+                       QWidget * widget = nullptr ) override;
 
     void setBounds(double x1,double y1,double x2,double y2);
     void setReference(char* sym);

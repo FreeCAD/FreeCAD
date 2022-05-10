@@ -20,16 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskPostDisplay_H
 #define GUI_TASKVIEW_TaskPostDisplay_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskDialog.h>
 #include <Gui/ViewProviderDocumentObject.h>
-#include <Base/Parameter.h>
-#include <App/PropertyLinks.h>
+#include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
+
 #include "ViewProviderFemPostFunction.h"
+
 
 class QComboBox;
 class Ui_TaskPostDisplay;
@@ -134,7 +133,7 @@ class TaskPostBox : public Gui::TaskView::TaskBox {
     Q_OBJECT
 
 public:
-    TaskPostBox(Gui::ViewProviderDocumentObject* view, const QPixmap &icon, const QString &title, QWidget *parent = 0);
+    TaskPostBox(Gui::ViewProviderDocumentObject* view, const QPixmap &icon, const QString &title, QWidget *parent = nullptr);
     ~TaskPostBox();
 
     virtual void applyPythonCode() = 0;
@@ -198,7 +197,7 @@ class TaskPostDisplay : public TaskPostBox
     Q_OBJECT
 
 public:
-    TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget *parent = 0);
+    TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget *parent = nullptr);
     ~TaskPostDisplay();
 
     virtual void applyPythonCode();
@@ -220,7 +219,7 @@ class TaskPostFunction : public TaskPostBox {
     Q_OBJECT
 
 public:
-    TaskPostFunction(Gui::ViewProviderDocumentObject* view, QWidget* parent = 0);
+    TaskPostFunction(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
     virtual ~TaskPostFunction();
 
     virtual void applyPythonCode();
@@ -231,7 +230,7 @@ class TaskPostClip : public TaskPostBox {
     Q_OBJECT
 
 public:
-    TaskPostClip(Gui::ViewProviderDocumentObject* view, App::PropertyLink* function, QWidget* parent = 0);
+    TaskPostClip(Gui::ViewProviderDocumentObject* view, App::PropertyLink* function, QWidget* parent = nullptr);
     virtual ~TaskPostClip();
 
     virtual void applyPythonCode();
@@ -256,7 +255,7 @@ class TaskPostDataAlongLine: public TaskPostBox {
     Q_OBJECT
 
 public:
-    TaskPostDataAlongLine(Gui::ViewProviderDocumentObject* view, QWidget* parent = 0);
+    TaskPostDataAlongLine(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
     virtual ~TaskPostDataAlongLine();
 
     virtual void applyPythonCode();
@@ -286,7 +285,7 @@ class TaskPostDataAtPoint: public TaskPostBox {
     Q_OBJECT
 
 public:
-    TaskPostDataAtPoint(Gui::ViewProviderDocumentObject* view, QWidget* parent = 0);
+    TaskPostDataAtPoint(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
     virtual ~TaskPostDataAtPoint();
 
     virtual void applyPythonCode();
@@ -310,7 +309,7 @@ class TaskPostScalarClip : public TaskPostBox {
     Q_OBJECT
 
 public:
-    TaskPostScalarClip(Gui::ViewProviderDocumentObject* view, QWidget* parent = 0);
+    TaskPostScalarClip(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
     virtual ~TaskPostScalarClip();
 
     virtual void applyPythonCode();
@@ -331,7 +330,7 @@ class TaskPostWarpVector : public TaskPostBox {
     Q_OBJECT
 
 public:
-    TaskPostWarpVector(Gui::ViewProviderDocumentObject* view, QWidget* parent = 0);
+    TaskPostWarpVector(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
     virtual ~TaskPostWarpVector();
 
     virtual void applyPythonCode();
@@ -355,7 +354,7 @@ class TaskPostCut : public TaskPostBox {
     Q_OBJECT
 
 public:
-    TaskPostCut(Gui::ViewProviderDocumentObject* view, App::PropertyLink* function, QWidget* parent = 0);
+    TaskPostCut(Gui::ViewProviderDocumentObject* view, App::PropertyLink* function, QWidget* parent = nullptr);
     virtual ~TaskPostCut();
 
     virtual void applyPythonCode();

@@ -20,16 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskRevolutionParameters_H
 #define GUI_TASKVIEW_TaskRevolutionParameters_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderRevolution.h"
+
 
 class Ui_TaskRevolutionParameters;
 
@@ -50,7 +46,7 @@ class TaskRevolutionParameters : public TaskSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskRevolutionParameters(ViewProvider* RevolutionView,QWidget *parent = 0);
+    TaskRevolutionParameters(ViewProvider* RevolutionView,QWidget *parent = nullptr);
     ~TaskRevolutionParameters();
 
     virtual void apply() override;

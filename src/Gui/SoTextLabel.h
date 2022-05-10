@@ -23,18 +23,16 @@
 #ifndef GUI_SOTEXTLABEL_H
 #define GUI_SOTEXTLABEL_H
 
-#include <Inventor/fields/SoSubField.h>
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoImage.h>
-#include <Inventor/nodes/SoText2.h>
+#include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
-#include <Inventor/fields/SoSFBool.h>
-#include <Inventor/fields/SoSFName.h>
 #include <Inventor/fields/SoSFInt32.h>
-#include <Inventor/fields/SoSFImage.h>
+#include <Inventor/fields/SoSFName.h>
 #include <Inventor/manips/SoTransformManip.h>
+#include <Inventor/nodes/SoImage.h>
+#include <Inventor/nodes/SoText2.h>
+
 
 namespace Gui {
 

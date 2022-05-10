@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <Inventor/SoPickedPoint.h>
+# include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoPointDetail.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
@@ -46,6 +47,7 @@
 # include <QWhatsThis>
 #endif
 
+# include <boost/range/adaptors.hpp>
 # include <iomanip>
 # include <ios>
 
@@ -155,13 +157,13 @@ void ViewProviderMeshCurvature::onChanged(const App::Property* prop)
     ViewProviderDocumentObject::onChanged(prop);
 }
 
-void ViewProviderMeshCurvature::hide(void)
+void ViewProviderMeshCurvature::hide()
 {
     inherited::hide();
     pcColorStyle->style = SoDrawStyle::INVISIBLE;
 }
 
-void ViewProviderMeshCurvature::show(void)
+void ViewProviderMeshCurvature::show()
 {
     inherited::show();
     pcColorStyle->style = SoDrawStyle::FILLED;
@@ -309,7 +311,8 @@ void ViewProviderMeshCurvature::updateData(const App::Property* prop)
     }
     else if (prop->getTypeId() == Mesh::PropertyCurvatureList::getClassTypeId()) {
         const Mesh::PropertyCurvatureList* curv = static_cast<const Mesh::PropertyCurvatureList*>(prop);
-        if (curv->getSize() < 3) return; // invalid array
+        if (curv->getSize() < 3) // invalid array
+            return;
 #if 0 // FIXME: Do not always change the range
         init(curv); // init color bar
 #endif
@@ -317,38 +320,58 @@ void ViewProviderMeshCurvature::updateData(const App::Property* prop)
     }
 }
 
-SoSeparator* ViewProviderMeshCurvature::getFrontRoot(void) const
+SoSeparator* ViewProviderMeshCurvature::getFrontRoot() const
 {
     return pcColorRoot;
 }
 
 void ViewProviderMeshCurvature::setVertexCurvatureMode(int mode)
 {
-    Mesh::PropertyCurvatureList* pCurvInfo=0;
-    std::map<std::string,App::Property*> Map;
+    using PropertyMap = std::map<std::string,App::Property*>;
+    Mesh::PropertyCurvatureList* pCurvInfo = nullptr;
+    PropertyMap Map;
     pcObject->getPropertyMap(Map);
-    for( std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it ) {
-        Base::Type t = it->second->getTypeId();
-        if ( t==Mesh::PropertyCurvatureList::getClassTypeId() ) {
-            pCurvInfo = (Mesh::PropertyCurvatureList*)it->second;
-            break;
-        }
-    }
 
-    if ( !pCurvInfo )
+    auto it = std::find_if(Map.begin(), Map.end(), [](const PropertyMap::value_type& v) {
+        Base::Type type = v.second->getTypeId();
+        return (type == Mesh::PropertyCurvatureList::getClassTypeId());
+    });
+
+    if (it == Map.end())
         return; // cannot display this feature type due to missing curvature property
 
+    pCurvInfo = static_cast<Mesh::PropertyCurvatureList*>(it->second);
+
     // curvature values
-    std::vector<float> fValues = pCurvInfo->getCurvature( mode ); 
-    unsigned long j=0;
-    for ( std::vector<float>::const_iterator jt = fValues.begin(); jt != fValues.end(); ++jt, j++ ) {
-        App::Color col = pcColorBar->getColor( *jt );
-        pcColorMat->diffuseColor.set1Value(j, SbColor(col.r, col.g, col.b));
-        if ( pcColorBar->isVisible( *jt ) ) {
-            pcColorMat->transparency.set1Value(j, 0.0f);
-        } else {
-            pcColorMat->transparency.set1Value(j, 0.8f);
-        }
+    std::vector<float> fValues = pCurvInfo->getCurvature(mode);
+    pcColorMat->diffuseColor.setNum(fValues.size());
+    pcColorMat->transparency.setNum(fValues.size());
+
+    SbColor* diffcol = pcColorMat->diffuseColor.startEditing();
+    float* transp = pcColorMat->transparency.startEditing();
+
+    for (auto const& value : fValues | boost::adaptors::indexed(0)) {
+        App::Color c = pcColorBar->getColor(value.value());
+        diffcol[value.index()].setValue(c.r, c.g, c.b);
+        transp[value.index()] = c.a;
+    }
+
+    pcColorMat->diffuseColor.finishEditing();
+    pcColorMat->transparency.finishEditing();
+
+    // In order to apply the transparency changes the IndexFaceSet node must be touched
+    touchShapeNode();
+}
+
+void ViewProviderMeshCurvature::touchShapeNode()
+{
+    SoSearchAction searchAction;
+    searchAction.setType(SoIndexedFaceSet::getClassTypeId());
+    searchAction.setInterest(SoSearchAction::FIRST);
+    searchAction.apply(pcLinkRoot);
+    SoPath* selectionPath = searchAction.getPath();
+    if (selectionPath) {
+        selectionPath->getTail()->touch();
     }
 }
 
@@ -389,7 +412,7 @@ const char* ViewProviderMeshCurvature::getDefaultDisplayMode() const
     return "Absolute curvature";
 }
 
-std::vector<std::string> ViewProviderMeshCurvature::getDisplayModes(void) const
+std::vector<std::string> ViewProviderMeshCurvature::getDisplayModes() const
 {
     std::vector<std::string> StrList = inherited::getDisplayModes();
 
@@ -436,7 +459,7 @@ public:
 
         std::vector<App::DocumentObject*> groups = doc->getObjectsOfType
             (App::DocumentObjectGroup::getClassTypeId());
-        App::DocumentObjectGroup* group = 0;
+        App::DocumentObjectGroup* group = nullptr;
         std::string internalname = "CurvatureGroup";
         for (std::vector<App::DocumentObject*>::iterator it = groups.begin(); it != groups.end(); ++it) {
             if (internalname == (*it)->getNameInDocument()) {
@@ -503,7 +526,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void * ud, SoEventCallback
         }
         else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {
             const SoPickedPoint * point = n->getPickedPoint();
-            if (point == NULL) {
+            if (point == nullptr) {
                 Base::Console().Message("No facet picked.\n");
                 return;
             }
@@ -541,7 +564,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void * ud, SoEventCallback
     }
     else if (ev->getTypeId().isDerivedFrom(SoLocation2Event::getClassTypeId())) {
         const SoPickedPoint * point = n->getPickedPoint();
-        if (point == NULL)
+        if (point == nullptr)
             return;
         n->setHandled();
 

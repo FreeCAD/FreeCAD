@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Standard_math.hxx>
@@ -28,7 +27,6 @@
 # include <QString>
 # include <QSlider>
 #endif
-
 
 #include "ui_TaskDriver.h"
 #include "TaskDriver.h"
@@ -43,16 +41,14 @@
 #include <Gui/Utilities.h>
 
 
-
 using namespace FemGui;
 using namespace Gui;
 
-
-TaskDriver::TaskDriver(Fem::FemAnalysis *pcObject,QWidget *parent)
+TaskDriver::TaskDriver(Fem::FemAnalysis* pcObject, QWidget* parent)
     : TaskBox(Gui::BitmapFactory().pixmap("FEM_CreateNodesSet"),
-      tr("Nodes set"),
-      true,
-      parent),
+        tr("Nodes set"),
+        true,
+        parent),
       pcObject(pcObject)
 {
     // we need a separate container widget to add all controls to
@@ -69,8 +65,6 @@ TaskDriver::TaskDriver(Fem::FemAnalysis *pcObject,QWidget *parent)
 
 }
 
-
-
 void TaskDriver::SwitchMethod(int /*Value*/)
 {
     //if(Value == 1){
@@ -84,14 +78,9 @@ void TaskDriver::SwitchMethod(int /*Value*/)
     //}
 }
 
-
-
-
-
 TaskDriver::~TaskDriver()
 {
     delete ui;
 }
-
 
 #include "moc_TaskDriver.cpp"

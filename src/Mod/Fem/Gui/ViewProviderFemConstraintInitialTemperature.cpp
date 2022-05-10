@@ -72,9 +72,9 @@ bool ViewProviderFemConstraintInitialTemperature::setEdit(int ModNum)
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         TaskDlgFemConstraintInitialTemperature *constrDlg = qobject_cast<TaskDlgFemConstraintInitialTemperature *>(dlg);
         if (constrDlg && constrDlg->getConstraintView() != this)
-            constrDlg = 0; // another constraint left open its task panel
+            constrDlg = nullptr; // another constraint left open its task panel
         if (dlg && !constrDlg) {
-            if (constraintDialog != NULL) {
+            if (constraintDialog != nullptr) {
                 // Ignore the request to open another dialog
                 return false;
             } else {

@@ -20,18 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef _SoFCSelectionAction_h
 #define _SoFCSelectionAction_h
 
-//#include <Inventor/SoAction.h>
+#include <Inventor/SbColor.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoSubAction.h>
-#include <Inventor/events/SoSubEvent.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFString.h>
-#include <Inventor/SbColor.h>
 #include <vector>
+
 
 class SoSFString;
 class SoSFColor;

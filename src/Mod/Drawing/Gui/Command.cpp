@@ -23,6 +23,7 @@
 #include <vector>
 
 #include <Base/Tools.h>
+#include <App/Document.h>
 #include <App/PropertyGeo.h>
 
 #include <Gui/Action.h>
@@ -127,7 +128,7 @@ Gui::Action * CmdDrawingNewPage::createAction(void)
     pcAction->setDropDownMenu(true);
     applyCommandData(this->className(), pcAction);
 
-    QAction* defaultAction = 0;
+    QAction* defaultAction = nullptr;
     int defaultId = 0;
 
     QString lastPaper;

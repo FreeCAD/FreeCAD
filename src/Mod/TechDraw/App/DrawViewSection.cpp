@@ -100,13 +100,13 @@ const char* DrawViewSection::SectionDirEnums[]= {"Right",
                                             "Left",
                                             "Up",
                                             "Down",
-                                             NULL};
+                                             nullptr};
 
 const char* DrawViewSection::CutSurfaceEnums[]= {"Hide",
                                             "Color",
                                             "SvgHatch",
                                             "PatHatch",
-                                             NULL};
+                                             nullptr};
 
 
 //===========================================================================
@@ -121,7 +121,7 @@ DrawViewSection::DrawViewSection()
     static const char *fgroup = "Cut Surface Format";
 
     ADD_PROPERTY_TYPE(SectionSymbol ,(""),sgroup,App::Prop_None,"The identifier for this section");
-    ADD_PROPERTY_TYPE(BaseView ,(0),sgroup,App::Prop_None,"2D View source for this Section");
+    ADD_PROPERTY_TYPE(BaseView ,(nullptr),sgroup,App::Prop_None,"2D View source for this Section");
     BaseView.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(SectionNormal ,(0,0,1.0) ,sgroup,App::Prop_None,
                         "Section Plane normal direction");  //direction of extrusion of cutting prism
@@ -357,7 +357,7 @@ void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
 // cut base shape with tool
     //is SectionOrigin valid?
     Bnd_Box centerBox;
-    BRepBndLib::Add(baseShape, centerBox);
+    BRepBndLib::AddOptimal(baseShape, centerBox);
     centerBox.SetGap(0.0);
 
 // make tool
@@ -414,7 +414,7 @@ void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
 
 // check for error in cut
     Bnd_Box testBox;
-    BRepBndLib::Add(rawShape, testBox);
+    BRepBndLib::AddOptimal(rawShape, testBox);
     testBox.SetGap(0.0);
     if (testBox.IsVoid()) {           //prism & input don't intersect.  rawShape is garbage, don't bother.
         Base::Console().Warning("DVS::execute - prism & input don't intersect - %s\n", Label.getValue());
@@ -509,7 +509,7 @@ void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
         for (; sectionExpl.More(); sectionExpl.Next()) {
             iface++;
             const TopoDS_Face& face = TopoDS::Face(sectionExpl.Current());
-            TechDraw::Face* sectionFace = new TechDraw::Face();
+            TechDraw::FacePtr sectionFace(std::make_shared<TechDraw::Face>());
             TopExp_Explorer expFace(face, TopAbs_WIRE);
             int iwire = 0;
             for ( ; expFace.More(); expFace.Next()) {
@@ -521,7 +521,7 @@ void DrawViewSection::sectionExec(TopoDS_Shape baseShape)
                 for ( ; expWire.More(); expWire.Next()) {
                     iedge++;
                     const TopoDS_Edge& edge = TopoDS::Edge(expWire.Current());
-                    TechDraw::BaseGeom* e = BaseGeom::baseFactory(edge);
+                    TechDraw::BaseGeomPtr e = BaseGeom::baseFactory(edge);
                     if (e != nullptr) {
                         w->geoms.push_back(e);
                     }

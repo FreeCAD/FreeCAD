@@ -25,16 +25,14 @@
 
 #include <string>
 # include <QRectF>
+
 #include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
 #include <App/PropertyLinks.h>
-
-
 #include <Base/BoundBox.h>
-#include <Base/Matrix.h>
 #include <Base/Vector3D.h>
 
 #include "DrawViewCollection.h"
+
 
 class gp_Dir;
 class gp_Pnt;
@@ -124,12 +122,8 @@ public:
 
     void updateSecondaryDirs();
 
-    void rotateRight(void);
-    void rotateLeft(void);
-    void rotateUp(void);
-    void rotateDown(void);
-    void spinCW(void);
-    void spinCCW(void);
+    void rotate(const std::string &rotationdirection);
+    void spin(const std::string &spindirection);
     
     void dumpISO(const char * title);
     std::vector<DrawProjGroupItem*> getViewsAsDPGI();

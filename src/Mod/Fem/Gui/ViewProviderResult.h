@@ -26,6 +26,7 @@
 
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/ViewProviderPythonFeature.h>
+#include <Mod/Fem/FemGlobal.h>
 
 namespace FemGui
 {
@@ -44,8 +45,6 @@ public:
     // shows solid in the tree
     virtual bool isShow(void) const
     { return true; }
-
-    //bool doubleClicked(void);
 };
 
 typedef Gui::ViewProviderPythonFeatureT<ViewProviderResult> ViewProviderResultPython;

@@ -26,9 +26,11 @@
 #include <gp_Ax2.hxx>
 
 #include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
 #include <App/FeaturePython.h>
+#include <App/PropertyStandard.h>
+
 #include "DrawViewPart.h"
+
 
 namespace TechDraw
 {
@@ -88,6 +90,10 @@ public:
     //DPGI always fits on page since DPG handles scaling
     virtual bool checkFit(void) const override { return true; }
     virtual bool checkFit(DrawPage*) const override { return true; }
+
+    virtual int countParentPages() const override;
+    virtual DrawPage* findParentPage() const override;
+    virtual std::vector<DrawPage*> findAllParentPages() const override;
 
 protected:
     void onChanged(const App::Property* prop) override;

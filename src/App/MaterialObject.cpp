@@ -23,11 +23,8 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "MaterialObject.h"
-#include "DocumentObjectPy.h"
+
 
 using namespace App;
 

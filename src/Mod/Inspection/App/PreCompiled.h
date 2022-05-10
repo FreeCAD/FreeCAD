@@ -26,19 +26,6 @@
 
 #include <FCConfig.h>
 
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-# define InspectionExport __declspec(dllexport)
-# define MeshExport          __declspec(dllimport)
-# define PointsExport     __declspec(dllimport)
-# define PartExport       __declspec(dllimport)
-#else // for Linux
-# define InspectionExport
-# define MeshExport
-# define PointsExport
-# define PartExport
-#endif
-
 #ifdef _MSC_VER
 # pragma warning(disable : 4290)
 # pragma warning(disable : 4275)
@@ -50,6 +37,7 @@
 #include <cstdio>
 #include <cassert>
 #include <iostream>
+#include <numeric>
 
 // STL
 #include <algorithm>
@@ -63,8 +51,22 @@
 #include <string>
 #include <vector>
 
-// Xerces
-#include <xercesc/util/XercesDefs.hpp>
+// boost
+#include <boost_bind_bind.hpp>
+
+// OCC
+#include <gp_Pnt.hxx>
+#include <BRepExtrema_DistShapeShape.hxx>
+#include <BRepBuilderAPI_MakeVertex.hxx>
+#include <BRepClass3d_SolidClassifier.hxx>
+#include <BRepGProp_Face.hxx>
+#include <TopoDS.hxx>
+
+// Qt
+#include <QtConcurrentMap>
+#include <QEventLoop>
+#include <QFuture>
+#include <QFutureWatcher>
 
 #endif //_PreComp_
 

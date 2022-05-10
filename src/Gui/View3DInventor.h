@@ -20,17 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_VIEW3DINVENTOR_H
 #define GUI_VIEW3DINVENTOR_H
 
-#include "MDIView.h"
-
-#include <Base/Parameter.h>
 #include <QImage>
 #include <QtOpenGL.h>
 
-class SoNode;
+#include <Base/Parameter.h>
+
+#include "MDIView.h"
+
+
 class QPrinter;
 class QStackedWidget;
 
@@ -45,7 +45,7 @@ class GuiExport GLOverlayWidget : public QWidget
     Q_OBJECT
 
 public:
-    GLOverlayWidget(QWidget* parent=0) : QWidget(parent)
+    GLOverlayWidget(QWidget* parent=nullptr) : QWidget(parent)
     {}
     ~GLOverlayWidget()
     {}
@@ -68,7 +68,7 @@ class GuiExport View3DInventor : public MDIView, public ParameterGrp::ObserverTy
     TYPESYSTEM_HEADER();
 
 public:
-    View3DInventor(Gui::Document* pcDocument, QWidget* parent, const QtGLWidget* sharewidget = 0, Qt::WindowFlags wflags=Qt::WindowFlags());
+    View3DInventor(Gui::Document* pcDocument, QWidget* parent, const QtGLWidget* sharewidget = nullptr, Qt::WindowFlags wflags=Qt::WindowFlags());
     ~View3DInventor();
 
     /// Message handler

@@ -44,7 +44,7 @@
 # include <Inventor/nodes/SoMaterialBinding.h>
 # include <Inventor/nodes/SoScale.h>
 
-# include <math.h>
+# include <cmath>
 #endif
 
 #include <Gui/Command.h>
@@ -55,8 +55,6 @@
 #include <Base/Console.h>
 #include <Gui/Control.h>
 
-
-#define PI (3.141592653589793238462643383279502884L)
 
 using namespace FemGui;
 
@@ -83,9 +81,9 @@ bool ViewProviderFemConstraintTransform::setEdit(int ModNum)
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         TaskDlgFemConstraintTransform *constrDlg = qobject_cast<TaskDlgFemConstraintTransform *>(dlg);
         if (constrDlg && constrDlg->getConstraintView() != this)
-            constrDlg = 0; // another constraint left open its task panel
+            constrDlg = nullptr; // another constraint left open its task panel
         if (dlg && !constrDlg) {
-            if (constraintDialog != NULL) {
+            if (constraintDialog != nullptr) {
                 // Ignore the request to open another dialog
                 return false;
             } else {
@@ -154,9 +152,9 @@ void ViewProviderFemConstraintTransform::updateData(const App::Property* prop)
             double z_axis_y = 0;
             double z_axis_z = 1;
 
-            double rot_x = (pcConstraint->X_rot.getValue() * (PI/180));
-            double rot_y = (pcConstraint->Y_rot.getValue() * (PI/180));
-            double rot_z = (pcConstraint->Z_rot.getValue() * (PI/180));
+            double rot_x = (pcConstraint->X_rot.getValue() * (M_PI /180));
+            double rot_y = (pcConstraint->Y_rot.getValue() * (M_PI /180));
+            double rot_z = (pcConstraint->Z_rot.getValue() * (M_PI /180));
 
             double x_axis_x_p;
             double x_axis_y_p;
@@ -170,51 +168,51 @@ void ViewProviderFemConstraintTransform::updateData(const App::Property* prop)
             double z_axis_y_p;
             double z_axis_z_p;
 
-            if (rot_x!=0){
-                x_axis_z_p = x_axis_z*cos(rot_x) - x_axis_y*sin(rot_x);
-                x_axis_y_p = x_axis_y*cos(rot_x) + x_axis_z*sin(rot_x);
+            if (rot_x != 0) {
+                x_axis_z_p = x_axis_z * cos(rot_x) - x_axis_y * sin(rot_x);
+                x_axis_y_p = x_axis_y * cos(rot_x) + x_axis_z * sin(rot_x);
                 x_axis_z = x_axis_z_p;
                 x_axis_y = x_axis_y_p;
 
-                y_axis_z_p = y_axis_z*cos(rot_x) - y_axis_y*sin(rot_x);
-                y_axis_y_p = y_axis_y*cos(rot_x) + y_axis_z*sin(rot_x);
+                y_axis_z_p = y_axis_z * cos(rot_x) - y_axis_y * sin(rot_x);
+                y_axis_y_p = y_axis_y * cos(rot_x) + y_axis_z * sin(rot_x);
                 y_axis_z = y_axis_z_p;
                 y_axis_y = y_axis_y_p;
 
-                z_axis_z_p = z_axis_z*cos(rot_x) - z_axis_y*sin(rot_x);
-                z_axis_y_p = z_axis_y*cos(rot_x) + z_axis_z*sin(rot_x);
+                z_axis_z_p = z_axis_z * cos(rot_x) - z_axis_y * sin(rot_x);
+                z_axis_y_p = z_axis_y * cos(rot_x) + z_axis_z * sin(rot_x);
                 z_axis_z = z_axis_z_p;
                 z_axis_y = z_axis_y_p;
             }
-            if (rot_y != 0){
-                x_axis_z_p = x_axis_z*cos(rot_y) + x_axis_x*sin(rot_y);
-                x_axis_x_p = x_axis_x*cos(rot_y) - x_axis_z*sin(rot_y);
+            if (rot_y != 0) {
+                x_axis_z_p = x_axis_z * cos(rot_y) + x_axis_x * sin(rot_y);
+                x_axis_x_p = x_axis_x * cos(rot_y) - x_axis_z * sin(rot_y);
                 x_axis_z = x_axis_z_p;
                 x_axis_x = x_axis_x_p;
 
-                y_axis_z_p = y_axis_z*cos(rot_y) + y_axis_x*sin(rot_y);
-                y_axis_x_p = y_axis_x*cos(rot_y) - y_axis_z*sin(rot_y);
+                y_axis_z_p = y_axis_z * cos(rot_y) + y_axis_x * sin(rot_y);
+                y_axis_x_p = y_axis_x * cos(rot_y) - y_axis_z * sin(rot_y);
                 y_axis_z = y_axis_z_p;
                 y_axis_x = y_axis_x_p;
 
-                z_axis_z_p = z_axis_z*cos(rot_y) + z_axis_x*sin(rot_y);
-                z_axis_x_p = z_axis_x*cos(rot_y) - z_axis_z*sin(rot_y);
+                z_axis_z_p = z_axis_z * cos(rot_y) + z_axis_x * sin(rot_y);
+                z_axis_x_p = z_axis_x * cos(rot_y) - z_axis_z * sin(rot_y);
                 z_axis_z = z_axis_z_p;
                 z_axis_x = z_axis_x_p;
             }
-            if (rot_z !=0){
-                x_axis_x_p = x_axis_x*cos(rot_z) + x_axis_y*sin(rot_z);
-                x_axis_y_p = x_axis_y*cos(rot_z) - x_axis_x*sin(rot_z);
+            if (rot_z != 0) {
+                x_axis_x_p = x_axis_x * cos(rot_z) + x_axis_y * sin(rot_z);
+                x_axis_y_p = x_axis_y * cos(rot_z) - x_axis_x * sin(rot_z);
                 x_axis_x = x_axis_x_p;
                 x_axis_y = x_axis_y_p;
 
-                y_axis_x_p = y_axis_x*cos(rot_z) + y_axis_y*sin(rot_z);
-                y_axis_y_p = y_axis_y*cos(rot_z) - y_axis_x*sin(rot_z);
+                y_axis_x_p = y_axis_x * cos(rot_z) + y_axis_y * sin(rot_z);
+                y_axis_y_p = y_axis_y * cos(rot_z) - y_axis_x * sin(rot_z);
                 y_axis_x = y_axis_x_p;
                 y_axis_y = y_axis_y_p;
 
-                z_axis_x_p = z_axis_x*cos(rot_z) + z_axis_y*sin(rot_z);
-                z_axis_y_p = z_axis_y*cos(rot_z) - z_axis_x*sin(rot_z);
+                z_axis_x_p = z_axis_x * cos(rot_z) + z_axis_y * sin(rot_z);
+                z_axis_y_p = z_axis_y * cos(rot_z) - z_axis_x * sin(rot_z);
                 z_axis_x = z_axis_x_p;
                 z_axis_y = z_axis_y_p;
             }

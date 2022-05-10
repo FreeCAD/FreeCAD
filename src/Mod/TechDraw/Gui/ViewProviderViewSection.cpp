@@ -30,29 +30,18 @@
 # endif
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
 #include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-
-#include <Gui/Application.h>
-#include <Gui/Command.h>
+#include <Base/Parameter.h>
 #include <Gui/Control.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
 
-#include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
-//#include <Mod/TechDraw/App/Preferences.h>
+#include <Mod/TechDraw/App/DrawHatch.h>
 
-#include "PreferencesGui.h"
 #include "TaskSectionView.h"
 #include "ViewProviderViewSection.h"
+#include "QGIView.h"
 
 using namespace TechDrawGui;
 

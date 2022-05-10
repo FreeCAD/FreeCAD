@@ -25,11 +25,13 @@
 #define PART_TOPOSHAPE_H
 
 #include <iosfwd>
+#include <list>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Wire.hxx>
 #include <TopTools_ListOfShape.hxx>
 #include <App/ComplexGeoData.h>
 #include <Base/Exception.h>
+#include <Mod/Part/PartGlobal.h>
 
 class gp_Ax1;
 class gp_Ax2;
@@ -135,12 +137,12 @@ public:
     /// get the subelement by type and number
     virtual Data::Segment* getSubElement(const char* Type, unsigned long) const;
     /** Get lines from segment */
-    virtual void getLinesFromSubelement(
+    virtual void getLinesFromSubElement(
         const Data::Segment*,
         std::vector<Base::Vector3d> &Points,
         std::vector<Line> &lines) const;
     /** Get faces from segment */
-    virtual void getFacesFromSubelement(
+    virtual void getFacesFromSubElement(
         const Data::Segment*,
         std::vector<Base::Vector3d> &Points,
         std::vector<Base::Vector3d> &PointNormals,
@@ -279,13 +281,13 @@ public:
     /** @name Manipulation*/
     //@{
     void transformGeometry(const Base::Matrix4D &rclMat);
-    TopoDS_Shape transformGShape(const Base::Matrix4D&) const;
+    TopoDS_Shape transformGShape(const Base::Matrix4D&, bool copy = false) const;
     bool transformShape(const Base::Matrix4D&, bool copy, bool checkScale=false);
     TopoDS_Shape mirror(const gp_Ax2&) const;
     TopoDS_Shape toNurbs() const;
     TopoDS_Shape replaceShape(const std::vector< std::pair<TopoDS_Shape,TopoDS_Shape> >& s) const;
     TopoDS_Shape removeShape(const std::vector<TopoDS_Shape>& s) const;
-    void sewShape();
+    void sewShape(double tolerance = 1.0e-06);
     bool fix(double, double, double);
     bool removeInternalWires(double);
     TopoDS_Shape removeSplitter() const;
@@ -302,7 +304,7 @@ public:
     virtual void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &faces,
         float Accuracy, uint16_t flags=0) const;
     void setFaces(const std::vector<Base::Vector3d> &Points,
-                  const std::vector<Facet> &faces, float Accuracy=1.0e-06);
+                  const std::vector<Facet> &faces, double tolerance=1.0e-06);
     void getDomains(std::vector<Domain>&) const;
     //@}
 
@@ -311,34 +313,34 @@ public:
      * To be complete in next batch of patches
      */
     //@{
-    TopoShape &makECompound(const std::vector<TopoShape> &shapes, const char *op=0, bool force=true);
+    TopoShape &makeCompound(const std::vector<TopoShape> &shapes, const char *op=nullptr, bool force=true);
 
-    TopoShape &makEWires(const TopoShape &shape, const char *op=0, bool fix=false, double tol=0.0);
-    TopoShape makEWires(const char *op=0, bool fix=false, double tol=0.0) const {
-        return TopoShape().makEWires(*this,op,fix,tol);
+    TopoShape &makeWires(const TopoShape &shape, const char *op=nullptr, bool fix=false, double tol=0.0);
+    TopoShape makeWires(const char *op=nullptr, bool fix=false, double tol=0.0) const {
+        return TopoShape().makeWires(*this,op,fix,tol);
     }
-    TopoShape &makEFace(const std::vector<TopoShape> &shapes, const char *op=0, const char *maker=0);
-    TopoShape &makEFace(const TopoShape &shape, const char *op=0, const char *maker=0);
-    TopoShape makEFace(const char *op=0, const char *maker=0) const {
-        return TopoShape().makEFace(*this,op,maker);
+    TopoShape &makeFace(const std::vector<TopoShape> &shapes, const char *op=nullptr, const char *maker=nullptr);
+    TopoShape &makeFace(const TopoShape &shape, const char *op=nullptr, const char *maker=nullptr);
+    TopoShape makeFace(const char *op=nullptr, const char *maker=nullptr) const {
+        return TopoShape().makeFace(*this,op,maker);
     }
-    bool _makETransform(const TopoShape &shape, const Base::Matrix4D &mat,
-            const char *op=0, bool checkScale=false, bool copy=false);
+    bool _makeTransform(const TopoShape &shape, const Base::Matrix4D &mat,
+            const char *op=nullptr, bool checkScale=false, bool copy=false);
 
-    TopoShape &makETransform(const TopoShape &shape, const Base::Matrix4D &mat,
-            const char *op=0, bool checkScale=false, bool copy=false) {
-        _makETransform(shape,mat,op,checkScale,copy);
+    TopoShape &makeTransform(const TopoShape &shape, const Base::Matrix4D &mat,
+            const char *op=nullptr, bool checkScale=false, bool copy=false) {
+        _makeTransform(shape,mat,op,checkScale,copy);
         return *this;
     }
-    TopoShape makETransform(const Base::Matrix4D &mat, const char *op=0, 
+    TopoShape makeTransform(const Base::Matrix4D &mat, const char *op=nullptr,
             bool checkScale=false, bool copy=false) const {
-        return TopoShape().makETransform(*this,mat,op,checkScale,copy);
+        return TopoShape().makeTransform(*this,mat,op,checkScale,copy);
     }
 
-    TopoShape &makETransform(const TopoShape &shape, const gp_Trsf &trsf, 
-            const char *op=0, bool copy=false);
-    TopoShape makETransform(const gp_Trsf &trsf, const char *op=0, bool copy=false) const {
-        return TopoShape().makETransform(*this,trsf,op,copy);
+    TopoShape &makeTransform(const TopoShape &shape, const gp_Trsf &trsf,
+            const char *op=nullptr, bool copy=false);
+    TopoShape makeTransform(const gp_Trsf &trsf, const char *op=nullptr, bool copy=false) const {
+        return TopoShape().makeTransform(*this,trsf,op,copy);
     }
 
     void move(const TopLoc_Location &loc) {
@@ -350,15 +352,15 @@ public:
         return ret;
     }
 
-    TopoShape &makEGTransform(const TopoShape &shape, const Base::Matrix4D &mat, 
-            const char *op=0, bool copy=false);
-    TopoShape makEGTransform(const Base::Matrix4D &mat, const char *op=0, bool copy=false) const {
-        return TopoShape().makEGTransform(*this,mat,op,copy);
+    TopoShape &makeGTransform(const TopoShape &shape, const Base::Matrix4D &mat,
+            const char *op=nullptr, bool copy=false);
+    TopoShape makeGTransform(const Base::Matrix4D &mat, const char *op=nullptr, bool copy=false) const {
+        return TopoShape().makeGTransform(*this,mat,op,copy);
     }
 
-    TopoShape &makERefine(const TopoShape &shape, const char *op=0, bool no_fail=true);
-    TopoShape makERefine(const char *op=0, bool no_fail=true) const {
-        return TopoShape().makERefine(*this,op,no_fail);
+    TopoShape &makeRefine(const TopoShape &shape, const char *op=nullptr, bool no_fail=true);
+    TopoShape makeRefine(const char *op=nullptr, bool no_fail=true) const {
+        return TopoShape().makeRefine(*this,op,no_fail);
     }
     //@}
 

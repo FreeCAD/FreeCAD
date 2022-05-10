@@ -25,13 +25,9 @@
 #ifndef APP_FEATUREPYTHON_H
 #define APP_FEATUREPYTHON_H
 
-
-#include <Base/Exception.h>
-#include <Base/Writer.h>
 #include <App/GeoFeature.h>
-#include <App/DynamicProperty.h>
 #include <App/PropertyPythonObject.h>
-#include <App/PropertyGeo.h>
+
 
 namespace App
 {
@@ -85,6 +81,8 @@ public:
     /// Set sub-element visibility
     int setElementVisible(const char *, bool);
 
+    bool editProperty(const char *propName);
+
 private:
     App::DocumentObject* object;
     bool has__object__;
@@ -106,7 +104,8 @@ private:
     FC_PY_ELEMENT(canLoadPartial)\
     FC_PY_ELEMENT(hasChildElement)\
     FC_PY_ELEMENT(isElementVisible)\
-    FC_PY_ELEMENT(setElementVisible)
+    FC_PY_ELEMENT(setElementVisible)\
+    FC_PY_ELEMENT(editProperty)\
 
 #define FC_PY_ELEMENT_DEFINE(_name) \
     Py::Object py_##_name;
@@ -214,7 +213,7 @@ public:
     virtual App::DocumentObject *getSubObject(const char *subname, PyObject **pyObj, 
             Base::Matrix4D *mat, bool transform, int depth) const override 
     {
-        App::DocumentObject *ret = 0;
+        App::DocumentObject *ret = nullptr;
         if(imp->getSubObject(ret,subname,pyObj,mat,transform,depth))
             return ret;
         return FeatureT::getSubObject(subname,pyObj,mat,transform,depth);
@@ -230,7 +229,7 @@ public:
     virtual App::DocumentObject *getLinkedObject(bool recurse, 
             Base::Matrix4D *mat, bool transform, int depth) const override
     {
-        App::DocumentObject *ret = 0;
+        App::DocumentObject *ret = nullptr;
         if(imp->getLinkedObject(ret,recurse,mat,transform,depth))
             return ret;
         return FeatureT::getLinkedObject(recurse,mat,transform,depth);
@@ -302,6 +301,11 @@ public:
         if(ret>=0)
             return ret;
         return FeatureT::canLoadPartial();
+    }
+
+    virtual void editProperty(const char *propName) override {
+        if (!imp->editProperty(propName))
+            FeatureT::editProperty(propName);
     }
 
     PyObject *getPyObject(void) override {

@@ -73,18 +73,18 @@ def make_bspline(pointslist, closed=False, placement=None, face=None, support=No
             nlist.append(v.Point)
         pointslist = nlist
     if len(pointslist) < 2:
-        _err = "Draft.makeBSpline: not enough points"
+        _err = "Draft.make_bspline: not enough points"
         App.Console.PrintError(translate("draft", _err)+"\n")
         return
     if (pointslist[0] == pointslist[-1]):
         if len(pointslist) > 2:
             closed = True
             pointslist.pop()
-            _err = "Draft.makeBSpline: Equal endpoints forced Closed"
+            _err = "Draft.make_bspline: Equal endpoints forced Closed"
             App.Console.PrintWarning(translate("Draft", _err) + _err + "\n")
         else:
             # len == 2 and first == last   GIGO
-            _err = "Draft.makeBSpline: Invalid pointslist"
+            _err = "Draft.make_bspline: Invalid pointslist"
             App.Console.PrintError(translate("Draft", _err)+"\n")
             return
     # should have sensible parms from here on

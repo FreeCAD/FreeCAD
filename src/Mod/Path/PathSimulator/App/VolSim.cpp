@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #include <Base/Console.h>
 
+#include <BRepBndLib.hxx>
 #include <BRepCheck_Analyzer.hxx>
 #include <BRepClass3d_SolidClassifier.hxx>
 #include <gp_Pnt.hxx>

@@ -37,6 +37,7 @@
 #include <Inventor/fields/SoMFVec3f.h>
 #include <Inventor/SbBox3f.h>
 #include <Inventor/fields/SoSFImage.h>
+#include <Mod/Sketcher/SketcherGlobal.h>
 
 namespace SketcherGui {
 

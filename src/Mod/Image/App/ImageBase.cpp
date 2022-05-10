@@ -16,20 +16,17 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <cmath>
-# include <cstring>
-#endif
 
-#include "ImageBase.h"
 #include <Base/Exception.h>
+#include "ImageBase.h"
+
 
 using namespace Image;
 
 // Constructor (constructs an empty image)
 ImageBase::ImageBase()
 {
-    _pPixelData = NULL;
+    _pPixelData = nullptr;
     _owner = true;
     _width = 0;
     _height = 0;
@@ -53,7 +50,7 @@ ImageBase::ImageBase(const ImageBase &rhs)
     if (rhs._owner == true)
     {
         // rhs is the owner - do a deep copy
-        _pPixelData = NULL;
+        _pPixelData = nullptr;
         _owner = false; // avoids a superfluous delete
         if (createCopy((void *)(rhs._pPixelData), rhs._width, rhs._height, rhs._format, rhs._numSigBitsPerSample) != 0)
             throw Base::RuntimeError("ImageBase::ImageBase. Error creating copy of image");
@@ -108,12 +105,12 @@ void ImageBase::clear()
     if (_owner == true)
     {
         delete [] _pPixelData;
-        _pPixelData = NULL;
+        _pPixelData = nullptr;
     }
     // Else just reset the pointer (the owner of the pixel data must be responsible for deleting it)
     else
     {
-        _pPixelData = NULL;
+        _pPixelData = nullptr;
     }
 
     // Re-initialise the other variables
@@ -204,7 +201,7 @@ int ImageBase::_setColorFormat(int format, unsigned short numSigBitsPerSample)
 int ImageBase::_allocate()
 {
     // Check that pixel data pointer is null
-    if (_pPixelData != NULL)
+    if (_pPixelData != nullptr)
         return -1;
 
     // Allocate the space needed to store the pixel data
@@ -299,7 +296,7 @@ int ImageBase::pointTo(void* pSrcPixelData, unsigned long width, unsigned long h
 // if there is no image data
 int ImageBase::getSample(int x, int y, unsigned short sampleIndex, double &value)
 {
-    if ((_pPixelData == NULL) || 
+    if ((_pPixelData == nullptr) || 
         (sampleIndex >= _numSamples) ||
         (x < 0) || (x >= (int)_width) || 
         (y < 0) || (y >= (int)_height))

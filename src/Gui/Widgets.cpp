@@ -23,9 +23,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QAction>
 # include <QColorDialog>
-# include <QDesktopWidget>
+# include <QDebug>
+# include <QDesktopServices>
 # include <QDialogButtonBox>
 # include <QDrag>
 # include <QEventLoop>
@@ -38,7 +38,6 @@
 # include <QTextBlock>
 # include <QTimer>
 # include <QToolTip>
-# include <QDebug>
 #endif
 
 #include <Base/Tools.h>
@@ -46,15 +45,16 @@
 #include <Base/Interpreter.h>
 #include <App/ExpressionParser.h>
 
-#include "Command.h"
 #include "Widgets.h"
-#include "Application.h"
 #include "Action.h"
-#include "PrefWidgets.h"
+#include "Application.h"
 #include "BitmapFactory.h"
+#include "Command.h"
 #include "DlgExpressionInput.h"
+#include "PrefWidgets.h"
 #include "QuantitySpinBox_p.h"
 #include "Tools.h"
+#include "ui_DlgTreeWidget.h"
 
 using namespace Gui;
 using namespace App;
@@ -300,14 +300,14 @@ void ActionSelector::onItemDoubleClicked(QTreeWidgetItem * item, int column)
     if (treeWidget == availableWidget) {
         int index = availableWidget->indexOfTopLevelItem(item);
         item = availableWidget->takeTopLevelItem(index);
-        availableWidget->setCurrentItem(0);
+        availableWidget->setCurrentItem(nullptr);
         selectedWidget->addTopLevelItem(item);
         selectedWidget->setCurrentItem(item);
     }
     else if (treeWidget == selectedWidget) {
         int index = selectedWidget->indexOfTopLevelItem(item);
         item = selectedWidget->takeTopLevelItem(index);
-        selectedWidget->setCurrentItem(0);
+        selectedWidget->setCurrentItem(nullptr);
         availableWidget->addTopLevelItem(item);
         availableWidget->setCurrentItem(item);
     }
@@ -319,7 +319,7 @@ void ActionSelector::on_addButton_clicked()
     if (item) {
         int index = availableWidget->indexOfTopLevelItem(item);
         item = availableWidget->takeTopLevelItem(index);
-        availableWidget->setCurrentItem(0);
+        availableWidget->setCurrentItem(nullptr);
         selectedWidget->addTopLevelItem(item);
         selectedWidget->setCurrentItem(item);
     }
@@ -331,7 +331,7 @@ void ActionSelector::on_removeButton_clicked()
     if (item) {
         int index = selectedWidget->indexOfTopLevelItem(item);
         item = selectedWidget->takeTopLevelItem(index);
-        selectedWidget->setCurrentItem(0);
+        selectedWidget->setCurrentItem(nullptr);
         availableWidget->addTopLevelItem(item);
         availableWidget->setCurrentItem(item);
     }
@@ -369,40 +369,46 @@ void ActionSelector::on_downButton_clicked()
 
 /**
  * Constructs a line edit with no text.
- * The \a parent and \a name arguments are sent to the QLineEdit constructor.
+ * The \a parent argument is sent to the QLineEdit constructor.
  */
 AccelLineEdit::AccelLineEdit ( QWidget * parent )
   : QLineEdit(parent)
 {
-    noneStr = tr("none");
-    setText(noneStr);
+    setPlaceholderText(tr("Press a keyboard shortcut"));
+    setClearButtonEnabled(true);
     keyPressedCount = 0;
 }
 
 bool AccelLineEdit::isNone() const
 {
-    QString t = text();
-    return t.isEmpty() || t == noneStr;
+    return text().isEmpty();
 }
 
 /**
  * Checks which keys are pressed and show it as text.
  */
-void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
+void AccelLineEdit::keyPressEvent (QKeyEvent * e)
 {
     QString txtLine = text();
 
     int key = e->key();
     Qt::KeyboardModifiers state = e->modifiers();
 
-    // Backspace clears the shortcut
+    // Backspace clears the shortcut if text is present, else sets Backspace as shortcut.
     // If a modifier is pressed without any other key, return.
-    // AltGr is not a modifier but doesn't have a QtSring representation.
+    // AltGr is not a modifier but doesn't have a QString representation.
     switch(key) {
     case Qt::Key_Backspace:
+    case Qt::Key_Delete:
         if (state == Qt::NoModifier) {
             keyPressedCount = 0;
-            setText(noneStr);
+            if (isNone()) {
+                QKeySequence ks(key);
+                setText(ks.toString(QKeySequence::NativeText));
+            }
+            else {
+                clear();
+            }
         }
     case Qt::Key_Control:
     case Qt::Key_Shift:
@@ -424,7 +430,7 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
         txtLine.clear();
         break;
     default:
-        txtLine += QString::fromLatin1(",");
+        txtLine += QChar::fromLatin1(',');
         break;
     }
 
@@ -456,7 +462,66 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
 
 // ------------------------------------------------------------------------------
 
-#if QT_VERSION >= 0x050200
+/* TRANSLATOR Gui::ModifierLineEdit */
+
+/**
+ * Constructs a line edit with no text.
+ * The \a parent argument is sent to the QLineEdit constructor.
+ */
+ModifierLineEdit::ModifierLineEdit (QWidget * parent )
+  : QLineEdit(parent)
+{
+    setPlaceholderText(tr("Press modifier keys"));
+}
+
+/**
+ * Checks which modifiers are pressed and show it as text.
+ */
+void ModifierLineEdit::keyPressEvent (QKeyEvent * e)
+{
+    int key = e->key();
+    Qt::KeyboardModifiers state = e->modifiers();
+
+    switch(key) {
+    case Qt::Key_Backspace:
+    case Qt::Key_Delete:
+        clear();
+        return;
+    case Qt::Key_Control:
+    case Qt::Key_Shift:
+    case Qt::Key_Alt:
+    case Qt::Key_Meta:
+        break;
+    default:
+        return;
+    }
+
+    clear();
+    QString txtLine;
+
+    // Handles modifiers applying a mask.
+    if ((state & Qt::ControlModifier) == Qt::ControlModifier) {
+        QKeySequence ks(Qt::CTRL);
+        txtLine += ks.toString(QKeySequence::NativeText);
+    }
+    if ((state & Qt::AltModifier) == Qt::AltModifier) {
+        QKeySequence ks(Qt::ALT);
+        txtLine += ks.toString(QKeySequence::NativeText);
+    }
+    if ((state & Qt::ShiftModifier) == Qt::ShiftModifier) {
+        QKeySequence ks(Qt::SHIFT);
+        txtLine += ks.toString(QKeySequence::NativeText);
+    }
+    if ((state & Qt::MetaModifier) == Qt::MetaModifier) {
+        QKeySequence ks(Qt::META);
+        txtLine += ks.toString(QKeySequence::NativeText);
+    }
+
+    setText(txtLine);
+}
+
+// ------------------------------------------------------------------------------
+
 ClearLineEdit::ClearLineEdit (QWidget * parent)
   : QLineEdit(parent)
 {
@@ -476,41 +541,6 @@ void ClearLineEdit::updateClearButton(const QString& text)
 {
     clearAction->setVisible(!text.isEmpty());
 }
-#else
-ClearLineEdit::ClearLineEdit (QWidget * parent)
-  : QLineEdit(parent)
-{
-    clearButton = new QToolButton(this);
-    QPixmap pixmap(BitmapFactory().pixmapFromSvg(":/icons/edit-cleartext.svg", QSize(18, 18)));
-    clearButton->setIcon(QIcon(pixmap));
-    clearButton->setIconSize(pixmap.size());
-    clearButton->setCursor(Qt::ArrowCursor);
-    clearButton->setStyleSheet(QString::fromLatin1("QToolButton { border: none; padding: 0px; }"));
-    clearButton->hide();
-    connect(clearButton, SIGNAL(clicked()), this, SLOT(clear()));
-    connect(this, SIGNAL(textChanged(const QString&)),
-            this, SLOT(updateClearButton(const QString&)));
-    int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
-    setStyleSheet(QString::fromLatin1("QLineEdit { padding-right: %1px; } ")
-                  .arg(clearButton->sizeHint().width() + frameWidth + 1));
-    QSize msz = minimumSizeHint();
-    setMinimumSize(qMax(msz.width(), clearButton->sizeHint().height() + frameWidth * 2 + 2),
-                   msz.height());
-}
-
-void ClearLineEdit::resizeEvent(QResizeEvent *)
-{
-    QSize sz = clearButton->sizeHint();
-    int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth);
-    clearButton->move(rect().right() - frameWidth - sz.width(),
-                      (rect().bottom() + 1 - sz.height())/2);
-}
-
-void ClearLineEdit::updateClearButton(const QString& text)
-{
-    clearButton->setVisible(!text.isEmpty());
-}
-#endif
 
 // ------------------------------------------------------------------------------
 
@@ -525,8 +555,9 @@ void ClearLineEdit::updateClearButton(const QString& text)
  */
 CheckListDialog::CheckListDialog( QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl )
+    , ui(new Ui_DlgTreeWidget)
 {
-    ui.setupUi(this);
+    ui->setupUi(this);
 }
 
 /**
@@ -543,7 +574,7 @@ CheckListDialog::~CheckListDialog()
 void CheckListDialog::setCheckableItems( const QStringList& items )
 {
     for ( QStringList::ConstIterator it = items.begin(); it != items.end(); ++it ) {
-        QTreeWidgetItem* item = new QTreeWidgetItem(ui.treeWidget);
+        QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
         item->setText(0, *it);
         item->setCheckState(0, Qt::Unchecked);
     }
@@ -556,7 +587,7 @@ void CheckListDialog::setCheckableItems( const QStringList& items )
 void CheckListDialog::setCheckableItems( const QList<CheckListItem>& items )
 {
     for ( QList<CheckListItem>::ConstIterator it = items.begin(); it != items.end(); ++it ) {
-        QTreeWidgetItem* item = new QTreeWidgetItem(ui.treeWidget);
+        QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
         item->setText(0, (*it).first);
         item->setCheckState(0, ( (*it).second ? Qt::Checked : Qt::Unchecked));
     }
@@ -575,7 +606,7 @@ QStringList CheckListDialog::getCheckedItems() const
  */
 void CheckListDialog::accept ()
 {
-    QTreeWidgetItemIterator it(ui.treeWidget, QTreeWidgetItemIterator::Checked);
+    QTreeWidgetItemIterator it(ui->treeWidget, QTreeWidgetItemIterator::Checked);
     while (*it) {
         checked.push_back((*it)->text(0));
         ++it;
@@ -594,14 +625,16 @@ struct ColorButtonP
     bool allowChange;
     bool autoChange;
     bool drawFrame;
+    bool allowTransparency;
     bool modal;
     bool dirty;
 
     ColorButtonP()
-        : cd(0)
+        : cd(nullptr)
         , allowChange(true)
         , autoChange(false)
         , drawFrame(true)
+        , allowTransparency(false)
         , modal(true)
         , dirty(true)
     {
@@ -669,6 +702,21 @@ void ColorButton::setDrawFrame(bool ok)
 bool ColorButton::drawFrame() const
 {
     return d->drawFrame;
+}
+
+void Gui::ColorButton::setAllowTransparency(bool allow)
+{
+    d->allowTransparency = allow;
+    if (d->cd)
+        d->cd->setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, allow);
+}
+
+bool Gui::ColorButton::allowTransparency() const
+{
+    if (d->cd)
+        return d->cd->testOption(QColorDialog::ColorDialogOption::ShowAlphaChannel);
+    else
+        return d->allowTransparency;
 }
 
 void ColorButton::setModal(bool b)
@@ -762,7 +810,9 @@ void ColorButton::onChooseColor()
     if (d->modal) {
         QColor currentColor = d->col;
         QColorDialog cd(d->col, this);
-        cd.setOptions(QColorDialog::DontUseNativeDialog);
+        if (DialogOptions::dontUseNativeColorDialog())
+            cd.setOptions(QColorDialog::DontUseNativeDialog);
+        cd.setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
 
         if (d->autoChange) {
             connect(&cd, SIGNAL(currentColorChanged(const QColor &)),
@@ -787,7 +837,9 @@ void ColorButton::onChooseColor()
         if (d->cd.isNull()) {
             d->old = d->col;
             d->cd = new QColorDialog(d->col, this);
-            d->cd->setOptions(QColorDialog::DontUseNativeDialog);
+            if (DialogOptions::dontUseNativeColorDialog())
+                d->cd->setOptions(QColorDialog::DontUseNativeDialog);
+            d->cd->setOption(QColorDialog::ColorDialogOption::ShowAlphaChannel, d->allowTransparency);
             d->cd->setAttribute(Qt::WA_DeleteOnClose);
             connect(d->cd, SIGNAL(rejected()),
                     this, SLOT(onRejected()));
@@ -812,53 +864,33 @@ void ColorButton::onRejected()
 
 // ------------------------------------------------------------------------------
 
-UrlLabel::UrlLabel(QWidget * parent, Qt::WindowFlags f)
-  : QLabel(parent, f)
+UrlLabel::UrlLabel(QWidget* parent, Qt::WindowFlags f)
+    : QLabel(parent, f)
+    , _url (QStringLiteral("http://localhost"))
+    , _launchExternal(true)
 {
-    _url = QString::fromLatin1("http://localhost");
-    setToolTip(this->_url);
-
-    if (qApp->styleSheet().isEmpty()) {
-        setStyleSheet(QString::fromLatin1("Gui--UrlLabel {color: #0000FF;text-decoration: underline;}"));
-    }
+    setToolTip(this->_url);    
+    setCursor(Qt::PointingHandCursor);
+    if (qApp->styleSheet().isEmpty())
+        setStyleSheet(QStringLiteral("Gui--UrlLabel {color: #0000FF;text-decoration: underline;}"));
 }
 
 UrlLabel::~UrlLabel()
 {
 }
 
-void UrlLabel::enterEvent ( QEvent * )
+void Gui::UrlLabel::setLaunchExternal(bool l)
 {
-    setCursor(Qt::PointingHandCursor);
+    _launchExternal = l;
 }
 
-void UrlLabel::leaveEvent ( QEvent * )
+void UrlLabel::mouseReleaseEvent(QMouseEvent*)
 {
-    setCursor(Qt::ArrowCursor);
-}
-
-void UrlLabel::mouseReleaseEvent (QMouseEvent *)
-{
-    // The webbrowser Python module allows to start the system browser in an OS-independent way
-    Base::PyGILStateLocker lock;
-    PyObject* module = PyImport_ImportModule("webbrowser");
-    if (module) {
-        // get the methods dictionary and search for the 'open' method
-        PyObject* dict = PyModule_GetDict(module);
-        PyObject* func = PyDict_GetItemString(dict, "open");
-        if (func) {
-            PyObject* args = Py_BuildValue("(s)", (const char*)this->_url.toLatin1());
-#if PY_VERSION_HEX < 0x03090000
-            PyObject* result = PyEval_CallObject(func,args);
-#else
-            PyObject* result = PyObject_CallObject(func,args);
-#endif
-            // decrement the args and module reference
-            Py_XDECREF(result);
-            Py_DECREF(args);
-            Py_DECREF(module);
-        }
-    }
+    if (_launchExternal)
+        QDesktopServices::openUrl(this->_url);
+    else
+        // Someone else will deal with it...
+        Q_EMIT linkClicked(_url);
 }
 
 QString UrlLabel::url() const
@@ -866,10 +898,166 @@ QString UrlLabel::url() const
     return this->_url;
 }
 
+bool Gui::UrlLabel::launchExternal() const
+{
+    return _launchExternal;
+}
+
 void UrlLabel::setUrl(const QString& u)
 {
     this->_url = u;
     setToolTip(this->_url);
+}
+
+// --------------------------------------------------------------------
+
+StatefulLabel::StatefulLabel(QWidget* parent)
+    : QLabel(parent)
+    , _overridePreference(false)
+{
+    // Always attach to the parameter group that stores the main FreeCAD stylesheet
+    _stylesheetGroup = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
+    _stylesheetGroup->Attach(this);
+}
+
+StatefulLabel::~StatefulLabel()
+{
+    if (_parameterGroup.isValid())
+        _parameterGroup->Detach(this);
+    _stylesheetGroup->Detach(this);
+}
+
+void StatefulLabel::setDefaultStyle(const QString& defaultStyle)
+{
+    _defaultStyle = defaultStyle;
+}
+
+void StatefulLabel::setParameterGroup(const std::string& groupName)
+{
+    if (_parameterGroup.isValid())
+        _parameterGroup->Detach(this);
+        
+    // Attach to the Parametergroup so we know when it changes
+    _parameterGroup = App::GetApplication().GetParameterGroupByPath(groupName.c_str());    
+    if (_parameterGroup.isValid())
+        _parameterGroup->Attach(this);
+}
+
+void StatefulLabel::registerState(const QString& state, const QString& styleCSS,
+    const std::string& preferenceName)
+{
+    _availableStates[state] = { styleCSS, preferenceName };
+}
+
+void StatefulLabel::registerState(const QString& state, const QColor& color,
+    const std::string& preferenceName)
+{
+    QString css;
+    if (color.isValid())
+        css = QString::fromUtf8("Gui--StatefulLabel{ color : rgba(%1,%2,%3,%4) ;}").arg(color.red()).arg(color.green()).arg(color.blue()).arg(color.alpha());
+    _availableStates[state] = { css, preferenceName };
+}
+
+void StatefulLabel::registerState(const QString& state, const QColor& fg, const QColor& bg,
+    const std::string& preferenceName)
+{
+    QString colorEntries;
+    if (fg.isValid())
+        colorEntries.append(QString::fromUtf8("color : rgba(%1,%2,%3,%4);").arg(fg.red()).arg(fg.green()).arg(fg.blue()).arg(fg.alpha()));
+    if (bg.isValid())
+        colorEntries.append(QString::fromUtf8("background-color : rgba(%1,%2,%3,%4);").arg(bg.red()).arg(bg.green()).arg(bg.blue()).arg(bg.alpha()));
+    QString css = QString::fromUtf8("Gui--StatefulLabel{ %1 }").arg(colorEntries);
+    _availableStates[state] = { css, preferenceName };
+}
+
+/** Observes the parameter group and clears the cache if it changes */
+void StatefulLabel::OnChange(Base::Subject<const char*>& rCaller, const char* rcReason)
+{
+    Q_UNUSED(rCaller);
+    auto changedItem = std::string(rcReason);
+    if (changedItem == "StyleSheet") {
+        _styleCache.clear();
+    }
+    else {
+        for (const auto& state : _availableStates) {
+            if (state.second.preferenceString == changedItem) {
+                _styleCache.erase(_styleCache.find(state.first));
+            }
+        }
+    }
+}
+
+void StatefulLabel::setOverridePreference(bool overridePreference)
+{
+    _overridePreference = overridePreference;
+}
+
+void StatefulLabel::setState(QString state)
+{
+    _state = state;
+    this->ensurePolished();
+
+    // If the stylesheet insists, ignore all other logic and let it do its thing. This
+    // property is *only* set by the stylesheet.
+    if (_overridePreference)
+        return;
+
+    // Check the cache first:
+    if (auto style = _styleCache.find(_state); style != _styleCache.end()) {
+        auto test = style->second.toStdString();
+        this->setStyleSheet(style->second);
+        return;
+    }
+
+    if (auto entry = _availableStates.find(state); entry != _availableStates.end()) {
+        // Order of precedence: first, check if the user has set this in their preferences:
+        if (!entry->second.preferenceString.empty()) {            
+            // First, try to see if it's just stored a color (as an unsigned int):
+            auto availableColorPrefs = _parameterGroup->GetUnsignedMap();
+            std::string lookingForGroup = entry->second.preferenceString;
+            for (const auto &unsignedEntry : availableColorPrefs) {
+                std::string foundGroup = unsignedEntry.first;
+                if (unsignedEntry.first == entry->second.preferenceString) {
+                    // Convert the stored Uint into usable color data:
+                    unsigned int col = unsignedEntry.second;
+                    QColor qcolor((col >> 24) & 0xff, (col >> 16) & 0xff, (col >> 8) & 0xff);
+                    this->setStyleSheet(QString::fromUtf8("Gui--StatefulLabel{ color : rgba(%1,%2,%3,%4) ;}").arg(qcolor.red()).arg(qcolor.green()).arg(qcolor.blue()).arg(qcolor.alpha()));
+                    _styleCache[state] = this->styleSheet();
+                    return;
+                }
+            }
+
+            // If not, try to see if there's an entire style string set as ASCII:
+            auto availableStringPrefs = _parameterGroup->GetASCIIMap();
+            for (const auto& stringEntry : availableStringPrefs) {
+                if (stringEntry.first == entry->second.preferenceString) {
+                    QString css = QString::fromUtf8("Gui--StatefulLabel{ %1 }").arg(QString::fromStdString(stringEntry.second));
+                    this->setStyleSheet(css);
+                    _styleCache[state] = this->styleSheet();
+                    return;
+                }
+            }
+        }
+
+        // If there is no preferences entry for this label, allow the stylesheet to set it, and only set to the default
+        // formatting if there is no stylesheet entry
+        if (qApp->styleSheet().isEmpty()) {
+            this->setStyleSheet(entry->second.defaultCSS);
+            _styleCache[state] = this->styleSheet();
+            return;
+        }
+        // else the stylesheet sets our appearance: make sure it recalculates the appearance:
+        this->setStyleSheet(QString());
+        this->setStyle(qApp->style());
+        this->style()->unpolish(this);
+        this->style()->polish(this);
+    }
+    else {
+        if (styleSheet().isEmpty()) {
+            this->setStyleSheet(_defaultStyle);
+            _styleCache[state] = this->styleSheet();
+        }
+    }
 }
 
 // --------------------------------------------------------------------
@@ -943,7 +1131,7 @@ void LabelButton::browse()
 
 // ----------------------------------------------------------------------
 
-ToolTip* ToolTip::inst = 0;
+ToolTip* ToolTip::inst = nullptr;
 
 ToolTip* ToolTip::instance()
 {
@@ -1505,5 +1693,35 @@ void ExpLineEdit::keyPressEvent(QKeyEvent *event)
     if (!hasExpression())
         QLineEdit::keyPressEvent(event);
 }
+
+// --------------------------------------------------------------------
+
+ButtonGroup::ButtonGroup(QObject *parent)
+  : QButtonGroup(parent)
+  , _exclusive(true)
+{
+    QButtonGroup::setExclusive(false);
+
+    connect(this, qOverload<QAbstractButton *>(&QButtonGroup::buttonClicked),
+            [=](QAbstractButton *button) {
+        if (exclusive()) {
+            for (auto btn : buttons()) {
+                if (btn && btn != button && btn->isCheckable())
+                    btn->setChecked(false);
+            }
+        }
+    });
+}
+
+void ButtonGroup::setExclusive(bool on)
+{
+    _exclusive = on;
+}
+
+bool ButtonGroup::exclusive() const
+{
+    return _exclusive;
+}
+
 
 #include "moc_Widgets.cpp"

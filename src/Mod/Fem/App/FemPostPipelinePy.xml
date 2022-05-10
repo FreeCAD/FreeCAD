@@ -18,6 +18,11 @@
                 <UserDocu>Read in vtk file</UserDocu>
             </Documentation>
         </Methode>
+        <Methode Name="scale">
+            <Documentation>
+                <UserDocu>scale the points of a loaded vtk file</UserDocu>
+            </Documentation>
+        </Methode>
         <Methode Name="load">
             <Documentation>
                 <UserDocu>Load a result object</UserDocu>

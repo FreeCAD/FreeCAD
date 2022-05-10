@@ -566,7 +566,8 @@ void SoFCMeshNode::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center)
  */
 void SoFCMeshNode::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  if (!this->shouldPrimitiveCount(action)) return;
+  if (!this->shouldPrimitiveCount(action))
+      return;
   action->addNumTriangles(countTriangles());
 }
 
@@ -591,7 +592,8 @@ void SoFCMeshNode::write( SoWriteAction* action )
   else if (out->getStage() == SoOutput::WRITE) {
     const MeshCore::MeshPointArray& rPoints = _mesh->getKernel().GetPoints();
     const MeshCore::MeshFacetArray& rFacets = _mesh->getKernel().GetFacets();
-    if (this->writeHeader(out, FALSE, FALSE)) return;
+    if (this->writeHeader(out, FALSE, FALSE))
+        return;
     point.setNum(rPoints.size());
     unsigned int pos=0;
     for (MeshCore::MeshPointArray::_TConstIterator cP=rPoints.begin(); cP!=rPoints.end(); ++cP)
@@ -744,7 +746,8 @@ void SoFCMeshOpenEdge::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &cent
  */
 void SoFCMeshOpenEdge::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  if (!this->shouldPrimitiveCount(action)) return;
+  if (!this->shouldPrimitiveCount(action))
+      return;
   
   // Count number of open edges first
   int ctEdges=0;

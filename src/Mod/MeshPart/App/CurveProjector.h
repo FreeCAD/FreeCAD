@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Juergen Riegel         <juergen.riegel@web.de>          *
+ *   Copyright (c) 2008 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -33,6 +33,7 @@
 
 #include <Base/Vector3D.h>
 #include <Mod/Mesh/App/Mesh.h>
+#include <Mod/MeshPart/MeshPartGlobal.h>
 
 namespace MeshCore
 {
@@ -57,7 +58,7 @@ public:
 
   struct FaceSplitEdge
   {
-    unsigned long ulFaceIndex;
+    MeshCore::FacetIndex ulFaceIndex;
     Base::Vector3f p1,p2;
   };
 
@@ -95,7 +96,7 @@ public:
   void projectCurve(const TopoDS_Edge& aEdge,
                     std::vector<FaceSplitEdge> &vSplitEdges);
 
-  bool findStartPoint(const MeshKernel &MeshK,const Base::Vector3f &Pnt,Base::Vector3f &Rslt,unsigned long &FaceIndex);
+  bool findStartPoint(const MeshKernel &MeshK,const Base::Vector3f &Pnt,Base::Vector3f &Rslt,MeshCore::FacetIndex &FaceIndex);
 
 
 
@@ -121,7 +122,7 @@ public:
                     const std::vector<Base::Vector3f> &rclPoints,
                     std::vector<FaceSplitEdge> &vSplitEdges);
 
-  bool findStartPoint(const MeshKernel &MeshK,const Base::Vector3f &Pnt,Base::Vector3f &Rslt,unsigned long &FaceIndex);
+  bool findStartPoint(const MeshKernel &MeshK,const Base::Vector3f &Pnt,Base::Vector3f &Rslt,MeshCore::FacetIndex &FaceIndex);
 
 
 
@@ -162,7 +163,7 @@ public:
     /// Helper class
     struct SplitEdge
     {
-        unsigned long uE0, uE1; /**< start and endpoint of an edge */
+        MeshCore::PointIndex uE0, uE1; /**< start and endpoint of an edge */
         Base::Vector3f cPt; /**< Point on edge (\a uE0, \a uE1) */
     };
     struct Edge

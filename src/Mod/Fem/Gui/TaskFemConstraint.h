@@ -21,15 +21,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskFemConstraint_H
 #define GUI_TASKVIEW_TaskFemConstraint_H
 
-#include <Gui/TaskView/TaskView.h>
+#include <Gui/DocumentObserver.h>
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Mod/Fem/FemGlobal.h>
 
 #include "ViewProviderFemConstraint.h"
+
 
 class QAction;
 class QListWidget;
@@ -42,7 +44,7 @@ class TaskFemConstraint : public Gui::TaskView::TaskBox, public Gui::SelectionOb
     Q_OBJECT
 
 public:
-    TaskFemConstraint(ViewProviderFemConstraint *ConstraintView,QWidget *parent = 0,const char* pixmapname = "");
+    TaskFemConstraint(ViewProviderFemConstraint *ConstraintView,QWidget *parent = nullptr,const char* pixmapname = "");
     virtual ~TaskFemConstraint() {}
 
     virtual const std::string getReferences(void) const {return std::string();}
@@ -59,18 +61,17 @@ protected Q_SLOTS:
 
 protected:
     virtual void changeEvent(QEvent *e) { TaskBox::changeEvent(e); }
+    const QString makeRefText(const std::string& objName, const std::string& subName) const;
     const QString makeRefText(const App::DocumentObject* obj, const std::string& subName) const;
     virtual void keyPressEvent(QKeyEvent * ke);
     void createDeleteAction(QListWidget* parentList);
     bool KeyEvent(QEvent *e);
-
-private:
     virtual void onSelectionChanged(const Gui::SelectionChanges&) {}
 
 protected:
     QWidget* proxy;
     QAction* deleteAction;
-    ViewProviderFemConstraint *ConstraintView;
+    Gui::WeakPtrT<ViewProviderFemConstraint> ConstraintView;
     enum {seldir, selref, selloc, selnone} selectionMode;
 
 private:

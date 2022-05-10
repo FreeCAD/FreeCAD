@@ -26,15 +26,6 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define PointsExport    __declspec(dllimport)
-# define PointsGuiExport __declspec(dllexport)
-#else // for Linux
-# define PointsExport
-# define PointsGuiExport
-#endif
-
 #ifdef FC_OS_WIN32
 # ifndef NOMINMAX
 # define NOMINMAX
@@ -44,8 +35,8 @@
 #ifdef _PreComp_
 
 // standard
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 
 // STL
 #include <algorithm>
@@ -60,15 +51,14 @@
 #include <vector>
 #include <bitset>
 
-#include <Python.h>
 #ifdef FC_OS_WIN32
 # include <windows.h>
 #endif
 
 
 // Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
+#ifndef __QtAll__
+# include <Gui/QtAll.h>
 #endif
 
 // Inventor
@@ -79,4 +69,4 @@
 
 #endif  //_PreComp_
 
-#endif // POINTSGUI_PRECOMPILED_H 
+#endif // POINTSGUI_PRECOMPILED_H

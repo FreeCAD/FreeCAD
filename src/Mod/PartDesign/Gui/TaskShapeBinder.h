@@ -24,8 +24,8 @@
 #ifndef GUI_TASKVIEW_TaskDatumShapeBinder_H
 #define GUI_TASKVIEW_TaskDatumShapeBinder_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
 
 #include "ViewProviderShapeBinder.h"
 
@@ -49,7 +49,7 @@ class TaskShapeBinder : public Gui::TaskView::TaskBox, Gui::SelectionObserver
     Q_OBJECT
 
 public:
-    TaskShapeBinder(ViewProviderShapeBinder *view,bool newObj=false,QWidget *parent = 0);
+    TaskShapeBinder(ViewProviderShapeBinder *view,bool newObj=false,QWidget *parent = nullptr);
     ~TaskShapeBinder();
 
  

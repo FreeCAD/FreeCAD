@@ -45,7 +45,7 @@ class GuiExport Action : public QObject
     Q_OBJECT
 
 public:
-    Action (Command* pcCmd, QObject * parent = 0);
+    Action (Command* pcCmd, QObject * parent = nullptr);
     /// Action takes ownership of the 'action' object.
     Action (Command* pcCmd, QAction* action, QObject * parent);
     virtual ~Action();
@@ -98,7 +98,7 @@ class GuiExport ActionGroup : public Action
     Q_OBJECT
 
 public:
-    ActionGroup (Command* pcCmd, QObject * parent = 0);
+    ActionGroup (Command* pcCmd, QObject * parent = nullptr);
     virtual ~ActionGroup();
 
     void addTo (QWidget * w);
@@ -107,6 +107,7 @@ public:
     void setExclusive (bool);
     bool isExclusive() const;
     void setVisible (bool);
+    void setIsMode(bool b) { _isMode = b; }
 
     void setDropDownMenu(bool b) { _dropDown = b; }
     QAction* addAction(QAction*);
@@ -126,6 +127,7 @@ protected:
     bool _dropDown;
     bool _external;
     bool _toggle;
+    bool _isMode;
 };
 
 // --------------------------------------------------------------------
@@ -136,7 +138,7 @@ class GuiExport WorkbenchComboBox : public QComboBox
     Q_OBJECT
 
 public:
-    WorkbenchComboBox(WorkbenchGroup* wb, QWidget* parent=0);
+    WorkbenchComboBox(WorkbenchGroup* wb, QWidget* parent=nullptr);
     virtual ~WorkbenchComboBox();
     void showPopup();
 
@@ -195,7 +197,7 @@ class GuiExport RecentFilesAction : public ActionGroup
     Q_OBJECT
 
 public:
-    RecentFilesAction (Command* pcCmd, QObject * parent = 0);
+    RecentFilesAction (Command* pcCmd, QObject * parent = nullptr);
     virtual ~RecentFilesAction();
 
     void appendFile(const QString&);
@@ -228,7 +230,7 @@ class GuiExport RecentMacrosAction : public ActionGroup
     Q_OBJECT
 
 public:
-    RecentMacrosAction (Command* pcCmd, QObject * parent = 0);
+    RecentMacrosAction (Command* pcCmd, QObject * parent = nullptr);
     virtual ~RecentMacrosAction();
 
     void appendFile(const QString&);
@@ -261,7 +263,7 @@ class GuiExport UndoAction : public Action
     Q_OBJECT
 
 public:
-    UndoAction (Command* pcCmd,QObject * parent = 0);
+    UndoAction (Command* pcCmd,QObject * parent = nullptr);
     ~UndoAction();
     void addTo (QWidget * w);
     void setEnabled(bool);
@@ -286,7 +288,7 @@ class GuiExport RedoAction : public Action
     Q_OBJECT
 
 public:
-    RedoAction (Command* pcCmd,QObject * parent = 0);
+    RedoAction (Command* pcCmd,QObject * parent = nullptr);
     ~RedoAction();
     void addTo ( QWidget * w );
     void setEnabled(bool);
@@ -310,7 +312,7 @@ class GuiExport DockWidgetAction : public Action
     Q_OBJECT
 
 public:
-    DockWidgetAction (Command* pcCmd, QObject * parent = 0);
+    DockWidgetAction (Command* pcCmd, QObject * parent = nullptr);
     virtual ~DockWidgetAction();
     void addTo (QWidget * w);
 
@@ -329,7 +331,7 @@ class GuiExport ToolBarAction : public Action
     Q_OBJECT
 
 public:
-    ToolBarAction (Command* pcCmd, QObject * parent = 0);
+    ToolBarAction (Command* pcCmd, QObject * parent = nullptr);
     virtual ~ToolBarAction();
     void addTo (QWidget * w);
 
@@ -347,7 +349,7 @@ class GuiExport WindowAction : public ActionGroup
     Q_OBJECT
 
 public:
-    WindowAction (Command* pcCmd, QObject * parent = 0);
+    WindowAction (Command* pcCmd, QObject * parent = nullptr);
     virtual ~WindowAction();
     void addTo (QWidget * w);
 

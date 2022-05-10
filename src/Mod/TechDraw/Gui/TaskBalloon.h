@@ -24,15 +24,14 @@
 #ifndef GUI_TASKVIEW_TASKBALLOON_H
 #define GUI_TASKVIEW_TASKBALLOON_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
-
-#include "QGIViewBalloon.h"
-#include "ViewProviderBalloon.h"
+#include <Gui/TaskView/TaskView.h>
 
 namespace TechDrawGui
 {
 
+class QGIViewBalloon;
+class ViewProviderBalloon;
 class Ui_TaskBalloon;
 class TaskBalloon : public QWidget
 {

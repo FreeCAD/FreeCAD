@@ -24,22 +24,19 @@
 
 #ifndef _PreComp_
 # include <sstream>
-#endif
 
 #include <Inventor/SbBox.h>
-#include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/misc/SoState.h>
-
-#include <string.h>
+#include <Inventor/nodes/SoText2.h>
+#include <Inventor/nodes/SoTransform.h>
 #include <iostream>
+#include <string>
+#endif
 
 #include "SoFCBoundingBox.h"
+
 
 using namespace Gui;
 

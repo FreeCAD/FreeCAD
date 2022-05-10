@@ -26,16 +26,10 @@
 
 #ifndef _PreComp_
 #include <Precision.hxx>
-
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/UnitsApi.h>
-#include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 
@@ -102,7 +96,7 @@ bool ViewProviderHatch::setEdit(int ModNum)
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
     TaskDlgHatch *projDlg = qobject_cast<TaskDlgHatch *>(dlg);
     if (projDlg && (projDlg->getViewProvider() != this))
-        projDlg = 0; // somebody left task panel open
+        projDlg = nullptr; // somebody left task panel open
 
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
@@ -169,8 +163,10 @@ bool ViewProviderHatch::canDelete(App::DocumentObject *obj) const
 Gui::MDIView *ViewProviderHatch::getMDIView() const
 {
     auto obj = getViewObject();
-    if(!obj) return 0;
+    if(!obj)
+        return nullptr;
     auto vp = Gui::Application::Instance->getViewProvider(obj->getSourceView());
-    if(!vp) return 0;
+    if(!vp)
+        return nullptr;
     return vp->getMDIView();
 }

@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QWidget" name="toolEditor" native="true">
+    <widget class="QWidget" name="toolEditor">
      <layout class="QVBoxLayout" name="verticalLayout_2"/>
     </widget>
    </item>

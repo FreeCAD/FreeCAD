@@ -40,7 +40,7 @@
 #include "PointsAlgos.h"
 #include "PointsPy.h"
 
-#ifdef _WIN32
+#ifdef _MSC_VER
 # include <ppl.h>
 #endif
 
@@ -56,7 +56,7 @@ PointKernel::PointKernel(const PointKernel& pts)
 
 }
 
-std::vector<const char*> PointKernel::getElementTypes(void) const
+std::vector<const char*> PointKernel::getElementTypes() const
 {
     std::vector<const char*> temp;
     //temp.push_back("Segment");
@@ -79,13 +79,13 @@ Data::Segment* PointKernel::getSubElement(const char* /*Type*/, unsigned long /*
     //    return 0;
     //}
 
-    return 0;
+    return nullptr;
 }
 
 void PointKernel::transformGeometry(const Base::Matrix4D &rclMat)
 {
     std::vector<value_type>& kernel = getBasicPoints();
-#ifdef _WIN32
+#ifdef _MSC_VER
     // Win32-only at the moment since ppl.h is a Microsoft library. Points is not using Qt so we cannot use QtConcurrent
     // We could also rewrite Points to leverage SIMD instructions
     // Other option: openMP. But with VC2013 results in high CPU usage even after computation (busy-waits for >100ms)
@@ -99,11 +99,11 @@ void PointKernel::transformGeometry(const Base::Matrix4D &rclMat)
 #endif
 }
 
-Base::BoundBox3d PointKernel::getBoundBox(void)const
+Base::BoundBox3d PointKernel::getBoundBox()const
 {
     Base::BoundBox3d bnd;
 
-#ifdef _WIN32
+#ifdef _MSC_VER
     // Thread-local bounding boxes
     Concurrency::combinable<Base::BoundBox3d> bbs;
     // Cannot use a const_point_iterator here as it is *not* a proper iterator (fails the for_each template)
@@ -131,16 +131,16 @@ void PointKernel::operator = (const PointKernel& Kernel)
     }
 }
 
-unsigned int PointKernel::getMemSize (void) const
+unsigned int PointKernel::getMemSize () const
 {
     return _Points.size() * sizeof(value_type);
 }
 
-PointKernel::size_type PointKernel::countValid(void) const
+PointKernel::size_type PointKernel::countValid() const
 {
     size_type num = 0;
     for (const_point_iterator it = begin(); it != end(); ++it) {
-        if (!(boost::math::isnan(it->x) || 
+        if (!(boost::math::isnan(it->x) ||
               boost::math::isnan(it->y) ||
               boost::math::isnan(it->z)))
             num++;
@@ -153,7 +153,7 @@ std::vector<PointKernel::value_type> PointKernel::getValidPoints() const
     std::vector<PointKernel::value_type> valid;
     valid.reserve(countValid());
     for (const_point_iterator it = begin(); it != end(); ++it) {
-        if (!(boost::math::isnan(it->x) || 
+        if (!(boost::math::isnan(it->x) ||
               boost::math::isnan(it->y) ||
               boost::math::isnan(it->z)))
             valid.emplace_back(
@@ -168,7 +168,7 @@ void PointKernel::Save (Base::Writer &writer) const
 {
     if (!writer.isForceXML()) {
         writer.Stream() << writer.ind()
-            << "<Points file=\"" << writer.addFile(writer.ObjectName.c_str(), this) << "\" " 
+            << "<Points file=\"" << writer.addFile(writer.ObjectName.c_str(), this) << "\" "
             << "mtrx=\"" << _Mtrx.toString() << "\"/>" << std::endl;
     }
 }
@@ -220,7 +220,7 @@ void PointKernel::save(const char* file) const
     save(out);
 }
 
-void PointKernel::load(const char* file) 
+void PointKernel::load(const char* file)
 {
     PointsAlgos::Load(*this,file);
 }
@@ -267,7 +267,7 @@ PointKernel::const_point_iterator::const_point_iterator
 //{
 //}
 
-PointKernel::const_point_iterator& 
+PointKernel::const_point_iterator&
 PointKernel::const_point_iterator::operator=(const PointKernel::const_point_iterator& pi)
 {
     this->_kernel  = pi._kernel;

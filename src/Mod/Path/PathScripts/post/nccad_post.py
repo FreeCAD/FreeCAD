@@ -26,7 +26,7 @@ from PathScripts import PostUtils
 import datetime
 
 
-TOOLTIP = '''
+TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to take
 a pseudo-gcode fragment output by a Path object and output real GCode
 suitable for the Max Computer GmbH nccad9 Computer Numeric Control.
@@ -41,33 +41,35 @@ Supported features:
 
 import nccad_post
 nccad_post.export([object], "/path/to/file.knc", "")
-'''
+"""
 
 
-MACHINE_NAME = '''Max Computer GmbH nccad9 MCS/KOSY'''
+MACHINE_NAME = """Max Computer GmbH nccad9 MCS/KOSY"""
 
 
 # gCode for changing tools
 # M01 <String> ; Displays <String> and waits for user interaction
-TOOL_CHANGE = '''G77      ; Move to release position
+TOOL_CHANGE = """G77      ; Move to release position
 M10 O6.0 ; Stop spindle
 M01 Insert tool TOOL
 G76      ; Move to reference point to ensure correct coordinates after tool change
-M10 O6.1 ; Start spindel'''
+M10 O6.1 ; Start spindle"""
 
 
 # gCode finishing the program
-POSTAMBLE = '''G77      ; Move to release position
-M10 O6.0 ; Stop spindle'''
+POSTAMBLE = """G77      ; Move to release position
+M10 O6.0 ; Stop spindle"""
 
 
 # gCode header with information about CAD-software, post-processor
 # and date/time
-HEADER = ''';Exported by FreeCAD
+HEADER = """;Exported by FreeCAD
 ;Post Processor: {}
 ;CAM file: {}
 ;Output Time: {}
-'''.format(__name__, App.ActiveDocument.FileName, str(datetime.datetime.now()))
+""".format(
+    __name__, App.ActiveDocument.FileName, str(datetime.datetime.now())
+)
 
 
 def export(objectslist, filename, argstring):
@@ -86,14 +88,15 @@ def export(objectslist, filename, argstring):
     for obj in objectslist:
         for command in obj.Path.Commands:
             # Manipulate tool change commands
-            if 'M6' == command.Name:
-                gcode += TOOL_CHANGE.replace('TOOL',
-                                             str(int(command.Parameters['T'])))
-            elif 'M3' == command.Name:
+            if "M6" == command.Name:
+                gcode += TOOL_CHANGE.replace("TOOL", str(int(command.Parameters["T"])))
+            elif "M3" == command.Name:
                 # Convert spindle speed (rpm) command to comment
-                gcode += ('M01 Set spindle speed to '
-                          + str(int(command.Parameters['S']))
-                          + ' rounds per minute')
+                gcode += (
+                    "M01 Set spindle speed to "
+                    + str(int(command.Parameters["S"]))
+                    + " rounds per minute"
+                )
             else:
                 # Add other commands
                 gcode += command.Name
@@ -102,15 +105,15 @@ def export(objectslist, filename, argstring):
                 for parameter, value in command.Parameters.items():
                     # Multiply F parameter value by 10,
                     # FreeCAD = mm/s, nccad = 1/10 mm/s
-                    if 'F' == parameter:
+                    if "F" == parameter:
                         value *= 10
                     # Add command parameters and values and round float
                     # as nccad9 does not support exponents
-                    gcode += ' ' + parameter + str(round(value, 5))
+                    gcode += " " + parameter + str(round(value, 5))
 
-            gcode += '\n'
+            gcode += "\n"
 
-    gcode += POSTAMBLE + '\n'
+    gcode += POSTAMBLE + "\n"
 
     # Open editor window
     if App.GuiUp:
@@ -121,7 +124,7 @@ def export(objectslist, filename, argstring):
             gcode = dia.editor.toPlainText()
 
     # Save to file
-    if filename != '-':
+    if filename != "-":
         gfile = open(filename, "w")
         gfile.write(gcode)
         gfile.close()

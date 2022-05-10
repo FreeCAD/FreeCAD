@@ -25,6 +25,7 @@
 #define POINTS_WORKBENCH_H
 
 #include <Gui/Workbench.h>
+#include <Mod/Points/PointsGlobal.h>
 
 namespace PointsGui {
 
@@ -48,4 +49,4 @@ protected:
 } // namespace PointsGui
 
 
-#endif // POINTS_WORKBENCH_H 
+#endif // POINTS_WORKBENCH_H

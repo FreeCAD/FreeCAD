@@ -20,32 +20,31 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QVBoxLayout>
+ #include <QCheckBox>
+# include <QLabel>
+# include <QLineEdit>
 # include <QListWidget>
 # include <QListWidgetItem>
-# include <QLineEdit>
+# include <QMenu>
 # include <QTextStream>
 # include <QToolButton>
- #include <QCheckBox>
-# include <QMenu>
-# include <QLabel>
+# include <QVBoxLayout>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
+#include <App/ComplexGeoData.h>
 #include <App/Document.h>
 #include <App/GeoFeature.h>
-#include "SelectionView.h"
-#include "Command.h"
-#include "Application.h"
-#include "Document.h"
-#include "ViewProvider.h"
-#include "BitmapFactory.h"
 
-FC_LOG_LEVEL_INIT("Selection",true,true,true)
+#include "SelectionView.h"
+#include "Application.h"
+#include "BitmapFactory.h"
+#include "Command.h"
+#include "Document.h"
+
+
+FC_LOG_LEVEL_INIT("Selection", true, true, true)
 
 using namespace Gui;
 using namespace Gui::DockWnd;
@@ -55,8 +54,9 @@ using namespace Gui::DockWnd;
 
 SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
   : DockWindow(pcDocument,parent)
-  , SelectionObserver(false,0)
+  , SelectionObserver(true, ResolveMode::NoResolve)
   , x(0.0f), y(0.0f), z(0.0f)
+  , openedAutomatically(false)
 {
     setWindowTitle(tr("Selection View"));
 
@@ -124,6 +124,22 @@ void SelectionView::leaveEvent(QEvent *)
 /// @cond DOXERR
 void SelectionView::onSelectionChanged(const SelectionChanges &Reason)
 {
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+        ->GetGroup("Preferences")->GetGroup("Selection");
+    bool autoShow = hGrp->GetBool("AutoShowSelectionView", false);
+    hGrp->SetBool("AutoShowSelectionView", autoShow); // Remove this line once the preferences window item is implemented
+
+    if (autoShow) {
+        if (!parentWidget()->isVisible() && Selection().hasSelection()) {
+            parentWidget()->show();
+            openedAutomatically = true;
+        }
+        else if (openedAutomatically && !Selection().hasSelection()) {
+            parentWidget()->hide();
+            openedAutomatically = false;
+        }
+    }
+
     QString selObject;
     QTextStream str(&selObject);
     if (Reason.Type == SelectionChanges::AddSelection) {
@@ -185,7 +201,7 @@ void SelectionView::onSelectionChanged(const SelectionChanges &Reason)
     else if (Reason.Type == SelectionChanges::SetSelection) {
         // remove all items
         selectionView->clear();
-        std::vector<SelectionSingleton::SelObj> objs = Gui::Selection().getSelection(Reason.pDocName,0);
+        std::vector<SelectionSingleton::SelObj> objs = Gui::Selection().getSelection(Reason.pDocName, ResolveMode::NoResolve);
         for (std::vector<SelectionSingleton::SelObj>::iterator it = objs.begin(); it != objs.end(); ++it) {
             // save as user data
             QStringList list;
@@ -297,7 +313,7 @@ void SelectionView::validateSearch(void)
         if (doc) {
             Gui::Selection().clearSelection();
             for (std::vector<App::DocumentObject*>::iterator it = searchList.begin(); it != searchList.end(); ++it) {
-                Gui::Selection().addSelection(doc->getName(),(*it)->getNameInDocument(),0);
+                Gui::Selection().addSelection(doc->getName(),(*it)->getNameInDocument(),nullptr);
             }
         }
     }
@@ -344,11 +360,13 @@ void SelectionView::deselect(void)
 
 void SelectionView::toggleSelect(QListWidgetItem* item)
 {
-    if (!item) return;
+    if (!item)
+        return;
     std::string name = item->text().toLatin1().constData();
     char *docname = &name.at(0);
     char *objname = std::strchr(docname,'#');
-    if(!objname) return;
+    if(!objname)
+        return;
     *objname++ = 0;
     char *subname = std::strchr(objname,'.');
     if(subname) {
@@ -382,11 +400,13 @@ void SelectionView::toggleSelect(QListWidgetItem* item)
 
 void SelectionView::preselect(QListWidgetItem* item)
 {
-    if (!item) return;
+    if (!item)
+        return;
     std::string name = item->text().toLatin1().constData();
     char *docname = &name.at(0);
     char *objname = std::strchr(docname,'#');
-    if(!objname) return;
+    if(!objname)
+        return;
     *objname++ = 0;
     char *subname = std::strchr(objname,'.');
     if(subname) {
@@ -534,7 +554,7 @@ QString SelectionView::getProperty(App::DocumentObject* obj) const
         App::GeoFeature* geo = static_cast<App::GeoFeature*>(obj);
         const App::PropertyComplexGeoData* data = geo->getPropertyOfGeometry();
         const char* name = data ? data->getName() : nullptr;
-        if (name) {
+        if (App::Property::isValidName(name)) {
             property = QString::fromLatin1(name);
         }
     }
@@ -604,14 +624,10 @@ bool SelectionView::onMsg(const char* /*pMsg*/,const char** /*ppReturn*/)
 }
 
 void SelectionView::hideEvent(QHideEvent *ev) {
-    FC_TRACE(this << " detaching selection observer");
-    this->detachSelection();
     DockWindow::hideEvent(ev);
 }
 
 void SelectionView::showEvent(QShowEvent *ev) {
-    FC_TRACE(this << " attaching selection observer");
-    this->attachSelection();
     enablePickList->setChecked(Selection().needPickedList());
     Gui::DockWindow::showEvent(ev);
 }

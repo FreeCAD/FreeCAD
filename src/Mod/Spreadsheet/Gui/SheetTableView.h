@@ -52,16 +52,24 @@ class SheetTableView : public QTableView
 {
     Q_OBJECT
 public:
-    explicit SheetTableView(QWidget *parent = 0);
+    explicit SheetTableView(QWidget *parent = nullptr);
     ~SheetTableView();
     
     void edit(const QModelIndex &index);
     void setSheet(Spreadsheet::Sheet *_sheet);
     std::vector<App::Range> selectedRanges() const;
+    QModelIndexList selectedIndexesRaw() const;
+    QString toHtml() const;
+
+public Q_SLOTS:
+    void mergeCells();
+    void splitCell();
     void deleteSelection();
     void copySelection();
     void cutSelection();
     void pasteClipboard();
+    void finishEditWithMove(int keyPressed, Qt::KeyboardModifiers modifiers, bool handleTabMotion = false);
+    void ModifyBlockSelection(int targetRow, int targetColumn);
 
 protected Q_SLOTS:
     void commitData(QWidget *editor);
@@ -73,13 +81,34 @@ protected Q_SLOTS:
     void insertColumnsAfter();
     void removeColumns();
     void cellProperties();
+    void onRecompute();
+    void onBind();
+    void onConfSetup();
+
 protected:
     bool edit(const QModelIndex &index, EditTrigger trigger, QEvent *event);
     bool event(QEvent *event);
     void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint);
+    void mousePressEvent(QMouseEvent* event);
+    void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+
+    void contextMenuEvent (QContextMenuEvent * e);
+
+    void _copySelection(const std::vector<App::Range> &ranges, bool copy);
 
     QModelIndex currentEditIndex;
     Spreadsheet::Sheet * sheet;
+    int tabCounter;
+
+    QMenu *contextMenu;
+
+    QAction *actionMerge;
+    QAction *actionSplit;
+    QAction *actionCopy;
+    QAction *actionPaste;
+    QAction *actionCut;
+    QAction *actionDel;
+    QAction *actionBind;
 
     boost::signals2::scoped_connection cellSpanChangedConnection;
 };

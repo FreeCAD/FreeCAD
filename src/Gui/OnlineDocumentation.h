@@ -60,7 +60,7 @@ class HttpServer : public QTcpServer
     Q_OBJECT
 
 public:
-    HttpServer(QObject* parent = 0);
+    HttpServer(QObject* parent = nullptr);
 
     void incomingConnection(qintptr socket);
     void pause();

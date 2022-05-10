@@ -42,16 +42,12 @@
 
 #include "SketchGeometryExtension.h"
 
+#include "GeoEnum.h"
+
+#include "GeoList.h"
+
 namespace Sketcher
 {
-
-struct SketcherExport GeoEnum
-{
-    static const int RtPnt;
-    static const int HAxis;
-    static const int VAxis;
-    static const int RefExt;
-};
 
 class SketchAnalysis;
 
@@ -200,6 +196,8 @@ public:
     /// retrieves a vector containing both normal and external Geometry (including the sketch axes)
     std::vector<Part::Geometry*> getCompleteGeometry(void) const;
 
+    GeoListFacade getGeoListFacade(void) const;
+
     /// converts a GeoId index into an index of the CompleteGeometry vector
     int getCompleteGeometryIndex(int GeoId) const;
 
@@ -244,6 +242,8 @@ public:
 
     /// set the driving status of this constraint and solve
     int setVirtualSpace(int ConstrId, bool isinvirtualspace);
+    /// set the driving status of a group of constraints at once
+    int setVirtualSpace(std::vector<int> constrIds, bool isinvirtualspace);
     /// get the driving status of this constraint
     int getVirtualSpace(int ConstrId, bool &isinvirtualspace) const;
     /// toggle the driving status of this constraint
@@ -283,12 +283,12 @@ public:
     /// trim a curve
     int trim(int geoId, const Base::Vector3d& point);
     /// extend a curve
-    int extend(int geoId, double increment, int endPoint);
+    int extend(int geoId, double increment, PointPos endPoint);
     /// split a curve
     int split(int geoId, const Base::Vector3d &point);
 
     /// adds symmetric geometric elements with respect to the refGeoId (line or point)
-    int addSymmetric(const std::vector<int> &geoIdList, int refGeoId, Sketcher::PointPos refPosId=Sketcher::none);
+    int addSymmetric(const std::vector<int> &geoIdList, int refGeoId, Sketcher::PointPos refPosId=Sketcher::PointPos::none);
     /// with default parameters adds a copy of the geometric elements displaced by the displacement vector.
     /// It creates an array of csize elements in the direction of the displacement vector by rsize elements in the
     /// direction perpendicular to the displacement vector, wherein the modulus of this perpendicular vector is scaled by perpscale.
@@ -339,6 +339,15 @@ public:
      \retval bool - returns true if the operation succeeded, or false if it did not succeed.
      */
     bool modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int multiplicityincr = 1);
+
+    /*!
+      \brief Inserts a knot in the BSpline at `param` with given `multiplicity`. If the knot already exists, its multiplicity is increased by `multiplicity`.
+      \param GeoId - the geometry of type bspline to increase the degree
+      \param param - the parameter value where the knot is to be placed
+      \param multiplicity - multiplicity of the inserted knot
+      \retval bool - returns true if the operation succeeded, or false if it did not succeed.
+    */
+    bool insertBSplineKnot(int GeoId, double param, int multiplicity = 1);
 
     /// retrieves for a Vertex number the corresponding GeoId and PosId
     void getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId) const;
@@ -481,15 +490,15 @@ public:
     };
     /// Return true if this object is allowed as external geometry for the
     /// sketch. rsn argument receives the reason for disallowing.
-    bool isExternalAllowed(App::Document *pDoc, App::DocumentObject *pObj, eReasonList* rsn = 0) const;
+    bool isExternalAllowed(App::Document *pDoc, App::DocumentObject *pObj, eReasonList* rsn = nullptr) const;
 
-    bool isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject *pObj, bool & xinv, bool & yinv, eReasonList* rsn = 0) const;
+    bool isCarbonCopyAllowed(App::Document *pDoc, App::DocumentObject *pObj, bool & xinv, bool & yinv, eReasonList* rsn = nullptr) const;
 
     bool isPerformingInternalTransaction() const {return internaltransaction;};
 
     /** retrieves intersection points of this curve with the closest two curves around a point of this curve.
      * - it includes internal and external intersecting geometry.
-     * - it returns Constraint::GeoUndef if no intersection is found.
+     * - it returns GeoEnum::GeoUndef if no intersection is found.
      */
     bool seekTrimPoints(int GeoId, const Base::Vector3d &point,
                                   int &GeoId1, Base::Vector3d &intersect1,
@@ -596,19 +605,19 @@ protected:
     void addConstraint( Sketcher::ConstraintType constrType,
                         int firstGeoId,
                         Sketcher::PointPos firstPos,
-                        int secondGeoId = Constraint::GeoUndef,
-                        Sketcher::PointPos secondPos = Sketcher::none,
-                        int thirdGeoId = Constraint::GeoUndef,
-                        Sketcher::PointPos thirdPos = Sketcher::none);
+                        int secondGeoId = GeoEnum::GeoUndef,
+                        Sketcher::PointPos secondPos = Sketcher::PointPos::none,
+                        int thirdGeoId = GeoEnum::GeoUndef,
+                        Sketcher::PointPos thirdPos = Sketcher::PointPos::none);
 
     // creates a new constraint
     std::unique_ptr<Constraint> createConstraint(   Sketcher::ConstraintType constrType,
                                                     int firstGeoId,
                                                     Sketcher::PointPos firstPos,
-                                                    int secondGeoId = Constraint::GeoUndef,
-                                                    Sketcher::PointPos secondPos = Sketcher::none,
-                                                    int thirdGeoId = Constraint::GeoUndef,
-                                                    Sketcher::PointPos thirdPos = Sketcher::none);
+                                                    int secondGeoId = GeoEnum::GeoUndef,
+                                                    Sketcher::PointPos secondPos = Sketcher::PointPos::none,
+                                                    int thirdGeoId = GeoEnum::GeoUndef,
+                                                    Sketcher::PointPos thirdPos = Sketcher::PointPos::none);
 
 private:
     /// Flag to allow external geometry from other bodies than the one this sketch belongs to

@@ -233,7 +233,6 @@ class GitControl(VersionControl):
                 if remote in self.remotes:
                     url=self.remotes[remote]
                     #rewrite github to public url
-                    import re
                     match = re.match('git@github\.com:(\S+?)/(\S+\.git)',url) \
                             or re.match('https://github\.com/(\S+)/(\S+\.git)'\
                             ,url)
@@ -331,7 +330,6 @@ class GitControl(VersionControl):
         self.branch=self.branch[2:]
         self.getremotes() #setup self.remotes and branchlst
 
-        remote='origin' #used to determine the url
         self.geturl()
         origin = None #remote for the blessed master
         for fetchurl in ("git@github.com:FreeCAD/FreeCAD.git",\
@@ -350,8 +348,6 @@ class GitControl(VersionControl):
         if self.branch == '(no branch)': #check for remote branches
             if len(self.branchlst) >= 2:
                 self.branch = self.branchlst[1]
-                if '/' in self.branch:
-                    remote=self.branch.split('/',1)[0]
             else: # guess
                 self.branch = '(%s)' % \
                     os.popen("git describe --all --dirty").read().strip()

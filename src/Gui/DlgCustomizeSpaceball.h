@@ -23,10 +23,10 @@
 #ifndef GUI_DIALOG_DLGCUSTOMIZESPACEBALL_H
 #define GUI_DIALOG_DLGCUSTOMIZESPACEBALL_H
 
-#include <QTreeView>
-#include <QListView>
-#include <QComboBox>
 #include <QAbstractListModel>
+#include <QComboBox>
+#include <QListView>
+#include <QTreeView>
 #include "PropertyPage.h"
 
 #include <boost/foreach.hpp>
@@ -44,7 +44,7 @@ namespace Gui
         {
             Q_OBJECT
         public:
-            ButtonView(QWidget *parent = 0);
+            ButtonView(QWidget *parent = nullptr);
             void selectButton(int number);
         Q_SIGNALS:
             void changeCommandSelection(const QString& commandName);
@@ -79,7 +79,7 @@ namespace Gui
         {
             Q_OBJECT
         public:
-            CommandView(QWidget *parent = 0);
+            CommandView(QWidget *parent = nullptr);
         public Q_SLOTS:
             void goChangeCommandSelection(const QString& commandName);
         private Q_SLOTS:
@@ -107,7 +107,7 @@ namespace Gui
         {
             Q_OBJECT
         public:
-            CommandModel(QObject *parent = 0);
+            CommandModel(QObject *parent = nullptr);
             ~CommandModel();
             virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
             virtual QModelIndex parent(const QModelIndex &index) const;
@@ -144,7 +144,7 @@ namespace Gui
         {
             Q_OBJECT
         public:
-            DlgCustomizeSpaceball(QWidget *parent = 0);
+            DlgCustomizeSpaceball(QWidget *parent = nullptr);
             virtual ~DlgCustomizeSpaceball();
         protected:
             void changeEvent(QEvent *e);

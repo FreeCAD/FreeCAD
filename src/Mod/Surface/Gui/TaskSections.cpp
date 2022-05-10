@@ -31,6 +31,7 @@
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopTools_ListIteratorOfListOfShape.hxx>
 
+#include <App/Document.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -187,7 +188,7 @@ class SectionsPanel::ShapeSelection : public Gui::SelectionFilterGate
 {
 public:
     ShapeSelection(SectionsPanel::SelectionMode& mode, Surface::Sections* editedObject)
-        : Gui::SelectionFilterGate(static_cast<Gui::SelectionFilter*>(nullptr))
+        : Gui::SelectionFilterGate(nullPointer())
         , mode(mode)
         , editedObject(editedObject)
     {
@@ -554,7 +555,7 @@ TaskSections::TaskSections(ViewProviderSections* vp, Surface::Sections* obj)
     widget1 = new SectionsPanel(vp, obj);
     Gui::TaskView::TaskBox* taskbox1 = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Surface_Sections"),
-        widget1->windowTitle(), true, 0);
+        widget1->windowTitle(), true, nullptr);
     taskbox1->groupLayout()->addWidget(widget1);
     Content.push_back(taskbox1);
 }

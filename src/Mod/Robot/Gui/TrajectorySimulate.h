@@ -46,7 +46,7 @@ class TrajectorySimulate : public QDialog
     Q_OBJECT
 
 public:
-    TrajectorySimulate(Robot::RobotObject *pcRobotObject,Robot::TrajectoryObject *pcTrajectoryObject,QWidget *parent = 0);
+    TrajectorySimulate(Robot::RobotObject *pcRobotObject,Robot::TrajectoryObject *pcTrajectoryObject,QWidget *parent = nullptr);
     ~TrajectorySimulate();
 
 private Q_SLOTS:

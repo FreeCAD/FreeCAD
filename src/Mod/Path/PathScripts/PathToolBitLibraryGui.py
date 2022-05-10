@@ -24,7 +24,7 @@
 
 import FreeCAD
 import FreeCADGui
-import PathGui as PGui # ensure Path/Gui/Resources are loaded
+import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
 import PathScripts.PathToolBit as PathToolBit
@@ -42,15 +42,19 @@ import uuid as UUID
 from functools import partial
 
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
 
 _UuidRole = PySide.QtCore.Qt.UserRole + 1
 _PathRole = PySide.QtCore.Qt.UserRole + 2
 
 
-def translate(context, text, disambig=None):
-    return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
+
 
 def checkWorkingDir():
     # users shouldn't use the example toolbits and libraries.
@@ -60,70 +64,104 @@ def checkWorkingDir():
     workingdir = os.path.dirname(PathPreferences.lastPathToolLibrary())
     defaultdir = os.path.dirname(PathPreferences.pathDefaultToolsPath())
 
-    PathLog.debug('workingdir: {} defaultdir: {}'.format(workingdir, defaultdir))
+    PathLog.debug("workingdir: {} defaultdir: {}".format(workingdir, defaultdir))
 
-    dirOK = lambda : workingdir != defaultdir and (os.access(workingdir, os.W_OK))
+    dirOK = lambda: workingdir != defaultdir and (os.access(workingdir, os.W_OK))
 
     if dirOK():
         return True
 
     qm = PySide.QtGui.QMessageBox
-    ret = qm.question(None,'', "Toolbit working directory not set up. Do that now?", qm.Yes | qm.No)
+    ret = qm.question(
+        None, "", "Toolbit working directory not set up. Do that now?", qm.Yes | qm.No
+    )
 
     if ret == qm.No:
         return False
 
-    msg = translate("Path", "Choose a writable location for your toolbits", None)
+    msg = translate("Path_ToolBit", "Choose a writable location for your toolbits")
     while not dirOK():
-        workingdir = PySide.QtGui.QFileDialog.getExistingDirectory(None, msg,
-                PathPreferences.filePath())
+        workingdir = PySide.QtGui.QFileDialog.getExistingDirectory(
+            None, msg, PathPreferences.filePath()
+        )
 
-    if workingdir[-8:] == os.path.sep + 'Library':
+    if workingdir[-8:] == os.path.sep + "Library":
         workingdir = workingdir[:-8]  # trim off trailing /Library if user chose it
 
-    PathPreferences.setLastPathToolLibrary("{}{}Library".format(workingdir, os.path.sep))
+    PathPreferences.setLastPathToolLibrary(
+        "{}{}Library".format(workingdir, os.path.sep)
+    )
     PathPreferences.setLastPathToolBit("{}{}Bit".format(workingdir, os.path.sep))
-    PathLog.debug('setting workingdir to: {}'.format(workingdir))
+    PathLog.debug("setting workingdir to: {}".format(workingdir))
 
-    subdirlist = ['Bit', 'Library', 'Shape']
+    # Copy only files of default Path\Tools folder to working directory (targeting the README.md help file)
+    src_toolfiles = os.listdir(defaultdir)
+    for file_name in src_toolfiles:
+        if file_name in ["README.md"]:
+            full_file_name = os.path.join(defaultdir, file_name)
+            if os.path.isfile(full_file_name):
+                shutil.copy(full_file_name, workingdir)
+
+    # Determine which subdirectories are missing
+    subdirlist = ["Bit", "Library", "Shape"]
     mode = 0o777
     for dir in subdirlist.copy():
         subdir = "{}{}{}".format(workingdir, os.path.sep, dir)
         if os.path.exists(subdir):
             subdirlist.remove(dir)
 
+    # Query user for creation permission of any missing subdirectories
     if len(subdirlist) >= 1:
-        needed = ', '.join([str(d) for d in subdirlist])
+        needed = ", ".join([str(d) for d in subdirlist])
         qm = PySide.QtGui.QMessageBox
-        ret = qm.question(None,'', "Toolbit Working directory {} needs these sudirectories:\n {} \n Create them?".format(workingdir, needed), qm.Yes | qm.No)
+        ret = qm.question(
+            None,
+            "",
+            "Toolbit Working directory {} needs these sudirectories:\n {} \n Create them?".format(
+                workingdir, needed
+            ),
+            qm.Yes | qm.No,
+        )
 
         if ret == qm.No:
             return False
         else:
+            # Create missing subdirectories if user agrees to creation
             for dir in subdirlist:
                 subdir = "{}{}{}".format(workingdir, os.path.sep, dir)
                 os.mkdir(subdir, mode)
-                if dir != 'Shape':
+                # Query user to copy example files into subdirectories created
+                if dir != "Shape":
                     qm = PySide.QtGui.QMessageBox
-                    ret = qm.question(None,'', "Copy example files to new {} directory?".format(dir), qm.Yes | qm.No)
+                    ret = qm.question(
+                        None,
+                        "",
+                        "Copy example files to new {} directory?".format(dir),
+                        qm.Yes | qm.No,
+                    )
                     if ret == qm.Yes:
-                        src="{}{}{}".format(defaultdir, os.path.sep, dir)
+                        src = "{}{}{}".format(defaultdir, os.path.sep, dir)
                         src_files = os.listdir(src)
                         for file_name in src_files:
                             full_file_name = os.path.join(src, file_name)
                             if os.path.isfile(full_file_name):
                                 shutil.copy(full_file_name, subdir)
 
-
     # if no library is set, choose the first one in the Library directory
     if PathPreferences.lastFileToolLibrary() is None:
-        libFiles = [f for f in glob.glob(PathPreferences.lastPathToolLibrary() + os.path.sep + '*.fctl')]
+        libFiles = [
+            f
+            for f in glob.glob(
+                PathPreferences.lastPathToolLibrary() + os.path.sep + "*.fctl"
+            )
+        ]
         PathPreferences.setLastFileToolLibrary(libFiles[0])
 
     return True
 
+
 class _TableView(PySide.QtGui.QTableView):
-    '''Subclass of QTableView to support rearrange and copying of ToolBits'''
+    """Subclass of QTableView to support rearrange and copying of ToolBits"""
 
     def __init__(self, parent):
         PySide.QtGui.QTableView.__init__(self, parent)
@@ -157,9 +195,15 @@ class _TableView(PySide.QtGui.QTableView):
         for col in range(model.columnCount()):
             srcItem = model.item(srcRow, col)
 
-            model.setData(model.index(dstRow, col), srcItem.data(PySide.QtCore.Qt.EditRole), PySide.QtCore.Qt.EditRole)
+            model.setData(
+                model.index(dstRow, col),
+                srcItem.data(PySide.QtCore.Qt.EditRole),
+                PySide.QtCore.Qt.EditRole,
+            )
             if col == 0:
-                model.setData(model.index(dstRow, col), srcItem.data(_PathRole), _PathRole)
+                model.setData(
+                    model.index(dstRow, col), srcItem.data(_PathRole), _PathRole
+                )
                 # Even a clone of a tool gets its own uuid so it can be identified when
                 # rearranging the order or inserting/deleting rows
                 model.setData(model.index(dstRow, col), UUID.uuid4(), _UuidRole)
@@ -173,11 +217,10 @@ class _TableView(PySide.QtGui.QTableView):
     def dropEvent(self, event):
         PathLog.track()
         mime = event.mimeData()
-        data = mime.data('application/x-qstandarditemmodeldatalist')
+        data = mime.data("application/x-qstandarditemmodeldatalist")
         stream = PySide.QtCore.QDataStream(data)
         srcRows = []
         while not stream.atEnd():
-            # pylint: disable=unused-variable
             row = stream.readInt32()
             srcRows.append(row)
 
@@ -193,8 +236,7 @@ class _TableView(PySide.QtGui.QTableView):
 
 
 class ModelFactory(object):
-    ''' Helper class to generate qtdata models for toolbit libraries
-    '''
+    """Helper class to generate qtdata models for toolbit libraries"""
 
     def __init__(self, path=None):
         PathLog.track()
@@ -209,35 +251,37 @@ class ModelFactory(object):
         with open(path) as fp:
             library = json.load(fp)
 
-        for toolBit in library['tools']:
+        for toolBit in library["tools"]:
             try:
-                nr = toolBit['nr']
-                bit = PathToolBit.findToolBit(toolBit['path'], path)
+                nr = toolBit["nr"]
+                bit = PathToolBit.findToolBit(toolBit["path"], path)
                 if bit:
                     PathLog.track(bit)
                     tool = PathToolBit.Declaration(bit)
                     datamodel.appendRow(self._toolAdd(nr, tool, bit))
                 else:
-                    PathLog.error("Could not find tool #{}: {}".format(nr, toolBit['path']))
+                    PathLog.error(
+                        "Could not find tool #{}: {}".format(nr, toolBit["path"])
+                    )
             except Exception as e:
-                msg = "Error loading tool: {} : {}".format(toolBit['path'], e)
+                msg = "Error loading tool: {} : {}".format(toolBit["path"], e)
                 FreeCAD.Console.PrintError(msg)
 
     def _toolAdd(self, nr, tool, path):
 
-        strShape = os.path.splitext(os.path.basename(tool['shape']))[0]
+        strShape = os.path.splitext(os.path.basename(tool["shape"]))[0]
         # strDiam = tool['parameter']['Diameter']
         tooltip = "{}".format(strShape)
 
         toolNr = PySide.QtGui.QStandardItem()
         toolNr.setData(nr, PySide.QtCore.Qt.EditRole)
-        toolNr.setToolTip(tool['shape'])
+        toolNr.setToolTip(tool["shape"])
         toolNr.setData(path, _PathRole)
         toolNr.setData(UUID.uuid4(), _UuidRole)
         toolNr.setToolTip(tooltip)
 
         toolName = PySide.QtGui.QStandardItem()
-        toolName.setData(tool['name'], PySide.QtCore.Qt.EditRole)
+        toolName.setData(tool["name"], PySide.QtCore.Qt.EditRole)
         toolName.setEditable(False)
         toolName.setToolTip(tooltip)
 
@@ -248,9 +292,9 @@ class ModelFactory(object):
         return [toolNr, toolName, toolShape]
 
     def newTool(self, datamodel, path):
-        '''
+        """
         Adds a toolbit item to a model
-        '''
+        """
         PathLog.track()
 
         try:
@@ -266,15 +310,15 @@ class ModelFactory(object):
         datamodel.appendRow(self._toolAdd(nr, tool, path))
 
     def findLibraries(self, model):
-        '''
+        """
         Finds all the fctl files in a location
         Returns a QStandardItemModel
-        '''
+        """
         PathLog.track()
         path = PathPreferences.lastPathToolLibrary()
 
         if os.path.isdir(path):  # opening all tables in a directory
-            libFiles = [f for f in glob.glob(path + os.path.sep + '*.fctl')]
+            libFiles = [f for f in glob.glob(path + os.path.sep + "*.fctl")]
             libFiles.sort()
             for libFile in libFiles:
                 loc, fnlong = os.path.split(libFile)
@@ -282,17 +326,17 @@ class ModelFactory(object):
                 libItem = PySide.QtGui.QStandardItem(fn)
                 libItem.setToolTip(loc)
                 libItem.setData(libFile, _PathRole)
-                libItem.setIcon(PySide.QtGui.QPixmap(':/icons/Path_ToolTable.svg'))
+                libItem.setIcon(PySide.QtGui.QPixmap(":/icons/Path_ToolTable.svg"))
                 model.appendRow(libItem)
 
-        PathLog.debug('model rows: {}'.format(model.rowCount()))
+        PathLog.debug("model rows: {}".format(model.rowCount()))
         return model
 
     def libraryOpen(self, model, lib=""):
-        '''
+        """
         opens the tools in library
         Returns a QStandardItemModel
-        '''
+        """
         PathLog.track(lib)
 
         if lib == "":
@@ -304,23 +348,23 @@ class ModelFactory(object):
         if os.path.isfile(lib):  # An individual library is wanted
             self.__libraryLoad(lib, model)
 
-        PathLog.debug('model rows: {}'.format(model.rowCount()))
+        PathLog.debug("model rows: {}".format(model.rowCount()))
         return model
 
 
 class ToolBitSelector(object):
-    '''Controller for displaying a library and creating ToolControllers'''
+    """Controller for displaying a library and creating ToolControllers"""
 
     def __init__(self):
         checkWorkingDir()
-        self.form = FreeCADGui.PySideUic.loadUi(':/panels/ToolBitSelector.ui')
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolBitSelector.ui")
         self.factory = ModelFactory()
         self.toolModel = PySide.QtGui.QStandardItemModel(0, len(self.columnNames()))
         self.setupUI()
         self.title = self.form.windowTitle()
 
     def columnNames(self):
-        return ['#', 'Tool']
+        return ["#", "Tool"]
 
     def currentLibrary(self, shortNameOnly):
         libfile = PathPreferences.lastFileToolLibrary()
@@ -345,14 +389,19 @@ class ToolBitSelector(object):
         self.loadData()
         self.form.tools.setModel(self.toolModel)
         self.form.tools.selectionModel().selectionChanged.connect(self.enableButtons)
-        self.form.tools.doubleClicked.connect(partial(self.selectedOrAllToolControllers))
+        self.form.tools.doubleClicked.connect(
+            partial(self.selectedOrAllToolControllers)
+        )
         self.form.libraryEditorOpen.clicked.connect(self.libraryEditorOpen)
         self.form.addToolController.clicked.connect(self.selectedOrAllToolControllers)
 
     def enableButtons(self):
-        selected = (len(self.form.tools.selectedIndexes()) >= 1)
+        selected = len(self.form.tools.selectedIndexes()) >= 1
         if selected:
-            jobs = len([1 for j in FreeCAD.ActiveDocument.Objects if j.Name[:3] == "Job"]) >= 1
+            jobs = (
+                len([1 for j in FreeCAD.ActiveDocument.Objects if j.Name[:3] == "Job"])
+                >= 1
+            )
         self.form.addToolController.setEnabled(selected and jobs)
 
     def libraryEditorOpen(self):
@@ -361,17 +410,17 @@ class ToolBitSelector(object):
         self.loadData()
 
     def selectedOrAllTools(self):
-        '''
+        """
         Iterate the selection and add individual tools
         If a group is selected, iterate and add children
-        '''
+        """
 
         itemsToProcess = []
         for index in self.form.tools.selectedIndexes():
             item = index.model().itemFromIndex(index)
 
             if item.hasChildren():
-                for i in range(item.rowCount()-1):
+                for i in range(item.rowCount() - 1):
                     if item.child(i).column() == 0:
                         itemsToProcess.append(item.child(i))
 
@@ -386,10 +435,10 @@ class ToolBitSelector(object):
         return tools
 
     def selectedOrAllToolControllers(self, index=None):
-        '''
+        """
         if no jobs, don't do anything, otherwise all TCs for all
         selected toolbits
-        '''
+        """
         jobs = PathUtilsGui.PathUtils.GetJobs()
         if len(jobs) == 0:
             return
@@ -405,12 +454,14 @@ class ToolBitSelector(object):
         tools = self.selectedOrAllTools()
 
         for tool in tools:
-            tc = PathToolControllerGui.Create("TC: {}".format(tool[1].Label), tool[1], tool[0])
+            tc = PathToolControllerGui.Create(
+                "TC: {}".format(tool[1].Label), tool[1], tool[0]
+            )
             job.Proxy.addToolController(tc)
             FreeCAD.ActiveDocument.recompute()
 
     def open(self, path=None):
-        ''' load library stored in path and bring up ui'''
+        """load library stored in path and bring up ui"""
         docs = FreeCADGui.getMainWindow().findChildren(PySide.QtGui.QDockWidget)
         for doc in docs:
             if doc.objectName() == "ToolSelector":
@@ -422,13 +473,16 @@ class ToolBitSelector(object):
                     return
 
         mw = FreeCADGui.getMainWindow()
-        mw.addDockWidget(PySide.QtCore.Qt.RightDockWidgetArea, self.form,
-                         PySide.QtCore.Qt.Orientation.Vertical)
+        mw.addDockWidget(
+            PySide.QtCore.Qt.RightDockWidgetArea,
+            self.form,
+            PySide.QtCore.Qt.Orientation.Vertical,
+        )
 
 
 class ToolBitLibrary(object):
-    '''ToolBitLibrary is the controller for
-    displaying/selecting/creating/editing a collection of ToolBits.'''
+    """ToolBitLibrary is the controller for
+    displaying/selecting/creating/editing a collection of ToolBits."""
 
     def __init__(self):
         PathLog.track()
@@ -437,9 +491,11 @@ class ToolBitLibrary(object):
         self.temptool = None
         self.toolModel = PySide.QtGui.QStandardItemModel(0, len(self.columnNames()))
         self.listModel = PySide.QtGui.QStandardItemModel()
-        self.form = FreeCADGui.PySideUic.loadUi(':/panels/ToolBitLibraryEdit.ui')
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolBitLibraryEdit.ui")
         self.toolTableView = _TableView(self.form.toolTableGroup)
-        self.form.toolTableGroup.layout().replaceWidget(self.form.toolTable, self.toolTableView)
+        self.form.toolTableGroup.layout().replaceWidget(
+            self.form.toolTable, self.toolTableView
+        )
         self.form.toolTable.hide()
         self.setupUI()
         self.title = self.form.windowTitle()
@@ -452,6 +508,7 @@ class ToolBitLibrary(object):
         if shapefile is None:  # user canceled
             return
 
+        # select the bit file location and filename
         filename = PathToolBitGui.GetNewToolFile()
         if filename is None:
             return
@@ -460,7 +517,7 @@ class ToolBitLibrary(object):
         loc, fil = os.path.split(filename)
         fname = os.path.splitext(fil)[0]
         fullpath = "{}{}{}.fctb".format(loc, os.path.sep, fname)
-        PathLog.debug(fullpath)
+        PathLog.debug("fullpath: {}".format(fullpath))
 
         self.temptool = PathToolBit.ToolBitFactory().Create(name=fname)
         self.temptool.BitShape = shapefile
@@ -490,7 +547,9 @@ class ToolBitLibrary(object):
 
     def toolDelete(self):
         PathLog.track()
-        selectedRows = set([index.row() for index in self.toolTableView.selectedIndexes()])
+        selectedRows = set(
+            [index.row() for index in self.toolTableView.selectedIndexes()]
+        )
         for row in sorted(list(selectedRows), key=lambda r: -r):
             self.toolModel.removeRows(row, 1)
 
@@ -499,7 +558,7 @@ class ToolBitLibrary(object):
         self.form.toolDelete.setEnabled(sel)
 
     def tableSelected(self, index):
-        ''' loads the tools for the selected tool table '''
+        """loads the tools for the selected tool table"""
         PathLog.track()
         item = index.model().itemFromIndex(index)
         libpath = item.data(_PathRole)
@@ -512,7 +571,9 @@ class ToolBitLibrary(object):
 
     def libraryPath(self):
         PathLog.track()
-        path = PySide.QtGui.QFileDialog.getExistingDirectory(self.form, 'Tool Library Path', PathPreferences.lastPathToolLibrary())
+        path = PySide.QtGui.QFileDialog.getExistingDirectory(
+            self.form, "Tool Library Path", PathPreferences.lastPathToolLibrary()
+        )
         if len(path) == 0:
             return
 
@@ -565,6 +626,7 @@ class ToolBitLibrary(object):
         self.form.librarySave.setEnabled(True)
 
     def toolEdit(self, selected):
+        PathLog.track()
         item = self.toolModel.item(selected.row(), 0)
 
         if self.temptool is not None:
@@ -574,10 +636,14 @@ class ToolBitLibrary(object):
             pass
         else:
             tbpath = item.data(_PathRole)
-            self.temptool = PathToolBit.ToolBitFactory().CreateFrom(tbpath, 'temptool')
-            self.editor = PathToolBitEdit.ToolBitEditor(self.temptool, self.form.toolTableGroup, loadBitBody=False)
+            self.temptool = PathToolBit.ToolBitFactory().CreateFrom(tbpath, "temptool")
+            self.editor = PathToolBitEdit.ToolBitEditor(
+                self.temptool, self.form.toolTableGroup, loadBitBody=False
+            )
 
-            QBtn = PySide.QtGui.QDialogButtonBox.Ok | PySide.QtGui.QDialogButtonBox.Cancel
+            QBtn = (
+                PySide.QtGui.QDialogButtonBox.Ok | PySide.QtGui.QDialogButtonBox.Cancel
+            )
             buttonBox = PySide.QtGui.QDialogButtonBox(QBtn)
             buttonBox.accepted.connect(self.accept)
             buttonBox.rejected.connect(self.reject)
@@ -589,24 +655,31 @@ class ToolBitLibrary(object):
 
     def toolEditDone(self, success=True):
         FreeCAD.ActiveDocument.removeObject("temptool")
-        print('all done')
+        print("all done")
 
     def libraryNew(self):
-        TooltableTypeJSON = translate("PathToolLibraryManager", "Tooltable JSON (*.fctl)")
+        TooltableTypeJSON = translate("Path_ToolBit", "Tooltable JSON (*.fctl)")
 
-        filename = PySide.QtGui.QFileDialog.getSaveFileName(self.form,
-                translate("TooltableEditor", "Save toolbit library", None),
-                PathPreferences.lastPathToolLibrary(), "{}".format(TooltableTypeJSON))
+        filename = PySide.QtGui.QFileDialog.getSaveFileName(
+            self.form,
+            translate("Path_ToolBit", "Save toolbit library"),
+            PathPreferences.lastPathToolLibrary(),
+            "{}".format(TooltableTypeJSON),
+        )
 
         if not (filename and filename[0]):
             self.loadData()
 
-        path = filename[0] if filename[0].endswith('.fctl') else "{}.fctl".format(filename[0])
+        path = (
+            filename[0]
+            if filename[0].endswith(".fctl")
+            else "{}.fctl".format(filename[0])
+        )
         library = {}
         tools = []
-        library['version'] = 1
-        library['tools'] = tools
-        with open(path, 'w') as fp:
+        library["version"] = 1
+        library["tools"] = tools
+        with open(path, "w") as fp:
             json.dump(library, fp, sort_keys=True, indent=2)
 
         self.loadData()
@@ -614,18 +687,26 @@ class ToolBitLibrary(object):
     def librarySave(self):
         library = {}
         tools = []
-        library['version'] = 1
-        library['tools'] = tools
+        library["version"] = 1
+        library["tools"] = tools
         for row in range(self.toolModel.rowCount()):
-            toolNr = self.toolModel.data(self.toolModel.index(row, 0), PySide.QtCore.Qt.EditRole)
+            toolNr = self.toolModel.data(
+                self.toolModel.index(row, 0), PySide.QtCore.Qt.EditRole
+            )
             toolPath = self.toolModel.data(self.toolModel.index(row, 0), _PathRole)
             if PathPreferences.toolsStoreAbsolutePaths():
-                tools.append({'nr': toolNr, 'path': toolPath})
+                bitPath = toolPath
             else:
-                tools.append({'nr': toolNr, 'path': PathToolBit.findRelativePathTool(toolPath)})
+                # bitPath = PathToolBit.findRelativePathTool(toolPath)
+                # Extract the name of the shape file
+                __, filShp = os.path.split(
+                    toolPath
+                )  #  __ is an ignored placeholder acknowledged by LGTM
+                bitPath = str(filShp)
+            tools.append({"nr": toolNr, "path": bitPath})
 
         if self.path is not None:
-            with open(self.path, 'w') as fp:
+            with open(self.path, "w") as fp:
                 json.dump(library, fp, sort_keys=True, indent=2)
 
     def libraryOk(self):
@@ -640,7 +721,7 @@ class ToolBitLibrary(object):
         return lib, loc
 
     def columnNames(self):
-        return ['Nr', 'Tool', 'Shape']
+        return ["Nr", "Tool", "Shape"]
 
     def loadData(self, path=None):
         PathLog.track(path)
@@ -662,7 +743,7 @@ class ToolBitLibrary(object):
         self.path = path
         self.form.setWindowTitle("{}".format(PathPreferences.lastPathToolLibrary()))
         self.toolModel.setHorizontalHeaderLabels(self.columnNames())
-        self.listModel.setHorizontalHeaderLabels(['Library'])
+        self.listModel.setHorizontalHeaderLabels(["Library"])
 
         # Select the current library in the list of tables
         curIndex = None
@@ -705,19 +786,29 @@ class ToolBitLibrary(object):
 
     def librarySaveAs(self, path):
 
-        TooltableTypeJSON = translate("PathToolLibraryManager", "Tooltable JSON (*.fctl)")
-        TooltableTypeLinuxCNC = translate("PathToolLibraryManager", "LinuxCNC tooltable (*.tbl)")
+        TooltableTypeJSON = translate("Path_ToolBit", "Tooltable JSON (*.fctl)")
+        TooltableTypeLinuxCNC = translate("Path_ToolBit", "LinuxCNC tooltable (*.tbl)")
 
-        filename = PySide.QtGui.QFileDialog.getSaveFileName(self.form,
-                translate("TooltableEditor", "Save toolbit library", None),
-                PathPreferences.lastPathToolLibrary(), "{};;{}".format(TooltableTypeJSON,
-                    TooltableTypeLinuxCNC))
+        filename = PySide.QtGui.QFileDialog.getSaveFileName(
+            self.form,
+            translate("Path_ToolBit", "Save toolbit library"),
+            PathPreferences.lastPathToolLibrary(),
+            "{};;{}".format(TooltableTypeJSON, TooltableTypeLinuxCNC),
+        )
         if filename and filename[0]:
             if filename[1] == TooltableTypeLinuxCNC:
-                path = filename[0] if filename[0].endswith('.tbl') else "{}.tbl".format(filename[0])
+                path = (
+                    filename[0]
+                    if filename[0].endswith(".tbl")
+                    else "{}.tbl".format(filename[0])
+                )
                 self.libararySaveLinuxCNC(path)
             else:
-                path = filename[0] if filename[0].endswith('.fctl') else "{}.fctl".format(filename[0])
+                path = (
+                    filename[0]
+                    if filename[0].endswith(".fctl")
+                    else "{}.fctl".format(filename[0])
+                )
                 self.path = path
                 self.librarySave()
                 self.updateToolbar()
@@ -725,11 +816,13 @@ class ToolBitLibrary(object):
     def libararySaveLinuxCNC(self, path):
         # linuxcnc line template
         LIN = "T{} P{} X{} Y{} Z{} A{} B{} C{} U{} V{} W{} D{} I{} J{} Q{}; {}"
-        with open(path, 'w') as fp:
+        with open(path, "w") as fp:
             fp.write(";\n")
 
             for row in range(self.toolModel.rowCount()):
-                toolNr = self.toolModel.data(self.toolModel.index(row, 0), PySide.QtCore.Qt.EditRole)
+                toolNr = self.toolModel.data(
+                    self.toolModel.index(row, 0), PySide.QtCore.Qt.EditRole
+                )
                 toolPath = self.toolModel.data(self.toolModel.index(row, 0), _PathRole)
 
                 bit = PathToolBit.Factory.CreateFrom(toolPath)
@@ -747,16 +840,39 @@ class ToolBitLibrary(object):
                     voffset = bit.Voffset if hasattr(bit, "Voffset") else "0"
                     woffset = bit.Woffset if hasattr(bit, "Woffset") else "0"
 
-                    diameter = bit.Diameter.getUserPreferred()[0].split()[0] if hasattr(bit, "Diameter") else "0"
+                    diameter = (
+                        bit.Diameter.getUserPreferred()[0].split()[0]
+                        if hasattr(bit, "Diameter")
+                        else "0"
+                    )
                     frontangle = bit.FrontAngle if hasattr(bit, "FrontAngle") else "0"
                     backangle = bit.BackAngle if hasattr(bit, "BackAngle") else "0"
-                    orientation = bit.Orientation if hasattr(bit, "Orientation") else "0"
+                    orientation = (
+                        bit.Orientation if hasattr(bit, "Orientation") else "0"
+                    )
                     remark = bit.Label
 
-                    fp.write(LIN.format(toolNr, pocket, xoffset, yoffset,
-                             zoffset, aoffset, boffset, coffset, uoffset,
-                             voffset, woffset, diameter, frontangle, backangle,
-                             orientation, remark) + "\n")
+                    fp.write(
+                        LIN.format(
+                            toolNr,
+                            pocket,
+                            xoffset,
+                            yoffset,
+                            zoffset,
+                            aoffset,
+                            boffset,
+                            coffset,
+                            uoffset,
+                            voffset,
+                            woffset,
+                            diameter,
+                            frontangle,
+                            backangle,
+                            orientation,
+                            remark,
+                        )
+                        + "\n"
+                    )
 
                     FreeCAD.ActiveDocument.removeObject(bit.Name)
 

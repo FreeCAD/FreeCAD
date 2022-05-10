@@ -70,17 +70,17 @@ public:
   /// get the default display mode
   virtual const char* getDefaultDisplayMode() const;
   /// returns a list of all possible modes
-  virtual std::vector<std::string> getDisplayModes(void) const;
+  virtual std::vector<std::string> getDisplayModes() const;
 
 protected:
   void calcMaterialIndex(const SbRotation &rot);
-  void calcNormalVector(void);
+  void calcNormalVector();
 
   static void sValueChangedCallback(void *, SoDragger *);
-  void valueChangedCallback(void);
+  void valueChangedCallback();
 
   static void sDragEndCallback(void *, SoDragger *);
-  void DragEndCallback(void);
+  void DragEndCallback();
 
   SoTrackballDragger *pcTrackballDragger;
   SoTransform        *pcTransformDrag;

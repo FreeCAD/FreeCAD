@@ -23,69 +23,55 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRep_Builder.hxx>
-# include <BRep_Tool.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepFeat_MakePrism.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <Geom_Surface.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Solid.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Wire.hxx>
-# include <TopExp_Explorer.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <Precision.hxx>
-# include <BRepPrimAPI_MakeHalfSpace.hxx>
-# include <BRepAlgoAPI_Common.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <gp_Pln.hxx>
-# include <GeomAPI_ProjectPointOnSurf.hxx>
-# include <BRepOffsetAPI_MakePipeShell.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <ShapeAnalysis_FreeBounds.hxx>
-# include <TopTools_HSequenceOfShape.hxx>
-# include <TopTools_ListIteratorOfListOfShape.hxx>
-# include <TopTools_IndexedMapOfShape.hxx>
-# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-# include <TopExp.hxx>
+ //# include <BRep_Tool.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
+# include <BRepAlgoAPI_Fuse.hxx>
+# include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
 # include <BRepBuilderAPI_MakeSolid.hxx>
+# include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepClass3d_SolidClassifier.hxx>
+# include <BRepOffsetAPI_MakePipeShell.hxx>
+# include <gp_Ax2.hxx>
 # include <Law_Function.hxx>
-# include <Law_Linear.hxx>
-# include <Law_S.hxx>
+//# include <Law_Linear.hxx>
+//# include <Law_S.hxx>
+# include <Precision.hxx>
+# include <ShapeAnalysis_FreeBounds.hxx>
+# include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Wire.hxx>
+# include <TopTools_HSequenceOfShape.hxx>
+//# include <TopTools_IndexedMapOfShape.hxx>
+//# include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #endif
 
+#include <App/DocumentObject.h>
 #include <Base/Exception.h>
-#include <Base/Placement.h>
-#include <Base/Console.h>
 #include <Base/Reader.h>
-#include <App/Document.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
 
-//#include "Body.h"
 #include "FeaturePipe.h"
 
 
 using namespace PartDesign;
 
-const char* Pipe::TypeEnums[] = {"FullPath","UpToFace",NULL};
-const char* Pipe::TransitionEnums[] = {"Transformed","Right corner", "Round corner",NULL};
-const char* Pipe::ModeEnums[] = {"Standard", "Fixed", "Frenet", "Auxiliary", "Binormal", NULL};
-const char* Pipe::TransformEnums[] = {"Constant", "Multisection", "Linear", "S-shape", "Interpolation", NULL};
+const char* Pipe::TypeEnums[] = {"FullPath", "UpToFace", nullptr};
+const char* Pipe::TransitionEnums[] = {"Transformed", "Right corner", "Round corner", nullptr};
+const char* Pipe::ModeEnums[] = {"Standard", "Fixed", "Frenet", "Auxiliary", "Binormal", nullptr};
+const char* Pipe::TransformEnums[] = {"Constant", "Multisection", "Linear", "S-shape", "Interpolation", nullptr};
 
 
 PROPERTY_SOURCE(PartDesign::Pipe, PartDesign::ProfileBased)
 
 Pipe::Pipe()
 {
-    ADD_PROPERTY_TYPE(Sections,(0),"Sweep",App::Prop_None,"List of sections");
-    Sections.setSize(0);
-    ADD_PROPERTY_TYPE(Spine,(0),"Sweep",App::Prop_None,"Path to sweep along");
+    ADD_PROPERTY_TYPE(Sections,(nullptr),"Sweep",App::Prop_None,"List of sections");
+    Sections.setValue(nullptr);
+    ADD_PROPERTY_TYPE(Spine,(nullptr),"Sweep",App::Prop_None,"Path to sweep along");
     ADD_PROPERTY_TYPE(SpineTangent,(false),"Sweep",App::Prop_None,"Include tangent edges into path");
-    ADD_PROPERTY_TYPE(AuxillerySpine,(0),"Sweep",App::Prop_None,"Secondary path to orient sweep");
+    ADD_PROPERTY_TYPE(AuxillerySpine,(nullptr),"Sweep",App::Prop_None,"Secondary path to orient sweep");
     ADD_PROPERTY_TYPE(AuxillerySpineTangent,(false),"Sweep",App::Prop_None,"Include tangent edges into secondary path");
     ADD_PROPERTY_TYPE(AuxilleryCurvelinear, (true), "Sweep", App::Prop_None,"Calculate normal between equidistant points on both spines");
     ADD_PROPERTY_TYPE(Mode,(long(0)),"Sweep",App::Prop_None,"Profile mode");
@@ -112,26 +98,54 @@ short Pipe::mustExecute() const
 
 App::DocumentObjectExecReturn *Pipe::execute(void)
 {
-    std::vector<TopoDS_Wire> wires;
-    try {
-        wires = getProfileWires();
-    } catch (const Base::Exception& e) {
-        return new App::DocumentObjectExecReturn(e.what());
-    }
+    auto getSectionShape =
+        [](App::DocumentObject* feature, const std::vector<std::string> &subs) -> TopoDS_Shape {
+            if (!feature ||
+                !feature->isDerivedFrom(Part::Feature::getClassTypeId()))
+                throw Base::TypeError("Pipe: Invalid profile/section");
 
-    TopoDS_Shape sketchshape = getVerifiedFace();
-    if (sketchshape.IsNull())
-        return new App::DocumentObjectExecReturn("Pipe: No valid sketch or face as first section");
-    else {
-        //TODO: currently we only allow planar faces. the reason for this is that with other faces in front, we could
-        //not use the current simulate approach and build the start and end face from the wires. As the shell
-        //begins always at the spine and not the profile, the sketchshape cannot be used directly as front face.
-        //We would need a method to translate the front shape to match the shell starting position somehow...
-        TopoDS_Face face = TopoDS::Face(sketchshape);
-        BRepAdaptor_Surface adapt(face);
-        if(adapt.GetType() != GeomAbs_Plane)
-            return new App::DocumentObjectExecReturn("Pipe: Only planar faces supported");
-    }
+            auto subName = subs.empty() ? "" : subs.front();
+
+            // only take the entire shape when we have a sketch selected, but
+            // not a point of the sketch
+            if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId()) &&
+                subName.compare(0, 6, "Vertex") != 0)
+                return static_cast<Part::Part2DObject*>(feature)->Shape.getValue();
+            else {
+                if(subName.empty())
+                    throw Base::ValueError("Pipe: No valid subelement linked in Part::Feature");
+                return static_cast<Part::Feature*>(feature)->Shape.getShape().getSubShape(subName.c_str());
+            }
+        };
+
+    auto addWiresToWireSections =
+        [](TopoDS_Shape& section,
+           std::vector<std::vector<TopoDS_Shape>>& wiresections) -> size_t {
+            TopExp_Explorer ex;
+            size_t i=0;
+            bool initialWireSectionsEmpty = wiresections.empty();
+            for (ex.Init(section, TopAbs_WIRE); ex.More(); ex.Next(), ++i) {
+                // if profile was just a point then this is where we can first set our list
+                if (i>=wiresections.size()) {
+                    if (initialWireSectionsEmpty)
+                        wiresections.emplace_back(1, ex.Current());
+                    else
+                        throw Base::ValueError("Pipe: Sections need to have the same amount of inner wires (except profile and last section, which can be points)");
+                }
+                else
+                    wiresections[i].push_back(TopoDS::Wire(ex.Current()));
+            }
+            return i;
+        };
+
+    // TODO: currently we can only allow planar faces, so add that check.
+    // The reason for this is that with other faces in front, we could not use the
+    // current simulate approach and build the start and end face from the wires.
+    // As the shell begins always at the spine and not the profile, the sketchshape
+    // cannot be used directly as front face. We would need a method to translate
+    // the front shape to match the shell starting position somehow...
+    std::vector<TopoDS_Wire> wires;
+    TopoDS_Shape profilePoint;
 
     // if the Base property has a valid shape, fuse the pipe into it
     TopoDS_Shape base;
@@ -142,16 +156,22 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
     }
 
     try {
-        //setup the location
+        // setup the location
         this->positionByPrevious();
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
-        if(!base.IsNull())
+        if (!base.IsNull())
             base.Move(invObjLoc);
 
-        //build the paths
+        // setup the profile section
+        TopoDS_Shape profileShape = getSectionShape(Profile.getValue(),
+                                                    Profile.getSubValues());
+        if (profileShape.IsNull())
+            return new App::DocumentObjectExecReturn("Pipe: Could not obtain profile shape");
+
+        // build the paths
         App::DocumentObject* spine = Spine.getValue();
         if (!(spine && spine->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
-            return new App::DocumentObjectExecReturn("No spine linked.");
+            return new App::DocumentObjectExecReturn("No spine linked");
 
         std::vector<std::string> subedge = Spine.getSubValues();
         TopoDS_Shape path;
@@ -159,10 +179,9 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         buildPipePath(shape, subedge, path);
         path.Move(invObjLoc);
 
-
         // auxiliary
         TopoDS_Shape auxpath;
-        if(Mode.getValue()==3) {
+        if (Mode.getValue()==3) {
             App::DocumentObject* auxspine = AuxillerySpine.getValue();
             if (!(auxspine && auxspine->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
                 return new App::DocumentObjectExecReturn("No auxiliary spine linked.");
@@ -173,54 +192,76 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             auxpath.Move(invObjLoc);
         }
 
-        //build up multisections
-        auto multisections = Sections.getValues();
-        std::vector<std::vector<TopoDS_Wire>> wiresections;
-        for(TopoDS_Wire& wire : wires)
-            wiresections.emplace_back(1, wire);
-        //maybe we need a sacling law
+        // build up multisections
+        auto multisections = Sections.getSubListValues();
+        std::vector<std::vector<TopoDS_Shape>> wiresections;
+
+        size_t numWires = addWiresToWireSections(profileShape, wiresections);
+        if (numWires == 0) {
+            // profileShape had no wires so only other valid option is single point section
+            TopExp_Explorer ex;
+            size_t i=0;
+            for (ex.Init(profileShape, TopAbs_VERTEX); ex.More(); ex.Next(), ++i)
+                profilePoint = ex.Current();
+            if (i > 1)
+                return new App::DocumentObjectExecReturn("Pipe: Only one isolated point is needed if using a sketch with isolated points for section");
+        }
+
+        if (!profilePoint.IsNull() &&
+            (Transformation.getValue() != 1 || multisections.empty()))
+            return new App::DocumentObjectExecReturn("Pipe: At least one section is needed when using a single point for profile");
+
+        // maybe we need a scaling law
         Handle(Law_Function) scalinglaw;
 
-        //see if we shall use multiple sections
-        if(Transformation.getValue() == 1) {
+        bool isLastSectionVertex = false;
 
-            //TODO: we need to order the sections to prevent occ from crahsing, as makepieshell connects
-            //the sections in the order of adding
+        // see if we shall use multiple sections
+        if (Transformation.getValue() == 1) {
+            // TODO: we need to order the sections to prevent occ from crashing,
+            // as makepipeshell connects the sections in the order of adding
+            for (auto &subSet : multisections) {
+                if (!subSet.first->isDerivedFrom(Part::Feature::getClassTypeId()))
+                    return new App::DocumentObjectExecReturn("Pipe: All sections need to be part features");
 
-            for(App::DocumentObject* obj : multisections) {
-                if(!obj->isDerivedFrom(Part::Feature::getClassTypeId()))
-                    return  new App::DocumentObjectExecReturn("All sections need to be part features");
+                // if the section is an object's face then take just the face
+                TopoDS_Shape shape = getSectionShape(subSet.first, subSet.second);
+                if (shape.IsNull())
+                    return new App::DocumentObjectExecReturn("Pipe: Could not obtain section shape");
 
-                TopExp_Explorer ex;
-                size_t i=0;
-                for (ex.Init(static_cast<Part::Feature*>(obj)->Shape.getValue(), TopAbs_WIRE); ex.More(); ex.Next()) {
-                    if(i>=wiresections.size())
-                        return new App::DocumentObjectExecReturn("Multisections need to have the same amount of inner wires as the base section");
-                    wiresections[i].push_back(TopoDS::Wire(ex.Current()));
-
-                    ++i;
+                size_t nWiresAdded = addWiresToWireSections(shape, wiresections);
+                if (nWiresAdded == 0) {
+                    TopExp_Explorer ex;
+                    size_t i=0;
+                    for (ex.Init(shape, TopAbs_VERTEX); ex.More(); ex.Next(), ++i) {
+                        if (isLastSectionVertex)
+                            return new App::DocumentObjectExecReturn("Pipe: Only the profile and last section can be vertices");
+                        isLastSectionVertex = true;
+                        for (auto &wires : wiresections)
+                            wires.push_back(ex.Current());
+                    }
                 }
 
-                if(i<wiresections.size())
+                if (!isLastSectionVertex && nWiresAdded < wiresections.size())
                     return new App::DocumentObjectExecReturn("Multisections need to have the same amount of inner wires as the base section");
             }
         }
         /*//build the law functions instead
-        else if(Transformation.getValue() == 2) {
-            if(ScalingData.getValues().size()<1)
+        else if (Transformation.getValue() == 2) {
+            if (ScalingData.getValues().size()<1)
                 return new App::DocumentObjectExecReturn("No valid data given for linear scaling mode");
 
             Handle(Law_Linear) lin = new Law_Linear();
-            lin->Set(0,1,1,ScalingData[0].x);
+            lin->Set(0, 1, 1, ScalingData[0].x);
 
             scalinglaw = lin;
         }
-        else if(Transformation.getValue() == 3) {
-            if(ScalingData.getValues().size()<1)
+        else if (Transformation.getValue() == 3) {
+            if (ScalingData.getValues().size()<1)
                 return new App::DocumentObjectExecReturn("No valid data given for S-shape scaling mode");
 
             Handle(Law_S) s = new Law_S();
-            s->Set(0,1,ScalingData[0].y, 1, ScalingData[0].x, ScalingData[0].z);
+            s->Set(0, 1, ScalingData[0].y, 1, ScalingData[0].x, ScalingData[0].z);
 
             scalinglaw = s;
         }*/
@@ -229,22 +270,32 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         if (path.IsNull())
             return new App::DocumentObjectExecReturn("Path must not be a null shape");
 
-        //build all shells
+        // build all shells
         std::vector<TopoDS_Shape> shells;
-        std::vector<TopoDS_Wire> frontwires, backwires;
-        for(std::vector<TopoDS_Wire>& wires : wiresections) {
 
+        TopoDS_Shape copyProfilePoint(profilePoint);
+        if (!profilePoint.IsNull())
+            copyProfilePoint.Move(invObjLoc);
+
+        std::vector<TopoDS_Wire> frontwires, backwires;
+        for (auto& wires : wiresections) {
             BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(path));
             setupAlgorithm(mkPS, auxpath);
 
-            if(!scalinglaw) {
-                for(TopoDS_Wire& wire : wires) {
+            if (!scalinglaw) {
+                if (!profilePoint.IsNull())
+                    mkPS.Add(copyProfilePoint);
+
+                for (auto& wire : wires) {
                     wire.Move(invObjLoc);
                     mkPS.Add(wire);
                 }
             }
             else {
-                for(TopoDS_Wire& wire : wires)  {
+                if (!profilePoint.IsNull())
+                    mkPS.SetLaw(copyProfilePoint, scalinglaw);
+
+                for (auto& wire : wires)  {
                     wire.Move(invObjLoc);
                     mkPS.SetLaw(wire, scalinglaw);
                 }
@@ -260,6 +311,10 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
                 TopTools_ListOfShape sim;
                 mkPS.Simulate(2, sim);
 
+                // Note that while we call them front and back, these sections
+                // appear to correspond to the front or back of the path. When one
+                // or both ends of the pipe are points, one or both of these wires
+                // (and eventually faces) will be null.
                 frontwires.push_back(TopoDS::Wire(sim.First()));
                 backwires.push_back(TopoDS::Wire(sim.Last()));
             }
@@ -267,17 +322,20 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
 
         BRepBuilderAPI_MakeSolid mkSolid;
 
-        if (!frontwires.empty()) {
-            // build the end faces, sew the shell and build the final solid
-            TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
-            TopoDS_Shape back  = Part::FaceMakerCheese::makeFace(backwires);
-
+        if (!frontwires.empty() || !backwires.empty()) {
             BRepBuilderAPI_Sewing sewer;
             sewer.SetTolerance(Precision::Confusion());
-            sewer.Add(front);
-            sewer.Add(back);
 
-            for(TopoDS_Shape& s : shells)
+            // build the end faces, sew the shell and build the final solid
+            if (!frontwires.empty()) {
+                TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
+                sewer.Add(front);
+            }
+            if (!backwires.empty()) {
+                TopoDS_Shape back  = Part::FaceMakerCheese::makeFace(backwires);
+                sewer.Add(back);
+            }
+            for (TopoDS_Shape& s : shells)
                 sewer.Add(s);
 
             sewer.Perform();
@@ -289,7 +347,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             }
         }
 
-        if(!mkSolid.IsDone())
+        if (!mkSolid.IsDone())
             return new App::DocumentObjectExecReturn("Result is not a solid");
 
         TopoDS_Shape result = mkSolid.Shape();
@@ -302,7 +360,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         //result.Move(invObjLoc);
         AddSubShape.setValue(result);
 
-        if(base.IsNull()) {
+        if (base.IsNull()) {
             if (getAddSubType() == FeatureAddSub::Subtractive)
                 return new App::DocumentObjectExecReturn("Pipe: There is nothing to subtract from\n");
 
@@ -311,7 +369,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             return App::DocumentObject::StdReturn;
         }
 
-        if(getAddSubType() == FeatureAddSub::Additive) {
+        if (getAddSubType() == FeatureAddSub::Additive) {
 
             BRepAlgoAPI_Fuse mkFuse(base, result);
             if (!mkFuse.IsDone())
@@ -330,7 +388,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             boolOp = refineShapeIfActive(boolOp);
             Shape.setValue(getSolid(boolOp));
         }
-        else if(getAddSubType() == FeatureAddSub::Subtractive) {
+        else if (getAddSubType() == FeatureAddSub::Subtractive) {
 
             BRepAlgoAPI_Cut mkCut(base, result);
             if (!mkCut.IsDone())
@@ -381,7 +439,7 @@ void Pipe::setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, TopoDS_Shape
     const Base::Vector3d& bVec = Binormal.getValue();
     switch(Mode.getValue()) {
         case 1:
-            mkPipeShell.SetMode(gp_Ax2(gp_Pnt(0,0,0), gp_Dir(0,0,1), gp_Dir(1,0,0)));
+            mkPipeShell.SetMode(gp_Ax2(gp_Pnt(0, 0, 0), gp_Dir(0, 0, 1), gp_Dir(1, 0, 0)));
             break;
         case 2:
             mkPipeShell.SetMode(true);
@@ -390,18 +448,18 @@ void Pipe::setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, TopoDS_Shape
             auxiliary = true;
             break;
         case 4:
-            mkPipeShell.SetMode(gp_Dir(bVec.x,bVec.y,bVec.z));
+            mkPipeShell.SetMode(gp_Dir(bVec.x, bVec.y, bVec.z));
             break;
     }
 
-    if(auxiliary) {
+    if (auxiliary) {
         mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxilleryCurvelinear.getValue());
-        //mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxilleryCurvelinear.getValue(), BRepFill_ContactOnBorder);
+        // mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxilleryCurvelinear.getValue(), BRepFill_ContactOnBorder);
     }
 }
 
 
-void Pipe::getContiniusEdges(Part::TopoShape /*TopShape*/, std::vector< std::string >& /*SubNames*/) {
+void Pipe::getContinuousEdges(Part::TopoShape /*TopShape*/, std::vector< std::string >& /*SubNames*/) {
 
     /*
     TopTools_IndexedMapOfShape mapOfEdges;
@@ -410,7 +468,7 @@ void Pipe::getContiniusEdges(Part::TopoShape /*TopShape*/, std::vector< std::str
     TopExp::MapShapes(TopShape.getShape(), TopAbs_EDGE, mapOfEdges);
 
     Base::Console().Message("Initial edges:\n");
-    for(int i=0; i<SubNames.size(); ++i)
+    for (int i=0; i<SubNames.size(); ++i)
         Base::Console().Message("Subname: %s\n", SubNames[i].c_str());
 
     unsigned int i = 0;
@@ -418,11 +476,11 @@ void Pipe::getContiniusEdges(Part::TopoShape /*TopShape*/, std::vector< std::str
     {
         std::string aSubName = static_cast<std::string>(SubNames.at(i));
 
-        if (aSubName.size() > 4 && aSubName.substr(0,4) == "Edge") {
+        if (aSubName.compare(0, 4, "Edge") == 0) {
             TopoDS_Edge edge = TopoDS::Edge(TopShape.getSubShape(aSubName.c_str()));
             const TopTools_ListOfShape& los = mapEdgeEdge.FindFromKey(edge);
 
-            if(los.Extent() != 2)
+            if (los.Extent() != 2)
             {
                 SubNames.erase(SubNames.begin()+i);
                 continue;
@@ -447,7 +505,7 @@ void Pipe::getContiniusEdges(Part::TopoShape /*TopShape*/, std::vector< std::str
     }
 
     Base::Console().Message("Final edges:\n");
-    for(int i=0; i<SubNames.size(); ++i)
+    for (int i=0; i<SubNames.size(); ++i)
         Base::Console().Message("Subname: %s\n", SubNames[i].c_str());
     */
 }
@@ -457,8 +515,8 @@ void Pipe::buildPipePath(const Part::TopoShape& shape, const std::vector< std::s
     if (!shape.getShape().IsNull()) {
         try {
             if (!subedge.empty()) {
-                //if(SpineTangent.getValue())
-                    //getContiniusEdges(shape, subedge);
+                //if (SpineTangent.getValue())
+                    //getContinuousEdges(shape, subedge);
 
                 BRepBuilderAPI_MakeWire mkWire;
                 for (std::vector<std::string>::const_iterator it = subedge.begin(); it != subedge.end(); ++it) {
@@ -506,8 +564,6 @@ void Pipe::buildPipePath(const Part::TopoShape& shape, const std::vector< std::s
     }
 }
 
-
-
 PROPERTY_SOURCE(PartDesign::AdditivePipe, PartDesign::Pipe)
 AdditivePipe::AdditivePipe() {
     addSubType = Additive;
@@ -516,4 +572,15 @@ AdditivePipe::AdditivePipe() {
 PROPERTY_SOURCE(PartDesign::SubtractivePipe, PartDesign::Pipe)
 SubtractivePipe::SubtractivePipe() {
     addSubType = Subtractive;
+}
+
+void Pipe::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
+{
+    // property Sections had the App::PropertyLinkList and was changed to App::PropertyXLinkSubList
+    if (prop == &Sections && strcmp(TypeName, "App::PropertyLinkList") == 0) {
+        Sections.upgrade(reader, TypeName);
+    }
+    else {
+        ProfileBased::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }

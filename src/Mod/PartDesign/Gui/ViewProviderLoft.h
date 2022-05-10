@@ -33,6 +33,12 @@ class PartDesignGuiExport ViewProviderLoft : public ViewProviderAddSub
     PROPERTY_HEADER(PartDesignGui::ViewProviderLoft);
 
 public:
+    enum Reference {
+        Profile,
+        Section,
+        Both
+    };
+
     /// constructor
     ViewProviderLoft();
     /// destructor
@@ -41,20 +47,23 @@ public:
     /// grouping handling 
     std::vector<App::DocumentObject*> claimChildren(void)const;
     void setupContextMenu(QMenu*, QObject*, const char*);
-    bool doubleClicked();
 
     virtual bool onDelete(const std::vector<std::string> &);
-    void highlightReferences(const bool on, bool auxiliary);
+    void highlightProfile(bool on);
+    void highlightSection(bool on);
+    void highlightReferences(Reference mode, bool on);
     
 protected:
+    virtual QIcon getIcon(void) const;
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
     virtual TaskDlgFeatureParameters* getEditDialog();
-    
-    virtual QIcon getIcon(void) const;
-    
+
 private:
-    std::vector<App::Color> originalLineColors;
+    void highlightReferences(Part::Feature*, const std::vector<std::string>&, bool);
+
+private:
+    std::map<long, std::vector<App::Color>> originalLineColors;
 };
 
 

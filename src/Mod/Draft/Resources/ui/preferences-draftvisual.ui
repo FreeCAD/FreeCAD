@@ -191,7 +191,7 @@
         <item>
          <widget class="QLabel" name="label_13">
           <property name="text">
-           <string>Alternate SVG Patterns location</string>
+           <string>Alternate SVG patterns location</string>
           </property>
          </widget>
         </item>
@@ -217,7 +217,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Here you can specify a directory containing SVG files containing &lt;pattern&gt; definitions that can be added to the standard Draft hatch patterns</string>
+           <string>Here you can specify a directory with custom SVG files containing &lt;pattern&gt; definitions to be added to the standard patterns</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>patternFile</cstring>
@@ -234,7 +234,7 @@
         <item>
          <widget class="QLabel" name="label_7">
           <property name="text">
-           <string>Hatch patterns resolution</string>
+           <string>SVG pattern resolution</string>
           </property>
          </widget>
         </item>
@@ -277,7 +277,7 @@
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Hatch Pattern default size</string>
+           <string>SVG pattern default size</string>
           </property>
          </widget>
         </item>
@@ -297,7 +297,7 @@
         <item>
          <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox">
           <property name="toolTip">
-           <string>The default size of hatch patterns</string>
+           <string>The default size for SVG patterns</string>
           </property>
           <property name="decimals">
            <number>4</number>

@@ -49,7 +49,7 @@ PyObject *TrimmedCurvePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  
     // never create such objects with the constructor
     PyErr_SetString(PyExc_RuntimeError,
                     "You cannot create an instance of the abstract class 'TrimmedCurve'.");
-    return 0;
+    return nullptr;
 }
 
 // constructor method
@@ -68,23 +68,23 @@ PyObject* TrimmedCurvePy::setParameterRange(PyObject * args)
             u=c->FirstParameter();
             v=c->LastParameter();
             if (!PyArg_ParseTuple(args, "|dd", &u,&v))
-                return 0;
+                return nullptr;
             getGeomTrimmedCurvePtr()->setRange(u,v);
             Py_Return;
         }
     }
     catch (Base::CADKernelError& e) {
         PyErr_SetString(PartExceptionOCCError, e.what());
-        return 0;
+        return nullptr;
     }
 
     PyErr_SetString(PartExceptionOCCError, "Geometry is not a trimmed curve");
-    return 0;
+    return nullptr;
 }
 
 PyObject *TrimmedCurvePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int TrimmedCurvePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

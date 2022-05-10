@@ -139,7 +139,7 @@ namespace KDL {
 
     VelocityProfile* Trajectory_Composite::GetProfile()
     {
-        return 0;
+        return nullptr;
     }
 }
 

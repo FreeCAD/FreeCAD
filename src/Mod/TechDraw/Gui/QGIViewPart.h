@@ -23,11 +23,12 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWPART_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEWPART_H
 
-#include <QObject>
 #include <QPainter>
-
+#include <QStyleOptionGraphicsItem>
 #include <Mod/TechDraw/App/Geometry.h>
+
 #include "QGIView.h"
+
 
 namespace TechDraw {
 class DrawViewPart;
@@ -54,7 +55,7 @@ public:
     int type() const override { return Type;}
     virtual void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
-                        QWidget * widget = 0 ) override;
+                        QWidget * widget = nullptr ) override;
 
 
     void toggleCache(bool state) override;
@@ -74,7 +75,7 @@ public:
     virtual void rotateView(void) override;
 
 
-    static QPainterPath geomToPainterPath(TechDraw::BaseGeom *baseGeom, double rotation = 0.0);
+    static QPainterPath geomToPainterPath(TechDraw::BaseGeomPtr baseGeom, double rotation = 0.0);
     /// Helper for pathArc()
     /*!
      * x_axis_rotation is in radian
@@ -94,9 +95,9 @@ public:
     bool getExporting(void) { return m_isExporting; }
 
 protected:
-    QPainterPath drawPainterPath(TechDraw::BaseGeom *baseGeom) const;
+    QPainterPath drawPainterPath(TechDraw::BaseGeomPtr baseGeom) const;
     void drawViewPart();
-    QGIFace* drawFace(TechDraw::Face* f, int idx);
+    QGIFace* drawFace(TechDraw::FacePtr f, int idx);
 
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 

@@ -1,0 +1,144 @@
+$pyNastran: version=msc
+$pyNastran: punch=False
+$pyNastran: encoding=utf-8
+$pyNastran: nnodes=55
+$pyNastran: nelements=54
+$EXECUTIVE CONTROL DECK
+SOL 101
+CEND
+$CASE CONTROL DECK
+ECHO = NONE
+TITLE = pyNastran for generating solverinput for for Mystran
+SUBCASE 1
+    DISPLACEMENT(SORT1,REAL) = ALL
+    LOAD = 1
+    SPC = 1
+    SPCFORCES(SORT1,REAL) = ALL
+    STRESS(SORT1,REAL,VONMISES,BILIN) = ALL
+    SUBTITLE = Default
+BEGIN BULK
+$PARAMS
+PARAM       POST      -1
+$NODES
+GRID           1              0.    500.    500.
+GRID           2           8000.    500.    500.
+GRID           3        148.1481    500.    500.
+GRID           4        296.2963    500.    500.
+GRID           5        444.4444    500.    500.
+GRID           6        592.5926    500.    500.
+GRID           7        740.7407    500.    500.
+GRID           8        888.8889    500.    500.
+GRID           9        1037.037    500.    500.
+GRID          10        1185.185    500.    500.
+GRID          11        1333.333    500.    500.
+GRID          12        1481.481    500.    500.
+GRID          13         1629.63    500.    500.
+GRID          14        1777.778    500.    500.
+GRID          15        1925.926    500.    500.
+GRID          16        2074.074    500.    500.
+GRID          17        2222.222    500.    500.
+GRID          18         2370.37    500.    500.
+GRID          19        2518.519    500.    500.
+GRID          20        2666.667    500.    500.
+GRID          21        2814.815    500.    500.
+GRID          22        2962.963    500.    500.
+GRID          23        3111.111    500.    500.
+GRID          24        3259.259    500.    500.
+GRID          25        3407.407    500.    500.
+GRID          26        3555.556    500.    500.
+GRID          27        3703.704    500.    500.
+GRID          28        3851.852    500.    500.
+GRID          29           4000.    500.    500.
+GRID          30        4148.148    500.    500.
+GRID          31        4296.296    500.    500.
+GRID          32        4444.444    500.    500.
+GRID          33        4592.593    500.    500.
+GRID          34        4740.741    500.    500.
+GRID          35        4888.889    500.    500.
+GRID          36        5037.037    500.    500.
+GRID          37        5185.185    500.    500.
+GRID          38        5333.333    500.    500.
+GRID          39        5481.481    500.    500.
+GRID          40         5629.63    500.    500.
+GRID          41        5777.778    500.    500.
+GRID          42        5925.926    500.    500.
+GRID          43        6074.074    500.    500.
+GRID          44        6222.222    500.    500.
+GRID          45         6370.37    500.    500.
+GRID          46        6518.519    500.    500.
+GRID          47        6666.667    500.    500.
+GRID          48        6814.815    500.    500.
+GRID          49        6962.963    500.    500.
+GRID          50        7111.111    500.    500.
+GRID          51        7259.259    500.    500.
+GRID          52        7407.407    500.    500.
+GRID          53        7555.556    500.    500.
+GRID          54        7703.704    500.    500.
+GRID          55        7851.852    500.    500.
+$ELEMENTS
+CBAR           1       1       1       3      0.      0.      1.
+CBAR           2       1       3       4      0.      0.      1.
+CBAR           3       1       4       5      0.      0.      1.
+CBAR           4       1       5       6      0.      0.      1.
+CBAR           5       1       6       7      0.      0.      1.
+CBAR           6       1       7       8      0.      0.      1.
+CBAR           7       1       8       9      0.      0.      1.
+CBAR           8       1       9      10      0.      0.      1.
+CBAR           9       1      10      11      0.      0.      1.
+CBAR          10       1      11      12      0.      0.      1.
+CBAR          11       1      12      13      0.      0.      1.
+CBAR          12       1      13      14      0.      0.      1.
+CBAR          13       1      14      15      0.      0.      1.
+CBAR          14       1      15      16      0.      0.      1.
+CBAR          15       1      16      17      0.      0.      1.
+CBAR          16       1      17      18      0.      0.      1.
+CBAR          17       1      18      19      0.      0.      1.
+CBAR          18       1      19      20      0.      0.      1.
+CBAR          19       1      20      21      0.      0.      1.
+CBAR          20       1      21      22      0.      0.      1.
+CBAR          21       1      22      23      0.      0.      1.
+CBAR          22       1      23      24      0.      0.      1.
+CBAR          23       1      24      25      0.      0.      1.
+CBAR          24       1      25      26      0.      0.      1.
+CBAR          25       1      26      27      0.      0.      1.
+CBAR          26       1      27      28      0.      0.      1.
+CBAR          27       1      28      29      0.      0.      1.
+CBAR          28       1      29      30      0.      0.      1.
+CBAR          29       1      30      31      0.      0.      1.
+CBAR          30       1      31      32      0.      0.      1.
+CBAR          31       1      32      33      0.      0.      1.
+CBAR          32       1      33      34      0.      0.      1.
+CBAR          33       1      34      35      0.      0.      1.
+CBAR          34       1      35      36      0.      0.      1.
+CBAR          35       1      36      37      0.      0.      1.
+CBAR          36       1      37      38      0.      0.      1.
+CBAR          37       1      38      39      0.      0.      1.
+CBAR          38       1      39      40      0.      0.      1.
+CBAR          39       1      40      41      0.      0.      1.
+CBAR          40       1      41      42      0.      0.      1.
+CBAR          41       1      42      43      0.      0.      1.
+CBAR          42       1      43      44      0.      0.      1.
+CBAR          43       1      44      45      0.      0.      1.
+CBAR          44       1      45      46      0.      0.      1.
+CBAR          45       1      46      47      0.      0.      1.
+CBAR          46       1      47      48      0.      0.      1.
+CBAR          47       1      48      49      0.      0.      1.
+CBAR          48       1      49      50      0.      0.      1.
+CBAR          49       1      50      51      0.      0.      1.
+CBAR          50       1      51      52      0.      0.      1.
+CBAR          51       1      52      53      0.      0.      1.
+CBAR          52       1      53      54      0.      0.      1.
+CBAR          53       1      54      55      0.      0.      1.
+CBAR          54       1      55       2      0.      0.      1.
+$PROPERTIES
+PBARL          1       1             BAR
+           1000.   1000.      0.
+$MATERIALS
+MAT1           1 210000.              .3
+$LOADS
+LOAD           1      1.      1.       2
+FORCE          2       2        9000000.      0.      0.     -1.
+$SPCs
+SPCADD         1       2
+SPC1           2  123456       1
+ENDDATA

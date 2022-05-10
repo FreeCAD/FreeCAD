@@ -26,19 +26,6 @@
 
 #include <FCConfig.h>
 
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-# define ReenExport     __declspec(dllexport)
-# define PartExport     __declspec(dllimport)
-# define MeshExport     __declspec(dllimport)
-# define PointsExport   __declspec(dllimport)
-#else // for Linux
-# define ReenExport
-# define PartExport
-# define MeshExport
-# define PointsExport
-#endif
-
 #ifdef _MSC_VER
 #   pragma warning(disable : 4181)
 #   pragma warning(disable : 4267)
@@ -57,8 +44,8 @@
 // standard
 #include <iostream>
 #include <sstream>
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 #include <string>
 #include <map>
 #include <vector>
@@ -77,9 +64,6 @@
 #include <Geom_BSplineSurface.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <TopoDS_Face.hxx>
-
-#include <Python.h>
-
 
 #endif
 #endif // _PreComp_

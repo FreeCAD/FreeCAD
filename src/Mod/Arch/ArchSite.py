@@ -130,7 +130,7 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False,tz=None):
             else:
                 oldversion = True
         if tz:
-            tz = datetime.timezone(datetime.timedelta(hours=-3))
+            tz = datetime.timezone(datetime.timedelta(hours=tz))
         else:
             tz = datetime.timezone.utc
     else:
@@ -232,7 +232,7 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False,tz=None):
     numsep = coin.SoSeparator()
     pathsep = coin.SoSeparator()
     hoursep = coin.SoSeparator()
-    hournumsep = coin.SoSeparator()
+    #hournumsep = coin.SoSeparator()
     mastersep.addChild(circlesep)
     mastersep.addChild(numsep)
     mastersep.addChild(pathsep)
@@ -749,11 +749,11 @@ class _Site(ArchIFC.IfcProduct):
             if f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1)) < 1.5707:
                 fset.append(f)
         if fset:
-            import Drawing,Part
+            import TechDraw, Part
             pset = []
             for f in fset:
                 try:
-                    pf = Part.Face(Part.Wire(Drawing.project(f,FreeCAD.Vector(0,0,1))[0].Edges))
+                    pf = Part.Face(Part.Wire(TechDraw.project(f,FreeCAD.Vector(0,0,1))[0].Edges))
                 except Part.OCCError:
                     # error in computing the area. Better set it to zero than show a wrong value
                     if obj.ProjectedArea.Value != 0:
@@ -994,7 +994,7 @@ class _ViewProviderSite:
             The name of the property that has changed.
         """
 
-        if prop in ["Longitude","Latitude"]:
+        if prop in ["Longitude","Latitude","TimeZone"]:
             self.onChanged(obj.ViewObject,"SolarDiagram")
         elif prop == "Declination":
             self.onChanged(obj.ViewObject,"SolarDiagramPosition")

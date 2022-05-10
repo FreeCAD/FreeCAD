@@ -10,6 +10,8 @@ set(Path_Scripts
     Init.py
     PathCommands.py
     TestPathApp.py
+    PathMachineState.py
+    PathFeedRate.py
 )
 
 if(BUILD_GUI)
@@ -24,7 +26,7 @@ INSTALL(
 )
 
 SET(PathScripts_SRCS
-    PathCommands.py
+    PathScripts/drillableLib.py
     PathScripts/PathAdaptive.py
     PathScripts/PathAdaptiveGui.py
     PathScripts/PathAreaOp.py
@@ -142,26 +144,49 @@ SET(PathScripts_SRCS
     PathScripts/__init__.py
 )
 
+SET(Generator_SRCS
+    Generators/drill_generator.py
+    Generators/helix_generator.py
+    Generators/rotation_generator.py
+    Generators/threadmilling_generator.py
+    Generators/toolchange_generator.py
+)
+
 SET(PathScripts_post_SRCS
     PathScripts/post/__init__.py
     PathScripts/post/centroid_post.py
     PathScripts/post/comparams_post.py
-    PathScripts/post/dynapath_post.py
     PathScripts/post/dxf_post.py
+    PathScripts/post/dynapath_post.py
     PathScripts/post/example_pre.py
+    PathScripts/post/fablin_post.py
+    PathScripts/post/fanuc_post.py
     PathScripts/post/gcode_pre.py
     PathScripts/post/grbl_post.py
+    PathScripts/post/heidenhain_post.py
     PathScripts/post/jtech_post.py
+    PathScripts/post/KineticNCBeamicon2_post.py
     PathScripts/post/linuxcnc_post.py
     PathScripts/post/mach3_mach4_post.py
+    PathScripts/post/marlin_post.py
     PathScripts/post/nccad_post.py
     PathScripts/post/opensbp_post.py
     PathScripts/post/opensbp_pre.py
     PathScripts/post/philips_post.py
     PathScripts/post/rml_post.py
+    PathScripts/post/rrf_post.py
     PathScripts/post/slic3r_pre.py
     PathScripts/post/smoothie_post.py
     PathScripts/post/uccnc_post.py
+)
+
+SET(PathPythonGui_SRCS
+    PathPythonGui/__init__.py
+    PathPythonGui/simple_edit_panel.py
+)
+
+SET(Tools_SRCS
+    Tools/README.md
 )
 
 SET(Tools_Bit_SRCS
@@ -194,14 +219,27 @@ SET(Tools_Shape_SRCS
 
 SET(PathTests_SRCS
     PathTests/__init__.py
+    PathTests/boxtest.fcstd
+    PathTests/Drilling_1.FCStd
     PathTests/PathTestUtils.py
+    PathTests/test_adaptive.fcstd
+    PathTests/test_centroid_00.ngc
+    PathTests/test_geomop.fcstd
+    PathTests/test_holes00.fcstd
+    PathTests/test_linuxcnc_00.ngc
+    PathTests/TestPathAdaptive.py
     PathTests/TestPathCore.py
     PathTests/TestPathDeburr.py
     PathTests/TestPathDepthParams.py
     PathTests/TestPathDressupDogbone.py
     PathTests/TestPathDressupHoldingTags.py
+    PathTests/TestPathDrillGenerator.py
+    PathTests/TestPathDrillable.py
+    PathTests/TestPathRotationGenerator.py
     PathTests/TestPathGeom.py
     PathTests/TestPathHelix.py
+    PathTests/TestPathHelpers.py
+    PathTests/TestPathHelixGenerator.py
     PathTests/TestPathLog.py
     PathTests/TestPathOpTools.py
     PathTests/TestPathPost.py
@@ -209,7 +247,9 @@ SET(PathTests_SRCS
     PathTests/TestPathPropertyBag.py
     PathTests/TestPathSetupSheet.py
     PathTests/TestPathStock.py
+    PathTests/TestPathToolChangeGenerator.py
     PathTests/TestPathThreadMilling.py
+    PathTests/TestPathThreadMillingGenerator.py
     PathTests/TestPathTool.py
     PathTests/TestPathToolBit.py
     PathTests/TestPathToolController.py
@@ -220,11 +260,6 @@ SET(PathTests_SRCS
     PathTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
     PathTests/Tools/Library/test-path-tool-bit-library-00.fctl
     PathTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
-    PathTests/boxtest.fcstd
-    PathTests/test_centroid_00.ngc
-    PathTests/test_geomop.fcstd
-    PathTests/test_holes00.fcstd
-    PathTests/test_linuxcnc_00.ngc
 )
 
 SET(PathImages_Ops
@@ -243,8 +278,13 @@ SET(Path_Images
 )
 
 SET(PathData_Threads
-    Data/Threads/metric-internal.csv
-    Data/Threads/imperial-internal.csv
+    Data/Threads/imperial-external-2A.csv
+    Data/Threads/imperial-external-3A.csv
+    Data/Threads/imperial-internal-2B.csv
+    Data/Threads/imperial-internal-3B.csv
+    Data/Threads/metric-external-4G6G.csv
+    Data/Threads/metric-external-6G.csv
+    Data/Threads/metric-internal-6H.csv
 )
 
 SET(Path_Data
@@ -253,7 +293,10 @@ SET(Path_Data
 
 SET(all_files
     ${PathScripts_SRCS}
+    ${Generator_SRCS}
     ${PathScripts_post_SRCS}
+    ${PathPythonGui_SRCS}
+    ${Tools_SRCS}
     ${Tools_Bit_SRCS}
     ${Tools_Library_SRCS}
     ${Tools_Shape_SRCS}
@@ -286,6 +329,13 @@ INSTALL(
 
 INSTALL(
     FILES
+        ${Generator_SRCS}
+    DESTINATION
+        Mod/Path/Generators
+)
+
+INSTALL(
+    FILES
         ${PathTests_SRCS}
     DESTINATION
         Mod/Path/PathTests
@@ -297,13 +347,27 @@ INSTALL(
   DESTINATION
         Mod/Path/PathTests
 )
-      
+
 
 INSTALL(
     FILES
         ${PathScripts_post_SRCS}
     DESTINATION
         Mod/Path/PathScripts/post
+)
+
+INSTALL(
+    FILES
+        ${PathPythonGui_SRCS}
+    DESTINATION
+        Mod/Path/PathPythonGui
+)
+
+INSTALL(
+    FILES
+        ${Tools_SRCS}
+    DESTINATION
+        Mod/Path/Tools
 )
 
 INSTALL(

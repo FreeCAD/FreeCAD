@@ -21,18 +21,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef _DrawViewClip_h_
 #define _DrawViewClip_h_
 
 #include <App/DocumentObject.h>
-#include <App/DocumentObjectGroup.h>
-#include <App/PropertyLinks.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
 #include <App/FeaturePython.h>
+#include <App/PropertyLinks.h>
+#include <App/PropertyUnits.h>
 
 #include "DrawView.h"
+
 
 namespace TechDraw
 {

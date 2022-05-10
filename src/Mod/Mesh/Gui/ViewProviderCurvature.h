@@ -70,13 +70,13 @@ public:
 
     /// Extracts the mesh data from the feature \a pcFeature and creates an Inventor node \a SoNode with these data. 
     void attach(App::DocumentObject* pcFeature);
-    virtual bool useNewSelectionModel(void) const {return false;}
+    virtual bool useNewSelectionModel() const {return false;}
     /// Sets the viewing mode
     void setDisplayMode(const char* ModeName);
     /// get the default display mode
     virtual const char* getDefaultDisplayMode() const;
     /// Returns a list of all possible modes
-    std::vector<std::string> getDisplayModes(void) const;
+    std::vector<std::string> getDisplayModes() const;
     /// Updates the mesh feature representation
     void updateData(const App::Property*);
     /// Returns a pixmap for the associated feature type
@@ -84,11 +84,11 @@ public:
     /// Once the color bar settinhs has been changed this method gets called to update the feature's representation
     void OnChange(Base::Subject<int> &rCaller,int rcReason);
     /// Returns a color bar
-    SoSeparator* getFrontRoot(void) const;
+    SoSeparator* getFrontRoot() const;
     /// Hide the object in the view
-    virtual void hide(void);
+    virtual void hide();
     /// Show the object in the view
-    virtual void show(void);
+    virtual void show();
 
 public:
     static void curvatureInfoCallback(void * ud, SoEventCallback * n);
@@ -97,6 +97,7 @@ protected:
     void onChanged(const App::Property* prop);
     void setVertexCurvatureMode(int mode);
     std::string curvatureInfo(bool detail, int index1, int index2, int index3) const;
+    void touchShapeNode();
 
 private:
     void init(const Mesh::PropertyCurvatureList *prop);

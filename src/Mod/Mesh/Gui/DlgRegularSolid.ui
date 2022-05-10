@@ -23,61 +23,6 @@
    <property name="spacing">
     <number>6</number>
    </property>
-   <item row="1" column="0">
-    <layout class="QHBoxLayout">
-     <property name="spacing">
-      <number>6</number>
-     </property>
-     <property name="margin">
-      <number>0</number>
-     </property>
-     <item>
-      <spacer>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Expanding</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="createSolidButton">
-       <property name="text">
-        <string>&amp;Create</string>
-       </property>
-       <property name="shortcut">
-        <string>Alt+C</string>
-       </property>
-       <property name="autoDefault">
-        <bool>true</bool>
-       </property>
-       <property name="default">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="buttonClose">
-       <property name="text">
-        <string>Cl&amp;ose</string>
-       </property>
-       <property name="shortcut">
-        <string>Alt+O</string>
-       </property>
-       <property name="autoDefault">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox1">
      <property name="title">
@@ -169,6 +114,49 @@
             <property name="spacing">
              <number>6</number>
             </property>
+            <item row="0" column="0">
+             <widget class="QLabel" name="textLabel2">
+              <property name="text">
+               <string>Length:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="Gui::QuantitySpinBox" name="boxLength">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
+              <property name="minimum">
+               <double>0.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>1000.000000000000000</double>
+              </property>
+              <property name="value">
+               <double>10.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="textLabel3">
+              <property name="text">
+               <string>Width:</string>
+              </property>
+             </widget>
+            </item>
+           <item row="1" column="1">
+             <widget class="Gui::QuantitySpinBox" name="boxWidth">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
+              <property name="maximum">
+               <double>1000.000000000000000</double>
+              </property>
+              <property name="value">
+               <double>10.000000000000000</double>
+              </property>
+             </widget>
+            </item>
             <item row="2" column="0">
              <widget class="QLabel" name="textLabel4">
               <property name="text">
@@ -189,50 +177,7 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
-             <widget class="Gui::QuantitySpinBox" name="boxLength">
-              <property name="unit" stdset="0">
-               <string notr="true">mm</string>
-              </property>
-              <property name="minimum">
-               <double>0.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>10.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QLabel" name="textLabel2">
-              <property name="text">
-               <string>Length:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="Gui::QuantitySpinBox" name="boxWidth">
-              <property name="unit" stdset="0">
-               <string notr="true">mm</string>
-              </property>
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>10.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="textLabel3">
-              <property name="text">
-               <string>Width:</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+            </layout>
           </item>
           <item row="1" column="0">
            <spacer>
@@ -285,7 +230,14 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
+            <item row="1" column="0">
+             <widget class="QLabel" name="textLabel6">
+              <property name="text">
+               <string>Length:</string>
+              </property>
+             </widget>
+            </item>
+           <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="cylinderLength">
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
@@ -295,14 +247,7 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="textLabel6">
-              <property name="text">
-               <string>Length:</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+            </layout>
           </item>
           <item row="1" column="0">
            <widget class="Line" name="line1">
@@ -322,30 +267,6 @@
             <property name="spacing">
              <number>6</number>
             </property>
-            <item row="2" column="0" colspan="2">
-             <widget class="QCheckBox" name="cylinderClosed">
-              <property name="text">
-               <string>Closed</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QSpinBox" name="cylinderCount">
-              <property name="value">
-               <number>50</number>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="textLabel8">
-              <property name="text">
-               <string>Sampling:</string>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="0">
              <widget class="QLabel" name="textLabel7">
               <property name="text">
@@ -366,7 +287,31 @@
               </property>
              </widget>
             </item>
-           </layout>
+           <item row="1" column="0">
+             <widget class="QLabel" name="textLabel8">
+              <property name="text">
+               <string>Sampling:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QSpinBox" name="cylinderCount">
+              <property name="value">
+               <number>50</number>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0" colspan="2">
+             <widget class="QCheckBox" name="cylinderClosed">
+              <property name="text">
+               <string>Closed</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            </layout>
           </item>
           <item row="3" column="0">
            <spacer>
@@ -402,6 +347,30 @@
             <property name="spacing">
              <number>6</number>
             </property>
+            <item row="0" column="0">
+             <widget class="QLabel" name="textLabel9">
+              <property name="text">
+               <string>Radius 1:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="Gui::QuantitySpinBox" name="coneRadius1">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
+              <property name="value">
+               <double>2.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+           <item row="1" column="0">
+             <widget class="QLabel" name="textLabel10">
+              <property name="text">
+               <string>Radius 2:</string>
+              </property>
+             </widget>
+            </item>
             <item row="1" column="1" rowspan="2">
              <widget class="Gui::QuantitySpinBox" name="coneRadius2">
               <property name="unit" stdset="0">
@@ -429,31 +398,7 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="0">
-             <widget class="QLabel" name="textLabel9">
-              <property name="text">
-               <string>Radius 1:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="textLabel10">
-              <property name="text">
-               <string>Radius 2:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="Gui::QuantitySpinBox" name="coneRadius1">
-              <property name="unit" stdset="0">
-               <string notr="true">mm</string>
-              </property>
-              <property name="value">
-               <double>2.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-           </layout>
+            </layout>
           </item>
           <item row="1" column="0">
            <widget class="Line" name="line2">
@@ -473,7 +418,14 @@
             <property name="spacing">
              <number>6</number>
             </property>
-            <item row="0" column="1">
+            <item row="0" column="0">
+             <widget class="QLabel" name="textLabel12">
+              <property name="text">
+               <string>Edge length:</string>
+              </property>
+             </widget>
+            </item>
+           <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="coneEdgeLength">
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
@@ -490,6 +442,13 @@
               </property>
              </widget>
             </item>
+            <item row="1" column="1">
+             <widget class="QSpinBox" name="coneCount">
+              <property name="value">
+               <number>50</number>
+              </property>
+             </widget>
+            </item>
             <item row="2" column="0">
              <widget class="QCheckBox" name="coneClosed">
               <property name="text">
@@ -500,21 +459,7 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="QSpinBox" name="coneCount">
-              <property name="value">
-               <number>50</number>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QLabel" name="textLabel12">
-              <property name="text">
-               <string>Edge length:</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+            </layout>
           </item>
           <item row="3" column="0">
            <spacer>
@@ -637,13 +582,20 @@
             <property name="spacing">
              <number>6</number>
             </property>
-            <item row="1" column="1">
-             <widget class="Gui::QuantitySpinBox" name="ellipsoidRadius2">
+            <item row="0" column="0">
+             <widget class="QLabel" name="textLabel16">
+              <property name="text">
+               <string>Radius 1:</string>
+              </property>
+             </widget>
+            </item>
+           <item row="0" column="1">
+             <widget class="Gui::QuantitySpinBox" name="ellipsoidRadius1">
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
               <property name="value">
-               <double>4.000000000000000</double>
+               <double>2.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -654,24 +606,17 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
-             <widget class="Gui::QuantitySpinBox" name="ellipsoidRadius1">
+            <item row="1" column="1">
+             <widget class="Gui::QuantitySpinBox" name="ellipsoidRadius2">
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
               <property name="value">
-               <double>2.000000000000000</double>
+               <double>4.000000000000000</double>
               </property>
              </widget>
             </item>
-            <item row="0" column="0">
-             <widget class="QLabel" name="textLabel16">
-              <property name="text">
-               <string>Radius 1:</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+            </layout>
           </item>
           <item row="1" column="0">
            <widget class="Line" name="line4">
@@ -741,27 +686,10 @@
             <property name="spacing">
              <number>6</number>
             </property>
-            <item row="1" column="0">
-             <widget class="QLabel" name="textLabel20">
-              <property name="text">
-               <string>Radius 2:</string>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="0">
              <widget class="QLabel" name="textLabel19">
               <property name="text">
                <string>Radius 1:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="Gui::QuantitySpinBox" name="toroidRadius2">
-              <property name="unit" stdset="0">
-               <string notr="true">mm</string>
-              </property>
-              <property name="value">
-               <double>2.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -775,7 +703,24 @@
               </property>
              </widget>
             </item>
-           </layout>
+           <item row="1" column="0">
+             <widget class="QLabel" name="textLabel20">
+              <property name="text">
+               <string>Radius 2:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="Gui::QuantitySpinBox" name="toroidRadius2">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
+              <property name="value">
+               <double>2.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            </layout>
           </item>
           <item row="1" column="0">
            <widget class="Line" name="line5">
@@ -834,7 +779,62 @@
      </layout>
     </widget>
    </item>
-  </layout>
+  <item row="1" column="0">
+    <layout class="QHBoxLayout">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="margin">
+      <number>0</number>
+     </property>
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Expanding</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="createSolidButton">
+       <property name="text">
+        <string>&amp;Create</string>
+       </property>
+       <property name="shortcut">
+        <string>Alt+C</string>
+       </property>
+       <property name="autoDefault">
+        <bool>true</bool>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonClose">
+       <property name="text">
+        <string>Cl&amp;ose</string>
+       </property>
+       <property name="shortcut">
+        <string>Alt+O</string>
+       </property>
+       <property name="autoDefault">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

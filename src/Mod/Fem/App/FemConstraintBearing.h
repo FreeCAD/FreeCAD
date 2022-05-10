@@ -34,7 +34,7 @@
 namespace Fem
 {
 
-class AppFemExport ConstraintBearing : public Fem::Constraint
+class FemExport ConstraintBearing : public Fem::Constraint
 {
     PROPERTY_HEADER(Fem::ConstraintBearing);
 

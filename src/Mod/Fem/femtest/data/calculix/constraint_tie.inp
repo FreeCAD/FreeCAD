@@ -18530,13 +18530,11 @@ Evolumes
 
 ***********************************************************
 ** Element sets for materials and FEM element type (solid, shell, beam, fluid)
-** written by write_element_sets_material_and_femelement_type function
 *ELSET,ELSET=MechanicalMaterialSolid
 Evolumes
 
 ***********************************************************
 ** constraints fixed node sets
-** written by write_node_sets_constraints_fixed function
 ** ConstraintFixed
 *NSET,NSET=ConstraintFixed
 3,
@@ -18545,7 +18543,6 @@ Evolumes
 
 ***********************************************************
 ** constraints tie surface sets
-** written by write_surfaces_constraints_tie function
 ** ConstraintTie
 *SURFACE, NAME=TIE_DEPConstraintTie
 4834,S1
@@ -18596,36 +18593,31 @@ Evolumes
 
 ***********************************************************
 ** Materials
-** written by write_materials function
-** Young's modulus unit is MPa = N/mm2
+** see information about units at file end
 ** FreeCAD material name: Calculix-Steel
 ** MechanicalMaterial
 *MATERIAL, NAME=MechanicalMaterial
 *ELASTIC
-210000, 0.300
+210000,0.3
 
 ***********************************************************
 ** Sections
-** written by write_femelementsets function
 *SOLID SECTION, ELSET=MechanicalMaterialSolid, MATERIAL=MechanicalMaterial
 
 ***********************************************************
 ** Tie Constraints
-** written by write_constraints_tie function
 ** ConstraintTie
-*TIE, POSITION TOLERANCE=25.0, ADJUST=NO, NAME=TIEConstraintTie
+*TIE, POSITION TOLERANCE=25, ADJUST=NO, NAME=TIEConstraintTie
 TIE_DEPConstraintTie,TIE_INDConstraintTie
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
-** written by write_step_begin function
 *STEP
 *STATIC
 
 
 ***********************************************************
 ** Fixed Constraints
-** written by write_constraints_fixed function
 ** ConstraintFixed
 *BOUNDARY
 ConstraintFixed,1
@@ -18635,7 +18627,6 @@ ConstraintFixed,3
 
 ***********************************************************
 ** constraints force node loads
-** written by write_constraints_force function
 *CLOAD
 ** ConstraintForce
 ** node loads on shape: BooleanFragments:Edge2
@@ -18647,7 +18638,6 @@ ConstraintFixed,3
 
 ***********************************************************
 ** Outputs --> frd file
-** written by write_outputs_types function
 *NODE FILE
 U
 *EL FILE
@@ -18659,12 +18649,10 @@ RF
 
 
 ***********************************************************
-** written by write_step_end function
 *END STEP 
 
 ***********************************************************
 ** CalculiX Input file
-** written by write_footer function
 **   written by    --> FreeCAD 0.19.19481 (Git)
 **   written on    --> Wed Feb  5 08:55:37 2020
 **   file name     --> 
@@ -18674,7 +18662,7 @@ RF
 ***********************************************************
 **  About units:
 **  See ccx manual, ccx does not know about any unit.
-**  Golden rule: The user must make sure that the numbers he provides have consistent units.
+**  Golden rule: The user must make sure that the numbers they provide have consistent units.
 **  The user is the FreeCAD calculix writer module ;-)
 **
 **  The unit system which is used at Guido Dhondt's company: mm, N, s, K
@@ -18688,9 +18676,9 @@ RF
 **
 **  This leads to:
 **  Force: N
-**  Pressure: N/mm^2
+**  Pressure: N/mm^2 == MPa (Young's Modulus has unit Pressure)
 **  Density: t/mm^3
 **  Gravity: mm/s^2
-**  Thermal conductivity: t*mm/K/s^3 (same as W/m/K)
-**  Specific Heat: mm^2/s^2/K (same as J/kg/K)
+**  Thermal conductivity: t*mm/K/s^3 == as W/m/K == kW/mm/K
+**  Specific Heat: mm^2/s^2/K = J/kg/K == kJ/t/K
 **

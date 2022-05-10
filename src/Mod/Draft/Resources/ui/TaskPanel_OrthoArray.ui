@@ -38,6 +38,263 @@
       <string/>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_icon">
+        <property name="text">
+         <string>(Placeholder for the icon)</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QGroupBox" name="group_copies">
+        <property name="toolTip">
+         <string>Number of elements in the array in the specified direction, including a copy of the original object.
+The number must be at least 1 in each direction.</string>
+        </property>
+        <property name="title">
+         <string>Number of elements</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_5">
+         <item row="0" column="0">
+          <layout class="QGridLayout" name="grid_number">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_n_X">
+             <property name="text">
+              <string>X</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QSpinBox" name="spinbox_n_X">
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="value">
+              <number>2</number>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_n_Y">
+             <property name="text">
+              <string>Y</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QSpinBox" name="spinbox_n_Y">
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="value">
+              <number>2</number>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_n_Z">
+             <property name="text">
+              <string>Z</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QSpinBox" name="spinbox_n_Z">
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="value">
+              <number>1</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     <item row="4" column="0">
+       <widget class="QGroupBox" name="group_X">
+        <property name="toolTip">
+         <string>Distance between the elements in the X direction.
+Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</string>
+        </property>
+        <property name="title">
+         <string>X intervals</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="0" column="0">
+          <layout class="QGridLayout" name="grid_X">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_X_x">
+             <property name="text">
+              <string>X</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="Gui::InputField" name="input_X_x">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="unit" stdset="0">
+              <string notr="true"/>
+             </property>
+             <property name="quantity" stdset="0">
+              <double>100.000000000000000</double>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_X_y">
+             <property name="text">
+              <string>Y</string>
+             </property>
+            </widget>
+           </item>
+          <item row="1" column="1">
+            <widget class="Gui::InputField" name="input_X_y">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="unit" stdset="0">
+              <string notr="true"/>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_X_z">
+             <property name="text">
+              <string>Z</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="Gui::InputField" name="input_X_z">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="unit" stdset="0">
+              <string notr="true"/>
+             </property>
+            </widget>
+           </item>
+           </layout>
+         </item>
+         <item row="1" column="0">
+          <widget class="QPushButton" name="button_reset_X">
+           <property name="toolTip">
+            <string>Reset the distances.</string>
+           </property>
+           <property name="text">
+            <string>Reset X</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QGroupBox" name="group_Y">
+        <property name="toolTip">
+         <string>Distance between the elements in the Y direction.
+Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
+Negative values will result in copies produced in the negative direction.</string>
+        </property>
+        <property name="title">
+         <string>Y intervals</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_6">
+         <item row="0" column="0">
+          <layout class="QGridLayout" name="grid_Y">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_Y_x">
+             <property name="text">
+              <string>X</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="Gui::InputField" name="input_Y_x">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="unit" stdset="0">
+              <string notr="true"/>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_Y_y">
+             <property name="text">
+              <string>Y</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="Gui::InputField" name="input_Y_y">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="unit" stdset="0">
+              <string notr="true"/>
+             </property>
+             <property name="quantity" stdset="0">
+              <double>100.000000000000000</double>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_Y_z">
+             <property name="text">
+              <string>Z</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="Gui::InputField" name="input_Y_z">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="unit" stdset="0">
+              <string notr="true"/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="1" column="0">
+          <widget class="QPushButton" name="button_reset_Y">
+           <property name="toolTip">
+            <string>Reset the distances.</string>
+           </property>
+           <property name="text">
+            <string>Reset Y</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
       <item row="6" column="0">
        <widget class="QGroupBox" name="group_Z">
         <property name="toolTip">
@@ -51,20 +308,6 @@ Negative values will result in copies produced in the negative direction.</strin
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
           <layout class="QGridLayout" name="grid_Z">
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_Z_z">
-             <property name="text">
-              <string>Z</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_Z_y">
-             <property name="text">
-              <string>Y</string>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="0">
             <widget class="QLabel" name="label_Z_x">
              <property name="text">
@@ -85,6 +328,13 @@ Negative values will result in copies produced in the negative direction.</strin
              </property>
             </widget>
            </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_Z_y">
+             <property name="text">
+              <string>Y</string>
+             </property>
+            </widget>
+           </item>
            <item row="1" column="1">
             <widget class="Gui::InputField" name="input_Z_y">
              <property name="sizePolicy">
@@ -95,6 +345,13 @@ Negative values will result in copies produced in the negative direction.</strin
              </property>
              <property name="unit" stdset="0">
               <string notr="true"/>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_Z_z">
+             <property name="text">
+              <string>Z</string>
              </property>
             </widget>
            </item>
@@ -171,264 +428,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
         </property>
        </spacer>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_icon">
-        <property name="text">
-         <string>(Placeholder for the icon)</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QGroupBox" name="group_X">
-        <property name="toolTip">
-         <string>Distance between the elements in the X direction.
-Normally, only the X value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</string>
-        </property>
-        <property name="title">
-         <string>X intervals</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_2">
-         <item row="0" column="0">
-          <layout class="QGridLayout" name="grid_X">
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_X_z">
-             <property name="text">
-              <string>Z</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="Gui::InputField" name="input_X_x">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="unit" stdset="0">
-              <string notr="true"/>
-             </property>
-             <property name="quantity" stdset="0">
-              <double>100.000000000000000</double>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="Gui::InputField" name="input_X_y">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="unit" stdset="0">
-              <string notr="true"/>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="Gui::InputField" name="input_X_z">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="unit" stdset="0">
-              <string notr="true"/>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_X_x">
-             <property name="text">
-              <string>X</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_X_y">
-             <property name="text">
-              <string>Y</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="1" column="0">
-          <widget class="QPushButton" name="button_reset_X">
-           <property name="toolTip">
-            <string>Reset the distances.</string>
-           </property>
-           <property name="text">
-            <string>Reset X</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="QGroupBox" name="group_Y">
-        <property name="toolTip">
-         <string>Distance between the elements in the Y direction.
-Normally, only the Y value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</string>
-        </property>
-        <property name="title">
-         <string>Y intervals</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_6">
-         <item row="0" column="0">
-          <layout class="QGridLayout" name="grid_Y">
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_Y_x">
-             <property name="text">
-              <string>X</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_Y_y">
-             <property name="text">
-              <string>Y</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_Y_z">
-             <property name="text">
-              <string>Z</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="Gui::InputField" name="input_Y_x">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="unit" stdset="0">
-              <string notr="true"/>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="Gui::InputField" name="input_Y_y">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="unit" stdset="0">
-              <string notr="true"/>
-             </property>
-             <property name="quantity" stdset="0">
-              <double>100.000000000000000</double>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="Gui::InputField" name="input_Y_z">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="unit" stdset="0">
-              <string notr="true"/>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="1" column="0">
-          <widget class="QPushButton" name="button_reset_Y">
-           <property name="toolTip">
-            <string>Reset the distances.</string>
-           </property>
-           <property name="text">
-            <string>Reset Y</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QGroupBox" name="group_copies">
-        <property name="toolTip">
-         <string>Number of elements in the array in the specified direction, including a copy of the original object.
-The number must be at least 1 in each direction.</string>
-        </property>
-        <property name="title">
-         <string>Number of elements</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_5">
-         <item row="0" column="0">
-          <layout class="QGridLayout" name="grid_number">
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_n_X">
-             <property name="text">
-              <string>X</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_n_Z">
-             <property name="text">
-              <string>Z</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_n_Y">
-             <property name="text">
-              <string>Y</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QSpinBox" name="spinbox_n_X">
-             <property name="minimum">
-              <number>1</number>
-             </property>
-             <property name="value">
-              <number>2</number>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QSpinBox" name="spinbox_n_Y">
-             <property name="minimum">
-              <number>1</number>
-             </property>
-             <property name="value">
-              <number>2</number>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QSpinBox" name="spinbox_n_Z">
-             <property name="minimum">
-              <number>1</number>
-             </property>
-             <property name="value">
-              <number>1</number>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-      </item>
-     </layout>
+      </layout>
     </widget>
    </item>
   </layout>

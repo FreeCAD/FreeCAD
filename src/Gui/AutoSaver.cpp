@@ -30,32 +30,29 @@
 # include <QRunnable>
 # include <QTextStream>
 # include <QThreadPool>
-# include <boost_bind_bind.hpp>
-# include <sstream>
 #endif
 
-#include "AutoSaver.h"
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
 
+#include "AutoSaver.h"
 #include "Document.h"
-#include "WaitCursor.h"
-#include "Widgets.h"
 #include "MainWindow.h"
 #include "ViewProvider.h"
+#include "WaitCursor.h"
 
 FC_LOG_LEVEL_INIT("App",true,true)
 
 using namespace Gui;
 namespace bp = boost::placeholders;
 
-AutoSaver* AutoSaver::self = 0;
+AutoSaver* AutoSaver::self = nullptr;
 
 AutoSaver::AutoSaver(QObject* parent)
   : QObject(parent), timeout(900000), compressed(true)

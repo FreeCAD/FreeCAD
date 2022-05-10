@@ -412,7 +412,7 @@ class GmshTools():
                 shell=False,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                text=True
+                universal_newlines=True
             )
         except Exception as e:
             Console.PrintMessage(str(e) + "\n")
@@ -733,6 +733,13 @@ class GmshTools():
         geo = open(self.temp_file_geo, "w")
         geo.write("// geo file for meshing with Gmsh meshing software created by FreeCAD\n")
         geo.write("\n")
+
+        cpu_count = os.cpu_count()
+        if cpu_count != None and cpu_count > 1:
+            geo.write("// enable multi-core processing\n")
+            geo.write(f"General.NumThreads = {cpu_count};\n")
+            geo.write("\n")
+
         geo.write("// open brep geometry\n")
         # explicit use double quotes in geo file
         geo.write('Merge "{}";\n'.format(self.temp_file_geometry))
@@ -1011,7 +1018,7 @@ for len in max_mesh_sizes:
 """
 TODO
 class GmshTools should be splittet in two classes
-one class should only collect the mesh parameter from mesh object and his childs
+one class should only collect the mesh parameter from mesh object and its childs
 a second class only uses the collected parameter,
 writes the input file runs gmsh reads back the unv and returns a FemMesh
 gmsh binary will be collected in the second class

@@ -29,6 +29,7 @@
 #include <App/DocumentObjectGroup.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyFile.h>
+#include <Mod/Raytracing/RaytracingGlobal.h>
 
 namespace Raytracing
 {
@@ -37,8 +38,7 @@ class Property;
 
 /** Base class of all Feature classes in FreeCAD
  */
-//class RayFeature: public Part::PartFeature
-class AppRaytracingExport RayProject: public App::DocumentObjectGroup
+class RaytracingExport RayProject: public App::DocumentObjectGroup
 {
     PROPERTY_HEADER(Raytracing::RayProject);
 

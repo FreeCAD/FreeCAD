@@ -86,13 +86,13 @@
       <source>Base</source>
       <translation>基本</translation>
     </message>
+    <message>
+      <source>Enum</source>
+      <translation>列举</translation>
+    </message>
   </context>
   <context>
     <name>CmdTestConsoleOutput</name>
-    <message>
-      <source>Standard-Test</source>
-      <translation>标准测试</translation>
-    </message>
     <message>
       <source>Test console output</source>
       <translation>测试控制台输出</translation>
@@ -101,20 +101,12 @@
   <context>
     <name>CmdViewMeasureClearAll</name>
     <message>
-      <source>Measure</source>
-      <translation>测量</translation>
-    </message>
-    <message>
       <source>Clear measurement</source>
       <translation>清除测量</translation>
     </message>
   </context>
   <context>
     <name>CmdViewMeasureToggleAll</name>
-    <message>
-      <source>Measure</source>
-      <translation>测量</translation>
-    </message>
     <message>
       <source>Toggle measurement</source>
       <translation>切换测量</translation>
@@ -193,6 +185,73 @@
     <message>
       <source>Measure distance</source>
       <translation>测量距离</translation>
+    </message>
+    <message>
+      <source>Toggle array elements</source>
+      <translation type="unfinished">Toggle array elements</translation>
+    </message>
+  </context>
+  <context>
+    <name>CommandGroup</name>
+    <message>
+      <source>File</source>
+      <translation>文件</translation>
+    </message>
+    <message>
+      <source>Edit</source>
+      <translation>编辑</translation>
+    </message>
+    <message>
+      <source>Help</source>
+      <translation>帮助</translation>
+    </message>
+    <message>
+      <source>Link</source>
+      <translation>链接</translation>
+    </message>
+    <message>
+      <source>Tools</source>
+      <translation>工具</translation>
+    </message>
+    <message>
+      <source>View</source>
+      <translation>视图</translation>
+    </message>
+    <message>
+      <source>Window</source>
+      <translation>窗口</translation>
+    </message>
+    <message>
+      <source>Standard</source>
+      <translation>标准</translation>
+    </message>
+    <message>
+      <source>Macros</source>
+      <translation>宏</translation>
+    </message>
+    <message>
+      <source>Macro</source>
+      <translation>宏</translation>
+    </message>
+    <message>
+      <source>Structure</source>
+      <translation>结构</translation>
+    </message>
+    <message>
+      <source>Standard-Test</source>
+      <translation>标准测试</translation>
+    </message>
+    <message>
+      <source>Standard-View</source>
+      <translation>标准视图</translation>
+    </message>
+    <message>
+      <source>TreeView</source>
+      <translation>树视图</translation>
+    </message>
+    <message>
+      <source>Measure</source>
+      <translation>测量</translation>
     </message>
   </context>
   <context>
@@ -277,6 +336,25 @@
     </message>
   </context>
   <context>
+    <name>EditMode</name>
+    <message>
+      <source>Default</source>
+      <translation>默认</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>变换</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>锯切</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>颜色</translation>
+    </message>
+  </context>
+  <context>
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
@@ -292,6 +370,10 @@
     <message>
       <source>none</source>
       <translation>无</translation>
+    </message>
+    <message>
+      <source>Press a keyboard shortcut</source>
+      <translation type="unfinished">Press a keyboard shortcut</translation>
     </message>
   </context>
   <context>
@@ -391,13 +473,6 @@
       <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
       <translation>滚动鼠标中键或在点击鼠标左键或右键时按住鼠标中键并移动鼠标</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui::Command</name>
-    <message>
-      <source>Standard</source>
-      <translation>标准</translation>
     </message>
   </context>
   <context>
@@ -505,7 +580,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>FreeCAD would not be possible without the contributions of</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+      <translation>如果没有以下贡献者的帮助，FreeCAD 项目不可能成立</translation>
     </message>
     <message>
       <source>Individuals</source>
@@ -516,6 +591,25 @@ while doing a left or right click and move the mouse up or down</source>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
       <translation>组织</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::ApplicationCache</name>
+    <message>
+      <source>Cache directory</source>
+      <translation type="unfinished">Cache directory</translation>
+    </message>
+    <message>
+      <source>The cache directory %1 exceeds the size of %2.</source>
+      <translation type="unfinished">The cache directory %1 exceeds the size of %2.</translation>
+    </message>
+    <message>
+      <source>Do you want to clear it now?</source>
+      <translation type="unfinished">Do you want to clear it now?</translation>
+    </message>
+    <message>
+      <source>Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</source>
+      <translation type="unfinished">Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</translation>
     </message>
   </context>
   <context>
@@ -727,11 +821,11 @@ In this case the prefix will be automatically trimmed when shown in the property
 However, the property is still used in a script with the full name, like 'obj.Group_Name'.
 
 If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
-      <translation type="unfinished">Prefix the property name with the group name in the form 'Group_Name' to avoid conflicts with an existing property.
-In this case the prefix will be automatically trimmed when shown in the property editor.
-However, the property is still used in a script with the full name, like 'obj.Group_Name'.
+      <translation>属性名称前加上组名前缀，以“组名_属性名”的形式来避免与现有属性冲突。
+这样，当在属性编辑器中显示时前缀将自动隐藏。
+但在脚本中该属性中仍然是全名，例如'obj.Group_name'。
 
-If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</translation>
+如果没有勾选，那么属性必须是唯一的命名，并且它是像'obj.name'一样被访问的。</translation>
     </message>
     <message>
       <source>Prefix group name</source>
@@ -789,6 +883,32 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source>Icon folders...</source>
       <translation>图标文件夹...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCreateNewPreferencePack</name>
+    <message>
+      <source>Create New Preference Pack</source>
+      <translation type="unfinished">Create New Preference Pack</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>名称</translation>
+    </message>
+    <message>
+      <source>Property group templates</source>
+      <translation type="unfinished">Property group templates</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCreateNewPreferencePackImp</name>
+    <message>
+      <source>Pack already exists</source>
+      <translation type="unfinished">Pack already exists</translation>
+    </message>
+    <message>
+      <source>A preference pack with that name already exists. Do you want to overwrite it?</source>
+      <translation type="unfinished">A preference pack with that name already exists. Do you want to overwrite it?</translation>
     </message>
   </context>
   <context>
@@ -855,14 +975,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source>Macros</source>
       <translation>宏</translation>
-    </message>
-    <message>
-      <source>No macro</source>
-      <translation>无宏定义</translation>
-    </message>
-    <message>
-      <source>No macros found.</source>
-      <translation>未发现宏.</translation>
     </message>
     <message>
       <source>Macro not found</source>
@@ -1424,6 +1536,14 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <source>Code lines will be numbered</source>
       <translation>代码行将被编号</translation>
     </message>
+    <message>
+      <source>The cursor shape will be a block</source>
+      <translation type="unfinished">The cursor shape will be a block</translation>
+    </message>
+    <message>
+      <source>Enable block cursor</source>
+      <translation type="unfinished">Enable block cursor</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgGeneral</name>
@@ -1472,14 +1592,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <translation>样式表：</translation>
     </message>
     <message>
-      <source>Python console</source>
-      <translation>Python控制台</translation>
-    </message>
-    <message>
-      <source>Enable word wrap</source>
-      <translation>启用自动换行</translation>
-    </message>
-    <message>
       <source>Language of the application's user interface</source>
       <translation>应用程序用户界面语言</translation>
     </message>
@@ -1490,8 +1602,8 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source>Background of the main window will consist of tiles of a special image.
 See the FreeCAD Wiki for details about the image.</source>
-      <translation type="unfinished">Background of the main window will consist of tiles of a special image.
-See the FreeCAD Wiki for details about the image.</translation>
+      <translation>主窗口的背景将由特殊图像的平铺显示。
+请参阅FreeCAD Wiki 了解图像的详细信息。</translation>
     </message>
     <message>
       <source>Style sheet how user interface will look like</source>
@@ -1531,9 +1643,64 @@ after FreeCAD launches</source>
       <translation>选择再FreeCAD启动以后显示的工作台</translation>
     </message>
     <message>
-      <source>Words will be wrapped when they exceed available
-horizontal space in Python console</source>
-      <translation>在 Python 控制台中自动换行</translation>
+      <source>Number format:</source>
+      <translation type="unfinished">Number format:</translation>
+    </message>
+    <message>
+      <source>Operating system</source>
+      <translation>操作系统</translation>
+    </message>
+    <message>
+      <source>Selected language</source>
+      <translation type="unfinished">Selected language</translation>
+    </message>
+    <message>
+      <source>C/POSIX</source>
+      <translation type="unfinished">C/POSIX</translation>
+    </message>
+    <message>
+      <source>If enabled, numerical keypad decimal separator will be substituted with locale separator</source>
+      <translation type="unfinished">If enabled, numerical keypad decimal separator will be substituted with locale separator</translation>
+    </message>
+    <message>
+      <source>Substitute decimal separator (needs restart)</source>
+      <translation type="unfinished">Substitute decimal separator (needs restart)</translation>
+    </message>
+    <message>
+      <source>Preference packs</source>
+      <translation type="unfinished">Preference packs</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>名称</translation>
+    </message>
+    <message>
+      <source>Type</source>
+      <translation>类型</translation>
+    </message>
+    <message>
+      <source>Load</source>
+      <translation>加载</translation>
+    </message>
+    <message>
+      <source>Save new...</source>
+      <translation type="unfinished">Save new...</translation>
+    </message>
+    <message>
+      <source>Manage...</source>
+      <translation type="unfinished">Manage...</translation>
+    </message>
+    <message>
+      <source>Revert...</source>
+      <translation type="unfinished">Revert...</translation>
+    </message>
+    <message>
+      <source>The text cursor will be blinking</source>
+      <translation type="unfinished">The text cursor will be blinking</translation>
+    </message>
+    <message>
+      <source>Enable cursor blinking</source>
+      <translation type="unfinished">Enable cursor blinking</translation>
     </message>
   </context>
   <context>
@@ -1573,6 +1740,26 @@ horizontal space in Python console</source>
     <message>
       <source>Both</source>
       <translation>两者都是</translation>
+    </message>
+    <message>
+      <source>Manage preference packs</source>
+      <translation type="unfinished">Manage preference packs</translation>
+    </message>
+    <message>
+      <source>Preference Pack Name</source>
+      <translation type="unfinished">Preference Pack Name</translation>
+    </message>
+    <message>
+      <source>Tags</source>
+      <translation>标签</translation>
+    </message>
+    <message>
+      <source>Apply</source>
+      <translation>应用</translation>
+    </message>
+    <message>
+      <source>Apply the %1 preference pack</source>
+      <translation type="unfinished">Apply the %1 preference pack</translation>
     </message>
   </context>
   <context>
@@ -1644,12 +1831,20 @@ horizontal space in Python console</source>
       <translation>复制</translation>
     </message>
     <message>
-      <source>Addons...</source>
-      <translation>插件...</translation>
-    </message>
-    <message>
       <source>Toolbar</source>
       <translation>工具栏</translation>
+    </message>
+    <message>
+      <source>Launch a guide on how to set up a macro in a custom global toolbar.</source>
+      <translation type="unfinished">Launch a guide on how to set up a macro in a custom global toolbar.</translation>
+    </message>
+    <message>
+      <source>Open Addon Manager where macros created by the community and other addons can be downloaded.</source>
+      <translation type="unfinished">Open Addon Manager where macros created by the community and other addons can be downloaded.</translation>
+    </message>
+    <message>
+      <source>Download</source>
+      <translation>下载</translation>
     </message>
   </context>
   <context>
@@ -1707,7 +1902,8 @@ This file already exists.</source>
     <message>
       <source>'%1'
  already exists.</source>
-      <translation>%1：已经存在</translation>
+      <translation>'%1'
+ 已存在。</translation>
     </message>
     <message>
       <source>Rename Failed</source>
@@ -1753,27 +1949,27 @@ Note: your changes will be applied when you next switch workbenches
     </message>
     <message>
       <source>Walkthrough, dialog 1 of 2</source>
-      <translation type="unfinished">Walkthrough, dialog 1 of 2</translation>
+      <translation>遍历，对话框1 / 2</translation>
     </message>
     <message>
       <source>Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</source>
-      <translation type="unfinished">Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</translation>
+      <translation>顺序执行以下指令：填充缺失的字段 (可选) 然后单击添加，然后关闭</translation>
     </message>
     <message>
       <source>Walkthrough, dialog 1 of 1</source>
-      <translation type="unfinished">Walkthrough, dialog 1 of 1</translation>
+      <translation>遍历，对话框1 / 1</translation>
     </message>
     <message>
       <source>Walkthrough, dialog 2 of 2</source>
-      <translation type="unfinished">Walkthrough, dialog 2 of 2</translation>
+      <translation>遍历，对话框2 / 2</translation>
     </message>
     <message>
       <source>Walkthrough instructions: Click right arrow button (-&gt;), then Close.</source>
-      <translation type="unfinished">Walkthrough instructions: Click right arrow button (-&gt;), then Close.</translation>
+      <translation>顺序执行以下指令：点击右箭头按钮 (-&gt;)，然后关闭。</translation>
     </message>
     <message>
       <source>Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</source>
-      <translation type="unfinished">Walkthrough instructions: Click New, then right arrow (-&gt;) button, then Close.</translation>
+      <translation>顺序执行以下指令：点击新建，然后右箭头按钮 (-&gt;)，然后关闭。</translation>
     </message>
   </context>
   <context>
@@ -2031,6 +2227,48 @@ Specify another directory, please.</source>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgPreferencePackManagement</name>
+    <message>
+      <source>Manage Preference Packs</source>
+      <translation type="unfinished">Manage Preference Packs</translation>
+    </message>
+    <message>
+      <source>Open Addon Manager...</source>
+      <translation type="unfinished">Open Addon Manager...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgPreferencePackManagementImp</name>
+    <message>
+      <source>User-Saved Preference Packs</source>
+      <translation type="unfinished">User-Saved Preference Packs</translation>
+    </message>
+    <message>
+      <source>Built-In Preference Packs</source>
+      <translation type="unfinished">Built-In Preference Packs</translation>
+    </message>
+    <message>
+      <source>Toggle visibility of built-in preference pack '%1'</source>
+      <translation type="unfinished">Toggle visibility of built-in preference pack '%1'</translation>
+    </message>
+    <message>
+      <source>Delete user-saved preference pack '%1'</source>
+      <translation type="unfinished">Delete user-saved preference pack '%1'</translation>
+    </message>
+    <message>
+      <source>Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</source>
+      <translation type="unfinished">Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</translation>
+    </message>
+    <message>
+      <source>Delete saved preference pack?</source>
+      <translation type="unfinished">Delete saved preference pack?</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to delete the preference pack named '%1'? This cannot be undone.</source>
+      <translation type="unfinished">Are you sure you want to delete the preference pack named '%1'? This cannot be undone.</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgPreferences</name>
     <message>
       <source>Preferences</source>
@@ -2214,7 +2452,7 @@ Specify another directory, please.</source>
     </message>
     <message>
       <source>If enabled, then 3D view selection will be synchronized with full object hierarchy.</source>
-      <translation type="unfinished">If enabled, then 3D view selection will be synchronized with full object hierarchy.</translation>
+      <translation>如果启用，则3D 视图选择将与完整对象层级同步.</translation>
     </message>
   </context>
   <context>
@@ -2294,7 +2532,7 @@ on-screen while displaying the error</source>
     </message>
     <message>
       <source>Show report view on error</source>
-      <translation>错误时显示报表视图</translation>
+      <translation>出现错误时显示报告窗口</translation>
     </message>
     <message>
       <source>When a warning has occurred, the Report View dialog becomes visible
@@ -2303,17 +2541,16 @@ on-screen while displaying the warning</source>
     </message>
     <message>
       <source>Show report view on warning</source>
-      <translation>在警告时显示报告视图</translation>
+      <translation>出现警告时显示报告窗口</translation>
     </message>
     <message>
       <source>When a normal message has occurred, the Report View dialog becomes visible
 on-screen while displaying the message</source>
-      <translation type="unfinished">When a normal message has occurred, the Report View dialog becomes visible
-on-screen while displaying the message</translation>
+      <translation>当有普通消息时，报告窗口会出现并显示这个消息</translation>
     </message>
     <message>
       <source>Show report view on normal message</source>
-      <translation type="unfinished">Show report view on normal message</translation>
+      <translation>出现普通消息时显示报告窗口</translation>
     </message>
     <message>
       <source>When a log message has occurred, the Report View dialog becomes visible
@@ -2322,7 +2559,7 @@ on-screen while displaying the log message</source>
     </message>
     <message>
       <source>Show report view on log message</source>
-      <translation>在日志消息中显示报告视图</translation>
+      <translation>出现日志消息时显示报告窗口</translation>
     </message>
     <message>
       <source>Font color for normal messages in Report view panel</source>
@@ -2354,19 +2591,41 @@ from Python console to Report view panel</translation>
     </message>
     <message>
       <source>Include a timecode for each report</source>
-      <translation type="unfinished">Include a timecode for each report</translation>
+      <translation>为每份报告包含一个时间码</translation>
     </message>
     <message>
       <source>Include a timecode for each entry</source>
-      <translation type="unfinished">Include a timecode for each entry</translation>
+      <translation>每个条目包含一个时间码</translation>
     </message>
     <message>
       <source>Normal messages will be recorded</source>
-      <translation type="unfinished">Normal messages will be recorded</translation>
+      <translation>正常消息将被记录</translation>
     </message>
     <message>
       <source>Record normal messages</source>
-      <translation type="unfinished">Record normal messages</translation>
+      <translation>记录正常消息</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgRevertToBackupConfig</name>
+    <message>
+      <source>Revert to Backup Config</source>
+      <translation type="unfinished">Revert to Backup Config</translation>
+    </message>
+    <message>
+      <source>WARNING: this process will undo any preference changes made since the specified date, and will also reset your Recent files and Macros to their state on that date.</source>
+      <translation type="unfinished">WARNING: this process will undo any preference changes made since the specified date, and will also reset your Recent files and Macros to their state on that date.</translation>
+    </message>
+    <message>
+      <source>Available backup files:</source>
+      <translation type="unfinished">Available backup files:</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgRevertToBackupConfigImp</name>
+    <message>
+      <source>No selection in dialog, cannot load backup file</source>
+      <translation type="unfinished">No selection in dialog, cannot load backup file</translation>
     </message>
   </context>
   <context>
@@ -2594,7 +2853,7 @@ but slower response to any scene changes.</translation>
     </message>
     <message>
       <source>Objects will be projected in orthographic projection</source>
-      <translation>对象将以正投影法投射。</translation>
+      <translation>对象将以正交投影方式投影</translation>
     </message>
     <message>
       <source>Objects will appear in a perspective projection</source>
@@ -2608,7 +2867,7 @@ opening or creation</translation>
     </message>
     <message>
       <source>Show axis cross by default</source>
-      <translation type="unfinished">Show axis cross by default</translation>
+      <translation>默认显示坐标轴</translation>
     </message>
     <message>
       <source>Pick radius (px):</source>
@@ -2646,6 +2905,20 @@ bounding box size of the 3D object that is currently displayed.</source>
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</translation>
     </message>
+    <message>
+      <source>Relative size :   </source>
+      <translation type="unfinished">Relative size :   </translation>
+    </message>
+    <message>
+      <source>Size of main coordinate system representation
+in the corner -- in % of height/width of viewport</source>
+      <translation type="unfinished">Size of main coordinate system representation
+in the corner -- in % of height/width of viewport</translation>
+    </message>
+    <message>
+      <source>%</source>
+      <translation>%</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -2680,6 +2953,69 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <source>15px</source>
       <translation>15px</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsCacheDirectory</name>
+    <message>
+      <source>Cache</source>
+      <translation type="unfinished">Cache</translation>
+    </message>
+    <message>
+      <source>Cache directory</source>
+      <translation type="unfinished">Cache directory</translation>
+    </message>
+    <message>
+      <source>Location:</source>
+      <translation type="unfinished">Location:</translation>
+    </message>
+    <message>
+      <source>Check periodically at program start:</source>
+      <translation type="unfinished">Check periodically at program start:</translation>
+    </message>
+    <message>
+      <source>Always</source>
+      <translation type="unfinished">Always</translation>
+    </message>
+    <message>
+      <source>Daily</source>
+      <translation type="unfinished">Daily</translation>
+    </message>
+    <message>
+      <source>Weekly</source>
+      <translation type="unfinished">Weekly</translation>
+    </message>
+    <message>
+      <source>Monthly</source>
+      <translation type="unfinished">Monthly</translation>
+    </message>
+    <message>
+      <source>Yearly</source>
+      <translation type="unfinished">Yearly</translation>
+    </message>
+    <message>
+      <source>Never</source>
+      <translation type="unfinished">Never</translation>
+    </message>
+    <message>
+      <source>Cache size limit:</source>
+      <translation type="unfinished">Cache size limit:</translation>
+    </message>
+    <message>
+      <source>Check now...</source>
+      <translation type="unfinished">Check now...</translation>
+    </message>
+    <message>
+      <source>Notify the user if the cache size exceeds the specified limit</source>
+      <translation type="unfinished">Notify the user if the cache size exceeds the specified limit</translation>
+    </message>
+    <message>
+      <source>Unknown</source>
+      <translation>未知的</translation>
+    </message>
+    <message>
+      <source>Current cache size: %1</source>
+      <translation type="unfinished">Current cache size: %1</translation>
     </message>
   </context>
   <context>
@@ -2719,10 +3055,6 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <source>Alt+R</source>
       <translation>Alt+R</translation>
-    </message>
-    <message>
-      <source>Out &amp;invisible</source>
-      <translation>&amp;外部不显示</translation>
     </message>
     <message>
       <source>Alt+I</source>
@@ -2775,6 +3107,40 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <source>Color-gradient settings</source>
       <translation>颜色渐变设置</translation>
+    </message>
+    <message>
+      <source>Color gradient is used with its full color range</source>
+      <translation type="unfinished">Color gradient is used with its full color range</translation>
+    </message>
+    <message>
+      <source>Color gradient starts from the zero value</source>
+      <translation type="unfinished">Color gradient starts from the zero value</translation>
+    </message>
+    <message>
+      <source>Data outside the specified min-max range
+will be displayed in gray</source>
+      <translation type="unfinished">Data outside the specified min-max range
+will be displayed in gray</translation>
+    </message>
+    <message>
+      <source>Data outside the specified min-max range
+will be displayed with transparency</source>
+      <translation type="unfinished">Data outside the specified min-max range
+will be displayed with transparency</translation>
+    </message>
+    <message>
+      <source>Out &amp;transparent</source>
+      <translation type="unfinished">Out &amp;transparent</translation>
+    </message>
+    <message>
+      <source>Number of labels besides the color bar</source>
+      <translation type="unfinished">Number of labels besides the color bar</translation>
+    </message>
+    <message>
+      <source>Number of decimals for labels
+besides the color bar</source>
+      <translation type="unfinished">Number of decimals for labels
+besides the color bar</translation>
     </message>
   </context>
   <context>
@@ -3009,7 +3375,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>Creative Commons Attribution</source>
-      <translation type="unfinished">Creative Commons Attribution</translation>
+      <translation>创建通用属性</translation>
     </message>
     <message>
       <source>Creative Commons Attribution-ShareAlike</source>
@@ -3033,14 +3399,14 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
       <source>URL describing more about the license</source>
-      <translation type="unfinished">URL describing more about the license</translation>
+      <translation>更多关于许可证的 URL</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsDocumentImp</name>
     <message>
       <source>The format of the date to use.</source>
-      <translation type="unfinished">The format of the date to use.</translation>
+      <translation>要使用的日期格式。</translation>
     </message>
     <message>
       <source>Default</source>
@@ -3263,24 +3629,55 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
-      <source>Unloaded Workbenches</source>
-      <translation type="unfinished">Unloaded Workbenches</translation>
+      <source>Workbench Name</source>
+      <translation type="unfinished">Workbench Name</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Autoload?</source>
+      <translation type="unfinished">Autoload?</translation>
     </message>
     <message>
-      <source>Load Selected</source>
-      <translation>加载所选</translation>
+      <source>Load Now</source>
+      <translation type="unfinished">Load Now</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Available Workbenches</source>
+      <translation type="unfinished">Available Workbenches</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>工作台</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation type="unfinished">Autoload</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation type="unfinished">If checked</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation type="unfinished">will be loaded automatically when FreeCAD starts up</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation type="unfinished">This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation>已载入</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation type="unfinished">Load now</translation>
     </message>
   </context>
   <context>
@@ -3463,10 +3860,6 @@ Turntable: the part will be rotated around the z-axis.</translation>
       <translation>轨迹球</translation>
     </message>
     <message>
-      <source>New document scale</source>
-      <translation type="unfinished">New document scale</translation>
-    </message>
-    <message>
       <source>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</source>
       <translation type="unfinished">Sets camera zoom for new documents.
@@ -3606,6 +3999,46 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
       <translation type="unfinished">How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
+    <message>
+      <source>Camera zoom</source>
+      <translation type="unfinished">Camera zoom</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsPythonConsole</name>
+    <message>
+      <source>Python console</source>
+      <translation>Python控制台</translation>
+    </message>
+    <message>
+      <source>Settings</source>
+      <translation>设置</translation>
+    </message>
+    <message>
+      <source>Words will be wrapped when they exceed available
+horizontal space in Python console</source>
+      <translation>在 Python 控制台中自动换行</translation>
+    </message>
+    <message>
+      <source>Enable word wrap</source>
+      <translation>启用自动换行</translation>
+    </message>
+    <message>
+      <source>The cursor shape will be a block</source>
+      <translation type="unfinished">The cursor shape will be a block</translation>
+    </message>
+    <message>
+      <source>Enable block cursor</source>
+      <translation type="unfinished">Enable block cursor</translation>
+    </message>
+    <message>
+      <source>Saves Python history across sessions</source>
+      <translation type="unfinished">Saves Python history across sessions</translation>
+    </message>
+    <message>
+      <source>Save history</source>
+      <translation>保存历史记录</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsSelection</name>
@@ -3666,7 +4099,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>Number of decimals:</source>
-      <translation>小数位数︰</translation>
+      <translation>小数位数:</translation>
     </message>
     <message>
       <source>Imperial decimal (in/lb)</source>
@@ -3738,7 +4171,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>FEM (mm, N, sec)</source>
-      <translation>FEM (mm, N, sec)</translation>
+      <translation>有限元(毫米，牛顿，秒)</translation>
     </message>
   </context>
   <context>
@@ -3843,7 +4276,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     </message>
     <message>
       <source>as:</source>
-      <translation>如</translation>
+      <translation>如:</translation>
     </message>
     <message>
       <source>=&gt;</source>
@@ -3872,12 +4305,6 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
     <message>
       <source>Result</source>
       <translation>结果</translation>
-    </message>
-    <message>
-      <source>List of last used calculations 
-To add a calculation press Return in the value input field</source>
-      <translation type="unfinished">List of last used calculations 
-To add a calculation press Return in the value input field</translation>
     </message>
     <message>
       <source>Quantity</source>
@@ -3912,6 +4339,12 @@ The preference system is the one set in the general preferences.</source>
     <message>
       <source>Copy the result into the clipboard</source>
       <translation>复制结果到剪贴板</translation>
+    </message>
+    <message>
+      <source>List of last used calculations.
+To add a calculation press Return in the value input field</source>
+      <translation type="unfinished">List of last used calculations.
+To add a calculation press Return in the value input field</translation>
     </message>
   </context>
   <context>
@@ -4039,7 +4472,7 @@ The preference system is the one set in the general preferences.</source>
     </message>
     <message>
       <source>Cleanup...</source>
-      <translation>清除</translation>
+      <translation>清理...</translation>
     </message>
     <message>
       <source>Delete</source>
@@ -4062,10 +4495,6 @@ The preference system is the one set in the general preferences.</source>
       <translation>您确定要删除所有暂存目录？</translation>
     </message>
     <message>
-      <source>Finished</source>
-      <translation>完成</translation>
-    </message>
-    <message>
       <source>Transient directories deleted.</source>
       <translation>暂存目录已删除。</translation>
     </message>
@@ -4079,6 +4508,10 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
       <translation>删除所有的暂存目录之后您将无法恢复任何文件。</translation>
+    </message>
+    <message>
+      <source>Transient deleted</source>
+      <translation type="unfinished">Transient deleted</translation>
     </message>
   </context>
   <context>
@@ -4448,32 +4881,32 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>单击此按钮之前，请选择1，2或3个点。点可以位于顶点，面或边上。如果在面或边缘上，所使用的点将是沿着面或边缘的鼠标位置处的点。如果选择1点，则将其用作旋转中心。如果选择了2个点，则它们之间的中点将成为旋转中心，必要时将新建自定义轴。如果选择3个点，则第一个点成为旋转中心，并且位于与3个点定义的平面垂直的矢量上。报告视图中提供了一些距离和角度信息，这在对齐对象时非常有用。为方便，使用Shift+单击时，相应的距离或角度将复制到剪贴板。</translation>
     </message>
     <message>
-      <source>Around y-axis:</source>
-      <translation type="unfinished">Around y-axis:</translation>
+      <source>Pitch (around y-axis):</source>
+      <translation type="unfinished">Pitch (around y-axis):</translation>
     </message>
     <message>
-      <source>Around z-axis:</source>
-      <translation type="unfinished">Around z-axis:</translation>
+      <source>Roll (around x-axis):</source>
+      <translation type="unfinished">Roll (around x-axis):</translation>
     </message>
     <message>
-      <source>Around x-axis:</source>
-      <translation type="unfinished">Around x-axis:</translation>
+      <source>Yaw (around z-axis):</source>
+      <translation type="unfinished">Yaw (around z-axis):</translation>
     </message>
     <message>
-      <source>Rotation around the x-axis</source>
-      <translation type="unfinished">Rotation around the x-axis</translation>
+      <source>Yaw (around z-axis)</source>
+      <translation type="unfinished">Yaw (around z-axis)</translation>
     </message>
     <message>
-      <source>Rotation around the y-axis</source>
-      <translation type="unfinished">Rotation around the y-axis</translation>
+      <source>Pitch (around y-axis)</source>
+      <translation type="unfinished">Pitch (around y-axis)</translation>
     </message>
     <message>
-      <source>Rotation around the z-axis</source>
-      <translation type="unfinished">Rotation around the z-axis</translation>
+      <source>Roll (around the x-axis)</source>
+      <translation type="unfinished">Roll (around the x-axis)</translation>
     </message>
     <message>
-      <source>Euler angles (xy'z'')</source>
-      <translation>欧拉角（xy'z''）</translation>
+      <source>Euler angles (zy'x'')</source>
+      <translation type="unfinished">Euler angles (zy'x'')</translation>
     </message>
   </context>
   <context>
@@ -4609,10 +5042,6 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation type="unfinished">The selected objects contain other dependencies. Please select which objects to export. All dependencies are auto selected by default.</translation>
     </message>
     <message>
-      <source>Dependency</source>
-      <translation>依赖关系</translation>
-    </message>
-    <message>
       <source>Document</source>
       <translation>文档</translation>
     </message>
@@ -4621,20 +5050,34 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>名称</translation>
     </message>
     <message>
-      <source>State</source>
-      <translation>状态</translation>
+      <source>&amp;Use Original Selections</source>
+      <translation>&amp;U使用原有选择</translation>
     </message>
     <message>
-      <source>Hierarchy</source>
-      <translation>组织结构</translation>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation type="unfinished">Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</translation>
     </message>
     <message>
-      <source>Selected</source>
-      <translation>选定</translation>
+      <source>Auto select depending objects</source>
+      <translation type="unfinished">Auto select depending objects</translation>
     </message>
     <message>
-      <source>Partial</source>
-      <translation>部分的</translation>
+      <source>Depending on</source>
+      <translation type="unfinished">Depending on</translation>
+    </message>
+    <message>
+      <source>Depended by</source>
+      <translation type="unfinished">Depended by</translation>
+    </message>
+    <message>
+      <source>Selections</source>
+      <translation>选项</translation>
+    </message>
+    <message>
+      <source>All</source>
+      <translation>全部</translation>
     </message>
   </context>
   <context>
@@ -4729,8 +5172,8 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>错误</translation>
     </message>
     <message>
-      <source>Show report view on</source>
-      <translation>显示报告视图在</translation>
+      <source>Show output window on</source>
+      <translation type="unfinished">Show output window on</translation>
     </message>
   </context>
   <context>
@@ -4796,7 +5239,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Reveals this object and its subelements in the python console.</source>
-      <translation>将此物件及其子元素于python主控台中显示</translation>
+      <translation>在 python 控制台中显示此对象及其子元素。</translation>
     </message>
     <message>
       <source>Mark to recompute</source>
@@ -5176,6 +5619,18 @@ Do you want to save the document now?</source>
       <translation type="unfinished">To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</translation>
     </message>
+    <message>
+      <source>Help addon needed!</source>
+      <translation type="unfinished">Help addon needed!</translation>
+    </message>
+    <message>
+      <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
+      <translation type="unfinished">The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</translation>
+    </message>
+    <message>
+      <source>Open Addon Manager</source>
+      <translation type="unfinished">Open Addon Manager</translation>
+    </message>
   </context>
   <context>
     <name>Gui::ManualAlignment</name>
@@ -5283,6 +5738,13 @@ How do you want to proceed?</source>
     </message>
   </context>
   <context>
+    <name>Gui::ModifierLineEdit</name>
+    <message>
+      <source>Press modifier keys</source>
+      <translation type="unfinished">Press modifier keys</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::NetworkRetriever</name>
     <message>
       <source>Download started...</source>
@@ -5306,6 +5768,25 @@ How do you want to proceed?</source>
     <message>
       <source>Press CTRL and left mouse button</source>
       <translation>按CTRL和鼠标左键</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::OpenSCADNavigationStyle</name>
+    <message>
+      <source>Press left mouse button</source>
+      <translation>按鼠标左键</translation>
+    </message>
+    <message>
+      <source>Press right mouse button and move mouse</source>
+      <translation type="unfinished">Press right mouse button and move mouse</translation>
+    </message>
+    <message>
+      <source>Press left mouse button and move mouse</source>
+      <translation type="unfinished">Press left mouse button and move mouse</translation>
+    </message>
+    <message>
+      <source>Press middle mouse button or SHIFT and right mouse button</source>
+      <translation type="unfinished">Press middle mouse button or SHIFT and right mouse button</translation>
     </message>
   </context>
   <context>
@@ -5400,6 +5881,14 @@ How do you want to proceed?</source>
     <message>
       <source>Auto expand</source>
       <translation type="unfinished">Auto expand</translation>
+    </message>
+    <message>
+      <source>Rename property group</source>
+      <translation type="unfinished">Rename property group</translation>
+    </message>
+    <message>
+      <source>Group name:</source>
+      <translation type="unfinished">Group name:</translation>
     </message>
   </context>
   <context>
@@ -5557,6 +6046,10 @@ Do you want to exit without saving your data?</source>
       <source>The file '%1' cannot be opened.</source>
       <translation>无法打开文件'%1'.</translation>
     </message>
+    <message>
+      <source>none</source>
+      <translation>无</translation>
+    </message>
   </context>
   <context>
     <name>Gui::RevitNavigationStyle</name>
@@ -5578,6 +6071,25 @@ Do you want to exit without saving your data?</source>
     </message>
   </context>
   <context>
+    <name>Gui::SearchBar</name>
+    <message>
+      <source>Previous</source>
+      <translation>上一个</translation>
+    </message>
+    <message>
+      <source>Next</source>
+      <translation type="unfinished">Next</translation>
+    </message>
+    <message>
+      <source>Case sensitive</source>
+      <translation type="unfinished">Case sensitive</translation>
+    </message>
+    <message>
+      <source>Whole words</source>
+      <translation type="unfinished">Whole words</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::SelectModule</name>
     <message>
       <source>Select module</source>
@@ -5595,10 +6107,6 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::StdCmdDescription</name>
     <message>
-      <source>Help</source>
-      <translation>帮助</translation>
-    </message>
-    <message>
       <source>Des&amp;cription</source>
       <translation>描述(&amp;C)</translation>
     </message>
@@ -5609,10 +6117,6 @@ Do you want to exit without saving your data?</source>
   </context>
   <context>
     <name>Gui::StdCmdDownloadOnlineHelp</name>
-    <message>
-      <source>Help</source>
-      <translation>帮助</translation>
-    </message>
     <message>
       <source>Download online help</source>
       <translation>下载在线帮助</translation>
@@ -5650,10 +6154,6 @@ Do you want to specify another directory?</source>
   </context>
   <context>
     <name>Gui::StdCmdPythonHelp</name>
-    <message>
-      <source>Tools</source>
-      <translation>工具</translation>
-    </message>
     <message>
       <source>Automatic python modules documentation</source>
       <translation>自动 python 模块文件</translation>
@@ -5816,6 +6316,25 @@ Do you want to specify another directory?</source>
     <message>
       <source>Edit text</source>
       <translation>编辑文本</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::TinkerCADNavigationStyle</name>
+    <message>
+      <source>Press left mouse button</source>
+      <translation>按鼠标左键</translation>
+    </message>
+    <message>
+      <source>Press middle mouse button</source>
+      <translation>按鼠标中键</translation>
+    </message>
+    <message>
+      <source>Press right mouse button</source>
+      <translation type="unfinished">Press right mouse button</translation>
+    </message>
+    <message>
+      <source>Scroll middle mouse button</source>
+      <translation>滚动鼠标中键</translation>
     </message>
   </context>
   <context>
@@ -5983,6 +6502,22 @@ Do you want to specify another directory?</source>
       <source>Vietnamese</source>
       <translation>越南语</translation>
     </message>
+    <message>
+      <source>Bulgarian</source>
+      <translation type="unfinished">Bulgarian</translation>
+    </message>
+    <message>
+      <source>Greek</source>
+      <translation>希腊语</translation>
+    </message>
+    <message>
+      <source>Spanish, Argentina</source>
+      <translation type="unfinished">Spanish, Argentina</translation>
+    </message>
+    <message>
+      <source>Georgian</source>
+      <translation type="unfinished">Georgian</translation>
+    </message>
   </context>
   <context>
     <name>Gui::TreeDockWidget</name>
@@ -6050,7 +6585,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Enable or disable recomputations of document</source>
-      <translation>启用或禁用文档重新计算功能？</translation>
+      <translation>启用或禁用文档的重新计算</translation>
     </message>
     <message>
       <source>Mark to recompute</source>
@@ -6128,16 +6663,24 @@ Do you want to specify another directory?</source>
       <source> (but must be executed)</source>
       <translation type="unfinished"> (but must be executed)</translation>
     </message>
+    <message>
+      <source>Add dependent objects to selection</source>
+      <translation type="unfinished">Add dependent objects to selection</translation>
+    </message>
+    <message>
+      <source>Adds all dependent objects to the selection</source>
+      <translation type="unfinished">Adds all dependent objects to the selection</translation>
+    </message>
   </context>
   <context>
     <name>Gui::VectorListEditor</name>
     <message>
       <source>Vectors</source>
-      <translation type="unfinished">Vectors</translation>
+      <translation>矢量</translation>
     </message>
     <message>
       <source>Table</source>
-      <translation type="unfinished">Table</translation>
+      <translation>表格</translation>
     </message>
     <message>
       <source>...</source>
@@ -6603,24 +7146,6 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>文档当前无法关闭.</translation>
     </message>
     <message>
-      <source>No OpenGL</source>
-      <translation>无 OpenGL</translation>
-    </message>
-    <message>
-      <source>This system does not support OpenGL</source>
-      <translation>此系统不支持 OpenGL</translation>
-    </message>
-    <message>
-      <source>Help</source>
-      <translation>帮助</translation>
-    </message>
-    <message>
-      <source>Unable to load documentation.
-In order to load it Qt 4.4 or higher is required.</source>
-      <translation>无法加载文档.
-加载它需要Qt4.4或更高版本.</translation>
-    </message>
-    <message>
       <source>Exporting PDF...</source>
       <translation>导出 PDF...</translation>
     </message>
@@ -6670,7 +7195,7 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Save a copy of the document under new filename...</source>
-      <translation>以新的文件名称保存目前文档的副本</translation>
+      <translation>以新的文件名称保存目前文档的副本...</translation>
     </message>
     <message>
       <source>Frozen views</source>
@@ -6738,19 +7263,19 @@ Be aware the point where you click matters.</source>
     </message>
     <message>
       <source>Dependency error</source>
-      <translation type="unfinished">Dependency error</translation>
+      <translation>依赖关系错误</translation>
     </message>
     <message>
       <source>Copy selected</source>
-      <translation type="unfinished">Copy selected</translation>
+      <translation>复制所选项</translation>
     </message>
     <message>
       <source>Copy active document</source>
-      <translation type="unfinished">Copy active document</translation>
+      <translation>复制活动文档</translation>
     </message>
     <message>
       <source>Copy all documents</source>
-      <translation type="unfinished">Copy all documents</translation>
+      <translation>复制所有文档</translation>
     </message>
     <message>
       <source>Paste</source>
@@ -6772,7 +7297,7 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Simple group</source>
-      <translation type="unfinished">Simple group</translation>
+      <translation>简单组</translation>
     </message>
     <message>
       <source>Group with links</source>
@@ -6784,7 +7309,7 @@ Please check the Report View for more details.</translation>
     </message>
     <message>
       <source>Create link group failed</source>
-      <translation type="unfinished">Create link group failed</translation>
+      <translation>创建链接组失败</translation>
     </message>
     <message>
       <source>Create link failed</source>
@@ -6834,7 +7359,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>Save dependent files</source>
-      <translation type="unfinished">Save dependent files</translation>
+      <translation>保存依赖文件</translation>
     </message>
     <message>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
@@ -6842,7 +7367,7 @@ underscore, and must not start with a digit.</translation>
     </message>
     <message>
       <source>Failed to save document</source>
-      <translation type="unfinished">Failed to save document</translation>
+      <translation>保存文档失败</translation>
     </message>
     <message>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
@@ -6894,27 +7419,7 @@ Choose 'Abort' to abort</translation>
     </message>
     <message>
       <source>Are you sure you want to continue?</source>
-      <translation type="unfinished">Are you sure you want to continue?</translation>
-    </message>
-    <message>
-      <source>
-
-Please check report view for more...</source>
-      <translation type="unfinished">
-
-Please check report view for more...</translation>
-    </message>
-    <message>
-      <source>
-Document: </source>
-      <translation type="unfinished">
-Document: </translation>
-    </message>
-    <message>
-      <source>
-  Path: </source>
-      <translation>
-  路径： </translation>
+      <translation>您确定要继续吗？</translation>
     </message>
     <message>
       <source>Identical physical path</source>
@@ -6930,19 +7435,139 @@ Document: </translation>
     </message>
     <message>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
-      <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
+      <translation>加载文件时出现严重错误。有些数据可能已被修改或根本没有恢复。 保存项目很可能导致数据丢失。</translation>
     </message>
     <message>
       <source>Workbenches</source>
       <translation>工作台</translation>
     </message>
     <message>
-      <source>
+      <source>Could not save document</source>
+      <translation>无法保存文档</translation>
+    </message>
+    <message>
+      <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
-Physical path: </source>
-      <translation>
+"%1"
 
-物理路径： </translation>
+Would you like to save the file with a different name?</source>
+      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</translation>
+    </message>
+    <message>
+      <source>Document not saved</source>
+      <translation>文档未保存.</translation>
+    </message>
+    <message>
+      <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
+      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+    </message>
+    <message>
+      <source>%1 Document(s) not saved</source>
+      <translation type="unfinished">%1 Document(s) not saved</translation>
+    </message>
+    <message>
+      <source>Some documents could not be saved. Do you want to cancel closing?</source>
+      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
+    </message>
+    <message>
+      <source>Please check report view for more...</source>
+      <translation type="unfinished">Please check report view for more...</translation>
+    </message>
+    <message>
+      <source>Physical path:</source>
+      <translation type="unfinished">Physical path:</translation>
+    </message>
+    <message>
+      <source>Document:</source>
+      <translation type="unfinished">Document:</translation>
+    </message>
+    <message>
+      <source>Path:</source>
+      <translation>路径:</translation>
+    </message>
+    <message>
+      <source>Edit %1</source>
+      <translation>编辑 %1</translation>
+    </message>
+    <message>
+      <source>Setup configurable object</source>
+      <translation type="unfinished">Setup configurable object</translation>
+    </message>
+    <message>
+      <source>Select which object to copy or exclude when configuration changes.All external linked object are excluded by default.</source>
+      <translation type="unfinished">Select which object to copy or exclude when configuration changes.All external linked object are excluded by default.</translation>
+    </message>
+    <message>
+      <source>Please select which objects to copy when the configuration is changed</source>
+      <translation type="unfinished">Please select which objects to copy when the configuration is changed</translation>
+    </message>
+    <message>
+      <source>Apply to all</source>
+      <translation type="unfinished">Apply to all</translation>
+    </message>
+    <message>
+      <source>Apply the setting to all links. Or, uncheck this
+option to apply only to this link.</source>
+      <translation type="unfinished">Apply the setting to all links. Or, uncheck this
+option to apply only to this link.</translation>
+    </message>
+    <message>
+      <source>Copy on change</source>
+      <translation type="unfinished">Copy on change</translation>
+    </message>
+    <message>
+      <source>Enable</source>
+      <translation>启用</translation>
+    </message>
+    <message>
+      <source>Enable auto copy of linked object when its configuration is changed</source>
+      <translation type="unfinished">Enable auto copy of linked object when its configuration is changed</translation>
+    </message>
+    <message>
+      <source>Tracking</source>
+      <translation>追踪</translation>
+    </message>
+    <message>
+      <source>Copy the linked object when its configuration is changed.
+Also auto redo the copy if the original linked object is changed.
+</source>
+      <translation type="unfinished">Copy the linked object when its configuration is changed.
+Also auto redo the copy if the original linked object is changed.
+</translation>
+    </message>
+    <message>
+      <source>Disable copy on change</source>
+      <translation type="unfinished">Disable copy on change</translation>
+    </message>
+    <message>
+      <source>Rerefresh configurable object</source>
+      <translation type="unfinished">Rerefresh configurable object</translation>
+    </message>
+    <message>
+      <source>Synchronize the original configurable source object by
+creating a new deep copy. Note that any changes made to
+the current copy will be lost.
+</source>
+      <translation type="unfinished">Synchronize the original configurable source object by
+creating a new deep copy. Note that any changes made to
+the current copy will be lost.
+</translation>
+    </message>
+    <message>
+      <source>Toggle array elements</source>
+      <translation type="unfinished">Toggle array elements</translation>
+    </message>
+    <message>
+      <source>Change whether show each link array element as individual objects</source>
+      <translation type="unfinished">Change whether show each link array element as individual objects</translation>
+    </message>
+    <message>
+      <source>Transform at the origin of the placement</source>
+      <translation type="unfinished">Transform at the origin of the placement</translation>
     </message>
   </context>
   <context>
@@ -6959,10 +7584,6 @@ Physical path: </source>
   <context>
     <name>StdBoxElementSelection</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Box element selection</source>
       <translation>方框元素选择</translation>
     </message>
@@ -6970,20 +7591,12 @@ Physical path: </source>
   <context>
     <name>StdBoxSelection</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Box selection</source>
       <translation>框选</translation>
     </message>
   </context>
   <context>
     <name>StdCmdAbout</name>
-    <message>
-      <source>Help</source>
-      <translation>帮助</translation>
-    </message>
     <message>
       <source>&amp;About %1</source>
       <translation>关于%1(&amp;A)</translation>
@@ -6996,10 +7609,6 @@ Physical path: </source>
   <context>
     <name>StdCmdAboutQt</name>
     <message>
-      <source>Help</source>
-      <translation>帮助</translation>
-    </message>
-    <message>
       <source>About &amp;Qt</source>
       <translation>关于Qt(&amp;Q)</translation>
     </message>
@@ -7010,10 +7619,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdActivateNextWindow</name>
-    <message>
-      <source>Window</source>
-      <translation>窗口</translation>
-    </message>
     <message>
       <source>Ne&amp;xt</source>
       <translation>下一个(&amp;X)</translation>
@@ -7026,10 +7631,6 @@ Physical path: </source>
   <context>
     <name>StdCmdActivatePrevWindow</name>
     <message>
-      <source>Window</source>
-      <translation>窗口</translation>
-    </message>
-    <message>
       <source>Pre&amp;vious</source>
       <translation>上一个(&amp;V)</translation>
     </message>
@@ -7040,10 +7641,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdAlignment</name>
-    <message>
-      <source>Edit</source>
-      <translation>编辑</translation>
-    </message>
     <message>
       <source>Alignment...</source>
       <translation>对齐...</translation>
@@ -7056,10 +7653,6 @@ Physical path: </source>
   <context>
     <name>StdCmdArrangeIcons</name>
     <message>
-      <source>Window</source>
-      <translation>窗口</translation>
-    </message>
-    <message>
       <source>Arrange &amp;Icons</source>
       <translation>排列图标(&amp;I)</translation>
     </message>
@@ -7071,20 +7664,12 @@ Physical path: </source>
   <context>
     <name>StdCmdAxisCross</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Toggle axis cross</source>
       <translation>切换轴交叉</translation>
     </message>
   </context>
   <context>
     <name>StdCmdCascadeWindows</name>
-    <message>
-      <source>Window</source>
-      <translation>窗口</translation>
-    </message>
     <message>
       <source>&amp;Cascade</source>
       <translation>层叠(&amp;C)</translation>
@@ -7097,10 +7682,6 @@ Physical path: </source>
   <context>
     <name>StdCmdCloseActiveWindow</name>
     <message>
-      <source>Window</source>
-      <translation>窗口</translation>
-    </message>
-    <message>
       <source>Cl&amp;ose</source>
       <translation>关闭</translation>
     </message>
@@ -7111,10 +7692,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdCloseAllWindows</name>
-    <message>
-      <source>Window</source>
-      <translation>窗口</translation>
-    </message>
     <message>
       <source>Close Al&amp;l</source>
       <translation>全部关闭(&amp;L)</translation>
@@ -7127,10 +7704,6 @@ Physical path: </source>
   <context>
     <name>StdCmdCommandLine</name>
     <message>
-      <source>Tools</source>
-      <translation>工具</translation>
-    </message>
-    <message>
       <source>Start command &amp;line...</source>
       <translation>启动命令行(&amp;L)...</translation>
     </message>
@@ -7141,10 +7714,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdCopy</name>
-    <message>
-      <source>Edit</source>
-      <translation>编辑</translation>
-    </message>
     <message>
       <source>C&amp;opy</source>
       <translation>复制(&amp;C)</translation>
@@ -7157,10 +7726,6 @@ Physical path: </source>
   <context>
     <name>StdCmdCut</name>
     <message>
-      <source>Edit</source>
-      <translation>编辑</translation>
-    </message>
-    <message>
       <source>&amp;Cut</source>
       <translation>剪切(&amp;C)</translation>
     </message>
@@ -7171,10 +7736,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdDelete</name>
-    <message>
-      <source>Edit</source>
-      <translation>编辑</translation>
-    </message>
     <message>
       <source>&amp;Delete</source>
       <translation>删除(&amp;D)</translation>
@@ -7187,10 +7748,6 @@ Physical path: </source>
   <context>
     <name>StdCmdDemoMode</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>View turntable...</source>
       <translation>视图罗盘...</translation>
     </message>
@@ -7202,10 +7759,6 @@ Physical path: </source>
   <context>
     <name>StdCmdDependencyGraph</name>
     <message>
-      <source>Tools</source>
-      <translation>工具</translation>
-    </message>
-    <message>
       <source>Dependency graph...</source>
       <translation>依赖关系图...</translation>
     </message>
@@ -7216,10 +7769,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdDlgCustomize</name>
-    <message>
-      <source>Tools</source>
-      <translation>工具</translation>
-    </message>
     <message>
       <source>Cu&amp;stomize...</source>
       <translation>自定义(&amp;S)...</translation>
@@ -7239,17 +7788,9 @@ Physical path: </source>
       <source>Opens a dialog to let you execute a recorded macro</source>
       <translation>打开一个对话框,执行一个录制的宏</translation>
     </message>
-    <message>
-      <source>Macro</source>
-      <translation>宏</translation>
-    </message>
   </context>
   <context>
     <name>StdCmdDlgMacroExecuteDirect</name>
-    <message>
-      <source>Macro</source>
-      <translation>宏</translation>
-    </message>
     <message>
       <source>Execute macro</source>
       <translation>执行宏</translation>
@@ -7269,17 +7810,9 @@ Physical path: </source>
       <source>Opens a dialog to record a macro</source>
       <translation>打开一个对话框,录制宏</translation>
     </message>
-    <message>
-      <source>Macro</source>
-      <translation>宏</translation>
-    </message>
   </context>
   <context>
     <name>StdCmdDlgParameter</name>
-    <message>
-      <source>Tools</source>
-      <translation>工具</translation>
-    </message>
     <message>
       <source>E&amp;dit parameters ...</source>
       <translation>编辑参数(&amp;E)...</translation>
@@ -7292,10 +7825,6 @@ Physical path: </source>
   <context>
     <name>StdCmdDlgPreferences</name>
     <message>
-      <source>Tools</source>
-      <translation>工具</translation>
-    </message>
-    <message>
       <source>&amp;Preferences ...</source>
       <translation>首选项(&amp;P)...</translation>
     </message>
@@ -7306,10 +7835,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdDockViewMenu</name>
-    <message>
-      <source>View</source>
-      <translation>视图</translation>
-    </message>
     <message>
       <source>Panels</source>
       <translation>面板</translation>
@@ -7322,10 +7847,6 @@ Physical path: </source>
   <context>
     <name>StdCmdDrawStyle</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Draw style</source>
       <translation>绘制样式</translation>
     </message>
@@ -7337,10 +7858,6 @@ Physical path: </source>
   <context>
     <name>StdCmdDuplicateSelection</name>
     <message>
-      <source>Edit</source>
-      <translation>编辑</translation>
-    </message>
-    <message>
       <source>Duplicate selection</source>
       <translation>复制选择</translation>
     </message>
@@ -7351,10 +7868,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdEdit</name>
-    <message>
-      <source>Edit</source>
-      <translation>编辑</translation>
-    </message>
     <message>
       <source>Toggle &amp;Edit mode</source>
       <translation>切换编辑(&amp;E)模式</translation>
@@ -7370,10 +7883,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdExport</name>
-    <message>
-      <source>File</source>
-      <translation>文件</translation>
-    </message>
     <message>
       <source>&amp;Export...</source>
       <translation>导出(&amp;E)...</translation>
@@ -7394,20 +7903,12 @@ Physical path: </source>
   <context>
     <name>StdCmdExpression</name>
     <message>
-      <source>Edit</source>
-      <translation>编辑</translation>
-    </message>
-    <message>
       <source>Expression actions</source>
       <translation>表达式动作</translation>
     </message>
   </context>
   <context>
     <name>StdCmdFeatRecompute</name>
-    <message>
-      <source>File</source>
-      <translation>文件</translation>
-    </message>
     <message>
       <source>&amp;Recompute</source>
       <translation>重新计算(&amp;R)</translation>
@@ -7420,10 +7921,6 @@ Physical path: </source>
   <context>
     <name>StdCmdFreeCADDonation</name>
     <message>
-      <source>Help</source>
-      <translation>帮助</translation>
-    </message>
-    <message>
       <source>Donate</source>
       <translation>赞助</translation>
     </message>
@@ -7434,10 +7931,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdFreeCADFAQ</name>
-    <message>
-      <source>Help</source>
-      <translation>帮助</translation>
-    </message>
     <message>
       <source>FreeCAD FAQ</source>
       <translation>FreeCAD 常见问题</translation>
@@ -7454,10 +7947,6 @@ Physical path: </source>
   <context>
     <name>StdCmdFreeCADForum</name>
     <message>
-      <source>Help</source>
-      <translation>帮助</translation>
-    </message>
-    <message>
       <source>FreeCAD Forum</source>
       <translation>FreeCAD 论坛</translation>
     </message>
@@ -7472,10 +7961,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdFreeCADPowerUserHub</name>
-    <message>
-      <source>Help</source>
-      <translation>帮助</translation>
-    </message>
     <message>
       <source>Python scripting documentation</source>
       <translation>Python 脚本文件</translation>
@@ -7492,10 +7977,6 @@ Physical path: </source>
   <context>
     <name>StdCmdFreeCADUserHub</name>
     <message>
-      <source>Help</source>
-      <translation>帮助</translation>
-    </message>
-    <message>
       <source>Users documentation</source>
       <translation>用户文档</translation>
     </message>
@@ -7506,10 +7987,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdFreeCADWebsite</name>
-    <message>
-      <source>Help</source>
-      <translation>帮助</translation>
-    </message>
     <message>
       <source>FreeCAD Website</source>
       <translation>FreeCAD网站</translation>
@@ -7522,10 +7999,6 @@ Physical path: </source>
   <context>
     <name>StdCmdFreezeViews</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Freeze display</source>
       <translation>冻结显示</translation>
     </message>
@@ -7536,10 +8009,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdGroup</name>
-    <message>
-      <source>Structure</source>
-      <translation>结构</translation>
-    </message>
     <message>
       <source>Create group</source>
       <translation>创建组</translation>
@@ -7552,10 +8021,6 @@ Physical path: </source>
   <context>
     <name>StdCmdHideObjects</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Hide all objects</source>
       <translation>隐藏所有对象</translation>
     </message>
@@ -7567,10 +8032,6 @@ Physical path: </source>
   <context>
     <name>StdCmdHideSelection</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Hide selection</source>
       <translation>隐藏选中对象</translation>
     </message>
@@ -7581,10 +8042,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdImport</name>
-    <message>
-      <source>File</source>
-      <translation>文件</translation>
-    </message>
     <message>
       <source>&amp;Import...</source>
       <translation>导入(&amp;I)...</translation>
@@ -7605,20 +8062,12 @@ Physical path: </source>
   <context>
     <name>StdCmdLinkActions</name>
     <message>
-      <source>View</source>
-      <translation>视图</translation>
-    </message>
-    <message>
       <source>Link actions</source>
       <translation type="unfinished">Link actions</translation>
     </message>
   </context>
   <context>
     <name>StdCmdLinkImport</name>
-    <message>
-      <source>Link</source>
-      <translation>链接</translation>
-    </message>
     <message>
       <source>Import links</source>
       <translation>导入链接</translation>
@@ -7631,10 +8080,6 @@ Physical path: </source>
   <context>
     <name>StdCmdLinkImportAll</name>
     <message>
-      <source>Link</source>
-      <translation>链接</translation>
-    </message>
-    <message>
       <source>Import all links</source>
       <translation>导入所有链接</translation>
     </message>
@@ -7645,10 +8090,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdLinkMake</name>
-    <message>
-      <source>Link</source>
-      <translation>链接</translation>
-    </message>
     <message>
       <source>Make link</source>
       <translation>创建链接</translation>
@@ -7661,10 +8102,6 @@ Physical path: </source>
   <context>
     <name>StdCmdLinkMakeGroup</name>
     <message>
-      <source>Link</source>
-      <translation>链接</translation>
-    </message>
-    <message>
       <source>Make link group</source>
       <translation>创建链接组</translation>
     </message>
@@ -7675,10 +8112,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdLinkMakeRelative</name>
-    <message>
-      <source>Link</source>
-      <translation>链接</translation>
-    </message>
     <message>
       <source>Make sub-link</source>
       <translation>创建子链接</translation>
@@ -7691,10 +8124,6 @@ Physical path: </source>
   <context>
     <name>StdCmdLinkReplace</name>
     <message>
-      <source>Link</source>
-      <translation>链接</translation>
-    </message>
-    <message>
       <source>Replace with link</source>
       <translation type="unfinished">Replace with link</translation>
     </message>
@@ -7705,10 +8134,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdLinkSelectActions</name>
-    <message>
-      <source>View</source>
-      <translation>视图</translation>
-    </message>
     <message>
       <source>Link navigation</source>
       <translation type="unfinished">Link navigation</translation>
@@ -7721,10 +8146,6 @@ Physical path: </source>
   <context>
     <name>StdCmdLinkSelectAllLinks</name>
     <message>
-      <source>Link</source>
-      <translation>链接</translation>
-    </message>
-    <message>
       <source>Select all links</source>
       <translation>选择全部链接</translation>
     </message>
@@ -7735,10 +8156,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdLinkSelectLinked</name>
-    <message>
-      <source>Link</source>
-      <translation>链接</translation>
-    </message>
     <message>
       <source>Go to linked object</source>
       <translation type="unfinished">Go to linked object</translation>
@@ -7751,10 +8168,6 @@ Physical path: </source>
   <context>
     <name>StdCmdLinkSelectLinkedFinal</name>
     <message>
-      <source>Link</source>
-      <translation>链接</translation>
-    </message>
-    <message>
       <source>Go to the deepest linked object</source>
       <translation type="unfinished">Go to the deepest linked object</translation>
     </message>
@@ -7765,10 +8178,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdLinkUnlink</name>
-    <message>
-      <source>Link</source>
-      <translation>链接</translation>
-    </message>
     <message>
       <source>Unlink</source>
       <translation>取消链接</translation>
@@ -7781,10 +8190,6 @@ Physical path: </source>
   <context>
     <name>StdCmdMacroAttachDebugger</name>
     <message>
-      <source>Macro</source>
-      <translation>宏</translation>
-    </message>
-    <message>
       <source>Attach to remote debugger...</source>
       <translation>附加到远程调试器...</translation>
     </message>
@@ -7795,10 +8200,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdMacroStartDebug</name>
-    <message>
-      <source>Macro</source>
-      <translation>宏</translation>
-    </message>
     <message>
       <source>Debug macro</source>
       <translation>调试宏</translation>
@@ -7811,10 +8212,6 @@ Physical path: </source>
   <context>
     <name>StdCmdMacroStepInto</name>
     <message>
-      <source>Macro</source>
-      <translation>宏</translation>
-    </message>
-    <message>
       <source>Step into</source>
       <translation>单步调试</translation>
     </message>
@@ -7822,20 +8219,12 @@ Physical path: </source>
   <context>
     <name>StdCmdMacroStepOver</name>
     <message>
-      <source>Macro</source>
-      <translation>宏</translation>
-    </message>
-    <message>
       <source>Step over</source>
       <translation>单步执行</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMacroStopDebug</name>
-    <message>
-      <source>Macro</source>
-      <translation>宏</translation>
-    </message>
     <message>
       <source>Stop debugging</source>
       <translation>停止调试</translation>
@@ -7848,10 +8237,6 @@ Physical path: </source>
   <context>
     <name>StdCmdMacroStopRecord</name>
     <message>
-      <source>Macro</source>
-      <translation>宏</translation>
-    </message>
-    <message>
       <source>S&amp;top macro recording</source>
       <translation>停止宏录制(&amp;T)</translation>
     </message>
@@ -7863,20 +8248,12 @@ Physical path: </source>
   <context>
     <name>StdCmdMeasureDistance</name>
     <message>
-      <source>View</source>
-      <translation>视图</translation>
-    </message>
-    <message>
       <source>Measure distance</source>
       <translation>测量距离</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMeasurementSimple</name>
-    <message>
-      <source>Tools</source>
-      <translation>工具</translation>
-    </message>
     <message>
       <source>Measures distance between two selected objects</source>
       <translation>测量两个选中物体间距离</translation>
@@ -7888,10 +8265,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdMergeProjects</name>
-    <message>
-      <source>File</source>
-      <translation>文件</translation>
-    </message>
     <message>
       <source>Merge project...</source>
       <translation>合并项目...</translation>
@@ -7911,10 +8284,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdNew</name>
-    <message>
-      <source>File</source>
-      <translation>文件</translation>
-    </message>
     <message>
       <source>&amp;New</source>
       <translation>新建(&amp;N)</translation>
@@ -7942,10 +8311,6 @@ Physical path: </source>
   <context>
     <name>StdCmdOnlineHelpWebsite</name>
     <message>
-      <source>Help</source>
-      <translation>帮助</translation>
-    </message>
-    <message>
       <source>Help Website</source>
       <translation>帮助网站</translation>
     </message>
@@ -7956,10 +8321,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdOpen</name>
-    <message>
-      <source>File</source>
-      <translation>文件</translation>
-    </message>
     <message>
       <source>&amp;Open...</source>
       <translation>打开(&amp;O)...</translation>
@@ -7988,10 +8349,6 @@ Physical path: </source>
   <context>
     <name>StdCmdPart</name>
     <message>
-      <source>Structure</source>
-      <translation>结构</translation>
-    </message>
-    <message>
       <source>Create part</source>
       <translation>创建零件</translation>
     </message>
@@ -8002,10 +8359,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdPaste</name>
-    <message>
-      <source>Edit</source>
-      <translation>编辑</translation>
-    </message>
     <message>
       <source>&amp;Paste</source>
       <translation>粘贴(&amp;P)</translation>
@@ -8018,10 +8371,6 @@ Physical path: </source>
   <context>
     <name>StdCmdPlacement</name>
     <message>
-      <source>Edit</source>
-      <translation>编辑</translation>
-    </message>
-    <message>
       <source>Placement...</source>
       <translation>定位...</translation>
     </message>
@@ -8032,10 +8381,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdPrint</name>
-    <message>
-      <source>File</source>
-      <translation>文件</translation>
-    </message>
     <message>
       <source>&amp;Print...</source>
       <translation>打印(&amp;P)...</translation>
@@ -8048,10 +8393,6 @@ Physical path: </source>
   <context>
     <name>StdCmdPrintPdf</name>
     <message>
-      <source>File</source>
-      <translation>文件</translation>
-    </message>
-    <message>
       <source>&amp;Export PDF...</source>
       <translation>导出PDF(&amp;E)...</translation>
     </message>
@@ -8062,10 +8403,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdPrintPreview</name>
-    <message>
-      <source>File</source>
-      <translation>文件</translation>
-    </message>
     <message>
       <source>&amp;Print preview...</source>
       <translation>打印预览(&amp;P)...</translation>
@@ -8082,10 +8419,6 @@ Physical path: </source>
   <context>
     <name>StdCmdProjectInfo</name>
     <message>
-      <source>File</source>
-      <translation>文件</translation>
-    </message>
-    <message>
       <source>Project i&amp;nformation...</source>
       <translation>项目信息(&amp;N)...</translation>
     </message>
@@ -8096,10 +8429,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdProjectUtil</name>
-    <message>
-      <source>Tools</source>
-      <translation>工具</translation>
-    </message>
     <message>
       <source>Project utility...</source>
       <translation>项目工具...</translation>
@@ -8112,10 +8441,6 @@ Physical path: </source>
   <context>
     <name>StdCmdPythonWebsite</name>
     <message>
-      <source>Help</source>
-      <translation>帮助</translation>
-    </message>
-    <message>
       <source>Python Website</source>
       <translation>Python网站</translation>
     </message>
@@ -8126,10 +8451,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdQuit</name>
-    <message>
-      <source>File</source>
-      <translation>文件</translation>
-    </message>
     <message>
       <source>E&amp;xit</source>
       <translation>退出(&amp;X)</translation>
@@ -8142,20 +8463,12 @@ Physical path: </source>
   <context>
     <name>StdCmdRandomColor</name>
     <message>
-      <source>File</source>
-      <translation>文件</translation>
-    </message>
-    <message>
       <source>Random color</source>
       <translation>随机颜色</translation>
     </message>
   </context>
   <context>
     <name>StdCmdRecentFiles</name>
-    <message>
-      <source>File</source>
-      <translation>文件</translation>
-    </message>
     <message>
       <source>Recent files</source>
       <translation>最近打开的文件</translation>
@@ -8168,10 +8481,6 @@ Physical path: </source>
   <context>
     <name>StdCmdRecentMacros</name>
     <message>
-      <source>Macro</source>
-      <translation>宏</translation>
-    </message>
-    <message>
       <source>Recent macros</source>
       <translation>最近的宏</translation>
     </message>
@@ -8182,10 +8491,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdRedo</name>
-    <message>
-      <source>Edit</source>
-      <translation>编辑</translation>
-    </message>
     <message>
       <source>&amp;Redo</source>
       <translation>重做(&amp;R)</translation>
@@ -8198,10 +8503,6 @@ Physical path: </source>
   <context>
     <name>StdCmdRefresh</name>
     <message>
-      <source>Edit</source>
-      <translation>编辑</translation>
-    </message>
-    <message>
       <source>&amp;Refresh</source>
       <translation>刷新(&amp;R)</translation>
     </message>
@@ -8211,11 +8512,18 @@ Physical path: </source>
     </message>
   </context>
   <context>
-    <name>StdCmdRevert</name>
+    <name>StdCmdReportBug</name>
     <message>
-      <source>File</source>
-      <translation>文件</translation>
+      <source>Report a bug</source>
+      <translation type="unfinished">Report a bug</translation>
     </message>
+    <message>
+      <source>Report a bug or suggest a feature</source>
+      <translation type="unfinished">Report a bug or suggest a feature</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdRevert</name>
     <message>
       <source>Revert</source>
       <translation>还原</translation>
@@ -8228,10 +8536,6 @@ Physical path: </source>
   <context>
     <name>StdCmdSave</name>
     <message>
-      <source>File</source>
-      <translation>文件</translation>
-    </message>
-    <message>
       <source>&amp;Save</source>
       <translation>保存(&amp;S)</translation>
     </message>
@@ -8242,10 +8546,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdSaveAll</name>
-    <message>
-      <source>File</source>
-      <translation>文件</translation>
-    </message>
     <message>
       <source>Save All</source>
       <translation>全部保存</translation>
@@ -8258,10 +8558,6 @@ Physical path: </source>
   <context>
     <name>StdCmdSaveAs</name>
     <message>
-      <source>File</source>
-      <translation>文件</translation>
-    </message>
-    <message>
       <source>Save &amp;As...</source>
       <translation>另存为(&amp;A)...</translation>
     </message>
@@ -8272,10 +8568,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdSaveCopy</name>
-    <message>
-      <source>File</source>
-      <translation>文件</translation>
-    </message>
     <message>
       <source>Save a &amp;Copy...</source>
       <translation>保存副本(&amp;C)...</translation>
@@ -8288,10 +8580,6 @@ Physical path: </source>
   <context>
     <name>StdCmdSceneInspector</name>
     <message>
-      <source>Tools</source>
-      <translation>工具</translation>
-    </message>
-    <message>
       <source>Scene inspector...</source>
       <translation>场景检索...</translation>
     </message>
@@ -8302,10 +8590,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdSelBack</name>
-    <message>
-      <source>View</source>
-      <translation>视图</translation>
-    </message>
     <message>
       <source>&amp;Back</source>
       <translation>返回(&amp;B)</translation>
@@ -8318,10 +8602,6 @@ Physical path: </source>
   <context>
     <name>StdCmdSelBoundingBox</name>
     <message>
-      <source>View</source>
-      <translation>视图</translation>
-    </message>
-    <message>
       <source>&amp;Bounding box</source>
       <translation>边框(&amp;B)</translation>
     </message>
@@ -8332,10 +8612,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdSelForward</name>
-    <message>
-      <source>View</source>
-      <translation>视图</translation>
-    </message>
     <message>
       <source>&amp;Forward</source>
       <translation>向前(&amp;F)</translation>
@@ -8348,10 +8624,6 @@ Physical path: </source>
   <context>
     <name>StdCmdSelectAll</name>
     <message>
-      <source>Edit</source>
-      <translation>编辑</translation>
-    </message>
-    <message>
       <source>Select &amp;All</source>
       <translation>全选(&amp;A)</translation>
     </message>
@@ -8362,10 +8634,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdSelectVisibleObjects</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
     <message>
       <source>Select visible objects</source>
       <translation>选择可见对象</translation>
@@ -8378,10 +8646,6 @@ Physical path: </source>
   <context>
     <name>StdCmdSendToPythonConsole</name>
     <message>
-      <source>Edit</source>
-      <translation>编辑</translation>
-    </message>
-    <message>
       <source>&amp;Send to Python Console</source>
       <translation>发送到 Python 控制台(&amp;S)</translation>
     </message>
@@ -8392,10 +8656,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdSetAppearance</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
     <message>
       <source>Appearance...</source>
       <translation>外观...</translation>
@@ -8408,10 +8668,6 @@ Physical path: </source>
   <context>
     <name>StdCmdShowObjects</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Show all objects</source>
       <translation>显示所有对象</translation>
     </message>
@@ -8422,10 +8678,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdShowSelection</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
     <message>
       <source>Show selection</source>
       <translation>显示所选</translation>
@@ -8438,10 +8690,6 @@ Physical path: </source>
   <context>
     <name>StdCmdStatusBar</name>
     <message>
-      <source>View</source>
-      <translation>视图</translation>
-    </message>
-    <message>
       <source>Status bar</source>
       <translation>状态栏</translation>
     </message>
@@ -8452,10 +8700,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdTextDocument</name>
-    <message>
-      <source>Tools</source>
-      <translation>工具</translation>
-    </message>
     <message>
       <source>Add text document</source>
       <translation>添加文本文档</translation>
@@ -8468,10 +8712,6 @@ Physical path: </source>
   <context>
     <name>StdCmdTextureMapping</name>
     <message>
-      <source>Tools</source>
-      <translation>工具</translation>
-    </message>
-    <message>
       <source>Texture mapping...</source>
       <translation>纹理映射...</translation>
     </message>
@@ -8482,10 +8722,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdTileWindows</name>
-    <message>
-      <source>Window</source>
-      <translation>窗口</translation>
-    </message>
     <message>
       <source>&amp;Tile</source>
       <translation>平铺(&amp;T)</translation>
@@ -8498,20 +8734,12 @@ Physical path: </source>
   <context>
     <name>StdCmdToggleBreakpoint</name>
     <message>
-      <source>Macro</source>
-      <translation>宏</translation>
-    </message>
-    <message>
       <source>Toggle breakpoint</source>
       <translation>切换断点</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleClipPlane</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
     <message>
       <source>Clipping plane</source>
       <translation>修剪平面</translation>
@@ -8524,10 +8752,6 @@ Physical path: </source>
   <context>
     <name>StdCmdToggleNavigation</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Toggle navigation/Edit mode</source>
       <translation>切换导航/编辑模式</translation>
     </message>
@@ -8538,10 +8762,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdToggleObjects</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
     <message>
       <source>Toggle all objects</source>
       <translation>切换所有对象</translation>
@@ -8554,10 +8774,6 @@ Physical path: </source>
   <context>
     <name>StdCmdToggleSelectability</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Toggle selectability</source>
       <translation>切换可选择性</translation>
     </message>
@@ -8568,10 +8784,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdToggleVisibility</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
     <message>
       <source>Toggle visibility</source>
       <translation>切换可见性</translation>
@@ -8584,10 +8796,6 @@ Physical path: </source>
   <context>
     <name>StdCmdToolBarMenu</name>
     <message>
-      <source>View</source>
-      <translation>视图</translation>
-    </message>
-    <message>
       <source>Tool&amp;bars</source>
       <translation>工具栏(&amp;B)</translation>
     </message>
@@ -8598,10 +8806,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdTransform</name>
-    <message>
-      <source>Edit</source>
-      <translation>编辑</translation>
-    </message>
     <message>
       <source>Transform...</source>
       <translation>变换...</translation>
@@ -8614,10 +8818,6 @@ Physical path: </source>
   <context>
     <name>StdCmdTransformManip</name>
     <message>
-      <source>Edit</source>
-      <translation>编辑</translation>
-    </message>
-    <message>
       <source>Transform</source>
       <translation>变换</translation>
     </message>
@@ -8628,10 +8828,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdTreeCollapse</name>
-    <message>
-      <source>View</source>
-      <translation>视图</translation>
-    </message>
     <message>
       <source>Collapse selected item</source>
       <translation>折叠所选项</translation>
@@ -8644,10 +8840,6 @@ Physical path: </source>
   <context>
     <name>StdCmdTreeExpand</name>
     <message>
-      <source>View</source>
-      <translation>视图</translation>
-    </message>
-    <message>
       <source>Expand selected item</source>
       <translation>展开所选项</translation>
     </message>
@@ -8658,10 +8850,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdTreeSelectAllInstances</name>
-    <message>
-      <source>View</source>
-      <translation>视图</translation>
-    </message>
     <message>
       <source>Select all instances</source>
       <translation>选择所有实例</translation>
@@ -8674,10 +8862,6 @@ Physical path: </source>
   <context>
     <name>StdCmdTreeViewActions</name>
     <message>
-      <source>View</source>
-      <translation>视图</translation>
-    </message>
-    <message>
       <source>TreeView actions</source>
       <translation>树视图操作</translation>
     </message>
@@ -8688,10 +8872,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdUndo</name>
-    <message>
-      <source>Edit</source>
-      <translation>编辑</translation>
-    </message>
     <message>
       <source>&amp;Undo</source>
       <translation>撤消(&amp;U)</translation>
@@ -8704,10 +8884,6 @@ Physical path: </source>
   <context>
     <name>StdCmdUnitsCalculator</name>
     <message>
-      <source>Tools</source>
-      <translation>工具</translation>
-    </message>
-    <message>
       <source>&amp;Units calculator...</source>
       <translation>&amp;单位计算器...</translation>
     </message>
@@ -8717,11 +8893,18 @@ Physical path: </source>
     </message>
   </context>
   <context>
-    <name>StdCmdUserInterface</name>
+    <name>StdCmdUserEditMode</name>
     <message>
-      <source>View</source>
-      <translation>视图</translation>
+      <source>Edit mode</source>
+      <translation>编辑模式</translation>
     </message>
+    <message>
+      <source>Defines behavior when editing an object from tree</source>
+      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdUserInterface</name>
     <message>
       <source>Dock views</source>
       <translation>停靠视图</translation>
@@ -8734,10 +8917,6 @@ Physical path: </source>
   <context>
     <name>StdCmdViewBottom</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Bottom</source>
       <translation>底视</translation>
     </message>
@@ -8748,10 +8927,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdViewCreate</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
     <message>
       <source>Create new view</source>
       <translation>创建新视图</translation>
@@ -8764,10 +8939,6 @@ Physical path: </source>
   <context>
     <name>StdCmdViewDimetric</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Dimetric</source>
       <translation>二轴测</translation>
     </message>
@@ -8778,10 +8949,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdViewExample1</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
     <message>
       <source>Inventor example #1</source>
       <translation>Inventor 实例#1</translation>
@@ -8794,10 +8961,6 @@ Physical path: </source>
   <context>
     <name>StdCmdViewExample2</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Inventor example #2</source>
       <translation>Inventor 实例#2</translation>
     </message>
@@ -8808,10 +8971,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdViewExample3</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
     <message>
       <source>Inventor example #3</source>
       <translation>Inventor 实例#3</translation>
@@ -8824,10 +8983,6 @@ Physical path: </source>
   <context>
     <name>StdCmdViewFitAll</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Fit all</source>
       <translation>适合所有</translation>
     </message>
@@ -8838,10 +8993,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdViewFitSelection</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
     <message>
       <source>Fit selection</source>
       <translation>适合选中</translation>
@@ -8854,10 +9005,6 @@ Physical path: </source>
   <context>
     <name>StdCmdViewFront</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Front</source>
       <translation>前视</translation>
     </message>
@@ -8868,10 +9015,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdViewHome</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
     <message>
       <source>Home</source>
       <translation>主页</translation>
@@ -8884,10 +9027,6 @@ Physical path: </source>
   <context>
     <name>StdCmdViewIsometric</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Isometric</source>
       <translation>等轴测</translation>
     </message>
@@ -8898,10 +9037,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdViewIvIssueCamPos</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
     <message>
       <source>Issue camera position</source>
       <translation>发布相机位置</translation>
@@ -8914,10 +9049,6 @@ Physical path: </source>
   <context>
     <name>StdCmdViewIvStereoInterleavedColumns</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Stereo Interleaved Columns</source>
       <translation>三维成像列扫描</translation>
     </message>
@@ -8928,10 +9059,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdViewIvStereoInterleavedRows</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
     <message>
       <source>Stereo Interleaved Rows</source>
       <translation>三维成像行扫描</translation>
@@ -8944,10 +9071,6 @@ Physical path: </source>
   <context>
     <name>StdCmdViewIvStereoOff</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Stereo Off</source>
       <translation>关闭三维成像</translation>
     </message>
@@ -8958,10 +9081,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdViewIvStereoQuadBuff</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
     <message>
       <source>Stereo quad buffer</source>
       <translation>三维成像缓存</translation>
@@ -8974,10 +9093,6 @@ Physical path: </source>
   <context>
     <name>StdCmdViewIvStereoRedGreen</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Stereo red/cyan</source>
       <translation>立体红色/青色</translation>
     </message>
@@ -8988,10 +9103,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdViewLeft</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
     <message>
       <source>Left</source>
       <translation>左视</translation>
@@ -9004,10 +9115,6 @@ Physical path: </source>
   <context>
     <name>StdCmdViewRear</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Rear</source>
       <translation>后视</translation>
     </message>
@@ -9018,10 +9125,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdViewRestoreCamera</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
     <message>
       <source>Restore saved camera</source>
       <translation>恢复保存的相机</translation>
@@ -9034,10 +9137,6 @@ Physical path: </source>
   <context>
     <name>StdCmdViewRight</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Right</source>
       <translation>右视</translation>
     </message>
@@ -9048,10 +9147,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdViewRotateLeft</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
     <message>
       <source>Rotate Left</source>
       <translation>向左旋转</translation>
@@ -9064,10 +9159,6 @@ Physical path: </source>
   <context>
     <name>StdCmdViewRotateRight</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Rotate Right</source>
       <translation>向右旋转</translation>
     </message>
@@ -9078,10 +9169,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdViewSaveCamera</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
     <message>
       <source>Save current camera</source>
       <translation>保存当前相机</translation>
@@ -9094,10 +9181,6 @@ Physical path: </source>
   <context>
     <name>StdCmdViewTop</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Top</source>
       <translation>俯视</translation>
     </message>
@@ -9108,10 +9191,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdViewTrimetric</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
     <message>
       <source>Trimetric</source>
       <translation>三轴测</translation>
@@ -9124,10 +9203,6 @@ Physical path: </source>
   <context>
     <name>StdCmdViewVR</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>FreeCAD-VR</source>
       <translation>FreeCAD-虚拟现实</translation>
     </message>
@@ -9138,10 +9213,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdCmdWhatsThis</name>
-    <message>
-      <source>Help</source>
-      <translation>帮助</translation>
-    </message>
     <message>
       <source>&amp;What's This?</source>
       <translation>这是什么(&amp;W)?</translation>
@@ -9154,10 +9225,6 @@ Physical path: </source>
   <context>
     <name>StdCmdWindows</name>
     <message>
-      <source>Window</source>
-      <translation>窗口</translation>
-    </message>
-    <message>
       <source>&amp;Windows...</source>
       <translation>窗口(&amp;W)...</translation>
     </message>
@@ -9169,20 +9236,12 @@ Physical path: </source>
   <context>
     <name>StdCmdWindowsMenu</name>
     <message>
-      <source>Window</source>
-      <translation>窗口</translation>
-    </message>
-    <message>
       <source>Activates this window</source>
       <translation>激活此窗口</translation>
     </message>
   </context>
   <context>
     <name>StdCmdWorkbench</name>
-    <message>
-      <source>View</source>
-      <translation>视图</translation>
-    </message>
     <message>
       <source>Workbench</source>
       <translation>工作台</translation>
@@ -9195,10 +9254,6 @@ Physical path: </source>
   <context>
     <name>StdMainFullscreen</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Fullscreen</source>
       <translation>全屏</translation>
     </message>
@@ -9210,10 +9265,6 @@ Physical path: </source>
   <context>
     <name>StdOrthographicCamera</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Orthographic view</source>
       <translation>平行视图</translation>
     </message>
@@ -9224,10 +9275,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdPerspectiveCamera</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
     <message>
       <source>Perspective view</source>
       <translation>透视视图</translation>
@@ -9247,17 +9294,9 @@ Physical path: </source>
       <source>Expand active document and collapse all others</source>
       <translation>展开活动文档并折叠所有其他文档</translation>
     </message>
-    <message>
-      <source>TreeView</source>
-      <translation>树视图</translation>
-    </message>
   </context>
   <context>
     <name>StdTreeDrag</name>
-    <message>
-      <source>TreeView</source>
-      <translation>树视图</translation>
-    </message>
     <message>
       <source>Initiate dragging</source>
       <translation>启动拖动</translation>
@@ -9274,20 +9313,12 @@ Physical path: </source>
       <translation>在树状图中显示所有文档</translation>
     </message>
     <message>
-      <source>TreeView</source>
-      <translation>树视图</translation>
-    </message>
-    <message>
       <source>Multi document</source>
       <translation>多文档</translation>
     </message>
   </context>
   <context>
     <name>StdTreePreSelection</name>
-    <message>
-      <source>TreeView</source>
-      <translation>树视图</translation>
-    </message>
     <message>
       <source>Pre-selection</source>
       <translation>预选</translation>
@@ -9300,10 +9331,6 @@ Physical path: </source>
   <context>
     <name>StdTreeRecordSelection</name>
     <message>
-      <source>TreeView</source>
-      <translation>树视图</translation>
-    </message>
-    <message>
       <source>Record selection</source>
       <translation>录制选择</translation>
     </message>
@@ -9314,10 +9341,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdTreeSelection</name>
-    <message>
-      <source>TreeView</source>
-      <translation>树视图</translation>
-    </message>
     <message>
       <source>Go to selection</source>
       <translation>转到选择</translation>
@@ -9334,20 +9357,12 @@ Physical path: </source>
       <translation>仅在树状图中显示活动文档</translation>
     </message>
     <message>
-      <source>TreeView</source>
-      <translation>树视图</translation>
-    </message>
-    <message>
       <source>Single document</source>
       <translation>单个文档</translation>
     </message>
   </context>
   <context>
     <name>StdTreeSyncPlacement</name>
-    <message>
-      <source>TreeView</source>
-      <translation>树视图</translation>
-    </message>
     <message>
       <source>Sync placement</source>
       <translation>同步位置</translation>
@@ -9360,10 +9375,6 @@ Physical path: </source>
   <context>
     <name>StdTreeSyncSelection</name>
     <message>
-      <source>TreeView</source>
-      <translation>树视图</translation>
-    </message>
-    <message>
       <source>Sync selection</source>
       <translation>同步选择</translation>
     </message>
@@ -9374,10 +9385,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdTreeSyncView</name>
-    <message>
-      <source>TreeView</source>
-      <translation>树视图</translation>
-    </message>
     <message>
       <source>Sync view</source>
       <translation>同步视图</translation>
@@ -9390,20 +9397,12 @@ Physical path: </source>
   <context>
     <name>StdViewBoxZoom</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Box zoom</source>
       <translation>框选缩放</translation>
     </message>
   </context>
   <context>
     <name>StdViewDock</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
     <message>
       <source>Docked</source>
       <translation>停靠</translation>
@@ -9416,10 +9415,6 @@ Physical path: </source>
   <context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Document window</source>
       <translation>文档窗口</translation>
     </message>
@@ -9430,10 +9425,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdViewFullscreen</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
     <message>
       <source>Fullscreen</source>
       <translation>全屏</translation>
@@ -9446,10 +9437,6 @@ Physical path: </source>
   <context>
     <name>StdViewScreenShot</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Save picture...</source>
       <translation>保存图片...</translation>
     </message>
@@ -9460,10 +9447,6 @@ Physical path: </source>
   </context>
   <context>
     <name>StdViewUndock</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
     <message>
       <source>Undocked</source>
       <translation>不停靠</translation>
@@ -9476,20 +9459,12 @@ Physical path: </source>
   <context>
     <name>StdViewZoomIn</name>
     <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
-    <message>
       <source>Zoom In</source>
       <translation>放大</translation>
     </message>
   </context>
   <context>
     <name>StdViewZoomOut</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>标准视图</translation>
-    </message>
     <message>
       <source>Zoom Out</source>
       <translation>缩小</translation>
@@ -9619,7 +9594,7 @@ Do you still want to proceed?</source>
     <name>Std_Revert</name>
     <message>
       <source>This will discard all the changes since last file save.</source>
-      <translation>这将会丢弃自上次保存文档后所有的变更</translation>
+      <translation>这将放弃自上次文件保存以来的所有更改。</translation>
     </message>
     <message>
       <source>Revert document</source>
@@ -9740,42 +9715,13 @@ Do you still want to proceed?</source>
       <source>Special Ops</source>
       <translation>特殊设定</translation>
     </message>
-  </context>
-  <context>
-    <name>testClass</name>
     <message>
-      <source>test</source>
-      <translation>测试</translation>
+      <source>Axonometric</source>
+      <translation>轴测图</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-size:20pt; font-weight:600;"&gt;iisTaskPanel&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;Created for Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-size:20pt; font-weight:600;"&gt;iisTaskPanel&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;Created for Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Choose the style of the Task Panel</source>
-      <translation>选择任务面板的样式</translation>
-    </message>
-    <message>
-      <source>Default</source>
-      <translation>默认</translation>
-    </message>
-    <message>
-      <source>Windows XP</source>
-      <translation>Windows XP</translation>
+      <source>Link actions</source>
+      <translation type="unfinished">Link actions</translation>
     </message>
   </context>
 </TS>

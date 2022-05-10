@@ -6,17 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>555</width>
-    <height>662</height>
+    <width>425</width>
+    <height>447</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>General</string>
   </property>
   <layout class="QGridLayout" name="gridLayout1">
-   <property name="margin">
-    <number>9</number>
-   </property>
    <property name="spacing">
     <number>6</number>
    </property>
@@ -31,7 +28,7 @@
         </sizepolicy>
        </property>
        <property name="title">
-        <string>Working directory for solving analysis</string>
+        <string>Working directory for solving analysis and gmsh meshing</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
@@ -56,11 +53,11 @@
             <property name="checked">
              <bool>true</bool>
             </property>
-            <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem/General</cstring>
-            </property>
             <property name="prefEntry" stdset="0">
              <cstring>UseTempDirectory</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Fem/General</cstring>
             </property>
            </widget>
           </item>
@@ -100,11 +97,11 @@
             <property name="text">
              <string>Beside .FCStd file</string>
             </property>
-            <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem/General</cstring>
-            </property>
             <property name="prefEntry" stdset="0">
              <cstring>UseBesideDirectory</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Fem/General</cstring>
             </property>
            </widget>
           </item>
@@ -144,11 +141,11 @@
             <property name="text">
              <string>Use custom directory</string>
             </property>
-            <property name="prefPath" stdset="0">
-             <cstring>Mod/Fem/General</cstring>
-            </property>
             <property name="prefEntry" stdset="0">
              <cstring>UseCustomDirectory</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Fem/General</cstring>
             </property>
            </widget>
           </item>
@@ -205,14 +202,14 @@
                 <height>16777215</height>
                </size>
               </property>
-              <property name="prefPath" stdset="0">
-               <cstring>Mod/Fem/General</cstring>
+              <property name="mode">
+               <enum>Gui::FileChooser::Directory</enum>
               </property>
               <property name="prefEntry" stdset="0">
                <cstring>CustomDirectoryPath</cstring>
               </property>
-              <property name="mode">
-               <enum>Gui::FileChooser::Directory</enum>
+              <property name="prefPath" stdset="0">
+               <cstring>Mod/Fem/General</cstring>
               </property>
              </widget>
             </item>
@@ -387,11 +384,6 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::FileChooser</class>
    <extends>QWidget</extends>
    <header>Gui/FileDialog.h</header>
@@ -404,6 +396,11 @@
   <customwidget>
    <class>Gui::PrefRadioButton</class>
    <extends>QRadioButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

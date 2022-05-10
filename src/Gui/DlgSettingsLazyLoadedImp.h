@@ -27,6 +27,8 @@
 #include "PropertyPage.h"
 #include <memory>
 
+class QCheckBox;
+
 namespace Gui {
 namespace Dialog {
 class Ui_DlgSettingsLazyLoaded;
@@ -42,14 +44,14 @@ class DlgSettingsLazyLoadedImp : public PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsLazyLoadedImp( QWidget* parent = 0 );
+    DlgSettingsLazyLoadedImp( QWidget* parent = nullptr );
     ~DlgSettingsLazyLoadedImp();
 
     void saveSettings();
     void loadSettings();
 
 protected Q_SLOTS:
-    void onLoadClicked();
+    void onLoadClicked(const QString& wbName);
 
 protected:
     void buildUnloadedWorkbenchList();
@@ -58,6 +60,10 @@ protected:
 private:
     std::unique_ptr<Ui_DlgSettingsLazyLoaded> ui;
     static const uint WorkbenchNameRole;
+
+    std::vector<std::string> _backgroundAutoloadedModules;
+    std::string _startupModule;
+    std::map<QString, QCheckBox*> _autoloadCheckboxes;
 };
 
 } // namespace Dialog

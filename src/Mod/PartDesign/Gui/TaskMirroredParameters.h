@@ -20,16 +20,12 @@
  *                                                                            *
  ******************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskMirroredParameters_H
 #define GUI_TASKVIEW_TaskMirroredParameters_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-
 #include "TaskTransformedParameters.h"
 #include "ViewProviderMirrored.h"
+
 
 class Ui_TaskMirroredParameters;
 
@@ -51,7 +47,7 @@ class TaskMirroredParameters : public TaskTransformedParameters
 
 public:
     /// Constructor for task with ViewProvider
-    TaskMirroredParameters(ViewProviderTransformed *TransformedView, QWidget *parent = 0);
+    TaskMirroredParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
     TaskMirroredParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
 

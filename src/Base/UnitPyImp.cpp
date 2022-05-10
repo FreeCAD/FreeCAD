@@ -90,8 +90,8 @@ int UnitPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             *self = Quantity::parse(qstr).getUnit();
             return 0;
         }
-        catch (const Base::Exception& e) {
-            PyErr_SetString(PyExc_RuntimeError, e.what());
+        catch (const Base::ParserError& e) {
+            PyErr_SetString(PyExc_ValueError, e.what());
             return -1;
         }
     }

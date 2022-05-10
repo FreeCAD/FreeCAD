@@ -22,27 +22,22 @@
 
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <sstream>
-#endif
 
 #include <Base/Console.h>
-#include <Base/Exception.h>
+
 #include "WorkbenchManager.h"
 #include "Workbench.h"
+#include "DockWindowManager.h"
 #include "MenuManager.h"
 #include "ToolBarManager.h"
-#include "ToolBoxManager.h"
-#include "DockWindowManager.h"
-#include "MainWindow.h"
 
 using namespace Gui;
 
-WorkbenchManager* WorkbenchManager::_instance = 0;
+WorkbenchManager* WorkbenchManager::_instance = nullptr;
 
 WorkbenchManager* WorkbenchManager::instance()
 {
-    if (_instance == 0)
+    if (_instance == nullptr)
         _instance = new WorkbenchManager;
     return _instance;
 }
@@ -50,10 +45,10 @@ WorkbenchManager* WorkbenchManager::instance()
 void WorkbenchManager::destruct()
 {
     delete _instance;
-    _instance = 0;
+    _instance = nullptr;
 }
 
-WorkbenchManager::WorkbenchManager() : _activeWorkbench(0)
+WorkbenchManager::WorkbenchManager() : _activeWorkbench(nullptr)
 {
 }
 
@@ -105,14 +100,14 @@ void WorkbenchManager::removeWorkbench(const std::string& name)
         Workbench* wb = it->second;
         _workbenches.erase(it);
         if (_activeWorkbench == wb)
-            _activeWorkbench = 0;
+            _activeWorkbench = nullptr;
         delete wb;
     }
 }
 
 Workbench* WorkbenchManager::getWorkbench (const std::string& name) const
 {
-    Workbench* wb=0;
+    Workbench* wb=nullptr;
 
     std::map<std::string, Workbench*>::const_iterator it = _workbenches.find(name);
     if (it != _workbenches.end()) {

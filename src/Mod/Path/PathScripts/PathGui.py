@@ -21,62 +21,85 @@
 # ***************************************************************************
 
 import FreeCAD
+import FreeCADGui
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtil as PathUtil
-import PySide
+from PySide import QtGui, QtCore
 
+from PySide import QtCore, QtGui
 
 __title__ = "Path UI helper and utility functions"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
 __doc__ = "A collection of helper and utility functions for the Path GUI."
 
-def translate(context, text, disambig=None):
-    return PySide.QtCore.QCoreApplication.translate(context, text, disambig)
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-# PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
+
+
+def populateCombobox(form, enumTups, comboBoxesPropertyMap):
+    """populateCombobox(form, enumTups, comboBoxesPropertyMap) ... populate comboboxes with translated enumerations
+    ** comboBoxesPropertyMap will be unnecessary if UI files use strict combobox naming protocol.
+    Args:
+        form = UI form
+        enumTups = list of (translated_text, data_string) tuples
+        comboBoxesPropertyMap = list of (translated_text, data_string) tuples
+    """
+    PathLog.track(enumTups)
+
+    # Load appropriate enumerations in each combobox
+    for cb, prop in comboBoxesPropertyMap:
+        box = getattr(form, cb)  # Get the combobox
+        box.clear()  # clear the combobox
+        for text, data in enumTups[prop]:  #  load enumerations
+            box.addItem(text, data)
 
 
 def updateInputField(obj, prop, widget, onBeforeChange=None):
-    '''updateInputField(obj, prop, widget) ... update obj's property prop with the value of widget.
+    """updateInputField(obj, prop, widget) ... update obj's property prop with the value of widget.
     The property's value is only assigned if the new value differs from the current value.
     This prevents onChanged notifications where the value didn't actually change.
     Gui::InputField and Gui::QuantitySpinBox widgets are supported - and the property can
     be of type Quantity or Float.
     If onBeforeChange is specified it is called before a new value is assigned to the property.
     Returns True if a new value was assigned, False otherwise (new value is the same as the current).
-    '''
-    PathLog.track()
-    value = widget.property('rawValue')
+    """
+    value = widget.property("rawValue")
+    PathLog.track("value: {}".format(value))
     attr = PathUtil.getProperty(obj, prop)
-    attrValue = attr.Value if hasattr(attr, 'Value') else attr
+    attrValue = attr.Value if hasattr(attr, "Value") else attr
 
     isDiff = False
     if not PathGeom.isRoughly(attrValue, value):
         isDiff = True
     else:
-        if hasattr(obj, 'ExpressionEngine'):
-            noExpr = True
+        if hasattr(obj, "ExpressionEngine"):
+            exprSet = False
             for (prp, expr) in obj.ExpressionEngine:
                 if prp == prop:
-                    noExpr = False
+                    exprSet = True
                     PathLog.debug('prop = "expression": {} = "{}"'.format(prp, expr))
                     value = FreeCAD.Units.Quantity(obj.evalExpression(expr)).Value
                     if not PathGeom.isRoughly(attrValue, value):
                         isDiff = True
                     break
-            if noExpr:
-                widget.setProperty('readonly', False)
-                widget.setStyleSheet("color: black")
-            else:
-                widget.setProperty('readonly', True)
+            if exprSet:
+                widget.setReadOnly(True)
                 widget.setStyleSheet("color: gray")
+            else:
+                widget.setReadOnly(False)
+                widget.setStyleSheet("color: black")
             widget.update()
 
     if isDiff:
-        PathLog.debug("updateInputField(%s, %s): %.2f -> %.2f" % (obj.Label, prop, attr, value))
+        PathLog.debug(
+            "updateInputField(%s, %s): %.2f -> %.2f" % (obj.Label, prop, attr, value)
+        )
         if onBeforeChange:
             onBeforeChange(obj)
         PathUtil.setProperty(obj, prop, value)
@@ -85,69 +108,131 @@ def updateInputField(obj, prop, widget, onBeforeChange=None):
     return False
 
 
-class QuantitySpinBox:
-    '''Controller class to interface a Gui::QuantitySpinBox.
+class QuantitySpinBox(QtCore.QObject):
+    """Controller class to interface a Gui::QuantitySpinBox.
     The spin box gets bound to a given property and supports update in both directions.
     QuatitySpinBox(widget, obj, prop, onBeforeChange=None)
             widget ... expected to be reference to a Gui::QuantitySpinBox
             obj    ... document object
             prop   ... canonical name of the (sub-) property
             onBeforeChange ... an optional callback being executed before the value of the property is changed
-    '''
+    """
 
     def __init__(self, widget, obj, prop, onBeforeChange=None):
+        super().__init__()
         PathLog.track(widget)
         self.widget = widget
         self.onBeforeChange = onBeforeChange
         self.prop = None
+        self.obj = obj
         self.attachTo(obj, prop)
+        self.widget.installEventFilter(self)
 
-    def attachTo(self, obj, prop = None):
-        '''attachTo(obj, prop=None) ... use an existing editor for the given object and property'''
+    def eventFilter(self, obj, event):
+        if event.type() == QtCore.QEvent.Type.FocusIn:
+            self.updateSpinBox()
+        return False
+
+    def attachTo(self, obj, prop=None):
+        """attachTo(obj, prop=None) ... use an existing editor for the given object and property"""
         PathLog.track(self.prop, prop)
         self.obj = obj
         self.prop = prop
         if obj and prop:
             attr = PathUtil.getProperty(obj, prop)
             if attr is not None:
-                if hasattr(attr, 'Value'):
-                    self.widget.setProperty('unit', attr.getUserPreferred()[2])
-                self.widget.setProperty('binding', "%s.%s" % (obj.Name, prop))
+                if hasattr(attr, "Value"):
+                    self.widget.setProperty("unit", attr.getUserPreferred()[2])
+                self.widget.setProperty("binding", "%s.%s" % (obj.Name, prop))
                 self.valid = True
             else:
-                PathLog.warning(translate('PathGui', "Cannot find property %s of %s") % (prop, obj.Label))
+                PathLog.warning("Cannot find property {} of {}".format(prop, obj.Label))
                 self.valid = False
         else:
             self.valid = False
 
     def expression(self):
-        '''expression() ... returns the expression if one is bound to the property'''
+        """expression() ... returns the expression if one is bound to the property"""
         PathLog.track(self.prop, self.valid)
         if self.valid:
-            return self.widget.property('expression')
-        return ''
+            return self.widget.property("expression")
+        return ""
 
     def setMinimum(self, quantity):
-        '''setMinimum(quantity) ... set the minimum'''
+        """setMinimum(quantity) ... set the minimum"""
         PathLog.track(self.prop, self.valid)
         if self.valid:
-            value = quantity.Value if hasattr(quantity, 'Value') else quantity
-            self.widget.setProperty('setMinimum', value)
+            value = quantity.Value if hasattr(quantity, "Value") else quantity
+            self.widget.setProperty("setMinimum", value)
 
     def updateSpinBox(self, quantity=None):
-        '''updateSpinBox(quantity=None) ... update the display value of the spin box.
+        """updateSpinBox(quantity=None) ... update the display value of the spin box.
         If no value is provided the value of the bound property is used.
-        quantity can be of type Quantity or Float.'''
-        PathLog.track(self.prop, self.valid)
+        quantity can be of type Quantity or Float."""
+        PathLog.track(self.prop, self.valid, quantity)
+
         if self.valid:
+            expr = self._hasExpression()
             if quantity is None:
-                quantity = PathUtil.getProperty(self.obj, self.prop)
-            value = quantity.Value if hasattr(quantity, 'Value') else quantity
-            self.widget.setProperty('rawValue', value)
+                if expr:
+                    quantity = FreeCAD.Units.Quantity(self.obj.evalExpression(expr))
+                else:
+                    quantity = PathUtil.getProperty(self.obj, self.prop)
+            value = quantity.Value if hasattr(quantity, "Value") else quantity
+            self.widget.setProperty("rawValue", value)
+            if expr:
+                self.widget.setReadOnly(True)
+                self.widget.setStyleSheet("color: gray")
+            else:
+                self.widget.setReadOnly(False)
+                self.widget.setStyleSheet("color: black")
 
     def updateProperty(self):
-        '''updateProperty() ... update the bound property with the value from the spin box'''
+        """updateProperty() ... update the bound property with the value from the spin box"""
         PathLog.track(self.prop, self.valid)
         if self.valid:
-            return updateInputField(self.obj, self.prop, self.widget, self.onBeforeChange)
+            return updateInputField(
+                self.obj, self.prop, self.widget, self.onBeforeChange
+            )
         return None
+
+    def _hasExpression(self):
+        for (prop, exp) in self.obj.ExpressionEngine:
+            if prop == self.prop:
+                return exp
+        return None
+
+
+def getDocNode():
+    doc = FreeCADGui.ActiveDocument.Document.Name
+    tws = FreeCADGui.getMainWindow().findChildren(QtGui.QTreeWidget)
+
+    for tw in tws:
+        if tw.topLevelItemCount() != 1 or tw.topLevelItem(0).text(0) != "Application":
+            continue
+        toptree = tw.topLevelItem(0)
+        for i in range(0, toptree.childCount()):
+            docitem = toptree.child(i)
+            if docitem.text(0) == doc:
+                return docitem
+    return None
+
+
+def disableItem(item):
+    Dragflag = QtCore.Qt.ItemFlag.ItemIsDragEnabled
+    Dropflag = QtCore.Qt.ItemFlag.ItemIsDropEnabled
+    item.setFlags(item.flags() & ~Dragflag)
+    item.setFlags(item.flags() & ~Dropflag)
+    for idx in range(0, item.childCount()):
+        disableItem(item.child(idx))
+
+
+def findItem(docitem, objname):
+    print(docitem.text(0))
+    for i in range(0, docitem.childCount()):
+        if docitem.child(i).text(0) == objname:
+            return docitem.child(i)
+        res = findItem(docitem.child(i), objname)
+        if res:
+            return res
+    return None

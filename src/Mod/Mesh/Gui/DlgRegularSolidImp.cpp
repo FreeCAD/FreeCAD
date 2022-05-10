@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <float.h>
+# include <cfloat>
 # include <qcheckbox.h>
 # include <qcombobox.h>
 # include <qmessagebox.h>
@@ -33,6 +33,7 @@
 #include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 #include <Base/UnitsApi.h>
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>

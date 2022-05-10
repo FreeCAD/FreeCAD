@@ -60,6 +60,7 @@
 # include <BRepBndLib.hxx>
 # include <ShapeAnalysis_Edge.hxx>
 # include <ShapeAnalysis_Curve.hxx>
+# include <ShapeAnalysis_Shell.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <TColgp_SequenceOfPnt.hxx>
 # include <GeomAPI_ProjectPointOnSurf.hxx>
@@ -826,14 +827,22 @@ bool FaceTypedBSpline::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &fa
     if (surfaceOne.IsNull() || surfaceTwo.IsNull())
         return false;
 
-    if (surfaceOne->IsURational() != surfaceTwo->IsURational()) return false;
-    if (surfaceOne->IsVRational() != surfaceTwo->IsVRational()) return false;
-    if (surfaceOne->IsUPeriodic() != surfaceTwo->IsUPeriodic()) return false;
-    if (surfaceOne->IsVPeriodic() != surfaceTwo->IsVPeriodic()) return false;
-    if (surfaceOne->IsUClosed() != surfaceTwo->IsUClosed()) return false;
-    if (surfaceOne->IsVClosed() != surfaceTwo->IsVClosed()) return false;
-    if (surfaceOne->UDegree() != surfaceTwo->UDegree()) return false;
-    if (surfaceOne->VDegree() != surfaceTwo->VDegree()) return false;
+    if (surfaceOne->IsURational() != surfaceTwo->IsURational())
+        return false;
+    if (surfaceOne->IsVRational() != surfaceTwo->IsVRational())
+        return false;
+    if (surfaceOne->IsUPeriodic() != surfaceTwo->IsUPeriodic())
+        return false;
+    if (surfaceOne->IsVPeriodic() != surfaceTwo->IsVPeriodic())
+        return false;
+    if (surfaceOne->IsUClosed() != surfaceTwo->IsUClosed())
+        return false;
+    if (surfaceOne->IsVClosed() != surfaceTwo->IsVClosed())
+        return false;
+    if (surfaceOne->UDegree() != surfaceTwo->UDegree())
+        return false;
+    if (surfaceOne->VDegree() != surfaceTwo->VDegree())
+        return false;
 
     //pole test
     int uPoleCountOne(surfaceOne->NbUPoles());
@@ -1034,6 +1043,7 @@ bool FaceUniter::process()
     typeObjects.push_back(&getBSplineObject());
     //add more face types.
 
+    bool checkFinalShell = false;
     ModelRefine::FaceTypeSplitter splitter;
     splitter.addShell(workShell);
     std::vector<FaceTypedBase *>::iterator typeIt;
@@ -1061,6 +1071,11 @@ bool FaceUniter::process()
                 TopoDS_Face newFace = (*typeIt)->buildFace(adjacencySplitter.getGroup(adjacentIndex));
                 if (!newFace.IsNull())
                 {
+                    // the created face should have the same orientation as the input faces
+                    const FaceVectorType& faces = adjacencySplitter.getGroup(adjacentIndex);
+                    if (!faces.empty() && newFace.Orientation() != faces[0].Orientation()) {
+                        checkFinalShell = true;
+                    }
                     facesToSew.push_back(newFace);
                     if (facesToRemove.capacity() <= facesToRemove.size() + adjacencySplitter.getGroup(adjacentIndex).size())
                         facesToRemove.reserve(facesToRemove.size() + adjacencySplitter.getGroup(adjacentIndex).size());
@@ -1141,6 +1156,19 @@ bool FaceUniter::process()
             faceFixer.Perform();
         }
         workShell = TopoDS::Shell(edgeFuse.Shape());
+
+        // A difference of orientation between original and fused faces was previously detected
+        if (checkFinalShell) {
+            ShapeAnalysis_Shell check;
+            check.LoadShells(workShell);
+            if (!check.HasFreeEdges()) {
+                // the shell is a solid, make sure that volume is positive
+                GProp_GProps props;
+                BRepGProp::VolumeProperties(workShell, props);
+                if (props.Mass() < 0)
+                    workShell = TopoDS::Shell(workShell.Reversed());
+            }
+        }
         // update the list of modifications
         TopTools_DataMapOfShapeShape faceMap;
         edgeFuse.Faces(faceMap);

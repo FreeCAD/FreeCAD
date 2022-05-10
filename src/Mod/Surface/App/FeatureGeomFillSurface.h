@@ -32,6 +32,7 @@
 #include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
 #include <Mod/Part/App/FeaturePartSpline.h>
+#include <Mod/Surface/SurfaceGlobal.h>
 
 namespace Surface
 {
@@ -46,8 +47,8 @@ public:
     ShapeValidator();
     void initValidator(void);
     void checkEdge(const TopoDS_Shape& shape);
-    void checkAndAdd(const TopoDS_Shape &shape, Handle(ShapeExtend_WireData) *aWD = NULL);
-    void checkAndAdd(const Part::TopoShape &ts, const char *subName, Handle(ShapeExtend_WireData) *aWire = NULL);
+    void checkAndAdd(const TopoDS_Shape &shape, Handle(ShapeExtend_WireData) *aWD = nullptr);
+    void checkAndAdd(const Part::TopoShape &ts, const char *subName, Handle(ShapeExtend_WireData) *aWire = nullptr);
 
     bool isBezier() const {
         return willBezier;

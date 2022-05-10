@@ -8,6 +8,7 @@ set(Part_Scripts
     Init.py
     JoinFeatures.py
     MakeBottle.py
+    PartEnums.py
     TestPartApp.py
 )
 
@@ -33,6 +34,7 @@ set(BasicShapes_Scripts
 
 if(BUILD_GUI)
     list (APPEND BasicShapes_Scripts
+          BasicShapes/ShapeContent.py
           BasicShapes/CommandShapes.py
           BasicShapes/ViewProviderShapes.py
           BasicShapes/TaskTube.ui

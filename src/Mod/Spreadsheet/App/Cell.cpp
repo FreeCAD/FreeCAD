@@ -131,12 +131,12 @@ Cell::Cell(PropertySheet *_owner, const Cell &other)
     , foregroundColor(other.foregroundColor)
     , backgroundColor(other.backgroundColor)
     , displayUnit(other.displayUnit)
-    , alias(other.alias)
     , computedUnit(other.computedUnit)
     , rowSpan(other.rowSpan)
     , colSpan(other.colSpan)
 {
     setUsed(MARK_SET, false);
+    setAlias(other.alias);
     setDirty();
 }
 
@@ -247,7 +247,10 @@ const App::Expression *Cell::getExpression(bool withFormat) const
 bool Cell::getStringContent(std::string & s, bool persistent) const
 {
     if (expression) {
-        if (freecad_dynamic_cast<App::StringExpression>(expression.get())) {
+        s.clear();
+        if(expression->hasComponent())
+            s = "=" + expression->toString(persistent);
+        else if (freecad_dynamic_cast<App::StringExpression>(expression.get())) {
             s = static_cast<App::StringExpression*>(expression.get())->getText();
             char * end;
             errno = 0;
@@ -285,6 +288,8 @@ void Cell::setContent(const char * value)
     clearException();
     if (value) {
         if (owner->sheet()->isRestoring()) {
+            if (value[0] == '\0' || (value[0] == '\'' && value[1] == '\0'))
+                return;
             expression.reset(new App::StringExpression(owner->sheet(), value));
             setUsed(EXPRESSION_SET, true);
             return;
@@ -299,7 +304,10 @@ void Cell::setContent(const char * value)
             }
         }
         else if (*value == '\'') {
-            newExpr = std::make_unique<App::StringExpression>(owner->sheet(), value + 1);
+            if (value[1] == '\0')
+                value = nullptr;
+            else
+                newExpr = std::make_unique<App::StringExpression>(owner->sheet(), value + 1);
         }
         else if (*value != '\0') {
             // check if value is just a number
@@ -703,15 +711,15 @@ void Cell::moveAbsolute(CellAddress newAddress)
 
 void Cell::restore(Base::XMLReader &reader, bool checkAlias)
 {
-    const char* style = reader.hasAttribute("style") ? reader.getAttribute("style") : 0;
-    const char* alignment = reader.hasAttribute("alignment") ? reader.getAttribute("alignment") : 0;
+    const char* style = reader.hasAttribute("style") ? reader.getAttribute("style") : nullptr;
+    const char* alignment = reader.hasAttribute("alignment") ? reader.getAttribute("alignment") : nullptr;
     const char* content = reader.hasAttribute("content") ? reader.getAttribute("content") : "";
-    const char* foregroundColor = reader.hasAttribute("foregroundColor") ? reader.getAttribute("foregroundColor") : 0;
-    const char* backgroundColor = reader.hasAttribute("backgroundColor") ? reader.getAttribute("backgroundColor") : 0;
-    const char* displayUnit = reader.hasAttribute("displayUnit") ? reader.getAttribute("displayUnit") : 0;
-    const char* alias = reader.hasAttribute("alias") ? reader.getAttribute("alias") : 0;
-    const char* rowSpan = reader.hasAttribute("rowSpan") ? reader.getAttribute("rowSpan") : 0;
-    const char* colSpan = reader.hasAttribute("colSpan") ? reader.getAttribute("colSpan") : 0;
+    const char* foregroundColor = reader.hasAttribute("foregroundColor") ? reader.getAttribute("foregroundColor") : nullptr;
+    const char* backgroundColor = reader.hasAttribute("backgroundColor") ? reader.getAttribute("backgroundColor") : nullptr;
+    const char* displayUnit = reader.hasAttribute("displayUnit") ? reader.getAttribute("displayUnit") : nullptr;
+    const char* alias = reader.hasAttribute("alias") ? reader.getAttribute("alias") : nullptr;
+    const char* rowSpan = reader.hasAttribute("rowSpan") ? reader.getAttribute("rowSpan") : nullptr;
+    const char* colSpan = reader.hasAttribute("colSpan") ? reader.getAttribute("colSpan") : nullptr;
 
     // Don't trigger multiple updates below; wait until everything is loaded by calling unfreeze() below.
     PropertySheet::AtomicPropertyChange signaller(*owner);
@@ -998,7 +1006,7 @@ App::Color Cell::decodeColor(const std::string & color, const App::Color & defau
 
         if (color[0] != '#')
             return defaultColor;
-        unsigned int value = strtoul(color.c_str() + 1, 0, 16);
+        unsigned int value = strtoul(color.c_str() + 1, nullptr, 16);
 
         if (color.size() == 7)
             value = (value << 8) | 0xff;

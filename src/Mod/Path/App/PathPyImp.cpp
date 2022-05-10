@@ -57,7 +57,7 @@ PyObject *PathPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Pytho
 // constructor method
 int PathPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
-    PyObject *pcObj=0;
+    PyObject *pcObj=nullptr;
     char *gcode;
     if (PyArg_ParseTuple(args, "|O!", &(PyList_Type), &pcObj)) {
         if (pcObj) {
@@ -164,7 +164,7 @@ PyObject* PathPy::addCommands(PyObject * args)
         }
         return new PathPy(new Path::Toolpath(*getToolpathPtr()));
     }
-    Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters - command or list of commands expected");
+    Py_Error(PyExc_TypeError, "Wrong parameters - command or list of commands expected");
 }
 
 PyObject* PathPy::insertCommand(PyObject * args)
@@ -176,7 +176,7 @@ PyObject* PathPy::insertCommand(PyObject * args)
         getToolpathPtr()->insertCommand(cmd,pos);
         return new PathPy(new Path::Toolpath(*getToolpathPtr()));
     }
-    Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters - expected command and optional integer");
+    Py_Error(PyExc_TypeError, "Wrong parameters - expected command and optional integer");
 }
 
 PyObject* PathPy::deleteCommand(PyObject * args)
@@ -186,7 +186,7 @@ PyObject* PathPy::deleteCommand(PyObject * args)
         getToolpathPtr()->deleteCommand(pos);
         return new PathPy(new Path::Toolpath(*getToolpathPtr()));
     }
-    Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters - expected an integer (optional)");
+    Py_Error(PyExc_TypeError, "Wrong parameters - expected an integer (optional)");
 }
 
 PyObject* PathPy::getCycleTime(PyObject * args)
@@ -195,7 +195,7 @@ PyObject* PathPy::getCycleTime(PyObject * args)
     if (PyArg_ParseTuple(args, "dddd", &hFeed, &vFeed, &hRapid, &vRapid)){
         return PyFloat_FromDouble(getToolpathPtr()->getCycleTime(hFeed, vFeed, hRapid, vRapid));
     }
-    return 0;
+    return nullptr;
 }
 
 // GCode methods
@@ -211,7 +211,7 @@ PyObject* PathPy::toGCode(PyObject * args)
 
 PyObject* PathPy::setFromGCode(PyObject * args)
 {
-    char *pstr=0;
+    char *pstr=nullptr;
     if (PyArg_ParseTuple(args, "s", &pstr)) {
         std::string gcode(pstr);
         getToolpathPtr()->setFromGCode(gcode);
@@ -225,7 +225,7 @@ PyObject* PathPy::setFromGCode(PyObject * args)
 
 PyObject *PathPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int PathPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

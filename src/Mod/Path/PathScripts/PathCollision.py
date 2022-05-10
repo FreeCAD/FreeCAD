@@ -24,16 +24,12 @@ import FreeCAD
 import PathScripts.PathLog as PathLog
 from PySide import QtCore
 from PathScripts.PathUtils import waiting_effects
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
-LOG_MODULE = 'PathCollision'
+LOG_MODULE = "PathCollision"
 PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
-PathLog.trackModule('PathCollision')
-FreeCAD.setLogLevel('Path.Area', 0)
-
-
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+PathLog.trackModule("PathCollision")
+FreeCAD.setLogLevel("Path.Area", 0)
 
 __title__ = "Path Collision Utility"
 __author__ = "sliptonic (Brad Collette)"
@@ -44,25 +40,30 @@ __url__ = "https://www.freecadweb.org"
 
 class _CollisionSim:
     def __init__(self, obj):
-        #obj.addProperty("App::PropertyLink", "Original", "reference", QtCore.QT_TRANSLATE_NOOP("App::Property", "The base object this collision refers to"))
         obj.Proxy = self
 
     def execute(self, fp):
-        '''Do something when doing a recomputation, this method is mandatory'''
-        print('_CollisionSim', fp)
+        """Do something when doing a recomputation, this method is mandatory"""
+        print("_CollisionSim", fp)
 
 
 class _ViewProviderCollisionSim:
     def __init__(self, vobj):
         self.Object = vobj.Object
         vobj.Proxy = self
-        vobj.addProperty("App::PropertyLink", "Original", "reference", QtCore.QT_TRANSLATE_NOOP("App::Property", "The base object this collision refers to"))
+        vobj.addProperty(
+            "App::PropertyLink",
+            "Original",
+            "reference",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The base object this collision refers to"
+            ),
+        )
 
     def attach(self, vobj):
         self.Object = vobj.Object
 
     def setEdit(self, vobj, mode=0):
-        # pylint: disable=unused-argument
         return True
 
     def getIcon(self):
@@ -72,22 +73,22 @@ class _ViewProviderCollisionSim:
         return None
 
     def __setstate__(self, state):
-        # pylint: disable=unused-argument
         return None
 
     def onDelete(self, feature, subelements):
-        # pylint: disable=unused-argument
         feature.Original.ViewObject.Visibility = True
         return True
 
 
 def __compareBBSpace(bb1, bb2):
-    if (bb1.XMin == bb2.XMin and
-            bb1.XMax == bb2.XMax and
-            bb1.YMin == bb2.YMin and
-            bb1.YMax == bb2.YMax and
-            bb1.ZMin == bb2.ZMin and
-            bb1.ZMax == bb2.ZMax):
+    if (
+        bb1.XMin == bb2.XMin
+        and bb1.XMax == bb2.XMax
+        and bb1.YMin == bb2.YMin
+        and bb1.YMax == bb2.YMax
+        and bb1.ZMin == bb2.ZMin
+        and bb1.ZMax == bb2.ZMax
+    ):
         return True
     return False
 
@@ -124,6 +125,3 @@ def getCollisionObject(baseobject, simobject):
         obj.ViewObject.Original = baseobject
 
     return result
-
-
-

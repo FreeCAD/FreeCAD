@@ -44,6 +44,7 @@
 #include <Base/Converter.h>
 #include <Base/CoordinateSystem.h>
 #include <App/Application.h>
+#include <App/ComplexGeoData.h>
 #include <App/Document.h>
 #include <App/Placement.h>
 #include <Mod/Mesh/App/Core/Approximation.h>
@@ -255,7 +256,7 @@ TaskFitBSplineSurface::TaskFitBSplineSurface(const App::DocumentObjectT& obj)
     widget = new FitBSplineSurfaceWidget(obj);
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("actions/FitSurface"),
-        widget->windowTitle(), true, 0);
+        widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

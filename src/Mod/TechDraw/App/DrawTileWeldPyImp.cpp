@@ -45,7 +45,7 @@ std::string DrawTileWeldPy::representation(void) const
 
 PyObject *DrawTileWeldPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DrawTileWeldPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

@@ -25,16 +25,10 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
-# include <cinttypes>
-# include <iomanip>
-# include <boost/algorithm/string.hpp>
-# include <boost/lexical_cast.hpp>
 #endif
 
 #include <Base/Vector3D.h>
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Exception.h>
+
 #include "Voronoi.h"
 
 using namespace Base;
@@ -198,7 +192,7 @@ void Voronoi::colorExterior(const Voronoi::diagram_type::edge_type *edge, std::s
   edge->color(colorValue);
   edge->twin()->color(colorValue);
   auto v = edge->vertex1();
-  if (v == NULL || !edge->is_primary()) {
+  if (v == nullptr || !edge->is_primary()) {
     return;
   }
   v->color(colorValue);

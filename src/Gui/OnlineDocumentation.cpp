@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
@@ -30,18 +29,12 @@
 # include <QTcpSocket>
 #endif
 
-#include <sstream>
-#include <CXX/Objects.hxx>
-#include <zipios++/zipfile.h>
 #include <Base/Interpreter.h>
-#include <Base/Stream.h>
-#include <Base/Console.h>
 #include <Base/Exception.h>
-#include <App/Application.h>
 
-#include "MainWindow.h"
-#include "BitmapFactory.h"
 #include "OnlineDocumentation.h"
+#include "MainWindow.h"
+
 
 using namespace Gui;
 
@@ -361,9 +354,9 @@ void HttpServer::discardClient()
 /* TRANSLATOR Gui::StdCmdPythonHelp */
 
 StdCmdPythonHelp::StdCmdPythonHelp()
-  : Command("Std_PythonHelp"), server(0)
+  : Command("Std_PythonHelp"), server(nullptr)
 {
-    sGroup        = QT_TR_NOOP("Tools");
+    sGroup        = "Tools";
     sMenuText     = QT_TR_NOOP("Automatic python modules documentation");
     sToolTipText  = QT_TR_NOOP("Opens a browser to show the Python modules documentation");
     sWhatsThis    = "Std_PythonHelp";

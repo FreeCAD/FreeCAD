@@ -31,8 +31,6 @@
 # include <BRepAdaptor_Curve.hxx>
 #endif
 
-
-#include "FeaturePolarPattern.h"
 #include "DatumLine.h"
 #include <Base/Axis.h>
 #include <Base/Exception.h>
@@ -40,6 +38,8 @@
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/Part2DObject.h>
 #include <App/OriginFeature.h>
+
+#include "FeaturePolarPattern.h"
 
 using namespace PartDesign;
 
@@ -53,7 +53,7 @@ const App::PropertyAngle::Constraints PolarPattern::floatAngle = { Base::toDegre
 
 PolarPattern::PolarPattern()
 {
-    ADD_PROPERTY_TYPE(Axis, (0), "PolarPattern", (App::PropertyType)(App::Prop_None), "Direction");
+    ADD_PROPERTY_TYPE(Axis, (nullptr), "PolarPattern", (App::PropertyType)(App::Prop_None), "Direction");
     ADD_PROPERTY(Reversed, (0));
     ADD_PROPERTY(Angle, (360.0));
     Angle.setConstraints(&floatAngle);
@@ -98,7 +98,7 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
         offset = radians / (occurrences - 1);
 
     App::DocumentObject* refObject = Axis.getValue();
-    if (refObject == NULL)
+    if (refObject == nullptr)
         throw Base::ValueError("No axis reference specified");
     std::vector<std::string> subStrings = Axis.getSubValues();
     if (subStrings.empty())
@@ -115,7 +115,7 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
             axis = refSketch->getAxis(Part::Part2DObject::V_Axis);
         else if (subStrings[0] == "N_Axis")
             axis = refSketch->getAxis(Part::Part2DObject::N_Axis);
-        else if (subStrings[0].size() > 4 && subStrings[0].substr(0,4) == "Axis") {
+        else if (subStrings[0].compare(0, 4, "Axis") == 0) {
             int AxId = std::atoi(subStrings[0].substr(4,4000).c_str());
             if (AxId >= 0 && AxId < refSketch->getAxisCount())
                 axis = refSketch->getAxis(AxId);
@@ -188,6 +188,9 @@ void PolarPattern::handleChangedPropertyType(Base::XMLReader& reader, const char
         // restore the PropertyInteger to be able to set its value
         OccurrencesProperty.Restore(reader);
         Occurrences.setValue(OccurrencesProperty.getValue());
+    }
+    else {
+        Transformed::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 

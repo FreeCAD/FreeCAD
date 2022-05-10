@@ -39,7 +39,7 @@ std::string DrawViewPy::representation(void) const
 
 PyObject *DrawViewPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DrawViewPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

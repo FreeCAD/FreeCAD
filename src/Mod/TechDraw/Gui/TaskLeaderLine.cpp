@@ -24,13 +24,15 @@
 
 #ifndef _PreComp_
 #include <cmath>
-#endif // #ifndef _PreComp_
+#endif
 
 #include <QStatusBar>
 #include <QGraphicsScene>
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
+
+#include <App/Document.h>
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -47,11 +49,10 @@
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/ArrowPropEnum.h>
-//#include <Mod/TechDraw/App/Preferences.h>
 
 #include <Mod/TechDraw/Gui/ui_TaskLeaderLine.h>
 
-#include "DrawGuiStd.h"
+#include "DrawGuiUtil.h"
 #include "PreferencesGui.h"
 #include "QGVPage.h"
 #include "QGIView.h"
@@ -96,11 +97,7 @@ TaskLeaderLine::TaskLeaderLine(TechDrawGui::ViewProviderLeader* leadVP) :
     m_saveY(0.0),
     m_haveMdi(false)
 {
-    if (m_lineVP == nullptr)  {
-        //should be caught in CMD caller
-        Base::Console().Error("TaskLeaderLine - bad parameters.  Can not proceed.\n");
-        return;
-    }
+    //existence of leadVP is guaranteed by caller being ViewProviderLeaderLine.setEdit
 
     m_lineFeat = m_lineVP->getFeature();
 
@@ -189,12 +186,7 @@ TaskLeaderLine::TaskLeaderLine(TechDraw::DrawView* baseFeat,
     m_saveY(0.0),
     m_haveMdi(false)
 {
-    if ( (m_basePage == nullptr) ||
-         (m_baseFeat == nullptr) )  {
-        //should be caught in CMD caller
-        Base::Console().Error("TaskLeaderLine - bad parameters.  Can not proceed.\n");
-        return;
-    }
+    //existence of basePage and baseFeat is checked in CmdTechDrawLeaderLine (CommandAnnotate.cpp)
 
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_basePage->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_basePage);
@@ -815,7 +807,8 @@ bool TaskLeaderLine::accept()
     }
 
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
-    if (!doc) return false;
+    if (!doc)
+        return false;
 
     if (!getCreateMode())  {
 //        removeTracker();
@@ -846,7 +839,8 @@ bool TaskLeaderLine::reject()
     }
 
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
-    if (!doc) return false;
+    if (!doc)
+        return false;
 
     if (getCreateMode() &&
         (m_lineFeat != nullptr) )  {
@@ -879,7 +873,7 @@ TaskDlgLeaderLine::TaskDlgLeaderLine(TechDraw::DrawView* baseFeat,
 {
     widget  = new TaskLeaderLine(baseFeat,page);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-LeaderLine"),
-                                             widget->windowTitle(), true, 0);
+                                             widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }
@@ -889,7 +883,7 @@ TaskDlgLeaderLine::TaskDlgLeaderLine(TechDrawGui::ViewProviderLeader* leadVP)
 {
     widget  = new TaskLeaderLine(leadVP);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-LeaderLine"),
-                                             widget->windowTitle(), true, 0);
+                                             widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

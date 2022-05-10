@@ -24,10 +24,9 @@
 #ifndef GUI_DOCKWINDOW_H
 #define GUI_DOCKWINDOW_H
 
-
-#include <Base/Parameter.h>
 #include <Gui/View.h>
 #include <QWidget>
+
 
 namespace Gui {
 class MDIView;
@@ -54,7 +53,7 @@ public:
    * the view will attach to the active document. Be aware there isn't
    * always an active document available!
    */
-  DockWindow ( Gui::Document* pcDocument=0, QWidget *parent=0 );
+  DockWindow ( Gui::Document* pcDocument=nullptr, QWidget *parent=nullptr );
   /** View destructor
    * Detach the view from the document, if attached.
    */

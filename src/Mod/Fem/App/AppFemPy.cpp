@@ -23,26 +23,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Python.h>
 # include <memory>
 # include <cstdlib>
-# include <SMESH_Gen.hxx>
-# include <SMESH_Group.hxx>
-# include <SMESHDS_Mesh.hxx>
-# include <SMDS_MeshNode.hxx>
-# include <StdMeshers_MaxLength.hxx>
-# include <StdMeshers_LocalLength.hxx>
-# include <StdMeshers_NumberOfSegments.hxx>
-# include <StdMeshers_AutomaticLength.hxx>
-# include <StdMeshers_MEFISTO_2D.hxx>
-# include <StdMeshers_Deflection1D.hxx>
-# include <StdMeshers_MaxElementArea.hxx>
-# include <StdMeshers_Regular_1D.hxx>
-# include <StdMeshers_QuadranglePreference.hxx>
-# include <StdMeshers_Quadrangle_2D.hxx>
-# include <StdMeshers_LengthFromEdges.hxx>
-# include <StdMeshers_NotConformAllowed.hxx>
-# include <StdMeshers_Arithmetic1D.hxx>
 # include <Standard_Real.hxx>
 #endif
 
@@ -153,14 +135,14 @@ private:
     Py::Object insert(const Py::Tuple& args)
     {
         char* Name;
-        const char* DocName = 0;
+        const char* DocName = nullptr;
         if (!PyArg_ParseTuple(args.ptr(), "et|s","utf-8",&Name,&DocName))
             throw Py::Exception();
 
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
-        App::Document *pcDoc = 0;
+        App::Document *pcDoc = nullptr;
         if (DocName)
             pcDoc = App::GetApplication().getDocument(DocName);
         else
@@ -246,8 +228,8 @@ private:
 #ifdef FC_USE_VTK
     Py::Object readResult(const Py::Tuple& args)
     {
-        char* fileName = NULL;
-        char* objName = NULL;
+        char* fileName = nullptr;
+        char* objName = nullptr;
 
         if (!PyArg_ParseTuple(args.ptr(), "et|et","utf-8", &fileName, "utf-8", &objName))
             throw Py::Exception();
@@ -270,8 +252,8 @@ private:
 
     Py::Object writeResult(const Py::Tuple& args)
     {
-        char* fileName = NULL;
-        PyObject *pcObj = NULL;
+        char* fileName = nullptr;
+        PyObject *pcObj = nullptr;
 
         if (!PyArg_ParseTuple(args.ptr(), "et|O!","utf-8", &fileName, &(App::DocumentObjectPy::Type), &pcObj))
             throw Py::Exception();
@@ -317,7 +299,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace Fem

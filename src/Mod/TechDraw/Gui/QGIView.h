@@ -23,25 +23,36 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEW_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEW_H
 
+#include <QColor>
+#include <QFont>
 #include <QGraphicsItemGroup>
 #include <QObject>
 #include <QPen>
-#include <QFont>
-#include <QColor>
-#include <QCursor>
 #include <QPointF>
 
-#include <App/DocumentObject.h>
 #include <Base/Parameter.h>
-#include <Gui/ViewProvider.h>
-
-#include <Mod/TechDraw/App/DrawView.h>
+#include <Base/Vector3D.h>
 
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
 class QGraphicsSceneMouseEvent;
 QT_END_NAMESPACE
+
+namespace App
+{
+class DocumentObject;
+}
+
+namespace Gui
+{
+class ViewProvider;
+}
+
+namespace TechDraw
+{
+class DrawView;
+}
 
 namespace TechDrawGui
 {

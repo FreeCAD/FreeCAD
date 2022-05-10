@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -31,28 +30,30 @@
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoBaseColor.h>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoFontStyle.h>
+# include <Inventor/nodes/SoIndexedLineSet.h>
+# include <Inventor/nodes/SoMarkerSet.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoText2.h>
 # include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoIndexedLineSet.h>
-# include <Inventor/nodes/SoMarkerSet.h>
-# include <Inventor/nodes/SoDrawStyle.h>
 #endif
+
+#include <Inventor/MarkerBitmaps.h>
+
+#include <App/Document.h>
+#include <App/MeasureDistance.h>
+#include <Base/Console.h>
+#include <Base/Quantity.h>
 
 #include "ViewProviderMeasureDistance.h"
 #include "Application.h"
+#include <Command.h>
 #include "Document.h"
 #include "View3DInventorViewer.h"
 #include "ViewParams.h"
 
-#include <App/PropertyGeo.h>
-#include <App/PropertyStandard.h>
-#include <App/MeasureDistance.h>
-#include <Base/Console.h>
-#include <Base/Quantity.h>
-#include <Inventor/MarkerBitmaps.h>
 
 using namespace Gui;
 
@@ -242,11 +243,14 @@ PointMarker::PointMarker(View3DInventorViewer* iv) : view(iv),
     vp(new ViewProviderPointMarker)
 {
     view->addViewProvider(vp);
+    previousSelectionEn = view->isSelectionEnabled();
+    view->setSelectionEnabled(false);
 }
 
 PointMarker::~PointMarker()
 {
     view->removeViewProvider(vp);
+    view->setSelectionEnabled(previousSelectionEn);
     delete vp;
 }
 
@@ -318,11 +322,10 @@ void ViewProviderMeasureDistance::measureDistanceCallback(void * ud, SoEventCall
         const SoKeyboardEvent * ke = static_cast<const SoKeyboardEvent*>(ev);
         const SbBool press = ke->getState() == SoButtonEvent::DOWN ? true : false;
         if (ke->getKey() == SoKeyboardEvent::ESCAPE) {
+            n->setHandled();
+            // Handle it on key up, because otherwise upper layer will handle it too.
             if (!press) {
-                n->setHandled();
-                view->setEditing(false);
-                view->removeEventCallback(SoEvent::getClassTypeId(), measureDistanceCallback, ud);
-                pm->deleteLater();
+                endMeasureDistanceMode(ud, view, n, pm);
             }
         }
     }
@@ -334,7 +337,7 @@ void ViewProviderMeasureDistance::measureDistanceCallback(void * ud, SoEventCall
 
         if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
             const SoPickedPoint * point = n->getPickedPoint();
-            if (point == NULL) {
+            if (point == nullptr) {
                 Base::Console().Message("No point picked.\n");
                 return;
             }
@@ -350,10 +353,16 @@ void ViewProviderMeasureDistance::measureDistanceCallback(void * ud, SoEventCall
             }
         }
         else if (mbe->getButton() != SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {
-            n->setHandled();
-            view->setEditing(false);
-            view->removeEventCallback(SoEvent::getClassTypeId(), measureDistanceCallback, ud);
-            pm->deleteLater();
+            endMeasureDistanceMode(ud, view, n, pm);
         }
     }
+}
+
+void ViewProviderMeasureDistance::endMeasureDistanceMode(void * ud, Gui::View3DInventorViewer* view, SoEventCallback * n, PointMarker *pm)
+{
+    n->setHandled();
+    view->setEditing(false);
+    view->removeEventCallback(SoEvent::getClassTypeId(), ViewProviderMeasureDistance::measureDistanceCallback, ud);
+    Application::Instance->commandManager().testActive();
+    pm->deleteLater();
 }

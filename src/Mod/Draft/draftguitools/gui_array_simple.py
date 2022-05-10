@@ -86,7 +86,7 @@ class Array(gui_base_original.Modifier):
         if Gui.Selection.getSelection():
             obj = Gui.Selection.getSelection()[0]
             Gui.addModule("Draft")
-            _cmd = 'Draft.makeArray'
+            _cmd = 'Draft.make_array'
             _cmd += '('
             _cmd += 'FreeCAD.ActiveDocument.' + obj.Name + ', '
             _cmd += 'FreeCAD.Vector(1, 0, 0), '

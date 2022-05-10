@@ -22,18 +22,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+#include <App/DocumentObject.h>
+#include <App/GeoFeatureGroupExtension.h>
 
 #include "ViewProviderGeoFeatureGroupExtension.h"
-#include "Command.h"
+#include "ViewProviderDocumentObject.h"
 #include "Application.h"
-#include "Document.h"
-#include <App/GeoFeatureGroupExtension.h>
 #include "SoFCUnifiedSelection.h"
+
 
 using namespace Gui;
 
@@ -50,7 +48,7 @@ ViewProviderGeoFeatureGroupExtension::ViewProviderGeoFeatureGroupExtension()
 ViewProviderGeoFeatureGroupExtension::~ViewProviderGeoFeatureGroupExtension()
 {
     pcGroupChildren->unref();
-    pcGroupChildren = 0;
+    pcGroupChildren = nullptr;
 }
 
 

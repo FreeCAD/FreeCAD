@@ -41,7 +41,7 @@
 # include <TDF_LabelSequence.hxx>
 # include <TDF_ChildIterator.hxx>
 # include <TDataStd_Name.hxx>
-# include <Quantity_Color.hxx>
+# include <Quantity_ColorRGBA.hxx>
 # include <TopoDS_Iterator.hxx>
 # include <Interface_Static.hxx>
 # include <TDF_AttributeSequence.hxx>
@@ -50,6 +50,7 @@
 
 #include <XCAFDoc_ShapeMapTool.hxx>
 
+#include <boost/format.hpp>
 #include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
 #include <Base/Parameter.h>
@@ -71,11 +72,39 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
 
+#if OCC_VERSION_HEX >= 0x070500
+// See https://dev.opencascade.org/content/occt-3d-viewer-becomes-srgb-aware
+#   define OCC_COLOR_SPACE Quantity_TOC_sRGB
+#else
+#   define OCC_COLOR_SPACE Quantity_TOC_RGB
+#endif
+
 FC_LOG_LEVEL_INIT("Import",true,true)
 
 using namespace Import;
 
 /////////////////////////////////////////////////////////////////////
+
+static inline App::Color convertColor(const Quantity_ColorRGBA &c)
+{
+    Standard_Real r, g, b;
+    c.GetRGB().Values(r, g, b, OCC_COLOR_SPACE);
+    return App::Color(static_cast<float>(r),
+                      static_cast<float>(g),
+                      static_cast<float>(b),
+                      1.0f - static_cast<float>(c.Alpha()));
+}
+
+static inline Quantity_ColorRGBA convertColor(const App::Color &c)
+{
+    return Quantity_ColorRGBA(Quantity_Color(c.r, c.g, c.b, OCC_COLOR_SPACE), 1.0f - c.a);
+}
+
+static inline std::ostream& operator<<(std::ostream& os, const Quantity_ColorRGBA &c) {
+    App::Color color = convertColor(c);
+    auto toHex = [](float v) {return boost::format("%02X") % static_cast<int>(v*255);};
+    return os << "#" << toHex(color.r) << toHex(color.g) << toHex(color.b) << toHex(color.a);
+}
 
 static std::string labelName(TDF_Label label) {
     std::string txt;
@@ -92,7 +121,7 @@ static std::string labelName(TDF_Label label) {
 }
 
 static void printLabel(TDF_Label label, Handle(XCAFDoc_ShapeTool) aShapeTool,
-    Handle(XCAFDoc_ColorTool) aColorTool, const char *msg = 0) 
+    Handle(XCAFDoc_ColorTool) aColorTool, const char *msg = nullptr) 
 {
     if(label.IsNull() || !FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
         return;
@@ -116,13 +145,13 @@ static void printLabel(TDF_Label label, Handle(XCAFDoc_ShapeTool) aShapeTool,
             ss << ", " << Part::TopoShape::shapeName(shape.ShapeType(),true);
     }
     if(aShapeTool->IsShape(label)) {
-        Quantity_Color c;
+        Quantity_ColorRGBA c;
         if(aColorTool->GetColor(label,XCAFDoc_ColorGen,c))
-            ss << ", gc: " << c.StringName(c.Name());
+            ss << ", gc: " << c;
         if(aColorTool->GetColor(label,XCAFDoc_ColorSurf,c))
-            ss << ", sc: " << c.StringName(c.Name());
+            ss << ", sc: " << c;
         if(aColorTool->GetColor(label,XCAFDoc_ColorCurv,c))
-            ss << ", cc: " << c.StringName(c.Name());
+            ss << ", cc: " << c;
     }
 
     ss << std::endl;
@@ -142,7 +171,7 @@ static void dumpLabels(TDF_Label label, Handle(XCAFDoc_ShapeTool) aShapeTool,
 /////////////////////////////////////////////////////////////////////
 
 ImportOCAF2::ImportOCAF2(Handle(TDocStd_Document) h, App::Document* d, const std::string& name)
-    : pDoc(h), pDocument(d), default_name(name), sequencer(0)
+    : pDoc(h), pDocument(d), default_name(name), sequencer(nullptr)
 {
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool (pDoc->Main());
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
@@ -229,12 +258,11 @@ void ImportOCAF2::setObjectName(Info &info, TDF_Label label) {
     }
 }
 
-
 bool ImportOCAF2::getColor(const TopoDS_Shape &shape, Info &info, bool check, bool noDefault) {
     bool ret = false;
-    Quantity_Color aColor;
+    Quantity_ColorRGBA aColor;
     if(aColorTool->GetColor(shape, XCAFDoc_ColorSurf, aColor)) {
-        App::Color c(aColor.Red(),aColor.Green(),aColor.Blue());
+        App::Color c = convertColor(aColor);
         if(!check || info.faceColor!=c) {
             info.faceColor = c;
             info.hasFaceColor = true;
@@ -242,7 +270,7 @@ bool ImportOCAF2::getColor(const TopoDS_Shape &shape, Info &info, bool check, bo
         }
     }
     if(!noDefault && !info.hasFaceColor && aColorTool->GetColor(shape, XCAFDoc_ColorGen, aColor)) {
-        App::Color c(aColor.Red(),aColor.Green(),aColor.Blue());
+        App::Color c = convertColor(aColor);
         if(!check || info.faceColor!=c) {
             info.faceColor = c;
             info.hasFaceColor = true;
@@ -250,7 +278,7 @@ bool ImportOCAF2::getColor(const TopoDS_Shape &shape, Info &info, bool check, bo
         }
     }
     if(aColorTool->GetColor(shape, XCAFDoc_ColorCurv, aColor)) {
-        App::Color c(aColor.Red(),aColor.Green(),aColor.Blue());
+        App::Color c = convertColor(aColor);
         // Some STEP include a curve color with the same value of the face
         // color. And this will look weird in FC. So for shape with face
         // we'll ignore the curve color, if it is the same as the face color.
@@ -275,7 +303,7 @@ App::DocumentObject *ImportOCAF2::expandShape(
         App::Document *doc, TDF_Label label, const TopoDS_Shape &shape) 
 {
     if(shape.IsNull() || !TopExp_Explorer(shape,TopAbs_VERTEX).More())
-        return 0;
+        return nullptr;
 
     // When saved as compound, STEP file does not support instance sharing,
     // meaning that even if the source compound may contain child shapes of
@@ -310,7 +338,7 @@ App::DocumentObject *ImportOCAF2::expandShape(
             }
         }
         if(objs.empty())
-            return 0;
+            return nullptr;
         auto compound = static_cast<Part::Compound2*>(doc->addObject("Part::Compound2","Compound"));
         compound->Links.setValues(objs);
         // compound->Visibility.setValue(false);
@@ -318,7 +346,7 @@ App::DocumentObject *ImportOCAF2::expandShape(
         return compound;
     }
     Info info;
-    info.obj = 0;
+    info.obj = nullptr;
     createObject(doc,label,shape,info,false);
     return info.obj;
 }
@@ -365,15 +393,15 @@ bool ImportOCAF2::createObject(App::Document *doc, TDF_Label label,
 
                 bool foundFaceColor=false,foundEdgeColor=false;
                 App::Color faceColor,edgeColor;
-                Quantity_Color aColor;
+                Quantity_ColorRGBA aColor;
                 if(aColorTool->GetColor(l, XCAFDoc_ColorSurf, aColor) ||
                    aColorTool->GetColor(l, XCAFDoc_ColorGen, aColor))
                 {
-                    faceColor = App::Color(aColor.Red(),aColor.Green(),aColor.Blue());
+                    faceColor = convertColor(aColor);
                     foundFaceColor = true;
                 }
                 if(aColorTool->GetColor(l, XCAFDoc_ColorCurv, aColor)) {
-                    edgeColor = App::Color(aColor.Red(),aColor.Green(),aColor.Blue());
+                    edgeColor = convertColor(aColor);
                     foundEdgeColor = true;
                     if(j==0 && foundFaceColor && faceColors.size() && edgeColor==faceColor) {
                         // Do not set edge the same color as face
@@ -529,7 +557,7 @@ App::DocumentObject* ImportOCAF2::loadShapes()
         ImportLegacy legacy(*this);
         legacy.setMerge(merge);
         legacy.loadShapes();
-        return 0;
+        return nullptr;
     }
 
     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
@@ -539,7 +567,7 @@ App::DocumentObject* ImportOCAF2::loadShapes()
     aShapeTool->GetShapes(labels);
     Base::SequencerLauncher seq("Importing...",labels.Length());
     FC_MSG("free shape count " << labels.Length());
-    sequencer = showProgress?&seq:0;
+    sequencer = showProgress?&seq:nullptr;
 
     labels.Clear();
     myShapes.clear();
@@ -567,7 +595,7 @@ App::DocumentObject* ImportOCAF2::loadShapes()
             vis.push_back(aColorTool->IsVisible(label));
         }
     }
-    App::DocumentObject *ret = 0;
+    App::DocumentObject *ret = nullptr;
     if(objs.size()==1) {
         ret = objs.front();
     }else {
@@ -596,7 +624,7 @@ App::DocumentObject* ImportOCAF2::loadShapes()
         ret = feature;
         ret->recomputeFeature(true);
     }
-    sequencer = 0;
+    sequencer = nullptr;
     return ret;
 }
 
@@ -648,11 +676,11 @@ void ImportOCAF2::getSHUOColors(TDF_Label label,
             subname += App::DocumentObject::hiddenMarker();
             colors.emplace(subname,App::Color());
         } else {
-            Quantity_Color aColor;
+            Quantity_ColorRGBA aColor;
             if(aColorTool->GetColor(slabel, XCAFDoc_ColorSurf, aColor) ||
                aColorTool->GetColor(slabel, XCAFDoc_ColorGen, aColor))
             {
-                colors.emplace(subname,App::Color(aColor.Red(),aColor.Green(),aColor.Blue()));
+                colors.emplace(subname,convertColor(aColor));
             }
         }
     }
@@ -662,7 +690,7 @@ App::DocumentObject *ImportOCAF2::loadShape(App::Document *doc,
         TDF_Label label, const TopoDS_Shape &shape, bool baseOnly, bool newDoc) 
 {
     if(shape.IsNull())
-        return 0;
+        return nullptr;
 
     auto baseShape = shape.Located(TopLoc_Location());
     auto it = myShapes.find(baseShape);
@@ -677,7 +705,7 @@ App::DocumentObject *ImportOCAF2::loadShape(App::Document *doc,
         else 
             res = createAssembly(doc,baseLabel,baseShape,info,newDoc);
         if(!res)
-            return 0;
+            return nullptr;
         setObjectName(info,baseLabel);
         it = myShapes.emplace(baseShape,info).first;
     }
@@ -782,12 +810,9 @@ bool ImportOCAF2::createAssembly(App::Document *_doc,
         childInfo.vis.push_back(vis);
         childInfo.labels.push_back(childLabel);
         childInfo.plas.emplace_back(Part::TopoShape::convert(childShape.Location().Transformation()));
-        Quantity_Color aColor;
+        Quantity_ColorRGBA aColor;
         if (aColorTool->GetColor(childShape, XCAFDoc_ColorSurf, aColor)) {
-            auto &color = childInfo.colors[childInfo.plas.size()-1];
-            color.r = (float)aColor.Red();
-            color.g = (float)aColor.Green();
-            color.b = (float)aColor.Blue();
+            childInfo.colors[childInfo.plas.size()-1] = convertColor(aColor); 
         }
     }
     assert(visibilities.size() == children.size());
@@ -1036,7 +1061,7 @@ void ExportOCAF2::setupObject(TDF_Label label, App::DocumentObject *obj,
                 continue;
             }
             const App::Color& c = vv.second;
-            Quantity_Color color(c.r,c.g,c.b,Quantity_TOC_RGB);
+            Quantity_ColorRGBA color = convertColor(c);
             auto colorType = vv.first[0]=='F'?XCAFDoc_ColorSurf:XCAFDoc_ColorCurv;
             if(vv.first=="Face" || vv.first=="Edge") {
                 aColorTool->SetColor(nodeLabel, color, colorType);
@@ -1097,22 +1122,22 @@ void ExportOCAF2::exportObjects(std::vector<App::DocumentObject*> &objs, const c
     myNames.clear();
     mySetups.clear();
     if(objs.size()==1)
-        exportObject(objs.front(),0,TDF_Label());
+        exportObject(objs.front(),nullptr,TDF_Label());
     else {
         auto label = aShapeTool->NewShape();
-        App::Document *doc = 0;
+        App::Document *doc = nullptr;
         bool sameDoc = true;
         for(auto obj : objs) {
             if(doc)
                 sameDoc = sameDoc && doc==obj->getDocument();
             else
                 doc = obj->getDocument();
-            exportObject(obj,0,label);
+            exportObject(obj,nullptr,label);
         }
 
         if(!name && doc && sameDoc)
             name = doc->getName();
-        setName(label,0,name);
+        setName(label,nullptr,name);
     }
 
     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
@@ -1128,7 +1153,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
         const char *sub, TDF_Label parent, const char *name) 
 {
     App::DocumentObject *obj;
-    auto shape = Part::Feature::getTopoShape(parentObj,sub,false,0,&obj,false,!sub);
+    auto shape = Part::Feature::getTopoShape(parentObj,sub,false,nullptr,&obj,false,!sub);
     if(!obj || shape.isNull()) {
         if (obj)
             FC_WARN(obj->getFullName() << " has null shape");
@@ -1189,7 +1214,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
             setupObject(label,name?parentObj:obj,shape,prefix,name);
             return label;
         }
-        auto next = linked->getLinkedObject(false,0,false,depth++);
+        auto next = linked->getLinkedObject(false,nullptr,false,depth++);
         if(!next || linked==next)
             break;
         linked = next;
@@ -1219,12 +1244,21 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
             // not call setupObject() on a non-located baseshape like above,
             // because OCCT does not respect shape style sharing when not
             // exporting assembly
-            if(!keepPlacement) 
+            if(!keepPlacement || shape.getPlacement() == Base::Placement())
                 shape.setShape(shape.getShape().Located(TopLoc_Location()));
+            else {
+                Base::Matrix4D mat = shape.getTransform();
+                shape.setShape(shape.getShape().Located(TopLoc_Location()));
+                // Transform with copy to conceal the transformation
+                shape.transformShape(mat, true);
+                // Even if the shape has no transformation, TopoShape still sets
+                // a TopLoc_Location, so we need to clear it again.
+                shape.setShape(shape.getShape().Located(TopLoc_Location()));
+            }
             label = aShapeTool->AddShape(shape.getShape(),Standard_False, Standard_False);
             auto o = name?parentObj:obj;
             if(o!=linked)
-                setupObject(label,linked,shape,prefix,0,true);
+                setupObject(label,linked,shape,prefix,nullptr,true);
             setupObject(label,o,shape,prefix,name,true);
         }
 
@@ -1244,9 +1278,9 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
     // check for link array
     auto linkArray = obj->getLinkedObject(true)->getExtensionByType<App::LinkBaseExtension>(true);
     if(linkArray && (linkArray->getShowElementValue() || !linkArray->getElementCountValue()))
-        linkArray = 0;
+        linkArray = nullptr;
     for(auto &subobj : subs) {
-        App::DocumentObject *parentGrp = 0;
+        App::DocumentObject *parentGrp = nullptr;
         std::string childName;
         auto sobj = obj->resolve(subobj.c_str(),&parentGrp,&childName);
         if(!sobj) {
@@ -1269,7 +1303,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
         if(!vis && !exportHidden)
             continue;
 
-        TDF_Label childLabel = exportObject(obj,subobj.c_str(),label,linkArray?childName.c_str():0);
+        TDF_Label childLabel = exportObject(obj,subobj.c_str(),label,linkArray?childName.c_str():nullptr);
         if(childLabel.IsNull())
             continue;
 
@@ -1277,7 +1311,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
             // Work around OCCT bug. If no color setting here, it will crash.
             // The culprit is at STEPCAFControl_Writer::1093 as shown below
             //
-            // surfColor = Styles.EncodeColor(Quantity_Color(1,1,1,Quantity_TOC_RGB),DPDCs,ColRGBs);
+            // surfColor = Styles.EncodeColor(Quantity_Color(1,1,1,OCC_COLOR_SPACE),DPDCs,ColRGBs);
             // PSA = Styles.MakeColorPSA ( item, surfColor, curvColor, isComponent );
             // if ( isComponent )
             //     setDefaultInstanceColor( override, PSA);
@@ -1287,13 +1321,13 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
             //     setDefaultInstanceColor( override, PSA);
             //
             auto childShape = aShapeTool->GetShape(childLabel);
-            Quantity_Color col;
+            Quantity_ColorRGBA col;
             if(!aColorTool->GetInstanceColor(childShape,XCAFDoc_ColorGen,col) &&
                !aColorTool->GetInstanceColor(childShape,XCAFDoc_ColorSurf,col) &&
                !aColorTool->GetInstanceColor(childShape,XCAFDoc_ColorCurv,col)) 
             {
                 auto &c = defaultColor;
-                aColorTool->SetColor(childLabel, Quantity_Color(c.r,c.g,c.b,Quantity_TOC_RGB), XCAFDoc_ColorGen);
+                aColorTool->SetColor(childLabel, convertColor(c), XCAFDoc_ColorGen);
                 FC_WARN(labelName(childLabel) << " set default color");
             }
             aColorTool->SetVisibility(childLabel,Standard_False);

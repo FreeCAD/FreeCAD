@@ -23,7 +23,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QString>
 # include <QApplication>
 # include <QBitmap>
 # include <QDir>
@@ -33,16 +32,16 @@
 # include <QImageReader>
 # include <QPainter>
 # include <QPalette>
+# include <QString>
 # include <QSvgRenderer>
 # include <QStyleOption>
-# include <sstream>
 #endif
 
 #include <string>
 #include <Inventor/fields/SoSFImage.h>
 
-#include <Base/Console.h>
 #include <App/Application.h>
+#include <Base/Console.h>
 
 #include "BitmapFactory.h"
 
@@ -87,25 +86,25 @@ public:
 };
 }
 
-BitmapFactoryInst* BitmapFactoryInst::_pcSingleton = NULL;
+BitmapFactoryInst* BitmapFactoryInst::_pcSingleton = nullptr;
 
 BitmapFactoryInst& BitmapFactoryInst::instance(void)
 {
-    if (_pcSingleton == NULL)
+    if (_pcSingleton == nullptr)
     {
         _pcSingleton = new BitmapFactoryInst;
         std::map<std::string,std::string>::const_iterator it;
         it = App::GetApplication().Config().find("ProgramIcons");
         if (it != App::GetApplication().Config().end()) {
-            QString home = QString::fromUtf8(App::GetApplication().getHomePath());
+            QString home = QString::fromStdString(App::Application::getHomePath());
             QString path = QString::fromUtf8(it->second.c_str());
             if (QDir(path).isRelative()) {
                 path = QFileInfo(QDir(home), path).absoluteFilePath();
             }
             _pcSingleton->addPath(path);
         }
-        _pcSingleton->addPath(QString::fromLatin1("%1/icons").arg(QString::fromUtf8(App::GetApplication().getHomePath())));
-        _pcSingleton->addPath(QString::fromLatin1("%1/icons").arg(QString::fromUtf8(App::GetApplication().Config()["UserAppData"].c_str())));
+        _pcSingleton->addPath(QString::fromLatin1("%1/icons").arg(QString::fromStdString(App::Application::getHomePath())));
+        _pcSingleton->addPath(QString::fromLatin1("%1/icons").arg(QString::fromStdString(App::Application::getUserAppDataDir())));
         _pcSingleton->addPath(QLatin1String(":/icons/"));
         _pcSingleton->addPath(QLatin1String(":/Icons/"));
     }
@@ -115,9 +114,9 @@ BitmapFactoryInst& BitmapFactoryInst::instance(void)
 
 void BitmapFactoryInst::destruct (void)
 {
-    if (_pcSingleton != 0)
+    if (_pcSingleton != nullptr)
     delete _pcSingleton;
-    _pcSingleton = 0;
+    _pcSingleton = nullptr;
 }
 
 BitmapFactoryInst::BitmapFactoryInst()
@@ -556,7 +555,7 @@ void BitmapFactoryInst::convert(const QImage& p, SoSFImage& img) const
     }
 
     // allocate image data
-    img.setValue(size, numcomponents, NULL);
+    img.setValue(size, numcomponents, nullptr);
 
     unsigned char * bytes = img.startEditing(size, numcomponents);
 

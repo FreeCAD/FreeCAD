@@ -115,7 +115,7 @@ void TaskLineDecor::getDefaults(void)
     //set defaults to format of 1st edge
     if (!m_edges.empty()) {
         int num = DrawUtil::getIndexFromName(m_edges.front());
-        BaseGeom* bg = m_partFeat->getGeomByIndex(num);
+        BaseGeomPtr bg = m_partFeat->getGeomByIndex(num);
         if (bg != nullptr) {
             if (bg->cosmetic) {
                 if (bg->source() == 1) {
@@ -187,7 +187,7 @@ void TaskLineDecor::applyDecorations(void)
 //    Base::Console().Message("TLD::applyDecorations()\n");
     for (auto& e: m_edges) {
         int num = DrawUtil::getIndexFromName(e);
-        BaseGeom* bg = m_partFeat->getGeomByIndex(num);
+        BaseGeomPtr bg = m_partFeat->getGeomByIndex(num);
         if (bg != nullptr) {
             if (bg->cosmetic) {
                 if (bg->source() == 1) {
@@ -230,7 +230,8 @@ bool TaskLineDecor::accept()
 {
 //    Base::Console().Message("TLD::accept()\n");
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_partFeat->getDocument());
-    if (!doc) return false;
+    if (!doc)
+        return false;
 
     if (apply()) {
         applyDecorations();
@@ -248,7 +249,8 @@ bool TaskLineDecor::reject()
 {
 //    Base::Console().Message("TLD::reject()\n");
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_partFeat->getDocument());
-    if (!doc) return false;
+    if (!doc)
+        return false;
 
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
     return false;
@@ -436,7 +438,7 @@ TaskDlgLineDecor::TaskDlgLineDecor(TechDraw::DrawViewPart* partFeat,
 {
     widget  = new TaskLineDecor(partFeat, edgeNames);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-DecorateLine"),
-                                         widget->windowTitle(), true, 0);
+                                         widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
     if (edgeNames.empty()) {
@@ -447,7 +449,7 @@ TaskDlgLineDecor::TaskDlgLineDecor(TechDraw::DrawViewPart* partFeat,
     if (parent != nullptr) {
         restore = new TaskRestoreLines(partFeat, parent);
         restoreBox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/techdraw-DecorateLine"),
-                                             tr("Restore Invisible Lines"), true, 0);
+                                             tr("Restore Invisible Lines"), true, nullptr);
         restoreBox->groupLayout()->addWidget(restore);
         Content.push_back(restoreBox);
     }

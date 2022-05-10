@@ -24,30 +24,28 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <cfloat>
+
 # include <Standard_math.hxx>
-# include <Python.h>
+
+# include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoDepthBuffer.h>
 # include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoLineSet.h>
+# include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoVertexProperty.h>
-# include <Inventor/nodes/SoAnnotation.h>
-# include <cfloat>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
+#include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Base/Reader.h>
-#include <Base/ViewProj.h>
-#include <App/Application.h>
 #include <Gui/SoFCBoundingBox.h>
 
 #include "ViewProvider2DObject.h"
-#include <Mod/Part/App/PartFeature.h>
 
 
 using namespace PartGui;
@@ -57,7 +55,7 @@ using namespace std;
 //**************************************************************************
 // Construction/Destruction
 
-const char* ViewProvider2DObjectGrid::GridStyleEnums[]= {"Dashed","Light",NULL};
+const char* ViewProvider2DObjectGrid::GridStyleEnums[]= {"Dashed","Light",nullptr};
 App::PropertyQuantityConstraint::Constraints ViewProvider2DObjectGrid::GridSizeRange = {0.001,DBL_MAX,1.0};
 
 PROPERTY_SOURCE(PartGui::ViewProvider2DObjectGrid, PartGui::ViewProvider2DObject)
@@ -248,7 +246,8 @@ void ViewProvider2DObjectGrid::updateData(const App::Property* prop)
     if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
         if (GridAutoSize.getValue()) {
             Base::BoundBox3d bbox = static_cast<const Part::PropertyPartShape*>(prop)->getBoundingBox();
-            if (!bbox.IsValid()) return;
+            if (!bbox.IsValid())
+                return;
             Gui::coinRemoveAllChildren(GridRoot);
             Base::Placement place = static_cast<const Part::PropertyPartShape*>(prop)->getComplexData()->getPlacement();
             place.invert();
@@ -274,7 +273,7 @@ void ViewProvider2DObjectGrid::onChanged(const App::Property* prop)
     ViewProviderPart::onChanged(prop);
 
     if (prop == &ShowGrid || prop == &ShowOnlyInEditMode || prop == &Visibility) {
-        if (ShowGrid.getValue() && Visibility.getValue() && !(ShowOnlyInEditMode.getValue() && !this->isEditing()))
+        if (ShowGrid.getValue() && ((Visibility.getValue() && !ShowOnlyInEditMode.getValue()) || this->isEditing()))
             createGrid();
         else
             Gui::coinRemoveAllChildren(GridRoot);
@@ -304,6 +303,9 @@ void ViewProvider2DObjectGrid::handleChangedPropertyType(Base::XMLReader &reader
         App::PropertyFloat floatProp;
         floatProp.Restore(reader);
         static_cast<App::PropertyFloat*>(prop)->setValue(floatProp.getValue());
+    }
+    else {
+        ViewProviderPart::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 

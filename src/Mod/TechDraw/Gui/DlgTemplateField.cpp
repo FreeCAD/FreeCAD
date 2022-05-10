@@ -24,20 +24,21 @@
 #include "PreCompiled.h"
 #include <Base/Console.h>
 #include "DlgTemplateField.h"
+#include <Mod/TechDraw/Gui/ui_DlgTemplateField.h>
 
 using namespace TechDrawGui;
 
 DlgTemplateField::DlgTemplateField( QWidget *parent /* = nullptr */ ) :
-    QDialog(parent)
+    QDialog(parent), ui(new Ui_dlgTemplateField)
 {
-    setupUi(this);
-    leInput->setFocus();
+    ui->setupUi(this);
+    ui->leInput->setFocus();
 }
 
 void DlgTemplateField::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        retranslateUi(this);
+        ui->retranslateUi(this);
     }
     else {
         QWidget::changeEvent(e);
@@ -47,18 +48,18 @@ void DlgTemplateField::changeEvent(QEvent *e)
 void DlgTemplateField::setFieldName(std::string name)
 {
     QString qs = QString::fromUtf8(name.data(), name.size());
-    lblName->setText(qs);
+    ui->lblName->setText(qs);
 }
 
 void DlgTemplateField::setFieldContent(std::string content)
 {
     QString qs = QString::fromUtf8(content.data(), content.size());
-    leInput->setText(qs);
+    ui->leInput->setText(qs);
 }
 
 QString DlgTemplateField::getFieldContent()
 {
-    QString result = leInput->text();
+    QString result = ui->leInput->text();
     return result;
 }
 

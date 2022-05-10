@@ -37,6 +37,7 @@
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/ViewProvider.h>
 
 #include <Base/Console.h>
@@ -70,7 +71,7 @@ public:
         const App::DocumentObject* object;
     public:
         FaceSelection(const App::DocumentObject* obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
+            : Gui::SelectionFilterGate(nullPointer()), object(obj)
         {
         }
         bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName)
@@ -289,7 +290,7 @@ TaskThickness::TaskThickness(Part::Thickness* offset)
     widget->setWindowTitle(ThicknessWidget::tr("Thickness"));
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Part_Thickness"),
-        widget->windowTitle(), true, 0);
+        widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

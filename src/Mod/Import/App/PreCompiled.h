@@ -26,17 +26,6 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define ImportExport  __declspec(dllexport)
-# define PartExport    __declspec(dllimport)
-# define AppPartExport __declspec(dllimport)
-#else // for Linux
-# define ImportExport
-# define PartExport
-# define AppPartExport
-#endif
-
 
 /// here get the warnings of to long specifieres disabled (needet for VC6)
 #ifdef _MSC_VER
@@ -49,22 +38,16 @@
 
 #ifdef _PreComp_
 
-// Python
-#include <Python.h>
-
 // standard
 #include <list>
 #include <iostream>
 #include <sstream>
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 #include <io.h>
 #include <fcntl.h>
 #include <vector>
 #include <map>
-
-// Xerces
-#include <xercesc/util/XercesDefs.hpp>
 
 // OpenCasCade =====================================================================================
 // Base

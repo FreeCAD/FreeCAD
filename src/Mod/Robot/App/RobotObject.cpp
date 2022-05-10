@@ -42,8 +42,8 @@ PROPERTY_SOURCE(Robot::RobotObject, App::GeoFeature)
 RobotObject::RobotObject()
 :block(false)
 {
-    ADD_PROPERTY_TYPE(RobotVrmlFile     ,(0),"Robot definition"    ,Prop_None,"Included file with the VRML representation of the robot");
-    ADD_PROPERTY_TYPE(RobotKinematicFile,(0),"Robot definition",Prop_None,"Included file with kinematic definition of the robot Axis");
+    ADD_PROPERTY_TYPE(RobotVrmlFile     ,(nullptr),"Robot definition"    ,Prop_None,"Included file with the VRML representation of the robot");
+    ADD_PROPERTY_TYPE(RobotKinematicFile,(nullptr),"Robot definition",Prop_None,"Included file with kinematic definition of the robot Axis");
 
     ADD_PROPERTY_TYPE(Axis1,(0.0),"Robot kinematic",Prop_None,"Axis 1 angle of the robot in degre");
     ADD_PROPERTY_TYPE(Axis2,(0.0),"Robot kinematic",Prop_None,"Axis 2 angle of the robot in degre");
@@ -56,7 +56,7 @@ RobotObject::RobotObject()
     ADD_PROPERTY_TYPE(Tcp,(Base::Placement()),"Robot kinematic",Prop_None,"Tcp of the robot");
     ADD_PROPERTY_TYPE(Base,(Base::Placement()),"Robot kinematic",Prop_None,"Actual base frame of the robot");
     ADD_PROPERTY_TYPE(Tool,(Base::Placement()),"Robot kinematic",Prop_None,"Tool frame of the robot (Tool)");
-    ADD_PROPERTY_TYPE(ToolShape,(0),"Robot definition",Prop_None,"Link to the Shape is used as Tool");
+    ADD_PROPERTY_TYPE(ToolShape,(nullptr),"Robot definition",Prop_None,"Link to the Shape is used as Tool");
     ADD_PROPERTY_TYPE(ToolBase ,(Base::Placement()),"Robot definition",Prop_None,"Defines where to connect the ToolShape");
     //ADD_PROPERTY_TYPE(Position,(Base::Placement()),"Robot definition",Prop_None,"Position of the robot in the simulation");
     ADD_PROPERTY_TYPE(Home ,(0),"Robot kinematic",Prop_None,"Axis position for home");

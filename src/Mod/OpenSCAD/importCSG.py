@@ -1,7 +1,6 @@
 # -*- coding: utf8 -*-
 
 #***************************************************************************
-#*                                                                         *
 #*   Copyright (c) 2012 Keith Sloan <keith@sloan-home.co.uk>               *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -19,21 +18,23 @@
 #*   License along with this program; if not, write to the Free Software   *
 #*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
 #*   USA                                                                   *
-#*                                                                         * 
-#*   Acknowledgements :                                                    *
+#*                                                                         *
+#*   Acknowledgements:                                                     *
 #*                                                                         *
 #*     Thanks to shoogen on the FreeCAD forum and Peter Li                 *
 #*     for programming advice and some code.                               *
 #*                                                                         *
 #*                                                                         *
 #***************************************************************************
-__title__="FreeCAD OpenSCAD Workbench - CSG importer"
+__title__ = "FreeCAD OpenSCAD Workbench - CSG importer"
 __author__ = "Keith Sloan <keith@sloan-home.co.uk>"
 __url__ = ["http://www.sloan-home.co.uk/ImportCSG"]
 
 printverbose = False
 
-import FreeCAD, io, os
+import FreeCAD
+import io
+import os
 
 import ply.lex as lex
 import ply.yacc as yacc
@@ -43,7 +44,7 @@ from OpenSCADFeatures import *
 from OpenSCADUtils import *
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
-printverbose = params.GetBool('printVerbose',False)
+printverbose = params.GetBool('printVerbose', False)
 
 if FreeCAD.GuiUp:
     gui = True
@@ -51,12 +52,14 @@ else:
     if printverbose: print("FreeCAD Gui not present.")
     gui = False
 
-hassetcolor=[]
-alreadyhidden=[]
+hassetcolor = []
+alreadyhidden = []
+original_root_objects = []
 
-# Get the token map from the lexer.  This is required.
+# Get the token map from the lexer. This is required.
 import tokrules
 from tokrules import tokens
+
 
 def shallHide(subject):
     for obj in subject.OutListRecursive:
@@ -66,29 +69,36 @@ def shallHide(subject):
             return True
     return False
 
-def setColorRecursively(obj,color,transp):
-    if(obj.TypeId=="Part::Fuse" or obj.TypeId=="Part::MultiFuse"):
-                for currentObject in obj.OutList:
-                    if (currentObject.TypeId=="Part::Fuse" or currentObject.TypeId=="Part::MultiFuse"):
-                        setColorRecursively(currentObject,color,transp)
-                    else:
-                        print("Fixing up colors for: "+str(currentObject.FullName))
-                    if(currentObject not in hassetcolor):
-                        currentObject.ViewObject.ShapeColor=color
-                        currentObject.ViewObject.Transparency=transp
-                        setColorRecursively(currentObject,color,transp)
-                    else:
-                        setColorRecursively(currentObject,color,transp)
+
+def setColorRecursively(obj, color, transp):
+    '''
+    For some reason a part made by cutting or fusing other parts do not have a color
+    unless its constituents are also colored. This code sets colors for those
+    constituents unless already set elsewhere.
+    '''
+    obj.ViewObject.ShapeColor = color
+    obj.ViewObject.Transparency = transp
+    # Add any other relevant features to this list
+    boolean_features = ["Part::Fuse", "Part::MultiFuse", "Part::Cut",
+                        "Part::Common", "Part::MultiCommon"]
+    if obj.TypeId in boolean_features:
+        for currentObject in obj.OutList:
+            if printverbose: print(f"Fixing up colors for: {currentObject.FullName}")
+            if currentObject not in hassetcolor:
+                setColorRecursively(currentObject, color, transp)
+
 
 def fixVisibility():
-    for obj in FreeCAD.ActiveDocument.Objects:
-         if(( obj.TypeId=="Part::Fuse" or obj.TypeId=="Part::MultiFuse") and shallHide(obj)):
-            if "Group" in obj.FullName:
-                alreadyhidden.append(obj)
-                obj.ViewObject.Visibility=False
-                for currentObject in obj.OutList:
-                    if(currentObject not in alreadyhidden):
-                        currentObject.ViewObject.Visibility=True
+    # After an import, only the remaining root objects that we created should be visible, not any
+    # of their individual component objects. But make sure to only handle the ones we just imported,
+    # not anything that already existed. And objects that exist at the toplevel without any
+    # children are ignored.
+    for root_object in FreeCAD.ActiveDocument.RootObjects:
+        if root_object not in original_root_objects:
+            root_object.ViewObject.Visibility = True
+            for obj in root_object.OutListRecursive:
+                obj.ViewObject.Visibility = False
+
 
 if gui:
     try:
@@ -103,6 +113,7 @@ if gui:
             from PySide import QtGui
             return QtGui.QApplication.translate(context, text, None)
 
+
 def open(filename):
     "called when freecad opens a file."
     global doc
@@ -110,10 +121,10 @@ def open(filename):
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
     if filename.lower().endswith('.scad'):
-        tmpfile=callopenscad(filename)
+        tmpfile = callopenscad(filename)
         if workaroundforissue128needed():
-            pathName = '' #https://github.com/openscad/openscad/issues/128
-            #pathName = os.getcwd() #https://github.com/openscad/openscad/issues/128
+            pathName = ''  # https://github.com/openscad/openscad/issues/128
+            #pathName = os.getcwd() # https://github.com/openscad/openscad/issues/128
         else:
             pathName = os.path.dirname(os.path.normpath(filename))
         processcsg(tmpfile)
@@ -126,21 +137,24 @@ def open(filename):
         processcsg(filename)
     return doc
 
-def insert(filename,docname):
+
+def insert(filename, docname):
     "called when freecad imports a file"
     global doc
     global pathName
     groupname_unused = os.path.splitext(os.path.basename(filename))[0]
     try:
-        doc=FreeCAD.getDocument(docname)
+        doc = FreeCAD.getDocument(docname)
+        for obj in doc.RootObjects:
+            original_root_objects.append(obj)
     except NameError:
-        doc=FreeCAD.newDocument(docname)
+        doc = FreeCAD.newDocument(docname)
     #importgroup = doc.addObject("App::DocumentObjectGroup",groupname)
     if filename.lower().endswith('.scad'):
-        tmpfile=callopenscad(filename)
+        tmpfile = callopenscad(filename)
         if workaroundforissue128needed():
-            pathName = '' #https://github.com/openscad/openscad/issues/128
-            #pathName = os.getcwd() #https://github.com/openscad/openscad/issues/128
+            pathName = ''  # https://github.com/openscad/openscad/issues/128
+            #pathName = os.getcwd() # https://github.com/openscad/openscad/issues/128
         else:
             pathName = os.path.dirname(os.path.normpath(filename))
         processcsg(tmpfile)
@@ -155,16 +169,17 @@ def insert(filename,docname):
 def processcsg(filename):
     global doc
 
-    if printverbose: print ('ImportCSG Version 0.6a')
+    if printverbose: print('ImportCSG Version 0.6a')
     # Build the lexer
     if printverbose: print('Start Lex')
     lex.lex(module=tokrules)
     if printverbose: print('End Lex')
 
-    # Build the parser   
+    # Build the parser
     if printverbose: print('Load Parser')
-    # No debug out otherwise Linux has protection exception
-    parser = yacc.yacc(debug=False)
+    # Disable generation of debug ('parser.out') and table cache ('parsetab.py'),
+    # as it requires a writable location
+    parser = yacc.yacc(debug=False, write_tables=False)
     if printverbose: print('Parser Loaded')
     # Give the lexer some input
     #f=open('test.scad', 'r')
@@ -179,11 +194,13 @@ def processcsg(filename):
     if printverbose:
         print('End Parser')
         print(result)
-    fixVisibility()
+    if gui:
+        fixVisibility()
     hassetcolor.clear()
     alreadyhidden.clear()
     FreeCAD.Console.PrintMessage('End processing CSG file\n')
     doc.recompute()
+
 
 def p_block_list_(p):
     '''
@@ -194,34 +211,40 @@ def p_block_list_(p):
     '''
     #if printverbose: print("Block List")
     #if printverbose: print(p[1])
-    if(len(p) > 2) :
+    if(len(p) > 2):
         if printverbose: print(p[2])
         p[0] = p[1] + p[2]
-    else :
+    else:
         p[0] = p[1]
     #if printverbose: print("End Block List")
+
 
 def p_render_action(p):
     'render_action : render LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
     if printverbose: print("Render (ignored)")
     p[0] = p[6]
 
+
 def p_group_action1(p):
     'group_action1 : group LPAREN RPAREN OBRACE block_list EBRACE'
     if printverbose: print("Group")
 # Test if need for implicit fuse
-    if (len(p[5]) > 1) :
-        p[0] = [fuse(p[5],"Group")]
-    else :
+    if p[5] is None:
+        p[0] = []
+        return
+    if (len(p[5]) > 1):
+        p[0] = [fuse(p[5], "Group")]
+    else:
         p[0] = p[5]
 
 
-def p_group_action2(p) :
+def p_group_action2(p):
     'group_action2 : group LPAREN RPAREN SEMICOL'
     if printverbose: print("Group2")
     p[0] = []
-   
-def p_boolean(p) :
+
+
+def p_boolean(p):
     '''
     boolean : true
             | false
@@ -232,9 +255,11 @@ def p_boolean(p) :
 #    'string : QUOTE ID QUOTE'
 #    p[0] = p[2]
 
+
 def p_stripped_string(p):
     'stripped_string : STRING'
     p[0] = p[1].strip('"')
+
 
 def p_statement(p):
     '''statement : part
@@ -248,25 +273,28 @@ def p_statement(p):
     '''
     p[0] = p[1]
 
+
 def p_anymodifier(p):
     '''anymodifier : MODIFIERBACK
                    | MODIFIERDEBUG
                    | MODIFIERROOT
                    | MODIFIERDISABLE
     '''
-    #just return the plain modifier for now
-    #has to be changed when the modifiers are implemented
-    #please note that disabled objects usually are stripped of the CSG output during compilation
+    # just return the plain modifier for now
+    # has to be changed when the modifiers are implemented
+    # please note that disabled objects usually are stripped of the CSG output during compilation
     p[0] = p[1]
+
 
 def p_statementwithmod(p):
     '''statementwithmod : anymodifier statement'''
-    #ignore the modifiers but add them to the label
+    # ignore the modifiers but add them to the label
     modifier = p[1]
     obj = p[2]
-    if hasattr(obj,'Label'):
+    if hasattr(obj, 'Label'):
         obj.Label = modifier + obj.Label
     p[0] = obj
+
 
 def p_part(p):
     '''
@@ -282,11 +310,13 @@ def p_part(p):
          '''
     p[0] = p[1]
 
+
 def p_2d_point(p):
     '2d_point : OSQUARE NUMBER COMMA NUMBER ESQUARE'
     global points_list
     if printverbose: print("2d Point")
-    p[0] = [float(p[2]),float(p[4])]
+    p[0] = [float(p[2]), float(p[4])]
+
 
 def p_points_list_2d(p):
     '''
@@ -294,12 +324,12 @@ def p_points_list_2d(p):
                    | points_list_2d 2d_point COMMA
                    | points_list_2d 2d_point
                    '''
-    if p[2] == ',' :
+    if p[2] == ',':
         #if printverbose:
         #    print("Start List")
         #    print(p[1])
         p[0] = [p[1]]
-    else :
+    else:
         if printverbose:
             print(p[1])
             print(p[2])
@@ -307,23 +337,25 @@ def p_points_list_2d(p):
         p[0] = p[1]
     #if printverbose: print(p[0])
 
+
 def p_3d_point(p):
     '3d_point : OSQUARE NUMBER COMMA NUMBER COMMA NUMBER ESQUARE'
     global points_list
     if printverbose: print("3d point")
-    p[0] = [p[2],p[4],p[6]]
-   
+    p[0] = [p[2], p[4], p[6]]
+
+
 def p_points_list_3d(p):
     '''
     points_list_3d : 3d_point COMMA
                | points_list_3d 3d_point COMMA
                | points_list_3d 3d_point
                '''
-    if p[2] == ',' :
+    if p[2] == ',':
         if printverbose: print("Start List")
         if printverbose: print(p[1])
         p[0] = [p[1]]
-    else :
+    else:
         if printverbose: print(p[1])
         if printverbose: print(p[2])
         p[1].append(p[2])
@@ -337,11 +369,11 @@ def p_path_points(p):
                 | path_points NUMBER
                 '''
     #if printverbose: print("Path point")
-    if p[2] == ',' :
+    if p[2] == ',':
         #if printverbose: print('Start list')
         #if printverbose: print(p[1])
         p[0] = [int(p[1])]
-    else :
+    else:
         #if printverbose: print(p[1])
         #if printverbose: print(len(p[1]))
         #if printverbose: print(p[2])
@@ -356,16 +388,17 @@ def p_path_list(p):
     #if printverbose: print(p[2])
     p[0] = p[2]
 
-def p_path_set(p) :
+
+def p_path_set(p):
     '''
     path_set : path_list
              | path_set COMMA path_list
              '''
     #if printverbose: print('Path Set')
     #if printverbose: print(len(p))
-    if len(p) == 2 :
+    if len(p) == 2:
         p[0] = [p[1]]
-    else :
+    else:
         p[1].append(p[3])
         p[0] = p[1]
     #if printverbose: print(p[0])
@@ -388,10 +421,10 @@ def p_operation(p):
               '''
     p[0] = p[1]
 
-def placeholder(name,children,arguments):
+def placeholder(name, children, arguments):
     from OpenSCADFeatures import OpenSCADPlaceholder
     newobj=doc.addObject("Part::FeaturePython",name)
-    OpenSCADPlaceholder(newobj,children,str(arguments))
+    OpenSCADPlaceholder(newobj, children, str(arguments))
     if gui:
         if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
             GetBool('useViewProviderTree'):
@@ -402,9 +435,9 @@ def placeholder(name,children,arguments):
     #don't hide the children
     return newobj
 
-def CGALFeatureObj(name,children,arguments=[]):
-    myobj=doc.addObject("Part::FeaturePython",name)
-    CGALFeature(myobj,name,children,str(arguments))
+def CGALFeatureObj(name, children,arguments=[]):
+    myobj=doc.addObject("Part::FeaturePython", name)
+    CGALFeature(myobj, name, children, str(arguments))
     if gui:
         for subobj in children:
             subobj.ViewObject.hide()
@@ -422,27 +455,27 @@ def p_offset_action(p):
     if len(p[6]) == 0:
         newobj = placeholder('group',[],'{}')
     elif (len(p[6]) == 1 ): #single object
-        subobj = p[6]
+        subobj = p[6][0]
     else:
         subobj = fuse(p[6],"Offset Union")
-    if 'r' in p[3] :
+    if 'r' in p[3]:
         offset = float(p[3]['r'])
-    if 'delta' in p[3] : 
+    if 'delta' in p[3]:
         offset = float(p[3]['delta'])
-    if subobj[0].Shape.Volume == 0 :
+    if subobj.Shape.Volume == 0 :
        newobj=doc.addObject("Part::Offset2D",'Offset2D')
-       newobj.Source = subobj[0] 
+       newobj.Source = subobj
        newobj.Value = offset
-       if 'r' in p[3] :
-           newobj.Join = 0 
-       else :
-           newobj.Join = 2 
-    else :
+       if 'r' in p[3]:
+           newobj.Join = 0
+       else:
+           newobj.Join = 2
+    else:
        newobj=doc.addObject("Part::Offset",'offset')
        newobj.Shape = subobj[0].Shape.makeOffset(offset)
     newobj.Document.recompute()
     if gui:
-        subobj[0].ViewObject.hide()
+        subobj.ViewObject.hide()
 #        if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
 #            GetBool('useViewProviderTree'):
 #            from OpenSCADFeatures import ViewProviderTree
@@ -450,6 +483,12 @@ def p_offset_action(p):
 #        else:
 #            newobj.ViewObject.Proxy = 0
     p[0] = [newobj]
+
+def checkObjShape(obj) :
+    if printverbose: print('Check Object Shape')
+    if obj.Shape.isNull() == True :
+       if printverbose: print('Shape is Null - recompute')
+       obj.recompute()
 
 def p_hull_action(p):
     'hull_action : hull LPAREN RPAREN OBRACE block_list EBRACE'
@@ -463,29 +502,25 @@ def p_minkowski_action(p):
 def p_resize_action(p):
     '''
     resize_action : resize LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE '''
-    print(p[3])
     new_size = p[3]['newsize']
-    auto    = p[3]['auto'] 
-    print(new_size)
-    print(auto)
+    auto     = p[3]['auto']
     p[6][0].recompute()
     if p[6][0].Shape.isNull():
         doc.recompute()
+    p[6][0].Shape.tessellate(0.05)
     old_bbox = p[6][0].Shape.BoundBox
-    print ("Old bounding box: " + str(old_bbox))
     old_size = [old_bbox.XLength, old_bbox.YLength, old_bbox.ZLength]
-    for r in range(0,3) :
-        if auto[r] == '1' :
+    for r in range(0,3):
+        if auto[r] == '1':
            new_size[r] = new_size[0]
-        if new_size[r] == '0' :
+        if new_size[r] == '0':
            new_size[r] = str(old_size[r])
-    print(new_size)
 
     # Calculate a transform matrix from the current bounding box to the new one:
     transform_matrix = FreeCAD.Matrix()
 
-    scale = FreeCAD.Vector(float(new_size[0])/old_size[0], 
-                           float(new_size[1])/old_size[1], 
+    scale = FreeCAD.Vector(float(new_size[0])/old_size[0],
+                           float(new_size[1])/old_size[1],
                            float(new_size[2])/old_size[2])
 
     transform_matrix.scale(scale)
@@ -501,7 +536,7 @@ def p_resize_action(p):
             new_part.ViewObject.Proxy = 0
         p[6][0].ViewObject.hide()
     p[0] = [new_part]
-     
+
 
 def p_not_supported(p):
     '''
@@ -555,22 +590,7 @@ def p_color_action(p):
                 if "Group" in obj.FullName:
                     obj.ViewObject.Visibility=False
                     alreadyhidden.append(obj)
-                if(obj.TypeId=="Part::Fuse" or obj.TypeId=="Part::MultiFuse"):
-                    for currentObject in obj.OutList:
-                        if (currentObject.TypeId=="Part::Fuse" or   currentObject.TypeId=="Part::MultiFuse"):
-                            setColorRecursively(currentObject,color,transp)
-                        if(currentObject not in hassetcolor):
-                            currentObject.ViewObject.ShapeColor=color
-                            currentObject.ViewObject.Transparency=transp
-                            setColorRecursively(currentObject,color,transp)
-                        else:
-                            setColorRecursively(currentObject,color,transp)
-                else:
-                    obj.ViewObject.ShapeColor =color
-                    obj.ViewObject.Transparency = transp
-            else:
-                obj.ViewObject.ShapeColor =color
-                obj.ViewObject.Transparency = transp
+            setColorRecursively(obj, color, transp)
             hassetcolor.append(obj)
     p[0] = p[6]
 
@@ -600,6 +620,9 @@ def fuse(lst,name):
        myfuse = doc.addObject('Part::Fuse',name)
        myfuse.Base = lst[0]
        myfuse.Tool = lst[1]
+       checkObjShape(myfuse.Base)
+       checkObjShape(myfuse.Tool)
+       myfuse.Shape = myfuse.Base.Shape.fuse(myfuse.Tool.Shape)
        if gui:
            myfuse.Base.ViewObject.hide()
            myfuse.Tool.ViewObject.hide()
@@ -612,8 +635,8 @@ def p_union_action(p):
     if printverbose: print("Push Union Result")
     p[0] = [newpart]
     if printverbose: print("End Union")
-    
-def p_difference_action(p):  
+
+def p_difference_action(p):
     'difference_action : difference LPAREN RPAREN OBRACE block_list EBRACE'
 
     if printverbose: print("difference")
@@ -624,7 +647,7 @@ def p_difference_action(p):
     elif (len(p[5]) == 1 ): #single object
         p[0] = p[5]
     else:
-# Cut using Fuse    
+# Cut using Fuse
         mycut = doc.addObject('Part::Cut',p[1])
         mycut.Base = p[5][0]
 #       Can only Cut two objects do we need to fuse extras
@@ -633,6 +656,7 @@ def p_difference_action(p):
            mycut.Tool = fuse(p[5][1:],'union')
         else :
            mycut.Tool = p[5][1]
+           checkObjShape(mycut.Tool)
         if gui:
             mycut.Base.ViewObject.hide()
             mycut.Tool.ViewObject.hide()
@@ -657,6 +681,8 @@ def p_intersection_action(p):
        mycommon = doc.addObject('Part::Common',p[1])
        mycommon.Base = p[5][0]
        mycommon.Tool = p[5][1]
+       checkObjShape(mycommon.Base)
+       checkObjShape(mycommon.Tool)
        if gui:
            mycommon.Base.ViewObject.hide()
            mycommon.Tool.ViewObject.hide()
@@ -664,6 +690,7 @@ def p_intersection_action(p):
         mycommon = p[5][0]
     else : # 1 child
         mycommon = placeholder('group',[],'{}')
+    mycommon.Shape = mycommon.Base.Shape.common(mycommon.Tool.Shape)
     p[0] = [mycommon]
     if printverbose: print("End Intersection")
 
@@ -702,9 +729,9 @@ def process_rotate_extrude_prism(obj, angle, n):
         obj.ViewObject.hide()
     return(newobj)
 
-def p_rotate_extrude_action(p): 
+def p_rotate_extrude_action(p):
     'rotate_extrude_action : rotate_extrude LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
-    if printverbose: print("Rotate Extrude") 
+    if printverbose: print("Rotate Extrude")
     angle = 360.0
     if 'angle' in p[3]:
         angle = float(p[3]['angle'])
@@ -765,7 +792,7 @@ def process_linear_extrude(obj,h) :
         newobj.ViewObject.hide()
     return(mylinear)
 
-def process_linear_extrude_with_transform(base,height,twist,scale) :   
+def process_linear_extrude_with_transform(base,height,twist,scale) :
     newobj=doc.addObject("Part::FeaturePython",'transform_extrude')
     Twist(newobj,base,height,-twist,scale) #base is an FreeCAD Object, height and twist are floats, scale is a two-component vector of floats
     if gui:
@@ -783,14 +810,15 @@ def p_linear_extrude_with_transform(p):
     'linear_extrude_with_transform : linear_extrude LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
     if printverbose: print("Linear Extrude With Transform")
     h = float(p[3]['height'])
-    s = 1.0
+    if printverbose: print("Height : ",h)
+    s = [1.0,1.0]
     t = 0.0
-    if printverbose: print("Twist : ",p[3])
     if 'scale' in p[3]:
         s = [float(p[3]['scale'][0]), float(p[3]['scale'][1])]
-        print ("Scale: " + str(s))
+        if printverbose: print ("Scale: " + str(s))
     if 'twist' in p[3]:
         t = float(p[3]['twist'])
+        if printverbose: print("Twist : ",t)
     # Test if null object like from null text
     if (len(p[6]) == 0) :
         p[0] = []
@@ -799,7 +827,8 @@ def p_linear_extrude_with_transform(p):
         obj = fuse(p[6],"Linear Extrude Union")
     else :
         obj = p[6][0]
-    if t != 0.0 or s != 1.0:
+    checkObjShape(obj)
+    if t != 0.0 or s[0] != 1.0 or s[1] != 1.0:
         newobj = process_linear_extrude_with_transform(obj,h,t,s)
     else:
         newobj = process_linear_extrude(obj,h)
@@ -873,7 +902,7 @@ def process_mesh_file(fname,ext):
 def processTextCmd(t):
     from OpenSCADUtils import callopenscadstring
     tmpfilename = callopenscadstring(t,'dxf')
-    from OpenSCAD2Dgeom import importDXFface 
+    from OpenSCAD2Dgeom import importDXFface
     face = importDXFface(tmpfilename,None,None)
     obj=doc.addObject('Part::Feature','text')
     obj.Shape=face
@@ -914,7 +943,7 @@ def p_multmatrix_action(p):
     transform_matrix = FreeCAD.Matrix()
     if printverbose: print("Multmatrix")
     if printverbose: print(p[3])
-    if gui:
+    if gui and p[6]:
         parentcolor=p[6][0].ViewObject.ShapeColor
         parenttransparency=p[6][0].ViewObject.Transparency
 
@@ -984,24 +1013,24 @@ def p_multmatrix_action(p):
         if part.Shape.isNull():
             doc.recompute()
         new_part = doc.addObject("Part::Feature","Matrix Deformation")
-        new_part.Shape = part.Shape.transformGeometry(transform_matrix) 
+        new_part.Shape = part.Shape.transformGeometry(transform_matrix)
         if gui:
             part.ViewObject.hide()
-    if False :  
-#   Does not fix problemfile or beltTighener although later is closer       
+    if False :
+#   Does not fix problemfile or beltTighener although later is closer
         newobj=doc.addObject("Part::FeaturePython",'RefineMultMatrix')
         RefineShape(newobj,new_part)
         if gui:
             newobj.ViewObject.Proxy = 0
-            new_part.ViewObject.hide()   
+            new_part.ViewObject.hide()
         p[0] = [newobj]
     else :
         p[0] = [new_part]
-    if gui:
+    if gui and p[6]:
         new_part.ViewObject.ShapeColor=parentcolor
         new_part.ViewObject.Transparency = parenttransparency
     if printverbose: print("Multmatrix applied")
-    
+
 def p_matrix(p):
     'matrix : OSQUARE vector COMMA vector COMMA vector COMMA vector ESQUARE'
     if printverbose: print("Matrix")
@@ -1016,7 +1045,7 @@ def center(obj,x,y,z):
     obj.Placement = FreeCAD.Placement(\
         FreeCAD.Vector(-x/2.0,-y/2.0,-z/2.0),\
         FreeCAD.Rotation(0,0,0,1))
-    
+
 def p_sphere_action(p):
     'sphere_action : sphere LPAREN keywordargument_list RPAREN SEMICOL'
     if printverbose: print("Sphere : ",p[3])
@@ -1118,8 +1147,8 @@ def p_cylinder_action(p):
     if printverbose: print("Center = ",tocenter)
     if tocenter=='true' :
        center(mycyl,0,0,h)
-    if False :  
-#   Does not fix problemfile or beltTighener although later is closer       
+    if False :
+#   Does not fix problemfile or beltTighener although later is closer
         newobj=doc.addObject("Part::FeaturePython",'RefineCylinder')
         RefineShape(newobj,mycyl)
         if gui:
@@ -1172,7 +1201,8 @@ def p_circle_action(p) :
         Draft._Circle(mycircle)
         mycircle.Radius = r
         mycircle.MakeFace = True
-        #mycircle = Draft.makeCircle(r,face=True) # would call doc.recompute
+        mycircle = Draft.makeCircle(r,face=True) # would call doc.recompute
+        FreeCAD.ActiveDocument.recompute()
         #mycircle = doc.addObject('Part::Circle',p[1]) #would not create a face
         #mycircle.Radius = r
     else :
@@ -1219,7 +1249,10 @@ def p_text_action(p) :
     t = addString(t,'font',p)
     t = addString(t,'direction',p)
     t = addString(t,'language',p)
-    t = addString(t,'script',p)
+    if "script" in p[3]:
+        t = addString(t,'script',p)
+    else:
+        t += ', script="latin"'
     t = addString(t,'halign',p)
     t = addString(t,'valign',p)
     t = addValue(t,'$fn',p)
@@ -1294,7 +1327,7 @@ def p_polyhedron_action(p) :
         print(v)
         print ("Polyhedron "+p[9])
         print (p[12])
-    faces_list = []    
+    faces_list = []
     mypolyhed = doc.addObject('Part::Feature',p[1])
     for i in p[12] :
         if printverbose: print(i)
@@ -1302,11 +1335,7 @@ def p_polyhedron_action(p) :
         pp =[v2(v[k]) for k in i]
         # Add first point to end of list to close polygon
         pp.append(pp[0])
-        print("pp")
-        print(pp)
         w = Part.makePolygon(pp)
-        print("w")
-        print(w)
         try:
            f = Part.Face(w)
         except Exception:
@@ -1326,10 +1355,11 @@ def p_projection_action(p) :
     if printverbose: print('Projection')
 
     doc.recompute()
+    p[6][0].Shape.tessellate(0.05) # Ensure the bounding box calculation is not done with the splines, which can give a bad result
     bbox = p[6][0].Shape.BoundBox
     for shape in p[6]:
+        shape.Shape.tessellate(0.05)
         bbox.add(shape.Shape.BoundBox)
-    print (bbox)
     plane = doc.addObject("Part::Plane","xy_plane_used_for_projection")
     plane.Length = bbox.XLength
     plane.Width = bbox.YLength

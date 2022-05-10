@@ -28,10 +28,13 @@
 #endif
 
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/regex.hpp>
 
-#include <Base/Exception.h>
-#include <Base/Console.h>
 #include "ComplexGeoData.h"
+#include <Base/BoundBox.h>
+#include <Base/Placement.h>
+#include <Base/Rotation.h>
+
 
 using namespace Data;
 
@@ -41,26 +44,28 @@ TYPESYSTEM_SOURCE_ABSTRACT(Data::Segment , Base::BaseClass)
 TYPESYSTEM_SOURCE_ABSTRACT(Data::ComplexGeoData , Base::Persistence)
 
 
-ComplexGeoData::ComplexGeoData(void)
+ComplexGeoData::ComplexGeoData()
     :Tag(0)
 {
 }
 
-ComplexGeoData::~ComplexGeoData(void)
+ComplexGeoData::~ComplexGeoData()
 {
 }
 
 Data::Segment* ComplexGeoData::getSubElementByName(const char* name) const
 {
     int index = 0;
-    std::string element(name);
-    std::string::size_type pos = element.find_first_of("0123456789");
-    if (pos != std::string::npos) {
-        index = std::atoi(element.substr(pos).c_str());
-        element = element.substr(0,pos);
+    std::string element;
+    boost::regex ex("^([^0-9]*)([0-9]*)$");
+    boost::cmatch what;
+
+    if (boost::regex_match(name, what, ex)) {
+        element = what[1].str();
+        index = std::atoi(what[2].str().c_str());
     }
 
-    return getSubElement(element.c_str(),index);
+    return getSubElement(element.c_str(), static_cast<unsigned long>(index));
 }
 
 void ComplexGeoData::applyTransform(const Base::Matrix4D& rclTrf)
@@ -97,7 +102,7 @@ Base::Placement ComplexGeoData::getPlacement() const
                            Base::Rotation(mat));
 }
 
-void ComplexGeoData::getLinesFromSubelement(const Segment*,
+void ComplexGeoData::getLinesFromSubElement(const Segment*,
                                             std::vector<Base::Vector3d> &Points,
                                             std::vector<Line> &lines) const
 {
@@ -105,7 +110,7 @@ void ComplexGeoData::getLinesFromSubelement(const Segment*,
     (void)lines;
 }
 
-void ComplexGeoData::getFacesFromSubelement(const Segment*,
+void ComplexGeoData::getFacesFromSubElement(const Segment*,
                                             std::vector<Base::Vector3d> &Points,
                                             std::vector<Base::Vector3d> &PointNormals,
                                             std::vector<Facet> &faces) const
@@ -166,13 +171,15 @@ const std::string &ComplexGeoData::elementMapPrefix() {
 const char *ComplexGeoData::isMappedElement(const char *name) {
     if(name && boost::starts_with(name,elementMapPrefix()))
         return name+elementMapPrefix().size();
-    return 0;
+    return nullptr;
 }
 
 std::string ComplexGeoData::newElementName(const char *name) {
-    if(!name) return std::string();
+    if(!name)
+        return std::string();
     const char *dot = strrchr(name,'.');
-    if(!dot || dot==name) return name;
+    if(!dot || dot==name)
+        return name;
     const char *c = dot-1;
     for(;c!=name;--c) {
         if(*c == '.') {
@@ -186,9 +193,11 @@ std::string ComplexGeoData::newElementName(const char *name) {
 }
 
 std::string ComplexGeoData::oldElementName(const char *name) {
-    if(!name) return std::string();
+    if(!name)
+        return std::string();
     const char *dot = strrchr(name,'.');
-    if(!dot || dot==name) return name;
+    if(!dot || dot==name)
+        return name;
     const char *c = dot-1;
     for(;c!=name;--c) {
         if(*c == '.') {
@@ -202,7 +211,8 @@ std::string ComplexGeoData::oldElementName(const char *name) {
 }
 
 std::string ComplexGeoData::noElementName(const char *name) {
-    if(!name) return std::string();
+    if(!name)
+        return std::string();
     auto element = findElementName(name);
     if(element)
         return std::string(name,element-name);

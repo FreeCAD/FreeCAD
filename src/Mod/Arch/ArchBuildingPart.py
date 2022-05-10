@@ -32,6 +32,7 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
+    import draftutils.units as units
 else:
     # \cond
     def translate(ctxt,txt):
@@ -348,6 +349,11 @@ class BuildingPart(ArchIFC.IfcProduct):
         if not "SavedInventor" in pl:
             obj.addProperty("App::PropertyFileIncluded","SavedInventor","BuildingPart",QT_TRANSLATE_NOOP("App::Property","This property stores an inventor representation for this object"))
             obj.setEditorMode("SavedInventor",2)
+        if not "OnlySolids" in pl:
+            obj.addProperty("App::PropertyBool","OnlySolids","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, only solids will be collected by this object when referenced from other files"))
+            obj.OnlySolids = True
+        if not "MaterialsTable" in pl:
+            obj.addProperty("App::PropertyMap","MaterialsTable","BuildingPart",QT_TRANSLATE_NOOP("App::Property","A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files"))
 
         self.Type = "BuildingPart"
 
@@ -406,23 +412,32 @@ class BuildingPart(ArchIFC.IfcProduct):
                                 print("angle after rotation:",shape.Placement.Rotation.Angle)
                                 child.Placement = shape.Placement
                             if deltap:
-                                print("moving child")
+                                print("moving child",child.Label)
                                 child.Placement.move(deltap)
 
     def execute(self,obj):
 
         # gather all the child shapes into a compound
-        shapes = self.getShapes(obj)
+        pl = obj.Placement
+        shapes,materialstable = self.getShapes(obj)
         if shapes:
-            f = []
-            for s in shapes:
-                f.extend(s.Faces)
-            #print("faces before compound:",len(f))
             import Part
-            obj.Shape = Part.makeCompound(f)
-            #print("faces after compound:",len(obj.Shape.Faces))
-            #print("recomputing ",obj.Label)
+            if obj.OnlySolids:
+                f = []
+                for s in shapes:
+                    f.extend(s.Solids)
+                #print("faces before compound:",len(f))
+                obj.Shape = Part.makeCompound(f)
+                #print("faces after compound:",len(obj.Shape.Faces))
+                #print("recomputing ",obj.Label)
+            else:
+                obj.Shape = Part.makeCompound(shapes)
+            obj.Placement = pl
         obj.Area = self.getArea(obj)
+        obj.MaterialsTable = materialstable
+        if obj.ViewObject:
+            # update the autogroup box if needed
+            obj.ViewObject.Proxy.onChanged(obj.ViewObject,"AutoGroupBox")
 
     def getArea(self,obj):
 
@@ -431,9 +446,7 @@ class BuildingPart(ArchIFC.IfcProduct):
         area = 0
         if hasattr(obj,"Group"):
             for child in obj.Group:
-                if hasattr(child,"Area") and hasattr(child,"IfcType"):
-                    # only add arch objects that have an Area property
-                    # TODO only spaces? ATM only spaces and windows have an Area property
+                if (Draft.get_type(child) in ["Space","BuildingPart"]) and hasattr(child,"IfcType"):
                     area += child.Area.Value
         return area
 
@@ -442,10 +455,22 @@ class BuildingPart(ArchIFC.IfcProduct):
         "recursively get the shapes of objects inside this BuildingPart"
 
         shapes = []
+        solidindex = 0
+        materialstable = {}
         for child in Draft.get_group_contents(obj):
-            if hasattr(child,'Shape'):
-                shapes.extend(child.Shape.Faces)
-        return shapes
+            if not Draft.get_type(child) in ["Space"]:
+                if hasattr(child,'Shape') and child.Shape:
+                    shapes.append(child.Shape)
+                    for solid in child.Shape.Solids:
+                        matname = "Undefined"
+                        if hasattr(child,"Material") and child.Material:
+                            matname = child.Material.Name
+                        if matname in materialstable:
+                            materialstable[matname] = materialstable[matname]+","+str(solidindex)
+                        else:
+                            materialstable[matname] = str(solidindex)
+                        solidindex += 1
+        return shapes,materialstable
 
     def getSpaces(self,obj):
 
@@ -462,13 +487,20 @@ class BuildingPart(ArchIFC.IfcProduct):
 
         "Touches all descendents where applicable"
 
-        for child in obj.Group:
+        g = []
+        if hasattr(obj,"Group"):
+            g = obj.Group
+        elif (Draft.getType(obj) in ["Wall","Structure"]):
+            g = obj.Additions
+        for child in g:
             if Draft.getType(child) in ["Wall","Structure"]:
                 if not child.Height.Value:
-                    print("Executing ",child.Label)
+                    FreeCAD.Console.PrintLog("Auto-updating Height of "+child.Name+"\n")
+                    self.touchChildren(child)
                     child.Proxy.execute(child)
             elif Draft.getType(child) in ["Group","BuildingPart"]:
                 self.touchChildren(child)
+
 
     def addObject(self,obj,child):
 
@@ -478,6 +510,28 @@ class BuildingPart(ArchIFC.IfcProduct):
             g = obj.Group
             g.append(child)
             obj.Group = g
+
+    def autogroup(self,obj,child):
+
+        "Adds an object to the group of this BuildingPart automatically"
+
+        if obj.ViewObject:
+            if hasattr(obj.ViewObject.Proxy,"autobbox") and obj.ViewObject.Proxy.autobbox:
+                if hasattr(child,"Shape") and child.Shape:
+                    abb = obj.ViewObject.Proxy.autobbox
+                    cbb = child.Shape.BoundBox
+                    if abb.isValid():
+                        if not cbb.isValid():
+                            FreeCAD.ActiveDocument.recompute()
+                        if not cbb.isValid():
+                            cbb = FreeCAD.BoundBox()
+                            for v in child.Shape.Vertexes:
+                                print(v.Point)
+                                cbb.add(v.Point)
+                        if cbb.isValid() and abb.isInside(cbb):
+                            self.addObject(obj,child)
+                            return True
+        return False
 
 
 class ViewProviderBuildingPart:
@@ -554,7 +608,7 @@ class ViewProviderBuildingPart:
             vobj.addProperty("App::PropertyColor","ChildrenLineColor","Children",QT_TRANSLATE_NOOP("App::Property","The line color of child objects"))
             c = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeLineColor",255)
             vobj.ChildrenLineColor = (float((c>>24)&0xFF)/255.0,float((c>>16)&0xFF)/255.0,float((c>>8)&0xFF)/255.0,0.0)
-        if not "ChildrenShapeolor" in pl:
+        if not "ChildrenShapeColor" in pl:
             vobj.addProperty("App::PropertyColor","ChildrenShapeColor","Children",QT_TRANSLATE_NOOP("App::Property","The shape color of child objects"))
             c = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeColor",4294967295)
             vobj.ChildrenLineColor = (float((c>>24)&0xFF)/255.0,float((c>>16)&0xFF)/255.0,float((c>>8)&0xFF)/255.0,0.0)
@@ -569,6 +623,16 @@ class ViewProviderBuildingPart:
             vobj.CutMargin = 1600
         if not "AutoCutView" in pl:
             vobj.addProperty("App::PropertyBool","AutoCutView","Clip",QT_TRANSLATE_NOOP("App::Property","Turn cutting on when activating this level"))
+
+        # autogroup properties
+        if not "AutogroupSize" in pl:
+            vobj.addProperty("App::PropertyIntegerList","AutogroupSize","AutoGroup",QT_TRANSLATE_NOOP("App::Property","The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]"))
+        if not "AutogroupBox" in pl:
+            vobj.addProperty("App::PropertyBool","AutogroupBox","AutoGroup",QT_TRANSLATE_NOOP("App::Property","Turns auto group box on/off"))
+        if not "AutogroupAutosize" in pl:
+            vobj.addProperty("App::PropertyBool","AutogroupAutosize","AutoGroup",QT_TRANSLATE_NOOP("App::Property","Automatically set size from contents"))
+        if not "AutogroupMargin" in pl:
+            vobj.addProperty("App::PropertyLength","AutogroupMargin","AutoGroup",QT_TRANSLATE_NOOP("App::Property","A margin to use when autosize is turned on"))
 
     def onDocumentRestored(self,vobj):
 
@@ -597,8 +661,24 @@ class ViewProviderBuildingPart:
         self.lco = coin.SoCoordinate3()
         self.sep.addChild(self.lco)
         lin = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
-        lin.coordIndex.setValues([0,1,-1,2,3,-1,4,5,-1])
+        if lin:
+            lin.coordIndex.setValues([0,1,-1,2,3,-1,4,5,-1])
         self.sep.addChild(lin)
+        self.bbox = coin.SoSwitch()
+        self.bbox.whichChild = -1
+        bboxsep = coin.SoSeparator()
+        self.bbox.addChild(bboxsep)
+        drawstyle = coin.SoDrawStyle()
+        drawstyle.style = coin.SoDrawStyle.LINES
+        drawstyle.lineWidth = 3
+        drawstyle.linePattern = 0x0f0f  # 0xaa
+        bboxsep.addChild(drawstyle)
+        self.bbco = coin.SoCoordinate3()
+        bboxsep.addChild(self.bbco)
+        lin = coin.SoIndexedLineSet()
+        lin.coordIndex.setValues([0,1,2,3,0,-1,4,5,6,7,4,-1,0,4,-1,1,5,-1,2,6,-1,3,7,-1])
+        bboxsep.addChild(lin)
+        self.sep.addChild(self.bbox)
         self.tra = coin.SoTransform()
         self.tra.rotation.setValue(FreeCAD.Rotation(0,0,90).Q)
         self.sep.addChild(self.tra)
@@ -613,6 +693,8 @@ class ViewProviderBuildingPart:
         self.onChanged(vobj,"FontName")
         self.onChanged(vobj,"ShowLevel")
         self.onChanged(vobj,"FontSize")
+        self.onChanged(vobj,"AutogroupBox")
+        self.setProperties(vobj)
         return
 
     def getDisplayModes(self,vobj):
@@ -652,13 +734,14 @@ class ViewProviderBuildingPart:
 
         colors = []
         for child in Draft.get_group_contents(obj):
-            if hasattr(child,'Shape') and (hasattr(child.ViewObject,"DiffuseColor") or hasattr(child.ViewObject,"ShapeColor")):
-                if hasattr(child.ViewObject,"DiffuseColor") and len(child.ViewObject.DiffuseColor) == len(child.Shape.Faces):
-                    colors.extend(child.ViewObject.DiffuseColor)
-                else:
-                    c = child.ViewObject.ShapeColor[:3]+(child.ViewObject.Transparency/100.0,)
-                    for i in range(len(child.Shape.Faces)):
-                        colors.append(c)
+            if not Draft.get_type(child) in ["Space"]:
+                if hasattr(child,'Shape') and (hasattr(child.ViewObject,"DiffuseColor") or hasattr(child.ViewObject,"ShapeColor")):
+                    if hasattr(child.ViewObject,"DiffuseColor") and len(child.ViewObject.DiffuseColor) == len(child.Shape.Faces):
+                        colors.extend(child.ViewObject.DiffuseColor)
+                    else:
+                        c = child.ViewObject.ShapeColor[:3]+(child.ViewObject.Transparency/100.0,)
+                        for i in range(len(child.Shape.Faces)):
+                            colors.append(c)
         return colors
 
     def onChanged(self,vobj,prop):
@@ -673,14 +756,14 @@ class ViewProviderBuildingPart:
             if hasattr(vobj,"LineWidth"):
                 self.dst.lineWidth = vobj.LineWidth
         elif prop == "FontName":
-            if hasattr(vobj,"FontName"):
+            if hasattr(vobj,"FontName") and hasattr(self,"fon"):
                 if vobj.FontName:
                     if sys.version_info.major < 3:
                         self.fon.name = vobj.FontName.encode("utf8")
                     else:
                         self.fon.name = vobj.FontName
         elif prop in ["FontSize","DisplayOffset","OriginOffset"]:
-            if hasattr(vobj,"FontSize") and hasattr(vobj,"DisplayOffset") and hasattr(vobj,"OriginOffset"):
+            if hasattr(vobj,"FontSize") and hasattr(vobj,"DisplayOffset") and hasattr(vobj,"OriginOffset") and hasattr(self,"fon"):
                 fs = vobj.FontSize.Value
                 if fs:
                     self.fon.size = fs
@@ -693,7 +776,7 @@ class ViewProviderBuildingPart:
                     else:
                         self.lco.point.setValues([[-fs,0,0],[fs,0,0],[0,-fs,0],[0,fs,0],[0,0,-fs],[0,0,fs]])
         elif prop in ["OverrideUnit","ShowUnit","ShowLevel","ShowLabel"]:
-            if hasattr(vobj,"OverrideUnit") and hasattr(vobj,"ShowUnit") and hasattr(vobj,"ShowLevel") and hasattr(vobj,"ShowLabel"):
+            if hasattr(vobj,"OverrideUnit") and hasattr(vobj,"ShowUnit") and hasattr(vobj,"ShowLevel") and hasattr(vobj,"ShowLabel") and hasattr(self,"txt"):
                 z = vobj.Object.Placement.Base.z + vobj.Object.LevelOffset.Value
                 q = FreeCAD.Units.Quantity(z,FreeCAD.Units.Length)
                 txt = ""
@@ -709,14 +792,14 @@ class ViewProviderBuildingPart:
                     else:
                         u = q.getUserPreferred()[2]
                     try:
-                        q = q.getValueAs(u)
+                        txt += units.display_external(float(q),None,'Length',vobj.ShowUnit,u)
                     except Exception:
                         q = q.getValueAs(q.getUserPreferred()[2])
-                    d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",0)
-                    fmt = "{0:."+ str(d) + "f}"
-                    if not vobj.ShowUnit:
-                        u = ""
-                    txt += fmt.format(float(q)) + str(u)
+                        d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",0)
+                        fmt = "{0:."+ str(d) + "f}"
+                        if not vobj.ShowUnit:
+                            u = ""
+                        txt += fmt.format(float(q)) + str(u)
                 if not txt:
                     txt = " " # empty texts make coin crash...
                 if isinstance(txt,unicode):
@@ -773,6 +856,23 @@ class ViewProviderBuildingPart:
                 vobj.CutView = False
         elif prop == "SaveInventor":
             self.writeInventor(vobj.Object)
+        elif prop in ["AutogroupBox","AutogroupSize"]:
+            if hasattr(vobj,"AutogroupBox") and hasattr(vobj,"AutogroupSize"):
+                if vobj.AutogroupBox:
+                    if len(vobj.AutogroupSize) >= 6:
+                        self.autobbox = FreeCAD.BoundBox(*vobj.AutogroupSize[0:6])
+                        self.autobbox.move(vobj.Object.Placement.Base)
+                        pts = [list(self.autobbox.getPoint(i)) for i in range(8)]
+                        self.bbco.point.setValues(pts)
+                        self.bbox.whichChild = 0
+                else:
+                    self.autobbox = None
+                    self.bbox.whichChild = -1
+        elif prop in ["AutogroupAutosize","AutogroupMargin"]:
+            if hasattr(vobj,"AutogroupAutosize") and vobj.AutogroupAutosize:
+                bbox = vobj.Object.Shape.BoundBox
+                bbox.enlarge(vobj.AutogroupMargin.Value)
+                vobj.AutogroupSize = [int(i) for i in [bbox.XMin,bbox.YMin,bbox.ZMin,bbox.XMax,bbox.YMax,bbox.ZMax]]
 
     def onDelete(self,vobj,subelements):
 

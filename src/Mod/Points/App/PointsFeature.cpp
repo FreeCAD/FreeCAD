@@ -45,7 +45,7 @@ using namespace Points;
 
 PROPERTY_SOURCE(Points::Feature, App::GeoFeature)
 
-Feature::Feature() 
+Feature::Feature()
 {
     ADD_PROPERTY(Points, (PointKernel()));
 }
@@ -59,7 +59,7 @@ short Feature::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Feature::execute(void)
+App::DocumentObjectExecReturn *Feature::execute()
 {
     this->Points.touch();
     return App::DocumentObject::StdReturn;
@@ -90,7 +90,7 @@ void Feature::onChanged(const App::Property* prop)
         if (p != this->Placement.getValue())
             this->Placement.setValue(p);
     }
-    
+
     GeoFeature::onChanged(prop);
 }
 
@@ -110,7 +110,7 @@ template class PointsExport FeatureCustomT<Points::Feature>;
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Points::FeaturePython, Points::Feature)
-template<> const char* Points::FeaturePython::getViewProviderName(void) const {
+template<> const char* Points::FeaturePython::getViewProviderName() const {
     return "PointsGui::ViewProviderPython";
 }
 /// @endcond

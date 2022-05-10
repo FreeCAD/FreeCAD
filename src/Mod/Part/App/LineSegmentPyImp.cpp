@@ -188,7 +188,7 @@ PyObject* LineSegmentPy::setParameterRange(PyObject *args)
 {
     double first, last;
     if (!PyArg_ParseTuple(args, "dd", &first, &last))
-        return NULL;
+        return nullptr;
 
     try {
         Handle(Geom_TrimmedCurve) this_curve = Handle(Geom_TrimmedCurve)::DownCast
@@ -197,7 +197,7 @@ PyObject* LineSegmentPy::setParameterRange(PyObject *args)
     }
     catch (Standard_Failure& e) {
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return NULL;
+        return nullptr;
     }
 
     Py_Return; 
@@ -317,7 +317,7 @@ void LineSegmentPy::setEndPoint(Py::Object arg)
 
 PyObject *LineSegmentPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int LineSegmentPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

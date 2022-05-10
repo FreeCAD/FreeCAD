@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_ViewProviderPlacement_H
 #define GUI_ViewProviderPlacement_H
 
 #include "AxisOrigin.h"
 #include "ViewProviderGeometryObject.h"
 #include "ViewProviderPythonFeature.h"
-#include <QObject>
+
 
 class SoFontStyle;
 class SoText2;

@@ -38,9 +38,9 @@ class FemSelectionGate : public Gui::SelectionFilterGate
     };
 
     FemSelectionGate(ElemType type)
-        : Gui::SelectionFilterGate((Gui::SelectionFilter*)0),Type(type)
+        : Gui::SelectionFilterGate(nullPointer()),Type(type)
     {
-    };
+    }
 
     ElemType Type;
 

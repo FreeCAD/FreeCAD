@@ -127,7 +127,7 @@ TechDraw::DrawSVGTemplate * QGISVGTemplate::getSVGTemplate()
     if(pageTemplate && pageTemplate->isDerivedFrom(TechDraw::DrawSVGTemplate::getClassTypeId()))
         return static_cast<TechDraw::DrawSVGTemplate *>(pageTemplate);
     else
-        return 0;
+        return nullptr;
 }
 
 void QGISVGTemplate::draw()

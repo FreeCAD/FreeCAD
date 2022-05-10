@@ -24,17 +24,15 @@
 #ifndef APP_PROPERTYGEO_H
 #define APP_PROPERTYGEO_H
 
-// Std. configurations
-
-#include <Base/Vector3D.h>
-#include <Base/Matrix.h>
 #include <Base/BoundBox.h>
+#include <Base/Matrix.h>
 #include <Base/Placement.h>
 #include <Base/Unit.h>
+#include <Base/Vector3D.h>
 
-#include "Property.h"
 #include "PropertyLinks.h"
-#include "ComplexGeoData.h"
+#include <FCGlobal.h>
+
 
 namespace Base {
 class Writer;
@@ -105,6 +103,13 @@ public:
 
     virtual Base::Unit getUnit() const {
         return Base::Unit();
+    }
+
+    virtual bool isSame(const Property &other) const override {
+        if (&other == this)
+            return true;
+        return getTypeId() == other.getTypeId()
+            && getValue() == static_cast<decltype(this)>(&other)->getValue();
     }
 
 private:
@@ -277,12 +282,20 @@ public:
         return sizeof(Base::Matrix4D);
     }
 
+    virtual bool isSame(const Property &other) const {
+        if (&other == this)
+            return true;
+        return getTypeId() == other.getTypeId()
+            && getValue() == static_cast<decltype(this)>(&other)->getValue();
+    }
+
 private:
     Base::Matrix4D _cMat;
 };
 
-/** Vector properties
- * This is the father of all properties handling Integers.
+/// Property representing a placement
+/*!
+ * Encapsulates a Base::Placement in a Property
  */
 class AppExport PropertyPlacement: public Property
 {
@@ -341,6 +354,13 @@ public:
 
     virtual unsigned int getMemSize (void) const override {
         return sizeof(Base::Placement);
+    }
+
+    virtual bool isSame(const Property &other) const override {
+        if (&other == this)
+            return true;
+        return getTypeId() == other.getTypeId()
+            && getValue() == static_cast<decltype(this)>(&other)->getValue();
     }
 
     static const Placement Null;
@@ -405,6 +425,73 @@ public:
 
 protected:
     Base::Placement getPyValue(PyObject *) const override;
+};
+
+
+/// Property representing a rotation
+/*!
+ * Encapsulates a Base::Rotation in a Property
+ */
+class AppExport PropertyRotation : public Property
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    /**
+     * A constructor.
+     * A more elaborate description of the constructor.
+     */
+    PropertyRotation();
+
+    /**
+     * A destructor.
+     * A more elaborate description of the destructor.
+     */
+    virtual ~PropertyRotation();
+
+    /** Sets the property
+     */
+    void setValue(const Base::Rotation &rot);
+
+    /** Sets property only if changed
+     * @param pos: input placement
+     * @param tol: position tolerance
+     * @param atol: angular tolerance
+     */
+    bool setValueIfChanged(const Base::Rotation &rot, double atol=1e-12);
+
+    /** This method returns a string representation of the property
+     */
+    const Base::Rotation &getValue() const;
+
+    /// Get valid paths for this property; used by auto completer
+    void getPaths(std::vector<ObjectIdentifier> &paths) const override;
+
+    void setPathValue(const ObjectIdentifier &path, const boost::any &value) override;
+
+    virtual const boost::any getPathValue(const ObjectIdentifier &path) const override;
+
+    virtual bool getPyPathValue(const ObjectIdentifier &path, Py::Object &res) const override;
+
+    const char* getEditorName() const override {
+        return "Gui::PropertyEditor::PropertyRotationItem";
+    }
+
+    virtual PyObject *getPyObject() override;
+    virtual void setPyObject(PyObject *) override;
+
+    virtual void Save (Base::Writer &writer) const override;
+    virtual void Restore(Base::XMLReader &reader) override;
+
+    virtual Property *Copy() const override;
+    virtual void Paste(const Property &from) override;
+
+    virtual unsigned int getMemSize () const override {
+        return sizeof(Base::Placement);
+    }
+
+private:
+    Base::Rotation _rot;
 };
 
 

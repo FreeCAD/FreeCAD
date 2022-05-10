@@ -20,13 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef Image_ImagePlane_H
 #define Image_ImagePlane_H
 
 #include <App/GeoFeature.h>
 #include <App/PropertyFile.h>
 #include <App/PropertyUnits.h>
+#include <Mod/Image/ImageGlobal.h>
 
 namespace Image
 {
@@ -37,7 +37,7 @@ class ImageExport ImagePlane : public App::GeoFeature
 
 public:
     /// Constructor
-    ImagePlane(void);
+    ImagePlane();
     virtual ~ImagePlane();
 
     App::PropertyFileIncluded ImageFile;
@@ -45,7 +45,7 @@ public:
     App::PropertyLength       YSize;
 
     /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
+    virtual const char* getViewProviderName() const {
         return "ImageGui::ViewProviderImagePlane";
     }
 };

@@ -22,11 +22,12 @@
 
 import FreeCAD
 import Path
-import PathGui as PGui # ensure Path/Gui/Resources are loaded
+import PathGui as PGui  # ensure Path/Gui/Resources are loaded
 import PathScripts.PathDressup as PathDressup
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
 import PathScripts.PathUtil as PathUtil
+import PathScripts.PathJob as PathJob
 import PathSimulator
 import math
 import os
@@ -35,8 +36,9 @@ from FreeCAD import Vector, Base
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
-Mesh = LazyLoader('Mesh', globals(), 'Mesh')
-Part = LazyLoader('Part', globals(), 'Part')
+
+Mesh = LazyLoader("Mesh", globals(), "Mesh")
+Part = LazyLoader("Part", globals(), "Part")
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -75,13 +77,16 @@ class PathSimulation:
         self.simperiod = 20
         self.accuracy = 0.1
         self.resetSimulation = False
+        self.jobs = []
 
     def Connect(self, but, sig):
         QtCore.QObject.connect(but, QtCore.SIGNAL("clicked()"), sig)
 
     def UpdateProgress(self):
         if self.numCommands > 0:
-            self.taskForm.form.progressBar.setValue(self.iprogress * 100 / self.numCommands)
+            self.taskForm.form.progressBar.setValue(
+                self.iprogress * 100 / self.numCommands
+            )
 
     def Activate(self):
         self.initdone = False
@@ -96,13 +101,9 @@ class PathSimulation:
         self.onSpeedBarChange()
         form.sliderAccuracy.valueChanged.connect(self.onAccuracyBarChange)
         self.onAccuracyBarChange()
+        self._populateJobSelection(form)
         form.comboJobs.currentIndexChanged.connect(self.onJobChange)
-        jobList = FreeCAD.ActiveDocument.findObjects("Path::FeaturePython", "Job.*")
-        form.comboJobs.clear()
-        self.jobs = []
-        for j in jobList:
-            self.jobs.append(j)
-            form.comboJobs.addItem(j.ViewObject.Icon, j.Label)
+        self.onJobChange()
         FreeCADGui.Control.showDialog(self.taskForm)
         self.disableAnim = False
         self.isVoxel = True
@@ -110,6 +111,42 @@ class PathSimulation:
         self.voxSim = PathSimulator.PathSim()
         self.SimulateMill()
         self.initdone = True
+
+    def _populateJobSelection(self, form):
+        # Make Job selection combobox
+        setJobIdx = 0
+        jobName = ""
+        jIdx = 0
+        # Get list of Job objects in active document
+        jobList = FreeCAD.ActiveDocument.findObjects("Path::FeaturePython", "Job.*")
+        jCnt = len(jobList)
+
+        # Check if user has selected a specific job for simulation
+        guiSelection = FreeCADGui.Selection.getSelectionEx()
+        if guiSelection:  #  Identify job selected by user
+            sel = guiSelection[0]
+            if hasattr(sel.Object, "Proxy") and isinstance(
+                sel.Object.Proxy, PathJob.ObjectJob
+            ):
+                jobName = sel.Object.Name
+                FreeCADGui.Selection.clearSelection()
+
+        # populate the job selection combobox
+        form.comboJobs.blockSignals(True)
+        form.comboJobs.clear()
+        form.comboJobs.blockSignals(False)
+        for j in jobList:
+            form.comboJobs.addItem(j.ViewObject.Icon, j.Label)
+            self.jobs.append(j)
+            if j.Name == jobName or jCnt == 1:
+                setJobIdx = jIdx
+            jIdx += 1
+
+        # Pre-select GUI-selected job in the combobox
+        if jobName or jCnt == 1:
+            form.comboJobs.setCurrentIndex(setJobIdx)
+        else:
+            form.comboJobs.setCurrentIndex(0)
 
     def SetupSimulation(self):
         form = self.taskForm.form
@@ -123,19 +160,23 @@ class PathSimulation:
                 self.numCommands += len(self.operations[i].Path.Commands)
 
         self.stock = self.job.Stock.Shape
-        if (self.isVoxel):
+        if self.isVoxel:
             maxlen = self.stock.BoundBox.XLength
-            if (maxlen < self.stock.BoundBox.YLength):
+            if maxlen < self.stock.BoundBox.YLength:
                 maxlen = self.stock.BoundBox.YLength
-            self.voxSim.BeginSimulation(self.stock, 0.01 * self.accuracy * maxlen)
-            (self.cutMaterial.Mesh, self.cutMaterialIn.Mesh) = self.voxSim.GetResultMesh()
+            self.resolution = 0.01 * self.accuracy * maxlen
+            self.voxSim.BeginSimulation(self.stock, self.resolution)
+            (
+                self.cutMaterial.Mesh,
+                self.cutMaterialIn.Mesh,
+            ) = self.voxSim.GetResultMesh()
         else:
             self.cutMaterial.Shape = self.stock
         self.busy = False
         self.tool = None
         for i in range(len(self.activeOps)):
             self.SetupOperation(0)
-            if (self.tool is not None):
+            if self.tool is not None:
                 break
         self.iprogress = 0
         self.UpdateProgress()
@@ -147,18 +188,29 @@ class PathSimulation:
         except Exception:
             self.tool = None
 
-        if (self.tool is not None):
+        if self.tool is not None:
             if isinstance(self.tool, Path.Tool):
                 # handle legacy tools
-                toolProf = self.CreateToolProfile(self.tool, Vector(0, 1, 0), Vector(0, 0, 0), float(self.tool.Diameter) / 2.0)
-                self.cutTool.Shape = Part.makeSolid(toolProf.revolve(Vector(0, 0, 0), Vector(0, 0, 1)))
+                toolProf = self.CreateToolProfile(
+                    self.tool,
+                    Vector(0, 1, 0),
+                    Vector(0, 0, 0),
+                    float(self.tool.Diameter) / 2.0,
+                )
+                self.cutTool.Shape = Part.makeSolid(
+                    toolProf.revolve(Vector(0, 0, 0), Vector(0, 0, 1))
+                )
             else:
                 # handle tool bits
                 self.cutTool.Shape = self.tool.Shape
 
             if not self.cutTool.Shape.isValid() or self.cutTool.Shape.isNull():
                 self.EndSimulation()
-                raise RuntimeError("Path Simulation: Error in tool geometry - {}".format(self.tool.Name))
+                raise RuntimeError(
+                    "Path Simulation: Error in tool geometry - {}".format(
+                        self.tool.Name
+                    )
+                )
 
             self.cutTool.ViewObject.show()
             self.voxSim.SetToolShape(self.cutTool.Shape, 0.05 * self.accuracy)
@@ -174,19 +226,27 @@ class PathSimulation:
         self.skipStep = False
         self.initialPos = Vector(0, 0, self.job.Stock.Shape.BoundBox.ZMax)
         # Add cut tool
-        self.cutTool = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "CutTool")
+        self.cutTool = FreeCAD.ActiveDocument.addObject(
+            "Part::FeaturePython", "CutTool"
+        )
         self.cutTool.ViewObject.Proxy = 0
         self.cutTool.ViewObject.hide()
 
         # Add cut material
         if self.isVoxel:
-            self.cutMaterial = FreeCAD.ActiveDocument.addObject("Mesh::FeaturePython", "CutMaterial")
-            self.cutMaterialIn = FreeCAD.ActiveDocument.addObject("Mesh::FeaturePython", "CutMaterialIn")
+            self.cutMaterial = FreeCAD.ActiveDocument.addObject(
+                "Mesh::FeaturePython", "CutMaterial"
+            )
+            self.cutMaterialIn = FreeCAD.ActiveDocument.addObject(
+                "Mesh::FeaturePython", "CutMaterialIn"
+            )
             self.cutMaterialIn.ViewObject.Proxy = 0
             self.cutMaterialIn.ViewObject.show()
             self.cutMaterialIn.ViewObject.ShapeColor = (1.0, 0.85, 0.45, 0.0)
         else:
-            self.cutMaterial = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "CutMaterial")
+            self.cutMaterial = FreeCAD.ActiveDocument.addObject(
+                "Part::FeaturePython", "CutMaterial"
+            )
             self.cutMaterial.Shape = self.job.Stock.Shape
         self.cutMaterial.ViewObject.Proxy = 0
         self.cutMaterial.ViewObject.show()
@@ -194,7 +254,9 @@ class PathSimulation:
 
         # Add cut path solid for debug
         if self.debug:
-            self.cutSolid = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "CutDebug")
+            self.cutSolid = FreeCAD.ActiveDocument.addObject(
+                "Part::FeaturePython", "CutDebug"
+            )
             self.cutSolid.ViewObject.Proxy = 0
             self.cutSolid.ViewObject.hide()
 
@@ -214,28 +276,30 @@ class PathSimulation:
         cmd = self.operation.Path.Commands[self.icmd]
         pathSolid = None
 
-        if cmd.Name in ['G0']:
+        if cmd.Name in ["G0"]:
             self.firstDrill = True
             self.curpos = self.RapidMove(cmd, self.curpos)
-        if cmd.Name in ['G1', 'G2', 'G3']:
+        if cmd.Name in ["G1", "G2", "G3"]:
             self.firstDrill = True
             if self.skipStep:
                 self.curpos = self.RapidMove(cmd, self.curpos)
             else:
-                (pathSolid, self.curpos) = self.GetPathSolid(self.tool, cmd, self.curpos)
+                (pathSolid, self.curpos) = self.GetPathSolid(
+                    self.tool, cmd, self.curpos
+                )
 
-        if cmd.Name in ['G80']:
+        if cmd.Name in ["G80"]:
             self.firstDrill = True
-        if cmd.Name in ['G81', 'G82', 'G83']:
+        if cmd.Name in ["G81", "G82", "G83"]:
             if self.firstDrill:
-                extendcommand = Path.Command('G0', {"Z": cmd.r})
+                extendcommand = Path.Command("G0", {"Z": cmd.r})
                 self.curpos = self.RapidMove(extendcommand, self.curpos)
                 self.firstDrill = False
-            extendcommand = Path.Command('G0', {"X": cmd.x, "Y": cmd.y, "Z": cmd.r})
+            extendcommand = Path.Command("G0", {"X": cmd.x, "Y": cmd.y, "Z": cmd.r})
             self.curpos = self.RapidMove(extendcommand, self.curpos)
-            extendcommand = Path.Command('G1', {"X": cmd.x, "Y": cmd.y, "Z": cmd.z})
+            extendcommand = Path.Command("G1", {"X": cmd.x, "Y": cmd.y, "Z": cmd.z})
             self.curpos = self.RapidMove(extendcommand, self.curpos)
-            extendcommand = Path.Command('G1', {"X": cmd.x, "Y": cmd.y, "Z": cmd.r})
+            extendcommand = Path.Command("G1", {"X": cmd.x, "Y": cmd.y, "Z": cmd.r})
             self.curpos = self.RapidMove(extendcommand, self.curpos)
         self.skipStep = False
         if pathSolid is not None:
@@ -275,27 +339,61 @@ class PathSimulation:
 
         cmd = self.opCommands[self.icmd]
         # for cmd in job.Path.Commands:
-        if cmd.Name in ['G0', 'G1', 'G2', 'G3']:
+        if cmd.Name in ["G0", "G1", "G2", "G3"]:
             self.firstDrill = True
-            self.curpos = self.voxSim.ApplyCommand(self.curpos, cmd)
+            if cmd.Name in ["G2", "G3"] and (cmd.k or 0) == 0:
+                cx = self.curpos.Base.x + (cmd.i or 0)
+                cy = self.curpos.Base.y + (cmd.j or 0)
+                a0 = math.atan2(self.curpos.Base.y - cy, self.curpos.Base.x - cx)
+                a1 = math.atan2(cmd.y - cy, cmd.x - cx)
+                da = a1 - a0
+                if cmd.Name == "G3":
+                    da = da % (2 * math.pi)
+                else:
+                    da = -((-da) % (2 * math.pi))
+                r = math.sqrt((cmd.i or 0) ** 2 + (cmd.j or 0) ** 2)
+                n = math.ceil(math.sqrt(r / self.resolution * da * da))
+                da = da / n
+                dz = (cmd.z - self.curpos.Base.z) / n
+                cmd.Name = "G1"
+                for i in range(n):
+                    a0 += da
+                    cmd.x = cx + r * math.cos(a0)
+                    cmd.y = cy + r * math.sin(a0)
+                    cmd.z = self.curpos.Base.z + dz
+                    self.curpos = self.voxSim.ApplyCommand(self.curpos, cmd)
+            else:
+                self.curpos = self.voxSim.ApplyCommand(self.curpos, cmd)
             if not self.disableAnim:
                 self.cutTool.Placement = self.curpos
-                (self.cutMaterial.Mesh, self.cutMaterialIn.Mesh) = self.voxSim.GetResultMesh()
-        if cmd.Name in ['G80']:
+                (
+                    self.cutMaterial.Mesh,
+                    self.cutMaterialIn.Mesh,
+                ) = self.voxSim.GetResultMesh()
+        if cmd.Name in ["G80"]:
             self.firstDrill = True
-        if cmd.Name in ['G81', 'G82', 'G83']:
+        if cmd.Name in ["G81", "G82", "G83"]:
             extendcommands = []
             if self.firstDrill:
-                extendcommands.append(Path.Command('G0', {"Z": cmd.r}))
+                extendcommands.append(Path.Command("G0", {"Z": cmd.r}))
                 self.firstDrill = False
-            extendcommands.append(Path.Command('G0', {"X": cmd.x, "Y": cmd.y, "Z": cmd.r}))
-            extendcommands.append(Path.Command('G1', {"X": cmd.x, "Y": cmd.y, "Z": cmd.z}))
-            extendcommands.append(Path.Command('G1', {"X": cmd.x, "Y": cmd.y, "Z": cmd.r}))
+            extendcommands.append(
+                Path.Command("G0", {"X": cmd.x, "Y": cmd.y, "Z": cmd.r})
+            )
+            extendcommands.append(
+                Path.Command("G1", {"X": cmd.x, "Y": cmd.y, "Z": cmd.z})
+            )
+            extendcommands.append(
+                Path.Command("G1", {"X": cmd.x, "Y": cmd.y, "Z": cmd.r})
+            )
             for ecmd in extendcommands:
                 self.curpos = self.voxSim.ApplyCommand(self.curpos, ecmd)
                 if not self.disableAnim:
                     self.cutTool.Placement = self.curpos
-                    (self.cutMaterial.Mesh, self.cutMaterialIn.Mesh) = self.voxSim.GetResultMesh()
+                    (
+                        self.cutMaterial.Mesh,
+                        self.cutMaterialIn.Mesh,
+                    ) = self.voxSim.GetResultMesh()
         self.icmd += 1
         self.iprogress += 1
         self.UpdateProgress()
@@ -309,7 +407,7 @@ class PathSimulation:
         self.busy = False
 
     def PerformCut(self):
-        if (self.isVoxel):
+        if self.isVoxel:
             self.PerformCutVoxel()
         else:
             self.PerformCutBoolean()
@@ -425,7 +523,7 @@ class PathSimulation:
         form.listOperations.clear()
         self.operations = []
         for op in j.Operations.OutList:
-            if PathUtil.opProperty(op, 'Active'):
+            if PathUtil.opProperty(op, "Active"):
                 listItem = QtGui.QListWidgetItem(op.ViewObject.Icon, op.Label)
                 listItem.setFlags(listItem.flags() | QtCore.Qt.ItemIsUserCheckable)
                 listItem.setCheckState(QtCore.Qt.CheckState.Checked)
@@ -467,7 +565,7 @@ class PathSimulation:
     def InvalidOperation(self):
         if len(self.activeOps) == 0:
             return True
-        if (self.tool is None):
+        if self.tool is None:
             TSError("No tool assigned for the operation")
             return True
         return False
@@ -494,7 +592,10 @@ class PathSimulation:
 
     def ViewShape(self):
         if self.isVoxel:
-            (self.cutMaterial.Mesh, self.cutMaterialIn.Mesh) = self.voxSim.GetResultMesh()
+            (
+                self.cutMaterial.Mesh,
+                self.cutMaterialIn.Mesh,
+            ) = self.voxSim.GetResultMesh()
         else:
             self.cutMaterial.Shape = self.stock
 
@@ -538,12 +639,15 @@ class PathSimulation:
 
 
 class CommandPathSimulate:
-
     def GetResources(self):
-        return {'Pixmap': 'Path_Simulator',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Simulator", "CAM Simulator"),
-                'Accel': "P, M",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Simulator", "Simulate Path G-Code on stock")}
+        return {
+            "Pixmap": "Path_Simulator",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP("Path_Simulator", "CAM Simulator"),
+            "Accel": "P, M",
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "Path_Simulator", "Simulate Path G-Code on stock"
+            ),
+        }
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:
@@ -553,12 +657,11 @@ class CommandPathSimulate:
         return False
 
     def Activated(self):
+        pathSimulation = PathSimulation()
         pathSimulation.Activate()
 
 
-pathSimulation = PathSimulation()
-
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('Path_Simulator', CommandPathSimulate())
+    FreeCADGui.addCommand("Path_Simulator", CommandPathSimulate())
     FreeCAD.Console.PrintLog("Loading PathSimulator Gui... done\n")

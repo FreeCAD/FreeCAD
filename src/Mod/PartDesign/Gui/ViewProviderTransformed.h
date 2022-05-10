@@ -51,6 +51,8 @@ public:
 
     // The feature name of the subclass
     std::string featureName;
+    // Name of menu dialog
+    QString menuName;
 
     virtual Gui::ViewProvider *startEditing(int ModNum=0) override;
 
@@ -68,6 +70,9 @@ protected:
 public:
     void recomputeFeature(bool recompute=true);
     QString getMessage() const {return diagMessage;}
+
+private:
+    void showRejectedShape(TopoDS_Shape shape);
 };
 
 

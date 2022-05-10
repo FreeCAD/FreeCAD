@@ -31,6 +31,7 @@
 #include "ui_Tessellation.h"
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -44,7 +45,7 @@
 #include <Gui/WaitCursor.h>
 #include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshFeature.h>
-#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/BodyBase.h>
 #include <Mod/Mesh/Gui/ViewProvider.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
@@ -59,7 +60,7 @@ Tessellation::Tessellation(QWidget* parent)
     gmsh = new Mesh2ShapeGmsh(this);
     connect(gmsh, SIGNAL(processed()), this, SLOT(gmshProcessed()));
 
-    ui->stackedWidget->addTab(gmsh, tr("gmsh"));
+    ui->stackedWidget->addTab(gmsh, tr("Gmsh"));
 
     ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Mod/Mesh/Meshing/Standard");
@@ -192,7 +193,7 @@ void Tessellation::on_estimateMaximumEdgeLength_clicked()
     }
 
     double edgeLen = 0;
-    for (auto &sel : Gui::Selection().getSelection("*",0)) {
+    for (auto &sel : Gui::Selection().getSelection("*", Gui::ResolveMode::NoResolve)) {
         auto shape = Part::Feature::getTopoShape(sel.pObject,sel.SubName);
         if (shape.hasSubShape(TopAbs_FACE)) {
             Base::BoundBox3d bbox = shape.getBoundBox();
@@ -222,23 +223,45 @@ bool Tessellation::accept()
 
     this->document = QString::fromLatin1(activeDoc->getName());
 
-    for (auto &sel : Gui::Selection().getSelection("*",0)) {
+    bool bodyWithNoTip = false;
+    bool partWithNoFace = false;
+    for (auto &sel : Gui::Selection().getSelection("*", Gui::ResolveMode::NoResolve)) {
         auto shape = Part::Feature::getTopoShape(sel.pObject,sel.SubName);
         if (shape.hasSubShape(TopAbs_FACE)) {
             shapeObjects.emplace_back(sel.pObject, sel.SubName);
         }
+        else if (sel.pObject) {
+            if (sel.pObject->isDerivedFrom(Part::Feature::getClassTypeId())) {
+                partWithNoFace = true;
+            }
+            if (sel.pObject->isDerivedFrom(Part::BodyBase::getClassTypeId())) {
+                Part::BodyBase* body = static_cast<Part::BodyBase*>(sel.pObject);
+                if (!body->Tip.getValue()) {
+                    bodyWithNoTip = true;
+                }
+            }
+        }
     }
 
     if (shapeObjects.empty()) {
-        QMessageBox::critical(this, windowTitle(),
-            tr("Select a shape for meshing, first."));
+        if (bodyWithNoTip) {
+            QMessageBox::critical(this, windowTitle(), tr("You have selected a body without tip.\n"
+                                                          "Either set the tip of the body or select a different shape, please."));
+        }
+        else if (partWithNoFace) {
+            QMessageBox::critical(this, windowTitle(), tr("You have selected a shape without faces.\n"
+                                                          "Select a different shape, please."));
+        }
+        else {
+            QMessageBox::critical(this, windowTitle(), tr("Select a shape for meshing, first."));
+        }
         return false;
     }
 
     bool doClose = !ui->checkBoxDontQuit->isChecked();
     int method = ui->stackedWidget->currentIndex();
 
-    // For gmsh the workflow is very different because it uses an executable
+    // For Gmsh the workflow is very different because it uses an executable
     // and therefore things are asynchronous
     if (method == Gmsh) {
         gmsh->process(activeDoc, shapeObjects);
@@ -500,7 +523,7 @@ bool Mesh2ShapeGmsh::writeProject(QString& inpFile, QString& outFile)
                 maxSize = 1.0e22;
             double minSize = getMinSize();
 
-            // gmsh geo file
+            // Gmsh geo file
             Base::FileInfo geo(d->geoFile);
             Base::ofstream geoOut(geo, std::ios::out);
             geoOut << "// geo file for meshing with Gmsh meshing software created by FreeCAD\n"
@@ -585,7 +608,7 @@ TaskTessellation::TaskTessellation()
     widget = new Tessellation();
     Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
         QPixmap()/*Gui::BitmapFactory().pixmap("MeshPart_Mesher")*/,
-        widget->windowTitle(), true, 0);
+        widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

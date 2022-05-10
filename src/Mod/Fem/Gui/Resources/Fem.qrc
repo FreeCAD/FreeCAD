@@ -10,6 +10,7 @@
 
         <!-- gui command icons: constraints -->
         <file>icons/FEM_ConstraintBearing.svg</file>
+        <file>icons/FEM_ConstraintCentrif.svg</file>
         <file>icons/FEM_ConstraintContact.svg</file>
         <file>icons/FEM_ConstraintDisplacement.svg</file>
         <file>icons/FEM_ConstraintElectrostaticPotential.svg</file>
@@ -29,6 +30,7 @@
         <file>icons/FEM_ConstraintTemperature.svg</file>
         <file>icons/FEM_ConstraintTie.svg</file>
         <file>icons/FEM_ConstraintTransform.svg</file>
+        <file>icons/FEM_ConstraintSpring.svg</file>
 
         <!-- gui command icons: element geometries -->
         <file>icons/FEM_ElementFluid1D.svg</file>
@@ -74,6 +76,7 @@
         <!-- gui command icons: solver -->
         <file>icons/FEM_SolverControl.svg</file>
         <file>icons/FEM_SolverElmer.svg</file>
+        <file>icons/FEM_SolverMystran.svg</file>
         <file>icons/FEM_SolverRun.svg</file>
         <file>icons/FEM_SolverStandard.svg</file>
         <file>icons/FEM_SolverZ88.svg</file>
@@ -91,6 +94,8 @@
 
         <!-- main wb icon and preferences icons -->
         <file>icons/FemWorkbench.svg</file>
+        <file>icons/fem-solver-analysis-buckling.svg</file>
+        <file>icons/fem-solver-analysis-checkmesh.svg</file>
         <file>icons/fem-solver-analysis-frequency.svg</file>
         <file>icons/fem-solver-analysis-static.svg</file>
         <file>icons/fem-solver-analysis-thermomechanical.svg</file>
@@ -140,8 +145,12 @@
         <file>translations/Fem_vi.qm</file>
         <file>translations/Fem_zh-CN.qm</file>
         <file>translations/Fem_zh-TW.qm</file>
+        <file>translations/Fem_es-AR.qm</file>
+        <file>translations/Fem_bg.qm</file>
+        <file>translations/Fem_ka.qm</file>
 
         <!-- task panels -->
+        <file>ui/ConstraintCentrif.ui</file>
         <file>ui/ConstraintSectionPrint.ui</file>
         <file>ui/ConstraintTie.ui</file>
         <file>ui/ElectrostaticPotential.ui</file>

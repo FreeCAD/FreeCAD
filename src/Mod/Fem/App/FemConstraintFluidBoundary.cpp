@@ -47,20 +47,20 @@ PROPERTY_SOURCE(Fem::ConstraintFluidBoundary, Fem::Constraint)
 
 // also defined in TaskFemConstraintFluidBoundary.cpp and FoamCaseBuilder/BasicBuilder.py, update simultaneously
 // the second (index 1) item is the default enum, as index 0 causes compiling error
-static const char* BoundaryTypes[] = {"inlet","wall","outlet","interface","freestream", NULL};
-static const char* WallSubtypes[] = {"unspecific", "fixed", "slip", "partialSlip", "moving", NULL};
-static const char* InletSubtypes[] = {"unspecific","totalPressure","uniformVelocity","volumetricFlowRate","massFlowRate", NULL};
-static const char* OutletSubtypes[] = {"unspecific","totalPressure","staticPressure","uniformVelocity", "outFlow", NULL};
-static const char* InterfaceSubtypes[] = {"unspecific","symmetry","wedge","cyclic","empty", NULL};
-static const char* FreestreamSubtypes[] = {"unspecific", "freestream",NULL};
+static const char* BoundaryTypes[] = {"inlet","wall","outlet","interface","freestream", nullptr};
+static const char* WallSubtypes[] = {"unspecific", "fixed", "slip", "partialSlip", "moving", nullptr};
+static const char* InletSubtypes[] = {"unspecific","totalPressure","uniformVelocity","volumetricFlowRate","massFlowRate", nullptr};
+static const char* OutletSubtypes[] = {"unspecific","totalPressure","staticPressure","uniformVelocity", "outFlow", nullptr};
+static const char* InterfaceSubtypes[] = {"unspecific","symmetry","wedge","cyclic","empty", nullptr};
+static const char* FreestreamSubtypes[] = {"unspecific", "freestream",nullptr};
 
 // see Ansys fluet manual: Turbulence Specification method, if not specified, solver will guess a value based e.g. 0.05 for inlet length geometry",
-static const char* TurbulenceSpecifications[] = {"intensity&DissipationRate", "intensity&LengthScale","intensity&ViscosityRatio","intensity&HydraulicDiameter",NULL};
+static const char* TurbulenceSpecifications[] = {"intensity&DissipationRate", "intensity&LengthScale","intensity&ViscosityRatio","intensity&HydraulicDiameter",nullptr};
 /* only used in TaskFemConstraintFluidBoundary.cpp */
 
 // activate the heat transfer and radiation model in Solver object explorer
 // also defined in FoamCaseBuilder/HeatTransferBuilder.py, update simultaneously, heatFlux is not a standard OpenFOAM patch type
-static const char* ThermalBoundaryTypes[] = {"fixedValue","zeroGradient", "fixedGradient", "mixed", "heatFlux", "HTC","coupled", NULL};
+static const char* ThermalBoundaryTypes[] = {"fixedValue","zeroGradient", "fixedGradient", "mixed", "heatFlux", "HTC","coupled", nullptr};
 /* only used in TaskFemConstraintFluidBoundary.cpp
 static const char* ThermalBoundaryHelpTexts[] = {"fixed Temperature [K]", "no heat transfer ()", "fixed value heat flux [K/m]",
             "mixed fixedGradient and fixedValue", "fixed heat flux [W/m2]", "Heat transfer coeff [W/(M2)/K]", "conjugate heat transfer with solid", NULL};
@@ -78,7 +78,7 @@ ConstraintFluidBoundary::ConstraintFluidBoundary()
     ADD_PROPERTY_TYPE(BoundaryValue,(0.0),"FluidBoundary",(App::PropertyType)(App::Prop_None),
                       "Scaler value for the specific value subtype, like pressure, velocity magnitude");
     /// Direction should be allowed to edit in property editor, if no edge is available in CAD model
-    ADD_PROPERTY_TYPE(Direction,(0),"FluidBoundary",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(Direction,(nullptr),"FluidBoundary",(App::PropertyType)(App::Prop_None),
                       "Vector direction of BoundaryValue");
     ADD_PROPERTY_TYPE(Reversed,(0),"FluidBoundary",(App::PropertyType)(App::Prop_ReadOnly|App::Prop_Output),
                       "To distinguish inlet (flow outward from solid) or outlet boundary condition");
@@ -182,7 +182,7 @@ void ConstraintFluidBoundary::onChanged(const App::Property* prop)
         }
     } else if (prop == &NormalDirection) {
         // Set a default direction if no direction reference has been given
-        if (Direction.getValue() == NULL) {
+        if (Direction.getValue() == nullptr) {
             Base::Vector3d direction = NormalDirection.getValue();
             if (Reversed.getValue())
                 direction = -direction;

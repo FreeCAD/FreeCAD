@@ -26,9 +26,9 @@
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
+
 #include "PartFeature.h"
 #include "FaceMakerCheese.h"
-#include <TopoDS_Face.hxx>
 
 namespace Part
 {
@@ -100,8 +100,8 @@ public:
      * link is wrong.
      */
     static bool fetchAxisLink(const App::PropertyLinkSub& axisLink,
-                              Base::Vector3d &basepoint,
-                              Base::Vector3d &dir);
+                              Base::Vector3d& basepoint,
+                              Base::Vector3d& dir);
 
     /**
      * @brief computeFinalParameters: applies mode logic and fetches links, to
@@ -110,7 +110,7 @@ public:
      */
     ExtrusionParameters computeFinalParameters();
 
-    static Base::Vector3d calculateShapeNormal(const App::PropertyLink &shapeLink);
+    static Base::Vector3d calculateShapeNormal(const App::PropertyLink& shapeLink);
 
 public: //mode enumerations
     enum eDirMode{
@@ -119,10 +119,6 @@ public: //mode enumerations
         dmNormal
     };
     static const char* eDirModeStrings[];
-
-protected:
-    static void makeDraft(const ExtrusionParameters& params, const TopoDS_Shape&, std::list<TopoDS_Shape>&);
-
 
 protected:
     virtual void setupObject() override;

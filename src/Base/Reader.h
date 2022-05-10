@@ -23,18 +23,18 @@
 #ifndef BASE_READER_H
 #define BASE_READER_H
 
-
-#include <string>
-#include <map>
 #include <bitset>
+#include <map>
 #include <memory>
+#include <sstream>
+#include <string>
 
 #include <xercesc/framework/XMLPScanToken.hpp>
 #include <xercesc/sax2/Attributes.hpp>
 #include <xercesc/sax2/DefaultHandler.hpp>
 
 #include "FileInfo.h"
-#include "Writer.h"
+
 
 namespace zipios {
 class ZipInputStream;
@@ -47,7 +47,7 @@ XERCES_CPP_NAMESPACE_END
 
 namespace Base
 {
-
+class Persistence;
 
 /** The XML reader class
  * This is an important helper class for the store and retrieval system
@@ -134,11 +134,11 @@ public:
     /** @name Parser handling */
     //@{
     /// get the local name of the current Element
-    const char* localName(void) const;
+    const char* localName() const;
     /// get the current element level
     int level() const;
     /// read until a start element is found (\<name\>) or start-end element (\<name/\>) (with special name if given)
-    void readElement   (const char* ElementName=0);
+    void readElement   (const char* ElementName=nullptr);
 
     /** read until an end element is found
      *
@@ -154,9 +154,9 @@ public:
      * child element may have the same name as its parent, otherwise, using \c
      * ElementName is enough.
      */
-    void readEndElement(const char* ElementName=0, int level=-1);
+    void readEndElement(const char* ElementName=nullptr, int level=-1);
     /// read until characters are found
-    void readCharacters(void);
+    void readCharacters();
     /// read binary file
     void readBinFile(const char*);
     //@}
@@ -164,7 +164,7 @@ public:
     /** @name Attribute handling */
     //@{
     /// get the number of attributes of the current element
-    unsigned int getAttributeCount(void) const;
+    unsigned int getAttributeCount() const;
     /// check if the read element has a special attribute
     bool hasAttribute(const char* AttrName) const;
     /// return the named attribute as an interer (does type checking)
@@ -200,9 +200,9 @@ public:
     /// sets simultaneously the global and local PartialRestore bits
     void setPartialRestore(bool on);
 
-    void clearPartialRestoreDocumentObject(void);
-    void clearPartialRestoreProperty(void);
-    void clearPartialRestoreObject(void);
+    void clearPartialRestoreDocumentObject();
+    void clearPartialRestoreProperty();
+    void clearPartialRestoreObject();
 
     /// return the status bits
     bool testStatus(ReaderStatus pos) const;
@@ -216,7 +216,7 @@ public:
 
 protected:
     /// read the next element
-    bool read(void);
+    bool read();
 
     // -----------------------------------------------------------------------
     //  Handlers for the SAX ContentHandler interface
@@ -296,7 +296,6 @@ class BaseExport Reader : public std::istream
 {
 public:
     Reader(std::istream&, const std::string&, int version);
-    ~Reader();
     std::istream& getStream();
     std::string getFileName() const;
     int getFileVersion() const;

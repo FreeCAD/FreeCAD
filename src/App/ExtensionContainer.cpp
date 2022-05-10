@@ -23,15 +23,14 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <cassert>
-# include <algorithm>
-#endif
+#include <Base/Console.h>
+#include <Base/Exception.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 
 #include "Extension.h"
-#include "DocumentObject.h"
-#include "Base/Exception.h"
-#include <Base/Console.h>
+#include "ExtensionContainer.h"
+
 
 using namespace App;
 
@@ -103,7 +102,8 @@ Extension* ExtensionContainer::getExtension(Base::Type t, bool derived, bool no_
             if(entry.first.isDerivedFrom(t))
                 return entry.second;
         }
-        if(no_except) return 0;
+        if(no_except)
+            return nullptr;
         //if we arrive here we don't have anything matching
         throw Base::TypeError("ExtensionContainer::getExtension: No extension of given type available");
     }
@@ -111,7 +111,8 @@ Extension* ExtensionContainer::getExtension(Base::Type t, bool derived, bool no_
         return result->second;
     }
     else {
-        if(no_except) return 0;
+        if(no_except)
+            return nullptr;
         //if we arrive here we don't have anything matching
         throw Base::TypeError("ExtensionContainer::getExtension: No extension of given type available");
     }
@@ -203,77 +204,77 @@ short int ExtensionContainer::getPropertyType(const char* name) const {
 const char* ExtensionContainer::getPropertyName(const Property* prop) const {
 
     const char* res = App::PropertyContainer::getPropertyName(prop);
-    if(res != 0)
+    if(res != nullptr)
         return res;
 
     for(auto entry : _extensions) {
         res = entry.second->extensionGetPropertyName(prop);
-        if(res != 0)
+        if(res != nullptr)
             return res;
     }
 
-    return 0;
+    return nullptr;
 }
 
 const char* ExtensionContainer::getPropertyGroup(const Property* prop) const {
 
     const char* res = App::PropertyContainer::getPropertyGroup(prop);
-    if(res != 0)
+    if(res != nullptr)
         return res;
 
     for(auto entry : _extensions) {
         res = entry.second->extensionGetPropertyGroup(prop);
-        if(res != 0)
+        if(res != nullptr)
             return res;
     }
 
-    return 0;
+    return nullptr;
 }
 
 const char* ExtensionContainer::getPropertyGroup(const char* name) const {
 
     const char* res = App::PropertyContainer::getPropertyGroup(name);
-    if(res != 0)
+    if(res != nullptr)
         return res;
 
     for(auto entry : _extensions) {
         res = entry.second->extensionGetPropertyGroup(name);
-        if(res != 0)
+        if(res != nullptr)
             return res;
     }
 
-    return 0;
+    return nullptr;
 }
 
 
 const char* ExtensionContainer::getPropertyDocumentation(const Property* prop) const {
 
     const char* res = App::PropertyContainer::getPropertyDocumentation(prop);
-    if(res != 0)
+    if(res != nullptr)
         return res;
 
     for(auto entry : _extensions) {
         res = entry.second->extensionGetPropertyDocumentation(prop);
-        if(res != 0)
+        if(res != nullptr)
             return res;
     }
 
-    return 0;
+    return nullptr;
 }
 
 const char* ExtensionContainer::getPropertyDocumentation(const char* name) const {
 
     const char* res = App::PropertyContainer::getPropertyDocumentation(name);
-    if(res != 0)
+    if(res != nullptr)
         return res;
 
     for(auto entry : _extensions) {
         res = entry.second->extensionGetPropertyDocumentation(name);
-        if(res != 0)
+        if(res != nullptr)
             return res;
     }
 
-    return 0;
+    return nullptr;
 }
 
 void ExtensionContainer::onChanged(const Property* prop) {

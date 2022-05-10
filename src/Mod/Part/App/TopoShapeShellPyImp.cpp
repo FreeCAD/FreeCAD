@@ -131,7 +131,7 @@ PyObject*  TopoShapeShellPy::add(PyObject *args)
 {
     PyObject *obj;
     if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapeFacePy::Type), &obj))
-        return NULL;
+        return nullptr;
 
     BRep_Builder builder;
     TopoDS_Shape shell = getTopoShapePtr()->getShape();
@@ -153,7 +153,7 @@ PyObject*  TopoShapeShellPy::add(PyObject *args)
     }
     catch (Standard_Failure& e) {
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 
     getTopoShapePtr()->setShape(shell);
@@ -164,7 +164,7 @@ PyObject*  TopoShapeShellPy::add(PyObject *args)
 PyObject*  TopoShapeShellPy::getFreeEdges(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
     ShapeAnalysis_Shell as;
     as.LoadShells(getTopoShapePtr()->getShape());
 #if OCC_VERSION_HEX < 0x060500
@@ -179,7 +179,7 @@ PyObject*  TopoShapeShellPy::getFreeEdges(PyObject *args)
 PyObject*  TopoShapeShellPy::getBadEdges(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
     ShapeAnalysis_Shell as;
     as.LoadShells(getTopoShapePtr()->getShape());
 #if OCC_VERSION_HEX < 0x060500
@@ -195,7 +195,7 @@ PyObject* TopoShapeShellPy::makeHalfSpace(PyObject *args)
 {
     PyObject* pPnt;
     if (!PyArg_ParseTuple(args, "O!",&(Base::VectorPy::Type),&pPnt))
-        return 0;
+        return nullptr;
 
     try {
         Base::Vector3d pt = Py::Vector(pPnt,false).toVector();
@@ -204,7 +204,7 @@ PyObject* TopoShapeShellPy::makeHalfSpace(PyObject *args)
     }
     catch (Standard_Failure& e) {
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
@@ -286,7 +286,7 @@ Py::Dict TopoShapeShellPy::getPrincipalProperties(void) const
 
 PyObject *TopoShapeShellPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int TopoShapeShellPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

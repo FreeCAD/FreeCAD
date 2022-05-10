@@ -8,8 +8,9 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
+    ${CMAKE_BINARY_DIR}/src/3rdParty/libE57Format
+    ${CMAKE_SOURCE_DIR}/src/3rdParty/libE57Format/include
 )
 
 set(Points_LIBS
@@ -60,7 +61,9 @@ set(Points_Scripts
 
 add_library(Points SHARED ${Points_SRCS} ${Points_Scripts})
 
-target_link_libraries(Points ${Points_LIBS})
+link_directories(${CMAKE_BINARY_DIR}/src/3rdParty/libE57Format)
+
+target_link_libraries(Points E57Format ${Points_LIBS})
 
 
 fc_target_copy_resource_flat(Points

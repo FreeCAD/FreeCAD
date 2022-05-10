@@ -33,6 +33,7 @@
 #include <Base/Quantity.h>
 
 #include "TaskFemConstraint.h"
+#include "TaskFemConstraintOnBoundary.h"
 #include "ViewProviderFemConstraintDisplacement.h"
 
 #include <QObject>
@@ -43,20 +44,20 @@
 class Ui_TaskFemConstraintDisplacement;
 
 namespace FemGui {
-class TaskFemConstraintDisplacement : public TaskFemConstraint
+class TaskFemConstraintDisplacement : public TaskFemConstraintOnBoundary
 {
     Q_OBJECT
 
 public:
-    TaskFemConstraintDisplacement(ViewProviderFemConstraintDisplacement *ConstraintView, QWidget *parent = 0);
+    TaskFemConstraintDisplacement(ViewProviderFemConstraintDisplacement *ConstraintView, QWidget *parent = nullptr);
     ~TaskFemConstraintDisplacement();
     const std::string getReferences() const;
     double get_spinxDisplacement()const;
     double get_spinyDisplacement()const;
     double get_spinzDisplacement()const;
-    double get_rotxv()const;
-    double get_rotyv()const;
-    double get_rotzv()const;
+    double get_spinxRotation()const;
+    double get_spinyRotation()const;
+    double get_spinzRotation()const;
     bool get_dispxfix()const;
     bool get_dispxfree()const;
     bool get_dispyfix()const;
@@ -95,8 +96,9 @@ private Q_SLOTS:
     void removeFromSelection();
 
 protected:
-    bool event(QEvent *e); 
+    bool event(QEvent *e);
     void changeEvent(QEvent *e);
+    void clearButtons(const SelectionChangeModes notThis) override;
 
 private:
     void updateUI();

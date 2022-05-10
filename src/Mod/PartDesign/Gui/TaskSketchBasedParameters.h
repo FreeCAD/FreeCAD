@@ -29,6 +29,7 @@
 #include "ViewProvider.h"
 
 #include "TaskFeatureParameters.h"
+#include "EnumFlags.h"
 
 namespace App {
 class Property;
@@ -53,7 +54,13 @@ protected:
     const QString onAddSelection(const Gui::SelectionChanges& msg);
     virtual void startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base);
     virtual void finishReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base);
-    void onSelectReference(const bool pressed, const bool edge, const bool face, const bool planar, const bool circle = false);
+    /*!
+     * \brief onSelectReference
+     * Start reference selection mode to allow to select objects of the type defined
+     * with \a AllowSelectionFlags.
+     * If AllowSelection::NONE is passed the selection mode is finished.
+     */
+    void onSelectReference(AllowSelectionFlags);
     void exitSelectionMode();
     QVariant setUpToFace(const QString& text);
     /// Try to find the name of a feature with the given label.
@@ -61,6 +68,10 @@ protected:
     QVariant objectNameByLabel(const QString& label, const QVariant& suggest) const;
 
     QString getFaceReference(const QString& obj, const QString& sub) const;
+    /// Create a label for the 2D feature: the objects name if it's already 2D,
+    /// or the subelement's name if the object is a solid.
+    QString make2DLabel(const App::DocumentObject* section,
+                        const std::vector<std::string>& subValues);
 };
 
 class TaskDlgSketchBasedParameters : public PartDesignGui::TaskDlgFeatureParameters

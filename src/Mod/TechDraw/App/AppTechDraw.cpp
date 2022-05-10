@@ -18,11 +18,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
@@ -65,6 +61,8 @@
 
 #include "CosmeticExtension.h"
 
+#include "FeatureProjection.h"
+
 namespace TechDraw {
     extern PyObject* initModule();
 }
@@ -79,7 +77,7 @@ PyMOD_INIT_FUNC(TechDraw)
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
     PyObject* mod = TechDraw::initModule();
     Base::Console().Log("Loading TechDraw module... done\n");
@@ -129,6 +127,8 @@ PyMOD_INIT_FUNC(TechDraw)
 
     TechDraw::CosmeticExtension     ::init();
     TechDraw::CosmeticExtensionPython::init();
+
+    TechDraw::FeatureProjection::init();
 
    // are these python init calls required?  some modules don't have them
    // Python Types

@@ -54,7 +54,7 @@ using namespace App;
 
 PROPERTY_SOURCE(Fem::FemMeshShapeNetgenObject, Fem::FemMeshShapeObject)
 
-const char* FinenessEnums[]= {"VeryCoarse","Coarse","Moderate","Fine","VeryFine","UserDefined",NULL};
+const char* FinenessEnums[]= {"VeryCoarse","Coarse","Moderate","Fine","VeryFine","UserDefined",nullptr};
 
 FemMeshShapeNetgenObject::FemMeshShapeNetgenObject()
 {

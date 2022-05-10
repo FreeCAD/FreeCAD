@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QApplication>
 # include <QGraphicsView>
 # include <QMessageBox>
 # include <iostream>
@@ -31,6 +32,7 @@
 # include <exception>
 #endif  //#ifndef _PreComp_
 
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
@@ -39,6 +41,7 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/MainWindow.h>
 #include <Gui/FileDialog.h>
 #include <Gui/ViewProvider.h>
@@ -67,6 +70,7 @@
 #include "TaskCosmeticLine.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderViewPart.h"
+#include "QGIView.h"
 #include "QGVPage.h"
 
 using namespace TechDrawGui;
@@ -258,7 +262,7 @@ Gui::Action * CmdTechDrawCosmeticVertexGroup::createAction(void)
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/techdraw-CosmeticVertex"));
     p1->setObjectName(QString::fromLatin1("TechDraw_CosmeticVertex"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_CosmeticVertx"));
+    p1->setWhatsThis(QString::fromLatin1("TechDraw_CosmeticVertex"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_Midpoints"));
     p2->setObjectName(QString::fromLatin1("TechDraw_Midpoints"));
@@ -348,15 +352,20 @@ void execMidpoints(Gui::Command* cmd)
         return;
     }
 
-    const std::vector<TechDraw::BaseGeom*> edges = dvp->getEdgeGeometry();
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Midpoint Vertices"));
+
+    const TechDraw::BaseGeomPtrVector edges = dvp->getEdgeGeometry();
     double scale = dvp->getScale();
     for (auto& s: selectedEdges) {
         int GeoId(TechDraw::DrawUtil::getIndexFromName(s));
-        TechDraw::BaseGeom* geom = edges.at(GeoId);
+        TechDraw::BaseGeomPtr geom = edges.at(GeoId);
         Base::Vector3d mid = geom->getMidPoint();
         mid = DrawUtil::invertY(mid);
         dvp->addCosmeticVertex(mid / scale);
     }
+
+    Gui::Command::commitCommand();
+
     dvp->recomputeFeature();
 }
 
@@ -371,17 +380,22 @@ void execQuadrants(Gui::Command* cmd)
         return;
     }
 
-    const std::vector<TechDraw::BaseGeom*> edges = dvp->getEdgeGeometry();
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Quadrant Vertices"));
+
+    const TechDraw::BaseGeomPtrVector edges = dvp->getEdgeGeometry();
     double scale = dvp->getScale();
     for (auto& s: selectedEdges) {
         int GeoId(TechDraw::DrawUtil::getIndexFromName(s));
-        TechDraw::BaseGeom* geom = edges.at(GeoId);
+        TechDraw::BaseGeomPtr geom = edges.at(GeoId);
             std::vector<Base::Vector3d> quads = geom->getQuads();
             for (auto& q: quads) {
                 Base::Vector3d iq = DrawUtil::invertY(q);
                 dvp->addCosmeticVertex(iq / scale);
             }
     }
+
+    Gui::Command::commitCommand();
+
     dvp->recomputeFeature();
 }
 
@@ -1084,7 +1098,7 @@ void execLine2Points(Gui::Command* cmd)
     if (!vertexNames.empty()) {
         for (auto& v2d: vertexNames) {
             int idx = DrawUtil::getIndexFromName(v2d);
-            TechDraw::Vertex* v = baseFeat->getProjVertexByIndex(idx);
+            TechDraw::VertexPtr v = baseFeat->getProjVertexByIndex(idx);
             if (v) {
                 Base::Vector3d p = DrawUtil::invertY(v->pnt);
                 points.push_back(p / scale);
@@ -1188,7 +1202,7 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
             int idx = TechDraw::DrawUtil::getIndexFromName(s);
             std::string geomType = TechDraw::DrawUtil::getGeomTypeFromName(s);
             if (geomType == "Edge") {
-                TechDraw::BaseGeom* bg = objFeat->getGeomByIndex(idx);
+                TechDraw::BaseGeomPtr bg = objFeat->getGeomByIndex(idx);
                 if ((bg != nullptr) &&
                     (bg->cosmetic) ) {
                     int source = bg->source();
@@ -1203,7 +1217,7 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
                     }
                 }
             } else if (geomType == "Vertex") {
-                TechDraw::Vertex* tdv = objFeat->getProjVertexByIndex(idx);
+                TechDraw::VertexPtr tdv = objFeat->getProjVertexByIndex(idx);
                 if (tdv != nullptr) {
                     std::string delTag = tdv->cosmeticTag;
                     if (!delTag.empty()) {

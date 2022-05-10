@@ -89,7 +89,7 @@ private:
         if (file.hasExtension("svg") || file.hasExtension("svgz")) {
             QString fileName = QString::fromUtf8(EncodedName.c_str());
             // Displaying the image in a view
-            DrawingView* view = new DrawingView(0, Gui::getMainWindow());
+            DrawingView* view = new DrawingView(nullptr, Gui::getMainWindow());
             view->load(fileName);
             view->setWindowIcon(Gui::BitmapFactory().pixmap("actions/drawing-landscape"));
             QFileInfo fi(fileName);
@@ -98,7 +98,7 @@ private:
             Gui::getMainWindow()->addWindow(view);
         }
         else {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, "unknown filetype");
+            throw Py::Exception(PyExc_IOError, "unknown filetype");
         }
 
         return Py::None();
@@ -117,7 +117,7 @@ private:
         if (file.hasExtension("svg") || file.hasExtension("svgz")) {
             QString fileName = QString::fromUtf8(EncodedName.c_str());
             // Displaying the image in a view
-            DrawingView* view = new DrawingView(0, Gui::getMainWindow());
+            DrawingView* view = new DrawingView(nullptr, Gui::getMainWindow());
             view->load(fileName);
             view->setWindowIcon(Gui::BitmapFactory().pixmap("actions/drawing-landscape"));
             QFileInfo fi(fileName);
@@ -125,7 +125,7 @@ private:
             view->resize( 400, 300 );
             Gui::getMainWindow()->addWindow(view);
         } else {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, "unknown filetype");
+            throw Py::Exception(PyExc_IOError, "unknown filetype");
         }
 
         return Py::None();
@@ -173,10 +173,9 @@ private:
                         for (std::vector<App::DocumentObject*>::const_iterator it = views.begin(); it != views.end(); ++it) {
                             if ((*it)->getTypeId().isDerivedFrom(Drawing::FeatureViewPart::getClassTypeId())) {
                                 Drawing::FeatureViewPart* view = static_cast<Drawing::FeatureViewPart*>(*it);
-                                std::string viewName = view->Label.getValue();
                                 App::DocumentObject* link = view->Source.getValue();
                                 if (!link) {
-                                    throw Py::Exception(Base::BaseExceptionFreeCADError, "No object linked");
+                                    throw Py::ValueError("No object linked");
                                 }
                                 if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
                                     throw Py::TypeError("Linked object is not a Part object");
@@ -217,7 +216,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace DrawingGui

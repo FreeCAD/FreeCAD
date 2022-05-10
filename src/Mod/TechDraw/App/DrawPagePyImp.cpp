@@ -93,30 +93,40 @@ PyObject* DrawPagePy::getAllViews(PyObject* args)
     return Py::new_reference_to(ret);
 }
 
+PyObject* DrawPagePy::requestPaint(PyObject* args)
+{
+    (void) args;
+    DrawPage* page = getDrawPagePtr();
+    page->requestPaint();
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+
 //    double getPageWidth() const;
 PyObject* DrawPagePy::getPageWidth(PyObject *)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    return nullptr;
 }
 
 //    double getPageHeight() const;
 PyObject* DrawPagePy::getPageHeight(PyObject *)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    return nullptr;
 }
 
 //    const char* getPageOrientation() const;
 PyObject* DrawPagePy::getPageOrientation(PyObject *)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    return nullptr;
 }
 
 PyObject *DrawPagePy::getCustomAttributes(const char* ) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DrawPagePy::setCustomAttributes(const char* , PyObject *)

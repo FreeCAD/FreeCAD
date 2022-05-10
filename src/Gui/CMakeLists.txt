@@ -1,8 +1,10 @@
 #add_subdirectory(Icons)
 add_subdirectory(Stylesheets)
+add_subdirectory(PreferencePacks)
+add_subdirectory(PreferencePackTemplates)
 
 if(WIN32)
-add_definitions(-DFCGui -DQIIS_MAKEDLL -DQSINT_MAKEDLL -DOVR_OS_WIN32 -DQUARTER_INTERNAL -DQUARTER_MAKE_DLL -DCOIN_DLL)
+add_definitions(-DFCGui -DQSINT_MAKEDLL -DOVR_OS_WIN32 -DQUARTER_INTERNAL -DQUARTER_MAKE_DLL -DCOIN_DLL)
 endif(WIN32)
 
 IF(CMAKE_BUILD_TYPE)
@@ -306,6 +308,7 @@ SET(Gui_UIC_SRCS
     DlgAuthorization.ui
     DlgChooseIcon.ui
     DlgCommands.ui
+    DlgCreateNewPreferencePack.ui
     DlgCustomizeSpNavSettings.ui
     DlgDisplayProperties.ui
     DlgEditor.ui
@@ -319,12 +322,15 @@ SET(Gui_UIC_SRCS
     DlgOnlineHelp.ui
     DlgParameter.ui
     DlgParameterFind.ui
+    DlgPreferencePackManagement.ui
     DlgPreferences.ui
     DlgProjectInformation.ui
     DlgProjectUtility.ui
     DlgPropertyLink.ui
     DlgReportView.ui
+    DlgRevertToBackupConfig.ui
     DlgSettings3DView.ui
+    DlgSettingsCacheDirectory.ui
     DlgSettingsNavigation.ui
     DlgSettingsSelection.ui
     DlgSettingsUnits.ui
@@ -334,6 +340,7 @@ SET(Gui_UIC_SRCS
     DlgSettingsImage.ui
     DlgSettingsLazyLoaded.ui
     DlgSettingsMacro.ui
+    DlgSettingsPythonConsole.ui
     DlgCheckableMessageBox.ui
     DlgToolbars.ui
     DlgWorkbenches.ui
@@ -360,7 +367,6 @@ SET(Gui_UIC_SRCS
 SET(Gui_RES_SRCS
     Icons/resource.qrc
     Language/translation.qrc
-    iisTaskPanel/src/iisTaskPanel.qrc
     QSint/actionpanel/schemes.qrc
 )
 
@@ -403,6 +409,7 @@ SET(Dialog_CPP_SRCS
     Clipping.cpp
     DemoMode.cpp
     DlgActivateWindowImp.cpp
+    DlgCreateNewPreferencePackImp.cpp
     DlgUnitsCalculatorImp.cpp
     DlgDisplayPropertiesImp.cpp
     DlgInputDialogImp.cpp
@@ -413,9 +420,11 @@ SET(Dialog_CPP_SRCS
     DlgMaterialPropertiesImp.cpp
     DlgParameterImp.cpp
     DlgParameterFind.cpp
+    DlgPreferencePackManagementImp.cpp
     DlgProjectInformationImp.cpp
     DlgProjectUtility.cpp
     DlgPropertyLink.cpp
+    DlgRevertToBackupConfigImp.cpp
     DlgExpressionInput.cpp
     TaskDlgRelocation.cpp
     DlgCheckableMessageBox.cpp
@@ -440,6 +449,7 @@ SET(Dialog_HPP_SRCS
     Clipping.h
     DemoMode.h
     DlgActivateWindowImp.h
+    DlgCreateNewPreferencePackImp.h
     DlgUnitsCalculatorImp.h
     DlgDisplayPropertiesImp.h
     DlgInputDialogImp.h
@@ -450,9 +460,11 @@ SET(Dialog_HPP_SRCS
     DlgMaterialPropertiesImp.h
     DlgParameterImp.h
     DlgParameterFind.h
+    DlgPreferencePackManagementImp.h
     DlgProjectInformationImp.h
     DlgProjectUtility.h
     DlgPropertyLink.h
+    DlgRevertToBackupConfigImp.h
     DlgCheckableMessageBox.h
     DlgExpressionInput.h
     TaskDlgRelocation.h
@@ -493,12 +505,15 @@ SET(Dialog_SRCS
     DlgMaterialProperties.ui
     DlgParameter.ui
     DlgParameterFind.ui
+    DlgPreferencePackManagement.ui
     DlgProjectInformation.ui
     DlgProjectUtility.ui
     DlgPropertyLink.ui
+    DlgRevertToBackupConfig.ui
     DlgCheckableMessageBox.ui
     DlgTreeWidget.ui
     DlgExpressionInput.ui
+    DlgCreateNewPreferencePack.ui
     DownloadManager.ui
     DownloadItem.ui
     DocumentRecovery.ui
@@ -557,6 +572,7 @@ SET(Dialog_Settings_CPP_SRCS
     DlgPreferencesImp.cpp
     DlgReportViewImp.cpp
     DlgSettings3DViewImp.cpp
+    DlgSettingsCacheDirectory.cpp
     DlgSettingsNavigation.cpp
     DlgSettingsSelection.cpp
     DlgSettingsUnitsImp.cpp
@@ -566,6 +582,7 @@ SET(Dialog_Settings_CPP_SRCS
     DlgSettingsImageImp.cpp
     DlgSettingsLazyLoadedImp.cpp
     DlgSettingsMacroImp.cpp
+    DlgSettingsPythonConsole.cpp
 )
 SET(Dialog_Settings_HPP_SRCS
     DlgEditorImp.h
@@ -574,6 +591,7 @@ SET(Dialog_Settings_HPP_SRCS
     DlgPreferencesImp.h
     DlgReportViewImp.h
     DlgSettings3DViewImp.h
+    DlgSettingsCacheDirectory.h
     DlgSettingsNavigation.h
     DlgSettingsSelection.h
     DlgSettingsUnitsImp.h
@@ -583,6 +601,7 @@ SET(Dialog_Settings_HPP_SRCS
     DlgSettingsImageImp.h
     DlgSettingsLazyLoadedImp.h
     DlgSettingsMacroImp.h
+    DlgSettingsPythonConsole.h
 )
 SET(Dialog_Settings_SRCS
     ${Dialog_Settings_CPP_SRCS}
@@ -593,6 +612,7 @@ SET(Dialog_Settings_SRCS
     DlgPreferences.ui
     DlgReportView.ui
     DlgSettings3DView.ui
+    DlgSettingsCacheDirectory.ui
     DlgSettingsNavigation.ui
     DlgSettingsSelection.ui
     DlgSettingsUnits.ui
@@ -602,6 +622,7 @@ SET(Dialog_Settings_SRCS
     DlgSettingsImage.ui
     DlgSettingsLazyLoaded.ui
     DlgSettingsMacro.ui
+    DlgSettingsPythonConsole.ui
 )
 SOURCE_GROUP("Dialog\\Settings" FILES ${Dialog_Settings_SRCS})
 
@@ -732,40 +753,6 @@ SET(Task_View_SRCS
 )
 SOURCE_GROUP("Task View" FILES ${Task_View_SRCS})
 
-SET(iisTaskPanel_SRCS
-    iisTaskPanel/src/iisfreecadscheme.cpp
-    iisTaskPanel/src/iisfreecadscheme.h
-    iisTaskPanel/src/iisiconlabel.cpp
-    iisTaskPanel/src/iisiconlabel.h
-    iisTaskPanel/src/iistaskbox.cpp
-    iisTaskPanel/src/iistaskbox.h
-    iisTaskPanel/src/iistaskgroup.cpp
-    iisTaskPanel/src/iistaskgroup.h
-    iisTaskPanel/src/iistaskheader.cpp
-    iisTaskPanel/src/iistaskheader.h
-    iisTaskPanel/src/iistaskpanel.cpp
-    iisTaskPanel/src/iistaskpanel.h
-    iisTaskPanel/src/iistaskpanelscheme.cpp
-    iisTaskPanel/src/iistaskpanelscheme.h
-    iisTaskPanel/src/iiswinxptaskpanelscheme.cpp
-    iisTaskPanel/src/iiswinxptaskpanelscheme.h
-    iisTaskPanel/src/iistaskpanel_global.h
-)
-SOURCE_GROUP("Widget\\iisTaskPanel" FILES ${iisTaskPanel_SRCS})
-set(iis_MOC_HDRS
-    iisTaskPanel/src/iisiconlabel.h
-    iisTaskPanel/src/iistaskbox.h
-    iisTaskPanel/src/iistaskgroup.h
-    iisTaskPanel/src/iistaskheader.h
-)
-
-if (BUILD_QT5)
-    qt5_wrap_cpp(iis_MOC_SRCS ${iis_MOC_HDRS})
-else()
-    qt4_wrap_cpp(iis_MOC_SRCS ${iis_MOC_HDRS})
-endif()
-SOURCE_GROUP("Widget\\iisTaskPanel\\Mocs" FILES ${iis_MOC_SRCS})
-
 SET(qsintActionPanel_SRCS
     QSint/actionpanel/actionbox.cpp
     QSint/actionpanel/actionbox.h
@@ -832,6 +819,8 @@ SET(View3D_CPP_SRCS
     BlenderNavigationStyle.cpp
     MayaGestureNavigationStyle.cpp
     OpenCascadeNavigationStyle.cpp
+    OpenSCADNavigationStyle.cpp
+    TinkerCADNavigationStyle.cpp
     TouchpadNavigationStyle.cpp
     GestureNavigationStyle.cpp
     SplitView3DInventor.cpp
@@ -1025,6 +1014,7 @@ SOURCE_GROUP("View3D\\Inventor" FILES ${Inventor_SRCS})
 SET(Widget_CPP_SRCS
     FileDialog.cpp
     MainWindow.cpp
+    MainWindowPy.cpp
     PrefWidgets.cpp
     InputField.cpp
     ProgressBar.cpp
@@ -1032,6 +1022,8 @@ SET(Widget_CPP_SRCS
     QuantitySpinBox.cpp
     SpinBox.cpp
     Splashscreen.cpp
+    PythonWrapper.cpp
+    UiLoader.cpp
     WidgetFactory.cpp
     Widgets.cpp
     Window.cpp
@@ -1040,6 +1032,7 @@ SET(Widget_CPP_SRCS
 SET(Widget_HPP_SRCS
     FileDialog.h
     MainWindow.h
+    MainWindowPy.h
     PrefWidgets.h
     InputField.h
     ProgressBar.h
@@ -1048,6 +1041,8 @@ SET(Widget_HPP_SRCS
     QuantitySpinBox_p.h
     SpinBox.h
     Splashscreen.h
+    PythonWrapper.h
+    UiLoader.h
     WidgetFactory.h
     Widgets.h
     Window.h
@@ -1139,6 +1134,7 @@ SET(FreeCADGui_CPP_SRCS
     resource.cpp
     Control.cpp
     SpaceballEvent.cpp
+    PreferencePackManager.cpp
     Thumbnail.cpp
     Utilities.cpp
     WaitCursor.cpp
@@ -1168,10 +1164,12 @@ SET(FreeCADGui_SRCS
     MetaTypes.h
     PreCompiled.cpp
     PreCompiled.h
-    Qt4All.h
+    QtAll.h
     Control.h
     SpaceballEvent.h
+    PreferencePackManager.h
     Thumbnail.h
+    Tools.h
     Utilities.h
     WaitCursor.h
     ManualAlignment.h
@@ -1183,7 +1181,6 @@ SET(FreeCADGui_SRCS
     ${FreeCADGui_SDK_SRCS}
     ${FreeCADGui_CPP_SRCS}
     ${FreeCADGui_XML_SRCS}
-    ${iis_MOC_SRCS}
     ${qsint_MOC_SRCS}
     ${Gui_QRC_SRCS}
     ${Gui_UIC_HDRS}
@@ -1198,7 +1195,6 @@ SET(FreeCADGui_SRCS
     ${Language_SRCS}
     ${Propertyeditor_SRCS}
     ${Task_View_SRCS}
-    ${iisTaskPanel_SRCS}
     ${qsintActionPanel_SRCS}
     ${Resource_SRCS}
     ${Quarter_SRCS}

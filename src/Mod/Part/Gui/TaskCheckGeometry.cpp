@@ -32,7 +32,6 @@
 # include <QThread>
 # include <QTreeWidget>
 # include <QPushButton>
-# include <Python.h>
 # include <Standard_Version.hxx>
 # include <BRepCheck_Analyzer.hxx>
 # include <BRepCheck_Result.hxx>
@@ -64,6 +63,7 @@
 #endif //_PreComp_
 
 #include "../App/PartFeature.h"
+#include "../App/TopoShapePy.h"
 #include <Base/Interpreter.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Selection.h>
@@ -190,10 +190,10 @@ QString getBOPCheckString(const BOPAlgo_CheckStatus &status)
 
 ResultEntry::ResultEntry()
 {
-    viewProviderRoot = 0;
-    boxSep = 0;
-    boxSwitch = 0;
-    parent = 0;
+    viewProviderRoot = nullptr;
+    boxSep = nullptr;
+    boxSwitch = nullptr;
+    parent = nullptr;
     children.clear();
     selectionStrings.clear();
 }
@@ -210,10 +210,10 @@ ResultEntry::~ResultEntry()
 void ResultEntry::buildEntryName()
 {
   ResultEntry *parentEntry = this;
-  while(parentEntry->parent != 0)
+  while(parentEntry->parent != nullptr)
   {
       ResultEntry *temp = parentEntry->parent;
-      if (temp->parent == 0)
+      if (temp->parent == nullptr)
         break;
       parentEntry = parentEntry->parent;
   }
@@ -271,7 +271,7 @@ void ResultEntry::buildEntryName()
 
 ResultModel::ResultModel(QObject *parent) : QAbstractItemModel(parent)
 {
-    root = 0;
+    root = nullptr;
 }
 
 ResultModel::~ResultModel()
@@ -450,7 +450,7 @@ void TaskCheckGeometryResults::goCheck()
         checkedCount++;
         checkedMap.Clear();
 
-        buildShapeContent(baseName, shape);
+        buildShapeContent(sel.pObject, baseName, shape);
 
         BRepCheck_Analyzer shapeCheck(shape);
         if (!shapeCheck.IsValid())
@@ -584,81 +584,34 @@ void TaskCheckGeometryResults::checkSub(const BRepCheck_Analyzer &shapeCheck, co
     }
 }
 
-void TaskCheckGeometryResults::buildShapeContent(const QString &baseName, const TopoDS_Shape &shape)
+void TaskCheckGeometryResults::buildShapeContent(App::DocumentObject *pObject, const QString &baseName, const TopoDS_Shape &shape)
 {
-    ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-            GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Units");
-    int decimals = group->GetInt("Decimals", 2);
-    group = App::GetApplication().GetUserParameter().
-        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
-    bool advancedShapeContent = group->GetBool("AdvancedShapeContent", true);
+
+    bool advancedShapeContent = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->
+            GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry")->GetBool("AdvancedShapeContent", true);
+    int decimals = App::GetApplication().GetUserParameter().
+            GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Units")->GetInt("Decimals", 2);
     std::ostringstream stream;
     if (!shapeContentString.empty())
         stream << std::endl << std::endl;
     stream << "Checked object: ";
-    std::ostringstream cmdstream;
-    cmdstream << "_basename = '" << baseName.toStdString().c_str() << "'" << std::endl;
-    cmdstream << "_obj = _basename[_basename.index('.')+1:]" << std::endl;
-    cmdstream << "_doc = _basename[:_basename.index(_obj)-1]" << std::endl;
-    cmdstream << "_shp = App.ActiveDocument.getObject(_obj).Shape" << std::endl;
-    cmdstream << "_type = str(_shp.ShapeType)" << std::endl;
-    cmdstream << "_result = _doc+'.'+App.ActiveDocument.getObject(_obj).Label+' ('+_obj+'):\\n'" << std::endl;
-    cmdstream << "_result += 'Shape type:  '+_type+'\\n'" << std::endl;
-    cmdstream << "_result += 'Vertices:  '+str(len(_shp.Vertexes))+'\\n'" << std::endl;
-    cmdstream << "_result += 'Edges:  '+str(len(_shp.Edges))+'\\n'" << std::endl;
-    cmdstream << "_result += 'Wires:  '+str(len(_shp.Wires))+'\\n'" << std::endl;
-    cmdstream << "_result += 'Faces:  '+str(len(_shp.Faces))+'\\n'" << std::endl;
-    cmdstream << "_result += 'Shells:  '+str(len(_shp.Shells))+'\\n'" << std::endl;
-    cmdstream << "_result += 'Solids:  '+str(len(_shp.Solids))+'\\n'" << std::endl;
-    cmdstream << "_result += 'CompSolids:  '+str(len(_shp.CompSolids))+'\\n'" << std::endl;
-    cmdstream << "_result += 'Compounds:  '+str(len(_shp.Compounds))+'\\n'" << std::endl;
-    cmdstream << "_result += 'Shapes:  '+str(len(_shp.Vertexes+_shp.Edges+_shp.Wires+_shp.Faces+_shp.Shells+_shp.Solids+_shp.CompSolids+_shp.Compounds))+'\\n'" << std::endl;
-    if (advancedShapeContent){
-        cmdstream << "_result += '----------\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'Area') and not 'Wire' in _type and not 'Edge' in _type and not 'Vertex' in _type:" << std::endl;
-        cmdstream << "    _result += 'Area:  '+str(round(_shp.Area, " << decimals << "))+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'Volume') and not 'Wire' in _type and not 'Edge' in _type and not 'Vertex' in _type and not 'Face' in _type:" << std::endl;
-        cmdstream << "    _result += 'Volume:  '+str(round(_shp.Volume, " << decimals << "))+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'Mass'):" << std::endl;
-        cmdstream << "    _result += 'Mass:  '+str(round(_shp.Mass, " << decimals << "))+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'Length'):" << std::endl;
-        cmdstream << "    _result += 'Length:  '+str(round(_shp.Length, " << decimals << "))+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'Curve') and hasattr(_shp.Curve,'Radius'):" << std::endl;
-        cmdstream << "    _result += 'Radius:  '+str(round(_shp.Curve.Radius, " << decimals << "))+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'Curve') and hasattr(_shp.Curve,'Center'):" << std::endl;
-        cmdstream << "    _result += 'Curve center:  '+str([round(vv," << decimals << ") for vv in _shp.Curve.Center])+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'Curve') and hasattr(_shp.Curve,'Continuity'):" << std::endl;
-        cmdstream << "    _result += 'Continuity:  '+str(_shp.Curve.Continuity)+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'CenterOfMass'):" << std::endl;
-        cmdstream << "    _result += 'CenterOfMass:  '+str([round(vv," << decimals << ") for vv in _shp.CenterOfMass])+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp,'normalAt'):" << std::endl;
-        cmdstream << "    try:" << std::endl;
-        cmdstream << "        _result += 'normalAt(0):  '+str([round(vv," << decimals << ") for vv in _shp.normalAt(0)]) +'\\n'" << std::endl;
-        cmdstream << "    except Exception:" << std::endl;
-        cmdstream << "        try:" << std::endl;
-        cmdstream << "            _result += 'normalAt(0,0):  '+str([round(vv," << decimals << ") for vv in _shp.normalAt(0,0)]) +'\\n'" << std::endl;
-        cmdstream << "        except Exception:" << std::endl;
-        cmdstream << "            pass" << std::endl;
-        cmdstream << "if hasattr(_shp, 'isClosed') and ('Wire' in _type or 'Edge' in _type):" << std::endl;
-        cmdstream << "    _result += 'isClosed:  '+str(_shp.isClosed())+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp, 'Orientation'):" << std::endl;
-        cmdstream << "    _result += 'Orientation:  '+str(_shp.Orientation)+'\\n'" << std::endl;
-        cmdstream << "if hasattr(_shp, 'PrincipalProperties'):" << std::endl;
-        cmdstream << "    _props = _shp.PrincipalProperties" << std::endl;
-        cmdstream << "    for _p in _props:" << std::endl;
-        cmdstream << "        if 'Base.Vector' in str(type(_props[_p])) or 'tuple' in str(type(_props[_p])):" << std::endl;
-        cmdstream << "            _result += str(_p)+':  '+str([round(vv," << decimals << ") for vv in _props[_p]]) +'\\n'" << std::endl;
-        cmdstream << "        else:" << std::endl;
-        cmdstream << "            _result += str(_p)+':  '+str(_props[_p])+'\\n'" << std::endl;
-    }
-
-    std::string cmd = cmdstream.str();
-
+    Base::PyGILStateLocker lock;
     try {
-        std::string result = Base::Interpreter().runStringWithKey(cmd.c_str(),"_result");
-        stream << result;
+        PyObject* module = PyImport_ImportModule("BasicShapes.ShapeContent");
+        if (!module) {
+            throw Py::Exception();
+        }
+        Py::Tuple args(3);
+        args.setItem(0, Py::asObject(pObject->getPyObject()));
+        args.setItem(1, Py::Long(decimals));
+        args.setItem(2, Py::Boolean(advancedShapeContent));
+        Py::Module shapecontent(module, true);
+        Py::String result(shapecontent.callMemberFunction("buildShapeContent", args));
+        stream << result.as_std_string("utf-8");
     }
-    catch (Base::PyException&) { //script had runtime error so fall back on OCCT method
+    catch (Py::Exception&) {
+        Base::PyException e;
+        e.ReportException();
         stream << baseName.toLatin1().data() << std::endl;
         BRepTools_ShapeSet set;
         set.Add(shape);
@@ -711,8 +664,10 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
 #if OCC_VERSION_HEX >= 0x060900
 #if OCC_VERSION_HEX < 0x070500
   BOPCheck.SetProgressIndicator(theProgress);
-#else
+#elif OCC_VERSION_HEX < 0x070600
   BOPCheck.SetProgressIndicator(theScope);
+#else
+  Q_UNUSED(theScope)
 #endif // 0x070500
 #else
   Q_UNUSED(theProgress);
@@ -740,7 +695,7 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   Base::TimeInfo start_time;
 #endif
 
-BOPCheck.Perform();
+  BOPCheck.Perform();
 
 #ifdef FC_DEBUG
   float bopAlgoTime = Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo());
@@ -903,10 +858,10 @@ bool TaskCheckGeometryResults::split(QString &input, QString &doc, QString &obje
 QString PartGui::buildSelectionName(const ResultEntry *entry, const TopoDS_Shape &shape)
 {
     const ResultEntry *parentEntry = entry;
-    while(parentEntry->parent != 0)
+    while(parentEntry->parent != nullptr)
     {
         ResultEntry *temp = parentEntry->parent;
-        if (temp->parent == 0)
+        if (temp->parent == nullptr)
           break;
         parentEntry = parentEntry->parent;
     }
@@ -1047,7 +1002,7 @@ void PartGui::goSetupResultUnorientableShapeFace(ResultEntry *entry)
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 TaskCheckGeometryDialog::TaskCheckGeometryDialog()
-    : widget(0), contentLabel(0), okBtn(0), settingsBtn(0), resultsBtn(0)
+    : widget(nullptr), contentLabel(nullptr), okBtn(nullptr), settingsBtn(nullptr), resultsBtn(nullptr)
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
@@ -1058,14 +1013,14 @@ TaskCheckGeometryDialog::TaskCheckGeometryDialog()
 
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Part_CheckGeometry"),
-        widget->windowTitle(), true, 0);
+        widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 
     contentLabel = new QTextEdit();
     contentLabel->setText(widget->getShapeContentString());
     shapeContentBox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("Part_CheckGeometry"),
-        tr("Shape Content"), true, 0);
+        tr("Shape Content"), true, nullptr);
     shapeContentBox->groupLayout()->addWidget(contentLabel);
     if (!expandShapeContent){
         shapeContentBox->hideGroupBox();
@@ -1073,7 +1028,7 @@ TaskCheckGeometryDialog::TaskCheckGeometryDialog()
     Content.push_back(shapeContentBox);
 
     settingsBox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("Part_CheckGeometry"),
-        tr("Settings"), true, 0);
+        tr("Settings"), true, nullptr);
     Content.push_back(settingsBox);
 
     autoRunCheckBox = new QCheckBox();
@@ -1387,12 +1342,12 @@ TaskCheckGeometryDialog::~TaskCheckGeometryDialog()
   if (widget)
   {
     delete widget;
-    widget = 0;
+    widget = nullptr;
   }
   if (contentLabel)
   {
     delete contentLabel;
-    contentLabel = 0;
+    contentLabel = nullptr;
   }
 }
 

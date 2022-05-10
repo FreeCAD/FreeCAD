@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -29,22 +28,22 @@
 # include <QPointer>
 #endif
 
-#include "TaskDialogPython.h"
-#include "TaskView.h"
-
+#include <Base/Interpreter.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
-#include <Gui/WidgetFactory.h>
-#include <Base/Interpreter.h>
-#include <Base/Console.h>
-#include <CXX/Objects.hxx>
+#include <Gui/UiLoader.h>
+#include <Gui/PythonWrapper.h>
+
+#include "TaskDialogPython.h"
+#include "TaskView.h"
+
 
 using namespace Gui;
 using namespace Gui::TaskView;
 
-ControlPy* ControlPy::instance = 0;
+ControlPy* ControlPy::instance = nullptr;
 
 ControlPy* ControlPy::getInstance()
 {
@@ -129,7 +128,7 @@ Py::Object ControlPy::activeDialog(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-    return Py::Boolean(dlg!=0);
+    return Py::Boolean(dlg!=nullptr);
 }
 
 Py::Object ControlPy::closeDialog(const Py::Tuple& args)
@@ -212,7 +211,7 @@ Py::Object ControlPy::showModelView(const Py::Tuple& args)
 // ------------------------------------------------------------------
 
 TaskWatcherPython::TaskWatcherPython(const Py::Object& o)
-  : TaskWatcher(0), watcher(o)
+  : TaskWatcher(nullptr), watcher(o)
 {
     QString title;
     if (watcher.hasAttr(std::string("title"))) {
@@ -228,9 +227,9 @@ TaskWatcherPython::TaskWatcherPython(const Py::Object& o)
         icon = BitmapFactory().pixmap(s.c_str());
     }
 
-    Gui::TaskView::TaskBox *tb = 0;
+    Gui::TaskView::TaskBox *tb = nullptr;
     if (watcher.hasAttr(std::string("commands"))) {
-        tb = new Gui::TaskView::TaskBox(icon, title, true, 0);
+        tb = new Gui::TaskView::TaskBox(icon, title, true, nullptr);
         Py::Sequence cmds(watcher.getAttr(std::string("commands")));
         CommandManager &mgr = Gui::Application::Instance->commandManager();
         for (Py::Sequence::iterator it = cmds.begin(); it != cmds.end(); ++it) {
@@ -244,7 +243,7 @@ TaskWatcherPython::TaskWatcherPython(const Py::Object& o)
 
     if (watcher.hasAttr(std::string("widgets"))) {
         if (!tb && !title.isEmpty())
-            tb = new Gui::TaskView::TaskBox(icon, title, true, 0);
+            tb = new Gui::TaskView::TaskBox(icon, title, true, nullptr);
         Py::Sequence list(watcher.getAttr(std::string("widgets")));
 
         Gui::PythonWrapper wrap;
@@ -318,13 +317,13 @@ TaskDialogPython::TaskDialogPython(const Py::Object& o) : dlg(o)
         fn = QString::fromUtf8(path.c_str());
 
         QFile file(fn);
-        QWidget* form = 0;
+        QWidget* form = nullptr;
         if (file.open(QFile::ReadOnly))
-            form = loader.load(&file, 0);
+            form = loader.load(&file, nullptr);
         file.close();
         if (form) {
             Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
-                QPixmap(icon), form->windowTitle(), true, 0);
+                QPixmap(icon), form->windowTitle(), true, nullptr);
             taskbox->groupLayout()->addWidget(form);
             Content.push_back(taskbox);
         }
@@ -351,7 +350,7 @@ TaskDialogPython::TaskDialogPython(const Py::Object& o) : dlg(o)
                     QWidget* form = qobject_cast<QWidget*>(object);
                     if (form) {
                         Gui::TaskView::TaskBox* taskbox = new Gui::TaskView::TaskBox(
-                            form->windowIcon().pixmap(32), form->windowTitle(), true, 0);
+                            form->windowIcon().pixmap(32), form->windowTitle(), true, nullptr);
                         taskbox->groupLayout()->addWidget(form);
                         Content.push_back(taskbox);
                     }
@@ -368,19 +367,28 @@ TaskDialogPython::~TaskDialogPython()
     Content.clear();
 
     Base::PyGILStateLocker lock;
-
-    // The widgets stored in the 'form' attribute will be deleted.
-    // Thus, set this attribute to None to make sure that when using
-    // the same dialog instance for a task panel won't segfault.
-    if (this->dlg.hasAttr(std::string("form"))) {
-        this->dlg.setAttr(std::string("form"), Py::None());
-    }
-    this->dlg = Py::None();
+    clearForm();
 
     // Assigning None to 'dlg' may destroy some of the stored widgets.
     // By guarding them with QPointer their pointers will be set to null
     // so that the destructor of the base class can reliably call 'delete'.
     Content.insert(Content.begin(), guarded.begin(), guarded.end());
+}
+
+void TaskDialogPython::clearForm()
+{
+    try {
+        // The widgets stored in the 'form' attribute will be deleted.
+        // Thus, set this attribute to None to make sure that when using
+        // the same dialog instance for a task panel won't segfault.
+        if (this->dlg.hasAttr(std::string("form"))) {
+            this->dlg.setAttr(std::string("form"), Py::None());
+        }
+        this->dlg = Py::None();
+    }
+    catch (Py::AttributeError& e) {
+        e.clear();
+    }
 }
 
 void TaskDialogPython::open()

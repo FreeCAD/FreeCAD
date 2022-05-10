@@ -23,7 +23,6 @@ include_directories(
     ${PYTHON_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
-    ${XercesC_INCLUDE_DIRS}
 )
 
 if(BUILD_QT5)
@@ -36,11 +35,8 @@ else(BUILD_QT5)
     )
 endif(BUILD_QT5)
 
-generate_from_xml(MDIViewPagePy)
-
 # The XML files
 set(TechDrawGui_XML_SRCS
-    MDIViewPagePy.xml
 )
 
 link_directories(${OCC_LIBRARY_DIR})
@@ -57,6 +53,7 @@ else()
 endif()
 
 set(TechDrawGui_UIC_SRCS
+    DlgPageChooser.ui
     DlgPrefsTechDrawAdvanced.ui
     DlgPrefsTechDrawAnnotation.ui
     DlgPrefsTechDrawColors.ui
@@ -69,6 +66,8 @@ set(TechDrawGui_UIC_SRCS
     TaskActiveView.ui
     TaskBalloon.ui
     TaskCosmeticLine.ui
+    TaskSelectLineAttributes.ui
+    TaskCustomizeFormat.ui
     TaskCosVertex.ui
     TaskCenterLine.ui
     TaskDetail.ui
@@ -84,6 +83,8 @@ set(TechDrawGui_UIC_SRCS
     TaskSectionView.ui
     TaskWeldingSymbol.ui
     SymbolChooser.ui
+    TaskMoveView.ui
+    TaskProjection.ui
 )
 
 if(BUILD_QT5)
@@ -111,6 +112,8 @@ SET(TechDrawGui_SRCS
     CommandCreateDims.cpp
     CommandDecorate.cpp
     CommandAnnotate.cpp
+    CommandExtensionDims.cpp
+    CommandExtensionPack.cpp
     Resources/TechDraw.qrc
     PreCompiled.cpp
     PreCompiled.h
@@ -119,6 +122,9 @@ SET(TechDrawGui_SRCS
     TaskProjGroup.ui
     TaskProjGroup.cpp
     TaskProjGroup.h
+    DlgPageChooser.ui
+    DlgPageChooser.cpp
+    DlgPageChooser.h
     DlgPrefsTechDrawGeneral.ui
     DlgPrefsTechDrawGeneralImp.cpp
     DlgPrefsTechDrawGeneralImp.h
@@ -180,6 +186,12 @@ SET(TechDrawGui_SRCS
     TaskWeldingSymbol.ui
     TaskWeldingSymbol.cpp
     TaskWeldingSymbol.h
+    TaskSelectLineAttributes.ui
+    TaskSelectLineAttributes.cpp
+    TaskSelectLineAttributes.h
+    TaskCustomizeFormat.ui
+    TaskCustomizeFormat.cpp
+    TaskCustomizeFormat.h
     DrawGuiUtil.cpp
     DrawGuiUtil.h
     Rez.cpp
@@ -200,12 +212,15 @@ SET(TechDrawGui_SRCS
     TaskCosmeticLine.ui
     TaskCosmeticLine.cpp
     TaskCosmeticLine.h
+    TaskMoveView.ui
+    TaskProjection.cpp
+    TaskProjection.h
+    TaskProjection.ui
 )
 
 SET(TechDrawGuiView_SRCS
     MDIViewPage.cpp
     MDIViewPage.h
-    MDIViewPagePyImp.cpp
     QGVPage.cpp
     QGVPage.h
     QGCustomText.cpp
@@ -370,6 +385,11 @@ SET(TechDrawGuiTaskDlgs_SRCS
     TaskActiveView.ui
     TaskDetail.ui
     TaskCosmeticLine.ui
+    TaskSelectLineAttributes.ui
+    TaskCustomizeFormat.ui
+    TaskMoveView.ui
+    TaskProjection.ui
+
 )
 SOURCE_GROUP("TaskDialogs" FILES ${TechDrawGuiTaskDlgs_SRCS})
 
@@ -382,6 +402,13 @@ SET(TechDrawGuiFonts
     Resources/fonts/osifont-lgpl3fe.ttf
     Resources/fonts/osifont.license
 )
+
+if(FREECAD_USE_PCH)
+    add_definitions(-D_PreComp_)
+    GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" PCH_SRCS ${TechDrawGui_SRCS} ${TechDrawGuiView_SRCS}
+                                                           ${TechDrawGuiViewProvider_SRCS} ${MRTE_SRCS})
+    ADD_MSVC_PRECOMPILED_HEADER(TechDrawGui PreCompiled.h PreCompiled.cpp PCH_SRCS)
+endif(FREECAD_USE_PCH)
 
 add_library(TechDrawGui SHARED ${TechDrawGui_SRCS} ${TechDrawGuiView_SRCS} ${TechDrawGuiViewProvider_SRCS}
                                ${TechDrawGuiIcon_SVG} ${TechDrawGuiFonts} ${MRTE_SRCS})

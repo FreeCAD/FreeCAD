@@ -35,17 +35,17 @@ bool FemSelectionGate::allow(App::Document* /*pDoc*/, App::DocumentObject* /*pOb
     if (!sSubName || sSubName[0] == '\0')
         return false;
 
-    if( sSubName[0] == 'E' &&
+    if (sSubName[0] == 'E' &&
         sSubName[1] == 'l' &&
         sSubName[2] == 'e' &&
         sSubName[3] == 'm' &&
-        (Type == Element || Type == NodeElement) )
+        (Type == Element || Type == NodeElement))
         return true;
-    if( sSubName[0] == 'N' &&
+    if (sSubName[0] == 'N' &&
         sSubName[1] == 'o' &&
         sSubName[2] == 'd' &&
         sSubName[3] == 'e' &&
-        (Type == Node || Type == NodeElement) )
+        (Type == Node || Type == NodeElement))
         return true;
 
     return false;

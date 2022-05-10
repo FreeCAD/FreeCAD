@@ -20,19 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_FEMMESH_H
 #define FEM_FEMMESH_H
 
 #include <App/ComplexGeoData.h>
-#include <Base/Placement.h>
 #include <Base/Quantity.h>
+#include <Mod/Fem/FemGlobal.h>
 
 #include <vector>
 #include <list>
 #include <memory>
 #include <SMESH_Version.h>
-#include <SMDSAbs_ElementType.hxx>
+
 
 class SMESH_Gen;
 class SMESH_Mesh;
@@ -50,7 +49,7 @@ typedef std::shared_ptr<SMESH_Hypothesis> SMESH_HypothesisPtr;
 
 /** The representation of a FemMesh
  */
-class AppFemExport FemMesh : public Data::ComplexGeoData
+class FemExport FemMesh : public Data::ComplexGeoData
 {
     TYPESYSTEM_HEADER();
 

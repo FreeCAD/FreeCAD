@@ -55,7 +55,7 @@ const char* DrawProjGroupItem::TypeEnums[] = {"Front",
                                              "FrontTopRight",
                                              "FrontBottomLeft",
                                              "FrontBottomRight",
-                                             NULL};
+                                             nullptr};
 
 
 PROPERTY_SOURCE(TechDraw::DrawProjGroupItem, TechDraw::DrawViewPart)
@@ -129,6 +129,9 @@ bool DrawProjGroupItem::showLock(void) const
 App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
 {
 //    Base::Console().Message("DPGI::execute(%s)\n",Label.getValue());
+    if (!keepUpdated()) {
+        return App::DocumentObject::StdReturn;
+    }
 
     bool haveX = checkXDirection();
     if (!haveX) {
@@ -170,6 +173,7 @@ void DrawProjGroupItem::autoPosition()
 void DrawProjGroupItem::onDocumentRestored()
 {
 //    Base::Console().Message("DPGI::onDocumentRestored() - %s\n", getNameInDocument());
+    DrawView::onDocumentRestored();
     App::DocumentObjectExecReturn* rc = DrawProjGroupItem::execute();
     if (rc) {
         delete rc;
@@ -325,7 +329,7 @@ double DrawProjGroupItem::getScale(void) const
     double result = 1.0;
     auto pgroup = getPGroup();
     if (pgroup != nullptr) {
-        result = pgroup->Scale.getValue();
+        result = pgroup->getScale();
         if (!(result > 0.0)) {
             Base::Console().Log("DPGI - %s - bad scale found (%.3f) using 1.0\n",getNameInDocument(),Scale.getValue());
             result = 1.0;                                   //kludgy protective fix. autoscale sometimes serves up 0.0!
@@ -347,6 +351,38 @@ void DrawProjGroupItem::unsetupObject()
         }
     }
     DrawViewPart::unsetupObject();
+}
+
+//DPGIs have DPG as parent, not Page, so we need to ask the DPG how many Pages own it.
+int DrawProjGroupItem::countParentPages() const
+{
+    DrawProjGroup* dpg = getPGroup();
+    if (dpg != nullptr) {
+        int count = dpg->countParentPages();
+        return count;
+    }
+    return 0;
+}
+
+DrawPage* DrawProjGroupItem::findParentPage() const
+{
+    DrawProjGroup* dpg = getPGroup();
+    if (dpg != nullptr) {
+        DrawPage* dp = dpg->findParentPage();
+        return dp;
+    }
+    return nullptr;
+}
+
+std::vector<DrawPage*> DrawProjGroupItem::findAllParentPages() const
+{
+    DrawProjGroup* dpg = getPGroup();
+    if (dpg != nullptr) {
+        std::vector<DrawPage*> dps = dpg->findAllParentPages();
+        return dps;
+    }
+    std::vector<DrawPage*> empty;
+    return empty;
 }
 
 PyObject *DrawProjGroupItem::getPyObject(void)

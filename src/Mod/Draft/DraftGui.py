@@ -97,12 +97,12 @@ inCommandShortcuts = {
         None
         ],
     "Increase": [
-        Draft.getParam("inCommandShortcutIncrease", "["),
+        Draft.getParam("inCommandShortcutIncreaseRadius", "["),
         translate("draft","Increase snap radius"),
         None
         ],
     "Decrease": [
-        Draft.getParam("inCommandShortcutDecrease", "]"),
+        Draft.getParam("inCommandShortcutDecreaseRadius", "]"),
         translate("draft","Decrease snap radius"),
         None
         ],
@@ -173,31 +173,31 @@ from draftutils.units import (getDefaultUnit,
 
 class DraftBaseWidget(QtGui.QWidget):
     def __init__(self,parent = None):
-        QtGui.QWidget.__init__(self,parent)
+        super().__init__(parent)
     def eventFilter(self, widget, event):
         if (event.type() == QtCore.QEvent.KeyPress
             and event.text().upper() == inCommandShortcuts["CycleSnap"][0]):
             if hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.cycleSnapObject()
             return True
-        return QtGui.QWidget.eventFilter(self, widget, event)
+        return super().eventFilter(widget, event)
 
 class DraftDockWidget(DraftBaseWidget):
     """custom Widget that emits a resized() signal when resized"""
     def __init__(self,parent = None):
-        QtGui.QWidget.__init__(self,parent)
+        super().__init__(parent)
     def resizeEvent(self,event):
         self.emit(QtCore.SIGNAL("resized()"))
     def changeEvent(self, event):
         if event.type() == QtCore.QEvent.LanguageChange:
             self.emit(QtCore.SIGNAL("retranslate()"))
         else:
-            QtGui.QWidget.changeEvent(self,event)
+            super().changeEvent(event)
 
 class DraftLineEdit(QtGui.QLineEdit):
     """custom QLineEdit widget that has the power to catch Escape keypress"""
     def __init__(self, parent=None):
-        QtGui.QLineEdit.__init__(self, parent)
+        super().__init__(parent)
     def keyPressEvent(self, event):
         if event.key() == QtCore.Qt.Key_Escape:
             self.emit(QtCore.SIGNAL("escaped()"))
@@ -206,7 +206,7 @@ class DraftLineEdit(QtGui.QLineEdit):
         elif event.key() == QtCore.Qt.Key_Down:
             self.emit(QtCore.SIGNAL("down()"))
         else:
-            QtGui.QLineEdit.keyPressEvent(self, event)
+            super().keyPressEvent(event)
 
 class DraftTaskPanel:
     def __init__(self,widget,extra=None):
@@ -473,9 +473,11 @@ class DraftToolBar:
         self.xValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.labely = self._label("labely", yl)
         self.yValue = self._inputfield("yValue", yl)
+        self.yValue.installEventFilter(self.baseWidget) # Required to detect snap cycling in case of Y constraining.
         self.yValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.labelz = self._label("labelz", zl)
         self.zValue = self._inputfield("zValue", zl)
+        self.zValue.installEventFilter(self.baseWidget) # Required to detect snap cycling in case of Z constraining.
         self.zValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.pointButton = self._pushbutton("addButton", bl, icon="Draft_AddPoint")
 
@@ -498,6 +500,7 @@ class DraftToolBar:
         self.layout.addLayout(al)
         self.labellength = self._label("labellength", ll)
         self.lengthValue = self._inputfield("lengthValue", ll)
+        self.lengthValue.installEventFilter(self.baseWidget) # Required to detect snap cycling if focusOnLength is True.
         self.lengthValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.labelangle = self._label("labelangle", al)
         self.angleLock = self._checkbox("angleLock",al,checked=self.alock)
@@ -612,7 +615,10 @@ class DraftToolBar:
         QtCore.QObject.connect(self.undoButton,QtCore.SIGNAL("pressed()"),self.undoSegment)
         QtCore.QObject.connect(self.selectButton,QtCore.SIGNAL("pressed()"),self.selectEdge)
         QtCore.QObject.connect(self.continueCmd,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
+
         QtCore.QObject.connect(self.isCopy,QtCore.SIGNAL("stateChanged(int)"),self.setCopymode)
+        QtCore.QObject.connect(self.isSubelementMode, QtCore.SIGNAL("stateChanged(int)"), self.setSubelementMode)
+
         QtCore.QObject.connect(self.isRelative,QtCore.SIGNAL("stateChanged(int)"),self.setRelative)
         QtCore.QObject.connect(self.isGlobal,QtCore.SIGNAL("stateChanged(int)"),self.setGlobal)
         QtCore.QObject.connect(self.hasFill,QtCore.SIGNAL("stateChanged(int)"),self.setFill)
@@ -685,7 +691,7 @@ class DraftToolBar:
         self.autoGroupButton = self._pushbutton(
             "autoGroup", self.bottomtray,icon=":/icons/button_invalid.svg",
             hide=False, width=120)
-        self.autoGroupButton.setText("None")
+        self.autoGroupButton.setText(translate("draft", "None"))
         self.autoGroupButton.setFlat(True)
 
         QtCore.QObject.connect(self.wplabel,QtCore.SIGNAL("pressed()"),self.selectplane)
@@ -947,7 +953,6 @@ class DraftToolBar:
         self.extraLineUi()
         self.xValue.setEnabled(True)
         self.yValue.setEnabled(True)
-        self.undoButton.show()
         self.continueCmd.show()
 
     def wireUi(self, title=translate("draft", "DWire"), cancel=None, extra=None,
@@ -969,20 +974,18 @@ class DraftToolBar:
 
     def circleUi(self):
         self.pointUi(translate("draft", "Circle"),icon="Draft_Circle")
-        if Draft.getParam("UsePartPrimitives",False):
-            self.hasFill.setEnabled(False)
-        else:
-            self.hasFill.setEnabled(True)
-        self.hasFill.show()
-        self.continueCmd.show()
+        self.extUi()
+        self.isRelative.hide()
 
     def arcUi(self):
         self.pointUi(translate("draft", "Arc"),icon="Draft_Arc")
         self.continueCmd.show()
+        self.isRelative.hide()
 
     def rotateSetCenterUi(self):
         self.pointUi(translate("draft", "Rotate"),icon="Draft_Rotate")
-        self.continueCmd.show()
+        self.modUi()
+        self.isRelative.hide()
 
     def pointUi(self, title=translate("draft","Point"), cancel=None, extra=None,
                 getcoords=None, rel=False, icon="Draft_Draft"):
@@ -1017,11 +1020,11 @@ class DraftToolBar:
         w.setWindowTitle(translate("draft","Label type", utf8_decode=True))
         l = QtGui.QVBoxLayout(w)
         combo = QtGui.QComboBox()
-        for s in ["Custom","Name","Label","Position","Length","Area","Volume","Tag","Material"]:
+        from draftobjects.label import get_label_types
+        types = get_label_types()
+        for s in types:
             combo.addItem(s)
-        combo.setCurrentIndex(
-            ["Custom","Name","Label","Position","Length","Area","Volume","Tag","Material"]\
-            .index(Draft.getParam("labeltype","Custom")))
+        combo.setCurrentIndex(types.index(Draft.getParam("labeltype","Custom")))
         l.addWidget(combo)
         QtCore.QObject.connect(combo,QtCore.SIGNAL("currentIndexChanged(int)"),callback)
         self.pointUi(title=title, extra=w, icon="Draft_Label")
@@ -1095,7 +1098,7 @@ class DraftToolBar:
         self.taskUi(title, icon="Draft_Trimex")
         self.radiusUi()
         self.labelRadius.setText(translate("draft","Distance"))
-        self.radiusValue.setToolTip(translate("draft", "Trim distance"))
+        self.radiusValue.setToolTip(translate("draft", "Offset distance"))
         self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         todo.delay(self.radiusValue.setFocus,None)
         self.radiusValue.selectAll()
@@ -1119,6 +1122,8 @@ class DraftToolBar:
         self.textbuffer=[]
         self.textline=0
         self.continueCmd.show()
+        # Change the checkbox label as the in-command shortcut cannot be used:
+        self.continueCmd.setText(translate("draft", "Continue"))
 
     def SSUi(self):
         ''' set up ui for ShapeString text entry '''
@@ -1231,7 +1236,6 @@ class DraftToolBar:
         self.continueCmd.show()
 
     def modUi(self):
-        self.undoButton.hide()
         self.isCopy.show()
         self.isSubelementMode.show()
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
@@ -1305,6 +1309,9 @@ class DraftToolBar:
         if self.sourceCmd:
             if self.sourceCmd.featureName == "Offset":
                 p.SetBool("OffsetCopyMode",bool(val))
+
+    def setSubelementMode(self):
+        self.sourceCmd.set_ghosts()
 
     def relocate(self):
         """relocates the right-aligned buttons depending on the toolbar size"""
@@ -1740,7 +1747,11 @@ class DraftToolBar:
         """this function sends the entered text to the active draft command
         if enter has been pressed twice. Otherwise it blanks the line.
         """
-        self.sourceCmd.text = self.textValue.toPlainText().splitlines()
+        self.sourceCmd.text = self.textValue.toPlainText()\
+            .replace("\\","\\\\")\
+            .replace("\"","\\\"")\
+            .replace("\'","\\\'")\
+            .splitlines()
         self.sourceCmd.createObject()
 
     def displayPoint(self, point=None, last=None, plane=None, mask=None):
@@ -2033,7 +2044,7 @@ class DraftToolBar:
     def setAutoGroup(self,value=None):
         if value is None:
             self.autogroup = None
-            self.autoGroupButton.setText("None")
+            self.autoGroupButton.setText(translate("draft", "None"))
             self.autoGroupButton.setIcon(QtGui.QIcon.fromTheme('Draft_AutoGroup_off',
                                                                QtGui.QIcon(':/icons/button_invalid.svg')))
             self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))
@@ -2048,7 +2059,7 @@ class DraftToolBar:
                 self.autoGroupButton.setDown(False)
             else:
                 self.autogroup = None
-                self.autoGroupButton.setText("None")
+                self.autoGroupButton.setText(translate("draft", "None"))
                 self.autoGroupButton.setIcon(QtGui.QIcon.fromTheme('Draft_AutoGroup_off',
                                                                    QtGui.QIcon(':/icons/button_invalid.svg')))
                 self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))
@@ -2087,7 +2098,7 @@ class DraftToolBar:
     def toggleradius(self,val):
         if hasattr(FreeCADGui,"Snapper"):
             par = Draft.getParam("snapRange", 8)
-            Draft.setParam("snapRange",par+val)
+            Draft.setParam("snapRange", max(0, par+val))
             FreeCADGui.Snapper.showradius()
 
     def constrain(self,val):
@@ -2142,12 +2153,21 @@ class DraftToolBar:
             return None
         self.update_cartesian_coords()
         if self.angleLock.isChecked():
-            FreeCADGui.Snapper.setAngle(self.angle)
+            if not self.globalMode:
+                angle_vec = FreeCAD.DraftWorkingPlane.getGlobalRot(self.angle)
+            else:
+                angle_vec = self.angle
+            FreeCADGui.Snapper.setAngle(angle_vec)
 
     def toggleAngle(self,b):
         self.alock = self.angleLock.isChecked()
-        if b:
-            FreeCADGui.Snapper.setAngle(self.angle)
+        self.update_cartesian_coords()
+        if self.alock:
+            if not self.globalMode:
+                angle_vec = FreeCAD.DraftWorkingPlane.getGlobalRot(self.angle)
+            else:
+                angle_vec = self.angle
+            FreeCADGui.Snapper.setAngle(angle_vec)
         else:
             FreeCADGui.Snapper.setAngle()
             self.angle = None

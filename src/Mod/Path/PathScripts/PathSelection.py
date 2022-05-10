@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
+# *   Copyright (c) 2021 Schildkroet                                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,13 +21,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-'''Selection gates and observers to control selectability while building Path operations '''
+"""Selection gates and observers to control selectability while building Path operations """
 
 import FreeCAD
 import FreeCADGui
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferences as PathPreferences
-import PathScripts.PathUtils as PathUtils
+import PathScripts.drillableLib as drillableLib
 import math
 
 PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
@@ -34,227 +35,229 @@ PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
 class PathBaseGate(object):
-    # pylint: disable=no-init
     pass
 
 
 class EGate(PathBaseGate):
-    def allow(self, doc, obj, sub):  # pylint: disable=unused-argument
-        return sub and sub[0:4] == 'Edge'
+    def allow(self, doc, obj, sub):
+        return sub and sub[0:4] == "Edge"
 
 
 class MESHGate(PathBaseGate):
-    def allow(self, doc, obj, sub):  # pylint: disable=unused-argument
-        return obj.TypeId[0:4] == 'Mesh'
+    def allow(self, doc, obj, sub):
+        return obj.TypeId[0:4] == "Mesh"
 
 
 class VCARVEGate:
     def allow(self, doc, obj, sub):
         try:
             shape = obj.Shape
-        except Exception:  # pylint: disable=broad-except
+        except Exception:
             return False
 
         if math.fabs(shape.Volume) < 1e-9 and len(shape.Wires) > 0:
             return True
 
-        if shape.ShapeType == 'Face':
+        if shape.ShapeType == "Face":
             return True
 
-        elif shape.ShapeType == 'Solid':
-            if sub and sub[0:4] == 'Face':
+        elif shape.ShapeType == "Solid":
+            if sub and sub[0:4] == "Face":
                 return True
 
-        elif shape.ShapeType == 'Compound':
-            if sub and sub[0:4] == 'Face':
+        elif shape.ShapeType == "Compound":
+            if sub and sub[0:4] == "Face":
                 return True
 
         if sub:
             subShape = shape.getElement(sub)
-            if subShape.ShapeType == 'Edge':
+            if subShape.ShapeType == "Edge":
                 return False
 
         return False
 
 
 class ENGRAVEGate(PathBaseGate):
-    def allow(self, doc, obj, sub):  # pylint: disable=unused-argument
+    def allow(self, doc, obj, sub):
         try:
             shape = obj.Shape
-        except Exception:  # pylint: disable=broad-except
+        except Exception:
             return False
 
         if math.fabs(shape.Volume) < 1e-9 and len(shape.Wires) > 0:
             return True
 
-        if shape.ShapeType == 'Edge':
+        if shape.ShapeType == "Edge":
             return True
 
         if sub:
             subShape = shape.getElement(sub)
-            if subShape.ShapeType == 'Edge':
+            if subShape.ShapeType == "Edge":
                 return True
 
         return False
 
 
 class CHAMFERGate(PathBaseGate):
-    def allow(self, doc, obj, sub): # pylint: disable=unused-argument
+    def allow(self, doc, obj, sub):
         try:
             shape = obj.Shape
-        except Exception: # pylint: disable=broad-except
+        except Exception:
             return False
 
         if math.fabs(shape.Volume) < 1e-9 and len(shape.Wires) > 0:
             return True
 
-        if 'Edge' == shape.ShapeType or 'Face' == shape.ShapeType:
+        if "Edge" == shape.ShapeType or "Face" == shape.ShapeType:
             return True
 
         if sub:
             subShape = shape.getElement(sub)
-            if subShape.ShapeType == 'Edge':
+            if subShape.ShapeType == "Edge":
                 return True
-            elif (subShape.ShapeType == 'Face' and subShape.normalAt(0, 0) == FreeCAD.Vector(0, 0, 1)):
+            elif subShape.ShapeType == "Face":
                 return True
 
         return False
 
 
 class DRILLGate(PathBaseGate):
-    def allow(self, doc, obj, sub):  # pylint: disable=unused-argument
-        PathLog.debug('obj: {} sub: {}'.format(obj, sub))
-        if hasattr(obj, "Shape") and sub:
-            shape = obj.Shape
-            subobj = shape.getElement(sub)
-            return PathUtils.isDrillable(shape, subobj, includePartials=True)
-        else:
+    def allow(self, doc, obj, sub):
+        PathLog.debug("obj: {} sub: {}".format(obj, sub))
+        if not hasattr(obj, "Shape") and sub:
             return False
+        shape = obj.Shape
+        subobj = shape.getElement(sub)
+        if subobj.ShapeType not in ["Edge", "Face"]:
+            return False
+        return drillableLib.isDrillable(shape, subobj, vector=None)
 
 
-class FACEGate(PathBaseGate):   # formerly PROFILEGate class using allow_ORIG method as allow()
-    def allow(self, doc, obj, sub):  # pylint: disable=unused-argument
+class FACEGate(
+    PathBaseGate
+):  # formerly PROFILEGate class using allow_ORIG method as allow()
+    def allow(self, doc, obj, sub):
         profileable = False
 
         try:
             obj = obj.Shape
-        except Exception:  # pylint: disable=broad-except
+        except Exception:
             return False
 
-        if obj.ShapeType == 'Compound':
-            if sub and sub[0:4] == 'Face':
+        if obj.ShapeType == "Compound":
+            if sub and sub[0:4] == "Face":
                 profileable = True
 
-        elif obj.ShapeType == 'Face':   # 3D Face, not flat, planar?
-            profileable = True   # Was False
+        elif obj.ShapeType == "Face":  # 3D Face, not flat, planar?
+            profileable = True  # Was False
 
-        elif obj.ShapeType == 'Solid':
-            if sub and sub[0:4] == 'Face':
+        elif obj.ShapeType == "Solid":
+            if sub and sub[0:4] == "Face":
                 profileable = True
 
         return profileable
 
-    def allow_ORIG(self, doc, obj, sub):  # pylint: disable=unused-argument
+    def allow_ORIG(self, doc, obj, sub):
 
         profileable = False
         try:
             obj = obj.Shape
-        except Exception:  # pylint: disable=broad-except
+        except Exception:
             return False
 
-        if obj.ShapeType == 'Edge':
+        if obj.ShapeType == "Edge":
             profileable = False
 
-        elif obj.ShapeType == 'Compound':
-            if sub and sub[0:4] == 'Face':
+        elif obj.ShapeType == "Compound":
+            if sub and sub[0:4] == "Face":
                 profileable = True
 
-            if sub and sub[0:4] == 'Edge':
+            if sub and sub[0:4] == "Edge":
                 profileable = False
 
-        elif obj.ShapeType == 'Face':
+        elif obj.ShapeType == "Face":
             profileable = False
 
-        elif obj.ShapeType == 'Solid':
-            if sub and sub[0:4] == 'Face':
+        elif obj.ShapeType == "Solid":
+            if sub and sub[0:4] == "Face":
                 profileable = True
 
-            if sub and sub[0:4] == 'Edge':
+            if sub and sub[0:4] == "Edge":
                 profileable = False
 
-        elif obj.ShapeType == 'Wire':
+        elif obj.ShapeType == "Wire":
             profileable = False
 
         return profileable
 
 
 class PROFILEGate(PathBaseGate):
-    def allow(self, doc, obj, sub):  # pylint: disable=unused-argument
-        if sub and sub[0:4] == 'Edge':
+    def allow(self, doc, obj, sub):
+        if sub and sub[0:4] == "Edge":
             return True
 
         try:
             obj = obj.Shape
-        except Exception:  # pylint: disable=broad-except
+        except Exception:
             return False
 
-        if obj.ShapeType == 'Compound':
-            if sub and sub[0:4] == 'Face':
+        if obj.ShapeType == "Compound":
+            if sub and sub[0:4] == "Face":
                 return True
 
-        elif obj.ShapeType == 'Face':
+        elif obj.ShapeType == "Face":
             return True
 
-        elif obj.ShapeType == 'Solid':
-            if sub and sub[0:4] == 'Face':
+        elif obj.ShapeType == "Solid":
+            if sub and sub[0:4] == "Face":
                 return True
 
-        elif obj.ShapeType == 'Wire':
+        elif obj.ShapeType == "Wire":
             return True
 
         return False
 
 
 class POCKETGate(PathBaseGate):
-    def allow(self, doc, obj, sub):  # pylint: disable=unused-argument
+    def allow(self, doc, obj, sub):
 
         pocketable = False
         try:
             obj = obj.Shape
-        except Exception:  # pylint: disable=broad-except
+        except Exception:
             return False
 
-        if obj.ShapeType == 'Edge':
+        if obj.ShapeType == "Edge":
             pocketable = False
 
-        elif obj.ShapeType == 'Face':
+        elif obj.ShapeType == "Face":
             pocketable = True
 
-        elif obj.ShapeType == 'Solid':
-            if sub and sub[0:4] == 'Face':
+        elif obj.ShapeType == "Solid":
+            if sub and sub[0:4] == "Face":
                 pocketable = True
 
-        elif obj.ShapeType == 'Compound':
-            if sub and sub[0:4] == 'Face':
+        elif obj.ShapeType == "Compound":
+            if sub and sub[0:4] == "Face":
                 pocketable = True
 
         return pocketable
 
 
 class ADAPTIVEGate(PathBaseGate):
-    def allow(self, doc, obj, sub):  # pylint: disable=unused-argument
+    def allow(self, doc, obj, sub):
 
         adaptive = True
         try:
             obj = obj.Shape
-        except Exception:  # pylint: disable=broad-except
+        except Exception:
             return False
 
         return adaptive
 
 
 class CONTOURGate(PathBaseGate):
-    def allow(self, doc, obj, sub):  # pylint: disable=unused-argument
+    def allow(self, doc, obj, sub):
         pass
 
 
@@ -264,23 +267,23 @@ class PROBEGate:
 
 
 class TURNGate(PathBaseGate):
-    def allow(self, doc, obj, sub):  # pylint: disable=unused-argument
-        PathLog.debug('obj: {} sub: {}'.format(obj, sub))
+    def allow(self, doc, obj, sub):
+        PathLog.debug("obj: {} sub: {}".format(obj, sub))
         if hasattr(obj, "Shape") and sub:
             shape = obj.Shape
             subobj = shape.getElement(sub)
-            return PathUtils.isDrillable(shape, subobj, includePartials=True)
+            return drillableLib.isDrillable(shape, subobj, vector=None)
         else:
             return False
 
 
 class ALLGate(PathBaseGate):
-    def allow(self, doc, obj, sub):  # pylint: disable=unused-argument
-        if sub and sub[0:6] == 'Vertex':
+    def allow(self, doc, obj, sub):
+        if sub and sub[0:6] == "Vertex":
             return True
-        if sub and sub[0:4] == 'Edge':
+        if sub and sub[0:4] == "Edge":
             return True
-        if sub and sub[0:4] == 'Face':
+        if sub and sub[0:4] == "Face":
             return True
         return False
 
@@ -347,7 +350,7 @@ def slotselect():
 
 def surfaceselect():
     gate = False
-    if(MESHGate() or FACEGate()):
+    if MESHGate() or FACEGate():
         gate = True
     FreeCADGui.Selection.addSelectionGate(gate)
     if not PathPreferences.suppressSelectionModeWarning():
@@ -379,30 +382,31 @@ def turnselect():
 
 def select(op):
     opsel = {}
-    opsel['Contour'] = contourselect  # (depreciated)
-    opsel['Deburr'] = chamferselect
-    opsel['Drilling'] = drillselect
-    opsel['Engrave'] = engraveselect
-    opsel['Helix'] = drillselect
-    opsel['MillFace'] = pocketselect
-    opsel['Pocket'] = pocketselect
-    opsel['Pocket 3D'] = pocketselect
-    opsel['Pocket Shape'] = pocketselect
-    opsel['Profile Edges'] = eselect  # (depreciated)
-    opsel['Profile Faces'] = fselect  # (depreciated)
-    opsel['Profile'] = profileselect
-    opsel['Slot'] = slotselect
-    opsel['Surface'] = surfaceselect
-    opsel['Waterline'] = surfaceselect
-    opsel['Adaptive'] = adaptiveselect
-    opsel['Vcarve'] = vcarveselect
-    opsel['Probe'] = probeselect
-    opsel['Custom'] = customselect
-    opsel['Thread Milling'] = drillselect
-    opsel['TurnFace'] = turnselect
-    opsel['TurnProfile'] = turnselect
-    opsel['TurnPartoff'] = turnselect
-    opsel['TurnRough'] = turnselect
+    opsel["Contour"] = contourselect  # deprecated
+    opsel["Deburr"] = chamferselect
+    opsel["Drilling"] = drillselect
+    opsel["Engrave"] = engraveselect
+    opsel["Helix"] = drillselect
+    opsel["MillFace"] = pocketselect
+    opsel["Pocket"] = pocketselect
+    opsel["Pocket 3D"] = pocketselect
+    opsel["Pocket3D"] = pocketselect  # deprecated
+    opsel["Pocket Shape"] = pocketselect
+    opsel["Profile Edges"] = eselect  # deprecated
+    opsel["Profile Faces"] = fselect  # deprecated
+    opsel["Profile"] = profileselect
+    opsel["Slot"] = slotselect
+    opsel["Surface"] = surfaceselect
+    opsel["Waterline"] = surfaceselect
+    opsel["Adaptive"] = adaptiveselect
+    opsel["Vcarve"] = vcarveselect
+    opsel["Probe"] = probeselect
+    opsel["Custom"] = customselect
+    opsel["ThreadMilling"] = drillselect
+    opsel["TurnFace"] = turnselect
+    opsel["TurnProfile"] = turnselect
+    opsel["TurnPartoff"] = turnselect
+    opsel["TurnRough"] = turnselect
     return opsel[op]
 
 

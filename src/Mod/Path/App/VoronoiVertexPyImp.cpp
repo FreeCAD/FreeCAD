@@ -22,24 +22,16 @@
 
 #include "PreCompiled.h"
 
-
-#ifndef _PreComp_
-# include <boost/algorithm/string.hpp>
-#endif
-
-#include "Base/Exception.h"
-#include "Base/GeometryPyCXX.h"
-#include "Base/PlacementPy.h"
 #include "Base/Vector3D.h"
 #include "Base/VectorPy.h"
-#include "Mod/Path/App/Voronoi.h"
-#include "Mod/Path/App/VoronoiEdge.h"
-#include "Mod/Path/App/VoronoiEdgePy.h"
-#include "Mod/Path/App/VoronoiPy.h"
-#include "Mod/Path/App/VoronoiVertex.h"
-#include "Mod/Path/App/VoronoiVertexPy.h"
 
-#include "Mod/Path/App/VoronoiVertexPy.cpp"
+#include "Voronoi.h"
+#include "VoronoiEdge.h"
+#include "VoronoiEdgePy.h"
+#include "VoronoiVertex.h"
+#include "VoronoiVertexPy.h"
+#include "VoronoiVertexPy.cpp"
+
 
 using namespace Path;
 
@@ -97,10 +89,10 @@ const Voronoi::voronoi_diagram_type::vertex_type* getVertexFromPy(VoronoiVertexP
   if (throwIfNotBound) {
     throw Py::TypeError("Vertex not bound to voronoi diagram");
   }
-  return 0;
+  return nullptr;
 }
 
-VoronoiVertex* getVoronoiVertexFromPy(const VoronoiVertexPy *v, PyObject *args = 0) {
+VoronoiVertex* getVoronoiVertexFromPy(const VoronoiVertexPy *v, PyObject *args = nullptr) {
   VoronoiVertex *self = v->getVoronoiVertexPtr();
   if (!self->isBound()) {
     throw Py::TypeError("Vertex not bound to voronoi diagram");
@@ -168,7 +160,7 @@ PyObject* VoronoiVertexPy::toPoint(PyObject *args)
 
 PyObject* VoronoiVertexPy::getCustomAttributes(const char* /*attr*/) const
 {
-  return 0;
+  return nullptr;
 }
 
 int VoronoiVertexPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

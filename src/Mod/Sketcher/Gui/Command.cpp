@@ -41,6 +41,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/DlgEditFileIncludePropertyExternal.h>
 #include <Gui/SelectionFilter.h>
+#include <Gui/SelectionObject.h>
 
 #include <Mod/Sketcher/App/SketchObjectSF.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -81,16 +82,16 @@ namespace SketcherGui {
     };
 
 
-    Attacher::eMapMode SuggestAutoMapMode(Attacher::SuggestResult::eSuggestResult* pMsgId = 0,
-                                      QString* message = 0,
-                                      std::vector<Attacher::eMapMode>* allmodes = 0){
+    Attacher::eMapMode SuggestAutoMapMode(Attacher::SuggestResult::eSuggestResult* pMsgId = nullptr,
+                                      QString* message = nullptr,
+                                      std::vector<Attacher::eMapMode>* allmodes = nullptr){
         //convert pointers into valid references, to avoid checking for null pointers everywhere
         Attacher::SuggestResult::eSuggestResult buf;
-        if (pMsgId == 0)
+        if (pMsgId == nullptr)
             pMsgId = &buf;
         Attacher::SuggestResult::eSuggestResult &msg = *pMsgId;
         QString buf2;
-        if (message == 0)
+        if (message == nullptr)
             message = &buf2;
         QString &msg_str = *message;
 
@@ -139,7 +140,7 @@ CmdSketcherNewSketch::CmdSketcherNewSketch()
     :Command("Sketcher_NewSketch")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create sketch");
     sToolTipText    = QT_TR_NOOP("Create a new sketch.");
     sWhatsThis      = "Sketcher_NewSketch";
@@ -180,7 +181,8 @@ void CmdSketcherNewSketch::activated(int iMsg)
                 qApp->translate("Sketcher_NewSketch", "Sketch attachment"),
                 qApp->translate("Sketcher_NewSketch", "Select the method to attach this sketch to selected object"),
                 items, iSugg, false, &ok, Qt::MSWindowsFixedSizeDialogHint);
-            if (!ok) return;
+            if (!ok)
+                return;
             int index = items.indexOf(text);
             if (index == 0){
                 bAttach = false;
@@ -262,7 +264,7 @@ CmdSketcherEditSketch::CmdSketcherEditSketch()
     :Command("Sketcher_EditSketch")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Edit sketch");
     sToolTipText    = QT_TR_NOOP("Edit the selected sketch.");
     sWhatsThis      = "Sketcher_EditSketch";
@@ -292,7 +294,7 @@ CmdSketcherLeaveSketch::CmdSketcherLeaveSketch()
   : Command("Sketcher_LeaveSketch")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Leave sketch");
     sToolTipText    = QT_TR_NOOP("Finish editing the active sketch.");
     sWhatsThis      = "Sketcher_LeaveSketch";
@@ -336,7 +338,7 @@ CmdSketcherStopOperation::CmdSketcherStopOperation()
   : Command("Sketcher_StopOperation")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Stop operation");
     sToolTipText    = QT_TR_NOOP("When in edit mode, "
                                  "stop the active operation "
@@ -377,7 +379,7 @@ CmdSketcherReorientSketch::CmdSketcherReorientSketch()
     :Command("Sketcher_ReorientSketch")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Reorient sketch...");
     sToolTipText    = QT_TR_NOOP("Place the selected sketch on one of the global coordinate planes.\n"
                                  "This will clear the 'Support' property, if any.");
@@ -398,7 +400,7 @@ void CmdSketcherReorientSketch::activated(int iMsg)
             QMessageBox::Yes|QMessageBox::No);
         if (ret == QMessageBox::No)
             return;
-        sketch->Support.setValue(0);
+        sketch->Support.setValue(nullptr);
     }
 
     // ask user for orientation
@@ -504,7 +506,7 @@ CmdSketcherMapSketch::CmdSketcherMapSketch()
   : Command("Sketcher_MapSketch")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Map sketch to face...");
     sToolTipText    = QT_TR_NOOP("Set the 'Support' of a sketch.\n"
                                  "First select the supporting geometry, for example, a face or an edge of a solid object,\n"
@@ -556,7 +558,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
                 assert(0);
                 throw Base::ValueError("Unexpected null pointer in CmdSketcherMapSketch::activated");
             }
-            std::vector<App::DocumentObject*> input = part->getOutList();
+            std::vector<App::DocumentObject*> input = part->getOutListRecursive();
             if (std::find(input.begin(), input.end(), sketch) != input.end()) {
                 throw ExceptionWrongInput(QT_TR_NOOP("Some of the selected objects depend on the sketch to be mapped. "
                                                      "Circular dependencies are not allowed."));
@@ -621,7 +623,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
                                      items,
                                      bCurIncompatible ? iSugg : iCurr,
                                      false,
-                                     &ok, 
+                                     &ok,
                                      Qt::MSWindowsFixedSizeDialogHint);
         // * collect dialog result
         if (!ok)
@@ -645,11 +647,13 @@ void CmdSketcherMapSketch::activated(int iMsg)
             Gui::cmdAppObjectArgs(sketch, "MapMode = \"%s\"",AttachEngine::getModeName(suggMapMode).c_str());
             Gui::cmdAppObjectArgs(sketch, "Support = %s",supportString.c_str());
             commitCommand();
+            doCommand(Gui,"App.activeDocument().recompute()");
         } else {
             openCommand(QT_TRANSLATE_NOOP("Command", "Detach sketch"));
             Gui::cmdAppObjectArgs(sketch, "MapMode = \"%s\"",AttachEngine::getModeName(suggMapMode).c_str());
             Gui::cmdAppObjectArgs(sketch, "Support = None");
             commitCommand();
+            doCommand(Gui,"App.activeDocument().recompute()");
         }
     } catch (ExceptionWrongInput &e) {
         QMessageBox::warning(Gui::getMainWindow(),
@@ -664,7 +668,8 @@ bool CmdSketcherMapSketch::isActive(void)
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
     Base::Type sketch_type = Base::Type::fromName("Sketcher::SketchObject");
-    if (doc && doc->countObjectsOfType(sketch_type) > 0)
+    std::vector<Gui::SelectionObject> selobjs = Gui::Selection().getSelectionEx();
+    if (doc && doc->countObjectsOfType(sketch_type) > 0 && !selobjs.empty())
         return true;
 
     return false;
@@ -676,13 +681,14 @@ CmdSketcherViewSketch::CmdSketcherViewSketch()
     : Command("Sketcher_ViewSketch")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("View sketch");
     sToolTipText    = QT_TR_NOOP("When in edit mode, "
                                  "set the camera orientation perpendicular to the sketch plane.");
     sWhatsThis      = "Sketcher_ViewSketch";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_ViewSketch";
+    sAccel          = "Q, P";
     eType           = 0;
 }
 
@@ -715,7 +721,7 @@ CmdSketcherValidateSketch::CmdSketcherValidateSketch()
   : Command("Sketcher_ValidateSketch")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Validate sketch...");
     sToolTipText    = QT_TR_NOOP("Validate a sketch by looking at missing coincidences,\n"
                                  "invalid constraints, degenerated geometry, etc.");
@@ -728,7 +734,7 @@ CmdSketcherValidateSketch::CmdSketcherValidateSketch()
 void CmdSketcherValidateSketch::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
     if (selection.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("CmdSketcherValidateSketch", "Wrong selection"),
@@ -753,7 +759,7 @@ CmdSketcherMirrorSketch::CmdSketcherMirrorSketch()
     : Command("Sketcher_MirrorSketch")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Mirror sketch");
     sToolTipText    = QT_TR_NOOP("Create a new mirrored sketch for each selected sketch\n"
                                  "by using the X or Y axes, or the origin point,\n"
@@ -767,7 +773,7 @@ CmdSketcherMirrorSketch::CmdSketcherMirrorSketch()
 void CmdSketcherMirrorSketch::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
     if (selection.size() < 1) {
         QMessageBox::warning(Gui::getMainWindow(),
             qApp->translate("CmdSketcherMirrorSketch", "Wrong selection"),
@@ -776,7 +782,7 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
     }
 
     int refgeoid = -1;
-    Sketcher::PointPos refposid = Sketcher::none;
+    Sketcher::PointPos refposid = Sketcher::PointPos::none;
     // Ask the user the type of mirroring
     SketchMirrorDialog smd;
     if (smd.exec() != QDialog::Accepted)
@@ -824,17 +830,17 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
 
         for (std::vector<Sketcher::Constraint *>::const_iterator itc=mirrorconstr.begin(); itc != mirrorconstr.end(); ++itc) {
 
-            if ((*itc)->First != Sketcher::Constraint::GeoUndef
+            if ((*itc)->First != Sketcher::GeoEnum::GeoUndef
                     || (*itc)->First == Sketcher::GeoEnum::HAxis
                     || (*itc)->First == Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
                 (*itc)->First -= (addedGeometries + 1);
-            if ((*itc)->Second != Sketcher::Constraint::GeoUndef
+            if ((*itc)->Second != Sketcher::GeoEnum::GeoUndef
                     || (*itc)->Second == Sketcher::GeoEnum::HAxis
                     || (*itc)->Second == Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
                 (*itc)->Second -= (addedGeometries + 1);
-            if ((*itc)->Third != Sketcher::Constraint::GeoUndef
+            if ((*itc)->Third != Sketcher::GeoEnum::GeoUndef
                     || (*itc)->Third == Sketcher::GeoEnum::HAxis
                     || (*itc)->Third == Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
@@ -860,7 +866,7 @@ CmdSketcherMergeSketches::CmdSketcherMergeSketches()
 : Command("Sketcher_MergeSketches")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Merge sketches");
     sToolTipText    = QT_TR_NOOP("Create a new sketch from merging two or more selected sketches.");
     sWhatsThis      = "Sketcher_MergeSketches";
@@ -872,7 +878,7 @@ CmdSketcherMergeSketches::CmdSketcherMergeSketches()
 void CmdSketcherMergeSketches::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
     if (selection.size() < 2) {
         QMessageBox::warning(Gui::getMainWindow(),
                              qApp->translate("CmdSketcherMergeSketches", "Wrong selection"),
@@ -902,17 +908,17 @@ void CmdSketcherMergeSketches::activated(int iMsg)
         for (int i=0; i<=(addedConstraints-baseConstraints); i++){
             Sketcher::Constraint * constraint= mergesketch->Constraints.getValues()[i+baseConstraints];
 
-            if (constraint->First != Sketcher::Constraint::GeoUndef &&
+            if (constraint->First != Sketcher::GeoEnum::GeoUndef &&
                     constraint->First != Sketcher::GeoEnum::HAxis &&
                     constraint->First != Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
                 constraint->First += baseGeometry;
-            if (constraint->Second != Sketcher::Constraint::GeoUndef &&
+            if (constraint->Second != Sketcher::GeoEnum::GeoUndef &&
                     constraint->Second != Sketcher::GeoEnum::HAxis &&
                     constraint->Second != Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
                 constraint->Second += baseGeometry;
-            if (constraint->Third != Sketcher::Constraint::GeoUndef &&
+            if (constraint->Third != Sketcher::GeoEnum::GeoUndef &&
                     constraint->Third != Sketcher::GeoEnum::HAxis &&
                     constraint->Third != Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
@@ -944,13 +950,14 @@ CmdSketcherViewSection::CmdSketcherViewSection()
 : Command("Sketcher_ViewSection")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("View section");
     sToolTipText    = QT_TR_NOOP("When in edit mode, "
                                  "switch between section view and full view.");
     sWhatsThis      = "Sketcher_ViewSection";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_ViewSection";
+    sAccel          = "Q, S";
     eType           = 0;
 }
 

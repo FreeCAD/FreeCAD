@@ -57,11 +57,11 @@ int PathSimPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 
 PyObject* PathSimPy::BeginSimulation(PyObject * args, PyObject * kwds)
 {
-	static char *kwlist[] = { "stock", "resolution", NULL };
+	static char *kwlist[] = { "stock", "resolution", nullptr };
 	PyObject *pObjStock;
 	float resolution;
 	if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!f", kwlist, &(Part::TopoShapePy::Type), &pObjStock, &resolution))
-		return 0;
+		return nullptr;
 	PathSim *sim = getPathSimPtr();
 	Part::TopoShape *stock = static_cast<Part::TopoShapePy*>(pObjStock)->getTopoShapePtr();
 	sim->BeginSimulation(stock, resolution);
@@ -74,7 +74,7 @@ PyObject* PathSimPy::SetToolShape(PyObject * args)
 	PyObject *pObjToolShape;
 	float resolution;
 	if (!PyArg_ParseTuple(args, "O!f", &(Part::TopoShapePy::Type), &pObjToolShape, &resolution))
-		return 0;
+		return nullptr;
 	PathSim *sim = getPathSimPtr();
 	const TopoDS_Shape& toolShape = static_cast<Part::TopoShapePy*>(pObjToolShape)->getTopoShapePtr()->getShape();
 	sim->SetToolShape(toolShape, resolution);
@@ -85,12 +85,12 @@ PyObject* PathSimPy::SetToolShape(PyObject * args)
 PyObject* PathSimPy::GetResultMesh(PyObject * args)
 {
 	if (!PyArg_ParseTuple(args, ""))
-		return 0;
+		return nullptr;
 	cStock *stock = getPathSimPtr()->m_stock;
-	if (stock == NULL)
+	if (stock == nullptr)
 	{
 		PyErr_SetString(PyExc_RuntimeError, "Simulation has stock object");
-		return 0;
+		return nullptr;
 	}
 
 	Mesh::MeshObject *meshOuter = new Mesh::MeshObject();
@@ -107,11 +107,11 @@ PyObject* PathSimPy::GetResultMesh(PyObject * args)
 
 PyObject* PathSimPy::ApplyCommand(PyObject * args, PyObject * kwds)
 {
-	static char *kwlist[] = { "position", "command", NULL };
+	static char *kwlist[] = { "position", "command", nullptr };
 	PyObject *pObjPlace;
 	PyObject *pObjCmd;
 	if (!PyArg_ParseTupleAndKeywords(args, kwds, "O!O!", kwlist, &(Base::PlacementPy::Type), &pObjPlace, &(Path::CommandPy::Type), &pObjCmd))
-		return 0;
+		return nullptr;
 	PathSim *sim = getPathSimPtr();
 	Base::Placement *pos = static_cast<Base::PlacementPy*>(pObjPlace)->getPlacementPtr();
 	Path::Command *cmd = static_cast<Path::CommandPy*>(pObjCmd)->getCommandPtr();
@@ -130,7 +130,7 @@ Py::Object PathSimPy::getTool(void) const
 
 PyObject *PathSimPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int PathSimPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

@@ -6,18 +6,14 @@
  ***************************************************************************/
 
 #include "taskheader_p.h"
-#include "actionpanelscheme.h"
-#include "actionlabel.h"
 
-#include <QtCore/QVariant>
-#include <QtCore/QEvent>
-#include <QtCore/QTimer>
-
-#include <QHBoxLayout>
-#include <QPainter>
-#include <QMouseEvent>
 #include <QApplication>
+#include <QEvent>
+#include <QHBoxLayout>
+#include <QMouseEvent>
+#include <QPainter>
 #include <QStyle>
+#include <QTimer>
 
 
 namespace QSint
@@ -31,7 +27,7 @@ TaskHeader::TaskHeader(const QIcon &icon, const QString &title, bool expandable,
   m_buttonOver(false),
   m_fold(true),
   m_opacity(0.1),
-  myButton(0)
+  myButton(nullptr)
 {
     setProperty("class", "header");
 
@@ -79,9 +75,9 @@ void TaskHeader::setExpandable(bool expandable)
             return;
 
         myButton->removeEventFilter(this);
-        myButton->setParent(0);
+        myButton->setParent(nullptr);
         delete myButton;
-        myButton = 0;
+        myButton = nullptr;
         changeIcons();
     }
 }

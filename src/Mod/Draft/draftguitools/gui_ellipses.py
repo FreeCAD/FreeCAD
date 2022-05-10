@@ -122,7 +122,7 @@ class Ellipse(gui_base_original.Creator):
                             _cmd_list)
             else:
                 # Insert a Draft ellipse
-                _cmd = 'Draft.makeEllipse'
+                _cmd = 'Draft.make_ellipse'
                 _cmd += '('
                 _cmd += str(r1) + ', ' + str(r2) + ', '
                 _cmd += 'placement=pl, '

@@ -127,7 +127,7 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(TechDraw::DrawViewPart,
                                 TechDraw::DrawView)
 
 DrawViewPart::DrawViewPart(void) :
-    geometryObject(0)
+    geometryObject(nullptr)
 {
     static const char *group = "Projection";
     static const char *sgroup = "HLR Parameters";
@@ -142,10 +142,10 @@ DrawViewPart::DrawViewPart(void) :
     double defDist = hGrp->GetFloat("FocusDistance",100.0);
 
     //properties that affect Geometry
-    ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"3D Shape to view");
+    ADD_PROPERTY_TYPE(Source ,(nullptr),group,App::Prop_None,"3D Shape to view");
     Source.setScope(App::LinkScope::Global);
     Source.setAllowExternal(true);
-    ADD_PROPERTY_TYPE(XSource ,(0),group,App::Prop_None,"External 3D Shape to view");
+    ADD_PROPERTY_TYPE(XSource ,(nullptr),group,App::Prop_None,"External 3D Shape to view");
 
 
     ADD_PROPERTY_TYPE(Direction ,(0.0,-1.0,0.0),
@@ -324,7 +324,10 @@ short DrawViewPart::mustExecute() const
                     SeamHidden.isTouched() ||
                     IsoHidden.isTouched() ||
                     IsoCount.isTouched() ||
-                    CoarseView.isTouched());
+                    CoarseView.isTouched() ||
+                    CosmeticVertexes.isTouched() ||
+                    CosmeticEdges.isTouched() ||
+                    CenterLines.isTouched());
     }
 
     if (result) {
@@ -388,7 +391,7 @@ void DrawViewPart::addShapes2d(void)
             vp = vp - m_saveCentroid;
             //need to offset the point to match the big projection
             Base::Vector3d projected = projectPoint(vp * getScale());
-            TechDraw::Vertex* v1 = new TechDraw::Vertex(projected);
+            TechDraw::VertexPtr v1(std::make_shared<TechDraw::Vertex>(projected));
             geometryObject->addVertex(v1);
         } else if (s.ShapeType() == TopAbs_EDGE) {
               //not supporting edges yet. 
@@ -399,7 +402,7 @@ void DrawViewPart::addShapes2d(void)
 //                                                       getScale());
 //            TopoDS_Shape sMirror = TechDraw::mirrorShape(sScale);
 //            TopoDS_Edge edge = TopoDS::Edge(sMirror);
-//            BaseGeom* bg = projectEdge(edge);
+//            BaseGeomPtr bg = projectEdge(edge);
 
 //            geometryObject->addEdge(bg);
             //save connection between source feat and this edge
@@ -414,8 +417,11 @@ GeometryObject* DrawViewPart::makeGeometryForShape(TopoDS_Shape shape)
 
     gp_Ax2 viewAxis = getProjectionCS(stdOrg);
 
+//    BRepTools::Write(shape, "DVPShape.brep");            //debug
+
     inputCenter = TechDraw::findCentroid(shape,
                                          viewAxis);
+
     Base::Vector3d centroid(inputCenter.X(),
                             inputCenter.Y(),
                             inputCenter.Z());
@@ -491,7 +497,7 @@ TechDraw::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, 
                             false);
     }
 
-    const std::vector<TechDraw::BaseGeom  *> & edges = go->getEdgeGeometry();
+    const BaseGeomPtrVector& edges = go->getEdgeGeometry();
     if (edges.empty()) {
         Base::Console().Log("DVP::buildGO - NO extracted edges!\n");
     }
@@ -506,9 +512,9 @@ void DrawViewPart::extractFaces()
         return;
     }
     geometryObject->clearFaceGeom();
-    const std::vector<TechDraw::BaseGeom*>& goEdges =
+    const std::vector<TechDraw::BaseGeomPtr>& goEdges =
                        geometryObject->getVisibleFaceEdges(SmoothVisible.getValue(),SeamVisible.getValue());
-    std::vector<TechDraw::BaseGeom*>::const_iterator itEdge = goEdges.begin();
+    std::vector<TechDraw::BaseGeomPtr>::const_iterator itEdge = goEdges.begin();
     std::vector<TopoDS_Edge> origEdges;
     for (;itEdge != goEdges.end(); itEdge++) {
         origEdges.push_back((*itEdge)->occEdge);
@@ -533,7 +539,7 @@ void DrawViewPart::extractFaces()
         TopoDS_Vertex v1 = TopExp::FirstVertex((*itOuter));
         TopoDS_Vertex v2 = TopExp::LastVertex((*itOuter));
         Bnd_Box sOuter;
-        BRepBndLib::Add(*itOuter, sOuter);
+        BRepBndLib::AddOptimal(*itOuter, sOuter);
         sOuter.SetGap(0.1);
         if (sOuter.IsVoid()) {
             Base::Console().Log("DVP::Extract Faces - outer Bnd_Box is void for %s\n",getNameInDocument());
@@ -554,7 +560,7 @@ void DrawViewPart::extractFaces()
             }
 
             Bnd_Box sInner;
-            BRepBndLib::Add(*itInner, sInner);
+            BRepBndLib::AddOptimal(*itInner, sInner);
             sInner.SetGap(0.1);
             if (sInner.IsVoid()) {
                 Base::Console().Log("INFO - DVP::Extract Faces - inner Bnd_Box is void for %s\n",getNameInDocument());
@@ -618,7 +624,7 @@ void DrawViewPart::extractFaces()
 //        std::string wireName = ss.str();
 //        BRepTools::Write((*itWire), wireName.c_str());            //debug
 //debug        idb++;
-        TechDraw::Face* f = new TechDraw::Face();
+        TechDraw::FacePtr f(std::make_shared<TechDraw::Face>());
         const TopoDS_Wire& wire = (*itWire);
         TechDraw::Wire* w = new TechDraw::Wire(wire);
         f->wires.push_back(w);
@@ -685,27 +691,27 @@ std::vector<TechDraw::DrawViewBalloon*> DrawViewPart::getBalloons() const
     return result;
 }
 
-const std::vector<TechDraw::Vertex *> DrawViewPart::getVertexGeometry() const
+const std::vector<TechDraw::VertexPtr> DrawViewPart::getVertexGeometry() const
 {
-    std::vector<TechDraw::Vertex *> result;
+    std::vector<TechDraw::VertexPtr> result;
     if (geometryObject != nullptr) {
         result = geometryObject->getVertexGeometry();
     }
     return result;
 }
 
-const std::vector<TechDraw::Face *> DrawViewPart::getFaceGeometry() const
+const std::vector<TechDraw::FacePtr> DrawViewPart::getFaceGeometry() const
 {
-    std::vector<TechDraw::Face*> result;
+    std::vector<TechDraw::FacePtr> result;
     if (geometryObject != nullptr) {
         result = geometryObject->getFaceGeometry();
     }
     return result;
 }
 
-const std::vector<TechDraw::BaseGeom*> DrawViewPart::getEdgeGeometry() const
+const BaseGeomPtrVector DrawViewPart::getEdgeGeometry() const
 {
-    std::vector<TechDraw::BaseGeom  *> result;
+    BaseGeomPtrVector result;
     if (geometryObject != nullptr) {
         result = geometryObject->getEdgeGeometry();
     }
@@ -713,39 +719,39 @@ const std::vector<TechDraw::BaseGeom*> DrawViewPart::getEdgeGeometry() const
 }
 
 //! returns existing BaseGeom of 2D Edge(idx)
-TechDraw::BaseGeom* DrawViewPart::getGeomByIndex(int idx) const
+TechDraw::BaseGeomPtr DrawViewPart::getGeomByIndex(int idx) const
 {
-    const std::vector<TechDraw::BaseGeom *> &geoms = getEdgeGeometry();
+    const std::vector<TechDraw::BaseGeomPtr> &geoms = getEdgeGeometry();
     if (geoms.empty()) {
         Base::Console().Log("INFO - getGeomByIndex(%d) - no Edge Geometry. Probably restoring?\n",idx);
-        return NULL;
+        return nullptr;
     }
     if ((unsigned)idx >= geoms.size()) {
         Base::Console().Log("INFO - getGeomByIndex(%d) - invalid index\n",idx);
-        return NULL;
+        return nullptr;
     }
     return geoms.at(idx);
 }
 
 //! returns existing geometry of 2D Vertex(idx)
-TechDraw::Vertex* DrawViewPart::getProjVertexByIndex(int idx) const
+TechDraw::VertexPtr DrawViewPart::getProjVertexByIndex(int idx) const
 {
-    const std::vector<TechDraw::Vertex *> &geoms = getVertexGeometry();
+    const std::vector<TechDraw::VertexPtr> &geoms = getVertexGeometry();
     if (geoms.empty()) {
         Base::Console().Log("INFO - getProjVertexByIndex(%d) - no Vertex Geometry. Probably restoring?\n",idx);
-        return NULL;
+        return nullptr;
     }
     if ((unsigned)idx >= geoms.size()) {
         Base::Console().Log("INFO - getProjVertexByIndex(%d) - invalid index\n",idx);
-        return NULL;
+        return nullptr;
     }
     return geoms.at(idx);
 }
 
-TechDraw::Vertex* DrawViewPart::getProjVertexByCosTag(std::string cosTag)
+TechDraw::VertexPtr DrawViewPart::getProjVertexByCosTag(std::string cosTag)
 {
-    TechDraw::Vertex* result = nullptr;
-    std::vector<TechDraw::Vertex*> gVerts = getVertexGeometry();
+    TechDraw::VertexPtr result = nullptr;
+    std::vector<TechDraw::VertexPtr> gVerts = getVertexGeometry();
     if (gVerts.empty()) {
         Base::Console().Log("INFO - getProjVertexByCosTag(%s) - no Vertex Geometry.\n");
         return result;
@@ -762,12 +768,12 @@ TechDraw::Vertex* DrawViewPart::getProjVertexByCosTag(std::string cosTag)
 
 
 //! returns existing geometry of 2D Face(idx)
-std::vector<TechDraw::BaseGeom*> DrawViewPart::getFaceEdgesByIndex(int idx) const
+std::vector<TechDraw::BaseGeomPtr> DrawViewPart::getFaceEdgesByIndex(int idx) const
 {
-    std::vector<TechDraw::BaseGeom*> result;
-    const std::vector<TechDraw::Face *>& faces = getFaceGeometry();
+    std::vector<TechDraw::BaseGeomPtr> result;
+    const std::vector<TechDraw::FacePtr>& faces = getFaceGeometry();
     if (idx < (int) faces.size()) {
-        TechDraw::Face* projFace = faces.at(idx);
+        TechDraw::FacePtr projFace = faces.at(idx);
         for (auto& w: projFace->wires) {
             for (auto& g:w->geoms) {
                 if (g->cosmetic) {
@@ -786,8 +792,8 @@ std::vector<TopoDS_Wire> DrawViewPart::getWireForFace(int idx) const
 {
     std::vector<TopoDS_Wire> result;
     std::vector<TopoDS_Edge> edges;
-    const std::vector<TechDraw::Face *>& faces = getFaceGeometry();
-    TechDraw::Face * ourFace = faces.at(idx);
+    const std::vector<TechDraw::FacePtr>& faces = getFaceGeometry();
+    TechDraw::FacePtr ourFace = faces.at(idx);
     for (auto& w:ourFace->wires) {
         edges.clear();
         int i = 0;
@@ -848,7 +854,7 @@ Base::Vector3d DrawViewPart::projectPoint(const Base::Vector3d& pt, bool invert)
 
 //project a loose edge onto the paper plane
 //TODO:: loose edges not supported yet
-BaseGeom* DrawViewPart::projectEdge(const TopoDS_Edge& e) const
+BaseGeomPtr DrawViewPart::projectEdge(const TopoDS_Edge& e) const
 {
     Base::Vector3d stdOrg(0.0,0.0,0.0);
     gp_Ax2 viewAxis = getProjectionCS(stdOrg);
@@ -860,8 +866,7 @@ BaseGeom* DrawViewPart::projectEdge(const TopoDS_Edge& e) const
     projector.Build();
     TopoDS_Shape s = projector.Projection();
 //    Base::Console().Message("DVP::projectEdge - s.IsNull: %d\n", s.IsNull());
-//    BaseGeom* result = BaseGeom::baseFactory(pe);
-    BaseGeom* result = nullptr;
+    BaseGeomPtr result;
     return result;
 }
 
@@ -871,8 +876,8 @@ bool DrawViewPart::hasGeometry(void) const
     if (geometryObject == nullptr) {
         return result;
     }
-    const std::vector<TechDraw::Vertex*> &verts = getVertexGeometry();
-    const std::vector<TechDraw::BaseGeom*> &edges = getEdgeGeometry();
+    const std::vector<TechDraw::VertexPtr> &verts = getVertexGeometry();
+    const std::vector<TechDraw::BaseGeomPtr> &edges = getEdgeGeometry();
     if (verts.empty() &&
         edges.empty() ) {
         result = false;
@@ -926,6 +931,14 @@ Base::Vector3d DrawViewPart::getOriginalCentroid(void) const
     return m_saveCentroid;
 }
 
+Base::Vector3d DrawViewPart::getCurrentCentroid(void) const
+{
+    TopoDS_Shape shape = getSourceShape();
+    gp_Ax2 cs = getProjectionCS(Base::Vector3d(0.0, 0.0, 0.0));
+    Base::Vector3d center = TechDraw::findCentroidVec(shape, cs);
+    return center;
+}
+
 std::vector<DrawViewSection*> DrawViewPart::getSectionRefs(void) const
 {
     std::vector<DrawViewSection*> result;
@@ -952,7 +965,7 @@ std::vector<DrawViewDetail*> DrawViewPart::getDetailRefs(void) const
     return result;
 }
 
-const std::vector<TechDraw::BaseGeom  *> DrawViewPart::getVisibleFaceEdges() const
+const BaseGeomPtrVector DrawViewPart::getVisibleFaceEdges() const
 {
     return geometryObject->getVisibleFaceEdges(SmoothVisible.getValue(),SeamVisible.getValue());
 }
@@ -1104,7 +1117,7 @@ void DrawViewPart::updateReferenceVert(std::string tag, Base::Vector3d loc2d)
 void DrawViewPart::addReferencesToGeom(void)
 {
 //    Base::Console().Message("DVP::addReferencesToGeom() - %s\n", getNameInDocument());
-    std::vector<TechDraw::Vertex *> gVerts = getVertexGeometry();
+    std::vector<TechDraw::VertexPtr> gVerts = getVertexGeometry();
     gVerts.insert(gVerts.end(), m_referenceVerts.begin(), m_referenceVerts.end());
     getGeometryObject()->setVertexGeometry(gVerts);
 }
@@ -1119,7 +1132,7 @@ std::string DrawViewPart::addReferenceVertex(Base::Vector3d v)
 //    Base::Vector3d scaledV = v * getScale();
 //    TechDraw::Vertex* ref = new TechDraw::Vertex(scaledV);
     Base::Vector3d scaledV = v;
-    TechDraw::Vertex* ref = new TechDraw::Vertex(scaledV);
+    TechDraw::VertexPtr ref(std::make_shared<TechDraw::Vertex>(scaledV));
     ref->reference = true;
     refTag = ref->getTagAsString();
     m_referenceVerts.push_back(ref);
@@ -1128,7 +1141,7 @@ std::string DrawViewPart::addReferenceVertex(Base::Vector3d v)
 
 void DrawViewPart::removeReferenceVertex(std::string tag)
 {
-    std::vector<TechDraw::Vertex*> newRefVerts;
+    std::vector<TechDraw::VertexPtr> newRefVerts;
     for (auto& v: m_referenceVerts) {
         if (v->getTagAsString() != tag) {
             newRefVerts.push_back(v);
@@ -1144,8 +1157,8 @@ void DrawViewPart::removeAllReferencesFromGeom()
 {
 //    Base::Console().Message("DVP::removeAllReferencesFromGeom()\n");
     if (!m_referenceVerts.empty()) {
-        std::vector<TechDraw::Vertex *> gVerts = getVertexGeometry();
-        std::vector<TechDraw::Vertex *> newVerts;
+        std::vector<TechDraw::VertexPtr> gVerts = getVertexGeometry();
+        std::vector<TechDraw::VertexPtr> newVerts;
         for (auto& gv: gVerts) {
             if (!gv->reference) {
                 newVerts.push_back(gv);
@@ -1203,8 +1216,8 @@ void DrawViewPart::refreshCVGeoms(void)
 {
 //    Base::Console().Message("DVP::refreshCVGeoms()\n");
 
-    std::vector<TechDraw::Vertex *> gVerts = getVertexGeometry();
-    std::vector<TechDraw::Vertex *> newGVerts;
+    std::vector<TechDraw::VertexPtr> gVerts = getVertexGeometry();
+    std::vector<TechDraw::VertexPtr> newGVerts;
     for (auto& gv :gVerts) {
         if (gv->cosmeticTag.empty()) {       //keep only non-cv vertices
             newGVerts.push_back(gv);
@@ -1219,7 +1232,7 @@ int DrawViewPart::getCVIndex(std::string tag)
 {
 //    Base::Console().Message("DVP::getCVIndex(%s)\n", tag.c_str());
     int result = -1;
-    std::vector<TechDraw::Vertex *> gVerts = getVertexGeometry();
+    std::vector<TechDraw::VertexPtr> gVerts = getVertexGeometry();
     std::vector<TechDraw::CosmeticVertex*> cVerts = CosmeticVertexes.getValues();
 
     int i = 0;
@@ -1265,7 +1278,7 @@ void DrawViewPart::addCosmeticEdgesToGeom(void)
 //    Base::Console().Message("CEx::addCosmeticEdgesToGeom()\n");
     const std::vector<TechDraw::CosmeticEdge*> cEdges = CosmeticEdges.getValues();
     for (auto& ce: cEdges) {
-        TechDraw::BaseGeom* scaledGeom = ce->scaledGeometry(getScale());
+        TechDraw::BaseGeomPtr scaledGeom = ce->scaledGeometry(getScale());
         if (scaledGeom == nullptr) {
             continue;
         }
@@ -1283,7 +1296,7 @@ int DrawViewPart::add1CEToGE(std::string tag)
         Base::Console().Message("CEx::add1CEToGE 2 - ce %s not found\n", tag.c_str());
         return -1;
     }
-    TechDraw::BaseGeom* scaledGeom = ce->scaledGeometry(getScale());
+    TechDraw::BaseGeomPtr scaledGeom = ce->scaledGeometry(getScale());
     int iGE = geometryObject->addCosmeticEdge(scaledGeom,
                                               tag);
                                                 
@@ -1294,8 +1307,8 @@ int DrawViewPart::add1CEToGE(std::string tag)
 void DrawViewPart::refreshCEGeoms(void)
 {
 //    Base::Console().Message("DVP::refreshCEGeoms()\n");
-    std::vector<TechDraw::BaseGeom *> gEdges = getEdgeGeometry();
-    std::vector<TechDraw::BaseGeom *> oldGEdges;
+    std::vector<TechDraw::BaseGeomPtr> gEdges = getEdgeGeometry();
+    std::vector<TechDraw::BaseGeomPtr> oldGEdges;
     for (auto& ge :gEdges) {
         if (ge->source() != SourceType::COSEDGE)  {
             oldGEdges.push_back(ge);
@@ -1321,7 +1334,7 @@ int DrawViewPart::add1CLToGE(std::string tag)
         Base::Console().Message("CEx::add1CLToGE 2 - cl %s not found\n", tag.c_str());
         return -1;
     }
-    TechDraw::BaseGeom* scaledGeom = cl->scaledGeometry(this);
+    TechDraw::BaseGeomPtr scaledGeom = cl->scaledGeometry(this);
     int iGE = geometryObject->addCenterLine(scaledGeom,
                                             tag);
                                                 
@@ -1332,8 +1345,8 @@ int DrawViewPart::add1CLToGE(std::string tag)
 void DrawViewPart::refreshCLGeoms(void)
 {
 //    Base::Console().Message("DVP::refreshCLGeoms()\n");
-    std::vector<TechDraw::BaseGeom *> gEdges = getEdgeGeometry();
-    std::vector<TechDraw::BaseGeom *> newGEdges;
+    std::vector<TechDraw::BaseGeomPtr> gEdges = getEdgeGeometry();
+    std::vector<TechDraw::BaseGeomPtr> newGEdges;
     for (auto& ge :gEdges) {
         if (ge->source() != SourceType::CENTERLINE)  {
             newGEdges.push_back(ge);
@@ -1349,7 +1362,7 @@ void DrawViewPart::addCenterLinesToGeom(void)
 //   Base::Console().Message("DVP::addCenterLinesToGeom()\n");
     const std::vector<TechDraw::CenterLine*> lines = CenterLines.getValues();
     for (auto& cl: lines) {
-        TechDraw::BaseGeom* scaledGeom = cl->scaledGeometry(this);
+        TechDraw::BaseGeomPtr scaledGeom = cl->scaledGeometry(this);
         if (scaledGeom == nullptr) {
             Base::Console().Error("DVP::addCenterLinesToGeom - scaledGeometry is null\n");
             continue;
@@ -1379,7 +1392,7 @@ void DrawViewPart::dumpVerts(std::string text)
         Base::Console().Message("no verts to dump yet\n");
         return;
     }
-    std::vector<TechDraw::Vertex *> gVerts = getVertexGeometry();
+    std::vector<TechDraw::VertexPtr> gVerts = getVertexGeometry();
     Base::Console().Message("%s - dumping %d vertGeoms\n",
                             text.c_str(), gVerts.size());
     for (auto& gv: gVerts) {

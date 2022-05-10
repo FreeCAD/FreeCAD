@@ -29,25 +29,25 @@
 
 #include "Workbench.h"
 #include "WorkbenchPy.h"
-#include "PythonWorkbenchPy.h"
-#include "MenuManager.h"
-#include "ToolBarManager.h"
-#include "DockWindowManager.h"
-#include "Application.h"
 #include "Action.h"
+#include "Application.h"
 #include "Command.h"
 #include "Control.h"
+#include "DockWindowManager.h"
+#include "MainWindow.h"
+#include "MenuManager.h"
+#include "PythonWorkbenchPy.h"
+#include "Selection.h"
+#include "ToolBarManager.h"
 #include "ToolBoxManager.h"
 #include "Window.h"
-#include "Selection.h"
-#include "MainWindow.h"
-#include <Gui/ComboView.h>
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/TaskView/TaskWatcher.h>
 
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <Base/Interpreter.h>
+#include <Gui/ComboView.h>
+#include <Gui/TaskView/TaskView.h>
+#include <Gui/TaskView/TaskWatcher.h>
 
 using namespace Gui;
 
@@ -56,7 +56,7 @@ using namespace Gui;
 
     FreeCAD provides the possibility to have one or more workbenches for a module.
     A workbench changes the appearance of the main window in that way that it defines toolbars, items in the toolbox, menus or the context menu and dockable windows that are shown to the user.
-    The idea behind this concept is that the user should see only the functions that are required for the task that he is doing at this moment and not to show dozens of unneeded functions which the user never uses.
+    The idea behind this concept is that the user should see only the functions that are required for the task that they are doing at this moment and not to show dozens of unneeded functions which the user never uses.
 
     \section stepbystep Step by step
     Here follows a short description of how your own workbench can be added to a module.
@@ -176,13 +176,13 @@ using namespace Gui;
  * \section moredetails More details and limitations
  * One of the key concepts of the workbench framework is to load a module at runtime when the user needs some function that it
  * provides. So, if the user doesn't need a module it never gets loaded into RAM. This speeds up the startup procedure of
-
  * FreeCAD and saves memory.
+ * 
  * At startup FreeCAD scans all module directories and invokes InitGui.py. So an item for a workbench gets created. If the user
  * clicks on such an item the matching module gets loaded, the C++ workbench gets registered and activated.
  *
- * The user is able to modify a workbench (Edit|Customize). E.g. he can add new toolbars or items for the toolbox and add his preferred
- * functions to them. But he has only full control over "his" toolbars, the default workbench items cannot be modified or even removed.
+ * The user is able to modify a workbench (Edit|Customize). E.g. they can add new toolbars or items for the toolbox and add their preferred
+ * functions to them. But the user only has full control over "their" own toolbars, the default workbench items cannot be modified or even removed.
  *
  * FreeCAD provides also the possibility to define pure Python workbenches. Such workbenches are temporarily only and are lost after exiting
  * the FreeCAD session. But if you want to keep your Python workbench you can write a macro and attach it with a user defined button or just
@@ -192,7 +192,7 @@ using namespace Gui;
  * w=Workbench()                                              # creates a standard workbench (the same as StdWorkbench in C++)
  * w.MenuText = "My Workbench"                                # the text that will appear in the combo box
  * dir(w)                                                     # lists all available function of the object
- * FreeCADGui.addWorkbench(w)                                 # Creates an item for our workbenmch now
+ * FreeCADGui.addWorkbench(w)                                 # Creates an item for our workbench now
  *                                                            # Note: We must first add the workbench to run some initialization code
  *                                                            # Then we are ready to customize the workbench
  * list = ["Std_Test1", "Std_Test2", "Std_Test3"]             # creates a list of new functions
@@ -325,6 +325,7 @@ void Workbench::setupCustomShortcuts() const
                 QString str = QString::fromUtf8(it->second.c_str());
                 QKeySequence shortcut = str;
                 cmd->getAction()->setShortcut(shortcut.toString(QKeySequence::NativeText));
+                cmd->recreateTooltip(it->first.c_str(), cmd->getAction()); // The tooltip has the shortcut in it...
             }
         }
     }
@@ -348,8 +349,8 @@ void Workbench::createLinkMenu(MenuItem *item) {
     *linkMenu << "Std_LinkMakeGroup" << "Std_LinkMake";
 
     auto &rMgr = Application::Instance->commandManager();
-    const char *cmds[] = {"Std_LinkMakeRelative",0,"Std_LinkUnlink","Std_LinkReplace",
-        "Std_LinkImport","Std_LinkImportAll",0,"Std_LinkSelectLinked",
+    const char *cmds[] = {"Std_LinkMakeRelative",nullptr,"Std_LinkUnlink","Std_LinkReplace",
+        "Std_LinkImport","Std_LinkImportAll",nullptr,"Std_LinkSelectLinked",
         "Std_LinkSelectLinkedFinal","Std_LinkSelectAllLinks"};
     bool separator = true;
     for(size_t i=0;i<sizeof(cmds)/sizeof(cmds[0]);++i) {
@@ -367,6 +368,38 @@ void Workbench::createLinkMenu(MenuItem *item) {
         }
     }
     *item << linkMenu;
+}
+
+std::vector<std::pair<std::string, std::string>> Workbench::staticMenuItems;
+
+void Workbench::addPermanentMenuItem(const std::string& cmd, const std::string& after)
+{
+    staticMenuItems.emplace_back(cmd, after);
+}
+
+void Workbench::removePermanentMenuItem(const std::string& cmd)
+{
+    auto it = std::find_if(staticMenuItems.begin(), staticMenuItems.end(), [cmd](const std::pair<std::string, std::string>& p) {
+        return (p.first == cmd);
+    });
+
+    if (it != staticMenuItems.end())
+        staticMenuItems.erase(it);
+}
+
+void  Workbench::addPermanentMenuItems(MenuItem* mb) const
+{
+    for (const auto& it : staticMenuItems) {
+        MenuItem* par = mb->findParentOf(it.second);
+        if (par) {
+            Gui::MenuItem* item = par->findItem(it.second);
+            item = par->afterItem(item);
+
+            Gui::MenuItem* add = new Gui::MenuItem();
+            add->setCommand(it.first);
+            par->insertItem(item, add);
+        }
+    }
 }
 
 void Workbench::activated()
@@ -394,6 +427,7 @@ bool Workbench::activate()
     delete dw;
 
     MenuItem* mb = setupMenuBar();
+    addPermanentMenuItems(mb);
     MenuManager::getInstance()->setup( mb );
     delete mb;
 
@@ -480,9 +514,26 @@ std::list<std::string> Workbench::listCommandbars() const
 // --------------------------------------------------------------------
 
 #if 0 // needed for Qt's lupdate utility
+    qApp->translate("CommandGroup", "File");
+    qApp->translate("CommandGroup", "Edit");
+    qApp->translate("CommandGroup", "Help");
+    qApp->translate("CommandGroup", "Link");
+    qApp->translate("CommandGroup", "Tools");
+    qApp->translate("CommandGroup", "View");
+    qApp->translate("CommandGroup", "Window");
+    qApp->translate("CommandGroup", "Standard");
+    qApp->translate("CommandGroup", "Macros");
+    qApp->translate("CommandGroup", "Macro");
+    qApp->translate("CommandGroup", "Structure");
+    qApp->translate("CommandGroup", "Standard-Test");
+    qApp->translate("CommandGroup", "Standard-View");
+    qApp->translate("CommandGroup", "TreeView");
+    qApp->translate("CommandGroup", "Measure");
+
     qApp->translate("Workbench", "&File");
     qApp->translate("Workbench", "&Edit");
     qApp->translate("Workbench", "Standard views");
+    qApp->translate("Workbench", "Axonometric");
     qApp->translate("Workbench", "&Stereo");
     qApp->translate("Workbench", "&Zoom");
     qApp->translate("Workbench", "Visibility");
@@ -496,6 +547,8 @@ std::list<std::string> Workbench::listCommandbars() const
     qApp->translate("Workbench", "Macro");
     qApp->translate("Workbench", "View");
     qApp->translate("Workbench", "Special Ops");
+    // needed for Structure toolbar
+    qApp->translate("Workbench", "Link actions");
 #endif
 
 #if 0 // needed for the application menu on OSX
@@ -544,7 +597,7 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
             *item << "Separator" << "Std_SetAppearance" << "Std_ToggleVisibility"
                   << "Std_ToggleSelectability" << "Std_TreeSelection"
                   << "Std_RandomColor" << "Separator" << "Std_Delete"
-                  << "Std_SendToPythonConsole";
+                  << "Std_SendToPythonConsole" << "Std_TransformManip";
         }
     }
     else if (strcmp(recipient,"Tree") == 0)
@@ -587,7 +640,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_Refresh" << "Std_BoxSelection" << "Std_BoxElementSelection"
           << "Std_SelectAll" << "Std_Delete" << "Std_SendToPythonConsole"
           << "Separator" << "Std_Placement" << "Std_TransformManip" << "Std_Alignment"
-          << "Std_Edit" << "Separator" << "Std_DlgPreferences";
+          << "Std_Edit" << "Separator" << "Std_UserEditMode" << "Separator" << "Std_DlgPreferences";
 
     MenuItem* axoviews = new MenuItem;
     axoviews->setCommand("Axonometric");
@@ -697,8 +750,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
     help->setCommand("&Help");
     *help << "Std_OnlineHelp" << "Std_FreeCADWebsite" << "Std_FreeCADDonation"
           << "Std_FreeCADUserHub" << "Std_FreeCADPowerUserHub"
-          << "Std_PythonHelp" << "Std_FreeCADForum"
-          << "Std_FreeCADFAQ" << "Std_About" << "Std_WhatsThis";
+          << "Std_PythonHelp" << "Std_FreeCADForum" << "Std_FreeCADFAQ"
+          << "Std_ReportBug" << "Std_About" << "Std_WhatsThis";
 
     return menuBar;
 }
@@ -712,7 +765,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     file->setCommand("File");
     *file << "Std_New" << "Std_Open" << "Std_Save" << "Std_Print" << "Separator" << "Std_Cut"
           << "Std_Copy" << "Std_Paste" << "Separator" << "Std_Undo" << "Std_Redo" << "Separator"
-          << "Std_Refresh" << "Separator" << "Std_WhatsThis";
+          << "Std_UserEditMode" << "Separator" << "Std_Refresh" << "Separator" << "Std_WhatsThis";
 
     // Workbench switcher
     ToolBarItem* wb = new ToolBarItem( root );
@@ -945,12 +998,12 @@ MenuItem* TestWorkbench::setupMenuBar() const
 
 ToolBarItem* TestWorkbench::setupToolBars() const
 {
-    return 0;
+    return nullptr;
 }
 
 ToolBarItem* TestWorkbench::setupCommandBars() const
 {
-    return 0;
+    return nullptr;
 }
 
 // -----------------------------------------------------------------------
@@ -958,7 +1011,7 @@ ToolBarItem* TestWorkbench::setupCommandBars() const
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::PythonBaseWorkbench, Gui::Workbench)
 
 PythonBaseWorkbench::PythonBaseWorkbench()
-  : _menuBar(0), _contextMenu(0), _toolBar(0), _commandBar(0), _workbenchPy(0)
+  : _menuBar(nullptr), _contextMenu(nullptr), _toolBar(nullptr), _commandBar(nullptr), _workbenchPy(nullptr)
 {
 }
 

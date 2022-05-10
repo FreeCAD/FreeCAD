@@ -27,6 +27,7 @@
 #include <vector>
 #include <string>
 #include "Facet.h"
+#include "Types.h"
 #include "Core/Iterator.h"
 
 namespace Mesh
@@ -38,10 +39,10 @@ class MeshExport Segment
 {
 public:
     Segment(MeshObject*, bool mod);
-    Segment(MeshObject*, const std::vector<unsigned long>& inds, bool mod);
-    void addIndices(const std::vector<unsigned long>& inds);
-    void removeIndices(const std::vector<unsigned long>& inds);
-    const std::vector<unsigned long>& getIndices() const;
+    Segment(MeshObject*, const std::vector<FacetIndex>& inds, bool mod);
+    void addIndices(const std::vector<FacetIndex>& inds);
+    void removeIndices(const std::vector<FacetIndex>& inds);
+    const std::vector<FacetIndex>& getIndices() const;
     bool isEmpty() const { return _indices.empty(); }
 
     Segment(const Segment&);
@@ -62,7 +63,7 @@ public:
 
 private:
     MeshObject* _mesh;
-    std::vector<unsigned long> _indices;
+    std::vector<FacetIndex> _indices;
     std::string _name;
     std::string _color;
     bool _save;
@@ -72,7 +73,7 @@ public:
     class MeshExport const_facet_iterator
     {
     public:
-        const_facet_iterator(const Segment*, std::vector<unsigned long>::const_iterator);
+        const_facet_iterator(const Segment*, std::vector<FacetIndex>::const_iterator);
         const_facet_iterator(const const_facet_iterator& fi);
         ~const_facet_iterator();
 
@@ -88,7 +89,7 @@ public:
         const Segment* _segment;
         Facet _facet;
         MeshCore::MeshFacetIterator _f_it;
-        std::vector<unsigned long>::const_iterator _it;
+        std::vector<FacetIndex>::const_iterator _it;
     };
 
     const_facet_iterator facets_begin() const

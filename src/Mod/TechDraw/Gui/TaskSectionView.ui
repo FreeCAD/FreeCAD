@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>370</width>
-    <height>326</height>
+    <height>368</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -76,13 +76,48 @@
       </widget>
      </item>
      <item row="2" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Scale Type</string>
+       </property>
+      </widget>
+     </item>
+    <item row="2" column="2">
+      <widget class="QComboBox" name="cmbScaleType">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>22</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Scale Page/Auto/Custom</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>Page</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Automatic</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Custom</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="3" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
         <string>Scale</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="2">
+     <item row="3" column="2">
       <widget class="Gui::QuantitySpinBox" name="sbScale">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -122,7 +157,7 @@
        </property>
       </widget>
      </item>
-    </layout>
+     </layout>
    </item>
    <item>
     <widget class="Line" name="line">

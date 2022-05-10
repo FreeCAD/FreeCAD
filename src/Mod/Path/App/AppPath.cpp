@@ -20,11 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
@@ -55,6 +51,7 @@
 #include "VoronoiVertex.h"
 #include "VoronoiVertexPy.h"
 
+
 namespace Path {
 extern PyObject* initModule();
 }
@@ -68,7 +65,7 @@ PyMOD_INIT_FUNC(Path)
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(NULL);
+        PyMOD_Return(nullptr);
     }
 
     PyObject* pathModule = Path::initModule();

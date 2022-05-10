@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
+<svg width="16.93mm" height="16.93mm" fill-rule="evenodd" stroke-linejoin="round" stroke-width="28.222" preserveAspectRatio="xMidYMid" version="1.2" viewBox="0 0 1693 1693" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:ooo="http://xml.openoffice.org/svg/export">
+ <defs class="ClipPathGroup">
+  <clipPath id="presentation_clip_path">
+   <rect width="1693" height="1693"/>
+  </clipPath>
+ </defs>
+ <g class="SlideGroup">
+   <g id="container-id1">
+    <g id="id1" class="Slide" clip-path="url(#presentation_clip_path)">
+     <g class="Page">
+      <g class="Graphic">
+       <g id="id3">
+        <rect class="BoundingBox" width="1693" height="1693" fill="none"/>
+        <defs>
+         <clipPath id="clip_path_1">
+          <path d="m0 0h1692v1692h-1692v-1692z"/>
+         </clipPath>
+        </defs>
+        <g clip-path="url(#clip_path_1)">
+         <path d="m121 974v0c-7-26-11-51-11-77 0-48 13-93 35-134 24-41 58-75 98-98 19-11 38-19 58-26v0c25-7 50-11 77-11 46 0 93 13 133 37 40 23 74 57 98 98 10 18 19 37 25 57v0c8 24 11 51 11 77 0 46-12 93-36 134s-58 74-98 98c-18 10-37 19-57 24v0c-25 8-50 12-76 12-48 0-93-12-135-36-40-24-74-57-98-98-10-17-17-36-24-56" fill="none" stroke="#f00" stroke-linecap="square" stroke-linejoin="bevel" stroke-width="57"/>
+         <path d="m492 521-234 743" fill="none" stroke="#f00" stroke-linejoin="miter" stroke-width="57"/>
+         <path d="m834 56-174 562" fill="none" stroke="#f00" stroke-linejoin="miter" stroke-width="58"/>
+         <path d="m749 528h-185v-387h370v387h-185z" fill="none" stroke="#f00" stroke-linecap="square" stroke-linejoin="bevel" stroke-width="58"/>
+         <path d="m813 1063 567 8-85 583-403-3-79-588z" fill="#ff0"/>
+         <path d="m813 1063 567 8-85 583-403-3-79-588z" fill="none" stroke="#2b1100" stroke-linejoin="miter" stroke-width="53"/>
+         <path d="m1252 714 408 626" fill="none" stroke="#2b1100" stroke-linejoin="miter" stroke-width="53"/>
+         <path d="m1425 927 46-28 112 173-43 29" fill="none" stroke="#2b1100" stroke-linejoin="miter" stroke-width="53"/>
+         <path d="m984 1182-1 328" fill="none" stroke="#2b1100" stroke-linejoin="miter" stroke-width="40"/>
+         <path d="m1100 1187-2 328" fill="none" stroke="#2b1100" stroke-linejoin="miter" stroke-width="40"/>
+         <path d="m1215 1187-2 328" fill="none" stroke="#2b1100" stroke-linejoin="miter" stroke-width="40"/>
+         <path d="m840 730c80-32 143-18 207 36 64 53 77 144 61 228" fill="none" stroke="#f00" stroke-linecap="square" stroke-linejoin="bevel" stroke-width="66"/>
+         <path d="m1111 899 124 5-64 126-72 125-58-125-59-131h129z" fill="#f00"/>
+         <path d="m1111 899 124 5-64 126-72 125-58-125-59-131h129z" fill="none" stroke="#f00" stroke-linecap="square" stroke-linejoin="bevel" stroke-width="33"/>
+         <path d="m1170 402c0 8-2 15-6 22s-9 12-16 16-14 6-22 6c-7 0-15-2-21-6-7-4-13-9-16-16-4-7-6-14-6-22 0-7 2-15 6-21 3-7 9-13 16-16 6-4 14-6 21-6 8 0 15 2 22 6 7 3 12 9 16 16 4 6 6 14 6 21z" fill="#f00"/>
+         <path d="m1170 402c0 8-2 15-6 22s-9 12-16 16-14 6-22 6c-7 0-15-2-21-6-7-4-13-9-16-16-4-7-6-14-6-22 0-7 2-15 6-21 3-7 9-13 16-16 6-4 14-6 21-6 8 0 15 2 22 6 7 3 12 9 16 16 4 6 6 14 6 21v0z" fill="none" stroke="#f00" stroke-linecap="round" stroke-linejoin="miter" stroke-width="40"/>
+         <path d="m1392 402c0 7-2 15-5 22-4 6-10 12-16 15-7 4-14 6-22 6s-15-2-22-6c-6-3-12-9-16-15-3-7-5-15-5-22 0-8 2-15 5-22 4-7 10-12 16-16 7-4 14-6 22-6s15 2 22 6c6 4 12 9 16 16 3 7 5 14 5 22z" fill="#f00"/>
+         <path d="m1392 402c0 7-2 15-5 22-4 6-10 12-16 15-7 4-14 6-22 6s-15-2-22-6c-6-3-12-9-16-15-3-7-5-15-5-22 0-8 2-15 5-22 4-7 10-12 16-16 7-4 14-6 22-6s15 2 22 6c6 4 12 9 16 16 3 7 5 14 5 22v0z" fill="none" stroke="#f00" stroke-linecap="round" stroke-linejoin="miter" stroke-width="40"/>
+         <path d="m1588 402c0 7-2 15-6 22-4 6-9 12-16 15-6 4-14 6-22 6-7 0-15-2-21-6-7-3-12-9-16-15-4-7-6-15-6-22 0-8 2-15 6-22s9-12 16-16c6-4 14-6 21-6 8 0 16 2 22 6 7 4 12 9 16 16s6 14 6 22z" fill="#f00"/>
+         <path d="m1588 402c0 7-2 15-6 22-4 6-9 12-16 15-6 4-14 6-22 6-7 0-15-2-21-6-7-3-12-9-16-15-4-7-6-15-6-22 0-8 2-15 6-22s9-12 16-16c6-4 14-6 21-6 8 0 16 2 22 6 7 4 12 9 16 16s6 14 6 22v0z" fill="none" stroke="#f00" stroke-linecap="round" stroke-linejoin="miter" stroke-width="40"/>
+        </g>
+       </g>
+      </g>
+     </g>
+    </g>
+   </g>
+ </g>
+</svg>

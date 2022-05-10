@@ -24,9 +24,22 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
 # include <QAction>
 #endif
+
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <App/Origin.h>
+
+#include <Base/Console.h>
+#include <Gui/Selection.h>
+#include <Gui/Command.h>
+#include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/FeatureLinearPattern.h>
+#include <Mod/PartDesign/App/FeatureMirrored.h>
+#include <Mod/PartDesign/App/FeatureMultiTransform.h>
+#include <Mod/PartDesign/App/FeaturePolarPattern.h>
+#include <Mod/PartDesign/App/FeatureScaled.h>
 
 #include "ui_TaskMultiTransformParameters.h"
 #include "TaskMultiTransformParameters.h"
@@ -35,25 +48,6 @@
 #include "TaskPolarPatternParameters.h"
 #include "TaskScaledParameters.h"
 #include "Utils.h"
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/Origin.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
-#include <Gui/Control.h>
-#include <Mod/PartDesign/App/FeatureMultiTransform.h>
-#include <Mod/PartDesign/App/FeatureMirrored.h>
-#include <Mod/PartDesign/App/FeatureLinearPattern.h>
-#include <Mod/PartDesign/App/FeaturePolarPattern.h>
-#include <Mod/PartDesign/App/FeatureScaled.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/Sketcher/App/SketchObject.h>
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -154,7 +148,7 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     // Fill data into dialog elements
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); i++) {
         const App::DocumentObject* obj = *i;
-        if (obj != NULL) {
+        if (obj != nullptr) {
             QListWidgetItem* item = new QListWidgetItem();
             item->setText(QString::fromUtf8(obj->Label.getValue()));
             item->setData(Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
@@ -221,9 +215,9 @@ void TaskMultiTransformParameters::closeSubTask()
 {
     if (subTask) {
         exitSelectionMode();
-        disconnect(ui->checkBoxUpdateView, 0, subTask, 0);
+        disconnect(ui->checkBoxUpdateView, nullptr, subTask, nullptr);
         delete subTask;
-        subTask = NULL;
+        subTask = nullptr;
     }
 }
 
@@ -275,6 +269,7 @@ void TaskMultiTransformParameters::onTransformEdit()
     else
         return; // TODO: Show an error?
 
+    subTask->setEnabledTransaction(isEnabledTransaction());
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             subTask, SLOT(onUpdateView(bool)));
 }
@@ -293,7 +288,9 @@ void TaskMultiTransformParameters::onTransformAddMirrored()
     if (!pcActiveBody)
         return;
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Mirrored"));
+    if (isEnabledTransaction())
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Mirrored"));
+
     FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::Mirrored','"<<newFeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(newFeatName.c_str());
     if (!Feat)
@@ -319,7 +316,9 @@ void TaskMultiTransformParameters::onTransformAddLinearPattern()
     if (!pcActiveBody)
         return;
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make LinearPattern"));
+    if (isEnabledTransaction())
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make LinearPattern"));
+
     FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::LinearPattern','"<<newFeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(newFeatName.c_str());
     if (!Feat)
@@ -355,7 +354,9 @@ void TaskMultiTransformParameters::onTransformAddPolarPattern()
     if (!pcActiveBody)
         return;
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "PolarPattern"));
+    if (isEnabledTransaction())
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "PolarPattern"));
+
     FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::PolarPattern','"<<newFeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(newFeatName.c_str());
     if (!Feat)
@@ -381,7 +382,9 @@ void TaskMultiTransformParameters::onTransformAddScaled()
     if (!pcActiveBody)
         return;
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Scaled"));
+    if (isEnabledTransaction())
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Scaled"));
+
     FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::Scaled','"<<newFeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(newFeatName.c_str());
     if (!Feat)
@@ -449,6 +452,9 @@ void TaskMultiTransformParameters::moveTransformFeature(const int increment)
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(TransformedView->getObject());
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
 
+    if (transformFeatures.empty())
+        return;
+
     App::DocumentObject* feature = transformFeatures[row];
     transformFeatures.erase(transformFeatures.begin() + row);
     QListWidgetItem* item = new QListWidgetItem(*(ui->listTransformFeatures->item(row)));
@@ -494,7 +500,6 @@ void TaskMultiTransformParameters::onUpdateView(bool on)
 {
     blockUpdate = !on;
     if (on) {
-        setupTransaction();
         recomputeFeature();
     }
 }
@@ -539,6 +544,7 @@ TaskDlgMultiTransformParameters::TaskDlgMultiTransformParameters(ViewProviderMul
     : TaskDlgTransformedParameters(MultiTransformView)
 {
     parameter = new TaskMultiTransformParameters(MultiTransformView);
+    parameter->setEnabledTransaction(false);
 
     Content.push_back(parameter);
 }

@@ -36,7 +36,7 @@ class DlgPrefsTechDrawHLRImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgPrefsTechDrawHLRImp( QWidget* parent = 0 );
+    DlgPrefsTechDrawHLRImp( QWidget* parent = nullptr );
     ~DlgPrefsTechDrawHLRImp();
 
 protected:

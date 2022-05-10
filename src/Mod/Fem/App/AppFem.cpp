@@ -20,11 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -59,6 +55,7 @@
 #include "FemConstraintContact.h"
 #include "FemConstraintFluidBoundary.h"
 #include "FemConstraintTransform.h"
+#include "FemConstraintSpring.h"
 
 #include "FemResultObject.h"
 #include "FemSolverObject.h"
@@ -84,7 +81,7 @@ PyMOD_INIT_FUNC(Fem)
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
     PyObject* femModule = Fem::initModule();
     Base::Console().Log("Loading Fem module... done\n");
@@ -156,6 +153,7 @@ PyMOD_INIT_FUNC(Fem)
     Fem::ConstraintPulley                     ::init();
     Fem::ConstraintTemperature                ::init();
     Fem::ConstraintTransform                  ::init();
+    Fem::ConstraintSpring                     ::init();
 
     Fem::FemMesh                              ::init();
     Fem::FemMeshObject                        ::init();

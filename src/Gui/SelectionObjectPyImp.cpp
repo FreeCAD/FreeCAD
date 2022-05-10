@@ -22,16 +22,18 @@
 
 #include "PreCompiled.h"
 
-#include "SelectionObject.h"
-#include "Selection.h"
-#include <Base/GeometryPyCXX.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/Application.h>
+#include <Base/GeometryPyCXX.h>
+
+#include "Selection.h"
+#include "SelectionObject.h"
+
 
 // inclusion of the generated files (generated out of SelectionObjectPy.xml)
 #include "SelectionObjectPy.h"
 #include "SelectionObjectPy.cpp"
+
 
 using namespace Gui;
 
@@ -44,7 +46,7 @@ std::string SelectionObjectPy::representation(void) const
 PyObject* SelectionObjectPy::remove(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
     Selection().rmvSelection(getSelectionObjectPtr()->getDocName(),
                              getSelectionObjectPtr()->getFeatName());
     Py_Return;
@@ -54,11 +56,11 @@ PyObject* SelectionObjectPy::isObjectTypeOf(PyObject * args)
 {
     char* type;
     if (!PyArg_ParseTuple(args, "s", &type))
-        return 0;
+        return nullptr;
     Base::Type id = Base::Type::fromName(type);
     if (id.isBad()) {
         PyErr_SetString(PyExc_TypeError, "Not a valid type");
-        return 0;
+        return nullptr;
     }
 
     bool ok = getSelectionObjectPtr()->isObjectTypeOf(id);
@@ -123,7 +125,7 @@ Py::Tuple SelectionObjectPy::getSubObjects(void) const
     std::vector<PyObject *> subObjs;
 
     for(const auto &subname : getSelectionObjectPtr()->getSubNames()) {
-        PyObject *pyObj=0;
+        PyObject *pyObj=nullptr;
         Base::Matrix4D mat;
         obj->getSubObject(subname.c_str(),&pyObj,&mat);
         if(pyObj)
@@ -157,7 +159,7 @@ Py::Tuple SelectionObjectPy::getPickedPoints(void) const
 
 PyObject *SelectionObjectPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int SelectionObjectPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

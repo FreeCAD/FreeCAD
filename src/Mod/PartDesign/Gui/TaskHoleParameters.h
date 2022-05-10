@@ -20,18 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskHoleParameters_H
 #define GUI_TASKVIEW_TaskHoleParameters_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <App/DocumentObserver.h>
-#include <boost/bind/bind.hpp>
-
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderHole.h"
+
 
 class Ui_TaskHoleParameters;
 
@@ -56,7 +50,7 @@ class TaskHoleParameters : public TaskSketchBasedParameters
     Q_OBJECT
 
 public:
-    TaskHoleParameters(ViewProviderHole *HoleView, QWidget *parent = 0);
+    TaskHoleParameters(ViewProviderHole *HoleView, QWidget *parent = nullptr);
     ~TaskHoleParameters();
 
     void apply() override;

@@ -24,6 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <fstream>
+# include <iostream>
 # include <sstream>
 #endif
 
@@ -33,7 +35,6 @@
 #include <Base/FileInfo.h>
 #include <App/Application.h>
 #include <boost/regex.hpp>
-#include <iostream>
 #include <iterator>
 
 #include "FeaturePage.h"
@@ -54,7 +55,7 @@ FeaturePage::FeaturePage(void) : numChildren(0)
 {
     static const char *group = "Drawing view";
 
-    ADD_PROPERTY_TYPE(PageResult, (0), group, App::Prop_Output, "Resulting SVG document of that page");
+    ADD_PROPERTY_TYPE(PageResult, (nullptr), group, App::Prop_Output, "Resulting SVG document of that page");
     ADD_PROPERTY_TYPE(Template, (""), group, App::Prop_None, "Template for the page");
     ADD_PROPERTY_TYPE(EditableTexts, (""), group, App::Prop_None, "Substitution values for the editable strings in the template");
 }

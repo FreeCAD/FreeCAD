@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 #include <cmath>
+#include <QTreeWidget>
 #endif // #ifndef _PreComp_
 
 #include <Base/Console.h>
@@ -209,7 +210,7 @@ void TaskLinkDim::updateDims()
            std::string DimName = dim->getNameInDocument();
            Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.MeasureType = \'%s\'",
                             DimName.c_str(),measureType.c_str());
-           dim->References3D.setValue(0,"");            //DVD.References3D
+           dim->References3D.setValue(nullptr,"");            //DVD.References3D
            dim->clear3DMeasurements();                  //DVD.measurement.References3D
         }
     }
@@ -265,8 +266,8 @@ TaskDlgLinkDim::TaskDlgLinkDim(std::vector<App::DocumentObject*> parts,std::vect
     TaskDialog()
 {
     widget  = new TaskLinkDim(parts,subs,page);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_Dimension_Link"),
-                                         widget->windowTitle(), true, 0);
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_LinkDimension"),
+                                         widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

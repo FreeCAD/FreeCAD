@@ -36,7 +36,7 @@ class DlgPrefsTechDrawScaleImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgPrefsTechDrawScaleImp( QWidget* parent = 0 );
+    DlgPrefsTechDrawScaleImp( QWidget* parent = nullptr );
     ~DlgPrefsTechDrawScaleImp();
 
 protected Q_SLOTS:

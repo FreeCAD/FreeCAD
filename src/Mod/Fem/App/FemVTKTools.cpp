@@ -21,7 +21,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -89,27 +88,30 @@
 #include "FemVTKTools.h"
 #include "FemMeshProperty.h"
 #include "FemAnalysis.h"
+#include "FemResultObject.h"
 
 namespace Fem
 {
 
 template<class TReader> vtkDataSet* readVTKFile(const char*fileName)
 {
-  vtkSmartPointer<TReader> reader =
-    vtkSmartPointer<TReader>::New();
-  reader->SetFileName(fileName);
-  reader->Update();
-  reader->GetOutput()->Register(reader);
-  return vtkDataSet::SafeDownCast(reader->GetOutput());
+    vtkSmartPointer<TReader> reader =
+      vtkSmartPointer<TReader>::New();
+    reader->SetFileName(fileName);
+    reader->Update();
+    auto output = reader->GetOutput();
+    if (output)
+        output->Register(reader);
+    return vtkDataSet::SafeDownCast(output);
 }
 
 template<class TWriter> void writeVTKFile(const char* filename, vtkSmartPointer<vtkUnstructuredGrid> dataset)
 {
-  vtkSmartPointer<TWriter> writer =
-    vtkSmartPointer<TWriter>::New();
-  writer->SetFileName(filename);
-  writer->SetInputData(dataset);
-  writer->Write();
+    vtkSmartPointer<TWriter> writer =
+      vtkSmartPointer<TWriter>::New();
+    writer->SetFileName(filename);
+    writer->SetInputData(dataset);
+    writer->Write();
 }
 
 
@@ -207,17 +209,25 @@ FemMesh* FemVTKTools::readVTKMesh(const char* filename, FemMesh* mesh)
     if(f.hasExtension("vtu"))
     {
         vtkSmartPointer<vtkDataSet> dataset  = readVTKFile<vtkXMLUnstructuredGridReader>(filename);
+        if (!dataset.Get()) {
+            Base::Console().Error("Failed to load file %s\n", filename);
+            return nullptr;
+        }
         importVTKMesh(dataset, mesh);
     }
     else if(f.hasExtension("vtk"))
     {
         vtkSmartPointer<vtkDataSet> dataset = readVTKFile<vtkDataSetReader>(filename);
+        if (!dataset.Get()) {
+            Base::Console().Error("Failed to load file %s\n", filename);
+            return nullptr;
+        }
         importVTKMesh(dataset, mesh);
     }
     else
     {
         Base::Console().Error("file name extension is not supported\n");
-        return NULL;
+        return nullptr;
     }
     //Mesh should link to the part feature, in order to set up FemConstraint
 
@@ -519,7 +529,7 @@ App::DocumentObject* getObjectByType(const Base::Type type)
                 return static_cast<App::DocumentObject*>(*it); // return the first of that type
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 App::DocumentObject* createObjectByType(const Base::Type type)
@@ -575,7 +585,7 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
     App::DocumentObject* obj = pcDoc->getActiveObject();
 
     vtkSmartPointer<vtkDataSet> dataset = ds;
-    App::DocumentObject* result = NULL;
+    App::DocumentObject* result = nullptr;
 
     if (res)
     {
@@ -587,7 +597,7 @@ App::DocumentObject* FemVTKTools::readResult(const char* filename, App::Document
         else
         {
             Base::Console().Message("the active object is not the correct type, do nothing\n");
-            return NULL;
+            return nullptr;
         }
     }
 
@@ -827,9 +837,13 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
     SMESH_Mesh* smesh = const_cast<SMESH_Mesh*>(static_cast<FemMeshObject*>(meshObj)->FemMesh.getValue().getSMesh());
     SMESHDS_Mesh* meshDS = smesh->GetMeshDS();
 
+    // all result object meshes are in mm therefore for e.g. length outputs like
+    // displacement we must divide by 1000
+    double factor = 1.0;
+
     // vectors
     for (std::map<std::string, std::string>::iterator it = vectors.begin(); it != vectors.end(); ++it) {
-        const int dim=3;  //Fixme, detect dim, but FreeCAD PropertyVectorList ATM only has DIM of 3
+        const int dim = 3;  //Fixme, detect dim, but FreeCAD PropertyVectorList ATM only has DIM of 3
         App::PropertyVectorList* field = nullptr;
         if (res->getPropertyByName(it->first.c_str()))
             field = static_cast<App::PropertyVectorList*>(res->getPropertyByName(it->first.c_str()));
@@ -848,17 +862,22 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
             //we need to set values for the unused points.
             //TODO: ensure that the result bar does not include the used 0 if it is not part of the result (e.g. does the result bar show 0 as smallest value?)
             if (nPoints != field->getSize()) {
-                double tuple[] = {0,0,0};
-                for (vtkIdType i=0; i<nPoints; ++i) {
+                double tuple[] = { 0, 0, 0 };
+                for (vtkIdType i = 0; i < nPoints; ++i) {
                     data->SetTuple(i, tuple);
                 }
             }
 
+            if (it->first.compare("DisplacementVectors") == 0)
+                factor = 0.001; // to get meter
+            else
+                factor = 1.0;
+
             SMDS_NodeIteratorPtr aNodeIter = meshDS->nodesIterator();
-            for (std::vector<Base::Vector3d>::const_iterator jt=vel.begin(); jt!=vel.end(); ++jt) {
+            for (std::vector<Base::Vector3d>::const_iterator jt = vel.begin(); jt != vel.end(); ++jt) {
                 const SMDS_MeshNode* node = aNodeIter->next();
-                double tuple[] = {jt->x, jt->y, jt->z};
-                data->SetTuple(node->GetID()-1, tuple);
+                double tuple[] = { jt->x * factor, jt->y * factor, jt->z * factor };
+                data->SetTuple(node->GetID() - 1, tuple);
             }
             grid->GetPointData()->AddArray(data);
             Base::Console().Log("    The PropertyVectorList %s was exported to VTK vector list: %s\n", it->first.c_str(), it->second.c_str());
@@ -887,15 +906,36 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
             //we need to set values for the unused points.
             //TODO: ensure that the result bar does not include the used 0 if it is not part of the result (e.g. does the result bar show 0 as smallest value?)
             if (nPoints != field->getSize()) {
-                for (vtkIdType i=0; i<nPoints; ++i) {
+                for (vtkIdType i = 0; i < nPoints; ++i) {
                     data->SetValue(i, 0);
                 }
-             }
+            }
+
+            if ((it->first.compare("MaxShear") == 0)
+                || (it->first.compare("MaxShear") == 0)
+                || (it->first.compare("NodeStressXX") == 0)
+                || (it->first.compare("NodeStressXY") == 0)
+                || (it->first.compare("NodeStressXZ") == 0)
+                || (it->first.compare("NodeStressYY") == 0)
+                || (it->first.compare("NodeStressYZ") == 0)
+                || (it->first.compare("NodeStressZZ") == 0)
+                || (it->first.compare("PrincipalMax") == 0)
+                || (it->first.compare("PrincipalMed") == 0)
+                || (it->first.compare("PrincipalMin") == 0)
+                || (it->first.compare("vonMises") == 0)
+                || (it->first.compare("NetworkPressure") == 0) )
+                factor = 1e6; // to get Pascal
+            else if (it->first.compare("DisplacementLengths") == 0)
+                factor = 0.001; // to get meter
+            else
+                factor = 1.0;
 
             SMDS_NodeIteratorPtr aNodeIter = meshDS->nodesIterator();
-            for (size_t i=0; i<vec.size(); ++i) {
+            for (size_t i = 0; i < vec.size(); ++i) {
                 const SMDS_MeshNode* node = aNodeIter->next();
-                data->SetValue(node->GetID()-1, vec[i]);
+                // for the MassFlowRate the last vec entries can be a nullptr, thus check this
+                if (node)
+                    data->SetValue(node->GetID() - 1, vec[i] * factor);
             }
 
             grid->GetPointData()->AddArray(data);

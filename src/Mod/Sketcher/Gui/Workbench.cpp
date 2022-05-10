@@ -34,6 +34,7 @@
 using namespace SketcherGui;
 
 #if 0 // needed for Qt's lupdate utility
+    qApp->translate("CommandGroup", "Sketcher");
     qApp->translate("Workbench", "Sketcher");
     qApp->translate("Workbench", "Sketcher geometries");
     qApp->translate("Workbench", "Sketcher constraints");
@@ -407,21 +408,23 @@ inline void SketcherAddWorkbenchBSplines<Gui::MenuItem>(Gui::MenuItem& bspline)
             << "Sketcher_BSplineComb"
             << "Sketcher_BSplineKnotMultiplicity"
             << "Sketcher_BSplinePoleWeight"
-            << "Sketcher_BSplineConvertToNURB"
+            << "Sketcher_BSplineConvertToNURBS"
             << "Sketcher_BSplineIncreaseDegree"
             << "Sketcher_BSplineDecreaseDegree"
             << "Sketcher_BSplineIncreaseKnotMultiplicity"
-            << "Sketcher_BSplineDecreaseKnotMultiplicity";
+            << "Sketcher_BSplineDecreaseKnotMultiplicity"
+            << "Sketcher_BSplineInsertKnot";
 }
 
 template <>
 inline void SketcherAddWorkbenchBSplines<Gui::ToolBarItem>(Gui::ToolBarItem& bspline)
 {
     bspline << "Sketcher_CompBSplineShowHideGeometryInformation"
-            << "Sketcher_BSplineConvertToNURB"
+            << "Sketcher_BSplineConvertToNURBS"
             << "Sketcher_BSplineIncreaseDegree"
             << "Sketcher_BSplineDecreaseDegree"
-            << "Sketcher_CompModifyKnotMultiplicity";
+            << "Sketcher_CompModifyKnotMultiplicity"
+            << "Sketcher_BSplineInsertKnot";
 }
 
 template <typename T>

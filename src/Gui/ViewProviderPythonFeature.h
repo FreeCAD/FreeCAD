@@ -20,17 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_VIEWPROVIDERPYTHONFEATURE_H
 #define GUI_VIEWPROVIDERPYTHONFEATURE_H
 
-#include <App/Application.h>
 #include <App/AutoTransaction.h>
-#include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/Document.h>
 #include <App/PropertyPythonObject.h>
-#include <App/DynamicProperty.h>
 #include <App/FeaturePython.h>
+
+#include "ViewProviderGeometryObject.h"
+#include "Document.h"
+
 
 class SoSensor;
 class SoDragger;
@@ -125,6 +124,8 @@ public:
 
     bool getDropPrefix(std::string &prefix) const;
 
+    bool editProperty(const char *propName);
+
 private:
     ViewProviderDocumentObject* object;
     App::PropertyPythonObject &Proxy;
@@ -170,6 +171,7 @@ private:
     FC_PY_ELEMENT(getDropPrefix) \
     FC_PY_ELEMENT(replaceObject) \
     FC_PY_ELEMENT(getLinkedViewProvider) \
+    FC_PY_ELEMENT(editProperty) \
 
 #undef FC_PY_ELEMENT
 #define FC_PY_ELEMENT(_name) FC_PY_ELEMENT_DEFINE(_name)
@@ -264,7 +266,7 @@ public:
         return name;
     }
     virtual SoDetail* getDetail(const char* name) const override {
-        SoDetail *det = 0;
+        SoDetail *det = nullptr;
         if(imp->getDetail(name,det))
             return det;
         return ViewProviderT::getDetail(name);
@@ -568,11 +570,16 @@ protected:
     }
 
     virtual ViewProviderDocumentObject *getLinkedViewProvider(
-            std::string *subname=0, bool recursive=false) const override{
-        ViewProviderDocumentObject *res = 0;
+            std::string *subname=nullptr, bool recursive=false) const override{
+        ViewProviderDocumentObject *res = nullptr;
         if(!imp->getLinkedViewProvider(res, subname, recursive))
             res = ViewProviderT::getLinkedViewProvider(subname,recursive);
         return res;
+    }
+
+    virtual void editProperty(const char *propName) override {
+        if (!imp->editProperty(propName))
+            ViewProviderT::editProperty(propName);
     }
 
 public:

@@ -17,7 +17,6 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${FREETYPE_INCLUDE_DIRS}
 )
@@ -92,11 +91,13 @@ generate_from_xml(TopoShapeVertexPy)
 generate_from_xml(TopoShapeWirePy)
 generate_from_xml(BRepOffsetAPI_MakePipeShellPy)
 generate_from_xml(BRepOffsetAPI_MakeFillingPy)
+generate_from_xml(PrecisionPy)
 
 # make sure to create the directory at configure time
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/BRepFeat)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Geom2d)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/GeomPlate)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/HLRBRep)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/ShapeUpgrade)
 
 generate_from_xml(BRepFeat/MakePrismPy)
@@ -122,6 +123,11 @@ generate_from_xml(Geom2d/Parabola2dPy)
 generate_from_xml(GeomPlate/BuildPlateSurfacePy)
 generate_from_xml(GeomPlate/CurveConstraintPy)
 generate_from_xml(GeomPlate/PointConstraintPy)
+
+generate_from_xml(HLRBRep/HLRBRep_AlgoPy)
+generate_from_xml(HLRBRep/HLRToShapePy)
+generate_from_xml(HLRBRep/HLRBRep_PolyAlgoPy)
+generate_from_xml(HLRBRep/PolyHLRToShapePy)
 
 generate_from_xml(ShapeUpgrade/UnifySameDomainPy)
 
@@ -312,6 +318,8 @@ SET(Python_SRCS
     BRepOffsetAPI_MakePipeShellPyImp.cpp
     BRepOffsetAPI_MakeFillingPy.xml
     BRepOffsetAPI_MakeFillingPyImp.cpp
+    PrecisionPy.xml
+    PrecisionPyImp.cpp
     PartPyCXX.cpp
     PartPyCXX.h
 )
@@ -322,8 +330,7 @@ SET(BRepFeatPy_SRCS
     BRepFeat/MakePrismPy.xml
     BRepFeat/MakePrismPyImp.cpp
 )
-
-SOURCE_GROUP("ShapeUpgrade" FILES ${ShapeUpgradePy_SRCS})
+SOURCE_GROUP("BRepFeat" FILES ${BRepFeatPy_SRCS})
 
 # Geom2d wrappers
 SET(Geom2dPy_SRCS
@@ -377,6 +384,20 @@ SET(GeomPlatePy_SRCS
 
 SOURCE_GROUP("GeomPlate" FILES ${GeomPlatePy_SRCS})
 
+# HLRBRep wrappers
+SET(HLRBRepPy_SRCS
+    HLRBRep/HLRBRep_AlgoPy.xml
+    HLRBRep/HLRBRep_AlgoPyImp.cpp
+    HLRBRep/HLRToShapePy.xml
+    HLRBRep/HLRToShapePyImp.cpp
+
+    HLRBRep/HLRBRep_PolyAlgoPy.xml
+    HLRBRep/HLRBRep_PolyAlgoPyImp.cpp
+    HLRBRep/PolyHLRToShapePy.xml
+    HLRBRep/PolyHLRToShapePyImp.cpp
+)
+SOURCE_GROUP("HLRBRep" FILES ${HLRBRepPy_SRCS})
+
 # ShapeUpgrade wrappers
 SET(ShapeUpgradePy_SRCS
     ShapeUpgrade/UnifySameDomainPy.xml
@@ -392,6 +413,7 @@ SET(Part_SRCS
     ${BRepFeatPy_SRCS}
     ${Geom2dPy_SRCS}
     ${GeomPlatePy_SRCS}
+    ${HLRBRepPy_SRCS}
     ${ShapeUpgradePy_SRCS}
     Attacher.cpp
     Attacher.h
@@ -402,6 +424,8 @@ SET(Part_SRCS
     BSplineCurveBiArcs.cpp
     CrossSection.cpp
     CrossSection.h
+    ExtrusionHelper.cpp
+    ExtrusionHelper.h
     GeometryExtension.cpp
     GeometryExtension.h
     GeometryDefaultExtension.cpp

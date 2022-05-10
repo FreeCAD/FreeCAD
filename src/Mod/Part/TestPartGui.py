@@ -41,3 +41,21 @@ import FreeCAD, FreeCADGui, os, sys, unittest, Part, PartGui
 #	def tearDown(self):
 #		#closing doc
 #		FreeCAD.closeDocument("PartGuiTest")
+class PartGuiViewProviderTestCases(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("PartGuiTest")
+
+    def testCanDropObject(self):
+        # https://github.com/FreeCAD/FreeCAD/pull/6850
+        box = self.Doc.addObject("Part::Box", "Box")
+        with self.assertRaises(TypeError):
+            box.ViewObject.canDragObject(None)
+        with self.assertRaises(TypeError):
+            box.ViewObject.canDropObject(None)
+        box.ViewObject.canDropObject()
+        with self.assertRaises(TypeError):
+            box.ViewObject.dropObject(box, None)
+
+    def tearDown(self):
+        #closing doc
+        FreeCAD.closeDocument("PartGuiTest")

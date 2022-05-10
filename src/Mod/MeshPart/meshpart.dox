@@ -1,5 +1,5 @@
 /** \defgroup MESHPART MeshPart
- *  \ingroup CWORKBENCHES 
+ *  \ingroup CWORKBENCHES
  *  \brief Part to Mesh (and vice-versa) conversion tools
  */
 

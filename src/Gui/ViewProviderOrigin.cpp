@@ -21,37 +21,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QApplication>
-# include <QPixmap>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoGroup.h>
 #endif
 
-
-#include <Base/Vector3D.h>
-#include <App/Origin.h>
-#include <App/OriginFeature.h>
 #include <App/Document.h>
+#include <App/Origin.h>
+#include "Base/Console.h"
+#include <Base/Vector3D.h>
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "ViewProviderOrigin.h"
-#include "ViewProviderPlane.h"
-#include "ViewProviderLine.h"
 #include "Application.h"
 #include "Command.h"
-#include "BitmapFactory.h"
 #include "Document.h"
-#include "Tree.h"
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
+#include "ViewProviderLine.h"
+#include "ViewProviderPlane.h"
 
-#include "Base/Console.h"
-
-#include <App/Origin.h>
 
 using namespace Gui;
 
@@ -76,7 +63,7 @@ ViewProviderOrigin::ViewProviderOrigin()
 
 ViewProviderOrigin::~ViewProviderOrigin() {
     pcGroupChildren->unref();
-    pcGroupChildren = 0;
+    pcGroupChildren = nullptr;
 }
 
 std::vector<App::DocumentObject*> ViewProviderOrigin::claimChildren(void) const {

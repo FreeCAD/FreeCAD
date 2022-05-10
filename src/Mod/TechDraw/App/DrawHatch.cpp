@@ -59,7 +59,7 @@ DrawHatch::DrawHatch(void)
 {
     static const char *vgroup = "Hatch";
 
-    ADD_PROPERTY_TYPE(Source, (0), vgroup, (App::PropertyType)(App::Prop_None), "The View + Face to be hatched");
+    ADD_PROPERTY_TYPE(Source, (nullptr), vgroup, (App::PropertyType)(App::Prop_None), "The View + Face to be hatched");
     Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(HatchPattern, (prefSvgHatch()), vgroup, App::Prop_None, "The hatch pattern file for this area");
     ADD_PROPERTY_TYPE(SvgIncluded, (""), vgroup,App::Prop_None,

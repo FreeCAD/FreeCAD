@@ -43,7 +43,7 @@ macro(SetGlobalCompilerAndLinkerSettings)
             endif()
         endif(FREECAD_RELEASE_SEH)
 
-        option(FREECAD_USE_MP_COMPILE_FLAG "Add /MP flag to the compiler definitions. Speeds up the compile on multi processor machines" OFF)
+	option(FREECAD_USE_MP_COMPILE_FLAG "Add /MP flag to the compiler definitions. Speeds up the compile on multi processor machines" ON)
         if(FREECAD_USE_MP_COMPILE_FLAG)
             # set "Build with Multiple Processes"
             set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
@@ -62,17 +62,25 @@ macro(SetGlobalCompilerAndLinkerSettings)
     endif(MSVC)
 
     if(MINGW)
-        # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=12477
-        # Actually '-Wno-inline-dllimport' should work to suppress warnings of the form:
-        # inline function 'foo' is declared as dllimport: attribute ignored
-        # But it doesn't work with MinGW gcc 4.5.0 while using '-Wno-attributes' seems to
-        # do the trick.
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mthreads -Wno-attributes")
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mthreads -Wno-attributes")
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -mthreads -Wl,--export-all-symbols")
-        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -mthreads -Wl,--export-all-symbols")
-        # http://stackoverflow.com/questions/8375310/warning-auto-importing-has-been-activated-without-enable-auto-import-specifie
-        # set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -static-libgcc -static-libstdc++")
-        link_libraries(-lgdi32)
+        if(CMAKE_COMPILER_IS_CLANGXX)
+            # clang for MSYS doesn't support -mthreads
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-attributes")
+            set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-attributes")
+            set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--export-all-symbols")
+            #set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--export-all-symbols")
+        else()
+            # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=12477
+            # Actually '-Wno-inline-dllimport' should work to suppress warnings of the form:
+            # inline function 'foo' is declared as dllimport: attribute ignored
+            # But it doesn't work with MinGW gcc 4.5.0 while using '-Wno-attributes' seems to
+            # do the trick.
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-attributes")
+            set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-attributes")
+            set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--export-all-symbols")
+            #set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--export-all-symbols")
+            # http://stackoverflow.com/questions/8375310/warning-auto-importing-has-been-activated-without-enable-auto-import-specifie
+            # set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -static-libgcc -static-libstdc++")
+            link_libraries(-lgdi32)
+        endif()
     endif(MINGW)
 endmacro(SetGlobalCompilerAndLinkerSettings)

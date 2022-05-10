@@ -35,6 +35,7 @@
 #include "Base/Console.h"
 #include "Base/Exception.h"
 #include "Base/FileInfo.h"
+#include <Base/Interpreter.h>
 #include "Base/Sequencer.h"
 #include "Base/Stream.h"
 #include "Base/Tools.h"
@@ -110,7 +111,8 @@ int Exporter::addObject(App::DocumentObject *obj, float tol)
                 it = meshCache.emplace(linked,
                         static_cast<Mesh::Feature*>(linked)->Mesh.getValue()).first;
                 it->second.setTransform(Base::Matrix4D());
-            } else {
+            }
+            else {
                 Base::PyGILStateLocker lock;
                 PyObject *pyobj = nullptr;
                 linked->getSubObject("", &pyobj, nullptr, false);
@@ -127,10 +129,14 @@ int Exporter::addObject(App::DocumentObject *obj, float tol)
                 Py_DECREF(pyobj);
             }
         }
-        MeshObject mesh(it->second);
-        mesh.transformGeometry(matrix);
-        if (addMesh(sobj->Label.getValue(), mesh))
-            ++count;
+
+        // Add a new mesh
+        if (it != meshCache.end()) {
+            MeshObject mesh(it->second);
+            mesh.transformGeometry(matrix);
+            if (addMesh(sobj->Label.getValue(), mesh))
+                ++count;
+        }
     }
     return count;
 }
@@ -180,9 +186,9 @@ bool MergeExporter::addMesh(const char *name, const MeshObject & mesh)
         for (unsigned long i=0; i<numSegm; i++) {
             const Segment& segm = mesh.getSegment(i);
             if (segm.isSaved()) {
-                std::vector<unsigned long> indices = segm.getIndices();
+                std::vector<FacetIndex> indices = segm.getIndices();
                 std::for_each( indices.begin(), indices.end(),
-                               [countFacets] (unsigned long &v) {
+                               [countFacets] (FacetIndex &v) {
                                    v += countFacets;
                                } );
                 Segment new_segm(&mergingMesh, indices, true);
@@ -192,9 +198,9 @@ bool MergeExporter::addMesh(const char *name, const MeshObject & mesh)
         }
     } else {
         // now create a segment for the added mesh
-        std::vector<unsigned long> indices;
+        std::vector<FacetIndex> indices;
         indices.resize(mergingMesh.countFacets() - countFacets);
-        std::generate(indices.begin(), indices.end(), Base::iotaGen<unsigned long>(countFacets));
+        std::generate(indices.begin(), indices.end(), Base::iotaGen<FacetIndex>(countFacets));
         Segment segm(&mergingMesh, indices, true);
         segm.setName(name);
         mergingMesh.addSegment(segm);

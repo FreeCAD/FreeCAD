@@ -26,17 +26,18 @@
 #define APP_DOCUMENTOBJECT_H
 
 #include <App/TransactionalObject.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyLinks.h>
 #include <App/PropertyExpressionEngine.h>
+#include <App/PropertyLinks.h>
+#include <App/PropertyStandard.h>
+#include <Base/SmartPtrPy.h>
 
-#include <Base/TimeInfo.h>
-#include <Base/Matrix.h>
-#include <CXX/Objects.hxx>
-
-#include <unordered_map>
 #include <bitset>
-#include <boost_signals2.hpp>
+#include <unordered_map>
+
+namespace Base
+{
+class Matrix4D;
+}
 
 namespace App
 {
@@ -58,7 +59,6 @@ enum ObjectStatus {
     Recompute2 = 9, // set when the object is being recomputed in the second pass
     PartialObject = 10,
     PendingRecompute = 11, // set by Document, indicating the object is in recomputation queue
-    PendingRemove = 12, // set by Document, indicating the object is in pending for remove after recompute
     ObjImporting = 13, // Mark the object as importing
     NoTouch = 14, // no touch on any property change
     GeoExcluded = 15, // mark as a member but not claimed by GeoFeatureGroup
@@ -66,6 +66,7 @@ enum ObjectStatus {
     NoAutoExpand = 17, // disable tree item auto expand on selection for this object
     PendingTransactionUpdate = 18, // mark that the object expects a call to onUndoRedoFinished() after transaction is finished.
     RecomputeExtension = 19, // mark the object to recompute its extensions
+    TouchOnColorChange = 20, // inform view provider touch object on color change
 };
 
 /** Return object for feature execution
@@ -73,11 +74,11 @@ enum ObjectStatus {
 class AppExport DocumentObjectExecReturn
 {
 public:
-    DocumentObjectExecReturn(const std::string& sWhy, DocumentObject* WhichObject=0)
+    DocumentObjectExecReturn(const std::string& sWhy, DocumentObject* WhichObject=nullptr)
         : Why(sWhy), Which(WhichObject)
     {
     }
-    DocumentObjectExecReturn(const char* sWhy, DocumentObject* WhichObject=0)
+    DocumentObjectExecReturn(const char* sWhy, DocumentObject* WhichObject=nullptr)
         : Which(WhichObject)
     {
         if (sWhy)
@@ -174,8 +175,8 @@ public:
     bool isRemoving() const {return StatusBits.test(ObjectStatus::Remove);}
     /// return the status bits
     unsigned long getStatus() const {return StatusBits.to_ulong();}
-    bool testStatus(ObjectStatus pos) const {return StatusBits.test((size_t)pos);}
-    void setStatus(ObjectStatus pos, bool on) {StatusBits.set((size_t)pos, on);}
+    bool testStatus(ObjectStatus pos) const {return StatusBits.test(size_t(pos));}
+    void setStatus(ObjectStatus pos, bool on) {StatusBits.set(size_t(pos), on);}
     //@}
 
     int isExporting() const;
@@ -248,7 +249,7 @@ public:
      * objects, with the furthest linking object ordered last.
      */
     void getInListEx(std::set<App::DocumentObject*> &inSet,
-            bool recursive, std::vector<App::DocumentObject*> *inList=0) const;
+            bool recursive, std::vector<App::DocumentObject*> *inList=nullptr) const;
     /** Return a set of all objects linking to this object, including possible external parent objects
      * @param recursive [in]: whether to obtain recursive in list
      */
@@ -346,8 +347,8 @@ public:
      * then it shall return itself. If subname is invalid, then it shall return
      * zero.
      */
-    virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj=0,
-            Base::Matrix4D *mat=0, bool transform=true, int depth=0) const;
+    virtual DocumentObject *getSubObject(const char *subname, PyObject **pyObj=nullptr,
+            Base::Matrix4D *mat=nullptr, bool transform=true, int depth=0) const;
 
     /// Return a list of objects referenced by a given subname including this object
     std::vector<DocumentObject*> getSubObjectList(const char *subname) const;
@@ -396,7 +397,7 @@ public:
      * it is not a link or the link is invalid.
      */
     virtual DocumentObject *getLinkedObject(bool recurse=true,
-            Base::Matrix4D *mat=0, bool transform=false, int depth=0) const;
+            Base::Matrix4D *mat=nullptr, bool transform=false, int depth=0) const;
 
     /* Return true to cause PropertyView to show linked object's property */
     virtual bool canLinkProperties() const {return true;}
@@ -424,6 +425,8 @@ public:
 
     virtual void setExpression(const ObjectIdentifier & path, std::shared_ptr<App::Expression> expr);
 
+    void clearExpression(const ObjectIdentifier & path);
+
     virtual const PropertyExpressionEngine::ExpressionInfo getExpression(const ObjectIdentifier &path) const;
 
     virtual void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
@@ -437,8 +440,8 @@ public:
     virtual bool removeDynamicProperty(const char* prop) override;
 
     virtual App::Property* addDynamicProperty(
-            const char* type, const char* name=0,
-            const char* group=0, const char* doc=0,
+            const char* type, const char* name=nullptr,
+            const char* group=nullptr, const char* doc=nullptr,
             short attr=0, bool ro=false, bool hidden=false) override;
 
     /** Resolve the last document object referenced in the subname
@@ -453,9 +456,9 @@ public:
      * @return Returns the last referenced document object in the subname. If no
      * such object in subname, return pObject.
      */
-    App::DocumentObject *resolve(const char *subname, App::DocumentObject **parent=0,
-        std::string *childName=0, const char **subElement=0,
-        PyObject **pyObj=0, Base::Matrix4D *mat=0, bool transform=true, int depth=0) const;
+    App::DocumentObject *resolve(const char *subname, App::DocumentObject **parent=nullptr,
+        std::string *childName=nullptr, const char **subElement=nullptr,
+        PyObject **pyObj=nullptr, Base::Matrix4D *mat=nullptr, bool transform=true, int depth=0) const;
 
     /** Resolve a link reference that is relative to this object reference
      *
@@ -519,7 +522,7 @@ public:
      * future parent.
      */
     virtual bool adjustRelativeLinks(const std::set<App::DocumentObject*> &inList,
-            std::set<App::DocumentObject*> *visited=0);
+            std::set<App::DocumentObject*> *visited=nullptr);
 
     /** allow partial loading of dependent objects
      *
@@ -613,7 +616,7 @@ protected:
 
      /// python object of this class and all descendent
 protected: // attributes
-    Py::Object PythonObject;
+    Py::SmartPtr PythonObject;
     /// pointer to the document this object belongs to
     App::Document* _pDoc;
 

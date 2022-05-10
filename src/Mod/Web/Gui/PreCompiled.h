@@ -26,22 +26,11 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define WebGuiExport __declspec(dllexport)
-#else // for Linux
-# define WebGuiExport
-#endif
-
-
 #ifdef _PreComp_
-
-// Python
-#include <Python.h>
 
 // standard
 #include <iostream>
-#include <assert.h>
+#include <cassert>
 #include <cmath>
 
 // STL
@@ -59,10 +48,12 @@
 # include <windows.h>
 #endif
 
+// Qt Core
+#include <QLatin1String>
 
 // Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
+#ifndef __QtAll__
+# include <Gui/QtAll.h>
 #endif
 
 // QtWebKit

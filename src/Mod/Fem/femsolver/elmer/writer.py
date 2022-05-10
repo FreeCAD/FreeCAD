@@ -79,7 +79,7 @@ class Writer(object):
     def getHandledConstraints(self):
         return self._handledObjects
 
-    def write(self):
+    def write_solver_input(self):
         self._handleRedifinedConstants()
         self._handleSimulation()
         self._handleHeat()
@@ -110,7 +110,7 @@ class Writer(object):
         # instead of hard coding them here for a second once
         self.unit_schema = Units.Scheme.SI1
         self.unit_system = {  # standard FreeCAD Base units = unit schema 0
-            "L": "mm",
+            "L": "m",
             "M": "kg",
             "T": "s",
             "I": "A",
@@ -123,7 +123,7 @@ class Writer(object):
         if self.unit_schema == Units.Scheme.SI1:
             Console.PrintMessage(
                 "The FreeCAD standard unit schema mm/kg/s is used. "
-                "Elmer sif-file writing is done in Standard FreeCAD units.\n"
+                "Elmer sif-file writing is however done in SI units.\n"
             )
         elif self.unit_schema == Units.Scheme.SI2:
             Console.PrintMessage(
@@ -143,11 +143,11 @@ class Writer(object):
             # see also unit comment in calculix writer
             Console.PrintMessage(
                 "The FEM unit schema mm/N/s is used. "
-                "Elmer sif-file writing is done in FEM-units.\n"
+                "Elmer sif-file writing is however done in SI units.\n"
             )
             self.unit_system = {
-                "L": "mm",
-                "M": "t",
+                "L": "m",
+                "M": "kg",
                 "T": "s",
                 "I": "A",
                 "O": "K",
@@ -214,6 +214,7 @@ class Writer(object):
                     _ELMERGRID_IFORMAT,
                     _ELMERGRID_OFORMAT,
                     unvPath,
+                    "-scale", "0.001", "0.001", "0.001",
                     "-out", self.directory]
             subprocess.call(args, stdout=subprocess.DEVNULL)
 
@@ -280,11 +281,12 @@ class Writer(object):
     def _handleSimulation(self):
         self._simulation("Coordinate System", "Cartesian 3D")
         self._simulation("Coordinate Mapping", (1, 2, 3))
-        if self.unit_schema == Units.Scheme.SI2:
-            self._simulation("Coordinate Scaling", 0.001)
-            Console.PrintMessage(
-                "'Coordinate Scaling = Real 0.001' was inserted into the solver input file.\n"
-            )
+        # not necessary anymore since we use SI units
+        #if self.unit_schema == Units.Scheme.SI2:
+        #self._simulation("Coordinate Scaling", 0.001)
+        #    Console.PrintMessage(
+        #        "'Coordinate Scaling = Real 0.001' was inserted into the solver input file.\n"
+        #    )
         self._simulation("Simulation Type", "Steady state")
         self._simulation("Steady State Max Iterations", 1)
         self._simulation("Output Intervals", 1)
@@ -460,10 +462,9 @@ class Writer(object):
         for obj in self._getMember("Fem::ConstraintElectrostaticPotential"):
             if obj.References:
                 for name in obj.References[0][1]:
-                    # https://forum.freecadweb.org/viewtopic.php?f=18&t=41488&start=10#p369454  ff
                     if obj.PotentialEnabled:
                         if hasattr(obj, "Potential"):
-                            potential = self._getFromUi(obj.Potential, "V", "M*L^2/(T^3 * I)")
+                            potential = float(obj.Potential.getValueAs("V"))
                             self._boundary(name, "Potential", potential)
                     if obj.PotentialConstant:
                         self._boundary(name, "Potential Constant", True)

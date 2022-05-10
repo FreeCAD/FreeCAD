@@ -20,15 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <QMessageBox>
-#endif
 
-#include "Application.h"
-#include "MainWindow.h"
 #include "DlgEditFileIncludePropertyExternal.h"
+#include "Application.h"
 #include "FileDialog.h"
 
 
@@ -65,7 +60,7 @@ int DlgEditFileIncludePropertyExternal::Do(void)
     QFileInfo file = QString::fromUtf8(Prop.getValue());
     assert(file.exists());
 
-    QDir tmp = QString::fromUtf8(App::Application::getTempPath().c_str());
+    QDir tmp = QString::fromUtf8(App::Application::getUserCachePath().c_str());
     QString TempFile = tmp.absoluteFilePath(file.fileName());
     QFile::remove(TempFile);
 

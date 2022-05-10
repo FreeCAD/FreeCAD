@@ -28,6 +28,7 @@
 #include <Gui/ViewProviderPythonFeature.h>
 #include <Gui/ViewProviderBuilder.h>
 #include <Inventor/SbVec2f.h>
+#include <Mod/Points/PointsGlobal.h>
 
 
 class SoSwitch;
@@ -83,7 +84,7 @@ public:
     /// set the viewing mode
     virtual void setDisplayMode(const char* ModeName);
     /// returns a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
+    virtual std::vector<std::string> getDisplayModes() const;
     virtual QIcon getIcon() const;
 
     /// Sets the edit mnode
@@ -127,7 +128,7 @@ public:
 
     /**
      * Extracts the point data from the feature \a pcFeature and creates
-     * an Inventor node \a SoNode with these data. 
+     * an Inventor node \a SoNode with these data.
      */
     virtual void attach(App::DocumentObject *);
     /// Update the point representation
@@ -155,7 +156,7 @@ public:
 
     /**
      * Extracts the point data from the feature \a pcFeature and creates
-     * an Inventor node \a SoNode with these data. 
+     * an Inventor node \a SoNode with these data.
      */
     virtual void attach(App::DocumentObject *);
     /// Update the point representation

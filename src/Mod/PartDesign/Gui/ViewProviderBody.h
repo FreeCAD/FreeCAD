@@ -25,6 +25,7 @@
 #define PARTGUI_ViewProviderBody_H
 
 #include <Mod/Part/Gui/ViewProvider.h>
+#include <Mod/PartDesign/PartDesignGlobal.h>
 #include <Gui/ViewProviderOriginGroupExtension.h>
 #include <QCoreApplication>
 

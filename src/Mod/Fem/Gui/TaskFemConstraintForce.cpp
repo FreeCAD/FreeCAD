@@ -21,47 +21,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <sstream>
-
 # include <QAction>
-# include <QKeyEvent>
 # include <QMessageBox>
-# include <QRegExp>
-# include <QTextStream>
-
-# include <Precision.hxx>
 # include <TopoDS.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <Geom_Plane.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Ax1.hxx>
-# include <BRepAdaptor_Curve.hxx>
-# include <Geom_Line.hxx>
-# include <gp_Lin.hxx>
 #endif
 
-#include "ui_TaskFemConstraintForce.h"
-#include "TaskFemConstraintForce.h"
-#include <Base/Console.h>
-#include <Base/Tools.h>
-#include <App/Application.h>
-#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <App/OriginFeature.h>
-#include <App/PropertyGeo.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/Selection.h>
 #include <Gui/Command.h>
+#include <Gui/SelectionObject.h>
+#include <Gui/ViewProvider.h>
 #include <Mod/Fem/App/FemConstraintForce.h>
 #include <Mod/Fem/App/FemTools.h>
-#include <Mod/Part/App/PartFeature.h>
+
+#include "TaskFemConstraintForce.h"
+#include "ui_TaskFemConstraintForce.h"
 
 
 using namespace FemGui;
@@ -69,8 +47,8 @@ using namespace Gui;
 
 /* TRANSLATOR FemGui::TaskFemConstraintForce */
 
-TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce *ConstraintView,QWidget *parent)
-    : TaskFemConstraint(ConstraintView, parent, "FEM_ConstraintForce")
+TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce* ConstraintView, QWidget* parent)
+    : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintForce")
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -128,8 +106,8 @@ TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce *C
     ui->checkReverse->blockSignals(false);
 
     //Selection buttons
-    connect(ui->btnAdd, SIGNAL(clicked()), this, SLOT(addToSelection()));
-    connect(ui->btnRemove, SIGNAL(clicked()), this, SLOT(removeFromSelection()));
+    buttonGroup->addButton(ui->btnAdd, (int)SelectionChangeModes::refAdd);
+    buttonGroup->addButton(ui->btnRemove, (int)SelectionChangeModes::refRemove);
 
     updateUI();
 }
@@ -313,7 +291,9 @@ TaskFemConstraintForce::getDirection(const std::vector<Gui::SelectionObject>& se
 void TaskFemConstraintForce::onButtonDirection(const bool pressed)
 {
     // sets the normal vector of the currently selecteed planar face as direction
-    Q_UNUSED(pressed)
+    Q_UNUSED(pressed);
+
+    clearButtons(SelectionChangeModes::none);
 
     auto link = getDirection(Gui::Selection().getSelectionEx());
     if (!link.first) {
@@ -374,7 +354,7 @@ const std::string TaskFemConstraintForce::getDirectionObject(void) const
         return "";
 
     int pos = dir.find_last_of(":");
-    return dir.substr(pos+1).c_str();
+    return dir.substr(pos + 1).c_str();
 }
 
 bool TaskFemConstraintForce::getReverse() const
@@ -387,12 +367,12 @@ TaskFemConstraintForce::~TaskFemConstraintForce()
     delete ui;
 }
 
-bool TaskFemConstraintForce::event(QEvent *e)
+bool TaskFemConstraintForce::event(QEvent* e)
 {
     return TaskFemConstraint::KeyEvent(e);
 }
 
-void TaskFemConstraintForce::changeEvent(QEvent *e)
+void TaskFemConstraintForce::changeEvent(QEvent* e)
 {
     TaskBox::changeEvent(e);
     if (e->type() == QEvent::LanguageChange) {
@@ -402,12 +382,20 @@ void TaskFemConstraintForce::changeEvent(QEvent *e)
     }
 }
 
+void TaskFemConstraintForce::clearButtons(const SelectionChangeModes notThis)
+{
+    if (notThis != SelectionChangeModes::refAdd)
+        ui->btnAdd->setChecked(false);
+    if (notThis != SelectionChangeModes::refRemove)
+        ui->btnRemove->setChecked(false);
+}
+
 //**************************************************************************
 //**************************************************************************
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgFemConstraintForce::TaskDlgFemConstraintForce(ViewProviderFemConstraintForce *ConstraintView)
+TaskDlgFemConstraintForce::TaskDlgFemConstraintForce(ViewProviderFemConstraintForce* ConstraintView)
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
@@ -425,7 +413,7 @@ void TaskDlgFemConstraintForce::open()
         QString msg = QObject::tr("Constraint force");
         Gui::Command::openCommand((const char*)msg.toUtf8());
         ConstraintView->setVisible(true);
-        Gui::Command::doCommand(Gui::Command::Doc,ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
+        Gui::Command::doCommand(Gui::Command::Doc, ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
     }
 }
 
@@ -437,7 +425,7 @@ bool TaskDlgFemConstraintForce::accept()
     try {
         //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "FEM force constraint changed"));
 
-        if (parameterForce->getForce()<=0)
+        if (parameterForce->getForce() <= 0)
         {
             QMessageBox::warning(parameter, tr("Input error"), tr("Please specify a force greater than 0"));
             return false;
@@ -445,7 +433,7 @@ bool TaskDlgFemConstraintForce::accept()
         else
         {
             QByteArray num = QByteArray::number(parameterForce->getForce());
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Force = %s",name.c_str(), num.data());
+            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Force = %s", name.c_str(), num.data());
         }
 
         std::string dirname = parameterForce->getDirectionName().data();
@@ -456,15 +444,16 @@ bool TaskDlgFemConstraintForce::accept()
             QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
             buf = buf.arg(QString::fromStdString(dirname));
             buf = buf.arg(QString::fromStdString(dirobj));
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Direction = %s", name.c_str(), buf.toStdString().c_str());
-        } else {
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Direction = None", name.c_str());
+            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Direction = %s", name.c_str(), buf.toStdString().c_str());
+        }
+        else {
+            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Direction = None", name.c_str());
         }
 
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %s", name.c_str(), parameterForce->getReverse() ? "True" : "False");
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Reversed = %s", name.c_str(), parameterForce->getReverse() ? "True" : "False");
 
         scale = parameterForce->getScale();  //OvG: determine modified scale
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
@@ -478,7 +467,7 @@ bool TaskDlgFemConstraintForce::reject()
 {
     // roll back the changes
     Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
     Gui::Command::updateActive();
 
     return true;

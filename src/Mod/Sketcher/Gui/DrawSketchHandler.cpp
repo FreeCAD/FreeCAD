@@ -59,18 +59,194 @@ using namespace SketcherGui;
 using namespace Sketcher;
 
 
+/************************************ Attorney *******************************************/
+
+inline void ViewProviderSketchDrawSketchHandlerAttorney::setConstraintSelectability(ViewProviderSketch &vp, bool enabled /*= true*/)
+{
+    vp.setConstraintSelectability(enabled);
+}
+
+inline void ViewProviderSketchDrawSketchHandlerAttorney::setPositionText(ViewProviderSketch &vp, const Base::Vector2d &Pos, const SbString &txt)
+{
+    vp.setPositionText(Pos,txt);
+}
+
+inline void ViewProviderSketchDrawSketchHandlerAttorney::setPositionText(ViewProviderSketch &vp, const Base::Vector2d &Pos)
+{
+    vp.setPositionText(Pos);
+}
+
+inline void ViewProviderSketchDrawSketchHandlerAttorney::resetPositionText(ViewProviderSketch &vp)
+{
+    vp.resetPositionText();
+}
+
+inline void ViewProviderSketchDrawSketchHandlerAttorney::drawEdit(ViewProviderSketch &vp, const std::vector<Base::Vector2d> &EditCurve)
+{
+    vp.drawEdit(EditCurve);
+}
+
+inline void ViewProviderSketchDrawSketchHandlerAttorney::drawEdit(ViewProviderSketch &vp, const std::list<std::vector<Base::Vector2d>> &list)
+{
+    vp.drawEdit(list);
+}
+
+inline void ViewProviderSketchDrawSketchHandlerAttorney::drawEditMarkers(ViewProviderSketch &vp, const std::vector<Base::Vector2d> &EditMarkers, unsigned int augmentationlevel)
+{
+    vp.drawEditMarkers(EditMarkers, augmentationlevel);
+}
+
+inline void ViewProviderSketchDrawSketchHandlerAttorney::setAxisPickStyle(ViewProviderSketch &vp, bool on)
+{
+    vp.setAxisPickStyle(on);
+}
+
+inline int ViewProviderSketchDrawSketchHandlerAttorney::getPreselectPoint(const ViewProviderSketch &vp)
+{
+   return vp.getPreselectPoint();
+}
+
+inline int ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCurve(const ViewProviderSketch &vp)
+{
+    return vp.getPreselectCurve();
+}
+
+inline int ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCross(const ViewProviderSketch &vp)
+{
+    return vp.getPreselectCross();
+}
+
+
+/**************************** CurveConverter **********************************************/
+
+CurveConverter::CurveConverter()
+{
+    try {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+        hGrp->Attach(this);
+    }
+    catch(const Base::ValueError & e) { // ensure that if parameter strings are not well-formed, the exception is not propagated
+        Base::Console().Error("CurveConverter: Malformed parameter string: %s\n", e.what());
+    }
+
+    updateCurvedEdgeCountSegmentsParameter();
+}
+
+CurveConverter::~CurveConverter()
+{
+    try {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+        hGrp->Detach(this);
+    }
+    catch(const Base::ValueError & e) {// ensure that if parameter strings are not well-formed, the program is not terminated when calling the noexcept destructor.
+        Base::Console().Error("CurveConverter: Malformed parameter string: %s\n", e.what());
+    }
+}
+
+std::vector<Base::Vector2d> CurveConverter::toVector2D(const Part::Geometry * geometry)
+{
+    std::vector<Base::Vector2d> vector2d;
+
+    const auto type = geometry->getTypeId();
+
+    auto emplaceasvector2d = [&vector2d](const Base::Vector3d & point) {
+        vector2d.emplace_back(point.x,point.y);
+    };
+
+    auto isconic = type.isDerivedFrom(Part::GeomConic::getClassTypeId());
+    auto isbounded = type.isDerivedFrom(Part::GeomBoundedCurve::getClassTypeId());
+
+    if (type == Part::GeomLineSegment::getClassTypeId()) { // add a line
+        auto geo = static_cast<const Part::GeomLineSegment *>(geometry);
+
+        emplaceasvector2d(geo->getStartPoint());
+        emplaceasvector2d(geo->getEndPoint());
+    }
+    else if ( isconic || isbounded ) {
+
+        auto geo = static_cast<const Part::GeomConic *>(geometry);
+
+        double segment = (geo->getLastParameter() - geo->getFirstParameter()) / curvedEdgeCountSegments;
+
+        for (int i=0; i < curvedEdgeCountSegments; i++)
+            emplaceasvector2d(geo->value(geo->getFirstParameter() + i * segment));
+
+        // either close the curve for untrimmed conic or set the last point for bounded curves
+        emplaceasvector2d(isconic ? geo->value(0) : geo->value(geo->getLastParameter()));
+    }
+
+    return vector2d;
+}
+
+std::list<std::vector<Base::Vector2d>> CurveConverter::toVector2DList(const std::vector<Part::Geometry *> &geometries)
+{
+    std::list<std::vector<Base::Vector2d>> list;
+
+    for(const auto & geo : geometries)
+        list.push_back(toVector2D(geo));
+
+    return list;
+}
+
+void CurveConverter::updateCurvedEdgeCountSegmentsParameter()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    int stdcountsegments = hGrp->GetInt("SegmentsPerGeometry", 50);
+
+    // value cannot be smaller than 6
+    if (stdcountsegments < 6)
+        stdcountsegments = 6;
+
+    curvedEdgeCountSegments = stdcountsegments;
+};
+
+/** Observer for parameter group. */
+void CurveConverter::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
+{
+    (void) rCaller;
+
+    if(strcmp(sReason, "SegmentsPerGeometry") == 0) {
+        updateCurvedEdgeCountSegmentsParameter();
+    }
+
+}
+
+/**************************** DrawSketchHandler *******************************************/
+
+
 //**************************************************************************
 // Construction/Destruction
 
-DrawSketchHandler::DrawSketchHandler() : sketchgui(0) {}
+DrawSketchHandler::DrawSketchHandler() : sketchgui(nullptr) {}
 
 DrawSketchHandler::~DrawSketchHandler() {}
+
+void DrawSketchHandler::activate(ViewProviderSketch * vp)
+{
+    sketchgui = vp;
+
+    this->preActivated();
+    this->activated();
+}
+
+void DrawSketchHandler::deactivate()
+{
+    this->deactivated();
+    this->postDeactivated();
+    ViewProviderSketchDrawSketchHandlerAttorney::setConstraintSelectability(*sketchgui, true);
+    unsetCursor();
+}
+
+void DrawSketchHandler::preActivated()
+{
+    ViewProviderSketchDrawSketchHandlerAttorney::setConstraintSelectability(*sketchgui, false);
+}
 
 void DrawSketchHandler::quit(void)
 {
     assert(sketchgui);
-    sketchgui->drawEdit(std::vector<Base::Vector2d>());
-    sketchgui->drawEditMarkers(std::vector<Base::Vector2d>());
+    drawEdit(std::vector<Base::Vector2d>());
+    drawEditMarkers(std::vector<Base::Vector2d>());
     resetPositionText();
 
     Gui::Selection().rmvSelectionGate();
@@ -91,6 +267,17 @@ int DrawSketchHandler::getHighestVertexIndex(void)
 int DrawSketchHandler::getHighestCurveIndex(void)
 {
     return sketchgui->getSketchObject()->getHighestCurveIndex();
+}
+
+unsigned long DrawSketchHandler::getCrosshairColor()
+{
+    unsigned long color = 0xFFFFFFFF; // white
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/View");
+    color = hGrp->GetUnsigned("CursorCrosshairColor", color);
+    // from rgba to rgb
+    color = (color >> 8) & 0xFFFFFF;
+    return color;
 }
 
 void DrawSketchHandler::setCrosshairCursor(const char* svgName) {
@@ -314,26 +501,31 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
     Base::Vector3d hitShapeDir = Base::Vector3d(0,0,0); // direction of hit shape (if it is a line, the direction of the line)
 
     // Get Preselection
-    int preSelPnt = sketchgui->getPreselectPoint();
-    int preSelCrv = sketchgui->getPreselectCurve();
-    int preSelCrs = sketchgui->getPreselectCross();
-    int GeoId = Constraint::GeoUndef;
-    Sketcher::PointPos PosId = Sketcher::none;
+    int preSelPnt = getPreselectPoint();
+    int preSelCrv = getPreselectCurve();
+    int preSelCrs = getPreselectCross();
+    int GeoId = GeoEnum::GeoUndef;
+
+    Sketcher::PointPos PosId = Sketcher::PointPos::none;
+
     if (preSelPnt != -1)
         sketchgui->getSketchObject()->getGeoVertexIndex(preSelPnt, GeoId, PosId);
     else if (preSelCrv != -1){
-        GeoId = preSelCrv;
-        const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
+        const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(preSelCrv);
 
-        if(geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()){
-            const Part::GeomLineSegment *line = static_cast<const Part::GeomLineSegment *>(geom);
-            hitShapeDir= line->getEndPoint()-line->getStartPoint();
+        // ensure geom exists in case object was called before preselection is updated
+        if (geom) {
+            GeoId = preSelCrv;
+            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                const Part::GeomLineSegment *line = static_cast<const Part::GeomLineSegment *>(geom);
+                hitShapeDir= line->getEndPoint()-line->getStartPoint();
+            }
         }
 
     }
     else if (preSelCrs == 0) { // root point
         GeoId = Sketcher::GeoEnum::RtPnt;
-        PosId = Sketcher::start;
+        PosId = Sketcher::PointPos::start;
     }
     else if (preSelCrs == 1){ // x axis
         GeoId = Sketcher::GeoEnum::HAxis;
@@ -345,7 +537,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
         hitShapeDir = Base::Vector3d(0,1,0);
     }
 
-    if (GeoId != Constraint::GeoUndef) {
+    if (GeoId != GeoEnum::GeoUndef) {
 
         const Part::Geometry * hitobject = sketchgui->getSketchObject()->getGeometry(GeoId);
 
@@ -354,13 +546,13 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
         constr.Type = Sketcher::None;
         constr.GeoId = GeoId;
         constr.PosId = PosId;
-        if (type == AutoConstraint::VERTEX && PosId != Sketcher::none)
+        if ((type == AutoConstraint::VERTEX || type == AutoConstraint::VERTEX_NO_TANGENCY) && PosId != Sketcher::PointPos::none)
             constr.Type = Sketcher::Coincident;
-        else if (type == AutoConstraint::CURVE && PosId != Sketcher::none)
+        else if (type == AutoConstraint::CURVE && PosId != Sketcher::PointPos::none)
             constr.Type = Sketcher::PointOnObject;
-        else if (type == AutoConstraint::VERTEX && PosId == Sketcher::none && hitobject->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
+        else if ((type == AutoConstraint::VERTEX || type == AutoConstraint::VERTEX_NO_TANGENCY) && PosId == Sketcher::PointPos::none && hitobject->getTypeId() != Part::GeomBSplineCurve::getClassTypeId())
             constr.Type = Sketcher::PointOnObject;
-        else if (type == AutoConstraint::CURVE && PosId == Sketcher::none)
+        else if (type == AutoConstraint::CURVE && PosId == Sketcher::PointPos::none)
             constr.Type = Sketcher::Tangent;
 
         if(constr.Type == Sketcher::Tangent && Dir.Length() > 1e-8 && hitShapeDir.Length() > 1e-8) { // We are hitting a line and have hitting vector information
@@ -392,8 +584,8 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
 
     AutoConstraint constr;
     constr.Type = Sketcher::None;
-    constr.GeoId = Constraint::GeoUndef;
-    constr.PosId = Sketcher::none;
+    constr.GeoId = GeoEnum::GeoUndef;
+    constr.PosId = Sketcher::PointPos::none;
     double angle = std::abs(atan2(Dir.y, Dir.x));
     if (angle < angleDevRad || (M_PI - angle) < angleDevRad )
         // Suggest horizontal constraint
@@ -405,9 +597,13 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
     if (constr.Type != Sketcher::None)
         suggestedConstraints.push_back(constr);
 
+    // Do not seek for tangent if we are actually building a primitive
+    if (type == AutoConstraint::VERTEX_NO_TANGENCY)
+        return suggestedConstraints.size();
+
     // Find if there are tangent constraints (currently arcs and circles)
 
-    int tangId = Constraint::GeoUndef;
+    int tangId = GeoEnum::GeoUndef;
 
     // Do not consider if distance is more than that.
     // Decrease this value when a candidate is found.
@@ -549,13 +745,13 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
         }
     }
 
-    if (tangId != Constraint::GeoUndef) {
+    if (tangId != GeoEnum::GeoUndef) {
         if (tangId > getHighestCurveIndex()) // external Geometry
             tangId = getHighestCurveIndex() - tangId;
         // Suggest vertical constraint
         constr.Type = Tangent;
         constr.GeoId = tangId;
-        constr.PosId = Sketcher::none;
+        constr.PosId = Sketcher::PointPos::none;
         suggestedConstraints.push_back(constr);
     }
 
@@ -578,40 +774,44 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
         // Iterate through constraints
         std::vector<AutoConstraint>::const_iterator it = autoConstrs.begin();
         for (; it != autoConstrs.end(); ++it) {
+            int geoId2 = it->GeoId;
+
             switch (it->Type)
             {
             case Sketcher::Coincident: {
-                if (posId1 == Sketcher::none)
+                if (posId1 == Sketcher::PointPos::none)
                     continue;
                 // If the auto constraint has a point create a coincident otherwise it is an edge on a point
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Coincident',%i,%i,%i,%i)) "
-                                     , geoId1, posId1, it->GeoId, it->PosId);
+                                     , geoId1, static_cast<int>(posId1), it->GeoId, static_cast<int>(it->PosId));
                 } break;
             case Sketcher::PointOnObject: {
-                int geoId2 = it->GeoId;
                 Sketcher::PointPos posId2 = it->PosId;
-                if (posId1 == Sketcher::none) {
+                if (posId1 == Sketcher::PointPos::none) {
                     // Auto constraining an edge so swap parameters
                     std::swap(geoId1,geoId2);
                     std::swap(posId1,posId2);
                 }
 
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('PointOnObject',%i,%i,%i)) "
-                                     , geoId1, posId1, geoId2);
+                                     , geoId1, static_cast<int>(posId1), geoId2);
                 } break;
+        // In special case of Horizontal/Vertical constraint, geoId2 is normally unused and should be 'Constraint::GeoUndef'
+        // However it can be used as a way to require the function to apply these constraints on another geometry
+        // In this case the caller as to set geoId2, then it will be used as target instead of geoId2
             case Sketcher::Horizontal: {
-                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Horizontal',%i)) ", geoId1);
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Horizontal',%i)) ",
+                                      geoId2 != GeoEnum::GeoUndef ? geoId2 : geoId1);
                 } break;
             case Sketcher::Vertical: {
-                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Vertical',%i)) ", geoId1);
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Vertical',%i)) ",
+                                      geoId2 != GeoEnum::GeoUndef ? geoId2 : geoId1);
                 } break;
             case Sketcher::Tangent: {
                 Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(sketchgui->getObject());
 
                 const Part::Geometry *geom1 = Obj->getGeometry(geoId1);
                 const Part::Geometry *geom2 = Obj->getGeometry(it->GeoId);
-
-                int geoId2 = it->GeoId;
 
                 // ellipse tangency support using construction elements (lines)
                 if( geom1 && geom2 &&
@@ -682,16 +882,60 @@ void DrawSketchHandler::renderSuggestConstraintsCursor(std::vector<AutoConstrain
 
 void DrawSketchHandler::setPositionText(const Base::Vector2d &Pos, const SbString &text)
 {
-    sketchgui->setPositionText(Pos, text);
+    ViewProviderSketchDrawSketchHandlerAttorney::setPositionText(*sketchgui, Pos, text);
 }
 
 
 void DrawSketchHandler::setPositionText(const Base::Vector2d &Pos)
 {
-    sketchgui->setPositionText(Pos);
+    ViewProviderSketchDrawSketchHandlerAttorney::setPositionText(*sketchgui,Pos);
 }
 
 void DrawSketchHandler::resetPositionText(void)
 {
-    sketchgui->resetPositionText();
+    ViewProviderSketchDrawSketchHandlerAttorney::resetPositionText(*sketchgui);
+}
+
+void DrawSketchHandler::drawEdit(const std::vector<Base::Vector2d> &EditCurve)
+{
+    ViewProviderSketchDrawSketchHandlerAttorney::drawEdit(*sketchgui, EditCurve);
+}
+
+void DrawSketchHandler::drawEdit(const std::list<std::vector<Base::Vector2d>> &list)
+{
+    ViewProviderSketchDrawSketchHandlerAttorney::drawEdit(*sketchgui, list);
+}
+
+void DrawSketchHandler::drawEdit(const std::vector<Part::Geometry *> &geometries)
+{
+    static CurveConverter c;
+
+    auto list = c.toVector2DList(geometries);
+
+    drawEdit(list);
+}
+
+void DrawSketchHandler::drawEditMarkers(const std::vector<Base::Vector2d> &EditMarkers, unsigned int augmentationlevel)
+{
+    ViewProviderSketchDrawSketchHandlerAttorney::drawEditMarkers(*sketchgui, EditMarkers, augmentationlevel);
+}
+
+void DrawSketchHandler::setAxisPickStyle(bool on)
+{
+    ViewProviderSketchDrawSketchHandlerAttorney::setAxisPickStyle(*sketchgui, on);
+}
+
+int DrawSketchHandler::getPreselectPoint(void) const
+{
+    return ViewProviderSketchDrawSketchHandlerAttorney::getPreselectPoint(*sketchgui);
+}
+
+int DrawSketchHandler::getPreselectCurve(void) const
+{
+    return ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCurve(*sketchgui);
+}
+
+int DrawSketchHandler::getPreselectCross(void) const
+{
+    return ViewProviderSketchDrawSketchHandlerAttorney::getPreselectCross(*sketchgui);
 }

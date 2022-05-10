@@ -187,7 +187,7 @@ Py::Float ToroidPy::getVolume(void) const
 
 PyObject *ToroidPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ToroidPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

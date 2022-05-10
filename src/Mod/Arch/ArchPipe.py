@@ -144,7 +144,7 @@ class _CommandPipeConnector:
         return {'Pixmap'  : 'Arch_PipeConnector',
                 'MenuText': QT_TRANSLATE_NOOP("Arch_PipeConnector","Connector"),
                 'Accel': "P, C",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Pipe","Creates a connector between 2 or 3 selected pipes")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_PipeConnector","Creates a connector between 2 or 3 selected pipes")}
 
     def IsActive(self):
 
@@ -407,6 +407,9 @@ class _ArchPipeConnector(ArchComponent.Component):
         else:
             v2 = wires[1].Vertexes[-2].Point.sub(wires[1].Vertexes[-1].Point).normalize()
         p = obj.Pipes[0].Proxy.getProfile(obj.Pipes[0])
+        # If the pipe has a non-zero WallThickness p is a shape instead of a wire:
+        if p.ShapeType != "Wire":
+            p = p.Wires
         p = Part.Face(p)
         if len(obj.Pipes) == 2:
             if obj.ConnectorType != "Corner":

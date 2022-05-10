@@ -34,6 +34,7 @@
 #include <vector>
 #include <memory>
 #include <Gui/SoFCSelectionContext.h>
+#include <Mod/Part/PartGlobal.h>
 
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;

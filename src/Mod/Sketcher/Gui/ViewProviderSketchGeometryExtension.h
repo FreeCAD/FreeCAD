@@ -24,6 +24,7 @@
 #define SKETCHER_VIEWPROVIDERSKETCHGEOMETRYEXTENSION_H
 
 #include <Mod/Part/App/Geometry.h>
+#include <Mod/Sketcher/SketcherGlobal.h>
 
 namespace SketcherGui {
 

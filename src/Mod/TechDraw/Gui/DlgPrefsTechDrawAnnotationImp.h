@@ -36,7 +36,7 @@ class DlgPrefsTechDrawAnnotationImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgPrefsTechDrawAnnotationImp( QWidget* parent = 0 );
+    DlgPrefsTechDrawAnnotationImp( QWidget* parent = nullptr );
     ~DlgPrefsTechDrawAnnotationImp();
 
 public Q_SLOTS:

@@ -19,7 +19,7 @@
 //
 //  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
-//  SMESH SMESH : implementaion of SMESH idl descriptions
+//  SMESH SMESH : implementation of SMESH idl descriptions
 //  File   : SMESH_0D_Algo.hxx
 //  Module : SMESH
 //  $Header: /home/server/cvs/SMESH/SMESH_SRC/src/SMESH/SMESH_0D_Algo.hxx,v 1.2.2.1 2008/11/27 12:25:15 abd Exp $

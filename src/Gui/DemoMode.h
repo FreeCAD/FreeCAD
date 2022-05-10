@@ -20,12 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_DIALOG_DEMOMODE_H
 #define GUI_DIALOG_DEMOMODE_H
 
-#include <Inventor/SbLinear.h>
 #include <QDialog>
+
 
 class QTimer;
 class SoCamera;
@@ -44,7 +43,7 @@ class GuiExport DemoMode : public QDialog
     Q_OBJECT
 
 public:
-    DemoMode(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+    DemoMode(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DemoMode();
 
     void accept();

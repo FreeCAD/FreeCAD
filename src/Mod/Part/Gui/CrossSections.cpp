@@ -50,6 +50,7 @@
 #include "CrossSections.h"
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/CrossSection.h>
+#include <App/Document.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Application.h>
@@ -57,6 +58,7 @@
 #include <Gui/Document.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <App/Link.h>
 #include <Base/Sequencer.h>
 #include <Base/UnitsApi.h>
 
@@ -193,8 +195,14 @@ void CrossSections::accept()
 
 void CrossSections::apply()
 {
-    std::vector<App::DocumentObject*> obj = Gui::Selection().
-        getObjectsOfType(Part::Feature::getClassTypeId());
+    std::vector<App::DocumentObject*> docobjs = Gui::Selection().
+            getObjectsOfType(App::DocumentObject::getClassTypeId());
+    std::vector<App::DocumentObject*> obj;
+    for (std::vector<App::DocumentObject*>::iterator it = docobjs.begin(); it != docobjs.end(); ++it){
+        if (!Part::Feature::getTopoShape(*it).isNull()) {
+            obj.push_back((*it));
+        }
+    }
 
     std::vector<double> d;
     if (ui->sectionsBox->isChecked())
@@ -517,7 +525,7 @@ TaskCrossSections::TaskCrossSections(const Base::BoundBox3d& bb)
     widget = new CrossSections(bb);
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Part_CrossSections"),
-        widget->windowTitle(), true, 0);
+        widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

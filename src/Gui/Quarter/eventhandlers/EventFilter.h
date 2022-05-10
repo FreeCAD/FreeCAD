@@ -53,7 +53,7 @@ public:
   void registerInputDevice(InputDevice * device);
   void unregisterInputDevice(InputDevice * device);
 
-  const QPoint & globalMousePosition(void) const;
+  const QPoint & globalMousePosition() const;
 
 protected:
   bool eventFilter(QObject * obj, QEvent * event);

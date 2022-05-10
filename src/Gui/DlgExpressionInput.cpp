@@ -21,21 +21,21 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
 #include <QApplication>
-#include <QPainter>
-#include <QDesktopWidget>
 #include <QMenu>
 #include <QMouseEvent>
+#endif
+
+#include <App/Application.h>
+#include <App/DocumentObject.h>
+#include <App/ExpressionParser.h>
+#include <Base/Tools.h>
 
 #include "DlgExpressionInput.h"
 #include "ui_DlgExpressionInput.h"
-#include "ExpressionCompleter.h"
 #include "Tools.h"
-#include <Base/Tools.h>
-#include <Base/Console.h>
-#include <App/Application.h>
-#include <App/ExpressionParser.h>
-#include <App/DocumentObject.h>
+
 
 using namespace App;
 using namespace Gui::Dialog;
@@ -45,13 +45,13 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
                                        const Base::Unit & _impliedUnit, QWidget *parent)
   : QDialog(parent)
   , ui(new Ui::DlgExpressionInput)
-  , expression(_expression ? _expression->copy() : 0)
+  , expression(_expression ? _expression->copy() : nullptr)
   , path(_path)
   , discarded(false)
   , impliedUnit(_impliedUnit)
   , minimumWidth(10)
 {
-    assert(path.getDocumentObject() != 0);
+    assert(path.getDocumentObject() != nullptr);
 
     // Setup UI
     ui->setupUi(this);
@@ -118,6 +118,14 @@ QPoint DlgExpressionInput::expressionPosition() const
 
 void DlgExpressionInput::textChanged(const QString &text)
 {
+    if (text.isEmpty()) {
+        ui->okBtn->setDisabled(true);
+        ui->discardBtn->setDefault(true);
+        return;
+    }
+
+    ui->okBtn->setDefault(true);
+
     try {
         //resize the input field according to text size
         QFontMetrics fm(ui->expression->font());

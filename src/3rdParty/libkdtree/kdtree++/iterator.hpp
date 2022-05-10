@@ -52,10 +52,10 @@ namespace KDTree
     typedef _Node_base::_Base_const_ptr _Base_const_ptr;
     _Base_const_ptr _M_node;
 
-    inline _Base_iterator(_Base_const_ptr const __N = NULL)
+    inline _Base_iterator(_Base_const_ptr const __N = nullptr)
       : _M_node(__N) {}
-    inline _Base_iterator(_Base_iterator const& __THAT)
-      : _M_node(__THAT._M_node) {}
+    //inline _Base_iterator(_Base_iterator const& __THAT)
+    //  : _M_node(__THAT._M_node) {}
 
     inline void
     _M_increment()

@@ -23,16 +23,16 @@
 #ifndef GUI_TASKVIEW_TASKSECTIONVIEW_H
 #define GUI_TASKVIEW_TASKSECTIONVIEW_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
-
-#include <Mod/TechDraw/Gui/ui_TaskSectionView.h>
-
-#include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawViewSection.h>
+#include <Gui/TaskView/TaskView.h>
 
 
 class Ui_TaskSectionView;
+
+namespace TechDraw {
+    class DrawViewPart;
+    class DrawViewSection;
+}
 
 namespace TechDrawGui
 {
@@ -60,6 +60,8 @@ protected Q_SLOTS:
     void onXChanged();
     void onYChanged();
     void onZChanged();
+    void scaleTypeChanged(int index);
+
 
 protected:
     void changeEvent(QEvent *e);
@@ -98,6 +100,7 @@ private:
     Base::Vector3d m_saveDirection;
     Base::Vector3d m_saveOrigin;
     double m_saveScale;
+    int m_saveScaleType;
 
     std::string m_dirName;
     std::string m_sectionName;

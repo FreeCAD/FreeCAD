@@ -3,37 +3,12 @@ configure_file(ThirdPartyLibraries.html
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/ThirdPartyLibraries.html COPYONLY)
 configure_file(LICENSE.html
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/LICENSE.html COPYONLY)
-configure_file(CONTRIBUTORS
-    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/CONTRIBUTORS COPYONLY)
 
-
-
-if(BUILD_GUI)
-    FILE(GLOB QCH_FILES freecad.qch.part*)
-    list(SORT QCH_FILES)
-    set (DEST_FILE ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/freecad.qch)
-    foreach(SRC_FILE ${QCH_FILES})
-        if(${SRC_FILE} IS_NEWER_THAN ${DEST_FILE})
-            EXECUTE_PROCESS(COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/src/Tools/catfiles.py
-                  --outputfile=${DEST_FILE} ${QCH_FILES}
-                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-                  OUTPUT_STRIP_TRAILING_WHITESPACE)
-            break()
-        endif()
-    endforeach()
-
-    configure_file(freecad.qhc ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DOCDIR}/freecad.qhc COPYONLY)
-    INSTALL(FILES
-        ${DEST_FILE}
-        DESTINATION ${CMAKE_INSTALL_DOCDIR}
-    )
-endif(BUILD_GUI)
+# The CONTRIBUTORS file is now compiled into the FreeCAD GUI Qt resource file
 
 INSTALL(FILES
-    freecad.qhc
     ThirdPartyLibraries.html
     LICENSE.html
-    CONTRIBUTORS
     DESTINATION ${CMAKE_INSTALL_DOCDIR}
 )
 
@@ -78,13 +53,9 @@ if(DOXYGEN_FOUND)
 
     # exclude some subdirectories
     # src/Tools : content not relevant ?
-    # src/3rdParty/CxImage : Windows thumbnailer
     set(        DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/Tools)
-    list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/CxImage)
     list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/Doc/sphinx)
     # deprecated modules
-    list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/Mod/Assembly)
-    list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/Mod/Cam)
     list(APPEND DOXYGEN_EXCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/Mod/Complete)
 
     STRING(REGEX REPLACE ";" " " DOXYGEN_EXCLUDE_LIST "${DOXYGEN_EXCLUDE_DIR}")

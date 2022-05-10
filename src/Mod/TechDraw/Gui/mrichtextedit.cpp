@@ -51,9 +51,9 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
+#include <Gui/FileDialog.h>
 
 #include <App/Application.h>
-
 #include "PreferencesGui.h"
 #include "mrichtextedit.h"
 
@@ -62,7 +62,7 @@ using namespace TechDraw;
 
 MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) {
     setupUi(this);
-    m_lastBlockList = 0;
+    m_lastBlockList = nullptr;
 #if QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
     f_textedit->setTabStopWidth(40);
 #else
@@ -146,15 +146,15 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
 
     // link
 
-    f_link->setShortcut(Qt::CTRL + Qt::Key_L);
+    f_link->setShortcut(QKeySequence(QString::fromUtf8("CTRL+L")));
 
     connect(f_link, SIGNAL(clicked(bool)), this, SLOT(textLink(bool)));
 
     // bold, italic & underline
 
-    f_bold->setShortcut(Qt::CTRL + Qt::Key_B);
-    f_italic->setShortcut(Qt::CTRL + Qt::Key_I);
-    f_underline->setShortcut(Qt::CTRL + Qt::Key_U);
+    f_bold->setShortcut(QKeySequence(QString::fromUtf8("CTRL+B")));
+    f_italic->setShortcut(QKeySequence(QString::fromUtf8("CTRL+I")));
+    f_underline->setShortcut(QKeySequence(QString::fromUtf8("CTRL+U")));
 
     connect(f_bold, SIGNAL(clicked()), this, SLOT(textBold()));
     connect(f_italic, SIGNAL(clicked()), this, SLOT(textItalic()));
@@ -184,16 +184,16 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
 
     // lists
 
-    f_list_bullet->setShortcut(Qt::CTRL + Qt::Key_Minus);
-    f_list_ordered->setShortcut(Qt::CTRL + Qt::Key_Equal);
+    f_list_bullet->setShortcut(QKeySequence(QString::fromUtf8("CTRL+-")));
+    f_list_ordered->setShortcut(QKeySequence(QString::fromUtf8("CTRL+=")));
 
     connect(f_list_bullet, SIGNAL(clicked(bool)), this, SLOT(listBullet(bool)));
     connect(f_list_ordered, SIGNAL(clicked(bool)), this, SLOT(listOrdered(bool)));
 
     // indentation
 
-    f_indent_dec->setShortcut(Qt::CTRL + Qt::Key_Comma);
-    f_indent_inc->setShortcut(Qt::CTRL + Qt::Key_Period);
+    f_indent_dec->setShortcut(QKeySequence(QString::fromUtf8("CTRL+,")));
+    f_indent_inc->setShortcut(QKeySequence(QString::fromUtf8("CTRL+.")));
 
     connect(f_indent_inc, SIGNAL(clicked()), this, SLOT(increaseIndentation()));
     connect(f_indent_dec, SIGNAL(clicked()), this, SLOT(decreaseIndentation()));
@@ -317,6 +317,15 @@ void MRichTextEdit::focusInEvent(QFocusEvent *) {
     f_textedit->setFocus(Qt::TabFocusReason);
 }
 
+void MRichTextEdit::keyPressEvent(QKeyEvent *event) {
+    if (event->key() == Qt::Key_Return && event->modifiers() == Qt::ControlModifier) {
+        onSave();
+        return;
+    }
+
+    QWidget::keyPressEvent(event);
+}
+
 
 void MRichTextEdit::textUnderline() {
     QTextCharFormat fmt;
@@ -424,7 +433,12 @@ void MRichTextEdit::textStyle(int index) {
 }
 
 void MRichTextEdit::textFgColor() {
-    QColor col = QColorDialog::getColor(f_textedit->textColor(), this);
+    QColor col;
+    if (Gui::DialogOptions::dontUseNativeColorDialog()){
+        col = QColorDialog::getColor(f_textedit->textColor(),this, QLatin1String(""), QColorDialog::DontUseNativeDialog);
+    } else {
+        col = QColorDialog::getColor(f_textedit->textColor(), this);
+    }
     QTextCursor cursor = f_textedit->textCursor();
     if (!cursor.hasSelection()) {
         cursor.select(QTextCursor::WordUnderCursor);
@@ -441,7 +455,12 @@ void MRichTextEdit::textFgColor() {
 }
 
 void MRichTextEdit::textBgColor() {
-    QColor col = QColorDialog::getColor(f_textedit->textBackgroundColor(), this);
+    QColor col;
+    if (Gui::DialogOptions::dontUseNativeColorDialog()){
+        col = QColorDialog::getColor(f_textedit->textBackgroundColor(),this, QLatin1String(""), QColorDialog::DontUseNativeDialog);
+    } else {
+        col = QColorDialog::getColor(f_textedit->textBackgroundColor(), this);
+    }
     QTextCursor cursor = f_textedit->textCursor();
     if (!cursor.hasSelection()) {
         cursor.select(QTextCursor::WordUnderCursor);
@@ -517,7 +536,7 @@ void MRichTextEdit::slotCursorPositionChanged() {
 
     if (m_lastBlockList && 
         (l == m_lastBlockList || 
-        (l != 0 && m_lastBlockList != 0 && l->format().style() == m_lastBlockList->format().style()) ) ) {
+        (l != nullptr && m_lastBlockList != nullptr && l->format().style() == m_lastBlockList->format().style()) ) ) {
         return;
     }
     m_lastBlockList = l;

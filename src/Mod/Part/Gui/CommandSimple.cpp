@@ -23,26 +23,21 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QDir>
-# include <QFileInfo>
-# include <QLineEdit>
-# include <QInputDialog>
 # include <Standard_math.hxx>
 #endif
 
-#include <Base/Exception.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Base/Exception.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
-#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/WaitCursor.h>
 
-#include "../App/PartFeature.h"
-#include "../App/TopoShape.h"
 #include "DlgPartCylinderImp.h"
+#include "ShapeFromMesh.h"
 
 
 //===========================================================================
@@ -115,51 +110,8 @@ CmdPartShapeFromMesh::CmdPartShapeFromMesh()
 void CmdPartShapeFromMesh::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-
-    double STD_OCC_TOLERANCE = 1e-6;
-
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
-    int decimals = hGrp->GetInt("Decimals");
-    double tolerance_from_decimals = pow(10., -decimals);
-
-    double minimal_tolerance = tolerance_from_decimals < STD_OCC_TOLERANCE ? STD_OCC_TOLERANCE : tolerance_from_decimals;
-
-    bool ok;
-    double tol = QInputDialog::getDouble(Gui::getMainWindow(), QObject::tr("Sewing Tolerance"),
-        QObject::tr("Enter tolerance for sewing shape:"), 0.1, minimal_tolerance, 10.0, decimals, &ok, Qt::MSWindowsFixedSizeDialogHint);
-    if (!ok)
-        return;
-    Base::Type meshid = Base::Type::fromName("Mesh::Feature");
-    std::vector<App::DocumentObject*> meshes;
-    meshes = Gui::Selection().getObjectsOfType(meshid);
-    Gui::WaitCursor wc;
-    std::vector<App::DocumentObject*>::iterator it;
-    openCommand(QT_TRANSLATE_NOOP("Command", "Convert mesh"));
-    for (it = meshes.begin(); it != meshes.end(); ++it) {
-        App::Document* doc = (*it)->getDocument();
-        std::string mesh = (*it)->getNameInDocument();
-        std::string name = doc->getUniqueObjectName(mesh.c_str());
-        doCommand(Doc,"import Part");
-        doCommand(Doc,"FreeCAD.getDocument(\"%s\").addObject(\"Part::Feature\",\"%s\")"
-                     ,doc->getName()
-                     ,name.c_str());
-        doCommand(Doc,"__shape__=Part.Shape()");
-        doCommand(Doc,"__shape__.makeShapeFromMesh("
-                      "FreeCAD.getDocument(\"%s\").getObject(\"%s\").Mesh.Topology,%f"
-                      ")"
-                     ,doc->getName()
-                     ,mesh.c_str()
-                     ,tol);
-        doCommand(Doc,"FreeCAD.getDocument(\"%s\").getObject(\"%s\").Shape=__shape__"
-                     ,doc->getName()
-                     ,name.c_str());
-        doCommand(Doc,"FreeCAD.getDocument(\"%s\").getObject(\"%s\").purgeTouched()"
-                     ,doc->getName()
-                     ,name.c_str());
-        doCommand(Doc,"del __shape__");
-    }
-
-    commitCommand();
+    PartGui::ShapeFromMesh dlg(Gui::getMainWindow());
+    dlg.exec();
 }
 
 bool CmdPartShapeFromMesh::isActive(void)
@@ -237,16 +189,19 @@ CmdPartSimpleCopy::CmdPartSimpleCopy()
 static void _copyShape(const char *cmdName, bool resolve,bool needElement=false, bool refine=false) {
     Gui::WaitCursor wc;
     Gui::Command::openCommand(cmdName);
-    for(auto &sel : Gui::Selection().getSelectionEx("*",App::DocumentObject::getClassTypeId(),resolve)) {
+    for(auto &sel : Gui::Selection().getSelectionEx("*", App::DocumentObject::getClassTypeId(),
+                                                    resolve ? Gui::ResolveMode::OldStyleElement : Gui::ResolveMode::NoResolve)) {
         std::map<std::string,App::DocumentObject*> subMap;
         auto obj = sel.getObject();
-        if(!obj) continue;
-        if(resolve || !sel.hasSubNames())
+        if (!obj)
+            continue;
+        if (resolve || !sel.hasSubNames()) {
             subMap.emplace("",obj);
+        }
         else {
             for(const auto &sub : sel.getSubNames()) {
-                const char *element = 0;
-                auto sobj = obj->resolve(sub.c_str(),0,0,&element);
+                const char *element = nullptr;
+                auto sobj = obj->resolve(sub.c_str(),nullptr,nullptr,&element);
                 if(!sobj) continue;
                 if(!needElement && element) 
                     subMap.emplace(sub.substr(0,element-sub.c_str()),sobj);
@@ -263,8 +218,9 @@ static void _copyShape(const char *cmdName, bool resolve,bool needElement=false,
                     "App.ActiveDocument.addObject('Part::Feature','%s').Shape=__shape\n"
                     "App.ActiveDocument.ActiveObject.Label=%s.Label\n",
                         parentName.c_str(), v.first.c_str(),
-                        needElement?"True":"False", refine?"True":"False",
-                        needElement?".copy()":"", 
+                        needElement ? "True" : "False",
+                        refine ? "True" : "False",
+                        needElement ? ".copy()" : "",
                         v.second->getNameInDocument(), 
                         Gui::Command::getObjectCmd(v.second).c_str());
             auto newObj = App::GetApplication().getActiveDocument()->getActiveObject();
@@ -426,7 +382,7 @@ void CmdPartDefeaturing::activated(int iMsg)
     Q_UNUSED(iMsg);
     Gui::WaitCursor wc;
     Base::Type partid = Base::Type::fromName("Part::Feature");
-    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx(0, partid);
+    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx(nullptr, partid);
     openCommand(QT_TRANSLATE_NOOP("Command", "Defeaturing"));
     for (std::vector<Gui::SelectionObject>::iterator it = objs.begin(); it != objs.end(); ++it) {
         try {
@@ -468,7 +424,7 @@ void CmdPartDefeaturing::activated(int iMsg)
 bool CmdPartDefeaturing::isActive(void)
 {
     Base::Type partid = Base::Type::fromName("Part::Feature");
-    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx(0, partid);
+    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx(nullptr, partid);
     for (std::vector<Gui::SelectionObject>::iterator it = objs.begin(); it != objs.end(); ++it) {
         std::vector<std::string> subnames = it->getSubNames();
         for (std::vector<std::string>::iterator sub = subnames.begin(); sub != subnames.end(); ++sub) {

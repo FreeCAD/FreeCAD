@@ -185,14 +185,14 @@ private:
     Py::Object importer(const Py::Tuple& args)
     {
         char* Name;
-        char* DocName=0;
+        char* DocName=nullptr;
         if (!PyArg_ParseTuple(args.ptr(), "et|s","utf-8",&Name,&DocName))
             throw Py::Exception();
 
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
-        App::Document *pcDoc = 0;
+        App::Document *pcDoc = nullptr;
         if (DocName) {
             pcDoc = App::GetApplication().getDocument(DocName);
         }
@@ -223,7 +223,7 @@ private:
         int exportAmfCompressed( hGrp->GetBool("ExportAmfCompressed", true) );
 
         static char *kwList[] = {"objectList", "filename", "tolerance",
-                                 "exportAmfCompressed", NULL};
+                                 "exportAmfCompressed", nullptr};
 
         if (!PyArg_ParseTupleAndKeywords( args.ptr(), keywds.ptr(),
                                           "Oet|dp",
@@ -274,7 +274,7 @@ private:
         } else {
             std::string exStr("Can't determine mesh format from file name: '");
             exStr += outputFileName + "'";
-            throw Py::Exception(Base::BaseExceptionFreeCADError, exStr.c_str());
+            throw Py::ValueError(exStr.c_str());
         }
 
         for (auto it : objectList) {
@@ -308,21 +308,34 @@ private:
     }
     Py::Object createBox(const Py::Tuple& args)
     {
-        float length = 10.0f;
-        float width = 10.0f;
-        float height = 10.0f;
-        float edgelen = -1.0f;
-        if (!PyArg_ParseTuple(args.ptr(), "|ffff",&length,&width,&height,&edgelen))
-            throw Py::Exception();
+        MeshObject* mesh = nullptr;
 
-        MeshObject* mesh;
-        if (edgelen < 0.0f)
-            mesh = MeshObject::createCube(length, width, height);
-        else
-            mesh = MeshObject::createCube(length, width, height, edgelen);
+        do {
+            float length = 10.0f;
+            float width = 10.0f;
+            float height = 10.0f;
+            float edgelen = -1.0f;
+            if (PyArg_ParseTuple(args.ptr(), "|ffff",&length,&width,&height,&edgelen)) {
+                if (edgelen < 0.0f)
+                    mesh = MeshObject::createCube(length, width, height);
+                else
+                    mesh = MeshObject::createCube(length, width, height, edgelen);
+                break;
+            }
 
+            PyErr_Clear();
+            PyObject* box;
+            if (PyArg_ParseTuple(args.ptr(), "O!",&Base::BoundBoxPy::Type, &box)) {
+                Py::BoundingBox bbox(box, false);
+                mesh = MeshObject::createCube(bbox.getValue());
+                break;
+            }
+
+            throw Py::TypeError("Must be real numbers or BoundBox");
+        }
+        while (false);
         if (!mesh) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, "Creation of box failed");
+            throw Py::RuntimeError("Creation of box failed");
         }
         return Py::asObject(new MeshPy(mesh));
     }
@@ -355,7 +368,7 @@ private:
 
         MeshObject* mesh = MeshObject::createSphere(radius, sampling);
         if (!mesh) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, "Creation of sphere failed");
+            throw Py::RuntimeError("Creation of sphere failed");
         }
         return Py::asObject(new MeshPy(mesh));
     }
@@ -369,7 +382,7 @@ private:
 
         MeshObject* mesh = MeshObject::createEllipsoid(radius1, radius2, sampling);
         if (!mesh) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, "Creation of ellipsoid failed");
+            throw Py::RuntimeError("Creation of ellipsoid failed");
         }
         return Py::asObject(new MeshPy(mesh));
     }
@@ -385,7 +398,7 @@ private:
 
         MeshObject* mesh = MeshObject::createCylinder(radius, length, closed, edgelen, sampling);
         if (!mesh) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, "Creation of cylinder failed");
+            throw Py::RuntimeError("Creation of cylinder failed");
         }
         return Py::asObject(new MeshPy(mesh));
     }
@@ -402,7 +415,7 @@ private:
 
         MeshObject* mesh = MeshObject::createCone(radius1, radius2, len, closed, edgelen, sampling);
         if (!mesh) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, "Creation of cone failed");
+            throw Py::RuntimeError("Creation of cone failed");
         }
         return Py::asObject(new MeshPy(mesh));
     }
@@ -416,7 +429,7 @@ private:
 
         MeshObject* mesh = MeshObject::createTorus(radius1, radius2, sampling);
         if (!mesh) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, "Creation of torus failed");
+            throw Py::RuntimeError("Creation of torus failed");
         }
         return Py::asObject(new MeshPy(mesh));
     }
@@ -579,7 +592,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace Mesh

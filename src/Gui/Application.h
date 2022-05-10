@@ -25,8 +25,8 @@
 #define APPLICATION_H
 
 #include <QPixmap>
+#include <map>
 #include <string>
-#include <vector>
 
 #define  putpix()
 
@@ -43,6 +43,7 @@ class MacroManager;
 class MDIView;
 class MainWindow;
 class MenuItem;
+class PreferencePackManager;
 class ViewProvider;
 class ViewProviderDocumentObject;
 
@@ -74,11 +75,11 @@ public:
     /** @name methods for View handling */
     //@{
     /// send Messages to the active view
-    bool sendMsgToActiveView(const char* pMsg, const char** ppReturn=0);
+    bool sendMsgToActiveView(const char* pMsg, const char** ppReturn=nullptr);
     /// send Messages test to the active view
     bool sendHasMsgToActiveView(const char* pMsg);
     /// send Messages to the focused view
-    bool sendMsgToFocusView(const char* pMsg, const char** ppReturn=0);
+    bool sendMsgToFocusView(const char* pMsg, const char** ppReturn=nullptr);
     /// send Messages test to the focused view
     bool sendHasMsgToFocusView(const char* pMsg);
     /// Attach a view (get called by the FCView constructor)
@@ -133,6 +134,8 @@ public:
     boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalInEdit;
     /// signal on leaving edit mode
     boost::signals2::signal<void (const Gui::ViewProviderDocumentObject&)> signalResetEdit;
+    /// signal on changing user edit mode
+    boost::signals2::signal<void (int)> signalUserEditModeChanged;
     //@}
 
     /** @name methods for Document handling */
@@ -216,9 +219,11 @@ public:
     void createStandardOperations();
     //@}
 
+    Gui::PreferencePackManager* prefPackManager(void);
+
     /** @name Init, Destruct an Access methods */
     //@{
-    /// some kind of singelton
+    /// some kind of singleton
     static Application* Instance;
     static void initApplication(void);
     static void initTypes(void);
@@ -226,6 +231,28 @@ public:
     static void runInitGuiScript(void);
     static void runApplication(void);
     void tryClose( QCloseEvent * e );
+    //@}
+    
+    /** @name User edit mode */
+    //@{
+protected:
+    // the below std::map is a translation of 'EditMode' enum in ViewProvider.h
+    // to add a new edit mode, it should first be added there
+    // this is only used for GUI user interaction (menu, toolbar, Python API)
+    const std::map <int, std::string> userEditModes {
+        {0, QT_TRANSLATE_NOOP("EditMode", "Default")},
+        {1, QT_TRANSLATE_NOOP("EditMode", "Transform")},
+        {2, QT_TRANSLATE_NOOP("EditMode", "Cutting")},
+        {3, QT_TRANSLATE_NOOP("EditMode", "Color")}
+    };
+    int userEditMode = userEditModes.begin()->first;
+
+public:
+    std::map <int, std::string> listUserEditModes() const { return userEditModes; }
+    int getUserEditMode(const std::string &mode = "") const;
+    std::string getUserEditModeName(int mode = -1) const;
+    bool setUserEditMode(int mode);
+    bool setUserEditMode(const std::string &mode);
     //@}
 
 public:
@@ -293,6 +320,10 @@ public:
 
     static PyObject* sAddDocObserver           (PyObject *self,PyObject *args);
     static PyObject* sRemoveDocObserver        (PyObject *self,PyObject *args);
+    
+    static PyObject* sListUserEditModes        (PyObject *self,PyObject *args);
+    static PyObject* sGetUserEditMode          (PyObject *self,PyObject *args);
+    static PyObject* sSetUserEditMode          (PyObject *self,PyObject *args);
 
     static PyMethodDef    Methods[];
 

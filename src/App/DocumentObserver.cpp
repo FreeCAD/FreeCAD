@@ -23,17 +23,12 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <functional>
-# include <sstream>
-#endif
-
 #include <Base/Tools.h>
+
 #include "Application.h"
-#include "Document.h"
-#include "DocumentObject.h"
-#include "DocumentObserver.h"
 #include "ComplexGeoData.h"
+#include "Document.h"
+#include "DocumentObserver.h"
 #include "GeoFeature.h"
 
 using namespace App;
@@ -123,6 +118,13 @@ DocumentObjectT::DocumentObjectT(const Property* prop)
     *this = prop;
 }
 
+DocumentObjectT::DocumentObjectT(const Document* doc, const std::string& objName)
+{
+    if (doc && doc->getName())
+        document = doc->getName();
+    object = objName;
+}
+
 DocumentObjectT::DocumentObjectT(const char *docName, const char *objName)
 {
     if(docName)
@@ -173,7 +175,7 @@ void DocumentObjectT::operator=(const DocumentObject* obj)
 }
 
 void DocumentObjectT::operator=(const Property *prop) {
-    if(!prop || !prop->getName()
+    if(!prop || !prop->hasName()
              || !prop->getContainer()
              || !prop->getContainer()->isDerivedFrom(App::DocumentObject::getClassTypeId()))
     {
@@ -216,7 +218,7 @@ std::string DocumentObjectT::getDocumentPython() const
 
 DocumentObject* DocumentObjectT::getObject() const
 {
-    DocumentObject* obj = 0;
+    DocumentObject* obj = nullptr;
     Document* doc = getDocument();
     if (doc) {
         obj = doc->getObject(object.c_str());
@@ -258,7 +260,7 @@ Property *DocumentObjectT::getProperty() const {
     auto obj = getObject();
     if(obj)
         return obj->getPropertyByName(property.c_str());
-    return 0;
+    return nullptr;
 }
 
 // -----------------------------------------------------------------------------
@@ -278,6 +280,11 @@ SubObjectT::SubObjectT(SubObjectT &&other)
 
 SubObjectT::SubObjectT(const DocumentObject *obj, const char *s)
     :DocumentObjectT(obj),subname(s?s:"")
+{
+}
+
+SubObjectT::SubObjectT(const DocumentObject *obj)
+    :DocumentObjectT(obj)
 {
 }
 
@@ -322,6 +329,22 @@ SubObjectT &SubObjectT::operator=(SubObjectT &&other)
         return *this;
     static_cast<DocumentObjectT&>(*this) = std::move(other);
     subname = std::move(other.subname);
+    return *this;
+}
+
+SubObjectT &SubObjectT::operator=(const DocumentObjectT &other)
+{
+    if (this == &other)
+        return *this;
+    static_cast<DocumentObjectT&>(*this) = other;
+    subname.clear();
+    return *this;
+}
+
+SubObjectT &SubObjectT::operator=(const DocumentObject *other)
+{
+    static_cast<DocumentObjectT&>(*this) = other;
+    subname.clear();
     return *this;
 }
 
@@ -377,7 +400,7 @@ App::DocumentObject *SubObjectT::getSubObject() const {
     auto obj = getObject();
     if(obj)
         return obj->getSubObject(subname.c_str());
-    return 0;
+    return nullptr;
 }
 
 std::string SubObjectT::getSubObjectPython(bool force) const {
@@ -394,6 +417,43 @@ std::vector<App::DocumentObject*> SubObjectT::getSubObjectList() const {
     if(obj)
         return obj->getSubObjectList(subname.c_str());
     return {};
+}
+
+std::string SubObjectT::getObjectFullName(const char *docName) const
+{
+    std::ostringstream ss;
+    if (!docName || getDocumentName() != docName) {
+        ss << getDocumentName();
+        if (auto doc = getDocument()) {
+            if (doc->Label.getStrValue() != getDocumentName())
+                ss << "(" << doc->Label.getValue() << ")";
+        }
+        ss << "#";
+    }
+    ss << getObjectName();
+    if (getObjectLabel().size() && getObjectLabel() != getObjectName())
+        ss << " (" << getObjectLabel() << ")";
+    return ss.str();
+}
+
+std::string SubObjectT::getSubObjectFullName(const char *docName) const
+{
+    if (subname.empty())
+        return getObjectFullName(docName);
+    std::ostringstream ss;
+    if (!docName || getDocumentName() != docName) {
+        ss << getDocumentName();
+        if (auto doc = getDocument()) {
+            if (doc->Label.getStrValue() != getDocumentName())
+                ss << "(" << doc->Label.getValue() << ")";
+        }
+        ss << "#";
+    }
+    ss << getObjectName() << "." << subname;
+    auto sobj = getSubObject();
+    if (sobj && sobj->Label.getStrValue() != sobj->getNameInDocument())
+        ss << " (" << sobj->Label.getValue() << ")";
+    return ss.str();
 }
 
 // -----------------------------------------------------------------------------
@@ -649,15 +709,13 @@ DocumentObserver::DocumentObserver() : _document(nullptr)
         (&DocumentObserver::slotCreatedDocument, this, sp::_1));
     this->connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(std::bind
         (&DocumentObserver::slotDeletedDocument, this, sp::_1));
+    this->connectApplicationActivateDocument = App::GetApplication().signalActiveDocument.connect(std::bind
+        (&DocumentObserver::slotActivateDocument, this, sp::_1));
 }
 
-DocumentObserver::DocumentObserver(Document* doc) : _document(nullptr)
+DocumentObserver::DocumentObserver(Document* doc) : DocumentObserver()
 {
     // Connect to application and given document
-    this->connectApplicationCreatedDocument = App::GetApplication().signalNewDocument.connect(std::bind
-        (&DocumentObserver::slotCreatedDocument, this, sp::_1));
-    this->connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(std::bind
-        (&DocumentObserver::slotDeletedDocument, this, sp::_1));
     attachDocument(doc);
 }
 
@@ -666,6 +724,7 @@ DocumentObserver::~DocumentObserver()
     // disconnect from application and document
     this->connectApplicationCreatedDocument.disconnect();
     this->connectApplicationDeletedDocument.disconnect();
+    this->connectApplicationActivateDocument.disconnect();
     detachDocument();
 }
 
@@ -710,6 +769,10 @@ void DocumentObserver::slotCreatedDocument(const App::Document& /*Doc*/)
 }
 
 void DocumentObserver::slotDeletedDocument(const App::Document& /*Doc*/)
+{
+}
+
+void DocumentObserver::slotActivateDocument(const App::Document& /*Doc*/)
 {
 }
 

@@ -33,6 +33,7 @@ __url__ = "https://www.freecadweb.org"
 import FreeCAD
 import FreeCADGui
 
+from PySide import QtGui
 from femtaskpanels import task_result_mechanical
 from . import view_base_femconstraint
 
@@ -63,9 +64,15 @@ class VPResultMechanical(view_base_femconstraint.VPBaseFemConstraint):
     def onDelete(self, feature, subelements):
         children = self.claimChildren()
         if len(children) > 0:
-            try:
-                for obj in children:
-                    obj.ViewObject.show()
-            except Exception as err:
-                FreeCAD.Console.PrintError("Error in onDelete: {0} \n".format(err))
+            # issue a warning
+            bodyMessage = "The results object is not empty, therefore the\nfollowing referencing objects might be lost:\n"
+            for obj in children:
+                bodyMessage += "\n" + obj.Label
+            bodyMessage += "\n\nAre you sure you want to continue?"
+            reply = QtGui.QMessageBox.warning(None, "Object dependencies", bodyMessage,
+            QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, QtGui.QMessageBox.No)
+            if reply == QtGui.QMessageBox.Yes:
+                return True
+            else:
+                return False
         return True

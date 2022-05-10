@@ -183,7 +183,7 @@ void SpherePy::setAxis(Py::Object arg)
 
 PyObject *SpherePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int SpherePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

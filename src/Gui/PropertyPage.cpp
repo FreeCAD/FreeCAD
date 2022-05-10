@@ -20,13 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QVBoxLayout>
+#endif
+
+#include <Base/Console.h>
 
 #include "PropertyPage.h"
 #include "PrefWidgets.h"
-#include "WidgetFactory.h"
-#include <Base/Console.h>
+#include "UiLoader.h"
+
 
 using namespace Gui::Dialog;
 
@@ -113,7 +117,7 @@ void PreferencePage::changeEvent(QEvent *e)
 // ----------------------------------------------------------------
 
 PreferenceUiForm::PreferenceUiForm(const QString& fn, QWidget* parent)
-  : PreferencePage(parent), form(0)
+  : PreferencePage(parent), form(nullptr)
 {
     UiLoader loader;
     loader.setLanguageChangeEnabled(true);
@@ -168,6 +172,7 @@ void PreferenceUiForm::loadSettings()
     loadPrefWidgets<Gui::PrefSpinBox        *>();
     loadPrefWidgets<Gui::PrefDoubleSpinBox  *>();
     loadPrefWidgets<Gui::PrefLineEdit       *>();
+    loadPrefWidgets<Gui::PrefTextEdit       *>();
     loadPrefWidgets<Gui::PrefFileChooser    *>();
     loadPrefWidgets<Gui::PrefComboBox       *>();
     loadPrefWidgets<Gui::PrefFontBox        *>();
@@ -176,6 +181,7 @@ void PreferenceUiForm::loadSettings()
     loadPrefWidgets<Gui::PrefSlider         *>();
     loadPrefWidgets<Gui::PrefColorButton    *>();
     loadPrefWidgets<Gui::PrefUnitSpinBox    *>();
+    loadPrefWidgets<Gui::PrefQuantitySpinBox*>();
 }
 
 void PreferenceUiForm::saveSettings()
@@ -187,6 +193,7 @@ void PreferenceUiForm::saveSettings()
     savePrefWidgets<Gui::PrefSpinBox        *>();
     savePrefWidgets<Gui::PrefDoubleSpinBox  *>();
     savePrefWidgets<Gui::PrefLineEdit       *>();
+    savePrefWidgets<Gui::PrefTextEdit       *>();
     savePrefWidgets<Gui::PrefFileChooser    *>();
     savePrefWidgets<Gui::PrefComboBox       *>();
     savePrefWidgets<Gui::PrefFontBox        *>();
@@ -195,6 +202,7 @@ void PreferenceUiForm::saveSettings()
     savePrefWidgets<Gui::PrefSlider         *>();
     savePrefWidgets<Gui::PrefColorButton    *>();
     savePrefWidgets<Gui::PrefUnitSpinBox    *>();
+    savePrefWidgets<Gui::PrefQuantitySpinBox*>();
 }
 
 // ----------------------------------------------------------------

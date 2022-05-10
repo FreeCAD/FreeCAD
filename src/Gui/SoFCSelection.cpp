@@ -23,42 +23,29 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <qstatusbar.h>
-# include <qstring.h>
+# include <QString>
+# include <Inventor/SoFullPath.h>
+# include <Inventor/SoPickedPoint.h>
+# include <Inventor/actions/SoGLRenderAction.h>
+# include <Inventor/actions/SoHandleEventAction.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
-# include <Inventor/nodes/SoCube.h>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/nodes/SoCube.h>
+# include <Inventor/elements/SoLazyElement.h>
+# include <Inventor/elements/SoMaterialBindingElement.h>
+# include <Inventor/elements/SoOverrideElement.h>
+# include <Inventor/elements/SoWindowElement.h>
+# include <Inventor/events/SoKeyboardEvent.h>
+# include <Inventor/events/SoLocation2Event.h>
+# include <Inventor/events/SoMouseButtonEvent.h>
+# include <Inventor/misc/SoState.h>
 #endif
 
-#include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoCacheElement.h>
-#include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/elements/SoWindowElement.h>
-
-#include <Inventor/SoFullPath.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoHandleEventAction.h>
-#include <Inventor/events/SoKeyboardEvent.h>
-#include <Inventor/events/SoMouseButtonEvent.h>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/misc/SoChildList.h>
-#include <Inventor/events/SoLocation2Event.h>
-#include <Inventor/SoPickedPoint.h>
-
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
-
-#include <Base/Console.h>
 #include "SoFCSelection.h"
 #include "MainWindow.h"
-#include "Selection.h"
 #include "SoFCSelectionAction.h"
-#include "SoFCInteractiveElement.h"
 #include "SoFCUnifiedSelection.h"
 #include "ViewParams.h"
+
 
 // For 64-bit system the method using the front buffer doesn't work at all for lines.
 // Thus, use the method which forces a redraw every time. This is a bit slower but at
@@ -78,7 +65,7 @@ namespace Gui {
 std::array<std::pair<double, std::string>,3 > schemaTranslatePoint(double x, double y, double z, double precision);
 }
 
-SoFullPath * Gui::SoFCSelection::currenthighlight = NULL;
+SoFullPath * Gui::SoFCSelection::currenthighlight = nullptr;
 
 
 // *************************************************************************
@@ -139,10 +126,10 @@ SoFCSelection::~SoFCSelection()
 {
     // If we're being deleted and we're the current highlight,
     // NULL out that variable
-    if (currenthighlight != NULL &&
+    if (currenthighlight != nullptr &&
         (!currenthighlight->getTail()->isOfType(SoFCSelection::getClassTypeId()))) {
         currenthighlight->unref();
-        currenthighlight = NULL;
+        currenthighlight = nullptr;
     }
     //delete THIS;
 }
@@ -173,35 +160,42 @@ void SoFCSelection::doAction(SoAction *action)
     if(useNewSelection.getValue() && action->getCurPathCode()!=SoAction::OFF_PATH) {
         if (action->getTypeId() == Gui::SoHighlightElementAction::getClassTypeId()) {
             Gui::SoHighlightElementAction* hlaction = static_cast<Gui::SoHighlightElementAction*>(action);
-            if(!hlaction->isHighlighted()) {
+            if (!hlaction->isHighlighted()) {
                 auto ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
-                if(ctx->isHighlighted()) {
+                if (ctx && ctx->isHighlighted()) {
                     ctx->highlightIndex = -1;
                     touch();
                 }
-            }else{
+            }
+            else {
                 auto ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
-                ctx->highlightColor = hlaction->getColor();
-                if(!ctx->isHighlighted()) {
-                    ctx->highlightIndex = 0;
-                    touch();
+                if (ctx) {
+                    ctx->highlightColor = hlaction->getColor();
+                    if (!ctx->isHighlighted()) {
+                        ctx->highlightIndex = 0;
+                        touch();
+                    }
                 }
             }
             return;
-        } else if (action->getTypeId() == Gui::SoSelectionElementAction::getClassTypeId()) {
+        }
+        else if (action->getTypeId() == Gui::SoSelectionElementAction::getClassTypeId()) {
             Gui::SoSelectionElementAction* selaction = static_cast<Gui::SoSelectionElementAction*>(action);
             if (selaction->getType() == Gui::SoSelectionElementAction::All ||
                 selaction->getType() == Gui::SoSelectionElementAction::Append) {
                 SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext);
-                ctx->selectionColor = selaction->getColor();
-                if(!ctx->isSelectAll()) {
-                    ctx->selectAll();
-                    this->touch();
+                if (ctx) {
+                    ctx->selectionColor = selaction->getColor();
+                    if(!ctx->isSelectAll()) {
+                        ctx->selectAll();
+                        this->touch();
+                    }
                 }
-            } else if (selaction->getType() == Gui::SoSelectionElementAction::None ||
-                       selaction->getType() == Gui::SoSelectionElementAction::Remove) {
+            }
+            else if (selaction->getType() == Gui::SoSelectionElementAction::None ||
+                     selaction->getType() == Gui::SoSelectionElementAction::Remove) {
                 SelContextPtr ctx = Gui::SoFCSelectionRoot::getActionContext(action,this,selContext,false);
-                if(ctx && ctx->isSelected()) {
+                if (ctx && ctx->isSelected()) {
                     ctx->selectionIndex.clear();
                     this->touch();
                 }
@@ -314,10 +308,14 @@ void SoFCSelection::doAction(SoAction *action)
 int SoFCSelection::getPriority(const SoPickedPoint* p)
 {
     const SoDetail* detail = p->getDetail();
-    if(!detail) return 0;
-    if(detail->isOfType(SoFaceDetail::getClassTypeId())) return 1;
-    if(detail->isOfType(SoLineDetail::getClassTypeId())) return 2;
-    if(detail->isOfType(SoPointDetail::getClassTypeId())) return 3;
+    if(!detail)
+        return 0;
+    if(detail->isOfType(SoFaceDetail::getClassTypeId()))
+        return 1;
+    if(detail->isOfType(SoLineDetail::getClassTypeId()))
+        return 2;
+    if(detail->isOfType(SoPointDetail::getClassTypeId()))
+        return 3;
     return 0;
 }
 
@@ -330,7 +328,7 @@ SoFCSelection::getPickedPoint(SoHandleEventAction* action) const
     // almost similar coordinates we use the second point, instead.
     const SoPickedPointList & points = action->getPickedPointList();
     if (points.getLength() == 0)
-        return 0;
+        return nullptr;
     else if (points.getLength() == 1)
         return points[0];
     //const SoPickedPoint* pp0 = points[0];
@@ -491,7 +489,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                         Gui::Selection().clearSelection(documentName.getValue().getString());
                         Gui::Selection().addSelection(documentName.getValue().getString()
                                               ,objectName.getValue().getString()
-                                              ,0 ,pt[0] ,pt[1] ,pt[2]);
+                                              ,nullptr ,pt[0] ,pt[1] ,pt[2]);
                     }
 
                     if (mymode == OFF) {
@@ -978,9 +976,11 @@ SoFCSelection::setOverride(SoGLRenderAction * action, SelContextPtr ctx)
 
     Styles mystyle = (Styles) this->style.getValue();
 
-    if(mystyle == SoFCSelection::BOX) {
-        SoFCSelectionRoot::renderBBox(
-                action,this,preselected?ctx->highlightColor:ctx->selectionColor);
+    if (mystyle == SoFCSelection::BOX) {
+        if (ctx) {
+            SoFCSelectionRoot::renderBBox(
+                    action, this, preselected ? ctx->highlightColor : ctx->selectionColor);
+        }
         this->uniqueId = oldId;
         return false;
     }
@@ -992,19 +992,19 @@ SoFCSelection::setOverride(SoGLRenderAction * action, SelContextPtr ctx)
     SoMaterialBindingElement::set(state,SoMaterialBindingElement::OVERALL);
     SoOverrideElement::setMaterialBindingOverride(state,this,true);
 
-    if(!preselected)
+    if (!preselected && ctx)
         SoLazyElement::setEmissive(state, &ctx->selectionColor);
-    else
+    else if (ctx)
         SoLazyElement::setEmissive(state, &ctx->highlightColor);
     SoOverrideElement::setEmissiveColorOverride(state, this, true);
 
     if(SoLazyElement::getLightModel(state)==SoLazyElement::BASE_COLOR
             || mystyle == SoFCSelection::EMISSIVE_DIFFUSE)
     {
-        if(!preselected)
-            SoLazyElement::setDiffuse(state, this,1, &ctx->selectionColor,&colorpacker);
-        else
-            SoLazyElement::setDiffuse(state, this,1, &ctx->highlightColor,&colorpacker);
+        if (!preselected && ctx)
+            SoLazyElement::setDiffuse(state, this, 1, &ctx->selectionColor,&colorpacker);
+        else if (ctx)
+            SoLazyElement::setDiffuse(state, this, 1, &ctx->highlightColor,&colorpacker);
         SoOverrideElement::setDiffuseColorOverride(state, this, true);
     }
 
@@ -1028,7 +1028,7 @@ SoFCSelection::turnoffcurrent(SoAction * action)
     }
     if (SoFCSelection::currenthighlight) {
         SoFCSelection::currenthighlight->unref();
-        SoFCSelection::currenthighlight = NULL;
+        SoFCSelection::currenthighlight = nullptr;
     }
 #else
     if (currenthighlight == NULL)
@@ -1057,7 +1057,7 @@ SoFCSelection::isHighlighted(SoAction *action)
 ////////////////////////////////////////////////////////////////////////
 {
     SoFullPath *actionPath = (SoFullPath *) action->getCurPath();
-    return (currenthighlight != NULL &&
+    return (currenthighlight != nullptr &&
         currenthighlight->getTail() == actionPath->getTail() && // nested SoHL!
         *currenthighlight == *actionPath);
 }

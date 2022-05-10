@@ -105,6 +105,12 @@ public:
     std::list<std::string> listMenus() const;
     //// Shows a list of all command bars
     std::list<std::string> listCommandbars() const;
+    /// Add a permanent menu item \a cmd after an existing command \a after.
+    /// Permanent menu items are always added independent of what the active workbench is.
+    /// Adding it will only fail if the item \a after doesn't exist.
+    static void addPermanentMenuItem(const std::string& cmd, const std::string& after);
+    /// Removes the command \a cmd from the permanent menu items.
+    static void removePermanentMenuItem(const std::string& cmd);
 
 protected:
     /** Returns a MenuItem tree structure of menus for this workbench. */
@@ -115,6 +121,8 @@ protected:
     virtual ToolBarItem* setupCommandBars() const=0;
     /** Returns a DockWindowItems structure of dock windows this workbench. */
     virtual DockWindowItems* setupDockWindows() const=0;
+    /** Add permanent menu items to the structure */
+    void addPermanentMenuItems(MenuItem*) const;
 
 private:
     /**
@@ -127,6 +135,7 @@ private:
 
 private:
     std::string _name;
+    static std::vector<std::pair<std::string, std::string>> staticMenuItems;
 };
 
 /**

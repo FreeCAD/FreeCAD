@@ -396,6 +396,7 @@ def getColorFromProduct(product):
                     if color:
                         return color
 
+
 def getColorFromMaterial(material):
 
     if material.HasRepresentation:
@@ -540,6 +541,8 @@ def predefined_to_rgb(rgb_color):
 
 # ************************************************************************************************
 # property related methods
+
+
 def buildRelProperties(ifcfile):
     """
     Builds and returns a dictionary of {object:[properties]} from an IFC file
@@ -814,6 +817,7 @@ def get2DShape(representation,scaling=1000):
                         result.append(e)
             elif el.is_a("IfcIndexedPolyCurve"):
                 coords = el.Points.CoordList
+
                 def index2points(segment):
                     pts = []
                     for i in segment.wrappedValue:
@@ -856,8 +860,12 @@ def get2DShape(representation,scaling=1000):
             elif item.is_a("IfcTextLiteral"):
                 pl = getPlacement(item.Placement, scaling)
                 if pl:
-                    t = Draft.makeText([item.Literal], point=pl.Base)
-                    return [t]  # dirty hack... Object creation should not be done here
+                    t = Draft.make_text(item.Literal.split(";"), pl)
+                    if FreeCAD.GuiUp:
+                        if item.Path == "RIGHT":
+                            t.ViewObject.Justification = "Right"
+                    # do not return because there might be more than one representation
+                    #return []  # TODO dirty hack... Object creation should not be done here
     elif representation.is_a() in ["IfcPolyline","IfcCircle","IfcTrimmedCurve","IfcRectangleProfileDef"]:
         result = getCurveSet(representation)
     return result
@@ -898,7 +906,6 @@ def isRectangle(verts):
 
 
 def createFromProperties(propsets,ifcfile,parametrics):
-
     """
     Creates a FreeCAD parametric object from a set of properties.
     """
@@ -986,7 +993,6 @@ def createFromProperties(propsets,ifcfile,parametrics):
 
 
 def applyColorDict(doc,colordict=None):
-
     """applies the contents of a color dict to the objects in the given doc.
     If no colordict is given, the doc Meta property is searched for a "colordict" entry."""
 
@@ -1007,7 +1013,6 @@ def applyColorDict(doc,colordict=None):
 
 
 def getParents(ifcobj):
-
     """finds the parent entities of an IFC entity"""
 
     parentlist = []
@@ -1019,3 +1024,79 @@ def getParents(ifcobj):
             if rel.is_a("IfcRelAggregates"):
                 parentlist.append(rel.RelatingObject)
     return parentlist
+
+
+def createAnnotation(annotation,doc,ifcscale,preferences):
+    """creates an annotation object"""
+
+    anno = None
+    if annotation.is_a("IfcGrid"):
+        axes = []
+        uvwaxes = ()
+        if annotation.UAxes:
+            uvwaxes = annotation.UAxes
+        if annotation.VAxes:
+            uvwaxes = uvwaxes + annotation.VAxes
+        if annotation.WAxes:
+            uvwaxes = uvwaxes + annotation.WAxes
+        for axis in uvwaxes:
+            if axis.AxisCurve:
+                sh = get2DShape(axis.AxisCurve,ifcscale)
+                if sh and (len(sh[0].Vertexes) == 2):  # currently only straight axes are supported
+                    sh = sh[0]
+                    l = sh.Length
+                    pl = FreeCAD.Placement()
+                    pl.Base = sh.Vertexes[0].Point
+                    pl.Rotation = FreeCAD.Rotation(FreeCAD.Vector(0,1,0),sh.Vertexes[-1].Point.sub(sh.Vertexes[0].Point))
+                    o = Arch.makeAxis(1,l)
+                    o.Length = l
+                    o.Placement = pl
+                    o.CustomNumber = axis.AxisTag
+                    axes.append(o)
+        if axes:
+            name = "Grid"
+            grid_placement = None
+            if annotation.Name:
+                name = annotation.Name
+                if six.PY2:
+                    name = name.encode("utf8")
+            if annotation.ObjectPlacement:
+                # https://forum.freecadweb.org/viewtopic.php?f=39&t=40027
+                grid_placement = getPlacement(annotation.ObjectPlacement,scaling=1)
+            if preferences['PREFIX_NUMBERS']:
+                name = "ID" + str(aid) + " " + name
+            anno = Arch.makeAxisSystem(axes,name)
+            if grid_placement:
+                anno.Placement = grid_placement
+        print(" axis")
+    else:
+        name = "Annotation"
+        if annotation.Name:
+            name = annotation.Name
+            if six.PY2:
+                name = name.encode("utf8")
+        if "annotation" not in name.lower():
+            name = "Annotation " + name
+        if preferences['PREFIX_NUMBERS']: name = "ID" + str(aid) + " " + name
+        shapes2d = []
+        for rep in annotation.Representation.Representations:
+            if rep.RepresentationIdentifier in ["Annotation","FootPrint","Axis"]:
+                sh = get2DShape(rep,ifcscale)
+                if sh in doc.Objects:
+                    # dirty hack: get2DShape might return an object directly if non-shape based (texts for ex)
+                    anno = sh
+                else:
+                    shapes2d.extend(sh)
+        if shapes2d:
+            import Part
+            sh = Part.makeCompound(shapes2d)
+            #if preferences['DEBUG']: print(" shape")
+            anno = doc.addObject("Part::Feature",name)
+            anno.Shape = sh
+            p = getPlacement(annotation.ObjectPlacement,ifcscale)
+            if p:  # and annotation.is_a("IfcAnnotation"):
+                anno.Placement = p
+        #else:
+            #if preferences['DEBUG']: print(" no shape")
+
+    return anno

@@ -271,7 +271,7 @@ TaskDlgFemConstraintGear::TaskDlgFemConstraintGear(ViewProviderFemConstraintGear
 {
     this->ConstraintView = ConstraintView;
     assert(ConstraintView);
-    this->parameter = new TaskFemConstraintGear(ConstraintView, 0, "FEM_ConstraintGear");
+    this->parameter = new TaskFemConstraintGear(ConstraintView, nullptr, "FEM_ConstraintGear");
 
     Content.push_back(parameter);
 }

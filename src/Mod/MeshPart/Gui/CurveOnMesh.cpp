@@ -217,7 +217,7 @@ class CurveOnMeshHandler::Private
 public:
     struct PickedPoint
     {
-        unsigned long facet;
+        MeshCore::FacetIndex facet;
         SbVec3f point;
         SbVec3f normal;
     };
@@ -246,9 +246,9 @@ public:
         , cosAngle(0.7071) // 45 degree
         , approximate(true)
         , curve(new ViewProviderCurveOnMesh)
-        , mesh(0)
-        , grid(0)
-        , viewer(0)
+        , mesh(nullptr)
+        , grid(nullptr)
+        , viewer(nullptr)
         , editcursor(QPixmap(cursor_curveonmesh), 7, 7)
     {
     }
@@ -293,7 +293,7 @@ public:
                     cutLines.push_back(polyline);
                 }
                 else {
-                    SbVec3f dir1;
+                    SbVec3f dir1(0.0f, 0.0f, 0.0f);
                     SbVec3f dir2 = pick.point - last.point;
                     dir2.normalize();
                     std::size_t num = pickedPoints.size();
@@ -450,7 +450,7 @@ void CurveOnMeshHandler::disableCallback()
         view3d->removeViewProvider(d_ptr->curve);
         view3d->removeEventCallback(SoEvent::getClassTypeId(), Private::vertexCallback, this);
     }
-    d_ptr->viewer = 0;
+    d_ptr->viewer = nullptr;
 }
 
 std::vector<SbVec3f> CurveOnMeshHandler::getVertexes() const

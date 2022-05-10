@@ -105,7 +105,8 @@ def read(filename):
 class SH3DHandler(xml.sax.ContentHandler):
 
     def __init__(self,z):
-
+        
+        super().__init__()
         self.makeIndividualWalls = False
         self.z = z
         self.windows = []

@@ -21,18 +21,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_VIEWPROVIDERDIMENSION_H
 #define DRAWINGGUI_VIEWPROVIDERDIMENSION_H
 
 #include <App/PropertyUnits.h>
 
-#include "ViewProviderDrawingView.h"
 #include <Mod/TechDraw/App/DrawViewDimension.h>
+
+#include "ViewProviderDrawingView.h"
 
 
 namespace TechDrawGui {
-
 
 class TechDrawGuiExport ViewProviderDimension : public ViewProviderDrawingView
 {
@@ -76,7 +75,6 @@ public:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
     virtual bool doubleClicked(void);
-    void startDefaultEditMode();
 
     virtual TechDraw::DrawViewDimension* getViewObject() const;
 

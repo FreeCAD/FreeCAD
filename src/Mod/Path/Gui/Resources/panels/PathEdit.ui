@@ -31,8 +31,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>146</width>
-         <height>378</height>
+         <width>139</width>
+         <height>357</height>
         </rect>
        </property>
        <attribute name="label">
@@ -65,7 +65,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QWidget" name="widget_3" native="true">
+            <widget class="QWidget" name="widget_3">
              <layout class="QHBoxLayout" name="horizontalLayout_6">
               <item>
                <spacer name="horizontalSpacer_2">
@@ -112,8 +112,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>96</width>
-         <height>26</height>
+         <width>98</width>
+         <height>28</height>
         </rect>
        </property>
        <attribute name="label">
@@ -144,26 +144,6 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="1" colspan="2">
-     <widget class="QLineEdit" name="postProcessorArguments">
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the Post Processor. The arguments are specific for each Post Processor, please see it's documentation for details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="0">
-     <spacer name="verticalSpacer">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>747</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
     <item row="0" column="2">
      <widget class="QToolButton" name="postProcessorSetOutputFile">
       <property name="text">
@@ -188,6 +168,13 @@
       </property>
      </widget>
     </item>
+    <item row="2" column="1" colspan="2">
+     <widget class="QLineEdit" name="postProcessorArguments">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the Post Processor. The arguments are specific for each Post Processor, please see it's documentation for details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+    </item>
     <item row="4" column="0" colspan="3">
      <widget class="QGroupBox" name="groupBox_7">
       <property name="sizePolicy">
@@ -205,21 +192,6 @@
          <property name="toolTip">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ordering by Fixture, will cause all operations to be performed in the first coordinate system before switching to the second. Then all operations will be performed there in the same order.&lt;/p&gt;&lt;p&gt;This is useful if the operator can safely load work into one coordinate system while the machine is doing work in another.&lt;/p&gt;&lt;p&gt;Ordering by Tool, will minimize the Tool Changes. A tool change will be done, then all operations in all coordinate systems before changing tools.&lt;/p&gt;&lt;p&gt;Ordering by operation will do each operation in all coordinate systems before moving to the next operation. This is especially useful in conjunction with the 'split output' even with only a single work coordinate system since it will put each operation into a separate file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
-         <item>
-          <property name="text">
-           <string>Fixture</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Tool</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Operation</string>
-          </property>
-         </item>
         </widget>
        </item>
        <item row="0" column="0">
@@ -414,7 +386,20 @@
       </layout>
      </widget>
     </item>
-   </layout>
+   <item row="5" column="0">
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>747</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    </layout>
   </widget>
   <widget class="QWidget" name="tabSetup">
    <attribute name="title">
@@ -431,8 +416,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>545</width>
-         <height>896</height>
+         <width>548</width>
+         <height>941</height>
         </rect>
        </property>
        <attribute name="label">
@@ -449,7 +434,7 @@
             <number>0</number>
            </property>
            <item>
-            <widget class="QWidget" name="widget_2" native="true">
+            <widget class="QWidget" name="widget_2">
              <layout class="QHBoxLayout" name="horizontalLayout_5">
               <item>
                <widget class="QComboBox" name="stock">
@@ -519,15 +504,15 @@
            <item>
             <widget class="QFrame" name="stockFromBase">
              <layout class="QGridLayout" name="gridLayout_9">
-              <item row="1" column="3">
-               <widget class="Gui::InputField" name="stockExtYpos"/>
-              </item>
               <item row="0" column="1">
                <widget class="QLabel" name="stockExtXLabel">
                 <property name="text">
                  <string>Ext. X</string>
                 </property>
                </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="Gui::InputField" name="stockExtXneg"/>
               </item>
               <item row="0" column="3">
                <widget class="Gui::InputField" name="stockExtXpos">
@@ -546,8 +531,11 @@
                 </property>
                </widget>
               </item>
-              <item row="0" column="2">
-               <widget class="Gui::InputField" name="stockExtXneg"/>
+              <item row="1" column="2">
+               <widget class="Gui::InputField" name="stockExtYneg"/>
+              </item>
+             <item row="1" column="3">
+               <widget class="Gui::InputField" name="stockExtYpos"/>
               </item>
               <item row="2" column="1">
                <widget class="QLabel" name="stockExtZLabel">
@@ -562,27 +550,21 @@
               <item row="2" column="3">
                <widget class="Gui::InputField" name="stockExtZpos"/>
               </item>
-              <item row="1" column="2">
-               <widget class="Gui::InputField" name="stockExtYneg"/>
-              </item>
-             </layout>
+              </layout>
             </widget>
            </item>
            <item>
             <widget class="QFrame" name="stockCreateCylinder">
              <layout class="QGridLayout" name="gridLayout_10">
-              <item row="0" column="2">
-               <widget class="Gui::InputField" name="stockCylinderRadius"/>
-              </item>
-              <item row="1" column="2">
-               <widget class="Gui::InputField" name="stockCylinderHeight"/>
-              </item>
               <item row="0" column="1">
                <widget class="QLabel" name="stockCylinderRadiusLabel">
                 <property name="text">
                  <string>Radius</string>
                 </property>
                </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="Gui::InputField" name="stockCylinderRadius"/>
               </item>
               <item row="1" column="1">
                <widget class="QLabel" name="stockCylinderHeightLabel">
@@ -591,7 +573,10 @@
                 </property>
                </widget>
               </item>
-             </layout>
+             <item row="1" column="2">
+               <widget class="Gui::InputField" name="stockCylinderHeight"/>
+              </item>
+              </layout>
             </widget>
            </item>
            <item>
@@ -604,18 +589,15 @@
                 </property>
                </widget>
               </item>
+              <item row="0" column="2">
+               <widget class="Gui::InputField" name="stockBoxLength"/>
+              </item>
               <item row="1" column="1">
                <widget class="QLabel" name="stockBoxWidthLabel">
                 <property name="text">
                  <string>Width</string>
                 </property>
                </widget>
-              </item>
-              <item row="0" column="2">
-               <widget class="Gui::InputField" name="stockBoxLength"/>
-              </item>
-              <item row="2" column="2">
-               <widget class="Gui::InputField" name="stockBoxHeight"/>
               </item>
               <item row="1" column="2">
                <widget class="Gui::InputField" name="stockBoxWidth"/>
@@ -627,7 +609,10 @@
                 </property>
                </widget>
               </item>
-             </layout>
+             <item row="2" column="2">
+               <widget class="Gui::InputField" name="stockBoxHeight"/>
+              </item>
+              </layout>
             </widget>
            </item>
           </layout>
@@ -639,6 +624,20 @@
            <string>Alignment</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_2">
+           <item row="0" column="0">
+            <widget class="QPushButton" name="moveToOrigin">
+             <property name="text">
+              <string>Move to Origin</string>
+             </property>
+            </widget>
+           </item>
+          <item row="0" column="1">
+            <widget class="QPushButton" name="setOrigin">
+             <property name="text">
+              <string>Set Origin</string>
+             </property>
+            </widget>
+           </item>
            <item row="2" column="0">
             <widget class="QPushButton" name="centerInStock">
              <property name="text">
@@ -653,21 +652,7 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QPushButton" name="setOrigin">
-             <property name="text">
-              <string>Set Origin</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QPushButton" name="moveToOrigin">
-             <property name="text">
-              <string>Move to Origin</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
+           </layout>
          </widget>
         </item>
         <item>
@@ -697,6 +682,13 @@
              </property>
             </widget>
            </item>
+           <item row="1" column="0">
+            <widget class="QPushButton" name="modelSetX0">
+             <property name="text">
+              <string>X=0</string>
+             </property>
+            </widget>
+           </item>
            <item row="1" column="1">
             <widget class="QPushButton" name="modelSetY0">
              <property name="text">
@@ -708,13 +700,6 @@
             <widget class="QPushButton" name="modelSetZ0">
              <property name="text">
               <string>Z=0</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QPushButton" name="modelSetX0">
-             <property name="text">
-              <string>X=0</string>
              </property>
             </widget>
            </item>
@@ -734,6 +719,23 @@
            <string>Move - XY</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_3">
+           <item row="0" column="0">
+            <widget class="QPushButton" name="modelMoveLeftUp">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../Path.qrc">
+               <normaloff>:/icons/arrow-left-up.svg</normaloff>:/icons/arrow-left-up.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
+             </property>
+            </widget>
+           </item>
            <item row="0" column="1">
             <widget class="QPushButton" name="modelMoveUp">
              <property name="text">
@@ -768,31 +770,14 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="0">
-            <widget class="QPushButton" name="modelMoveLeftUp">
+           <item row="1" column="0">
+            <widget class="QPushButton" name="modelMoveLeft">
              <property name="text">
               <string/>
              </property>
              <property name="icon">
               <iconset resource="../Path.qrc">
-               <normaloff>:/icons/arrow-left-up.svg</normaloff>:/icons/arrow-left-up.svg</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="QPushButton" name="modelMoveRight">
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../Path.qrc">
-               <normaloff>:/icons/arrow-right.svg</normaloff>:/icons/arrow-right.svg</iconset>
+               <normaloff>:/icons/arrow-left.svg</normaloff>:/icons/arrow-left.svg</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -815,14 +800,14 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="0">
-            <widget class="QPushButton" name="modelMoveLeft">
+           <item row="1" column="2">
+            <widget class="QPushButton" name="modelMoveRight">
              <property name="text">
               <string/>
              </property>
              <property name="icon">
               <iconset resource="../Path.qrc">
-               <normaloff>:/icons/arrow-left.svg</normaloff>:/icons/arrow-left.svg</iconset>
+               <normaloff>:/icons/arrow-right.svg</normaloff>:/icons/arrow-right.svg</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -892,8 +877,31 @@
            <string>Rotate - XY</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_6">
+           <item row="0" column="0">
+            <widget class="QPushButton" name="modelRotateLeft">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../Path.qrc">
+               <normaloff>:/icons/arrow-ccw.svg</normaloff>:/icons/arrow-ccw.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
+             </property>
+            </widget>
+           </item>
            <item row="0" column="1">
-            <widget class="QWidget" name="widget_5" native="true">
+            <widget class="QWidget" name="widget_5">
              <layout class="QVBoxLayout" name="verticalLayout_18">
               <property name="leftMargin">
                <number>0</number>
@@ -931,29 +939,6 @@
                </widget>
               </item>
              </layout>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QPushButton" name="modelRotateLeft">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../Path.qrc">
-               <normaloff>:/icons/arrow-ccw.svg</normaloff>:/icons/arrow-ccw.svg</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
             </widget>
            </item>
            <item row="0" column="2">
@@ -1002,8 +987,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>213</width>
-         <height>321</height>
+         <width>561</width>
+         <height>675</height>
         </rect>
        </property>
        <attribute name="label">
@@ -1067,10 +1052,23 @@
            <string>Heights</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_4">
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_7">
+           <item row="0" column="1" colspan="2">
+            <widget class="QLabel" name="label_15">
              <property name="text">
-              <string>Safe</string>
+              <string>Expression</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3">
+            <widget class="QLabel" name="label_14">
+             <property name="text">
+              <string>Offset</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
              </property>
             </widget>
            </item>
@@ -1078,13 +1076,6 @@
             <widget class="QLabel" name="label_13">
              <property name="text">
               <string>Clearance</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1" colspan="2">
-            <widget class="QLineEdit" name="setupSafeHeightExpr">
-             <property name="toolTip">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as SafeHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;OpStockZMax+SetupSheet.SafeHeightOffset&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>
@@ -1102,23 +1093,17 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="3">
-            <widget class="QLabel" name="label_14">
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_7">
              <property name="text">
-              <string>Offset</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+              <string>Safe</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="1" colspan="2">
-            <widget class="QLabel" name="label_15">
-             <property name="text">
-              <string>Expression</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+           <item row="3" column="1" colspan="2">
+            <widget class="QLineEdit" name="setupSafeHeightExpr">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as SafeHeight for new operations.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: &amp;quot;OpStockZMax+SetupSheet.SafeHeightOffset&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>
@@ -1185,8 +1170,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>317</width>
-         <height>173</height>
+         <width>300</width>
+         <height>145</height>
         </rect>
        </property>
        <attribute name="label">
@@ -1243,7 +1228,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QWidget" name="widget_4" native="true">
+            <widget class="QWidget" name="widget_4">
              <layout class="QHBoxLayout" name="horizontalLayout_2">
               <item>
                <widget class="QPushButton" name="toolControllerEdit">
@@ -1285,8 +1270,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>138</width>
-         <height>112</height>
+         <width>151</width>
+         <height>119</height>
         </rect>
        </property>
        <attribute name="label">
@@ -1370,7 +1355,7 @@
    </attribute>
    <layout class="QVBoxLayout" name="verticalLayout_4">
     <item>
-     <widget class="QWidget" name="activeToolGroup" native="true">
+     <widget class="QWidget" name="activeToolGroup">
       <layout class="QFormLayout" name="formLayout_3">
        <property name="fieldGrowthPolicy">
         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
@@ -1389,7 +1374,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QWidget" name="widget" native="true">
+     <widget class="QWidget" name="widget">
       <layout class="QHBoxLayout" name="horizontalLayout_4">
        <item>
         <widget class="QListWidget" name="operationsList">
@@ -1399,7 +1384,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QWidget" name="operationMove" native="true">
+        <widget class="QWidget" name="operationMove">
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <property name="leftMargin">
            <number>0</number>
@@ -1468,7 +1453,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QWidget" name="operationModify" native="true">
+     <widget class="QWidget" name="operationModify">
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
         <widget class="QPushButton" name="operationEdit">

@@ -148,7 +148,7 @@ void TaskPolarPatternParameters::setupUI()
     // Fill data into dialog elements
     for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i) {
         const App::DocumentObject* obj = *i;
-        if (obj != NULL) {
+        if (obj != nullptr) {
             QListWidgetItem* item = new QListWidgetItem();
             item->setText(QString::fromUtf8(obj->Label.getValue()));
             item->setData(Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
@@ -173,7 +173,7 @@ void TaskPolarPatternParameters::setupUI()
         this->fillAxisCombo(axesLinks, static_cast<Part::Part2DObject*>(sketch));
     }
     else {
-        this->fillAxisCombo(axesLinks, NULL);
+        this->fillAxisCombo(axesLinks, nullptr);
     }
 
     //show the parts coordinate system axis for selection
@@ -318,19 +318,19 @@ void TaskPolarPatternParameters::onAxisChanged(int /*num*/)
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
 
     try{
-        if(axesLinks.getCurrentLink().getValue() == 0){
+        if(axesLinks.getCurrentLink().getValue() == nullptr){
             // enter reference selection mode
             hideObject();
             showBase();
             selectionMode = reference;
             Gui::Selection().clearSelection();
-            addReferenceSelectionGate(true, false, false, false, true);
+            addReferenceSelectionGate(AllowSelection::EDGE | AllowSelection::CIRCLE);
         } else {
             exitSelectionMode();
             pcPolarPattern->Axis.Paste(axesLinks.getCurrentLink());
         }
     } catch (Base::Exception &e) {
-        QMessageBox::warning(0,tr("Error"),QString::fromLatin1(e.what()));
+        QMessageBox::warning(nullptr,tr("Error"),QString::fromLatin1(e.what()));
     }
 
     kickUpdateViewTimer();

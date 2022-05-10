@@ -23,18 +23,14 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMFACE_H
 #define DRAWINGGUI_QGRAPHICSITEMFACE_H
 
-#include <Qt>
-#include <QGraphicsItem>
-#include <QSvgRenderer>
 #include <QByteArray>
-#include <QBrush>
+#include <QGraphicsItem>
 #include <QPixmap>
-#include <QImage>
 
 #include <Mod/TechDraw/App/HatchLine.h>
-#include <Mod/TechDraw/App/Geometry.h>
 
 #include "QGIPrimPath.h"
+
 
 namespace TechDrawGui
 {
@@ -56,7 +52,7 @@ public:
     int type() const override { return Type;}
     QRectF boundingRect() const override;
     QPainterPath shape() const override;
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 ) override;
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
 
 public:
     enum fillMode {
@@ -106,9 +102,9 @@ public:
     void clearFillItems(void);
 
     void lineSetToFillItems(TechDraw::LineSet& ls);
-    QGraphicsPathItem* geomToLine(TechDraw::BaseGeom* base, TechDraw::LineSet& ls);
-//    QGraphicsPathItem* geomToOffsetLine(TechDraw::BaseGeom* base, double offset, const TechDraw::LineSet& ls);
-    QGraphicsPathItem* geomToStubbyLine(TechDraw::BaseGeom* base, double offset, TechDraw::LineSet& ls);
+    QGraphicsPathItem* geomToLine(TechDraw::BaseGeomPtr base, TechDraw::LineSet& ls);
+//    QGraphicsPathItem* geomToOffsetLine(TechDraw::BaseGeomPtr base, double offset, const TechDraw::LineSet& ls);
+    QGraphicsPathItem* geomToStubbyLine(TechDraw::BaseGeomPtr base, double offset, TechDraw::LineSet& ls);
     QGraphicsPathItem* lineFromPoints(Base::Vector3d start, Base::Vector3d end, TechDraw::DashSpec ds);
 
     //bitmap texture fill parms method
@@ -123,7 +119,7 @@ protected:
     std::vector<double> offsetDash(const std::vector<double> dv, const double offset);
     QPainterPath dashedPPath(const std::vector<double> dv, const Base::Vector3d start, const Base::Vector3d end);
     double dashRemain(const std::vector<double> dv, const double offset);
-    double calcOffset(TechDraw::BaseGeom* g,TechDraw::LineSet ls);
+    double calcOffset(TechDraw::BaseGeomPtr g,TechDraw::LineSet ls);
     int projIndex;                              //index of face in Projection. -1 for SectionFace.
     QGCustomRect *m_rect;
 

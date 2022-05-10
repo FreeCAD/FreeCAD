@@ -60,17 +60,17 @@ int ToolPy::PyInit(PyObject* args, PyObject* kwd)
     char *name="Default tool";
     char *type = "Undefined";
     char *mat = "Undefined";
-    PyObject *dia = 0;
-    PyObject *len = 0;
-    PyObject *fla = 0;
-    PyObject *cor = 0;
-    PyObject *ang = 0;
-    PyObject *hei = 0;
+    PyObject *dia = nullptr;
+    PyObject *len = nullptr;
+    PyObject *fla = nullptr;
+    PyObject *cor = nullptr;
+    PyObject *ang = nullptr;
+    PyObject *hei = nullptr;
     int version = 1;
 
-    static char *kwlist[] = {"name", "tooltype", "material", "diameter", "lengthOffset", "flatRadius", "cornerRadius", "cuttingEdgeAngle", "cuttingEdgeHeight" , "version", NULL};
+    static char *kwlist[] = {"name", "tooltype", "material", "diameter", "lengthOffset", "flatRadius", "cornerRadius", "cuttingEdgeAngle", "cuttingEdgeHeight" , "version", nullptr};
 
-    PyObject *dict = 0;
+    PyObject *dict = nullptr;
     if (!kwd && (PyObject_TypeCheck(args, &PyDict_Type) || PyArg_ParseTuple(args, "O!", &PyDict_Type, &dict))) {
         static PyObject *arg = PyTuple_New(0);
         if (PyObject_TypeCheck(args, &PyDict_Type)) {
@@ -209,7 +209,7 @@ void  ToolPy::setCuttingEdgeHeight(Py::Float arg)
 
 PyObject *ToolPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ToolPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
@@ -227,7 +227,7 @@ PyObject* ToolPy::copy(PyObject * args)
 
 PyObject* ToolPy::setFromTemplate(PyObject * args)
 {
-    char *pstr = 0;
+    char *pstr = nullptr;
     if (PyArg_ParseTuple(args, "s", &pstr)) {
         // embed actual string in dummy tag so XMLReader can consume that on construction
         std::ostringstream os;
@@ -239,12 +239,12 @@ PyObject* ToolPy::setFromTemplate(PyObject * args)
     }
 
     PyErr_Clear();
-    if (!PyInit(args, 0)) {
+    if (!PyInit(args, nullptr)) {
         Py_Return ;
     }
 
     PyErr_SetString(PyExc_TypeError, "argument must be a string or dictionary");
-    return 0;
+    return nullptr;
 }
 
 PyObject* ToolPy::templateAttrs(PyObject * args)

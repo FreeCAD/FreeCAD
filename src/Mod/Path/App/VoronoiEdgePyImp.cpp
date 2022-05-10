@@ -22,29 +22,23 @@
 
 #include "PreCompiled.h"
 
-
 #ifndef _PreComp_
-#include <boost/algorithm/string.hpp>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <Geom_Parabola.hxx>
 #endif
 
-#include "Base/Exception.h"
-#include "Base/Vector3D.h"
-#include "Base/VectorPy.h"
-#include "Mod/Part/App/ArcOfParabolaPy.h"
-#include "Mod/Part/App/LineSegmentPy.h"
+#include "Mod/Part/App/Geometry.h"
 #include "Mod/Part/App/TopoShapeEdgePy.h"
-#include "Mod/Path/App/Voronoi.h"
-#include "Mod/Path/App/Voronoi.h"
-#include "Mod/Path/App/VoronoiCell.h"
-#include "Mod/Path/App/VoronoiCellPy.h"
-#include "Mod/Path/App/VoronoiEdge.h"
-#include "Mod/Path/App/VoronoiEdgePy.h"
-#include "Mod/Path/App/VoronoiVertex.h"
-#include "Mod/Path/App/VoronoiVertexPy.h"
 
-#include "Mod/Path/App/VoronoiEdgePy.cpp"
+#include "Voronoi.h"
+#include "VoronoiCell.h"
+#include "VoronoiCellPy.h"
+#include "VoronoiEdge.h"
+#include "VoronoiEdgePy.h"
+#include "VoronoiEdgePy.cpp"
+#include "VoronoiVertex.h"
+#include "VoronoiVertexPy.h"
+
 
 using namespace Path;
 
@@ -251,10 +245,10 @@ const Voronoi::voronoi_diagram_type::edge_type* getEdgeFromPy(VoronoiEdgePy *e, 
   if (throwIfNotBound) {
     throw Py::TypeError("Edge not bound to voronoi diagram");
   }
-  return 0;
+  return nullptr;
 }
 
-VoronoiEdge* getVoronoiEdgeFromPy(const VoronoiEdgePy *e, PyObject *args = 0) {
+VoronoiEdge* getVoronoiEdgeFromPy(const VoronoiEdgePy *e, PyObject *args = nullptr) {
   VoronoiEdge *self = e->getVoronoiEdgePtr();
   if (!self->isBound()) {
     throw Py::TypeError("Edge not bound to voronoi diagram");
@@ -624,7 +618,7 @@ PyObject* VoronoiEdgePy::getSegmentAngle(PyObject *args)
 
 PyObject* VoronoiEdgePy::getCustomAttributes(const char* /*attr*/) const
 {
-  return 0;
+  return nullptr;
 }
 
 int VoronoiEdgePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

@@ -552,7 +552,7 @@ PYCXX_EXPORT int &_Py_VerboseFlag()                  { return Py_VerboseFlag; }
 PYCXX_EXPORT const char *__Py_PackageContext()       { return _Py_PackageContext; }
 
 //
-//    Needed to keep the abstactions for delayload interface
+//    Needed to keep the abstractions for delayload interface
 //
 void _XINCREF( PyObject *op )
 {

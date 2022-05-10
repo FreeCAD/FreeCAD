@@ -23,11 +23,9 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "InventorObject.h"
 #include "DocumentObjectPy.h"
+
 
 using namespace App;
 

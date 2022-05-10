@@ -79,11 +79,13 @@
  *   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  **********************************************************************/
+
 #include <PreCompiled.h>
-#include <windows.h>
+
+#include <Windows.h>
 #include <tchar.h>
 #include <stdio.h>
-#include <stdlib.h>
+
 #pragma comment(lib, "version.lib")  // for "VerQueryValue"
 #pragma warning(disable:4826)
 
@@ -93,7 +95,7 @@
 // If VC7 and later, then use the shipped 'dbghelp.h'-file
 #pragma pack(push,8)
 #if _MSC_VER >= 1300
-#include <dbghelp.h>
+#include <DbgHelp.h>
 #else
 // inline the important dbghelp.h-declarations...
 typedef enum {
@@ -240,7 +242,8 @@ DWORD64
 
 static void MyStrCpy(char* szDest, size_t nMaxDestSize, const char* szSrc)
 {
-  if (nMaxDestSize <= 0) return;
+  if (nMaxDestSize <= 0)
+      return;
   if (strlen(szSrc) < nMaxDestSize)
   {
     strcpy_s(szDest, nMaxDestSize, szSrc);
@@ -305,7 +308,7 @@ public:
       if (GetFileAttributes(szTemp) == INVALID_FILE_ATTRIBUTES)
       {
         // ".local" file does not exist, so we can try to load the dbghelp.dll from the "Debugging Tools for Windows"
-        // Ok, first try the new path according to the archtitecture:
+        // Ok, first try the new path according to the architecture:
 #ifdef _M_IX86
         if ( (m_hDbhHelp == NULL) && (GetEnvironmentVariable(_T("ProgramFiles"), szTemp, 4096) > 0) )
         {

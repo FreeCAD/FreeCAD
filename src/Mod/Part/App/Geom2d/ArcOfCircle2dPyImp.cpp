@@ -129,7 +129,7 @@ Py::Object ArcOfCircle2dPy::getCircle(void) const
 
 PyObject *ArcOfCircle2dPy::getCustomAttributes(const char* ) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ArcOfCircle2dPy::setCustomAttributes(const char* , PyObject *)

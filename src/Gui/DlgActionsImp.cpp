@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QDialogButtonBox>
@@ -32,18 +31,16 @@
 # include <QKeySequence>
 # include <QLineEdit>
 # include <QMessageBox>
-# include <QTextStream>
-# include <QVBoxLayout>
 #endif
 
 #include "DlgActionsImp.h"
 #include "ui_DlgActions.h"
 #include "Action.h"
 #include "Application.h"
-#include "Command.h"
 #include "BitmapFactory.h"
-#include "Widgets.h"
+#include "Command.h"
 #include "ui_DlgChooseIcon.h"
+
 
 using namespace Gui::Dialog;
 
@@ -59,7 +56,6 @@ using namespace Gui::Dialog;
 DlgCustomActionsImp::DlgCustomActionsImp( QWidget* parent )
   : CustomizeActionPage(parent)
   , ui(new Ui_DlgCustomActions)
-  , bShown(false)
 {
     ui->setupUi(this);
     // search for all macros
@@ -71,7 +67,7 @@ DlgCustomActionsImp::DlgCustomActionsImp( QWidget* parent )
     for (unsigned int i=0; i<d.count(); i++ )
         ui->actionMacros->insertItem(0,d[i],QVariant(false));
 
-    QString systemMacroDirStr = QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro");
+    QString systemMacroDirStr = QString::fromStdString(App::Application::getHomePath()) + QString::fromLatin1("Macro");
     d = QDir(systemMacroDirStr, QLatin1String("*.FCMacro *.py"));
     if (d.exists()) {
         for (unsigned int i=0; i<d.count(); i++ ) {
@@ -91,20 +87,6 @@ DlgCustomActionsImp::DlgCustomActionsImp( QWidget* parent )
 /** Destroys the object and frees any allocated resources */
 DlgCustomActionsImp::~DlgCustomActionsImp()
 {
-}
-
-/**
- * Displays this page. If no macros were found a message box
- * appears.
- */
-void DlgCustomActionsImp::showEvent(QShowEvent* e)
-{
-    QWidget::showEvent(e);
-    if (ui->actionMacros->count() == 0 && bShown == false)
-    {
-        bShown = true;
-        QMessageBox::warning(this, tr("No macro"),tr("No macros found."));
-    }
 }
 
 bool DlgCustomActionsImp::event(QEvent* e)
@@ -238,8 +220,8 @@ void DlgCustomActionsImp::on_buttonAddAction_clicked()
     }
 
     // search for the command in the manager
-    QByteArray actionName = newActionName().toLatin1();
     CommandManager& rclMan = Application::Instance->commandManager();
+    QByteArray actionName = QString::fromStdString(rclMan.newMacroName()).toLatin1();
     MacroCommand* macro = new MacroCommand(actionName, ui->actionMacros->itemData(ui->actionMacros->currentIndex()).toBool());
     rclMan.addCommand( macro );
 
@@ -511,34 +493,6 @@ void DlgCustomActionsImp::on_buttonChoosePixmap_clicked()
     }
 }
 
-QString DlgCustomActionsImp::newActionName()
-{
-    int id = 0;
-    QString sName;
-    bool bUsed;
-
-    CommandManager& rclMan = Application::Instance->commandManager();
-    std::vector<Command*> aclCurMacros = rclMan.getGroupCommands("Macros");
-
-    do
-    {
-        bUsed = false;
-        sName = QString::fromLatin1("Std_Macro_%1").arg( id++ );
-
-        std::vector<Command*>::iterator it;
-        for ( it = aclCurMacros.begin(); it!= aclCurMacros.end(); ++it )
-        {
-            if (sName == QLatin1String((*it)->getName()))
-            {
-                bUsed = true;
-                break;
-            }
-        }
-    } while ( bUsed );
-
-    return sName;
-}
-
 void DlgCustomActionsImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
@@ -647,7 +601,7 @@ void IconFolders::removeFolder()
 
     addButton->setEnabled(true);
     QPushButton* remove = static_cast<QPushButton*>(sender());
-    QLineEdit* edit = 0;
+    QLineEdit* edit = nullptr;
     for (QList< QPair<QLineEdit*, QPushButton*> >::iterator it = buttonMap.begin(); it != buttonMap.end(); ++it) {
         if (it->second == remove) {
             edit = it->first;

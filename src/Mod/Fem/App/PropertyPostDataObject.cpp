@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -43,10 +42,12 @@
 
 #include <Base/FileInfo.h>
 #include <Base/Console.h>
-#include <Base/Writer.h>
 #include <Base/Reader.h>
+#include <Base/Stream.h>
+#include <Base/Writer.h>
 #include <App/Application.h>
 #include <App/DocumentObject.h>
+#include <CXX/Objects.hxx>
 
 #include "PropertyPostDataObject.h"
 
@@ -66,6 +67,51 @@ PropertyPostDataObject::~PropertyPostDataObject()
 {
 }
 
+void PropertyPostDataObject::scaleDataObject(vtkDataObject* dataObject, double s)
+{
+    auto scalePoints = [](vtkPoints* points, double s) {
+        for (vtkIdType i = 0; i < points->GetNumberOfPoints(); i++) {
+            double xyz[3];
+            points->GetPoint(i, xyz);
+            for (int j = 0; j < 3; j++)
+                xyz[j] *= s;
+            points->SetPoint(i, xyz);
+        }
+    };
+
+    if (dataObject->GetDataObjectType() == VTK_POLY_DATA) {
+        vtkPolyData* dataSet = vtkPolyData::SafeDownCast(dataObject);
+        scalePoints(dataSet->GetPoints(), s);
+    }
+    else if (dataObject->GetDataObjectType() == VTK_STRUCTURED_GRID) {
+        vtkStructuredGrid* dataSet = vtkStructuredGrid::SafeDownCast(dataObject);
+        scalePoints(dataSet->GetPoints(), s);
+    }
+    else if (dataObject->GetDataObjectType() == VTK_UNSTRUCTURED_GRID) {
+        vtkUnstructuredGrid* dataSet = vtkUnstructuredGrid::SafeDownCast(dataObject);
+        scalePoints(dataSet->GetPoints(), s);
+    }
+    else if (dataObject->GetDataObjectType() == VTK_MULTIBLOCK_DATA_SET) {
+        vtkMultiBlockDataSet* dataSet = vtkMultiBlockDataSet::SafeDownCast(dataObject);
+        for (unsigned int i = 0; i < dataSet->GetNumberOfBlocks(); i++)
+            scaleDataObject(dataSet->GetBlock(i), s);
+    }
+    else if (dataObject->GetDataObjectType() == VTK_MULTIPIECE_DATA_SET) {
+        vtkMultiPieceDataSet* dataSet = vtkMultiPieceDataSet::SafeDownCast(dataObject);
+        for (unsigned int i = 0; i < dataSet->GetNumberOfPieces(); i++)
+            scaleDataObject(dataSet->GetPiece(i), s);
+    }
+}
+
+void PropertyPostDataObject::scale(double s)
+{
+    if (m_dataObject) {
+        aboutToSetValue();
+        scaleDataObject(m_dataObject, s);
+        hasSetValue();
+    }
+}
+
 void PropertyPostDataObject::setValue(const vtkSmartPointer<vtkDataObject>& ds)
 {
     aboutToSetValue();
@@ -74,8 +120,9 @@ void PropertyPostDataObject::setValue(const vtkSmartPointer<vtkDataObject>& ds)
         createDataObjectByExternalType(ds);
         m_dataObject->DeepCopy(ds);
     }
-    else
-        m_dataObject = NULL;
+    else {
+        m_dataObject = nullptr;
+    }
 
     hasSetValue();
 }
@@ -108,7 +155,7 @@ int PropertyPostDataObject::getDataType() {
 PyObject *PropertyPostDataObject::getPyObject(void)
 {
     //TODO: fetch the vtk python object from the data set and return it
-    return new PyObject();
+    return Py::new_reference_to(Py::None());
 }
 
 void PropertyPostDataObject::setPyObject(PyObject * /*value*/)
@@ -262,6 +309,15 @@ void PropertyPostDataObject::SaveDocFile (Base::Writer &writer) const
     xmlWriter->SetInputDataObject(m_dataObject);
     xmlWriter->SetFileName(fi.filePath().c_str());
     xmlWriter->SetDataModeToBinary();
+
+#ifdef VTK_CELL_ARRAY_V2
+    // Looks like an invalid data object that causes a crash with vtk9
+    vtkUnstructuredGrid* dataGrid = vtkUnstructuredGrid::SafeDownCast(m_dataObject);
+    if (dataGrid && (dataGrid->GetPiece() < 0 || dataGrid->GetNumberOfPoints() <= 0)) {
+        std::cerr << "PropertyPostDataObject::SaveDocFile: ignore empty vtkUnstructuredGrid\n";
+        return;
+    }
+#endif
 
     if ( xmlWriter->Write() != 1 ) {
         // Note: Do NOT throw an exception here because if the tmp. file could

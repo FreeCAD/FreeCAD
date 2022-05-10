@@ -20,23 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <qfileinfo.h>
-# include <qsplitter.h>
+# include <QSplitter>
+# include <Inventor/nodes/SoDirectionalLight.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoPerspectiveCamera.h>
-# include <Inventor/nodes/SoDirectionalLight.h>
 #endif
 
+#include <Base/Interpreter.h>
+
 #include "SplitView3DInventor.h"
-#include "View3DInventorViewer.h"
-#include "SoFCSelectionAction.h"
-#include "Document.h"
 #include "Application.h"
+#include "Document.h"
 #include "NavigationStyle.h"
+#include "SoFCSelectionAction.h"
+#include "View3DInventorViewer.h"
 #include "View3DPy.h"
 
 
@@ -47,7 +47,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(Gui::AbstractSplitView,Gui::MDIView)
 AbstractSplitView::AbstractSplitView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags)
   : MDIView(pcDocument,parent, wflags)
 {
-    _viewerPy = 0;
+    _viewerPy = nullptr;
     // important for highlighting
     setMouseTracking(true);
 }
@@ -59,7 +59,7 @@ AbstractSplitView::~AbstractSplitView()
         delete *it;
     }
     if (_viewerPy) {
-        static_cast<AbstractSplitViewPy*>(_viewerPy)->_view = 0;
+        Base::PyGILStateLocker lock;
         Py_DECREF(_viewerPy);
     }
 }
@@ -67,9 +67,15 @@ AbstractSplitView::~AbstractSplitView()
 void AbstractSplitView::deleteSelf()
 {
     for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
-        (*it)->setSceneGraph(0);
+        (*it)->setSceneGraph(nullptr);
     }
     MDIView::deleteSelf();
+}
+
+void AbstractSplitView::viewAll()
+{
+    for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
+        (*it)->viewAll();
 }
 
 bool AbstractSplitView::containsViewProvider(const ViewProvider* vp) const
@@ -91,6 +97,7 @@ void AbstractSplitView::setupSettings()
     // apply the user settings
     OnChange(*hGrp,"EyeDistance");
     OnChange(*hGrp,"CornerCoordSystem");
+    OnChange(*hGrp,"CornerCoordSystemSize");
     OnChange(*hGrp,"UseAutoRotation");
     OnChange(*hGrp,"Gradient");
     OnChange(*hGrp,"BackgroundColor");
@@ -117,7 +124,7 @@ void AbstractSplitView::setupSettings()
 
 View3DInventorViewer* AbstractSplitView::getViewer(unsigned int n) const
 {
-    return (_viewer.size() > n ? _viewer[n] : 0);
+    return (_viewer.size() > n ? _viewer[n] : nullptr);
 }
 
 /// Observer message from the ParameterGrp
@@ -241,6 +248,10 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
             (*it)->setFeedbackVisibility(rGrp.GetBool("CornerCoordSystem",true));
     }
+    else if (strcmp(Reason,"CornerCoordSystemSize") == 0) {
+        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
+            (*it)->setFeedbackSize(rGrp.GetInt("CornerCoordSystemSize",10));
+    }
     else if (strcmp(Reason,"UseAutoRotation") == 0) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
             (*it)->setAnimationEnabled(rGrp.GetBool("UseAutoRotation",false));
@@ -307,8 +318,7 @@ const char *AbstractSplitView::getName(void) const
 bool AbstractSplitView::onMsg(const char* pMsg, const char**)
 {
     if (strcmp("ViewFit",pMsg) == 0 ) {
-        for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->viewAll();
+        viewAll();
         return true;
     }
     else if (strcmp("ViewBottom",pMsg) == 0) {
@@ -439,6 +449,8 @@ void AbstractSplitViewPy::init_type()
     behaviors().doc("Python binding class for the Inventor viewer class");
     // you must have overwritten the virtual functions
     behaviors().supportRepr();
+    behaviors().supportGetattr();
+    behaviors().supportSetattr();
     behaviors().supportSequenceType();
 
     add_varargs_method("fitAll",&AbstractSplitViewPy::fitAll,"fitAll()");
@@ -452,10 +464,12 @@ void AbstractSplitViewPy::init_type()
     add_varargs_method("viewIsometric",&AbstractSplitViewPy::viewIsometric,"viewIsometric()");
     add_varargs_method("getViewer",&AbstractSplitViewPy::getViewer,"getViewer(index)");
     add_varargs_method("close",&AbstractSplitViewPy::close,"close()");
+    add_varargs_method("cast_to_base", &AbstractSplitViewPy::cast_to_base, "cast_to_base() cast to MDIView class");
+    behaviors().readyType();
 }
 
 AbstractSplitViewPy::AbstractSplitViewPy(AbstractSplitView *vi)
-  : _view(vi)
+  : base(vi)
 {
 }
 
@@ -463,30 +477,61 @@ AbstractSplitViewPy::~AbstractSplitViewPy()
 {
 }
 
-void AbstractSplitViewPy::testExistence()
+Py::Object AbstractSplitViewPy::cast_to_base(const Py::Tuple&)
 {
-    if (!(_view && _view->getViewer(0)))
-        throw Py::RuntimeError("Object already deleted");
+    return Gui::MDIViewPy::create(base.getMDIViewPtr());
 }
 
 Py::Object AbstractSplitViewPy::repr()
 {
-    std::string s;
     std::ostringstream s_out;
-    if (!_view)
+    if (!getSplitViewPtr())
         throw Py::RuntimeError("Cannot print representation of deleted object");
     s_out << "AbstractSplitView";
     return Py::String(s_out.str());
+}
+
+// Since with PyCXX it's not possible to make a sub-class of MDIViewPy
+// a trick is to use MDIViewPy as class member and override getattr() to
+// join the attributes of both classes. This way all methods of MDIViewPy
+// appear for SheetViewPy, too.
+Py::Object AbstractSplitViewPy::getattr(const char * attr)
+{
+    getSplitViewPtr();
+    std::string name( attr );
+    if (name == "__dict__" || name == "__class__") {
+        Py::Dict dict_self(BaseType::getattr("__dict__"));
+        Py::Dict dict_base(base.getattr("__dict__"));
+        for (auto it : dict_base) {
+            dict_self.setItem(it.first, it.second);
+        }
+        return dict_self;
+    }
+
+    try {
+        return BaseType::getattr(attr);
+    }
+    catch (Py::AttributeError& e) {
+        e.clear();
+        return base.getattr(attr);
+    }
+}
+
+AbstractSplitView* AbstractSplitViewPy::getSplitViewPtr()
+{
+    AbstractSplitView* view = qobject_cast<AbstractSplitView*>(base.getMDIViewPtr());
+    if (!(view && view->getViewer(0)))
+        throw Py::RuntimeError("Object already deleted");
+    return view;
 }
 
 Py::Object AbstractSplitViewPy::fitAll(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    testExistence();
 
     try {
-        _view->onMsg("ViewFit", 0);
+        getSplitViewPtr()->onMsg("ViewFit", nullptr);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -504,10 +549,9 @@ Py::Object AbstractSplitViewPy::viewBottom(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    testExistence();
 
     try {
-        _view->onMsg("ViewBottom", 0);
+        getSplitViewPtr()->onMsg("ViewBottom", nullptr);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -526,10 +570,9 @@ Py::Object AbstractSplitViewPy::viewFront(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    testExistence();
 
     try {
-        _view->onMsg("ViewFront", 0);
+        getSplitViewPtr()->onMsg("ViewFront", nullptr);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -548,10 +591,9 @@ Py::Object AbstractSplitViewPy::viewLeft(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    testExistence();
 
     try {
-        _view->onMsg("ViewLeft", 0);
+        getSplitViewPtr()->onMsg("ViewLeft", nullptr);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -570,10 +612,9 @@ Py::Object AbstractSplitViewPy::viewRear(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    testExistence();
 
     try {
-        _view->onMsg("ViewRear", 0);
+        getSplitViewPtr()->onMsg("ViewRear", nullptr);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -592,10 +633,9 @@ Py::Object AbstractSplitViewPy::viewRight(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    testExistence();
 
     try {
-        _view->onMsg("ViewRight", 0);
+        getSplitViewPtr()->onMsg("ViewRight", nullptr);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -614,10 +654,9 @@ Py::Object AbstractSplitViewPy::viewTop(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    testExistence();
 
     try {
-        _view->onMsg("ViewTop", 0);
+        getSplitViewPtr()->onMsg("ViewTop", nullptr);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -636,10 +675,9 @@ Py::Object AbstractSplitViewPy::viewIsometric(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    testExistence();
 
     try {
-        _view->onMsg("ViewAxo", 0);
+        getSplitViewPtr()->onMsg("ViewAxo", nullptr);
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -659,10 +697,9 @@ Py::Object AbstractSplitViewPy::getViewer(const Py::Tuple& args)
     int viewIndex;
     if (!PyArg_ParseTuple(args.ptr(), "i", &viewIndex))
         throw Py::Exception();
-    testExistence();
 
     try {
-        Gui::View3DInventorViewer* view = _view->getViewer(viewIndex);
+        Gui::View3DInventorViewer* view = getSplitViewPtr()->getViewer(viewIndex);
         if (!view)
             throw Py::IndexError("Index out of range");
         return Py::asObject(view->getPyObject());
@@ -673,6 +710,10 @@ Py::Object AbstractSplitViewPy::getViewer(const Py::Tuple& args)
     catch (const std::exception& e) {
         throw Py::RuntimeError(e.what());
     }
+    catch (const Py::Exception&) {
+        // re-throw
+        throw;
+    }
     catch(...) {
         throw Py::RuntimeError("Unknown C++ exception");
     }
@@ -680,29 +721,28 @@ Py::Object AbstractSplitViewPy::getViewer(const Py::Tuple& args)
 
 Py::Object AbstractSplitViewPy::sequence_item(ssize_t viewIndex)
 {
-    testExistence();
-    if (viewIndex >= _view->getSize() || viewIndex < 0)
+    AbstractSplitView* view = getSplitViewPtr();
+    if (viewIndex >= view->getSize() || viewIndex < 0)
         throw Py::IndexError("Index out of range");
-    PyObject* viewer = _view->getViewer(viewIndex)->getPyObject();
+    PyObject* viewer = view->getViewer(viewIndex)->getPyObject();
     return Py::asObject(viewer);
 }
 
 int AbstractSplitViewPy::sequence_length()
 {
-    testExistence();
-    return _view->getSize();
+    AbstractSplitView* view = getSplitViewPtr();
+    return view->getSize();
 }
 
 Py::Object AbstractSplitViewPy::close(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    testExistence();
 
-    _view->close();
-    if (_view->parentWidget())
-        _view->parentWidget()->deleteLater();
-    _view = 0;
+    AbstractSplitView* view = getSplitViewPtr();
+    view->close();
+    if (view->parentWidget())
+        view->parentWidget()->deleteLater();
 
     return Py::None();
 }
@@ -726,9 +766,6 @@ SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, Q
 
     if (samples > 1) {
         glformat = true;
-#if !defined(HAVE_QT5_OPENGL)
-        f.setSampleBuffers(true);
-#endif
         f.setSamples(samples);
     }
     else if (samples > 0) {
@@ -739,7 +776,7 @@ SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, Q
     while (views < 2)
         views ++;
 
-    QSplitter* mainSplitter = 0;
+    QSplitter* mainSplitter = nullptr;
 
     // if views < 3 show them as a row
     if (views <= 3) {
@@ -791,3 +828,5 @@ SplitView3DInventor::SplitView3DInventor(int views, Gui::Document* pcDocument, Q
 SplitView3DInventor::~SplitView3DInventor()
 {
 }
+
+#include "moc_SplitView3DInventor.cpp"

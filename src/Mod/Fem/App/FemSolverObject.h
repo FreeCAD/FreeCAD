@@ -26,11 +26,12 @@
 #define Fem_FemSolverObject_H
 
 #include <App/FeaturePython.h>
+#include <Mod/Fem/FemGlobal.h>
 
 namespace Fem
 {
 /// Father of all result data in a Fem Analysis
-class AppFemExport FemSolverObject : public App::DocumentObject
+class FemExport FemSolverObject : public App::DocumentObject
 {
     PROPERTY_HEADER(Fem::FemSolverObject);
 

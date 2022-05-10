@@ -24,8 +24,8 @@
 #define GUI_DIALOG_DLGEXPRESSIONINPUT_H
 
 #include <QDialog>
-#include <Base/Unit.h>
 #include <App/ObjectIdentifier.h>
+#include <Base/Unit.h>
 #include <memory>
 
 namespace Ui {
@@ -51,7 +51,7 @@ class GuiExport DlgExpressionInput : public QDialog
     Q_OBJECT
 
 public:
-    explicit DlgExpressionInput(const App::ObjectIdentifier & _path, std::shared_ptr<const App::Expression> _expression, const Base::Unit &_impliedUnit, QWidget *parent = 0);
+    explicit DlgExpressionInput(const App::ObjectIdentifier & _path, std::shared_ptr<const App::Expression> _expression, const Base::Unit &_impliedUnit, QWidget *parent = nullptr);
     ~DlgExpressionInput();
 
     std::shared_ptr<App::Expression> getExpression() const { return expression; }

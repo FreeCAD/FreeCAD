@@ -23,34 +23,28 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepPrimAPI_MakeBox.hxx>
-# include <BRepBuilderAPI_GTransform.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
+# include <BRepPrim_Cylinder.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
+# include <BRepAlgoAPI_Fuse.hxx>
+# include <BRepBuilderAPI_GTransform.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepBuilderAPI_MakePolygon.hxx>
+# include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepBuilderAPI_Transform.hxx>
+# include <BRepPrimAPI_MakeBox.hxx>
+# include <BRepPrimAPI_MakeCone.hxx>
 # include <BRepPrimAPI_MakeCylinder.hxx>
 # include <BRepPrimAPI_MakeSphere.hxx>
-# include <BRepPrimAPI_MakeCone.hxx>
 # include <BRepPrimAPI_MakeTorus.hxx>
-# include <BRepPrimAPI_MakePrism.hxx>
-# include <BRepPrim_Cylinder.hxx>
-# include <BRepBuilderAPI_MakePolygon.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <BRepBuilderAPI_MakeSolid.hxx>
-# include <QObject>
-# include <math.h>
 #endif
 
-
-#include "FeaturePrimitive.h"
-#include "DatumPoint.h"
-#include "DatumCS.h"
-#include "FeaturePy.h"
+#include <App/DocumentObject.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
-#include <App/Document.h>
-#include <App/Application.h>
 #include <App/FeaturePythonPyImp.h>
+
+#include "FeaturePrimitive.h"
+#include "FeaturePy.h"
 
 using namespace PartDesign;
 

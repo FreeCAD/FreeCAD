@@ -28,6 +28,7 @@
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyLinks.h>
+#include <Base/SmartPtrPy.h>
 #include "Cell.h"
 
 namespace Spreadsheet
@@ -42,7 +43,7 @@ class SpreadsheetExport PropertySheet : public App::PropertyExpressionContainer
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
 
-    PropertySheet(Sheet * _owner = 0);
+    PropertySheet(Sheet * _owner = nullptr);
 
     ~PropertySheet();
 
@@ -74,7 +75,7 @@ public:
 
     void copyCells(Base::Writer &writer, const std::vector<App::Range> &ranges) const;
 
-    void pasteCells(Base::XMLReader &reader, const App::CellAddress &addr);
+    void pasteCells(Base::XMLReader &reader, App::Range dstRange);
 
     Cell *createCell(App::CellAddress address);
 
@@ -106,11 +107,15 @@ public:
 
     const Cell * getValue(App::CellAddress key) const;
 
+    Cell * getValueFromAlias(const std::string &alias);
+
     const Cell * getValueFromAlias(const std::string &alias) const;
 
     bool isValidAlias(const std::string &candidate);
 
-    std::set<App::CellAddress> getUsedCells() const;
+    std::vector<App::CellAddress> getUsedCells() const;
+
+    std::vector<App::CellAddress> getNonEmptyCells() const;
 
     Sheet * sheet() const { return owner; }
 
@@ -148,6 +153,8 @@ public:
 
     void getSpans(App::CellAddress address, int &rows, int &cols) const;
 
+    App::CellAddress getAnchor(App::CellAddress address) const;
+
     bool isMergedCell(App::CellAddress address) const;
 
     bool isHidden(App::CellAddress address) const;
@@ -161,6 +168,8 @@ public:
     PyObject *getPyObject(void) override;
     void setPyObject(PyObject *) override;
 
+    PyObject *getPyValue(PyObject *key);
+
     void invalidateDependants(const App::DocumentObject *docObj);
 
     void renamedDocumentObject(const App::DocumentObject *docObj);
@@ -170,9 +179,28 @@ public:
 
     void documentSet();
 
+    App::CellAddress getCellAddress(const char *addr, bool silent=false) const;
+    App::Range getRange(const char *range, bool silent=false) const;
+
     std::string getRow(int offset=0) const;
 
     std::string getColumn(int offset=0) const;
+
+    virtual void setPathValue(const App::ObjectIdentifier & path, const boost::any & value) override;
+    virtual const boost::any getPathValue(const App::ObjectIdentifier & path) const override;
+
+    unsigned getBindingBorder(App::CellAddress address) const;
+
+    bool isBindingPath(const App::ObjectIdentifier &path,
+            App::CellAddress *from=nullptr, App::CellAddress *to=nullptr, bool *href=nullptr) const;
+
+    enum BindingType {
+        BindingNone,
+        BindingNormal,
+        BindingHiddenRef,
+    };
+    BindingType getBinding(const App::Range &range,
+            App::ExpressionPtr *pStart=nullptr, App::ExpressionPtr *pEnd=nullptr) const;
 
 protected:
     virtual void hasSetValue() override;
@@ -258,7 +286,7 @@ private:
     std::map<std::string, App::CellAddress> revAliasProp;
 
     /*! The associated python object */
-    Py::Object PythonObject;
+    Py::SmartPtr PythonObject;
 
     std::map<const App::DocumentObject*, boost::signals2::scoped_connection> depConnections;
 

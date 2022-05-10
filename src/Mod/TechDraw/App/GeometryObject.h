@@ -23,15 +23,17 @@
 #ifndef _TECHDRAW_GEOMETRYOBJECT_H
 #define _TECHDRAW_GEOMETRYOBJECT_H
 
-#include <TopoDS_Shape.hxx>
-#include <TopoDS_Compound.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Ax2.hxx>
+#include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <Base/Vector3D.h>
-#include <Base/BoundBox.h>
 #include <string>
 #include <vector>
+
+#include <TopoDS_Shape.hxx>
+#include <gp_Ax2.hxx>
+#include <gp_Pnt.hxx>
+
+#include <Base/BoundBox.h>
+#include <Base/Vector3D.h>
 
 #include "Geometry.h"
 
@@ -104,13 +106,13 @@ public:
     //! Returns 2D bounding box
     Base::BoundBox3d calcBoundingBox() const;
 
-    const std::vector<Vertex *>   & getVertexGeometry() const { return vertexGeom; }
-    const std::vector<BaseGeom *> & getEdgeGeometry() const { return edgeGeom; }
-    const std::vector<BaseGeom *> getVisibleFaceEdges(bool smooth, bool seam) const;
-    const std::vector<Face *>     & getFaceGeometry() const { return faceGeom; }
+    const std::vector<VertexPtr>   & getVertexGeometry() const { return vertexGeom; }
+    const BaseGeomPtrVector & getEdgeGeometry() const { return edgeGeom; }
+    const BaseGeomPtrVector getVisibleFaceEdges(bool smooth, bool seam) const;
+    const std::vector<FacePtr>     & getFaceGeometry() const { return faceGeom; }
     
-    void setVertexGeometry(std::vector<Vertex*> newVerts) {vertexGeom = newVerts; }
-    void setEdgeGeometry(std::vector<BaseGeom*> newGeoms) {edgeGeom = newGeoms; }
+    void setVertexGeometry(std::vector<VertexPtr> newVerts) {vertexGeom = newVerts; }
+    void setEdgeGeometry(BaseGeomPtrVector newGeoms) {edgeGeom = newGeoms; }
 
     void projectShape(const TopoDS_Shape &input,
                       const gp_Ax2 &viewAxis);
@@ -120,7 +122,7 @@ public:
                              const gp_Ax2 &CS);
 
     void extractGeometry(edgeClass category, bool visible);
-    void addFaceGeom(Face * f);
+    void addFaceGeom(FacePtr f);
     void clearFaceGeom();
     void setIsoCount(int i) { m_isoCount = i; }
     void setParentName(std::string n);                          //for debug messages
@@ -146,8 +148,8 @@ public:
     TopoDS_Shape getHidSeam(void)    { return hidSeam; }
     TopoDS_Shape getHidIso(void)     { return hidIso; }
 
-    void addVertex(TechDraw::Vertex* v);
-    void addEdge(TechDraw::BaseGeom* bg);
+    void addVertex(TechDraw::VertexPtr v);
+    void addEdge(TechDraw::BaseGeomPtr bg);
 
 
     int addCosmeticVertex(CosmeticVertex* cv);
@@ -161,10 +163,10 @@ public:
     int addCosmeticEdge(Base::Vector3d start,
                         Base::Vector3d end,
                         std::string tagString);
-    int addCosmeticEdge(TechDraw::BaseGeom* base,
+    int addCosmeticEdge(TechDraw::BaseGeomPtr base,
                         std::string tagString);
 
-    int addCenterLine(TechDraw::BaseGeom* bg,
+    int addCenterLine(TechDraw::BaseGeomPtr bg,
                       std::string tag);
 /*                       int s = 0, int si = -1);*/
 
@@ -192,9 +194,9 @@ protected:
     bool isWithinArc(double theta, double first, double last, bool cw) const;
 
     // Geometry
-    std::vector<BaseGeom *> edgeGeom;
-    std::vector<Vertex *> vertexGeom;
-    std::vector<Face *> faceGeom;
+    BaseGeomPtrVector edgeGeom;
+    std::vector<VertexPtr> vertexGeom;
+    std::vector<FacePtr> faceGeom;
 
     bool findVertex(Base::Vector3d v);
 

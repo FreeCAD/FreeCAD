@@ -30,7 +30,7 @@ It just creates a `Part::Mirroring` object, and sets the appropriate
 # \ingroup draftfunctions
 # \brief Provides functions to produce a mirrored object.
 
-## \addtogroup draftfuctions
+## \addtogroup draftfunctions
 # @{
 import FreeCAD as App
 import draftutils.utils as utils

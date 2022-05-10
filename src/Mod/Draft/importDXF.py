@@ -328,7 +328,7 @@ def locateLayer(wantedLayer, color=None, drawstyle=None):
 
     See also
     --------
-    Draft.makeLayer
+    Draft.make_layer
 
     To do
     -----
@@ -341,9 +341,9 @@ def locateLayer(wantedLayer, color=None, drawstyle=None):
         if wantedLayerName == l.Label:
             return l
     if dxfUseDraftVisGroups:
-        newLayer = Draft.makeLayer(name=wantedLayer,
-                                   linecolor=color,
-                                   drawstyle=drawstyle)
+        newLayer = Draft.make_layer(name=wantedLayer,
+                                    line_color=color,
+                                    draw_style=drawstyle)
     else:
         newLayer = doc.addObject("App::DocumentObjectGroup", wantedLayer)
     newLayer.Label = wantedLayerName
@@ -806,7 +806,7 @@ def placementFromDXFOCS(ent):
     # http://docs.autodesk.com/ACD/2011/ENU/filesDXF/WS1a9193826455f5ff18cb41610ec0a2e719-7941.htm
     # Arbitrary Axis Algorithm
     # http://docs.autodesk.com/ACD/2011/ENU/filesDXF/WS1a9193826455f5ff18cb41610ec0a2e719-793d.htm#WSc30cd3d5faa8f6d81cb25f1ffb755717d-7ff5
-    # Riferimenti dell'algoritmo dell'asse arbitrario in italiano 
+    # Riferimenti dell'algoritmo dell'asse arbitrario in italiano
     # http://docs.autodesk.com/ACD/2011/ITA/filesDXF/WS1a9193826455f5ff18cb41610ec0a2e719-7941.htm
     # http://docs.autodesk.com/ACD/2011/ITA/filesDXF/WS1a9193826455f5ff18cb41610ec0a2e719-793d.htm#WSc30cd3d5faa8f6d81cb25f1ffb755717d-7ff5
     if (draftWPlane.axis == FreeCAD.Vector(1.0, 0.0, 0.0)):
@@ -825,7 +825,7 @@ def placementFromDXFOCS(ent):
         draftWPlane.v.normalize()
         draftWPlane.position = Vector(0.0, 0.0, 0.0)
         draftWPlane.weak = False
-    
+
     pl = FreeCAD.Placement()
     pl = draftWPlane.getPlacement()
     if ((ent.type == "lwpolyline") or (ent.type == "polyline")):
@@ -871,7 +871,7 @@ def drawLine(line, forceShape=False):
         if not DraftVecUtils.equals(v1, v2):
             try:
                 if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
-                    return Draft.makeWire([v1, v2])
+                    return Draft.make_wire([v1, v2])
                 else:
                     return Part.LineSegment(v1, v2).toShape()
             except Part.OCCError:
@@ -989,7 +989,7 @@ def drawPolyline(polyline, forceShape=False, num=None):
                     else:
                         return Part.Face(w1)
                 elif (dxfCreateDraft or dxfCreateSketch) and (not curves) and (not forceShape):
-                    ob = Draft.makeWire(verts)
+                    ob = Draft.make_wire(verts)
                     ob.Closed = polyline.closed
                     ob.Placement = placementFromDXFOCS(polyline)
                     return ob
@@ -1047,9 +1047,9 @@ def drawArc(arc, forceShape=False):
     try:
         if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
             pl = placementFromDXFOCS(arc)
-            return Draft.makeCircle(circle.Radius, pl, face=False,
-                                    startangle=firstangle,
-                                    endangle=lastangle)
+            return Draft.make_circle(circle.Radius, pl, face=False,
+                                     startangle=firstangle,
+                                     endangle=lastangle)
         else:
             return circle.toShape(math.radians(firstangle),
                                   math.radians(lastangle))
@@ -1096,7 +1096,7 @@ def drawCircle(circle, forceShape=False):
     try:
         if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
             pl = placementFromDXFOCS(circle)
-            return Draft.makeCircle(circle.radius, pl)
+            return Draft.make_circle(circle.radius, pl)
         else:
             return curve.toShape()
     except Part.OCCError:
@@ -1155,7 +1155,7 @@ def drawEllipse(ellipse, forceShape=False):
                 shape.Placement = pl
                 return shape
             else:
-                return Draft.makeEllipse(majr, minr, pl)
+                return Draft.make_ellipse(majr, minr, pl)
         else:
             shape = el.toShape(start, end)
             shape.Placement = pl
@@ -1365,9 +1365,9 @@ def drawSplineIterpolation(verts, closed=False, forceShape=False,
     """
     if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
         if dxfDiscretizeCurves or alwaysDiscretize:
-            ob = Draft.makeWire(verts)
+            ob = Draft.make_wire(verts)
         else:
-            ob = Draft.makeBSpline(verts)
+            ob = Draft.make_bspline(verts)
         ob.Closed = closed
         return ob
     else:
@@ -1465,7 +1465,7 @@ def drawSpline(spline, forceShape=False):
     -------
     Part::Part2DObject or Part::TopoShape ('Edge', 'Face')
         The returned object is normally a `Draft BezCurve`
-        created with `Draft.makeBezCurve(controlpoints, Degree=degree)`,
+        created with `Draft.make_bezcurve(controlpoints, Degree=degree)`,
         if `forceShape` is `False` and there are no weights.
 
         Otherwise it tries to return a `Part.Shape` of type `'Wire'`,
@@ -1495,7 +1495,7 @@ def drawSpline(spline, forceShape=False):
 
     See also
     --------
-    drawBlock, Draft.makeBezCurve, Part.BezierCurve, drawSplineIterpolation,
+    drawBlock, Draft.make_bezcurve, Part.BezierCurve, drawSplineIterpolation,
     Part.BSplineCurve.buildFromPolesMultsKnots
 
     To do
@@ -1587,7 +1587,7 @@ def drawSpline(spline, forceShape=False):
             if not forceShape and weights is None:
                 points = controlpoints[:]
                 del points[degree+1::degree+1]
-                return Draft.makeBezCurve(points, Degree=degree)
+                return Draft.make_bezcurve(points, Degree=degree)
             else:
                 poles = controlpoints[:]
                 edges = []
@@ -1815,7 +1815,7 @@ def drawInsert(insert, num=None, clone=False):
             addText(a, attrib=True)
     if clone:
         if insert.block in blockobjects:
-            newob = Draft.clone(blockobjects[insert.block])
+            newob = Draft.make_clone(blockobjects[insert.block])
             tsf = FreeCAD.Matrix()
             rot = math.radians(insert.rotation)
             pos = vec(insert.loc)
@@ -1886,7 +1886,7 @@ def drawLayerBlock(objlist):
     obj = None
     if (dxfCreateDraft or dxfCreateSketch) and isObj:
         try:
-            obj = Draft.makeBlock(objlist)
+            obj = Draft.make_block(objlist)
         except Part.OCCError:
             pass
     else:
@@ -2016,7 +2016,7 @@ def addText(text, attrib=False):
 
     See also
     --------
-    locateLayer, drawBlock, Draft.makeText
+    locateLayer, drawBlock, Draft.make_text
 
     To do
     -----
@@ -2050,7 +2050,7 @@ def addText(text, attrib=False):
         #        val = val.encode("latin1")
         #    except Exception:
         #        pass
-        newob = Draft.makeText(val.split("\n"))
+        newob = Draft.make_text(val.split("\n"))
         if hasattr(lay, "addObject"):
             lay.addObject(newob)
         elif hasattr(lay, "Proxy") and hasattr(lay.Proxy, "addObject"):
@@ -2234,16 +2234,16 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                     FreeCAD.ActiveDocument.recompute()
                     if dxfMakeBlocks or dxfJoin:
                         if sketch:
-                            shape = Draft.makeSketch(shape,
-                                                     autoconstraints=True,
-                                                     addTo=sketch)
+                            shape = Draft.make_sketch(shape,
+                                                      autoconstraints=True,
+                                                      addTo=sketch)
                         else:
-                            shape = Draft.makeSketch(shape,
-                                                     autoconstraints=True)
+                            shape = Draft.make_sketch(shape,
+                                                      autoconstraints=True)
                             sketch = shape
                     else:
-                        shape = Draft.makeSketch(shape,
-                                                 autoconstraints=True)
+                        shape = Draft.make_sketch(shape,
+                                                  autoconstraints=True)
                 elif dxfJoin or getShapes:
                     if isinstance(shape, Part.Shape):
                         shapes.append(shape)
@@ -2285,16 +2285,16 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                     FreeCAD.ActiveDocument.recompute()
                     if dxfMakeBlocks or dxfJoin:
                         if sketch:
-                            shape = Draft.makeSketch(shape,
-                                                     autoconstraints=True,
-                                                     addTo=sketch)
+                            shape = Draft.make_sketch(shape,
+                                                      autoconstraints=True,
+                                                      addTo=sketch)
                         else:
-                            shape = Draft.makeSketch(shape,
-                                                     autoconstraints=True)
+                            shape = Draft.make_sketch(shape,
+                                                      autoconstraints=True)
                             sketch = shape
                     else:
-                        shape = Draft.makeSketch(shape,
-                                                 autoconstraints=True)
+                        shape = Draft.make_sketch(shape,
+                                                  autoconstraints=True)
                 elif dxfJoin or getShapes:
                     if isinstance(shape, Part.Shape):
                         shapes.append(shape)
@@ -2320,16 +2320,16 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                     FreeCAD.ActiveDocument.recompute()
                     if dxfMakeBlocks or dxfJoin:
                         if sketch:
-                            shape = Draft.makeSketch(shape,
-                                                     autoconstraints=True,
-                                                     addTo=sketch)
+                            shape = Draft.make_sketch(shape,
+                                                      autoconstraints=True,
+                                                      addTo=sketch)
                         else:
-                            shape = Draft.makeSketch(shape,
-                                                     autoconstraints=True)
+                            shape = Draft.make_sketch(shape,
+                                                      autoconstraints=True)
                             sketch = shape
                     else:
-                        shape = Draft.makeSketch(shape,
-                                                 autoconstraints=True)
+                        shape = Draft.make_sketch(shape,
+                                                  autoconstraints=True)
                 elif dxfJoin or getShapes:
                     if isinstance(shape, Part.Shape):
                         shapes.append(shape)
@@ -2381,16 +2381,16 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                     FreeCAD.ActiveDocument.recompute()
                     if dxfMakeBlocks or dxfJoin:
                         if sketch:
-                            shape = Draft.makeSketch(shape,
-                                                     autoconstraints=True,
-                                                     addTo=sketch)
+                            shape = Draft.make_sketch(shape,
+                                                      autoconstraints=True,
+                                                      addTo=sketch)
                         else:
-                            shape = Draft.makeSketch(shape,
-                                                     autoconstraints=True)
+                            shape = Draft.make_sketch(shape,
+                                                      autoconstraints=True)
                             sketch = shape
                     else:
-                        shape = Draft.makeSketch(shape,
-                                                 autoconstraints=True)
+                        shape = Draft.make_sketch(shape,
+                                                  autoconstraints=True)
                 elif dxfMakeBlocks:
                     addToBlock(shape, circle.layer)
                 elif getShapes:
@@ -2607,7 +2607,7 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                     shape = Part.Vertex(x, y, z)
                     addToBlock(shape, lay)
                 else:
-                    newob = Draft.makePoint(x, y, z)
+                    newob = Draft.make_point(x, y, z)
                     lay = locateLayer(lay)
                     lay.addObject(newob)
                     if gui:
@@ -2623,7 +2623,7 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
         for leader in leaders:
             if dxfImportLayouts or (not rawValue(leader, 67)):
                 points = getMultiplePoints(leader)
-                newob = Draft.makeWire(points)
+                newob = Draft.make_wire(points)
                 lay = locateLayer(rawValue(leader, 8))
                 lay.addObject(newob)
                 if gui:
@@ -2654,7 +2654,7 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                             if gui:
                                 formatObject(newob, hatch)
                     else:
-                        newob = Draft.makeWire(points)
+                        newob = Draft.make_wire(points)
                         locateLayer(lay).addObject(newob)
                         if gui:
                             formatObject(newob, hatch)
@@ -2721,7 +2721,6 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
     if badobjects:
         print("dxf: ", len(badobjects), " objects were not imported")
     del doc
-    del blockshapes
 
 
 def warn(dxfobject, num=None):
@@ -2877,7 +2876,7 @@ def getShapes(filename):
 def projectShape(shape, direction, tess=None):
     """Project shape in a given direction.
 
-    It uses `Drawing.projectEx(shape, direction)`
+    It uses `TechDraw.projectEx(shape, direction)`
     to return a list with all the parts of the projection.
     The first five elements are added to a list of edges,
     which are then put in a `Part.Compound`.
@@ -2908,12 +2907,12 @@ def projectShape(shape, direction, tess=None):
 
     See also
     --------
-    Drawing.projectEx, DraftGeomUtils.cleanProjection
+    TechDraw.projectEx, DraftGeomUtils.cleanProjection
     """
-    import Drawing
+    import TechDraw
     edges = []
     try:
-        groups = Drawing.projectEx(shape, direction)
+        groups = TechDraw.projectEx(shape, direction)
     except Part.OCCError:
         print("unable to project shape on direction ", direction)
         return shape
@@ -3009,7 +3008,7 @@ def getSplineSegs(edge):
         It returns the point in `edge.FirstParameter`,
         all the intermediate points, and the point in `edge.LastParameter`.
 
-        If the `segmentlenth` variable is zero in the parameters database,
+        If the `segmentlength` variable is zero in the parameters database,
         then it only returns the first and the last point of the `edge`.
     """
     params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
@@ -3666,8 +3665,9 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
             # other cases, treat objects one by one
             dxf = dxfLibrary.Drawing()
             # add global variables
-            if hasattr(dxf,"header"): 
+            if hasattr(dxf,"header"):
                 dxf.header.append("  9\n$DIMTXT\n 40\n"+str(Draft.getParam("textheight", 20))+"\n")
+                dxf.header.append("  9\n$INSUNITS\n 70\n4\n")
             for ob in exportLayers:
                 if ob.Label != "0":  # dxflibrary already creates it
                     ltype = 'continuous'
@@ -3732,7 +3732,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                         p2 = obj.Placement.multVec(App.Vector(_v))
                     _h = vobj.Proxy.header.translation.getValue().getValue()
                     lspc = FreeCAD.Vector(_h)
-                    p1 = p2 + lspc                    
+                    p1 = p2 + lspc
                     dxf.append(dxfLibrary.Text(t1, p1, height=f1,
                                                color=getACI(ob, text=True),
                                                style='STANDARD',
@@ -3752,56 +3752,43 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                     if not axes:
                         continue
                     for ax in axes:
-                        dxf.append(dxfLibrary.Line([tuple(ax[0]),
-                                                    tuple(ax[1])],
-                                                   color=getACI(ob),
-                                                   layer=getStrGroup(ob)))
-                        p = ax[1]
-                        h = 1
-                        if FreeCAD.GuiUp:
-                            vobj = ob.ViewObject
-                            rad = vobj.BubbleSize.Value/2
-                            n = 0
-                            pos = ["Start"]
-                            if hasattr(vobj, "BubblePosition"):
-                                if vobj.BubblePosition == "Both":
-                                    pos = ["Start", "End"]
-                                else:
-                                    pos = [vobj.BubblePosition]
-                            for p in pos:
-                                if p == "Start":
-                                    p1 = ax[0]
-                                    p2 = ax[1]
-                                else:
-                                    p1 = ax[1]
-                                    p2 = ax[0]
-                                dv = p2.sub(p1)
-                                dv.normalize()
-                                center = p2.add(dv.scale(rad, rad, rad))
-                                h = float(ob.ViewObject.FontSize)
-                                dxf.append(dxfLibrary.Circle(center,
-                                                             rad,
-                                                             color=getACI(ob),
-                                                             layer=getStrGroup(ob)))
-                                dxf.append(dxfLibrary.Text(ax[2],
-                                                           center,
-                                                           alignment=center,
-                                                           height=h,
-                                                           justifyhor=1,
-                                                           justifyver=2,
-                                                           color=getACI(ob),
-                                                           style='STANDARD',
-                                                           layer=getStrGroup(ob)))
-                        else:
-                            dxf.append(dxfLibrary.Text(ax[2],
-                                                       p,
-                                                       alignment=p,
+                        dxf.append(dxfLibrary.Line([ax[0],
+                                                    ax[1]],
+                                                    color=getACI(ob),
+                                                    layer=getStrGroup(ob)))
+                    h = 1
+                    if FreeCAD.GuiUp:
+                        vobj = ob.ViewObject
+                        h = float(ob.ViewObject.FontSize)
+                        for text in vobj.Proxy.getTextData():
+                            pos = text[1].add(FreeCAD.Vector(-h/2,-h/2,0))
+                            dxf.append(dxfLibrary.Text(text[0],
+                                                       pos,
                                                        height=h,
-                                                       justifyhor=1,
-                                                       justifyver=2,
                                                        color=getACI(ob),
                                                        style='STANDARD',
                                                        layer=getStrGroup(ob)))
+                        for shape in vobj.Proxy.getShapeData():
+                            if hasattr(shape,"Curve") and isinstance(shape.Curve,Part.Circle):
+                                dxf.append(dxfLibrary.Circle(shape.Curve.Center,
+                                                             shape.Curve.Radius,
+                                                             color=getACI(ob),
+                                                             layer=getStrGroup(ob)))
+                            else:
+                                if lwPoly:
+                                    points = [(v.Point.x, v.Point.y, v.Point.z, None, None, 0.0) for v in shape.Vertexes]
+                                    dxf.append(dxfLibrary.LwPolyLine(points,
+                                                                     [0.0, 0.0],
+                                                                     1,
+                                                                     color=getACI(ob),
+                                                                     layer=getGroup(ob)))
+                                else:
+                                    points = [((v.Point.x, v.Point.y, v.Point.z), None, [None, None], 0.0) for v in shape.Vertexes]
+                                    dxf.append(dxfLibrary.PolyLine(points,
+                                                                   [0.0, 0.0, 0.0],
+                                                                   1,
+                                                                   color=getACI(ob),
+                                                                   layer=getGroup(ob)))
 
                 elif ob.isDerivedFrom("Part::Feature"):
                     tess = None
@@ -4143,8 +4130,8 @@ def getViewDXF(view, blocks=True):
         r = view.Rotation
         if r != 0:
             r = -r  # fix rotation direction
-        import Drawing
-        proj = Drawing.projectToDXF(view.Source.Shape, view.Direction)
+        import TechDraw
+        proj = TechDraw.projectToDXF(view.Source.Shape, view.Direction)
         if dxfExportBlocks:
             # change layer and set color and ltype to BYBLOCK (0)
             proj = proj.replace("sheet_layer\n",

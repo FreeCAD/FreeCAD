@@ -221,7 +221,7 @@ PyObject *SMESH_HypothesisPy<T>::PyMake(struct _typeobject * /*type*/, PyObject 
     int hypId;
     PyObject* obj;
     if (!PyArg_ParseTuple(args, "iO!",&hypId,&(FemMeshPy::Type),&obj))
-        return 0;
+        return nullptr;
     FemMesh* mesh = static_cast<FemMeshPy*>(obj)->getFemMeshPtr();
 #if SMESH_VERSION_MAJOR >= 9
     return new T(hypId, mesh->getGenerator());
@@ -294,7 +294,7 @@ StdMeshers_AutomaticLengthPy::StdMeshers_AutomaticLengthPy(int /*hypId*/, SMESH_
 }
 #else
 StdMeshers_AutomaticLengthPy::StdMeshers_AutomaticLengthPy(int /*hypId*/, int /*studyId*/, SMESH_Gen* /*gen*/)
-  : SMESH_HypothesisPyBase(0)
+  : SMESH_HypothesisPyBase(nullptr)
 {
 }
 #endif

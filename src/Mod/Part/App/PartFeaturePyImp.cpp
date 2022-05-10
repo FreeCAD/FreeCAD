@@ -39,7 +39,7 @@ std::string PartFeaturePy::representation(void) const
 
 PyObject *PartFeaturePy::getCustomAttributes(const char* ) const
 {
-    return 0;
+    return nullptr;
 }
 
 int PartFeaturePy::setCustomAttributes(const char* , PyObject *)

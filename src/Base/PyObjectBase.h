@@ -48,13 +48,11 @@
 #define slots
 #include <bitset>
 
-#include <typeinfo>
 #include "Exception.h"
 #ifndef PYCXX_PYTHON_2TO3
 #define PYCXX_PYTHON_2TO3
 #endif
 #include <CXX/Objects.hxx>
-
 
 
 /** Python static class macro for definition
@@ -135,15 +133,15 @@ inline void Assert(int expr, char *msg)         // C++ assert
 /// return with no return value if nothing happens
 #define Py_Return return Py_INCREF(Py_None), Py_None
 /// returns an error
-#define Py_Error(E, M)   _Py_Error(return(NULL),E,M)
+#define Py_Error(E, M)   _Py_Error(return(nullptr),E,M)
 #define _Py_Error(R, E, M)   {PyErr_SetString(E, M); R;}
 /// returns an error
-#define Py_ErrorObj(E, O)   _Py_ErrorObj(return(NULL),E,O)
+#define Py_ErrorObj(E, O)   _Py_ErrorObj(return(nullptr),E,O)
 #define _Py_ErrorObj(R, E, O)   {PyErr_SetObject(E, O); R;}
 /// checks on a condition and returns an error on failure
 #define Py_Try(F) {if (!(F)) return NULL;}
 /// assert which returns with an error on failure
-#define Py_Assert(A,E,M) {if (!(A)) {PyErr_SetString(E, M); return NULL;}}
+#define Py_Assert(A,E,M) {if (!(A)) {PyErr_SetString(E, M); return nullptr;}}
 
 
 /// This must be the first line of each PyC++ class
@@ -219,6 +217,11 @@ public:
     PyObjectBase* IncRef() {Py_INCREF(this);return this;}
     /// decref method wrapper (see python extending manual)
     PyObjectBase* DecRef() {Py_DECREF(this);return this;}
+
+    /// Get the pointer of the twin object
+    void* getTwinPointer() const {
+        return _pcTwinPointer;
+    }
 
     /** GetAttribute implementation
      *  This method implements the retrieval of object attributes.
@@ -407,11 +410,20 @@ static PyObject * s##DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){
  */
 #define PYMETHODEDEF(FUNC)	{"" #FUNC "",(PyCFunction) s##FUNC,Py_NEWARGS},
 
-BaseExport extern PyObject* BaseExceptionFreeCADError;
-#define PY_FCERROR (Base::BaseExceptionFreeCADError ? \
- BaseExceptionFreeCADError : PyExc_RuntimeError)
+BaseExport extern PyObject* PyExc_FC_GeneralError;
+#define PY_FCERROR (Base::PyExc_FC_GeneralError ? \
+ PyExc_FC_GeneralError : PyExc_RuntimeError)
 
-BaseExport extern PyObject* BaseExceptionFreeCADAbort;
+BaseExport extern PyObject* PyExc_FC_FreeCADAbort;
+BaseExport extern PyObject* PyExc_FC_XMLBaseException;
+BaseExport extern PyObject* PyExc_FC_XMLParseException;
+BaseExport extern PyObject* PyExc_FC_XMLAttributeError;
+BaseExport extern PyObject* PyExc_FC_UnknownProgramOption;
+BaseExport extern PyObject* PyExc_FC_BadFormatError;
+BaseExport extern PyObject* PyExc_FC_BadGraphError;
+BaseExport extern PyObject* PyExc_FC_ExpressionError;
+BaseExport extern PyObject* PyExc_FC_ParserError;
+BaseExport extern PyObject* PyExc_FC_CADKernelError;
 
 /** Exception handling for python callback functions
  * Is a convenience macro to manage the exception handling of python callback
@@ -421,14 +433,14 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
  * PYFUNCIMP_D(DocTypeStdPy,AddFeature)
  * {
  *   char *pstr;
- *   if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
- *      return NULL;                             // NULL triggers exception
+ *   if (!PyArg_ParseTuple(args, "s", &pstr))
+ *      return nullptr;
  *
  *   try {
  *     Feature *pcFtr = _pcDocTypeStd->AddFeature(pstr);
  *   }catch(...)                                                        \
  *   {                                                                 \
- * 	 	Py_Error(Base::BaseExceptionFreeCADError,"Unknown C++ exception");          \
+ * 	 	Py_Error(Base::PyExc_FC_GeneralError,"Unknown C++ exception");          \
  *   }catch(FCException e) ..... // and so on....                                                               \
  * }
  * \endcode
@@ -437,8 +449,8 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
  * PYFUNCIMP_D(DocTypeStdPy,AddFeature)
  * {
  *   char *pstr;
- *   if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
- *      return NULL;                             // NULL triggers exception
+ *   if (!PyArg_ParseTuple(args, "s", &pstr))
+ *      return nullptr;
  *
  *  PY_TRY {
  *    Feature *pcFtr = _pcDocTypeStd->AddFeature(pstr);
@@ -453,20 +465,16 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
 #define PY_TRY	try
 
 #define __PY_CATCH(R)                                               \
-    catch(Base::AbortException &e)                                  \
-    {                                                               \
-        _Py_ErrorObj(R,Base::BaseExceptionFreeCADAbort,e.getPyObject());\
-    }                                                               \
     catch(Base::Exception &e)                                       \
     {                                                               \
         auto pye = e.getPyExceptionType();                          \
         if(!pye)                                                    \
-            pye = Base::BaseExceptionFreeCADError;                  \
+            pye = Base::PyExc_FC_GeneralError;                      \
         _Py_ErrorObj(R,pye,e.getPyObject());                        \
     }                                                               \
-    catch(std::exception &e)                                        \
+    catch(const std::exception &e)                                  \
     {                                                               \
-        _Py_Error(R,Base::BaseExceptionFreeCADError,e.what());      \
+        _Py_Error(R,Base::PyExc_FC_GeneralError, e.what());         \
     }                                                               \
     catch(const Py::Exception&)                                     \
     {                                                               \
@@ -479,7 +487,7 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
     __PY_CATCH(R)                                                   \
     catch(...)                                                      \
     {                                                               \
-        _Py_Error(R,Base::BaseExceptionFreeCADError,"Unknown C++ exception"); \
+        _Py_Error(R,Base::PyExc_FC_GeneralError,"Unknown C++ exception"); \
     }
 
 #else
@@ -487,7 +495,7 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
 #  define _PY_CATCH(R) __PY_CATCH(R)
 #endif  // DONT_CATCH_CXX_EXCEPTIONS
 
-#define PY_CATCH _PY_CATCH(return(NULL))
+#define PY_CATCH _PY_CATCH(return(nullptr))
 
 /** Python helper class
  *  This class encapsulate the Decoding of UTF8 to a python object.
@@ -496,8 +504,9 @@ BaseExport extern PyObject* BaseExceptionFreeCADAbort;
 inline PyObject * PyAsUnicodeObject(const char *str)
 {
     // Returns a new reference, don't increment it!
-    PyObject *p = PyUnicode_DecodeUTF8(str,strlen(str),0);
-    if(!p)
+    Py_ssize_t len = Py_SAFE_DOWNCAST(strlen(str), size_t, Py_ssize_t);
+    PyObject *p = PyUnicode_DecodeUTF8(str, len, nullptr);
+    if (!p)
         throw Base::UnicodeError("UTF8 conversion failure at PyAsUnicodeString()");
     return p;
 }

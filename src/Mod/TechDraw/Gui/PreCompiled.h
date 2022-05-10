@@ -52,9 +52,6 @@
 
 #ifdef _PreComp_
 
-// Python
-#include <Python.h>
-
 // standard
 #include <iostream>
 #include <cassert>
@@ -72,14 +69,25 @@
 #include <bitset>
 
 #ifdef FC_OS_WIN32
+# define WIN32_LEAN_AND_MEAN
 # include <windows.h>
+# undef small
 #endif
 
 
 // Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
+#ifndef __QtAll__
+# include <Gui/QtAll.h>
 #endif
+#include <QPaintEngine>
+#include <QSvgGenerator>
+#include <QGLWidget>
+
+#include <Inventor/nodes/SoDirectionalLight.h>
+#include <Inventor/nodes/SoOrthographicCamera.h>
+#include <Inventor/nodes/SoPerspectiveCamera.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/misc/SoChildList.h>
 
 #endif //_PreComp_
 

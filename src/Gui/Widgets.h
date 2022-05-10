@@ -24,18 +24,29 @@
 #ifndef GUI_WIDGETS_H
 #define GUI_WIDGETS_H
 
-#include <Gui/ui_DlgTreeWidget.h>
-#include <QListWidget>
+#include <memory>
+#include <FCGlobal.h>
+
+#include <QBasicTimer>
+#include <QButtonGroup>
+#include <QDialog>
+#include <QElapsedTimer>
 #include <QLabel>
 #include <QLineEdit>
+#include <QListWidget>
+#include <QPlainTextEdit>
 #include <QPointer>
 #include <QPushButton>
-#include <QPlainTextEdit>
-#include <QBasicTimer>
-#include <QElapsedTimer>
 #include <QToolButton>
-#include <QModelIndex>
+
+#include <Base/Parameter.h>
 #include "ExpressionBinding.h"
+
+class QGridLayout;
+class QVBoxLayout;
+class QTreeWidget;
+class QTreeWidgetItem;
+class QSpacerItem;
 
 namespace Gui {
 class PrefCheckBox;
@@ -52,7 +63,7 @@ class CommandIconView : public QListWidget
   Q_OBJECT
 
 public:
-  CommandIconView (QWidget * parent = 0);
+  CommandIconView (QWidget * parent = nullptr);
   virtual ~CommandIconView ();
 
 protected:
@@ -73,7 +84,7 @@ class GuiExport ActionSelector : public QWidget
     Q_OBJECT
 
 public:
-    ActionSelector(QWidget* parent=0);
+    ActionSelector(QWidget* parent=nullptr);
     ~ActionSelector();
 
     QTreeWidget* availableTreeWidget() const
@@ -118,7 +129,7 @@ private:
 // ------------------------------------------------------------------------------
 
 /**
- * The AccelLineEdit class provides a lineedit to specfify shortcuts.
+ * The AccelLineEdit class provides a lineedit to specify shortcuts.
  * \author Werner Mayer
  */
 class GuiExport AccelLineEdit : public QLineEdit
@@ -126,15 +137,30 @@ class GuiExport AccelLineEdit : public QLineEdit
   Q_OBJECT
 
 public:
-    AccelLineEdit(QWidget * parent=0);
+    AccelLineEdit(QWidget * parent=nullptr);
     bool isNone() const;
 
 protected:
     void keyPressEvent(QKeyEvent * e);
 
 private:
-    QString noneStr;
     int keyPressedCount;
+};
+
+// ------------------------------------------------------------------------------
+
+/**
+ * The ModifierLineEdit class provides a lineedit to specify modifiers.
+ */
+class GuiExport ModifierLineEdit : public QLineEdit
+{
+  Q_OBJECT
+
+public:
+    ModifierLineEdit(QWidget * parent=nullptr);
+
+protected:
+    void keyPressEvent(QKeyEvent * e);
 };
 
 // ------------------------------------------------------------------------------
@@ -148,7 +174,7 @@ class GuiExport ClearLineEdit : public QLineEdit
   Q_OBJECT
 
 public:
-    ClearLineEdit (QWidget * parent=0);
+    ClearLineEdit (QWidget * parent=nullptr);
 
 protected:
     void resizeEvent(QResizeEvent *);
@@ -163,6 +189,7 @@ private:
 // ------------------------------------------------------------------------------
 
 typedef QPair<QString, bool> CheckListItem;
+class Ui_DlgTreeWidget;
 
 /**
  * The CheckListDialog class provides a dialog with a QListView with
@@ -175,7 +202,7 @@ class GuiExport CheckListDialog : public QDialog
   Q_OBJECT
 
 public:
-  CheckListDialog( QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags() );
+  CheckListDialog( QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags() );
   ~CheckListDialog();
 
   void setCheckableItems( const QStringList& items );
@@ -186,7 +213,7 @@ public:
 
 private:
   QStringList checked;
-  Ui_DlgTreeWidget ui;
+  std::unique_ptr<Ui_DlgTreeWidget> ui;
 };
 
 // ------------------------------------------------------------------------------
@@ -202,9 +229,10 @@ class GuiExport ColorButton : public QPushButton
     Q_PROPERTY( QColor color READ color WRITE setColor )
     Q_PROPERTY( bool allowChangeColor READ allowChangeColor WRITE setAllowChangeColor )
     Q_PROPERTY( bool drawFrame READ drawFrame WRITE setDrawFrame )
+    Q_PROPERTY( bool allowTransparency READ allowTransparency WRITE setAllowTransparency)
 
 public:
-    ColorButton(QWidget* parent = 0);
+    ColorButton(QWidget* parent = nullptr);
     ~ColorButton();
 
     void setColor(const QColor&);
@@ -215,6 +243,9 @@ public:
 
     void setDrawFrame(bool);
     bool drawFrame() const;
+
+    void setAllowTransparency(bool);
+    bool allowTransparency() const;
 
     void setModal(bool);
     bool isModal() const;
@@ -254,23 +285,107 @@ class GuiExport UrlLabel : public QLabel
 {
   Q_OBJECT
   Q_PROPERTY( QString  url    READ url   WRITE setUrl)
+  Q_PROPERTY( bool  launchExternal    READ launchExternal   WRITE setLaunchExternal)
 
 public:
-  UrlLabel ( QWidget * parent = 0, Qt::WindowFlags f = Qt::WindowFlags() );
+  UrlLabel ( QWidget * parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags() );
   virtual ~UrlLabel();
 
   QString url() const;
+  bool launchExternal() const;
+  
+Q_SIGNALS:
+  void linkClicked(QString url);
 
 public Q_SLOTS:
   void setUrl( const QString &u );
+  void setLaunchExternal(bool l);
 
 protected:
-  void enterEvent ( QEvent * );
-  void leaveEvent ( QEvent * );
   void mouseReleaseEvent ( QMouseEvent * );
 
 private:
   QString _url;
+  bool _launchExternal;
+};
+
+
+/**
+ * A text label whose appearance can change based on a specified state. 
+ *
+ * The state is an arbitrary string exposed as a Qt Property (and thus available for selection via 
+ * a stylesheet). This is intended for things like messages to the user, where a message that is an 
+ * "error" might be colored differently than one that is a "warning" or a "message".
+ * 
+ * In order of style precedence for a given state: User preference > Stylesheet > Default
+ * unless the stylesheet sets the overridePreference, in which case the stylesheet will
+ * take precedence. If a stylesheet sets styles for this widgets states, it should also
+ * set the "handledByStyle" property to ensure the style values are used, rather than the
+ * defaults.
+ * 
+ * For example, the .qss might contain:
+ * Gui--StatefulLabel {
+ *   qproperty-overridePreference: true;
+ * }
+ * Gui--StatefulLabel[state="special_state"] {
+ *   color: red;
+ * }
+ * In this case, StatefulLabels with state "special_state" will be colored red, regardless of any
+ * entry in preferences. Use the "overridePreference" stylesheet option with care!
+ * 
+ * @author Chris Hennes
+ */
+class GuiExport StatefulLabel : public QLabel, public Base::Observer<const char*>
+{
+    Q_OBJECT
+        Q_PROPERTY( bool overridePreference MEMBER _overridePreference WRITE setOverridePreference)
+        Q_PROPERTY( QString state MEMBER _state WRITE setState )
+
+public:
+    StatefulLabel(QWidget* parent = nullptr);
+    virtual ~StatefulLabel();
+
+    /** If an unrecognized state is set, use this style */
+    void setDefaultStyle(const QString &defaultStyle);
+
+    /** If any of the states have user preferences associated with them, this sets the parameter
+        group that stores those preferences. All states must be in the same parameter group, but
+        the group does not have to have entries for all of them. */
+    void setParameterGroup(const std::string& groupName);
+
+    /** Register a state and its corresponding style (optionally attached to a user preference) */
+    void registerState(const QString &state, const QString &styleCSS, 
+        const std::string& preferenceName = std::string());
+
+    /** For convenience, allow simple color-only states via QColor (optionally attached to a user preference) */
+    void registerState(const QString& state, const QColor& color, 
+        const std::string& preferenceName = std::string());
+
+    /** For convenience, allow simple color-only states via QColor (optionally attached to a user preference) */
+    void registerState(const QString& state, const QColor& foregroundColor, const QColor& backgroundColor, 
+        const std::string& preferenceName = std::string());
+
+    /** Observes the parameter group and clears the cache if it changes */
+    void OnChange(Base::Subject<const char *>& rCaller, const char* rcReason);
+
+public Q_SLOTS:
+    void setState(QString state);
+    void setOverridePreference(bool overridePreference);
+
+private:
+    QString _state;
+    bool _overridePreference;
+    ParameterGrp::handle _parameterGroup;
+    ParameterGrp::handle _stylesheetGroup;
+
+    struct StateData {
+        QString defaultCSS;
+        std::string preferenceString;
+    };
+    
+    std::map<QString, StateData> _availableStates;
+    std::map<QString, QString> _styleCache;
+    QString _defaultStyle;
 };
 
 // ----------------------------------------------------------------------
@@ -286,7 +401,7 @@ class GuiExport LabelButton : public QWidget
     Q_PROPERTY(QVariant value  READ value  WRITE setValue)
 
 public:
-    LabelButton (QWidget * parent = 0);
+    LabelButton (QWidget * parent = nullptr);
     virtual ~LabelButton();
 
     QVariant value() const;
@@ -326,7 +441,7 @@ private:
 class GuiExport ToolTip : public QObject
 {
 public:
-    static void showText(const QPoint & pos, const QString & text, QWidget * w = 0);
+    static void showText(const QPoint & pos, const QString & text, QWidget * w = nullptr);
 
 protected:
     static ToolTip* instance();
@@ -373,12 +488,12 @@ private:
 
 // ----------------------------------------------------------------------
 
-class PropertyListEditor : public QPlainTextEdit
+class GuiExport PropertyListEditor : public QPlainTextEdit
 {
     Q_OBJECT
 
 public:
-    PropertyListEditor(QWidget *parent = 0);
+    PropertyListEditor(QWidget *parent = nullptr);
 
     void lineNumberAreaPaintEvent(QPaintEvent *event);
     int lineNumberAreaWidth();
@@ -407,7 +522,7 @@ class GuiExport LabelEditor : public QWidget
 public:
     enum InputType {String, Float, Integer};
 
-    LabelEditor (QWidget * parent = 0);
+    LabelEditor (QWidget * parent = nullptr);
     virtual ~LabelEditor();
 
     /**
@@ -455,7 +570,7 @@ class GuiExport ExpLineEdit : public QLineEdit, public ExpressionBinding
     Q_OBJECT
 
 public:
-    ExpLineEdit ( QWidget * parent=0, bool expressionOnly=false );
+    ExpLineEdit ( QWidget * parent=nullptr, bool expressionOnly=false );
 
     void setExpression(std::shared_ptr<App::Expression> expr);
     void bind(const App::ObjectIdentifier &_path);
@@ -471,6 +586,25 @@ private Q_SLOTS:
 
 private:
     bool autoClose;
+};
+
+/*!
+ * \brief The ButtonGroup class
+ * Unlike Qt's QButtonGroup this class allows it that in exclusive mode
+ * all buttons can be unchecked.
+ */
+class GuiExport ButtonGroup : public QButtonGroup
+{
+    Q_OBJECT
+
+public:
+    ButtonGroup(QObject *parent = nullptr);
+
+    void setExclusive(bool on);
+    bool exclusive() const;
+
+private:
+    bool _exclusive;
 };
 
 } // namespace Gui

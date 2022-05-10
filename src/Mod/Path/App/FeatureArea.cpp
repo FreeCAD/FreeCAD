@@ -44,7 +44,7 @@ PARAM_ENUM_STRING_DECLARE(static const char *Enums,AREA_PARAMS_ALL)
 FeatureArea::FeatureArea()
     :myInited(false)
 {
-    ADD_PROPERTY(Sources,(0));
+    ADD_PROPERTY(Sources,(nullptr));
     ADD_PROPERTY(WorkPlane,(TopoDS_Shape()));
 
     PARAM_PROP_ADD("Area",AREA_PARAMS_OPCODE);
@@ -166,7 +166,7 @@ PROPERTY_SOURCE(Path::FeatureAreaView, Part::Feature)
 
 FeatureAreaView::FeatureAreaView()
 {
-    ADD_PROPERTY(Source,(0));
+    ADD_PROPERTY(Source,(nullptr));
     ADD_PROPERTY_TYPE(SectionIndex,(0),"Section",App::Prop_None,"The start index of the section to show, negative value for reverse index from bottom");
     ADD_PROPERTY_TYPE(SectionCount,(1),"Section",App::Prop_None,"Number of sections to show, 0 to show all section starting from SectionIndex");
 }
@@ -174,7 +174,8 @@ FeatureAreaView::FeatureAreaView()
 std::list<TopoDS_Shape> FeatureAreaView::getShapes() {
     std::list<TopoDS_Shape> shapes;
     App::DocumentObject* pObj = Source.getValue();
-    if (!pObj) return shapes;
+    if (!pObj)
+        return shapes;
     if(!pObj->isDerivedFrom(FeatureArea::getClassTypeId()))
         return shapes;
 
@@ -186,7 +187,8 @@ std::list<TopoDS_Shape> FeatureAreaView::getShapes() {
     int index=SectionIndex.getValue(),count=SectionCount.getValue();
     if(index<0) {
         index += ((int)all_shapes.size());
-        if(index<0) return shapes;
+        if(index<0)
+            return shapes;
         if(count<=0 || index+1-count<0) {
             count = index+1;
             index = 0;

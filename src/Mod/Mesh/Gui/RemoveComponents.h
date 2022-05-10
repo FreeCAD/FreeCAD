@@ -42,7 +42,7 @@ class MeshGuiExport RemoveComponents : public QWidget
     Q_OBJECT
 
 public:
-    RemoveComponents(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+    RemoveComponents(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~RemoveComponents();
     void reject();
     void deleteSelection();
@@ -78,7 +78,7 @@ class MeshGuiExport RemoveComponentsDialog : public QDialog
     Q_OBJECT
 
 public:
-    RemoveComponentsDialog(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+    RemoveComponentsDialog(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~RemoveComponentsDialog();
     void reject();
 
@@ -106,7 +106,7 @@ public:
 
     virtual QDialogButtonBox::StandardButtons getStandardButtons() const
     { return QDialogButtonBox::Ok | QDialogButtonBox::Close; }
-    virtual bool isAllowedAlterDocument(void) const
+    virtual bool isAllowedAlterDocument() const
     { return true; }
     virtual void modifyStandardButtons(QDialogButtonBox*);
 

@@ -25,7 +25,9 @@
 
 #include <QGraphicsRectItem>
 
-#include "Mod/TechDraw/App/DrawTemplate.h"
+namespace TechDraw {
+class DrawTemplate;
+}
 
 namespace TechDrawGui
 {

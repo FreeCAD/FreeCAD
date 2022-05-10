@@ -22,10 +22,10 @@
 # ***************************************************************************
 """Provides functions to transform sketches into Draft objects."""
 ## @package draftify
-# \ingroup draftfuctions
+# \ingroup draftfunctions
 # \brief Provides functions to transform sketches into Draft objects.
 
-## \addtogroup draftfuctions
+## \addtogroup draftfunctions
 # @{
 
 import lazy_loader.lazy_loader as lz

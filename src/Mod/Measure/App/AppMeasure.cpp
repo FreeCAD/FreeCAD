@@ -21,16 +21,13 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
-#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 
 #include "Measurement.h"
 #include "MeasurementPy.h"
+
 
 namespace Measure {
 class Module : public Py::ExtensionModule<Module>
@@ -48,7 +45,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace Measure
@@ -63,7 +60,7 @@ PyMOD_INIT_FUNC(Measure)
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
     PyObject* mod = Measure::initModule();
     // Add Types to module

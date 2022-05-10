@@ -23,15 +23,14 @@
 #ifndef PARTDESIGNGUI_FeaturePickDialog_H
 #define PARTDESIGNGUI_FeaturePickDialog_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
+#include <QListWidgetItem>
+
+#include <App/DocumentObject.h>
 #include <Gui/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
 #include <Gui/ViewProviderOrigin.h>
-#include <App/DocumentObject.h>
 
-#include <boost/function.hpp>
-#include <QListWidgetItem>
 
 namespace PartDesignGui {
 
@@ -59,13 +58,14 @@ public:
     TaskFeaturePick(std::vector<App::DocumentObject*> &objects,
                     const std::vector<featureStatus> &status,
                     bool singleFeatureSelect,
-                    QWidget *parent = 0);
+                    QWidget *parent = nullptr);
 
     ~TaskFeaturePick();
 
     std::vector<App::DocumentObject*> getFeatures();
     std::vector<App::DocumentObject*> buildFeatures();
     void showExternal(bool val);
+    bool isSingleSelectionEnabled() const;
 
     static App::DocumentObject* makeCopy(App::DocumentObject* obj, std::string sub, bool independent);
 

@@ -29,18 +29,16 @@
 #define TECHDRAW_EDGEWALKER_H
 
 #include <vector>
-#include <boost_graph_adjacency_list.hpp>
-#include <boost/graph/properties.hpp>
 #include <boost/graph/graph_traits.hpp>
-#include <boost/property_map/property_map.hpp>
-#include <boost/graph/boyer_myrvold_planar_test.hpp>
-#include <boost/graph/is_kuratowski_subgraph.hpp>
 #include <boost/graph/planar_face_traversal.hpp>
-#include <boost/ref.hpp>
+#include <boost/property_map/property_map.hpp>
 
-#include <TopoDS_Vertex.hxx>
 #include <TopoDS_Edge.hxx>
+#include <TopoDS_Vertex.hxx>
 #include <TopoDS_Wire.hxx>
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 
 namespace TechDraw {
 //using namespace boost;
@@ -72,7 +70,7 @@ typedef
                                 >
         planar_embedding_t;
 
-class WalkerEdge
+class TechDrawExport WalkerEdge
 {
 public:
     static bool weCompare(WalkerEdge i, WalkerEdge j);
@@ -85,7 +83,7 @@ public:
     int idx;
 };
 
-class ewWire
+class TechDrawExport ewWire
 {
 public:
     bool isEqual(ewWire w);
@@ -96,7 +94,7 @@ public:
     int size(void);
 };
 
-class ewWireList
+class TechDrawExport ewWireList
 {
 public:
     ewWireList removeDuplicateWires();
@@ -108,7 +106,7 @@ public:
 
 
 
-class edgeVisitor : public boost::planar_face_traversal_visitor
+class TechDrawExport edgeVisitor : public boost::planar_face_traversal_visitor
 {
 public:
     template <typename Edge>
@@ -124,7 +122,7 @@ private:
     TechDraw::graph m_g;
 };
 
-class incidenceItem
+class TechDrawExport incidenceItem
 {
 public:
     incidenceItem() {iEdge = 0; angle = 0.0;}
@@ -137,7 +135,7 @@ public:
     edge_t eDesc;
 };
 
-class embedItem
+class TechDrawExport embedItem
 {
 public:
     embedItem();
@@ -152,7 +150,7 @@ public:
 };
 
 
-class EdgeWalker
+class TechDrawExport EdgeWalker
 {
 public:
     EdgeWalker(void);

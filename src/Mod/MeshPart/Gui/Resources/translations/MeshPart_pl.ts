@@ -2,11 +2,29 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="pl" sourcelanguage="en">
   <context>
+    <name>MeshPart_FlatteningCommand</name>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="47"/>
+      <source>Unwrap Mesh</source>
+      <translation>Rozwiń siatkę</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="80"/>
+      <source>Find a flat representation of a mesh.</source>
+      <translation>Znajdź płaską reprezentację siatki.</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="79"/>
+      <source>Unwrap Face</source>
+      <translation>Rozwiń ścianę</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
       <location filename="../../Command.cpp" line="276"/>
       <source>MeshPart</source>
-      <translation>Składnik_Siatki</translation>
+      <translation>Siatka Części</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="277"/>
@@ -36,7 +54,7 @@
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
       <translation>Tworzy przybliżoną krzywą na wierzchu siatki.
-To polecenie działa tylko z obiektem typu 'mesh'.</translation>
+To polecenie działa tylko z obiektem typu Siatka.</translation>
     </message>
   </context>
   <context>
@@ -117,7 +135,7 @@ To polecenie działa tylko z obiektem typu 'mesh'.</translation>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
       <source>Guiding plane</source>
-      <translation>Prowadzenie płaszczyzny</translation>
+      <translation>Płaszczyzna prowadzenia</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
@@ -242,12 +260,12 @@ Ta komenda działa tylko z obiektem 'mesh', a nie zwykłą płaszczyzną lub pow
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="61"/>
       <source>Split threshold</source>
-      <translation>Próg połączenia</translation>
+      <translation>Próg podziału</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="87"/>
       <source>Spline Approximation</source>
-      <translation>Przybliżenie splajnu</translation>
+      <translation>Przybliżenie krzywej złożonej</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="96"/>
@@ -260,7 +278,7 @@ Ta komenda działa tylko z obiektem 'mesh', a nie zwykłą płaszczyzną lub pow
       <translation>Ciągłość</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="129"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="136"/>
       <source>Maximum curve degree</source>
       <translation>Maksymalny stopień krzywej</translation>
     </message>
@@ -288,24 +306,14 @@ Ta komenda działa tylko z obiektem 'mesh', a nie zwykłą płaszczyzną lub pow
       <translation>Standardowy</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="145"/>
-      <source>Mefisto</source>
-      <translation>Mefisto</translation>
-    </message>
-    <message>
-      <location filename="../../Tessellation.ui" line="206"/>
-      <source>Netgen</source>
-      <translation>Netgen</translation>
+      <location filename="../../Tessellation.ui" line="33"/>
+      <source>Use the standard mesher</source>
+      <translation>Użyj standardowego generatora siatek</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="41"/>
       <source>Surface deviation:</source>
       <translation>Odchylenie powierzchni:</translation>
-    </message>
-    <message>
-      <location filename="../../Tessellation.ui" line="33"/>
-      <source>Use the standard mesher</source>
-      <translation>Użyj standardowego generatora siatek</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="48"/>
@@ -332,7 +340,7 @@ Odchylenie powierzchniowe pomnożone przez długość aktualnego segmentu oczek 
     <message>
       <location filename="../../Tessellation.ui" line="102"/>
       <source>Relative surface deviation</source>
-      <translation>Względne odchylenie powierzchni:</translation>
+      <translation>Względne odchylenie powierzchni</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="109"/>
@@ -359,6 +367,11 @@ tą funkcję (np. format OBJ).</translation>
       <translation>Zdefiniuj segmenty według kolorów ścian</translation>
     </message>
     <message>
+      <location filename="../../Tessellation.ui" line="145"/>
+      <source>Mefisto</source>
+      <translation>Mefisto</translation>
+    </message>
+    <message>
       <location filename="../../Tessellation.ui" line="148"/>
       <source>Use the Mefisto mesher</source>
       <translation>Użyj generatora siatek Mefisto</translation>
@@ -379,6 +392,11 @@ Najmniejszą wartością jest 0.</translation>
       <location filename="../../Tessellation.ui" line="183"/>
       <source>Estimate</source>
       <translation>Szacunkowo</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="206"/>
+      <source>Netgen</source>
+      <translation>Netgen</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="209"/>
@@ -435,7 +453,7 @@ Wartość w zakresie 0,1-1.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="302"/>
       <source>Elements per edge:</source>
-      <translation>Ilość elementów na krawędź:</translation>
+      <translation>Liczba elementów na krawędź:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="312"/>
@@ -448,7 +466,7 @@ Wartość w zakresie 0,2–10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="335"/>
       <source>Elements per curvature radius:</source>
-      <translation>Ilość elementów na promień krzywizny:</translation>
+      <translation>Liczba elementów na promień krzywizny:</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="370"/>
@@ -473,7 +491,7 @@ Wartość w zakresie 0,2–10.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="393"/>
       <source>Whether meshes will be arranged preferably using quadrilateral faces</source>
-      <translation>Czy siatki będą układane najlepiej przy użyciu czworobocznych ścian</translation>
+      <translation>Czy siatki będą rozmieszczone najlepiej przy użyciu czworobocznych ścian</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="396"/>
@@ -486,18 +504,32 @@ Wartość w zakresie 0,2–10.</translation>
       <translation>Pozostaw panel otwarty</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="62"/>
-      <source>gmsh</source>
-      <translation>gmsh</translation>
+      <location filename="../../Tessellation.cpp" line="63"/>
+      <source>Gmsh</source>
+      <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="213"/>
-      <location filename="../../Tessellation.cpp" line="219"/>
+      <location filename="../../Tessellation.cpp" line="214"/>
+      <location filename="../../Tessellation.cpp" line="220"/>
       <source>No active document</source>
       <translation>Brak aktywnego dokumentu</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="234"/>
+      <location filename="../../Tessellation.cpp" line="248"/>
+      <source>You have selected a body without tip.
+Either set the tip of the body or select a different shape, please.</source>
+      <translation>Wybrałeś zawartość bez czubka.
+Proszę, ustaw czubek zawartości lub wybierz inny kształt.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.cpp" line="252"/>
+      <source>You have selected a shape without faces.
+Select a different shape, please.</source>
+      <translation>Wybrałeś kształt bez ścian.
+Proszę wybrać inny kształt.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.cpp" line="256"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Najpierw wybierz kształt do utworzenia siatki.</translation>
     </message>
@@ -535,7 +567,7 @@ Wartość w zakresie 0,2–10.</translation>
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Select the side you want to keep.</source>
-      <translation>Wybierz stronę, którą chcesz zachować.</translation>
+      <translation>Wybierz tę stronę, którą zamierzasz pozostawić.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="105"/>
@@ -558,7 +590,7 @@ Wartość w zakresie 0,2–10.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>MeshPart</source>
-      <translation>Składnik_Siatki</translation>
+      <translation>Siatka Części</translation>
     </message>
   </context>
 </TS>

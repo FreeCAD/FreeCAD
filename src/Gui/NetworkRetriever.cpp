@@ -24,23 +24,23 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <qapplication.h>
-# include <qdir.h>
-# include <qfileinfo.h>
-# include <qlineedit.h>
-# include <qmessagebox.h>
-# include <qtimer.h>
+# include <QApplication>
+# include <QDir>
+# include <QFileInfo>
+# include <QMessageBox>
+# include <QTimer>
 #endif
+
+#include <App/Application.h>
+#include <Base/Console.h>
 
 #include "NetworkRetriever.h"
 #include "Action.h"
 #include "BitmapFactory.h"
+#include "FileDialog.h"
 #include "MainWindow.h"
 #include "ui_DlgAuthorization.h"
-#include "FileDialog.h"
 
-#include <App/Application.h>
-#include <Base/Console.h>
 
 using namespace Gui;
 using namespace Gui::Dialog;
@@ -387,7 +387,7 @@ bool NetworkRetriever::testWget()
 StdCmdDownloadOnlineHelp::StdCmdDownloadOnlineHelp( QObject * parent)
   : QObject(parent), Command("Std_DownloadOnlineHelp")
 {
-    sGroup        = QT_TR_NOOP("Help");
+    sGroup        ="Help";
     sMenuText     = QT_TR_NOOP("Download online help");
     sToolTipText  = QT_TR_NOOP("Download %1's online help");
     sWhatsThis    = "Std_DownloadOnlineHelp";
@@ -418,7 +418,7 @@ Action * StdCmdDownloadOnlineHelp::createAction(void)
 {
     Action *pcAction;
 
-    QString exe = QString::fromLatin1(App::GetApplication().getExecutableName());
+    QString exe = QString::fromStdString(App::Application::getExecutableName());
     pcAction = new Action(this,getMainWindow());
     pcAction->setText(QCoreApplication::translate(
         this->className(), getMenuText()));
@@ -437,7 +437,7 @@ Action * StdCmdDownloadOnlineHelp::createAction(void)
 void StdCmdDownloadOnlineHelp::languageChange()
 {
     if (_pcAction) {
-        QString exe = QString::fromLatin1(App::GetApplication().getExecutableName());
+        QString exe = QString::fromStdString(App::Application::getExecutableName());
         _pcAction->setText(QCoreApplication::translate(
             this->className(), getMenuText()));
         _pcAction->setToolTip(QCoreApplication::translate(
@@ -483,7 +483,7 @@ void StdCmdDownloadOnlineHelp::activated(int iMsg)
         bool canStart = false;
 
         // set output directory
-        QString path = QString::fromUtf8(App::GetApplication().getHomePath());
+        QString path = QString::fromStdString(App::Application::getHomePath());
         path += QString::fromLatin1("/doc/");
         ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/OnlineHelp");
         path = QString::fromUtf8(hURLGrp->GetASCII( "DownloadLocation", path.toLatin1() ).c_str());

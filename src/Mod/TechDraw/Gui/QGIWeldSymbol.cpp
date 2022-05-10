@@ -36,7 +36,7 @@
   # include <QPaintDevice>
   # include <QSvgGenerator>
 
-  # include <math.h>
+  # include <cmath>
 #endif
 
 #include <App/Application.h>

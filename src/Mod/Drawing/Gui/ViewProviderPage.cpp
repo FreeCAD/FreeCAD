@@ -56,7 +56,7 @@ PROPERTY_SOURCE(DrawingGui::ViewProviderDrawingPage, Gui::ViewProviderDocumentOb
 // Construction/Destruction
 
 ViewProviderDrawingPage::ViewProviderDrawingPage()
-  : view(0)
+  : view(nullptr)
 {
     sPixmap = "Page";
     ADD_PROPERTY(HintScale,(10.0));

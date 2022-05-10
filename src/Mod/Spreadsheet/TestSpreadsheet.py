@@ -1143,6 +1143,139 @@ class SpreadsheetCases(unittest.TestCase):
         self.doc.recompute()
         sheet.setAlias('C3','test')
 
+    def testCrossLinkEmptyPropertyName(self):
+        # https://forum.freecadweb.org/viewtopic.php?f=3&t=58603
+        base = FreeCAD.newDocument("base")
+        sheet = base.addObject('Spreadsheet::Sheet','Spreadsheet')
+        sheet.setAlias('A1', 'x')
+        sheet.set('x', '42mm')
+        base.recompute()
+
+        square = FreeCAD.newDocument("square")
+        body = square.addObject('PartDesign::Body','Body')
+        box = square.addObject('PartDesign::AdditiveBox','Box')
+        body.addObject(box)
+        box.Length = 10.00
+        box.Width = 10.00
+        box.Height = 10.00
+        square.recompute()
+
+        basePath = self.TempPath + os.sep + 'base.FCStd'
+        base.saveAs(basePath)
+        squarePath = self.TempPath + os.sep + 'square.FCStd'
+        square.saveAs(squarePath)
+
+        base.save()
+        square.save()
+
+        FreeCAD.closeDocument(square.Name)
+        FreeCAD.closeDocument(base.Name)
+
+        ##
+        ## preparation done
+        base = FreeCAD.openDocument(basePath)
+        square = FreeCAD.openDocument(squarePath)
+
+        square.Box.setExpression('Length', u'base#Spreadsheet.x')
+        square.recompute()
+
+        square.save()
+        base.save()
+        FreeCAD.closeDocument(square.Name)
+        FreeCAD.closeDocument(base.Name)
+
+    def testExpressionWithAlias(self):
+        # https://forum.freecadweb.org/viewtopic.php?p=564502#p564502
+        ss1 = self.doc.addObject("Spreadsheet::Sheet", "Input")
+        ss1.setAlias('A1', 'one')
+        ss1.setAlias('A2', 'two')
+        ss1.set("A1","1")
+        ss1.set("A2","2")
+        self.doc.recompute()
+
+        ss2 = self.doc.addObject("Spreadsheet::Sheet", "Output")
+        ss2.set("A1","=Input.A1 + Input.A2")
+        ss2.set("A2","=Input.one + Input.two")
+        ss2.set("A3","=<<Input>>.A1 + <<Input>>.A2")
+        ss2.set("A4","=<<Input>>.one + <<Input>>.two")
+        self.doc.recompute()
+
+        self.assertEqual(ss2.get("A1"), 3)
+        self.assertEqual(ss2.get("A2"), 3)
+        self.assertEqual(ss2.get("A3"), 3)
+        self.assertEqual(ss2.get("A4"), 3)
+
+        project_path = self.TempPath + os.sep + 'alias.FCStd'
+        self.doc.saveAs(project_path)
+        FreeCAD.closeDocument(self.doc.Name)
+        self.doc = FreeCAD.openDocument(project_path)
+        ss1 = self.doc.Input
+        ss2 = self.doc.Output
+
+        self.assertEqual(ss2.get("A1"), 3)
+        self.assertEqual(ss2.get("A2"), 3)
+        self.assertEqual(ss2.get("A3"), 3)
+        self.assertEqual(ss2.get("A4"), 3)
+
+        ss1.set("A1","2")
+        self.doc.recompute()
+
+        self.assertEqual(ss1.get("A1"), 2)
+        self.assertEqual(ss1.get("one"), 2)
+
+        self.assertEqual(ss2.get("A1"), 4)
+        self.assertEqual(ss2.get("A2"), 4)
+        self.assertEqual(ss2.get("A3"), 4)
+        self.assertEqual(ss2.get("A4"), 4)
+
+    def testIssue6844(self):
+        body = self.doc.addObject("App::FeaturePython", "Body")
+        body.addProperty("App::PropertyEnumeration", "Configuration")
+        body.Configuration = ["Item1", "Item2", "Item3"]
+
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Sheet")
+        sheet.addProperty("App::PropertyString", "A2")
+        sheet.A2 = "Item2"
+        sheet.addProperty("App::PropertyEnumeration", "body")
+        sheet.body = ["Item1", "Item2", "Item3"]
+
+        sheet.setExpression(".body.Enum", "cells[<<A2:|>>]")
+        sheet.setExpression(".cells.Bind.B1.ZZ1", "tuple(.cells; <<B>> + str(hiddenref(Body.Configuration) + 2); <<ZZ>> + str(hiddenref(Body.Configuration) + 2))")
+
+        self.doc.recompute()
+        self.doc.UndoMode = 0
+        self.doc.removeObject("Body")
+        sheet.clearAll()
+
+    def testIssue6840(self):
+        body = self.doc.addObject("App::FeaturePython", "Body")
+        body.addProperty("App::PropertyEnumeration", "Configuration")
+        body.Configuration = ["Item1", "Item2", "Item3"]
+
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Sheet")
+        sheet.addProperty("App::PropertyString", "A2")
+        sheet.A2 = "Item2"
+        sheet.addProperty("App::PropertyEnumeration", "body")
+        sheet.body = ["Item1", "Item2", "Item3"]
+
+        sheet.setExpression(".body.Enum", "cells[<<A2:|>>]")
+        sheet.setExpression(".cells.Bind.B1.ZZ1", "tuple(.cells; <<B>> + str(hiddenref(Body.Configuration) + 2); <<ZZ>> + str(hiddenref(Body.Configuration) + 2))")
+
+        self.doc.recompute()
+        self.doc.clearDocument()
+
+    def testFixPR6843(self):
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Sheet")
+        sheet.set("A5", "a")
+        sheet.set("A6", "b")
+        self.doc.recompute()
+        sheet.insertRows("6", 1)
+        self.doc.recompute()
+        self.assertEqual(sheet.A5, "a")
+        self.assertEqual(sheet.A7, "b")
+        with self.assertRaises(AttributeError):
+            self.assertEqual(sheet.A6, "")
+
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument(self.doc.Name)

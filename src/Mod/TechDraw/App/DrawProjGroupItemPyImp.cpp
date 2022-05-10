@@ -26,7 +26,7 @@ PyObject* DrawProjGroupItemPy::autoPosition(PyObject *args)
 
 PyObject *DrawProjGroupItemPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DrawProjGroupItemPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

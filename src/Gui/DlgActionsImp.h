@@ -53,7 +53,7 @@ class DlgCustomActionsImp : public CustomizeActionPage
     Q_OBJECT
 
 public:
-    DlgCustomActionsImp( QWidget* parent = 0 );
+    DlgCustomActionsImp( QWidget* parent = nullptr );
     ~DlgCustomActionsImp();
 
 Q_SIGNALS:
@@ -64,7 +64,6 @@ Q_SIGNALS:
 protected:
     /** Trigger for reparent event. */
     bool event(QEvent* e);
-    void showEvent(QShowEvent* e);
     void changeEvent(QEvent *e);
 
 protected Q_SLOTS:
@@ -85,12 +84,9 @@ protected Q_SLOTS:
 private:
     /** Shows all actions and their pixmaps if available  */
     void showActions();
-    /** Name for the new created action */
-    QString newActionName();
 
 private:
     std::unique_ptr<Ui_DlgCustomActions> ui;
-    bool bShown; /**< For internal use only*/
     QString m_sPixmap; /**< Name of the specified pixmap */
 };
 

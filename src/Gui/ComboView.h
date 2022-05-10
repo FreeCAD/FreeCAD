@@ -20,13 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #ifndef GUI_DOCKWND_COMBOVIEW_H
 #define GUI_DOCKWND_COMBOVIEW_H
 
 #include "DockWindow.h"
-#include "Selection.h"
+
 
 class QTabWidget;
 class QTreeView;
@@ -70,7 +68,7 @@ public:
      * A constructor.
      * A more elaborate description of the constructor.
      */
-    ComboView(bool showModel, Gui::Document*  pcDocument, QWidget *parent=0);
+    ComboView(bool showModel, Gui::Document*  pcDocument, QWidget *parent=nullptr);
 
     /**
      * A destructor.

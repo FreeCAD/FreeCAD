@@ -22,51 +22,55 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <Approx_Curve3d.hxx>
-#include <Bnd_Box.hxx>
-#include <BRepBndLib.hxx>
-#include <BRepAdaptor_Curve.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepTools.hxx>
-#include <BRepAdaptor_HCurve.hxx>
-#include <BRepLib.hxx>
-#include <BRepBuilderAPI_MakeVertex.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepExtrema_DistShapeShape.hxx>
-#include <Precision.hxx>
-#include <GCPnts_AbscissaPoint.hxx>
-#include <gce_MakeCirc.hxx>
-#include <GC_MakeEllipse.hxx>
-#include <GC_MakeArcOfCircle.hxx>
-#include <gp_Lin.hxx>
-#include <gp_Circ.hxx>
-#include <gp_Elips.hxx>
-#include <gp_Pnt.hxx>
-#include <gp_Dir.hxx>
-#include <gp_Vec.hxx>
-#include <gp_Ax2.hxx>
-#include <GeomAdaptor_Curve.hxx>
-#include <Geom_BSplineCurve.hxx>
-#include <Geom_BezierCurve.hxx>
-#include <Geom_Circle.hxx>
-#include <Geom_Geometry.hxx>
-#include <Geom_TrimmedCurve.hxx>
-#include <GeomConvert_BSplineCurveToBezierCurve.hxx>
-#include <GeomAPI_PointsToBSpline.hxx>
-#include <GeomLProp_CLProps.hxx>
-#include <GeomAPI_ProjectPointOnCurve.hxx>
-#include <Poly_Polygon3D.hxx>
-#include <TopoDS.hxx>
-#include <TopoDS_Edge.hxx>
-#include <TopExp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <TColgp_Array1OfPnt2d.hxx>
-#include <TColgp_Array1OfPnt.hxx>
-#include <BRepLProp_CLProps.hxx>
-
-#include <cmath>
+# include <boost/uuid/uuid_generators.hpp>
+# include <boost/uuid/uuid_io.hpp>
+# include <Approx_Curve3d.hxx>
+# include <Bnd_Box.hxx>
+# include <BRepBndLib.hxx>
+# include <BRepAdaptor_Curve.hxx>
+# include <BRep_Tool.hxx>
+# include <BRepTools.hxx>
+# include <BRepLib.hxx>
+# include <BRepBuilderAPI_MakeVertex.hxx>
+# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepBuilderAPI_MakeWire.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
+# include <BRepLProp_CLProps.hxx>
+# include <Precision.hxx>
+# include <GCPnts_AbscissaPoint.hxx>
+# include <gce_MakeCirc.hxx>
+# include <GC_MakeEllipse.hxx>
+# include <GC_MakeArcOfCircle.hxx>
+# include <gp_Lin.hxx>
+# include <gp_Circ.hxx>
+# include <gp_Elips.hxx>
+# include <gp_Pnt.hxx>
+# include <gp_Dir.hxx>
+# include <gp_Vec.hxx>
+# include <gp_Ax2.hxx>
+# include <GeomAdaptor_Curve.hxx>
+# include <Geom_BSplineCurve.hxx>
+# include <Geom_BezierCurve.hxx>
+# include <Geom_Circle.hxx>
+# include <Geom_Geometry.hxx>
+# include <Geom_TrimmedCurve.hxx>
+# include <GeomConvert_BSplineCurveToBezierCurve.hxx>
+# include <GeomAPI_PointsToBSpline.hxx>
+# include <GeomLProp_CLProps.hxx>
+# include <GeomAPI_ProjectPointOnCurve.hxx>
+# include <Poly_Polygon3D.hxx>
+# include <Standard_Version.hxx>
+# include <TopoDS.hxx>
+# include <TopoDS_Edge.hxx>
+# include <TopExp.hxx>
+# include <TopExp_Explorer.hxx>
+# include <TColgp_Array1OfPnt2d.hxx>
+# include <TColgp_Array1OfPnt.hxx>
+#if OCC_VERSION_HEX < 0x070600
+# include <BRepAdaptor_HCurve.hxx>
+#endif
+# include <cmath>
 #endif  // #ifndef _PreComp_
 
 #include <Base/Console.h>
@@ -86,6 +90,10 @@
 using namespace TechDraw;
 using namespace std;
 
+#if OCC_VERSION_HEX >= 0x070600
+using BRepAdaptor_HCurve = BRepAdaptor_Curve;
+#endif
+
 #define GEOMETRYEDGE 0
 #define COSMETICEDGE 1
 #define CENTERLINE   2
@@ -100,7 +108,7 @@ Wire::Wire(const TopoDS_Wire &w)
     TopExp_Explorer edges(w, TopAbs_EDGE);
     for (; edges.More(); edges.Next()) {
         const auto edge( TopoDS::Edge(edges.Current()) );
-        BaseGeom* bg = BaseGeom::baseFactory(edge);
+        BaseGeomPtr bg = BaseGeom::baseFactory(edge);
         if (bg != nullptr) {
             geoms.push_back(bg);
         } else {
@@ -111,9 +119,7 @@ Wire::Wire(const TopoDS_Wire &w)
 
 Wire::~Wire()
 {
-    for(auto it : geoms) {
-        delete it;
-    }
+    //shared_ptr to geoms should free memory when ref count goes to zero
     geoms.clear();
 }
 
@@ -178,11 +184,12 @@ BaseGeom::BaseGeom() :
 {
     occEdge = TopoDS_Edge();
     cosmeticTag = std::string();
+    tag = boost::uuids::nil_uuid();
 }
 
-BaseGeom* BaseGeom::copy()
+BaseGeomPtr BaseGeom::copy()
 {
-    BaseGeom* result = nullptr;
+    BaseGeomPtr result;
     if (!occEdge.IsNull()) {
         result = baseFactory(occEdge);
         if (result != nullptr) {
@@ -197,7 +204,7 @@ BaseGeom* BaseGeom::copy()
             result->cosmeticTag = cosmeticTag;
         }
     } else {
-        result = new BaseGeom();
+        result = std::make_shared<BaseGeom>();
         result->extractType = extractType;
         result->classOfEdge = classOfEdge;
         result->hlrVisible = hlrVisible;
@@ -382,7 +389,7 @@ double BaseGeom::minDist(Base::Vector3d p)
 }
 
 //!find point on me nearest to p
-Base::Vector3d BaseGeom::nearPoint(const BaseGeom* p)
+Base::Vector3d BaseGeom::nearPoint(const BaseGeomPtr p)
 {
     Base::Vector3d result(0.0, 0.0, 0.0);
     TopoDS_Edge pEdge = p->occEdge;
@@ -443,9 +450,8 @@ bool BaseGeom::closed(void)
 
 
 //! Convert 1 OCC edge into 1 BaseGeom (static factory method)
-BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
+BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge)
 {
-    std::unique_ptr<BaseGeom> result;
     if (edge.IsNull()) {
         Base::Console().Message("BG::baseFactory - input edge is NULL \n");
     }
@@ -454,7 +460,7 @@ BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
         return nullptr;
     }
 
-    result = std::make_unique<Generic>(edge);
+    BaseGeomPtr result = std::make_shared<Generic> (edge);
 
     BRepAdaptor_Curve adapt(edge);
     switch(adapt.GetType()) {
@@ -468,9 +474,9 @@ BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
         //if first to last is > 1 radian? are circles parameterize by rotation angle?
         //if start and end points are close?
         if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
-              result = std::make_unique<Circle>(edge);
+              result = std::make_shared<Circle>(edge);
         } else {
-              result = std::make_unique<AOC>(edge);
+              result = std::make_shared<AOC>(edge);
         }
       } break;
       case GeomAbs_Ellipse: {
@@ -479,15 +485,15 @@ BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
         gp_Pnt s = adapt.Value(f);
         gp_Pnt e = adapt.Value(l);
         if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
-              result = std::make_unique<Ellipse>(edge);
+              result = std::make_shared<Ellipse>(edge);
         } else {
-              result = std::make_unique<AOE>(edge);
+              result = std::make_shared<AOE>(edge);
         }
       } break;
       case GeomAbs_BezierCurve: {
           Handle(Geom_BezierCurve) bez = adapt.Bezier();
           //if (bez->Degree() < 4) {
-          result = std::make_unique<BezierSegment>(edge);
+          result = std::make_shared<BezierSegment>(edge);
           if (edge.Orientation() == TopAbs_REVERSED) {
               result->reversed = true;
           }
@@ -495,25 +501,24 @@ BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
           //    OCC is quite happy with Degree > 3 but QtGui handles only 2,3
       } break;
       case GeomAbs_BSplineCurve: {
-        std::unique_ptr<BSpline> bspline;
         TopoDS_Edge circEdge;
 
         bool isArc = false;
         try {
-            bspline = std::make_unique<BSpline>(edge);
+            BSplinePtr bspline = std::make_shared<BSpline>(edge);
             if (bspline->isLine()) {
-                result = std::make_unique<Generic>(edge);
+                result = std::make_shared<Generic>(edge);
             } else {
                 circEdge = bspline->asCircle(isArc);
                 if (!circEdge.IsNull()) {
                     if (isArc) {
-                        result = std::make_unique<AOC>(circEdge);
+                        result = std::make_shared<AOC>(circEdge);
                     } else {
-                        result = std::make_unique<Circle>(circEdge);
+                        result = std::make_shared<Circle>(circEdge);
                     }
                 } else {
 //                    Base::Console().Message("Geom::baseFactory - circEdge is Null\n");
-                    result = std::move(bspline);
+                    result = bspline;
                 }
             }
             break;
@@ -532,13 +537,178 @@ BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
         result = std::make_unique<Generic>(edge);
       }  break;
     }
-    
-    return result.release();
+
+    return result;
 }
 
 bool BaseGeom::validateEdge(TopoDS_Edge edge)
 {
     return !DrawUtil::isCrazy(edge);
+}
+
+std::vector<Base::Vector3d> BaseGeom::intersection(TechDraw::BaseGeomPtr geom2)
+{
+    // find intersection vertex(es) between two edges
+    // permitted are: line, circle or arc of circle
+    // call: interPoints = line1.intersection(line2);
+    # define unknown 0
+    # define isGeneric 1
+    # define isArcOrCircle 2
+    // we check the type of the two objects
+    int edge1(unknown), edge2(unknown);
+    if (this->geomType == TechDraw::CIRCLE ||
+        this->geomType == TechDraw::ARCOFCIRCLE)
+        edge1 = isArcOrCircle;
+    else if (this->geomType == TechDraw::GENERIC)
+        edge1 = isGeneric;
+    if (geom2->geomType == TechDraw::CIRCLE ||
+        geom2->geomType == TechDraw::ARCOFCIRCLE)
+        edge2 = isArcOrCircle;
+    else if (geom2->geomType == TechDraw::GENERIC)
+        edge2 = isGeneric;
+    // we calculate the intersections
+    std::vector<Base::Vector3d> interPoints;
+    if (edge1 == isGeneric && edge2 == isGeneric)
+        intersectionLL(shared_from_this(), geom2, interPoints);
+    else if (edge1 == isArcOrCircle && edge2 == isGeneric)
+        intersectionCL(shared_from_this(), geom2, interPoints);
+    else if (edge1 == isGeneric && edge2 == isArcOrCircle)
+        intersectionCL(geom2, shared_from_this(), interPoints);
+    else if (edge1 == isArcOrCircle && edge2 == isArcOrCircle)
+        intersectionCC(shared_from_this(), geom2, interPoints);
+    return interPoints;
+}
+
+void BaseGeom::intersectionLL(TechDraw::BaseGeomPtr geom1,
+                              TechDraw::BaseGeomPtr geom2,
+                              std::vector<Base::Vector3d>& interPoints)
+{
+    // find intersection vertex of two lines
+    // Taken from: <http://de.wikipedia.org/wiki/Schnittpunkt>
+    TechDraw::GenericPtr gen1 = std::static_pointer_cast<TechDraw::Generic>(geom1);
+    TechDraw::GenericPtr gen2 = std::static_pointer_cast<TechDraw::Generic>(geom2);
+    // we calculate vectors to start points and direction verctors
+    Base::Vector3d startPnt1 = gen1->points.at(0);
+    Base::Vector3d endPnt1 = gen1->points.at(1);
+    Base::Vector3d startPnt2 = gen2->points.at(0);
+    Base::Vector3d endPnt2 = gen2->points.at(1);
+    Base::Vector3d dir1 = endPnt1 - startPnt1;
+    Base::Vector3d dir2 = endPnt2 - startPnt2;
+    // we create equations a*x+b*y+c=0 for both lines
+    float a1 = -dir1.y;
+    float b1 = dir1.x;
+    float c1 = -startPnt1.x * dir1.y + startPnt1.y * dir1.x;
+    float a2 = -dir2.y;
+    float b2 = dir2.x;
+    float c2 = -startPnt2.x * dir2.y + startPnt2.y * dir2.x;
+    float denom = a1 * b2 - a2 * b1;
+    if (abs(denom) >= 0.01)
+    // lines not (nearly) parallel, we calculate intersections
+    {
+        float xIntersect = (c1 * b2 - c2 * b1) / denom;
+        float yIntersect = (a1 * c2 - a2 * c1) / denom;
+        yIntersect = -yIntersect;
+        Base::Vector3d interPoint(xIntersect, yIntersect, 0.0);
+        interPoints.push_back(interPoint);
+    }
+}
+
+void BaseGeom::intersectionCL(TechDraw::BaseGeomPtr geom1,
+                              TechDraw::BaseGeomPtr geom2,
+                              std::vector<Base::Vector3d>& interPoints)
+{
+    // find intersection vertex(es) between one circle and one line
+    // Taken from: <http://de.wikipedia.org/wiki/Schnittpunkt>
+    TechDraw::CirclePtr gen1 = std::static_pointer_cast<TechDraw::Circle>(geom1);
+    TechDraw::GenericPtr gen2 = std::static_pointer_cast<TechDraw::Generic>(geom2);
+    // we calculate vectors to circle center, start point and direction vector
+    Base::Vector3d cirleCenter = gen1->center;
+    Base::Vector3d startPnt = gen2->points.at(0);
+    Base::Vector3d endPnt = gen2->points.at(1);
+    Base::Vector3d dir = endPnt - startPnt;
+    // we create equations of the circle: (x-x0)^2+(y-y0)^2=r^2
+    // and the line: a*x+b*y+c=0
+    float r0 = gen1->radius;
+    float x0 = cirleCenter.x;
+    float y0 = cirleCenter.y;
+    float a = -dir.y;
+    float b = dir.x;
+    float c = -startPnt.x * dir.y + startPnt.y * dir.x;
+    // we shift line and circle so that the circle center is in the origin
+    // and calculate constant d of new line equation
+    float d = c - a * x0 - b * y0;
+    float ab = a * a + b * b;
+    float rootArg = r0 * r0 * ab - d * d;
+    if (rootArg > 0)
+    // line and circle have common points
+    {
+        if (rootArg < 0.01)
+        // line is the tangent line, one intersection point
+        {
+            float x1 = x0 + a * d / ab;
+            float y1 = -y0 + b * d / ab;
+            Base::Vector3d interPoint1(x1, y1, 0.0);
+            interPoints.push_back(interPoint1);
+        }
+        else
+        // line is crossing the circle, two intersection points
+        {
+            float root = sqrt(rootArg);
+            float x1 = x0 + (a * d + b * root) / ab;
+            float y1 = -y0 - (b * d - a * root) / ab;
+            float x2 = x0 + (a * d - b * root) / ab;
+            float y2 = -y0 - (b * d + a * root) / ab;
+            Base::Vector3d interPoint1(x1, y1, 0.0);
+            interPoints.push_back(interPoint1);
+            Base::Vector3d interPoint2(x2, y2, 0.0);
+            interPoints.push_back(interPoint2);
+        }
+    }
+}
+
+void BaseGeom::intersectionCC(TechDraw::BaseGeomPtr geom1,
+                            TechDraw::BaseGeomPtr geom2,
+                            std::vector<Base::Vector3d>& interPoints)
+{
+    // find intersection vertex(es) between two circles
+    // Taken from: <http://de.wikipedia.org/wiki/Schnittpunkt>
+    TechDraw::CirclePtr gen1 = std::static_pointer_cast<TechDraw::Circle>(geom1);
+    TechDraw::CirclePtr gen2 = std::static_pointer_cast<TechDraw::Circle>(geom2);
+    Base::Vector3d Center1 = gen1->center;
+    Base::Vector3d Center2 = gen2->center;
+    float r1 = gen1->radius;
+    float r2 = gen2->radius;
+    // we calculate the distance d12 of the centers, and the
+    // two orthonormal vectors m and n
+    float d12 = (Center2 - Center1).Length();
+    Base::Vector3d m = (Center2 - Center1).Normalize();
+    Base::Vector3d n(-m.y, m.x, 0.0);
+    // we calculate d0, the distance from center1 to the tie line
+    // and rootArg, the square of the distance of the intersection points
+    float d0 = (r1 * r1 - r2 * r2 + d12 * d12) / (2 * d12);
+    float rootArg = r1 * r1 - d0 * d0;
+    if (rootArg > 0)
+    // the circles have intersection points
+    {
+        if (rootArg < 0.1)
+        // the circles touch, one intersection point
+        {
+            Base::Vector3d interPoint1 = -Center1 + m * d0;
+            interPoint1.y = -interPoint1.y;
+            interPoints.push_back(interPoint1);
+        }
+        else
+        // the circles have two intersection points
+        {
+            float e0 = sqrt(rootArg);
+            Base::Vector3d interPoint1 = Center1 + m * d0 + n * e0;
+            interPoint1.y = -interPoint1.y;
+            interPoints.push_back(interPoint1);
+            Base::Vector3d interPoint2 = Center1 + m * d0 - n * e0;
+            interPoint2.y = -interPoint2.y;
+            interPoints.push_back(interPoint2);
+        }
+    }
 }
 
 Ellipse::Ellipse(const TopoDS_Edge &e)
@@ -1005,7 +1175,7 @@ double Generic::slope(void)
     return slope;
 }
 
-Base::Vector3d Generic::apparentInter(Generic* g)
+Base::Vector3d Generic::apparentInter(GenericPtr g)
 {
     Base::Vector3d dir0 = asVector();
     Base::Vector3d dir1 = g->asVector();
@@ -1441,10 +1611,10 @@ Vertex::Vertex(Base::Vector3d v) : Vertex(v.x,v.y)
 }
 
 
-bool Vertex::isEqual(Vertex* v, double tol)
+bool Vertex::isEqual(const Vertex& v, double tol)
 {
     bool result = false;
-    double dist = (pnt - (v->pnt)).Length();
+    double dist = (pnt - (v.pnt)).Length();
     if (dist <= tol) {
         result = true;
     }
@@ -1520,7 +1690,7 @@ void Vertex::createNewTag()
     static bool seeded = false;
 
     if (!seeded) {
-        ran.seed(static_cast<unsigned int>(std::time(0)));
+        ran.seed(static_cast<unsigned int>(std::time(nullptr)));
         seeded = true;
     }
     static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
@@ -1569,7 +1739,7 @@ BaseGeomPtrVector GeometryUtils::chainGeoms(BaseGeomPtrVector geoms)
         for (unsigned int i = 1; i < geoms.size(); i++) { //do size-1 more edges
             auto next( nextGeom(atPoint, geoms, used, Precision::Confusion()) );
             if (next.index) { //found an unused edge with vertex == atPoint
-                BaseGeom* nextEdge = geoms.at(next.index);
+                BaseGeomPtr nextEdge = geoms.at(next.index);
                 used[next.index] = true;
                 nextEdge->reversed = next.reversed;
                 result.push_back(nextEdge);
@@ -1615,7 +1785,7 @@ BaseGeomPtrVector GeometryUtils::chainGeoms(BaseGeomPtrVector geoms)
     return result;
 }
 
-TopoDS_Edge GeometryUtils::edgeFromGeneric(TechDraw::Generic* g)
+TopoDS_Edge GeometryUtils::edgeFromGeneric(TechDraw::GenericPtr g)
 {
 //    Base::Console().Message("GU::edgeFromGeneric()\n");
     //TODO: note that this isn't quite right as g can be a polyline!
@@ -1629,7 +1799,7 @@ TopoDS_Edge GeometryUtils::edgeFromGeneric(TechDraw::Generic* g)
     return e;
 }
 
-TopoDS_Edge GeometryUtils::edgeFromCircle(TechDraw::Circle* c)
+TopoDS_Edge GeometryUtils::edgeFromCircle(TechDraw::CirclePtr c)
 {
     gp_Pnt loc(c->center.x, c->center.y, c->center.z);
     gp_Dir dir(0,0,1);
@@ -1643,7 +1813,7 @@ TopoDS_Edge GeometryUtils::edgeFromCircle(TechDraw::Circle* c)
     return e;
 }
 
-TopoDS_Edge GeometryUtils::edgeFromCircleArc(TechDraw::AOC* c)
+TopoDS_Edge GeometryUtils::edgeFromCircleArc(TechDraw::AOCPtr c)
 {
     gp_Pnt loc(c->center.x, c->center.y, c->center.z);
     gp_Dir dir(0,0,1);

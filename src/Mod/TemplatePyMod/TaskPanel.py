@@ -102,6 +102,7 @@ class TaskManyTaskBoxes:
         widget2 = QtGui.QWidget()
         widget2.setWindowTitle("My Test Box")
         text = QtGui.QLabel("testBox",widget2)
+        text.setObjectName("label")
         self.form = [widget1,widget2]
 
 def createTask():

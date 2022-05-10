@@ -23,17 +23,18 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEWDIMENSION_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEWDIMENSION_H
 
-#include <QObject>
-#include <QGraphicsView>
-#include <QStyleOptionGraphicsItem>
-#include <QGraphicsItem>
-#include <QGraphicsObject>
 #include <QColor>
 #include <QFont>
+#include <QGraphicsItem>
+#include <QGraphicsObject>
+#include <QStyleOptionGraphicsItem>
+
 #include <Base/Vector3D.h>
-#include "Rez.h"
-#include "QGIView.h"
+
 #include "QGCustomText.h"
+#include "QGIView.h"
+#include "Rez.h"
+
 
 namespace TechDraw {
 class DrawViewDimension;
@@ -153,7 +154,7 @@ public:
     virtual QRectF boundingRect() const override;
     virtual void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
-                        QWidget * widget = 0 ) override;
+                        QWidget * widget = nullptr ) override;
 
     TechDraw::DrawViewDimension *dvDimension;
     virtual void drawBorder() override;
@@ -236,6 +237,10 @@ protected:
 
     void drawDistanceExecutive(const Base::Vector2d &startPoint, const Base::Vector2d &endPoint, double lineAngle,
              const Base::BoundBox2d &labelRectangle, int standardStyle, int renderExtent, bool flipArrows) const;
+    void drawDistanceOverride(const Base::Vector2d &startPoint, const Base::Vector2d &endPoint,
+                              double lineAngle, const Base::BoundBox2d &labelRectangle,
+                              int standardStyle, int renderExtent, bool flipArrows, double extensionAngle) const;
+
     void drawRadiusExecutive(const Base::Vector2d &centerPoint, const Base::Vector2d &midPoint, double radius,
                              double endAngle, double startRotation, const Base::BoundBox2d &labelRectangle,
                              double centerOverhang, int standardStyle, int renderExtent, bool flipArrow) const;
@@ -249,8 +254,8 @@ protected:
                                  const QVariant &value ) override;
     virtual void setSvgPens(void);
     virtual void setPens(void);
-    Base::Vector3d findIsoDir(Base::Vector3d ortho);
-    Base::Vector3d findIsoExt(Base::Vector3d isoDir);
+    Base::Vector3d findIsoDir(Base::Vector3d ortho) const;
+    Base::Vector3d findIsoExt(Base::Vector3d isoDir) const;
     QString getPrecision(void);
 
     virtual void mouseReleaseEvent( QGraphicsSceneMouseEvent * event) override;
@@ -264,6 +269,8 @@ protected:
     double m_lineWidth;
 
     void arrowPositionsToFeature(const Base::Vector2d positions[]) const;
+    void makeMarkC(double x, double y, QColor c = Qt::red) const;
+
 
 private:
     static inline Base::Vector2d fromQtApp(const Base::Vector3d &v) { return Base::Vector2d(v.x, -v.y); }

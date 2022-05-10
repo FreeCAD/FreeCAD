@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_VIEWPROVIDERFEMMESH_H
 #define FEM_VIEWPROVIDERFEMMESH_H
 
-#include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewProviderBuilder.h>
+#include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewProviderPythonFeature.h>
-
-#include <CXX/Objects.hxx>
+#include <Mod/Fem/FemGlobal.h>
 
 class SoCoordinate3;
 class SoDrawStyle;

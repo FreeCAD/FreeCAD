@@ -22,14 +22,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_VIEWPROVIDERBALLOON_H
 #define DRAWINGGUI_VIEWPROVIDERBALLOON_H
 
 #include <App/PropertyUnits.h>
+#include <Mod/TechDraw/App/DrawViewBalloon.h>
 
 #include "ViewProviderDrawingView.h"
-#include <Mod/TechDraw/App/DrawViewBalloon.h>
 
 
 namespace TechDrawGui {
@@ -63,7 +62,6 @@ public:
     virtual void unsetEdit(int ModNum);
     virtual bool doubleClicked(void);
     virtual bool canDelete(App::DocumentObject* obj) const;
-    void startDefaultEditMode();
 
     virtual TechDraw::DrawViewBalloon* getViewObject() const;
 

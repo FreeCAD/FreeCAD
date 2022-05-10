@@ -48,24 +48,32 @@
 #ifdef _PreComp_
 
 // standard
+#include <fstream>
 #include <iostream>
 #include <sstream>
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 #include <string>
 #include <map>
 #include <vector>
 #include <set>
 #include <bitset>
 
+#include <boost/graph/boyer_myrvold_planar_test.hpp>
+#include <boost/graph/is_kuratowski_subgraph.hpp>
+#include <boost/regex.hpp>
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
+
+#include <QFile>
 
 // OpenCasCade =====================================================================================
 #include <Mod/Part/App/OpenCascadeAll.h>
-
-// Python
-#include <Python.h>
-
+#include <gce_MakeCirc.hxx>
+#include <HLRBRep_HLRToShape.hxx>
+#include <HLRBRep_PolyAlgo.hxx>
+#include <HLRBRep_PolyHLRToShape.hxx>
 
 #endif // _PreComp_
 #endif

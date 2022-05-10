@@ -25,6 +25,7 @@
 
 #include <Base/Placement.h>
 #include <QDialog>
+#include <Mod/Sketcher/SketcherGlobal.h>
 
 namespace SketcherGui {
 

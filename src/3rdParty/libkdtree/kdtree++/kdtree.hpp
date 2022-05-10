@@ -48,7 +48,7 @@
 
 
 //
-//  This number is guarenteed to change with every release.
+//  This number is guaranteed to change with every release.
 //
 //  KDTREE_VERSION % 100 is the patch level
 //  KDTREE_VERSION / 100 % 1000 is the minor version
@@ -255,7 +255,7 @@ namespace KDTree
         _M_erase_subtree(_M_get_root());
         _M_set_leftmost(&_M_header);
         _M_set_rightmost(&_M_header);
-        _M_set_root(NULL);
+        _M_set_root(nullptr);
         _M_count = 0;
       }
 
@@ -298,8 +298,8 @@ namespace KDTree
       typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
       typedef std::reverse_iterator<iterator> reverse_iterator;
 
-      // Note: the static_cast in end() is invalid (_M_header is not convertable to a _Link_type), but
-      // thats ok as it just means undefined behaviour if the user dereferences the end() iterator.
+      // Note: the static_cast in end() is invalid (_M_header is not convertible to a _Link_type), but
+      // that's ok as it just means undefined behaviour if the user dereferences the end() iterator.
 
       const_iterator begin() const { return const_iterator(_M_get_leftmost()); }
       const_iterator end() const { return const_iterator(static_cast<_Link_const_type>(&_M_header)); }
@@ -401,7 +401,7 @@ namespace KDTree
 
       // compares via equivalence
       // so if you are looking for any item with the same location,
-      // according to the standard accessor comparisions,
+      // according to the standard accessor comparisons,
       // then this is the function for you.
       template <class SearchVal>
       const_iterator
@@ -642,8 +642,8 @@ namespace KDTree
       {
         _M_set_leftmost(&_M_header);
         _M_set_rightmost(&_M_header);
-	_M_header._M_parent = NULL;
-        _M_set_root(NULL);
+	_M_header._M_parent = nullptr;
+        _M_set_root(nullptr);
       }
 
       iterator
@@ -699,7 +699,7 @@ namespace KDTree
             _S_set_right(_S_parent(dead_dad), step_dad);
 
         // deal with the left and right edges of the tree...
-        // if the dead_dad was at the edge, then substitude...
+        // if the dead_dad was at the edge, then substitute...
         // but if there IS no new dead, then left_most is the dead_dad's parent
          if (dead_dad == _M_get_leftmost())
            _M_set_leftmost( (step_dad ? step_dad : _S_parent(dead_dad)) );
@@ -1157,9 +1157,9 @@ namespace KDTree
 
       _Link_type
       _M_new_node(const_reference __V, //  = value_type(),
-                  _Base_ptr const __PARENT = NULL,
-                  _Base_ptr const __LEFT = NULL,
-                  _Base_ptr const __RIGHT = NULL)
+                  _Base_ptr const __PARENT = nullptr,
+                  _Base_ptr const __LEFT = nullptr,
+                  _Base_ptr const __RIGHT = nullptr)
       {
          typename _Base::NoLeakAlloc noleak(this);
          _Link_type new_node = noleak.get();

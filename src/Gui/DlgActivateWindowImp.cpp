@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
-# include <QHeaderView>
 # include <QPushButton>
 #endif
 
@@ -32,6 +30,7 @@
 #include "ui_DlgActivateWindow.h"
 #include "MainWindow.h"
 #include "MDIView.h"
+
 
 using namespace Gui::Dialog;
 
@@ -51,7 +50,7 @@ DlgActivateWindowImp::DlgActivateWindowImp(QWidget* parent, Qt::WindowFlags fl)
     ui->setupUi(this);
     QPushButton* buttonOk = ui->buttonBox->button(QDialogButtonBox::Ok);
     buttonOk->setText(QApplication::translate("Gui::Dialog::DlgActivateWindow", "&Activate"));
-    QTreeWidgetItem* active=0;
+    QTreeWidgetItem* active=nullptr;
     QStringList labels; labels << tr("Windows");
     ui->treeWidget->setHeaderLabels(labels);
     ui->treeWidget->header()->hide();

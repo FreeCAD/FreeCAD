@@ -24,10 +24,11 @@
 #ifndef PARTDESIGN_DATUMSHAPE_H
 #define PARTDESIGN_DATUMSHAPE_H
 
-#include <QString>
-#include <boost_signals2.hpp>
 #include <App/PropertyLinks.h>
+#include <App/DocumentObserver.h>
+#include <App/FeaturePython.h>
 #include <Mod/Part/App/DatumFeature.h>
+#include <Mod/PartDesign/PartDesignGlobal.h>
 
 namespace PartDesign
 {
@@ -51,7 +52,7 @@ public:
     App::PropertyLinkSubListGlobal    Support;
     App::PropertyBool TraceSupport;
 
-    static void getFilteredReferences(App::PropertyLinkSubList* prop, App::GeoFeature*& object, std::vector< std::string >& subobjects);
+    static void getFilteredReferences(const App::PropertyLinkSubList* prop, App::GeoFeature*& object, std::vector< std::string >& subobjects);
     static Part::TopoShape buildShapeFromReferences(App::GeoFeature* obj, std::vector< std::string > subs);
 
     const char* getViewProviderName(void) const override {
@@ -59,9 +60,12 @@ public:
     }
 
 protected:
+    Part::TopoShape updatedShape() const;
+    bool hasPlacementChanged() const;
     virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
     virtual short int mustExecute(void) const override;
     virtual App::DocumentObjectExecReturn* execute(void) override;
+    virtual void onChanged(const App::Property* prop) override;
 
 private:
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
@@ -77,6 +81,8 @@ public:
     typedef Part::Feature inherited;
 
     SubShapeBinder();
+    ~SubShapeBinder();
+
     const char* getViewProviderName(void) const override {
         return "PartDesignGui::ViewProviderSubShapeBinder";
     }
@@ -92,6 +98,13 @@ public:
     App::PropertyBool PartialLoad;
     App::PropertyXLink Context;
     App::PropertyInteger _Version;
+    App::PropertyEnumeration BindCopyOnChange;
+    App::PropertyBool Refine;
+    App::PropertyFloat Offset;
+    App::PropertyEnumeration OffsetJoinType;
+    App::PropertyBool OffsetFill;
+    App::PropertyBool OffsetOpenResult;
+    App::PropertyBool OffsetIntersection;
 
     enum UpdateOption {
         UpdateNone = 0,
@@ -106,8 +119,8 @@ public:
 
     virtual bool canLinkProperties() const override {return false;}
 
-    virtual App::DocumentObject *getSubObject(const char *subname, PyObject **pyObj=0, 
-            Base::Matrix4D *mat=0, bool transform=true, int depth=0) const override;
+    virtual App::DocumentObject *getSubObject(const char *subname, PyObject **pyObj=nullptr, 
+            Base::Matrix4D *mat=nullptr, bool transform=true, int depth=0) const override;
 
 protected:
     virtual App::DocumentObjectExecReturn* execute(void) override;
@@ -119,14 +132,26 @@ protected:
     virtual void onDocumentRestored() override;
     virtual void setupObject() override;
 
+    void setupCopyOnChange();
+    void checkCopyOnChange(const App::Property &prop);
+    void clearCopiedObjects();
+
     void checkPropertyStatus();
 
     void slotRecomputedObject(const App::DocumentObject& Obj);
 
     typedef boost::signals2::scoped_connection Connection;
     Connection connRecomputedObj;
-    App::Document *contextDoc=0;
+    App::Document *contextDoc = nullptr;
+
+    std::vector<Connection> copyOnChangeConns;
+    bool hasCopyOnChange = true;
+
+    App::PropertyXLinkSub _CopiedLink;
+    std::vector<App::DocumentObjectT> _CopiedObjs;
 };
+
+typedef App::FeaturePythonT<SubShapeBinder> SubShapeBinderPython;
 
 } //namespace PartDesign
 

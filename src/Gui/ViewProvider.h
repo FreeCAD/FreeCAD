@@ -20,22 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_VIEWPROVIDER_H
 #define GUI_VIEWPROVIDER_H
 
-#include <map>
-#include <vector>
-#include <string>
 #include <bitset>
+#include <map>
+#include <string>
+#include <vector>
 #include <QIcon>
 #include <boost_signals2.hpp>
 #include <boost/intrusive_ptr.hpp>
 
-#include <App/TransactionalObject.h>
 #include <App/Material.h>
-#include <Base/Vector3D.h>
+#include <App/TransactionalObject.h>
 #include <Base/BoundBox.h>
+#include <Base/Vector3D.h>
+
 
 class SbVec2s;
 class SbVec3f;
@@ -166,7 +166,7 @@ public:
     /// return a hit element to the selection path or 0
     virtual std::string getElement(const SoDetail *) const { return std::string(); }
     /// return the coin node detail of the subelement
-    virtual SoDetail* getDetail(const char *) const { return 0; }
+    virtual SoDetail* getDetail(const char *) const { return nullptr; }
 
     /** return the coin node detail and path to the node of the subelement
      *
@@ -209,7 +209,7 @@ public:
      * This method shall work regardless whether the current view object is
      * visible or not.
      */
-    Base::BoundBox3d getBoundingBox(const char *subname=0, bool transform=true, MDIView *view=0) const;
+    Base::BoundBox3d getBoundingBox(const char *subname=nullptr, bool transform=true, MDIView *view=nullptr) const;
 
     /**
      * Get called if the object is about to get deleted.
@@ -404,7 +404,7 @@ public:
     /** @name Color management methods
      */
     //@{
-    virtual std::map<std::string, App::Color> getElementColors(const char *element=0) const {
+    virtual std::map<std::string, App::Color> getElementColors(const char *element=nullptr) const {
         (void)element;
         return {};
     }
@@ -420,6 +420,9 @@ public:
      * you can handle most of the events in the viewer by yourself
      */
     //@{
+    // the below enum is reflected in 'userEditModes' std::map in Application.h
+    // so it is possible for the user to choose a default one through GUI
+    // if you add a mode here, consider to make it accessible there too
     enum EditMode {Default = 0,
                    Transform,
                    Cutting,
@@ -465,6 +468,8 @@ public:
     /// is called when the Provider is in edit and the mouse is clicked
     virtual bool mouseButtonPressed(int button, bool pressed, const SbVec2s &cursorPos,
                                     const View3DInventorViewer* viewer);
+
+    virtual bool mouseWheelEvent(int delta, const SbVec2s &cursorPos, const View3DInventorViewer* viewer);
     /// set up the context-menu with the supported edit modes
     virtual void setupContextMenu(QMenu*, QObject*, const char*);
 

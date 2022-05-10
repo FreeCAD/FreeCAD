@@ -20,40 +20,39 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QApplication>
 # include <QMenu>
 # include <QMessageBox>
-#endif
 
-#include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/SoPickedPoint.h>
-#include <Inventor/lists/SoPickedPointList.h> 
+#include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/details/SoFaceDetail.h>
+#include <Inventor/events/SoButtonEvent.h>
+#include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/lists/SoPickedPointList.h> 
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
-#include <Inventor/nodes/SoPointSet.h>
 #include <Inventor/nodes/SoMaterial.h>
-#include <Inventor/nodes/SoShapeHints.h>
-#include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoMaterialBinding.h>
 #include <Inventor/nodes/SoNormal.h>
+#include <Inventor/nodes/SoPointSet.h>
+#include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/actions/SoSearchAction.h>
+#endif
 
-#include <Base/Exception.h>
-#include <App/PropertyLinks.h>
 #include <App/GeoFeature.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Flag.h>
 #include <Gui/MainWindow.h>
 #include <Gui/SoFCColorBar.h>
-#include <Gui/ViewProviderGeometryObject.h>
+
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Widgets.h>
 #include <Mod/Points/App/Properties.h>
@@ -395,7 +394,7 @@ namespace InspectionGui {
 class ViewProviderProxyObject : public QObject
 {
 public:
-    ViewProviderProxyObject(QWidget* w) : QObject(0), widget(w) {}
+    ViewProviderProxyObject(QWidget* w) : QObject(nullptr), widget(w) {}
     ~ViewProviderProxyObject() {}
     void customEvent(QEvent *)
     {
@@ -425,7 +424,7 @@ public:
         flag->setPalette(p);
         flag->setText(text);
         flag->setOrigin(point->getPoint());
-        Gui::GLFlagWindow* flags = 0;
+        Gui::GLFlagWindow* flags = nullptr;
         std::list<Gui::GLGraphicsItem*> glItems = view->getGraphicsItemsOfType(Gui::GLFlagWindow::getClassTypeId());
         if (glItems.empty()) {
             flags = new Gui::GLFlagWindow(view);
@@ -480,7 +479,7 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
         }
         else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {
             const SoPickedPoint * point = n->getPickedPoint();
-            if (point == NULL) {
+            if (point == nullptr) {
                 Base::Console().Message("No point picked.\n");
                 return;
             }

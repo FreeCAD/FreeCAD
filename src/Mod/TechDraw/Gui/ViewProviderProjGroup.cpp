@@ -25,28 +25,15 @@
 # ifdef FC_OS_WIN32
 #  include <windows.h>
 # endif
-# include <QAction>
 # include <QMenu>
 # include <QMessageBox>
 # include <QTextStream>
 #endif
 
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-
-#include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-
-#include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
-#include <Gui/SoFCSelection.h>
-#include <Gui/ViewProviderDocumentObject.h>
 
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
@@ -117,7 +104,7 @@ bool ViewProviderProjGroup::setEdit(int ModNum)
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
     TaskDlgProjGroup *projDlg = qobject_cast<TaskDlgProjGroup *>(dlg);
     if (projDlg && projDlg->getViewProvider() != this)
-        projDlg = 0; // another sketch left open its task panel
+        projDlg = nullptr; // another sketch left open its task panel
 
     // clear the selection (convenience)
     Gui::Selection().clearSelection();

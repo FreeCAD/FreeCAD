@@ -23,7 +23,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <float.h>
+# include <algorithm>
+# include <cfloat>
 # ifdef FC_OS_WIN32
 #  include <windows.h>
 # endif
@@ -32,94 +33,28 @@
 # else
 # include <GL/gl.h>
 # endif
-# include <Inventor/SbBox.h>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/actions/SoGetMatrixAction.h>
-# include <Inventor/actions/SoHandleEventAction.h>
-# include <Inventor/actions/SoToVRML2Action.h>
-# include <Inventor/actions/SoWriteAction.h>
-# include <Inventor/elements/SoViewportRegionElement.h>
-# include <Inventor/manips/SoClipPlaneManip.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoCallback.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoCube.h>
-# include <Inventor/nodes/SoDirectionalLight.h>
-# include <Inventor/nodes/SoEventCallback.h>
-# include <Inventor/nodes/SoFaceSet.h>
-# include <Inventor/nodes/SoImage.h>
-# include <Inventor/nodes/SoIndexedFaceSet.h>
-# include <Inventor/nodes/SoLightModel.h>
-# include <Inventor/nodes/SoLocateHighlight.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoMaterialBinding.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
-# include <Inventor/nodes/SoPerspectiveCamera.h>
-# include <Inventor/nodes/SoRotationXYZ.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <Inventor/nodes/SoSwitch.h>
-# include <Inventor/nodes/SoTransform.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoSelection.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/actions/SoBoxHighlightRenderAction.h>
 # include <Inventor/events/SoEvent.h>
-# include <Inventor/events/SoKeyboardEvent.h>
 # include <Inventor/events/SoLocation2Event.h>
-# include <Inventor/events/SoMotion3Event.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/actions/SoRayPickAction.h>
-# include <Inventor/projectors/SbSphereSheetProjector.h>
-# include <Inventor/SoOffscreenRenderer.h>
-# include <Inventor/SoPickedPoint.h>
-# include <Inventor/VRMLnodes/SoVRMLGroup.h>
-# include <QEventLoop>
-# include <QKeyEvent>
-# include <QWheelEvent>
-# include <QMessageBox>
-# include <QTimer>
-# include <QStatusBar>
-# include <QBitmap>
-# include <QMimeData>
+#include <QApplication>
+#include <QCursor>
+#include <QImage>
+#include <QMenu>
+#include <QOpenGLTexture>
+#include <QPainterPath>
 #endif
 
-#include <sstream>
-#include <Base/Console.h>
-#include <Base/Stream.h>
-#include <Base/FileInfo.h>
-#include <Base/Rotation.h>
-#include <Base/Sequencer.h>
 #include <Base/Tools.h>
-#include <Base/UnitsApi.h>
+#include <Eigen/Dense>
+
+#include "NaviCube.h"
+#include "Application.h"
+#include "Command.h"
+#include "MainWindow.h"
 
 #include "View3DInventorViewer.h"
 #include "View3DInventor.h"
-#include "Application.h"
-#include "MainWindow.h"
-#include "MDIView.h"
-#include "Command.h"
-
-#include "NaviCube.h"
-
-#include <QCursor>
-#include <QIcon>
-#include <QMenu>
-#include <QAction>
-#include <QImage>
-#include <QPainterPath>
-#include <QApplication>
-
-#if defined(HAVE_QT5_OPENGL)
-# include <QOpenGLTexture>
-#endif
-
-//#include <OpenGL/glu.h>
-#include <Eigen/Dense>
-#include <vector>
-#include <map>
-#include <algorithm>
-#include <iostream>
 
 
 using namespace Eigen;
@@ -285,9 +220,7 @@ public:
 	map<int,GLuint> m_Textures;
 	vector<Face*> m_Faces;
 	vector<int> m_Buttons;
-#if defined(HAVE_QT5_OPENGL)
 	vector<QOpenGLTexture *> m_glTextures;
-#endif
 	static vector<string> m_commands;
 	static vector<string> m_labels;
 	QMenu* m_Menu;
@@ -337,7 +270,7 @@ NaviCubeImplementation::NaviCubeImplementation(
 	OnChange(*hGrp, "ButtonColor");
 	OnChange(*hGrp, "CubeSize");
 
-	m_PickingFramebuffer = NULL;
+	m_PickingFramebuffer = nullptr;
 	m_Menu = createNaviCubeMenu();
 }
 
@@ -350,10 +283,8 @@ NaviCubeImplementation::~NaviCubeImplementation() {
 		delete m_PickingFramebuffer;
 	for (vector<Face*>::iterator f = m_Faces.begin(); f != m_Faces.end(); f++)
 		delete *f;
-#if defined(HAVE_QT5_OPENGL)
 	for (vector<QOpenGLTexture *>::iterator t = m_glTextures.begin(); t != m_glTextures.end(); t++)
 		delete *t;
-#endif
 }
 
 void NaviCubeImplementation::OnChange(ParameterGrp::SubjectType &rCaller, ParameterGrp::MessageType reason)
@@ -473,16 +404,12 @@ GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, cons
 	}
 
 	paint.end();
-#if !defined(HAVE_QT5_OPENGL)
-	return gl->bindTexture(image);
-#else
     Q_UNUSED(gl);
     QOpenGLTexture *texture = new QOpenGLTexture(image.mirrored());
     m_glTextures.push_back(texture);
     texture->setMinificationFilter(QOpenGLTexture::Nearest);
     texture->setMagnificationFilter(QOpenGLTexture::Linear);
     return texture->textureId();
-#endif
 }
 
 
@@ -581,16 +508,12 @@ GLuint NaviCubeImplementation::createButtonTex(QtGLWidget* gl, int button) {
 	painter.end();
 	//image.save(str(enum2str(button))+str(".png"));
 
-#if !defined(HAVE_QT5_OPENGL)
-	return gl->bindTexture(image);
-#else
     Q_UNUSED(gl);
     QOpenGLTexture *texture = new QOpenGLTexture(image.mirrored());
     m_glTextures.push_back(texture);
     texture->setMinificationFilter(QOpenGLTexture::Nearest);
     texture->setMagnificationFilter(QOpenGLTexture::Linear);
     return texture->textureId();
-#endif
 }
 
 GLuint NaviCubeImplementation::createMenuTex(QtGLWidget* gl, bool forPicking) {
@@ -656,16 +579,12 @@ GLuint NaviCubeImplementation::createMenuTex(QtGLWidget* gl, bool forPicking) {
 		painter.fillPath(path5, QColor(64,64,64));
 		}
 	painter.end();
-#if !defined(HAVE_QT5_OPENGL)
-	return gl->bindTexture(image);
-#else
     Q_UNUSED(gl);
     QOpenGLTexture *texture = new QOpenGLTexture(image.mirrored());
     m_glTextures.push_back(texture);
     texture->setMinificationFilter(QOpenGLTexture::Nearest);
     texture->setMagnificationFilter(QOpenGLTexture::Linear);
     return texture->textureId();
-#endif
 }
 
 void NaviCubeImplementation::addFace(const Vector3f& x, const Vector3f& z, int frontTex, int pickTex, int pickId, bool text) {
@@ -751,7 +670,7 @@ void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
 
 	// first create front and backside of faces
 	float gap = 0.12f;
-	m_Textures[TEX_FRONT_FACE] = createCubeFaceTex(gl, gap, NULL, SHAPE_SQUARE);
+	m_Textures[TEX_FRONT_FACE] = createCubeFaceTex(gl, gap, nullptr, SHAPE_SQUARE);
 
     vector<string> labels = NaviCubeImplementation::m_labels;
 
@@ -803,7 +722,7 @@ void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
 	addFace(x, z, TEX_BOTTOM, TEX_FRONT_FACE, TEX_BOTTOM, true);
 
 	// add corner faces
-	m_Textures[TEX_CORNER_FACE] = createCubeFaceTex(gl, gap, NULL, SHAPE_CORNER);
+	m_Textures[TEX_CORNER_FACE] = createCubeFaceTex(gl, gap, nullptr, SHAPE_CORNER);
 	// we need to rotate to the edge, thus matrix for rotation angle of 54.7 deg
 	cs = cos(atan(sqrt(2.0)));
 	sn = sin(atan(sqrt(2.0)));
@@ -840,7 +759,7 @@ void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
 	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_TOP_REAR_RIGHT);
 
 	// add edge faces
-	m_Textures[TEX_EDGE_FACE] = createCubeFaceTex(gl, gap, NULL, SHAPE_EDGE);
+	m_Textures[TEX_EDGE_FACE] = createCubeFaceTex(gl, gap, nullptr, SHAPE_EDGE);
 	// first back to top side
 	x[0] = 1; x[1] = 0; x[2] = 0;
 	z[0] = 0; z[1] = 0; z[2] = 1;
@@ -954,7 +873,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
     // FIXME actually now that we have Qt5, we could probably do this earlier (as we do not need the opengl context)
 	if (!m_NaviCubeInitialised) {
 		QtGLWidget* gl = static_cast<QtGLWidget*>(m_View3DInventorViewer->viewport());
-		if (gl == NULL)
+		if (gl == nullptr)
 			return;
 		initNaviCube(gl);
 		m_NaviCubeInitialised = true;
@@ -1278,7 +1197,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 	setHilite(0);
 	m_MouseDown = false;
 
-	// get the curent view
+	// get the current view
 	SbMatrix ViewRotMatrix;
 	SbRotation CurrentViewRot = m_View3DInventorViewer->getCameraOrientation();
 	CurrentViewRot.getValue(ViewRotMatrix);
@@ -1293,6 +1212,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 		float rotStepAngle = 360.0f / step;
 		ParameterGrp::handle hGrpNavi = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
 		bool toNearest = hGrpNavi->GetBool("NaviRotateToNearest", true);
+		bool applyRotation = true;
 
 		SbRotation viewRot = CurrentViewRot;
 
@@ -1528,9 +1448,9 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 		case TEX_BOTTOM_LEFT_FRONT:
 			viewRot = setView(rot - 90, 90 + tilt);
 			// we have 3 possible end states:
-			// - z-axis is not rotated larger than 120 ° from (0, 1, 0) -> we are already there
-			// - y-axis is not rotated larger than 120 ° from (0, 1, 0)
-			// - x-axis is not rotated larger than 120 ° from (0, 1, 0)
+			// - z-axis is not rotated larger than 120 deg from (0, 1, 0) -> we are already there
+			// - y-axis is not rotated larger than 120 deg from (0, 1, 0)
+			// - x-axis is not rotated larger than 120 deg from (0, 1, 0)
 			if (toNearest) {
 				if (ViewRotMatrix[1][0] > 0.4823)
 					viewRot = rotateView(viewRot, 0, -120, SbVec3f(1, 1, 1));
@@ -1624,10 +1544,12 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
 			break;
 		case TEX_VIEW_MENU_FACE :
 			handleMenu();
+			applyRotation = false;
 			break;
 		}
 
-		rotateView(viewRot);
+		if (applyRotation)
+			rotateView(viewRot);
 	}
 	return true;
 }
@@ -1648,7 +1570,6 @@ bool NaviCubeImplementation::inDragZone(short x, short y) {
 	return abs(dx)<limit && abs(dy)<limit;
 }
 
-
 bool NaviCubeImplementation::mouseMoved(short x, short y) {
 	setHilite(pickFace(x, y));
 
@@ -1657,8 +1578,12 @@ bool NaviCubeImplementation::mouseMoved(short x, short y) {
 			m_Dragging = true;
 		if (m_Dragging) {
 			setHilite(0);
-			m_CubeWidgetPosX = x;
-			m_CubeWidgetPosY = y;
+			SbVec2s view = m_View3DInventorViewer->getSoRenderManager()->getSize();
+			int width = view[0];
+			int height = view[1];
+			int len = m_CubeWidgetSize / 2;
+			m_CubeWidgetPosX = std::min(std::max(static_cast<int>(x), len), width - len);
+			m_CubeWidgetPosY = std::min(std::max(static_cast<int>(y), len), height - len);
 			this->m_View3DInventorViewer->getSoRenderManager()->scheduleRedraw();
 			return true;
 		}
@@ -1710,7 +1635,7 @@ DEF_3DV_CMD(ViewIsometricCmd)
 ViewIsometricCmd::ViewIsometricCmd()
   : Command("ViewIsometricCmd")
 {
-    sGroup        = QT_TR_NOOP("");
+    sGroup        = "";
     sMenuText     = QT_TR_NOOP("Isometric");
     sToolTipText  = QT_TR_NOOP("Set NaviCube to Isometric mode");
     sWhatsThis    = "";
@@ -1730,7 +1655,7 @@ DEF_3DV_CMD(ViewOrthographicCmd)
 ViewOrthographicCmd::ViewOrthographicCmd()
   : Command("ViewOrthographicCmd")
 {
-    sGroup        = QT_TR_NOOP("");
+    sGroup        = "";
     sMenuText     = QT_TR_NOOP("Orthographic");
     sToolTipText  = QT_TR_NOOP("Set View to Orthographic mode");
     sWhatsThis    = "";
@@ -1751,7 +1676,7 @@ DEF_3DV_CMD(ViewPerspectiveCmd)
 ViewPerspectiveCmd::ViewPerspectiveCmd()
   : Command("ViewPerspectiveCmd")
 {
-    sGroup        = QT_TR_NOOP("");
+    sGroup        = "";
     sMenuText     = QT_TR_NOOP("Perspective");
     sToolTipText  = QT_TR_NOOP("Set View to Perspective mode");
     sWhatsThis    = "";
@@ -1772,7 +1697,7 @@ DEF_3DV_CMD(ViewZoomToFitCmd)
 ViewZoomToFitCmd::ViewZoomToFitCmd()
   : Command("ViewZoomToFit")
 {
-    sGroup        = QT_TR_NOOP("");
+    sGroup        = "";
     sMenuText     = QT_TR_NOOP("Zoom to fit");
     sToolTipText  = QT_TR_NOOP("Zoom so that model fills the view");
     sWhatsThis    = "";

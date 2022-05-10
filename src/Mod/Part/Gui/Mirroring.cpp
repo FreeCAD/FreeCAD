@@ -29,7 +29,6 @@
 # include <TopoDS_Shape.hxx>
 # include <TopExp_Explorer.hxx>
 # include <cfloat>
-# include <Python.h>
 # include <Inventor/system/inttypes.h>
 #endif
 
@@ -42,6 +41,8 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/Link.h>
+#include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -69,6 +70,8 @@ Mirroring::Mirroring(QWidget* parent)
 
     Gui::ItemViewSelection sel(ui->shapes);
     sel.applyFrom(Gui::Selection().getObjectsOfType(Part::Feature::getClassTypeId()));
+    sel.applyFrom(Gui::Selection().getObjectsOfType(App::Link::getClassTypeId()));
+    sel.applyFrom(Gui::Selection().getObjectsOfType(App::Part::getClassTypeId()));
 }
 
 /*  
@@ -90,17 +93,18 @@ void Mirroring::changeEvent(QEvent *e)
 void Mirroring::findShapes()
 {
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
-    if (!activeDoc) return;
+    if (!activeDoc)
+        return;
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
-    if (!activeGui) return;
+    if (!activeGui)
+        return;
 
     this->document = QString::fromLatin1(activeDoc->getName());
-    std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType
-        (Part::Feature::getClassTypeId());
+    std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
     for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it!=objs.end(); ++it) {
-        const TopoDS_Shape& shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
-        if (!shape.IsNull()) {
+        Part::TopoShape shape = Part::Feature::getTopoShape(*it);
+        if (!shape.isNull()) {
             QString label = QString::fromUtf8((*it)->Label.getValue());
             QString name = QString::fromLatin1((*it)->getNameInDocument());
             
@@ -189,7 +193,7 @@ TaskMirroring::TaskMirroring()
     widget = new Mirroring();
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Part_Mirror.svg"),
-        widget->windowTitle(), false, 0);
+        widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

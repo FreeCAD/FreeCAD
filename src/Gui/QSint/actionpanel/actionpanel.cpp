@@ -9,7 +9,7 @@
 #include "actionpanelscheme.h"
 #include "actiongroup.h"
 
-#include <QtCore/QVariant>
+#include <QVariant>
 
 
 namespace QSint
@@ -17,7 +17,7 @@ namespace QSint
 
 
 ActionPanel::ActionPanel(QWidget *parent) :
-    BaseClass(parent), mySpacer(0)
+    BaseClass(parent), mySpacer(nullptr)
 {
     setProperty("class", "panel");
 
@@ -85,7 +85,7 @@ void ActionPanel::removeStretch()
   if (mySpacer) {
     layout()->removeItem(mySpacer);
     delete mySpacer;
-    mySpacer = 0;
+    mySpacer = nullptr;
   }
 }
 

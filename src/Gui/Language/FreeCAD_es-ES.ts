@@ -86,13 +86,13 @@
       <source>Base</source>
       <translation>Base</translation>
     </message>
+    <message>
+      <source>Enum</source>
+      <translation>Enum</translation>
+    </message>
   </context>
   <context>
     <name>CmdTestConsoleOutput</name>
-    <message>
-      <source>Standard-Test</source>
-      <translation>Prueba estándar</translation>
-    </message>
     <message>
       <source>Test console output</source>
       <translation>Prueba de salida de la consola</translation>
@@ -101,23 +101,15 @@
   <context>
     <name>CmdViewMeasureClearAll</name>
     <message>
-      <source>Measure</source>
-      <translation>Medir</translation>
-    </message>
-    <message>
       <source>Clear measurement</source>
-      <translation>Borrar medición</translation>
+      <translation>Limpiar medición</translation>
     </message>
   </context>
   <context>
     <name>CmdViewMeasureToggleAll</name>
     <message>
-      <source>Measure</source>
-      <translation>Medir</translation>
-    </message>
-    <message>
       <source>Toggle measurement</source>
-      <translation>Activar medición</translation>
+      <translation>Activa/desactiva la medición</translation>
     </message>
   </context>
   <context>
@@ -193,6 +185,73 @@
     <message>
       <source>Measure distance</source>
       <translation>Medir distancia</translation>
+    </message>
+    <message>
+      <source>Toggle array elements</source>
+      <translation type="unfinished">Toggle array elements</translation>
+    </message>
+  </context>
+  <context>
+    <name>CommandGroup</name>
+    <message>
+      <source>File</source>
+      <translation>Archivo</translation>
+    </message>
+    <message>
+      <source>Edit</source>
+      <translation>Editar</translation>
+    </message>
+    <message>
+      <source>Help</source>
+      <translation>Ayuda</translation>
+    </message>
+    <message>
+      <source>Link</source>
+      <translation>Vínculo</translation>
+    </message>
+    <message>
+      <source>Tools</source>
+      <translation>Herramientas</translation>
+    </message>
+    <message>
+      <source>View</source>
+      <translation>Vista</translation>
+    </message>
+    <message>
+      <source>Window</source>
+      <translation>Ventana</translation>
+    </message>
+    <message>
+      <source>Standard</source>
+      <translation>Estándar</translation>
+    </message>
+    <message>
+      <source>Macros</source>
+      <translation>Macros</translation>
+    </message>
+    <message>
+      <source>Macro</source>
+      <translation>Macro</translation>
+    </message>
+    <message>
+      <source>Structure</source>
+      <translation>Estructura</translation>
+    </message>
+    <message>
+      <source>Standard-Test</source>
+      <translation>Prueba estándar</translation>
+    </message>
+    <message>
+      <source>Standard-View</source>
+      <translation>Vista estándar</translation>
+    </message>
+    <message>
+      <source>TreeView</source>
+      <translation>Vista de árbol</translation>
+    </message>
+    <message>
+      <source>Measure</source>
+      <translation>Medir</translation>
     </message>
   </context>
   <context>
@@ -277,6 +336,25 @@
     </message>
   </context>
   <context>
+    <name>EditMode</name>
+    <message>
+      <source>Default</source>
+      <translation>Por defecto</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformar</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Corte</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Color</translation>
+    </message>
+  </context>
+  <context>
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
@@ -292,6 +370,10 @@
     <message>
       <source>none</source>
       <translation>ninguno</translation>
+    </message>
+    <message>
+      <source>Press a keyboard shortcut</source>
+      <translation type="unfinished">Press a keyboard shortcut</translation>
     </message>
   </context>
   <context>
@@ -395,13 +477,6 @@ mientras hace clic con el botón izquierdo o derecho y mueve el ratón hacia arr
     </message>
   </context>
   <context>
-    <name>Gui::Command</name>
-    <message>
-      <source>Standard</source>
-      <translation>Estándar</translation>
-    </message>
-  </context>
-  <context>
     <name>Gui::ContainerDialog</name>
     <message>
       <source>&amp;OK</source>
@@ -462,7 +537,7 @@ mientras hace clic con el botón izquierdo o derecho y mueve el ratón hacia arr
     </message>
     <message>
       <source>Release date</source>
-      <translation>Fecha de la versión</translation>
+      <translation>Fecha de lanzamiento</translation>
     </message>
     <message>
       <source>Copy to clipboard</source>
@@ -517,6 +592,25 @@ mientras hace clic con el botón izquierdo o derecho y mueve el ratón hacia arr
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
       <translation>Organizaciones</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::ApplicationCache</name>
+    <message>
+      <source>Cache directory</source>
+      <translation type="unfinished">Cache directory</translation>
+    </message>
+    <message>
+      <source>The cache directory %1 exceeds the size of %2.</source>
+      <translation type="unfinished">The cache directory %1 exceeds the size of %2.</translation>
+    </message>
+    <message>
+      <source>Do you want to clear it now?</source>
+      <translation type="unfinished">Do you want to clear it now?</translation>
+    </message>
+    <message>
+      <source>Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</source>
+      <translation type="unfinished">Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</translation>
     </message>
   </context>
   <context>
@@ -585,7 +679,7 @@ mientras hace clic con el botón izquierdo o derecho y mueve el ratón hacia arr
     </message>
     <message>
       <source>Offset</source>
-      <translation>Equidistancia</translation>
+      <translation>Desplazamiento</translation>
     </message>
     <message>
       <source>Clipping Y</source>
@@ -793,6 +887,32 @@ Si esto no está marcado, entonces la propiedad debe ser nombrada de forma únic
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgCreateNewPreferencePack</name>
+    <message>
+      <source>Create New Preference Pack</source>
+      <translation type="unfinished">Create New Preference Pack</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>Nombre</translation>
+    </message>
+    <message>
+      <source>Property group templates</source>
+      <translation type="unfinished">Property group templates</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCreateNewPreferencePackImp</name>
+    <message>
+      <source>Pack already exists</source>
+      <translation type="unfinished">Pack already exists</translation>
+    </message>
+    <message>
+      <source>A preference pack with that name already exists. Do you want to overwrite it?</source>
+      <translation type="unfinished">A preference pack with that name already exists. Do you want to overwrite it?</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgCustomActions</name>
     <message>
       <source>Macros</source>
@@ -856,14 +976,6 @@ Si esto no está marcado, entonces la propiedad debe ser nombrada de forma únic
     <message>
       <source>Macros</source>
       <translation>Macros</translation>
-    </message>
-    <message>
-      <source>No macro</source>
-      <translation>Ninguna macro</translation>
-    </message>
-    <message>
-      <source>No macros found.</source>
-      <translation>Ninguna macro encontrada.</translation>
     </message>
     <message>
       <source>Macro not found</source>
@@ -1425,6 +1537,14 @@ Si esto no está marcado, entonces la propiedad debe ser nombrada de forma únic
       <source>Code lines will be numbered</source>
       <translation>Las líneas de código serán numeradas</translation>
     </message>
+    <message>
+      <source>The cursor shape will be a block</source>
+      <translation type="unfinished">The cursor shape will be a block</translation>
+    </message>
+    <message>
+      <source>Enable block cursor</source>
+      <translation type="unfinished">Enable block cursor</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgGeneral</name>
@@ -1471,14 +1591,6 @@ Si esto no está marcado, entonces la propiedad debe ser nombrada de forma únic
     <message>
       <source>Style sheet:</source>
       <translation>Hoja del estilo:</translation>
-    </message>
-    <message>
-      <source>Python console</source>
-      <translation>Consola de Python</translation>
-    </message>
-    <message>
-      <source>Enable word wrap</source>
-      <translation>Habilitar ajuste de línea</translation>
     </message>
     <message>
       <source>Language of the application's user interface</source>
@@ -1535,10 +1647,64 @@ after FreeCAD launches</source>
 después de que FreeCAD inicie</translation>
     </message>
     <message>
-      <source>Words will be wrapped when they exceed available
-horizontal space in Python console</source>
-      <translation>Las palabras serán envueltas cuando excedan
-espacio horizontal disponible en la consola de Python</translation>
+      <source>Number format:</source>
+      <translation type="unfinished">Number format:</translation>
+    </message>
+    <message>
+      <source>Operating system</source>
+      <translation>Sistema operativo</translation>
+    </message>
+    <message>
+      <source>Selected language</source>
+      <translation type="unfinished">Selected language</translation>
+    </message>
+    <message>
+      <source>C/POSIX</source>
+      <translation type="unfinished">C/POSIX</translation>
+    </message>
+    <message>
+      <source>If enabled, numerical keypad decimal separator will be substituted with locale separator</source>
+      <translation type="unfinished">If enabled, numerical keypad decimal separator will be substituted with locale separator</translation>
+    </message>
+    <message>
+      <source>Substitute decimal separator (needs restart)</source>
+      <translation type="unfinished">Substitute decimal separator (needs restart)</translation>
+    </message>
+    <message>
+      <source>Preference packs</source>
+      <translation type="unfinished">Preference packs</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>Nombre</translation>
+    </message>
+    <message>
+      <source>Type</source>
+      <translation>Tipo</translation>
+    </message>
+    <message>
+      <source>Load</source>
+      <translation>Cargar</translation>
+    </message>
+    <message>
+      <source>Save new...</source>
+      <translation type="unfinished">Save new...</translation>
+    </message>
+    <message>
+      <source>Manage...</source>
+      <translation type="unfinished">Manage...</translation>
+    </message>
+    <message>
+      <source>Revert...</source>
+      <translation type="unfinished">Revert...</translation>
+    </message>
+    <message>
+      <source>The text cursor will be blinking</source>
+      <translation type="unfinished">The text cursor will be blinking</translation>
+    </message>
+    <message>
+      <source>Enable cursor blinking</source>
+      <translation type="unfinished">Enable cursor blinking</translation>
     </message>
   </context>
   <context>
@@ -1578,6 +1744,26 @@ espacio horizontal disponible en la consola de Python</translation>
     <message>
       <source>Both</source>
       <translation>Ambos</translation>
+    </message>
+    <message>
+      <source>Manage preference packs</source>
+      <translation type="unfinished">Manage preference packs</translation>
+    </message>
+    <message>
+      <source>Preference Pack Name</source>
+      <translation type="unfinished">Preference Pack Name</translation>
+    </message>
+    <message>
+      <source>Tags</source>
+      <translation>Etiquetas</translation>
+    </message>
+    <message>
+      <source>Apply</source>
+      <translation>Aplicar</translation>
+    </message>
+    <message>
+      <source>Apply the %1 preference pack</source>
+      <translation type="unfinished">Apply the %1 preference pack</translation>
     </message>
   </context>
   <context>
@@ -1649,12 +1835,20 @@ espacio horizontal disponible en la consola de Python</translation>
       <translation>Duplicar</translation>
     </message>
     <message>
-      <source>Addons...</source>
-      <translation>Complementos...</translation>
-    </message>
-    <message>
       <source>Toolbar</source>
       <translation>Barra de herramientas</translation>
+    </message>
+    <message>
+      <source>Launch a guide on how to set up a macro in a custom global toolbar.</source>
+      <translation type="unfinished">Launch a guide on how to set up a macro in a custom global toolbar.</translation>
+    </message>
+    <message>
+      <source>Open Addon Manager where macros created by the community and other addons can be downloaded.</source>
+      <translation type="unfinished">Open Addon Manager where macros created by the community and other addons can be downloaded.</translation>
+    </message>
+    <message>
+      <source>Download</source>
+      <translation>Descarga</translation>
     </message>
   </context>
   <context>
@@ -2039,6 +2233,48 @@ Especifique otro directorio, por favor.</translation>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgPreferencePackManagement</name>
+    <message>
+      <source>Manage Preference Packs</source>
+      <translation type="unfinished">Manage Preference Packs</translation>
+    </message>
+    <message>
+      <source>Open Addon Manager...</source>
+      <translation type="unfinished">Open Addon Manager...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgPreferencePackManagementImp</name>
+    <message>
+      <source>User-Saved Preference Packs</source>
+      <translation type="unfinished">User-Saved Preference Packs</translation>
+    </message>
+    <message>
+      <source>Built-In Preference Packs</source>
+      <translation type="unfinished">Built-In Preference Packs</translation>
+    </message>
+    <message>
+      <source>Toggle visibility of built-in preference pack '%1'</source>
+      <translation type="unfinished">Toggle visibility of built-in preference pack '%1'</translation>
+    </message>
+    <message>
+      <source>Delete user-saved preference pack '%1'</source>
+      <translation type="unfinished">Delete user-saved preference pack '%1'</translation>
+    </message>
+    <message>
+      <source>Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</source>
+      <translation type="unfinished">Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</translation>
+    </message>
+    <message>
+      <source>Delete saved preference pack?</source>
+      <translation type="unfinished">Delete saved preference pack?</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to delete the preference pack named '%1'? This cannot be undone.</source>
+      <translation type="unfinished">Are you sure you want to delete the preference pack named '%1'? This cannot be undone.</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgPreferences</name>
     <message>
       <source>Preferences</source>
@@ -2356,8 +2592,7 @@ desde la consola de Python al panel de la vista de informe</translation>
     <message>
       <source>Internal Python error messages will be redirected
 from Python console to Report view panel</source>
-      <translation>La salida interna de Python se redirigirá
-desde la consola de Python al panel de la vista de informe</translation>
+      <translation>Los mensajes de errores internos de Python serán redireccionados desde la consola de Python al panel de vista de informes</translation>
     </message>
     <message>
       <source>Include a timecode for each report</source>
@@ -2374,6 +2609,28 @@ desde la consola de Python al panel de la vista de informe</translation>
     <message>
       <source>Record normal messages</source>
       <translation>Grabar mensajes normales</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgRevertToBackupConfig</name>
+    <message>
+      <source>Revert to Backup Config</source>
+      <translation type="unfinished">Revert to Backup Config</translation>
+    </message>
+    <message>
+      <source>WARNING: this process will undo any preference changes made since the specified date, and will also reset your Recent files and Macros to their state on that date.</source>
+      <translation type="unfinished">WARNING: this process will undo any preference changes made since the specified date, and will also reset your Recent files and Macros to their state on that date.</translation>
+    </message>
+    <message>
+      <source>Available backup files:</source>
+      <translation type="unfinished">Available backup files:</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgRevertToBackupConfigImp</name>
+    <message>
+      <source>No selection in dialog, cannot load backup file</source>
+      <translation type="unfinished">No selection in dialog, cannot load backup file</translation>
     </message>
   </context>
   <context>
@@ -2463,11 +2720,11 @@ desde la consola de Python al panel de la vista de informe</translation>
     </message>
     <message>
       <source>Or&amp;thographic rendering</source>
-      <translation>Renderizado ortogonal</translation>
+      <translation>Representación or&amp;togonal</translation>
     </message>
     <message>
       <source>Perspective renderin&amp;g</source>
-      <translation>Renderizado en perspectiva</translation>
+      <translation>Representación en perspectiva</translation>
     </message>
     <message>
       <source>Marker size:</source>
@@ -2601,7 +2858,7 @@ pero una respuesta más lenta a cualquier cambio de escena.</translation>
     </message>
     <message>
       <source>Objects will be projected in orthographic projection</source>
-      <translation>Los objetos se proyectarán en proyección ortográfica</translation>
+      <translation>Los objetos se proyectarán en proyección ortogonal</translation>
     </message>
     <message>
       <source>Objects will appear in a perspective projection</source>
@@ -2651,6 +2908,20 @@ bounding box size of the 3D object that is currently displayed.</source>
 El valor especificado es un factor que se multiplicará con el tamaño del recuadro
 del objeto 3D que se muestra actualmente.</translation>
     </message>
+    <message>
+      <source>Relative size :   </source>
+      <translation type="unfinished">Relative size :   </translation>
+    </message>
+    <message>
+      <source>Size of main coordinate system representation
+in the corner -- in % of height/width of viewport</source>
+      <translation type="unfinished">Size of main coordinate system representation
+in the corner -- in % of height/width of viewport</translation>
+    </message>
+    <message>
+      <source>%</source>
+      <translation>%</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -2685,6 +2956,69 @@ del objeto 3D que se muestra actualmente.</translation>
     <message>
       <source>15px</source>
       <translation>15px</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsCacheDirectory</name>
+    <message>
+      <source>Cache</source>
+      <translation type="unfinished">Cache</translation>
+    </message>
+    <message>
+      <source>Cache directory</source>
+      <translation type="unfinished">Cache directory</translation>
+    </message>
+    <message>
+      <source>Location:</source>
+      <translation type="unfinished">Location:</translation>
+    </message>
+    <message>
+      <source>Check periodically at program start:</source>
+      <translation type="unfinished">Check periodically at program start:</translation>
+    </message>
+    <message>
+      <source>Always</source>
+      <translation type="unfinished">Always</translation>
+    </message>
+    <message>
+      <source>Daily</source>
+      <translation type="unfinished">Daily</translation>
+    </message>
+    <message>
+      <source>Weekly</source>
+      <translation type="unfinished">Weekly</translation>
+    </message>
+    <message>
+      <source>Monthly</source>
+      <translation type="unfinished">Monthly</translation>
+    </message>
+    <message>
+      <source>Yearly</source>
+      <translation type="unfinished">Yearly</translation>
+    </message>
+    <message>
+      <source>Never</source>
+      <translation type="unfinished">Never</translation>
+    </message>
+    <message>
+      <source>Cache size limit:</source>
+      <translation type="unfinished">Cache size limit:</translation>
+    </message>
+    <message>
+      <source>Check now...</source>
+      <translation type="unfinished">Check now...</translation>
+    </message>
+    <message>
+      <source>Notify the user if the cache size exceeds the specified limit</source>
+      <translation type="unfinished">Notify the user if the cache size exceeds the specified limit</translation>
+    </message>
+    <message>
+      <source>Unknown</source>
+      <translation>Desconocido</translation>
+    </message>
+    <message>
+      <source>Current cache size: %1</source>
+      <translation type="unfinished">Current cache size: %1</translation>
     </message>
   </context>
   <context>
@@ -2724,10 +3058,6 @@ del objeto 3D que se muestra actualmente.</translation>
     <message>
       <source>Alt+R</source>
       <translation>Alt+R</translation>
-    </message>
-    <message>
-      <source>Out &amp;invisible</source>
-      <translation>Sin &amp;visibilidad</translation>
     </message>
     <message>
       <source>Alt+I</source>
@@ -2780,6 +3110,40 @@ del objeto 3D que se muestra actualmente.</translation>
     <message>
       <source>Color-gradient settings</source>
       <translation>Ajustes de degradado de color</translation>
+    </message>
+    <message>
+      <source>Color gradient is used with its full color range</source>
+      <translation type="unfinished">Color gradient is used with its full color range</translation>
+    </message>
+    <message>
+      <source>Color gradient starts from the zero value</source>
+      <translation type="unfinished">Color gradient starts from the zero value</translation>
+    </message>
+    <message>
+      <source>Data outside the specified min-max range
+will be displayed in gray</source>
+      <translation type="unfinished">Data outside the specified min-max range
+will be displayed in gray</translation>
+    </message>
+    <message>
+      <source>Data outside the specified min-max range
+will be displayed with transparency</source>
+      <translation type="unfinished">Data outside the specified min-max range
+will be displayed with transparency</translation>
+    </message>
+    <message>
+      <source>Out &amp;transparent</source>
+      <translation type="unfinished">Out &amp;transparent</translation>
+    </message>
+    <message>
+      <source>Number of labels besides the color bar</source>
+      <translation type="unfinished">Number of labels besides the color bar</translation>
+    </message>
+    <message>
+      <source>Number of decimals for labels
+besides the color bar</source>
+      <translation type="unfinished">Number of decimals for labels
+besides the color bar</translation>
     </message>
   </context>
   <context>
@@ -3268,24 +3632,55 @@ También puede utilizar el formulario: John Doe &lt;john@doe.com&gt;</translatio
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
-      <source>Unloaded Workbenches</source>
-      <translation>Bancos de trabajo descargados</translation>
+      <source>Workbench Name</source>
+      <translation>Nombre del banco de trabajo</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cargar los bancos de trabajo seleccionados, añadiendo sus ventanas de preferencia al diálogo de preferencias.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Autoload?</source>
+      <translation>¿Carga automática?</translation>
     </message>
     <message>
-      <source>Load Selected</source>
-      <translation>Cargar Seleccionado</translation>
+      <source>Load Now</source>
+      <translation>Cargar ahora</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Bancos de trabajo disponibles&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Para preservar recursos, FreeCAD no carga los bancos de trabajo hasta que se usen. Cargarlos puede proporcionar acceso a preferencias adicionales relacionadas con su funcionalidad.&lt;/p&gt;&lt;p&gt;Los siguientes bancos de trabajo están disponibles en su instalación:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Para preservar recursos, FreeCAD no carga los bancos de trabajo hasta que se usen. Cargarlos puede proporcionar acceso a preferencias adicionales relacionadas con su funcionalidad.&lt;/p&gt;&lt;p&gt;Los siguientes bancos de trabajo están disponibles en su instalación, pero aún no están cargados:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Available Workbenches</source>
+      <translation>Bancos de trabajo disponibles</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>Escenario</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation>Carga automática</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation>Si está marcado</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation>se cargará automáticamente cuando FreeCAD se inicie</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation>Este es el módulo de inicio actual y debe cargarse automáticamente. Ver Preferencias/General/Autocarga para cambiar.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation>Cargado</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation>Cargar ahora</translation>
     </message>
   </context>
   <context>
@@ -3468,10 +3863,6 @@ Turntable: la pieza se girará alrededor del eje Z.</translation>
       <translation>Trackball</translation>
     </message>
     <message>
-      <source>New document scale</source>
-      <translation>Nueva escala de documento</translation>
-    </message>
-    <message>
       <source>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</source>
       <translation>Establece el zoom de la cámara para nuevos documentos.
@@ -3609,6 +4000,47 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
       <translation>Cuánto se ampliará.
 El paso de zoom de '1' significa un factor de 7.5 para cada paso de acercamiento.</translation>
     </message>
+    <message>
+      <source>Camera zoom</source>
+      <translation type="unfinished">Camera zoom</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsPythonConsole</name>
+    <message>
+      <source>Python console</source>
+      <translation>Consola de Python</translation>
+    </message>
+    <message>
+      <source>Settings</source>
+      <translation>Opciones</translation>
+    </message>
+    <message>
+      <source>Words will be wrapped when they exceed available
+horizontal space in Python console</source>
+      <translation>Las palabras serán envueltas cuando excedan
+espacio horizontal disponible en la consola de Python</translation>
+    </message>
+    <message>
+      <source>Enable word wrap</source>
+      <translation>Habilitar ajuste de línea</translation>
+    </message>
+    <message>
+      <source>The cursor shape will be a block</source>
+      <translation type="unfinished">The cursor shape will be a block</translation>
+    </message>
+    <message>
+      <source>Enable block cursor</source>
+      <translation type="unfinished">Enable block cursor</translation>
+    </message>
+    <message>
+      <source>Saves Python history across sessions</source>
+      <translation type="unfinished">Saves Python history across sessions</translation>
+    </message>
+    <message>
+      <source>Save history</source>
+      <translation>Guardar historial</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettingsSelection</name>
@@ -3618,11 +4050,11 @@ El paso de zoom de '1' significa un factor de 7.5 para cada paso de acercamiento
     </message>
     <message>
       <source>Auto switch to the 3D view containing the selected item</source>
-      <translation>Cambiar automáticamente a la vista 3D que contiene el elemento seleccionado</translation>
+      <translation>Cambia automáticamente a la vista 3D que contiene el elemento seleccionado</translation>
     </message>
     <message>
       <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
-      <translation>Auto expandir el elemento del árbol cuando se selecciona el objeto correspondiente en la vista 3D</translation>
+      <translation>Auto expande el elemento del árbol cuando se selecciona el objeto correspondiente en la vista 3D</translation>
     </message>
     <message>
       <source>Preselect the object in 3D view when mouse over the tree item</source>
@@ -3630,7 +4062,7 @@ El paso de zoom de '1' significa un factor de 7.5 para cada paso de acercamiento
     </message>
     <message>
       <source>Record selection in tree view in order to go back/forward using navigation button</source>
-      <translation>Grabar selección en la vista de árbol para retroceder/avanzar usando el botón de navegación</translation>
+      <translation>Graba la selección en la vista de árbol para retroceder/avanzar usando el botón de navegación</translation>
     </message>
     <message>
       <source>Add checkboxes for selection in document tree</source>
@@ -3877,12 +4309,6 @@ El paso de zoom de '1' significa un factor de 7.5 para cada paso de acercamiento
       <translation>Resultado</translation>
     </message>
     <message>
-      <source>List of last used calculations 
-To add a calculation press Return in the value input field</source>
-      <translation>Lista de los últimos cálculos usados 
-Para añadir un cálculo, presione Retorno en el campo de entrada de valor</translation>
-    </message>
-    <message>
       <source>Quantity</source>
       <translation>Cantidad</translation>
     </message>
@@ -3915,6 +4341,12 @@ El sistema de preferencias es el establecido en las preferencias generales.</tra
     <message>
       <source>Copy the result into the clipboard</source>
       <translation>Copiar el resultado en el portapapeles</translation>
+    </message>
+    <message>
+      <source>List of last used calculations.
+To add a calculation press Return in the value input field</source>
+      <translation type="unfinished">List of last used calculations.
+To add a calculation press Return in the value input field</translation>
     </message>
   </context>
   <context>
@@ -4065,10 +4497,6 @@ El sistema de preferencias es el establecido en las preferencias generales.</tra
       <translation>¿Está seguro que desea eliminar todos los directorios transitorios?</translation>
     </message>
     <message>
-      <source>Finished</source>
-      <translation>Completado</translation>
-    </message>
-    <message>
       <source>Transient directories deleted.</source>
       <translation>Directorios transitorios borrados.</translation>
     </message>
@@ -4083,6 +4511,10 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
     <message>
       <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
       <translation>Al eliminar todo directorio transitorio no podrá recuperar los archivos luego.</translation>
+    </message>
+    <message>
+      <source>Transient deleted</source>
+      <translation type="unfinished">Transient deleted</translation>
     </message>
   </context>
   <context>
@@ -4452,31 +4884,31 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
       <translation>Por favor, seleccione 1, 2 o 3 puntos antes de hacer clic en este botón. Un punto puede estar en un vértice, cara o arista. Si en una cara o arista, el punto utilizado será el punto en la posición del mouse a lo largo de la cara o la arista. Si se selecciona 1 punto, se utilizará como centro de rotación. Si se seleccionan 2 puntos, el punto medio entre ellos será el centro de rotación y, si es necesario, se creará un nuevo eje personalizado. Si se seleccionan 3 puntos, el primer punto se convierte en el centro de rotación y se encuentra en el vector que es normal al plano definido por los 3 puntos. Se proporciona cierta información de distancia y ángulo en la vista de reporte, que puede ser útil al alinear objetos. Para su comodidad, cuando se usa la tecla Mayús + clic, la distancia o el ángulo apropiados se copian en el portapapeles.</translation>
     </message>
     <message>
-      <source>Around y-axis:</source>
-      <translation>Alrededor del eje Y-:</translation>
+      <source>Pitch (around y-axis):</source>
+      <translation>Elevación (alrededor del eje y):</translation>
     </message>
     <message>
-      <source>Around z-axis:</source>
-      <translation>Alrededor del eje Z:</translation>
+      <source>Roll (around x-axis):</source>
+      <translation>Balanceo (alrededor del eje x-):</translation>
     </message>
     <message>
-      <source>Around x-axis:</source>
-      <translation>Alrededor del eje X:</translation>
+      <source>Yaw (around z-axis):</source>
+      <translation>Rumbo (alrededor del eje z):</translation>
     </message>
     <message>
-      <source>Rotation around the x-axis</source>
-      <translation>Rotación alrededor del eje x</translation>
+      <source>Yaw (around z-axis)</source>
+      <translation>Rumbo (alrededor del eje z)</translation>
     </message>
     <message>
-      <source>Rotation around the y-axis</source>
-      <translation>Rotación alrededor del eje y</translation>
+      <source>Pitch (around y-axis)</source>
+      <translation>Elevación (alrededor del eje y)</translation>
     </message>
     <message>
-      <source>Rotation around the z-axis</source>
-      <translation>Rotación alrededor del eje z</translation>
+      <source>Roll (around the x-axis)</source>
+      <translation>Balanceo (alrededor del eje x)</translation>
     </message>
     <message>
-      <source>Euler angles (xy'z'')</source>
+      <source>Euler angles (zy'x'')</source>
       <translation>Ángulos de Euler (xy'z'')</translation>
     </message>
   </context>
@@ -4613,10 +5045,6 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
       <translation>Los objetos seleccionados contienen otras dependencias. Por favor, seleccione qué objetos exportar. Todas las dependencias se seleccionan automáticamente por defecto.</translation>
     </message>
     <message>
-      <source>Dependency</source>
-      <translation>Dependencia</translation>
-    </message>
-    <message>
       <source>Document</source>
       <translation>Documento</translation>
     </message>
@@ -4625,20 +5053,33 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
       <translation>Nombre</translation>
     </message>
     <message>
-      <source>State</source>
-      <translation>Estado</translation>
+      <source>&amp;Use Original Selections</source>
+      <translation>&amp;Usar las Selecciones Originales</translation>
     </message>
     <message>
-      <source>Hierarchy</source>
-      <translation>Jerarquía</translation>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation>Ignorar lo precedente y continuar con los objetos seleccionados con prioridad a la apertura de este dialogo</translation>
     </message>
     <message>
-      <source>Selected</source>
-      <translation>Seleccionado</translation>
+      <source>Auto select depending objects</source>
+      <translation type="unfinished">Auto select depending objects</translation>
     </message>
     <message>
-      <source>Partial</source>
-      <translation>Parcial</translation>
+      <source>Depending on</source>
+      <translation type="unfinished">Depending on</translation>
+    </message>
+    <message>
+      <source>Depended by</source>
+      <translation type="unfinished">Depended by</translation>
+    </message>
+    <message>
+      <source>Selections</source>
+      <translation>Selecciones</translation>
+    </message>
+    <message>
+      <source>All</source>
+      <translation>Todo</translation>
     </message>
   </context>
   <context>
@@ -4733,8 +5174,8 @@ La columna 'Estado' muestra si el documento puede ser recuperado.</translation>
       <translation>Errores</translation>
     </message>
     <message>
-      <source>Show report view on</source>
-      <translation>Mostrar vista del informe en</translation>
+      <source>Show output window on</source>
+      <translation type="unfinished">Show output window on</translation>
     </message>
   </context>
   <context>
@@ -5161,7 +5602,7 @@ Desea guardar los cambios?</translation>
     </message>
     <message>
       <source>Toggles this dockable window</source>
-      <translation>Alterna esta ventana acopla-ble</translation>
+      <translation>Alterna esta ventana acoplable</translation>
     </message>
     <message>
       <source>Close All</source>
@@ -5180,6 +5621,18 @@ Desea guardar los cambios?</translation>
 Do you want to save the document now?</source>
       <translation>Para vincular a objetos externos, el documento debe guardarse al menos una vez.
 ¿Desea guardar el documento ahora?</translation>
+    </message>
+    <message>
+      <source>Help addon needed!</source>
+      <translation type="unfinished">Help addon needed!</translation>
+    </message>
+    <message>
+      <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
+      <translation type="unfinished">The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</translation>
+    </message>
+    <message>
+      <source>Open Addon Manager</source>
+      <translation type="unfinished">Open Addon Manager</translation>
     </message>
   </context>
   <context>
@@ -5288,6 +5741,13 @@ How do you want to proceed?</source>
     </message>
   </context>
   <context>
+    <name>Gui::ModifierLineEdit</name>
+    <message>
+      <source>Press modifier keys</source>
+      <translation type="unfinished">Press modifier keys</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::NetworkRetriever</name>
     <message>
       <source>Download started...</source>
@@ -5311,6 +5771,25 @@ How do you want to proceed?</source>
     <message>
       <source>Press CTRL and left mouse button</source>
       <translation>Presione la tecla CTRL y el botón izquierdo del ratón</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::OpenSCADNavigationStyle</name>
+    <message>
+      <source>Press left mouse button</source>
+      <translation>Pulsa el botón izquierdo del ratón</translation>
+    </message>
+    <message>
+      <source>Press right mouse button and move mouse</source>
+      <translation type="unfinished">Press right mouse button and move mouse</translation>
+    </message>
+    <message>
+      <source>Press left mouse button and move mouse</source>
+      <translation type="unfinished">Press left mouse button and move mouse</translation>
+    </message>
+    <message>
+      <source>Press middle mouse button or SHIFT and right mouse button</source>
+      <translation type="unfinished">Press middle mouse button or SHIFT and right mouse button</translation>
     </message>
   </context>
   <context>
@@ -5405,6 +5884,14 @@ How do you want to proceed?</source>
     <message>
       <source>Auto expand</source>
       <translation>Auto expandir</translation>
+    </message>
+    <message>
+      <source>Rename property group</source>
+      <translation type="unfinished">Rename property group</translation>
+    </message>
+    <message>
+      <source>Group name:</source>
+      <translation type="unfinished">Group name:</translation>
     </message>
   </context>
   <context>
@@ -5562,6 +6049,10 @@ Do you want to exit without saving your data?</source>
       <source>The file '%1' cannot be opened.</source>
       <translation>El archivo '%1' no se puede abrir.</translation>
     </message>
+    <message>
+      <source>none</source>
+      <translation>ninguno</translation>
+    </message>
   </context>
   <context>
     <name>Gui::RevitNavigationStyle</name>
@@ -5583,6 +6074,25 @@ Do you want to exit without saving your data?</source>
     </message>
   </context>
   <context>
+    <name>Gui::SearchBar</name>
+    <message>
+      <source>Previous</source>
+      <translation>Anterior</translation>
+    </message>
+    <message>
+      <source>Next</source>
+      <translation type="unfinished">Next</translation>
+    </message>
+    <message>
+      <source>Case sensitive</source>
+      <translation type="unfinished">Case sensitive</translation>
+    </message>
+    <message>
+      <source>Whole words</source>
+      <translation type="unfinished">Whole words</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::SelectModule</name>
     <message>
       <source>Select module</source>
@@ -5600,10 +6110,6 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::StdCmdDescription</name>
     <message>
-      <source>Help</source>
-      <translation>Ayuda</translation>
-    </message>
-    <message>
       <source>Des&amp;cription</source>
       <translation>Des&amp;cripción</translation>
     </message>
@@ -5614,10 +6120,6 @@ Do you want to exit without saving your data?</source>
   </context>
   <context>
     <name>Gui::StdCmdDownloadOnlineHelp</name>
-    <message>
-      <source>Help</source>
-      <translation>Ayuda</translation>
-    </message>
     <message>
       <source>Download online help</source>
       <translation>Descargar ayuda online</translation>
@@ -5657,10 +6159,6 @@ Do you want to specify another directory?</source>
   </context>
   <context>
     <name>Gui::StdCmdPythonHelp</name>
-    <message>
-      <source>Tools</source>
-      <translation>Herramientas</translation>
-    </message>
     <message>
       <source>Automatic python modules documentation</source>
       <translation>Documentación de módulos python automático</translation>
@@ -5826,6 +6324,25 @@ Do you want to specify another directory?</source>
     </message>
   </context>
   <context>
+    <name>Gui::TinkerCADNavigationStyle</name>
+    <message>
+      <source>Press left mouse button</source>
+      <translation>Pulsa el botón izquierdo del ratón</translation>
+    </message>
+    <message>
+      <source>Press middle mouse button</source>
+      <translation>Pulsar el botón central del ratón</translation>
+    </message>
+    <message>
+      <source>Press right mouse button</source>
+      <translation type="unfinished">Press right mouse button</translation>
+    </message>
+    <message>
+      <source>Scroll middle mouse button</source>
+      <translation>Desplazar el botón central del ratón</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::TouchpadNavigationStyle</name>
     <message>
       <source>Press left mouse button</source>
@@ -5892,7 +6409,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <source>Afrikaans</source>
-      <translation>Africano</translation>
+      <translation>Africaans</translation>
     </message>
     <message>
       <source>Norwegian</source>
@@ -5989,6 +6506,22 @@ Do you want to specify another directory?</source>
     <message>
       <source>Vietnamese</source>
       <translation>Vietnamita</translation>
+    </message>
+    <message>
+      <source>Bulgarian</source>
+      <translation>Búlgaro</translation>
+    </message>
+    <message>
+      <source>Greek</source>
+      <translation>Griego</translation>
+    </message>
+    <message>
+      <source>Spanish, Argentina</source>
+      <translation>Español, Argentina</translation>
+    </message>
+    <message>
+      <source>Georgian</source>
+      <translation type="unfinished">Georgian</translation>
     </message>
   </context>
   <context>
@@ -6134,6 +6667,14 @@ Do you want to specify another directory?</source>
     <message>
       <source> (but must be executed)</source>
       <translation> (pero debe ser ejecutado)</translation>
+    </message>
+    <message>
+      <source>Add dependent objects to selection</source>
+      <translation type="unfinished">Add dependent objects to selection</translation>
+    </message>
+    <message>
+      <source>Adds all dependent objects to the selection</source>
+      <translation type="unfinished">Adds all dependent objects to the selection</translation>
     </message>
   </context>
   <context>
@@ -6613,24 +7154,6 @@ Por favor abra una ventana del navegador y escriba en ella: http://localhost:%1.
       <translation>El documento no se puede cerrar por el momento.</translation>
     </message>
     <message>
-      <source>No OpenGL</source>
-      <translation>Sin OpenGL</translation>
-    </message>
-    <message>
-      <source>This system does not support OpenGL</source>
-      <translation>Este sistema no es compatible con OpenGL</translation>
-    </message>
-    <message>
-      <source>Help</source>
-      <translation>Ayuda</translation>
-    </message>
-    <message>
-      <source>Unable to load documentation.
-In order to load it Qt 4.4 or higher is required.</source>
-      <translation>No se puede cargar la documentación.
-Para cargarlo es necesario Qt 4.4 o superior.</translation>
-    </message>
-    <message>
       <source>Exporting PDF...</source>
       <translation>Exportando a PDF...</translation>
     </message>
@@ -6904,26 +7427,6 @@ Seleccione 'Abortar' para abortar</translation>
       <translation>¿Está seguro de que desea continuar?</translation>
     </message>
     <message>
-      <source>
-
-Please check report view for more...</source>
-      <translation>
-
-Por favor, compruebe la vista del informe para más...</translation>
-    </message>
-    <message>
-      <source>
-Document: </source>
-      <translation>
-Documento: </translation>
-    </message>
-    <message>
-      <source>
-  Path: </source>
-      <translation>
-  Ruta: </translation>
-    </message>
-    <message>
       <source>Identical physical path</source>
       <translation>Ruta física idéntica</translation>
     </message>
@@ -6944,12 +7447,132 @@ Documento: </translation>
       <translation>Escenarios</translation>
     </message>
     <message>
-      <source>
+      <source>Could not save document</source>
+      <translation>No se pudo guardar el documento</translation>
+    </message>
+    <message>
+      <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
-Physical path: </source>
-      <translation>
+"%1"
 
-Trayectoria física: </translation>
+Would you like to save the file with a different name?</source>
+      <translation>Hubo un problema al intentar guardar el archivo. Esto puede deberse a que algunas de las carpetas matriz no existen, o no posee permisos suficientes, o por otras razones. Detalles del error:
+
+"%1"
+
+¿Desea guardar el archivo con un nombre diferente?</translation>
+    </message>
+    <message>
+      <source>Document not saved</source>
+      <translation>Documento no guardado</translation>
+    </message>
+    <message>
+      <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
+      <translation>El documento%1 no se pudo guardar. ¿Desea cancelar cerrando?</translation>
+    </message>
+    <message>
+      <source>%1 Document(s) not saved</source>
+      <translation>%1 Documento(s) no guardados</translation>
+    </message>
+    <message>
+      <source>Some documents could not be saved. Do you want to cancel closing?</source>
+      <translation>Algunos documentos no se han podido guardar. ¿Desea cancelar el cierre?</translation>
+    </message>
+    <message>
+      <source>Please check report view for more...</source>
+      <translation type="unfinished">Please check report view for more...</translation>
+    </message>
+    <message>
+      <source>Physical path:</source>
+      <translation type="unfinished">Physical path:</translation>
+    </message>
+    <message>
+      <source>Document:</source>
+      <translation type="unfinished">Document:</translation>
+    </message>
+    <message>
+      <source>Path:</source>
+      <translation>Ruta:</translation>
+    </message>
+    <message>
+      <source>Edit %1</source>
+      <translation>Editar %1</translation>
+    </message>
+    <message>
+      <source>Setup configurable object</source>
+      <translation type="unfinished">Setup configurable object</translation>
+    </message>
+    <message>
+      <source>Select which object to copy or exclude when configuration changes.All external linked object are excluded by default.</source>
+      <translation type="unfinished">Select which object to copy or exclude when configuration changes.All external linked object are excluded by default.</translation>
+    </message>
+    <message>
+      <source>Please select which objects to copy when the configuration is changed</source>
+      <translation type="unfinished">Please select which objects to copy when the configuration is changed</translation>
+    </message>
+    <message>
+      <source>Apply to all</source>
+      <translation type="unfinished">Apply to all</translation>
+    </message>
+    <message>
+      <source>Apply the setting to all links. Or, uncheck this
+option to apply only to this link.</source>
+      <translation type="unfinished">Apply the setting to all links. Or, uncheck this
+option to apply only to this link.</translation>
+    </message>
+    <message>
+      <source>Copy on change</source>
+      <translation type="unfinished">Copy on change</translation>
+    </message>
+    <message>
+      <source>Enable</source>
+      <translation>Habilitar</translation>
+    </message>
+    <message>
+      <source>Enable auto copy of linked object when its configuration is changed</source>
+      <translation type="unfinished">Enable auto copy of linked object when its configuration is changed</translation>
+    </message>
+    <message>
+      <source>Tracking</source>
+      <translation>Seguimiento</translation>
+    </message>
+    <message>
+      <source>Copy the linked object when its configuration is changed.
+Also auto redo the copy if the original linked object is changed.
+</source>
+      <translation type="unfinished">Copy the linked object when its configuration is changed.
+Also auto redo the copy if the original linked object is changed.
+</translation>
+    </message>
+    <message>
+      <source>Disable copy on change</source>
+      <translation type="unfinished">Disable copy on change</translation>
+    </message>
+    <message>
+      <source>Rerefresh configurable object</source>
+      <translation type="unfinished">Rerefresh configurable object</translation>
+    </message>
+    <message>
+      <source>Synchronize the original configurable source object by
+creating a new deep copy. Note that any changes made to
+the current copy will be lost.
+</source>
+      <translation type="unfinished">Synchronize the original configurable source object by
+creating a new deep copy. Note that any changes made to
+the current copy will be lost.
+</translation>
+    </message>
+    <message>
+      <source>Toggle array elements</source>
+      <translation type="unfinished">Toggle array elements</translation>
+    </message>
+    <message>
+      <source>Change whether show each link array element as individual objects</source>
+      <translation type="unfinished">Change whether show each link array element as individual objects</translation>
+    </message>
+    <message>
+      <source>Transform at the origin of the placement</source>
+      <translation type="unfinished">Transform at the origin of the placement</translation>
     </message>
   </context>
   <context>
@@ -6966,10 +7589,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdBoxElementSelection</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
-    <message>
       <source>Box element selection</source>
       <translation>Selección de elemento de cuadro</translation>
     </message>
@@ -6977,20 +7596,12 @@ Trayectoria física: </translation>
   <context>
     <name>StdBoxSelection</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
-    <message>
       <source>Box selection</source>
       <translation>Cuadro de selección</translation>
     </message>
   </context>
   <context>
     <name>StdCmdAbout</name>
-    <message>
-      <source>Help</source>
-      <translation>Ayuda</translation>
-    </message>
     <message>
       <source>&amp;About %1</source>
       <translation>&amp;Acerca de %1</translation>
@@ -7003,10 +7614,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdAboutQt</name>
     <message>
-      <source>Help</source>
-      <translation>Ayuda</translation>
-    </message>
-    <message>
       <source>About &amp;Qt</source>
       <translation>Acerca de &amp;Qt</translation>
     </message>
@@ -7017,10 +7624,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdCmdActivateNextWindow</name>
-    <message>
-      <source>Window</source>
-      <translation>Ventana</translation>
-    </message>
     <message>
       <source>Ne&amp;xt</source>
       <translation>Si&amp;guiente</translation>
@@ -7033,10 +7636,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdActivatePrevWindow</name>
     <message>
-      <source>Window</source>
-      <translation>Ventana</translation>
-    </message>
-    <message>
       <source>Pre&amp;vious</source>
       <translation>Pre&amp;vio</translation>
     </message>
@@ -7048,24 +7647,16 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdAlignment</name>
     <message>
-      <source>Edit</source>
-      <translation>Editar</translation>
-    </message>
-    <message>
       <source>Alignment...</source>
       <translation>Alineación...</translation>
     </message>
     <message>
       <source>Align the selected objects</source>
-      <translation>Alinear los objetos seleccionados</translation>
+      <translation>Alinea los objetos seleccionados</translation>
     </message>
   </context>
   <context>
     <name>StdCmdArrangeIcons</name>
-    <message>
-      <source>Window</source>
-      <translation>Ventana</translation>
-    </message>
     <message>
       <source>Arrange &amp;Icons</source>
       <translation>Organizar &amp;Iconos</translation>
@@ -7078,20 +7669,12 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdAxisCross</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
-    <message>
       <source>Toggle axis cross</source>
       <translation>Activar o desactivar cruz de los ejes</translation>
     </message>
   </context>
   <context>
     <name>StdCmdCascadeWindows</name>
-    <message>
-      <source>Window</source>
-      <translation>Ventana</translation>
-    </message>
     <message>
       <source>&amp;Cascade</source>
       <translation>&amp;Cascada</translation>
@@ -7104,39 +7687,27 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdCloseActiveWindow</name>
     <message>
-      <source>Window</source>
-      <translation>Ventana</translation>
-    </message>
-    <message>
       <source>Cl&amp;ose</source>
       <translation>Ce&amp;rrar</translation>
     </message>
     <message>
       <source>Close active window</source>
-      <translation>Cerrar la ventana activa</translation>
+      <translation>Cierra la ventana activa</translation>
     </message>
   </context>
   <context>
     <name>StdCmdCloseAllWindows</name>
-    <message>
-      <source>Window</source>
-      <translation>Ventana</translation>
-    </message>
     <message>
       <source>Close Al&amp;l</source>
       <translation>Cerrar To&amp;do</translation>
     </message>
     <message>
       <source>Close all windows</source>
-      <translation>Cerrar todas las ventanas</translation>
+      <translation>Cierra todas las ventanas</translation>
     </message>
   </context>
   <context>
     <name>StdCmdCommandLine</name>
-    <message>
-      <source>Tools</source>
-      <translation>Herramientas</translation>
-    </message>
     <message>
       <source>Start command &amp;line...</source>
       <translation>Iniciar &amp;línea de comandos...</translation>
@@ -7149,10 +7720,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdCopy</name>
     <message>
-      <source>Edit</source>
-      <translation>Editar</translation>
-    </message>
-    <message>
       <source>C&amp;opy</source>
       <translation>C&amp;opiar</translation>
     </message>
@@ -7163,10 +7730,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdCmdCut</name>
-    <message>
-      <source>Edit</source>
-      <translation>Editar</translation>
-    </message>
     <message>
       <source>&amp;Cut</source>
       <translation>&amp;Cortar</translation>
@@ -7179,10 +7742,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdDelete</name>
     <message>
-      <source>Edit</source>
-      <translation>Editar</translation>
-    </message>
-    <message>
       <source>&amp;Delete</source>
       <translation>&amp;Borrar</translation>
     </message>
@@ -7193,10 +7752,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdCmdDemoMode</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>View turntable...</source>
       <translation>Ver torno...</translation>
@@ -7209,24 +7764,16 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdDependencyGraph</name>
     <message>
-      <source>Tools</source>
-      <translation>Herramientas</translation>
-    </message>
-    <message>
       <source>Dependency graph...</source>
       <translation>Gráfico de dependencias...</translation>
     </message>
     <message>
       <source>Show the dependency graph of the objects in the active document</source>
-      <translation>Mostrar el gráfico de dependencia de los objetos en el documento activo</translation>
+      <translation>Muestra el gráfico de dependencia de los objetos en el documento activo</translation>
     </message>
   </context>
   <context>
     <name>StdCmdDlgCustomize</name>
-    <message>
-      <source>Tools</source>
-      <translation>Herramientas</translation>
-    </message>
     <message>
       <source>Cu&amp;stomize...</source>
       <translation>Pe&amp;rsonalizar...</translation>
@@ -7246,17 +7793,9 @@ Trayectoria física: </translation>
       <source>Opens a dialog to let you execute a recorded macro</source>
       <translation>Abre un cuadro de diálogo que te permite ejecutar una macro grabada</translation>
     </message>
-    <message>
-      <source>Macro</source>
-      <translation>Macro</translation>
-    </message>
   </context>
   <context>
     <name>StdCmdDlgMacroExecuteDirect</name>
-    <message>
-      <source>Macro</source>
-      <translation>Macro</translation>
-    </message>
     <message>
       <source>Execute macro</source>
       <translation>Ejecutar macro</translation>
@@ -7276,17 +7815,9 @@ Trayectoria física: </translation>
       <source>Opens a dialog to record a macro</source>
       <translation>Abre un cuadro de diálogo para grabar una macro</translation>
     </message>
-    <message>
-      <source>Macro</source>
-      <translation>Macro</translation>
-    </message>
   </context>
   <context>
     <name>StdCmdDlgParameter</name>
-    <message>
-      <source>Tools</source>
-      <translation>Herramientas</translation>
-    </message>
     <message>
       <source>E&amp;dit parameters ...</source>
       <translation>&amp;Editar parámetros...</translation>
@@ -7299,10 +7830,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdDlgPreferences</name>
     <message>
-      <source>Tools</source>
-      <translation>Herramientas</translation>
-    </message>
-    <message>
       <source>&amp;Preferences ...</source>
       <translation>&amp;Preferencias...</translation>
     </message>
@@ -7313,10 +7840,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdCmdDockViewMenu</name>
-    <message>
-      <source>View</source>
-      <translation>Vista</translation>
-    </message>
     <message>
       <source>Panels</source>
       <translation>Paneles</translation>
@@ -7329,10 +7852,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdDrawStyle</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
-    <message>
       <source>Draw style</source>
       <translation>Estilo de dibujo</translation>
     </message>
@@ -7344,24 +7863,16 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdDuplicateSelection</name>
     <message>
-      <source>Edit</source>
-      <translation>Editar</translation>
-    </message>
-    <message>
       <source>Duplicate selection</source>
       <translation>Duplicar la selección</translation>
     </message>
     <message>
       <source>Put duplicates of the selected objects to the active document</source>
-      <translation>Ponga los duplicados de los objetos seleccionados en el documento activo</translation>
+      <translation>Pone los duplicados de los objetos seleccionados en el documento activo</translation>
     </message>
   </context>
   <context>
     <name>StdCmdEdit</name>
-    <message>
-      <source>Edit</source>
-      <translation>Editar</translation>
-    </message>
     <message>
       <source>Toggle &amp;Edit mode</source>
       <translation>Activar &amp;Modo de edición</translation>
@@ -7378,16 +7889,12 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdExport</name>
     <message>
-      <source>File</source>
-      <translation>Archivo</translation>
-    </message>
-    <message>
       <source>&amp;Export...</source>
       <translation>&amp;Exportar...</translation>
     </message>
     <message>
       <source>Export an object in the active document</source>
-      <translation>Exportar un objeto en el documento activo</translation>
+      <translation>Exporta un objeto en el documento activo</translation>
     </message>
     <message>
       <source>No selection</source>
@@ -7401,20 +7908,12 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdExpression</name>
     <message>
-      <source>Edit</source>
-      <translation>Editar</translation>
-    </message>
-    <message>
       <source>Expression actions</source>
       <translation>Acciones de expresión</translation>
     </message>
   </context>
   <context>
     <name>StdCmdFeatRecompute</name>
-    <message>
-      <source>File</source>
-      <translation>Archivo</translation>
-    </message>
     <message>
       <source>&amp;Recompute</source>
       <translation>&amp;Recalcular</translation>
@@ -7427,10 +7926,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdFreeCADDonation</name>
     <message>
-      <source>Help</source>
-      <translation>Ayuda</translation>
-    </message>
-    <message>
       <source>Donate</source>
       <translation>Donar</translation>
     </message>
@@ -7441,10 +7936,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdCmdFreeCADFAQ</name>
-    <message>
-      <source>Help</source>
-      <translation>Ayuda</translation>
-    </message>
     <message>
       <source>FreeCAD FAQ</source>
       <translation>Preguntas frecuentes sobre FreeCAD</translation>
@@ -7461,10 +7952,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdFreeCADForum</name>
     <message>
-      <source>Help</source>
-      <translation>Ayuda</translation>
-    </message>
-    <message>
       <source>FreeCAD Forum</source>
       <translation>Foro de FreeCAD</translation>
     </message>
@@ -7479,10 +7966,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdCmdFreeCADPowerUserHub</name>
-    <message>
-      <source>Help</source>
-      <translation>Ayuda</translation>
-    </message>
     <message>
       <source>Python scripting documentation</source>
       <translation>Documentación sobre FreeCAD + Python</translation>
@@ -7499,10 +7982,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdFreeCADUserHub</name>
     <message>
-      <source>Help</source>
-      <translation>Ayuda</translation>
-    </message>
-    <message>
       <source>Users documentation</source>
       <translation>Documentacion para el usuario</translation>
     </message>
@@ -7513,10 +7992,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdCmdFreeCADWebsite</name>
-    <message>
-      <source>Help</source>
-      <translation>Ayuda</translation>
-    </message>
     <message>
       <source>FreeCAD Website</source>
       <translation>Sitio web de FreeCAD</translation>
@@ -7529,10 +8004,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdFreezeViews</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
-    <message>
       <source>Freeze display</source>
       <translation>Congelar visualización</translation>
     </message>
@@ -7543,10 +8014,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdCmdGroup</name>
-    <message>
-      <source>Structure</source>
-      <translation>Estructura</translation>
-    </message>
     <message>
       <source>Create group</source>
       <translation>Crear grupo</translation>
@@ -7559,46 +8026,34 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdHideObjects</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
-    <message>
       <source>Hide all objects</source>
       <translation>Ocultar todos los objetos</translation>
     </message>
     <message>
       <source>Hide all objects in the document</source>
-      <translation>Ocultar todos los objetos en el documento</translation>
+      <translation>Oculta todos los objetos en el documento</translation>
     </message>
   </context>
   <context>
     <name>StdCmdHideSelection</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Hide selection</source>
       <translation>Ocultar selección</translation>
     </message>
     <message>
       <source>Hide all selected objects</source>
-      <translation>Ocultar todos los objetos seleccionados</translation>
+      <translation>Oculta todos los objetos seleccionados</translation>
     </message>
   </context>
   <context>
     <name>StdCmdImport</name>
-    <message>
-      <source>File</source>
-      <translation>Archivo</translation>
-    </message>
     <message>
       <source>&amp;Import...</source>
       <translation>&amp;Importar...</translation>
     </message>
     <message>
       <source>Import a file in the active document</source>
-      <translation>Importar un archivo en el documento activo</translation>
+      <translation>Importa un archivo en el documento activo</translation>
     </message>
     <message>
       <source>Supported formats</source>
@@ -7612,20 +8067,12 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdLinkActions</name>
     <message>
-      <source>View</source>
-      <translation>Vista</translation>
-    </message>
-    <message>
       <source>Link actions</source>
       <translation>Acciones de vínculos</translation>
     </message>
   </context>
   <context>
     <name>StdCmdLinkImport</name>
-    <message>
-      <source>Link</source>
-      <translation>Vínculo</translation>
-    </message>
     <message>
       <source>Import links</source>
       <translation>Importar vínculo</translation>
@@ -7638,10 +8085,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdLinkImportAll</name>
     <message>
-      <source>Link</source>
-      <translation>Vínculo</translation>
-    </message>
-    <message>
       <source>Import all links</source>
       <translation>Importar todos los vínculos</translation>
     </message>
@@ -7652,10 +8095,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdCmdLinkMake</name>
-    <message>
-      <source>Link</source>
-      <translation>Vínculo</translation>
-    </message>
     <message>
       <source>Make link</source>
       <translation>Crear vínculo</translation>
@@ -7668,10 +8107,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdLinkMakeGroup</name>
     <message>
-      <source>Link</source>
-      <translation>Vínculo</translation>
-    </message>
-    <message>
       <source>Make link group</source>
       <translation>Hacer vínculo de grupo</translation>
     </message>
@@ -7682,10 +8117,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdCmdLinkMakeRelative</name>
-    <message>
-      <source>Link</source>
-      <translation>Vínculo</translation>
-    </message>
     <message>
       <source>Make sub-link</source>
       <translation>Crear sub-vínculo</translation>
@@ -7698,10 +8129,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdLinkReplace</name>
     <message>
-      <source>Link</source>
-      <translation>Vínculo</translation>
-    </message>
-    <message>
       <source>Replace with link</source>
       <translation>Reemplazar con vínculo</translation>
     </message>
@@ -7712,10 +8139,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdCmdLinkSelectActions</name>
-    <message>
-      <source>View</source>
-      <translation>Vista</translation>
-    </message>
     <message>
       <source>Link navigation</source>
       <translation>Navegación de vínculos</translation>
@@ -7728,10 +8151,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdLinkSelectAllLinks</name>
     <message>
-      <source>Link</source>
-      <translation>Vínculo</translation>
-    </message>
-    <message>
       <source>Select all links</source>
       <translation>Seleccionar todos los vínculos</translation>
     </message>
@@ -7742,10 +8161,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdCmdLinkSelectLinked</name>
-    <message>
-      <source>Link</source>
-      <translation>Vínculo</translation>
-    </message>
     <message>
       <source>Go to linked object</source>
       <translation>Ir al objeto vinculado</translation>
@@ -7758,10 +8173,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdLinkSelectLinkedFinal</name>
     <message>
-      <source>Link</source>
-      <translation>Vínculo</translation>
-    </message>
-    <message>
       <source>Go to the deepest linked object</source>
       <translation>Ir al objeto vinculado más profundo</translation>
     </message>
@@ -7772,10 +8183,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdCmdLinkUnlink</name>
-    <message>
-      <source>Link</source>
-      <translation>Vínculo</translation>
-    </message>
     <message>
       <source>Unlink</source>
       <translation>Desvincular</translation>
@@ -7788,10 +8195,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdMacroAttachDebugger</name>
     <message>
-      <source>Macro</source>
-      <translation>Macro</translation>
-    </message>
-    <message>
       <source>Attach to remote debugger...</source>
       <translation>Adjuntar al depurador remoto...</translation>
     </message>
@@ -7802,10 +8205,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdCmdMacroStartDebug</name>
-    <message>
-      <source>Macro</source>
-      <translation>Macro</translation>
-    </message>
     <message>
       <source>Debug macro</source>
       <translation>Depurar macro</translation>
@@ -7818,10 +8217,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdMacroStepInto</name>
     <message>
-      <source>Macro</source>
-      <translation>Macro</translation>
-    </message>
-    <message>
       <source>Step into</source>
       <translation>Entrar en</translation>
     </message>
@@ -7829,20 +8224,12 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdMacroStepOver</name>
     <message>
-      <source>Macro</source>
-      <translation>Macro</translation>
-    </message>
-    <message>
       <source>Step over</source>
       <translation>Pasar al siguiente</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMacroStopDebug</name>
-    <message>
-      <source>Macro</source>
-      <translation>Macro</translation>
-    </message>
     <message>
       <source>Stop debugging</source>
       <translation>Parar depuración</translation>
@@ -7855,10 +8242,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdMacroStopRecord</name>
     <message>
-      <source>Macro</source>
-      <translation>Macro</translation>
-    </message>
-    <message>
       <source>S&amp;top macro recording</source>
       <translation>&amp;Detener la grabaciṕon de la macro</translation>
     </message>
@@ -7870,20 +8253,12 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdMeasureDistance</name>
     <message>
-      <source>View</source>
-      <translation>Vista</translation>
-    </message>
-    <message>
       <source>Measure distance</source>
       <translation>Medir distancia</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMeasurementSimple</name>
-    <message>
-      <source>Tools</source>
-      <translation>Herramientas</translation>
-    </message>
     <message>
       <source>Measures distance between two selected objects</source>
       <translation>Medir distancias entre dos objetos seleccionados</translation>
@@ -7896,16 +8271,12 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdMergeProjects</name>
     <message>
-      <source>File</source>
-      <translation>Archivo</translation>
-    </message>
-    <message>
       <source>Merge project...</source>
       <translation>Fusionar proyecto...</translation>
     </message>
     <message>
       <source>Merge project</source>
-      <translation>Fusionar proyecto</translation>
+      <translation>Fusiona el proyecto</translation>
     </message>
     <message>
       <source>Cannot merge project with itself.</source>
@@ -7919,16 +8290,12 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdNew</name>
     <message>
-      <source>File</source>
-      <translation>Archivo</translation>
-    </message>
-    <message>
       <source>&amp;New</source>
       <translation>&amp;Nuevo</translation>
     </message>
     <message>
       <source>Create a new empty document</source>
-      <translation>Crear un documento vacío nuevo</translation>
+      <translation>Crea un documento vacío nuevo</translation>
     </message>
     <message>
       <source>Unnamed</source>
@@ -7949,10 +8316,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdOnlineHelpWebsite</name>
     <message>
-      <source>Help</source>
-      <translation>Ayuda</translation>
-    </message>
-    <message>
       <source>Help Website</source>
       <translation>Sitio web de ayuda</translation>
     </message>
@@ -7964,16 +8327,12 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdOpen</name>
     <message>
-      <source>File</source>
-      <translation>Archivo</translation>
-    </message>
-    <message>
       <source>&amp;Open...</source>
       <translation>&amp;Abrir...</translation>
     </message>
     <message>
       <source>Open a document or import files</source>
-      <translation>Abrir un documento o importar archivos</translation>
+      <translation>Abre un documento o importa archivos</translation>
     </message>
     <message>
       <source>Supported formats</source>
@@ -7995,10 +8354,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdPart</name>
     <message>
-      <source>Structure</source>
-      <translation>Estructura</translation>
-    </message>
-    <message>
       <source>Create part</source>
       <translation>Crear pieza</translation>
     </message>
@@ -8009,10 +8364,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdCmdPaste</name>
-    <message>
-      <source>Edit</source>
-      <translation>Editar</translation>
-    </message>
     <message>
       <source>&amp;Paste</source>
       <translation>&amp;Pegar</translation>
@@ -8025,10 +8376,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdPlacement</name>
     <message>
-      <source>Edit</source>
-      <translation>Editar</translation>
-    </message>
-    <message>
       <source>Placement...</source>
       <translation>Ubicación...</translation>
     </message>
@@ -8040,46 +8387,34 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdPrint</name>
     <message>
-      <source>File</source>
-      <translation>Archivo</translation>
-    </message>
-    <message>
       <source>&amp;Print...</source>
       <translation>&amp;Imprimir...</translation>
     </message>
     <message>
       <source>Print the document</source>
-      <translation>Imprimir el documento</translation>
+      <translation>Imprime el documento</translation>
     </message>
   </context>
   <context>
     <name>StdCmdPrintPdf</name>
-    <message>
-      <source>File</source>
-      <translation>Archivo</translation>
-    </message>
     <message>
       <source>&amp;Export PDF...</source>
       <translation>&amp;Exportar en PDF...</translation>
     </message>
     <message>
       <source>Export the document as PDF</source>
-      <translation>Exportar el documento como PDF</translation>
+      <translation>Exporta el documento como PDF</translation>
     </message>
   </context>
   <context>
     <name>StdCmdPrintPreview</name>
-    <message>
-      <source>File</source>
-      <translation>Archivo</translation>
-    </message>
     <message>
       <source>&amp;Print preview...</source>
       <translation>Vista previa de impresión...</translation>
     </message>
     <message>
       <source>Print the document</source>
-      <translation>Imprimir el documento</translation>
+      <translation>Imprime el documento</translation>
     </message>
     <message>
       <source>Print preview</source>
@@ -8089,24 +8424,16 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdProjectInfo</name>
     <message>
-      <source>File</source>
-      <translation>Archivo</translation>
-    </message>
-    <message>
       <source>Project i&amp;nformation...</source>
       <translation>&amp;Información del proyecto...</translation>
     </message>
     <message>
       <source>Show details of the currently active project</source>
-      <translation>Mostrar detalles del proyecto activo actual</translation>
+      <translation>Muestra detalles del proyecto activo actual</translation>
     </message>
   </context>
   <context>
     <name>StdCmdProjectUtil</name>
-    <message>
-      <source>Tools</source>
-      <translation>Herramientas</translation>
-    </message>
     <message>
       <source>Project utility...</source>
       <translation>Utilidad del proyecto...</translation>
@@ -8119,10 +8446,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdPythonWebsite</name>
     <message>
-      <source>Help</source>
-      <translation>Ayuda</translation>
-    </message>
-    <message>
       <source>Python Website</source>
       <translation>Sitio web de Python</translation>
     </message>
@@ -8133,10 +8456,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdCmdQuit</name>
-    <message>
-      <source>File</source>
-      <translation>Archivo</translation>
-    </message>
     <message>
       <source>E&amp;xit</source>
       <translation>S&amp;alir</translation>
@@ -8149,20 +8468,12 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdRandomColor</name>
     <message>
-      <source>File</source>
-      <translation>Archivo</translation>
-    </message>
-    <message>
       <source>Random color</source>
       <translation>Color aleatorio</translation>
     </message>
   </context>
   <context>
     <name>StdCmdRecentFiles</name>
-    <message>
-      <source>File</source>
-      <translation>Archivo</translation>
-    </message>
     <message>
       <source>Recent files</source>
       <translation>Archivos recientes</translation>
@@ -8175,10 +8486,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdRecentMacros</name>
     <message>
-      <source>Macro</source>
-      <translation>Macro</translation>
-    </message>
-    <message>
       <source>Recent macros</source>
       <translation>Macros recientes</translation>
     </message>
@@ -8189,10 +8496,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdCmdRedo</name>
-    <message>
-      <source>Edit</source>
-      <translation>Editar</translation>
-    </message>
     <message>
       <source>&amp;Redo</source>
       <translation>&amp;Rehacer</translation>
@@ -8205,10 +8508,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdRefresh</name>
     <message>
-      <source>Edit</source>
-      <translation>Editar</translation>
-    </message>
-    <message>
       <source>&amp;Refresh</source>
       <translation>&amp;Actualizar pantalla</translation>
     </message>
@@ -8218,11 +8517,18 @@ Trayectoria física: </translation>
     </message>
   </context>
   <context>
-    <name>StdCmdRevert</name>
+    <name>StdCmdReportBug</name>
     <message>
-      <source>File</source>
-      <translation>Archivo</translation>
+      <source>Report a bug</source>
+      <translation type="unfinished">Report a bug</translation>
     </message>
+    <message>
+      <source>Report a bug or suggest a feature</source>
+      <translation type="unfinished">Report a bug or suggest a feature</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdRevert</name>
     <message>
       <source>Revert</source>
       <translation>Deshacer</translation>
@@ -8235,10 +8541,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdSave</name>
     <message>
-      <source>File</source>
-      <translation>Archivo</translation>
-    </message>
-    <message>
       <source>&amp;Save</source>
       <translation>&amp;Guardar</translation>
     </message>
@@ -8250,39 +8552,27 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdSaveAll</name>
     <message>
-      <source>File</source>
-      <translation>Archivo</translation>
-    </message>
-    <message>
       <source>Save All</source>
       <translation>Guardar todo</translation>
     </message>
     <message>
       <source>Save all opened document</source>
-      <translation>Guardar todos los documentos abiertos</translation>
+      <translation>Guarda todos los documentos abiertos</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSaveAs</name>
-    <message>
-      <source>File</source>
-      <translation>Archivo</translation>
-    </message>
     <message>
       <source>Save &amp;As...</source>
       <translation>Guardar &amp;Como...</translation>
     </message>
     <message>
       <source>Save the active document under a new file name</source>
-      <translation>Guardar el documento activo con un nuevo nombre de archivo</translation>
+      <translation>Guarda el documento activo con un nombre de archivo nuevo</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSaveCopy</name>
-    <message>
-      <source>File</source>
-      <translation>Archivo</translation>
-    </message>
     <message>
       <source>Save a &amp;Copy...</source>
       <translation>Guardar una &amp;Copia...</translation>
@@ -8295,10 +8585,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdSceneInspector</name>
     <message>
-      <source>Tools</source>
-      <translation>Herramientas</translation>
-    </message>
-    <message>
       <source>Scene inspector...</source>
       <translation>Inspector de escena...</translation>
     </message>
@@ -8309,10 +8595,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdCmdSelBack</name>
-    <message>
-      <source>View</source>
-      <translation>Vista</translation>
-    </message>
     <message>
       <source>&amp;Back</source>
       <translation>&amp;Atrás</translation>
@@ -8325,24 +8607,16 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdSelBoundingBox</name>
     <message>
-      <source>View</source>
-      <translation>Vista</translation>
-    </message>
-    <message>
       <source>&amp;Bounding box</source>
       <translation>&amp;Cuadro delimitador</translation>
     </message>
     <message>
       <source>Show selection bounding box</source>
-      <translation>Mostrar cuadro delimitador de selección</translation>
+      <translation>Muestra el cuadro delimitador de selección</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSelForward</name>
-    <message>
-      <source>View</source>
-      <translation>Vista</translation>
-    </message>
     <message>
       <source>&amp;Forward</source>
       <translation>&amp;Adelante</translation>
@@ -8355,39 +8629,27 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdSelectAll</name>
     <message>
-      <source>Edit</source>
-      <translation>Editar</translation>
-    </message>
-    <message>
       <source>Select &amp;All</source>
       <translation>Seleccionar &amp;Todo</translation>
     </message>
     <message>
       <source>Select all</source>
-      <translation>Seleccionar todo</translation>
+      <translation>Selecciona todo</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSelectVisibleObjects</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Select visible objects</source>
       <translation>Seleccionar objetos visibles</translation>
     </message>
     <message>
       <source>Select visible objects in the active document</source>
-      <translation>Seleccione objetos visibles en el documento activo</translation>
+      <translation>Selecciona objetos visibles en el documento activo</translation>
     </message>
   </context>
   <context>
     <name>StdCmdSendToPythonConsole</name>
-    <message>
-      <source>Edit</source>
-      <translation>Editar</translation>
-    </message>
     <message>
       <source>&amp;Send to Python Console</source>
       <translation>&amp;Enviar a consola de Python</translation>
@@ -8400,10 +8662,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdSetAppearance</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
-    <message>
       <source>Appearance...</source>
       <translation>Apariencia...</translation>
     </message>
@@ -8415,54 +8673,38 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdShowObjects</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
-    <message>
       <source>Show all objects</source>
       <translation>Mostrar todos los objetos</translation>
     </message>
     <message>
       <source>Show all objects in the document</source>
-      <translation>Mostrar todos los objetos en el documento</translation>
+      <translation>Muestra todos los objetos en el documento</translation>
     </message>
   </context>
   <context>
     <name>StdCmdShowSelection</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Show selection</source>
       <translation>Mostrar selección</translation>
     </message>
     <message>
       <source>Show all selected objects</source>
-      <translation>Mostrar todos los objetos seleccionados</translation>
+      <translation>Muestra todos los objetos seleccionados</translation>
     </message>
   </context>
   <context>
     <name>StdCmdStatusBar</name>
-    <message>
-      <source>View</source>
-      <translation>Vista</translation>
-    </message>
     <message>
       <source>Status bar</source>
       <translation>Barra de estado</translation>
     </message>
     <message>
       <source>Toggles the status bar</source>
-      <translation>Conmutar la barra de estado</translation>
+      <translation>Activa/desactiva la barra de estado</translation>
     </message>
   </context>
   <context>
     <name>StdCmdTextDocument</name>
-    <message>
-      <source>Tools</source>
-      <translation>Herramientas</translation>
-    </message>
     <message>
       <source>Add text document</source>
       <translation>Añadir documento de texto</translation>
@@ -8475,10 +8717,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdTextureMapping</name>
     <message>
-      <source>Tools</source>
-      <translation>Herramientas</translation>
-    </message>
-    <message>
       <source>Texture mapping...</source>
       <translation>Mapeo de textura...</translation>
     </message>
@@ -8489,10 +8727,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdCmdTileWindows</name>
-    <message>
-      <source>Window</source>
-      <translation>Ventana</translation>
-    </message>
     <message>
       <source>&amp;Tile</source>
       <translation>&amp;Mosaico</translation>
@@ -8505,10 +8739,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdToggleBreakpoint</name>
     <message>
-      <source>Macro</source>
-      <translation>Macro</translation>
-    </message>
-    <message>
       <source>Toggle breakpoint</source>
       <translation>Conmutar punto de parada</translation>
     </message>
@@ -8516,39 +8746,27 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdToggleClipPlane</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
-    <message>
       <source>Clipping plane</source>
       <translation>Plano de recorte</translation>
     </message>
     <message>
       <source>Toggles clipping plane for active view</source>
-      <translation>Conmuta el plano de recorte para la vista activa</translation>
+      <translation>Conmuta el plano de corte para la vista activa</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleNavigation</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Toggle navigation/Edit mode</source>
       <translation>Alternar en modo Navegación/Edición</translation>
     </message>
     <message>
       <source>Toggle between navigation and edit mode</source>
-      <translation>Alternar entre el modo de navegación y edición</translation>
+      <translation>Alterna entre el modo de navegación y edición</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleObjects</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Toggle all objects</source>
       <translation>Conmutar todos los objetos</translation>
@@ -8561,10 +8779,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdToggleSelectability</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
-    <message>
       <source>Toggle selectability</source>
       <translation>Conmutar selectividad</translation>
     </message>
@@ -8575,10 +8789,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdCmdToggleVisibility</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Toggle visibility</source>
       <translation>Conmutar visibilidad</translation>
@@ -8591,24 +8801,16 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdToolBarMenu</name>
     <message>
-      <source>View</source>
-      <translation>Vista</translation>
-    </message>
-    <message>
       <source>Tool&amp;bars</source>
       <translation>&amp;Barras de herramientas</translation>
     </message>
     <message>
       <source>Toggles this window</source>
-      <translation>Conmutar esta ventana</translation>
+      <translation>Alternar esta ventana</translation>
     </message>
   </context>
   <context>
     <name>StdCmdTransform</name>
-    <message>
-      <source>Edit</source>
-      <translation>Editar</translation>
-    </message>
     <message>
       <source>Transform...</source>
       <translation>Transformar...</translation>
@@ -8621,24 +8823,16 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdTransformManip</name>
     <message>
-      <source>Edit</source>
-      <translation>Editar</translation>
-    </message>
-    <message>
       <source>Transform</source>
       <translation>Transformar</translation>
     </message>
     <message>
       <source>Transform the selected object in the 3d view</source>
-      <translation>Transformar el objeto seleccionado en la vista 3D</translation>
+      <translation>Transforma el objeto seleccionado en la vista 3d</translation>
     </message>
   </context>
   <context>
     <name>StdCmdTreeCollapse</name>
-    <message>
-      <source>View</source>
-      <translation>Vista</translation>
-    </message>
     <message>
       <source>Collapse selected item</source>
       <translation>Colapsar elemento seleccionado</translation>
@@ -8651,10 +8845,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdTreeExpand</name>
     <message>
-      <source>View</source>
-      <translation>Vista</translation>
-    </message>
-    <message>
       <source>Expand selected item</source>
       <translation>Expandir elemento seleccionado</translation>
     </message>
@@ -8665,10 +8855,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdCmdTreeSelectAllInstances</name>
-    <message>
-      <source>View</source>
-      <translation>Vista</translation>
-    </message>
     <message>
       <source>Select all instances</source>
       <translation>Seleccionar todas las instancias</translation>
@@ -8681,10 +8867,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdTreeViewActions</name>
     <message>
-      <source>View</source>
-      <translation>Vista</translation>
-    </message>
-    <message>
       <source>TreeView actions</source>
       <translation>Acciones del vista de árbol</translation>
     </message>
@@ -8696,24 +8878,16 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdUndo</name>
     <message>
-      <source>Edit</source>
-      <translation>Editar</translation>
-    </message>
-    <message>
       <source>&amp;Undo</source>
       <translation>&amp;Deshacer</translation>
     </message>
     <message>
       <source>Undo exactly one action</source>
-      <translation>Deshacer exactamente una acción</translation>
+      <translation>Deshace exactamente una acción</translation>
     </message>
   </context>
   <context>
     <name>StdCmdUnitsCalculator</name>
-    <message>
-      <source>Tools</source>
-      <translation>Herramientas</translation>
-    </message>
     <message>
       <source>&amp;Units calculator...</source>
       <translation>Calculadora de unidades...</translation>
@@ -8724,11 +8898,18 @@ Trayectoria física: </translation>
     </message>
   </context>
   <context>
-    <name>StdCmdUserInterface</name>
+    <name>StdCmdUserEditMode</name>
     <message>
-      <source>View</source>
-      <translation>Vista</translation>
+      <source>Edit mode</source>
+      <translation>Modo edición</translation>
     </message>
+    <message>
+      <source>Defines behavior when editing an object from tree</source>
+      <translation>Determina el comportamiento cuando se edita un objeto del árbol</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdUserInterface</name>
     <message>
       <source>Dock views</source>
       <translation>Acoplar vistas</translation>
@@ -8741,10 +8922,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdViewBottom</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
-    <message>
       <source>Bottom</source>
       <translation>Inferior</translation>
     </message>
@@ -8755,10 +8932,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdCmdViewCreate</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Create new view</source>
       <translation>Crear una vista nueva</translation>
@@ -8771,24 +8944,16 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdViewDimetric</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
-    <message>
       <source>Dimetric</source>
       <translation>Dimétrica</translation>
     </message>
     <message>
       <source>Set to dimetric view</source>
-      <translation>Establecer vista dimétrica</translation>
+      <translation>Establece vista dimétrica</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewExample1</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Inventor example #1</source>
       <translation>Inventor ejemplo #1</translation>
@@ -8801,10 +8966,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdViewExample2</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
-    <message>
       <source>Inventor example #2</source>
       <translation>Inventor ejemplo #2</translation>
     </message>
@@ -8815,10 +8976,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdCmdViewExample3</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Inventor example #3</source>
       <translation>Inventor ejemplo #3</translation>
@@ -8831,204 +8988,148 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdViewFitAll</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
-    <message>
       <source>Fit all</source>
       <translation>Ajustar todo</translation>
     </message>
     <message>
       <source>Fits the whole content on the screen</source>
-      <translation>Ajustar el contenido completo a la pantalla</translation>
+      <translation>Ajusta el contenido completo a la pantalla</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewFitSelection</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Fit selection</source>
       <translation>Ajustar a la selección</translation>
     </message>
     <message>
       <source>Fits the selected content on the screen</source>
-      <translation>Ajustar el contenido seleccionado a la pantalla</translation>
+      <translation>Ajusta el contenido seleccionado a la pantalla</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewFront</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Front</source>
       <translation>Alzado</translation>
     </message>
     <message>
       <source>Set to front view</source>
-      <translation>Establecer vista alzado</translation>
+      <translation>Establece vista de alzado</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewHome</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Home</source>
       <translation>Inicio</translation>
     </message>
     <message>
       <source>Set to default home view</source>
-      <translation>Establecer como vista de inicio por defecto</translation>
+      <translation>Establece por defecto la vista de inicio</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIsometric</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Isometric</source>
       <translation>Isométrica</translation>
     </message>
     <message>
       <source>Set to isometric view</source>
-      <translation>Establecer vista isométrica</translation>
+      <translation>Establece vista isométrica</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvIssueCamPos</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Issue camera position</source>
       <translation>Publicar la posición de la cámara</translation>
     </message>
     <message>
       <source>Issue the camera position to the console and to a macro, to easily recall this position</source>
-      <translation>Publicar la posición de la cámara a la consola y a una macro, para rellamar fácilmente a esta posición</translation>
+      <translation>Publica la posición de la cámara a la consola y a una macro, para reutilizar fácilmente esta posición</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvStereoInterleavedColumns</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Stereo Interleaved Columns</source>
       <translation>Estéreo columnas intercaladas</translation>
     </message>
     <message>
       <source>Switch stereo viewing to Interleaved Columns</source>
-      <translation>Cambiar la visualización estéreo a columnas intercaladas</translation>
+      <translation>Cambia la visualización estéreo a columnas intercaladas</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvStereoInterleavedRows</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Stereo Interleaved Rows</source>
       <translation>Estéreo filas intercaladas</translation>
     </message>
     <message>
       <source>Switch stereo viewing to Interleaved Rows</source>
-      <translation>Cambiar la visualización estéreo a filas intercaladas</translation>
+      <translation>Cambia la visualización estéreo a filas intercaladas</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvStereoOff</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Stereo Off</source>
       <translation>Estereo apagado</translation>
     </message>
     <message>
       <source>Switch stereo viewing off</source>
-      <translation>Cambiar la visualización estereo a apagado</translation>
+      <translation>Apaga la visualización estereo</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvStereoQuadBuff</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Stereo quad buffer</source>
       <translation>Estereo cuádruple buffer</translation>
     </message>
     <message>
       <source>Switch stereo viewing to quad buffer</source>
-      <translation>Cambiar la visualización estereo a cuádruple buffer</translation>
+      <translation>Cambia la visualización estereo a cuádruple buffer</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewIvStereoRedGreen</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Stereo red/cyan</source>
       <translation>Estereo rojo/cian</translation>
     </message>
     <message>
       <source>Switch stereo viewing to red/cyan</source>
-      <translation>Cambiar a visualización estereo rojo/cian</translation>
+      <translation>Cambia a visualización estereo rojo/cian</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewLeft</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Left</source>
       <translation>Izquierda</translation>
     </message>
     <message>
       <source>Set to left view</source>
-      <translation>Establecer vista izquierda</translation>
+      <translation>Establece vista izquierda</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewRear</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Rear</source>
       <translation>Posterior</translation>
     </message>
     <message>
       <source>Set to rear view</source>
-      <translation>Establecer vista posterior</translation>
+      <translation>Establece vista posterior</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewRestoreCamera</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Restore saved camera</source>
       <translation>Restaurar cámara guardada</translation>
@@ -9041,54 +9142,38 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdViewRight</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
-    <message>
       <source>Right</source>
       <translation>Derecha</translation>
     </message>
     <message>
       <source>Set to right view</source>
-      <translation>Establecer vista derecha</translation>
+      <translation>Establece vista derecha</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewRotateLeft</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Rotate Left</source>
       <translation>Rotar a la izquierda</translation>
     </message>
     <message>
       <source>Rotate the view by 90° counter-clockwise</source>
-      <translation>Girar la vista a 90° en sentido antihorario</translation>
+      <translation>Gira la vista a 90° en sentido antihorario</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewRotateRight</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Rotate Right</source>
       <translation>Rotar a la derecha</translation>
     </message>
     <message>
       <source>Rotate the view by 90° clockwise</source>
-      <translation>Girar la vista a 90° en sentido horario</translation>
+      <translation>Gira la vista a 90° en sentido horario</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewSaveCamera</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Save current camera</source>
       <translation>Guardar cámara actual</translation>
@@ -9101,39 +9186,27 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdViewTop</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
-    <message>
       <source>Top</source>
       <translation>Planta</translation>
     </message>
     <message>
       <source>Set to top view</source>
-      <translation>Establecer vista en planta</translation>
+      <translation>Establece vista en planta</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewTrimetric</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Trimetric</source>
       <translation>Trimétrica</translation>
     </message>
     <message>
       <source>Set to trimetric view</source>
-      <translation>Establecer vista trimétrica</translation>
+      <translation>Establece vista trimétrica</translation>
     </message>
   </context>
   <context>
     <name>StdCmdViewVR</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>FreeCAD-VR</source>
       <translation>FreeCAD-VR</translation>
@@ -9146,10 +9219,6 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdWhatsThis</name>
     <message>
-      <source>Help</source>
-      <translation>Ayuda</translation>
-    </message>
-    <message>
       <source>&amp;What's This?</source>
       <translation>¿&amp;Qué es esto?</translation>
     </message>
@@ -9160,10 +9229,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdCmdWindows</name>
-    <message>
-      <source>Window</source>
-      <translation>Ventana</translation>
-    </message>
     <message>
       <source>&amp;Windows...</source>
       <translation>&amp;Ventanas...</translation>
@@ -9176,20 +9241,12 @@ Trayectoria física: </translation>
   <context>
     <name>StdCmdWindowsMenu</name>
     <message>
-      <source>Window</source>
-      <translation>Ventana</translation>
-    </message>
-    <message>
       <source>Activates this window</source>
       <translation>Activa esta ventana</translation>
     </message>
   </context>
   <context>
     <name>StdCmdWorkbench</name>
-    <message>
-      <source>View</source>
-      <translation>Vista</translation>
-    </message>
     <message>
       <source>Workbench</source>
       <translation>Escenario</translation>
@@ -9202,46 +9259,34 @@ Trayectoria física: </translation>
   <context>
     <name>StdMainFullscreen</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
-    <message>
       <source>Fullscreen</source>
       <translation>Pantalla completa</translation>
     </message>
     <message>
       <source>Display the main window in fullscreen mode</source>
-      <translation>Mostrar la ventana principal en modo de pantalla completa</translation>
+      <translation>Muestra la ventana principal en modo de pantalla completa</translation>
     </message>
   </context>
   <context>
     <name>StdOrthographicCamera</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
-    <message>
       <source>Orthographic view</source>
-      <translation>Vista ortográfica</translation>
+      <translation>Vista ortogonal</translation>
     </message>
     <message>
       <source>Switches to orthographic view mode</source>
-      <translation>Cambiar a modo de vista ortográfica</translation>
+      <translation>Cambia al modo de vista ortogonal</translation>
     </message>
   </context>
   <context>
     <name>StdPerspectiveCamera</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Perspective view</source>
       <translation>Vista perspectiva</translation>
     </message>
     <message>
       <source>Switches to perspective view mode</source>
-      <translation>Cambiar a modo de vista perspectiva</translation>
+      <translation>Cambia a modo de vista perspectiva</translation>
     </message>
   </context>
   <context>
@@ -9252,37 +9297,25 @@ Trayectoria física: </translation>
     </message>
     <message>
       <source>Expand active document and collapse all others</source>
-      <translation>Expandir documento activo y colapsar todos los demás</translation>
-    </message>
-    <message>
-      <source>TreeView</source>
-      <translation>Vista de árbol</translation>
+      <translation>Expande el documento activo y colapsa todos los demás</translation>
     </message>
   </context>
   <context>
     <name>StdTreeDrag</name>
-    <message>
-      <source>TreeView</source>
-      <translation>Vista de árbol</translation>
-    </message>
     <message>
       <source>Initiate dragging</source>
       <translation>Iniciar arrastre</translation>
     </message>
     <message>
       <source>Initiate dragging of current selected tree items</source>
-      <translation>Iniciar el arrastre de los elementos del árbol seleccionados</translation>
+      <translation>Inicia el arrastre de los elementos del árbol seleccionados</translation>
     </message>
   </context>
   <context>
     <name>StdTreeMultiDocument</name>
     <message>
       <source>Display all documents in the tree view</source>
-      <translation>Mostrar todos los documentos en la vista de árbol</translation>
-    </message>
-    <message>
-      <source>TreeView</source>
-      <translation>Vista de árbol</translation>
+      <translation>Muestra todos los documentos en la vista de árbol</translation>
     </message>
     <message>
       <source>Multi document</source>
@@ -9291,10 +9324,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdTreePreSelection</name>
-    <message>
-      <source>TreeView</source>
-      <translation>Vista de árbol</translation>
-    </message>
     <message>
       <source>Pre-selection</source>
       <translation>Pre-selección</translation>
@@ -9307,24 +9336,16 @@ Trayectoria física: </translation>
   <context>
     <name>StdTreeRecordSelection</name>
     <message>
-      <source>TreeView</source>
-      <translation>Vista de árbol</translation>
-    </message>
-    <message>
       <source>Record selection</source>
       <translation>Grabar selección</translation>
     </message>
     <message>
       <source>Record selection in tree view in order to go back/forward using navigation button</source>
-      <translation>Grabar selección en la vista de árbol para retroceder/avanzar usando el botón de navegación</translation>
+      <translation>Graba la selección en la vista de árbol para retroceder/avanzar usando el botón de navegación</translation>
     </message>
   </context>
   <context>
     <name>StdTreeSelection</name>
-    <message>
-      <source>TreeView</source>
-      <translation>Vista de árbol</translation>
-    </message>
     <message>
       <source>Go to selection</source>
       <translation>Ir a la selección</translation>
@@ -9341,10 +9362,6 @@ Trayectoria física: </translation>
       <translation>Muestra sólo el documento activo en la vista de árbol</translation>
     </message>
     <message>
-      <source>TreeView</source>
-      <translation>Vista de árbol</translation>
-    </message>
-    <message>
       <source>Single document</source>
       <translation>Documento simple</translation>
     </message>
@@ -9352,54 +9369,38 @@ Trayectoria física: </translation>
   <context>
     <name>StdTreeSyncPlacement</name>
     <message>
-      <source>TreeView</source>
-      <translation>Vista de árbol</translation>
-    </message>
-    <message>
       <source>Sync placement</source>
       <translation>Colocación de sincronización</translation>
     </message>
     <message>
       <source>Auto adjust placement on drag and drop objects across coordinate systems</source>
-      <translation>Ajustar automáticamente la colocación al arrastrar y soltar objetos a través de los sistemas de coordenadas</translation>
+      <translation>Ajusta automáticamente la posición al arrastrar y soltar objetos a través de los sistemas de coordenadas</translation>
     </message>
   </context>
   <context>
     <name>StdTreeSyncSelection</name>
-    <message>
-      <source>TreeView</source>
-      <translation>Vista de árbol</translation>
-    </message>
     <message>
       <source>Sync selection</source>
       <translation>Sincronizar selección</translation>
     </message>
     <message>
       <source>Auto expand tree item when the corresponding object is selected in 3D view</source>
-      <translation>Auto expandir el elemento del árbol cuando se selecciona el objeto correspondiente en la vista 3D</translation>
+      <translation>Auto expande el elemento del árbol cuando se selecciona el objeto correspondiente en la vista 3D</translation>
     </message>
   </context>
   <context>
     <name>StdTreeSyncView</name>
-    <message>
-      <source>TreeView</source>
-      <translation>Vista de árbol</translation>
-    </message>
     <message>
       <source>Sync view</source>
       <translation>Sincronizar vista</translation>
     </message>
     <message>
       <source>Auto switch to the 3D view containing the selected item</source>
-      <translation>Cambiar automáticamente a la vista 3D que contiene el elemento seleccionado</translation>
+      <translation>Cambia automáticamente a la vista 3D que contiene el elemento seleccionado</translation>
     </message>
   </context>
   <context>
     <name>StdViewBoxZoom</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Box zoom</source>
       <translation>Zona de zoom</translation>
@@ -9408,54 +9409,38 @@ Trayectoria física: </translation>
   <context>
     <name>StdViewDock</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
-    <message>
       <source>Docked</source>
       <translation>Acoplado</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Mostrar la vista activa en pantalla completa, en modo desacoplado o acoplado</translation>
+      <translation>Muestra la vista activa a pantalla completa, en modo desacoplado o acoplado</translation>
     </message>
   </context>
   <context>
     <name>StdViewDockUndockFullscreen</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Document window</source>
       <translation>Ventana del documento</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Mostrar la vista activa en pantalla completa, en modo desacoplado o acoplado</translation>
+      <translation>Muestra la vista activa a pantalla completa, en modo desacoplado o acoplado</translation>
     </message>
   </context>
   <context>
     <name>StdViewFullscreen</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Fullscreen</source>
       <translation>Pantalla completa</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Mostrar la vista activa en pantalla completa, en modo desacoplado o acoplado</translation>
+      <translation>Muestra la vista activa a pantalla completa, en modo desacoplado o acoplado</translation>
     </message>
   </context>
   <context>
     <name>StdViewScreenShot</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Save picture...</source>
       <translation>Guardar imagen...</translation>
@@ -9468,24 +9453,16 @@ Trayectoria física: </translation>
   <context>
     <name>StdViewUndock</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
-    <message>
       <source>Undocked</source>
       <translation>Desacoplado</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Mostrar la vista activa en pantalla completa, en modo desacoplado o acoplado</translation>
+      <translation>Muestra la vista activa a pantalla completa, en modo desacoplado o acoplado</translation>
     </message>
   </context>
   <context>
     <name>StdViewZoomIn</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Zoom In</source>
       <translation>Aumentar con el zoom</translation>
@@ -9493,10 +9470,6 @@ Trayectoria física: </translation>
   </context>
   <context>
     <name>StdViewZoomOut</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Vista estándar</translation>
-    </message>
     <message>
       <source>Zoom Out</source>
       <translation>Reducir con el zoom</translation>
@@ -9652,11 +9625,11 @@ Por favor, compruebe la Vista de Reportes para más detalles.
     <name>ViewOrthographicCmd</name>
     <message>
       <source>Orthographic</source>
-      <translation>Ortográfico</translation>
+      <translation>Ortogonal</translation>
     </message>
     <message>
       <source>Set View to Orthographic mode</source>
-      <translation>Configurar Vista a modo Ortográfico</translation>
+      <translation>Establecer Vista a modo Ortogonal</translation>
     </message>
   </context>
   <context>
@@ -9747,42 +9720,13 @@ Por favor, compruebe la Vista de Reportes para más detalles.
       <source>Special Ops</source>
       <translation>Operaciones especiales</translation>
     </message>
-  </context>
-  <context>
-    <name>testClass</name>
     <message>
-      <source>test</source>
-      <translation>prueba</translation>
+      <source>Axonometric</source>
+      <translation>Axonométrica</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-size:20pt; font-weight:600;"&gt;iisTaskPanel&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;Created for Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-size:20pt; font-weight:600;"&gt;iisTaskPanel&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;Creado por Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Choose the style of the Task Panel</source>
-      <translation>Seleccionar el estilo del Panel de Tareas</translation>
-    </message>
-    <message>
-      <source>Default</source>
-      <translation>Por defecto</translation>
-    </message>
-    <message>
-      <source>Windows XP</source>
-      <translation>Windows XP</translation>
+      <source>Link actions</source>
+      <translation>Acciones de vínculos</translation>
     </message>
   </context>
 </TS>

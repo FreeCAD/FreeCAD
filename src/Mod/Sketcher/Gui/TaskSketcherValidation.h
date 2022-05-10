@@ -27,6 +27,7 @@
 #include <vector>
 #include <memory>
 #include <Base/Vector3D.h>
+#include <App/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Mod/Sketcher/App/SketchAnalysis.h>
 
@@ -41,7 +42,7 @@ class SketcherValidation : public QWidget
     Q_OBJECT
 
 public:
-    SketcherValidation(Sketcher::SketchObject* Obj, QWidget* parent = 0);
+    SketcherValidation(Sketcher::SketchObject* Obj, QWidget* parent = nullptr);
     ~SketcherValidation();
 
 protected:
@@ -67,7 +68,7 @@ private:
 
 private:
     std::unique_ptr<Ui_TaskSketcherValidation> ui;
-    Sketcher::SketchObject* sketch;
+    App::WeakPtrT<Sketcher::SketchObject> sketch;
     Sketcher::SketchAnalysis sketchAnalyser;
     SoGroup* coincidenceRoot;
 };

@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 
-#include "PropertySheet.h"
+#include "Mod/Spreadsheet/App/PropertySheet.h"
 
 // inclusion of the generated files (generated out of PropertySheetPy.xml)
 #include "PropertySheetPy.h"
@@ -49,9 +49,14 @@ int PropertySheetPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
+PyObject * PropertySheetPy::mapping_subscript(PyObject * o, PyObject *key)
+{
+    return static_cast<PropertySheetPy*>(o)->getPropertySheetPtr()->getPyValue(key);
+}
+
 PyObject *PropertySheetPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int PropertySheetPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

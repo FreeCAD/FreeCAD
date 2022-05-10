@@ -23,24 +23,15 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRep_Builder.hxx>
-# include <BRepBndLib.hxx>
-# include <BRepPrimAPI_MakeRevol.hxx>
-# include <BRepBuilderAPI_MakeFace.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
-# include <TopoDS_Wire.hxx>
-# include <TopExp_Explorer.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
-# include <Precision.hxx>
+# include <BRepPrimAPI_MakeRevol.hxx>
 # include <gp_Lin.hxx>
+# include <TopoDS.hxx>
+# include <TopExp_Explorer.hxx>
+# include <Precision.hxx>
 #endif
 
-#include <QCoreApplication>
-#include <Base/Axis.h>
-#include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Base/Placement.h>
 #include <Base/Tools.h>
 
 #include "FeatureGroove.h"
@@ -65,7 +56,7 @@ Groove::Groove()
     ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0f,1.0f,0.0f)),"Groove", App::Prop_ReadOnly, "Axis");
     ADD_PROPERTY_TYPE(Angle,(360.0),"Groove", App::Prop_None, "Angle");
     Angle.setConstraints(&floatAngle);
-    ADD_PROPERTY_TYPE(ReferenceAxis,(0),"Groove",(App::PropertyType)(App::Prop_None),"Reference axis of Groove");
+    ADD_PROPERTY_TYPE(ReferenceAxis,(nullptr),"Groove",(App::PropertyType)(App::Prop_None),"Reference axis of Groove");
 }
 
 short Groove::mustExecute() const
@@ -208,7 +199,7 @@ void Groove::updateAxis(void)
     const std::vector<std::string> &subReferenceAxis = ReferenceAxis.getSubValues();
     Base::Vector3d base;
     Base::Vector3d dir;
-    getAxis(pcReferenceAxis, subReferenceAxis, base, dir);
+    getAxis(pcReferenceAxis, subReferenceAxis, base, dir, ForbiddenAxis::NotParallelWithNormal);
 
     if (dir.Length() > Precision::Confusion()) {
         Base.setValue(base.x,base.y,base.z);

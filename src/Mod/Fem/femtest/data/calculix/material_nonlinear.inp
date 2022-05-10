@@ -19774,13 +19774,11 @@ Evolumes
 
 ***********************************************************
 ** Element sets for materials and FEM element type (solid, shell, beam, fluid)
-** written by write_element_sets_material_and_femelement_type function
 *ELSET,ELSET=Material_linSolid
 Evolumes
 
 ***********************************************************
 ** constraints fixed node sets
-** written by write_node_sets_constraints_fixed function
 ** ConstraintFixed
 *NSET,NSET=ConstraintFixed
 1,
@@ -19989,13 +19987,12 @@ Evolumes
 
 ***********************************************************
 ** Materials
-** written by write_materials function
-** Young's modulus unit is MPa = N/mm2
+** see information about units at file end
 ** FreeCAD material name: CalculiX-Steel
 ** Material_lin
 *MATERIAL, NAME=Material_lin
 *ELASTIC
-210000, 0.300
+210000,0.3
 *PLASTIC
 240.0, 0.0
 270.0, 0.025
@@ -20003,19 +20000,16 @@ Evolumes
 
 ***********************************************************
 ** Sections
-** written by write_femelementsets function
 *SOLID SECTION, ELSET=Material_linSolid, MATERIAL=Material_lin
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
-** written by write_step_begin function
 *STEP, NLGEOM
 *STATIC
 
 
 ***********************************************************
 ** Fixed Constraints
-** written by write_constraints_fixed function
 ** ConstraintFixed
 *BOUNDARY
 ConstraintFixed,1
@@ -20025,94 +20019,92 @@ ConstraintFixed,3
 
 ***********************************************************
 ** constraints pressure element face loads
-** written by write_constraints_pressure function
 ** ConstraintPressure
 *DLOAD
 ** ConstraintPressure: face load
-4796,P3,-130.0
-4799,P4,-130.0
-4872,P4,-130.0
-4875,P1,-130.0
-5260,P3,-130.0
-5261,P4,-130.0
-5286,P3,-130.0
-5287,P3,-130.0
-5527,P1,-130.0
-5528,P3,-130.0
-5647,P1,-130.0
-5648,P1,-130.0
-5886,P1,-130.0
-5887,P1,-130.0
-5993,P1,-130.0
-5994,P1,-130.0
-6114,P1,-130.0
-6115,P1,-130.0
-6591,P3,-130.0
-6592,P3,-130.0
-6685,P3,-130.0
-6686,P3,-130.0
-6827,P4,-130.0
-6828,P4,-130.0
-7016,P4,-130.0
-7017,P4,-130.0
-7221,P1,-130.0
-7222,P1,-130.0
-7360,P3,-130.0
-7361,P3,-130.0
-7863,P3,-130.0
-7864,P3,-130.0
-8589,P1,-130.0
-8590,P3,-130.0
-9169,P4,-130.0
-9170,P4,-130.0
-10527,P4,-130.0
-10530,P1,-130.0
-10580,P4,-130.0
-10583,P1,-130.0
-10735,P3,-130.0
-10736,P3,-130.0
-10741,P4,-130.0
-10742,P3,-130.0
-10753,P1,-130.0
-10759,P4,-130.0
-10791,P4,-130.0
-10793,P1,-130.0
-10811,P4,-130.0
-10831,P4,-130.0
-10832,P1,-130.0
-10845,P1,-130.0
-10846,P1,-130.0
-10862,P4,-130.0
-10865,P1,-130.0
-10868,P3,-130.0
-10869,P1,-130.0
-10870,P3,-130.0
-10871,P3,-130.0
-10881,P1,-130.0
-10882,P4,-130.0
-10885,P1,-130.0
-10886,P1,-130.0
-10902,P1,-130.0
-10903,P1,-130.0
-10926,P1,-130.0
-10927,P1,-130.0
-10930,P1,-130.0
-10933,P4,-130.0
-11005,P1,-130.0
-11006,P1,-130.0
-11009,P1,-130.0
-11010,P4,-130.0
-11018,P1,-130.0
-11019,P1,-130.0
-11054,P4,-130.0
-11055,P4,-130.0
-11114,P3,-130.0
-11157,P1,-130.0
-11158,P4,-130.0
+4796,P3,-130
+4799,P4,-130
+4872,P4,-130
+4875,P1,-130
+5260,P3,-130
+5261,P4,-130
+5286,P3,-130
+5287,P3,-130
+5527,P1,-130
+5528,P3,-130
+5647,P1,-130
+5648,P1,-130
+5886,P1,-130
+5887,P1,-130
+5993,P1,-130
+5994,P1,-130
+6114,P1,-130
+6115,P1,-130
+6591,P3,-130
+6592,P3,-130
+6685,P3,-130
+6686,P3,-130
+6827,P4,-130
+6828,P4,-130
+7016,P4,-130
+7017,P4,-130
+7221,P1,-130
+7222,P1,-130
+7360,P3,-130
+7361,P3,-130
+7863,P3,-130
+7864,P3,-130
+8589,P1,-130
+8590,P3,-130
+9169,P4,-130
+9170,P4,-130
+10527,P4,-130
+10530,P1,-130
+10580,P4,-130
+10583,P1,-130
+10735,P3,-130
+10736,P3,-130
+10741,P4,-130
+10742,P3,-130
+10753,P1,-130
+10759,P4,-130
+10791,P4,-130
+10793,P1,-130
+10811,P4,-130
+10831,P4,-130
+10832,P1,-130
+10845,P1,-130
+10846,P1,-130
+10862,P4,-130
+10865,P1,-130
+10868,P3,-130
+10869,P1,-130
+10870,P3,-130
+10871,P3,-130
+10881,P1,-130
+10882,P4,-130
+10885,P1,-130
+10886,P1,-130
+10902,P1,-130
+10903,P1,-130
+10926,P1,-130
+10927,P1,-130
+10930,P1,-130
+10933,P4,-130
+11005,P1,-130
+11006,P1,-130
+11009,P1,-130
+11010,P4,-130
+11018,P1,-130
+11019,P1,-130
+11054,P4,-130
+11055,P4,-130
+11114,P3,-130
+11157,P1,-130
+11158,P4,-130
 
 ***********************************************************
 ** Outputs --> frd file
-** written by write_outputs_types function
 *NODE FILE
 U
 *EL FILE
@@ -20124,12 +20116,10 @@ RF
 
 
 ***********************************************************
-** written by write_step_end function
 *END STEP 
 
 ***********************************************************
 ** CalculiX Input file
-** written by write_footer function
 **   written by    --> FreeCAD 0.19.19432 (Git)
 **   written on    --> Fri Jan 31 08:04:49 2020
 **   file name     --> 
@@ -20139,7 +20129,7 @@ RF
 ***********************************************************
 **  About units:
 **  See ccx manual, ccx does not know about any unit.
-**  Golden rule: The user must make sure that the numbers he provides have consistent units.
+**  Golden rule: The user must make sure that the numbers they provide have consistent units.
 **  The user is the FreeCAD calculix writer module ;-)
 **
 **  The unit system which is used at Guido Dhondt's company: mm, N, s, K
@@ -20153,9 +20143,9 @@ RF
 **
 **  This leads to:
 **  Force: N
-**  Pressure: N/mm^2
+**  Pressure: N/mm^2 == MPa (Young's Modulus has unit Pressure)
 **  Density: t/mm^3
 **  Gravity: mm/s^2
-**  Thermal conductivity: t*mm/K/s^3 (same as W/m/K)
-**  Specific Heat: mm^2/s^2/K (same as J/kg/K)
+**  Thermal conductivity: t*mm/K/s^3 == as W/m/K == kW/mm/K
+**  Specific Heat: mm^2/s^2/K = J/kg/K == kJ/t/K
 **

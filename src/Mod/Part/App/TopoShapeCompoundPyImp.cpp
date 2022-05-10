@@ -98,7 +98,7 @@ PyObject*  TopoShapeCompoundPy::add(PyObject *args)
 {
     PyObject *obj;
     if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapePy::Type), &obj))
-        return NULL;
+        return nullptr;
 
     BRep_Builder builder;
     TopoDS_Shape comp = getTopoShapePtr()->getShape();
@@ -112,7 +112,7 @@ PyObject*  TopoShapeCompoundPy::add(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 
     getTopoShapePtr()->setShape(comp);
@@ -125,7 +125,7 @@ PyObject* TopoShapeCompoundPy::connectEdgesToWires(PyObject *args)
     PyObject *shared=Py_True;
     double tol = Precision::Confusion();
     if (!PyArg_ParseTuple(args, "|O!d",&PyBool_Type,&shared,&tol))
-        return 0;
+        return nullptr;
 
     try {
         const TopoDS_Shape& s = getTopoShapePtr()->getShape();
@@ -152,13 +152,13 @@ PyObject* TopoShapeCompoundPy::connectEdgesToWires(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 
 PyObject *TopoShapeCompoundPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int TopoShapeCompoundPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

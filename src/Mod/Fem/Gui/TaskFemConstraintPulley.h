@@ -21,13 +21,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskFemConstraintPulley_H
 #define GUI_TASKVIEW_TaskFemConstraintPulley_H
-
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
 
 #include "TaskFemConstraintGear.h"
 #include "ViewProviderFemConstraintPulley.h"
@@ -39,7 +34,7 @@ class TaskFemConstraintPulley : public TaskFemConstraintGear
     Q_OBJECT
 
 public:
-    TaskFemConstraintPulley(ViewProviderFemConstraintPulley *ConstraintView,QWidget *parent = 0);
+    TaskFemConstraintPulley(ViewProviderFemConstraintPulley *ConstraintView,QWidget *parent = nullptr);
 
     double getOtherDiameter(void) const;
     double getCenterDistance(void) const;

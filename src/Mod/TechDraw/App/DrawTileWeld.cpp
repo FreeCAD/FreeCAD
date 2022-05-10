@@ -54,8 +54,8 @@ DrawTileWeld::DrawTileWeld(void)
 
     ADD_PROPERTY_TYPE(LeftText,(""),group,(App::PropertyType)(App::Prop_None),
                       "Text before symbol");
-    ADD_PROPERTY_TYPE(RightText, (0), group, App::Prop_None, "Text after symbol");
-    ADD_PROPERTY_TYPE(CenterText, (0), group, App::Prop_None, "Text above/below symbol");
+    ADD_PROPERTY_TYPE(RightText, (nullptr), group, App::Prop_None, "Text after symbol");
+    ADD_PROPERTY_TYPE(CenterText, (nullptr), group, App::Prop_None, "Text above/below symbol");
     ADD_PROPERTY_TYPE(SymbolFile, (prefSymbol()), group, App::Prop_None, "Symbol File");
     ADD_PROPERTY_TYPE(SymbolIncluded, (""), group, App::Prop_None,
                                             "Embedded Symbol. System use only.");   // n/a to end users

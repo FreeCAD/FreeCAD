@@ -20,18 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef Fem_FemSetGeometryObject_H
 #define Fem_FemSetGeometryObject_H
 
 #include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
 #include "FemSetObject.h"
+
 
 namespace Fem
 {
 
-class AppFemExport FemSetGeometryObject : public FemSetObject
+class FemExport FemSetGeometryObject : public FemSetObject
 {
     PROPERTY_HEADER(Fem::FemSetGeometryObject);
 

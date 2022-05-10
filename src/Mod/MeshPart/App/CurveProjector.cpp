@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Juergen Riegel         <juergen.riegel@web.de>          *
+ *   Copyright (c) 2008 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -132,9 +132,9 @@ void CurveProjectorShape::projectCurve( const TopoDS_Edge& aEdge,
                                               (float)gpPt.Y(),
                                               (float)gpPt.Z());
   Base::Vector3f cResultPoint, cSplitPoint, cPlanePnt, cPlaneNormal;
-  unsigned long uStartFacetIdx,uCurFacetIdx;
-  unsigned long uLastFacetIdx=ULONG_MAX-1; // use another value as ULONG_MAX
-  unsigned long auNeighboursIdx[3];
+  MeshCore::FacetIndex uStartFacetIdx,uCurFacetIdx;
+  MeshCore::FacetIndex uLastFacetIdx=MeshCore::FACET_INDEX_MAX-1; // use another value as FACET_INDEX_MAX
+  MeshCore::FacetIndex auNeighboursIdx[3];
   bool GoOn;
   
   if( !findStartPoint(_Mesh,cStartPoint,cResultPoint,uStartFacetIdx) )
@@ -159,7 +159,7 @@ void CurveProjectorShape::projectCurve( const TopoDS_Edge& aEdge,
       const Base::Vector3f& cP0 = cCurFacet._aclPoints[i];
       const Base::Vector3f& cP1 = cCurFacet._aclPoints[(i+1)%3];
 
-      if ( auNeighboursIdx[i] != ULONG_MAX )
+      if ( auNeighboursIdx[i] != MeshCore::FACET_INDEX_MAX )
       {
         // calculate the normal by the edge vector and the middle between the two face normals
         MeshGeomFacet N = _Mesh.GetFacet( auNeighboursIdx[i] );
@@ -227,7 +227,7 @@ void CurveProjectorShape::projectCurve( const TopoDS_Edge& aEdge,
 
 }
 
-bool CurveProjectorShape::findStartPoint(const MeshKernel &MeshK,const Base::Vector3f &Pnt,Base::Vector3f &Rslt,unsigned long &FaceIndex)
+bool CurveProjectorShape::findStartPoint(const MeshKernel &MeshK,const Base::Vector3f &Pnt,Base::Vector3f &Rslt,MeshCore::FacetIndex &FaceIndex)
 {
   Base::Vector3f TempResultPoint;
   float MinLength = FLOAT_MAX;
@@ -332,7 +332,7 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
   str.precision(4);
   str.setf(std::ios::fixed | std::ios::showpoint);
 
-  std::map<unsigned long,std::vector<Base::Vector3f> > FaceProjctMap;
+  std::map<MeshCore::FacetIndex,std::vector<Base::Vector3f> > FaceProjctMap;
  
   for (unsigned long i = 0; i <= ulNbOfPoints; i++)
   {
@@ -387,7 +387,7 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
     MeshGeomFacet cCurFacet= MeshK.GetFacet(uCurFacetIdx);
     MeshK.GetFacetNeighbours ( uCurFacetIdx, auNeighboursIdx[0], auNeighboursIdx[1], auNeighboursIdx[2]);
     
-    uCurFacetIdx = ULONG_MAX;
+    uCurFacetIdx = MeshCore::FACET_INDEX_MAX;
     PointCount = 0;
 
     for(int i=0; i<3; i++)
@@ -405,7 +405,7 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
     }
 
 
-  }while(uCurFacetIdx != ULONG_MAX);
+  }while(uCurFacetIdx != MeshCore::FACET_INDEX_MAX);
 */
 }
 
@@ -425,9 +425,9 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
   // projection of the first point 
   Base::Vector3f cStartPoint = Base::Vector3f(gpPt.X(),gpPt.Y(),gpPt.Z());
   Base::Vector3f cResultPoint, cSplitPoint, cPlanePnt, cPlaneNormal,TempResultPoint;
-  unsigned long uStartFacetIdx,uCurFacetIdx;
-  unsigned long uLastFacetIdx=ULONG_MAX-1; // use another value as ULONG_MAX
-  unsigned long auNeighboursIdx[3];
+  MeshCore::FacetIndex uStartFacetIdx,uCurFacetIdx;
+  MeshCore::FacetIndex uLastFacetIdx=MeshCore::FACET_INDEX_MAX-1; // use another value as FACET_INDEX_MAX
+  MeshCore::FacetIndex auNeighboursIdx[3];
   bool GoOn;
 
   // go through the whole Mesh, find the first projection
@@ -471,7 +471,7 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
       for(int i=0; i<3; i++)
       {
         // if the i'th neighbour is valid
-        if ( auNeighboursIdx[i] != ULONG_MAX )
+        if ( auNeighboursIdx[i] != MeshCore::FACET_INDEX_MAX )
         {
           // try to project next interval
           MeshGeomFacet N = MeshK.GetFacet( auNeighboursIdx[i] );
@@ -511,9 +511,9 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
   // projection of the first point 
   Base::Vector3f cStartPoint = Base::Vector3f(gpPt.X(),gpPt.Y(),gpPt.Z());
   Base::Vector3f cResultPoint, cSplitPoint, cPlanePnt, cPlaneNormal;
-  unsigned long uStartFacetIdx,uCurFacetIdx;
-  unsigned long uLastFacetIdx=ULONG_MAX-1; // use another value as ULONG_MAX
-  unsigned long auNeighboursIdx[3];
+  MeshCore::FacetIndex uStartFacetIdx,uCurFacetIdx;
+  MeshCore::FacetIndex uLastFacetIdx=MeshCore::FACET_INDEX_MAX-1; // use another value as FACET_INDEX_MAX
+  MeshCore::FacetIndex auNeighboursIdx[3];
   bool GoOn;
   
   if( !findStartPoint(MeshK,cStartPoint,cResultPoint,uStartFacetIdx) )
@@ -542,7 +542,7 @@ void CurveProjectorSimple::projectCurve( const TopoDS_Edge& aEdge,
 }
 */
 
-bool CurveProjectorSimple::findStartPoint(const MeshKernel &MeshK,const Base::Vector3f &Pnt,Base::Vector3f &Rslt,unsigned long &FaceIndex)
+bool CurveProjectorSimple::findStartPoint(const MeshKernel &MeshK,const Base::Vector3f &Pnt,Base::Vector3f &Rslt,MeshCore::FacetIndex &FaceIndex)
 {
   Base::Vector3f TempResultPoint;
   float MinLength = FLOAT_MAX;
@@ -621,7 +621,7 @@ void CurveProjectorWithToolMesh::makeToolMesh( const TopoDS_Edge& aEdge,std::vec
 
   Base::SequencerLauncher seq("Building up tool mesh...", ulNbOfPoints+1);  
 
-  std::map<unsigned long,std::vector<Base::Vector3f> > FaceProjctMap;
+  std::map<MeshCore::FacetIndex,std::vector<Base::Vector3f> > FaceProjctMap;
  
   for (unsigned long i = 0; i < ulNbOfPoints; i++)
   {
@@ -878,7 +878,7 @@ void MeshProjection::projectOnMesh(const std::vector<Base::Vector3f>& pointsIn,
 
     for (auto it : pointsIn) {
         Base::Vector3f result;
-        unsigned long index;
+        MeshCore::FacetIndex index;
         if (clAlg.NearestFacetOnRay(it, dir, cGrid, result, index)) {
             MeshCore::MeshGeomFacet geomFacet = _rcMesh.GetFacet(index);
             if (tolerance > 0 && geomFacet.IntersectPlaneWithLine(it, dir, result)) {
@@ -943,13 +943,13 @@ void MeshProjection::projectParallelToMesh (const TopoDS_Shape &aShape, const Ba
         std::vector<Base::Vector3f> points;
         discretize(aEdge, points, 5);
 
-        typedef std::pair<Base::Vector3f, unsigned long> HitPoint;
+        typedef std::pair<Base::Vector3f, MeshCore::FacetIndex> HitPoint;
         std::vector<HitPoint> hitPoints;
         typedef std::pair<HitPoint, HitPoint> HitPoints;
         std::vector<HitPoints> hitPointPairs;
         for (auto it : points) {
             Base::Vector3f result;
-            unsigned long index;
+            MeshCore::FacetIndex index;
             if (clAlg.NearestFacetOnRay(it, dir, cGrid, result, index)) {
                 hitPoints.emplace_back(result, index);
 
@@ -988,13 +988,13 @@ void MeshProjection::projectParallelToMesh (const std::vector<PolyLine> &aEdges,
     for (auto it : aEdges) {
         std::vector<Base::Vector3f> points = it.points;
 
-        typedef std::pair<Base::Vector3f, unsigned long> HitPoint;
+        typedef std::pair<Base::Vector3f, MeshCore::FacetIndex> HitPoint;
         std::vector<HitPoint> hitPoints;
         typedef std::pair<HitPoint, HitPoint> HitPoints;
         std::vector<HitPoints> hitPointPairs;
         for (auto it : points) {
             Base::Vector3f result;
-            unsigned long index;
+            MeshCore::FacetIndex index;
             if (clAlg.NearestFacetOnRay(it, dir, cGrid, result, index)) {
                 hitPoints.emplace_back(result, index);
 
@@ -1024,8 +1024,8 @@ void MeshProjection::projectParallelToMesh (const std::vector<PolyLine> &aEdges,
 void MeshProjection::projectEdgeToEdge( const TopoDS_Edge &aEdge, float fMaxDist, const MeshFacetGrid& rGrid,
                                          std::vector<SplitEdge>& rSplitEdges ) const
 {
-    std::vector<unsigned long> auFInds;
-    std::map<std::pair<unsigned long, unsigned long>, std::list<unsigned long> > pEdgeToFace;
+    std::vector<MeshCore::FacetIndex> auFInds;
+    std::map<std::pair<MeshCore::PointIndex, MeshCore::PointIndex>, std::list<MeshCore::FacetIndex> > pEdgeToFace;
     const std::vector<MeshFacet>& rclFAry = _rcMesh.GetFacets();
 
     // search the facets in the local area of the curve
@@ -1038,12 +1038,12 @@ void MeshProjection::projectEdgeToEdge( const TopoDS_Edge &aEdge, float fMaxDist
     auFInds.erase(std::unique(auFInds.begin(), auFInds.end()), auFInds.end());
 
     // facet to edge
-    for ( std::vector<unsigned long>::iterator pI = auFInds.begin(); pI != auFInds.end(); ++pI ) {
+    for ( std::vector<MeshCore::FacetIndex>::iterator pI = auFInds.begin(); pI != auFInds.end(); ++pI ) {
         const MeshFacet& rF = rclFAry[*pI];
         for (int i = 0; i < 3; i++) {
-            unsigned long ulPt0 = std::min<unsigned long>(rF._aulPoints[i],  rF._aulPoints[(i+1)%3]);
-            unsigned long ulPt1 = std::max<unsigned long>(rF._aulPoints[i],  rF._aulPoints[(i+1)%3]);
-            pEdgeToFace[std::pair<unsigned long, unsigned long>(ulPt0, ulPt1)].push_front(*pI);
+            MeshCore::PointIndex ulPt0 = std::min<MeshCore::PointIndex>(rF._aulPoints[i],  rF._aulPoints[(i+1)%3]);
+            MeshCore::PointIndex ulPt1 = std::max<MeshCore::PointIndex>(rF._aulPoints[i],  rF._aulPoints[(i+1)%3]);
+            pEdgeToFace[std::pair<MeshCore::PointIndex, MeshCore::PointIndex>(ulPt0, ulPt1)].push_front(*pI);
         }
     }
 
@@ -1063,26 +1063,26 @@ void MeshProjection::projectEdgeToEdge( const TopoDS_Edge &aEdge, float fMaxDist
     MeshFacetIterator cFI( _rcMesh );
 
     Base::SequencerLauncher seq( "Project curve on mesh", pEdgeToFace.size() );
-    std::map<std::pair<unsigned long, unsigned long>, std::list<unsigned long> >::iterator it;
+    std::map<std::pair<MeshCore::PointIndex, MeshCore::PointIndex>, std::list<MeshCore::FacetIndex> >::iterator it;
     for ( it = pEdgeToFace.begin(); it != pEdgeToFace.end(); ++it ) {
         seq.next();
 
         // edge points
-        unsigned long uE0 = it->first.first;
+        MeshCore::PointIndex uE0 = it->first.first;
         cPI.Set( uE0 );
         Base::Vector3f cE0 = *cPI;
-        unsigned long uE1 = it->first.second;
+        MeshCore::PointIndex uE1 = it->first.second;
         cPI.Set( uE1 );
         Base::Vector3f cE1 = *cPI;
 
-        const std::list<unsigned long>& auFaces = it->second;
+        const std::list<MeshCore::FacetIndex>& auFaces = it->second;
         if ( auFaces.size() > 2 )
             continue; // non-manifold edge -> don't handle this
 //      if ( clBB.IsOut( gp_Pnt(cE0.x, cE0.y, cE0.z) ) && clBB.IsOut( gp_Pnt(cE1.x, cE1.y, cE1.z) ) )
 //          continue;
 
         Base::Vector3f cEdgeNormal;
-        for ( std::list<unsigned long>::const_iterator itF = auFaces.begin(); itF != auFaces.end(); ++itF ) {
+        for ( std::list<MeshCore::FacetIndex>::const_iterator itF = auFaces.begin(); itF != auFaces.end(); ++itF ) {
             cFI.Set( *itF );
             cEdgeNormal += cFI->GetNormal();
         }

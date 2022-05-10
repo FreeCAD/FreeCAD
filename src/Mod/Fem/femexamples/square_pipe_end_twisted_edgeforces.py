@@ -41,7 +41,7 @@ def get_information():
         "meshtype": "face",
         "meshelement": "Tria6",
         "constraints": ["force", "fixed"],
-        "solvers": ["calculix"],
+        "solvers": ["calculix", "ccxtools"],
         "material": "solid",
         "equation": "mechanical"
     }
@@ -79,7 +79,7 @@ def setup(doc=None, solvertype="ccxtools"):
     l4 = Part.makeLine((-142.5, 142.5, 0), (-142.5, -142.5, 0))
     wire = Part.Wire([l1, l2, l3, l4])
     shape = wire.extrude(Vector(0, 0, 1000))
-    geom_obj = doc.addObject('Part::Feature', 'SquareTube')
+    geom_obj = doc.addObject("Part::Feature", "SquareTube")
     geom_obj.Shape = shape
     doc.recompute()
 
@@ -120,7 +120,6 @@ def setup(doc=None, solvertype="ccxtools"):
     mat["Name"] = "Steel-Generic"
     mat["YoungsModulus"] = "200000 MPa"
     mat["PoissonRatio"] = "0.30"
-    mat["Density"] = "7900 kg/m^3"
     material_obj.Material = mat
     analysis.addObject(material_obj)
 

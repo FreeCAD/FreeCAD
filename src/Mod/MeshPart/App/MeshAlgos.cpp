@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Juergen Riegel         <juergen.riegel@web.de>          *
+ *   Copyright (c) 2008 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -67,7 +67,7 @@ void MeshAlgos::offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize)
     Base::Builder3D builder;  
     std::vector<Base::Vector3f> PointNormals= Mesh->CalcVertexNormals();
     std::vector<Base::Vector3f> FaceNormals;
-    std::set<unsigned long> fliped;
+    std::set<MeshCore::FacetIndex> fliped;
 
     MeshFacetIterator it(*Mesh);
     for (  it.Init(); it.More(); it.Next() )
@@ -103,7 +103,7 @@ void MeshAlgos::offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize)
         if(fliped.size() == 0)
             break;
 
-        for(std::set<unsigned long>::iterator It= fliped.begin();It!=fliped.end();++It)
+        for(std::set<MeshCore::FacetIndex>::iterator It= fliped.begin();It!=fliped.end();++It)
             alg.CollapseFacet(*It);
         fliped.clear();
     }
@@ -112,7 +112,7 @@ void MeshAlgos::offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize)
 
     // search for intersected facets
     MeshCore::MeshEvalSelfIntersection eval(*Mesh);
-    std::vector<std::pair<unsigned long, unsigned long> > faces;
+    std::vector<std::pair<MeshCore::FacetIndex, MeshCore::FacetIndex> > faces;
     eval.GetIntersections(faces);
 
 

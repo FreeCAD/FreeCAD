@@ -22,17 +22,14 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <sstream>
 # ifdef FC_OS_WIN32
 # define _USE_MATH_DEFINES
 # endif // FC_OS_WIN32
-# include <cmath>
 #endif
 
 #include "Quantity.h"
 #include "Exception.h"
 #include "UnitsApi.h"
-#include "Console.h"
 #include <boost/math/special_functions/fpclassify.hpp>
 
 /** \defgroup Units Units system
@@ -83,10 +80,29 @@ Quantity::Quantity(const Quantity& that)
     *this = that ;
 }
 
-Quantity::Quantity(double Value, const Unit& unit)
+Quantity::Quantity(double value, const Unit& unit)
 {
     this->_Unit = unit;
-    this->_Value = Value;
+    this->_Value = value;
+}
+
+Quantity::Quantity(double value, const QString& unit)
+{
+    if (unit.isEmpty()) {
+        this->_Value = value;
+        this->_Unit = Unit();
+        return;
+    }
+
+    try {
+        auto tmpQty = parse(unit);
+        this->_Unit = tmpQty.getUnit();
+        this->_Value = value * tmpQty.getValue();
+    }
+    catch (const Base::ParserError&) {
+        this->_Value = 0.0;
+        this->_Unit = Unit();
+    }
 }
 
 double Quantity::getValueAs(const Quantity &q)const
@@ -203,7 +219,7 @@ Quantity& Quantity::operator -=(const Quantity &p)
     return *this;
 }
 
-Quantity Quantity::operator -(void) const
+Quantity Quantity::operator -() const
 {
     return Quantity(-(this->_Value),this->_Unit);
 }
@@ -227,24 +243,24 @@ QString Quantity::getUserString(UnitsSchema* schema, double &factor, QString &un
 }
 
 /// true if it has a number without a unit
-bool Quantity::isDimensionless(void)const
+bool Quantity::isDimensionless() const
 {
     return isValid() && _Unit.isEmpty();
 }
 
 // true if it has a number and a valid unit
-bool Quantity::isQuantity(void)const
+bool Quantity::isQuantity() const
 {
     return isValid() && !_Unit.isEmpty();
 }
 
 // true if it has a number with or without a unit
-bool Quantity::isValid(void)const
+bool Quantity::isValid() const
 {
     return !boost::math::isnan(_Value);
 }
 
-void Quantity::setInvalid(void)
+void Quantity::setInvalid()
 {
     _Value = std::numeric_limits<double>::quiet_NaN();
 }
@@ -313,6 +329,11 @@ Quantity Quantity::Newton           (1000.0        ,Unit(1,1,-2)); // Newton (kg
 Quantity Quantity::MilliNewton      (1.0           ,Unit(1,1,-2));
 Quantity Quantity::KiloNewton       (1e+6          ,Unit(1,1,-2));
 Quantity Quantity::MegaNewton       (1e+9          ,Unit(1,1,-2));
+
+Quantity Quantity::NewtonPerMeter        (1.00         ,Unit(0,1,-2)); //Newton per meter (N/m or kg/s^2)
+Quantity Quantity::MilliNewtonPerMeter   (1e-3         ,Unit(0,1,-2));
+Quantity Quantity::KiloNewtonPerMeter    (1e3          ,Unit(0,1,-2)); 
+Quantity Quantity::MegaNewtonPerMeter    (1e6          ,Unit(0,1,-2)); 
 
 Quantity Quantity::Pascal           (0.001         ,Unit(-1,1,-2)); // Pascal (kg/m/s^2 or N/m^2)
 Quantity Quantity::KiloPascal       (1.00          ,Unit(-1,1,-2));
@@ -406,7 +427,7 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
     double ret_val;
     char temp[40];
     int i = 0;
-    for (char* c=yytext;*c!='\0';c++){
+    for (char* c=yytext;*c!='\0';c++) {
         // skip group delimiter
         if (*c==grp_delim) continue;
         // check for a dez delimiter other then dot
@@ -415,7 +436,8 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
         else
             temp[i++] = *c;
         // check buffer overflow
-        if (i>39) return 0.0;
+        if (i>39)
+            return 0.0;
     }
     temp[i] = '\0';
 
@@ -423,11 +445,20 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
     return ret_val;
 }
 
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wmissing-noreturn"
+#endif
+
 // error func
 void Quantity_yyerror(char *errorinfo)
 {
     throw Base::ParserError(errorinfo);
 }
+
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
 
 
 // for VC9 (isatty and fileno not supported anymore)
@@ -441,7 +472,7 @@ namespace QuantityParser {
 #define YYINITDEPTH 20
 // show parser the lexer method
 #define yylex QuantityLexer
-int QuantityLexer(void);
+int QuantityLexer();
 
 // Parser, defined in QuantityParser.y
 #include "QuantityParser.c"

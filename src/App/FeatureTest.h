@@ -21,15 +21,14 @@
  ***************************************************************************/
 
 
-
 #ifndef APP_FEATURETEST_H
 #define APP_FEATURETEST_H
 
-
 #include "DocumentObject.h"
-#include "PropertyUnits.h"
 #include "PropertyGeo.h"
 #include "PropertyLinks.h"
+#include "PropertyUnits.h"
+
 
 namespace App
 {
@@ -109,7 +108,7 @@ public:
   /// recalculate the Feature
   virtual DocumentObjectExecReturn *execute(void);
   /// returns the type name of the ViewProvider
-  //FIXME: Probably it makes sense to have a view provider for unittests (e.g. Gui::ViewProviderTest)
+  //Hint: Probably it makes sense to have a view provider for unittests (e.g. Gui::ViewProviderTest)
   virtual const char* getViewProviderName(void) const {
     return "Gui::ViewProviderFeature";
   }

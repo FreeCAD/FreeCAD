@@ -27,13 +27,6 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define SpreadsheetExport __declspec(dllexport)
-#else // for Linux
-# define SpreadsheetExport
-#endif
-
 
 // here get the warnings of too long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
@@ -45,13 +38,10 @@
 
 #ifdef _PreComp_
 
-// Python
-#include <Python.h>
-
 // standard
 #include <iostream>
-#include <assert.h>
-#include <math.h>
+#include <cassert>
+#include <cmath>
 
 // STL
 #include <vector>
@@ -69,8 +59,8 @@
 #endif
 
 // Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
+#ifndef __QtAll__
+# include <Gui/QtAll.h>
 #endif
 
 #endif //_PreComp_

@@ -94,7 +94,7 @@ DrawGeomHatch::DrawGeomHatch(void)
 {
     static const char *vgroup = "GeomHatch";
 
-    ADD_PROPERTY_TYPE(Source,(0),vgroup,(App::PropertyType)(App::Prop_None),"The View + Face to be crosshatched");
+    ADD_PROPERTY_TYPE(Source,(nullptr),vgroup,(App::PropertyType)(App::Prop_None),"The View + Face to be crosshatched");
     Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(FilePattern ,(prefGeomHatchFile()),vgroup,App::Prop_None,"The crosshatch pattern file for this area");
     ADD_PROPERTY_TYPE(PatIncluded, (""), vgroup,App::Prop_None,
@@ -126,7 +126,12 @@ void DrawGeomHatch::onChanged(const App::Property* prop)
             (doc != nullptr) ) {
             if (!FilePattern.isEmpty()) {
                 replacePatIncluded(FilePattern.getValue());
+                DrawGeomHatch::execute();         //remake the line sets
             }
+        }
+        if ((prop == &NamePattern) &&
+                (doc != nullptr)) {
+            DrawGeomHatch::execute();            //remake the line sets
         }
     } else {
         if ((prop == &FilePattern) ||                //make sure right pattern gets loaded at start up
@@ -144,7 +149,8 @@ short DrawGeomHatch::mustExecute() const
     if (!isRestoring()) {
         result  =  (Source.isTouched()  ||
                     FilePattern.isTouched() ||
-                    NamePattern.isTouched() );
+                    NamePattern.isTouched() ||
+                    ScalePattern.isTouched());
     }
 
     if (result) {
@@ -171,18 +177,13 @@ void DrawGeomHatch::makeLineSets(void)
 //    Base::Console().Message("DGH::makeLineSets()\n");
     if ((!PatIncluded.isEmpty())  &&
         (!NamePattern.isEmpty())) {
-        if ((m_saveFile != PatIncluded.getValue()) ||
-            (m_saveName != NamePattern.getValue()))  {
-            m_saveFile = PatIncluded.getValue();
-            m_saveName = NamePattern.getValue();
-            std::vector<PATLineSpec> specs = getDecodedSpecsFromFile();
-            m_lineSets.clear();
-            for (auto& hl: specs) {
-                //hl.dump("hl from file");
-                LineSet ls;
-                ls.setPATLineSpec(hl);
-                m_lineSets.push_back(ls);
-            }
+        std::vector<PATLineSpec> specs = getDecodedSpecsFromFile();
+        m_lineSets.clear();
+        for (auto& hl: specs) {
+            //hl.dump("hl from file");
+            LineSet ls;
+            ls.setPATLineSpec(hl);
+            m_lineSets.push_back(ls);
         }
     }
 }
@@ -285,7 +286,7 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
     TopoDS_Face face = f;
 
     Bnd_Box bBox;
-    BRepBndLib::Add(face, bBox);
+    BRepBndLib::AddOptimal(face, bBox);
     bBox.SetGap(0.0);
 
     for (auto& ls: lineSets) {
@@ -312,7 +313,7 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
         //save the boundingBox of hatch pattern
         Bnd_Box overlayBox;
         overlayBox.SetGap(0.0);
-        BRepBndLib::Add(common, overlayBox);
+        BRepBndLib::AddOptimal(common, overlayBox);
         ls.setBBox(overlayBox);
 
         //get resulting edges
@@ -328,10 +329,10 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
             resultEdges.push_back(edge);
         }
 
-        std::vector<TechDraw::BaseGeom*> resultGeoms;
+        std::vector<TechDraw::BaseGeomPtr> resultGeoms;
         int i = 0;
         for (auto& e: resultEdges) {
-            TechDraw::BaseGeom* base = BaseGeom::baseFactory(e);
+            TechDraw::BaseGeomPtr base = BaseGeom::baseFactory(e);
             if (base == nullptr) {
                 Base::Console().Log("FAIL - DGH::getTrimmedLines - baseFactory failed for edge: %d\n",i);
                 throw Base::ValueError("DGH::getTrimmedLines - baseFactory failed");
@@ -471,16 +472,16 @@ std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int fdx)
     TopoDS_Face face = extractFace(source,fdx);
 
     Bnd_Box bBox;
-    BRepBndLib::Add(face, bBox);
+    BRepBndLib::AddOptimal(face, bBox);
     bBox.SetGap(0.0);
 
     for (auto& ls: m_lineSets) {
         PATLineSpec hl = ls.getPATLineSpec();
         std::vector<TopoDS_Edge> candidates = DrawGeomHatch::makeEdgeOverlay(hl, bBox, ScalePattern.getValue());
-        std::vector<TechDraw::BaseGeom*> resultGeoms;
+        std::vector<TechDraw::BaseGeomPtr> resultGeoms;
         int i = 0;
         for (auto& e: candidates) {
-            TechDraw::BaseGeom* base = BaseGeom::baseFactory(e);
+            TechDraw::BaseGeomPtr base = BaseGeom::baseFactory(e);
             if (base == nullptr) {
                 Base::Console().Log("FAIL - DGH::getFaceOverlay - baseFactory failed for edge: %d\n",i);
                 throw Base::ValueError("DGH::getFaceOverlay - baseFactory failed");

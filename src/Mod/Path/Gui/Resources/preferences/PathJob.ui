@@ -38,17 +38,17 @@
           <string>Defaults</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_2">
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="leDefaultFilePath">
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to look for templates, post processors, tool tables and other external files.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If left empty the macro directory is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="0">
            <widget class="QLabel" name="label_7">
             <property name="text">
              <string>Path</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="leDefaultFilePath">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Path to look for templates, post processors, tool tables and other external files.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If left empty the macro directory is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </item>
@@ -90,15 +90,8 @@
          </property>
          <layout class="QGridLayout" name="gridLayout">
           <item row="0" column="0">
-           <widget class="QWidget" name="widget_5" native="true">
+           <widget class="QWidget" name="widget_5">
             <layout class="QGridLayout" name="gridLayout_4">
-             <item row="0" column="1">
-              <widget class="Gui::InputField" name="geometryTolerance">
-               <property name="toolTip">
-                <string>Default value for new Jobs, used for computing Paths.  Smaller increases accuracy, but slows down computation</string>
-               </property>
-              </widget>
-             </item>
              <item row="0" column="0">
               <widget class="QLabel" name="label_6">
                <property name="text">
@@ -106,8 +99,12 @@
                </property>
               </widget>
              </item>
-             <item row="1" column="1">
-              <widget class="Gui::InputField" name="curveAccuracy"/>
+             <item row="0" column="1">
+              <widget class="Gui::InputField" name="geometryTolerance">
+               <property name="toolTip">
+                <string>Default value for new Jobs, used for computing Paths.  Smaller increases accuracy, but slows down computation</string>
+               </property>
+              </widget>
              </item>
              <item row="1" column="0">
               <widget class="QLabel" name="label_12">
@@ -116,7 +113,10 @@
                </property>
               </widget>
              </item>
-            </layout>
+            <item row="1" column="1">
+              <widget class="Gui::InputField" name="curveAccuracy"/>
+             </item>
+             </layout>
            </widget>
           </item>
          </layout>
@@ -166,7 +166,7 @@
            <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
           </property>
           <item row="1" column="0">
-           <widget class="QWidget" name="widget_2" native="true">
+           <widget class="QWidget" name="widget_2">
             <layout class="QHBoxLayout" name="horizontalLayout_3">
              <item>
               <widget class="QLabel" name="label_4">
@@ -179,7 +179,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QWidget" name="widget" native="true">
+           <widget class="QWidget" name="widget">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -205,7 +205,7 @@
            </widget>
           </item>
           <item row="2" column="0">
-           <widget class="QWidget" name="widget_3" native="true">
+           <widget class="QWidget" name="widget_3">
             <layout class="QHBoxLayout" name="horizontalLayout_4">
              <item>
               <widget class="QLabel" name="label_5">
@@ -218,7 +218,7 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QWidget" name="widget_4" native="true">
+           <widget class="QWidget" name="widget_4">
             <layout class="QHBoxLayout" name="horizontalLayout_5">
              <item>
               <widget class="QComboBox" name="cboOutputPolicy">
@@ -409,15 +409,15 @@
           <item>
            <widget class="QFrame" name="stockFromBase">
             <layout class="QGridLayout" name="gridLayout_9">
-             <item row="1" column="3">
-              <widget class="Gui::InputField" name="stockExtYpos"/>
-             </item>
              <item row="0" column="1">
               <widget class="QLabel" name="stockExtXLabel">
                <property name="text">
                 <string>Ext. X</string>
                </property>
               </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="Gui::InputField" name="stockExtXneg"/>
              </item>
              <item row="0" column="3">
               <widget class="Gui::InputField" name="stockExtXpos">
@@ -436,8 +436,11 @@
                </property>
               </widget>
              </item>
-             <item row="0" column="2">
-              <widget class="Gui::InputField" name="stockExtXneg"/>
+             <item row="1" column="2">
+              <widget class="Gui::InputField" name="stockExtYneg"/>
+             </item>
+            <item row="1" column="3">
+              <widget class="Gui::InputField" name="stockExtYpos"/>
              </item>
              <item row="2" column="1">
               <widget class="QLabel" name="stockExtZLabel">
@@ -452,27 +455,21 @@
              <item row="2" column="3">
               <widget class="Gui::InputField" name="stockExtZpos"/>
              </item>
-             <item row="1" column="2">
-              <widget class="Gui::InputField" name="stockExtYneg"/>
-             </item>
-            </layout>
+             </layout>
            </widget>
           </item>
           <item>
            <widget class="QFrame" name="stockCreateCylinder">
             <layout class="QGridLayout" name="gridLayout_10">
-             <item row="0" column="2">
-              <widget class="Gui::InputField" name="stockCylinderRadius"/>
-             </item>
-             <item row="1" column="2">
-              <widget class="Gui::InputField" name="stockCylinderHeight"/>
-             </item>
              <item row="0" column="1">
               <widget class="QLabel" name="stockCylinderRadiusLabel">
                <property name="text">
                 <string>Radius</string>
                </property>
               </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="Gui::InputField" name="stockCylinderRadius"/>
              </item>
              <item row="1" column="1">
               <widget class="QLabel" name="stockCylinderHeightLabel">
@@ -481,7 +478,10 @@
                </property>
               </widget>
              </item>
-            </layout>
+            <item row="1" column="2">
+              <widget class="Gui::InputField" name="stockCylinderHeight"/>
+             </item>
+             </layout>
            </widget>
           </item>
           <item>
@@ -494,18 +494,15 @@
                </property>
               </widget>
              </item>
+             <item row="0" column="2">
+              <widget class="Gui::InputField" name="stockBoxLength"/>
+             </item>
              <item row="1" column="1">
               <widget class="QLabel" name="stockBoxWidthLabel">
                <property name="text">
                 <string>Width</string>
                </property>
               </widget>
-             </item>
-             <item row="0" column="2">
-              <widget class="Gui::InputField" name="stockBoxLength"/>
-             </item>
-             <item row="2" column="2">
-              <widget class="Gui::InputField" name="stockBoxHeight"/>
              </item>
              <item row="1" column="2">
               <widget class="Gui::InputField" name="stockBoxWidth"/>
@@ -517,7 +514,10 @@
                </property>
               </widget>
              </item>
-            </layout>
+            <item row="2" column="2">
+              <widget class="Gui::InputField" name="stockBoxHeight"/>
+             </item>
+             </layout>
            </widget>
           </item>
           <item>
@@ -545,26 +545,6 @@
              <bool>false</bool>
             </property>
             <layout class="QGridLayout" name="gridLayout_3">
-             <item row="0" column="2">
-              <widget class="Gui::InputField" name="stockAngle"/>
-             </item>
-             <item row="4" column="0">
-              <widget class="QLabel" name="label_10">
-               <property name="text">
-                <string>Position</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QLabel" name="label_11">
-               <property name="text">
-                <string>Axis</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="2">
-              <widget class="Gui::InputField" name="stockPositionX"/>
-             </item>
              <item row="0" column="0">
               <widget class="QLabel" name="label_9">
                <property name="text">
@@ -572,11 +552,15 @@
                </property>
               </widget>
              </item>
-             <item row="4" column="3">
-              <widget class="Gui::InputField" name="stockPositionY"/>
+             <item row="0" column="2">
+              <widget class="Gui::InputField" name="stockAngle"/>
              </item>
-             <item row="4" column="4">
-              <widget class="Gui::InputField" name="stockPositionZ"/>
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_11">
+               <property name="text">
+                <string>Axis</string>
+               </property>
+              </widget>
              </item>
              <item row="3" column="2">
               <widget class="QDoubleSpinBox" name="stockAxisX">
@@ -599,7 +583,23 @@
                </property>
               </widget>
              </item>
-            </layout>
+            <item row="4" column="0">
+              <widget class="QLabel" name="label_10">
+               <property name="text">
+                <string>Position</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="2">
+              <widget class="Gui::InputField" name="stockPositionX"/>
+             </item>
+             <item row="4" column="3">
+              <widget class="Gui::InputField" name="stockPositionY"/>
+             </item>
+             <item row="4" column="4">
+              <widget class="Gui::InputField" name="stockPositionZ"/>
+             </item>
+             </layout>
            </widget>
           </item>
          </layout>

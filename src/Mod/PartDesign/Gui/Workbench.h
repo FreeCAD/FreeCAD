@@ -25,6 +25,7 @@
 #define PARTDESIGN_WORKBENCH_H
 
 #include <Gui/Workbench.h>
+#include <Mod/PartDesign/PartDesignGlobal.h>
 
 namespace Gui {
 
@@ -35,12 +36,6 @@ class ViewProviderDocumentObject;
 }
 
 namespace PartDesignGui {
-
-// pointer to the active assembly object
-//extern PartDesign::Body                *ActivePartObject;
-//extern Gui::Document                   *ActiveGuiDoc;
-//extern App::Document                   *ActiveAppDoc;
-//extern Gui::ViewProviderDocumentObject *ActiveVp;
 
 /**
  * @author Werner Mayer
@@ -80,6 +75,11 @@ private:
 
    void _switchToDocument(const App::Document* doc);
 
+private:
+   boost::signals2::connection activeDoc;
+   boost::signals2::connection createDoc;
+   boost::signals2::connection finishDoc;
+   boost::signals2::connection deleteDoc;
 };
 
 } // namespace PartDesignGui

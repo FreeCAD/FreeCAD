@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QString>
@@ -36,16 +35,14 @@
 #include <Gui/BitmapFactory.h>
 
 
-
 using namespace FemGui;
 using namespace Gui;
 
-
-TaskAnalysisInfo::TaskAnalysisInfo(Fem::FemAnalysis *pcObject,QWidget *parent)
+TaskAnalysisInfo::TaskAnalysisInfo(Fem::FemAnalysis* pcObject, QWidget* parent)
     : TaskBox(Gui::BitmapFactory().pixmap("FEM_Analysis"),
-      tr("Nodes set"),
-      true,
-      parent),
+        tr("Nodes set"),
+        true,
+        parent),
       pcObject(pcObject)
 {
     // we need a separate container widget to add all controls to
@@ -56,24 +53,24 @@ TaskAnalysisInfo::TaskAnalysisInfo(Fem::FemAnalysis *pcObject,QWidget *parent)
 
     this->groupLayout()->addWidget(proxy);
 
- /*   QObject::connect(ui->toolButton_Poly,SIGNAL(clicked()),this,SLOT(Poly()));
-    QObject::connect(ui->toolButton_Pick,SIGNAL(clicked()),this,SLOT(Pick()));
-    QObject::connect(ui->comboBox,SIGNAL(activated  (int)),this,SLOT(SwitchMethod(int)));*/
+    /*   QObject::connect(ui->toolButton_Poly,SIGNAL(clicked()),this,SLOT(Poly()));
+       QObject::connect(ui->toolButton_Pick,SIGNAL(clicked()),this,SLOT(Pick()));
+       QObject::connect(ui->comboBox,SIGNAL(activated  (int)),this,SLOT(SwitchMethod(int)));*/
 
 }
 
 
 void TaskAnalysisInfo::SwitchMethod(int /*Value*/)
 {
- /*   if(Value == 1){
-        ui->groupBox_AngleSearch->setEnabled(true);
-        ui->toolButton_Pick->setEnabled(true);
-        ui->toolButton_Poly->setEnabled(false);
-    }else{
-        ui->groupBox_AngleSearch->setEnabled(false);
-        ui->toolButton_Pick->setEnabled(false);
-        ui->toolButton_Poly->setEnabled(true);
-    }*/
+    /*   if(Value == 1){
+           ui->groupBox_AngleSearch->setEnabled(true);
+           ui->toolButton_Pick->setEnabled(true);
+           ui->toolButton_Poly->setEnabled(false);
+       }else{
+           ui->groupBox_AngleSearch->setEnabled(false);
+           ui->toolButton_Pick->setEnabled(false);
+           ui->toolButton_Poly->setEnabled(true);
+       }*/
 }
 
 
@@ -81,6 +78,5 @@ TaskAnalysisInfo::~TaskAnalysisInfo()
 {
     delete ui;
 }
-
 
 #include "moc_TaskAnalysisInfo.cpp"

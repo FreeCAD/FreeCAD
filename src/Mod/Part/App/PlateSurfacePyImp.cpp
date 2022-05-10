@@ -58,11 +58,11 @@ PyObject *PlateSurfacePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  
 int PlateSurfacePy::PyInit(PyObject* args, PyObject* kwds)
 {
     static char* kwds_Parameter[] = {"Surface","Points","Curves","Degree",
-        "NbPtsOnCur","NbIter","Tol2d","Tol3d","TolAng","TolCurv","Anisotropie",NULL};
+        "NbPtsOnCur","NbIter","Tol2d","Tol3d","TolAng","TolCurv","Anisotropie",nullptr};
 
-    PyObject* surface = 0;
-    PyObject* points = 0;
-    PyObject* curves = 0;
+    PyObject* surface = nullptr;
+    PyObject* points = nullptr;
+    PyObject* curves = nullptr;
     int Degree = 3;
     int NbPtsOnCur = 10;
     int NbIter = 3;
@@ -140,7 +140,7 @@ int PlateSurfacePy::PyInit(PyObject* args, PyObject* kwds)
 PyObject* PlateSurfacePy::makeApprox(PyObject *args, PyObject* kwds)
 {
     static char* kwds_Parameter[] = {"Tol3d","MaxSegments","MaxDegree","MaxDistance",
-        "CritOrder","Continuity","EnlargeCoeff",NULL};
+        "CritOrder","Continuity","EnlargeCoeff",nullptr};
 
     double tol3d=0.01;
     int maxSeg=9;
@@ -152,7 +152,7 @@ PyObject* PlateSurfacePy::makeApprox(PyObject *args, PyObject* kwds)
 
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "|diidisd", kwds_Parameter,
         &tol3d, &maxSeg, &maxDegree, &dmax, &critOrder, &cont, &enlargeCoeff))
-        return 0;
+        return nullptr;
 
     GeomAbs_Shape continuity;
     std::string uc = cont;
@@ -181,13 +181,13 @@ PyObject* PlateSurfacePy::makeApprox(PyObject *args, PyObject* kwds)
         }
 
         PyErr_SetString(PyExc_RuntimeError, "Approximation of B-spline surface failed");
-        return 0;
+        return nullptr;
     } PY_CATCH_OCC;
 }
 
 PyObject *PlateSurfacePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int PlateSurfacePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

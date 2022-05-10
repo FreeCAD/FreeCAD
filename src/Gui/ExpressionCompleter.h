@@ -23,12 +23,10 @@
 #ifndef EXPRESSIONCOMPLETER_H
 #define EXPRESSIONCOMPLETER_H
 
-#include <QObject>
 #include <QCompleter>
 #include <QLineEdit>
+#include <QObject>
 #include <QPlainTextEdit>
-#include <set>
-#include <memory>
 #include <App/DocumentObserver.h>
 
 class QStandardItem;
@@ -50,8 +48,8 @@ class GuiExport ExpressionCompleter : public QCompleter
 {
     Q_OBJECT
 public:
-    ExpressionCompleter(const App::DocumentObject * currentDocObj,
-            QObject *parent = nullptr, bool noProperty = false);
+    ExpressionCompleter(const App::DocumentObject * currentDocObj, 
+            QObject *parent = nullptr, bool noProperty = false, bool checkInList = true);
 
     void getPrefixRange(int &start, int &end) const {
         start = prefixStart;
@@ -62,10 +60,9 @@ public:
         prefixEnd = end;
     }
 
-    void setDocumentObject(const App::DocumentObject*);
+    void setDocumentObject(const App::DocumentObject*, bool checkInList=true);
 
     void setNoProperty(bool enabled=true);
-    void setRequireLeadingEqualSign(bool enabled);
 
 public Q_SLOTS:
     void slotUpdate(const QString &prefix, int pos);
@@ -77,18 +74,19 @@ private:
 
     int prefixStart = 0;
     int prefixEnd = 0;
-    bool requireLeadingEqualSign = false;
 
     App::DocumentObjectT currentObj;
     bool noProperty;
-
+    bool checkInList;
 };
 
 class GuiExport ExpressionLineEdit : public QLineEdit {
     Q_OBJECT
 public:
-    ExpressionLineEdit(QWidget *parent = nullptr, bool noProperty = false, bool requireLeadingEqualSign = false);
-    void setDocumentObject(const App::DocumentObject *currentDocObj);
+    ExpressionLineEdit(QWidget *parent = nullptr, bool noProperty=false,
+            char checkPrefix=0, bool checkInList=true);
+    void setDocumentObject(const App::DocumentObject *currentDocObj, bool checkInList=true);
+    void setPrefix(char prefix);
     bool completerActive() const;
     void hideCompleter();
     void setNoProperty(bool enabled=true);
@@ -106,7 +104,8 @@ private:
     bool block;
     bool noProperty;
     bool exactMatch;
-    bool requireLeadingEqualSign;
+    bool checkInList;
+    char checkPrefix;
 };
 
 class GuiExport ExpressionTextEdit : public QPlainTextEdit {

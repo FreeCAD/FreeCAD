@@ -23,31 +23,16 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
-#include <Base/Console.h>
-#include <Base/Placement.h>
-
-#include <App/Application.h>
 #include <App/Document.h>
 #include <App/Origin.h>
-
-#include <Mod/Part/App/DatumFeature.h>
-#include <Mod/Part/App/PartFeature.h>
-
-
-#include "Feature.h"
-#include "FeatureSketchBased.h"
-#include "FeatureTransformed.h"
-#include "DatumPoint.h"
-#include "DatumLine.h"
-#include "DatumPlane.h"
-#include "ShapeBinder.h"
+#include <Base/Placement.h>
 
 #include "Body.h"
-#include "FeatureBase.h"
 #include "BodyPy.h"
+#include "FeatureBase.h"
+#include "FeatureSketchBased.h"
+#include "FeatureTransformed.h"
+#include "ShapeBinder.h"
 
 using namespace PartDesign;
 
@@ -190,7 +175,7 @@ bool Body::isAfterInsertPoint(App::DocumentObject* feature) {
 
 bool Body::isMemberOfMultiTransform(const App::DocumentObject* f)
 {
-    if (f == NULL)
+    if (f == nullptr)
         return false;
 
     // ORIGINAL COMMENT:
@@ -210,7 +195,7 @@ bool Body::isMemberOfMultiTransform(const App::DocumentObject* f)
 
 bool Body::isSolidFeature(const App::DocumentObject* f)
 {
-    if (f == NULL)
+    if (f == nullptr)
         return false;
 
     if (f->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) &&
@@ -223,7 +208,7 @@ bool Body::isSolidFeature(const App::DocumentObject* f)
 
 bool Body::isAllowed(const App::DocumentObject* f)
 {
-    if (f == NULL)
+    if (f == nullptr)
         return false;
 
     // TODO: Should we introduce a PartDesign::FeaturePython class? This should then also return true for isSolidFeature()

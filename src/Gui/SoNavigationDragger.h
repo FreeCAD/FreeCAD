@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef SONAVIGATIONDRAGGER_H
 #define SONAVIGATIONDRAGGER_H
 
@@ -39,10 +38,11 @@
 // rotTransRotatorFeedbackActive      XRotator.feedbackActive
 // (and similarly for parts of the YRotator and ZRotator)
 
-#include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/draggers/SoDragger.h>
-#include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoSFRotation.h>
+#include <Inventor/fields/SoSFVec3f.h>
+#include <Inventor/sensors/SoFieldSensor.h>
+
 
 //class TranslateRadialDragger;
 class SoRotateCylindricalDragger;

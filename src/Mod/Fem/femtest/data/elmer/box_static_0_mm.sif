@@ -54,7 +54,7 @@ End
 
 Material 1
   Poisson ratio = Real 0.3
-  Youngs Modulus = Real 200000000.0
+  Youngs Modulus = Real 200000000000.0
 End
 
 Equation 1
@@ -71,7 +71,7 @@ End
 
 Boundary Condition 1
   Name = String "Face2"
-  Normal Force = Real -1000000.0
+  Normal Force = Real -1000000000.0
 End
 
 Boundary Condition 2
@@ -86,7 +86,7 @@ Boundary Condition 3
   Force 1 Normalize by Area = Logical True
   Force 2 = Real -0.0
   Force 2 Normalize by Area = Logical True
-  Force 3 = Real -40000000.0
+  Force 3 = Real -40000.0
   Force 3 Normalize by Area = Logical True
   Name = String "Face6"
 End

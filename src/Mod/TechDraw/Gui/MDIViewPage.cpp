@@ -29,6 +29,7 @@
     #include <QApplication>
     #include <QContextMenuEvent>
     #include <QFileDialog>
+    #include <QGraphicsScene>
     #include <QGridLayout>
     #include <QGroupBox>
     #include <QListWidget>
@@ -44,10 +45,9 @@
 
 #endif  // #ifndef _PreComp_
 
-#include <math.h>
+#include <cmath>
 
 #include "MDIViewPage.h"
-#include "MDIViewPagePy.h"
 
 #include <Base/Stream.h>
 #include <Base/Tools.h>
@@ -68,9 +68,11 @@
 #include <Gui/Window.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawPagePy.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 #include <Mod/TechDraw/App/DrawTemplate.h>
 #include <Mod/TechDraw/App/DrawView.h>
@@ -293,7 +295,7 @@ void MDIViewPage::closeEvent(QCloseEvent* ev)
         return;
     detachSelection();
 
-    blockSelection(true);
+    blockSceneSelection(true);
     // when closing the view from GUI notify the view provider to mark it invisible
     if (_pcDocument && !m_objectName.empty()) {
         App::Document* doc = _pcDocument->getDocument();
@@ -304,7 +306,7 @@ void MDIViewPage::closeEvent(QCloseEvent* ev)
                 vp->hide();
         }
     }
-    blockSelection(false);
+    blockSceneSelection(false);
 }
 
 void MDIViewPage::attachTemplate(TechDraw::DrawTemplate *obj)
@@ -406,11 +408,11 @@ bool MDIViewPage::attachView(App::DocumentObject *obj)
 void MDIViewPage::onDeleteObject(const App::DocumentObject& obj)
 {
     //if this page has a QView for this obj, delete it.
-    blockSelection(true);
+    blockSceneSelection(true);
     if (obj.isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
         (void) m_view->removeQViewByName(obj.getNameInDocument());
     }
-    blockSelection(false);
+    blockSceneSelection(false);
 }
 
 void MDIViewPage::onTimer() {
@@ -444,6 +446,10 @@ void MDIViewPage::updateTemplate(bool forceUpdate)
 }
 
 //this is time consuming. should only be used when there is a problem.
+//Solve the situation where a DrawView belonging to this DrawPage has no QGraphicsItem in
+//the QGScene for the DrawPage -or-
+//a QGraphics item exists in the DrawPage's QGScene, but there is no corresponding DrawView
+//in the DrawPage.
 void MDIViewPage::fixOrphans(bool force)
 {
     if(!force) {
@@ -471,18 +477,52 @@ void MDIViewPage::fixOrphans(bool force)
             attachView(dv);
         }
     }
-
     // if qView doesn't have a Feature on this Page, delete it
-    std::vector<QGIView*> qvs = m_view->getViews();
+    std::vector<QGIView*> qvss = m_view->getViews();
+    // qvss may contain an item and its child item(s) and to avoid to access a deleted item a QPointer is needed
+    std::vector<QPointer<QGIView>> qvs;
+    std::for_each(qvss.begin(), qvss.end(), [&qvs](QGIView* v) {
+        qvs.emplace_back(v);
+    });
     App::Document* doc = getAppDocument();
     for (auto& qv: qvs) {
+        if (!qv)
+            continue; // already deleted?
         App::DocumentObject* obj = doc->getObject(qv->getViewName());
         if (obj == nullptr) {
+            //no DrawView anywhere in Document
             m_view->removeQView(qv);
         } else {
-            TechDraw::DrawPage* pp = qv->getViewObject()->findParentPage();
-            if (thisPage != pp) {
-               m_view->removeQView(qv);
+            //DrawView exists in Document.  Does it belong to this DrawPage?
+            int numParentPages = qv->getViewObject()->countParentPages();
+            if (numParentPages == 0) {
+                //DrawView does not belong to any DrawPage
+                //remove QGItem from QGScene
+                m_view->removeQView(qv);
+            } else if (numParentPages == 1) {
+                //Does DrawView belong to this DrawPage?
+                TechDraw::DrawPage* pp = qv->getViewObject()->findParentPage();
+                if (thisPage != pp) {
+                    //DrawView does not belong to this DrawPage
+                    //remove QGItem from QGScene
+                    m_view->removeQView(qv);
+                }
+            } else if (numParentPages > 1) {
+                //DrawView belongs to multiple DrawPages
+                //check if this MDIViewPage corresponds to any parent DrawPage
+                //if not, delete the QGItem
+                std::vector<TechDraw::DrawPage*> pPages = qv->getViewObject()->findAllParentPages();
+                bool found = false;
+                for (auto p: pPages) {
+                    if (thisPage == p) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    //none of the parent Pages for View correspond to this Page
+                    m_view->removeQView(qv);
+                }
             }
         }
     }
@@ -763,7 +803,7 @@ void MDIViewPage::print(QPrinter* printer)
 #endif
 
     //bool block =
-    static_cast<void> (blockConnection(true)); // avoid to be notified by itself
+    static_cast<void> (blockSelection(true)); // avoid to be notified by itself
     Gui::Selection().clearSelection();
 
     bool saveState = m_vpPage->getFrameState();
@@ -790,7 +830,7 @@ void MDIViewPage::print(QPrinter* printer)
     m_vpPage->setTemplateMarkers(saveState);
     m_view->refreshViews();
     //bool block =
-    static_cast<void> (blockConnection(false));
+    static_cast<void> (blockSelection(false));
 }
 
 PyObject* MDIViewPage::getPyObject()
@@ -840,7 +880,7 @@ void MDIViewPage::saveSVG()
     if (fn.isEmpty()) {
       return;
     }
-    static_cast<void> (blockConnection(true)); // avoid to be notified by itself
+    static_cast<void> (blockSelection(true)); // avoid to be notified by itself
 
     m_view->saveSvg(fn);
 }
@@ -859,9 +899,9 @@ void MDIViewPage::saveDXF()
 {
     QString defaultDir;
     QString fileName = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
-                                                   QString::fromUtf8(QT_TR_NOOP("Save Dxf File")),
+                                                   QString::fromUtf8(QT_TR_NOOP("Save DXF file")),
                                                    defaultDir,
-                                                   QString::fromUtf8(QT_TR_NOOP("Dxf (*.dxf)")));
+                                                   QString::fromUtf8(QT_TR_NOOP("DXF (*.dxf)")));
     if (fileName.isEmpty()) {
         return;
     }
@@ -956,7 +996,7 @@ void MDIViewPage::preSelectionChanged(const QPoint &pos)
 }
 
 //flag to prevent selection activity within mdivp
-void MDIViewPage::blockSelection(const bool state)
+void MDIViewPage::blockSceneSelection(const bool state)
 {
     isSelectionBlocked = state;
 }
@@ -966,7 +1006,7 @@ void MDIViewPage::blockSelection(const bool state)
 void MDIViewPage::clearSceneSelection()
 {
 //    Base::Console().Message("MDIVP::clearSceneSelection()\n");
-    blockSelection(true);
+    blockSceneSelection(true);
     m_qgSceneSelected.clear();
 
     std::vector<QGIView *> views = m_view->getViews();
@@ -993,7 +1033,7 @@ void MDIViewPage::clearSceneSelection()
         }
     }
 
-    blockSelection(false);
+    blockSceneSelection(false);
 }
 
 //!Update QGIView's selection state based on Selection made outside Drawing Interface
@@ -1001,12 +1041,12 @@ void MDIViewPage::selectQGIView(App::DocumentObject *obj, const bool isSelected)
 {
     QGIView *view = m_view->findQViewForDocObj(obj);
 
-    blockSelection(true);
+    blockSceneSelection(true);
     if(view) {
         view->setGroupSelection(isSelected);
         view->updateView();
     }
-    blockSelection(false);
+    blockSceneSelection(false);
 }
 
 //! invoked by selection change made in Tree via father MDIView
@@ -1019,21 +1059,21 @@ void MDIViewPage::onSelectionChanged(const Gui::SelectionChanges& msg)
         clearSceneSelection();
     } else if(msg.Type == Gui::SelectionChanges::SetSelection) {                     //replace entire selection set
         clearSceneSelection();
-        blockSelection(true);
+        blockSceneSelection(true);
         for (auto& so: selObjs){
             if (so.pObject->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
                 selectQGIView(so.pObject, true);
             }
         }
-        blockSelection(false);
+        blockSceneSelection(false);
     } else if(msg.Type == Gui::SelectionChanges::AddSelection) {
-        blockSelection(true);
+        blockSceneSelection(true);
         for (auto& so: selObjs){
             if (so.pObject->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
                 selectQGIView(so.pObject, true);
             }
         }
-        blockSelection(false);
+        blockSceneSelection(false);
     } else {
         Base::Console().Log("MDIVP::onSelectionChanged - unhandled: %d\n", msg.Type);
     }
@@ -1112,13 +1152,13 @@ void MDIViewPage::sceneSelectionChanged()
 //Note: Qt says: "no guarantee of selection order"!!!
 void MDIViewPage::setTreeToSceneSelect(void)
 {
-    bool saveBlock = blockConnection(true); // block selectionChanged signal from Tree/Observer
-    blockSelection(true);
+    bool saveBlock = blockSelection(true); // block selectionChanged signal from Tree/Observer
+    blockSceneSelection(true);
     Gui::Selection().clearSelection();
     QList<QGraphicsItem*> sceneSel = m_qgSceneSelected;
     for (QList<QGraphicsItem*>::iterator it = sceneSel.begin(); it != sceneSel.end(); ++it) {
         QGIView *itemView = dynamic_cast<QGIView *>(*it);
-        if(itemView == 0) {
+        if(itemView == nullptr) {
             QGIEdge *edge = dynamic_cast<QGIEdge *>(*it);
             if(edge) {
                 QGraphicsItem*parent = edge->parentItem();
@@ -1257,8 +1297,8 @@ void MDIViewPage::setTreeToSceneSelect(void)
         }
     }
 
-    blockSelection(false);
-    blockConnection(saveBlock);
+    blockSceneSelection(false);
+    blockSelection(saveBlock);
 }
 
 bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel, QList<QGraphicsItem*> sceneSel)
@@ -1293,7 +1333,7 @@ bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel, Q
 
     for (auto sn:sceneSel){
         QGIView *itemView = dynamic_cast<QGIView *>(sn);
-        if(itemView == 0) {
+        if(itemView == nullptr) {
             QGIDatumLabel* dl = dynamic_cast<QGIDatumLabel*>(sn);
             QGIPrimPath* pp = dynamic_cast<QGIPrimPath*>(sn);   //count Vertex/Edge/Face
             if (pp != nullptr) {
@@ -1362,6 +1402,87 @@ MDIViewPage *MDIViewPage::getFromScene(const QGraphicsScene *scene)
     }
 
     return nullptr;
+}
+
+// ----------------------------------------------------------------------------
+
+void MDIViewPagePy::init_type()
+{
+    behaviors().name("MDIViewPagePy");
+    behaviors().doc("Python binding class for the MDI view page class");
+    // you must have overwritten the virtual functions
+    behaviors().supportRepr();
+    behaviors().supportGetattr();
+    behaviors().supportSetattr();
+
+    add_varargs_method("getPage", &MDIViewPagePy::getPage, "getPage() returns the page being displayed");
+    add_varargs_method("cast_to_base", &MDIViewPagePy::cast_to_base, "cast_to_base() cast to MDIView class");
+    behaviors().readyType();
+}
+
+MDIViewPagePy::MDIViewPagePy(MDIViewPage *mdi)
+  : base(mdi)
+{
+}
+
+MDIViewPagePy::~MDIViewPagePy()
+{
+}
+
+Py::Object MDIViewPagePy::repr()
+{
+    std::ostringstream s_out;
+    if (!getMDIViewPagePtr())
+        throw Py::RuntimeError("Cannot print representation of deleted object");
+    s_out << "MDI view page";
+    return Py::String(s_out.str());
+}
+
+// Since with PyCXX it's not possible to make a sub-class of MDIViewPy
+// a trick is to use MDIViewPy as class member and override getattr() to
+// join the attributes of both classes. This way all methods of MDIViewPy
+// appear for SheetViewPy, too.
+Py::Object MDIViewPagePy::getattr(const char * attr)
+{
+    if (!getMDIViewPagePtr()) {
+        std::ostringstream s_out;
+        s_out << "Cannot access attribute '" << attr << "' of deleted object";
+        throw Py::RuntimeError(s_out.str());
+    }
+    std::string name( attr );
+    if (name == "__dict__" || name == "__class__") {
+        Py::Dict dict_self(BaseType::getattr("__dict__"));
+        Py::Dict dict_base(base.getattr("__dict__"));
+        for (auto it : dict_base) {
+            dict_self.setItem(it.first, it.second);
+        }
+        return dict_self;
+    }
+
+    try {
+        return BaseType::getattr(attr);
+    }
+    catch (Py::AttributeError& e) {
+        e.clear();
+        return base.getattr(attr);
+    }
+}
+
+MDIViewPage* MDIViewPagePy::getMDIViewPagePtr()
+{
+    return qobject_cast<MDIViewPage*>(base.getMDIViewPtr());
+}
+
+Py::Object MDIViewPagePy::getPage(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    return Py::asObject(new TechDraw::DrawPagePy(getMDIViewPagePtr()->getPage()));
+}
+
+Py::Object MDIViewPagePy::cast_to_base(const Py::Tuple&)
+{
+    return Gui::MDIViewPy::create(base.getMDIViewPtr());
 }
 
 #include <Mod/TechDraw/Gui/moc_MDIViewPage.cpp>

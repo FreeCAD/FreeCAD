@@ -30,21 +30,23 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderMultiTransform : public ViewProviderTransformed
 {
+    Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderMultiTransform)
     PROPERTY_HEADER(PartDesignGui::ViewProviderMultiTransform);
 public:
-    ViewProviderMultiTransform()
-        { featureName = std::string("MultiTransform");
-	   sPixmap = "PartDesign_MultiTransform.svg"; }
+    ViewProviderMultiTransform() {
+        featureName = std::string("MultiTransform");
+        menuName = tr("MultiTransform parameters");
+        sPixmap = "PartDesign_MultiTransform.svg";
+    }
 
     std::vector<App::DocumentObject*> claimChildren(void) const;
+    void setupContextMenu(QMenu*, QObject*, const char*);
 
     virtual bool onDelete(const std::vector<std::string> &);
 
 protected:
     /// Returns a newly create dialog for the part to be placed in the task view
     virtual TaskDlgFeatureParameters *getEditDialog();
-
-
 };
 
 

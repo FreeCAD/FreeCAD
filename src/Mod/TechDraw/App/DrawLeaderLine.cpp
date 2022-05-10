@@ -72,7 +72,7 @@ DrawLeaderLine::DrawLeaderLine(void)
 {
     static const char *group = "Leader";
 
-    ADD_PROPERTY_TYPE(LeaderParent,(0),group,(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(LeaderParent,(nullptr),group,(App::PropertyType)(App::Prop_None),
                       "View to which this leader is attached");
     LeaderParent.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(WayPoints,(Base::Vector3d()) ,group, App::Prop_None,

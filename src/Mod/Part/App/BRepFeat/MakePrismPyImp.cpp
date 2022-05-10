@@ -330,7 +330,7 @@ PyObject* MakePrismPy::shape(PyObject *args)
 
 PyObject *MakePrismPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int MakePrismPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

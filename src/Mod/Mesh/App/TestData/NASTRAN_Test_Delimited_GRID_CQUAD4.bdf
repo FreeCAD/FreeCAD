@@ -1,0 +1,35 @@
+$-------------------------------------------------------------------------------
+$       Nastran case control file                                               
+$ Part of the FreeCAD unit test system.
+$ This case uses space-delimited floating-point numbers that are not aligned to
+$ eight-character field widths.
+$-------------------------------------------------------------------------------
+$       Exec control section                                                    
+$-------------------------------------------------------------------------------
+ID    TESTCASE,Nastran
+APP   DISP    
+SOL   1       
+TIME  20      
+CEND
+$-------------------------------------------------------------------------------
+$       Case control section                                                    
+$-------------------------------------------------------------------------------
+MAXLINES    = 1000000
+TITLE    = TESTCASE                                   
+SUBTITLE = Test case for FreeCAD Mesh NASTRAN input                    
+
+GRID    1               0.00E+00 0.00E+00 0.00E+00                                
+GRID    2               0.00E+00 0.500000 0.00E+00                                
+GRID    3               0.00E+00 1.000000 0.00E+00                                
+GRID    4               0.00E+00 1.500000 0.00E+00                                
+GRID    5               0.00E+00 2.000000 0.00E+00                                
+GRID    6               0.00E+00 0.00E+00 0.500000                                
+GRID    7               0.00E+00 0.500000 0.500000                                
+GRID    8               0.00E+00 1.000000 0.500000                                
+GRID    9               0.00E+00 1.500000 0.500000                                
+GRID    10              0.00E+00 2.000000 0.500000                                
+CQUAD4  1       400     1       6       7       2                               
+CQUAD4  2       400     2       7       8       3                               
+CQUAD4  3       400     3       8       9       4                               
+CQUAD4  4       400     4       9       10      5                               
+ENDDATA

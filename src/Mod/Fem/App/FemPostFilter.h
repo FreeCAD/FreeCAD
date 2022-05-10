@@ -20,30 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef Fem_FemPostFilter_H
 #define Fem_FemPostFilter_H
 
-#include "FemPostObject.h"
-#include <App/PropertyUnits.h>
-
-#include <vtkSmartPointer.h>
-#include <vtkTableBasedClipDataSet.h>
-#include <vtkExtractGeometry.h>
-#include <vtkGeometryFilter.h>
-#include <vtkPassThrough.h>
-#include <vtkPlane.h>
-#include <vtkWarpVector.h>
 #include <vtkCutter.h>
+#include <vtkExtractGeometry.h>
 #include <vtkLineSource.h>
 #include <vtkPointSource.h>
 #include <vtkProbeFilter.h>
-#include <vtkThreshold.h>
+#include <vtkSmartPointer.h>
+#include <vtkTableBasedClipDataSet.h>
+#include <vtkWarpVector.h>
+
+#include <App/PropertyUnits.h>
+
+#include "FemPostObject.h"
+
 
 namespace Fem
 {
 
-class AppFemExport FemPostFilter : public Fem::FemPostObject
+class FemExport FemPostFilter : public Fem::FemPostObject
 {
     PROPERTY_HEADER(Fem::FemPostFilter);
 
@@ -75,7 +72,7 @@ private:
     std::string m_activePipeline;
 };
 
-class AppFemExport FemPostClipFilter : public FemPostFilter {
+class FemExport FemPostClipFilter : public FemPostFilter {
 
     PROPERTY_HEADER(Fem::FemPostClipFilter);
 
@@ -101,7 +98,7 @@ private:
     vtkSmartPointer<vtkExtractGeometry>         m_extractor;
 };
 
-class AppFemExport FemPostDataAlongLineFilter : public FemPostFilter {
+class FemExport FemPostDataAlongLineFilter : public FemPostFilter {
 
     PROPERTY_HEADER(Fem::FemPostDataAlongLineFilter);
 
@@ -133,7 +130,7 @@ private:
 
 };
 
-class AppFemExport FemPostDataAtPointFilter : public FemPostFilter {
+class FemExport FemPostDataAtPointFilter : public FemPostFilter {
 
     PROPERTY_HEADER(Fem::FemPostDataAtPointFilter);
 
@@ -164,7 +161,7 @@ private:
 
 };
 
-class AppFemExport FemPostScalarClipFilter : public FemPostFilter {
+class FemExport FemPostScalarClipFilter : public FemPostFilter {
 
     PROPERTY_HEADER(Fem::FemPostScalarClipFilter);
 
@@ -192,7 +189,7 @@ private:
     App::PropertyFloatConstraint::Constraints   m_constraints;
 };
 
-class AppFemExport FemPostWarpVectorFilter : public FemPostFilter {
+class FemExport FemPostWarpVectorFilter : public FemPostFilter {
 
     PROPERTY_HEADER(Fem::FemPostWarpVectorFilter);
 
@@ -217,7 +214,7 @@ private:
     App::Enumeration                 m_vectorFields;
 };
 
-class AppFemExport FemPostCutFilter : public FemPostFilter {
+class FemExport FemPostCutFilter : public FemPostFilter {
 
     PROPERTY_HEADER(Fem::FemPostCutFilter);
 

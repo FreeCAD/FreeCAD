@@ -31,7 +31,7 @@ namespace MeshPartGui {
 /**
  * @author Werner Mayer
  */
-class MeshPartGuiExport Workbench : public Gui::StdWorkbench
+class Workbench : public Gui::StdWorkbench
 {
     TYPESYSTEM_HEADER();
 

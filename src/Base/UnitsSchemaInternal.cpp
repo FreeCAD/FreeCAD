@@ -27,10 +27,8 @@
 #endif
 
 #include <QString>
-#include "Exception.h"
-#include "UnitsApi.h"
+
 #include "UnitsSchemaInternal.h"
-#include <cmath>
 
 
 using namespace Base;
@@ -218,6 +216,25 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
             factor = 0.001;
         }
     }
+    else if ((unit == Unit::Stiffness)) {
+        if (UnitValue < 1){// mN/m is the smallest
+            unitString = QString::fromLatin1("mN/m");
+            factor = 1e-3;
+        }
+        if (UnitValue < 1e3) {
+            unitString = QString::fromLatin1("N/m");
+            factor = 1.0;
+        }
+        else if (UnitValue < 1e6) {
+            unitString = QString::fromLatin1("kN/m");
+            factor = 1e3;
+        }
+        else {
+            unitString = QString::fromLatin1("MN/m");
+            factor = 1e6;
+            
+        }
+    }
     else if (unit == Unit::Force) {
         if (UnitValue < 1e3) {
             unitString = QString::fromLatin1("mN");
@@ -334,7 +351,7 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
     }
     else if (unit == Unit::ElectricalConductance) {
         if (UnitValue < 1e-9) {
-            unitString = QString::fromLatin1("\xC2\xB5S");
+            unitString = QString::fromUtf8("\xC2\xB5S");
             factor = 1e-12;
         }
         else if (UnitValue < 1e-6) {

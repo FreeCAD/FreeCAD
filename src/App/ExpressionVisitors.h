@@ -23,7 +23,6 @@
 #ifndef RENAMEOBJECTIDENTIFIEREXPRESSIONVISITOR_H
 #define RENAMEOBJECTIDENTIFIEREXPRESSIONVISITOR_H
 
-#include <Base/BaseClass.h>
 #include "Expression.h"
 
 namespace App {
@@ -56,7 +55,7 @@ private:
 template<class P> class UpdateElementReferenceExpressionVisitor : public ExpressionModifier<P> {
 public:
 
-    UpdateElementReferenceExpressionVisitor(P & _prop, App::DocumentObject *feature=0, bool reverse=false)
+    UpdateElementReferenceExpressionVisitor(P & _prop, App::DocumentObject *feature=nullptr, bool reverse=false)
         : ExpressionModifier<P>(_prop),feature(feature),reverse(reverse)
     {
     }

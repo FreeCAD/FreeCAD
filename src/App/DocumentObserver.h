@@ -26,8 +26,9 @@
 
 #include <Base/BaseClass.h>
 #include <boost_signals2.hpp>
-#include <set>
 #include <memory>
+#include <set>
+
 
 namespace App
 {
@@ -62,6 +63,14 @@ public:
     /*! Assignment operator */
     void operator=(const std::string&);
 
+    bool operator==(const DocumentT &other) const {
+        return document == other.document;
+    }
+
+    bool operator<(const DocumentT &other) const {
+        return document < other.document;
+    }
+
     /*! Get a pointer to the document or 0 if it doesn't exist any more. */
     Document* getDocument() const;
     /*! Get the name of the document. */
@@ -91,6 +100,8 @@ public:
     DocumentObjectT(DocumentObjectT &&);
     /*! Constructor */
     DocumentObjectT(const DocumentObject*);
+    /*! Constructor */
+    DocumentObjectT(const Document*, const std::string& objName);
     /*! Constructor */
     DocumentObjectT(const char *docName, const char *objName);
     /*! Constructor */
@@ -166,6 +177,9 @@ public:
     SubObjectT(const DocumentObject*, const char *subname);
 
     /*! Constructor */
+    SubObjectT(const DocumentObject*);
+
+    /*! Constructor */
     SubObjectT(const char *docName, const char *objName, const char *subname);
 
     /*! Assignment operator */
@@ -174,15 +188,37 @@ public:
     /*! Assignment operator */
     SubObjectT &operator=(SubObjectT &&);
 
+    /*! Assignment operator */
+    SubObjectT &operator=(const DocumentObjectT&);
+
+    /*! Assignment operator */
+    SubObjectT &operator=(const App::DocumentObject*);
+
     /*! Equality operator */
     bool operator==(const SubObjectT&) const;
 
     /// Set the subname path to the sub-object
     void setSubName(const char *subname);
 
+    /// Set the subname path to the sub-object
+    void setSubName(const std::string &subname) {
+        setSubName(subname.c_str());
+    }
+
     /// Return the subname path
     const std::string &getSubName() const;
 
+    /** Return docname#objname (label)
+     * @param docName: optional document name. The document prefix will only be printed
+     * if it is different then the given 'doc'.
+     */
+    std::string getObjectFullName(const char *docName=nullptr) const;
+
+    /** Return docname#objname.subname (label)
+     * @param doc: optional document name. The document prefix will only be printed
+     * if it is different then the given 'doc'.
+     */
+    std::string getSubObjectFullName(const char *docName=nullptr) const;
     /// Return the subname path without sub-element
     std::string getSubNameNoElement() const;
 
@@ -195,7 +231,7 @@ public:
     /** Return the old style sub-element name
      * @param index: if given, then return the element type, and extract the index
      */
-    std::string getOldElementName(int *index=0) const;
+    std::string getOldElementName(int *index=nullptr) const;
 
     /// Return the sub-object
     DocumentObject *getSubObject() const;
@@ -212,7 +248,7 @@ private:
 };
 
 /**
- * The PropertyLinkT class is a helper class to create Python statements for proprty links.
+ * The PropertyLinkT class is a helper class to create Python statements for property links.
  */
 class AppExport PropertyLinkT
 {
@@ -366,9 +402,9 @@ public:
     }
     /*!
      * \brief operator ->
-     * \return pointer to the document
+     * \return pointer to the document object
      */
-    T* operator->() {
+    T* operator->() const {
         return ptr.get<T>();
     }
     /*!
@@ -384,6 +420,11 @@ public:
      */
     bool operator!= (const WeakPtrT<T>& p) const {
         return ptr != p.ptr;
+    }
+    /*! Get a pointer to the object or 0 if it doesn't exist any more. */
+    T* get() const noexcept
+    {
+        return ptr.get<T>();
     }
 
 private:
@@ -422,10 +463,12 @@ public:
     void detachDocument();
 
 private:
-    /** Checks if a new document was created */
+    /** Called when a new document was created */
     virtual void slotCreatedDocument(const App::Document& Doc);
-    /** Checks if the given document is about to be closed */
+    /** Called when a document is about to be closed */
     virtual void slotDeletedDocument(const App::Document& Doc);
+    /** Called when a document is activated */
+    virtual void slotActivateDocument(const App::Document& Doc);
     /** Checks if a new object was added. */
     virtual void slotCreatedObject(const App::DocumentObject& Obj);
     /** Checks if the given object is about to be removed. */
@@ -445,6 +488,7 @@ private:
     typedef boost::signals2::connection Connection;
     Connection connectApplicationCreatedDocument;
     Connection connectApplicationDeletedDocument;
+    Connection connectApplicationActivateDocument;
     Connection connectDocumentCreatedObject;
     Connection connectDocumentDeletedObject;
     Connection connectDocumentChangedObject;

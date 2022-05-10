@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>247</width>
-    <height>157</height>
+    <height>143</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -40,7 +40,14 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0" colspan="2">
+      <item row="0" column="1" colspan="2">
+       <widget class="QLabel" name="labelElement">
+        <property name="text">
+         <string notr="true">[]</string>
+        </property>
+       </widget>
+      </item>
+     <item row="1" column="0" colspan="2">
        <widget class="Gui::ColorButton" name="colorButton">
         <property name="minimumSize">
          <size>
@@ -69,14 +76,7 @@
         </property>
        </spacer>
       </item>
-      <item row="0" column="1" colspan="2">
-       <widget class="QLabel" name="labelElement">
-        <property name="text">
-         <string notr="true">[]</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+      </layout>
     </widget>
    </item>
    <item>

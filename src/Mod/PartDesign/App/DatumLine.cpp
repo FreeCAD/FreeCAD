@@ -26,8 +26,8 @@
 
 #ifndef _PreComp_
 # include <BRepBuilderAPI_MakeEdge.hxx>
-# include <gp_Pnt.hxx>
 # include <gp_Lin.hxx>
+# include <gp_Pnt.hxx>
 #endif
 
 #include "DatumLine.h"
@@ -37,7 +37,7 @@ using namespace Attacher;
 
 // ============================================================================
 
-const char* Line::ResizeModeEnums[]= {"Automatic","Manual",NULL};
+const char* Line::ResizeModeEnums[]= {"Automatic","Manual",nullptr};
 
 PROPERTY_SOURCE(PartDesign::Line, Part::Datum)
 

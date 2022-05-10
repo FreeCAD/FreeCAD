@@ -46,6 +46,7 @@ from PySide.QtGui import QApplication
 
 import FreeCAD
 import FreeCADGui
+import FemGui
 
 import femresult.resulttools as resulttools
 
@@ -474,6 +475,9 @@ class _TaskPanel:
             minm = min(UserDefinedFormula)
             maxm = max(UserDefinedFormula)
             self.update_colors_stats(UserDefinedFormula, "", minm, maxm)
+
+        # finally we must recompute the result_obj
+        self.result_obj.Document.recompute()
 
     def get_scalar_disp_list(self, vector_list, axis):
         # list is needed, as zib-object is not subscriptable in py3

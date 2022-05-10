@@ -23,21 +23,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
+#include <Gui/Application.h>
 
 #include "DlgSettingsFemCcxImp.h"
 #include "ui_DlgSettingsFemCcx.h"
-#include <Gui/Application.h>
-#include <Gui/PrefWidgets.h>
+
 
 using namespace FemGui;
 
-DlgSettingsFemCcxImp::DlgSettingsFemCcxImp( QWidget* parent )
-  : PreferencePage( parent )
-  , ui(new Ui_DlgSettingsFemCcxImp)
+DlgSettingsFemCcxImp::DlgSettingsFemCcxImp(QWidget* parent)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgSettingsFemCcxImp)
 {
     ui->setupUi(this);
+    // set ranges
+    ui->dsb_ccx_analysis_time->setMaximum(FLOAT_MAX);
+    ui->dsb_ccx_initial_time_step->setMaximum(FLOAT_MAX);
 }
 
 DlgSettingsFemCcxImp::~DlgSettingsFemCcxImp()
@@ -47,8 +50,8 @@ DlgSettingsFemCcxImp::~DlgSettingsFemCcxImp()
 
 void DlgSettingsFemCcxImp::saveSettings()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Mod/Fem/Ccx");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Fem/Ccx");
     hGrp->SetInt("Solver", ui->cmb_solver->currentIndex());
     hGrp->SetInt("AnalysisType", ui->cb_analysis_type->currentIndex());
 
@@ -99,18 +102,20 @@ void DlgSettingsFemCcxImp::loadSettings()
     ui->fc_ccx_binary_path->onRestore();
     ui->cb_split_inp_writer->onRestore();
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Mod/Fem/Ccx");
-    int index =  hGrp->GetInt("Solver", 0);
-    if (index > -1) ui->cmb_solver->setCurrentIndex(index);
-    index =  hGrp->GetInt("AnalysisType", 0);
-    if (index > -1) ui->cb_analysis_type->setCurrentIndex(index);
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Fem/Ccx");
+    int index = hGrp->GetInt("Solver", 0);
+    if (index > -1)
+        ui->cmb_solver->setCurrentIndex(index);
+    index = hGrp->GetInt("AnalysisType", 0);
+    if (index > -1)
+        ui->cb_analysis_type->setCurrentIndex(index);
 }
 
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsFemCcxImp::changeEvent(QEvent *e)
+void DlgSettingsFemCcxImp::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         int c_index = ui->cb_analysis_type->currentIndex();

@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_VIEWPROVIDERTEMPLATE_H
 #define DRAWINGGUI_VIEWPROVIDERTEMPLATE_H
 
-#include <Gui/ViewProviderFeature.h>
 
 namespace TechDraw{
     class DrawTemplate;

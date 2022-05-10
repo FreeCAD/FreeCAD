@@ -62,10 +62,10 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QShowEvent>
 #include <QtGui/QMouseEvent>
-#include <math.h>
+#include <cmath>
 
 #include <QScreen>
-
+#include <Gui/FileDialog.h>
 #include "qtcolorpicker.h"
 
 /*! \class QtColorPicker
@@ -171,7 +171,7 @@ class ColorPickerItem : public QFrame
 
 public:
     ColorPickerItem(const QColor &color = Qt::white, const QString &text = QString(),
-              QWidget *parent = 0);
+              QWidget *parent = nullptr);
     ~ColorPickerItem();
 
     QColor color() const;
@@ -207,7 +207,7 @@ class ColorPickerPopup : public QFrame
 
 public:
     ColorPickerPopup(int width, bool withColorDialog,
-               QWidget *parent = 0);
+               QWidget *parent = nullptr);
     ~ColorPickerPopup();
 
     void insertColor(const QColor &col, const QString &text, int index);
@@ -271,7 +271,7 @@ private:
 */
 QtColorPicker::QtColorPicker(QWidget *parent,
                  int cols, bool enableColorDialog)
-    : QPushButton(parent), popup(0), withColorDialog(enableColorDialog)
+    : QPushButton(parent), popup(nullptr), withColorDialog(enableColorDialog)
 {
     setFocusPolicy(Qt::StrongFocus);
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
@@ -562,11 +562,11 @@ ColorPickerPopup::ColorPickerPopup(int width, bool withColorDialog,
     moreButton->setFrameRect(QRect(2, 2, 20, 17));
     connect(moreButton, SIGNAL(clicked()), SLOT(getColorFromDialog()));
     } else {
-    moreButton = 0;
+    moreButton = nullptr;
     }
 
-    eventLoop = 0;
-    grid = 0;
+    eventLoop = nullptr;
+    grid = nullptr;
     regenerateGrid();
 }
 
@@ -593,7 +593,7 @@ ColorPickerItem *ColorPickerPopup::find(const QColor &col) const
         return items.at(i);
     }
 
-    return 0;
+    return nullptr;
 }
 
 /*! \internal
@@ -659,7 +659,7 @@ void ColorPickerPopup::exec()
     QEventLoop e;
     eventLoop = &e;
     (void) e.exec();
-    eventLoop = 0;
+    eventLoop = nullptr;
 }
 
 /*! \internal
@@ -669,7 +669,7 @@ void ColorPickerPopup::updateSelected()
 {
     QLayoutItem *layoutItem;
     int i = 0;
-    while ((layoutItem = grid->itemAt(i)) != 0) {
+    while ((layoutItem = grid->itemAt(i)) != nullptr) {
     QWidget *w = layoutItem->widget();
     if (w && w->inherits("ColorPickerItem")) {
         ColorPickerItem *litem = reinterpret_cast<ColorPickerItem *>(layoutItem->widget());
@@ -755,7 +755,7 @@ void ColorPickerPopup::keyPressEvent(QKeyEvent *e)
 
         QLayoutItem *layoutItem;
                 int i = 0;
-        while ((layoutItem = grid->itemAt(i)) != 0) {
+        while ((layoutItem = grid->itemAt(i)) != nullptr) {
             QWidget *w = layoutItem->widget();
             if (w && w->inherits("ColorPickerItem")) {
             ColorPickerItem *litem
@@ -775,7 +775,7 @@ void ColorPickerPopup::keyPressEvent(QKeyEvent *e)
 
         QLayoutItem *layoutItem;
                 int i = 0;
-        while ((layoutItem = grid->itemAt(i)) != 0) {
+        while ((layoutItem = grid->itemAt(i)) != nullptr) {
             QWidget *w = layoutItem->widget();
             if (w && w->inherits("ColorPickerItem")) {
             ColorPickerItem *litem
@@ -902,7 +902,12 @@ void ColorPickerPopup::getColorFromDialog()
 {
     //bool ok;
     //QRgb rgb = QColorDialog::getRgba(lastSel.rgba(), &ok, parentWidget());
-    QColor col = QColorDialog::getColor(lastSel,parentWidget(),0,QColorDialog::ShowAlphaChannel);
+    QColor col;
+    if (Gui::DialogOptions::dontUseNativeColorDialog()){
+        col = QColorDialog::getColor(lastSel, parentWidget(), nullptr, QColorDialog::ShowAlphaChannel|QColorDialog::DontUseNativeDialog);
+    } else {
+        col = QColorDialog::getColor(lastSel, parentWidget(), nullptr, QColorDialog::ShowAlphaChannel);
+    }
     if (!col.isValid())
     return;
 

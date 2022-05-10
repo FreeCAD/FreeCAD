@@ -139,7 +139,7 @@ void PropertyPath::SaveDocFile (Base::Writer &) const
 void PropertyPath::RestoreDocFile(Base::Reader &reader)
 {
     App::PropertyContainer *container = getContainer();
-    App::DocumentObject *obj = 0;
+    App::DocumentObject *obj = nullptr;
     if (container->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         obj = static_cast<App::DocumentObject*>(container);
     }

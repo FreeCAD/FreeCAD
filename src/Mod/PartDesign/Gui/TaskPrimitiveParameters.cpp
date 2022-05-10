@@ -24,31 +24,24 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Precision.hxx>
 # include <QMessageBox>
-# include <QRegExp>
-# include <QTextStream>
-# include <sstream>
 #endif
 
-#include "TaskPrimitiveParameters.h"
-#include "ui_TaskPrimitiveParameters.h"
-#include "ViewProviderDatumCS.h"
-
+#include <App/Document.h>
 #include <App/Origin.h>
 #include <Base/Console.h>
-#include <Base/Interpreter.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Application.h>
-#include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/ViewProviderOrigin.h>
-#include <Mod/Part/App/DatumFeature.h>
 #include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/DatumCS.h>
 #include <Mod/PartDesign/App/FeaturePrimitive.h>
+
+#include "TaskPrimitiveParameters.h"
+#include "ui_TaskPrimitiveParameters.h"
+
 
 using namespace PartDesignGui;
 
@@ -341,7 +334,7 @@ TaskBoxPrimitives::~TaskBoxPrimitives()
 {
     //hide the parts coordinate system axis for selection
     try {
-        PartDesign::Body * body = vp ? PartDesign::Body::findBodyOf(vp->getObject()) : 0;
+        PartDesign::Body * body = vp ? PartDesign::Body::findBodyOf(vp->getObject()) : nullptr;
         if (body) {
             App::Origin *origin = body->getOrigin();
             Gui::ViewProviderOrigin* vpOrigin;
@@ -398,7 +391,7 @@ void TaskBoxPrimitives::onCylinderRadiusChanged(double v) {
 void TaskBoxPrimitives::onCylinderXSkewChanged(double v) {
     PartDesign::Cylinder* cyl = static_cast<PartDesign::Cylinder*>(vp->getObject());
     // we must assure that if the user incremented from e.g. 85 degree with the
-    // spin buttons he does not end at 90.0 but 89.9999 which is shown rounded to 90 degree
+    // spin buttons, they do not end at 90.0 but at 89.9999 which is shown rounded to 90 degree
     if ((v < 90.0) && (v > -90.0)) {
         cyl->FirstAngle.setValue(v);
     }
@@ -415,7 +408,7 @@ void TaskBoxPrimitives::onCylinderXSkewChanged(double v) {
 void TaskBoxPrimitives::onCylinderYSkewChanged(double v) {
     PartDesign::Cylinder* cyl = static_cast<PartDesign::Cylinder*>(vp->getObject());
     // we must assure that if the user incremented from e.g. 85 degree with the
-    // spin buttons he does not end at 90.0 but 89.9999 which is shown rounded to 90 degree
+    // spin buttons, they do not end at 90.0 but at 89.9999 which is shown rounded to 90 degree
     if ((v < 90.0) && (v > -90.0)) {
         cyl->SecondAngle.setValue(v);
     }
@@ -572,7 +565,7 @@ void TaskBoxPrimitives::onPrismHeightChanged(double v) {
 void TaskBoxPrimitives::onPrismXSkewChanged(double v) {
     PartDesign::Prism* sph = static_cast<PartDesign::Prism*>(vp->getObject());
     // we must assure that if the user incremented from e.g. 85 degree with the
-    // spin buttons he does not end at 90.0 but 89.9999 which is shown rounded to 90 degree
+    // spin buttons, they do not end at 90.0 but at 89.9999 which is shown rounded to 90 degree
     if ((v < 90.0) && (v > -90.0)) {
         sph->FirstAngle.setValue(v);
     }
@@ -589,7 +582,7 @@ void TaskBoxPrimitives::onPrismXSkewChanged(double v) {
 void TaskBoxPrimitives::onPrismYSkewChanged(double v) {
     PartDesign::Prism* sph = static_cast<PartDesign::Prism*>(vp->getObject());
     // we must assure that if the user incremented from e.g. 85 degree with the
-    // spin buttons he does not end at 90.0 but 89.9999 which is shown rounded to 90 degree
+    // spin buttons, they do not end at 90.0 but at 89.9999 which is shown rounded to 90 degree
     if ((v < 90.0) && (v > -90.0)) {
         sph->SecondAngle.setValue(v);
     }
@@ -691,7 +684,7 @@ bool TaskBoxPrimitives::setPrimitive(App::DocumentObject *obj)
             return false;
         }
 
-        Base::QuantityFormat format(Base::QuantityFormat::Default, Base::UnitsApi::getDecimals());
+        Base::QuantityFormat format(Base::QuantityFormat::Fixed, Base::UnitsApi::getDecimals());
         switch(ui->widgetStack->currentIndex()) {
             case 1:         // box
                 cmd = QString::fromLatin1(

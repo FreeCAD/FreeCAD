@@ -95,7 +95,7 @@ def display_external(internal_value,
     if dim == 'Length':
         q = App.Units.Quantity(internal_value, App.Units.Length)
         if not unit:
-            if not decimals and showUnit:
+            if decimals is None and showUnit:
                 return q.UserString
 
             conversion = q.getUserPreferred()[1]
@@ -107,11 +107,16 @@ def display_external(internal_value,
                 uom = unit
                 internal_value = q.getValueAs(unit)
                 conversion = 1
-            except:
+            except Exception:
                 conversion = q.getUserPreferred()[1]
                 uom = q.getUserPreferred()[2]
     elif dim == 'Angle':
-        return App.Units.Quantity(internal_value, App.Units.Angle).UserString
+        q = App.Units.Quantity(internal_value, App.Units.Angle)
+        if decimals is None:
+            return q.UserString
+
+        conversion = q.getUserPreferred()[1]
+        uom = q.getUserPreferred()[2]
     else:
         conversion = 1.0
         if not decimals:

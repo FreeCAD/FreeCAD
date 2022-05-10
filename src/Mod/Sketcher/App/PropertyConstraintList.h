@@ -99,7 +99,7 @@ public:
            returns null. This must be checked by the caller.
     */
     const Constraint *operator[] (const int idx) const {
-        return (invalidGeometry || invalidIndices) ? 0 : _lValueList[idx];
+        return (invalidGeometry || invalidIndices) ? nullptr : _lValueList[idx];
     }
 
     const std::vector<Constraint*> &getValues(void) const {

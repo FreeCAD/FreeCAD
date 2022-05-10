@@ -53,16 +53,13 @@
 #include <string>
 #include <vector>
 
-// Xerces
-#include <xercesc/util/XercesDefs.hpp>
-
 #ifdef FC_OS_WIN32
 # include <windows.h>
 #endif
 
 // Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
+#ifndef __QtAll__
+# include <Gui/QtAll.h>
 #endif
 
 #endif  //_PreComp_

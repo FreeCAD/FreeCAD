@@ -33,7 +33,7 @@ namespace Fem
 {
 
 //poly data is the only data we can visualize, hence every post processing object needs to expose it
-class AppFemExport FemPostObject : public App::GeoFeature
+class FemExport FemPostObject : public App::GeoFeature
 {
     PROPERTY_HEADER(Fem::FemPostObject);
 

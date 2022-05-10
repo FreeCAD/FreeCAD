@@ -29,10 +29,9 @@
 #endif
 
 #ifndef _PreComp_
-# include <float.h>
+# include <cfloat>
 # include <algorithm>
 # include <map>
-# include <Python.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/SoPrimitiveVertex.h>
 # include <Inventor/actions/SoCallbackAction.h>
@@ -460,7 +459,8 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 void SoBrepFaceSet::renderSimpleArray()
 {
     int cnt = index_array.size();
-    if (cnt == 0) return;
+    if (cnt == 0)
+        return;
 
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -486,7 +486,8 @@ void SoBrepFaceSet::renderColoredArray(SoMaterialBundle *const materials)
 {
     int num_parts = partIndex.getNum();
     int cnt = index_array.size();
-    if (cnt == 0) return;
+    if (cnt == 0)
+        return;
 
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -688,19 +689,22 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 #endif
 
 bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContextPtr ctx, SelContextPtr ctx2) {
-    if(!ctx && !ctx2) return false;
+    if(!ctx && !ctx2)
+        return false;
 
     auto state = action->getState();
     auto mb = SoMaterialBindingElement::get(state);
 
     auto element = SoLazyElement::getInstance(state);
     const SbColor *diffuse = element->getDiffusePointer();
-    if(!diffuse) return false;
+    if(!diffuse)
+        return false;
     int diffuse_size = element->getNumDiffuse();
 
     const float *trans = element->getTransparencyPointer();
     int trans_size = element->getNumTransparencies();
-    if(!trans || !trans_size) return false;
+    if(!trans || !trans_size)
+        return false;
     float trans0=0.0;
     bool hasTransparency = false;
     for(int i=0;i<trans_size;++i) {
@@ -980,7 +984,8 @@ void SoBrepFaceSet::generatePrimitives(SoAction * action)
 #else
     //This is highly experimental!!!
 
-    if (this->coordIndex.getNum() < 3) return;
+    if (this->coordIndex.getNum() < 3)
+        return;
     SoState * state = action->getState();
 
     if (this->vertexProperty.getValue()) {
@@ -1036,25 +1041,25 @@ void SoBrepFaceSet::generatePrimitives(SoAction * action)
     if (doTextures) {
         if (tb.isFunction() && !tb.needIndices()) {
             tbind = NONE;
-            tindices = NULL;
+            tindices = nullptr;
         }
         // FIXME: just call inherited::areTexCoordsIndexed() instead of
         // the if-check? 20020110 mortene.
         else if (SoTextureCoordinateBindingElement::get(state) ==
                  SoTextureCoordinateBindingElement::PER_VERTEX) {
             tbind = PER_VERTEX;
-            tindices = NULL;
+            tindices = nullptr;
         }
         else {
             tbind = PER_VERTEX_INDEXED;
-            if (tindices == NULL) tindices = cindices;
+            if (tindices == nullptr) tindices = cindices;
         }
     }
 
-    if (nbind == PER_VERTEX_INDEXED && nindices == NULL) {
+    if (nbind == PER_VERTEX_INDEXED && nindices == nullptr) {
         nindices = cindices;
     }
-    if (mbind == PER_VERTEX_INDEXED && mindices == NULL) {
+    if (mbind == PER_VERTEX_INDEXED && mindices == nullptr) {
         mindices = cindices;
     }
 
@@ -1411,8 +1416,8 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
                                 SbBool texture)
 {
     (void)texcoords; (void)texindices; (void)texture;
-    const SbVec3f * coords3d = NULL;
-    SbVec3f * cur_coords3d = NULL;
+    const SbVec3f * coords3d = nullptr;
+    SbVec3f * cur_coords3d = nullptr;
     coords3d = vertexlist->getArrayPtr3();
     cur_coords3d = ( SbVec3f *)coords3d;
 
@@ -1430,8 +1435,8 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
     int matnr = 0;
     int trinr = 0;
 
-    float * vertex_array = NULL;
-    GLuint * index_array = NULL;
+    float * vertex_array = nullptr;
+    GLuint * index_array = nullptr;
     SbColor  mycolor1,mycolor2,mycolor3;
     SbVec3f *mynormal1 = (SbVec3f *)currnormal;
     SbVec3f *mynormal2 = (SbVec3f *)currnormal;
@@ -1471,7 +1476,7 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
         const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
 
         PFNGLBINDBUFFERARBPROC glBindBufferARB = (PFNGLBINDBUFFERARBPROC) cc_glglue_getprocaddress(glue, "glBindBufferARB");
-        PFNGLMAPBUFFERARBPROC glMapBufferARB = (PFNGLMAPBUFFERARBPROC) cc_glglue_getprocaddress(glue, "glMapBufferARB");
+      //PFNGLMAPBUFFERARBPROC glMapBufferARB = (PFNGLMAPBUFFERARBPROC) cc_glglue_getprocaddress(glue, "glMapBufferARB");
         PFNGLGENBUFFERSPROC glGenBuffersARB = (PFNGLGENBUFFERSPROC)cc_glglue_getprocaddress(glue, "glGenBuffersARB");
         PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC)cc_glglue_getprocaddress(glue, "glDeleteBuffersARB");
         PFNGLBUFFERDATAARBPROC glBufferDataARB = (PFNGLBUFFERDATAARBPROC)cc_glglue_getprocaddress(glue, "glBufferDataARB");
@@ -1707,11 +1712,11 @@ void SoBrepFaceSet::VBO::render(SoGLRenderAction * action,
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
 
-    glVertexPointer(3,GL_FLOAT,10*sizeof(GLfloat),0);
+    glVertexPointer(3,GL_FLOAT,10*sizeof(GLfloat),nullptr);
     glNormalPointer(GL_FLOAT,10*sizeof(GLfloat),(GLvoid *)(3*sizeof(GLfloat)));
     glColorPointer(4,GL_FLOAT,10*sizeof(GLfloat),(GLvoid *)(6*sizeof(GLfloat)));
 
-    glDrawElements(GL_TRIANGLES, this->indice_array, GL_UNSIGNED_INT, (void *)0);
+    glDrawElements(GL_TRIANGLES, this->indice_array, GL_UNSIGNED_INT, (void *)nullptr);
 
     glDisableClientState(GL_COLOR_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);
@@ -1754,7 +1759,7 @@ void SoBrepFaceSet::renderShape(SoGLRenderAction * action,
 
     int texidx = 0;
 
-    const SbVec3f * coords3d = NULL;
+    const SbVec3f * coords3d = nullptr;
     coords3d = vertexlist->getArrayPtr3();
 
     const int32_t *viptr = vertexindices;

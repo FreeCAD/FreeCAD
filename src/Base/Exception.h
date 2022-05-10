@@ -25,13 +25,13 @@
 #ifndef BASE_EXCEPTION_H
 #define BASE_EXCEPTION_H
 
-#include <exception>
-#include <stdexcept>
+#include <csignal>
 #include <string>
-#include <signal.h>
-#include <Python.h>
-#include "FileInfo.h"
 #include "BaseClass.h"
+#include "FileInfo.h"
+
+
+typedef struct _object PyObject;
 
 /* MACROS FOR THROWING EXCEPTIONS */
 
@@ -96,10 +96,10 @@ public:
 
   Exception &operator=(const Exception &inst);
 
-  virtual const char* what(void) const throw();
+  virtual const char* what() const throw();
 
   /// Reports exception. It includes a mechanism to only report an exception once.
-  virtual void ReportException (void) const;
+  virtual void ReportException () const;
 
   inline void setMessage(const char * sMessage);
   inline void setMessage(const std::string& sMessage);
@@ -121,7 +121,7 @@ public:
   inline void setReported(bool reported) { _isReported = reported; }
 
   /// returns a Python dictionary containing the exception data
-  virtual PyObject * getPyObject(void);
+  virtual PyObject * getPyObject();
   /// returns sets the exception data from a Python dictionary
   virtual void setPyObject( PyObject * pydict);
 
@@ -138,7 +138,7 @@ protected:
   * This way, the file, line, and function are automatically inserted. */
   Exception(const char * sMessage);
   Exception(const std::string& sMessage);
-  Exception(void);
+  Exception();
   Exception(const Exception &inst);
 
 protected:
@@ -157,7 +157,7 @@ protected:
  */
 class BaseExport AbortException : public Exception
 {
-  TYPESYSTEM_HEADER();
+  TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
   /// Construction
   AbortException(const char * sMessage);
@@ -167,7 +167,9 @@ public:
   /// Destruction
   virtual ~AbortException() throw() {}
   /// Description of the exception
-  virtual const char* what() const throw();
+  const char* what() const throw() override;
+  /// returns the corresponding python exception type
+  PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -184,6 +186,7 @@ public:
 
   /// Destruction
   virtual ~XMLBaseException() throw() {}
+  PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -203,7 +206,8 @@ public:
   /// Destruction
   virtual ~XMLParseException() throw() {}
   /// Description of the exception
-  virtual const char* what() const throw();
+  const char* what() const throw() override;
+  PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -223,7 +227,8 @@ public:
   /// Destruction
   virtual ~XMLAttributeError() throw() {}
   /// Description of the exception
-  virtual const char* what() const throw();
+  const char* what() const throw() override;
+  PyObject * getPyExceptionType() const override;
 };
 
 /** File exception handling class
@@ -234,7 +239,7 @@ class BaseExport FileException : public Exception
 {
 public:
   /// With massage and file name
-  FileException(const char * sMessage, const char * sFileName=0);
+  FileException(const char * sMessage, const char * sFileName=nullptr);
   /// With massage and file name
   FileException(const char * sMessage, const FileInfo& File);
   /// standard construction
@@ -246,22 +251,23 @@ public:
   /// Assignment operator
   FileException &operator=(const FileException &inst);
   /// Description of the exception
-  virtual const char* what() const throw() override;
+  const char* what() const throw() override;
   /// Report generation
-  virtual void ReportException (void) const override;
+  void ReportException () const override;
   /// Get file name for use with translatable message
   std::string getFileName() const;
   /// returns a Python dictionary containing the exception data
-  virtual PyObject * getPyObject(void) override;
+  PyObject * getPyObject() override;
   /// returns sets the exception data from a Python dictionary
-  virtual void setPyObject( PyObject * pydict) override;
+  void setPyObject( PyObject * pydict) override;
 
-  virtual PyObject * getPyExceptionType() const override;
+  PyObject * getPyExceptionType() const override;
 protected:
   FileInfo file;
   // necessary   for what() legacy behaviour as it returns a buffer that
   // can not be of a temporary object to be destroyed at end of what()
   std::string _sErrMsgAndFileName;
+  void setFileName(const char * sFileName=nullptr);
 };
 
 /**
@@ -278,6 +284,7 @@ public:
   FileSystemError(const std::string& sMessage);
   /// Destruction
   virtual ~FileSystemError() throw() {}
+  PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -293,6 +300,7 @@ public:
   BadFormatError(const std::string& sMessage);
   /// Destruction
   virtual ~BadFormatError() throw() {}
+  PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -317,8 +325,9 @@ public:
   MemoryException &operator=(const MemoryException &inst);
 #if defined (__GNUC__)
   /// Description of the exception
-  virtual const char* what() const throw() override;
+  const char* what() const throw() override;
 #endif
+  PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -334,6 +343,7 @@ public:
   AccessViolation(const std::string& sMessage);
   /// Destruction
   virtual ~AccessViolation() throw() {}
+  PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -350,6 +360,7 @@ public:
   AbnormalProgramTermination(const std::string& sMessage);
   /// Destruction
   virtual ~AbnormalProgramTermination() throw() {}
+  PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -365,6 +376,7 @@ public:
   UnknownProgramOption(const std::string& sMessage);
   /// Destruction
   virtual ~UnknownProgramOption() throw() {}
+  PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -396,7 +408,7 @@ public:
   TypeError(const std::string& sMessage);
   /// Destruction
   virtual ~TypeError() throw() {}
-  virtual PyObject * getPyExceptionType() const override;
+  PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -412,7 +424,7 @@ public:
   ValueError(const std::string& sMessage);
   /// Destruction
   virtual ~ValueError() throw() {}
-  virtual PyObject * getPyExceptionType() const override;
+  PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -428,7 +440,7 @@ public:
   IndexError(const std::string& sMessage);
   /// Destruction
   virtual ~IndexError() throw() {}
-  virtual PyObject * getPyExceptionType() const override;
+  PyObject * getPyExceptionType() const override;
 };
 
 class BaseExport NameError : public Exception
@@ -440,7 +452,7 @@ public:
   NameError(const std::string& sMessage);
   /// Destruction
   virtual ~NameError() throw() {}
-  virtual PyObject * getPyExceptionType() const override;
+  PyObject * getPyExceptionType() const override;
 };
 
 class BaseExport ImportError : public Exception
@@ -452,7 +464,7 @@ public:
   ImportError(const std::string& sMessage);
   /// Destruction
   virtual ~ImportError() throw() {}
-  virtual PyObject * getPyExceptionType() const override;
+  PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -468,7 +480,7 @@ public:
   AttributeError(const std::string& sMessage);
   /// Destruction
   virtual ~AttributeError() throw() {}
-  virtual PyObject * getPyExceptionType() const override;
+  PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -484,7 +496,7 @@ public:
   RuntimeError(const std::string& sMessage);
   /// Destruction
   virtual ~RuntimeError() throw() {}
-  virtual PyObject * getPyExceptionType() const override;
+  PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -500,6 +512,7 @@ public:
   BadGraphError(const std::string& sMessage);
   /// Destruction
   virtual ~BadGraphError() throw() {}
+  PyObject * getPyExceptionType() const;
 };
 
 /**
@@ -515,39 +528,39 @@ public:
   NotImplementedError(const std::string& sMessage);
   /// Destruction
   virtual ~NotImplementedError() throw() {}
-  virtual PyObject * getPyExceptionType() const override;
+  PyObject * getPyExceptionType() const override;
 };
 
 /**
  * The ZeroDivisionError can be used to indicate a division by zero.
  * @author Werner Mayer
  */
-class BaseExport DivisionByZeroError : public Exception
+class BaseExport ZeroDivisionError : public Exception
 {
 public:
   /// Construction
-  DivisionByZeroError();
-  DivisionByZeroError(const char * sMessage);
-  DivisionByZeroError(const std::string& sMessage);
+  ZeroDivisionError();
+  ZeroDivisionError(const char * sMessage);
+  ZeroDivisionError(const std::string& sMessage);
   /// Destruction
-  virtual ~DivisionByZeroError() throw() {}
-  virtual PyObject * getPyExceptionType() const override;
+  virtual ~ZeroDivisionError() throw() {}
+  PyObject * getPyExceptionType() const override;
 };
 
 /**
  * The ReferenceError can be used to indicate a reference counter has the wrong value.
  * @author Werner Mayer
  */
-class BaseExport ReferencesError : public Exception
+class BaseExport ReferenceError : public Exception
 {
 public:
   /// Construction
-  ReferencesError();
-  ReferencesError(const char * sMessage);
-  ReferencesError(const std::string& sMessage);
+  ReferenceError();
+  ReferenceError(const char * sMessage);
+  ReferenceError(const std::string& sMessage);
   /// Destruction
-  virtual ~ReferencesError() throw() {}
-  virtual PyObject * getPyExceptionType() const override;
+  virtual ~ReferenceError() throw() {}
+  PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -564,6 +577,7 @@ public:
   ExpressionError(const std::string& sMessage);
   /// Destruction
   virtual ~ExpressionError() throw() {}
+  PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -579,6 +593,7 @@ public:
   ParserError(const std::string& sMessage);
   /// Destruction
   virtual ~ParserError() throw() {}
+  PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -594,7 +609,7 @@ public:
   UnicodeError(const std::string& sMessage);
   /// Destruction
   virtual ~UnicodeError() throw() {}
-  virtual PyObject * getPyExceptionType() const override;
+  PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -610,7 +625,7 @@ public:
   OverflowError(const std::string& sMessage);
   /// Destruction
   virtual ~OverflowError() throw() {}
-  virtual PyObject * getPyExceptionType() const override;
+  PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -626,7 +641,7 @@ public:
   UnderflowError(const std::string& sMessage);
   /// Destruction
   virtual ~UnderflowError() throw() {}
-  virtual PyObject * getPyExceptionType() const override;
+  PyObject * getPyExceptionType() const override;
 };
 
 /**
@@ -642,7 +657,7 @@ public:
   UnitsMismatchError(const std::string& sMessage);
   /// Destruction
   virtual ~UnitsMismatchError() throw() {}
-  virtual PyObject * getPyExceptionType() const override;
+  PyObject * getPyExceptionType() const override;
 };
 
  /* The CADKernelError can be used to indicate an exception originating in the CAD Kernel
@@ -659,6 +674,7 @@ public:
     CADKernelError(const std::string& sMessage);
     /// Destruction
     virtual ~CADKernelError() throw() {}
+    PyObject * getPyExceptionType() const;
 };
 
 /* The RestoreError can be used to try to do a best recovery effort when an error during restoring
@@ -677,6 +693,7 @@ public:
     RestoreError(const std::string& sMessage);
     /// Destruction
     virtual ~RestoreError() throw() {}
+    PyObject * getPyExceptionType() const override;
 };
 
 

@@ -32,18 +32,19 @@
 
 #include "SensorManager.h"
 
-#include <QtCore/QTimer>
+#include <QTimer>
 
-#include <Inventor/SoDB.h>
 #include <Inventor/SbTime.h>
+#include <Inventor/SoDB.h>
 #include <Inventor/SoRenderManager.h>
-#include <Inventor/nodekits/SoNodeKit.h>
 #include <Inventor/C/threads/thread.h>
+
 #include "SignalThread.h"
+
 
 using namespace SIM::Coin3D::Quarter;
 
-SensorManager::SensorManager(void)
+SensorManager::SensorManager()
   : inherited()
 {
   this->mainthreadid = cc_thread_id();
@@ -74,7 +75,7 @@ SensorManager::SensorManager(void)
 SensorManager::~SensorManager()
 {
   // remove the Coin callback before shutting down
-  SoDB::getSensorManager()->setChangedCallback(NULL, NULL);
+  SoDB::getSensorManager()->setChangedCallback(nullptr, nullptr);
 
   if (this->signalthread->isRunning()) {
     this->signalthread->stopThread();
@@ -104,7 +105,7 @@ SensorManager::sensorQueueChangedCB(void * closure)
 }
 
 void
-SensorManager::sensorQueueChanged(void)
+SensorManager::sensorQueueChanged()
 {
   SoSensorManager * sensormanager = SoDB::getSensorManager();
   assert(sensormanager);
@@ -144,7 +145,7 @@ SensorManager::sensorQueueChanged(void)
 }
 
 void
-SensorManager::idleTimeout(void)
+SensorManager::idleTimeout()
 {
   SoDB::getSensorManager()->processTimerQueue();
   SoDB::getSensorManager()->processDelayQueue(true);
@@ -152,14 +153,14 @@ SensorManager::idleTimeout(void)
 }
 
 void
-SensorManager::timerQueueTimeout(void)
+SensorManager::timerQueueTimeout()
 {
   SoDB::getSensorManager()->processTimerQueue();
   this->sensorQueueChanged();
 }
 
 void
-SensorManager::delayTimeout(void)
+SensorManager::delayTimeout()
 {
   SoDB::getSensorManager()->processTimerQueue();
   SoDB::getSensorManager()->processDelayQueue(false);

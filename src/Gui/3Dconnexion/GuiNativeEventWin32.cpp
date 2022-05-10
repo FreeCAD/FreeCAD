@@ -327,7 +327,8 @@ unsigned short HidToVirtualKey(unsigned long pid, unsigned short hidKeyCode)
 
 bool Gui::GuiNativeEvent::RawInputEventFilter(void* msg, long* result)
 {
-	if (gMouseInput == 0) return false;
+	if (gMouseInput == 0)
+	    return false;
 
 	MSG* message = (MSG*)(msg);
 
@@ -438,7 +439,8 @@ bool Gui::GuiNativeEvent::Is3dmouseAttached()
 		return false;
 	}
 
-	if (nDevices == 0) return false;
+	if (nDevices == 0)
+	    return false;
 
 	std::vector<RAWINPUTDEVICELIST> rawInputDeviceList(nDevices);
 	if (::GetRawInputDeviceList(&rawInputDeviceList[0], &nDevices, sizeof(RAWINPUTDEVICELIST)) == static_cast<unsigned int>(-1)) {
@@ -479,12 +481,14 @@ bool Gui::GuiNativeEvent::InitializeRawInput(HWND hwndTarget)
 	fWindow = hwndTarget;
 
 	// Simply fail if there is no window
-	if (!hwndTarget)  return false;
+	if (!hwndTarget)
+	    return false;
 
 	unsigned int numDevices = 0;
 	PRAWINPUTDEVICE devicesToRegister = GetDevicesToRegister(&numDevices);
 
-	if (numDevices == 0) return false;
+	if (numDevices == 0)
+	    return false;
 
 	// Get OS version.
 	OSVERSIONINFO osvi = {sizeof(OSVERSIONINFO),0};
@@ -753,7 +757,8 @@ bool Gui::GuiNativeEvent::TranslateRawInputData(UINT nInputCode, PRAWINPUT pRawI
 	qDebug("Rawinput.header.dwType=0x%x\n", pRawInput->header.dwType);
 #endif
 	// We are not interested in keyboard or mouse data received via raw input
-	if (pRawInput->header.dwType != RIM_TYPEHID) return false;
+	if (pRawInput->header.dwType != RIM_TYPEHID)
+	    return false;
 
 #if _TRACE_RIDI_DEVICENAME
 	UINT dwSize=0;

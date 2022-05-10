@@ -14,7 +14,7 @@ ${LangFileString} TEXT_WELCOME "Denna guide tar dig igenom installationen av $(^
 #${LangFileString} TEXT_CONFIGURE_PYTHON "Kompilerar Pythonskript..."
 
 ${LangFileString} TEXT_FINISH_DESKTOP "Skapa skrivbordsgenväg"
-${LangFileString} TEXT_FINISH_WEBSITE "Besök freecadweb.org för de senaste nyheterna, support och tips"
+${LangFileString} TEXT_FINISH_WEBSITE "Besök freecad.org för de senaste nyheterna, support och tips"
 
 #${LangFileString} FileTypeTitle "FreeCAD-dokument"
 

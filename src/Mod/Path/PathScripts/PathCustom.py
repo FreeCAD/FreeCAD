@@ -26,12 +26,13 @@ import Path
 import PathScripts.PathOp as PathOp
 import PathScripts.PathLog as PathLog
 
-from PySide import QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "Path Custom Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Path Custom object and FreeCAD command"
+
 
 if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
@@ -40,9 +41,7 @@ else:
     PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+translate = FreeCAD.Qt.translate
 
 
 class ObjectCustom(PathOp.ObjectOp):
@@ -50,8 +49,12 @@ class ObjectCustom(PathOp.ObjectOp):
         return PathOp.FeatureTool | PathOp.FeatureCoolant
 
     def initOperation(self, obj):
-        obj.addProperty("App::PropertyStringList", "Gcode", "Path",
-                QtCore.QT_TRANSLATE_NOOP("PathCustom", "The gcode to be inserted"))
+        obj.addProperty(
+            "App::PropertyStringList",
+            "Gcode",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "The gcode to be inserted"),
+        )
 
         obj.Proxy = self
 
@@ -70,9 +73,9 @@ def SetupProperties():
     return setup
 
 
-def Create(name, obj=None):
-    '''Create(name) ... Creates and returns a Custom operation.'''
+def Create(name, obj=None, parentJob=None):
+    """Create(name) ... Creates and returns a Custom operation."""
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    proxy = ObjectCustom(obj, name)
+    obj.Proxy = ObjectCustom(obj, name, parentJob)
     return obj

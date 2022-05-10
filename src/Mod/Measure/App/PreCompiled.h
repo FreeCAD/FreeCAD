@@ -26,17 +26,6 @@
 
 #include <FCConfig.h>
 
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-# define MeasureExport      __declspec(dllexport)
-# define PartExport         __declspec(dllimport)
-# define MeshExport         __declspec(dllimport)
-#else // for Linux
-# define MeasureExport
-# define PartExport
-# define MeshExport
-#endif
-
 #ifdef FC_OS_WIN32
 #define WIN32_LEAN_AND_MEAN
 #ifndef NOMINMAX
@@ -49,8 +38,8 @@
 // standard
 #include <iostream>
 #include <sstream>
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 #include <string>
 #include <map>
 #include <vector>
@@ -65,7 +54,6 @@
 #include <GProp_GProps.hxx>
 #include <GeomAPI_ExtremaCurveCurve.hxx>
 #include <BRepGProp.hxx>
-#include <Python.h>
 
 #elif defined(FC_OS_WIN32)
 #include <windows.h>

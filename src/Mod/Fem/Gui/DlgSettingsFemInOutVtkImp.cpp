@@ -22,18 +22,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include "Gui/Application.h"
+#include <Gui/Application.h>
+
 #include "DlgSettingsFemInOutVtkImp.h"
 #include "ui_DlgSettingsFemInOutVtk.h"
-#include <Gui/PrefWidgets.h>
+
 
 using namespace FemGui;
 
-DlgSettingsFemInOutVtkImp::DlgSettingsFemInOutVtkImp( QWidget* parent )
-    : PreferencePage( parent ), ui(new Ui_DlgSettingsFemInOutVtk)
+DlgSettingsFemInOutVtkImp::DlgSettingsFemInOutVtkImp(QWidget* parent)
+    : PreferencePage(parent), ui(new Ui_DlgSettingsFemInOutVtk)
 {
     ui->setupUi(this);
 }
@@ -49,8 +49,8 @@ DlgSettingsFemInOutVtkImp::~DlgSettingsFemInOutVtkImp()
 
 void DlgSettingsFemInOutVtkImp::saveSettings()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Mod/Fem/InOutVtk");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Fem/InOutVtk");
     hGrp->SetInt("ImportObject", ui->comboBoxVtkImportObject->currentIndex());
 
     ui->comboBoxVtkImportObject->onSave();
@@ -60,9 +60,9 @@ void DlgSettingsFemInOutVtkImp::loadSettings()
 {
     ui->comboBoxVtkImportObject->onRestore();
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Mod/Fem/InOutVtk");
-    int index =  hGrp->GetInt("ImportObject", 0);
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Fem/InOutVtk");
+    int index = hGrp->GetInt("ImportObject", 0);
     // 0 is standard on first initialize, 0 .. vtk res obj, 1 .. FEM mesh obj, 2 .. FreeCAD res obj
     if (index > -1) ui->comboBoxVtkImportObject->setCurrentIndex(index);
 }
@@ -70,7 +70,7 @@ void DlgSettingsFemInOutVtkImp::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsFemInOutVtkImp::changeEvent(QEvent *e)
+void DlgSettingsFemInOutVtkImp::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         int c_index = ui->comboBoxVtkImportObject->currentIndex();

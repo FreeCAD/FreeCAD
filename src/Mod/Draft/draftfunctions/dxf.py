@@ -21,14 +21,9 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to return the DXF representation of various shapes.
-
-Warning: this still uses the `Drawing.projectToDXF` method to provide
-the DXF representation of certain objects.
-Therefore, even if the Drawing Workbench is obsolete, the `Drawing` module
-may not be removed completely yet. This must be checked.
 """
 ## @package dxf
-# \ingroup draftfuctions
+# \ingroup draftfunctions
 # \brief Provides functions to return the DXF representation of shapes.
 
 import lazy_loader.lazy_loader as lz
@@ -43,10 +38,10 @@ from draftutils.messages import _wrn
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
 DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
-Drawing = lz.LazyLoader("Drawing", globals(), "Drawing")
+TechDraw = lz.LazyLoader("TechDraw", globals(), "TechDraw")
 
 
-## \addtogroup draftfuctions
+## \addtogroup draftfunctions
 # @{
 
 def _get_proj(vec, plane=None):
@@ -119,7 +114,7 @@ def get_dxf(obj, direction=None):
             direction = App.Vector(0, 0, -1)
 
         try:
-            d = Drawing.projectToDXF(obj.Shape, direction)
+            d = TechDraw.projectToDXF(obj.Shape, direction)
         except Exception:
             # TODO: trap only specific exception.
             # Impossible to generate DXF from Shape? Which exception is throw?

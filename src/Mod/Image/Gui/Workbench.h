@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef IMAGE_WORKBENCH_H
 #define IMAGE_WORKBENCH_H
 
 #include <Gui/Workbench.h>
+#include <Mod/Image/ImageGlobal.h>
 
 namespace ImageGui {
 

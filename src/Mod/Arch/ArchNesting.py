@@ -291,7 +291,6 @@ class Nester:
                     nofitpol = []
                     for placed in sheet:
                         pts = []
-                        pi = 0
                         for placedvert in self.order(placed[1],right=True):
                             fpts = []
                             for i,rotvert in enumerate(rotverts):

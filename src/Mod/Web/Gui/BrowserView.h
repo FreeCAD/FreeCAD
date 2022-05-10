@@ -20,20 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef WEBGUI_BROWSERVIEW_H
 #define WEBGUI_BROWSERVIEW_H
 
 
 #include <Gui/MDIView.h>
 #include <Gui/Window.h>
+#include <Mod/Web/WebGlobal.h>
 #include <QLineEdit>
 
 #if defined(QTWEBENGINE)
 #include <QWebEngineView>
+
 namespace WebGui {
 class WebEngineUrlRequestInterceptor;
-};
+}
 #elif defined(QTWEBKIT)
 #include <QWebView>
 #endif
@@ -54,7 +55,7 @@ class WebGuiExport WebView : public QWebView
     Q_OBJECT
 
 public:
-    WebView(QWidget *parent = 0);
+    WebView(QWidget *parent = nullptr);
 
 protected:
     void mousePressEvent(QMouseEvent *event);
@@ -79,6 +80,8 @@ class WebGuiExport BrowserView : public Gui::MDIView,
 {
     Q_OBJECT
 
+    TYPESYSTEM_HEADER();
+
 public:
     BrowserView(QWidget* parent);
     ~BrowserView();
@@ -97,7 +100,12 @@ public:
     bool onMsg(const char* pMsg,const char** ppReturn);
     bool onHasMsg(const char* pMsg) const;
 
-    bool canClose(void);
+    bool canClose (void);
+
+#ifdef QTWEBENGINE
+public Q_SLOTS:
+    void setWindowIcon(const QIcon &icon);
+#endif
 
 protected Q_SLOTS:
     void onLoadStarted();
@@ -107,7 +115,6 @@ protected Q_SLOTS:
     void urlFilter(const QUrl &url);
 #ifdef QTWEBENGINE
     void onDownloadRequested(QWebEngineDownloadItem *request);
-    void setWindowIcon(const QIcon &icon);
     void onLinkHovered(const QString& url);
 #else
     void onDownloadRequested(const QNetworkRequest& request);

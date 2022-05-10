@@ -24,7 +24,6 @@
 #ifndef PARTGUI_ViewProviderDatumCoordinateSystem_H
 #define PARTGUI_ViewProviderDatumCoordinateSystem_H
 
-#include "Gui/ViewProviderGeometryObject.h"
 #include "ViewProviderDatum.h"
 
 class SoCoordinate3;

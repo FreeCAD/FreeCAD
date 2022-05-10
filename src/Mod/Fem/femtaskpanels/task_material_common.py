@@ -427,8 +427,10 @@ class _TaskPanel:
                 )
                 self.material["YoungsModulus"] = "0 MPa"
             if "PoissonRatio" in self.material:
-                # PoissonRatio does not have a unit, but it is checked it there is no value at all
+                # PoissonRatio does not have a unit, but it is checked if there is no value at all
                 try:
+                    # next line with float() is ok
+                    # a quantity of a empty string returns very small value, would be wrong here
                     float(self.material["PoissonRatio"])
                 except ValueError:
                     FreeCAD.Console.PrintMessage(
@@ -477,6 +479,22 @@ class _TaskPanel:
                 self.material["VolumetricThermalExpansionCoefficient"] = "0 m^3/m^3/K"
         # Thermal properties
         if "ThermalConductivity" in self.material:
+            # TODO implement for all task panel values
+            # https://forum.freecadweb.org/viewtopic.php?f=18&t=56912&p=516826#p516800
+            try:
+                Units.Quantity(self.material["ThermalConductivity"])
+            except Exception:
+                FreeCAD.Console.PrintError(
+                    "Problem with the quantity for ThermalConductivity: '{}' Reset value.\n"
+                    "May try the following in Python console:\n"
+                    "from FreeCAD import Units\n"
+                    "Units.Quantity('{}')\n"
+                    .format(
+                        self.material["ThermalConductivity"],
+                        self.material["ThermalConductivity"]
+                    )
+                )
+                self.material["ThermalConductivity"] = "0 W/m/K"
             if "ThermalConductivity" not in str(Units.Unit(self.material["ThermalConductivity"])):
                 FreeCAD.Console.PrintMessage(
                     "ThermalConductivity in material data seems to have no unit "
@@ -529,8 +547,10 @@ class _TaskPanel:
             old_value = Units.Quantity(self.material[matProperty]).getValueAs(qUnit)
         else:
             # for example PoissonRatio
-            value = float(inputfield_text)
-            old_value = float(self.material[matProperty])
+            value = Units.Quantity(inputfield_text).Value
+            old_value = Units.Quantity(self.material[matProperty]).Value
+            # value = float(inputfield_text)  # this fails on locale with comma
+            # https://forum.freecadweb.org/viewtopic.php?f=18&t=56912&p=523313#p523313
         if value:
             if not (1 - variation < float(old_value) / value < 1 + variation):
                 material = self.material
@@ -627,55 +647,55 @@ class _TaskPanel:
     def set_mat_params_in_input_fields(self, matmap):
         if "YoungsModulus" in matmap:
             ym_new_unit = "MPa"
-            ym = FreeCAD.Units.Quantity(matmap["YoungsModulus"])
+            ym = Units.Quantity(matmap["YoungsModulus"])
             ym_with_new_unit = ym.getValueAs(ym_new_unit)
-            q = FreeCAD.Units.Quantity("{} {}".format(ym_with_new_unit, ym_new_unit))
+            q = Units.Quantity("{} {}".format(ym_with_new_unit, ym_new_unit))
             self.parameterWidget.input_fd_young_modulus.setText(q.UserString)
         if "PoissonRatio" in matmap:
             self.parameterWidget.spinBox_poisson_ratio.setValue(float(matmap["PoissonRatio"]))
         # Fluidic properties
         if "KinematicViscosity" in matmap:
             nu_new_unit = "m^2/s"
-            nu = FreeCAD.Units.Quantity(matmap["KinematicViscosity"])
+            nu = Units.Quantity(matmap["KinematicViscosity"])
             nu_with_new_unit = nu.getValueAs(nu_new_unit)
-            q = FreeCAD.Units.Quantity("{} {}".format(nu_with_new_unit, nu_new_unit))
+            q = Units.Quantity("{} {}".format(nu_with_new_unit, nu_new_unit))
             self.parameterWidget.input_fd_kinematic_viscosity.setText(q.UserString)
         # For isotropic materials and fluidic material
         # use the volumetric thermal expansion coefficient
         # is approximately three times the linear coefficient for solids
         if "VolumetricThermalExpansionCoefficient" in matmap:
             vtec_new_unit = "m^3/m^3/K"
-            vtec = FreeCAD.Units.Quantity(matmap["VolumetricThermalExpansionCoefficient"])
+            vtec = Units.Quantity(matmap["VolumetricThermalExpansionCoefficient"])
             vtec_with_new_unit = vtec.getValueAs(vtec_new_unit)
-            q = FreeCAD.Units.Quantity("{} {}".format(vtec_with_new_unit, vtec_new_unit))
+            q = Units.Quantity("{} {}".format(vtec_with_new_unit, vtec_new_unit))
             self.parameterWidget.input_fd_vol_expansion_coefficient.setText(q.UserString)
         if "Density" in matmap:
             density_new_unit = "kg/m^3"
-            density = FreeCAD.Units.Quantity(matmap["Density"])
+            density = Units.Quantity(matmap["Density"])
             density_with_new_unit = density.getValueAs(density_new_unit)
             # self.parameterWidget.input_fd_density.setText(
             #     "{} {}".format(density_with_new_unit, density_new_unit)
             # )
-            q = FreeCAD.Units.Quantity("{} {}".format(density_with_new_unit, density_new_unit))
+            q = Units.Quantity("{} {}".format(density_with_new_unit, density_new_unit))
             self.parameterWidget.input_fd_density.setText(q.UserString)
         # thermal properties
         if "ThermalConductivity" in matmap:
             tc_new_unit = "W/m/K"
-            tc = FreeCAD.Units.Quantity(matmap["ThermalConductivity"])
+            tc = Units.Quantity(matmap["ThermalConductivity"])
             tc_with_new_unit = tc.getValueAs(tc_new_unit)
-            q = FreeCAD.Units.Quantity("{} {}".format(tc_with_new_unit, tc_new_unit))
+            q = Units.Quantity("{} {}".format(tc_with_new_unit, tc_new_unit))
             self.parameterWidget.input_fd_thermal_conductivity.setText(q.UserString)
         if "ThermalExpansionCoefficient" in matmap:  # linear, only for solid
             tec_new_unit = "um/m/K"
-            tec = FreeCAD.Units.Quantity(matmap["ThermalExpansionCoefficient"])
+            tec = Units.Quantity(matmap["ThermalExpansionCoefficient"])
             tec_with_new_unit = tec.getValueAs(tec_new_unit)
-            q = FreeCAD.Units.Quantity("{} {}".format(tec_with_new_unit, tec_new_unit))
+            q = Units.Quantity("{} {}".format(tec_with_new_unit, tec_new_unit))
             self.parameterWidget.input_fd_expansion_coefficient.setText(q.UserString)
         if "SpecificHeat" in matmap:
             sh_new_unit = "J/kg/K"
-            sh = FreeCAD.Units.Quantity(matmap["SpecificHeat"])
+            sh = Units.Quantity(matmap["SpecificHeat"])
             sh_with_new_unit = sh.getValueAs(sh_new_unit)
-            q = FreeCAD.Units.Quantity("{} {}".format(sh_with_new_unit, sh_new_unit))
+            q = Units.Quantity("{} {}".format(sh_with_new_unit, sh_new_unit))
             self.parameterWidget.input_fd_specific_heat.setText(q.UserString)
 
     # fill the combo box with cards **************************************************************

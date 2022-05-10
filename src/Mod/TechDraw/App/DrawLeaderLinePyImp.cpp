@@ -45,7 +45,7 @@ std::string DrawLeaderLinePy::representation(void) const
 
 PyObject *DrawLeaderLinePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DrawLeaderLinePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

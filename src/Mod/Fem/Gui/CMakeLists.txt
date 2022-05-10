@@ -30,7 +30,6 @@ include_directories(
     ${ZLIB_INCLUDE_DIR}
     ${OCC_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
     ${SMESH_INCLUDE_DIR}
     ${VTK_INCLUDE_DIRS}
 )
@@ -42,6 +41,7 @@ link_directories(${SMESH_LIB_PATH})
 set(FemGui_LIBS
     Fem
     FreeCADGui
+    PartGui
 )
 
 
@@ -63,6 +63,7 @@ set(FemGui_UIC_SRCS
     DlgSettingsFemGmsh.ui
     DlgSettingsFemInOutVtk.ui
     DlgSettingsFemMaterial.ui
+    DlgSettingsFemMystran.ui
     DlgSettingsFemZ88.ui
     TaskCreateNodeSet.ui
     TaskObjectName.ui
@@ -79,6 +80,7 @@ set(FemGui_UIC_SRCS
     TaskFemConstraintPlaneRotation.ui
     TaskFemConstraintContact.ui
     TaskFemConstraintTransform.ui
+    TaskFemConstraintSpring.ui
     TaskTetParameter.ui
     TaskAnalysisInfo.ui
     TaskDriver.ui
@@ -129,12 +131,17 @@ SET(FemGui_DLG_SRCS
     DlgSettingsFemMaterial.ui
     DlgSettingsFemMaterialImp.cpp
     DlgSettingsFemMaterialImp.h
+    DlgSettingsFemMystran.ui
+    DlgSettingsFemMystranImp.cpp
+    DlgSettingsFemMystranImp.h
     DlgSettingsFemZ88.ui
     DlgSettingsFemZ88Imp.cpp
     DlgSettingsFemZ88Imp.h
     TaskFemConstraint.ui
     TaskFemConstraint.cpp
     TaskFemConstraint.h
+    TaskFemConstraintOnBoundary.cpp
+    TaskFemConstraintOnBoundary.h
     TaskFemConstraintBearing.ui
     TaskFemConstraintBearing.cpp
     TaskFemConstraintBearing.h
@@ -150,6 +157,9 @@ SET(FemGui_DLG_SRCS
     TaskFemConstraintPressure.ui
     TaskFemConstraintPressure.cpp
     TaskFemConstraintPressure.h
+    TaskFemConstraintSpring.ui
+    TaskFemConstraintSpring.cpp
+    TaskFemConstraintSpring.h
     TaskFemConstraintGear.cpp
     TaskFemConstraintGear.h
     TaskFemConstraintPulley.cpp
@@ -210,6 +220,8 @@ SET(FemGui_SRCS_ViewProvider
     FemSelectionGate.h
     ViewProviderFemConstraint.cpp
     ViewProviderFemConstraint.h
+    ViewProviderFemConstraintOnBoundary.cpp
+    ViewProviderFemConstraintOnBoundary.h
     ViewProviderFemConstraintBearing.cpp
     ViewProviderFemConstraintBearing.h
     ViewProviderFemConstraintFixed.cpp
@@ -220,6 +232,8 @@ SET(FemGui_SRCS_ViewProvider
     ViewProviderFemConstraintFluidBoundary.h
     ViewProviderFemConstraintPressure.cpp
     ViewProviderFemConstraintPressure.h
+    ViewProviderFemConstraintSpring.cpp
+    ViewProviderFemConstraintSpring.h
     ViewProviderFemConstraintGear.cpp
     ViewProviderFemConstraintGear.h
     ViewProviderFemConstraintPulley.cpp
@@ -299,6 +313,8 @@ SET(FemGui_SRCS_Module
     ActiveAnalysisObserver.cpp
     ActiveAnalysisObserver.h
     Command.cpp
+    FemSettings.cpp
+    FemSettings.h
     Resources/Fem.qrc
     PreCompiled.cpp
     PreCompiled.h
@@ -365,6 +381,7 @@ INSTALL(FILES ${FemGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Fem/Re
 # Python modules ui files, they are copied as they are, thus the need not to be added to Fem.qrc
 # see https://forum.freecadweb.org/viewtopic.php?f=10&t=25833
 SET(FemGuiPythonUI_SRCS
+    Resources/ui/ConstraintCentrif.ui
     Resources/ui/ConstraintTie.ui
     Resources/ui/ConstraintSectionPrint.ui
     Resources/ui/ElectrostaticPotential.ui

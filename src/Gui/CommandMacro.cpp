@@ -20,18 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include "Command.h"
 #include "Application.h"
-#include "MainWindow.h"
 #include "DlgMacroExecuteImp.h"
 #include "DlgMacroRecordImp.h"
 #include "Macro.h"
+#include "MainWindow.h"
 #include "PythonDebugger.h"
+
 
 using namespace Gui;
 
@@ -44,7 +42,7 @@ DEF_STD_CMD_A(StdCmdDlgMacroRecord)
 StdCmdDlgMacroRecord::StdCmdDlgMacroRecord()
   : Command("Std_DlgMacroRecord")
 {
-    sGroup        = QT_TR_NOOP("Macro");
+    sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("&Macro recording ...");
     sToolTipText  = QT_TR_NOOP("Opens a dialog to record a macro");
     sWhatsThis    = "Std_DlgMacroRecord";
@@ -73,7 +71,7 @@ DEF_STD_CMD_A(StdCmdMacroStopRecord)
 StdCmdMacroStopRecord::StdCmdMacroStopRecord()
   : Command("Std_MacroStopRecord")
 {
-    sGroup        = QT_TR_NOOP("Macro");
+    sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("S&top macro recording");
     sToolTipText  = QT_TR_NOOP("Stop the macro recording session");
     sWhatsThis    = "Std_MacroStopRecord";
@@ -101,7 +99,7 @@ DEF_STD_CMD_A(StdCmdDlgMacroExecute)
 StdCmdDlgMacroExecute::StdCmdDlgMacroExecute()
   : Command("Std_DlgMacroExecute")
 {
-    sGroup        = QT_TR_NOOP("Macro");
+    sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("Macros ...");
     sToolTipText  = QT_TR_NOOP("Opens a dialog to let you execute a recorded macro");
     sWhatsThis    = "Std_DlgMacroExecute";
@@ -130,7 +128,7 @@ DEF_STD_CMD_A(StdCmdDlgMacroExecuteDirect)
 StdCmdDlgMacroExecuteDirect::StdCmdDlgMacroExecuteDirect()
   : Command("Std_DlgMacroExecuteDirect")
 {
-    sGroup        = QT_TR_NOOP("Macro");
+    sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("Execute macro");
     sToolTipText  = QT_TR_NOOP("Execute the macro in the editor");
     sWhatsThis    = "Std_DlgMacroExecuteDirect";
@@ -156,7 +154,7 @@ DEF_STD_CMD_A(StdCmdMacroAttachDebugger)
 StdCmdMacroAttachDebugger::StdCmdMacroAttachDebugger()
   : Command("Std_MacroAttachDebugger")
 {
-    sGroup        = QT_TR_NOOP("Macro");
+    sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("Attach to remote debugger...");
     sToolTipText  = QT_TR_NOOP("Attach to a remotely running debugger");
     sWhatsThis    = "Std_MacroAttachDebugger";
@@ -181,7 +179,7 @@ DEF_STD_CMD_A(StdCmdMacroStartDebug)
 StdCmdMacroStartDebug::StdCmdMacroStartDebug()
   : Command("Std_MacroStartDebug")
 {
-    sGroup        = QT_TR_NOOP("Macro");
+    sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("Debug macro");
     sToolTipText  = QT_TR_NOOP("Start debugging of macro");
     sWhatsThis    = "Std_MacroStartDebug";
@@ -211,7 +209,7 @@ DEF_STD_CMD_A(StdCmdMacroStopDebug)
 StdCmdMacroStopDebug::StdCmdMacroStopDebug()
   : Command("Std_MacroStopDebug")
 {
-    sGroup        = QT_TR_NOOP("Macro");
+    sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("Stop debugging");
     sToolTipText  = QT_TR_NOOP("Stop debugging of macro");
     sWhatsThis    = "Std_MacroStopDebug";
@@ -238,12 +236,12 @@ DEF_STD_CMD_A(StdCmdMacroStepOver)
 StdCmdMacroStepOver::StdCmdMacroStepOver()
   : Command("Std_MacroStepOver")
 {
-    sGroup        = QT_TR_NOOP("Macro");
+    sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("Step over");
     sToolTipText  = QT_TR_NOOP("Step over");
     sWhatsThis    = "Std_MacroStepOver";
     sStatusTip    = QT_TR_NOOP("Step over");
-    sPixmap       = 0;
+    sPixmap       = nullptr;
     sAccel        = "F10";
     eType         = 0;
 }
@@ -265,12 +263,12 @@ DEF_STD_CMD_A(StdCmdMacroStepInto)
 StdCmdMacroStepInto::StdCmdMacroStepInto()
   : Command("Std_MacroStepInto")
 {
-    sGroup        = QT_TR_NOOP("Macro");
+    sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("Step into");
     sToolTipText  = QT_TR_NOOP("Step into");
     //sWhatsThis    = "Std_MacroStepOver";
     sStatusTip    = QT_TR_NOOP("Step into");
-    sPixmap       = 0;
+    sPixmap       = nullptr;
     sAccel        = "F11";
     eType         = 0;
 }
@@ -292,12 +290,12 @@ DEF_STD_CMD_A(StdCmdToggleBreakpoint)
 StdCmdToggleBreakpoint::StdCmdToggleBreakpoint()
   : Command("Std_ToggleBreakpoint")
 {
-    sGroup        = QT_TR_NOOP("Macro");
+    sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("Toggle breakpoint");
     sToolTipText  = QT_TR_NOOP("Toggle breakpoint");
     sWhatsThis    = "Std_ToggleBreakpoint";
     sStatusTip    = QT_TR_NOOP("Toggle breakpoint");
-    sPixmap       = 0;
+    sPixmap       = nullptr;
     sAccel        = "F9";
     eType         = 0;
 }

@@ -40,7 +40,7 @@ class DlgReportViewImp : public PreferencePage
     Q_OBJECT
 
 public:
-    DlgReportViewImp( QWidget* parent = 0 );
+    DlgReportViewImp( QWidget* parent = nullptr );
     ~DlgReportViewImp();
 
     void saveSettings();

@@ -32,7 +32,7 @@
 namespace Fem
 {
 
-class AppFemExport ConstraintDisplacement : public Fem::Constraint
+class FemExport ConstraintDisplacement : public Fem::Constraint
 {
     PROPERTY_HEADER(Fem::ConstraintDisplacement);
 

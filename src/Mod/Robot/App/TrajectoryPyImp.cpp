@@ -57,7 +57,7 @@ PyObject *TrajectoryPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  //
 // constructor method
 int TrajectoryPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
-    PyObject *pcObj=0;
+    PyObject *pcObj=nullptr;
     if (!PyArg_ParseTuple(args, "|O!", &(PyList_Type), &pcObj))
         return -1;
 
@@ -111,7 +111,7 @@ PyObject* TrajectoryPy::insertWaypoints(PyObject * args)
         return new TrajectoryPy(new Robot::Trajectory(*getTrajectoryPtr()));
     }
 
-    Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters - waypoint or placement expected");
+    Py_Error(PyExc_TypeError, "Wrong parameters - waypoint or placement expected");
 
 }
 
@@ -119,7 +119,7 @@ PyObject* TrajectoryPy::position(PyObject * args)
 {
     double pos;
     if (!PyArg_ParseTuple(args, "d", &pos))
-        return NULL;
+        return nullptr;
 
     return (new Base::PlacementPy(new Base::Placement(getTrajectoryPtr()->getPosition(pos))));
 }
@@ -128,7 +128,7 @@ PyObject* TrajectoryPy::velocity(PyObject * args)
 {
     double pos;
     if (!PyArg_ParseTuple(args, "d", &pos))
-        return NULL;
+        return nullptr;
 
      // return velocity as float
     return Py::new_reference_to(Py::Float(getTrajectoryPtr()->getVelocity(pos)));
@@ -138,7 +138,7 @@ PyObject* TrajectoryPy::deleteLast(PyObject *args)
 {
     int n=1;
     if (!PyArg_ParseTuple(args, "|i", &n))
-        return NULL;
+        return nullptr;
     getTrajectoryPtr()->deleteLast(n);
     return new TrajectoryPy(new Robot::Trajectory(*getTrajectoryPtr()));
  }
@@ -173,7 +173,7 @@ void TrajectoryPy::setWaypoints(Py::List)
 
 PyObject *TrajectoryPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int TrajectoryPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

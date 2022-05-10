@@ -31,7 +31,7 @@
 
 namespace Fem {
 
-class AppFemExport ConstraintHeatflux : public Fem::Constraint
+class FemExport ConstraintHeatflux : public Fem::Constraint
 {
     PROPERTY_HEADER(Fem::ConstraintHeatflux);
 

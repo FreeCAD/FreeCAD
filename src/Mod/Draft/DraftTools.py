@@ -78,9 +78,6 @@ import draftguitools.gui_edit
 import draftguitools.gui_selectplane
 import draftguitools.gui_setstyle
 import draftguitools.gui_planeproxy
-from draftguitools.gui_lineops import FinishLine
-from draftguitools.gui_lineops import CloseLine
-from draftguitools.gui_lineops import UndoLine
 from draftguitools.gui_togglemodes import ToggleConstructionMode
 from draftguitools.gui_togglemodes import ToggleContinueMode
 from draftguitools.gui_togglemodes import ToggleDisplayMode
@@ -105,7 +102,7 @@ FreeCADGui.updateLocale()
 # sets the default working plane
 plane = WorkingPlane.plane()
 FreeCAD.DraftWorkingPlane = plane
-defaultWP = Draft.getParam("defaultWP",1)
+defaultWP = Draft.getParam("defaultWP",0)
 if defaultWP == 1: plane.alignToPointAndAxis(Vector(0,0,0), Vector(0,0,1), 0)
 elif defaultWP == 2: plane.alignToPointAndAxis(Vector(0,0,0), Vector(0,1,0), 0)
 elif defaultWP == 3: plane.alignToPointAndAxis(Vector(0,0,0), Vector(1,0,0), 0)
@@ -168,6 +165,7 @@ from draftguitools.gui_shapestrings import ShapeString
 from draftguitools.gui_points import Point
 from draftguitools.gui_facebinders import Draft_Facebinder
 from draftguitools.gui_labels import Draft_Label
+from draftguitools.gui_hatch import Draft_Hatch
 
 # ---------------------------------------------------------------------------
 # Modifier functions

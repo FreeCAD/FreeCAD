@@ -30,6 +30,7 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Gui/BitmapFactory.h>
@@ -40,7 +41,7 @@
 
 #include "ViewProviderSketch.h"
 #include "GeometryCreationMode.h"
-#include "CommandConstraints.h"
+#include "Utils.h"
 
 using namespace std;
 using namespace SketcherGui;
@@ -70,13 +71,13 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     :Command("Sketcher_ToggleConstruction")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Toggle construction geometry");
     sToolTipText    = QT_TR_NOOP("Toggles the toolbar or selected geometry to/from construction mode");
     sWhatsThis      = "Sketcher_ToggleConstruction";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_ToggleConstruction";
-    sAccel          = "C,M";
+    sAccel          = "G, N";
     eType           = ForEdit;
 
     // list of toggle construction commands
@@ -114,7 +115,7 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
     {
         // get the selection
         std::vector<Gui::SelectionObject> selection;
-        selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+        selection = getSelection().getSelectionEx(nullptr, Sketcher::SketchObject::getClassTypeId());
 
         Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 

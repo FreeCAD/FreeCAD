@@ -23,19 +23,13 @@
 #ifndef TECHDRAWGUI_QGIRICHANNO_H
 #define TECHDRAWGUI_QGIRICHANNO_H
 
-#include <QObject>
-#include <QGraphicsView>
-#include <QStyleOptionGraphicsItem>
-#include <QGraphicsItem>
-#include <QGraphicsObject>
-#include <QPainterPath>
-#include <QColor>
 #include <QFont>
-#include <QPointF>
+#include <QGraphicsItem>
+#include <QObject>
+#include <QPainterPath>
 #include <QPen>
+#include <QStyleOptionGraphicsItem>
 
-#include <Base/Vector3D.h>
-#include "QGILeaderLine.h"
 
 namespace TechDraw {
 class DrawRichAnno;
@@ -68,7 +62,7 @@ public:
     int type() const override { return Type;}
     virtual void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,
-                        QWidget * widget = 0 ) override;
+                        QWidget * widget = nullptr ) override;
     virtual QRectF boundingRect() const override;
     virtual QPainterPath shape(void) const override;
 
@@ -97,6 +91,8 @@ protected:
     void setLineSpacing(int lineSpacing);
     double prefPointSize(void);
     QFont prefFont(void);
+
+    virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
     bool m_isExporting;
     QGCustomText* m_text;

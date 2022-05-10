@@ -20,17 +20,18 @@
 #ifndef _PreComp_
 # include <cmath>
 # include <QDebug>
-# include <QOpenGLDebugMessage>
-# include <QOpenGLContext>
-# include <QOpenGLFunctions>
-# include <QSurfaceFormat>
 # include <QMessageBox>
+# include <QOpenGLContext>
+# include <QOpenGLDebugMessage>
+# include <QOpenGLFunctions>
 # include <QPainter>
 # include <QPainterPath>
+# include <QSurfaceFormat>
 #endif
 
 #if defined(__MINGW32__)
 # include <GL/gl.h>
+# include <GL/glu.h>
 # include <GL/glext.h>
 #elif defined (FC_OS_MACOSX)
 # include <OpenGL/gl.h>
@@ -100,7 +101,7 @@ GLImageBox::GLImageBox(QWidget * parent, Qt::WindowFlags f)
     _zoomFactor = 1.0;
     _base_x0 = 0;
     _base_y0 = 0;
-    _pColorMap = 0;
+    _pColorMap = nullptr;
     _numMapEntries = 0;
 
 #if defined(_DEBUG) && 0
@@ -242,7 +243,7 @@ void GLImageBox::drawImage()
         glPixelTransferf(GL_BLUE_SCALE, (float)scale);
 
         // Load the color map if present
-        if (_pColorMap != 0)
+        if (_pColorMap != nullptr)
         {
             if (!haveMesa) glPixelTransferf(GL_MAP_COLOR, 1.0);
             glPixelMapfv(GL_PIXEL_MAP_R_TO_R, _numMapEntries, _pColorMap);
@@ -253,10 +254,10 @@ void GLImageBox::drawImage()
         else
         {
             glPixelTransferf(GL_MAP_COLOR, 0.0);
-            glPixelMapfv(GL_PIXEL_MAP_R_TO_R, 0, NULL);
-            glPixelMapfv(GL_PIXEL_MAP_G_TO_G, 0, NULL);
-            glPixelMapfv(GL_PIXEL_MAP_B_TO_B, 0, NULL);
-            glPixelMapfv(GL_PIXEL_MAP_A_TO_A, 0, NULL);
+            glPixelMapfv(GL_PIXEL_MAP_R_TO_R, 0, nullptr);
+            glPixelMapfv(GL_PIXEL_MAP_G_TO_G, 0, nullptr);
+            glPixelMapfv(GL_PIXEL_MAP_B_TO_B, 0, nullptr);
+            glPixelMapfv(GL_PIXEL_MAP_A_TO_A, 0, nullptr);
         }
 
         // Get the pixel format
@@ -697,7 +698,7 @@ void GLImageBox::resetDisplay()
 void GLImageBox::clearColorMap()
 {
     delete [] _pColorMap;
-    _pColorMap = 0;
+    _pColorMap = nullptr;
     _numMapEntries = 0;
 }
 
@@ -850,7 +851,7 @@ int GLImageBox::setColorMapAlphaValue(int index, float value)
 // Helper function to convert a pixel's value (of a sample) to the color map index (i.e. the map index that will be used for that pixel value)
 unsigned int GLImageBox::pixValToMapIndex(double PixVal)
 {
-    if (_pColorMap != NULL)
+    if (_pColorMap != nullptr)
     {
         double MaxVal = pow(2.0, _image.getNumBitsPerSample()) - 1.0;
         double Scale = (pow(2.0, _image.getNumBitsPerSample()) - 1.0) / (pow(2.0, _image.getNumSigBitsPerSample()) - 1.0);

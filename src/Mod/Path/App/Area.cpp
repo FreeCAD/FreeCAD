@@ -265,8 +265,10 @@ static bool getShapePlane(const TopoDS_Shape &shape, gp_Pln &pln) {
 }
 
 bool Area::isCoplanar(const TopoDS_Shape &s1, const TopoDS_Shape &s2) {
-    if(s1.IsNull() || s2.IsNull()) return false;
-    if(s1.IsSame(s2)) return true;
+    if(s1.IsNull() || s2.IsNull())
+        return false;
+    if(s1.IsSame(s2))
+        return true;
     gp_Pln pln1,pln2;
     if(!getShapePlane(s1,pln1) || !getShapePlane(s2,pln2))
         return false;
@@ -290,7 +292,8 @@ int Area::addShape(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf,
             addWire(area,TopoDS::Wire(it.Current()),trsf,deflection);
     }
 
-    if(haveShape) return skipped;
+    if(haveShape)
+        return skipped;
 
     CArea _area;
     CArea _areaOpen;
@@ -530,7 +533,7 @@ void Area::addToBuild(CArea &area, const TopoDS_Shape &shape) {
     TopoDS_Shape plane = getPlane();
     CArea areaOpen;
     mySkippedShapes += addShape(area,shape,&myTrsf,myParams.Deflection,
-            myParams.Coplanar==CoplanarNone?NULL:&plane,
+            myParams.Coplanar==CoplanarNone?nullptr:&plane,
             myHaveSolid||myParams.Coplanar==CoplanarForce,&areaOpen,
             myParams.OpenMode==OpenModeEdges,myParams.Reorient);
 
@@ -1052,7 +1055,8 @@ void Area::explode(const TopoDS_Shape &shape) {
                             TopoDS::Edge(xp.Current())).Wire(),&myTrsf,myParams.Deflection,true);
         }
     }
-    if(haveShape) return;
+    if(haveShape)
+        return;
     for(TopExp_Explorer it(shape, TopAbs_EDGE); it.More(); it.Next()) {
         if(myParams.Coplanar!=CoplanarNone && !isCoplanar(it.Current(),plane)){
             ++mySkippedShapes;
@@ -1083,7 +1087,7 @@ void Area::showShape(const TopoDS_Shape &shape, const char *name, const char *fm
 }
 
 template<class T>
-static void showShapes(const T &shapes, const char *name, const char *fmt=0, ...) {
+static void showShapes(const T &shapes, const char *name, const char *fmt=nullptr, ...) {
     if(FC_LOG_INSTANCE.level()>FC_LOGLEVEL_TRACE) {
         BRep_Builder builder;
         TopoDS_Compound comp;
@@ -1230,7 +1234,7 @@ int Area::project(TopoDS_Shape &shape_out,
         const TopoDS_Shape *work_plane)
 {
     FC_TIME_INIT2(t,t1);
-    Handle_HLRBRep_Algo brep_hlr = NULL;
+    Handle_HLRBRep_Algo brep_hlr;
     gp_Dir dir(0,0,1);
     try {
         brep_hlr = new HLRBRep_Algo();
@@ -1492,11 +1496,11 @@ std::vector<shared_ptr<Area> > Area::makeSections(
                 builder.MakeCompound(comp);
 
                 for(TopExp_Explorer xp(s.shape.Moved(loc), TopAbs_SOLID); xp.More(); xp.Next()) {
-                    showShape(xp.Current(),0,"section_%u_shape",i);
+                    showShape(xp.Current(),nullptr,"section_%u_shape",i);
                     std::list<TopoDS_Wire> wires;
                     Part::CrossSection section(a,b,c,xp.Current());
                     wires = section.slice(-d);
-                    showShapes(wires,0,"section_%u_wire",i);
+                    showShapes(wires,nullptr,"section_%u_wire",i);
                     if(wires.empty()) {
                         AREA_LOG("Section returns no wires");
                         continue;
@@ -1515,7 +1519,7 @@ std::vector<shared_ptr<Area> > Area::makeSections(
                         if (shape.IsNull())
                             AREA_WARN("FaceMakerBullseye return null shape on section");
                         else {
-                            showShape(shape,0,"section_%u_face",i);
+                            showShape(shape,nullptr,"section_%u_face",i);
                             for(auto it=wires.begin(),itNext=it;it!=wires.end();it=itNext) {
                                 ++itNext;
                                 if(BRep_Tool::IsClosed(*it))
@@ -1537,7 +1541,7 @@ std::vector<shared_ptr<Area> > Area::makeSections(
                 // Make sure the compound has at least one edge
                 if(TopExp_Explorer(comp,TopAbs_EDGE).More()) {
                     const TopoDS_Shape &shape = comp.Moved(locInverse);
-                    showShape(shape,0,"section_%u_result",i);
+                    showShape(shape,nullptr,"section_%u_result",i);
                     area->add(shape,s.op);
                 }else if(area->myShapes.empty()){
                     auto itNext = it;
@@ -1552,7 +1556,7 @@ std::vector<shared_ptr<Area> > Area::makeSections(
             if(area->myShapes.size()){
                 sections.push_back(area);
                 FC_TIME_LOG(t1,"makeSection " << z);
-                showShape(area->getShape(),0,"section_%u_final",i);
+                showShape(area->getShape(),nullptr,"section_%u_final",i);
                 break;
             }
             if(retried) {
@@ -1616,7 +1620,8 @@ std::list<Area::Shape> Area::getProjectedShapes(const gp_Trsf &trsf, bool invers
 }
 
 void Area::build() {
-    if(isBuilt()) return;
+    if(isBuilt())
+        return;
 
     if(myShapes.empty())
         throw Base::ValueError("no shape added");
@@ -1773,9 +1778,11 @@ TopoDS_Shape Area::getShape(int index) {
     build();
     AREA_SECTION(getShape,index);
 
-    if(myShapeDone) return myShape;
+    if(myShapeDone)
+        return myShape;
 
-    if(!myArea) return TopoDS_Shape();
+    if(!myArea)
+        return TopoDS_Shape();
 
     CAreaConfig conf(myParams);
 
@@ -2270,7 +2277,8 @@ TopoDS_Shape Area::toShape(const CArea &area, bool fill, const gp_Trsf *trsf, in
             builder.Add(compound,wire);
     }
     TopExp_Explorer xp(compound,TopAbs_EDGE);
-    if(!xp.More()) return TopoDS_Shape();
+    if(!xp.More())
+        return TopoDS_Shape();
     if(fill) {
         try{
             FC_TIME_INIT(t);
@@ -2750,7 +2758,8 @@ struct ShapeInfoBuilder {
 
         if(type == TopAbs_EDGE) {
             BRepAdaptor_Curve curve(TopoDS::Edge(shape));
-            if(curve.GetType()!=GeomAbs_Circle) return;
+            if(curve.GetType()!=GeomAbs_Circle)
+                return;
         }else{
             bool found = false;
             for(TopExp_Explorer it(shape,TopAbs_EDGE);it.More();it.Next()) {
@@ -2760,7 +2769,8 @@ struct ShapeInfoBuilder {
                     break;
                 }
             }
-            if(!found) return;
+            if(!found)
+                return;
         }
         gp_Ax3 pos = myList.back().myPln.Position();
         if(!pos.Direct()) pos = gp_Ax3(pos.Ax2());
@@ -2788,15 +2798,21 @@ struct ShapeInfoBuilder {
             myArcPlaneFound = true;
             return;
         }case Area::ArcPlaneXY:
-            if(x0&&y0) {myArcPlaneFound=true;return;}
+            if(x0&&y0) {myArcPlaneFound=true;
+                return;
+            }
             dstPos = gp_Ax3(pos.Location(),gp_Dir(0,0,1));
             break;
         case Area::ArcPlaneZX:
-            if(x0&&z0) {myArcPlaneFound=true;return;}
+            if(x0&&z0) {myArcPlaneFound=true;
+                return;
+            }
             dstPos = gp_Ax3(pos.Location(),gp_Dir(0,1,0));
             break;
         case Area::ArcPlaneYZ:
-            if(z0&&y0) {myArcPlaneFound=true;return;}
+            if(z0&&y0) {myArcPlaneFound=true;
+                return;
+            }
             dstPos = gp_Ax3(pos.Location(),gp_Dir(1,0,0));
             break;
         default:
@@ -2873,7 +2889,8 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
 {
     std::list<TopoDS_Shape> wires;
 
-    if(shapes.empty()) return wires;
+    if(shapes.empty())
+        return wires;
 
     AxisGetter getter;
     AxisSetter setter;
@@ -2961,7 +2978,7 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
     gp_Pnt pstart,pend;
     if(_pstart)
         pstart = *_pstart;
-    bool use_bound = !has_start || _pstart==NULL;
+    bool use_bound = !has_start || _pstart==nullptr;
 
     //Second stage, group shape by its plane, and find overall boundary
 
@@ -3227,7 +3244,7 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
     if(_pstart) pstart = *_pstart;
 
     double stepdown_hint = 1.0;
-    wires = sortWires(shapes,_pstart!=0,&pstart,pend,&stepdown_hint,
+    wires = sortWires(shapes,_pstart!=nullptr,&pstart,pend,&stepdown_hint,
             PARAM_REF(PARAM_FARG,AREA_PARAMS_ARC_PLANE),
             PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
 

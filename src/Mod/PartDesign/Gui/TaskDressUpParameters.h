@@ -21,15 +21,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskDressUpParameters_H
 #define GUI_TASKVIEW_TaskDressUpParameters_H
 
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
 
 #include "TaskFeatureParameters.h"
 #include "ViewProviderDressUp.h"
+
 
 class QAction;
 class QListWidget;
@@ -46,7 +45,7 @@ class TaskDressUpParameters : public Gui::TaskView::TaskBox, public Gui::Selecti
     Q_OBJECT
 
 public:
-    TaskDressUpParameters(ViewProviderDressUp *DressUpView, bool selectEdges, bool selectFaces, QWidget* parent = 0);
+    TaskDressUpParameters(ViewProviderDressUp *DressUpView, bool selectEdges, bool selectFaces, QWidget* parent = nullptr);
     virtual ~TaskDressUpParameters();
 
     const std::vector<std::string> getReferences(void) const;
@@ -71,6 +70,7 @@ protected Q_SLOTS:
     void itemClickedTimeout();
     virtual void onRefDeleted(void) = 0;
     void createDeleteAction(QListWidget* parentList, QWidget* parentButton);
+    void createAddAllEdgesAction(QListWidget* parentList);
 
 protected:
     void exitSelectionMode();
@@ -78,6 +78,7 @@ protected:
     bool wasDoubleClicked = false;
     bool KeyEvent(QEvent *e);
     void hideOnError();
+    void addAllEdges(QListWidget* listWidget);
 
 protected:
     enum selectionModes { none, refAdd, refRemove, plane, line };
@@ -91,9 +92,10 @@ protected:
     QWidget* proxy;
     ViewProviderDressUp *DressUpView;
     QAction* deleteAction;
+    QAction* addAllEdgesAction;
 
     bool allowFaces, allowEdges;
-    selectionModes selectionMode;    
+    selectionModes selectionMode;
     int transactionID;
 };
 

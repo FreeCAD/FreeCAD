@@ -81,7 +81,7 @@ TaskFemConstraint::TaskFemConstraint(ViewProviderFemConstraint *ConstraintView,Q
     selectionMode = selref;
 
     // Setup the dialog inside the Shaft Wizard dialog
-    if ((ConstraintView->wizardWidget != NULL) && (ConstraintView->wizardSubLayout != NULL)) {
+    if ((ConstraintView->wizardWidget != nullptr) && (ConstraintView->wizardSubLayout != nullptr)) {
         // Hide the shaft wizard table widget to make more space
         ConstraintView->wizardSubLayout->itemAt(0)->widget()->hide();
         QGridLayout* buttons = ConstraintView->wizardSubLayout->findChild<QGridLayout*>();
@@ -105,7 +105,7 @@ TaskFemConstraint::TaskFemConstraint(ViewProviderFemConstraint *ConstraintView,Q
 
 void TaskFemConstraint::keyPressEvent(QKeyEvent *ke)
 {
-    if ((ConstraintView->wizardWidget != NULL) && (ConstraintView->wizardSubLayout != NULL))
+    if ((ConstraintView->wizardWidget != nullptr) && (ConstraintView->wizardSubLayout != nullptr))
         // Prevent <Enter> from closing this dialog AND the shaft wizard dialog
         // TODO: This should trigger an update in the shaft wizard but its difficult to access a python dialog from here...
         if (ke->key() == Qt::Key_Return)
@@ -196,9 +196,14 @@ void TaskFemConstraint::onButtonWizOk()
 void TaskFemConstraint::onButtonWizCancel()
 {
     Fem::Constraint* pcConstraint = static_cast<Fem::Constraint*>(ConstraintView->getObject());
-    if (pcConstraint != NULL)
+    if (pcConstraint != nullptr)
         pcConstraint->getDocument()->removeObject(pcConstraint->getNameInDocument());
     onButtonWizOk();
+}
+
+const QString TaskFemConstraint::makeRefText(const std::string& objName, const std::string& subName) const
+{
+    return QString::fromUtf8((objName + ":" + subName).c_str());
 }
 
 const QString TaskFemConstraint::makeRefText(const App::DocumentObject* obj, const std::string& subName) const
@@ -208,7 +213,7 @@ const QString TaskFemConstraint::makeRefText(const App::DocumentObject* obj, con
 
 void TaskFemConstraint::createDeleteAction(QListWidget* parentList)
 {
-    // creates a context menu, a shortcutt for it and connects it to e slot function
+    // creates a context menu, a shortcut for it and connects it to a slot function
 
     deleteAction = new QAction(tr("Delete"), this);
     deleteAction->setShortcut(QKeySequence::Delete);

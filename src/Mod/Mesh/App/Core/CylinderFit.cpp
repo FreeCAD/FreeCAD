@@ -179,20 +179,16 @@ float CylinderFit::GetStdDeviation() const
     if (!_bIsFitted)
         return FLOAT_MAX;
 
-    float fSumXi = 0.0f, fSumXi2 = 0.0f,
-          fMean  = 0.0f, fDist   = 0.0f;
-
-    float ulPtCt = float(CountPoints());
-    std::list< Base::Vector3f >::const_iterator cIt;
-
-    for (cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt) {
-        fDist = GetDistanceToCylinder( *cIt );
-        fSumXi  += fDist;
-        fSumXi2 += ( fDist * fDist );
+    double sumXi = 0.0, sumXi2 = 0.0, dist = 0.0;
+    for (auto it : _vPoints) {
+        dist = GetDistanceToCylinder( it );
+        sumXi  += dist;
+        sumXi2 += (dist * dist);
     }
 
-    fMean = (1.0f / ulPtCt) * fSumXi;
-    return sqrt((ulPtCt / (ulPtCt - 1.0f)) * ((1.0f / ulPtCt) * fSumXi2 - fMean * fMean));
+    double N = static_cast<double>(CountPoints());
+    double mean = sumXi / N;
+    return sqrt((N / (N - 1.0)) * (sumXi2 / N - mean * mean));
 }
 
 void CylinderFit::ProjectToCylinder()

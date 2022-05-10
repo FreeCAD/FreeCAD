@@ -21,27 +21,26 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <boost_bind_bind.hpp>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/nodes/SoSeparator.h>
 #endif
 
+#include <App/Document.h>
+#include <App/Origin.h>
+#include <App/OriginGroupExtension.h>
+#include <Base/Console.h>
+
 #include "ViewProviderOriginGroupExtension.h"
 #include "Application.h"
 #include "Document.h"
-#include "ViewProviderOriginFeature.h"
-#include "ViewProviderOrigin.h"
-#include "View3DInventorViewer.h"
 #include "View3DInventor.h"
-#include "Command.h"
-#include <App/OriginGroupExtension.h>
-#include <App/Document.h>
-#include <App/Origin.h>
-#include <Base/Console.h>
+#include "View3DInventorViewer.h"
+#include "ViewProviderOrigin.h"
+#include "ViewProviderOriginFeature.h"
+
 
 using namespace Gui;
 namespace bp = boost::placeholders;
@@ -148,8 +147,8 @@ void ViewProviderOriginGroupExtension::updateOriginSize () {
         return;
 
     // obtain an Origin and it's ViewProvider
-    App::Origin* origin = 0;
-    Gui::ViewProviderOrigin* vpOrigin = 0;
+    App::Origin* origin = nullptr;
+    Gui::ViewProviderOrigin* vpOrigin = nullptr;
     try {
         origin = group->getOrigin ();
         assert (origin);

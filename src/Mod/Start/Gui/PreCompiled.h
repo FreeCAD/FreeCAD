@@ -20,30 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef STARTGUI_PRECOMPILED_H
 #define STARTGUI_PRECOMPILED_H
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define StartAppExport __declspec(dllimport)
-# define StartGuiExport __declspec(dllexport)
-#else // for Linux
-# define StartAppExport
-# define StartGuiExport
-#endif
-
-
 #ifdef _PreComp_
-
-// Python
-#include <Python.h>
-
 // standard
 #include <iostream>
-#include <assert.h>
+#include <cassert>
 #include <cmath>
 
 // STL
@@ -61,11 +46,8 @@
 # include <windows.h>
 #endif
 
-
 // Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
-#endif
+#include <QCoreApplication>
 
 #endif //_PreComp_
 

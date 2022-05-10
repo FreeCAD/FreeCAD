@@ -27,7 +27,9 @@
 #define GUI_ActiveObjectList_H
 
 #include <map>
-#include "Tree.h"
+#include <Gui/TreeItemMode.h>
+
+
 namespace App {
     class DocumentObject;
 }
@@ -52,23 +54,23 @@ namespace Gui
         {}
 
         template<typename _T>
-        inline _T getObject(const char* name, App::DocumentObject **parent=0, std::string *subname=0) const {
+        inline _T getObject(const char* name, App::DocumentObject **parent=nullptr, std::string *subname=nullptr) const {
             auto it = _ObjectMap.find(name);
             if(it==_ObjectMap.end())
                 return 0;
             return dynamic_cast<_T>(getObject(it->second,true,parent,subname));
         }
-        void setObject(App::DocumentObject*, const char*, const char *subname=0,
+        void setObject(App::DocumentObject*, const char*, const char *subname=nullptr,
                 const Gui::HighlightMode& m = HighlightMode::UserDefined);
         bool hasObject(const char*)const;
         void objectDeleted(const ViewProviderDocumentObject& viewProviderIn);
-        bool hasObject(App::DocumentObject *obj, const char *, const char *subname=0) const;
+        bool hasObject(App::DocumentObject *obj, const char *, const char *subname=nullptr) const;
 
     private:
         struct ObjectInfo;
         void setHighlight(const ObjectInfo &info, Gui::HighlightMode mode, bool enable);
         App::DocumentObject *getObject(const ObjectInfo &info, bool resolve,
-                App::DocumentObject **parent=0, std::string *subname=0) const;
+                App::DocumentObject **parent=nullptr, std::string *subname=nullptr) const;
         ObjectInfo getObjectInfo(App::DocumentObject *obj, const char *subname) const;
 
     private:

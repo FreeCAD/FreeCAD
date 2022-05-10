@@ -1,6 +1,7 @@
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2020 Eliud Cabrera Castillo <e.cabrera-castillo@tum.de> *
+# *   Copyright (c) 2021 FreeCAD Developers                                 *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -73,7 +74,7 @@ class ViewProviderLayer:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "If it is true, the objects contained "
                                      "within this layer will adopt "
-                                     "the line color of the layer")
+                                     "the shape color of the layer")
             vobj.addProperty("App::PropertyBool",
                              "OverrideShapeColorChildren",
                              "Layer",
@@ -150,7 +151,7 @@ class ViewProviderLayer:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "The transparency of the objects "
                                      "contained within this layer")
-            vobj.addProperty("App::PropertyInteger",
+            vobj.addProperty("App::PropertyPercent",
                              "Transparency",
                              "Layer",
                              _tip)
@@ -238,15 +239,17 @@ class ViewProviderLayer:
             # and then sets the target property accordingly
             if hasattr(target_vobj, prop):
                 setattr(target_vobj, prop, getattr(vobj, prop))
-            else:
-                continue
 
-            # Use the line color for the text color if it exists
+            # Use the line color for the point color and text color
             if prop == "LineColor":
+                if hasattr(target_vobj, "PointColor"):
+                    target_vobj.PointColor = vobj.LineColor
                 if hasattr(target_vobj, "TextColor"):
                     target_vobj.TextColor = vobj.LineColor
-                if hasattr(target_vobj, "FontColor"):
-                    target_vobj.FontColor = vobj.LineColor
+            # Use the line width for the point size
+            elif prop == "LineWidth":
+                if hasattr(target_vobj, "PointSize"):
+                    target_vobj.PointSize = vobj.LineWidth
 
     def onChanged(self, vobj, prop):
         """Execute when a view property is changed."""
@@ -399,80 +402,76 @@ class ViewProviderLayerContainer:
     def setupContextMenu(self, vobj, menu):
         """Set up actions to perform in the context menu."""
         action1 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_Layer.svg"),
-                                translate("Draft", "Merge layer duplicates"),
+                                translate("draft", "Merge layer duplicates"),
                                 menu)
         action1.triggered.connect(self.merge_by_name)
         menu.addAction(action1)
         action2 = QtGui.QAction(QtGui.QIcon(":/icons/Draft_NewLayer.svg"),
-                                translate("Draft", "Add new layer"),
+                                translate("draft", "Add new layer"),
                                 menu)
         action2.triggered.connect(self.add_layer)
         menu.addAction(action2)
 
     def merge_by_name(self):
-        """Merge the layers that have the same name."""
+        """Merge the layers that have the same base label."""
         if not hasattr(self, "Object") or not hasattr(self.Object, "Group"):
             return
 
-        obj = self.Object
+        doc = App.ActiveDocument
+        doc.openTransaction(translate("draft", "Merge layer duplicates"))
 
-        layers = list()
-        for iobj in obj.Group:
-            if hasattr(iobj, "Proxy") and isinstance(iobj.Proxy, Layer):
-                layers.append(iobj)
+        layer_container = self.Object
+        layers = []
+        for obj in layer_container.Group:
+            if hasattr(obj, "Proxy") and isinstance(obj.Proxy, Layer):
+                layers.append(obj)
 
-        to_delete = list()
+        to_delete = []
         for layer in layers:
-            # Test the last three characters of the layer's Label to see
-            # if it's a number, like `'Layer017'`
-            if (layer.Label[-1].isdigit()
-                    and layer.Label[-2].isdigit()
-                    and layer.Label[-3].isdigit()):
-                # If the object inside the layer has the same Label
-                # as the layer, save this object
-                orig = None
-                for ol in layer.OutList:
-                    if ol.Label == layer.Label[:-3].strip():
-                        orig = ol
-                        break
+            # Remove trailing digits (usually 3 but there might be more) and
+            # trailing spaces from Label before comparing:
+            base_label = layer.Label.rstrip("0123456789 ")
 
-                # Go into the objects that reference this layer object
-                # and set the layer property with the previous `orig`
-                # object found
-                # Editor: when is this possible? Maybe if a layer is inside
-                # another layer? Currently the code doesn't allow this
-                # so maybe this was a previous behavior that was disabled
-                # in `ViewProviderLayer`.
-                if orig:
-                    for par in layer.InList:
-                        for prop in par.PropertiesList:
-                            if getattr(par, prop) == layer:
-                                _msg("Changed property '" + prop
-                                     + "' of object " + par.Label
-                                     + " from " + layer.Label
-                                     + " to " + orig.Label)
-                                setattr(par, prop, orig)
-                    to_delete.append(layer)
+            # Try to find the `'base'` layer:
+            base = None
+            for other_layer in layers:
+                if ((not other_layer in to_delete) # Required if there are duplicate labels.
+                        and other_layer != layer
+                        and other_layer.Label.upper() == base_label.upper()):
+                    base = other_layer
+                    break
+
+            if base:
+                if layer.Group:
+                    base_group = base.Group
+                    for obj in layer.Group:
+                        if not obj in base_group:
+                            base_group.append(obj)
+                    base.Group = base_group
+                to_delete.append(layer)
+            elif layer.Label != base_label:
+                _msg(translate("draft", "Relabeling layer:")
+                        + " '{}' -> '{}'".format(layer.Label, base_label))
+                layer.Label = base_label
 
         for layer in to_delete:
-            if not layer.InList:
-                _msg("Merging duplicate layer: " + layer.Label)
-                App.ActiveDocument.removeObject(layer.Name)
-            elif len(layer.InList) == 1:
-                first = layer.InList[0]
+            _msg(translate("draft", "Merging layer:") + " '{}'".format(layer.Label))
+            doc.removeObject(layer.Name)
 
-                if first.isDerivedFrom("App::DocumentObjectGroup"):
-                    _msg("Merging duplicate layer: " + layer.Label)
-                    App.ActiveDocument.removeObject(layer.Name)
-            else:
-                _msg("InList not empty. "
-                     "Unable to delete layer: " + layer.Label)
+        doc.recompute()
+        doc.commitTransaction()
 
     def add_layer(self):
         """Creates a new layer"""
         import Draft
+
+        doc = App.ActiveDocument
+        doc.openTransaction(translate("draft", "Add new layer"))
+
         Draft.make_layer()
-        App.ActiveDocument.recompute()
+
+        doc.recompute()
+        doc.commitTransaction()
 
     def __getstate__(self):
         """Return a tuple of objects to save or None."""

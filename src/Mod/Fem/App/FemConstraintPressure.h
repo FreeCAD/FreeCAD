@@ -29,7 +29,7 @@
 
 namespace Fem {
 
-class AppFemExport ConstraintPressure : public Fem::Constraint
+class FemExport ConstraintPressure : public Fem::Constraint
 {
     PROPERTY_HEADER(Fem::ConstraintPressure);
 

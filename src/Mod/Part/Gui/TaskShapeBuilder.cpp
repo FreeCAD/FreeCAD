@@ -43,6 +43,7 @@
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
+#include <Gui/SelectionObject.h>
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -61,7 +62,7 @@ namespace PartGui {
         enum Type {VERTEX, EDGE, FACE, ALL};
         Type mode;
         ShapeSelection()
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), mode(ALL)
+            : Gui::SelectionFilterGate(nullPointer()), mode(ALL)
         {
         }
         void setMode(Type mode)
@@ -144,7 +145,7 @@ void ShapeBuilderWidget::onSelectionChanged(const Gui::SelectionChanges& msg)
             std::string subName(msg.pSubName);
             if (!subName.empty()) {
                 // From the shape get all faces and add them to the selection
-                bool blocked = blockConnection(true);
+                bool blocked = blockSelection(true);
                 App::Document* doc = App::GetApplication().getDocument(msg.pDocName);
                 App::DocumentObject* obj = doc->getObject(msg.pObjectName);
                 if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
@@ -161,7 +162,7 @@ void ShapeBuilderWidget::onSelectionChanged(const Gui::SelectionChanges& msg)
                     }
                 }
 
-                blockConnection(blocked);
+                blockSelection(blocked);
             }
         }
     }
@@ -171,7 +172,8 @@ void ShapeBuilderWidget::on_createButton_clicked()
 {
     int mode = d->bg.checkedId();
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (!doc) return;
+    if (!doc)
+        return;
 
     try {
         if (mode == 0) {
@@ -580,7 +582,7 @@ TaskShapeBuilder::TaskShapeBuilder()
     widget = new ShapeBuilderWidget();
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Part_Shapebuilder"),
-        widget->windowTitle(), true, 0);
+        widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

@@ -37,7 +37,6 @@
 # include <QMessageBox>
 # include <QtConcurrentMap>
 # include <boost_bind_bind.hpp>
-# include <Python.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
@@ -60,6 +59,7 @@
 #include <Gui/Document.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <App/Document.h>
 #include <Base/UnitsApi.h>
 
 using namespace MeshPartGui;
@@ -586,7 +586,7 @@ TaskCrossSections::TaskCrossSections(const Base::BoundBox3d& bb)
     widget = new CrossSections(bb);
     taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Mesh_CrossSections"),
-        widget->windowTitle(), true, 0);
+        widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

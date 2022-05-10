@@ -25,15 +25,13 @@
 
 #ifndef _PreComp_
 # include <QApplication>
-# include <QDateTime>
 # include <QMessageBox>
 # include <QProgressDialog>
+# include <QWindow>
 # ifdef FC_OS_WIN32
 #   include <windows.h>
 # endif
 #endif
-
-#include <QWindow>
 
 #include "WaitCursor.h"
 
@@ -60,9 +58,9 @@ private:
 };
 } // namespace Gui
 
-WaitCursorP* WaitCursorP::_instance = 0;
+WaitCursorP* WaitCursorP::_instance = nullptr;
 
-WaitCursorP::WaitCursorP() : QObject(0), isOn(false), flags(WaitCursor::AllEvents)
+WaitCursorP::WaitCursorP() : QObject(nullptr), isOn(false), flags(WaitCursor::AllEvents)
 {
 }
 

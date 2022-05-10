@@ -24,6 +24,9 @@
 #ifndef MESHGUI_DLGSETTINGSIMPORTEXPORTIMP_H
 #define MESHGUI_DLGSETTINGSIMPORTEXPORTIMP_H
 
+#ifndef MESH_GLOBAL_H
+#include <Mod/Mesh/MeshGlobal.h>
+#endif
 #include <Gui/PropertyPage.h>
 
 namespace MeshGui {
@@ -38,7 +41,7 @@ class DlgSettingsImportExport : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsImportExport(QWidget* parent = 0);
+    DlgSettingsImportExport(QWidget* parent = nullptr);
     ~DlgSettingsImportExport();
 
 protected:

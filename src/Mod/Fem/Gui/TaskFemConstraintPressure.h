@@ -23,32 +23,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskFemConstraintPressure_H
 #define GUI_TASKVIEW_TaskFemConstraintPressure_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Base/Quantity.h>
+#include <QObject>
 
-#include "TaskFemConstraint.h"
+#include "TaskFemConstraintOnBoundary.h"
 #include "ViewProviderFemConstraintPressure.h"
 
-#include <QObject>
-#include <Base/Console.h>
-#include <App/DocumentObject.h>
-#include <QKeyEvent>
 
 class Ui_TaskFemConstraintPressure;
 
 namespace FemGui {
-class TaskFemConstraintPressure : public TaskFemConstraint
+class TaskFemConstraintPressure : public TaskFemConstraintOnBoundary
 {
     Q_OBJECT
 
 public:
-    TaskFemConstraintPressure(ViewProviderFemConstraintPressure *ConstraintView,QWidget *parent = 0);
+    TaskFemConstraintPressure(ViewProviderFemConstraintPressure *ConstraintView,QWidget *parent = nullptr);
     ~TaskFemConstraintPressure();
     const std::string getReferences() const;
     double get_Pressure()const;
@@ -63,6 +55,7 @@ private Q_SLOTS:
 protected:
     bool event(QEvent *e);
     void changeEvent(QEvent *e);
+    void clearButtons(const SelectionChangeModes notThis) override;
 
 private:
     void updateUI();

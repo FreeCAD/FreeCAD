@@ -29,11 +29,7 @@
 #ifndef GZSTREAM_H
 #define GZSTREAM_H 1
 
-// standard C++ with new header file names and std:: namespace
-#include <iostream>
-#include <fstream>
-#include <istream>
-#include <ios>
+#include <sstream>
 #include <zlib.h>
 
 #ifdef _MSC_VER
@@ -65,7 +61,7 @@ private:
 
     int flush_buffer();
 public:
-    gzstreambuf() : file(0), opened(0), mode(0) {
+    gzstreambuf() : file(nullptr), opened(0), mode(0) {
         setp( buffer, buffer + (bufferSize-1));
         setg( buffer + 4,     // beginning of putback area
               buffer + 4,     // read position

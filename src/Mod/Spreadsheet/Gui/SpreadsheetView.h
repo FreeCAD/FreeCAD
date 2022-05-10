@@ -24,6 +24,7 @@
 #define SpreadsheetView_H
 
 #include <Gui/MDIView.h>
+#include <Gui/MDIViewPy.h>
 #include <QHeaderView>
 #include "SheetModel.h"
 #include <Mod/Spreadsheet/App/Sheet.h>
@@ -65,6 +66,14 @@ public:
     bool onMsg(const char* pMsg,const char** ppReturn);
     bool onHasMsg(const char* pMsg) const;
 
+    /** @name Printing */
+    //@{
+    void print();
+    void printPdf();
+    void printPreview();
+    void print(QPrinter*);
+    //@}
+
     void updateCell(const App::Property * prop);
 
     Spreadsheet::Sheet * getSheet() { return sheet; }
@@ -72,8 +81,15 @@ public:
     std::vector<App::Range> selectedRanges() const;
 
     QModelIndexList selectedIndexes() const;
+    QModelIndexList selectedIndexesRaw() const;
+
+    void select(App::CellAddress cell, QItemSelectionModel::SelectionFlags flags);
+
+    void select(App::CellAddress topLeft, App::CellAddress bottomRight, QItemSelectionModel::SelectionFlags flags);
 
     QModelIndex currentIndex() const;
+
+    void setCurrentIndex(App::CellAddress cell) const;
 
     void deleteSelection();
 
@@ -82,8 +98,10 @@ public:
     virtual void deleteSelf();
 
 protected Q_SLOTS:
-    void editingFinished();
+    void editingFinishedWithKey(int key, Qt::KeyboardModifiers modifiers);
+    void confirmAliasChanged(const QString& text);
     void aliasChanged(const QString& text);
+    void confirmContentChanged(const QString& text);
     void currentChanged( const QModelIndex & current, const QModelIndex & previous );
     void columnResized(int col, int oldSize, int newSize);
     void rowResized(int row, int oldSize, int newSize);
@@ -94,7 +112,6 @@ protected:
     void updateContentLine();
     void updateAliasLine();
     void setCurrentCell(QString str);
-    void keyPressEvent(QKeyEvent *event);
     void resizeColumn(int col, int newSize);
     void resizeRow(int col, int newSize);
 
@@ -108,6 +125,32 @@ protected:
 
     std::map<int, int> newColumnSizes;
     std::map<int, int> newRowSizes;
+};
+
+class SheetViewPy : public Py::PythonExtension<SheetViewPy>
+{
+public:
+    using BaseType = Py::PythonExtension<SheetViewPy>;
+    static void init_type();
+
+    SheetViewPy(SheetView *mdi);
+    ~SheetViewPy();
+
+    Py::Object repr();
+    Py::Object getattr(const char *);
+    Py::Object getSheet(const Py::Tuple&);
+    Py::Object cast_to_base(const Py::Tuple&);
+    
+    Py::Object selectedRanges(const Py::Tuple&);
+    Py::Object selectedCells(const Py::Tuple&);
+    Py::Object select(const Py::Tuple&);
+    Py::Object currentIndex(const Py::Tuple&);
+    Py::Object setCurrentIndex(const Py::Tuple&);
+
+    SheetView* getSheetViewPtr();
+
+protected:
+    Gui::MDIViewPy base;
 };
 
 } // namespace SpreadsheetModGui

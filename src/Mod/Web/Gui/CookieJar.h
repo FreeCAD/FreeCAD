@@ -24,7 +24,10 @@
 #ifndef WEBGUI_COOKIEJAR_H
 #define WEBGUI_COOKIEJAR_H
 
+#include <QFile>
 #include <QNetworkCookieJar>
+#include <QTimer>
+#include <Mod/Web/WebGlobal.h>
 
 class QNetworkCookieJar;
 
@@ -35,7 +38,7 @@ namespace WebGui {
         Q_OBJECT
 
     public:
-        FcCookieJar(QObject* parent = 0);
+        FcCookieJar(QObject* parent = nullptr);
         virtual ~FcCookieJar();
         virtual bool setCookiesFromUrl(const QList<QNetworkCookie>&, const QUrl&);
 

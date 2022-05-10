@@ -20,20 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef Fem_FemResultObject_H
 #define Fem_FemResultObject_H
 
 #include <App/DocumentObject.h>
-#include <App/PropertyUnits.h>
 #include <App/PropertyStandard.h>
 #include <App/FeaturePython.h>
-#include "FemResultObject.h"
+#include <Mod/Fem/FemGlobal.h>
+
 
 namespace Fem
 {
 /// Father of all result data in a Fem Analysis
-class AppFemExport FemResultObject : public App::DocumentObject
+class FemExport FemResultObject : public App::DocumentObject
 {
     PROPERTY_HEADER(Fem::FemResultObject);
 
@@ -51,8 +50,6 @@ public:
     App::PropertyFloatList Stats;
     /// Displacement vectors of analysis
 
-
-
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
         return "FemGui::ViewProviderResult";
@@ -62,8 +59,6 @@ public:
     }
     virtual short mustExecute(void) const;
     virtual PyObject *getPyObject(void);
-
-
 };
 
 typedef App::FeaturePythonT<FemResultObject> FemResultObjectPython;

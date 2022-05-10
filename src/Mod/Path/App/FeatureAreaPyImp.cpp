@@ -45,14 +45,14 @@ std::string FeatureAreaPy::representation(void) const
 PyObject* FeatureAreaPy::getArea(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     return new AreaPy(new Area(getFeatureAreaPtr()->getArea()));
 }
 
 PyObject* FeatureAreaPy::setParams(PyObject *args, PyObject *keywds)
 {
-    static char *kwlist[] = {PARAM_FIELD_STRINGS(NAME,AREA_PARAMS_CONF),NULL};
+    static char *kwlist[] = {PARAM_FIELD_STRINGS(NAME,AREA_PARAMS_CONF),nullptr};
 
     //Declare variables defined in the NAME field of the CONF parameter list
     PARAM_PY_DECLARE(PARAM_FNAME,AREA_PARAMS_CONF);
@@ -69,7 +69,7 @@ PyObject* FeatureAreaPy::setParams(PyObject *args, PyObject *keywds)
     if (!PyArg_ParseTupleAndKeywords(args, keywds, 
                 "|" PARAM_PY_KWDS(AREA_PARAMS_CONF), kwlist, 
                 PARAM_REF(PARAM_FNAME,AREA_PARAMS_CONF)))
-        return 0;
+        return nullptr;
 
 #define AREA_GET(_param) \
     feature->PARAM_FNAME(_param).setValue(\
@@ -98,7 +98,7 @@ void FeatureAreaPy::setWorkPlane(Py::Object obj) {
 
 PyObject *FeatureAreaPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 

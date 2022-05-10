@@ -15,6 +15,21 @@ if(BUILD_GUI)
     list (APPEND TechDraw_Scripts InitGui.py)
 endif(BUILD_GUI)
 
+set(TechDraw_ToolsScripts
+    TechDrawTools/__init__.py
+    TechDrawTools/CommandMoveView.py
+    TechDrawTools/CommandShareView.py
+    TechDrawTools/TaskMoveView.py
+    TechDrawTools/TaskShareView.py
+    TechDrawTools/TDToolsUtil.py
+    TechDrawTools/TDToolsMovers.py
+)
+
+set(TechDraw_ToolsGui
+    Gui/TaskMoveView.ui
+    Gui/DlgPageChooser.ui
+)
+
 SET(TechDraw_PATFile
     PAT/FCPAT.pat
 )
@@ -24,7 +39,7 @@ SET(TechDraw_LineGroupFile
 )
 
 add_custom_target(TechDraw_Data ALL
-SOURCES ${TechDraw_Scripts} ${TechDraw_PATFile} ${TechDraw_LineGroupFile}
+SOURCES ${TechDraw_Scripts} ${TechDraw_PATFile} ${TechDraw_LineGroupFile} ${TechDraw_ToolsScripts} ${TechDraw_ToolsGui}
 )
 
 fc_target_copy_resource(TechDraw_Data
@@ -95,6 +110,33 @@ INSTALL(
         PATTERN "*.svg*"
 )
 
+if(BUILD_GUI)
+fc_target_copy_resource(TechDraw_Data
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/TechDraw
+    ${TechDraw_ToolsScripts}
+)
+
+fc_target_copy_resource(TechDraw_Data
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/TechDraw/TechDrawTools
+    ${TechDraw_ToolsGui}
+)
+
+INSTALL(
+    FILES
+        ${TechDraw_ToolsScripts}
+    DESTINATION
+        Mod/TechDraw/TechDrawTools
+)
+
+INSTALL(
+    FILES
+        ${TechDraw_ToolsGui}
+    DESTINATION
+        Mod/TechDraw/TechDrawTools/Gui
+)
+endif(BUILD_GUI)
 
 #unit test files
 SET(TDTest_SRCS

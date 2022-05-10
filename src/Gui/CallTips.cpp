@@ -20,21 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QApplication>
 # include <QKeyEvent>
 # include <QLabel>
-# include <QTextCursor>
 # include <QPlainTextEdit>
+# include <QTextCursor>
 # include <QToolTip>
 #endif
 
-#include <CXX/Objects.hxx>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
 #include <App/Property.h>
 #include <App/PropertyContainer.h>
 #include <App/PropertyContainerPy.h>
@@ -42,10 +38,14 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentPy.h>
 #include <App/DocumentObjectPy.h>
+#include <Base/Console.h>
+#include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Document.h>
 #include <Gui/DocumentPy.h>
+
 #include "CallTips.h"
+
 
 Q_DECLARE_METATYPE( Gui::CallTip ) //< allows use of QVariant
 
@@ -234,7 +234,7 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
             return tips;
         }
 
-        PyObject* eval = 0;
+        PyObject* eval = nullptr;
         if (PyCode_Check(code)) {
             eval = PyEval_EvalCode(code, dict.ptr(), dict.ptr());
         }
@@ -277,9 +277,13 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
             // Make sure it's not a type object
             union PyType_Object typetype = {&PyType_Type};
             if (PyObject_IsInstance(obj.ptr(), typetype.o) != 1) {
+                // For wrapped objects with PySide2 use the object, not its type
+                // as otherwise attributes added at runtime won't be listed (e.g. MainWindowPy)
+                QString typestr(QLatin1String(Py_TYPE(obj.ptr())->tp_name));
+
                 // this should be now a user-defined Python class
                 // http://stackoverflow.com/questions/12233103/in-python-at-runtime-determine-if-an-object-is-a-class-old-and-new-type-instan
-                if (Py_TYPE(obj.ptr())->tp_flags & Py_TPFLAGS_HEAPTYPE) {
+                if (!typestr.startsWith(QLatin1String("PySide")) && Py_TYPE(obj.ptr())->tp_flags & Py_TPFLAGS_HEAPTYPE) {
                     obj = type;
                 }
             }
@@ -439,7 +443,8 @@ void CallTipsList::extractTipsFromProperties(Py::Object& obj, QMap<QString, Call
     App::PropertyContainerPy* cont = (App::PropertyContainerPy*)(obj.ptr());
     App::PropertyContainer* container = cont->getPropertyContainerPtr();
     // Make sure that the C++ object is alive
-    if (!container) return;
+    if (!container)
+        return;
     std::map<std::string,App::Property*> Map;
     container->getPropertyMap(Map);
 
@@ -685,7 +690,8 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
 void CallTipsList::callTipItemActivated(QListWidgetItem *item)
 {
     hide();
-    if (!item->isSelected()) return;
+    if (!item->isSelected())
+        return;
 
     QString text = item->text();
     QTextCursor cursor = textEdit->textCursor();

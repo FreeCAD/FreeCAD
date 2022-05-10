@@ -24,9 +24,9 @@
 #ifndef GUI_DIALOG_DLGMACROEXECUTEIMP_H
 #define GUI_DIALOG_DLGMACROEXECUTEIMP_H
 
-#include "Window.h"
 #include <QDialog>
 #include <memory>
+#include "Window.h"
 
 class QTreeWidgetItem;
 
@@ -44,7 +44,7 @@ class DlgMacroExecuteImp : public QDialog, public Gui::WindowParameter
     Q_OBJECT
 
 public:
-    DlgMacroExecuteImp( QWidget* parent = 0, Qt::WindowFlags fl =  Qt::WindowFlags() );
+    DlgMacroExecuteImp( QWidget* parent = nullptr, Qt::WindowFlags fl =  Qt::WindowFlags() );
     ~DlgMacroExecuteImp();
 
     void accept();

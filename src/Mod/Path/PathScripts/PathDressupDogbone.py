@@ -21,6 +21,9 @@
 # ***************************************************************************
 
 from __future__ import print_function
+
+from PySide import QtCore
+from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
 import PathScripts.PathDressup as PathDressup
@@ -29,48 +32,49 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathUtil as PathUtil
 import PathScripts.PathUtils as PathUtils
 import math
-
-from PySide import QtCore
+from PathScripts.PathGeom import CmdMoveCW, CmdMoveStraight, CmdMoveArc, CmdMoveRapid
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
-DraftGeomUtils = LazyLoader('DraftGeomUtils', globals(), 'DraftGeomUtils')
-Part = LazyLoader('Part', globals(), 'Part')
 
-LOG_MODULE = PathLog.thisModule()
-
-PathLog.setLevel(PathLog.Level.NOTICE, LOG_MODULE)
-#PathLog.trackModule(LOG_MODULE)
+DraftGeomUtils = LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
+Part = LazyLoader("Part", globals(), "Part")
 
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
-movecommands = ['G0', 'G00', 'G1', 'G01', 'G2', 'G02', 'G3', 'G03']
-movestraight = ['G1', 'G01']
-movecw = ['G2', 'G02']
-moveccw = ['G3', 'G03']
-movearc = movecw + moveccw
+
+translate = FreeCAD.Qt.translate
+
+
+movecommands = CmdMoveStraight + CmdMoveRapid + CmdMoveArc
 
 
 def debugMarker(vector, label, color=None, radius=0.5):
-    if PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG:
+    if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
         obj = FreeCAD.ActiveDocument.addObject("Part::Sphere", label)
         obj.Label = label
         obj.Radius = radius
-        obj.Placement = FreeCAD.Placement(vector, FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 0))
+        obj.Placement = FreeCAD.Placement(
+            vector, FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 0)
+        )
         if color:
             obj.ViewObject.ShapeColor = color
 
 
 def debugCircle(vector, r, label, color=None):
-    if PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG:
+    if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
         obj = FreeCAD.ActiveDocument.addObject("Part::Cylinder", label)
         obj.Label = label
         obj.Radius = r
         obj.Height = 1
-        obj.Placement = FreeCAD.Placement(vector, FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 0))
+        obj.Placement = FreeCAD.Placement(
+            vector, FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 0)
+        )
         obj.ViewObject.Transparency = 90
         if color:
             obj.ViewObject.ShapeColor = color
@@ -79,9 +83,9 @@ def debugCircle(vector, r, label, color=None):
 def addAngle(a1, a2):
     a = a1 + a2
     while a <= -math.pi:
-        a += 2*math.pi
+        a += 2 * math.pi
     while a > math.pi:
-        a -= 2*math.pi
+        a -= 2 * math.pi
     return a
 
 
@@ -102,7 +106,7 @@ def getAngle(v):
     return a
 
 
-def pointFromCommand(cmd, pt, X='X', Y='Y', Z='Z'):
+def pointFromCommand(cmd, pt, X="X", Y="Y", Z="Z"):
     x = cmd.Parameters.get(X, pt.x)
     y = cmd.Parameters.get(Y, pt.y)
     z = cmd.Parameters.get(Z, pt.z)
@@ -115,18 +119,20 @@ def edgesForCommands(cmds, startPt):
     for cmd in cmds:
         if cmd.Name in movecommands:
             pt = pointFromCommand(cmd, lastPt)
-            if cmd.Name in movestraight:
+            if cmd.Name in CmdMoveStraight:
                 edges.append(Part.Edge(Part.LineSegment(lastPt, pt)))
-            elif cmd.Name in movearc:
-                center = lastPt + pointFromCommand(cmd, FreeCAD.Vector(0, 0, 0), 'I', 'J', 'K')
+            elif cmd.Name in CmdMoveArc:
+                center = lastPt + pointFromCommand(
+                    cmd, FreeCAD.Vector(0, 0, 0), "I", "J", "K"
+                )
                 A = lastPt - center
                 B = pt - center
                 d = -B.x * A.y + B.y * A.x
 
                 if d == 0:
                     # we're dealing with half a circle here
-                    angle = getAngle(A) + math.pi/2
-                    if cmd.Name in movecw:
+                    angle = getAngle(A) + math.pi / 2
+                    if cmd.Name in CmdMoveCW:
                         angle -= math.pi
                 else:
                     C = A + B
@@ -141,21 +147,19 @@ def edgesForCommands(cmds, startPt):
 
 
 class Style(object):
-    # pylint: disable=no-init
 
-    Dogbone = 'Dogbone'
-    Tbone_H = 'T-bone horizontal'
-    Tbone_V = 'T-bone vertical'
-    Tbone_L = 'T-bone long edge'
-    Tbone_S = 'T-bone short edge'
+    Dogbone = "Dogbone"
+    Tbone_H = "T-bone horizontal"
+    Tbone_V = "T-bone vertical"
+    Tbone_L = "T-bone long edge"
+    Tbone_S = "T-bone short edge"
     All = [Dogbone, Tbone_H, Tbone_V, Tbone_L, Tbone_S]
 
 
 class Side(object):
-    # pylint: disable=no-init
 
-    Left = 'Left'
-    Right = 'Right'
+    Left = "Left"
+    Right = "Right"
     All = [Left, Right]
 
     @classmethod
@@ -168,16 +172,14 @@ class Side(object):
 
 
 class Incision(object):
-    # pylint: disable=no-init
 
-    Fixed = 'fixed'
-    Adaptive = 'adaptive'
-    Custom = 'custom'
+    Fixed = "fixed"
+    Adaptive = "adaptive"
+    Custom = "custom"
     All = [Adaptive, Fixed, Custom]
 
 
 class Smooth(object):
-    # pylint: disable=no-init
 
     Neither = 0
     In = 1
@@ -194,8 +196,7 @@ class Smooth(object):
 # be constant in all calculated results.
 # Instances of Chord are generally considered immutable and all movement member
 # functions return new instances.
-class Chord (object):
-
+class Chord(object):
     def __init__(self, start=None, end=None):
         if not start:
             start = FreeCAD.Vector()
@@ -205,15 +206,22 @@ class Chord (object):
         self.End = end
 
     def __str__(self):
-        return "Chord([%g, %g, %g] -> [%g, %g, %g])" % (self.Start.x, self.Start.y, self.Start.z, self.End.x, self.End.y, self.End.z)
+        return "Chord([%g, %g, %g] -> [%g, %g, %g])" % (
+            self.Start.x,
+            self.Start.y,
+            self.Start.z,
+            self.End.x,
+            self.End.y,
+            self.End.z,
+        )
 
     def moveTo(self, newEnd):
         return Chord(self.End, newEnd)
 
     def moveToParameters(self, params):
-        x = params.get('X', self.End.x)
-        y = params.get('Y', self.End.y)
-        z = params.get('Z', self.End.z)
+        x = params.get("X", self.End.x)
+        y = params.get("Y", self.End.y)
+        z = params.get("Z", self.End.z)
         return self.moveTo(FreeCAD.Vector(x, y, z))
 
     def moveBy(self, x, y, z):
@@ -244,14 +252,14 @@ class Chord (object):
         # if the 2 vectors are identical, they head in the same direction
         PathLog.debug("   {}.getDirectionOfVector({})".format(A, B))
         if PathGeom.pointsCoincide(A, B):
-            return 'Straight'
-        d = -A.x*B.y + A.y*B.x
+            return "Straight"
+        d = -A.x * B.y + A.y * B.x
         if d < 0:
             return Side.Left
         if d > 0:
             return Side.Right
         # at this point the only direction left is backwards
-        return 'Back'
+        return "Back"
 
     def getDirectionOf(self, chordOrVector):
         if type(chordOrVector) is Chord:
@@ -278,7 +286,7 @@ class Chord (object):
     def commandParams(self, f):
         params = {"X": self.End.x, "Y": self.End.y, "Z": self.End.z}
         if f:
-            params['F'] = f
+            params["F"] = f
         return params
 
     def g1Command(self, f):
@@ -287,9 +295,9 @@ class Chord (object):
     def arcCommand(self, cmd, center, f):
         params = self.commandParams(f)
         d = center - self.Start
-        params['I'] = d.x
-        params['J'] = d.y
-        params['K'] = 0
+        params["I"] = d.x
+        params["J"] = d.y
+        params["K"] = 0
         return Path.Command(cmd, params)
 
     def g2Command(self, center, f):
@@ -302,13 +310,17 @@ class Chord (object):
         return not PathGeom.isRoughly(self.End.z, self.Start.z)
 
     def isANoopMove(self):
-        PathLog.debug("{}.isANoopMove(): {}".format(self, PathGeom.pointsCoincide(self.Start, self.End)))
+        PathLog.debug(
+            "{}.isANoopMove(): {}".format(
+                self, PathGeom.pointsCoincide(self.Start, self.End)
+            )
+        )
         return PathGeom.pointsCoincide(self.Start, self.End)
 
     def foldsBackOrTurns(self, chord, side):
         direction = chord.getDirectionOf(self)
         PathLog.info("  - direction = %s/%s" % (direction, side))
-        return direction == 'Back' or direction == side
+        return direction == "Back" or direction == side
 
     def connectsTo(self, chord):
         return PathGeom.pointsCoincide(self.End, chord.Start)
@@ -335,7 +347,7 @@ class Bone(object):
         if self.cAngle is None:
             baseAngle = self.inChord.getAngleXY()
             turnAngle = self.outChord.getAngle(self.inChord)
-            theta = addAngle(baseAngle, (turnAngle - math.pi)/2)
+            theta = addAngle(baseAngle, (turnAngle - math.pi) / 2)
             if self.obj.Side == Side.Left:
                 theta = addAngle(theta, math.pi)
             self.tAngle = turnAngle
@@ -345,7 +357,7 @@ class Bone(object):
     def distance(self, toolRadius):
         if self.cDist is None:
             self.angle()  # make sure the angles are initialized
-            self.cDist = toolRadius / math.cos(self.tAngle/2)
+            self.cDist = toolRadius / math.cos(self.tAngle / 2)
         return self.cDist
 
     def corner(self, toolRadius):
@@ -368,7 +380,10 @@ class Bone(object):
             # moving directly towards the corner
             PathLog.debug("adaptive - on target: %.2f - %.2f" % (distance, toolRadius))
             return distance - toolRadius
-        PathLog.debug("adaptive - angles: corner=%.2f  bone=%.2f diff=%.12f" % (theta/math.pi, boneAngle/math.pi, theta - boneAngle))
+        PathLog.debug(
+            "adaptive - angles: corner=%.2f  bone=%.2f diff=%.12f"
+            % (theta / math.pi, boneAngle / math.pi, theta - boneAngle)
+        )
 
         # The bones root and end point form a triangle with the intersection of the tool path
         # with the toolRadius circle around the bone end point.
@@ -376,7 +391,7 @@ class Bone(object):
         # c = distance
         # b = self.toolRadius
         # beta = fabs(boneAngle - theta)
-        beta = math.fabs(addAngle(boneAngle, -theta)) # pylint: disable=invalid-unary-operand-type
+        beta = math.fabs(addAngle(boneAngle, -theta))
         D = (distance / toolRadius) * math.sin(beta)
         if D > 1:  # no intersection
             PathLog.debug("adaptive - no intersection - no bone")
@@ -395,28 +410,62 @@ class Bone(object):
                 length2 = toolRadius * math.sin(alpha2) / math.sin(beta2)
                 length = min(length, length2)
 
-        PathLog.debug("adaptive corner=%.2f * %.2f˚ -> bone=%.2f * %.2f˚" % (distance, theta, length, boneAngle))
+        PathLog.debug(
+            "adaptive corner=%.2f * %.2f˚ -> bone=%.2f * %.2f˚"
+            % (distance, theta, length, boneAngle)
+        )
         return length
 
 
 class ObjectDressup(object):
-
     def __init__(self, obj, base):
         # Tool Properties
-        obj.addProperty("App::PropertyLink", "Base", "Base", QtCore.QT_TRANSLATE_NOOP("Path_DressupDogbone", "The base path to modify"))
-        obj.addProperty("App::PropertyEnumeration", "Side", "Dressup", QtCore.QT_TRANSLATE_NOOP("Path_DressupDogbone", "The side of path to insert bones"))
+        obj.addProperty(
+            "App::PropertyLink",
+            "Base",
+            "Base",
+            QT_TRANSLATE_NOOP("App::Property", "The base path to modify"),
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "Side",
+            "Dressup",
+            QT_TRANSLATE_NOOP("App::Property", "The side of path to insert bones"),
+        )
         obj.Side = [Side.Left, Side.Right]
         obj.Side = Side.Right
-        obj.addProperty("App::PropertyEnumeration", "Style", "Dressup", QtCore.QT_TRANSLATE_NOOP("Path_DressupDogbone", "The style of bones"))
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "Style",
+            "Dressup",
+            QT_TRANSLATE_NOOP("App::Property", "The style of bones"),
+        )
         obj.Style = Style.All
         obj.Style = Style.Dogbone
-        obj.addProperty("App::PropertyIntegerList", "BoneBlacklist", "Dressup", QtCore.QT_TRANSLATE_NOOP("Path_DressupDogbone", "Bones that aren't dressed up"))
+        obj.addProperty(
+            "App::PropertyIntegerList",
+            "BoneBlacklist",
+            "Dressup",
+            QT_TRANSLATE_NOOP("App::Property", "Bones that aren't dressed up"),
+        )
         obj.BoneBlacklist = []
-        obj.setEditorMode('BoneBlacklist', 2)  # hide this one
-        obj.addProperty("App::PropertyEnumeration", "Incision", "Dressup", QtCore.QT_TRANSLATE_NOOP("Path_DressupDogbone", "The algorithm to determine the bone length"))
+        obj.setEditorMode("BoneBlacklist", 2)  # hide this one
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "Incision",
+            "Dressup",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The algorithm to determine the bone length"
+            ),
+        )
         obj.Incision = Incision.All
         obj.Incision = Incision.Adaptive
-        obj.addProperty("App::PropertyFloat", "Custom", "Dressup", QtCore.QT_TRANSLATE_NOOP("Path_DressupDogbone", "Dressup length if Incision == custom"))
+        obj.addProperty(
+            "App::PropertyFloat",
+            "Custom",
+            "Dressup",
+            QT_TRANSLATE_NOOP("App::Property", "Dressup length if Incision == custom"),
+        )
         obj.Custom = 0.0
         obj.Proxy = self
         obj.Base = base
@@ -431,7 +480,7 @@ class ObjectDressup(object):
         self.bones = None
 
     def onDocumentRestored(self, obj):
-        obj.setEditorMode('BoneBlacklist', 2)  # hide this one
+        obj.setEditorMode("BoneBlacklist", 2)  # hide this one
 
     def __getstate__(self):
         return None
@@ -446,14 +495,28 @@ class ObjectDressup(object):
 
     # Answer true if a dogbone could be on either end of the chord, given its command
     def canAttachDogbone(self, cmd, chord):
-        return cmd.Name in movestraight and not chord.isAPlungeMove() and not chord.isANoopMove()
+        return (
+            cmd.Name in CmdMoveStraight
+            and not chord.isAPlungeMove()
+            and not chord.isANoopMove()
+        )
 
     def shouldInsertDogbone(self, obj, inChord, outChord):
         return outChord.foldsBackOrTurns(inChord, self.theOtherSideOf(obj.Side))
 
     def findPivotIntersection(self, pivot, pivotEdge, edge, refPt, d, color):
-        # pylint: disable=unused-argument
-        PathLog.track("(%.2f, %.2f)^%.2f  - [(%.2f, %.2f), (%.2f, %.2f)]" % (pivotEdge.Curve.Center.x, pivotEdge.Curve.Center.y, pivotEdge.Curve.Radius, edge.Vertexes[0].Point.x, edge.Vertexes[0].Point.y, edge.Vertexes[1].Point.x, edge.Vertexes[1].Point.y))
+        PathLog.track(
+            "(%.2f, %.2f)^%.2f  - [(%.2f, %.2f), (%.2f, %.2f)]"
+            % (
+                pivotEdge.Curve.Center.x,
+                pivotEdge.Curve.Center.y,
+                pivotEdge.Curve.Radius,
+                edge.Vertexes[0].Point.x,
+                edge.Vertexes[0].Point.y,
+                edge.Vertexes[1].Point.x,
+                edge.Vertexes[1].Point.y,
+            )
+        )
         ppt = None
         pptDistance = 0
         for pt in DraftGeomUtils.findIntersection(edge, pivotEdge, dts=False):
@@ -469,7 +532,9 @@ class ObjectDressup(object):
                 PathLog.debug("Taking tangent as intersect %s" % tangent)
                 ppt = pivot + tangent
             else:
-                PathLog.debug("Taking chord start as intersect %s" % edge.Vertexes[0].Point)
+                PathLog.debug(
+                    "Taking chord start as intersect %s" % edge.Vertexes[0].Point
+                )
                 ppt = edge.Vertexes[0].Point
             # debugMarker(ppt, "ptt.%d-%s.in" % (self.boneId, d), color, 0.2)
             PathLog.debug("        -->  (%.2f, %.2f)" % (ppt.x, ppt.y))
@@ -479,15 +544,17 @@ class ObjectDressup(object):
         param = edge.Curve.parameter(point)
         return edge.FirstParameter <= param <= edge.LastParameter
 
-    def smoothChordCommands(self, bone, inChord, outChord, edge, wire, corner, smooth, color=None):
+    def smoothChordCommands(
+        self, bone, inChord, outChord, edge, wire, corner, smooth, color=None
+    ):
         if smooth == 0:
             PathLog.info(" No smoothing requested")
             return [bone.lastCommand, outChord.g1Command(bone.F)]
 
-        d = 'in'
+        d = "in"
         refPoint = inChord.Start
         if smooth == Smooth.Out:
-            d = 'out'
+            d = "out"
             refPoint = outChord.End
 
         if DraftGeomUtils.areColinear(inChord.asEdge(), outChord.asEdge()):
@@ -497,15 +564,36 @@ class ObjectDressup(object):
         pivot = None
         pivotDistance = 0
 
-        PathLog.info("smooth:  (%.2f, %.2f)-(%.2f, %.2f)" % (edge.Vertexes[0].Point.x, edge.Vertexes[0].Point.y, edge.Vertexes[1].Point.x, edge.Vertexes[1].Point.y))
+        PathLog.info(
+            "smooth:  (%.2f, %.2f)-(%.2f, %.2f)"
+            % (
+                edge.Vertexes[0].Point.x,
+                edge.Vertexes[0].Point.y,
+                edge.Vertexes[1].Point.x,
+                edge.Vertexes[1].Point.y,
+            )
+        )
         for e in wire.Edges:
             self.dbg.append(e)
             if type(e.Curve) == Part.LineSegment or type(e.Curve) == Part.Line:
-                PathLog.debug("         (%.2f, %.2f)-(%.2f, %.2f)" % (e.Vertexes[0].Point.x, e.Vertexes[0].Point.y, e.Vertexes[1].Point.x, e.Vertexes[1].Point.y))
+                PathLog.debug(
+                    "         (%.2f, %.2f)-(%.2f, %.2f)"
+                    % (
+                        e.Vertexes[0].Point.x,
+                        e.Vertexes[0].Point.y,
+                        e.Vertexes[1].Point.x,
+                        e.Vertexes[1].Point.y,
+                    )
+                )
             else:
-                PathLog.debug("         (%.2f, %.2f)^%.2f" % (e.Curve.Center.x, e.Curve.Center.y, e.Curve.Radius))
+                PathLog.debug(
+                    "         (%.2f, %.2f)^%.2f"
+                    % (e.Curve.Center.x, e.Curve.Center.y, e.Curve.Radius)
+                )
             for pt in DraftGeomUtils.findIntersection(edge, e, True, findAll=True):
-                if not PathGeom.pointsCoincide(pt, corner) and self.pointIsOnEdge(pt, e):
+                if not PathGeom.pointsCoincide(pt, corner) and self.pointIsOnEdge(
+                    pt, e
+                ):
                     # debugMarker(pt, "candidate-%d-%s" % (self.boneId, d), color, 0.05)
                     PathLog.debug("         -> candidate")
                     distance = (pt - refPoint).Length
@@ -518,9 +606,15 @@ class ObjectDressup(object):
         if pivot:
             # debugCircle(pivot, self.toolRadius, "pivot.%d-%s" % (self.boneId, d), color)
 
-            pivotEdge = Part.Edge(Part.Circle(pivot, FreeCAD.Vector(0, 0, 1), self.toolRadius))
-            t1 = self.findPivotIntersection(pivot, pivotEdge, inChord.asEdge(), inChord.End, d, color)
-            t2 = self.findPivotIntersection(pivot, pivotEdge, outChord.asEdge(), inChord.End, d, color)
+            pivotEdge = Part.Edge(
+                Part.Circle(pivot, FreeCAD.Vector(0, 0, 1), self.toolRadius)
+            )
+            t1 = self.findPivotIntersection(
+                pivot, pivotEdge, inChord.asEdge(), inChord.End, d, color
+            )
+            t2 = self.findPivotIntersection(
+                pivot, pivotEdge, outChord.asEdge(), inChord.End, d, color
+            )
 
             commands = []
             if not PathGeom.pointsCoincide(t1, inChord.Start):
@@ -530,7 +624,10 @@ class ObjectDressup(object):
                 PathLog.debug("  add g3 command")
                 commands.append(Chord(t1, t2).g3Command(pivot, bone.F))
             else:
-                PathLog.debug("  add g2 command center=(%.2f, %.2f) -> from (%2f, %.2f) to (%.2f, %.2f" % (pivot.x, pivot.y, t1.x, t1.y, t2.x, t2.y))
+                PathLog.debug(
+                    "  add g2 command center=(%.2f, %.2f) -> from (%2f, %.2f) to (%.2f, %.2f"
+                    % (pivot.x, pivot.y, t1.x, t1.y, t2.x, t2.y)
+                )
                 commands.append(Chord(t1, t2).g2Command(pivot, bone.F))
             if not PathGeom.pointsCoincide(t2, outChord.End):
                 PathLog.debug("  add lead out")
@@ -575,7 +672,12 @@ class ObjectDressup(object):
         bone.tip = boneInChord.End
 
         if bone.smooth == 0:
-            return [bone.lastCommand, boneInChord.g1Command(bone.F), boneOutChord.g1Command(bone.F), bone.outChord.g1Command(bone.F)]
+            return [
+                bone.lastCommand,
+                boneInChord.g1Command(bone.F),
+                boneOutChord.g1Command(bone.F),
+                bone.outChord.g1Command(bone.F),
+            ]
 
         # reconstruct the corner and convert to an edge
         offset = corner - bone.inChord.End
@@ -587,7 +689,7 @@ class ObjectDressup(object):
 
         # construct a shape representing the cut made by the bone
         vt0 = FreeCAD.Vector(0, self.toolRadius, 0)
-        vt1 = FreeCAD.Vector(length,  self.toolRadius, 0)
+        vt1 = FreeCAD.Vector(length, self.toolRadius, 0)
         vb0 = FreeCAD.Vector(0, -self.toolRadius, 0)
         vb1 = FreeCAD.Vector(length, -self.toolRadius, 0)
         vm2 = FreeCAD.Vector(length + self.toolRadius, 0, 0)
@@ -601,12 +703,32 @@ class ObjectDressup(object):
         boneArc = Part.Arc(vt1, vm2, vb1)
         # boneArc = Part.Circle(FreeCAD.Vector(length, 0, 0), FreeCAD.Vector(0,0,1), self.toolRadius)
         boneWire = Part.Shape([boneTop, boneArc, boneBot, boneLid])
-        boneWire.rotate(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(0, 0, 1), boneAngle * 180 / math.pi)
+        boneWire.rotate(
+            FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(0, 0, 1), boneAngle * 180 / math.pi
+        )
         boneWire.translate(bone.inChord.End)
         self.boneShapes = [cornerShape, boneWire]
 
-        bone.inCommands = self.smoothChordCommands(bone, bone.inChord, boneInChord, Part.Edge(iLine), boneWire, corner, bone.smooth & Smooth.In,  (1., 0., 0.))
-        bone.outCommands = self.smoothChordCommands(bone, boneOutChord, bone.outChord, Part.Edge(oLine), boneWire, corner, bone.smooth & Smooth.Out, (0., 1., 0.))
+        bone.inCommands = self.smoothChordCommands(
+            bone,
+            bone.inChord,
+            boneInChord,
+            Part.Edge(iLine),
+            boneWire,
+            corner,
+            bone.smooth & Smooth.In,
+            (1.0, 0.0, 0.0),
+        )
+        bone.outCommands = self.smoothChordCommands(
+            bone,
+            boneOutChord,
+            bone.outChord,
+            Part.Edge(oLine),
+            boneWire,
+            corner,
+            bone.smooth & Smooth.Out,
+            (0.0, 1.0, 0.0),
+        )
         return bone.inCommands + bone.outCommands
 
     def dogbone(self, bone):
@@ -617,13 +739,13 @@ class ObjectDressup(object):
     def tboneHorizontal(self, bone):
         angle = bone.angle()
         boneAngle = 0
-        if math.fabs(angle) > math.pi/2:
+        if math.fabs(angle) > math.pi / 2:
             boneAngle = math.pi
         return self.inOutBoneCommands(bone, boneAngle, self.toolRadius)
 
     def tboneVertical(self, bone):
         angle = bone.angle()
-        boneAngle = math.pi/2
+        boneAngle = math.pi / 2
         if PathGeom.isRoughly(angle, math.pi) or angle < 0:
             boneAngle = -boneAngle
         return self.inOutBoneCommands(bone, boneAngle, self.toolRadius)
@@ -635,14 +757,22 @@ class ObjectDressup(object):
             boneAngle = bone.outChord.getAngleXY()
 
         if Side.Right == bone.outChord.getDirectionOf(bone.inChord):
-            boneAngle = boneAngle - math.pi/2
+            boneAngle = boneAngle - math.pi / 2
         else:
-            boneAngle = boneAngle + math.pi/2
+            boneAngle = boneAngle + math.pi / 2
 
-        onInString = 'out'
+        onInString = "out"
         if onIn:
-            onInString = 'in'
-        PathLog.debug("tboneEdge boneAngle[%s]=%.2f   (in=%.2f, out=%.2f)" % (onInString, boneAngle/math.pi, bone.inChord.getAngleXY()/math.pi, bone.outChord.getAngleXY()/math.pi))
+            onInString = "in"
+        PathLog.debug(
+            "tboneEdge boneAngle[%s]=%.2f   (in=%.2f, out=%.2f)"
+            % (
+                onInString,
+                boneAngle / math.pi,
+                bone.inChord.getAngleXY() / math.pi,
+                bone.outChord.getAngleXY() / math.pi,
+            )
+        )
         return self.inOutBoneCommands(bone, boneAngle, self.toolRadius)
 
     def tboneLongEdge(self, bone):
@@ -661,7 +791,7 @@ class ObjectDressup(object):
         elif bone.location() in self.locationBlacklist:
             bone.obj.BoneBlacklist.append(bone.boneId)
             blacklisted = True
-        elif hasattr(bone.obj.Base, 'BoneBlacklist'):
+        elif hasattr(bone.obj.Base, "BoneBlacklist"):
             parentConsumed = bone.boneId not in bone.obj.Base.BoneBlacklist
             blacklisted = parentConsumed
         if blacklisted:
@@ -685,21 +815,29 @@ class ObjectDressup(object):
             return [bone.lastCommand, bone.outChord.g1Command(bone.F)]
 
     def insertBone(self, bone):
-        PathLog.debug(">----------------------------------- %d --------------------------------------" % bone.boneId)
+        PathLog.debug(
+            ">----------------------------------- %d --------------------------------------"
+            % bone.boneId
+        )
         self.boneShapes = []
         blacklisted, inaccessible = self.boneIsBlacklisted(bone)
         enabled = not blacklisted
         self.bones.append((bone.boneId, bone.locationZ(), enabled, inaccessible))
 
         self.boneId = bone.boneId
-        if False and PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG and bone.boneId > 2:
-            commands = self.boneCommands(bone, False)
-        else:
-            commands = self.boneCommands(bone, enabled)
+        # Specific debugging `if` statement
+        # if PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG and bone.boneId > 2:
+        #    commands = self.boneCommands(bone, False)
+        # else:
+        #    commands = self.boneCommands(bone, enabled)
+        commands = self.boneCommands(bone, enabled)
         bone.commands = commands
 
         self.shapes[bone.boneId] = self.boneShapes
-        PathLog.debug("<----------------------------------- %d --------------------------------------" % bone.boneId)
+        PathLog.debug(
+            "<----------------------------------- %d --------------------------------------"
+            % bone.boneId
+        )
         return commands
 
     def removePathCrossing(self, commands, bone1, bone2):
@@ -707,36 +845,40 @@ class ObjectDressup(object):
         bones = bone2.commands
         if True and hasattr(bone1, "outCommands") and hasattr(bone2, "inCommands"):
             inEdges = edgesForCommands(bone1.outCommands, bone1.tip)
-            outEdges = edgesForCommands(bone2.inCommands,  bone2.inChord.Start)
+            outEdges = edgesForCommands(bone2.inCommands, bone2.inChord.Start)
             for i in range(len(inEdges)):
                 e1 = inEdges[i]
-                for j in range(len(outEdges)-1, -1, -1):
+                for j in range(len(outEdges) - 1, -1, -1):
                     e2 = outEdges[j]
                     cutoff = DraftGeomUtils.findIntersection(e1, e2)
                     for pt in cutoff:
                         # debugCircle(e1.Curve.Center, e1.Curve.Radius, "bone.%d-1" % (self.boneId), (1.,0.,0.))
                         # debugCircle(e2.Curve.Center, e2.Curve.Radius, "bone.%d-2" % (self.boneId), (0.,1.,0.))
-                        if PathGeom.pointsCoincide(pt, e1.valueAt(e1.LastParameter)) or PathGeom.pointsCoincide(pt, e2.valueAt(e2.FirstParameter)):
+                        if PathGeom.pointsCoincide(
+                            pt, e1.valueAt(e1.LastParameter)
+                        ) or PathGeom.pointsCoincide(pt, e2.valueAt(e2.FirstParameter)):
                             continue
                         # debugMarker(pt, "it", (0.0, 1.0, 1.0))
                         # 1. remove all redundant commands
-                        commands = commands[:-(len(inEdges) - i)]
+                        commands = commands[: -(len(inEdges) - i)]
                         # 2., correct where c1 ends
                         c1 = bone1.outCommands[i]
                         c1Params = c1.Parameters
-                        c1Params.update({'X': pt.x, 'Y': pt.y, 'Z': pt.z})
+                        c1Params.update({"X": pt.x, "Y": pt.y, "Z": pt.z})
                         c1 = Path.Command(c1.Name, c1Params)
                         commands.append(c1)
                         # 3. change where c2 starts, this depends on the command itself
                         c2 = bone2.inCommands[j]
-                        if c2.Name in movearc:
+                        if c2.Name in CmdMoveArc:
                             center = e2.Curve.Center
                             offset = center - pt
                             c2Params = c2.Parameters
-                            c2Params.update({'I': offset.x, 'J': offset.y, 'K': offset.z})
+                            c2Params.update(
+                                {"I": offset.x, "J": offset.y, "K": offset.z}
+                            )
                             c2 = Path.Command(c2.Name, c2Params)
                             bones = [c2]
-                            bones.extend(bone2.commands[j+1:])
+                            bones.extend(bone2.commands[j + 1 :])
                         else:
                             bones = bone2.commands[j:]
                         # there can only be the one ...
@@ -756,11 +898,13 @@ class ObjectDressup(object):
 
         self.setup(obj, False)
 
-        commands = []           # the dressed commands
-        lastChord = Chord()     # the last chord
-        lastCommand = None      # the command that generated the last chord
-        lastBone = None         # track last bone for optimizations
-        oddsAndEnds = []        # track chords that are connected to plunges - in case they form a loop
+        commands = []  # the dressed commands
+        lastChord = Chord()  # the last chord
+        lastCommand = None  # the command that generated the last chord
+        lastBone = None  # track last bone for optimizations
+        oddsAndEnds = (
+            []
+        )  # track chords that are connected to plunges - in case they form a loop
 
         boneId = 1
         self.bones = []
@@ -780,32 +924,60 @@ class ObjectDressup(object):
                 thisChord = lastChord.moveToParameters(thisCommand.Parameters)
                 thisIsACandidate = self.canAttachDogbone(thisCommand, thisChord)
 
-                if thisIsACandidate and lastCommand and self.shouldInsertDogbone(obj, lastChord, thisChord):
+                if (
+                    thisIsACandidate
+                    and lastCommand
+                    and self.shouldInsertDogbone(obj, lastChord, thisChord)
+                ):
                     PathLog.info("  Found bone corner: {}".format(lastChord.End))
-                    bone = Bone(boneId, obj, lastCommand, lastChord, thisChord, Smooth.InAndOut, thisCommand.Parameters.get('F'))
+                    bone = Bone(
+                        boneId,
+                        obj,
+                        lastCommand,
+                        lastChord,
+                        thisChord,
+                        Smooth.InAndOut,
+                        thisCommand.Parameters.get("F"),
+                    )
                     bones = self.insertBone(bone)
                     boneId += 1
                     if lastBone:
                         PathLog.info("  removing potential path crossing")
                         # debugMarker(thisChord.Start, "it", (1.0, 0.0, 1.0))
-                        commands, bones = self.removePathCrossing(commands, lastBone, bone)
+                        commands, bones = self.removePathCrossing(
+                            commands, lastBone, bone
+                        )
                     commands.extend(bones[:-1])
                     lastCommand = bones[-1]
                     lastBone = bone
                 elif lastCommand and thisChord.isAPlungeMove():
                     PathLog.info("  Looking for connection in odds and ends")
                     haveNewLastCommand = False
-                    for chord in (chord for chord in oddsAndEnds if lastChord.connectsTo(chord)):
+                    for chord in (
+                        chord for chord in oddsAndEnds if lastChord.connectsTo(chord)
+                    ):
                         if self.shouldInsertDogbone(obj, lastChord, chord):
                             PathLog.info("    and there is one")
-                            PathLog.debug("    odd/end={} last={}".format(chord, lastChord))
-                            bone = Bone(boneId, obj, lastCommand, lastChord, chord, Smooth.In, lastCommand.Parameters.get('F'))
+                            PathLog.debug(
+                                "    odd/end={} last={}".format(chord, lastChord)
+                            )
+                            bone = Bone(
+                                boneId,
+                                obj,
+                                lastCommand,
+                                lastChord,
+                                chord,
+                                Smooth.In,
+                                lastCommand.Parameters.get("F"),
+                            )
                             bones = self.insertBone(bone)
                             boneId += 1
                             if lastBone:
                                 PathLog.info("    removing potential path crossing")
                                 # debugMarker(chord.Start, "it", (0.0, 1.0, 1.0))
-                                commands, bones = self.removePathCrossing(commands, lastBone, bone)
+                                commands, bones = self.removePathCrossing(
+                                    commands, lastBone, bone
+                                )
                             commands.extend(bones[:-1])
                             lastCommand = bones[-1]
                             haveNewLastCommand = True
@@ -837,7 +1009,7 @@ class ObjectDressup(object):
 
                 lastChord = thisChord
             else:
-                if thisCommand.Name[0] != '(':
+                if thisCommand.Name[0] != "(":
                     PathLog.info("  Clean slate")
                     if lastCommand:
                         commands.append(lastCommand)
@@ -859,12 +1031,12 @@ class ObjectDressup(object):
                 PathLog.info("Default side = right")
                 # otherwise dogbones are opposite of the base path's side
                 side = Side.Right
-                if hasattr(obj.Base, 'Side') and obj.Base.Side == 'Inside':
+                if hasattr(obj.Base, "Side") and obj.Base.Side == "Inside":
                     PathLog.info("inside -> side = left")
                     side = Side.Left
                 else:
                     PathLog.info("not inside -> side stays right")
-                if hasattr(obj.Base, 'Direction') and obj.Base.Direction == 'CCW':
+                if hasattr(obj.Base, "Direction") and obj.Base.Direction == "CCW":
                     PathLog.info("CCW -> switch sides")
                     side = Side.oppositeOf(side)
                 else:
@@ -888,7 +1060,7 @@ class ObjectDressup(object):
     def boneStateList(self, obj):
         state = {}
         # If the receiver was loaded from file, then it never generated the bone list.
-        if not hasattr(self, 'bones'):
+        if not hasattr(self, "bones"):
             self.execute(obj)
         for (nr, loc, enabled, inaccessible) in self.bones:
             item = state.get((loc[0], loc[1]))
@@ -899,14 +1071,14 @@ class ObjectDressup(object):
                 state[(loc[0], loc[1])] = (enabled, inaccessible, [nr], [loc[2]])
         return state
 
-class Marker(object):
 
+class Marker(object):
     def __init__(self, pt, r, h):
         if PathGeom.isRoughly(h, 0):
             h = 0.1
         self.pt = pt
-        self.r  = r
-        self.h  = h
+        self.r = r
+        self.h = h
         self.sep = coin.SoSeparator()
         self.pos = coin.SoTranslation()
         self.pos.translation = (pt.x, pt.y, pt.z + h / 2)
@@ -941,8 +1113,8 @@ class Marker(object):
 
     def color(self, id):
         if id == 1:
-            return coin.SbColor(.9, .9, .5)
-        return coin.SbColor(.9, .5, .9)
+            return coin.SbColor(0.9, 0.9, 0.5)
+        return coin.SbColor(0.9, 0.5, 0.9)
 
 
 class TaskPanel(object):
@@ -955,7 +1127,7 @@ class TaskPanel(object):
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/DogboneEdit.ui")
         self.s = None
-        FreeCAD.ActiveDocument.openTransaction(translate("Path_DressupDogbone", "Edit Dogbone Dress-up"))
+        FreeCAD.ActiveDocument.openTransaction("Edit Dogbone Dress-up")
         self.height = 10
         self.markers = []
 
@@ -997,8 +1169,10 @@ class TaskPanel(object):
 
     def updateBoneList(self):
         itemList = []
-        for loc, (enabled, inaccessible, ids, zs) in PathUtil.keyValueIter(self.obj.Proxy.boneStateList(self.obj)):
-            lbl = '(%.2f, %.2f): %s' % (loc[0], loc[1], ','.join(str(id) for id in ids))
+        for loc, (enabled, inaccessible, ids, zs) in PathUtil.keyValueIter(
+            self.obj.Proxy.boneStateList(self.obj)
+        ):
+            lbl = "(%.2f, %.2f): %s" % (loc[0], loc[1], ",".join(str(id) for id in ids))
             item = QtGui.QListWidgetItem(lbl)
             if enabled:
                 item.setCheckState(QtCore.Qt.CheckState.Checked)
@@ -1006,7 +1180,10 @@ class TaskPanel(object):
                 item.setCheckState(QtCore.Qt.CheckState.Unchecked)
             flags = QtCore.Qt.ItemFlag.ItemIsSelectable
             if not inaccessible:
-                flags |= QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable
+                flags |= (
+                    QtCore.Qt.ItemFlag.ItemIsEnabled
+                    | QtCore.Qt.ItemFlag.ItemIsUserCheckable
+                )
             item.setFlags(flags)
             item.setData(self.DataIds, ids)
             item.setData(self.DataKey, ids[0])
@@ -1018,7 +1195,13 @@ class TaskPanel(object):
             self.form.bones.addItem(item)
             loc = item.data(self.DataLoc)
             r = max(self.obj.Proxy.length, 1)
-            markers.append(Marker(FreeCAD.Vector(loc[0], loc[1], min(zs)), r, max(1, max(zs) - min(zs))))
+            markers.append(
+                Marker(
+                    FreeCAD.Vector(loc[0], loc[1], min(zs)),
+                    r,
+                    max(1, max(zs) - min(zs)),
+                )
+            )
         for m in self.markers:
             self.viewProvider.switch.removeChild(m.sep)
         for m in markers:
@@ -1031,11 +1214,11 @@ class TaskPanel(object):
         self.form.customLabel.setEnabled(customSelected)
         self.updateBoneList()
 
-        if PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG:
+        if PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG:
             for obj in FreeCAD.ActiveDocument.Objects:
-                if obj.Name.startswith('Shape'):
+                if obj.Name.startswith("Shape"):
                     FreeCAD.ActiveDocument.removeObject(obj.Name)
-            PathLog.info('object name %s' % self.obj.Name)
+            PathLog.info("object name %s" % self.obj.Name)
             if hasattr(self.obj.Proxy, "shapes"):
                 PathLog.info("showing shapes attribute")
                 for shapes in self.obj.Proxy.shapes.values():
@@ -1089,23 +1272,26 @@ class TaskPanel(object):
         for i, m in enumerate(self.markers):
             m.setSelected(i == index)
 
+
 class SelObserver(object):
     def __init__(self):
         import PathScripts.PathSelection as PST
+
         PST.eselect()
 
     def __del__(self):
         import PathScripts.PathSelection as PST
+
         PST.clear()
 
     def addSelection(self, doc, obj, sub, pnt):
-        # pylint: disable=unused-argument
-        FreeCADGui.doCommand('Gui.Selection.addSelection(FreeCAD.ActiveDocument.' + obj + ')')
+        FreeCADGui.doCommand(
+            "Gui.Selection.addSelection(FreeCAD.ActiveDocument." + obj + ")"
+        )
         FreeCADGui.updateGui()
 
 
 class ViewProviderDressup(object):
-
     def __init__(self, vobj):
         self.vobj = vobj
         self.obj = None
@@ -1132,7 +1318,6 @@ class ViewProviderDressup(object):
         return [self.obj.Base]
 
     def setEdit(self, vobj, mode=0):
-        # pylint: disable=unused-argument
         FreeCADGui.Control.closeDialog()
         panel = TaskPanel(self, vobj.Object)
         FreeCADGui.Control.showDialog(panel)
@@ -1146,8 +1331,7 @@ class ViewProviderDressup(object):
         return None
 
     def onDelete(self, arg1=None, arg2=None):
-        '''this makes sure that the base operation is added back to the project and visible'''
-        # pylint: disable=unused-argument
+        """this makes sure that the base operation is added back to the project and visible"""
         if arg1.Object and arg1.Object.Base:
             FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
             job = PathUtils.findParentJob(arg1.Object)
@@ -1157,11 +1341,11 @@ class ViewProviderDressup(object):
         return True
 
 
-def Create(base, name='DogboneDressup'):
-    '''
+def Create(base, name="DogboneDressup"):
+    """
     Create(obj, name='DogboneDressup') ... dresses the given PathProfile/PathContour object with dogbones.
-    '''
-    obj = FreeCAD.ActiveDocument.addObject('Path::FeaturePython', name)
+    """
+    obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     dbo = ObjectDressup(obj, base)
     job = PathUtils.findParentJob(base)
     job.Proxy.addOperation(obj, base)
@@ -1175,12 +1359,15 @@ def Create(base, name='DogboneDressup'):
 
 
 class CommandDressupDogbone(object):
-    # pylint: disable=no-init
-
     def GetResources(self):
-        return {'Pixmap': 'Path_Dressup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_DressupDogbone", "Dogbone Dress-up"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_DressupDogbone", "Creates a Dogbone Dress-up object from a selected path")}
+        return {
+            "Pixmap": "Path_Dressup",
+            "MenuText": QT_TRANSLATE_NOOP("Path_DressupDogbone", "Dogbone Dress-up"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Path_DressupDogbone",
+                "Creates a Dogbone Dress-up object from a selected path",
+            ),
+        }
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:
@@ -1194,18 +1381,26 @@ class CommandDressupDogbone(object):
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            FreeCAD.Console.PrintError(translate("Path_DressupDogbone", "Please select one path object")+"\n")
+            FreeCAD.Console.PrintError(
+                translate("Path_DressupDogbone", "Please select one path object") + "\n"
+            )
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
-            FreeCAD.Console.PrintError(translate("Path_DressupDogbone", "The selected object is not a path")+"\n")
+            FreeCAD.Console.PrintError(
+                translate("Path_DressupDogbone", "The selected object is not a path")
+                + "\n"
+            )
             return
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(translate("Path_DressupDogbone", "Create Dogbone Dress-up"))
-        FreeCADGui.addModule('PathScripts.PathDressupDogbone')
-        FreeCADGui.doCommand("PathScripts.PathDressupDogbone.Create(FreeCAD.ActiveDocument.%s)" % baseObject.Name)
-        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.openTransaction("Create Dogbone Dress-up")
+        FreeCADGui.addModule("PathScripts.PathDressupDogbone")
+        FreeCADGui.doCommand(
+            "PathScripts.PathDressupDogbone.Create(FreeCAD.ActiveDocument.%s)"
+            % baseObject.Name
+        )
+        # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()
 
 
@@ -1213,6 +1408,7 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui
     from pivy import coin
-    FreeCADGui.addCommand('Path_DressupDogbone', CommandDressupDogbone())
+
+    FreeCADGui.addCommand("Path_DressupDogbone", CommandDressupDogbone())
 
 FreeCAD.Console.PrintLog("Loading DressupDogbone... done\n")

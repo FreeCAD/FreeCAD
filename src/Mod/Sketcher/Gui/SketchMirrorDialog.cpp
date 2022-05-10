@@ -41,7 +41,7 @@ using namespace SketcherGui;
 SketchMirrorDialog::SketchMirrorDialog(void)
   : QDialog(Gui::getMainWindow())
   , RefGeoid(-1)
-  , RefPosid(Sketcher::none)
+  , RefPosid(Sketcher::PointPos::none)
   , ui(new Ui_SketchMirrorDialog)
 {
     ui->setupUi(this);
@@ -55,15 +55,15 @@ void SketchMirrorDialog::accept()
 {
     if (ui->XAxisRadioButton->isChecked()) {
         RefGeoid=Sketcher::GeoEnum::HAxis;
-        RefPosid=Sketcher::none;
+        RefPosid=Sketcher::PointPos::none;
     }
     else if (ui->YAxisRadioButton->isChecked()) {
         RefGeoid=Sketcher::GeoEnum::VAxis;
-        RefPosid=Sketcher::none; 
+        RefPosid=Sketcher::PointPos::none; 
     }
     else if (ui->OriginRadioButton->isChecked()) {
         RefGeoid=Sketcher::GeoEnum::RtPnt;
-        RefPosid=Sketcher::start; 
+        RefPosid=Sketcher::PointPos::start; 
     }
 
     QDialog::accept();

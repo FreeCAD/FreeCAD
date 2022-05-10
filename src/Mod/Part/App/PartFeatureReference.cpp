@@ -49,7 +49,7 @@ PROPERTY_SOURCE(Part::FeatureReference, App::GeoFeature)
 
 FeatureReference::FeatureReference(void) 
 {
-    ADD_PROPERTY(Reference, (0));
+    ADD_PROPERTY(Reference, (nullptr));
 }
 
 FeatureReference::~FeatureReference()

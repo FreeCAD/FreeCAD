@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
@@ -30,8 +29,9 @@
 
 #include "MenuManager.h"
 #include "Application.h"
-#include "MainWindow.h"
 #include "Command.h"
+#include "MainWindow.h"
+
 
 using namespace Gui;
 
@@ -81,7 +81,24 @@ MenuItem* MenuItem::findItem(const std::string& name)
         }
     }
 
-    return 0;
+    return nullptr;
+}
+
+MenuItem* MenuItem::findParentOf(const std::string& name)
+{
+    for (QList<MenuItem*>::Iterator it = _items.begin(); it != _items.end(); ++it)
+    {
+        if ((*it)->_name == name)
+            return this;
+    }
+
+    for (QList<MenuItem*>::Iterator it = _items.begin(); it != _items.end(); ++it)
+    {
+        if ((*it)->findParentOf(name))
+            return *it;
+    }
+
+    return nullptr;
 }
 
 MenuItem* MenuItem::copy() const
@@ -124,7 +141,7 @@ MenuItem* MenuItem::afterItem(MenuItem* item) const
 {
     int pos = _items.indexOf(item);
     if (pos < 0 || pos+1 == _items.size())
-        return 0;
+        return nullptr;
     return _items.at(pos+1);
 }
 
@@ -162,7 +179,7 @@ QList<MenuItem*> MenuItem::getItems() const
 
 // -----------------------------------------------------------
 
-MenuManager* MenuManager::_instance=0;
+MenuManager* MenuManager::_instance=nullptr;
 
 MenuManager* MenuManager::getInstance()
 {
@@ -174,7 +191,7 @@ MenuManager* MenuManager::getInstance()
 void MenuManager::destruct()
 {
     delete _instance;
-    _instance = 0;
+    _instance = nullptr;
 }
 
 MenuManager::MenuManager()
@@ -367,7 +384,7 @@ QAction* MenuManager::findAction(const QList<QAction*>& acts, const QString& ite
             return *it;
     }
 
-    return 0; // no item with the user data found
+    return nullptr; // no item with the user data found
 }
 
 QList<QAction*> MenuManager::findActions(const QList<QAction*>& acts, const QString& item) const

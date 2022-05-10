@@ -84,15 +84,15 @@
     </message>
     <message>
       <source>Base</source>
-      <translation>Pagrindas</translation>
+      <translation>Pagrindiniai dydžiai</translation>
+    </message>
+    <message>
+      <source>Enum</source>
+      <translation type="unfinished">Enum</translation>
     </message>
   </context>
   <context>
     <name>CmdTestConsoleOutput</name>
-    <message>
-      <source>Standard-Test</source>
-      <translation>Įprastinė patikra</translation>
-    </message>
     <message>
       <source>Test console output</source>
       <translation>Patikra su rodymu konsolėje</translation>
@@ -101,20 +101,12 @@
   <context>
     <name>CmdViewMeasureClearAll</name>
     <message>
-      <source>Measure</source>
-      <translation>Matavimas</translation>
-    </message>
-    <message>
       <source>Clear measurement</source>
       <translation>Išvalyti matavimą</translation>
     </message>
   </context>
   <context>
     <name>CmdViewMeasureToggleAll</name>
-    <message>
-      <source>Measure</source>
-      <translation>Matavimas</translation>
-    </message>
     <message>
       <source>Toggle measurement</source>
       <translation>Įjungti/išjungti matavimą</translation>
@@ -193,6 +185,73 @@
     <message>
       <source>Measure distance</source>
       <translation>Matuoti atstumą</translation>
+    </message>
+    <message>
+      <source>Toggle array elements</source>
+      <translation type="unfinished">Toggle array elements</translation>
+    </message>
+  </context>
+  <context>
+    <name>CommandGroup</name>
+    <message>
+      <source>File</source>
+      <translation>Failas</translation>
+    </message>
+    <message>
+      <source>Edit</source>
+      <translation>Taisyti</translation>
+    </message>
+    <message>
+      <source>Help</source>
+      <translation>Žinynas</translation>
+    </message>
+    <message>
+      <source>Link</source>
+      <translation>Nuoroda</translation>
+    </message>
+    <message>
+      <source>Tools</source>
+      <translation>Priemonės</translation>
+    </message>
+    <message>
+      <source>View</source>
+      <translation>Rodymas</translation>
+    </message>
+    <message>
+      <source>Window</source>
+      <translation>Langas</translation>
+    </message>
+    <message>
+      <source>Standard</source>
+      <translation>Įprastinis</translation>
+    </message>
+    <message>
+      <source>Macros</source>
+      <translation>Makrokomandos</translation>
+    </message>
+    <message>
+      <source>Macro</source>
+      <translation>Makrokomandos</translation>
+    </message>
+    <message>
+      <source>Structure</source>
+      <translation>Sandara</translation>
+    </message>
+    <message>
+      <source>Standard-Test</source>
+      <translation>Įprastinė patikra</translation>
+    </message>
+    <message>
+      <source>Standard-View</source>
+      <translation>Įprastinis vaizdas</translation>
+    </message>
+    <message>
+      <source>TreeView</source>
+      <translation>Medžio rodinys</translation>
+    </message>
+    <message>
+      <source>Measure</source>
+      <translation>Matavimas</translation>
     </message>
   </context>
   <context>
@@ -277,6 +336,25 @@
     </message>
   </context>
   <context>
+    <name>EditMode</name>
+    <message>
+      <source>Default</source>
+      <translation>Numatytasis</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Keisti</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation type="unfinished">Cutting</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Spalva</translation>
+    </message>
+  </context>
+  <context>
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
@@ -292,6 +370,10 @@
     <message>
       <source>none</source>
       <translation>joks</translation>
+    </message>
+    <message>
+      <source>Press a keyboard shortcut</source>
+      <translation type="unfinished">Press a keyboard shortcut</translation>
     </message>
   </context>
   <context>
@@ -391,13 +473,6 @@
       <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
       <translation>Sukite vidurinį pelės mygtuką arba judinkite pelę aukštyn arba žemyn nuspaudę vidurinįjį pelės mygtuką kartu su kairiuoju arba dešiniuoju mygtuku</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui::Command</name>
-    <message>
-      <source>Standard</source>
-      <translation>Įprastinis</translation>
     </message>
   </context>
   <context>
@@ -519,6 +594,25 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::ApplicationCache</name>
+    <message>
+      <source>Cache directory</source>
+      <translation type="unfinished">Cache directory</translation>
+    </message>
+    <message>
+      <source>The cache directory %1 exceeds the size of %2.</source>
+      <translation type="unfinished">The cache directory %1 exceeds the size of %2.</translation>
+    </message>
+    <message>
+      <source>Do you want to clear it now?</source>
+      <translation type="unfinished">Do you want to clear it now?</translation>
+    </message>
+    <message>
+      <source>Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</source>
+      <translation type="unfinished">Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::ButtonModel</name>
     <message>
       <source>Button %1</source>
@@ -600,7 +694,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>View</source>
-      <translation>Rodymas</translation>
+      <translation>Išvaizda</translation>
     </message>
     <message>
       <source>Adjust to view direction</source>
@@ -792,6 +886,32 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgCreateNewPreferencePack</name>
+    <message>
+      <source>Create New Preference Pack</source>
+      <translation type="unfinished">Create New Preference Pack</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>Pavadinimas</translation>
+    </message>
+    <message>
+      <source>Property group templates</source>
+      <translation type="unfinished">Property group templates</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCreateNewPreferencePackImp</name>
+    <message>
+      <source>Pack already exists</source>
+      <translation type="unfinished">Pack already exists</translation>
+    </message>
+    <message>
+      <source>A preference pack with that name already exists. Do you want to overwrite it?</source>
+      <translation type="unfinished">A preference pack with that name already exists. Do you want to overwrite it?</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgCustomActions</name>
     <message>
       <source>Macros</source>
@@ -855,14 +975,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source>Macros</source>
       <translation>Makrokomandos</translation>
-    </message>
-    <message>
-      <source>No macro</source>
-      <translation>Nėra makrokomandų</translation>
-    </message>
-    <message>
-      <source>No macros found.</source>
-      <translation>Nerasta jokių makrokomandų.</translation>
     </message>
     <message>
       <source>Macro not found</source>
@@ -1424,6 +1536,14 @@ If this is not ticked, then the property must be uniquely named, and it is acces
       <source>Code lines will be numbered</source>
       <translation type="unfinished">Code lines will be numbered</translation>
     </message>
+    <message>
+      <source>The cursor shape will be a block</source>
+      <translation type="unfinished">The cursor shape will be a block</translation>
+    </message>
+    <message>
+      <source>Enable block cursor</source>
+      <translation type="unfinished">Enable block cursor</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgGeneral</name>
@@ -1470,14 +1590,6 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <source>Style sheet:</source>
       <translation>Vartotojo sąsajos apipavidalinimas:</translation>
-    </message>
-    <message>
-      <source>Python console</source>
-      <translation>Python'o konsolė</translation>
-    </message>
-    <message>
-      <source>Enable word wrap</source>
-      <translation>Įgalinti teksto eilučių kėlimą</translation>
     </message>
     <message>
       <source>Language of the application's user interface</source>
@@ -1534,10 +1646,64 @@ after FreeCAD launches</source>
 after FreeCAD launches</translation>
     </message>
     <message>
-      <source>Words will be wrapped when they exceed available
-horizontal space in Python console</source>
-      <translation type="unfinished">Words will be wrapped when they exceed available
-horizontal space in Python console</translation>
+      <source>Number format:</source>
+      <translation type="unfinished">Number format:</translation>
+    </message>
+    <message>
+      <source>Operating system</source>
+      <translation>Operacijų sistema</translation>
+    </message>
+    <message>
+      <source>Selected language</source>
+      <translation type="unfinished">Selected language</translation>
+    </message>
+    <message>
+      <source>C/POSIX</source>
+      <translation type="unfinished">C/POSIX</translation>
+    </message>
+    <message>
+      <source>If enabled, numerical keypad decimal separator will be substituted with locale separator</source>
+      <translation type="unfinished">If enabled, numerical keypad decimal separator will be substituted with locale separator</translation>
+    </message>
+    <message>
+      <source>Substitute decimal separator (needs restart)</source>
+      <translation type="unfinished">Substitute decimal separator (needs restart)</translation>
+    </message>
+    <message>
+      <source>Preference packs</source>
+      <translation type="unfinished">Preference packs</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>Pavadinimas</translation>
+    </message>
+    <message>
+      <source>Type</source>
+      <translation>Rūšis</translation>
+    </message>
+    <message>
+      <source>Load</source>
+      <translation>Įkelti</translation>
+    </message>
+    <message>
+      <source>Save new...</source>
+      <translation type="unfinished">Save new...</translation>
+    </message>
+    <message>
+      <source>Manage...</source>
+      <translation type="unfinished">Manage...</translation>
+    </message>
+    <message>
+      <source>Revert...</source>
+      <translation type="unfinished">Revert...</translation>
+    </message>
+    <message>
+      <source>The text cursor will be blinking</source>
+      <translation type="unfinished">The text cursor will be blinking</translation>
+    </message>
+    <message>
+      <source>Enable cursor blinking</source>
+      <translation type="unfinished">Enable cursor blinking</translation>
     </message>
   </context>
   <context>
@@ -1568,7 +1734,7 @@ horizontal space in Python console</translation>
     </message>
     <message>
       <source>Combo View</source>
-      <translation>Mišrusis langas</translation>
+      <translation>Mišrusis rodinys</translation>
     </message>
     <message>
       <source>TreeView and PropertyView</source>
@@ -1577,6 +1743,26 @@ horizontal space in Python console</translation>
     <message>
       <source>Both</source>
       <translation>Abu</translation>
+    </message>
+    <message>
+      <source>Manage preference packs</source>
+      <translation type="unfinished">Manage preference packs</translation>
+    </message>
+    <message>
+      <source>Preference Pack Name</source>
+      <translation type="unfinished">Preference Pack Name</translation>
+    </message>
+    <message>
+      <source>Tags</source>
+      <translation type="unfinished">Tags</translation>
+    </message>
+    <message>
+      <source>Apply</source>
+      <translation>Pritaikyti</translation>
+    </message>
+    <message>
+      <source>Apply the %1 preference pack</source>
+      <translation type="unfinished">Apply the %1 preference pack</translation>
     </message>
   </context>
   <context>
@@ -1648,12 +1834,20 @@ horizontal space in Python console</translation>
       <translation>Sukurti kopiją</translation>
     </message>
     <message>
-      <source>Addons...</source>
-      <translation>Plėtiniai...</translation>
-    </message>
-    <message>
       <source>Toolbar</source>
       <translation>Priemonių juosta</translation>
+    </message>
+    <message>
+      <source>Launch a guide on how to set up a macro in a custom global toolbar.</source>
+      <translation type="unfinished">Launch a guide on how to set up a macro in a custom global toolbar.</translation>
+    </message>
+    <message>
+      <source>Open Addon Manager where macros created by the community and other addons can be downloaded.</source>
+      <translation type="unfinished">Open Addon Manager where macros created by the community and other addons can be downloaded.</translation>
+    </message>
+    <message>
+      <source>Download</source>
+      <translation>Atsisiųsti</translation>
     </message>
   </context>
   <context>
@@ -2037,6 +2231,48 @@ Prašome nurodti kitą aplanką.</translation>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgPreferencePackManagement</name>
+    <message>
+      <source>Manage Preference Packs</source>
+      <translation type="unfinished">Manage Preference Packs</translation>
+    </message>
+    <message>
+      <source>Open Addon Manager...</source>
+      <translation type="unfinished">Open Addon Manager...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgPreferencePackManagementImp</name>
+    <message>
+      <source>User-Saved Preference Packs</source>
+      <translation type="unfinished">User-Saved Preference Packs</translation>
+    </message>
+    <message>
+      <source>Built-In Preference Packs</source>
+      <translation type="unfinished">Built-In Preference Packs</translation>
+    </message>
+    <message>
+      <source>Toggle visibility of built-in preference pack '%1'</source>
+      <translation type="unfinished">Toggle visibility of built-in preference pack '%1'</translation>
+    </message>
+    <message>
+      <source>Delete user-saved preference pack '%1'</source>
+      <translation type="unfinished">Delete user-saved preference pack '%1'</translation>
+    </message>
+    <message>
+      <source>Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</source>
+      <translation type="unfinished">Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</translation>
+    </message>
+    <message>
+      <source>Delete saved preference pack?</source>
+      <translation type="unfinished">Delete saved preference pack?</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to delete the preference pack named '%1'? This cannot be undone.</source>
+      <translation type="unfinished">Are you sure you want to delete the preference pack named '%1'? This cannot be undone.</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgPreferences</name>
     <message>
       <source>Preferences</source>
@@ -2379,6 +2615,28 @@ from Python console to Report view panel</translation>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgRevertToBackupConfig</name>
+    <message>
+      <source>Revert to Backup Config</source>
+      <translation type="unfinished">Revert to Backup Config</translation>
+    </message>
+    <message>
+      <source>WARNING: this process will undo any preference changes made since the specified date, and will also reset your Recent files and Macros to their state on that date.</source>
+      <translation type="unfinished">WARNING: this process will undo any preference changes made since the specified date, and will also reset your Recent files and Macros to their state on that date.</translation>
+    </message>
+    <message>
+      <source>Available backup files:</source>
+      <translation type="unfinished">Available backup files:</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgRevertToBackupConfigImp</name>
+    <message>
+      <source>No selection in dialog, cannot load backup file</source>
+      <translation type="unfinished">No selection in dialog, cannot load backup file</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgRunExternal</name>
     <message>
       <source>Running external program</source>
@@ -2655,6 +2913,20 @@ bounding box size of the 3D object that is currently displayed.</source>
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</translation>
     </message>
+    <message>
+      <source>Relative size :   </source>
+      <translation type="unfinished">Relative size :   </translation>
+    </message>
+    <message>
+      <source>Size of main coordinate system representation
+in the corner -- in % of height/width of viewport</source>
+      <translation type="unfinished">Size of main coordinate system representation
+in the corner -- in % of height/width of viewport</translation>
+    </message>
+    <message>
+      <source>%</source>
+      <translation>%</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -2689,6 +2961,69 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <source>15px</source>
       <translation>15 taškų</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsCacheDirectory</name>
+    <message>
+      <source>Cache</source>
+      <translation type="unfinished">Cache</translation>
+    </message>
+    <message>
+      <source>Cache directory</source>
+      <translation type="unfinished">Cache directory</translation>
+    </message>
+    <message>
+      <source>Location:</source>
+      <translation type="unfinished">Location:</translation>
+    </message>
+    <message>
+      <source>Check periodically at program start:</source>
+      <translation type="unfinished">Check periodically at program start:</translation>
+    </message>
+    <message>
+      <source>Always</source>
+      <translation type="unfinished">Always</translation>
+    </message>
+    <message>
+      <source>Daily</source>
+      <translation type="unfinished">Daily</translation>
+    </message>
+    <message>
+      <source>Weekly</source>
+      <translation type="unfinished">Weekly</translation>
+    </message>
+    <message>
+      <source>Monthly</source>
+      <translation type="unfinished">Monthly</translation>
+    </message>
+    <message>
+      <source>Yearly</source>
+      <translation type="unfinished">Yearly</translation>
+    </message>
+    <message>
+      <source>Never</source>
+      <translation type="unfinished">Never</translation>
+    </message>
+    <message>
+      <source>Cache size limit:</source>
+      <translation type="unfinished">Cache size limit:</translation>
+    </message>
+    <message>
+      <source>Check now...</source>
+      <translation type="unfinished">Check now...</translation>
+    </message>
+    <message>
+      <source>Notify the user if the cache size exceeds the specified limit</source>
+      <translation type="unfinished">Notify the user if the cache size exceeds the specified limit</translation>
+    </message>
+    <message>
+      <source>Unknown</source>
+      <translation>Nežinoma</translation>
+    </message>
+    <message>
+      <source>Current cache size: %1</source>
+      <translation type="unfinished">Current cache size: %1</translation>
     </message>
   </context>
   <context>
@@ -2728,10 +3063,6 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <source>Alt+R</source>
       <translation>Alt+R</translation>
-    </message>
-    <message>
-      <source>Out &amp;invisible</source>
-      <translation>Viršyję ribas tampa nematomais</translation>
     </message>
     <message>
       <source>Alt+I</source>
@@ -2784,6 +3115,40 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <source>Color-gradient settings</source>
       <translation>Spalvokaitos nuostatos</translation>
+    </message>
+    <message>
+      <source>Color gradient is used with its full color range</source>
+      <translation type="unfinished">Color gradient is used with its full color range</translation>
+    </message>
+    <message>
+      <source>Color gradient starts from the zero value</source>
+      <translation type="unfinished">Color gradient starts from the zero value</translation>
+    </message>
+    <message>
+      <source>Data outside the specified min-max range
+will be displayed in gray</source>
+      <translation type="unfinished">Data outside the specified min-max range
+will be displayed in gray</translation>
+    </message>
+    <message>
+      <source>Data outside the specified min-max range
+will be displayed with transparency</source>
+      <translation type="unfinished">Data outside the specified min-max range
+will be displayed with transparency</translation>
+    </message>
+    <message>
+      <source>Out &amp;transparent</source>
+      <translation type="unfinished">Out &amp;transparent</translation>
+    </message>
+    <message>
+      <source>Number of labels besides the color bar</source>
+      <translation type="unfinished">Number of labels besides the color bar</translation>
+    </message>
+    <message>
+      <source>Number of decimals for labels
+besides the color bar</source>
+      <translation type="unfinished">Number of decimals for labels
+besides the color bar</translation>
     </message>
   </context>
   <context>
@@ -2924,12 +3289,12 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <source>Allow user aborting document recomputation by pressing ESC.
 This feature may slightly increase recomputation time.</source>
-      <translation type="unfinished">Allow user aborting document recomputation by pressing ESC.
-This feature may slightly increase recomputation time.</translation>
+      <translation>Leisti vartotojui nutraukti perskaičiavimą nuspaudžiant „ESC“ mygtuką.
+Ši galimybė gali truputį prailginti perskaičiavimo trukmę.</translation>
     </message>
     <message>
       <source>Allow aborting recomputation</source>
-      <translation type="unfinished">Allow aborting recomputation</translation>
+      <translation>Leisti perskaičiavimo nutraukimą</translation>
     </message>
     <message>
       <source>If there is a recovery file available the application will
@@ -3273,24 +3638,55 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
-      <source>Unloaded Workbenches</source>
-      <translation type="unfinished">Unloaded Workbenches</translation>
+      <source>Workbench Name</source>
+      <translation type="unfinished">Workbench Name</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Autoload?</source>
+      <translation type="unfinished">Autoload?</translation>
     </message>
     <message>
-      <source>Load Selected</source>
-      <translation type="unfinished">Load Selected</translation>
+      <source>Load Now</source>
+      <translation type="unfinished">Load Now</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Available Workbenches</source>
+      <translation type="unfinished">Available Workbenches</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>Darbastalis</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation type="unfinished">Autoload</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation type="unfinished">If checked</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation type="unfinished">will be loaded automatically when FreeCAD starts up</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation type="unfinished">This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation type="unfinished">Loaded</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation type="unfinished">Load now</translation>
     </message>
   </context>
   <context>
@@ -3473,10 +3869,6 @@ Turntable: the part will be rotated around the z-axis.</translation>
       <translation>Rutulinis manipuliatorius</translation>
     </message>
     <message>
-      <source>New document scale</source>
-      <translation>Naujo dokumento mastelis</translation>
-    </message>
-    <message>
       <source>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</source>
       <translation type="unfinished">Sets camera zoom for new documents.
@@ -3615,6 +4007,47 @@ Mouse tilting is not disabled by this setting.</translation>
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
       <translation type="unfinished">How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+    </message>
+    <message>
+      <source>Camera zoom</source>
+      <translation type="unfinished">Camera zoom</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsPythonConsole</name>
+    <message>
+      <source>Python console</source>
+      <translation>Python'o konsolė</translation>
+    </message>
+    <message>
+      <source>Settings</source>
+      <translation>Nuostatos</translation>
+    </message>
+    <message>
+      <source>Words will be wrapped when they exceed available
+horizontal space in Python console</source>
+      <translation type="unfinished">Words will be wrapped when they exceed available
+horizontal space in Python console</translation>
+    </message>
+    <message>
+      <source>Enable word wrap</source>
+      <translation>Įgalinti teksto eilučių kėlimą</translation>
+    </message>
+    <message>
+      <source>The cursor shape will be a block</source>
+      <translation type="unfinished">The cursor shape will be a block</translation>
+    </message>
+    <message>
+      <source>Enable block cursor</source>
+      <translation type="unfinished">Enable block cursor</translation>
+    </message>
+    <message>
+      <source>Saves Python history across sessions</source>
+      <translation type="unfinished">Saves Python history across sessions</translation>
+    </message>
+    <message>
+      <source>Save history</source>
+      <translation>Išsaugoti istoriją</translation>
     </message>
   </context>
   <context>
@@ -3884,12 +4317,6 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
       <translation type="unfinished">Result</translation>
     </message>
     <message>
-      <source>List of last used calculations 
-To add a calculation press Return in the value input field</source>
-      <translation type="unfinished">List of last used calculations 
-To add a calculation press Return in the value input field</translation>
-    </message>
-    <message>
       <source>Quantity</source>
       <translation>Kiekis</translation>
     </message>
@@ -3922,6 +4349,12 @@ The preference system is the one set in the general preferences.</translation>
     <message>
       <source>Copy the result into the clipboard</source>
       <translation>Kopijuoti rezultatą į iškarpinę</translation>
+    </message>
+    <message>
+      <source>List of last used calculations.
+To add a calculation press Return in the value input field</source>
+      <translation type="unfinished">List of last used calculations.
+To add a calculation press Return in the value input field</translation>
     </message>
   </context>
   <context>
@@ -4072,10 +4505,6 @@ The preference system is the one set in the general preferences.</translation>
       <translation>Ar tikrai norite panaikinti visus laikinus aplankus?</translation>
     </message>
     <message>
-      <source>Finished</source>
-      <translation>Baigta</translation>
-    </message>
-    <message>
       <source>Transient directories deleted.</source>
       <translation>Laikini aplankai panaikinti.</translation>
     </message>
@@ -4088,6 +4517,10 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
       <translation>Panaikinę visus laikinus aplankus jūs negalėsite po to atkurti jokių failų.</translation>
+    </message>
+    <message>
+      <source>Transient deleted</source>
+      <translation type="unfinished">Transient deleted</translation>
     </message>
   </context>
   <context>
@@ -4426,7 +4859,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>There are input fields with incorrect input, please ensure valid placement values!</source>
-      <translation>Yra laukų su neteisinga įvestimi, prašom jas pakeisti į tinkamas padėties vertes!</translation>
+      <translation>Yra laukų su neteisinga įvestimi, prašom jas pakeisti į tinkamas išdėstymo vertes!</translation>
     </message>
     <message>
       <source>Use center of mass</source>
@@ -4457,32 +4890,32 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Prieš paspausdami šį mygtuką, pažymėkite 1–3 taškus. Taškas turi būti viršūnėje, sienoje ar kraštinėje. Jei taškas yra sienoje ar kraštinėje, naudojamas taškas bus žymeklio vietoje esantis taškas, sutampantis su siena ar kraštine. Jei pasirinktas vienas taškas, jis bus naudojamas kaip sukimosi taškas. Jei pasirinkti du taškai, tai jas jungiančios atkarpos vidurio taškas bus naudojamas kaip sukimosi taškas; jei reikės, bus sukurta ir sukimosi ašis. Jei pasirinkti trys taškai, pirmasis pasirinktas taškas bus sukimosi taškas, kuris yra vektoriuje, statmename trimis taškais apibrėžtai plokštumai. Tam tikri atstumo ir kampo duomenys, naudingi daiktų sutapdinimui, bus pateikiami ataskaitos rodinyje. Jūsų patogumui, paspaudus „Shift“ ir pelės mygtuką, atitinkamas atstumas ar kampas bus nukopijuotas į mainų sritį.</translation>
     </message>
     <message>
-      <source>Around y-axis:</source>
-      <translation>Apie y ašį:</translation>
+      <source>Pitch (around y-axis):</source>
+      <translation type="unfinished">Pitch (around y-axis):</translation>
     </message>
     <message>
-      <source>Around z-axis:</source>
-      <translation>Apie z ašį:</translation>
+      <source>Roll (around x-axis):</source>
+      <translation type="unfinished">Roll (around x-axis):</translation>
     </message>
     <message>
-      <source>Around x-axis:</source>
-      <translation>Apie x ašį:</translation>
+      <source>Yaw (around z-axis):</source>
+      <translation type="unfinished">Yaw (around z-axis):</translation>
     </message>
     <message>
-      <source>Rotation around the x-axis</source>
-      <translation>Sukimas apie x ašį</translation>
+      <source>Yaw (around z-axis)</source>
+      <translation type="unfinished">Yaw (around z-axis)</translation>
     </message>
     <message>
-      <source>Rotation around the y-axis</source>
-      <translation>Sukimas apie y ašį</translation>
+      <source>Pitch (around y-axis)</source>
+      <translation type="unfinished">Pitch (around y-axis)</translation>
     </message>
     <message>
-      <source>Rotation around the z-axis</source>
-      <translation>Sukimas apie z ašį</translation>
+      <source>Roll (around the x-axis)</source>
+      <translation type="unfinished">Roll (around the x-axis)</translation>
     </message>
     <message>
-      <source>Euler angles (xy'z'')</source>
-      <translation>Oilerio kampai (xy'z'')</translation>
+      <source>Euler angles (zy'x'')</source>
+      <translation type="unfinished">Euler angles (zy'x'')</translation>
     </message>
   </context>
   <context>
@@ -4618,10 +5051,6 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation type="unfinished">The selected objects contain other dependencies. Please select which objects to export. All dependencies are auto selected by default.</translation>
     </message>
     <message>
-      <source>Dependency</source>
-      <translation>Priklausomybė</translation>
-    </message>
-    <message>
       <source>Document</source>
       <translation>Dokumentas</translation>
     </message>
@@ -4630,20 +5059,34 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Pavadinimas</translation>
     </message>
     <message>
-      <source>State</source>
-      <translation>Būklė</translation>
+      <source>&amp;Use Original Selections</source>
+      <translation type="unfinished">&amp;Use Original Selections</translation>
     </message>
     <message>
-      <source>Hierarchy</source>
-      <translation>Hierarchija</translation>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation type="unfinished">Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</translation>
     </message>
     <message>
-      <source>Selected</source>
-      <translation>Pasirinktas</translation>
+      <source>Auto select depending objects</source>
+      <translation type="unfinished">Auto select depending objects</translation>
     </message>
     <message>
-      <source>Partial</source>
-      <translation>Dalinis</translation>
+      <source>Depending on</source>
+      <translation type="unfinished">Depending on</translation>
+    </message>
+    <message>
+      <source>Depended by</source>
+      <translation type="unfinished">Depended by</translation>
+    </message>
+    <message>
+      <source>Selections</source>
+      <translation type="unfinished">Selections</translation>
+    </message>
+    <message>
+      <source>All</source>
+      <translation>Visi</translation>
     </message>
   </context>
   <context>
@@ -4665,7 +5108,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <name>Gui::DockWnd::ComboView</name>
     <message>
       <source>Combo View</source>
-      <translation>Mišrusis langas</translation>
+      <translation>Mišrusis rodinys</translation>
     </message>
     <message>
       <source>Model</source>
@@ -4738,8 +5181,8 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation type="unfinished">Errors</translation>
     </message>
     <message>
-      <source>Show report view on</source>
-      <translation type="unfinished">Show report view on</translation>
+      <source>Show output window on</source>
+      <translation type="unfinished">Show output window on</translation>
     </message>
   </context>
   <context>
@@ -4817,7 +5260,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <source>Selection View</source>
-      <translation>Pasirinkimo langas</translation>
+      <translation>Pasirinkimo rodinys</translation>
     </message>
     <message>
       <source>The number of selected items</source>
@@ -5186,6 +5629,18 @@ Do you want to save the document now?</source>
       <translation type="unfinished">To link to external objects, the document must be saved at least once.
 Do you want to save the document now?</translation>
     </message>
+    <message>
+      <source>Help addon needed!</source>
+      <translation type="unfinished">Help addon needed!</translation>
+    </message>
+    <message>
+      <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
+      <translation type="unfinished">The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</translation>
+    </message>
+    <message>
+      <source>Open Addon Manager</source>
+      <translation type="unfinished">Open Addon Manager</translation>
+    </message>
   </context>
   <context>
     <name>Gui::ManualAlignment</name>
@@ -5297,6 +5752,13 @@ dešiniajame pasirinkta %2 taškų(-ai).</translation>
     </message>
   </context>
   <context>
+    <name>Gui::ModifierLineEdit</name>
+    <message>
+      <source>Press modifier keys</source>
+      <translation type="unfinished">Press modifier keys</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::NetworkRetriever</name>
     <message>
       <source>Download started...</source>
@@ -5320,6 +5782,25 @@ dešiniajame pasirinkta %2 taškų(-ai).</translation>
     <message>
       <source>Press CTRL and left mouse button</source>
       <translation>Paspauskite „Ctrl“ ir kairįjį pelės mygtuką</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::OpenSCADNavigationStyle</name>
+    <message>
+      <source>Press left mouse button</source>
+      <translation>Paspauskite kairįjį pelės mygtuką</translation>
+    </message>
+    <message>
+      <source>Press right mouse button and move mouse</source>
+      <translation type="unfinished">Press right mouse button and move mouse</translation>
+    </message>
+    <message>
+      <source>Press left mouse button and move mouse</source>
+      <translation type="unfinished">Press left mouse button and move mouse</translation>
+    </message>
+    <message>
+      <source>Press middle mouse button or SHIFT and right mouse button</source>
+      <translation type="unfinished">Press middle mouse button or SHIFT and right mouse button</translation>
     </message>
   </context>
   <context>
@@ -5415,6 +5896,14 @@ dešiniajame pasirinkta %2 taškų(-ai).</translation>
       <source>Auto expand</source>
       <translation type="unfinished">Auto expand</translation>
     </message>
+    <message>
+      <source>Rename property group</source>
+      <translation type="unfinished">Rename property group</translation>
+    </message>
+    <message>
+      <source>Group name:</source>
+      <translation type="unfinished">Group name:</translation>
+    </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyModel</name>
@@ -5431,7 +5920,7 @@ dešiniajame pasirinkta %2 taškų(-ai).</translation>
     <name>Gui::PropertyView</name>
     <message>
       <source>View</source>
-      <translation>Išvaizda</translation>
+      <translation>Rodymas</translation>
     </message>
     <message>
       <source>Data</source>
@@ -5571,6 +6060,10 @@ Ar norite išeiti neišsaugoję duomenų?</translation>
       <source>The file '%1' cannot be opened.</source>
       <translation>Neįmanoma atverti failo „%1“.</translation>
     </message>
+    <message>
+      <source>none</source>
+      <translation>joks</translation>
+    </message>
   </context>
   <context>
     <name>Gui::RevitNavigationStyle</name>
@@ -5592,6 +6085,25 @@ Ar norite išeiti neišsaugoję duomenų?</translation>
     </message>
   </context>
   <context>
+    <name>Gui::SearchBar</name>
+    <message>
+      <source>Previous</source>
+      <translation type="unfinished">Previous</translation>
+    </message>
+    <message>
+      <source>Next</source>
+      <translation type="unfinished">Next</translation>
+    </message>
+    <message>
+      <source>Case sensitive</source>
+      <translation type="unfinished">Case sensitive</translation>
+    </message>
+    <message>
+      <source>Whole words</source>
+      <translation type="unfinished">Whole words</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::SelectModule</name>
     <message>
       <source>Select module</source>
@@ -5609,10 +6121,6 @@ Ar norite išeiti neišsaugoję duomenų?</translation>
   <context>
     <name>Gui::StdCmdDescription</name>
     <message>
-      <source>Help</source>
-      <translation>Žinynas</translation>
-    </message>
-    <message>
       <source>Des&amp;cription</source>
       <translation>Ap&amp;rašas</translation>
     </message>
@@ -5623,10 +6131,6 @@ Ar norite išeiti neišsaugoję duomenų?</translation>
   </context>
   <context>
     <name>Gui::StdCmdDownloadOnlineHelp</name>
-    <message>
-      <source>Help</source>
-      <translation>Žinynas</translation>
-    </message>
     <message>
       <source>Download online help</source>
       <translation>Atsisiųskite žinyną iš žiniatinklio</translation>
@@ -5666,10 +6170,6 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
   </context>
   <context>
     <name>Gui::StdCmdPythonHelp</name>
-    <message>
-      <source>Tools</source>
-      <translation>Priemonės</translation>
-    </message>
     <message>
       <source>Automatic python modules documentation</source>
       <translation>Automatiškai sukurtas „Python“ žinynas</translation>
@@ -5771,7 +6271,7 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     </message>
     <message>
       <source>Document window:</source>
-      <translation>Dokumento langas:</translation>
+      <translation>Dokumento rodinys:</translation>
     </message>
   </context>
   <context>
@@ -5832,6 +6332,25 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     <message>
       <source>Edit text</source>
       <translation>Keisti tekstą</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::TinkerCADNavigationStyle</name>
+    <message>
+      <source>Press left mouse button</source>
+      <translation>Paspauskite kairįjį pelės mygtuką</translation>
+    </message>
+    <message>
+      <source>Press middle mouse button</source>
+      <translation>Paspauskite vidurinį pelės mygtuką</translation>
+    </message>
+    <message>
+      <source>Press right mouse button</source>
+      <translation type="unfinished">Press right mouse button</translation>
+    </message>
+    <message>
+      <source>Scroll middle mouse button</source>
+      <translation>Sukite vidurinįjį pelės ratuką</translation>
     </message>
   </context>
   <context>
@@ -5999,12 +6518,28 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
       <source>Vietnamese</source>
       <translation>Vietnamiečių</translation>
     </message>
+    <message>
+      <source>Bulgarian</source>
+      <translation type="unfinished">Bulgarian</translation>
+    </message>
+    <message>
+      <source>Greek</source>
+      <translation>Graikų</translation>
+    </message>
+    <message>
+      <source>Spanish, Argentina</source>
+      <translation type="unfinished">Spanish, Argentina</translation>
+    </message>
+    <message>
+      <source>Georgian</source>
+      <translation type="unfinished">Georgian</translation>
+    </message>
   </context>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
       <source>Tree view</source>
-      <translation>Medžio langas</translation>
+      <translation>Medžio rodinys</translation>
     </message>
   </context>
   <context>
@@ -6126,7 +6661,7 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     </message>
     <message>
       <source>Allow partial recomputes</source>
-      <translation>Įgalinti dalinius savybių perskaičiavimus</translation>
+      <translation>Leisti dalinius savybių perskaičiavimus</translation>
     </message>
     <message>
       <source>Enable or disable recomputating editing object when 'skip recomputation' is enabled</source>
@@ -6143,6 +6678,14 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     <message>
       <source> (but must be executed)</source>
       <translation type="unfinished"> (but must be executed)</translation>
+    </message>
+    <message>
+      <source>Add dependent objects to selection</source>
+      <translation type="unfinished">Add dependent objects to selection</translation>
+    </message>
+    <message>
+      <source>Adds all dependent objects to the selection</source>
+      <translation type="unfinished">Adds all dependent objects to the selection</translation>
     </message>
   </context>
   <context>
@@ -6322,7 +6865,7 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     <name>QDockWidget</name>
     <message>
       <source>Tree view</source>
-      <translation>Medžio langas</translation>
+      <translation>Medžio rodinys</translation>
     </message>
     <message>
       <source>Property view</source>
@@ -6330,15 +6873,15 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     </message>
     <message>
       <source>Selection view</source>
-      <translation>Pasirinkimo langas</translation>
+      <translation>Pasirinkimo rodinys</translation>
     </message>
     <message>
       <source>Report view</source>
-      <translation>Ataskaitos langas</translation>
+      <translation>Ataskaitos rodinys</translation>
     </message>
     <message>
       <source>Combo View</source>
-      <translation>Mišrusis langas</translation>
+      <translation>Mišrusis rodinys</translation>
     </message>
     <message>
       <source>Toolbox</source>
@@ -6354,7 +6897,7 @@ Ar norėtumėte nurodyti kitą aplanką?</translation>
     </message>
     <message>
       <source>DAG View</source>
-      <translation>DAG langas</translation>
+      <translation>DAG rodinys</translation>
     </message>
   </context>
   <context>
@@ -6619,24 +7162,6 @@ Atverkite naršyklės langą ir įveskite: http://localhost:%1.</translation>
     <message>
       <source>The document is not closable for the moment.</source>
       <translation>Dokumento šiuo metu neįmanoma užverti.</translation>
-    </message>
-    <message>
-      <source>No OpenGL</source>
-      <translation>Nėra „OpenGL“</translation>
-    </message>
-    <message>
-      <source>This system does not support OpenGL</source>
-      <translation>Ši sistema nepalaiko „OpenGL“</translation>
-    </message>
-    <message>
-      <source>Help</source>
-      <translation>Žinynas</translation>
-    </message>
-    <message>
-      <source>Unable to load documentation.
-In order to load it Qt 4.4 or higher is required.</source>
-      <translation>Neįmanoma įkelti žinyno.
-Kad būtų galima įkelti žinyną, yra būtinas „Qt“ 4.4 ar naujesnės laidos.</translation>
     </message>
     <message>
       <source>Exporting PDF...</source>
@@ -6915,26 +7440,6 @@ Choose 'Abort' to abort</translation>
       <translation type="unfinished">Are you sure you want to continue?</translation>
     </message>
     <message>
-      <source>
-
-Please check report view for more...</source>
-      <translation type="unfinished">
-
-Please check report view for more...</translation>
-    </message>
-    <message>
-      <source>
-Document: </source>
-      <translation type="unfinished">
-Document: </translation>
-    </message>
-    <message>
-      <source>
-  Path: </source>
-      <translation type="unfinished">
-  Path: </translation>
-    </message>
-    <message>
       <source>Identical physical path</source>
       <translation type="unfinished">Identical physical path</translation>
     </message>
@@ -6955,12 +7460,132 @@ Document: </translation>
       <translation>Darbastaliai</translation>
     </message>
     <message>
-      <source>
+      <source>Could not save document</source>
+      <translation type="unfinished">Could not save document</translation>
+    </message>
+    <message>
+      <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
-Physical path: </source>
-      <translation type="unfinished">
+"%1"
 
-Physical path: </translation>
+Would you like to save the file with a different name?</source>
+      <translation type="unfinished">There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
+
+"%1"
+
+Would you like to save the file with a different name?</translation>
+    </message>
+    <message>
+      <source>Document not saved</source>
+      <translation type="unfinished">Document not saved</translation>
+    </message>
+    <message>
+      <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
+      <translation type="unfinished">The document%1 could not be saved. Do you want to cancel closing it?</translation>
+    </message>
+    <message>
+      <source>%1 Document(s) not saved</source>
+      <translation type="unfinished">%1 Document(s) not saved</translation>
+    </message>
+    <message>
+      <source>Some documents could not be saved. Do you want to cancel closing?</source>
+      <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
+    </message>
+    <message>
+      <source>Please check report view for more...</source>
+      <translation type="unfinished">Please check report view for more...</translation>
+    </message>
+    <message>
+      <source>Physical path:</source>
+      <translation type="unfinished">Physical path:</translation>
+    </message>
+    <message>
+      <source>Document:</source>
+      <translation type="unfinished">Document:</translation>
+    </message>
+    <message>
+      <source>Path:</source>
+      <translation>Kelias:</translation>
+    </message>
+    <message>
+      <source>Edit %1</source>
+      <translation type="unfinished">Edit %1</translation>
+    </message>
+    <message>
+      <source>Setup configurable object</source>
+      <translation type="unfinished">Setup configurable object</translation>
+    </message>
+    <message>
+      <source>Select which object to copy or exclude when configuration changes.All external linked object are excluded by default.</source>
+      <translation type="unfinished">Select which object to copy or exclude when configuration changes.All external linked object are excluded by default.</translation>
+    </message>
+    <message>
+      <source>Please select which objects to copy when the configuration is changed</source>
+      <translation type="unfinished">Please select which objects to copy when the configuration is changed</translation>
+    </message>
+    <message>
+      <source>Apply to all</source>
+      <translation type="unfinished">Apply to all</translation>
+    </message>
+    <message>
+      <source>Apply the setting to all links. Or, uncheck this
+option to apply only to this link.</source>
+      <translation type="unfinished">Apply the setting to all links. Or, uncheck this
+option to apply only to this link.</translation>
+    </message>
+    <message>
+      <source>Copy on change</source>
+      <translation type="unfinished">Copy on change</translation>
+    </message>
+    <message>
+      <source>Enable</source>
+      <translation>Įgalinti</translation>
+    </message>
+    <message>
+      <source>Enable auto copy of linked object when its configuration is changed</source>
+      <translation type="unfinished">Enable auto copy of linked object when its configuration is changed</translation>
+    </message>
+    <message>
+      <source>Tracking</source>
+      <translation type="unfinished">Tracking</translation>
+    </message>
+    <message>
+      <source>Copy the linked object when its configuration is changed.
+Also auto redo the copy if the original linked object is changed.
+</source>
+      <translation type="unfinished">Copy the linked object when its configuration is changed.
+Also auto redo the copy if the original linked object is changed.
+</translation>
+    </message>
+    <message>
+      <source>Disable copy on change</source>
+      <translation type="unfinished">Disable copy on change</translation>
+    </message>
+    <message>
+      <source>Rerefresh configurable object</source>
+      <translation type="unfinished">Rerefresh configurable object</translation>
+    </message>
+    <message>
+      <source>Synchronize the original configurable source object by
+creating a new deep copy. Note that any changes made to
+the current copy will be lost.
+</source>
+      <translation type="unfinished">Synchronize the original configurable source object by
+creating a new deep copy. Note that any changes made to
+the current copy will be lost.
+</translation>
+    </message>
+    <message>
+      <source>Toggle array elements</source>
+      <translation type="unfinished">Toggle array elements</translation>
+    </message>
+    <message>
+      <source>Change whether show each link array element as individual objects</source>
+      <translation type="unfinished">Change whether show each link array element as individual objects</translation>
+    </message>
+    <message>
+      <source>Transform at the origin of the placement</source>
+      <translation type="unfinished">Transform at the origin of the placement</translation>
     </message>
   </context>
   <context>
@@ -6977,10 +7602,6 @@ Physical path: </translation>
   <context>
     <name>StdBoxElementSelection</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Box element selection</source>
       <translation>Stačiakampio gretasienio nario pasirinkimas</translation>
     </message>
@@ -6988,20 +7609,12 @@ Physical path: </translation>
   <context>
     <name>StdBoxSelection</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Box selection</source>
       <translation>Stačiakampės srities parinkimas</translation>
     </message>
   </context>
   <context>
     <name>StdCmdAbout</name>
-    <message>
-      <source>Help</source>
-      <translation>Žinynas</translation>
-    </message>
     <message>
       <source>&amp;About %1</source>
       <translation>&amp;Apie %1</translation>
@@ -7014,10 +7627,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdAboutQt</name>
     <message>
-      <source>Help</source>
-      <translation>Žinynas</translation>
-    </message>
-    <message>
       <source>About &amp;Qt</source>
       <translation>Apie „&amp;Qt“</translation>
     </message>
@@ -7028,10 +7637,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdActivateNextWindow</name>
-    <message>
-      <source>Window</source>
-      <translation>Langas</translation>
-    </message>
     <message>
       <source>Ne&amp;xt</source>
       <translation>&amp;Sekantis</translation>
@@ -7044,10 +7649,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdActivatePrevWindow</name>
     <message>
-      <source>Window</source>
-      <translation>Langas</translation>
-    </message>
-    <message>
       <source>Pre&amp;vious</source>
       <translation>&amp;Ankstesnis</translation>
     </message>
@@ -7058,10 +7659,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdAlignment</name>
-    <message>
-      <source>Edit</source>
-      <translation>Taisyti</translation>
-    </message>
     <message>
       <source>Alignment...</source>
       <translation>Lygiavimas...</translation>
@@ -7074,10 +7671,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdArrangeIcons</name>
     <message>
-      <source>Window</source>
-      <translation>Langas</translation>
-    </message>
-    <message>
       <source>Arrange &amp;Icons</source>
       <translation>Lygiuoti &amp;piktogramas</translation>
     </message>
@@ -7089,20 +7682,12 @@ Physical path: </translation>
   <context>
     <name>StdCmdAxisCross</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Toggle axis cross</source>
       <translation>Rodyti arba slėpti koordinačių ašis</translation>
     </message>
   </context>
   <context>
     <name>StdCmdCascadeWindows</name>
-    <message>
-      <source>Window</source>
-      <translation>Langas</translation>
-    </message>
     <message>
       <source>&amp;Cascade</source>
       <translation>&amp;Pakopiškai</translation>
@@ -7115,10 +7700,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdCloseActiveWindow</name>
     <message>
-      <source>Window</source>
-      <translation>Langas</translation>
-    </message>
-    <message>
       <source>Cl&amp;ose</source>
       <translation>&amp;Užverti</translation>
     </message>
@@ -7129,10 +7710,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdCloseAllWindows</name>
-    <message>
-      <source>Window</source>
-      <translation>Langas</translation>
-    </message>
     <message>
       <source>Close Al&amp;l</source>
       <translation>Užverti &amp;viską</translation>
@@ -7145,10 +7722,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdCommandLine</name>
     <message>
-      <source>Tools</source>
-      <translation>Priemonės</translation>
-    </message>
-    <message>
       <source>Start command &amp;line...</source>
       <translation>Paleisti veiksmų eilutę...</translation>
     </message>
@@ -7159,10 +7732,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdCopy</name>
-    <message>
-      <source>Edit</source>
-      <translation>Taisyti</translation>
-    </message>
     <message>
       <source>C&amp;opy</source>
       <translation>&amp;Kopijuoti</translation>
@@ -7175,10 +7744,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdCut</name>
     <message>
-      <source>Edit</source>
-      <translation>Taisyti</translation>
-    </message>
-    <message>
       <source>&amp;Cut</source>
       <translation>Išk&amp;irpti</translation>
     </message>
@@ -7189,10 +7754,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdDelete</name>
-    <message>
-      <source>Edit</source>
-      <translation>Taisyti</translation>
-    </message>
     <message>
       <source>&amp;Delete</source>
       <translation>&amp;Naikinti</translation>
@@ -7205,10 +7766,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdDemoMode</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>View turntable...</source>
       <translation>Peržiūra sukant ratu...</translation>
     </message>
@@ -7220,10 +7777,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdDependencyGraph</name>
     <message>
-      <source>Tools</source>
-      <translation>Priemonės</translation>
-    </message>
-    <message>
       <source>Dependency graph...</source>
       <translation>Priklausomybių medis...</translation>
     </message>
@@ -7234,10 +7787,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdDlgCustomize</name>
-    <message>
-      <source>Tools</source>
-      <translation>Priemonės</translation>
-    </message>
     <message>
       <source>Cu&amp;stomize...</source>
       <translation>&amp;Sąranka...</translation>
@@ -7257,17 +7806,9 @@ Physical path: </translation>
       <source>Opens a dialog to let you execute a recorded macro</source>
       <translation>Atidaryti langą, leidžiantį įvykdyti įrašytą makrokomandą</translation>
     </message>
-    <message>
-      <source>Macro</source>
-      <translation>Makrokomandos</translation>
-    </message>
   </context>
   <context>
     <name>StdCmdDlgMacroExecuteDirect</name>
-    <message>
-      <source>Macro</source>
-      <translation>Makrokomandos</translation>
-    </message>
     <message>
       <source>Execute macro</source>
       <translation>Vykdyti makrokomandą</translation>
@@ -7287,17 +7828,9 @@ Physical path: </translation>
       <source>Opens a dialog to record a macro</source>
       <translation>Atidaryti dialogo langą makrokomandai įrašyti</translation>
     </message>
-    <message>
-      <source>Macro</source>
-      <translation>Makrokomandos</translation>
-    </message>
   </context>
   <context>
     <name>StdCmdDlgParameter</name>
-    <message>
-      <source>Tools</source>
-      <translation>Priemonės</translation>
-    </message>
     <message>
       <source>E&amp;dit parameters ...</source>
       <translation>Keisti &amp;savybes...</translation>
@@ -7310,10 +7843,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdDlgPreferences</name>
     <message>
-      <source>Tools</source>
-      <translation>Priemonės</translation>
-    </message>
-    <message>
       <source>&amp;Preferences ...</source>
       <translation>Nu&amp;ostatos...</translation>
     </message>
@@ -7324,10 +7853,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdDockViewMenu</name>
-    <message>
-      <source>View</source>
-      <translation>Rodymas</translation>
-    </message>
     <message>
       <source>Panels</source>
       <translation>Skydeliai</translation>
@@ -7340,10 +7865,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdDrawStyle</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Draw style</source>
       <translation>Atvaizdavimo būdas</translation>
     </message>
@@ -7355,10 +7876,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdDuplicateSelection</name>
     <message>
-      <source>Edit</source>
-      <translation>Taisyti</translation>
-    </message>
-    <message>
       <source>Duplicate selection</source>
       <translation>Kopijuoti pasirinkimą</translation>
     </message>
@@ -7369,10 +7886,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdEdit</name>
-    <message>
-      <source>Edit</source>
-      <translation>Taisyti</translation>
-    </message>
     <message>
       <source>Toggle &amp;Edit mode</source>
       <translation>&amp;Taisyti/baigti taisymą</translation>
@@ -7388,10 +7901,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdExport</name>
-    <message>
-      <source>File</source>
-      <translation>Failas</translation>
-    </message>
     <message>
       <source>&amp;Export...</source>
       <translation>&amp;Eksportuoti...</translation>
@@ -7412,20 +7921,12 @@ Physical path: </translation>
   <context>
     <name>StdCmdExpression</name>
     <message>
-      <source>Edit</source>
-      <translation>Taisyti</translation>
-    </message>
-    <message>
       <source>Expression actions</source>
       <translation type="unfinished">Expression actions</translation>
     </message>
   </context>
   <context>
     <name>StdCmdFeatRecompute</name>
-    <message>
-      <source>File</source>
-      <translation>Failas</translation>
-    </message>
     <message>
       <source>&amp;Recompute</source>
       <translation>Pe&amp;rskaičiuoti</translation>
@@ -7438,10 +7939,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdFreeCADDonation</name>
     <message>
-      <source>Help</source>
-      <translation>Žinynas</translation>
-    </message>
-    <message>
       <source>Donate</source>
       <translation>Paaukokite</translation>
     </message>
@@ -7452,10 +7949,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdFreeCADFAQ</name>
-    <message>
-      <source>Help</source>
-      <translation>Žinynas</translation>
-    </message>
     <message>
       <source>FreeCAD FAQ</source>
       <translation>„FreeCAD“ DUK</translation>
@@ -7472,10 +7965,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdFreeCADForum</name>
     <message>
-      <source>Help</source>
-      <translation>Žinynas</translation>
-    </message>
-    <message>
       <source>FreeCAD Forum</source>
       <translation>„FreeCAD“ forumas</translation>
     </message>
@@ -7490,10 +7979,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdFreeCADPowerUserHub</name>
-    <message>
-      <source>Help</source>
-      <translation>Žinynas</translation>
-    </message>
     <message>
       <source>Python scripting documentation</source>
       <translation>„Python'o“ scenarijų rašymo žinynas</translation>
@@ -7510,10 +7995,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdFreeCADUserHub</name>
     <message>
-      <source>Help</source>
-      <translation>Žinynas</translation>
-    </message>
-    <message>
       <source>Users documentation</source>
       <translation>Vartotojo dokumentacija</translation>
     </message>
@@ -7524,10 +8005,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdFreeCADWebsite</name>
-    <message>
-      <source>Help</source>
-      <translation>Žinynas</translation>
-    </message>
     <message>
       <source>FreeCAD Website</source>
       <translation>„FreeCAD“ svetainė</translation>
@@ -7540,10 +8017,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdFreezeViews</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Freeze display</source>
       <translation>Išlaikyti vaizdą</translation>
     </message>
@@ -7554,10 +8027,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdGroup</name>
-    <message>
-      <source>Structure</source>
-      <translation>Sandara</translation>
-    </message>
     <message>
       <source>Create group</source>
       <translation>Sukurti grupę</translation>
@@ -7570,10 +8039,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdHideObjects</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Hide all objects</source>
       <translation>Slėpti visus daiktus</translation>
     </message>
@@ -7585,10 +8050,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdHideSelection</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Hide selection</source>
       <translation>Slėpti žymėjimą</translation>
     </message>
@@ -7599,10 +8060,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdImport</name>
-    <message>
-      <source>File</source>
-      <translation>Failas</translation>
-    </message>
     <message>
       <source>&amp;Import...</source>
       <translation>&amp;Importuoti...</translation>
@@ -7623,20 +8080,12 @@ Physical path: </translation>
   <context>
     <name>StdCmdLinkActions</name>
     <message>
-      <source>View</source>
-      <translation>Rodymas</translation>
-    </message>
-    <message>
       <source>Link actions</source>
       <translation>Saito veiksmai</translation>
     </message>
   </context>
   <context>
     <name>StdCmdLinkImport</name>
-    <message>
-      <source>Link</source>
-      <translation>Nuoroda</translation>
-    </message>
     <message>
       <source>Import links</source>
       <translation>Importuoti saitus</translation>
@@ -7649,10 +8098,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdLinkImportAll</name>
     <message>
-      <source>Link</source>
-      <translation>Nuoroda</translation>
-    </message>
-    <message>
       <source>Import all links</source>
       <translation>Importuoti visus saitus</translation>
     </message>
@@ -7663,10 +8108,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdLinkMake</name>
-    <message>
-      <source>Link</source>
-      <translation>Nuoroda</translation>
-    </message>
     <message>
       <source>Make link</source>
       <translation>Sukurti saitą</translation>
@@ -7679,10 +8120,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdLinkMakeGroup</name>
     <message>
-      <source>Link</source>
-      <translation>Nuoroda</translation>
-    </message>
-    <message>
       <source>Make link group</source>
       <translation type="unfinished">Make link group</translation>
     </message>
@@ -7693,10 +8130,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdLinkMakeRelative</name>
-    <message>
-      <source>Link</source>
-      <translation>Nuoroda</translation>
-    </message>
     <message>
       <source>Make sub-link</source>
       <translation type="unfinished">Make sub-link</translation>
@@ -7709,10 +8142,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdLinkReplace</name>
     <message>
-      <source>Link</source>
-      <translation>Nuoroda</translation>
-    </message>
-    <message>
       <source>Replace with link</source>
       <translation type="unfinished">Replace with link</translation>
     </message>
@@ -7723,10 +8152,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdLinkSelectActions</name>
-    <message>
-      <source>View</source>
-      <translation>Rodymas</translation>
-    </message>
     <message>
       <source>Link navigation</source>
       <translation type="unfinished">Link navigation</translation>
@@ -7739,10 +8164,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdLinkSelectAllLinks</name>
     <message>
-      <source>Link</source>
-      <translation>Nuoroda</translation>
-    </message>
-    <message>
       <source>Select all links</source>
       <translation type="unfinished">Select all links</translation>
     </message>
@@ -7753,10 +8174,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdLinkSelectLinked</name>
-    <message>
-      <source>Link</source>
-      <translation>Nuoroda</translation>
-    </message>
     <message>
       <source>Go to linked object</source>
       <translation>Eiti į susietą daiktą</translation>
@@ -7769,10 +8186,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdLinkSelectLinkedFinal</name>
     <message>
-      <source>Link</source>
-      <translation>Nuoroda</translation>
-    </message>
-    <message>
       <source>Go to the deepest linked object</source>
       <translation>Eiti į tolimiausią susietąjį daiktą</translation>
     </message>
@@ -7783,10 +8196,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdLinkUnlink</name>
-    <message>
-      <source>Link</source>
-      <translation>Nuoroda</translation>
-    </message>
     <message>
       <source>Unlink</source>
       <translation>Atsieti</translation>
@@ -7799,10 +8208,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdMacroAttachDebugger</name>
     <message>
-      <source>Macro</source>
-      <translation>Makrokomandos</translation>
-    </message>
-    <message>
       <source>Attach to remote debugger...</source>
       <translation>Prijungti prie nuotolinės derintuvės...</translation>
     </message>
@@ -7813,10 +8218,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdMacroStartDebug</name>
-    <message>
-      <source>Macro</source>
-      <translation>Makrokomandos</translation>
-    </message>
     <message>
       <source>Debug macro</source>
       <translation>Makrokomandų derinimas</translation>
@@ -7829,10 +8230,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdMacroStepInto</name>
     <message>
-      <source>Macro</source>
-      <translation>Makrokomandos</translation>
-    </message>
-    <message>
       <source>Step into</source>
       <translation>Žingsnis į</translation>
     </message>
@@ -7840,20 +8237,12 @@ Physical path: </translation>
   <context>
     <name>StdCmdMacroStepOver</name>
     <message>
-      <source>Macro</source>
-      <translation>Makrokomandos</translation>
-    </message>
-    <message>
       <source>Step over</source>
       <translation>Peržengti</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMacroStopDebug</name>
-    <message>
-      <source>Macro</source>
-      <translation>Makrokomandos</translation>
-    </message>
     <message>
       <source>Stop debugging</source>
       <translation>Sustabdyti derinimą</translation>
@@ -7866,10 +8255,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdMacroStopRecord</name>
     <message>
-      <source>Macro</source>
-      <translation>Makrokomandos</translation>
-    </message>
-    <message>
       <source>S&amp;top macro recording</source>
       <translation>Sus&amp;tabdyti makrokomandos įrašymą</translation>
     </message>
@@ -7881,20 +8266,12 @@ Physical path: </translation>
   <context>
     <name>StdCmdMeasureDistance</name>
     <message>
-      <source>View</source>
-      <translation>Rodymas</translation>
-    </message>
-    <message>
       <source>Measure distance</source>
       <translation>Matuoti atstumą</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMeasurementSimple</name>
-    <message>
-      <source>Tools</source>
-      <translation>Priemonės</translation>
-    </message>
     <message>
       <source>Measures distance between two selected objects</source>
       <translation>Matuoja atstumą tarp dviejų pasirinktų daiktų</translation>
@@ -7906,10 +8283,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdMergeProjects</name>
-    <message>
-      <source>File</source>
-      <translation>Failas</translation>
-    </message>
     <message>
       <source>Merge project...</source>
       <translation>Apjungti projektus...</translation>
@@ -7929,10 +8302,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdNew</name>
-    <message>
-      <source>File</source>
-      <translation>Failas</translation>
-    </message>
     <message>
       <source>&amp;New</source>
       <translation>&amp;Naujas</translation>
@@ -7960,10 +8329,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdOnlineHelpWebsite</name>
     <message>
-      <source>Help</source>
-      <translation>Žinynas</translation>
-    </message>
-    <message>
       <source>Help Website</source>
       <translation>Pagalbos svetainė</translation>
     </message>
@@ -7974,10 +8339,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdOpen</name>
-    <message>
-      <source>File</source>
-      <translation>Failas</translation>
-    </message>
     <message>
       <source>&amp;Open...</source>
       <translation>&amp;Atverti...</translation>
@@ -8006,10 +8367,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdPart</name>
     <message>
-      <source>Structure</source>
-      <translation>Sandara</translation>
-    </message>
-    <message>
       <source>Create part</source>
       <translation>Sukurti detalę</translation>
     </message>
@@ -8020,10 +8377,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdPaste</name>
-    <message>
-      <source>Edit</source>
-      <translation>Taisyti</translation>
-    </message>
     <message>
       <source>&amp;Paste</source>
       <translation>Į&amp;klijuoti</translation>
@@ -8036,10 +8389,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdPlacement</name>
     <message>
-      <source>Edit</source>
-      <translation>Taisyti</translation>
-    </message>
-    <message>
       <source>Placement...</source>
       <translation>Išdėstymas...</translation>
     </message>
@@ -8050,10 +8399,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdPrint</name>
-    <message>
-      <source>File</source>
-      <translation>Failas</translation>
-    </message>
     <message>
       <source>&amp;Print...</source>
       <translation>S&amp;pausdinti...</translation>
@@ -8066,10 +8411,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdPrintPdf</name>
     <message>
-      <source>File</source>
-      <translation>Failas</translation>
-    </message>
-    <message>
       <source>&amp;Export PDF...</source>
       <translation>&amp;Eksportuoti į PDF...</translation>
     </message>
@@ -8080,10 +8421,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdPrintPreview</name>
-    <message>
-      <source>File</source>
-      <translation>Failas</translation>
-    </message>
     <message>
       <source>&amp;Print preview...</source>
       <translation>Sp&amp;audinio peržiūra...</translation>
@@ -8100,10 +8437,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdProjectInfo</name>
     <message>
-      <source>File</source>
-      <translation>Failas</translation>
-    </message>
-    <message>
       <source>Project i&amp;nformation...</source>
       <translation>Projekto in&amp;formacija...</translation>
     </message>
@@ -8114,10 +8447,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdProjectUtil</name>
-    <message>
-      <source>Tools</source>
-      <translation>Priemonės</translation>
-    </message>
     <message>
       <source>Project utility...</source>
       <translation>Projekto pagalbinės priemonės...</translation>
@@ -8130,10 +8459,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdPythonWebsite</name>
     <message>
-      <source>Help</source>
-      <translation>Žinynas</translation>
-    </message>
-    <message>
       <source>Python Website</source>
       <translation>„Python“ svetainė</translation>
     </message>
@@ -8144,10 +8469,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdQuit</name>
-    <message>
-      <source>File</source>
-      <translation>Failas</translation>
-    </message>
     <message>
       <source>E&amp;xit</source>
       <translation>Iš&amp;eiti</translation>
@@ -8160,20 +8481,12 @@ Physical path: </translation>
   <context>
     <name>StdCmdRandomColor</name>
     <message>
-      <source>File</source>
-      <translation>Failas</translation>
-    </message>
-    <message>
       <source>Random color</source>
       <translation>Atsitiktinė spalva</translation>
     </message>
   </context>
   <context>
     <name>StdCmdRecentFiles</name>
-    <message>
-      <source>File</source>
-      <translation>Failas</translation>
-    </message>
     <message>
       <source>Recent files</source>
       <translation>Paskiausiai naudoti failai</translation>
@@ -8186,10 +8499,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdRecentMacros</name>
     <message>
-      <source>Macro</source>
-      <translation>Makrokomandos</translation>
-    </message>
-    <message>
       <source>Recent macros</source>
       <translation type="unfinished">Recent macros</translation>
     </message>
@@ -8200,10 +8509,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdRedo</name>
-    <message>
-      <source>Edit</source>
-      <translation>Taisyti</translation>
-    </message>
     <message>
       <source>&amp;Redo</source>
       <translation>&amp;Pakartoti</translation>
@@ -8216,10 +8521,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdRefresh</name>
     <message>
-      <source>Edit</source>
-      <translation>Taisyti</translation>
-    </message>
-    <message>
       <source>&amp;Refresh</source>
       <translation>&amp;Atnaujinti</translation>
     </message>
@@ -8229,11 +8530,18 @@ Physical path: </translation>
     </message>
   </context>
   <context>
-    <name>StdCmdRevert</name>
+    <name>StdCmdReportBug</name>
     <message>
-      <source>File</source>
-      <translation>Failas</translation>
+      <source>Report a bug</source>
+      <translation type="unfinished">Report a bug</translation>
     </message>
+    <message>
+      <source>Report a bug or suggest a feature</source>
+      <translation type="unfinished">Report a bug or suggest a feature</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdRevert</name>
     <message>
       <source>Revert</source>
       <translation>Sugrąžinti</translation>
@@ -8246,10 +8554,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdSave</name>
     <message>
-      <source>File</source>
-      <translation>Failas</translation>
-    </message>
-    <message>
       <source>&amp;Save</source>
       <translation>Iš&amp;saugoti</translation>
     </message>
@@ -8260,10 +8564,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdSaveAll</name>
-    <message>
-      <source>File</source>
-      <translation>Failas</translation>
-    </message>
     <message>
       <source>Save All</source>
       <translation>Išsaugoti viską</translation>
@@ -8276,10 +8576,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdSaveAs</name>
     <message>
-      <source>File</source>
-      <translation>Failas</translation>
-    </message>
-    <message>
       <source>Save &amp;As...</source>
       <translation>Išsaugoti k&amp;aip...</translation>
     </message>
@@ -8290,10 +8586,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdSaveCopy</name>
-    <message>
-      <source>File</source>
-      <translation>Failas</translation>
-    </message>
     <message>
       <source>Save a &amp;Copy...</source>
       <translation>Įrašyti &amp;kopiją...</translation>
@@ -8306,10 +8598,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdSceneInspector</name>
     <message>
-      <source>Tools</source>
-      <translation>Priemonės</translation>
-    </message>
-    <message>
       <source>Scene inspector...</source>
       <translation>Scenos tikrintuvė...</translation>
     </message>
@@ -8320,10 +8608,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdSelBack</name>
-    <message>
-      <source>View</source>
-      <translation>Rodymas</translation>
-    </message>
     <message>
       <source>&amp;Back</source>
       <translation>&amp;Atgal</translation>
@@ -8336,10 +8620,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdSelBoundingBox</name>
     <message>
-      <source>View</source>
-      <translation>Rodymas</translation>
-    </message>
-    <message>
       <source>&amp;Bounding box</source>
       <translation>&amp;Ribiniai matmenys</translation>
     </message>
@@ -8350,10 +8630,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdSelForward</name>
-    <message>
-      <source>View</source>
-      <translation>Rodymas</translation>
-    </message>
     <message>
       <source>&amp;Forward</source>
       <translation>&amp;Pirmyn</translation>
@@ -8366,10 +8642,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdSelectAll</name>
     <message>
-      <source>Edit</source>
-      <translation>Taisyti</translation>
-    </message>
-    <message>
       <source>Select &amp;All</source>
       <translation>Pažymėti &amp;viską</translation>
     </message>
@@ -8380,10 +8652,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdSelectVisibleObjects</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
     <message>
       <source>Select visible objects</source>
       <translation>Pažymėti visus matomus daiktus</translation>
@@ -8396,10 +8664,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdSendToPythonConsole</name>
     <message>
-      <source>Edit</source>
-      <translation>Taisyti</translation>
-    </message>
-    <message>
       <source>&amp;Send to Python Console</source>
       <translation>Siųsti į „Python“ konsolę</translation>
     </message>
@@ -8410,10 +8674,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdSetAppearance</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
     <message>
       <source>Appearance...</source>
       <translation>Apipavidalinimas...</translation>
@@ -8426,10 +8686,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdShowObjects</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Show all objects</source>
       <translation>Rodyti visus daiktus</translation>
     </message>
@@ -8440,10 +8696,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdShowSelection</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
     <message>
       <source>Show selection</source>
       <translation>Rodyti pažymėjimą</translation>
@@ -8456,10 +8708,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdStatusBar</name>
     <message>
-      <source>View</source>
-      <translation>Rodymas</translation>
-    </message>
-    <message>
       <source>Status bar</source>
       <translation>Pranešimų juosta</translation>
     </message>
@@ -8470,10 +8718,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdTextDocument</name>
-    <message>
-      <source>Tools</source>
-      <translation>Priemonės</translation>
-    </message>
     <message>
       <source>Add text document</source>
       <translation>Pridėti tekstinį dokumentą</translation>
@@ -8486,10 +8730,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdTextureMapping</name>
     <message>
-      <source>Tools</source>
-      <translation>Priemonės</translation>
-    </message>
-    <message>
       <source>Texture mapping...</source>
       <translation>Tekstūros atvaizdavimas...</translation>
     </message>
@@ -8500,10 +8740,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdTileWindows</name>
-    <message>
-      <source>Window</source>
-      <translation>Langas</translation>
-    </message>
     <message>
       <source>&amp;Tile</source>
       <translation>&amp;Plytelėmis</translation>
@@ -8516,20 +8752,12 @@ Physical path: </translation>
   <context>
     <name>StdCmdToggleBreakpoint</name>
     <message>
-      <source>Macro</source>
-      <translation>Makrokomandos</translation>
-    </message>
-    <message>
       <source>Toggle breakpoint</source>
       <translation>Įjungti arba išjungti stabdos tašką</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleClipPlane</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
     <message>
       <source>Clipping plane</source>
       <translation>Kirtimas plokštuma</translation>
@@ -8542,10 +8770,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdToggleNavigation</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Toggle navigation/Edit mode</source>
       <translation>Persijungti į naršymą ar taisymą</translation>
     </message>
@@ -8556,10 +8780,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdToggleObjects</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
     <message>
       <source>Toggle all objects</source>
       <translation>Apkeisti visų daiktus matomumus</translation>
@@ -8572,10 +8792,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdToggleSelectability</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Toggle selectability</source>
       <translation>Perjungti pažymėjimo galimybę</translation>
     </message>
@@ -8586,10 +8802,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdToggleVisibility</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
     <message>
       <source>Toggle visibility</source>
       <translation>Pakeisti matomumą</translation>
@@ -8602,10 +8814,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdToolBarMenu</name>
     <message>
-      <source>View</source>
-      <translation>Rodymas</translation>
-    </message>
-    <message>
       <source>Tool&amp;bars</source>
       <translation>Įrankių &amp;juostos</translation>
     </message>
@@ -8616,10 +8824,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdTransform</name>
-    <message>
-      <source>Edit</source>
-      <translation>Taisyti</translation>
-    </message>
     <message>
       <source>Transform...</source>
       <translation>Transformacija...</translation>
@@ -8632,10 +8836,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdTransformManip</name>
     <message>
-      <source>Edit</source>
-      <translation>Taisyti</translation>
-    </message>
-    <message>
       <source>Transform</source>
       <translation>Keisti</translation>
     </message>
@@ -8646,10 +8846,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdTreeCollapse</name>
-    <message>
-      <source>View</source>
-      <translation>Rodymas</translation>
-    </message>
     <message>
       <source>Collapse selected item</source>
       <translation>Sutraukti pasirinktą narį</translation>
@@ -8662,10 +8858,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdTreeExpand</name>
     <message>
-      <source>View</source>
-      <translation>Rodymas</translation>
-    </message>
-    <message>
       <source>Expand selected item</source>
       <translation>Išskleisti pasirinktą šaką</translation>
     </message>
@@ -8676,10 +8868,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdTreeSelectAllInstances</name>
-    <message>
-      <source>View</source>
-      <translation>Rodymas</translation>
-    </message>
     <message>
       <source>Select all instances</source>
       <translation>Pasirinkti visus narius</translation>
@@ -8692,10 +8880,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdTreeViewActions</name>
     <message>
-      <source>View</source>
-      <translation>Rodymas</translation>
-    </message>
-    <message>
       <source>TreeView actions</source>
       <translation>Medžio rodinio veiksmai</translation>
     </message>
@@ -8706,10 +8890,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdUndo</name>
-    <message>
-      <source>Edit</source>
-      <translation>Taisyti</translation>
-    </message>
     <message>
       <source>&amp;Undo</source>
       <translation>A&amp;tšaukti</translation>
@@ -8722,10 +8902,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdUnitsCalculator</name>
     <message>
-      <source>Tools</source>
-      <translation>Priemonės</translation>
-    </message>
-    <message>
       <source>&amp;Units calculator...</source>
       <translation>&amp;Matų skaičiuoklė...</translation>
     </message>
@@ -8735,11 +8911,18 @@ Physical path: </translation>
     </message>
   </context>
   <context>
-    <name>StdCmdUserInterface</name>
+    <name>StdCmdUserEditMode</name>
     <message>
-      <source>View</source>
-      <translation>Rodymas</translation>
+      <source>Edit mode</source>
+      <translation type="unfinished">Edit mode</translation>
     </message>
+    <message>
+      <source>Defines behavior when editing an object from tree</source>
+      <translation type="unfinished">Defines behavior when editing an object from tree</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdUserInterface</name>
     <message>
       <source>Dock views</source>
       <translation>Įstatyti rodinius</translation>
@@ -8752,10 +8935,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdViewBottom</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Bottom</source>
       <translation>Iš apačios</translation>
     </message>
@@ -8766,10 +8945,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdViewCreate</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
     <message>
       <source>Create new view</source>
       <translation>Sukurti naują rodinį</translation>
@@ -8782,10 +8957,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdViewDimetric</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Dimetric</source>
       <translation>Dimetrinis vaizdavimas</translation>
     </message>
@@ -8796,10 +8967,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdViewExample1</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
     <message>
       <source>Inventor example #1</source>
       <translation>Sukurti pavyzdį Nr. 1</translation>
@@ -8812,10 +8979,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdViewExample2</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Inventor example #2</source>
       <translation>Sukurti pavyzdį Nr. 2</translation>
     </message>
@@ -8826,10 +8989,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdViewExample3</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
     <message>
       <source>Inventor example #3</source>
       <translation>Sukurti pavyzdį Nr. 3</translation>
@@ -8842,10 +9001,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdViewFitAll</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Fit all</source>
       <translation>Sutalpinti viską</translation>
     </message>
@@ -8856,10 +9011,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdViewFitSelection</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
     <message>
       <source>Fit selection</source>
       <translation>Sutalpinti parinkimą</translation>
@@ -8872,10 +9023,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdViewFront</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Front</source>
       <translation>Iš priekio</translation>
     </message>
@@ -8886,10 +9033,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdViewHome</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
     <message>
       <source>Home</source>
       <translation type="unfinished">Home</translation>
@@ -8902,10 +9045,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdViewIsometric</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Isometric</source>
       <translation>Izometrinis vaizdavimas</translation>
     </message>
@@ -8916,10 +9055,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdViewIvIssueCamPos</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
     <message>
       <source>Issue camera position</source>
       <translation>Kameros padėties parodymas</translation>
@@ -8932,10 +9067,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdViewIvStereoInterleavedColumns</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Stereo Interleaved Columns</source>
       <translation>Stereoskopinis stulpelinis atvaizdavimas</translation>
     </message>
@@ -8946,10 +9077,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdViewIvStereoInterleavedRows</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
     <message>
       <source>Stereo Interleaved Rows</source>
       <translation>Stereoskopinis eilutinis atvaizdavimas</translation>
@@ -8962,10 +9089,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdViewIvStereoOff</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Stereo Off</source>
       <translation>Išjungti stereoskopinį vaizdavimą</translation>
     </message>
@@ -8976,10 +9099,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdViewIvStereoQuadBuff</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
     <message>
       <source>Stereo quad buffer</source>
       <translation>Stereoskopinis atvaizdavimas keturgubu buferiu</translation>
@@ -8992,10 +9111,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdViewIvStereoRedGreen</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Stereo red/cyan</source>
       <translation>Stereoskopinis atvaizdavimas raudonai žydriems akiniams</translation>
     </message>
@@ -9006,10 +9121,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdViewLeft</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
     <message>
       <source>Left</source>
       <translation>Iš kairės</translation>
@@ -9022,10 +9133,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdViewRear</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Rear</source>
       <translation>Iš galo</translation>
     </message>
@@ -9036,10 +9143,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdViewRestoreCamera</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
     <message>
       <source>Restore saved camera</source>
       <translation type="unfinished">Restore saved camera</translation>
@@ -9052,10 +9155,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdViewRight</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Right</source>
       <translation>Iš dešinės</translation>
     </message>
@@ -9066,10 +9165,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdViewRotateLeft</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
     <message>
       <source>Rotate Left</source>
       <translation>Pasukti į kairę</translation>
@@ -9082,10 +9177,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdViewRotateRight</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Rotate Right</source>
       <translation>Pasukti į dešinę</translation>
     </message>
@@ -9096,10 +9187,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdViewSaveCamera</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
     <message>
       <source>Save current camera</source>
       <translation type="unfinished">Save current camera</translation>
@@ -9112,10 +9199,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdViewTop</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Top</source>
       <translation>Iš viršaus</translation>
     </message>
@@ -9126,10 +9209,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdViewTrimetric</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
     <message>
       <source>Trimetric</source>
       <translation>Trimetrinis vaizdavimas</translation>
@@ -9142,10 +9221,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdViewVR</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>FreeCAD-VR</source>
       <translation>„FreeCAD-VR“</translation>
     </message>
@@ -9156,10 +9231,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdCmdWhatsThis</name>
-    <message>
-      <source>Help</source>
-      <translation>Žinynas</translation>
-    </message>
     <message>
       <source>&amp;What's This?</source>
       <translation>&amp;Kas tai?</translation>
@@ -9172,10 +9243,6 @@ Physical path: </translation>
   <context>
     <name>StdCmdWindows</name>
     <message>
-      <source>Window</source>
-      <translation>Langas</translation>
-    </message>
-    <message>
       <source>&amp;Windows...</source>
       <translation>&amp;Langų sąrašas...</translation>
     </message>
@@ -9187,20 +9254,12 @@ Physical path: </translation>
   <context>
     <name>StdCmdWindowsMenu</name>
     <message>
-      <source>Window</source>
-      <translation>Langas</translation>
-    </message>
-    <message>
       <source>Activates this window</source>
       <translation>Pereiti į šį langą</translation>
     </message>
   </context>
   <context>
     <name>StdCmdWorkbench</name>
-    <message>
-      <source>View</source>
-      <translation>Rodymas</translation>
-    </message>
     <message>
       <source>Workbench</source>
       <translation>Darbastalis</translation>
@@ -9213,10 +9272,6 @@ Physical path: </translation>
   <context>
     <name>StdMainFullscreen</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Fullscreen</source>
       <translation>Per visą ekraną</translation>
     </message>
@@ -9228,10 +9283,6 @@ Physical path: </translation>
   <context>
     <name>StdOrthographicCamera</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Orthographic view</source>
       <translation>Ortografinis vaizdas</translation>
     </message>
@@ -9242,10 +9293,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdPerspectiveCamera</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
     <message>
       <source>Perspective view</source>
       <translation>Perspektyvos vaizdas</translation>
@@ -9265,17 +9312,9 @@ Physical path: </translation>
       <source>Expand active document and collapse all others</source>
       <translation>Išskleisti pasirinktą dokumentą ir suskleisti kitus</translation>
     </message>
-    <message>
-      <source>TreeView</source>
-      <translation>Medžio rodinys</translation>
-    </message>
   </context>
   <context>
     <name>StdTreeDrag</name>
-    <message>
-      <source>TreeView</source>
-      <translation>Medžio rodinys</translation>
-    </message>
     <message>
       <source>Initiate dragging</source>
       <translation>Pradėti tempimą</translation>
@@ -9292,20 +9331,12 @@ Physical path: </translation>
       <translation>Rodyti visus dokumentus medžio rodinyje</translation>
     </message>
     <message>
-      <source>TreeView</source>
-      <translation>Medžio rodinys</translation>
-    </message>
-    <message>
       <source>Multi document</source>
       <translation>Daugybinis dokumentas</translation>
     </message>
   </context>
   <context>
     <name>StdTreePreSelection</name>
-    <message>
-      <source>TreeView</source>
-      <translation>Medžio rodinys</translation>
-    </message>
     <message>
       <source>Pre-selection</source>
       <translation>Pirminis pasirinkimas</translation>
@@ -9318,10 +9349,6 @@ Physical path: </translation>
   <context>
     <name>StdTreeRecordSelection</name>
     <message>
-      <source>TreeView</source>
-      <translation>Medžio rodinys</translation>
-    </message>
-    <message>
       <source>Record selection</source>
       <translation>Įrašyti atranką</translation>
     </message>
@@ -9332,10 +9359,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdTreeSelection</name>
-    <message>
-      <source>TreeView</source>
-      <translation>Medžio rodinys</translation>
-    </message>
     <message>
       <source>Go to selection</source>
       <translation>Eiti į atranką</translation>
@@ -9352,20 +9375,12 @@ Physical path: </translation>
       <translation>Rodyti tik pasirinktą vieną dokumentą medžio rodinyje</translation>
     </message>
     <message>
-      <source>TreeView</source>
-      <translation>Medžio rodinys</translation>
-    </message>
-    <message>
       <source>Single document</source>
       <translation>Vienas dokumentas</translation>
     </message>
   </context>
   <context>
     <name>StdTreeSyncPlacement</name>
-    <message>
-      <source>TreeView</source>
-      <translation>Medžio rodinys</translation>
-    </message>
     <message>
       <source>Sync placement</source>
       <translation>Sinchronizuoti dėstymą</translation>
@@ -9378,10 +9393,6 @@ Physical path: </translation>
   <context>
     <name>StdTreeSyncSelection</name>
     <message>
-      <source>TreeView</source>
-      <translation>Medžio rodinys</translation>
-    </message>
-    <message>
       <source>Sync selection</source>
       <translation>Sinchronizuoti atranką</translation>
     </message>
@@ -9392,10 +9403,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdTreeSyncView</name>
-    <message>
-      <source>TreeView</source>
-      <translation>Medžio rodinys</translation>
-    </message>
     <message>
       <source>Sync view</source>
       <translation>Sinchronizuoti rodymą</translation>
@@ -9408,20 +9415,12 @@ Physical path: </translation>
   <context>
     <name>StdViewBoxZoom</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Box zoom</source>
       <translation>Srities priartinimas</translation>
     </message>
   </context>
   <context>
     <name>StdViewDock</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
     <message>
       <source>Docked</source>
       <translation>Įtvirtintas</translation>
@@ -9434,12 +9433,8 @@ Physical path: </translation>
   <context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Document window</source>
-      <translation>Dokumento langas</translation>
+      <translation>Dokumento rodinys</translation>
     </message>
     <message>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
@@ -9448,10 +9443,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdViewFullscreen</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
     <message>
       <source>Fullscreen</source>
       <translation>Per visą ekraną</translation>
@@ -9464,10 +9455,6 @@ Physical path: </translation>
   <context>
     <name>StdViewScreenShot</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Save picture...</source>
       <translation>Išsaugoti paveikslėlį...</translation>
     </message>
@@ -9478,10 +9465,6 @@ Physical path: </translation>
   </context>
   <context>
     <name>StdViewUndock</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
     <message>
       <source>Undocked</source>
       <translation>Neįtvirtintas</translation>
@@ -9494,20 +9477,12 @@ Physical path: </translation>
   <context>
     <name>StdViewZoomIn</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
-    <message>
       <source>Zoom In</source>
       <translation>Artiniti</translation>
     </message>
   </context>
   <context>
     <name>StdViewZoomOut</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Įprastinis vaizdas</translation>
-    </message>
     <message>
       <source>Zoom Out</source>
       <translation>Tolinti</translation>
@@ -9758,42 +9733,13 @@ Ar vis dar norite tęsti?</translation>
       <source>Special Ops</source>
       <translation>Ypatingi veiksmai</translation>
     </message>
-  </context>
-  <context>
-    <name>testClass</name>
     <message>
-      <source>test</source>
-      <translation>bandymas</translation>
+      <source>Axonometric</source>
+      <translation>Aksonometrinis</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-size:20pt; font-weight:600;"&gt;iisTaskPanel&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;Created for Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-size:20pt; font-weight:600;"&gt;iisTaskPanel&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;Sukurta veikti su „Qt“ 4.3.x laida&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Choose the style of the Task Panel</source>
-      <translation>Pasirinkite užduočių juostos stilių</translation>
-    </message>
-    <message>
-      <source>Default</source>
-      <translation>Numatytasis</translation>
-    </message>
-    <message>
-      <source>Windows XP</source>
-      <translation>Windows XP</translation>
+      <source>Link actions</source>
+      <translation>Saito veiksmai</translation>
     </message>
   </context>
 </TS>

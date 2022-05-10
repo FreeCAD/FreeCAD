@@ -26,15 +26,15 @@
       <bool>false</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="clipX"/>
-      </item>
-      <item row="0" column="3">
-       <widget class="QPushButton" name="flipClipX">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
         <property name="text">
-         <string>Flip</string>
+         <string>Offset</string>
         </property>
        </widget>
+      </item>
+     <item row="0" column="1">
+       <widget class="QDoubleSpinBox" name="clipX"/>
       </item>
       <item row="0" column="2">
        <spacer name="horizontalSpacer_2">
@@ -49,14 +49,14 @@
         </property>
        </spacer>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label">
+      <item row="0" column="3">
+       <widget class="QPushButton" name="flipClipX">
         <property name="text">
-         <string>Offset</string>
+         <string>Flip</string>
         </property>
        </widget>
       </item>
-     </layout>
+      </layout>
     </widget>
    </item>
    <item row="1" column="0">
@@ -71,15 +71,15 @@
       <bool>false</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="clipY"/>
-      </item>
-      <item row="0" column="3">
-       <widget class="QPushButton" name="flipClipY">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Flip</string>
+         <string>Offset</string>
         </property>
        </widget>
+      </item>
+     <item row="0" column="1">
+       <widget class="QDoubleSpinBox" name="clipY"/>
       </item>
       <item row="0" column="2">
        <spacer name="horizontalSpacer_3">
@@ -94,14 +94,14 @@
         </property>
        </spacer>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_2">
+      <item row="0" column="3">
+       <widget class="QPushButton" name="flipClipY">
         <property name="text">
-         <string>Offset</string>
+         <string>Flip</string>
         </property>
        </widget>
       </item>
-     </layout>
+      </layout>
     </widget>
    </item>
    <item row="2" column="0">
@@ -116,15 +116,15 @@
       <bool>false</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="clipZ"/>
-      </item>
-      <item row="0" column="3">
-       <widget class="QPushButton" name="flipClipZ">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Flip</string>
+         <string>Offset</string>
         </property>
        </widget>
+      </item>
+     <item row="0" column="1">
+       <widget class="QDoubleSpinBox" name="clipZ"/>
       </item>
       <item row="0" column="2">
        <spacer name="horizontalSpacer_4">
@@ -139,14 +139,14 @@
         </property>
        </spacer>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_3">
+      <item row="0" column="3">
+       <widget class="QPushButton" name="flipClipZ">
         <property name="text">
-         <string>Offset</string>
+         <string>Flip</string>
         </property>
        </widget>
       </item>
-     </layout>
+      </layout>
     </widget>
    </item>
    <item row="3" column="0">
@@ -161,7 +161,17 @@
       <bool>false</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout_6">
-      <item row="0" column="3">
+      <item row="0" column="1">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Offset</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QDoubleSpinBox" name="clipView"/>
+      </item>
+     <item row="0" column="3">
        <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -206,17 +216,7 @@
         </layout>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>Offset</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QDoubleSpinBox" name="clipView"/>
-      </item>
-     </layout>
+      </layout>
     </widget>
    </item>
    <item row="4" column="0">

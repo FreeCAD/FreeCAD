@@ -81,7 +81,7 @@
 
 using namespace MeshPart;
 
-SMESH_Gen* Mesher::_mesh_gen = 0;
+SMESH_Gen* Mesher::_mesh_gen = nullptr;
 
 
 MeshingOutput::MeshingOutput() 
@@ -186,7 +186,7 @@ public:
         Standard_Real x2, y2, z2;
         Standard_Real x3, y3, z3;
 
-        std::vector< std::vector<unsigned long> > meshSegments;
+        std::vector< std::vector<MeshCore::FacetIndex> > meshSegments;
         std::size_t numMeshFaces = 0;
 
         for (std::size_t i = 0; i < domains.size(); ++i) {
@@ -256,8 +256,8 @@ public:
 
             // add a segment for the face
             if (createSegm || this->segments) {
-                std::vector<unsigned long> segment(numDomainFaces);
-                std::generate(segment.begin(), segment.end(), Base::iotaGen<unsigned long>(numMeshFaces));
+                std::vector<MeshCore::FacetIndex> segment(numDomainFaces);
+                std::generate(segment.begin(), segment.end(), Base::iotaGen<MeshCore::FacetIndex>(numMeshFaces));
                 numMeshFaces += numDomainFaces;
                 meshSegments.push_back(segment);
             }

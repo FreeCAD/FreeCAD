@@ -75,6 +75,7 @@ class Point(gui_base_original.Creator):
         self.point = None
         if self.ui:
             self.ui.pointUi(title=translate("draft", self.featureName), icon="Draft_Point")
+            self.ui.isRelative.hide()
             self.ui.continueCmd.show()
         # adding 2 callback functions
         self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.click)
@@ -134,7 +135,7 @@ class Point(gui_base_original.Creator):
                                        _cmd_list))
                 else:
                     # Insert a Draft point
-                    _cmd = 'Draft.makePoint'
+                    _cmd = 'Draft.make_point'
                     _cmd += '('
                     _cmd += str(self.stack[0][0]) + ', '
                     _cmd += str(self.stack[0][1]) + ', '

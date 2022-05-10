@@ -5,8 +5,7 @@
 # http://forum.freecadweb.org/viewtopic.php?f=3&t=2307
 
 import threading
-import Mesh, MeshGui
-from FreeCAD import Base
+import Mesh
 
 # Create a global mesh and make copies of them
 # This makes the algorithm faster by ~60%.

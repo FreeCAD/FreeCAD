@@ -188,6 +188,10 @@ class AnalysisMember():
             [{"Object":shell_thickness_obj, "xxxxxxxx":value}, {}, ...]
 
         constraints:
+        constraints_centrif : list of dictionaries
+            list of centrifs for the analysis.
+            [{"Object":centrif_obj, "xxxxxxxx":value}, {}, ...]
+
         constraints_contact : list of dictionaries
             list of contact constraints from the analysis.
             [{"Object":contact_obj, "xxxxxxxx":value}, {}, ...]
@@ -275,6 +279,9 @@ class AnalysisMember():
         )
 
         # constraints
+        self.cons_centrif = self.get_several_member(
+            "Fem::ConstraintCentrif"
+        )
         self.cons_contact = self.get_several_member(
             "Fem::ConstraintContact"
         )

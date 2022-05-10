@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QAction>
 # include <QMenu>
 # include <QFont>
 # include <QFontMetrics>
@@ -32,38 +30,39 @@
 # include <QPainter>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/nodes/SoAnnotation.h>
+# include <Inventor/nodes/SoAsciiText.h>
 # include <Inventor/nodes/SoBaseColor.h>
+# include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoFont.h>
-# include <Inventor/nodes/SoText2.h>
-# include <Inventor/nodes/SoAsciiText.h>
-# include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodes/SoRotationXYZ.h>
 # include <Inventor/nodes/SoImage.h>
-# include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoLineSet.h>
 # include <Inventor/nodes/SoPointSet.h>
+# include <Inventor/nodes/SoRotationXYZ.h>
+# include <Inventor/nodes/SoText2.h>
+# include <Inventor/nodes/SoTranslation.h>
 #endif
 # include <Inventor/draggers/SoTranslate2Dragger.h>
 
-#include "ViewProviderAnnotation.h"
 #include <App/Annotation.h>
-#include <App/PropertyGeo.h>
-#include <App/Application.h>
+#include <App/Document.h>
 #include <App/PropertyStandard.h>
 #include <Base/Parameter.h>
-#include <Gui/BitmapFactory.h>
+
+#include "ViewProviderAnnotation.h"
+#include "Application.h"
+#include "BitmapFactory.h"
+#include "Document.h"
 #include "SoFCSelection.h"
 #include "SoTextLabel.h"
-#include "Application.h"
-#include "Document.h"
-#include "Window.h"
 #include "Tools.h"
+#include "Window.h"
+
 
 using namespace Gui;
 
-const char* ViewProviderAnnotation::JustificationEnums[]= {"Left","Right","Center",NULL};
-const char* ViewProviderAnnotation::RotationAxisEnums[]= {"X","Y","Z",NULL};
+const char* ViewProviderAnnotation::JustificationEnums[]= {"Left","Right","Center",nullptr};
+const char* ViewProviderAnnotation::RotationAxisEnums[]= {"X","Y","Z",nullptr};
 
 PROPERTY_SOURCE(Gui::ViewProviderAnnotation, Gui::ViewProviderDocumentObject)
 
@@ -273,7 +272,7 @@ void ViewProviderAnnotation::updateData(const App::Property* prop)
 
 // ----------------------------------------------------------------------------
 
-const char* ViewProviderAnnotationLabel::JustificationEnums[]= {"Left","Right","Center",NULL};
+const char* ViewProviderAnnotationLabel::JustificationEnums[]= {"Left","Right","Center",nullptr};
 
 PROPERTY_SOURCE(Gui::ViewProviderAnnotationLabel, Gui::ViewProviderDocumentObject)
 

@@ -40,7 +40,7 @@ class Mirroring : public QWidget
     Q_OBJECT
 
 public:
-    Mirroring(QWidget* parent = 0);
+    Mirroring(QWidget* parent = nullptr);
     ~Mirroring();
     bool accept();
 

@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <fstream>
 #include <sstream>
 #include <iomanip>
 #include <stdexcept>
@@ -208,7 +209,7 @@ std::string LineGroup::getGroupNamesFromFile(std::string FileName)
         std::getline(inFile, line);
         std::string nameTag = line.substr(0, 1);
         std::string found;
-        unsigned long int commaPos;
+        std::size_t commaPos;
         if (nameTag == "*") {
             commaPos = line.find(',', 1);
             if (commaPos != std::string::npos) {

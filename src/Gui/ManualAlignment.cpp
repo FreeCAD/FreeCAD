@@ -30,36 +30,27 @@
 # include <QMessageBox>
 # include <QPainter>
 # include <QSplitter>
-# include <QStatusBar>
 # include <QTimer>
 # include <QVBoxLayout>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/fields/SoSFImage.h>
-# include <Inventor/nodes/SoCoordinate3.h>
-# include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoImage.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoPointSet.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/sensors/SoNodeSensor.h>
-# include <boost_bind_bind.hpp>
 #endif
-
 
 #include <App/Document.h>
 #include <App/GeoFeature.h>
-#include <Base/Exception.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SplitView3DInventor.h>
-#include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/WaitCursor.h>
@@ -168,7 +159,7 @@ void AlignmentGroup::setRandomColor()
 Gui::Document* AlignmentGroup::getDocument() const
 {
     if (this->_views.empty())
-        return 0;
+        return nullptr;
     App::DocumentObject* pView = this->_views[0]->getObject();
     if (pView) {
         App::Document* rDoc = pView->getDocument();
@@ -176,7 +167,7 @@ Gui::Document* AlignmentGroup::getDocument() const
         return pDoc;
     }
 
-    return 0;
+    return nullptr;
 }
 
 void AlignmentGroup::addPoint(const PickedPoint& pnt)
@@ -380,16 +371,13 @@ public:
 
         if (samples > 1) {
             glformat = true;
-#if !defined(HAVE_QT5_OPENGL)
-            f.setSampleBuffers(true);
-#endif
             f.setSamples(samples);
         }
         else if (samples > 0) {
             smoothing = true;
         }
 
-        QSplitter* mainSplitter=0;
+        QSplitter* mainSplitter=nullptr;
         mainSplitter = new QSplitter(Qt::Horizontal, this);
         if (glformat) {
             _viewer.push_back(new View3DInventorViewer(f, mainSplitter));
@@ -510,7 +498,7 @@ public:
     SbVec3f pos_cam1, pos_cam2;
 
     Private()
-      : sensorCam1(0), sensorCam2(0)
+      : sensorCam1(nullptr), sensorCam2(nullptr)
     {
         // left view
         picksepLeft = new SoSeparator;
@@ -530,7 +518,8 @@ public:
     static
     void  reorientCamera(SoCamera * cam, const SbRotation & rot)
     {
-        if (cam == NULL) return;
+        if (cam == nullptr)
+            return;
 
         // Find global coordinates of focal point.
         SbVec3f direction;
@@ -660,13 +649,13 @@ public:
 
 /* TRANSLATOR Gui::ManualAlignment */
 
-ManualAlignment* ManualAlignment::_instance = 0;
+ManualAlignment* ManualAlignment::_instance = nullptr;
 
 /**
  * Construction.
  */
 ManualAlignment::ManualAlignment()
-  : myViewer(0), myDocument(0), myPickPoints(3), d(new Private)
+  : myViewer(nullptr), myDocument(nullptr), myPickPoints(3), d(new Private)
 {
     // connect with the application's signal for deletion of documents
     this->connectApplicationDeletedDocument = Gui::Application::Instance->signalDeleteDocument
@@ -686,7 +675,7 @@ ManualAlignment::~ManualAlignment()
     this->connectApplicationDeletedDocument.disconnect();
     closeViewer();
     delete d;
-    _instance = 0;
+    _instance = nullptr;
 }
 
 /**
@@ -707,7 +696,7 @@ void ManualAlignment::destruct()
 {
     if (_instance) {
         ManualAlignment* tmp = _instance;
-        _instance = 0;
+        _instance = nullptr;
         delete tmp;
     }
 }
@@ -717,7 +706,7 @@ void ManualAlignment::destruct()
  */
 bool ManualAlignment::hasInstance()
 {
-    return _instance != 0;
+    return _instance != nullptr;
 }
 
 void ManualAlignment::setMinPoints(int minPoints)
@@ -741,7 +730,7 @@ void ManualAlignment::clearAll()
 {
     myFixedGroup.clear();
     myAlignModel.clear();
-    myDocument = 0;
+    myDocument = nullptr;
 }
 
 void ManualAlignment::setViewingDirections(const Base::Vector3d& view1, const Base::Vector3d& up1,
@@ -901,7 +890,7 @@ void ManualAlignment::closeViewer()
     // Close the viewer
     if (myViewer->parentWidget())
         myViewer->parentWidget()->deleteLater();
-    myViewer = 0;
+    myViewer = nullptr;
 }
 
 /**
@@ -923,7 +912,7 @@ void ManualAlignment::reset()
 
     if (myDocument) {
         this->connectDocumentDeletedObject.disconnect();
-        myDocument = 0;
+        myDocument = nullptr;
     }
 }
 

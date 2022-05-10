@@ -24,15 +24,14 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QApplication>
-#include <QMessageBox>
 #endif
 
-#include "App/Part.h"
 #include "App/Document.h"
+
 #include "Command.h"
+#include "ActiveObjectList.h"
 #include "Application.h"
 #include "Document.h"
-#include "MDIView.h"
 #include "ViewProviderDocumentObject.h"
 
 
@@ -48,7 +47,7 @@ DEF_STD_CMD_A(StdCmdPart)
 StdCmdPart::StdCmdPart()
   : Command("Std_Part")
 {
-    sGroup        = QT_TR_NOOP("Structure");
+    sGroup        = "Structure";
     sMenuText     = QT_TR_NOOP("Create part");
     sToolTipText  = QT_TR_NOOP("Create a new part and make it active");
     sWhatsThis    = "Std_Part";
@@ -89,7 +88,7 @@ DEF_STD_CMD_A(StdCmdGroup)
 StdCmdGroup::StdCmdGroup()
   : Command("Std_Group")
 {
-    sGroup        = QT_TR_NOOP("Structure");
+    sGroup        = "Structure";
     sMenuText     = QT_TR_NOOP("Create group");
     sToolTipText  = QT_TR_NOOP("Create a new group for ordering objects");
     sWhatsThis    = "Std_Group";

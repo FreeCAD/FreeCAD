@@ -23,8 +23,9 @@
 #ifndef DAGRECTITEM_H
 #define DAGRECTITEM_H
 
-#include <QGraphicsRectItem>
 #include <QBrush>
+#include <QGraphicsRectItem>
+
 
 namespace Gui
 {
@@ -36,7 +37,7 @@ namespace Gui
     class RectItem : public QGraphicsRectItem
     {
     public:
-      RectItem(QGraphicsItem* parent = 0);
+      RectItem(QGraphicsItem* parent = nullptr);
       void setBackgroundBrush(const QBrush &brushIn){backgroundBrush = brushIn;}
       void setEditingBrush(const QBrush &brushIn){editBrush = brushIn;}
       void preHighlightOn(){preSelected = true;}
@@ -49,7 +50,7 @@ namespace Gui
       void editingFinished(){editing = false;}
       bool isEditing(){return editing;}
     protected:
-      virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+      virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr);
     private:
       QBrush backgroundBrush; //!< brush used for background. not used yet.
       QBrush editBrush; //!< brush used when object is in edit mode.

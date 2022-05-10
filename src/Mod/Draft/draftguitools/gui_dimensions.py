@@ -106,7 +106,7 @@ class Dimension(gui_base_original.Creator):
                 self.arctrack = trackers.arcTracker()
                 self.link = None
                 self.edges = []
-                self.pts = []
+                self.angles = []
                 self.angledata = None
                 self.indices = []
                 self.center = None
@@ -397,7 +397,7 @@ class Dimension(gui_base_original.Creator):
                     r = self.point.sub(self.center)
                     self.arctrack.setRadius(r.Length)
                     a = self.arctrack.getAngle(self.point)
-                    pair = DraftGeomUtils.getBoundaryAngles(a, self.pts)
+                    pair = DraftGeomUtils.getBoundaryAngles(a, self.angles)
                     if not (pair[0] < a < pair[1]):
                         self.angledata = [4 * math.pi - pair[0],
                                           2 * math.pi - pair[1]]
@@ -504,8 +504,15 @@ class Dimension(gui_base_original.Creator):
                                             self.arctrack.setCenter(self.center)
                                             self.arctrack.on()
                                             for e in self.edges:
-                                                for v in e.Vertexes:
-                                                    self.pts.append(self.arctrack.getAngle(v.Point))
+                                                if e.Length < 0.00003: # Edge must be long enough for the tolerance of 0.00001mm to make sense.
+                                                    _msg(translate("draft", "Edge too short!"))
+                                                    self.finish()
+                                                    return
+                                                for i in [0, 1]:
+                                                    pt = e.Vertexes[i].Point
+                                                    if pt.isEqual(self.center, 0.00001): # A relatively high tolerance is required.
+                                                        pt = e.Vertexes[i - 1].Point     # Use the other point instead.
+                                                    self.angles.append(self.arctrack.getAngle(pt))
                                             self.link = [self.link[0], ob]
                                         else:
                                             _msg(translate("draft", "Edges don't intersect!"))

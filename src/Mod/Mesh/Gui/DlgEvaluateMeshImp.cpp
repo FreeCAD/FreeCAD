@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <QDockWidget>
 # include <QMessageBox>
+# include <QScrollArea>
 #endif
 
 #include "DlgEvaluateMeshImp.h"
@@ -72,8 +73,8 @@ class DlgEvaluateMeshImp::Private
 {
 public:
     Private()
-        : meshFeature(0)
-        , view(0)
+        : meshFeature(nullptr)
+        , view(nullptr)
         , enableFoldsCheck(false)
         , checkNonManfoldPoints(false)
         , strictlyDegenerated(true)
@@ -97,7 +98,7 @@ public:
     std::map<std::string, ViewProviderMeshDefects*> vp;
     Mesh::Feature* meshFeature;
     QPointer<Gui::View3DInventor> view;
-    std::vector<unsigned long> self_intersections;
+    std::vector<Mesh::FacetIndex> self_intersections;
     bool enableFoldsCheck;
     bool checkNonManfoldPoints;
     bool strictlyDegenerated;
@@ -212,7 +213,7 @@ void DlgEvaluateMeshImp::slotDeletedObject(const App::DocumentObject& Obj)
     // is it the current mesh object then clear everything
     if (&Obj == d->meshFeature) {
         removeViewProviders();
-        d->meshFeature = 0;
+        d->meshFeature = nullptr;
         d->ui.meshNameButton->setCurrentIndex(0);
         cleanInformation();
         d->self_intersections.clear();
@@ -252,7 +253,7 @@ void DlgEvaluateMeshImp::slotDeletedDocument(const App::Document& Doc)
 
         // try to attach to the active document
         this->detachDocument();
-        d->view = 0;
+        d->view = nullptr;
         on_refreshButton_clicked();
     }
 }
@@ -276,7 +277,7 @@ void DlgEvaluateMeshImp::setMesh(Mesh::Feature* m)
     }
 }
 
-void DlgEvaluateMeshImp::addViewProvider(const char* name, const std::vector<unsigned long>& indices)
+void DlgEvaluateMeshImp::addViewProvider(const char* name, const std::vector<Mesh::ElementIndex>& indices)
 {
     removeViewProvider(name);
 
@@ -315,7 +316,7 @@ void DlgEvaluateMeshImp::on_meshNameButton_activated(int i)
 {
     QString item = d->ui.meshNameButton->itemData(i).toString();
 
-    d->meshFeature = 0;
+    d->meshFeature = nullptr;
     std::vector<App::DocumentObject*> objs = getDocument()->getObjectsOfType(Mesh::Feature::getClassTypeId());
     for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it) {
         if (item == QLatin1String((*it)->getNameInDocument())) {
@@ -440,7 +441,7 @@ void DlgEvaluateMeshImp::on_analyzeOrientationButton_clicked()
 
         const MeshKernel& rMesh = d->meshFeature->Mesh.getValue().getKernel();
         MeshEvalOrientation eval(rMesh);
-        std::vector<unsigned long> inds = eval.GetIndices();
+        std::vector<MeshCore::FacetIndex> inds = eval.GetIndices();
 #if 0
         if (inds.empty() && !eval.Evaluate()) {
             d->ui.checkOrientationButton->setText(tr("Flipped normals found"));
@@ -532,7 +533,7 @@ void DlgEvaluateMeshImp::on_analyzeNonmanifoldsButton_clicked()
         MeshEvalTopology f_eval(rMesh);
         bool ok1 = f_eval.Evaluate();
         bool ok2 = true;
-        std::vector<unsigned long> point_indices;
+        std::vector<Mesh::PointIndex> point_indices;
 
         if (d->checkNonManfoldPoints) {
             MeshEvalPointManifolds p_eval(rMesh);
@@ -555,10 +556,10 @@ void DlgEvaluateMeshImp::on_analyzeNonmanifoldsButton_clicked()
             d->ui.repairAllTogether->setEnabled(true);
 
             if (!ok1) {
-                const std::vector<std::pair<unsigned long, unsigned long> >& inds = f_eval.GetIndices();
-                std::vector<unsigned long> indices;
+                const std::vector<std::pair<Mesh::FacetIndex, Mesh::FacetIndex> >& inds = f_eval.GetIndices();
+                std::vector<Mesh::FacetIndex> indices;
                 indices.reserve(2*inds.size());
-                std::vector<std::pair<unsigned long, unsigned long> >::const_iterator it;
+                std::vector<std::pair<Mesh::FacetIndex, Mesh::FacetIndex> >::const_iterator it;
                 for (it = inds.begin(); it != inds.end(); ++it) {
                     indices.push_back(it->first);
                     indices.push_back(it->second);
@@ -721,7 +722,7 @@ void DlgEvaluateMeshImp::on_analyzeDegeneratedButton_clicked()
 
         const MeshKernel& rMesh = d->meshFeature->Mesh.getValue().getKernel();
         MeshEvalDegeneratedFacets eval(rMesh, d->epsilonDegenerated);
-        std::vector<unsigned long> degen = eval.GetIndices();
+        std::vector<Mesh::FacetIndex> degen = eval.GetIndices();
         
         if (degen.empty()) {
             d->ui.checkDegenerationButton->setText(tr("No degenerations"));
@@ -787,7 +788,7 @@ void DlgEvaluateMeshImp::on_analyzeDuplicatedFacesButton_clicked()
 
         const MeshKernel& rMesh = d->meshFeature->Mesh.getValue().getKernel();
         MeshEvalDuplicateFacets eval(rMesh);
-        std::vector<unsigned long> dupl = eval.GetIndices();
+        std::vector<Mesh::FacetIndex> dupl = eval.GetIndices();
     
         if (dupl.empty()) {
             d->ui.checkDuplicatedFacesButton->setText(tr("No duplicated faces"));
@@ -919,12 +920,12 @@ void DlgEvaluateMeshImp::on_analyzeSelfIntersectionButton_clicked()
 
         const MeshKernel& rMesh = d->meshFeature->Mesh.getValue().getKernel();
         MeshEvalSelfIntersection eval(rMesh);
-        std::vector<std::pair<unsigned long, unsigned long> > intersection;
+        std::vector<std::pair<Mesh::FacetIndex, Mesh::FacetIndex> > intersection;
         try {
             eval.GetIntersections(intersection);
         }
         catch (const Base::AbortException&) {
-            Base::Console().Message("The self-intersection analyse was aborted by the user\n");
+            Base::Console().Message("The self-intersection analysis was aborted by the user\n");
         }
 
         if (intersection.empty()) {
@@ -939,9 +940,9 @@ void DlgEvaluateMeshImp::on_analyzeSelfIntersectionButton_clicked()
             d->ui.repairSelfIntersectionButton->setEnabled(true);
             d->ui.repairAllTogether->setEnabled(true);
 
-            std::vector<unsigned long> indices;
+            std::vector<Mesh::FacetIndex> indices;
             indices.reserve(2*intersection.size());
-            std::vector<std::pair<unsigned long, unsigned long> >::iterator it;
+            std::vector<std::pair<Mesh::FacetIndex, Mesh::FacetIndex> >::iterator it;
             for (it = intersection.begin(); it != intersection.end(); ++it) {
                 indices.push_back(it->first);
                 indices.push_back(it->second);
@@ -1022,9 +1023,9 @@ void DlgEvaluateMeshImp::on_analyzeFoldsButton_clicked()
             removeViewProvider("MeshGui::ViewProviderMeshFolds");
         }
         else {
-            std::vector<unsigned long> inds  = f_eval.GetIndices();
-            std::vector<unsigned long> inds1 = s_eval.GetIndices();
-            std::vector<unsigned long> inds2 = b_eval.GetIndices();
+            std::vector<Mesh::FacetIndex> inds  = f_eval.GetIndices();
+            std::vector<Mesh::FacetIndex> inds1 = s_eval.GetIndices();
+            std::vector<Mesh::FacetIndex> inds2 = b_eval.GetIndices();
             inds.insert(inds.end(), inds1.begin(), inds1.end());
             inds.insert(inds.end(), inds2.begin(), inds2.end());
 
@@ -1239,7 +1240,7 @@ void DlgEvaluateMeshImp::on_buttonBox_clicked(QAbstractButton* button)
     qApp->translate("QDockWidget", "Evaluate & Repair Mesh");
 #endif
 
-DockEvaluateMeshImp* DockEvaluateMeshImp::_instance=0;
+DockEvaluateMeshImp* DockEvaluateMeshImp::_instance=nullptr;
 
 DockEvaluateMeshImp* DockEvaluateMeshImp::instance()
 {
@@ -1254,16 +1255,16 @@ DockEvaluateMeshImp* DockEvaluateMeshImp::instance()
 
 void DockEvaluateMeshImp::destruct ()
 {
-    if (_instance != 0) {
+    if (_instance != nullptr) {
         DockEvaluateMeshImp *pTmp = _instance;
-        _instance = 0;
+        _instance = nullptr;
         delete pTmp;
     }
 }
 
 bool DockEvaluateMeshImp::hasInstance()
 {
-    return _instance != 0;
+    return _instance != nullptr;
 }
 
 /**
@@ -1273,11 +1274,18 @@ bool DockEvaluateMeshImp::hasInstance()
 DockEvaluateMeshImp::DockEvaluateMeshImp( QWidget* parent, Qt::WindowFlags fl )
   : DlgEvaluateMeshImp( parent, fl )
 {
+    scrollArea = new QScrollArea();
+    scrollArea->setObjectName(QLatin1String("scrollArea"));
+    scrollArea->setFrameShape(QFrame::NoFrame);
+    scrollArea->setFrameShadow(QFrame::Plain);
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setWidget(this);
+
     // embed this dialog into a dockable widget container
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
     // use Qt macro for preparing for translation stuff (but not translating yet)
     QDockWidget* dw = pDockMgr->addDockWindow("Evaluate & Repair Mesh",
-        this, Qt::RightDockWidgetArea);
+        scrollArea, Qt::RightDockWidgetArea);
     //dw->setAttribute(Qt::WA_DeleteOnClose);
     dw->setFeatures(QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable);
     dw->show();
@@ -1288,7 +1296,7 @@ DockEvaluateMeshImp::DockEvaluateMeshImp( QWidget* parent, Qt::WindowFlags fl )
  */
 DockEvaluateMeshImp::~DockEvaluateMeshImp()
 {
-    _instance = 0;
+    _instance = nullptr;
 }
 
 /**
@@ -1298,7 +1306,11 @@ void DockEvaluateMeshImp::closeEvent(QCloseEvent*)
 {
     // closes the dock window
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
-    pDockMgr->removeDockWindow(this);
+    pDockMgr->removeDockWindow(scrollArea);
+
+    // make sure to also delete the scroll area
+    scrollArea->setWidget(nullptr);
+    scrollArea->deleteLater();
 }
 
 /**

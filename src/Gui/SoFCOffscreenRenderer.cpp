@@ -21,7 +21,11 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
+# include <iomanip>
+# include <ios>
+# include <sstream>
 # include <Inventor/actions/SoGLRenderAction.h>
 # include <Inventor/elements/SoGLCacheContextElement.h>
 # include <Inventor/fields/SoSFImage.h>
@@ -31,7 +35,6 @@
 # include <QFile>
 # include <QImage>
 # include <QImageWriter>
-# include <QPainter>
 #endif
 
 #if !defined(FC_OS_MACOSX)
@@ -40,23 +43,16 @@
 # include <GL/glext.h>
 #endif
 
-//gcc
-# include <iomanip>
-# include <ios>
-# include <sstream>
+#include <QOffscreenSurface>
 
+#include <App/Application.h>
 #include <Base/FileInfo.h>
 #include <Base/Exception.h>
 #include <Base/Console.h>
-#include <App/Application.h>
 
 #include "SoFCOffscreenRenderer.h"
 #include "BitmapFactory.h"
 
-#if defined(HAVE_QT5_OPENGL)
-# include <QOffscreenSurface>
-# include <QOpenGLContext>
-#endif
 
 using namespace Gui;
 using namespace std;
@@ -66,12 +62,12 @@ void writeJPEGComment(const std::string&, QByteArray&);
 
 // ---------------------------------------------------------------
 
-SoFCOffscreenRenderer* SoFCOffscreenRenderer::inst = 0;
+SoFCOffscreenRenderer* SoFCOffscreenRenderer::inst = nullptr;
 
 
 SoFCOffscreenRenderer& SoFCOffscreenRenderer::instance()
 {
-    if (inst==0)
+    if (inst==nullptr)
         inst = new SoFCOffscreenRenderer(SbViewportRegion());
     return *inst;
 }
@@ -166,7 +162,7 @@ void SoFCOffscreenRenderer::writeToImageFile(const char* filename, const char* c
                     img.setText(QLatin1String("Description"), QString::fromUtf8(comment));
                 img.setText(QLatin1String("Creation Time"), QDateTime::currentDateTime().toString());
                 img.setText(QLatin1String("Software"),
-                    QString::fromUtf8(App::GetApplication().getExecutableName()));
+                    QString::fromStdString(App::Application::getExecutableName()));
             }
 
             QFile f(QString::fromUtf8(filename));
@@ -296,7 +292,7 @@ std::string SoFCOffscreenRenderer::createMIBA(const SbMatrix& mat) const
     com << " <Source>\n" ;
     com << "  <Creator>Unknown</Creator>\n" ;
     com << "  <CreationDate>" << QDateTime::currentDateTime().toString().toLatin1().constData() << "</CreationDate>\n" ;
-    com << "  <CreatingSystem>" << App::GetApplication().getExecutableName() << " " << major << "." << minor << "</CreatingSystem>\n" ;
+    com << "  <CreatingSystem>" << App::Application::getExecutableName() << " " << major << "." << minor << "</CreatingSystem>\n" ;
     com << "  <PartNumber>Unknown</PartNumber>\n";
     com << "  <Revision>1.0</Revision>\n";
     com << " </Source>\n" ;
@@ -412,20 +408,11 @@ void SoQtOffscreenRenderer::init(const SbViewportRegion & vpr,
     this->didallocation = glrenderaction ? false : true;
     this->viewport = vpr;
 
-#if !defined(HAVE_QT5_OPENGL)
-    this->pixelbuffer = NULL;                // constructed later
-#endif
-    this->framebuffer = NULL;
+    this->framebuffer = nullptr;
     this->numSamples = -1;
-#if defined(HAVE_QT5_OPENGL)
     //this->texFormat = GL_RGBA32F_ARB;
     this->texFormat = GL_RGB32F_ARB;
-#else
-    //this->texFormat = GL_RGBA;
-    this->texFormat = GL_RGB;
-#endif
     this->cache_context = 0;
-    this->pbuffer = false;
 }
 
 /*!
@@ -452,9 +439,6 @@ SoQtOffscreenRenderer::SoQtOffscreenRenderer(SoGLRenderAction * action)
 */
 SoQtOffscreenRenderer::~SoQtOffscreenRenderer()
 {
-#if !defined(HAVE_QT5_OPENGL)
-    delete pixelbuffer;
-#endif
     delete framebuffer;
 
     if (this->didallocation) {
@@ -512,7 +496,9 @@ SoQtOffscreenRenderer::getBackgroundColor(void) const
 void
 SoQtOffscreenRenderer::setGLRenderAction(SoGLRenderAction * action)
 {
-    if (action == PRIVATE(this)->renderaction) { return; }
+    if (action == PRIVATE(this)->renderaction) {
+        return;
+    }
 
     if (PRIVATE(this)->didallocation) { delete PRIVATE(this)->renderaction; }
     PRIVATE(this)->renderaction = action;
@@ -552,18 +538,6 @@ SoQtOffscreenRenderer::internalTextureFormat() const
     return PRIVATE(this)->texFormat;
 }
 
-void
-SoQtOffscreenRenderer::setPbufferEnable(SbBool enable)
-{
-    PRIVATE(this)->pbuffer = enable;
-}
-
-SbBool
-SoQtOffscreenRenderer::getPbufferEnable(void) const
-{
-    return PRIVATE(this)->pbuffer;
-}
-
 // *************************************************************************
 
 void
@@ -573,43 +547,12 @@ SoQtOffscreenRenderer::pre_render_cb(void * /*userdata*/, SoGLRenderAction * act
     action->setRenderingIsRemote(false);
 }
 
-#if !defined(HAVE_QT5_OPENGL)
-void
-SoQtOffscreenRenderer::makePixelBuffer(int width, int height, int samples)
-{
-    if (pixelbuffer) {
-        delete pixelbuffer;
-        pixelbuffer = NULL;
-    }
-
-    viewport.setWindowSize(width, height);
-
-    QGLFormat fmt;
-    // With enabled alpha a transparent background is supported but
-    // at the same time breaks semi-transparent models. A workaround
-    // is to use a certain background color using GL_RGB as texture
-    // format and in the output image search for the above color and
-    // replaces it with the color requested by the user.
-    //fmt.setAlpha(true);
-    if (samples > 0) {
-        fmt.setSampleBuffers(true);
-        fmt.setSamples(samples);
-    }
-    else {
-        fmt.setSampleBuffers(false);
-    }
-
-    pixelbuffer = new QGLPixelBuffer(width, height, fmt);
-    cache_context = SoGLCacheContextElement::getUniqueCacheContext(); // unique per pixel buffer object, just to be sure
-}
-#endif
-
 void
 SoQtOffscreenRenderer::makeFrameBuffer(int width, int height, int samples)
 {
     if (framebuffer) {
         delete framebuffer;
-        framebuffer = NULL;
+        framebuffer = nullptr;
     }
 
     viewport.setWindowSize(width, height);
@@ -633,7 +576,6 @@ SoQtOffscreenRenderer::renderFromBase(SoBase * base)
 {
     const SbVec2s fullsize = this->viewport.getViewportSizePixels();
 
-#if defined(HAVE_QT5_OPENGL)
     QSurfaceFormat format;
     format.setSamples(PRIVATE(this)->numSamples);
     QOpenGLContext context;
@@ -644,33 +586,16 @@ SoQtOffscreenRenderer::renderFromBase(SoBase * base)
     offscreen.setFormat(format);
     offscreen.create();
     context.makeCurrent(&offscreen);
-#endif
 
-#if !defined(HAVE_QT5_OPENGL)
-    if (PRIVATE(this)->pbuffer) {
-        if (!pixelbuffer) {
-            makePixelBuffer(fullsize[0], fullsize[1], PRIVATE(this)->numSamples);
-        }
-        else if (pixelbuffer->width() != fullsize[0] || pixelbuffer->height() != fullsize[1]) {
-            // get the size right!
-            makePixelBuffer(fullsize[0], fullsize[1], PRIVATE(this)->numSamples);
-        }
-
-        pixelbuffer->makeCurrent();                // activate us!
+    if (!framebuffer) {
+        makeFrameBuffer(fullsize[0], fullsize[1], PRIVATE(this)->numSamples);
     }
-    else
-#endif
-    {
-        if (!framebuffer) {
-            makeFrameBuffer(fullsize[0], fullsize[1], PRIVATE(this)->numSamples);
-        }
-        else if (framebuffer->width() != fullsize[0] || framebuffer->height() != fullsize[1]) {
-            // get the size right!
-            makeFrameBuffer(fullsize[0], fullsize[1], PRIVATE(this)->numSamples);
-        }
-
-        framebuffer->bind();                // activate us!
+    else if (framebuffer->width() != fullsize[0] || framebuffer->height() != fullsize[1]) {
+        // get the size right!
+        makeFrameBuffer(fullsize[0], fullsize[1], PRIVATE(this)->numSamples);
     }
+
+    framebuffer->bind();                // activate us!
 
     // oldcontext is used to restore the previous context id, in case
     // the render action is not allocated by us.
@@ -685,7 +610,7 @@ SoQtOffscreenRenderer::renderFromBase(SoBase * base)
 
     // needed to clear viewport after glViewport() is called from
     // SoGLRenderAction
-    this->renderaction->addPreRenderCallback(pre_render_cb, NULL);
+    this->renderaction->addPreRenderCallback(pre_render_cb, nullptr);
     this->renderaction->setViewportRegion(this->viewport);
 
     if (base->isOfType(SoNode::getClassTypeId()))
@@ -696,24 +621,13 @@ SoQtOffscreenRenderer::renderFromBase(SoBase * base)
         assert(false && "Cannot apply to anything else than an SoNode or an SoPath");
     }
 
-    this->renderaction->removePreRenderCallback(pre_render_cb, NULL);
-
-#if !defined(HAVE_QT5_OPENGL)
-    if (pixelbuffer) {
-        pixelbuffer->doneCurrent();
-    }
-    else
-#endif
-    {
-        framebuffer->release();
-    }
+    this->renderaction->removePreRenderCallback(pre_render_cb, nullptr);
+    framebuffer->release();
 
     this->renderaction->setCacheContext(oldcontext); // restore old
 
-#if defined(HAVE_QT5_OPENGL)
     glImage = framebuffer->toImage();
     context.doneCurrent();
-#endif
 
     return true;
 }
@@ -780,14 +694,7 @@ SoQtOffscreenRenderer::render(SoPath * scene)
 void
 SoQtOffscreenRenderer::writeToImage (QImage& img) const
 {
-#if !defined(HAVE_QT5_OPENGL)
-    if (pixelbuffer)
-        img = pixelbuffer->toImage();
-    else if (framebuffer)
-        img = framebuffer->toImage();
-#else
     img = this->glImage;
-#endif
     if (PRIVATE(this)->backgroundcolor[3] < 1.0) {
         QColor c1, c2;
         c1.setRedF(PRIVATE(this)->backgroundcolor[0]);

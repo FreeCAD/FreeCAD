@@ -20,17 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include "UnitTestPy.h"
 #include "UnitTestImp.h"
 
 #include <Gui/Language/Translator.h>
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
+
 
 namespace TestGui {
 class Module : public Py::ExtensionModule<Module>
@@ -57,7 +55,7 @@ private:
     }
     Py::Object setTest(const Py::Tuple& args)
     {
-        char *pstr=0;
+        char *pstr=nullptr;
         if (!PyArg_ParseTuple(args.ptr(), "|s", &pstr))
             throw Py::Exception();
 
@@ -70,7 +68,7 @@ private:
     }
     Py::Object addTest(const Py::Tuple& args)
     {
-        char *pstr=0;
+        char *pstr=nullptr;
         if (!PyArg_ParseTuple(args.ptr(), "|s", &pstr))
             throw Py::Exception();
 
@@ -85,7 +83,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module())->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 }

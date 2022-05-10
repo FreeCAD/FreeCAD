@@ -27,6 +27,7 @@
 #include <App/PropertyFile.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/TopoShape.h>
+#include "GeoList.h"
 #include "Constraint.h"
 
 #include "planegcs/GCS.h"
@@ -35,6 +36,7 @@
 
 namespace Sketcher
 {
+
 
 class SketcherExport Sketch :public Base::Persistence
 {
@@ -88,6 +90,8 @@ public:
     /// returns the actual geometry
     std::vector<Part::Geometry *> extractGeometry(bool withConstructionElements=true,
                                                   bool withExternalElements=false) const;
+
+    GeoListFacade extractGeoListFacade() const;
 
     void updateExtension(int geoId, std::unique_ptr<Part::GeometryExtension> && ext);
     /// get the geometry as python objects
@@ -404,7 +408,7 @@ protected:
 protected:
     /// container element to store and work with the geometric elements of this sketch
     struct GeoDef {
-        GeoDef() : geo(0),type(None),external(false),index(-1),
+        GeoDef() : geo(nullptr),type(None),external(false),index(-1),
                    startPointId(-1),midPointId(-1),endPointId(-1) {}
         Part::Geometry  * geo;             // pointer to the geometry
         GeoType           type;            // type of the geometry
@@ -416,10 +420,10 @@ protected:
     };
     /// container element to store and work with the constraints of this sketch
     struct ConstrDef {
-        ConstrDef() : constr(0)
+        ConstrDef() : constr(nullptr)
                     , driving(true)
-                    , value(0)
-                    , secondvalue(0) {}
+                    , value(nullptr)
+                    , secondvalue(nullptr) {}
         Constraint *    constr;             // pointer to the constraint
         bool            driving;
         double *        value;

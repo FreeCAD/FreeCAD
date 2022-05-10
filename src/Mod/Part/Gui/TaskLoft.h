@@ -36,7 +36,7 @@ class LoftWidget : public QWidget
     Q_OBJECT
 
 public:
-    LoftWidget(QWidget* parent = 0);
+    LoftWidget(QWidget* parent = nullptr);
     ~LoftWidget();
 
     bool accept();

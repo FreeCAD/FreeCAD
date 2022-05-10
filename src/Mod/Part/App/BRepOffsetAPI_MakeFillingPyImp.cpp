@@ -429,7 +429,7 @@ PyObject* BRepOffsetAPI_MakeFillingPy::G2Error(PyObject *args)
 PyObject* BRepOffsetAPI_MakeFillingPy::shape(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return 0;
+        return nullptr;
 
     try {
         const TopoDS_Shape& shape = this->getBRepOffsetAPI_MakeFillingPtr()->Shape();
@@ -437,7 +437,7 @@ PyObject* BRepOffsetAPI_MakeFillingPy::shape(PyObject *args)
     }
     catch (Standard_Failure& e) {
         PyErr_SetString(PyExc_RuntimeError, e.GetMessageString());
-        return 0;
+        return nullptr;
     }
 }
 

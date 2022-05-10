@@ -23,33 +23,28 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+#include <limits>
+#include <locale>
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "Writer.h"
-#include "Persistence.h"
-#include "Exception.h"
 #include "Base64.h"
+#include "Exception.h"
 #include "FileInfo.h"
+#include "Persistence.h"
 #include "Stream.h"
 #include "Tools.h"
 
-#include <algorithm>
-#include <locale>
-#include <limits>
 
 using namespace Base;
 using namespace std;
 using namespace zipios;
 
 
-
 // ---------------------------------------------------------------------------
 //  Writer: Constructors and Destructor
 // ---------------------------------------------------------------------------
 
-Writer::Writer(void)
+Writer::Writer()
   : indent(0),forceXML(false),fileVersion(1)
 {
     indBuf[0] = '\0';
@@ -83,9 +78,9 @@ void Writer::insertBinFile(const char* FileName)
     Stream() << "<![CDATA[";
     std::ifstream::pos_type fileSize = from.tellg();
     from.seekg(0, std::ios::beg);
-    std::vector<unsigned char> bytes(fileSize);
-    from.read((char*)&bytes[0], fileSize);
-    Stream() << Base::base64_encode(&bytes[0], fileSize);
+    std::vector<unsigned char> bytes(static_cast<size_t>(fileSize));
+    from.read(reinterpret_cast<char*>(&bytes[0]), fileSize);
+    Stream() << Base::base64_encode(&bytes[0], static_cast<unsigned int>(fileSize));
     Stream() << "]]>" << endl;
 }
 
@@ -94,7 +89,7 @@ void Writer::setForceXML(bool on)
     forceXML = on;
 }
 
-bool Writer::isForceXML(void)
+bool Writer::isForceXML()
 {
     return forceXML;
 }
@@ -215,7 +210,7 @@ const std::vector<std::string>& Writer::getFilenames() const
     return FileNames;
 }
 
-void Writer::incInd(void)
+void Writer::incInd()
 {
     if (indent < 1020) {
         indBuf[indent  ] = ' ';
@@ -227,7 +222,7 @@ void Writer::incInd(void)
     }
 }
 
-void Writer::decInd(void)
+void Writer::decInd()
 {
     if (indent >= 4) {
         indent -= 4;
@@ -264,13 +259,13 @@ ZipWriter::ZipWriter(std::ostream& os)
     ZipStream.setf(ios::fixed,ios::floatfield);
 }
 
-void ZipWriter::writeFiles(void)
+void ZipWriter::writeFiles()
 {
     // use a while loop because it is possible that while
     // processing the files new ones can be added
     size_t index = 0;
     while (index < FileList.size()) {
-        FileEntry entry = FileList.begin()[index];
+        FileEntry entry = FileList[index];
         ZipStream.putNextEntry(entry.FileName);
         entry.Object->SaveDocFile(*this);
         index++;
@@ -303,14 +298,14 @@ bool FileWriter::shouldWrite(const std::string& , const Base::Persistence *) con
     return true;
 }
 
-void FileWriter::writeFiles(void)
+void FileWriter::writeFiles()
 {
     // use a while loop because it is possible that while
     // processing the files new ones can be added
     size_t index = 0;
     this->FileStream.close();
     while (index < FileList.size()) {
-        FileEntry entry = FileList.begin()[index];
+        FileEntry entry = FileList[index];
 
         if (shouldWrite(entry.FileName, entry.Object)) {
             std::string filePath = entry.FileName;

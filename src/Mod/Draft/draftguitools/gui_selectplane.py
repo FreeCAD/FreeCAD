@@ -127,6 +127,9 @@ class Draft_SelectPlane:
         self.taskd.form.fieldGridExtension.valueChanged.connect(self.onSetExtension)
         self.taskd.form.fieldSnapRadius.valueChanged.connect(self.onSetSnapRadius)
 
+        # save previous WP to ensure back to the last used when restored
+        FreeCAD.DraftWorkingPlane.save()
+
         # Try to find a WP from the current selection
         if FreeCADGui.Selection.getSelectionEx(FreeCAD.ActiveDocument.Name):
             if self.handle():
@@ -161,7 +164,6 @@ class Draft_SelectPlane:
 
         # Reset everything else
         FreeCADGui.Control.closeDialog()
-        FreeCAD.DraftWorkingPlane.restore()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
 
@@ -207,7 +209,9 @@ class Draft_SelectPlane:
                 if len(sel.SubElementNames) == 1:
                     # look for a face or a plane
                     if "Face" in sel.SubElementNames[0]:
-                        FreeCAD.DraftWorkingPlane.alignToFace(sel.SubObjects[0], self.getOffset())
+                        FreeCAD.DraftWorkingPlane.alignToFace(sel.SubObjects[0],
+                                                              self.getOffset(),
+                                                              sel.Object.getParentGeoFeatureGroup())
                         self.display(FreeCAD.DraftWorkingPlane.axis)
                         return True
                     elif sel.SubElementNames[0] == "Plane":

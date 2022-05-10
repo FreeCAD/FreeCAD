@@ -20,13 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_MDIVIEW_H
 #define GUI_MDIVIEW_H
 
-#include "View.h"
+#include <boost_signals2.hpp>
 #include <QMainWindow>
-#include "ActiveObjectList.h"
+#include <Gui/ActiveObjectList.h>
+#include <Gui/View.h>
+
 
 QT_BEGIN_NAMESPACE
 class QPrinter;
@@ -93,6 +94,16 @@ public:
     virtual void printPdf();
     /** Show a preview dialog */
     virtual void printPreview();
+    /** Save the printer configuration */
+    void savePrinterSettings(QPrinter* printer);
+    /** Restore the printer configuration */
+    void restorePrinterSettings(QPrinter* printer);
+    //@}
+
+    /** @name Undo/Redo actions */
+    //@{
+    virtual QStringList undoActions() const;
+    virtual QStringList redoActions() const;
     //@}
 
     QSize minimumSizeHint () const;
@@ -115,11 +126,11 @@ public:
 
     /// access getter for the active object list
     template<typename _T>
-    inline _T getActiveObject(const char* name, App::DocumentObject **parent=0, std::string *subname=0) const
+    inline _T getActiveObject(const char* name, App::DocumentObject **parent=nullptr, std::string *subname=nullptr) const
     {
         return ActiveObjects.getObject<_T>(name,parent,subname);
     }
-    void setActiveObject(App::DocumentObject*o, const char*n, const char *subname=0)
+    void setActiveObject(App::DocumentObject*o, const char*n, const char *subname=nullptr)
     {
         ActiveObjects.setObject(o, n, subname);
     }
@@ -127,7 +138,7 @@ public:
     {
         return ActiveObjects.hasObject(n);
     }
-    bool isActiveObject(App::DocumentObject*o, const char*n, const char *subname=0) const
+    bool isActiveObject(App::DocumentObject*o, const char*n, const char *subname=nullptr) const
     {
         return ActiveObjects.hasObject(o,n,subname);
     }

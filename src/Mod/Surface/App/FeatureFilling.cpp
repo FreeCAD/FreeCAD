@@ -47,19 +47,19 @@ PROPERTY_SOURCE(Surface::Filling, Part::Spline)
 
 Filling::Filling()
 {
-    ADD_PROPERTY_TYPE(BoundaryEdges,(0,""), "Filling", App::Prop_None, "Boundary Edges (C0 is required for edges without a corresponding face)");
+    ADD_PROPERTY_TYPE(BoundaryEdges,(nullptr,""), "Filling", App::Prop_None, "Boundary Edges (C0 is required for edges without a corresponding face)");
     ADD_PROPERTY_TYPE(BoundaryFaces,(""), "Filling", App::Prop_None, "Boundary Faces");
     ADD_PROPERTY_TYPE(BoundaryOrder,(-1), "Filling", App::Prop_None, "Order of constraint on boundary faces (C0, G1 and G2 are possible)");
 
-    ADD_PROPERTY_TYPE(UnboundEdges,(0,""), "Filling", App::Prop_None, "Unbound constraint edges (C0 is required for edges without a corresponding face)");
+    ADD_PROPERTY_TYPE(UnboundEdges,(nullptr,""), "Filling", App::Prop_None, "Unbound constraint edges (C0 is required for edges without a corresponding face)");
     ADD_PROPERTY_TYPE(UnboundFaces,(""), "Filling", App::Prop_None, "Unbound constraint faces");
     ADD_PROPERTY_TYPE(UnboundOrder,(-1), "Filling", App::Prop_None, "Order of constraint on curve faces (C0, G1 and G2 are possible)");
 
-    ADD_PROPERTY_TYPE(FreeFaces,(0,""), "Filling", App::Prop_None, "Free constraint on a face");
+    ADD_PROPERTY_TYPE(FreeFaces,(nullptr,""), "Filling", App::Prop_None, "Free constraint on a face");
     ADD_PROPERTY_TYPE(FreeOrder,(0), "Filling", App::Prop_None, "Order of constraint on free faces");
 
-    ADD_PROPERTY_TYPE(Points,(0,""), "Filling", App::Prop_None, "Constraint Points (on Surface)");
-    ADD_PROPERTY_TYPE(InitialFace,(0), "Filling", App::Prop_None, "Initial surface to use");
+    ADD_PROPERTY_TYPE(Points,(nullptr,""), "Filling", App::Prop_None, "Constraint Points (on Surface)");
+    ADD_PROPERTY_TYPE(InitialFace,(nullptr), "Filling", App::Prop_None, "Initial surface to use");
 
     ADD_PROPERTY_TYPE(Degree,(3), "Filling", App::Prop_None, "Starting degree");
     ADD_PROPERTY_TYPE(PointsOnCurve,(15), "Filling", App::Prop_None, "Number of points on an edge for constraint");
@@ -298,6 +298,7 @@ App::DocumentObjectExecReturn *Filling::execute(void)
         }
 
         // Add the constraints of border curves/faces (bound)
+        int numBoundaries = BoundaryEdges.getSize();
         addConstraints(builder, BoundaryEdges, BoundaryFaces, BoundaryOrder, Standard_True);
 
         // Add additional edge constraints if available (unbound)
@@ -316,7 +317,8 @@ App::DocumentObjectExecReturn *Filling::execute(void)
         }
 
         //Build the face
-        builder.Build();
+        if (numBoundaries > 1)
+            builder.Build();
         if (!builder.IsDone()) {
             Standard_Failure::Raise("Failed to create a face from constraints");
         }
@@ -327,7 +329,6 @@ App::DocumentObjectExecReturn *Filling::execute(void)
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
-
         return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
 }

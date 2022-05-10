@@ -36,17 +36,19 @@
       <layout class="QHBoxLayout" name="hlArrowSideLayout">
        <item>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="2" column="0">
-          <widget class="QLineEdit" name="leArrowTextL">
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="leArrowTextC">
            <property name="toolTip">
-            <string>Text before arrow side symbol</string>
+            <string>Text above arrow side symbol
+Angle, surface finish, root</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="2">
-          <widget class="QLineEdit" name="leArrowTextR">
+        <item row="2" column="0">
+          <widget class="QLineEdit" name="leArrowTextL">
            <property name="toolTip">
-            <string>Text after arrow side symbol</string>
+            <string>Text before arrow side symbol
+Preparation depth, (weld size)</string>
            </property>
           </widget>
          </item>
@@ -84,14 +86,15 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="leArrowTextC">
+         <item row="2" column="2">
+          <widget class="QLineEdit" name="leArrowTextR">
            <property name="toolTip">
-            <string>Text above arrow side symbol</string>
+            <string>Text after arrow side symbol
+Number of welds × length, (gap)</string>
            </property>
           </widget>
          </item>
-        </layout>
+         </layout>
        </item>
       </layout>
      </item>
@@ -112,6 +115,14 @@
       <layout class="QHBoxLayout" name="hlOtherSideLayout">
        <item>
         <layout class="QGridLayout" name="gridLayout_2">
+         <item row="0" column="0">
+          <widget class="QLineEdit" name="leOtherTextL">
+           <property name="toolTip">
+            <string>Text before other side symbol
+Preparation depth, (weld size)</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="1">
           <widget class="QPushButton" name="pbOtherSymbol">
            <property name="toolTip">
@@ -122,58 +133,11 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
-          <widget class="QLineEdit" name="leOtherTextC">
-           <property name="toolTip">
-            <string>Text below other side symbol</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="2">
           <widget class="QLineEdit" name="leOtherTextR">
            <property name="toolTip">
-            <string>Text after other side symbol</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2" alignment="Qt::AlignRight">
-          <widget class="QPushButton" name="pbFlipSides">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>60</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>60</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="baseSize">
-            <size>
-             <width>60</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="toolTip">
-            <string>Flips the sides</string>
-           </property>
-           <property name="text">
-            <string>Flip Sides</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLineEdit" name="leOtherTextL">
-           <property name="toolTip">
-            <string>Text before other side symbol</string>
+            <string>Text after other side symbol
+Number of welds × length, (gap)</string>
            </property>
           </widget>
          </item>
@@ -211,7 +175,49 @@
            </property>
           </widget>
          </item>
-        </layout>
+        <item row="1" column="1">
+          <widget class="QLineEdit" name="leOtherTextC">
+           <property name="toolTip">
+            <string>Text below arrow side symbol
+Angle, surface finish, root</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2" alignment="Qt::AlignRight">
+          <widget class="QPushButton" name="pbFlipSides">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>60</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>60</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="baseSize">
+            <size>
+             <width>60</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Flips the sides</string>
+           </property>
+           <property name="text">
+            <string>Flip Sides</string>
+           </property>
+          </widget>
+         </item>
+         </layout>
        </item>
       </layout>
      </item>
@@ -262,21 +268,14 @@ at the kink in the leader line</string>
    </item>
    <item>
     <layout class="QGridLayout" name="gridLayout_4">
-     <item row="1" column="1">
-      <widget class="Gui::FileChooser" name="fcSymbolDir">
-       <property name="toolTip">
-        <string>Directory to welding symbols.
-This directory will be used for the symbol selection.</string>
-       </property>
-       <property name="mode">
-        <enum>Gui::FileChooser::Directory</enum>
-       </property>
-       <property name="filter">
-        <string>*.svg</string>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Tail Text</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
+    <item row="0" column="1">
       <widget class="QLineEdit" name="leTailText">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -296,14 +295,21 @@ This directory will be used for the symbol selection.</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Tail Text</string>
+     <item row="1" column="1">
+      <widget class="Gui::FileChooser" name="fcSymbolDir">
+       <property name="toolTip">
+        <string>Directory path for welding symbols.
+This directory will be used for the symbol selection.</string>
+       </property>
+       <property name="mode">
+        <enum>Gui::FileChooser::Directory</enum>
+       </property>
+       <property name="filter">
+        <string>*.svg</string>
        </property>
       </widget>
      </item>
-    </layout>
+     </layout>
    </item>
   </layout>
  </widget>

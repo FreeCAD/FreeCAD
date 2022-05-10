@@ -55,7 +55,7 @@ NativeEvent::getEvent() const
 NativeEvent::NativeEvent()
   : QEvent(QEvent::User)
 {
-  this->rawevent = NULL;
+  this->rawevent = nullptr;
 }
 
 #endif // !HAVE_SPACENAV_LIB

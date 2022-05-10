@@ -20,26 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QMessageBox>
 #endif
 
-//#include "ViewProviderGroupExtensionPy.h"
-#include "ViewProviderGroupExtension.h"
-
-#include "Command.h"
-#include "Application.h"
-#include "Document.h"
-#include "MainWindow.h"
-#include <Base/Tools.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/GroupExtension.h>
-#include <App/Expression.h>
 #include <Base/Console.h>
-#include <QMessageBox>
+#include <Base/Tools.h>
+
+#include "ViewProviderGroupExtension.h"
+#include "ViewProviderDocumentObject.h"
+#include "Command.h"
+#include "Document.h"
+#include "MainWindow.h"
+
 
 using namespace Gui;
 
@@ -163,7 +161,7 @@ void ViewProviderGroupExtension::extensionHide(void) {
 bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::string >& ) {
 
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
-    // If the group is nonempty ask the user if he wants to delete its content
+    // If the group is nonempty ask the user if they want to delete its content
     if (group->Group.getSize() > 0) {
         QMessageBox::StandardButton choice =
             QMessageBox::question(getMainWindow(), QObject::tr ( "Delete group content?" ),

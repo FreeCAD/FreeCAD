@@ -26,12 +26,12 @@
 # include <sstream>
 #endif
 
-#include "Gui/ViewProviderLink.h"
-#include <App/DocumentObject.h>
 #include <Base/PlacementPy.h>
+
 // inclusion of the generated files (generated out of ViewProviderLinkPy.xml)
 #include "ViewProviderLinkPy.h"
 #include "ViewProviderLinkPy.cpp"
+
 
 using namespace Gui;
 
@@ -64,7 +64,8 @@ void ViewProviderLinkPy::setUseCenterballDragger(Py::Boolean arg) {
     try {
         getViewProviderLinkPtr()->enableCenterballDragger(arg);
     }catch(const Base::Exception &e){
-        throw Py::Exception(Base::BaseExceptionFreeCADError,e.what());
+        e.setPyException();
+        throw Py::Exception();
     }
 }
 
@@ -74,7 +75,7 @@ Py::Object ViewProviderLinkPy::getLinkView() const {
 
 PyObject *ViewProviderLinkPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ViewProviderLinkPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

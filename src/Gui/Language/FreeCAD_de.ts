@@ -86,13 +86,13 @@
       <source>Base</source>
       <translation>Basis</translation>
     </message>
+    <message>
+      <source>Enum</source>
+      <translation>Aufzählung</translation>
+    </message>
   </context>
   <context>
     <name>CmdTestConsoleOutput</name>
-    <message>
-      <source>Standard-Test</source>
-      <translation>Standard-Test</translation>
-    </message>
     <message>
       <source>Test console output</source>
       <translation>Konsolenausgabe testen</translation>
@@ -101,20 +101,12 @@
   <context>
     <name>CmdViewMeasureClearAll</name>
     <message>
-      <source>Measure</source>
-      <translation>Messen</translation>
-    </message>
-    <message>
       <source>Clear measurement</source>
       <translation>Messung löschen</translation>
     </message>
   </context>
   <context>
     <name>CmdViewMeasureToggleAll</name>
-    <message>
-      <source>Measure</source>
-      <translation>Messen</translation>
-    </message>
     <message>
       <source>Toggle measurement</source>
       <translation>Messen ein-/ausschalten</translation>
@@ -193,6 +185,73 @@
     <message>
       <source>Measure distance</source>
       <translation>Abstand messen</translation>
+    </message>
+    <message>
+      <source>Toggle array elements</source>
+      <translation type="unfinished">Toggle array elements</translation>
+    </message>
+  </context>
+  <context>
+    <name>CommandGroup</name>
+    <message>
+      <source>File</source>
+      <translation>Datei</translation>
+    </message>
+    <message>
+      <source>Edit</source>
+      <translation>Bearbeiten</translation>
+    </message>
+    <message>
+      <source>Help</source>
+      <translation>Hilfe</translation>
+    </message>
+    <message>
+      <source>Link</source>
+      <translation>Link</translation>
+    </message>
+    <message>
+      <source>Tools</source>
+      <translation>Werkzeuge</translation>
+    </message>
+    <message>
+      <source>View</source>
+      <translation>Ansicht</translation>
+    </message>
+    <message>
+      <source>Window</source>
+      <translation>Fenster</translation>
+    </message>
+    <message>
+      <source>Standard</source>
+      <translation>Standard</translation>
+    </message>
+    <message>
+      <source>Macros</source>
+      <translation>Makros</translation>
+    </message>
+    <message>
+      <source>Macro</source>
+      <translation>Makro</translation>
+    </message>
+    <message>
+      <source>Structure</source>
+      <translation>Struktur</translation>
+    </message>
+    <message>
+      <source>Standard-Test</source>
+      <translation>Standard-Test</translation>
+    </message>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standardansicht</translation>
+    </message>
+    <message>
+      <source>TreeView</source>
+      <translation>BaumAnsicht</translation>
+    </message>
+    <message>
+      <source>Measure</source>
+      <translation>Messen</translation>
     </message>
   </context>
   <context>
@@ -277,6 +336,25 @@
     </message>
   </context>
   <context>
+    <name>EditMode</name>
+    <message>
+      <source>Default</source>
+      <translation>Standard</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformieren</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Schneiden</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Farbe</translation>
+    </message>
+  </context>
+  <context>
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
@@ -292,6 +370,10 @@
     <message>
       <source>none</source>
       <translation>kein</translation>
+    </message>
+    <message>
+      <source>Press a keyboard shortcut</source>
+      <translation type="unfinished">Press a keyboard shortcut</translation>
     </message>
   </context>
   <context>
@@ -385,19 +467,12 @@
     </message>
     <message>
       <source>Press middle+left or middle+right button</source>
-      <translation>Drücke die mittlere + linke oder die mittlere + rechte Maustaste</translation>
+      <translation>Halte die mittlere + linke oder die mittlere + rechte Maustaste gedrückt</translation>
     </message>
     <message>
       <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
       <translation>Mittlere Maustaste scrollen, oder mittlere Maustaste gedrückt halten, dabei links oder rechts klicken und die Maus auf oder ab bewegen</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui::Command</name>
-    <message>
-      <source>Standard</source>
-      <translation>Standard</translation>
     </message>
   </context>
   <context>
@@ -516,6 +591,25 @@ while doing a left or right click and move the mouse up or down</source>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
       <translation>Organisationen</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::ApplicationCache</name>
+    <message>
+      <source>Cache directory</source>
+      <translation type="unfinished">Cache directory</translation>
+    </message>
+    <message>
+      <source>The cache directory %1 exceeds the size of %2.</source>
+      <translation type="unfinished">The cache directory %1 exceeds the size of %2.</translation>
+    </message>
+    <message>
+      <source>Do you want to clear it now?</source>
+      <translation type="unfinished">Do you want to clear it now?</translation>
+    </message>
+    <message>
+      <source>Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</source>
+      <translation type="unfinished">Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</translation>
     </message>
   </context>
   <context>
@@ -727,9 +821,9 @@ In this case the prefix will be automatically trimmed when shown in the property
 However, the property is still used in a script with the full name, like 'obj.Group_Name'.
 
 If this is not ticked, then the property must be uniquely named, and it is accessed like 'obj.Name'.</source>
-      <translation>Stellen Sie dem Eigenschaftsnamen den Gruppennamen in der Form 'Gruppenname' voran, um Konflikte mit einer bestehenden Eigenschaft zu vermeiden.
+      <translation>Dem Eigenschaftsnamen stellt man den Gruppennamen in der Form 'Group_Name' voran, um Konflikte mit einer bestehenden Eigenschaft zu vermeiden.
 In diesem Fall wird das Präfix automatisch gekürzt, wenn es im Eigenschaften-Editor angezeigt wird.
-Die Eigenschaft wird jedoch immer noch in einem Skript mit dem vollen Namen 'obj.Gruppenname' verwendet.
+Die Eigenschaft wird jedoch immer noch in einem Skript mit dem vollen Namen 'obj.Group_Name' verwendet.
 
 Wenn dies nicht ausgewählt ist, muss die Eigenschaft eindeutig benannt sein und wird durch 'obj.Name' aufgerufen.</translation>
     </message>
@@ -789,6 +883,32 @@ Wenn dies nicht ausgewählt ist, muss die Eigenschaft eindeutig benannt sein und
     <message>
       <source>Icon folders...</source>
       <translation>Symbol-Ordner...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCreateNewPreferencePack</name>
+    <message>
+      <source>Create New Preference Pack</source>
+      <translation type="unfinished">Create New Preference Pack</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>Name</translation>
+    </message>
+    <message>
+      <source>Property group templates</source>
+      <translation type="unfinished">Property group templates</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCreateNewPreferencePackImp</name>
+    <message>
+      <source>Pack already exists</source>
+      <translation type="unfinished">Pack already exists</translation>
+    </message>
+    <message>
+      <source>A preference pack with that name already exists. Do you want to overwrite it?</source>
+      <translation type="unfinished">A preference pack with that name already exists. Do you want to overwrite it?</translation>
     </message>
   </context>
   <context>
@@ -855,14 +975,6 @@ Wenn dies nicht ausgewählt ist, muss die Eigenschaft eindeutig benannt sein und
     <message>
       <source>Macros</source>
       <translation>Makros</translation>
-    </message>
-    <message>
-      <source>No macro</source>
-      <translation>Kein Makro</translation>
-    </message>
-    <message>
-      <source>No macros found.</source>
-      <translation>Keine Makros gefunden.</translation>
     </message>
     <message>
       <source>Macro not found</source>
@@ -1424,6 +1536,14 @@ Wenn dies nicht ausgewählt ist, muss die Eigenschaft eindeutig benannt sein und
       <source>Code lines will be numbered</source>
       <translation>Code-Zeilen werden nummeriert</translation>
     </message>
+    <message>
+      <source>The cursor shape will be a block</source>
+      <translation type="unfinished">The cursor shape will be a block</translation>
+    </message>
+    <message>
+      <source>Enable block cursor</source>
+      <translation type="unfinished">Enable block cursor</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgGeneral</name>
@@ -1470,14 +1590,6 @@ Wenn dies nicht ausgewählt ist, muss die Eigenschaft eindeutig benannt sein und
     <message>
       <source>Style sheet:</source>
       <translation>Formatvorlage:</translation>
-    </message>
-    <message>
-      <source>Python console</source>
-      <translation>Python-Konsole</translation>
-    </message>
-    <message>
-      <source>Enable word wrap</source>
-      <translation>Wortumbruch aktivieren</translation>
     </message>
     <message>
       <source>Language of the application's user interface</source>
@@ -1531,9 +1643,64 @@ after FreeCAD launches</source>
       <translation>Auswahl des Arbeitsbereichs, der nach dem FreeCAD Start aktiviert und angezeigt werden soll</translation>
     </message>
     <message>
-      <source>Words will be wrapped when they exceed available
-horizontal space in Python console</source>
-      <translation>Automatischer Zeilenumbruch in der Python Umgebung</translation>
+      <source>Number format:</source>
+      <translation type="unfinished">Number format:</translation>
+    </message>
+    <message>
+      <source>Operating system</source>
+      <translation>Betriebssystem</translation>
+    </message>
+    <message>
+      <source>Selected language</source>
+      <translation type="unfinished">Selected language</translation>
+    </message>
+    <message>
+      <source>C/POSIX</source>
+      <translation type="unfinished">C/POSIX</translation>
+    </message>
+    <message>
+      <source>If enabled, numerical keypad decimal separator will be substituted with locale separator</source>
+      <translation type="unfinished">If enabled, numerical keypad decimal separator will be substituted with locale separator</translation>
+    </message>
+    <message>
+      <source>Substitute decimal separator (needs restart)</source>
+      <translation type="unfinished">Substitute decimal separator (needs restart)</translation>
+    </message>
+    <message>
+      <source>Preference packs</source>
+      <translation type="unfinished">Preference packs</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>Name</translation>
+    </message>
+    <message>
+      <source>Type</source>
+      <translation>Typ</translation>
+    </message>
+    <message>
+      <source>Load</source>
+      <translation>Laden</translation>
+    </message>
+    <message>
+      <source>Save new...</source>
+      <translation type="unfinished">Save new...</translation>
+    </message>
+    <message>
+      <source>Manage...</source>
+      <translation type="unfinished">Manage...</translation>
+    </message>
+    <message>
+      <source>Revert...</source>
+      <translation type="unfinished">Revert...</translation>
+    </message>
+    <message>
+      <source>The text cursor will be blinking</source>
+      <translation type="unfinished">The text cursor will be blinking</translation>
+    </message>
+    <message>
+      <source>Enable cursor blinking</source>
+      <translation type="unfinished">Enable cursor blinking</translation>
     </message>
   </context>
   <context>
@@ -1573,6 +1740,26 @@ horizontal space in Python console</source>
     <message>
       <source>Both</source>
       <translation>Beide</translation>
+    </message>
+    <message>
+      <source>Manage preference packs</source>
+      <translation type="unfinished">Manage preference packs</translation>
+    </message>
+    <message>
+      <source>Preference Pack Name</source>
+      <translation type="unfinished">Preference Pack Name</translation>
+    </message>
+    <message>
+      <source>Tags</source>
+      <translation>Tags</translation>
+    </message>
+    <message>
+      <source>Apply</source>
+      <translation>Übernehmen</translation>
+    </message>
+    <message>
+      <source>Apply the %1 preference pack</source>
+      <translation type="unfinished">Apply the %1 preference pack</translation>
     </message>
   </context>
   <context>
@@ -1644,12 +1831,20 @@ horizontal space in Python console</source>
       <translation>Kopieren</translation>
     </message>
     <message>
-      <source>Addons...</source>
-      <translation>Addons...</translation>
+      <source>Toolbar</source>
+      <translation>Symbolleiste</translation>
     </message>
     <message>
-      <source>Toolbar</source>
-      <translation>Werkzeugleiste</translation>
+      <source>Launch a guide on how to set up a macro in a custom global toolbar.</source>
+      <translation type="unfinished">Launch a guide on how to set up a macro in a custom global toolbar.</translation>
+    </message>
+    <message>
+      <source>Open Addon Manager where macros created by the community and other addons can be downloaded.</source>
+      <translation type="unfinished">Open Addon Manager where macros created by the community and other addons can be downloaded.</translation>
+    </message>
+    <message>
+      <source>Download</source>
+      <translation>Herunterladen</translation>
     </message>
   </context>
   <context>
@@ -2032,6 +2227,48 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgPreferencePackManagement</name>
+    <message>
+      <source>Manage Preference Packs</source>
+      <translation type="unfinished">Manage Preference Packs</translation>
+    </message>
+    <message>
+      <source>Open Addon Manager...</source>
+      <translation type="unfinished">Open Addon Manager...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgPreferencePackManagementImp</name>
+    <message>
+      <source>User-Saved Preference Packs</source>
+      <translation type="unfinished">User-Saved Preference Packs</translation>
+    </message>
+    <message>
+      <source>Built-In Preference Packs</source>
+      <translation type="unfinished">Built-In Preference Packs</translation>
+    </message>
+    <message>
+      <source>Toggle visibility of built-in preference pack '%1'</source>
+      <translation type="unfinished">Toggle visibility of built-in preference pack '%1'</translation>
+    </message>
+    <message>
+      <source>Delete user-saved preference pack '%1'</source>
+      <translation type="unfinished">Delete user-saved preference pack '%1'</translation>
+    </message>
+    <message>
+      <source>Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</source>
+      <translation type="unfinished">Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</translation>
+    </message>
+    <message>
+      <source>Delete saved preference pack?</source>
+      <translation type="unfinished">Delete saved preference pack?</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to delete the preference pack named '%1'? This cannot be undone.</source>
+      <translation type="unfinished">Are you sure you want to delete the preference pack named '%1'? This cannot be undone.</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgPreferences</name>
     <message>
       <source>Preferences</source>
@@ -2309,7 +2546,7 @@ on-screen while displaying the warning</source>
     <message>
       <source>When a normal message has occurred, the Report View dialog becomes visible
 on-screen while displaying the message</source>
-      <translation>Wenn eine normale Meldung aufgetreten ist, erscheint der Berichtsansicht-Dialog auf dem Bildschirm um die Meldung anzuzeigen</translation>
+      <translation>Wenn eine normale Meldung aufgetreten ist, erscheint der Ausgabefenster-Dialog auf dem Bildschirm um die Meldung anzuzeigen</translation>
     </message>
     <message>
       <source>Show report view on normal message</source>
@@ -2343,14 +2580,14 @@ on-screen while displaying the log message</source>
     <message>
       <source>Internal Python output will be redirected
 from Python console to Report view panel</source>
-      <translation>Die Interne Python-Ausgabe wird
-von der Python-Konsole in das Berichtsfenster umgeleitet</translation>
+      <translation>Die interne Python-Ausgabe wird
+von der Python-Konsole in das Ausgabefenster umgeleitet</translation>
     </message>
     <message>
       <source>Internal Python error messages will be redirected
 from Python console to Report view panel</source>
-      <translation>Die Interne Python-Fehlermeldung wird
-von der Python-Konsole in das Berichtsfenster umgeleitet</translation>
+      <translation>Die internen Python-Fehlermeldungen werden
+von der Python-Konsole in das Ausgabefenster umgeleitet</translation>
     </message>
     <message>
       <source>Include a timecode for each report</source>
@@ -2367,6 +2604,28 @@ von der Python-Konsole in das Berichtsfenster umgeleitet</translation>
     <message>
       <source>Record normal messages</source>
       <translation>Normale Meldungen aufzeichnen</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgRevertToBackupConfig</name>
+    <message>
+      <source>Revert to Backup Config</source>
+      <translation type="unfinished">Revert to Backup Config</translation>
+    </message>
+    <message>
+      <source>WARNING: this process will undo any preference changes made since the specified date, and will also reset your Recent files and Macros to their state on that date.</source>
+      <translation type="unfinished">WARNING: this process will undo any preference changes made since the specified date, and will also reset your Recent files and Macros to their state on that date.</translation>
+    </message>
+    <message>
+      <source>Available backup files:</source>
+      <translation type="unfinished">Available backup files:</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgRevertToBackupConfigImp</name>
+    <message>
+      <source>No selection in dialog, cannot load backup file</source>
+      <translation type="unfinished">No selection in dialog, cannot load backup file</translation>
     </message>
   </context>
   <context>
@@ -2638,6 +2897,20 @@ bounding box size of the 3D object that is currently displayed.</source>
       <translation>Augenabstand für Stereo-Projektionen.
 Der angegebene Wert ist ein Faktor, der mit der Größe des Hüllquaders des gerade angezeigten 3D-Objekts multipliziert wird.</translation>
     </message>
+    <message>
+      <source>Relative size :   </source>
+      <translation type="unfinished">Relative size :   </translation>
+    </message>
+    <message>
+      <source>Size of main coordinate system representation
+in the corner -- in % of height/width of viewport</source>
+      <translation type="unfinished">Size of main coordinate system representation
+in the corner -- in % of height/width of viewport</translation>
+    </message>
+    <message>
+      <source>%</source>
+      <translation>%</translation>
+    </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
@@ -2672,6 +2945,69 @@ Der angegebene Wert ist ein Faktor, der mit der Größe des Hüllquaders des ger
     <message>
       <source>15px</source>
       <translation>15px</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsCacheDirectory</name>
+    <message>
+      <source>Cache</source>
+      <translation type="unfinished">Cache</translation>
+    </message>
+    <message>
+      <source>Cache directory</source>
+      <translation type="unfinished">Cache directory</translation>
+    </message>
+    <message>
+      <source>Location:</source>
+      <translation type="unfinished">Location:</translation>
+    </message>
+    <message>
+      <source>Check periodically at program start:</source>
+      <translation type="unfinished">Check periodically at program start:</translation>
+    </message>
+    <message>
+      <source>Always</source>
+      <translation type="unfinished">Always</translation>
+    </message>
+    <message>
+      <source>Daily</source>
+      <translation type="unfinished">Daily</translation>
+    </message>
+    <message>
+      <source>Weekly</source>
+      <translation type="unfinished">Weekly</translation>
+    </message>
+    <message>
+      <source>Monthly</source>
+      <translation type="unfinished">Monthly</translation>
+    </message>
+    <message>
+      <source>Yearly</source>
+      <translation type="unfinished">Yearly</translation>
+    </message>
+    <message>
+      <source>Never</source>
+      <translation type="unfinished">Never</translation>
+    </message>
+    <message>
+      <source>Cache size limit:</source>
+      <translation type="unfinished">Cache size limit:</translation>
+    </message>
+    <message>
+      <source>Check now...</source>
+      <translation type="unfinished">Check now...</translation>
+    </message>
+    <message>
+      <source>Notify the user if the cache size exceeds the specified limit</source>
+      <translation type="unfinished">Notify the user if the cache size exceeds the specified limit</translation>
+    </message>
+    <message>
+      <source>Unknown</source>
+      <translation>Unbekannt</translation>
+    </message>
+    <message>
+      <source>Current cache size: %1</source>
+      <translation type="unfinished">Current cache size: %1</translation>
     </message>
   </context>
   <context>
@@ -2711,10 +3047,6 @@ Der angegebene Wert ist ein Faktor, der mit der Größe des Hüllquaders des ger
     <message>
       <source>Alt+R</source>
       <translation>Alt+R</translation>
-    </message>
-    <message>
-      <source>Out &amp;invisible</source>
-      <translation>Außerhalb uns&amp;ichtbar</translation>
     </message>
     <message>
       <source>Alt+I</source>
@@ -2767,6 +3099,40 @@ Der angegebene Wert ist ein Faktor, der mit der Größe des Hüllquaders des ger
     <message>
       <source>Color-gradient settings</source>
       <translation>Farbverlauf-Einstellungen</translation>
+    </message>
+    <message>
+      <source>Color gradient is used with its full color range</source>
+      <translation type="unfinished">Color gradient is used with its full color range</translation>
+    </message>
+    <message>
+      <source>Color gradient starts from the zero value</source>
+      <translation type="unfinished">Color gradient starts from the zero value</translation>
+    </message>
+    <message>
+      <source>Data outside the specified min-max range
+will be displayed in gray</source>
+      <translation type="unfinished">Data outside the specified min-max range
+will be displayed in gray</translation>
+    </message>
+    <message>
+      <source>Data outside the specified min-max range
+will be displayed with transparency</source>
+      <translation type="unfinished">Data outside the specified min-max range
+will be displayed with transparency</translation>
+    </message>
+    <message>
+      <source>Out &amp;transparent</source>
+      <translation type="unfinished">Out &amp;transparent</translation>
+    </message>
+    <message>
+      <source>Number of labels besides the color bar</source>
+      <translation type="unfinished">Number of labels besides the color bar</translation>
+    </message>
+    <message>
+      <source>Number of decimals for labels
+besides the color bar</source>
+      <translation type="unfinished">Number of decimals for labels
+besides the color bar</translation>
     </message>
   </context>
   <context>
@@ -3256,24 +3622,55 @@ Sie können auch das Formular verwenden: John Doe &lt;john@doe.com&gt;</translat
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
-      <source>Unloaded Workbenches</source>
-      <translation>Nicht geladene Arbeitsbereiche</translation>
+      <source>Workbench Name</source>
+      <translation>Name des Arbeitsbereichs</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Laden Sie die ausgewählten Arbeitsbereich und fügen Sie ihre Einstellungs-Fenster dem Einstellungs-Dialog hinzu.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Autoload?</source>
+      <translation>Automatisch laden?</translation>
     </message>
     <message>
-      <source>Load Selected</source>
-      <translation>Lädt die Auswahl</translation>
+      <source>Load Now</source>
+      <translation>Jetzt laden</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deaktivierte Arbeitsbereiche&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Um Ressourcen zu schonen, lädt FreeCAD keine Arbeitsbereiche solange sie nicht verwendet werden. Wenn sie geladen werden, können sie Zugriff auf weitere Einstellungen bezüglich ihrer Funktionalität freigeben.&lt;/p&gt;&lt;p&gt;Die folgenden Arbeitsbereiche sind in Ihrer Installation verfügbar:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Um Ressourcen zu schonen, lädt FreeCAD keine Arbeitsbereiche solange sie nicht verwendet werden. Wenn sie geladen werden, haben Sie Zugriff auf die zusätzlichen Einstellungen.&lt;/p&gt;&lt;p&gt;Die folgenden Arbeitsbereiche sind in Ihrer Installation verfügbar, aber noch nicht geladen:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Available Workbenches</source>
+      <translation>Verfügbare Arbeitsbereiche</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>Arbeitsbereich</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation>Automatisch laden</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation>Wenn markiert</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation>wird beim Starten von FreeCAD automatisch geladen</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation>Dies ist das aktuelle Startmodul und muss automatisch geladen werden. Siehe Einstellungen/Allgemein/Autoload um dies zu ändern.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation>Geladen</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation>Jetzt laden</translation>
     </message>
   </context>
   <context>
@@ -3292,7 +3689,7 @@ Sie können auch das Formular verwenden: John Doe &lt;john@doe.com&gt;</translat
     </message>
     <message>
       <source>Show script commands in python console</source>
-      <translation>Skript-Befehle in Pythonkonsole anzeigen</translation>
+      <translation>Skript-Befehle in Python-Konsole anzeigen</translation>
     </message>
     <message>
       <source>Log all commands issued by menus to file:</source>
@@ -3456,10 +3853,6 @@ Drehteller: das Teil wird um die z-Achse gedreht.</translation>
       <translation>Trackball</translation>
     </message>
     <message>
-      <source>New document scale</source>
-      <translation>Neue Dokumentskala</translation>
-    </message>
-    <message>
       <source>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</source>
       <translation>Legt den Kamera-Zoom für neue Dokumente fest.
@@ -3598,6 +3991,47 @@ Das Neigen der Maus wird durch diese Einstellung nicht deaktiviert.</translation
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
       <translation>Wie stark vergrößert werden soll.
 Zoom-Schritt von '1' bedeutet für jeden Zoom-Schritt einen Faktor von 7,5.</translation>
+    </message>
+    <message>
+      <source>Camera zoom</source>
+      <translation type="unfinished">Camera zoom</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsPythonConsole</name>
+    <message>
+      <source>Python console</source>
+      <translation>Python-Konsole</translation>
+    </message>
+    <message>
+      <source>Settings</source>
+      <translation>Einstellungen</translation>
+    </message>
+    <message>
+      <source>Words will be wrapped when they exceed available
+horizontal space in Python console</source>
+      <translation>Zeilen werden in der Python-Konsole automatisch umbrochen,
+wenn sie die verfügbare Zeilenlänge überschreiten</translation>
+    </message>
+    <message>
+      <source>Enable word wrap</source>
+      <translation>Wortumbruch aktivieren</translation>
+    </message>
+    <message>
+      <source>The cursor shape will be a block</source>
+      <translation type="unfinished">The cursor shape will be a block</translation>
+    </message>
+    <message>
+      <source>Enable block cursor</source>
+      <translation type="unfinished">Enable block cursor</translation>
+    </message>
+    <message>
+      <source>Saves Python history across sessions</source>
+      <translation type="unfinished">Saves Python history across sessions</translation>
+    </message>
+    <message>
+      <source>Save history</source>
+      <translation>Verlauf speichern</translation>
     </message>
   </context>
   <context>
@@ -3867,12 +4301,6 @@ Zoom-Schritt von '1' bedeutet für jeden Zoom-Schritt einen Faktor von 7,5.</tra
       <translation>Ergebnis</translation>
     </message>
     <message>
-      <source>List of last used calculations 
-To add a calculation press Return in the value input field</source>
-      <translation>Liste der zuletzt verwendeten Berechnungen
-Um eine Berechnung hinzuzufügen drücken Sie Return im Werteingabefeld</translation>
-    </message>
-    <message>
       <source>Quantity</source>
       <translation>Anzahl</translation>
     </message>
@@ -3905,6 +4333,12 @@ Das Präferenzsystem ist das in den allgemeinen Einstellungen festgelegte System
     <message>
       <source>Copy the result into the clipboard</source>
       <translation>Ergebnis in die Zwischenablage kopieren</translation>
+    </message>
+    <message>
+      <source>List of last used calculations.
+To add a calculation press Return in the value input field</source>
+      <translation type="unfinished">List of last used calculations.
+To add a calculation press Return in the value input field</translation>
     </message>
   </context>
   <context>
@@ -4055,10 +4489,6 @@ Das Präferenzsystem ist das in den allgemeinen Einstellungen festgelegte System
       <translation>Sind Sie sicher, dass Sie alle temporären Verzeichnisse löschen möchten?</translation>
     </message>
     <message>
-      <source>Finished</source>
-      <translation>Beendet</translation>
-    </message>
-    <message>
       <source>Transient directories deleted.</source>
       <translation>Temporäre Verzeichnisse gelöscht.</translation>
     </message>
@@ -4071,6 +4501,10 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
       <translation>Wenn alle temporären Verzeichnisse gelöscht werden, können Sie anschließend keine Dateien wiederherstellen.</translation>
+    </message>
+    <message>
+      <source>Transient deleted</source>
+      <translation type="unfinished">Transient deleted</translation>
     </message>
   </context>
   <context>
@@ -4440,32 +4874,32 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Bitte wählen Sie 1, 2 oder 3 Punkte, bevor Sie auf diese Schaltfläche klicken. Ein Punkt kann sich auf einem Scheitelpunkt, einer Fläche oder einer Kante befinden. Der verwendete Punkt auf einer Fläche oder Kante ist derjenige Punkt, der sich an der Mausposition entlang der Fläche oder Kante befindet. Wenn 1 Punkt ausgewählt ist, wird dieser als Drehpunkt verwendet. Wenn zwei Punkte ausgewählt werden, ist der Mittelpunkt zwischen ihnen der Drehpunkt und falls erforderlich, wird eine neue benutzerdefinierte Achse erstellt. Wenn 3 Punkte ausgewählt werden, wird der erste Punkt zum Drehpunkt und liegt auf dem Vektor, der senkrecht zu der durch die 3 Punkte definierten Ebene liegt. In der Berichtansicht werden einige Entfernungs- und Winkelinformationen bereitgestellt, die beim Ausrichten von Objekten hilfreich sein können. Wenn Sie bei gedrückter Umschalttaste + klicken, wird der entsprechende Abstand oder Winkel in die Zwischenablage kopiert.</translation>
     </message>
     <message>
-      <source>Around y-axis:</source>
-      <translation>Um die y-Achse:</translation>
+      <source>Pitch (around y-axis):</source>
+      <translation>Nicken (um die y-Achse):</translation>
     </message>
     <message>
-      <source>Around z-axis:</source>
-      <translation>Um die z-Achse:</translation>
+      <source>Roll (around x-axis):</source>
+      <translation>Rollen (um die x-Achse):</translation>
     </message>
     <message>
-      <source>Around x-axis:</source>
-      <translation>Um die x-Achse:</translation>
+      <source>Yaw (around z-axis):</source>
+      <translation>Gieren (um die z-Achse):</translation>
     </message>
     <message>
-      <source>Rotation around the x-axis</source>
-      <translation>Drehen um die x-Achse</translation>
+      <source>Yaw (around z-axis)</source>
+      <translation>Gieren (um die z-Achse)</translation>
     </message>
     <message>
-      <source>Rotation around the y-axis</source>
-      <translation>Drehen um die y-Achse</translation>
+      <source>Pitch (around y-axis)</source>
+      <translation>Nicken (um die y-Achse)</translation>
     </message>
     <message>
-      <source>Rotation around the z-axis</source>
-      <translation>Drehung um die z-Achse</translation>
+      <source>Roll (around the x-axis)</source>
+      <translation>Rollen (um die x-Achse)</translation>
     </message>
     <message>
-      <source>Euler angles (xy'z'')</source>
-      <translation>Eulersche Winkel (xy'z'')</translation>
+      <source>Euler angles (zy'x'')</source>
+      <translation>Eulerwinkel (zy'x'')</translation>
     </message>
   </context>
   <context>
@@ -4601,10 +5035,6 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Die ausgewählten Objekte enthalten andere Abhängigkeiten. Bitte wählen Sie aus, welche Objekte exportiert werden sollen. Alle Abhängigkeiten werden standardmäßig automatisch ausgewählt.</translation>
     </message>
     <message>
-      <source>Dependency</source>
-      <translation>Abhängigkeit</translation>
-    </message>
-    <message>
       <source>Document</source>
       <translation>Dokument</translation>
     </message>
@@ -4613,20 +5043,35 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Name</translation>
     </message>
     <message>
-      <source>State</source>
-      <translation>Zustand</translation>
+      <source>&amp;Use Original Selections</source>
+      <translation>Originalauswahl &amp;verwenden</translation>
     </message>
     <message>
-      <source>Hierarchy</source>
-      <translation>Hierarchie</translation>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation>Abhängigkeiten ignorieren und mit Objekten
+fortfahren die ursprünglich vor dem Öffnen
+dieses Dialogs ausgewählt wurden</translation>
     </message>
     <message>
-      <source>Selected</source>
-      <translation>Ausgewählt</translation>
+      <source>Auto select depending objects</source>
+      <translation type="unfinished">Auto select depending objects</translation>
     </message>
     <message>
-      <source>Partial</source>
-      <translation>Teilweise</translation>
+      <source>Depending on</source>
+      <translation type="unfinished">Depending on</translation>
+    </message>
+    <message>
+      <source>Depended by</source>
+      <translation type="unfinished">Depended by</translation>
+    </message>
+    <message>
+      <source>Selections</source>
+      <translation>Auswahl</translation>
+    </message>
+    <message>
+      <source>All</source>
+      <translation>Alles</translation>
     </message>
   </context>
   <context>
@@ -4721,8 +5166,8 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Fehler</translation>
     </message>
     <message>
-      <source>Show report view on</source>
-      <translation>Berichtsansicht anzeigen für</translation>
+      <source>Show output window on</source>
+      <translation type="unfinished">Show output window on</translation>
     </message>
   </context>
   <context>
@@ -5169,6 +5614,18 @@ Do you want to save the document now?</source>
       <translation>Um zu externen Objekten zu verlinken, muss das Dokument mindestens einmal gespeichert werden.
 Möchten Sie das Dokument jetzt speichern?</translation>
     </message>
+    <message>
+      <source>Help addon needed!</source>
+      <translation type="unfinished">Help addon needed!</translation>
+    </message>
+    <message>
+      <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
+      <translation type="unfinished">The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</translation>
+    </message>
+    <message>
+      <source>Open Addon Manager</source>
+      <translation type="unfinished">Open Addon Manager</translation>
+    </message>
   </context>
   <context>
     <name>Gui::ManualAlignment</name>
@@ -5278,6 +5735,13 @@ How do you want to proceed?</source>
     </message>
   </context>
   <context>
+    <name>Gui::ModifierLineEdit</name>
+    <message>
+      <source>Press modifier keys</source>
+      <translation type="unfinished">Press modifier keys</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::NetworkRetriever</name>
     <message>
       <source>Download started...</source>
@@ -5301,6 +5765,25 @@ How do you want to proceed?</source>
     <message>
       <source>Press CTRL and left mouse button</source>
       <translation>Drücken Sie STRG und die linke Maustaste</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::OpenSCADNavigationStyle</name>
+    <message>
+      <source>Press left mouse button</source>
+      <translation>Drücken Sie die linke Maustaste</translation>
+    </message>
+    <message>
+      <source>Press right mouse button and move mouse</source>
+      <translation type="unfinished">Press right mouse button and move mouse</translation>
+    </message>
+    <message>
+      <source>Press left mouse button and move mouse</source>
+      <translation type="unfinished">Press left mouse button and move mouse</translation>
+    </message>
+    <message>
+      <source>Press middle mouse button or SHIFT and right mouse button</source>
+      <translation type="unfinished">Press middle mouse button or SHIFT and right mouse button</translation>
     </message>
   </context>
   <context>
@@ -5395,6 +5878,14 @@ How do you want to proceed?</source>
     <message>
       <source>Auto expand</source>
       <translation>Automatisch erweitern</translation>
+    </message>
+    <message>
+      <source>Rename property group</source>
+      <translation type="unfinished">Rename property group</translation>
+    </message>
+    <message>
+      <source>Group name:</source>
+      <translation type="unfinished">Group name:</translation>
     </message>
   </context>
   <context>
@@ -5552,6 +6043,10 @@ Wollen Sie sie beenden, ohne Ihre Daten zu speichern?</translation>
       <source>The file '%1' cannot be opened.</source>
       <translation>Die Datei '%1' kann nicht geöffnet werden.</translation>
     </message>
+    <message>
+      <source>none</source>
+      <translation>kein</translation>
+    </message>
   </context>
   <context>
     <name>Gui::RevitNavigationStyle</name>
@@ -5573,6 +6068,25 @@ Wollen Sie sie beenden, ohne Ihre Daten zu speichern?</translation>
     </message>
   </context>
   <context>
+    <name>Gui::SearchBar</name>
+    <message>
+      <source>Previous</source>
+      <translation>Vorherige</translation>
+    </message>
+    <message>
+      <source>Next</source>
+      <translation type="unfinished">Next</translation>
+    </message>
+    <message>
+      <source>Case sensitive</source>
+      <translation type="unfinished">Case sensitive</translation>
+    </message>
+    <message>
+      <source>Whole words</source>
+      <translation type="unfinished">Whole words</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::SelectModule</name>
     <message>
       <source>Select module</source>
@@ -5590,10 +6104,6 @@ Wollen Sie sie beenden, ohne Ihre Daten zu speichern?</translation>
   <context>
     <name>Gui::StdCmdDescription</name>
     <message>
-      <source>Help</source>
-      <translation>Hilfe</translation>
-    </message>
-    <message>
       <source>Des&amp;cription</source>
       <translation>Bes&amp;chreibung</translation>
     </message>
@@ -5604,10 +6114,6 @@ Wollen Sie sie beenden, ohne Ihre Daten zu speichern?</translation>
   </context>
   <context>
     <name>Gui::StdCmdDownloadOnlineHelp</name>
-    <message>
-      <source>Help</source>
-      <translation>Hilfe</translation>
-    </message>
     <message>
       <source>Download online help</source>
       <translation>Online-Hilfe herunterladen</translation>
@@ -5647,10 +6153,6 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
   </context>
   <context>
     <name>Gui::StdCmdPythonHelp</name>
-    <message>
-      <source>Tools</source>
-      <translation>Werkzeuge</translation>
-    </message>
     <message>
       <source>Automatic python modules documentation</source>
       <translation>Automatische Python Modul Dokumentation</translation>
@@ -5759,7 +6261,7 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     <name>Gui::TaskView::TaskDialog</name>
     <message>
       <source>A dialog is already open in the task panel</source>
-      <translation>Ein Dialog im Arbeitspaneele ist bereits geöffnet</translation>
+      <translation>Im Aufgabenbereich ist bereits ein Dialog geöffnet</translation>
     </message>
   </context>
   <context>
@@ -5813,6 +6315,25 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     <message>
       <source>Edit text</source>
       <translation>Text bearbeiten</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::TinkerCADNavigationStyle</name>
+    <message>
+      <source>Press left mouse button</source>
+      <translation>Drücken Sie die linke Maustaste</translation>
+    </message>
+    <message>
+      <source>Press middle mouse button</source>
+      <translation>Drücken Sie die mittlere Maustaste</translation>
+    </message>
+    <message>
+      <source>Press right mouse button</source>
+      <translation type="unfinished">Press right mouse button</translation>
+    </message>
+    <message>
+      <source>Scroll middle mouse button</source>
+      <translation>Scrollen Sie die mittlere Maustaste</translation>
     </message>
   </context>
   <context>
@@ -5980,6 +6501,22 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
       <source>Vietnamese</source>
       <translation>Vietnamesisch</translation>
     </message>
+    <message>
+      <source>Bulgarian</source>
+      <translation>Bulgarisch</translation>
+    </message>
+    <message>
+      <source>Greek</source>
+      <translation>Griechisch</translation>
+    </message>
+    <message>
+      <source>Spanish, Argentina</source>
+      <translation>Spanisch, Argentinien</translation>
+    </message>
+    <message>
+      <source>Georgian</source>
+      <translation type="unfinished">Georgian</translation>
+    </message>
   </context>
   <context>
     <name>Gui::TreeDockWidget</name>
@@ -6124,6 +6661,14 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     <message>
       <source> (but must be executed)</source>
       <translation> (muss aber ausgeführt werden)</translation>
+    </message>
+    <message>
+      <source>Add dependent objects to selection</source>
+      <translation type="unfinished">Add dependent objects to selection</translation>
+    </message>
+    <message>
+      <source>Adds all dependent objects to the selection</source>
+      <translation type="unfinished">Adds all dependent objects to the selection</translation>
     </message>
   </context>
   <context>
@@ -6603,24 +7148,6 @@ Bitte starten Sie einen Browser und geben darin ein: http://localhost:%1.</trans
       <translation>Das Dokument kann im Moment nicht geschlossen werden.</translation>
     </message>
     <message>
-      <source>No OpenGL</source>
-      <translation>Kein OpenGL</translation>
-    </message>
-    <message>
-      <source>This system does not support OpenGL</source>
-      <translation>Dieses System unterstützt kein OpenGL</translation>
-    </message>
-    <message>
-      <source>Help</source>
-      <translation>Hilfe</translation>
-    </message>
-    <message>
-      <source>Unable to load documentation.
-In order to load it Qt 4.4 or higher is required.</source>
-      <translation>Kann Dokumentation nicht laden.
-Es wird dazu Qt 4.4 oder höher benötigt.</translation>
-    </message>
-    <message>
       <source>Exporting PDF...</source>
       <translation>Exportiert als PDF...</translation>
     </message>
@@ -6897,26 +7424,6 @@ Wählen Sie 'Abbrechen' um abzubrechen</translation>
       <translation>Bist du sicher, dass du fortfahren möchtest?</translation>
     </message>
     <message>
-      <source>
-
-Please check report view for more...</source>
-      <translation>
-
-Bitte überprüfen Sie die Berichtsansicht für mehr...</translation>
-    </message>
-    <message>
-      <source>
-Document: </source>
-      <translation>
-Dokument: </translation>
-    </message>
-    <message>
-      <source>
-  Path: </source>
-      <translation>
-  Pfad: </translation>
-    </message>
-    <message>
       <source>Identical physical path</source>
       <translation>Identischer physischer Pfad</translation>
     </message>
@@ -6937,12 +7444,132 @@ Dokument: </translation>
       <translation>Arbeitsbereiche</translation>
     </message>
     <message>
-      <source>
+      <source>Could not save document</source>
+      <translation>Dokument konnte nicht gespeichert werden</translation>
+    </message>
+    <message>
+      <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
-Physical path: </source>
-      <translation>
+"%1"
 
-Physischer Pfad: </translation>
+Would you like to save the file with a different name?</source>
+      <translation>Es gab ein Problem beim Speichern der Datei. Dies kann daran liegen, dass einige der übergeordneten Ordner nicht existieren, Sie nicht über ausreichende Berechtigungen verfügen oder aus anderen Gründen. Fehlerdetails:
+
+"%1"
+
+Möchten Sie die Datei mit einem anderen Namen speichern?</translation>
+    </message>
+    <message>
+      <source>Document not saved</source>
+      <translation>Dokument nicht gespeichert</translation>
+    </message>
+    <message>
+      <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
+      <translation>Das Dokument%1 konnte nicht gespeichert werden. Möchtest du das Schließen abbrechen?</translation>
+    </message>
+    <message>
+      <source>%1 Document(s) not saved</source>
+      <translation>%1 Dokument(e) nicht gespeichert</translation>
+    </message>
+    <message>
+      <source>Some documents could not be saved. Do you want to cancel closing?</source>
+      <translation>Einige Dokumente konnten nicht gespeichert werden. Möchtest du das Schließen abbrechen?</translation>
+    </message>
+    <message>
+      <source>Please check report view for more...</source>
+      <translation type="unfinished">Please check report view for more...</translation>
+    </message>
+    <message>
+      <source>Physical path:</source>
+      <translation type="unfinished">Physical path:</translation>
+    </message>
+    <message>
+      <source>Document:</source>
+      <translation type="unfinished">Document:</translation>
+    </message>
+    <message>
+      <source>Path:</source>
+      <translation>Pfad:</translation>
+    </message>
+    <message>
+      <source>Edit %1</source>
+      <translation>%1 bearbeiten</translation>
+    </message>
+    <message>
+      <source>Setup configurable object</source>
+      <translation type="unfinished">Setup configurable object</translation>
+    </message>
+    <message>
+      <source>Select which object to copy or exclude when configuration changes.All external linked object are excluded by default.</source>
+      <translation type="unfinished">Select which object to copy or exclude when configuration changes.All external linked object are excluded by default.</translation>
+    </message>
+    <message>
+      <source>Please select which objects to copy when the configuration is changed</source>
+      <translation type="unfinished">Please select which objects to copy when the configuration is changed</translation>
+    </message>
+    <message>
+      <source>Apply to all</source>
+      <translation type="unfinished">Apply to all</translation>
+    </message>
+    <message>
+      <source>Apply the setting to all links. Or, uncheck this
+option to apply only to this link.</source>
+      <translation type="unfinished">Apply the setting to all links. Or, uncheck this
+option to apply only to this link.</translation>
+    </message>
+    <message>
+      <source>Copy on change</source>
+      <translation type="unfinished">Copy on change</translation>
+    </message>
+    <message>
+      <source>Enable</source>
+      <translation>Aktivieren</translation>
+    </message>
+    <message>
+      <source>Enable auto copy of linked object when its configuration is changed</source>
+      <translation type="unfinished">Enable auto copy of linked object when its configuration is changed</translation>
+    </message>
+    <message>
+      <source>Tracking</source>
+      <translation>Verfolgung</translation>
+    </message>
+    <message>
+      <source>Copy the linked object when its configuration is changed.
+Also auto redo the copy if the original linked object is changed.
+</source>
+      <translation type="unfinished">Copy the linked object when its configuration is changed.
+Also auto redo the copy if the original linked object is changed.
+</translation>
+    </message>
+    <message>
+      <source>Disable copy on change</source>
+      <translation type="unfinished">Disable copy on change</translation>
+    </message>
+    <message>
+      <source>Rerefresh configurable object</source>
+      <translation type="unfinished">Rerefresh configurable object</translation>
+    </message>
+    <message>
+      <source>Synchronize the original configurable source object by
+creating a new deep copy. Note that any changes made to
+the current copy will be lost.
+</source>
+      <translation type="unfinished">Synchronize the original configurable source object by
+creating a new deep copy. Note that any changes made to
+the current copy will be lost.
+</translation>
+    </message>
+    <message>
+      <source>Toggle array elements</source>
+      <translation type="unfinished">Toggle array elements</translation>
+    </message>
+    <message>
+      <source>Change whether show each link array element as individual objects</source>
+      <translation type="unfinished">Change whether show each link array element as individual objects</translation>
+    </message>
+    <message>
+      <source>Transform at the origin of the placement</source>
+      <translation type="unfinished">Transform at the origin of the placement</translation>
     </message>
   </context>
   <context>
@@ -6959,10 +7586,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdBoxElementSelection</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Box element selection</source>
       <translation>Box-Element Auswahl</translation>
     </message>
@@ -6970,20 +7593,12 @@ Physischer Pfad: </translation>
   <context>
     <name>StdBoxSelection</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Box selection</source>
       <translation>Rechteckauswahl</translation>
     </message>
   </context>
   <context>
     <name>StdCmdAbout</name>
-    <message>
-      <source>Help</source>
-      <translation>Hilfe</translation>
-    </message>
     <message>
       <source>&amp;About %1</source>
       <translation>&amp;Über %1</translation>
@@ -6996,10 +7611,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdAboutQt</name>
     <message>
-      <source>Help</source>
-      <translation>Hilfe</translation>
-    </message>
-    <message>
       <source>About &amp;Qt</source>
       <translation>Über &amp;Qt</translation>
     </message>
@@ -7010,10 +7621,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdActivateNextWindow</name>
-    <message>
-      <source>Window</source>
-      <translation>Fenster</translation>
-    </message>
     <message>
       <source>Ne&amp;xt</source>
       <translation>Nächs&amp;tes Fenster</translation>
@@ -7026,10 +7633,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdActivatePrevWindow</name>
     <message>
-      <source>Window</source>
-      <translation>Fenster</translation>
-    </message>
-    <message>
       <source>Pre&amp;vious</source>
       <translation>&amp;Vorheriges Fenster</translation>
     </message>
@@ -7040,10 +7643,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdAlignment</name>
-    <message>
-      <source>Edit</source>
-      <translation>Bearbeiten</translation>
-    </message>
     <message>
       <source>Alignment...</source>
       <translation>Ausrichtung...</translation>
@@ -7056,10 +7655,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdArrangeIcons</name>
     <message>
-      <source>Window</source>
-      <translation>Fenster</translation>
-    </message>
-    <message>
       <source>Arrange &amp;Icons</source>
       <translation>&amp;Symbole anordnen</translation>
     </message>
@@ -7071,20 +7666,12 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdAxisCross</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Toggle axis cross</source>
       <translation>Achsenkreuz ein/ausblenden</translation>
     </message>
   </context>
   <context>
     <name>StdCmdCascadeWindows</name>
-    <message>
-      <source>Window</source>
-      <translation>Fenster</translation>
-    </message>
     <message>
       <source>&amp;Cascade</source>
       <translation>Ü&amp;berlappend anordnen</translation>
@@ -7097,10 +7684,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdCloseActiveWindow</name>
     <message>
-      <source>Window</source>
-      <translation>Fenster</translation>
-    </message>
-    <message>
       <source>Cl&amp;ose</source>
       <translation>Schl&amp;ießen</translation>
     </message>
@@ -7111,10 +7694,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdCloseAllWindows</name>
-    <message>
-      <source>Window</source>
-      <translation>Fenster</translation>
-    </message>
     <message>
       <source>Close Al&amp;l</source>
       <translation>Alles sch&amp;ließen</translation>
@@ -7127,10 +7706,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdCommandLine</name>
     <message>
-      <source>Tools</source>
-      <translation>Werkzeuge</translation>
-    </message>
-    <message>
       <source>Start command &amp;line...</source>
       <translation>Kommandozei&amp;le...</translation>
     </message>
@@ -7141,10 +7716,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdCopy</name>
-    <message>
-      <source>Edit</source>
-      <translation>Bearbeiten</translation>
-    </message>
     <message>
       <source>C&amp;opy</source>
       <translation>&amp;Kopieren</translation>
@@ -7157,10 +7728,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdCut</name>
     <message>
-      <source>Edit</source>
-      <translation>Bearbeiten</translation>
-    </message>
-    <message>
       <source>&amp;Cut</source>
       <translation>&amp;Ausschneiden</translation>
     </message>
@@ -7171,10 +7738,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdDelete</name>
-    <message>
-      <source>Edit</source>
-      <translation>Bearbeiten</translation>
-    </message>
     <message>
       <source>&amp;Delete</source>
       <translation>&amp;Löschen</translation>
@@ -7187,10 +7750,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdDemoMode</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>View turntable...</source>
       <translation>Drehscheibe...</translation>
     </message>
@@ -7202,10 +7761,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdDependencyGraph</name>
     <message>
-      <source>Tools</source>
-      <translation>Werkzeuge</translation>
-    </message>
-    <message>
       <source>Dependency graph...</source>
       <translation>Abhängigkeitsgraph...</translation>
     </message>
@@ -7216,10 +7771,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdDlgCustomize</name>
-    <message>
-      <source>Tools</source>
-      <translation>Werkzeuge</translation>
-    </message>
     <message>
       <source>Cu&amp;stomize...</source>
       <translation>&amp;Benutzerdefiniert...</translation>
@@ -7239,17 +7790,9 @@ Physischer Pfad: </translation>
       <source>Opens a dialog to let you execute a recorded macro</source>
       <translation>Öffnet Dialog zum Ausführen eines gespeicherten Makros</translation>
     </message>
-    <message>
-      <source>Macro</source>
-      <translation>Makro</translation>
-    </message>
   </context>
   <context>
     <name>StdCmdDlgMacroExecuteDirect</name>
-    <message>
-      <source>Macro</source>
-      <translation>Makro</translation>
-    </message>
     <message>
       <source>Execute macro</source>
       <translation>Makro ausführen</translation>
@@ -7269,17 +7812,9 @@ Physischer Pfad: </translation>
       <source>Opens a dialog to record a macro</source>
       <translation>Öffnet einen Dialog zur Makroaufzeichnung</translation>
     </message>
-    <message>
-      <source>Macro</source>
-      <translation>Makro</translation>
-    </message>
   </context>
   <context>
     <name>StdCmdDlgParameter</name>
-    <message>
-      <source>Tools</source>
-      <translation>Werkzeuge</translation>
-    </message>
     <message>
       <source>E&amp;dit parameters ...</source>
       <translation>P&amp;arameter bearbeiten...</translation>
@@ -7292,10 +7827,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdDlgPreferences</name>
     <message>
-      <source>Tools</source>
-      <translation>Werkzeuge</translation>
-    </message>
-    <message>
       <source>&amp;Preferences ...</source>
       <translation>&amp;Einstellungen...</translation>
     </message>
@@ -7306,10 +7837,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdDockViewMenu</name>
-    <message>
-      <source>View</source>
-      <translation>Ansicht</translation>
-    </message>
     <message>
       <source>Panels</source>
       <translation>Paneele</translation>
@@ -7322,10 +7849,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdDrawStyle</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Draw style</source>
       <translation>Zeichenstil</translation>
     </message>
@@ -7337,10 +7860,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdDuplicateSelection</name>
     <message>
-      <source>Edit</source>
-      <translation>Bearbeiten</translation>
-    </message>
-    <message>
       <source>Duplicate selection</source>
       <translation>Auswahl duplizieren</translation>
     </message>
@@ -7351,10 +7870,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdEdit</name>
-    <message>
-      <source>Edit</source>
-      <translation>Bearbeiten</translation>
-    </message>
     <message>
       <source>Toggle &amp;Edit mode</source>
       <translation>Bearbeitungsmodus umschalten</translation>
@@ -7370,10 +7885,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdExport</name>
-    <message>
-      <source>File</source>
-      <translation>Datei</translation>
-    </message>
     <message>
       <source>&amp;Export...</source>
       <translation>&amp;Exportieren...</translation>
@@ -7394,20 +7905,12 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdExpression</name>
     <message>
-      <source>Edit</source>
-      <translation>Bearbeiten</translation>
-    </message>
-    <message>
       <source>Expression actions</source>
       <translation>Ausdruck-Aktionen</translation>
     </message>
   </context>
   <context>
     <name>StdCmdFeatRecompute</name>
-    <message>
-      <source>File</source>
-      <translation>Datei</translation>
-    </message>
     <message>
       <source>&amp;Recompute</source>
       <translation>Neu &amp;berechnen</translation>
@@ -7420,10 +7923,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdFreeCADDonation</name>
     <message>
-      <source>Help</source>
-      <translation>Hilfe</translation>
-    </message>
-    <message>
       <source>Donate</source>
       <translation>Spenden</translation>
     </message>
@@ -7434,10 +7933,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdFreeCADFAQ</name>
-    <message>
-      <source>Help</source>
-      <translation>Hilfe</translation>
-    </message>
     <message>
       <source>FreeCAD FAQ</source>
       <translation>FreeCAD FAQ</translation>
@@ -7454,10 +7949,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdFreeCADForum</name>
     <message>
-      <source>Help</source>
-      <translation>Hilfe</translation>
-    </message>
-    <message>
       <source>FreeCAD Forum</source>
       <translation>FreeCAD-Forum</translation>
     </message>
@@ -7472,10 +7963,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdFreeCADPowerUserHub</name>
-    <message>
-      <source>Help</source>
-      <translation>Hilfe</translation>
-    </message>
     <message>
       <source>Python scripting documentation</source>
       <translation>Python Scripting Dokumentation</translation>
@@ -7492,24 +7979,16 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdFreeCADUserHub</name>
     <message>
-      <source>Help</source>
-      <translation>Hilfe</translation>
-    </message>
-    <message>
       <source>Users documentation</source>
       <translation>Benutzerdokumentation</translation>
     </message>
     <message>
       <source>Documentation for users on the FreeCAD website</source>
-      <translation>Benutzerdokumentation auf der FreeCAD-Website</translation>
+      <translation>Benutzerdokumentation auf der FreeCAD-Webseite</translation>
     </message>
   </context>
   <context>
     <name>StdCmdFreeCADWebsite</name>
-    <message>
-      <source>Help</source>
-      <translation>Hilfe</translation>
-    </message>
     <message>
       <source>FreeCAD Website</source>
       <translation>FreeCAD Webseite</translation>
@@ -7522,10 +8001,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdFreezeViews</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Freeze display</source>
       <translation>Ansicht einfrieren</translation>
     </message>
@@ -7536,10 +8011,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdGroup</name>
-    <message>
-      <source>Structure</source>
-      <translation>Struktur</translation>
-    </message>
     <message>
       <source>Create group</source>
       <translation>Gruppe erstellen</translation>
@@ -7552,10 +8023,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdHideObjects</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Hide all objects</source>
       <translation>Alle Objekte ausblenden</translation>
     </message>
@@ -7567,10 +8034,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdHideSelection</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Hide selection</source>
       <translation>Auswahl ausblenden</translation>
     </message>
@@ -7581,10 +8044,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdImport</name>
-    <message>
-      <source>File</source>
-      <translation>Datei</translation>
-    </message>
     <message>
       <source>&amp;Import...</source>
       <translation>&amp;Importieren...</translation>
@@ -7605,20 +8064,12 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdLinkActions</name>
     <message>
-      <source>View</source>
-      <translation>Ansicht</translation>
-    </message>
-    <message>
       <source>Link actions</source>
-      <translation>Verknüpfungsaktionen</translation>
+      <translation>Verknüpfungen...</translation>
     </message>
   </context>
   <context>
     <name>StdCmdLinkImport</name>
-    <message>
-      <source>Link</source>
-      <translation>Link</translation>
-    </message>
     <message>
       <source>Import links</source>
       <translation>Verknüpfungen importieren</translation>
@@ -7631,10 +8082,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdLinkImportAll</name>
     <message>
-      <source>Link</source>
-      <translation>Link</translation>
-    </message>
-    <message>
       <source>Import all links</source>
       <translation>Alle Verknüpfungen importieren</translation>
     </message>
@@ -7645,10 +8092,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdLinkMake</name>
-    <message>
-      <source>Link</source>
-      <translation>Link</translation>
-    </message>
     <message>
       <source>Make link</source>
       <translation>Verknüpfung erstellen</translation>
@@ -7661,10 +8104,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdLinkMakeGroup</name>
     <message>
-      <source>Link</source>
-      <translation>Link</translation>
-    </message>
-    <message>
       <source>Make link group</source>
       <translation>Verknüpfungsgruppe erstellen</translation>
     </message>
@@ -7675,10 +8114,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdLinkMakeRelative</name>
-    <message>
-      <source>Link</source>
-      <translation>Link</translation>
-    </message>
     <message>
       <source>Make sub-link</source>
       <translation>Unterverknüpfung erstellen</translation>
@@ -7691,10 +8126,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdLinkReplace</name>
     <message>
-      <source>Link</source>
-      <translation>Link</translation>
-    </message>
-    <message>
       <source>Replace with link</source>
       <translation>Durch Verknüpfung ersetzen</translation>
     </message>
@@ -7705,10 +8136,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdLinkSelectActions</name>
-    <message>
-      <source>View</source>
-      <translation>Ansicht</translation>
-    </message>
     <message>
       <source>Link navigation</source>
       <translation>Verknüpfungsnavigation</translation>
@@ -7721,10 +8148,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdLinkSelectAllLinks</name>
     <message>
-      <source>Link</source>
-      <translation>Link</translation>
-    </message>
-    <message>
       <source>Select all links</source>
       <translation>Alle Verknüpfungen auswählen</translation>
     </message>
@@ -7735,10 +8158,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdLinkSelectLinked</name>
-    <message>
-      <source>Link</source>
-      <translation>Link</translation>
-    </message>
     <message>
       <source>Go to linked object</source>
       <translation>Zum verknüpften Objekt gehen</translation>
@@ -7751,10 +8170,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdLinkSelectLinkedFinal</name>
     <message>
-      <source>Link</source>
-      <translation>Link</translation>
-    </message>
-    <message>
       <source>Go to the deepest linked object</source>
       <translation>Zum tiefsten verknüpften Objekt gehen</translation>
     </message>
@@ -7765,10 +8180,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdLinkUnlink</name>
-    <message>
-      <source>Link</source>
-      <translation>Link</translation>
-    </message>
     <message>
       <source>Unlink</source>
       <translation>Verknüpfung auflösen</translation>
@@ -7781,10 +8192,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdMacroAttachDebugger</name>
     <message>
-      <source>Macro</source>
-      <translation>Makro</translation>
-    </message>
-    <message>
       <source>Attach to remote debugger...</source>
       <translation>An Remote-Debugger anhängen...</translation>
     </message>
@@ -7795,10 +8202,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdMacroStartDebug</name>
-    <message>
-      <source>Macro</source>
-      <translation>Makro</translation>
-    </message>
     <message>
       <source>Debug macro</source>
       <translation>Makro debuggen			</translation>
@@ -7811,10 +8214,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdMacroStepInto</name>
     <message>
-      <source>Macro</source>
-      <translation>Makro</translation>
-    </message>
-    <message>
       <source>Step into</source>
       <translation>Einzelschritt</translation>
     </message>
@@ -7822,20 +8221,12 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdMacroStepOver</name>
     <message>
-      <source>Macro</source>
-      <translation>Makro</translation>
-    </message>
-    <message>
       <source>Step over</source>
       <translation>Einen Schritt weiter</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMacroStopDebug</name>
-    <message>
-      <source>Macro</source>
-      <translation>Makro</translation>
-    </message>
     <message>
       <source>Stop debugging</source>
       <translation>Debuggen stoppen</translation>
@@ -7848,10 +8239,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdMacroStopRecord</name>
     <message>
-      <source>Macro</source>
-      <translation>Makro</translation>
-    </message>
-    <message>
       <source>S&amp;top macro recording</source>
       <translation>Ma&amp;kroaufzeichnung beenden</translation>
     </message>
@@ -7863,20 +8250,12 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdMeasureDistance</name>
     <message>
-      <source>View</source>
-      <translation>Ansicht</translation>
-    </message>
-    <message>
       <source>Measure distance</source>
       <translation>Abstand messen</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMeasurementSimple</name>
-    <message>
-      <source>Tools</source>
-      <translation>Werkzeuge</translation>
-    </message>
     <message>
       <source>Measures distance between two selected objects</source>
       <translation>Misst die Distanz zwischen zwei ausgewählten Objekten</translation>
@@ -7888,10 +8267,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdMergeProjects</name>
-    <message>
-      <source>File</source>
-      <translation>Datei</translation>
-    </message>
     <message>
       <source>Merge project...</source>
       <translation>Projekt zusammenführen...</translation>
@@ -7911,10 +8286,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdNew</name>
-    <message>
-      <source>File</source>
-      <translation>Datei</translation>
-    </message>
     <message>
       <source>&amp;New</source>
       <translation>&amp;Neu</translation>
@@ -7942,10 +8313,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdOnlineHelpWebsite</name>
     <message>
-      <source>Help</source>
-      <translation>Hilfe</translation>
-    </message>
-    <message>
       <source>Help Website</source>
       <translation>Hilfe-Webseite</translation>
     </message>
@@ -7956,10 +8323,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdOpen</name>
-    <message>
-      <source>File</source>
-      <translation>Datei</translation>
-    </message>
     <message>
       <source>&amp;Open...</source>
       <translation>&amp;Öffnen...</translation>
@@ -7988,10 +8351,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdPart</name>
     <message>
-      <source>Structure</source>
-      <translation>Struktur</translation>
-    </message>
-    <message>
       <source>Create part</source>
       <translation>Baugruppe erstellen</translation>
     </message>
@@ -8002,10 +8361,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdPaste</name>
-    <message>
-      <source>Edit</source>
-      <translation>Bearbeiten</translation>
-    </message>
     <message>
       <source>&amp;Paste</source>
       <translation>Ein&amp;fügen</translation>
@@ -8018,10 +8373,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdPlacement</name>
     <message>
-      <source>Edit</source>
-      <translation>Bearbeiten</translation>
-    </message>
-    <message>
       <source>Placement...</source>
       <translation>Placement...</translation>
     </message>
@@ -8032,10 +8383,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdPrint</name>
-    <message>
-      <source>File</source>
-      <translation>Datei</translation>
-    </message>
     <message>
       <source>&amp;Print...</source>
       <translation>&amp;Drucken...</translation>
@@ -8048,10 +8395,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdPrintPdf</name>
     <message>
-      <source>File</source>
-      <translation>Datei</translation>
-    </message>
-    <message>
       <source>&amp;Export PDF...</source>
       <translation>PDF &amp;exportieren...</translation>
     </message>
@@ -8062,10 +8405,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdPrintPreview</name>
-    <message>
-      <source>File</source>
-      <translation>Datei</translation>
-    </message>
     <message>
       <source>&amp;Print preview...</source>
       <translation>&amp;Druckvorschau...</translation>
@@ -8082,10 +8421,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdProjectInfo</name>
     <message>
-      <source>File</source>
-      <translation>Datei</translation>
-    </message>
-    <message>
       <source>Project i&amp;nformation...</source>
       <translation>Projekti&amp;nformationen...</translation>
     </message>
@@ -8096,10 +8431,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdProjectUtil</name>
-    <message>
-      <source>Tools</source>
-      <translation>Werkzeuge</translation>
-    </message>
     <message>
       <source>Project utility...</source>
       <translation>Projekt-Hilfsprogramm...</translation>
@@ -8112,10 +8443,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdPythonWebsite</name>
     <message>
-      <source>Help</source>
-      <translation>Hilfe</translation>
-    </message>
-    <message>
       <source>Python Website</source>
       <translation>Python-Webseite</translation>
     </message>
@@ -8126,10 +8453,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdQuit</name>
-    <message>
-      <source>File</source>
-      <translation>Datei</translation>
-    </message>
     <message>
       <source>E&amp;xit</source>
       <translation>B&amp;eenden</translation>
@@ -8142,20 +8465,12 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdRandomColor</name>
     <message>
-      <source>File</source>
-      <translation>Datei</translation>
-    </message>
-    <message>
       <source>Random color</source>
       <translation>Zufällige Farbe</translation>
     </message>
   </context>
   <context>
     <name>StdCmdRecentFiles</name>
-    <message>
-      <source>File</source>
-      <translation>Datei</translation>
-    </message>
     <message>
       <source>Recent files</source>
       <translation>Letzte Dateien</translation>
@@ -8168,10 +8483,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdRecentMacros</name>
     <message>
-      <source>Macro</source>
-      <translation>Makro</translation>
-    </message>
-    <message>
       <source>Recent macros</source>
       <translation>Aktuelle Makros</translation>
     </message>
@@ -8182,10 +8493,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdRedo</name>
-    <message>
-      <source>Edit</source>
-      <translation>Bearbeiten</translation>
-    </message>
     <message>
       <source>&amp;Redo</source>
       <translation>Wieder&amp;herstellen</translation>
@@ -8198,10 +8505,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdRefresh</name>
     <message>
-      <source>Edit</source>
-      <translation>Bearbeiten</translation>
-    </message>
-    <message>
       <source>&amp;Refresh</source>
       <translation>A&amp;ktualisieren</translation>
     </message>
@@ -8211,11 +8514,18 @@ Physischer Pfad: </translation>
     </message>
   </context>
   <context>
-    <name>StdCmdRevert</name>
+    <name>StdCmdReportBug</name>
     <message>
-      <source>File</source>
-      <translation>Datei</translation>
+      <source>Report a bug</source>
+      <translation type="unfinished">Report a bug</translation>
     </message>
+    <message>
+      <source>Report a bug or suggest a feature</source>
+      <translation type="unfinished">Report a bug or suggest a feature</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdRevert</name>
     <message>
       <source>Revert</source>
       <translation>Rückgängig</translation>
@@ -8228,10 +8538,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdSave</name>
     <message>
-      <source>File</source>
-      <translation>Datei</translation>
-    </message>
-    <message>
       <source>&amp;Save</source>
       <translation>&amp;Speichern</translation>
     </message>
@@ -8242,10 +8548,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdSaveAll</name>
-    <message>
-      <source>File</source>
-      <translation>Datei</translation>
-    </message>
     <message>
       <source>Save All</source>
       <translation>Alles speichern</translation>
@@ -8258,10 +8560,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdSaveAs</name>
     <message>
-      <source>File</source>
-      <translation>Datei</translation>
-    </message>
-    <message>
       <source>Save &amp;As...</source>
       <translation>Speichern &amp;unter...</translation>
     </message>
@@ -8272,10 +8570,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdSaveCopy</name>
-    <message>
-      <source>File</source>
-      <translation>Datei</translation>
-    </message>
     <message>
       <source>Save a &amp;Copy...</source>
       <translation>Spei&amp;chern einer Kopie...</translation>
@@ -8288,10 +8582,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdSceneInspector</name>
     <message>
-      <source>Tools</source>
-      <translation>Werkzeuge</translation>
-    </message>
-    <message>
       <source>Scene inspector...</source>
       <translation>Scene inspector...</translation>
     </message>
@@ -8302,10 +8592,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdSelBack</name>
-    <message>
-      <source>View</source>
-      <translation>Ansicht</translation>
-    </message>
     <message>
       <source>&amp;Back</source>
       <translation>&amp;Zurück</translation>
@@ -8318,10 +8604,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdSelBoundingBox</name>
     <message>
-      <source>View</source>
-      <translation>Ansicht</translation>
-    </message>
-    <message>
       <source>&amp;Bounding box</source>
       <translation>&amp;Begrenzungsrahmen</translation>
     </message>
@@ -8332,10 +8614,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdSelForward</name>
-    <message>
-      <source>View</source>
-      <translation>Ansicht</translation>
-    </message>
     <message>
       <source>&amp;Forward</source>
       <translation>&amp;Vorwärts</translation>
@@ -8348,10 +8626,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdSelectAll</name>
     <message>
-      <source>Edit</source>
-      <translation>Bearbeiten</translation>
-    </message>
-    <message>
       <source>Select &amp;All</source>
       <translation>&amp;Alles auswählen</translation>
     </message>
@@ -8362,10 +8636,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdSelectVisibleObjects</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
     <message>
       <source>Select visible objects</source>
       <translation>Sichtbare Objekte auswählen</translation>
@@ -8378,10 +8648,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdSendToPythonConsole</name>
     <message>
-      <source>Edit</source>
-      <translation>Bearbeiten</translation>
-    </message>
-    <message>
       <source>&amp;Send to Python Console</source>
       <translation>An Python-Konsole &amp;senden</translation>
     </message>
@@ -8392,10 +8658,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdSetAppearance</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
     <message>
       <source>Appearance...</source>
       <translation>Darstellung...</translation>
@@ -8408,10 +8670,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdShowObjects</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Show all objects</source>
       <translation>Alle Objekte einblenden</translation>
     </message>
@@ -8422,10 +8680,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdShowSelection</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
     <message>
       <source>Show selection</source>
       <translation>Auswahl einblenden</translation>
@@ -8438,10 +8692,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdStatusBar</name>
     <message>
-      <source>View</source>
-      <translation>Ansicht</translation>
-    </message>
-    <message>
       <source>Status bar</source>
       <translation>Statusleiste</translation>
     </message>
@@ -8452,10 +8702,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdTextDocument</name>
-    <message>
-      <source>Tools</source>
-      <translation>Werkzeuge</translation>
-    </message>
     <message>
       <source>Add text document</source>
       <translation>Textdokument hinzufügen</translation>
@@ -8468,10 +8714,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdTextureMapping</name>
     <message>
-      <source>Tools</source>
-      <translation>Werkzeuge</translation>
-    </message>
-    <message>
       <source>Texture mapping...</source>
       <translation>Texturabbildung...</translation>
     </message>
@@ -8482,10 +8724,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdTileWindows</name>
-    <message>
-      <source>Window</source>
-      <translation>Fenster</translation>
-    </message>
     <message>
       <source>&amp;Tile</source>
       <translation>&amp;Anordnen</translation>
@@ -8498,20 +8736,12 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdToggleBreakpoint</name>
     <message>
-      <source>Macro</source>
-      <translation>Makro</translation>
-    </message>
-    <message>
       <source>Toggle breakpoint</source>
       <translation>Haltepunkt an/aus</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleClipPlane</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
     <message>
       <source>Clipping plane</source>
       <translation>Schnittebene</translation>
@@ -8524,12 +8754,8 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdToggleNavigation</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Toggle navigation/Edit mode</source>
-      <translation>Navigations/Editier-Modus</translation>
+      <translation>Navigations-/Editier-Modus</translation>
     </message>
     <message>
       <source>Toggle between navigation and edit mode</source>
@@ -8538,10 +8764,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdToggleObjects</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
     <message>
       <source>Toggle all objects</source>
       <translation>Alle Objekte umkehren</translation>
@@ -8554,10 +8776,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdToggleSelectability</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Toggle selectability</source>
       <translation>Selektierbarkeit an/aus</translation>
     </message>
@@ -8568,10 +8786,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdToggleVisibility</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
     <message>
       <source>Toggle visibility</source>
       <translation>Ein/Ausblenden</translation>
@@ -8584,10 +8798,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdToolBarMenu</name>
     <message>
-      <source>View</source>
-      <translation>Ansicht</translation>
-    </message>
-    <message>
       <source>Tool&amp;bars</source>
       <translation>Symbol&amp;leisten</translation>
     </message>
@@ -8598,10 +8808,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdTransform</name>
-    <message>
-      <source>Edit</source>
-      <translation>Bearbeiten</translation>
-    </message>
     <message>
       <source>Transform...</source>
       <translation>Transformieren...</translation>
@@ -8614,10 +8820,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdTransformManip</name>
     <message>
-      <source>Edit</source>
-      <translation>Bearbeiten</translation>
-    </message>
-    <message>
       <source>Transform</source>
       <translation>Transformieren</translation>
     </message>
@@ -8628,10 +8830,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdTreeCollapse</name>
-    <message>
-      <source>View</source>
-      <translation>Ansicht</translation>
-    </message>
     <message>
       <source>Collapse selected item</source>
       <translation>Ausgewähltes Element einklappen</translation>
@@ -8644,10 +8842,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdTreeExpand</name>
     <message>
-      <source>View</source>
-      <translation>Ansicht</translation>
-    </message>
-    <message>
       <source>Expand selected item</source>
       <translation>Ausgewähltes Element ausklappen</translation>
     </message>
@@ -8658,10 +8852,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdTreeSelectAllInstances</name>
-    <message>
-      <source>View</source>
-      <translation>Ansicht</translation>
-    </message>
     <message>
       <source>Select all instances</source>
       <translation>Alle Instanzen auswählen</translation>
@@ -8674,10 +8864,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdTreeViewActions</name>
     <message>
-      <source>View</source>
-      <translation>Ansicht</translation>
-    </message>
-    <message>
       <source>TreeView actions</source>
       <translation>BaumAnsicht-Aktionen</translation>
     </message>
@@ -8688,10 +8874,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdUndo</name>
-    <message>
-      <source>Edit</source>
-      <translation>Bearbeiten</translation>
-    </message>
     <message>
       <source>&amp;Undo</source>
       <translation>&amp;Rückgängig</translation>
@@ -8704,10 +8886,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdUnitsCalculator</name>
     <message>
-      <source>Tools</source>
-      <translation>Werkzeuge</translation>
-    </message>
-    <message>
       <source>&amp;Units calculator...</source>
       <translation>&amp;Einheitenrechner...</translation>
     </message>
@@ -8717,11 +8895,18 @@ Physischer Pfad: </translation>
     </message>
   </context>
   <context>
-    <name>StdCmdUserInterface</name>
+    <name>StdCmdUserEditMode</name>
     <message>
-      <source>View</source>
-      <translation>Ansicht</translation>
+      <source>Edit mode</source>
+      <translation>Bearbeitungsmodus</translation>
     </message>
+    <message>
+      <source>Defines behavior when editing an object from tree</source>
+      <translation>Definiert das Verhalten beim Bearbeiten eines Objekts aus dem Baum</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdUserInterface</name>
     <message>
       <source>Dock views</source>
       <translation>Fenster andocken</translation>
@@ -8734,10 +8919,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdViewBottom</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Bottom</source>
       <translation>Unten</translation>
     </message>
@@ -8748,10 +8929,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdViewCreate</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
     <message>
       <source>Create new view</source>
       <translation>Neue Ansicht</translation>
@@ -8764,10 +8941,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdViewDimetric</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Dimetric</source>
       <translation>Dimetrisch</translation>
     </message>
@@ -8778,10 +8951,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdViewExample1</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
     <message>
       <source>Inventor example #1</source>
       <translation>Inventor Beispiel #1</translation>
@@ -8794,10 +8963,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdViewExample2</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Inventor example #2</source>
       <translation>Inventor Beispiel #2</translation>
     </message>
@@ -8808,10 +8973,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdViewExample3</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
     <message>
       <source>Inventor example #3</source>
       <translation>Inventor Beispiel #3</translation>
@@ -8824,10 +8985,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdViewFitAll</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Fit all</source>
       <translation>Einpassen</translation>
     </message>
@@ -8838,10 +8995,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdViewFitSelection</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
     <message>
       <source>Fit selection</source>
       <translation>Selektion einpassen</translation>
@@ -8854,10 +9007,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdViewFront</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Front</source>
       <translation>Vorne</translation>
     </message>
@@ -8868,10 +9017,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdViewHome</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
     <message>
       <source>Home</source>
       <translation>Home</translation>
@@ -8884,10 +9029,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdViewIsometric</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Isometric</source>
       <translation>Isometrisch</translation>
     </message>
@@ -8898,10 +9039,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdViewIvIssueCamPos</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
     <message>
       <source>Issue camera position</source>
       <translation>Kameraposition ausgeben</translation>
@@ -8914,10 +9051,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdViewIvStereoInterleavedColumns</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Stereo Interleaved Columns</source>
       <translation>Vertikales Interlacing</translation>
     </message>
@@ -8928,10 +9061,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdViewIvStereoInterleavedRows</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
     <message>
       <source>Stereo Interleaved Rows</source>
       <translation>Horizontales Interlacing</translation>
@@ -8944,10 +9073,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdViewIvStereoOff</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Stereo Off</source>
       <translation>Stereo aus</translation>
     </message>
@@ -8958,10 +9083,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdViewIvStereoQuadBuff</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
     <message>
       <source>Stereo quad buffer</source>
       <translation>Stereo 4-fach Puffer</translation>
@@ -8974,10 +9095,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdViewIvStereoRedGreen</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Stereo red/cyan</source>
       <translation>Stereo rot/cyan</translation>
     </message>
@@ -8988,10 +9105,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdViewLeft</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
     <message>
       <source>Left</source>
       <translation>Links</translation>
@@ -9004,10 +9117,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdViewRear</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Rear</source>
       <translation>Hinten</translation>
     </message>
@@ -9018,10 +9127,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdViewRestoreCamera</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
     <message>
       <source>Restore saved camera</source>
       <translation>Gespeicherte Kamera wiederherstellen</translation>
@@ -9034,10 +9139,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdViewRight</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Right</source>
       <translation>Rechts</translation>
     </message>
@@ -9048,10 +9149,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdViewRotateLeft</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
     <message>
       <source>Rotate Left</source>
       <translation>Nach links drehen</translation>
@@ -9064,12 +9161,8 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdViewRotateRight</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Rotate Right</source>
-      <translation>Rechtsherum rotieren</translation>
+      <translation>Nach Rechts drehen</translation>
     </message>
     <message>
       <source>Rotate the view by 90° clockwise</source>
@@ -9078,10 +9171,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdViewSaveCamera</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
     <message>
       <source>Save current camera</source>
       <translation>Aktuelle Kamera speichern</translation>
@@ -9094,10 +9183,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdViewTop</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Top</source>
       <translation>Oben</translation>
     </message>
@@ -9108,10 +9193,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdViewTrimetric</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
     <message>
       <source>Trimetric</source>
       <translation>Trimetrisch</translation>
@@ -9124,10 +9205,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdViewVR</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>FreeCAD-VR</source>
       <translation>FreeCAD-VR</translation>
     </message>
@@ -9138,10 +9215,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdCmdWhatsThis</name>
-    <message>
-      <source>Help</source>
-      <translation>Hilfe</translation>
-    </message>
     <message>
       <source>&amp;What's This?</source>
       <translation>Dire&amp;kthilfe</translation>
@@ -9154,10 +9227,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdWindows</name>
     <message>
-      <source>Window</source>
-      <translation>Fenster</translation>
-    </message>
-    <message>
       <source>&amp;Windows...</source>
       <translation>&amp;Fenster...</translation>
     </message>
@@ -9169,20 +9238,12 @@ Physischer Pfad: </translation>
   <context>
     <name>StdCmdWindowsMenu</name>
     <message>
-      <source>Window</source>
-      <translation>Fenster</translation>
-    </message>
-    <message>
       <source>Activates this window</source>
       <translation>Schaltet dieses Fenster aktiv</translation>
     </message>
   </context>
   <context>
     <name>StdCmdWorkbench</name>
-    <message>
-      <source>View</source>
-      <translation>Ansicht</translation>
-    </message>
     <message>
       <source>Workbench</source>
       <translation>Arbeitsbereich</translation>
@@ -9195,10 +9256,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdMainFullscreen</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Fullscreen</source>
       <translation>Vollbild</translation>
     </message>
@@ -9210,10 +9267,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdOrthographicCamera</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Orthographic view</source>
       <translation>Orthographische Ansicht</translation>
     </message>
@@ -9224,10 +9277,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdPerspectiveCamera</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
     <message>
       <source>Perspective view</source>
       <translation>Perspektivische Ansicht</translation>
@@ -9247,17 +9296,9 @@ Physischer Pfad: </translation>
       <source>Expand active document and collapse all others</source>
       <translation>Erweitere alle aktiven Dokumente und reduziere die Anderen</translation>
     </message>
-    <message>
-      <source>TreeView</source>
-      <translation>BaumAnsicht</translation>
-    </message>
   </context>
   <context>
     <name>StdTreeDrag</name>
-    <message>
-      <source>TreeView</source>
-      <translation>BaumAnsicht</translation>
-    </message>
     <message>
       <source>Initiate dragging</source>
       <translation>Ziehen initiieren</translation>
@@ -9274,20 +9315,12 @@ Physischer Pfad: </translation>
       <translation>Alle Dokumente in der Baumansicht anzeigen</translation>
     </message>
     <message>
-      <source>TreeView</source>
-      <translation>BaumAnsicht</translation>
-    </message>
-    <message>
       <source>Multi document</source>
       <translation>Mehrfachdokument</translation>
     </message>
   </context>
   <context>
     <name>StdTreePreSelection</name>
-    <message>
-      <source>TreeView</source>
-      <translation>BaumAnsicht</translation>
-    </message>
     <message>
       <source>Pre-selection</source>
       <translation>Vorauswahl</translation>
@@ -9300,10 +9333,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdTreeRecordSelection</name>
     <message>
-      <source>TreeView</source>
-      <translation>BaumAnsicht</translation>
-    </message>
-    <message>
       <source>Record selection</source>
       <translation>Auswahl aufzeichnen</translation>
     </message>
@@ -9314,10 +9343,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdTreeSelection</name>
-    <message>
-      <source>TreeView</source>
-      <translation>BaumAnsicht</translation>
-    </message>
     <message>
       <source>Go to selection</source>
       <translation>Gehe zu Selektion</translation>
@@ -9334,20 +9359,12 @@ Physischer Pfad: </translation>
       <translation>Nur das aktive Dokument in der Baumansicht anzeigen</translation>
     </message>
     <message>
-      <source>TreeView</source>
-      <translation>BaumAnsicht</translation>
-    </message>
-    <message>
       <source>Single document</source>
       <translation>Einzeldokument</translation>
     </message>
   </context>
   <context>
     <name>StdTreeSyncPlacement</name>
-    <message>
-      <source>TreeView</source>
-      <translation>BaumAnsicht</translation>
-    </message>
     <message>
       <source>Sync placement</source>
       <translation>Sync-Platzierung</translation>
@@ -9360,10 +9377,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdTreeSyncSelection</name>
     <message>
-      <source>TreeView</source>
-      <translation>BaumAnsicht</translation>
-    </message>
-    <message>
       <source>Sync selection</source>
       <translation>Sync-Auswahl</translation>
     </message>
@@ -9374,10 +9387,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdTreeSyncView</name>
-    <message>
-      <source>TreeView</source>
-      <translation>BaumAnsicht</translation>
-    </message>
     <message>
       <source>Sync view</source>
       <translation>Sync-Ansicht</translation>
@@ -9390,20 +9399,12 @@ Physischer Pfad: </translation>
   <context>
     <name>StdViewBoxZoom</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Box zoom</source>
       <translation>Zoomen mit Rechteck</translation>
     </message>
   </context>
   <context>
     <name>StdViewDock</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
     <message>
       <source>Docked</source>
       <translation>Angedockt</translation>
@@ -9416,10 +9417,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Document window</source>
       <translation>Dokumentfenster</translation>
     </message>
@@ -9430,10 +9427,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdViewFullscreen</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
     <message>
       <source>Fullscreen</source>
       <translation>Vollbild</translation>
@@ -9446,10 +9439,6 @@ Physischer Pfad: </translation>
   <context>
     <name>StdViewScreenShot</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Save picture...</source>
       <translation>Bildinhalt speichern...</translation>
     </message>
@@ -9460,10 +9449,6 @@ Physischer Pfad: </translation>
   </context>
   <context>
     <name>StdViewUndock</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
     <message>
       <source>Undocked</source>
       <translation>Abgedockt</translation>
@@ -9476,20 +9461,12 @@ Physischer Pfad: </translation>
   <context>
     <name>StdViewZoomIn</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
-    <message>
       <source>Zoom In</source>
       <translation>Vergrößern</translation>
     </message>
   </context>
   <context>
     <name>StdViewZoomOut</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standardansicht</translation>
-    </message>
     <message>
       <source>Zoom Out</source>
       <translation>Verkleinern</translation>
@@ -9645,11 +9622,11 @@ Möchten Sie trotzdem fortfahren?</translation>
     <name>ViewOrthographicCmd</name>
     <message>
       <source>Orthographic</source>
-      <translation>Orthographisch</translation>
+      <translation>Orthogonal</translation>
     </message>
     <message>
       <source>Set View to Orthographic mode</source>
-      <translation>Setze die Ansicht auf den orthographischen Modus</translation>
+      <translation>Setze die Ansicht auf den orthogonalen Modus</translation>
     </message>
   </context>
   <context>
@@ -9740,42 +9717,13 @@ Möchten Sie trotzdem fortfahren?</translation>
       <source>Special Ops</source>
       <translation>Spezialfunktionen</translation>
     </message>
-  </context>
-  <context>
-    <name>testClass</name>
     <message>
-      <source>test</source>
-      <translation>test</translation>
+      <source>Axonometric</source>
+      <translation>Axonometrisch</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-size:20pt; font-weight:600;"&gt;iisTaskPanel&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;Created for Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-size:20pt; font-weight:600;"&gt;iisTaskPanel&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;Created for Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Choose the style of the Task Panel</source>
-      <translation>Wählen Sie den Stil des Aufgabenfeldes</translation>
-    </message>
-    <message>
-      <source>Default</source>
-      <translation>Standard</translation>
-    </message>
-    <message>
-      <source>Windows XP</source>
-      <translation>Windows XP</translation>
+      <source>Link actions</source>
+      <translation>Verknüpfungen...</translation>
     </message>
   </context>
 </TS>

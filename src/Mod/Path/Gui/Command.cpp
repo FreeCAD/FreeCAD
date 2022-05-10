@@ -33,6 +33,7 @@
 #include <Gui/Command.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/Document.h>
 #include <Gui/Control.h>
 
@@ -68,7 +69,7 @@ void CmdPathArea::activated(int iMsg)
     std::string areaName;
     bool addView = true;
     for(const Gui::SelectionObject &selObj :
-        getSelection().getSelectionEx(NULL, Part::Feature::getClassTypeId()))
+        getSelection().getSelectionEx(nullptr, Part::Feature::getClassTypeId()))
     {
         const Part::Feature *pcObj = static_cast<const Part::Feature*>(selObj.getObject());
         const std::vector<std::string> &subnames = selObj.getSubNames();
@@ -151,7 +152,7 @@ void CmdPathAreaWorkplane::activated(int iMsg)
     std::string planeName;
 
     for(Gui::SelectionObject &selObj :
-        getSelection().getSelectionEx(NULL, Part::Feature::getClassTypeId()))
+        getSelection().getSelectionEx(nullptr, Part::Feature::getClassTypeId()))
     {
         const std::vector<std::string> &subnames = selObj.getSubNames();
         if(subnames.size()>1) {
@@ -211,7 +212,7 @@ void CmdPathAreaWorkplane::activated(int iMsg)
 
 bool CmdPathAreaWorkplane::isActive(void)
 {
-    return !getSelection().getSelectionEx(NULL, Path::FeatureArea::getClassTypeId()).empty();
+    return !getSelection().getSelectionEx(nullptr, Path::FeatureArea::getClassTypeId()).empty();
 }
 
 
@@ -290,7 +291,7 @@ void CmdPathShape::activated(int iMsg)
     std::list<std::string> cmds;
     std::ostringstream sources;
     for(const Gui::SelectionObject &selObj :
-        getSelection().getSelectionEx(NULL, Part::Feature::getClassTypeId()))
+        getSelection().getSelectionEx(nullptr, Part::Feature::getClassTypeId()))
     {
         const Part::Feature *pcObj = static_cast<const Part::Feature*>(selObj.getObject());
         const std::vector<std::string> &subnames = selObj.getSubNames();

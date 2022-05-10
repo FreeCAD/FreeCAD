@@ -24,7 +24,6 @@
 #ifndef GUI_MERGEDOCUMENTS_H
 #define GUI_MERGEDOCUMENTS_H
 
-#include <boost_signals2.hpp>
 #include <Base/Persistence.h>
 
 namespace zipios {

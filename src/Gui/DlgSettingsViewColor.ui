@@ -50,19 +50,6 @@
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="0" column="1">
-       <spacer name="spacer_4">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>183</width>
-          <height>23</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
       <item row="0" column="0">
        <layout class="QGridLayout" name="_3">
         <property name="leftMargin">
@@ -80,29 +67,6 @@
         <property name="spacing">
          <number>6</number>
         </property>
-        <item row="1" column="1">
-         <widget class="Gui::PrefColorButton" name="SelectionColor">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="color" stdset="0">
-           <color>
-            <red>28</red>
-            <green>173</green>
-            <blue>28</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>SelectionColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="0">
          <widget class="Gui::PrefCheckBox" name="checkBoxPreselection">
           <property name="minimumSize">
@@ -176,9 +140,45 @@
           </property>
          </widget>
         </item>
-       </layout>
+       <item row="1" column="1">
+         <widget class="Gui::PrefColorButton" name="SelectionColor">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>28</red>
+            <green>173</green>
+            <blue>28</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>SelectionColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        </layout>
       </item>
-     </layout>
+     <item row="0" column="1">
+       <spacer name="spacer_4">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>183</width>
+          <height>23</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      </layout>
     </widget>
    </item>
    <item row="1" column="0">
@@ -205,19 +205,6 @@
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="0" column="1">
-       <spacer name="spacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
       <item row="0" column="0">
        <layout class="QGridLayout" name="_4">
         <property name="leftMargin">
@@ -235,23 +222,29 @@
         <property name="spacing">
          <number>6</number>
         </property>
-        <item row="2" column="0">
-         <spacer name="spacer_2">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Minimum</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
+        <item row="0" column="0">
+         <widget class="Gui::PrefRadioButton" name="radioButtonSimple">
+          <property name="minimumSize">
            <size>
-            <width>171</width>
-            <height>20</height>
+            <width>240</width>
+            <height>0</height>
            </size>
           </property>
-         </spacer>
+          <property name="toolTip">
+           <string>Background will have selected color</string>
+          </property>
+          <property name="text">
+           <string>Simple color</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>Simple</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
         </item>
-        <item row="0" column="1">
+       <item row="0" column="1">
          <widget class="Gui::PrefColorButton" name="SelectionColor_Background">
           <property name="enabled">
            <bool>false</bool>
@@ -277,71 +270,6 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>BackgroundColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkMidColor">
-          <property name="toolTip">
-           <string>Color gradient will get selected color as middle color</string>
-          </property>
-          <property name="text">
-           <string>Middle color</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>UseBackgroundColorMid</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="Gui::PrefColorButton" name="backgroundColorTo">
-          <property name="toolTip">
-           <string>Bottom color</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="color" stdset="0">
-           <color>
-            <red>151</red>
-            <green>151</green>
-            <blue>170</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>BackgroundColor3</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="Gui::PrefColorButton" name="backgroundColorMid">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="toolTip">
-           <string>Middle color</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="color" stdset="0">
-           <color>
-            <red>111</red>
-            <green>111</green>
-            <blue>147</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>BackgroundColor4</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>View</cstring>
@@ -390,31 +318,103 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="Gui::PrefRadioButton" name="radioButtonSimple">
-          <property name="minimumSize">
+        <item row="2" column="0">
+         <spacer name="spacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Minimum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
            <size>
-            <width>240</width>
-            <height>0</height>
+            <width>171</width>
+            <height>20</height>
            </size>
           </property>
+         </spacer>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::PrefColorButton" name="backgroundColorTo">
           <property name="toolTip">
-           <string>Background will have selected color</string>
+           <string>Bottom color</string>
           </property>
           <property name="text">
-           <string>Simple color</string>
+           <string/>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>151</red>
+            <green>151</green>
+            <blue>170</blue>
+           </color>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>Simple</cstring>
+           <cstring>BackgroundColor3</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>View</cstring>
           </property>
          </widget>
         </item>
-       </layout>
+        <item row="3" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkMidColor">
+          <property name="toolTip">
+           <string>Color gradient will get selected color as middle color</string>
+          </property>
+          <property name="text">
+           <string>Middle color</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>UseBackgroundColorMid</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="Gui::PrefColorButton" name="backgroundColorMid">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="toolTip">
+           <string>Middle color</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>111</red>
+            <green>111</green>
+            <blue>147</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>BackgroundColor4</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+         </widget>
+        </item>
+        </layout>
       </item>
-     </layout>
+     <item row="0" column="1">
+       <spacer name="spacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      </layout>
     </widget>
    </item>
    <item row="2" column="0">
@@ -438,19 +438,6 @@
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="0" column="1">
-       <spacer name="spacer_5">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>183</width>
-          <height>23</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
       <item row="0" column="0">
        <layout class="QGridLayout">
         <property name="leftMargin">
@@ -545,7 +532,20 @@
         </item>
        </layout>
       </item>
-     </layout>
+     <item row="0" column="1">
+       <spacer name="spacer_5">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>183</width>
+          <height>23</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      </layout>
     </widget>
    </item>
    <item row="3" column="0">

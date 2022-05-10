@@ -34,6 +34,7 @@ YZ, and XZ planes.
 #  in FreeCAD and a couple of utility functions.
 
 import math
+from sys import float_info
 import lazy_loader.lazy_loader as lz
 
 import FreeCAD
@@ -125,7 +126,9 @@ class Plane:
 
     def copy(self):
         """Return a new plane that is a copy of the present object."""
-        return plane(u=self.u, v=self.v, w=self.axis, pos=self.position)
+        p = plane(u=self.u, v=self.v, w=self.axis, pos=self.position)
+        p.weak = self.weak
+        return p
 
     def offsetToPoint(self, p, direction=None):
         """Return the signed distance from a point to the plane.
@@ -226,7 +229,7 @@ class Plane:
             direction = self.axis
         return direction.dot(self.position.sub(p))
 
-    def projectPoint(self, p, direction=None):
+    def projectPoint(self, p, direction=None, force_projection=True):
         """Project a point onto the plane, by default orthogonally.
 
         Parameters
@@ -239,24 +242,38 @@ class Plane:
             It defaults to `None`, which then uses the `plane.axis` (normal)
             value, meaning that the point is projected perpendicularly
             to the plane.
+        force_projection: Bool, optional
+            Forces the projection if the deviation between the direction and
+            the normal is less than float epsilon from the orthogonality.
+            The direction of projection is modified to a float epsilon
+            deviation between the direction and the orthogonal.
+            It defaults to True.
 
         Returns
         -------
         Base::Vector3
             The projected vector, scaled to the appropriate distance.
         """
-        if not direction:
-            direction = self.axis
-        lp = self.getLocalCoords(p)
-        gp = self.getGlobalCoords(Vector(lp.x, lp.y, 0))
-        a = direction.getAngle(gp.sub(p))
-        if a > math.pi/2:
-            direction = direction.negative()
-            a = math.pi - a
-        ld = self.getLocalRot(direction)
-        gd = self.getGlobalRot(Vector(ld.x, ld.y, 0))
-        hyp = abs(math.tan(a) * lp.z)
-        return gp.add(DraftVecUtils.scaleTo(gd, hyp))
+
+        axis = Vector(self.axis).normalize()
+        if direction is None:
+            dir = axis
+        else:
+            dir = Vector(direction).normalize()
+
+        cos = dir.dot(axis)
+        delta_ax_proj = (p - self.position).dot(axis)
+        # check the only conflicting case: direction orthogonal to axis
+        if abs(cos) <= float_info.epsilon:
+            if force_projection:
+                cos = math.copysign(float_info.epsilon, delta_ax_proj)
+                dir = axis.cross(dir).cross(axis) - cos*axis
+            else:
+                return None
+
+        proj = p - delta_ax_proj/cos*dir
+
+        return proj
 
     def projectPointOld(self, p, direction=None):
         """Project a point onto the plane. OBSOLETE.
@@ -521,7 +538,7 @@ class Plane:
         self.v = v2
         self.axis = v3
 
-    def alignToFace(self, shape, offset=0):
+    def alignToFace(self, shape, offset=0, parent=None):
         """Align the plane to a face.
 
         It uses the center of mass of the face as `position`,
@@ -542,6 +559,10 @@ class Plane:
             Defaults to zero. A value which will be used to offset
             the plane in the direction of its `axis`.
 
+        parent : object
+            Defaults to None. The ParentGeoFeatureGroup of the object
+            the face belongs to.
+
         Returns
         -------
         bool
@@ -554,17 +575,21 @@ class Plane:
         """
         # Set face to the unique selected face, if found
         if shape.ShapeType == 'Face':
-            self.alignToPointAndAxis(shape.Faces[0].CenterOfMass,
-                                     shape.Faces[0].normalAt(0, 0),
-                                     offset)
+            if parent:
+                place = parent.getGlobalPlacement()
+            else:
+                place = FreeCAD.Placement()
+            cen = place.multVec(shape.Faces[0].CenterOfMass)
+            place.Base = FreeCAD.Vector(0, 0, 0) # Reset the Base for the conversion of the normal.
+            nor = place.multVec(shape.Faces[0].normalAt(0, 0))
+            self.alignToPointAndAxis(cen, nor, offset)
             import DraftGeomUtils
             q = DraftGeomUtils.getQuad(shape)
             if q:
-                self.u = q[1]
-                self.v = q[2]
+                self.u = place.multVec(q[1])
+                self.v = place.multVec(q[2])
                 if not DraftVecUtils.equals(self.u.cross(self.v), self.axis):
-                    self.u = q[2]
-                    self.v = q[1]
+                    self.u, self.v = self.v, self.u
                 if DraftVecUtils.equals(self.u, Vector(0, 0, 1)):
                     # the X axis is vertical: rotate 90 degrees
                     self.u, self.v = self.v.negative(), self.u
@@ -644,14 +669,14 @@ class Plane:
             if not geom_is_shape:
                 FreeCAD.Console.PrintError(translate(
                     "draft",
-                    "Object without Part.Shape geometry:'{}'\n".format(
-                        obj.ObjectName)))
+                    "Object without Part.Shape geometry:'{}'".format(
+                        obj.ObjectName)) + "\n")
                 return False
             if geom.isNull():
                 FreeCAD.Console.PrintError(translate(
                     "draft",
-                    "Object with null Part.Shape geometry:'{}'\n".format(
-                        obj.ObjectName)))
+                    "Object with null Part.Shape geometry:'{}'".format(
+                        obj.ObjectName)) + "\n")
                 return False
             if obj.HasSubObjects:
                 shapes.extend(obj.SubObjects)
@@ -664,7 +689,7 @@ class Plane:
         for n in range(len(shapes)):
             if not DraftGeomUtils.is_planar(shapes[n]):
                 FreeCAD.Console.PrintError(translate(
-                   "draft","'{}' object is not planar\n".format(names[n])))
+                   "draft", "'{}' object is not planar".format(names[n])) + "\n")
                 return False
             if not normal:
                 normal = DraftGeomUtils.get_normal(shapes[n])
@@ -675,8 +700,8 @@ class Plane:
             for n in range(len(shapes)):
                 if not DraftGeomUtils.are_coplanar(shapes[shape_ref], shapes[n]):
                     FreeCAD.Console.PrintError(translate(
-                        "draft","{} and {} aren't coplanar\n".format(
-                        names[shape_ref],names[n])))
+                        "draft", "{} and {} aren't coplanar".format(
+                        names[shape_ref],names[n])) + "\n")
                     return False
         else:
             # suppose all geometries are straight lines or points
@@ -685,7 +710,7 @@ class Plane:
                 poly = Part.makePolygon(points)
                 if not DraftGeomUtils.is_planar(poly):
                     FreeCAD.Console.PrintError(translate(
-                        "draft","All Shapes must be coplanar\n"))
+                        "draft", "All Shapes must be coplanar") + "\n")
                     return False
                 normal = DraftGeomUtils.get_normal(poly)
             else:
@@ -693,7 +718,7 @@ class Plane:
 
         if not normal:
             FreeCAD.Console.PrintError(translate(
-                "draft","Selected Shapes must define a plane\n"))
+                "draft", "Selected Shapes must define a plane") + "\n")
             return False
 
         # set center of mass
@@ -764,9 +789,9 @@ class Plane:
                     vdir = view.getViewDirection()
                     # The angle is between 0 and 180 degrees.
                     angle = vdir.getAngle(self.axis)
-                    if (angle > 0.001) and (angle < 3.14159):
-                        # don't change the plane if it is already
-                        # perpendicular to the current view
+                    # don't change the plane if the axis is already
+                    # antiparallel to the current view
+                    if abs(math.pi - angle) > Part.Precision.angular():
                         self.alignToPointAndAxis(Vector(0, 0, 0),
                                                  vdir.negative(), 0, upvec)
                 except Exception:
@@ -1254,6 +1279,34 @@ class Plane:
             norm = proj.cross(self.u)
             return DraftVecUtils.angle(self.u, proj, norm)
 
+    def getParameters(self):
+        """Return a dictionary with the data which define the plane:
+        `u`, `v`, `axis`, `weak`.
+
+        Returns
+        -------
+        dict
+            dictionary of the form:
+            {"position":position, "u":x, "v":v, "axis":axis, "weak":weak}
+        """
+        return {"position":self.position, "u":self.u, "v":self.v, "axis":self.axis, "weak":self.weak}
+
+    def setFromParameters(self, data):
+        """Set the plane according to data.
+
+        Parameters
+        ----------
+        data: dict
+            dictionary of the form:
+            {"position":position, "u":x, "v":v, "axis":axis, "weak":weak}
+       """
+        self.position = data["position"]
+        self.u = data["u"]
+        self.v = data["v"]
+        self.axis = data["axis"]
+        self.weak = data["weak"]
+
+        return None
 
 plane = Plane
 

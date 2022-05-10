@@ -80,7 +80,7 @@ bool LineSet::isDashed(void)
 }
 
 //! calculates the apparent start point (ie start of overlay line) for dashed lines
-Base::Vector3d LineSet::calcApparentStart(TechDraw::BaseGeom* g)
+Base::Vector3d LineSet::calcApparentStart(TechDraw::BaseGeomPtr g)
 {
     Base::Vector3d result;
     Base::Vector3d start(g->getStartPoint().x,g->getStartPoint().y,0.0);
@@ -151,7 +151,7 @@ Base::Vector3d LineSet::findAtomStart(void)
     return result;
 }
 
-Base::Vector3d LineSet::getPatternStartPoint(TechDraw::BaseGeom* g, double &offset, double scale)
+Base::Vector3d LineSet::getPatternStartPoint(TechDraw::BaseGeomPtr g, double &offset, double scale)
 {
     Base::Vector3d result = getOrigin();
     Base::Vector3d atomStart = findAtomStart();
@@ -317,7 +317,8 @@ std::vector<PATLineSpec> PATLineSpec::getSpecsForPattern(std::string& parmFile, 
     if (status) {
         lineSpecs = loadPatternDef(inFile);
     } else {
-        Base::Console().Message( "Could not find pattern: %s\n",parmName.c_str() );
+        //this message can come up when changing PAT file or pattern name
+        Base::Console().Log( "Could not find pattern: %s\n",parmName.c_str() );
         return result;
     }
 
@@ -331,13 +332,14 @@ std::vector<PATLineSpec> PATLineSpec::getSpecsForPattern(std::string& parmFile, 
 
 bool  PATLineSpec::findPatternStart(std::ifstream& inFile, std::string& parmName)
 {
+//    Base::Console().Message("HL::findPatternStart() - parmName: %s\n", parmName.c_str());
     bool result = false;
     while ( inFile.good() ){
          std::string line;
          std::getline(inFile,line);
          std::string nameTag = line.substr(0,1);
          std::string patternName;
-         unsigned long int commaPos;
+         std::size_t commaPos;
          if ((nameTag == ";")  ||
              (nameTag == " ")  ||
              (line.empty()) )  {           //is cr/lf empty?
@@ -394,7 +396,7 @@ std::vector<std::string> PATLineSpec::getPatternList(std::string& parmFile)
         std::string line;
         std::getline(inFile,line);
         std::string nameTag = line.substr(0,1);               //dupl code here
-        unsigned long int commaPos;
+        std::size_t commaPos;
         if (nameTag == "*") {  //found a pattern
             commaPos = line.find(',',1);
             std::string patternName;

@@ -20,18 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef _DrawPage_h_
 #define _DrawPage_h_
 
 #include <boost_signals2.hpp>
 
 #include <App/DocumentObject.h>
-#include <App/DocumentObjectGroup.h>
 #include <App/PropertyStandard.h>
-#include <App/PropertyFile.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
+
 
 namespace TechDraw
 {
@@ -94,7 +92,6 @@ public:
     bool isUnsetting(void) { return nowUnsetting; }
     void requestPaint(void);
     std::vector<App::DocumentObject*> getAllViews(void) ;
-    bool balloonPlacing;
     DrawViewPart *balloonParent;    //could be many balloons on page? 
     
     int getNextBalloonIndex(void);
@@ -105,6 +102,8 @@ public:
     void forceRedraw(bool b) { m_forceRedraw = b; }
     bool forceRedraw(void)   { return m_forceRedraw; }
     void redrawCommand();
+
+    bool canUpdate() const;
 
 protected:
     void onBeforeChange(const App::Property* prop) override;

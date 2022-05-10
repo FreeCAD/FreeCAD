@@ -22,14 +22,13 @@
 
 /* Text completion mechanism */
 
-
 #ifndef GUI_TEXTEDIT_H
 #define GUI_TEXTEDIT_H
 
 #include <QListWidget>
 #include <QPlainTextEdit>
-#include "View.h"
 #include "Window.h"
+
 
 namespace Gui {
 class CompletionBox;
@@ -58,11 +57,16 @@ class GuiExport TextEdit : public QPlainTextEdit
     Q_OBJECT
 
 public:
-    TextEdit(QWidget *parent = 0);
+    TextEdit(QWidget *parent = nullptr);
     virtual ~TextEdit();
 
 private Q_SLOTS:
     void complete();
+
+Q_SIGNALS:
+    void showSearchBar();
+    void findNext();
+    void findPrevious();
 
 protected:
     void keyPressEvent(QKeyEvent *);
@@ -82,7 +86,7 @@ class GuiExport TextEditor : public TextEdit, public WindowParameter
     Q_OBJECT
 
 public:
-    TextEditor(QWidget *parent = 0);
+    TextEditor(QWidget *parent = nullptr);
     ~TextEditor();
     void setSyntaxHighlighter(SyntaxHighlighter*);
 
@@ -132,7 +136,7 @@ private:
 
 /**
  * The CompletionList class provides a list box that pops up in a text edit if the user has pressed
- * an accelerator to complete the current word he is typing in.
+ * an accelerator to complete the current word they are typing in.
  * @author Werner Mayer
  */
 class CompletionList : public QListWidget

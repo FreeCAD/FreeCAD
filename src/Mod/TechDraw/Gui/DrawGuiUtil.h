@@ -25,14 +25,16 @@
 
 #include <string>
 #include <QCoreApplication>
-#include <QRectF>
-#include <QPointF>
-#include <QComboBox>
+
 #include <Base/Vector3D.h>
 
-#include <App/DocumentObject.h>
+class QComboBox;
+class QPointF;
+class QRectF;
 
-/*#include <Gui/PrefWidgets.h>*/
+namespace App {
+class DocumentObject;
+}
 
 namespace Part {
 class Feature;

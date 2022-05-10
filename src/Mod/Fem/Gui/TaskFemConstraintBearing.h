@@ -21,18 +21,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskFemConstraintBearing_H
 #define GUI_TASKVIEW_TaskFemConstraintBearing_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
+#include <QObject>
 
 #include "TaskFemConstraint.h"
 #include "ViewProviderFemConstraintBearing.h"
 
-#include <QKeyEvent>
 
 class Ui_TaskFemConstraintBearing;
 
@@ -51,7 +47,7 @@ class TaskFemConstraintBearing : public TaskFemConstraint
     Q_OBJECT
 
 public:
-    TaskFemConstraintBearing(ViewProviderFemConstraint *ConstraintView, QWidget *parent = 0,
+    TaskFemConstraintBearing(ViewProviderFemConstraint *ConstraintView, QWidget *parent = nullptr,
                              const char* pixmapname = "FEM_ConstraintBearing");
     virtual ~TaskFemConstraintBearing();
 

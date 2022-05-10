@@ -41,7 +41,7 @@ def get_information():
         "meshtype": "edge",
         "meshelement": "Seg3",
         "constraints": ["self weight"],
-        "solvers": ["calculix"],
+        "solvers": ["calculix", "ccxtools"],
         "material": "fluid",
         "equation": "thermomechanical"
     }

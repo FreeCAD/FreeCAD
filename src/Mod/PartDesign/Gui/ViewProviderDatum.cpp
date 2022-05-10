@@ -25,57 +25,41 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QApplication>
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <Inventor/details/SoFaceDetail.h>
+# include <Inventor/details/SoLineDetail.h>
+# include <Inventor/details/SoPointDetail.h>
+# include <Inventor/nodes/SoDrawStyle.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoMaterialBinding.h>
+# include <Inventor/nodes/SoPickStyle.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoShapeHints.h>
+# include <Precision.hxx>
 # include <QMessageBox>
 # include <QAction>
 # include <QMenu>
-# include <Inventor/actions/SoGetBoundingBoxAction.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/nodes/SoShapeHints.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoTransparencyType.h>
-# include <Inventor/nodes/SoDrawStyle.h>
-# include <Inventor/nodes/SoMarkerSet.h>
-# include <Inventor/nodes/SoVertexProperty.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoFaceSet.h>
-# include <Inventor/details/SoLineDetail.h>
-# include <Inventor/details/SoFaceDetail.h>
-# include <Inventor/details/SoPointDetail.h>
-# include <TopoDS_Vertex.hxx>
-# include <TopoDS.hxx>
-# include <BRep_Tool.hxx>
-# include <gp_Pnt.hxx>
-# include <Precision.hxx>
-# include <Geom_Plane.hxx>
-# include <Geom_Line.hxx>
-# include <GeomAPI_IntCS.hxx>
 #endif
 
+#include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
-#include <App/GeoFeatureGroupExtension.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
 #include <Gui/Application.h>
-#include <Gui/MDIView.h>
-#include <Gui/ViewProviderOrigin.h>
+#include <Gui/Command.h>
+#include <Gui/Control.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Gui/BitmapFactory.h>
-
-#include <Mod/PartDesign/App/DatumPoint.h>
-#include <Mod/PartDesign/App/DatumLine.h>
-#include <Mod/PartDesign/App/DatumPlane.h>
+#include <Gui/ViewProviderOrigin.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/DatumCS.h>
-
-#include "TaskDatumParameters.h"
-#include "ViewProviderBody.h"
-#include "Utils.h"
+#include <Mod/PartDesign/App/DatumLine.h>
+#include <Mod/PartDesign/App/DatumPlane.h>
+#include <Mod/PartDesign/App/DatumPoint.h>
 
 #include "ViewProviderDatum.h"
+#include "TaskDatumParameters.h"
+#include "Utils.h"
+#include "ViewProviderBody.h"
+
 
 using namespace PartDesignGui;
 
@@ -106,7 +90,7 @@ ViewProviderDatum::ViewProviderDatum()
     Transparency.setValue (col.a * 100);
 
     oldWb = "";
-    oldTip = NULL;
+    oldTip = nullptr;
 }
 
 ViewProviderDatum::~ViewProviderDatum()
@@ -124,18 +108,22 @@ void ViewProviderDatum::attach(App::DocumentObject *obj)
     if (o->getTypeId() == PartDesign::Plane::getClassTypeId()) {
         datumType = QString::fromLatin1("Plane");
         datumText = QObject::tr("Plane");
+        datumMenuText = tr("Datum Plane parameters");
     }
     else if (o->getTypeId() == PartDesign::Line::getClassTypeId()) {
         datumType = QString::fromLatin1("Line");
         datumText = QObject::tr("Line");
+        datumMenuText = tr("Datum Line parameters");
     }
     else if (o->getTypeId() == PartDesign::Point::getClassTypeId()) {
         datumType = QString::fromLatin1("Point");
         datumText = QObject::tr("Point");
+        datumMenuText = tr("Datum Point parameters");
     }
     else if (o->getTypeId() == PartDesign::CoordinateSystem::getClassTypeId()) {
         datumType = QString::fromLatin1("CoordinateSystem");
         datumText = QObject::tr("Coordinate System");
+        datumMenuText = tr("Local Coordinate System parameters");
     }
 
     SoShapeHints* hints = new SoShapeHints();
@@ -223,7 +211,7 @@ SoDetail* ViewProviderDatum::getDetail(const char* subelement) const
         return detail;
    }
 
-    return NULL;
+    return nullptr;
 }
 
 bool ViewProviderDatum::isSelectable(void) const
@@ -236,6 +224,8 @@ void ViewProviderDatum::setupContextMenu(QMenu* menu, QObject* receiver, const c
     QAction* act;
     act = menu->addAction(QObject::tr("Edit datum"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
+    // Call the extensions
+    Gui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderDatum::setEdit(int ModNum)
@@ -250,7 +240,7 @@ bool ViewProviderDatum::setEdit(int ModNum)
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         TaskDlgDatumParameters *datumDlg = qobject_cast<TaskDlgDatumParameters *>(dlg);
         if (datumDlg && datumDlg->getViewProvider() != this)
-            datumDlg = 0; // another datum feature left open its task panel
+            datumDlg = nullptr; // another datum feature left open its task panel
         if (dlg && !datumDlg) {
             QMessageBox msgBox;
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
@@ -288,7 +278,8 @@ bool ViewProviderDatum::doubleClicked(void)
     if(!activeDoc)
         activeDoc = getDocument();
     auto activeView = activeDoc->getActiveView();
-    if(!activeView) return false;
+    if(!activeView)
+        return false;
 
     std::string Msg("Edit ");
     Msg += this->pcObject->Label.getValue();
@@ -298,7 +289,7 @@ bool ViewProviderDatum::doubleClicked(void)
     PartDesign::Body* activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
     auto datumBody = PartDesignGui::getBodyFor(pcDatum, false);
 
-    if (datumBody != NULL) {
+    if (datumBody != nullptr) {
         if (datumBody != activeBody) {
             Gui::Command::doCommand(Gui::Command::Gui,
                     "Gui.ActiveDocument.ActiveView.setActiveObject('%s',%s)",

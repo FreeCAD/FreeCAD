@@ -25,15 +25,15 @@
 # include <QMessageBox>
 #endif
 
-#include "ui_DlgAddProperty.h"
-
-#include <Base/Tools.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include "MainWindow.h"
-#include <ViewProviderDocumentObject.h>
+#include <Base/Tools.h>
+
 #include "DlgAddProperty.h"
+#include "ui_DlgAddProperty.h"
+#include "MainWindow.h"
+#include "ViewProviderDocumentObject.h"
 
 
 using namespace Gui;
@@ -107,7 +107,8 @@ void DlgAddProperty::accept()
         name = group + "_" + name;
 
     for(auto c : containers) {
-        if(c->getPropertyByName(name.c_str())) {
+        auto prop = c->getPropertyByName(name.c_str());
+        if(prop && prop->getContainer() == c) {
             QMessageBox::critical(getMainWindow(),
                 QObject::tr("Invalid name"),
                 QObject::tr("The property '%1' already exists in '%2'").arg(
@@ -127,7 +128,7 @@ void DlgAddProperty::accept()
             e.ReportException();
             for(auto it2=containers.begin();it2!=it;++it2) {
                 try {
-                    (*it)->removeDynamicProperty(name.c_str());
+                    (*it2)->removeDynamicProperty(name.c_str());
                 } catch(Base::Exception &e) {
                     e.ReportException();
                 }

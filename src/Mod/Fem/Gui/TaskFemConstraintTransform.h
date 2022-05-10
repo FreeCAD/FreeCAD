@@ -27,18 +27,11 @@
 #ifndef GUI_TASKVIEW_TaskFemConstraintTransform_H
 #define GUI_TASKVIEW_TaskFemConstraintTransform_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Base/Quantity.h>
+#include <QObject>
 
 #include "TaskFemConstraint.h"
 #include "ViewProviderFemConstraintTransform.h"
 
-#include <QObject>
-#include <Base/Console.h>
-#include <App/DocumentObject.h>
-#include <QKeyEvent>
 
 class Ui_TaskFemConstraintTransform;
 
@@ -48,7 +41,7 @@ class TaskFemConstraintTransform : public TaskFemConstraint
     Q_OBJECT
 
 public:
-    TaskFemConstraintTransform(ViewProviderFemConstraintTransform *ConstraintView,QWidget *parent = 0);
+    TaskFemConstraintTransform(ViewProviderFemConstraintTransform *ConstraintView,QWidget *parent = nullptr);
     ~TaskFemConstraintTransform();
     const std::string getReferences() const;
     double get_X_rot()const;

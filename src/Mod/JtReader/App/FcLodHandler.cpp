@@ -20,18 +20,11 @@
 *                                                                         *
 ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
 
 #include <Base/Console.h>
 
 #include "FcLodHandler.h"
-
-
-
-
 
 
 void FcLodHandler::startLod()

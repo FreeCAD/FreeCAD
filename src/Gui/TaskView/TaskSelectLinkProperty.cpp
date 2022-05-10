@@ -20,30 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <algorithm>
-#endif
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <Base/Console.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/SelectionFilter.h>
+#include <Gui/SelectionObject.h>
 
 #include "ui_TaskSelectLinkProperty.h"
 #include "TaskSelectLinkProperty.h"
-#include <Base/Console.h>
-#include <App/DocumentObject.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Gui/SelectionFilter.h>
+
 
 using namespace Gui::TaskView;
 
 /* TRANSLATOR Gui::TaskView::TaskSelectLinkProperty */
 
 TaskSelectLinkProperty::TaskSelectLinkProperty(const char *sFilter,App::Property *prop,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("mouse_pointer"),tr("edit selection"),true, parent),Filter(0),LinkSub(0),LinkList(0)
+    : TaskBox(Gui::BitmapFactory().pixmap("mouse_pointer"),tr("edit selection"),true, parent),Filter(nullptr),LinkSub(nullptr),LinkList(nullptr)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -68,7 +63,7 @@ TaskSelectLinkProperty::TaskSelectLinkProperty(const char *sFilter,App::Property
 
     // property have to be set! 
     assert(prop);
-    StartObject = 0;
+    StartObject = nullptr;
     if (prop->getTypeId().isDerivedFrom(App::PropertyLinkSub::getClassTypeId())) {
         LinkSub = dynamic_cast<App::PropertyLinkSub *>(prop);
     }

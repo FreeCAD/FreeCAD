@@ -2,6 +2,24 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="sl" sourcelanguage="en">
   <context>
+    <name>MeshPart_FlatteningCommand</name>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="47"/>
+      <source>Unwrap Mesh</source>
+      <translation>Razvij ploskovje</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="80"/>
+      <source>Find a flat representation of a mesh.</source>
+      <translation>Iskanje ravninske predstavitve ploskovja.</translation>
+    </message>
+    <message>
+      <location filename="../../MeshFlatteningCommand.py" line="79"/>
+      <source>Unwrap Face</source>
+      <translation>Razvij ploskev</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
       <location filename="../../Command.cpp" line="276"/>
@@ -29,7 +47,7 @@
     <message>
       <location filename="../../Command.cpp" line="313"/>
       <source>Curve on mesh...</source>
-      <translation>Krivulja na ploskovju ...</translation>
+      <translation>Krivulja na ploskovju ...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="314"/>
@@ -260,7 +278,7 @@ Ta ukaz deluje le na "ploskovjih" in ne na pravilnih ploskvah ali površjih. Če
       <translation>Zveznost</translation>
     </message>
     <message>
-      <location filename="../../TaskCurveOnMesh.ui" line="129"/>
+      <location filename="../../TaskCurveOnMesh.ui" line="136"/>
       <source>Maximum curve degree</source>
       <translation>Najvišja stopnja krivulje</translation>
     </message>
@@ -288,24 +306,14 @@ Ta ukaz deluje le na "ploskovjih" in ne na pravilnih ploskvah ali površjih. Če
       <translation>Običajno</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="145"/>
-      <source>Mefisto</source>
-      <translation>Mefisto</translation>
-    </message>
-    <message>
-      <location filename="../../Tessellation.ui" line="206"/>
-      <source>Netgen</source>
-      <translation>Netgen</translation>
+      <location filename="../../Tessellation.ui" line="33"/>
+      <source>Use the standard mesher</source>
+      <translation>Uporabi običajni ploskovjevalnik</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="41"/>
       <source>Surface deviation:</source>
       <translation>Odstopanje površja:</translation>
-    </message>
-    <message>
-      <location filename="../../Tessellation.ui" line="33"/>
-      <source>Use the standard mesher</source>
-      <translation>Uporabi običajni ploskovjevalnik</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="48"/>
@@ -358,6 +366,11 @@ Skupine se bodo izvozile za izhodne zapise, ki podpirajo te značilnosti (npr. z
       <translation>Določi odseke po barvi ploskve</translation>
     </message>
     <message>
+      <location filename="../../Tessellation.ui" line="145"/>
+      <source>Mefisto</source>
+      <translation>Mefisto</translation>
+    </message>
+    <message>
       <location filename="../../Tessellation.ui" line="148"/>
       <source>Use the Mefisto mesher</source>
       <translation>Uporabi ploskovjevalnik Mefisto</translation>
@@ -378,6 +391,11 @@ Najmanjša vrednost je 0.</translation>
       <location filename="../../Tessellation.ui" line="183"/>
       <source>Estimate</source>
       <translation>Ocena</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.ui" line="206"/>
+      <source>Netgen</source>
+      <translation>Netgen</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="209"/>
@@ -485,18 +503,32 @@ Razpon vrednosti je 0.2-10.</translation>
       <translation>Pusti ploščo odprto</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="62"/>
-      <source>gmsh</source>
-      <translation>gmsh</translation>
+      <location filename="../../Tessellation.cpp" line="63"/>
+      <source>Gmsh</source>
+      <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="213"/>
-      <location filename="../../Tessellation.cpp" line="219"/>
+      <location filename="../../Tessellation.cpp" line="214"/>
+      <location filename="../../Tessellation.cpp" line="220"/>
       <source>No active document</source>
       <translation>Ni dejavnega dokumenta</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="234"/>
+      <location filename="../../Tessellation.cpp" line="248"/>
+      <source>You have selected a body without tip.
+Either set the tip of the body or select a different shape, please.</source>
+      <translation>Izbrali ste telo brez konice.
+Ali določite telesu konico ali pa izberite drugo obliko.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.cpp" line="252"/>
+      <source>You have selected a shape without faces.
+Select a different shape, please.</source>
+      <translation>Izbrali ste lik brez ploskev.
+Izberite drugi lik.</translation>
+    </message>
+    <message>
+      <location filename="../../Tessellation.cpp" line="256"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Najprej izberite obliko za ploskovjenje.</translation>
     </message>

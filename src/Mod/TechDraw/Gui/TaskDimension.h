@@ -23,15 +23,14 @@
 #ifndef GUI_TASKVIEW_TASKDIMENSION_H
 #define GUI_TASKVIEW_TASKDIMENSION_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
-
-#include "QGIViewDimension.h"
-#include "ViewProviderDimension.h"
+#include <Gui/TaskView/TaskView.h>
 
 namespace TechDrawGui
 {
 
+class QGIViewDimension;
+class ViewProviderDimension;
 class Ui_TaskDimension;
 class TaskDimension : public QWidget
 {
@@ -60,11 +59,19 @@ private Q_SLOTS:
     void onColorChanged();
     void onFontsizeChanged();
     void onDrawingStyleChanged();
+    void onOverrideToggled();
+    void onDimAngleChanged();
+    void onExtAngleChanged();
+    void onDimUseDefaultClicked();
+    void onDimUseSelectionClicked();
+    void onExtUseDefaultClicked();
+    void onExtUseSelectionClicked();
 
 private:
     std::unique_ptr<Ui_TaskDimension> ui;
     QGIViewDimension *m_parent;
     ViewProviderDimension *m_dimensionVP;
+    std::pair<double, bool> getAngleFromSelection();
 };
 
 class TaskDlgDimension : public Gui::TaskView::TaskDialog

@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -32,17 +31,18 @@
 # include <QThread>
 #endif
 
-#include <QtOpenGL.h>
+#include <App/Application.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
+
 #include "Thumbnail.h"
 #include "BitmapFactory.h"
 #include "View3DInventorViewer.h"
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <App/Application.h>
+
 
 using namespace Gui;
 
-Thumbnail::Thumbnail(int s) : viewer(0), size(s)
+Thumbnail::Thumbnail(int s) : viewer(nullptr), size(s)
 {
 }
 

@@ -56,7 +56,7 @@ class GuiExport TaskSelectLinkProperty : public TaskBox, public Gui::SelectionSi
     Q_OBJECT
 
 public:
-    TaskSelectLinkProperty(const char *,App::Property *,QWidget *parent = 0);
+    TaskSelectLinkProperty(const char *,App::Property *,QWidget *parent = nullptr);
     ~TaskSelectLinkProperty();
     /// Observer message from the Selection
     void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,

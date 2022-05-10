@@ -25,7 +25,7 @@
 
 #include "Swap.h"
 
-unsigned short Base::SwapOrder (void)
+unsigned short Base::SwapOrder ()
 {
   unsigned short usDummy = 1;
   return *((char*) &usDummy) == 1 ? LOW_ENDIAN : HIGH_ENDIAN;

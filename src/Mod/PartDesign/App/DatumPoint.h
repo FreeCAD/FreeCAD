@@ -25,10 +25,8 @@
 #ifndef PARTDESIGN_DATUMPOINT_H
 #define PARTDESIGN_DATUMPOINT_H
 
-#include <QString>
-#include <App/PropertyLinks.h>
-#include <App/GeoFeature.h>
 #include <Mod/Part/App/DatumFeature.h>
+#include <Mod/PartDesign/PartDesignGlobal.h>
 
 namespace PartDesign
 {

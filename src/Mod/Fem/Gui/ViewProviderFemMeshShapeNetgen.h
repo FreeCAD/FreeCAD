@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_ViewProviderFemMeshShapeNetgen_H
 #define FEM_ViewProviderFemMeshShapeNetgen_H
 
 #include "ViewProviderFemMeshShape.h"
-#include <Gui/ViewProviderBuilder.h>
 
 namespace FemGui
 {

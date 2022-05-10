@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -146,19 +146,19 @@ void CmdMeshPartTrimByPlane::activated(int)
         Base::Vector3f plnNormal = Base::convertTo<Base::Vector3f>(normal);
 
         if (role == Gui::SelectionRole::Inner) {
-            mesh->trim(plnBase, plnNormal);
+            mesh->trimByPlane(plnBase, plnNormal);
             static_cast<Mesh::Feature*>(*it)->Mesh.finishEditing();
         }
         else if (role == Gui::SelectionRole::Outer) {
-            mesh->trim(plnBase, -plnNormal);
+            mesh->trimByPlane(plnBase, -plnNormal);
             static_cast<Mesh::Feature*>(*it)->Mesh.finishEditing();
         }
         else if (role == Gui::SelectionRole::Split) {
             Mesh::MeshObject copy(*mesh);
-            mesh->trim(plnBase, plnNormal);
+            mesh->trimByPlane(plnBase, plnNormal);
             static_cast<Mesh::Feature*>(*it)->Mesh.finishEditing();
 
-            copy.trim(plnBase, -plnNormal);
+            copy.trimByPlane(plnBase, -plnNormal);
             App::Document* doc = (*it)->getDocument();
             Mesh::Feature* fea = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature"));
             fea->Label.setValue((*it)->Label.getValue());

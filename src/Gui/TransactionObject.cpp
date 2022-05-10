@@ -20,17 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
 
 #include "Application.h"
 #include "Document.h"
 #include "TransactionObject.h"
 #include "ViewProviderDocumentObject.h"
-#include <App/Document.h>
+
 
 using namespace Gui;
 

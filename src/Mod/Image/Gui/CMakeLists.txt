@@ -11,7 +11,6 @@ include_directories(
     ${OPENCV2_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
 )
 
 if(MSVC)
@@ -51,6 +50,8 @@ SET(ImageGui_SRCS
     Command.cpp
     ImageOrientationDialog.cpp
     ImageOrientationDialog.h
+    OpenGLImageBox.cpp
+    OpenGLImageBox.h
     ViewProviderImagePlane.cpp
     ViewProviderImagePlane.h
     Resources/Image.qrc
@@ -62,18 +63,6 @@ SET(ImageGui_SRCS
     Workbench.h
     XpmImages.h
 )
-
-if(FREECAD_USE_QTOPENGL_WIDGET)
-    list(APPEND ImageGui_SRCS
-        OpenGLImageBox.cpp
-        OpenGLImageBox.h
-    )
-else()
-    list(APPEND ImageGui_SRCS
-        GLImageBox.cpp
-        GLImageBox.h
-    )
-endif()
 
 SET(ImageGuiIcon_SVG
     Resources/icons/ImageWorkbench.svg

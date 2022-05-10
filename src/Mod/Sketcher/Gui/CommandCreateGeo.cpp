@@ -23,12 +23,14 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Inventor/events/SoKeyboardEvent.h>
 # include <Inventor/nodes/SoPickStyle.h>
 # include <QApplication>
+# include <QInputDialog>
 # include <QMessageBox>
-# include <stdlib.h>
-# include <qdebug.h>
 # include <QString>
+# include <cstdlib>
+# include <qdebug.h>
 # include <GC_MakeEllipse.hxx>
 # include <boost/math/special_functions/fpclassify.hpp>
 # include <memory>
@@ -51,11 +53,12 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/Part/App/BodyBase.h>
+#include <Mod/Part/App/Geometry2d.h>
 #include <Mod/Sketcher/App/Constraint.h>
 
 #include "ViewProviderSketch.h"
 #include "DrawSketchHandler.h"
-#include "CommandConstraints.h"
+#include "Utils.h"
 
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
@@ -82,48 +85,6 @@ double GetPointAngle (const Base::Vector2d &p1, const Base::Vector2d &p2)
   double dX = p2.x - p1.x;
   double dY = p2.y - p1.y;
   return dY >= 0 ? atan2(dY, dX) : atan2(dY, dX) + 2*M_PI;
-}
-
-/*
-Find the centerpoint of a circle drawn through any 3 points:
-
-Given points p1-3, draw 2 lines: S12 and S23 which each connect two points.  From the
-midpoint of each line, draw a perpendicular line (S12p/S23p) across the circle.  These
-lines will cross at the centerpoint.
-
-Mathematically, line S12 will have a slope of m12 which can be determined.  Therefore,
-the slope m12p is -1/m12. Line S12p will have an equation of y = m12p*x + b12p.  b12p can
-be solved for using the midpoint of the line.  This can be done for both lines.  Since
-both S12p and S23p cross at the centerpoint, solving the two equations together will give
-the location of the centerpoint.
-*/
-Base::Vector2d GetCircleCenter (const Base::Vector2d &p1, const Base::Vector2d &p2, const Base::Vector2d &p3)
-{
-    Base::Vector2d u = p2-p1;
-    Base::Vector2d v = p3-p2;
-    Base::Vector2d w = p1-p3;
-
-    double uu =  u*u;
-    double vv =  v*v;
-    double ww =  w*w;
-
-    double uv = -(u*v);
-    double vw = -(v*w);
-    double uw = -(u*w);
-
-    double w0 = (2 * sqrt(uu * ww - uw * uw) * uw / (uu * ww));
-    double w1 = (2 * sqrt(uu * vv - uv * uv) * uv / (uu * vv));
-    double w2 = (2 * sqrt(vv * ww - vw * vw) * vw / (vv * ww));
-
-    double wx = w0 + w1 + w2;
-
-    if( wx == 0)
-        THROWM(Base::ValueError,"Points are collinear");
-
-    double x = (w0*p1.x + w1*p2.x + w2*p3.x)/wx;
-    double y = (w0*p1.y + w1*p2.y + w2*p3.y)/wx;
-
-    return Base::Vector2d(x, y);
 }
 
 void ActivateHandler(Gui::Document *doc, DrawSketchHandler *handler)
@@ -159,7 +120,7 @@ SketcherGui::ViewProviderSketch* getSketchViewprovider(Gui::Document *doc)
             (SketcherGui::ViewProviderSketch::getClassTypeId()) )
             return dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     }
-    return 0;
+    return nullptr;
 }
 
 void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
@@ -192,17 +153,17 @@ void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
                         geoId1iterator = coincidents.find(-1);
 
                         if( geoId1iterator != coincidents.end()) {
-                            if( (*geoId1iterator).second == Sketcher::start )
+                            if( (*geoId1iterator).second == Sketcher::PointPos::start )
                                 orig = true;
                         }
                     }
                     else { // it may be that there is no constraint at all, but there is external geometry
                         ext = (*it).GeoId < 0;
-                        orig = ((*it).GeoId == -1 && (*it).PosId == Sketcher::start);
+                        orig = ((*it).GeoId == -1 && (*it).PosId == Sketcher::PointPos::start);
                     }
                 }
                 else if( (*it).Type == Sketcher::PointOnObject && axis == false) {
-                    axis = (((*it).GeoId == -1 && (*it).PosId == Sketcher::none) || ((*it).GeoId == -2 && (*it).PosId == Sketcher::none));
+                    axis = (((*it).GeoId == -1 && (*it).PosId == Sketcher::PointPos::none) || ((*it).GeoId == -2 && (*it).PosId == Sketcher::PointPos::none));
                 }
 
             }
@@ -232,26 +193,6 @@ void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
 
 /* Sketch commands =======================================================*/
 
-static const char cursor_crosshair_color_fmt[] = "+ c #%06lX";
-char cursor_crosshair_color[12];
-
-void DrawSketchHandler::setCrosshairColor()
-{
-    unsigned long color = getCrosshairColor();
-    sprintf(cursor_crosshair_color, cursor_crosshair_color_fmt, color);
-}
-
-unsigned long DrawSketchHandler::getCrosshairColor()
-{
-    unsigned long color = 0xFFFFFFFF; // white
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/View");
-    color = hGrp->GetUnsigned("CursorCrosshairColor", color);
-    // from rgba to rgb
-    color = (color >> 8) & 0xFFFFFF;
-    return color;
-}
-
 class DrawSketchHandlerLine: public DrawSketchHandler
 {
 public:
@@ -264,12 +205,7 @@ public:
         STATUS_End
     };
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_Line");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
@@ -286,7 +222,7 @@ public:
             setPositionText(onSketchPos, text);
 
             EditCurve[1] = onSketchPos;
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr2, onSketchPos, onSketchPos - EditCurve[0])) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
@@ -295,21 +231,22 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             EditCurve[0] = onSketchPos;
+
             Mode = STATUS_SEEK_Second;
         }
         else {
             EditCurve[1] = onSketchPos;
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
             Mode = STATUS_End;
         }
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode==STATUS_End){
@@ -337,20 +274,20 @@ public:
 
             // add auto constraints for the line segment start
             if (!sugConstr1.empty()) {
-                createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::start);
+                createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::start);
                 sugConstr1.clear();
             }
 
             // add auto constraints for the line segment end
             if (!sugConstr2.empty()) {
-                createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::end);
+                createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::PointPos::end);
                 sugConstr2.clear();
             }
 
             tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
 
             EditCurve.clear();
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
 
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
             if(continuousMode){
@@ -369,6 +306,14 @@ public:
         }
         return true;
     }
+
+private:
+
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_Line");
+    }
+
 protected:
     SelectMode Mode;
     std::vector<Base::Vector2d> EditCurve;
@@ -381,13 +326,13 @@ CmdSketcherCreateLine::CmdSketcherCreateLine()
   : Command("Sketcher_CreateLine")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create line");
     sToolTipText    = QT_TR_NOOP("Create a line in the sketch");
     sWhatsThis      = "Sketcher_CreateLine";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateLine";
-    sAccel          = "L";
+    sAccel          = "G, L";
     eType           = ForEdit;
 }
 
@@ -439,12 +384,9 @@ public:
         STATUS_End
     };
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_Box");
-    }
+public:
 
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
 
         if (Mode==STATUS_SEEK_First) {
@@ -481,7 +423,7 @@ public:
                 EditCurve[4] = EditCurve[0];
             }
 
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.0,0.0))) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
@@ -491,7 +433,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             if(constructionMethod == Diagonal) {
@@ -509,7 +451,7 @@ public:
                 EditCurve[2] = onSketchPos;
                 EditCurve[1] = Base::Vector2d(onSketchPos.x ,EditCurve[0].y);
                 EditCurve[3] = Base::Vector2d(EditCurve[0].x,onSketchPos.y);
-                sketchgui->drawEdit(EditCurve);
+                drawEdit(EditCurve);
                 Mode = STATUS_End;
             }
             else if (constructionMethod == CenterAndCorner) {
@@ -518,14 +460,14 @@ public:
                 EditCurve[2] = onSketchPos;
                 EditCurve[3] = Base::Vector2d(onSketchPos.x,EditCurve[0].y);
                 EditCurve[4] = EditCurve[0];
-                sketchgui->drawEdit(EditCurve);
+                drawEdit(EditCurve);
                 Mode = STATUS_End;
             }
         }
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode==STATUS_End){
@@ -552,7 +494,8 @@ public:
                         "conList.append(Sketcher.Constraint('Horizontal',%i))\n"
                         "conList.append(Sketcher.Constraint('Vertical',%i))\n"
                         "conList.append(Sketcher.Constraint('Vertical',%i))\n"
-                        "%s.addConstraint(conList)\n",
+                        "%s.addConstraint(conList)\n"
+                        "del geoList, conList\n",
                         EditCurve[0].x,EditCurve[0].y,EditCurve[1].x,EditCurve[1].y, // line 1
                         EditCurve[1].x,EditCurve[1].y,EditCurve[2].x,EditCurve[2].y, // line 2
                         EditCurve[2].x,EditCurve[2].y,EditCurve[3].x,EditCurve[3].y, // line 3
@@ -591,7 +534,8 @@ public:
                         "conList.append(Sketcher.Constraint('Vertical',%i))\n"
                         "conList.append(Sketcher.Constraint('Vertical',%i))\n"
                         "conList.append(Sketcher.Constraint('Symmetric',%i,2,%i,1,%i,1))\n"
-                        "%s.addConstraint(conList)\n",
+                        "%s.addConstraint(conList)\n"
+                        "del geoList, conList\n",
                         EditCurve[0].x,EditCurve[0].y,EditCurve[1].x,EditCurve[1].y, // line 1
                         EditCurve[1].x,EditCurve[1].y,EditCurve[2].x,EditCurve[2].y, // line 2
                         EditCurve[2].x,EditCurve[2].y,EditCurve[3].x,EditCurve[3].y, // line 3
@@ -621,13 +565,13 @@ public:
             if(constructionMethod == Diagonal) {
                 // add auto constraints at the start of the first side
                 if (sugConstr1.size() > 0) {
-                    createAutoConstraints(sugConstr1, getHighestCurveIndex() - 3 , Sketcher::start);
+                    createAutoConstraints(sugConstr1, getHighestCurveIndex() - 3 , Sketcher::PointPos::start);
                     sugConstr1.clear();
                 }
 
                 // add auto constraints at the end of the second side
                 if (sugConstr2.size() > 0) {
-                    createAutoConstraints(sugConstr2, getHighestCurveIndex() - 2, Sketcher::end);
+                    createAutoConstraints(sugConstr2, getHighestCurveIndex() - 2, Sketcher::PointPos::end);
                     sugConstr2.clear();
                 }
 
@@ -635,13 +579,13 @@ public:
             else if (constructionMethod == CenterAndCorner) {
                 // add auto constraints at the start of the first side
                 if (sugConstr1.size() > 0) {
-                    createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::start);
+                    createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::start);
                     sugConstr1.clear();
                 }
 
                 // add auto constraints at the end of the second side
                 if (sugConstr2.size() > 0) {
-                    createAutoConstraints(sugConstr2, getHighestCurveIndex() - 3, Sketcher::end);
+                    createAutoConstraints(sugConstr2, getHighestCurveIndex() - 3, Sketcher::PointPos::end);
                     sugConstr2.clear();
                 }
             }
@@ -654,7 +598,7 @@ public:
             // This code enables the continuous creation mode.
                 Mode=STATUS_SEEK_First;
                 EditCurve.clear();
-                sketchgui->drawEdit(EditCurve);
+                drawEdit(EditCurve);
                 EditCurve.resize(5);
                 applyCursor();
                 /* this is ok not to call to purgeHandler
@@ -670,6 +614,13 @@ public:
         }
         return true;
     }
+
+private:
+
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_Box");
+    }
 protected:
     BoxMode Mode;
     std::vector<Base::Vector2d> EditCurve;
@@ -684,13 +635,13 @@ CmdSketcherCreateRectangle::CmdSketcherCreateRectangle()
   : Command("Sketcher_CreateRectangle")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create rectangle");
     sToolTipText    = QT_TR_NOOP("Create a rectangle in the sketch");
     sWhatsThis      = "Sketcher_CreateRectangle";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateRectangle";
-    sAccel          = "R";
+    sAccel          = "G, R";
     eType           = ForEdit;
 }
 
@@ -725,13 +676,13 @@ CmdSketcherCreateRectangleCenter::CmdSketcherCreateRectangleCenter()
   : Command("Sketcher_CreateRectangle_Center")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create centered rectangle");
     sToolTipText    = QT_TR_NOOP("Create a centered rectangle in the sketch");
     sWhatsThis      = "Sketcher_CreateRectangle_Center";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateRectangle_Center";
-    sAccel          = "";
+    sAccel          = "G, V";
     eType           = ForEdit;
 }
 
@@ -780,12 +731,7 @@ public:
         STATUS_End
     };
 
-    virtual void activated(ViewProviderSketch*)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Oblong");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
 
         if (Mode == STATUS_SEEK_First) {
@@ -850,7 +796,7 @@ public:
             text.sprintf(" (%.1fR %.1fX %.1fY)", radius, lengthX, lengthY);
             setPositionText(onSketchPos, text);
 
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f, 0.f))) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
@@ -859,7 +805,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode == STATUS_SEEK_First) {
             StartPos = onSketchPos;
@@ -872,7 +818,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode == STATUS_End) {
@@ -927,7 +873,8 @@ public:
                     "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
                     "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
                     "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
-                    "%s.addConstraint(conList)\n",
+                    "%s.addConstraint(conList)\n"
+                    "del geoList, conList\n",
                     StartPos.x + (signX * radius), StartPos.y + (signY * radius), // center of the  arc 1
                     radius,
                     start, end,                 // start and end angle of arc1
@@ -981,7 +928,8 @@ public:
                     "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i, ))\n"
                     "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i, ))\n"
                     "conList.append(Sketcher.Constraint('PointOnObject', %i, 1, %i, ))\n"
-                    "%s.addConstraint(conList)\n",
+                    "%s.addConstraint(conList)\n"
+                    "del geoList, conList\n",
                     StartPos.x, StartPos.y, // point at StartPos
                     EndPos.x, EndPos.y,     // point at EndPos
                     Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(), // the sketch
@@ -995,13 +943,13 @@ public:
 
                 // add auto constraints at the StartPos auxiliary point
                 if (sugConstr1.size() > 0) {
-                    createAutoConstraints(sugConstr1, getHighestCurveIndex() - 1, Sketcher::start);
+                    createAutoConstraints(sugConstr1, getHighestCurveIndex() - 1, Sketcher::PointPos::start);
                     sugConstr1.clear();
                 }
 
                 // add auto constraints at the EndPos auxiliary point
                 if (sugConstr2.size() > 0) {
-                    createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::start);
+                    createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::PointPos::start);
                     sugConstr2.clear();
                 }
 
@@ -1020,7 +968,7 @@ public:
                 // This code enables the continuous creation mode.
                 Mode = STATUS_SEEK_First;
                 EditCurve.clear();
-                sketchgui->drawEdit(EditCurve);
+                drawEdit(EditCurve);
                 EditCurve.resize(37);
                 applyCursor();
                 /* this is ok not to call to purgeHandler
@@ -1034,6 +982,13 @@ public:
         }
         return true;
     }
+
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Oblong");
+    }
+
 protected:
     BoxMode Mode;
     Base::Vector2d StartPos, EndPos;
@@ -1049,13 +1004,13 @@ CmdSketcherCreateOblong::CmdSketcherCreateOblong()
     : Command("Sketcher_CreateOblong")
 {
     sAppModule = "Sketcher";
-    sGroup = QT_TR_NOOP("Sketcher");
+    sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Create rounded rectangle");
     sToolTipText = QT_TR_NOOP("Create a rounded rectangle in the sketch");
     sWhatsThis = "Sketcher_CreateOblong";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateOblong";
-    sAccel = "";
+    sAccel = "G, O";
     eType = ForEdit;
 }
 
@@ -1092,7 +1047,7 @@ CmdSketcherCompCreateRectangles::CmdSketcherCompCreateRectangles()
     : Command("Sketcher_CompCreateRectangles")
 {
     sAppModule = "Sketcher";
-    sGroup = QT_TR_NOOP("Sketcher");
+    sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Create rectangles");
     sToolTipText = QT_TR_NOOP("Creates a rectangle in the sketch");
     sWhatsThis = "Sketcher_CompCreateRectangles";
@@ -1208,8 +1163,8 @@ public:
       , EditCurve(2)
       , firstCurve(-1)
       , previousCurve(-1)
-      , firstPosId(Sketcher::none)
-      , previousPosId(Sketcher::none)
+      , firstPosId(Sketcher::PointPos::none)
+      , previousPosId(Sketcher::PointPos::none)
       , startAngle(0)
       , endAngle(0)
       , arcRadius(0)
@@ -1245,7 +1200,7 @@ public:
         SNAP_MODE_45Degree
     };
 
-    virtual void registerPressedKey(bool pressed, int key)
+    virtual void registerPressedKey(bool pressed, int key) override
     {
         if (Mode != STATUS_SEEK_Second)
             return; // SegmentMode can be changed only in STATUS_SEEK_Second mode
@@ -1324,12 +1279,7 @@ public:
         }
     }
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_Lineset");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         suppressTransition = false;
         if (Mode==STATUS_SEEK_First) {
@@ -1359,7 +1309,7 @@ public:
                     EditCurve[1] = EditCurve[0] + EditCurve[1];
                 }
 
-                sketchgui->drawEdit(EditCurve);
+                drawEdit(EditCurve);
 
                 float length = (EditCurve[1] - EditCurve[0]).Length();
                 float angle = (EditCurve[1] - EditCurve[0]).GetAngle(Base::Vector2d(1.f,0.f));
@@ -1440,7 +1390,7 @@ public:
                 EditCurve[30] = CenterPoint;
                 EditCurve[31] = EditCurve[0];
 
-                sketchgui->drawEdit(EditCurve);
+                drawEdit(EditCurve);
 
                 SbString text;
                 text.sprintf(" (%.1fR,%.1fdeg)", std::abs(arcRadius), arcAngle * 180 / M_PI);
@@ -1455,7 +1405,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode == STATUS_SEEK_First) {
 
@@ -1471,8 +1421,8 @@ public:
                     const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(sugConstr1[i].GeoId);
                     if ((geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
                          geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) &&
-                        (sugConstr1[i].PosId == Sketcher::start ||
-                         sugConstr1[i].PosId == Sketcher::end)) {
+                        (sugConstr1[i].PosId == Sketcher::PointPos::start ||
+                         sugConstr1[i].PosId == Sketcher::PointPos::end)) {
                         previousCurve = sugConstr1[i].GeoId;
                         previousPosId = sugConstr1[i].PosId;
                         updateTransitionData(previousCurve,previousPosId); // -> dirVec, EditCurve[0]
@@ -1487,7 +1437,7 @@ public:
 
             // remember our first point (even if we are doing a transition from a previous curve)
             firstCurve = getHighestCurveIndex() + 1;
-            firstPosId = Sketcher::start;
+            firstPosId = Sketcher::PointPos::start;
 
             if (SegmentMode == SEGMENT_MODE_Line)
                 EditCurve.resize(TransitionMode == TRANSITION_MODE_Free ? 2 : 3);
@@ -1501,7 +1451,7 @@ public:
                 unsetCursor();
                 resetPositionText();
                 EditCurve.clear();
-                sketchgui->drawEdit(EditCurve);
+                drawEdit(EditCurve);
 
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
                 bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
@@ -1515,10 +1465,10 @@ public:
                     suppressTransition=false;
                     firstCurve=-1;
                     previousCurve=-1;
-                    firstPosId=Sketcher::none;
-                    previousPosId=Sketcher::none;
+                    firstPosId=Sketcher::PointPos::none;
+                    previousPosId=Sketcher::PointPos::none;
                     EditCurve.clear();
-                    sketchgui->drawEdit(EditCurve);
+                    drawEdit(EditCurve);
                     EditCurve.resize(2);
                     applyCursor();
                     /* this is ok not to call to purgeHandler
@@ -1534,23 +1484,24 @@ public:
             }
 
             Mode = STATUS_Do;
-            if (sketchgui->getPreselectPoint() != -1 && firstPosId != Sketcher::none) {
+
+            if (getPreselectPoint() != -1 && firstPosId != Sketcher::PointPos::none) {
                 int GeoId;
                 Sketcher::PointPos PosId;
-                sketchgui->getSketchObject()->getGeoVertexIndex(sketchgui->getPreselectPoint(),GeoId,PosId);
+                sketchgui->getSketchObject()->getGeoVertexIndex(getPreselectPoint(),GeoId,PosId);
                 if (sketchgui->getSketchObject()->arePointsCoincident(GeoId,PosId,firstCurve,firstPosId))
                     Mode = STATUS_Close;
             }
-            else if (sketchgui->getPreselectCross() == 0 && firstPosId != Sketcher::none) {
+            else if (getPreselectCross() == 0 && firstPosId != Sketcher::PointPos::none) {
                 // close line started at root point
-                if (sketchgui->getSketchObject()->arePointsCoincident(-1,Sketcher::start,firstCurve,firstPosId))
+                if (sketchgui->getSketchObject()->arePointsCoincident(-1,Sketcher::PointPos::start,firstCurve,firstPosId))
                     Mode = STATUS_Close;
             }
         }
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         if (Mode == STATUS_Do || Mode == STATUS_Close) {
             bool addedGeometry = true;
@@ -1596,11 +1547,11 @@ public:
 
             int lastCurve = getHighestCurveIndex();
             // issue the constraint
-            if (addedGeometry && (previousPosId != Sketcher::none)) {
+            if (addedGeometry && (previousPosId != Sketcher::PointPos::none)) {
                 Sketcher::PointPos lastStartPosId = (SegmentMode == SEGMENT_MODE_Arc && startAngle > endAngle) ?
-                                                    Sketcher::end : Sketcher::start;
+                                                    Sketcher::PointPos::end : Sketcher::PointPos::start;
                 Sketcher::PointPos lastEndPosId = (SegmentMode == SEGMENT_MODE_Arc && startAngle > endAngle) ?
-                                                  Sketcher::start : Sketcher::end;
+                                                  Sketcher::PointPos::start : Sketcher::PointPos::end;
                 // in case of a tangency constraint, the coincident constraint is redundant
                 std::string constrType = "Coincident";
                 if (!suppressTransition && previousCurve != -1) {
@@ -1611,7 +1562,7 @@ public:
                         constrType = "Perpendicular";
                 }
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('%s',%i,%i,%i,%i)) ",
-                     constrType.c_str(), previousCurve, previousPosId, lastCurve, lastStartPosId);
+                     constrType.c_str(), previousCurve, static_cast<int>(previousPosId), lastCurve, static_cast<int>(lastStartPosId));
 
                 if(SnapMode == SNAP_MODE_45Degree && Mode != STATUS_Close) {
                     // -360, -315, -270, -225, -180, -135, -90, -45,  0, 45,  90, 135, 180, 225, 270, 315, 360
@@ -1626,7 +1577,7 @@ public:
                 if (Mode == STATUS_Close) {
                     // close the loop by constrain to the first curve point
                     Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Coincident',%i,%i,%i,%i)) ",
-                                          lastCurve,lastEndPosId,firstCurve,firstPosId);
+                                          lastCurve,static_cast<int>(lastEndPosId),firstCurve,static_cast<int>(firstPosId));
                 }
                 Gui::Command::commitCommand();
 
@@ -1654,7 +1605,7 @@ public:
                         if (sugConstr2[i].Type != Sketcher::Coincident)
                             sugConstr.push_back(sugConstr2[i]);
                     }
-                    createAutoConstraints(sugConstr, getHighestCurveIndex(), Sketcher::end);
+                    createAutoConstraints(sugConstr, getHighestCurveIndex(), Sketcher::PointPos::end);
                     sugConstr2.clear();
                 }
 
@@ -1664,7 +1615,7 @@ public:
 
                 resetPositionText();
                 EditCurve.clear();
-                sketchgui->drawEdit(EditCurve);
+                drawEdit(EditCurve);
 
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
                 bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
@@ -1678,10 +1629,10 @@ public:
                     suppressTransition=false;
                     firstCurve=-1;
                     previousCurve=-1;
-                    firstPosId=Sketcher::none;
-                    previousPosId=Sketcher::none;
+                    firstPosId=Sketcher::PointPos::none;
+                    previousPosId=Sketcher::PointPos::none;
                     EditCurve.clear();
-                    sketchgui->drawEdit(EditCurve);
+                    drawEdit(EditCurve);
                     EditCurve.resize(2);
                     applyCursor();
                     /* this is ok not to call to purgeHandler
@@ -1698,7 +1649,7 @@ public:
 
                 // Add auto constraints
                 if (sugConstr1.size() > 0) { // this is relevant only to the very first point
-                    createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::start);
+                    createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::start);
                     sugConstr1.clear();
                 }
 
@@ -1717,7 +1668,7 @@ public:
                 if (sugConstr2.size() > 0) {
                     createAutoConstraints(sugConstr2, getHighestCurveIndex(),
                                           (SegmentMode == SEGMENT_MODE_Arc && startAngle > endAngle) ?
-                                            Sketcher::start : Sketcher::end);
+                                            Sketcher::PointPos::start : Sketcher::PointPos::end);
                     sugConstr2.clear();
                 }
 
@@ -1726,7 +1677,7 @@ public:
                 // remember the vertex for the next rounds constraint..
                 previousCurve = getHighestCurveIndex();
                 previousPosId = (SegmentMode == SEGMENT_MODE_Arc && startAngle > endAngle) ?
-                                 Sketcher::start : Sketcher::end; // cw arcs are rendered in reverse
+                                 Sketcher::PointPos::start : Sketcher::PointPos::end; // cw arcs are rendered in reverse
 
                 // setup for the next line segment
                 // calculate dirVec and EditCurve[0]
@@ -1752,7 +1703,7 @@ public:
         return true;
     }
 
-    virtual void quit(void) {
+    virtual void quit(void) override {
         // We must see if we need to create a B-spline before cancelling everything
         // and now just like any other Handler,
 
@@ -1778,15 +1729,21 @@ public:
                 suppressTransition=false;
                 firstCurve=-1;
                 previousCurve=-1;
-                firstPosId=Sketcher::none;
-                previousPosId=Sketcher::none;
+                firstPosId=Sketcher::PointPos::none;
+                previousPosId=Sketcher::PointPos::none;
                 firstsegment=true;
                 EditCurve.clear();
-                sketchgui->drawEdit(EditCurve);
+                drawEdit(EditCurve);
                 EditCurve.resize(2);
                 applyCursor();
             }
         }
+    }
+
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_Lineset");
     }
 
 protected:
@@ -1819,7 +1776,7 @@ protected:
             dirVec.Set(lineSeg->getEndPoint().x - lineSeg->getStartPoint().x,
                        lineSeg->getEndPoint().y - lineSeg->getStartPoint().y,
                        0.f);
-            if (PosId == Sketcher::start) {
+            if (PosId == Sketcher::PointPos::start) {
                 dirVec *= -1;
                 EditCurve[0] = Base::Vector2d(lineSeg->getStartPoint().x, lineSeg->getStartPoint().y);
             }
@@ -1828,7 +1785,7 @@ protected:
         }
         else if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
             const Part::GeomArcOfCircle *arcSeg = static_cast<const Part::GeomArcOfCircle *>(geom);
-            if (PosId == Sketcher::start) {
+            if (PosId == Sketcher::PointPos::start) {
                 EditCurve[0] = Base::Vector2d(arcSeg->getStartPoint(/*emulateCCW=*/true).x,arcSeg->getStartPoint(/*emulateCCW=*/true).y);
                 dirVec = Base::Vector3d(0.f,0.f,-1.0) % (arcSeg->getStartPoint(/*emulateCCW=*/true)-arcSeg->getCenter());
             }
@@ -1847,12 +1804,13 @@ CmdSketcherCreatePolyline::CmdSketcherCreatePolyline()
   : Command("Sketcher_CreatePolyline")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create polyline");
     sToolTipText    = QT_TR_NOOP("Create a polyline in the sketch. 'M' Key cycles behaviour");
     sWhatsThis      = "Sketcher_CreatePolyline";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreatePolyline";
+    sAccel          = "G, M";
     eType           = ForEdit;
 }
 
@@ -1905,12 +1863,7 @@ public:
         STATUS_End
     };
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_Arc");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
@@ -1939,7 +1892,7 @@ public:
             text.sprintf(" (%.1fR,%.1fdeg)", radius, angle * 180 / M_PI);
             setPositionText(onSketchPos, text);
 
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
@@ -1964,7 +1917,7 @@ public:
             text.sprintf(" (%.1fR,%.1fdeg)", radius, arcAngle * 180 / M_PI);
             setPositionText(onSketchPos, text);
 
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.0,0.0))) {
                 renderSuggestConstraintsCursor(sugConstr3);
                 return;
@@ -1974,7 +1927,7 @@ public:
 
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             CenterPoint = onSketchPos;
@@ -2005,7 +1958,7 @@ public:
                 startAngle += arcAngle;
             }
 
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
             applyCursor();
             Mode = STATUS_End;
         }
@@ -2013,7 +1966,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode==STATUS_End) {
@@ -2037,19 +1990,19 @@ public:
 
             // Auto Constraint center point
             if (sugConstr1.size() > 0) {
-                createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::mid);
+                createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::mid);
                 sugConstr1.clear();
             }
 
             // Auto Constraint first picked point
             if (sugConstr2.size() > 0) {
-                createAutoConstraints(sugConstr2, getHighestCurveIndex(), (arcAngle > 0) ? Sketcher::start : Sketcher::end );
+                createAutoConstraints(sugConstr2, getHighestCurveIndex(), (arcAngle > 0) ? Sketcher::PointPos::start : Sketcher::PointPos::end );
                 sugConstr2.clear();
             }
 
             // Auto Constraint second picked point
             if (sugConstr3.size() > 0) {
-                createAutoConstraints(sugConstr3, getHighestCurveIndex(), (arcAngle > 0) ? Sketcher::end : Sketcher::start);
+                createAutoConstraints(sugConstr3, getHighestCurveIndex(), (arcAngle > 0) ? Sketcher::PointPos::end : Sketcher::PointPos::start);
                 sugConstr3.clear();
             }
 
@@ -2062,7 +2015,7 @@ public:
                 // This code enables the continuous creation mode.
                 Mode=STATUS_SEEK_First;
                 EditCurve.clear();
-                sketchgui->drawEdit(EditCurve);
+                drawEdit(EditCurve);
                 EditCurve.resize(2);
                 applyCursor();
                 /* this is ok not to call to purgeHandler
@@ -2075,6 +2028,12 @@ public:
             }
         }
         return true;
+    }
+
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_Arc");
     }
 protected:
     SelectMode Mode;
@@ -2090,12 +2049,13 @@ CmdSketcherCreateArc::CmdSketcherCreateArc()
   : Command("Sketcher_CreateArc")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create arc by center");
     sToolTipText    = QT_TR_NOOP("Create an arc by its center and by its end points");
     sWhatsThis      = "Sketcher_CreateArc";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateArc";
+    sAccel          = "G, A";
     eType           = ForEdit;
 }
 
@@ -2120,8 +2080,8 @@ public:
       : Mode(STATUS_SEEK_First), EditCurve(2)
       , radius(0), startAngle(0)
       , endAngle(0), arcAngle(0)
-      , arcPos1(Sketcher::none)
-      , arcPos2(Sketcher::none)
+      , arcPos1(Sketcher::PointPos::none)
+      , arcPos2(Sketcher::PointPos::none)
     {
     }
     virtual ~DrawSketchHandler3PointArc(){}
@@ -2133,12 +2093,7 @@ public:
         STATUS_End
     };
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_3PointArc");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
@@ -2169,7 +2124,7 @@ public:
             text.sprintf(" (%.1fR,%.1fdeg)", (float) radius, (float) lineAngle * 180 / M_PI);
             setPositionText(onSketchPos, text);
 
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
@@ -2182,7 +2137,7 @@ public:
             reverses.
             */
             try {
-                CenterPoint = EditCurve[30] = GetCircleCenter(FirstPoint, SecondPoint, onSketchPos);
+                CenterPoint = EditCurve[30] = Part::Geom2dCircle::getCircleCenter(FirstPoint, SecondPoint, onSketchPos);
 
                 radius = (SecondPoint - CenterPoint).Length();
 
@@ -2196,14 +2151,14 @@ public:
                     if (angle2 > angle1) {
                         EditCurve[0] =  FirstPoint;
                         EditCurve[29] = SecondPoint;
-                        arcPos1 = Sketcher::start;
-                        arcPos2 = Sketcher::end;
+                        arcPos1 = Sketcher::PointPos::start;
+                        arcPos2 = Sketcher::PointPos::end;
                     }
                     else {
                         EditCurve[0] =  SecondPoint;
                         EditCurve[29] = FirstPoint;
-                        arcPos1 = Sketcher::end;
-                        arcPos2 = Sketcher::start;
+                        arcPos1 = Sketcher::PointPos::end;
+                        arcPos2 = Sketcher::PointPos::start;
                     }
                     startAngle = min(angle1, angle2);
                     endAngle   = max(angle1, angle2);
@@ -2214,14 +2169,14 @@ public:
                     if (angle2 > angle1) {
                         EditCurve[0] =  SecondPoint;
                         EditCurve[29] = FirstPoint;
-                        arcPos1 = Sketcher::end;
-                        arcPos2 = Sketcher::start;
+                        arcPos1 = Sketcher::PointPos::end;
+                        arcPos2 = Sketcher::PointPos::start;
                     }
                     else {
                         EditCurve[0] =  FirstPoint;
                         EditCurve[29] = SecondPoint;
-                        arcPos1 = Sketcher::start;
-                        arcPos2 = Sketcher::end;
+                        arcPos1 = Sketcher::PointPos::start;
+                        arcPos2 = Sketcher::PointPos::end;
                     }
                     startAngle = max(angle1, angle2);
                     endAngle   = min(angle1, angle2);
@@ -2239,7 +2194,7 @@ public:
                 text.sprintf(" (%.1fR,%.1fdeg)", (float) radius, (float) arcAngle * 180 / M_PI);
                 setPositionText(onSketchPos, text);
 
-                sketchgui->drawEdit(EditCurve);
+                drawEdit(EditCurve);
                 if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.0,0.0),
                                     AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr3);
@@ -2253,7 +2208,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             // 32 point curve + center + endpoint
@@ -2273,7 +2228,7 @@ public:
         else {
             EditCurve.resize(30);
 
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
             applyCursor();
             Mode = STATUS_End;
         }
@@ -2281,7 +2236,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         // Need to look at.  rx might need fixing.
@@ -2318,7 +2273,7 @@ public:
 
             // Auto Constraint third picked point
             if (sugConstr3.size() > 0) {
-                createAutoConstraints(sugConstr3, getHighestCurveIndex(), Sketcher::none);
+                createAutoConstraints(sugConstr3, getHighestCurveIndex(), Sketcher::PointPos::none);
                 sugConstr3.clear();
             }
 
@@ -2330,7 +2285,7 @@ public:
                 // This code enables the continuous creation mode.
                 Mode=STATUS_SEEK_First;
                 EditCurve.clear();
-                sketchgui->drawEdit(EditCurve);
+                drawEdit(EditCurve);
                 EditCurve.resize(2);
                 applyCursor();
                 /* this is ok not to call to purgeHandler
@@ -2344,6 +2299,13 @@ public:
         }
         return true;
     }
+
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_3PointArc");
+    }
+
 protected:
     SelectMode Mode;
     std::vector<Base::Vector2d> EditCurve;
@@ -2359,12 +2321,13 @@ CmdSketcherCreate3PointArc::CmdSketcherCreate3PointArc()
   : Command("Sketcher_Create3PointArc")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create arc by three points");
     sToolTipText    = QT_TR_NOOP("Create an arc by its end points and a point along the arc");
     sWhatsThis      = "Sketcher_Create3PointArc";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Create3PointArc";
+    sAccel          = "G, 3, A";
     eType           = ForEdit;
 }
 
@@ -2386,7 +2349,7 @@ CmdSketcherCompCreateArc::CmdSketcherCompCreateArc()
   : Command("Sketcher_CompCreateArc")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create arc");
     sToolTipText    = QT_TR_NOOP("Create an arc in the sketcher");
     sWhatsThis      = "Sketcher_CompCreateArc";
@@ -2494,12 +2457,7 @@ public:
         STATUS_Close
     };
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_Circle");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
@@ -2527,7 +2485,7 @@ public:
             text.sprintf(" (%.1fR)", radius);
             setPositionText(onSketchPos, text);
 
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr2, onSketchPos, onSketchPos - EditCurve[0],
                                    AutoConstraint::CURVE)) {
                 renderSuggestConstraintsCursor(sugConstr2);
@@ -2537,7 +2495,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             EditCurve[0] = onSketchPos;
@@ -2549,7 +2507,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode==STATUS_Close) {
@@ -2575,13 +2533,13 @@ public:
 
             // add auto constraints for the center point
             if (sugConstr1.size() > 0) {
-                createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::mid);
+                createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::mid);
                 sugConstr1.clear();
             }
 
             // add suggested constraints for circumference
             if (sugConstr2.size() > 0) {
-                createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::none);
+                createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::PointPos::none);
                 sugConstr2.clear();
             }
 
@@ -2593,7 +2551,7 @@ public:
                 // This code enables the continuous creation mode.
                 Mode=STATUS_SEEK_First;
                 EditCurve.clear();
-                sketchgui->drawEdit(EditCurve);
+                drawEdit(EditCurve);
                 EditCurve.resize(34);
                 applyCursor();
                 /* this is ok not to call to purgeHandler
@@ -2607,6 +2565,13 @@ public:
         }
         return true;
     }
+
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_Circle");
+    }
+
 protected:
     SelectMode Mode;
     std::vector<Base::Vector2d> EditCurve;
@@ -2620,12 +2585,13 @@ CmdSketcherCreateCircle::CmdSketcherCreateCircle()
   : Command("Sketcher_CreateCircle")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create circle");
     sToolTipText    = QT_TR_NOOP("Create a circle in the sketch");
     sWhatsThis      = "Sketcher_CreateCircle";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateCircle";
+    sAccel          = "G, C";
     eType           = ForEdit;
 }
 
@@ -2709,27 +2675,10 @@ public:
     };
 
     /**
-     * @brief Slot called when the create ellipse command is activated
-     * @param sketchgui A pointer to the active sketch
-     */
-    virtual void activated(ViewProviderSketch *)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_Ellipse");
-        if (constrMethod == 0) {
-            method = CENTER_PERIAPSIS_B;
-            mode = STATUS_SEEK_CENTROID;
-        } else {
-            method = PERIAPSIS_APOAPSIS_B;
-            mode = STATUS_SEEK_PERIAPSIS;
-        }
-    }
-
-
-    /**
      * @brief Updates the ellipse when the cursor moves
      * @param onSketchPos the position of the cursor on the sketch
      */
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (method == PERIAPSIS_APOAPSIS_B) {
             if (mode == STATUS_SEEK_PERIAPSIS) {
@@ -2749,7 +2698,7 @@ public:
                 text.sprintf(" (%.1fR,%.1fR)", semiMajorRadius,semiMajorRadius);
                 setPositionText(onSketchPos, text);
 
-                sketchgui->drawEdit(editCurve);
+                drawEdit(editCurve);
                 // Suggestions for ellipse and curves are disabled because many tangent constraints
                 // need an intermediate point or line.
                 if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f),
@@ -2766,7 +2715,7 @@ public:
                 text.sprintf(" (%.1fR,%.1fR)", a, b);
                 setPositionText(onSketchPos, text);
 
-                sketchgui->drawEdit(editCurve);
+                drawEdit(editCurve);
                 if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f,0.f),
                     AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr3);
@@ -2790,7 +2739,7 @@ public:
                 text.sprintf(" (%.1fR,%.1fR)", semiMajorRadius,semiMajorRadius);
                 setPositionText(onSketchPos, text);
 
-                sketchgui->drawEdit(editCurve);
+                drawEdit(editCurve);
                 if (seekAutoConstraint(sugConstr2, onSketchPos, onSketchPos - centroid,
                     AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr2);
@@ -2805,7 +2754,7 @@ public:
                 text.sprintf(" (%.1fR,%.1fR)", a, b);
                 setPositionText(onSketchPos, text);
 
-                sketchgui->drawEdit(editCurve);
+                drawEdit(editCurve);
                 if (seekAutoConstraint(sugConstr3, onSketchPos, onSketchPos - centroid,
                     AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr3);
@@ -2821,7 +2770,7 @@ public:
      * @param onSketchPos the position of the cursor on the sketch
      * @return
      */
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (method == PERIAPSIS_APOAPSIS_B) {
             if (mode == STATUS_SEEK_PERIAPSIS) {
@@ -2856,7 +2805,7 @@ public:
      * @param onSketchPos the position of the cursor on the sketch
      * @return
      */
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (mode == STATUS_Close) {
@@ -2876,6 +2825,24 @@ public:
         }
         return true;
     }
+
+private:
+    /**
+     * @brief Slot called when the create ellipse command is activated
+     * @param sketchgui A pointer to the active sketch
+     */
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_Ellipse");
+        if (constrMethod == 0) {
+            method = CENTER_PERIAPSIS_B;
+            mode = STATUS_SEEK_CENTROID;
+        } else {
+            method = PERIAPSIS_APOAPSIS_B;
+            mode = STATUS_SEEK_PERIAPSIS;
+        }
+    }
+
 protected:
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3;
 private:
@@ -3344,30 +3311,30 @@ private:
         if (method == CENTER_PERIAPSIS_B) {
             // add auto constraints for the center point
             if (sugConstr1.size() > 0) {
-                createAutoConstraints(sugConstr1, currentgeoid, Sketcher::mid);
+                createAutoConstraints(sugConstr1, currentgeoid, Sketcher::PointPos::mid);
                 sugConstr1.clear();
             }
             if (sugConstr2.size() > 0) {
-                createAutoConstraints(sugConstr2, currentgeoid, Sketcher::none);
+                createAutoConstraints(sugConstr2, currentgeoid, Sketcher::PointPos::none);
                 sugConstr2.clear();
             }
             if (sugConstr3.size() > 0) {
-                createAutoConstraints(sugConstr3, currentgeoid, Sketcher::none);
+                createAutoConstraints(sugConstr3, currentgeoid, Sketcher::PointPos::none);
                 sugConstr3.clear();
             }
         }
 
         if (method == PERIAPSIS_APOAPSIS_B) {
             if (sugConstr1.size() > 0) {
-                createAutoConstraints(sugConstr1, currentgeoid, Sketcher::none);
+                createAutoConstraints(sugConstr1, currentgeoid, Sketcher::PointPos::none);
                 sugConstr1.clear();
             }
             if (sugConstr2.size() > 0) {
-                createAutoConstraints(sugConstr2, currentgeoid, Sketcher::none);
+                createAutoConstraints(sugConstr2, currentgeoid, Sketcher::PointPos::none);
                 sugConstr2.clear();
             }
             if (sugConstr3.size() > 0) {
-                createAutoConstraints(sugConstr3, currentgeoid, Sketcher::none);
+                createAutoConstraints(sugConstr3, currentgeoid, Sketcher::PointPos::none);
                 sugConstr3.clear();
             }
         }
@@ -3383,7 +3350,7 @@ private:
             mode = STATUS_SEEK_PERIAPSIS;
         }
         editCurve.clear();
-        sketchgui->drawEdit(editCurve);
+        drawEdit(editCurve);
 
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
         bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
@@ -3415,12 +3382,13 @@ CmdSketcherCreateEllipseByCenter::CmdSketcherCreateEllipseByCenter()
   : Command("Sketcher_CreateEllipseByCenter")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create ellipse by center");
     sToolTipText    = QT_TR_NOOP("Create an ellipse by center in the sketch");
     sWhatsThis      = "Sketcher_CreateEllipseByCenter";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Conics_Ellipse_Center";
+    sAccel          = "G, E, E";
     eType           = ForEdit;
 }
 
@@ -3445,12 +3413,13 @@ CmdSketcherCreateEllipseBy3Points::CmdSketcherCreateEllipseBy3Points()
   : Command("Sketcher_CreateEllipseBy3Points")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create ellipse by 3 points");
     sToolTipText    = QT_TR_NOOP("Create an ellipse by 3 points in the sketch");
     sWhatsThis      = "Sketcher_CreateEllipseBy3Points";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateEllipse_3points";
+    sAccel          = "G, 3, E";
     eType           = ForEdit;
 }
 
@@ -3484,12 +3453,7 @@ public:
         STATUS_Close
     };
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_ArcOfEllipse");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
@@ -3517,7 +3481,7 @@ public:
             text.sprintf(" (%.1fR,%.1fR)", radius,radius);
             setPositionText(onSketchPos, text);
 
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr2, onSketchPos, onSketchPos - centerPoint,
                                    AutoConstraint::CURVE)) {
                 renderSuggestConstraintsCursor(sugConstr2);
@@ -3548,7 +3512,7 @@ public:
             text.sprintf(" (%.1fR,%.1fR)", a, b);
             setPositionText(onSketchPos, text);
 
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr3);
                 return;
@@ -3587,7 +3551,7 @@ public:
             text.sprintf(" (%.1fR,%.1fR,%.1fdeg)", a, b, arcAngle * 180 / M_PI);
             setPositionText(onSketchPos, text);
 
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr4, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr4);
                 return;
@@ -3599,7 +3563,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             EditCurve[0] = onSketchPos;
@@ -3625,7 +3589,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode==STATUS_Close) {
@@ -3714,25 +3678,25 @@ public:
 
             // add auto constraints for the center point
             if (sugConstr1.size() > 0) {
-                createAutoConstraints(sugConstr1, currentgeoid, Sketcher::mid);
+                createAutoConstraints(sugConstr1, currentgeoid, Sketcher::PointPos::mid);
                 sugConstr1.clear();
             }
 
             // add suggested constraints for arc
             if (sugConstr2.size() > 0) {
-                createAutoConstraints(sugConstr2, currentgeoid, Sketcher::none);
+                createAutoConstraints(sugConstr2, currentgeoid, Sketcher::PointPos::none);
                 sugConstr2.clear();
             }
 
             // add suggested constraints for start of arc
             if (sugConstr3.size() > 0) {
-                createAutoConstraints(sugConstr3, currentgeoid, isOriginalArcCCW?Sketcher::start:Sketcher::end);
+                createAutoConstraints(sugConstr3, currentgeoid, isOriginalArcCCW?Sketcher::PointPos::start:Sketcher::PointPos::end);
                 sugConstr3.clear();
             }
 
             // add suggested constraints for start of arc
             if (sugConstr4.size() > 0) {
-                createAutoConstraints(sugConstr4, currentgeoid, isOriginalArcCCW?Sketcher::end:Sketcher::start);
+                createAutoConstraints(sugConstr4, currentgeoid, isOriginalArcCCW?Sketcher::PointPos::end:Sketcher::PointPos::start);
                 sugConstr4.clear();
             }
 
@@ -3744,7 +3708,7 @@ public:
                 // This code enables the continuous creation mode.
                 Mode=STATUS_SEEK_First;
                 EditCurve.clear();
-                sketchgui->drawEdit(EditCurve);
+                drawEdit(EditCurve);
                 EditCurve.resize(34);
                 applyCursor();
                 /* this is ok not to call to purgeHandler
@@ -3758,6 +3722,13 @@ public:
         }
         return true;
     }
+
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_ArcOfEllipse");
+    }
+
 protected:
     SelectMode Mode;
     std::vector<Base::Vector2d> EditCurve;
@@ -3772,12 +3743,13 @@ CmdSketcherCreateArcOfEllipse::CmdSketcherCreateArcOfEllipse()
   : Command("Sketcher_CreateArcOfEllipse")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create an arc of ellipse");
     sToolTipText    = QT_TR_NOOP("Create an arc of ellipse in the sketch");
     sWhatsThis      = "Sketcher_CreateArcOfEllipse";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateElliptical_Arc";
+    sAccel          = "G, E, A";
     eType           = ForEdit;
 }
 
@@ -3812,12 +3784,7 @@ public:
         STATUS_Close
     };
 
-    virtual void activated(ViewProviderSketch * /*sketchgui*/)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_ArcOfHyperbola");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
@@ -3836,7 +3803,7 @@ public:
             text.sprintf(" (%.1fR,%.1fR)", radius,radius);
             setPositionText(onSketchPos, text);
 
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f),
                                    AutoConstraint::CURVE)) {
                 renderSuggestConstraintsCursor(sugConstr2);
@@ -3868,7 +3835,7 @@ public:
                 setPositionText(onSketchPos, text);
             }
 
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr3);
                 return;
@@ -3918,7 +3885,7 @@ public:
                 arcAngle=0.;
             }
 
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr4, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr4);
                 return;
@@ -3928,7 +3895,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             EditCurve[0] = onSketchPos;
@@ -3956,7 +3923,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d /*onSketchPos*/)
+    virtual bool releaseButton(Base::Vector2d /*onSketchPos*/) override
     {
         if (Mode==STATUS_Close) {
             unsetCursor();
@@ -4055,25 +4022,25 @@ public:
 
             // add auto constraints for the center point
             if (sugConstr1.size() > 0) {
-                createAutoConstraints(sugConstr1, currentgeoid, Sketcher::mid);
+                createAutoConstraints(sugConstr1, currentgeoid, Sketcher::PointPos::mid);
                 sugConstr1.clear();
             }
 
             // add suggested constraints for arc
             if (sugConstr2.size() > 0) {
-                createAutoConstraints(sugConstr2, currentgeoid, Sketcher::none);
+                createAutoConstraints(sugConstr2, currentgeoid, Sketcher::PointPos::none);
                 sugConstr2.clear();
             }
 
             // add suggested constraints for start of arc
             if (sugConstr3.size() > 0) {
-                createAutoConstraints(sugConstr3, currentgeoid, isOriginalArcCCW?Sketcher::start:Sketcher::end);
+                createAutoConstraints(sugConstr3, currentgeoid, isOriginalArcCCW?Sketcher::PointPos::start:Sketcher::PointPos::end);
                 sugConstr3.clear();
             }
 
             // add suggested constraints for start of arc
             if (sugConstr4.size() > 0) {
-                createAutoConstraints(sugConstr4, currentgeoid, isOriginalArcCCW?Sketcher::end:Sketcher::start);
+                createAutoConstraints(sugConstr4, currentgeoid, isOriginalArcCCW?Sketcher::PointPos::end:Sketcher::PointPos::start);
                 sugConstr4.clear();
             }
 
@@ -4086,7 +4053,7 @@ public:
                 // This code enables the continuous creation mode.
                 Mode = STATUS_SEEK_First;
                 EditCurve.clear();
-                sketchgui->drawEdit(EditCurve);
+                drawEdit(EditCurve);
                 EditCurve.resize(34);
                 applyCursor();
                 /* It is ok not to call to purgeHandler
@@ -4100,6 +4067,13 @@ public:
         }
         return true;
     }
+
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_ArcOfHyperbola");
+    }
+
 protected:
     SelectMode Mode;
     std::vector<Base::Vector2d> EditCurve;
@@ -4115,12 +4089,13 @@ CmdSketcherCreateArcOfHyperbola::CmdSketcherCreateArcOfHyperbola()
   : Command("Sketcher_CreateArcOfHyperbola")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create an arc of hyperbola");
     sToolTipText    = QT_TR_NOOP("Create an arc of hyperbola in the sketch");
     sWhatsThis      = "Sketcher_CreateArcOfHyperbola";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateHyperbolic_Arc";
+    sAccel          = "G, H";
     eType           = ForEdit;
 }
 
@@ -4156,12 +4131,7 @@ public:
         STATUS_Close
     };
 
-    virtual void activated(ViewProviderSketch * /*sketchgui*/)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_ArcOfParabola");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
@@ -4180,7 +4150,7 @@ public:
             text.sprintf(" (F%.1f)", radius);
             setPositionText(onSketchPos, text);
 
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
@@ -4212,7 +4182,7 @@ public:
             text.sprintf(" (F%.1f)", focal);
             setPositionText(onSketchPos, text);
 
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
 
             if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr3);
@@ -4258,7 +4228,7 @@ public:
                 arcAngle=0.;
             }
 
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr4, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr4);
                 return;
@@ -4268,7 +4238,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             EditCurve[0] = onSketchPos;
@@ -4295,7 +4265,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d /*onSketchPos*/)
+    virtual bool releaseButton(Base::Vector2d /*onSketchPos*/) override
     {
         if (Mode==STATUS_Close) {
             unsetCursor();
@@ -4354,25 +4324,25 @@ public:
 
             // add auto constraints for the focus point
             if (sugConstr1.size() > 0) {
-                createAutoConstraints(sugConstr1, currentgeoid+1, Sketcher::start);
+                createAutoConstraints(sugConstr1, currentgeoid+1, Sketcher::PointPos::start);
                 sugConstr1.clear();
             }
 
             // add suggested constraints for vertex point
             if (sugConstr2.size() > 0) {
-                createAutoConstraints(sugConstr2, currentgeoid, Sketcher::mid);
+                createAutoConstraints(sugConstr2, currentgeoid, Sketcher::PointPos::mid);
                 sugConstr2.clear();
             }
 
             // add suggested constraints for start of arc
             if (sugConstr3.size() > 0) {
-                createAutoConstraints(sugConstr3, currentgeoid, isOriginalArcCCW?Sketcher::start:Sketcher::end);
+                createAutoConstraints(sugConstr3, currentgeoid, isOriginalArcCCW?Sketcher::PointPos::start:Sketcher::PointPos::end);
                 sugConstr3.clear();
             }
 
             // add suggested constraints for start of arc
             if (sugConstr4.size() > 0) {
-                createAutoConstraints(sugConstr4, currentgeoid, isOriginalArcCCW?Sketcher::end:Sketcher::start);
+                createAutoConstraints(sugConstr4, currentgeoid, isOriginalArcCCW?Sketcher::PointPos::end:Sketcher::PointPos::start);
                 sugConstr4.clear();
             }
 
@@ -4384,7 +4354,7 @@ public:
                 // This code enables the continuous creation mode.
                 Mode = STATUS_SEEK_First;
                 EditCurve.clear();
-                sketchgui->drawEdit(EditCurve);
+                drawEdit(EditCurve);
                 EditCurve.resize(34);
                 applyCursor();
                 /* It is ok not to call to purgeHandler
@@ -4397,6 +4367,12 @@ public:
             }
         }
         return true;
+    }
+
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_ArcOfParabola");
     }
 
 protected:
@@ -4413,12 +4389,13 @@ CmdSketcherCreateArcOfParabola::CmdSketcherCreateArcOfParabola()
   : Command("Sketcher_CreateArcOfParabola")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create an arc of parabola");
     sToolTipText    = QT_TR_NOOP("Create an arc of parabola in the sketch");
     sWhatsThis      = "Sketcher_CreateArcOfParabola";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateParabolic_Arc";
+    sAccel          = "G, J";
     eType           = ForEdit;
 }
 
@@ -4445,7 +4422,7 @@ CmdSketcherCompCreateConic::CmdSketcherCompCreateConic()
   : Command("Sketcher_CompCreateConic")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create a conic");
     sToolTipText    = QT_TR_NOOP("Create a conic in the sketch");
     sWhatsThis      = "Sketcher_CompCreateConic";
@@ -4585,14 +4562,13 @@ class DrawSketchHandlerBSpline: public DrawSketchHandler
 public:
     DrawSketchHandlerBSpline(int constructionMethod)
       : Mode(STATUS_SEEK_FIRST_CONTROLPOINT)
-      , EditCurve(2)
-      , CurrentConstraint(0)
+      , MousePressMode(MOUSE_NOT_PRESSED)
       , ConstrMethod(constructionMethod)
+      , SplineDegree(3)
       , IsClosed(false)
-      , FirstPoleGeoId(-2000)
     {
-        std::vector<AutoConstraint> sugConstr1;
-        sugConstr.push_back(sugConstr1);
+        addSugConstraint();
+        applyCursor();
     }
 
     virtual ~DrawSketchHandlerBSpline() {}
@@ -4603,59 +4579,62 @@ public:
         STATUS_CLOSE
     };
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_BSpline");
-    }
+    // TODO: this kind of behavior will be useful in a superclass
+    // when LMB is pressed it's a transitional state so some undos can't be done
+    // (like delete last pole)
+    enum MOUSE_PRESS_MODE {
+        MOUSE_PRESSED,
+        MOUSE_NOT_PRESSED
+    };
 
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
+        prevCursorPosition = onSketchPos;
+
         if (Mode==STATUS_SEEK_FIRST_CONTROLPOINT) {
             setPositionText(onSketchPos);
-            if (seekAutoConstraint(sugConstr[CurrentConstraint], onSketchPos, Base::Vector2d(0.f,0.f))) {
-                renderSuggestConstraintsCursor(sugConstr[CurrentConstraint]);
+
+            if (seekAutoConstraint(sugConstr.back(), onSketchPos, Base::Vector2d(0.f,0.f))) {
+                renderSuggestConstraintsCursor(sugConstr.back());
                 return;
             }
         }
-        else if (Mode==STATUS_SEEK_ADDITIONAL_CONTROLPOINTS){
+        else if (Mode==STATUS_SEEK_ADDITIONAL_CONTROLPOINTS) {
 
-            EditCurve[EditCurve.size()-1] = onSketchPos;
+            drawControlPolygonToPosition(onSketchPos);
 
-            sketchgui->drawEdit(EditCurve);
+            drawCursorToPosition(onSketchPos);
 
-            float length = (EditCurve[EditCurve.size()-1] - EditCurve[EditCurve.size()-2]).Length();
-            float angle = (EditCurve[EditCurve.size()-1] - EditCurve[EditCurve.size()-2]).GetAngle(Base::Vector2d(1.f,0.f));
-
-            SbString text;
-            text.sprintf(" (%.1f,%.1fdeg)", length, angle * 180 / M_PI);
-            setPositionText(EditCurve[EditCurve.size()-1], text);
-
-            if (seekAutoConstraint(sugConstr[CurrentConstraint], onSketchPos, Base::Vector2d(0.f,0.f))) {
-                renderSuggestConstraintsCursor(sugConstr[CurrentConstraint]);
+            if (seekAutoConstraint(sugConstr.back(), onSketchPos, Base::Vector2d(0.f,0.f))) {
+                renderSuggestConstraintsCursor(sugConstr.back());
                 return;
             }
-
         }
-        applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
-        if (Mode == STATUS_SEEK_FIRST_CONTROLPOINT) {
+        prevCursorPosition = onSketchPos;
 
-            EditCurve[0] = onSketchPos;
+        MousePressMode = MOUSE_PRESSED;
+
+        if (Mode == STATUS_SEEK_FIRST_CONTROLPOINT) {
+            BSplinePoles.push_back(onSketchPos);
 
             Mode = STATUS_SEEK_ADDITIONAL_CONTROLPOINTS;
 
             // insert circle point for pole, defer internal alignment constraining.
             try {
-
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Pole circle"));
 
                 //Add pole
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)",
-                                      EditCurve[0].x,EditCurve[0].y);
+                                      BSplinePoles.back().x, BSplinePoles.back().y);
 
+                poleGeoIds.push_back(getHighestCurveIndex());
+
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Weight',%d,%f)) ",
+                                      poleGeoIds.back(), 1.0 ); // First pole defaults to 1.0 weight
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -4670,42 +4649,35 @@ public:
 
             //static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
 
-            FirstPoleGeoId = getHighestCurveIndex();
-
             // add auto constraints on pole
-            if (sugConstr[CurrentConstraint].size() > 0) {
-                createAutoConstraints(sugConstr[CurrentConstraint], FirstPoleGeoId, Sketcher::mid, false);
+            if (sugConstr.back().size() > 0) {
+                createAutoConstraints(sugConstr.back(), poleGeoIds.back(), Sketcher::PointPos::mid, false);
             }
 
             static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
 
-            std::vector<AutoConstraint> sugConstrN;
-            sugConstr.push_back(sugConstrN);
-            CurrentConstraint++;
+            addSugConstraint();
 
         }
         else if (Mode == STATUS_SEEK_ADDITIONAL_CONTROLPOINTS) {
-            EditCurve[EditCurve.size()-1] = onSketchPos;
+            BSplinePoles.push_back(onSketchPos);
 
             // check if coincident with first pole
-            for(std::vector<AutoConstraint>::const_iterator it = sugConstr[CurrentConstraint].begin(); it != sugConstr[CurrentConstraint].end(); it++) {
-                if( (*it).Type == Sketcher::Coincident && (*it).GeoId == FirstPoleGeoId && (*it).PosId == Sketcher::mid ) {
-
+            for(auto & ac : sugConstr.back()) {
+                if( ac.Type == Sketcher::Coincident && ac.GeoId == poleGeoIds[0] && ac.PosId == Sketcher::PointPos::mid ) {
                     IsClosed = true;
-                    }
+                }
             }
 
             if (IsClosed) {
                 Mode = STATUS_CLOSE;
 
                 if (ConstrMethod == 1) { // if periodic we do not need the last pole
-                    EditCurve.pop_back();
+                    BSplinePoles.pop_back();
                     sugConstr.pop_back();
 
                     return true;
                 }
-
-
             }
 
             // insert circle point for pole, defer internal alignment constraining.
@@ -4715,15 +4687,13 @@ public:
 
                 //Add pole
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)",
-                                      EditCurve[EditCurve.size()-1].x,EditCurve[EditCurve.size()-1].y);
+                                      BSplinePoles.back().x,BSplinePoles.back().y);
 
-                if(EditCurve.size() == 2) {
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Weight',%d,%f)) ",
-                                          FirstPoleGeoId, 1.0 ); // First pole defaults to 1.0 weight
-                }
+                poleGeoIds.push_back(getHighestCurveIndex());
 
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
-                                      FirstPoleGeoId, FirstPoleGeoId+ EditCurve.size()-1);
+                                      poleGeoIds[0], poleGeoIds.back());
+
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -4739,34 +4709,198 @@ public:
             //static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
 
             // add auto constraints on pole
-            if (sugConstr[CurrentConstraint].size() > 0) {
-                createAutoConstraints(sugConstr[CurrentConstraint], FirstPoleGeoId + EditCurve.size()-1, Sketcher::mid, false);
+            if (sugConstr.back().size() > 0) {
+                createAutoConstraints(sugConstr.back(), poleGeoIds.back(), Sketcher::PointPos::mid, false);
             }
 
             //static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
 
             if (!IsClosed) {
-                EditCurve.resize(EditCurve.size() + 1); // add one place for a pole
-                std::vector<AutoConstraint> sugConstrN;
-                sugConstr.push_back(sugConstrN);
-                CurrentConstraint++;
+                addSugConstraint();
             }
 
         }
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d /*onSketchPos*/)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
+        prevCursorPosition = onSketchPos;
+        MousePressMode = MOUSE_NOT_PRESSED;
+
+        return finishCommand(onSketchPos);
+    }
+
+    virtual void registerPressedKey(bool pressed, int key) override
+    {
+        if (SoKeyboardEvent::D == key && pressed) {
+            SplineDegree = QInputDialog::getInt(
+                Gui::getMainWindow(),
+                QObject::tr("B-Spline Degree"),
+                QObject::tr("Define B-Spline Degree, between 1 and %1:")
+                .arg(QString::number(Geom_BSplineCurve::MaxDegree())),
+                SplineDegree, 1, Geom_BSplineCurve::MaxDegree(), 1);
+            // FIXME: Pressing Esc here also finishes the B-Spline creation.
+            // The user may only want to exit the dialog.
+        }
+        // On pressing Backspace delete last pole
+        else if (SoKeyboardEvent::BACKSPACE == key && pressed) {
+            // when mouse is pressed we are in a transitional state so don't mess with it
+            if (MOUSE_PRESSED == MousePressMode)
+                return;
+
+            // can only delete last pole if it exists
+            if (STATUS_SEEK_FIRST_CONTROLPOINT == Mode ||
+                STATUS_CLOSE == Mode)
+                return;
+
+            // if only first pole exists it's equivalent to canceling current spline
+            if (poleGeoIds.size() == 1) {
+                // this also exits b-spline creation if continuous mode is off
+                this->quit();
+                return;
+            }
+
+            // reverse the steps of press/release button
+            try {
+                // already ensured that CurrentConstraint == EditCurve.size() > 1
+                const int delGeoId = poleGeoIds.back();
+                const auto& constraints = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->Constraints.getValues();
+                for (int i = constraints.size() - 1; i >= 0; --i) {
+                    if (delGeoId == constraints[i]->First ||
+                        delGeoId == constraints[i]->Second ||
+                        delGeoId == constraints[i]->Third)
+                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "delConstraint(%d)", i);
+                }
+
+                // Remove pole
+                Gui::cmdAppObjectArgs(sketchgui->getObject(), "delGeometry(%d)", delGeoId);
+
+                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+
+                poleGeoIds.pop_back();
+                BSplinePoles.pop_back();
+
+                // last entry is kept, as it corresponds to the current pole, but the one corresponding to the erased pole is removed
+                sugConstr.erase(std::prev(std::prev(sugConstr.end())));
+
+
+                // run this in the end to draw lines and position text
+                drawControlPolygonToPosition(prevCursorPosition);
+                drawCursorToPosition(prevCursorPosition);
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().Error("%s\n", e.what());
+                // some commands might have already deleted some constraints/geometries but not others
+                Gui::Command::abortCommand();
+
+                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+
+                return;
+            }
+        }
+        // TODO: On pressing, say, W, modify last pole's weight
+        // TODO: On pressing, say, M, modify next knot's multiplicity
+
+        return;
+    }
+
+    virtual void quit(void) override
+    {
+        // We must see if we need to create a B-spline before cancelling everything
+        // and now just like any other Handler,
+
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+
+        bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
+
+        if (poleGeoIds.size() > 1) {
+            // create B-spline from existing poles
+            Mode=STATUS_CLOSE;
+            finishCommand(Base::Vector2d(0.f,0.f));
+        }
+        else if(poleGeoIds.size() == 1) {
+            // if we just have one point and we can not close anything, then cancel this creation but continue according to continuous mode
+            //sketchgui->getDocument()->undo(1);
+
+            Gui::Command::abortCommand();
+
+            tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
+
+            if(!continuousMode){
+                DrawSketchHandler::quit();
+            }
+            else {
+                // This code disregards existing data and enables the continuous creation mode.
+                resetHandlerState();
+            }
+        }
+        else { // we have no data (CurrentConstraint == 0) so user when right-clicking really wants to exit
+            DrawSketchHandler::quit();
+        }
+    }
+
+private:
+    void resetHandlerState()
+    {
+        Mode = STATUS_SEEK_FIRST_CONTROLPOINT;
+        applyCursor();
+
+        SplineDegree = 3;
+
+        sugConstr.clear();
+        poleGeoIds.clear();
+        BSplinePoles.clear();
+
+        eraseEditCurve();
+
+        addSugConstraint();
+
+        IsClosed = false;
+    }
+
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_BSpline");
+    }
+
+    void addSugConstraint() {
+        std::vector<AutoConstraint> sugConstr1;
+        sugConstr.push_back(std::move(sugConstr1));
+    }
+
+    void drawControlPolygonToPosition(Base::Vector2d position) {
+
+        std::vector<Base::Vector2d> editcurve(BSplinePoles);
+        editcurve.push_back(position);
+
+        drawEdit(editcurve);
+    }
+
+    void drawCursorToPosition(Base::Vector2d position) {
+        if (!BSplinePoles.empty()) {
+            float length = (position - BSplinePoles.back()).Length();
+            float angle = (position - BSplinePoles.back()).GetAngle(Base::Vector2d(1.f,0.f));
+
+            SbString text;
+            text.sprintf(" (%.1f,%.1fdeg)", length, (angle != -FLOAT_MAX) ? angle * 180 / M_PI : 0);
+            setPositionText(position, text);
+        }
+    }
+
+    void eraseEditCurve() {
+        drawEdit(std::vector<Base::Vector2d>());
+    }
+
+    bool finishCommand(Base::Vector2d position) {
         if (Mode==STATUS_CLOSE) {
             unsetCursor();
             resetPositionText();
 
             std::stringstream stream;
 
-            for (std::vector<Base::Vector2d>::const_iterator it=EditCurve.begin();
-                it != EditCurve.end(); ++it) {
-                stream << "App.Vector(" << (*it).x << "," << (*it).y << "),";
+            for (auto & pole : BSplinePoles) {
+                stream << "App.Vector(" << pole.x << "," << pole.y << "),";
             }
 
             std::string controlpoints = stream.str();
@@ -4781,7 +4915,6 @@ public:
             int currentgeoid = getHighestCurveIndex();
 
             try {
-
                 //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add B-spline curve"));
 
                 /*Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.BSplineCurve"
@@ -4793,29 +4926,28 @@ public:
 
                 // {"poles", "mults", "knots", "periodic", "degree", "weights", "CheckRational", NULL};
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "addGeometry(Part.BSplineCurve"
-                                        "(%s,None,None,%s,3,None,False),%s)",
+                                        "(%s,None,None,%s,%d,None,False),%s)",
                                         controlpoints.c_str(),
                                         ConstrMethod == 0 ?"False":"True",
+                                        SplineDegree,
                                         geometryCreationMode==Construction?"True":"False");
-
 
                 currentgeoid++;
 
                 // autoconstraints were added to the circles of the poles, which is ok because they must go to the
                 // right position, or the user will freak-out if they appear out of the autoconstrained position.
-                // However, autoconstrains on the first and last pole, in normal non-periodic b-splines (with appropriate endpoint knot multiplicity)
+                // However, autoconstraints on the first and last pole, in normal non-periodic b-splines (with appropriate endpoint knot multiplicity)
                 // as the ones created by this tool are intended for the b-spline endpoints, and not for the poles,
                 // so here we retrieve any autoconstraint on those poles' center and mangle it to the endpoint.
                 if (ConstrMethod == 0) {
-
                     for(auto & constr : static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->Constraints.getValues()) {
-                        if(constr->First == FirstPoleGeoId && constr->FirstPos == Sketcher::mid) {
+                        if(constr->First == poleGeoIds[0] && constr->FirstPos == Sketcher::PointPos::mid) {
                             constr->First = currentgeoid;
-                            constr->FirstPos = Sketcher::start;
+                            constr->FirstPos = Sketcher::PointPos::start;
                         }
-                        else if(constr->First == (FirstPoleGeoId + CurrentConstraint - 1) && constr->FirstPos == Sketcher::mid) {
+                        else if(constr->First == poleGeoIds.back() && constr->FirstPos == Sketcher::PointPos::mid) {
                             constr->First = currentgeoid;
-                            constr->FirstPos = Sketcher::end;
+                            constr->FirstPos = Sketcher::PointPos::end;
                         }
                     }
                 }
@@ -4825,12 +4957,13 @@ public:
 
                 cstream << "conList = []\n";
 
-                for (size_t i = 0; i < EditCurve.size(); i++) {
-                    cstream << "conList.append(Sketcher.Constraint('InternalAlignment:Sketcher::BSplineControlPoint'," << FirstPoleGeoId+i
-                        << "," << Sketcher::mid << "," << currentgeoid << "," << i << "))\n";
+                for (size_t i = 0; i < poleGeoIds.size(); i++) {
+                    cstream << "conList.append(Sketcher.Constraint('InternalAlignment:Sketcher::BSplineControlPoint'," << poleGeoIds[0] + i
+                        << "," << static_cast<int>(Sketcher::PointPos::mid) << "," << currentgeoid << "," << i << "))\n";
                 }
 
                 cstream << Gui::Command::getObjectCmd(sketchgui->getObject()) << ".addConstraint(conList)\n";
+                cstream << "del conList\n";
 
                 Gui::Command::doCommand(Gui::Command::Doc, cstream.str().c_str());
 
@@ -4855,19 +4988,9 @@ public:
 
             if(continuousMode){
                 // This code enables the continuous creation mode.
-                Mode = STATUS_SEEK_FIRST_CONTROLPOINT;
-                EditCurve.clear();
-                sketchgui->drawEdit(EditCurve);
-                EditCurve.resize(2);
-                applyCursor();
+                resetHandlerState();
 
-                sugConstr.clear();
-
-                std::vector<AutoConstraint> sugConstr1;
-                sugConstr.push_back(sugConstr1);
-
-                CurrentConstraint=0;
-                IsClosed=false;
+                drawCursorToPosition(position);
 
                 /* It is ok not to call to purgeHandler
                  * in continuous creation mode because the
@@ -4878,67 +5001,29 @@ public:
                 sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
             }
         }
+        else {
+            drawCursorToPosition(position);
+        }
+
         return true;
-    }
-
-    virtual void quit(void) {
-        // We must see if we need to create a B-spline before cancelling everything
-        // and now just like any other Handler,
-
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-
-        bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
-
-        if (CurrentConstraint > 1) {
-            // create B-spline from existing poles
-            Mode=STATUS_CLOSE;
-            EditCurve.pop_back();
-            this->releaseButton(Base::Vector2d(0.f,0.f));
-        }
-        else if(CurrentConstraint == 1) {
-            // if we just have one point and we can not close anything, then cancel this creation but continue according to continuous mode
-            //sketchgui->getDocument()->undo(1);
-
-            Gui::Command::abortCommand();
-
-            tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
-
-            if(!continuousMode){
-                DrawSketchHandler::quit();
-            }
-            else {
-                // This code disregards existing data and enables the continuous creation mode.
-                Mode = STATUS_SEEK_FIRST_CONTROLPOINT;
-                EditCurve.clear();
-                sketchgui->drawEdit(EditCurve);
-                EditCurve.resize(2);
-                applyCursor();
-
-                sugConstr.clear();
-
-                std::vector<AutoConstraint> sugConstr1;
-                sugConstr.push_back(sugConstr1);
-
-                CurrentConstraint=0;
-                IsClosed=false;
-            }
-        }
-        else { // we have no data (CurrentConstraint == 0) so user when right-clicking really wants to exit
-            DrawSketchHandler::quit();
-        }
     }
 
 protected:
     SELECT_MODE Mode;
+    MOUSE_PRESS_MODE MousePressMode;
 
-    std::vector<Base::Vector2d> EditCurve;
+    // Stores position of the poles of the BSpline.
+    std::vector<Base::Vector2d> BSplinePoles;
 
+    // suggested autoconstraints for poles.
+    // A new one must be added e.g. using addSugConstraint() before adding a new pole.
     std::vector<std::vector<AutoConstraint>> sugConstr;
 
-    int CurrentConstraint;
     int ConstrMethod;
+    int SplineDegree;
     bool IsClosed;
-    int FirstPoleGeoId;
+    std::vector<int> poleGeoIds;
+    Base::Vector2d prevCursorPosition;
 };
 
 DEF_STD_CMD_A(CmdSketcherCreateBSpline)
@@ -4947,12 +5032,13 @@ CmdSketcherCreateBSpline::CmdSketcherCreateBSpline()
   : Command("Sketcher_CreateBSpline")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create B-spline");
     sToolTipText    = QT_TR_NOOP("Create a B-spline via control points in the sketch.");
     sWhatsThis      = "Sketcher_CreateBSpline";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateBSpline";
+    sAccel          = "G, B, B";
     eType           = ForEdit;
 }
 
@@ -4991,12 +5077,13 @@ CmdSketcherCreatePeriodicBSpline::CmdSketcherCreatePeriodicBSpline()
 : Command("Sketcher_CreatePeriodicBSpline")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create periodic B-spline");
     sToolTipText    = QT_TR_NOOP("Create a periodic B-spline via control points in the sketch.");
     sWhatsThis      = "Sketcher_CreatePeriodicBSpline";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Create_Periodic_BSpline";
+    sAccel          = "G, B, P";
     eType           = ForEdit;
 }
 
@@ -5022,7 +5109,7 @@ CmdSketcherCompCreateBSpline::CmdSketcherCompCreateBSpline()
 : Command("Sketcher_CompCreateBSpline")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create a B-spline");
     sToolTipText    = QT_TR_NOOP("Create a B-spline in the sketch");
     sWhatsThis      = "Sketcher_CompCreateBSpline";
@@ -5139,22 +5226,13 @@ public:
         STATUS_End
     };
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_3PointCircle");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
             if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f),
                                    AutoConstraint::CURVE)) {
-                // Disable tangent snap on 1st point
-                if (sugConstr1.back().Type == Sketcher::Tangent)
-                    sugConstr1.pop_back();
-                else
-                    renderSuggestConstraintsCursor(sugConstr1);
+                renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
         }
@@ -5164,7 +5242,7 @@ public:
                 if (Mode == STATUS_SEEK_Second)
                     CenterPoint  = EditCurve[N+1] = (onSketchPos - FirstPoint)/2 + FirstPoint;
                 else
-                    CenterPoint = EditCurve[N+1] = GetCircleCenter(FirstPoint, SecondPoint, onSketchPos);
+                    CenterPoint = EditCurve[N+1] = Part::Geom2dCircle::getCircleCenter(FirstPoint, SecondPoint, onSketchPos);
                 radius = (onSketchPos - CenterPoint).Length();
                 double lineAngle = GetPointAngle(CenterPoint, onSketchPos);
 
@@ -5184,20 +5262,16 @@ public:
                 text.sprintf(" (%.1fR,%.1fdeg)", (float) radius, (float) lineAngle * 180 / M_PI);
                 setPositionText(onSketchPos, text);
 
-                sketchgui->drawEdit(EditCurve);
+                drawEdit(EditCurve);
                 if (Mode == STATUS_SEEK_Second) {
                     if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f),
                                         AutoConstraint::CURVE)) {
-                        // Disable tangent snap on 2nd point
-                        if (sugConstr2.back().Type == Sketcher::Tangent)
-                            sugConstr2.pop_back();
-                        else
-                            renderSuggestConstraintsCursor(sugConstr2);
+                        renderSuggestConstraintsCursor(sugConstr2);
                         return;
                     }
                 }
                 else {
-                    if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.0,0.0),
+                    if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f,0.f),
                                         AutoConstraint::CURVE)) {
                         renderSuggestConstraintsCursor(sugConstr3);
                         return;
@@ -5211,7 +5285,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode == STATUS_SEEK_First) {
             // N point curve + center + endpoint
@@ -5228,7 +5302,7 @@ public:
         else {
             EditCurve.resize(N);
 
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
             applyCursor();
             Mode = STATUS_End;
         }
@@ -5236,7 +5310,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         // Need to look at.  rx might need fixing.
@@ -5261,19 +5335,19 @@ public:
 
             // Auto Constraint first picked point
             if (sugConstr1.size() > 0) {
-                createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::none);
+                createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::none);
                 sugConstr1.clear();
             }
 
             // Auto Constraint second picked point
             if (sugConstr2.size() > 0) {
-                createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::none);
+                createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::PointPos::none);
                 sugConstr2.clear();
             }
 
             // Auto Constraint third picked point
             if (sugConstr3.size() > 0) {
-                createAutoConstraints(sugConstr3, getHighestCurveIndex(), Sketcher::none);
+                createAutoConstraints(sugConstr3, getHighestCurveIndex(), Sketcher::PointPos::none);
                 sugConstr3.clear();
             }
 
@@ -5285,7 +5359,7 @@ public:
                 // This code enables the continuous creation mode.
                 Mode=STATUS_SEEK_First;
                 EditCurve.clear();
-                sketchgui->drawEdit(EditCurve);
+                drawEdit(EditCurve);
                 EditCurve.resize(2);
                 applyCursor();
                 /* this is ok not to call to purgeHandler
@@ -5299,6 +5373,13 @@ public:
         }
         return true;
     }
+
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_3PointCircle");
+    }
+
 protected:
     SelectMode Mode;
     std::vector<Base::Vector2d> EditCurve;
@@ -5313,12 +5394,13 @@ CmdSketcherCreate3PointCircle::CmdSketcherCreate3PointCircle()
   : Command("Sketcher_Create3PointCircle")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create circle by three points");
     sToolTipText    = QT_TR_NOOP("Create a circle by 3 perimeter points");
     sWhatsThis      = "Sketcher_Create3PointCircle";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Create3PointCircle";
+    sAccel          = "G, 3, C";
     eType           = ForEdit;
 }
 
@@ -5340,7 +5422,7 @@ CmdSketcherCompCreateCircle::CmdSketcherCompCreateCircle()
   : Command("Sketcher_CompCreateCircle")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create circle");
     sToolTipText    = QT_TR_NOOP("Create a circle in the sketcher");
     sWhatsThis      = "Sketcher_CompCreateCircle";
@@ -5442,12 +5524,7 @@ public:
     DrawSketchHandlerPoint() : selectionDone(false) {}
     virtual ~DrawSketchHandlerPoint() {}
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Create_Point");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         setPositionText(onSketchPos);
         if (seekAutoConstraint(sugConstr, onSketchPos, Base::Vector2d(0.f,0.f))) {
@@ -5457,14 +5534,14 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         EditPoint = onSketchPos;
         selectionDone = true;
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (selectionDone){
@@ -5485,7 +5562,7 @@ public:
 
             // add auto constraints for the line segment start
             if (sugConstr.size() > 0) {
-                createAutoConstraints(sugConstr, getHighestCurveIndex(), Sketcher::start);
+                createAutoConstraints(sugConstr, getHighestCurveIndex(), Sketcher::PointPos::start);
                 sugConstr.clear();
             }
 
@@ -5508,6 +5585,12 @@ public:
         return true;
     }
 
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Create_Point");
+    }
+
 protected:
     bool selectionDone;
     Base::Vector2d EditPoint;
@@ -5520,12 +5603,13 @@ CmdSketcherCreatePoint::CmdSketcherCreatePoint()
   : Command("Sketcher_CreatePoint")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create point");
     sToolTipText    = QT_TR_NOOP("Create a point in the sketch");
     sWhatsThis      = "Sketcher_CreatePoint";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreatePoint";
+    sAccel          = "G, Y";
     eType           = ForEdit;
 }
 
@@ -5549,7 +5633,7 @@ CmdSketcherCreateText::CmdSketcherCreateText()
   : Command("Sketcher_CreateText")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create text");
     sToolTipText    = QT_TR_NOOP("Create text in the sketch");
     sWhatsThis      = "Sketcher_CreateText";
@@ -5577,7 +5661,7 @@ CmdSketcherCreateDraftLine::CmdSketcherCreateDraftLine()
   : Command("Sketcher_CreateDraftLine")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create draft line");
     sToolTipText    = QT_TR_NOOP("Create a draft line in the sketch");
     sWhatsThis      = "Sketcher_CreateDraftLine";
@@ -5604,7 +5688,7 @@ namespace SketcherGui {
         App::DocumentObject* object;
     public:
         FilletSelection(App::DocumentObject* obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
+            : Gui::SelectionFilterGate(nullPointer()), object(obj)
         {}
 
         bool allow(App::Document * /*pDoc*/, App::DocumentObject *pObj, const char *sSubName)
@@ -5659,35 +5743,28 @@ public:
         STATUS_SEEK_Second
     };
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        Gui::Selection().rmvSelectionGate();
-        Gui::Selection().addSelectionGate(new FilletSelection(sketchgui->getObject()));
-        setCrosshairCursor("Sketcher_Pointer_Create_Fillet");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         bool construction=false;
-        int VtId = sketchgui->getPreselectPoint();
+        int VtId = getPreselectPoint();
         if (Mode == STATUS_SEEK_First && VtId != -1) {
             int GeoId;
-            Sketcher::PointPos PosId=Sketcher::none;
+            Sketcher::PointPos PosId=Sketcher::PointPos::none;
             sketchgui->getSketchObject()->getGeoVertexIndex(VtId,GeoId,PosId);
             const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
             if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
-                (PosId == Sketcher::start || PosId == Sketcher::end)) {
+                (PosId == Sketcher::PointPos::start || PosId == Sketcher::PointPos::end)) {
 
                 // guess fillet radius
                 double radius=-1;
@@ -5704,9 +5781,9 @@ public:
                         const Part::GeomLineSegment *lineSeg2 = static_cast<const Part::GeomLineSegment *>(geom2);
                         Base::Vector3d dir1 = lineSeg1->getEndPoint() - lineSeg1->getStartPoint();
                         Base::Vector3d dir2 = lineSeg2->getEndPoint() - lineSeg2->getStartPoint();
-                        if (PosIdList[0] == Sketcher::end)
+                        if (PosIdList[0] == Sketcher::PointPos::end)
                             dir1 *= -1;
-                        if (PosIdList[1] == Sketcher::end)
+                        if (PosIdList[1] == Sketcher::PointPos::end)
                             dir2 *= -1;
                         double l1 = dir1.Length();
                         double l2 = dir2.Length();
@@ -5722,7 +5799,7 @@ public:
                 try {
                     bool pointFillet = (filletType == 1);
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create fillet"));
-                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,%f,%s,%s)", GeoId, PosId, radius, "True",
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "fillet(%d,%d,%f,%s,%s)", GeoId, static_cast<int>(PosId), radius, "True",
                         pointFillet ? "True":"False");
 
                     if (construction) {
@@ -5741,7 +5818,7 @@ public:
             return true;
         }
 
-        int GeoId = sketchgui->getPreselectCurve();
+        int GeoId = getPreselectCurve();
         if (GeoId > -1) {
             const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
             if (geom->getTypeId().isDerivedFrom(Part::GeomBoundedCurve::getClassTypeId())) {
@@ -5844,6 +5921,14 @@ public:
         return true;
     }
 
+private:
+    virtual void activated() override
+    {
+        Gui::Selection().rmvSelectionGate();
+        Gui::Selection().addSelectionGate(new FilletSelection(sketchgui->getObject()));
+        setCrosshairCursor("Sketcher_Pointer_Create_Fillet");
+    }
+
 protected:
     int filletType;
     SelectMode Mode;
@@ -5857,13 +5942,13 @@ CmdSketcherCreateFillet::CmdSketcherCreateFillet()
   : Command("Sketcher_CreateFillet")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create fillet");
     sToolTipText    = QT_TR_NOOP("Create a fillet between two lines or at a coincident point");
     sWhatsThis      = "Sketcher_CreateFillet";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateFillet";
-    sAccel          = "F";
+    sAccel          = "G, F, F";
     eType           = ForEdit;
 }
 
@@ -5886,13 +5971,13 @@ CmdSketcherCreatePointFillet::CmdSketcherCreatePointFillet()
   : Command("Sketcher_CreatePointFillet")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create corner-preserving fillet");
     sToolTipText    = QT_TR_NOOP("Fillet that preserves intersection point and most constraints");
     sWhatsThis      = "Sketcher_CreatePointFillet";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateFillet";
-    sAccel          = "";
+    sAccel          = "G, F, P";
     eType           = ForEdit;
 }
 
@@ -5917,7 +6002,7 @@ CmdSketcherCompCreateFillets::CmdSketcherCompCreateFillets()
   : Command("Sketcher_CompCreateFillets")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Fillets");
     sToolTipText    = QT_TR_NOOP("Create a fillet between two lines");
     sWhatsThis      = "Sketcher_CompCreateFillets";
@@ -6016,7 +6101,7 @@ namespace SketcherGui {
         App::DocumentObject* object;
     public:
         TrimmingSelection(App::DocumentObject* obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
+            : Gui::SelectionFilterGate(nullPointer()), object(obj)
         {}
 
         bool allow(App::Document * /*pDoc*/, App::DocumentObject *pObj, const char *sSubName)
@@ -6054,19 +6139,11 @@ public:
         Gui::Selection().rmvSelectionGate();
     }
 
-    virtual void activated(ViewProviderSketch *sketchgui)
-    {
-        Gui::Selection().clearSelection();
-        Gui::Selection().rmvSelectionGate();
-        Gui::Selection().addSelectionGate(new TrimmingSelection(sketchgui->getObject()));
-        setCrosshairCursor("Sketcher_Pointer_Trimming");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
 
-        int GeoId = sketchgui->getPreselectCurve();
+        int GeoId = getPreselectCurve();
 
         if (GeoId > -1) {
             auto sk = static_cast<Sketcher::SketchObject *>(sketchgui->getObject());
@@ -6078,38 +6155,38 @@ public:
 
                 EditMarkers.resize(0);
 
-                if(GeoId1 != Sketcher::Constraint::GeoUndef)
+                if(GeoId1 != Sketcher::GeoEnum::GeoUndef)
                     EditMarkers.emplace_back(intersect1.x, intersect1.y);
                 else {
-                    auto start = sk->getPoint(GeoId, Sketcher::start);
+                    auto start = sk->getPoint(GeoId, Sketcher::PointPos::start);
                     EditMarkers.emplace_back(start.x, start.y);
                 }
 
-                if(GeoId2 != Sketcher::Constraint::GeoUndef)
+                if(GeoId2 != Sketcher::GeoEnum::GeoUndef)
                     EditMarkers.emplace_back(intersect2.x, intersect2.y);
                 else {
-                    auto end = sk->getPoint(GeoId, Sketcher::end);
+                    auto end = sk->getPoint(GeoId, Sketcher::PointPos::end);
                     EditMarkers.emplace_back( end.x, end.y);
                 }
 
-                sketchgui->drawEditMarkers(EditMarkers, 2); // maker augmented by two sizes (see supported marker sizes)
+                drawEditMarkers(EditMarkers, 2); // maker augmented by two sizes (see supported marker sizes)
             }
         }
         else {
             EditMarkers.resize(0);
-            sketchgui->drawEditMarkers(EditMarkers, 2);
+            drawEditMarkers(EditMarkers, 2);
         }
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
-        int GeoId = sketchgui->getPreselectCurve();
+        int GeoId = getPreselectCurve();
         if (GeoId > -1) {
             const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
             if (geom->getTypeId().isDerivedFrom(Part::GeomTrimmedCurve::getClassTypeId())   ||
@@ -6130,13 +6207,23 @@ public:
             }
 
             EditMarkers.resize(0);
-            sketchgui->drawEditMarkers(EditMarkers);
+            drawEditMarkers(EditMarkers);
         }
         else // exit the trimming tool if the user clicked on empty space
             sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
 
         return true;
     }
+
+private:
+    virtual void activated() override
+    {
+        Gui::Selection().clearSelection();
+        Gui::Selection().rmvSelectionGate();
+        Gui::Selection().addSelectionGate(new TrimmingSelection(sketchgui->getObject()));
+        setCrosshairCursor("Sketcher_Pointer_Trimming");
+    }
+
 private:
     std::vector<Base::Vector2d> EditMarkers;
 };
@@ -6147,13 +6234,13 @@ CmdSketcherTrimming::CmdSketcherTrimming()
   : Command("Sketcher_Trimming")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Trim edge");
     sToolTipText    = QT_TR_NOOP("Trim an edge with respect to the picked position");
     sWhatsThis      = "Sketcher_Trimming";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Trimming";
-    sAccel          = "T,R";
+    sAccel          = "G, T";
     eType           = ForEdit;
 }
 
@@ -6177,7 +6264,7 @@ namespace SketcherGui {
         App::DocumentObject* object;
     public:
         ExtendSelection(App::DocumentObject* obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0)
+            : Gui::SelectionFilterGate(nullPointer())
             , object(obj)
             , disabled(false)
         {}
@@ -6231,17 +6318,7 @@ public:
         STATUS_SEEK_Second,
     };
 
-    virtual void activated(ViewProviderSketch *sketchgui)
-    {
-        Q_UNUSED(sketchgui)
-        Gui::Selection().clearSelection();
-        Gui::Selection().rmvSelectionGate();
-        filterGate = new ExtendSelection(sketchgui->getObject());
-        Gui::Selection().addSelectionGate(filterGate);
-        setCrosshairCursor("Sketcher_Pointer_Extension");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode == STATUS_SEEK_Second) {
@@ -6281,7 +6358,7 @@ public:
                     ExtendFromStart = onSketchPos.Distance(startPoint) < onSketchPos.Distance(endPoint);
                     Increment = ExtendFromStart ? projection.Length() : projection.Length() - recenteredLine.Length();
                 }
-                sketchgui->drawEdit(EditCurve);
+                drawEdit(EditCurve);
 
             } else if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
                 const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geom);
@@ -6344,9 +6421,9 @@ public:
                     double angle = modStartAngle + i * modArcAngle/30.0;
                     EditCurve[i] = Base::Vector2d(center.x + radius * cos(angle), center.y + radius * sin(angle));
                 }
-                sketchgui->drawEdit(EditCurve);
+                drawEdit(EditCurve);
             }
-            int curveId = sketchgui->getPreselectCurve();
+            int curveId = getPreselectCurve();
             if (BaseGeoId != curveId && seekAutoConstraint(SugConstr, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(SugConstr);
                 return;
@@ -6354,17 +6431,17 @@ public:
         }
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode == STATUS_SEEK_First) {
-            BaseGeoId = sketchgui->getPreselectCurve();
+            BaseGeoId = getPreselectCurve();
             if (BaseGeoId > -1) {
                 const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(BaseGeoId);
                 if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
@@ -6395,7 +6472,7 @@ public:
             try {
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Extend edge"));
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "extend(%d, %f, %d)\n", // GeoId, increment, PointPos
-                    BaseGeoId, Increment, ExtendFromStart ? Sketcher::start : Sketcher::end);
+                    BaseGeoId, Increment, ExtendFromStart ? static_cast<int>(Sketcher::PointPos::start) : static_cast<int>(Sketcher::PointPos::end));
                 Gui::Command::commitCommand();
 
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
@@ -6405,7 +6482,7 @@ public:
 
                 // constrain chosen point
                 if (SugConstr.size() > 0) {
-                    createAutoConstraints(SugConstr, BaseGeoId, (ExtendFromStart) ? Sketcher::start : Sketcher::end);
+                    createAutoConstraints(SugConstr, BaseGeoId, (ExtendFromStart) ? Sketcher::PointPos::start : Sketcher::PointPos::end);
                     SugConstr.clear();
                 }
                 bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
@@ -6415,7 +6492,7 @@ public:
                     Mode=STATUS_SEEK_First;
                     filterGate->setDisabled(false);
                     EditCurve.clear();
-                    sketchgui->drawEdit(EditCurve);
+                    drawEdit(EditCurve);
                     EditCurve.resize(2);
                     applyCursor();
                     /* this is ok not to call to purgeHandler
@@ -6436,6 +6513,17 @@ public:
             sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
         }
         return true;
+    }
+
+private:
+    virtual void activated() override
+    {
+        Q_UNUSED(sketchgui)
+        Gui::Selection().clearSelection();
+        Gui::Selection().rmvSelectionGate();
+        filterGate = new ExtendSelection(sketchgui->getObject());
+        Gui::Selection().addSelectionGate(filterGate);
+        setCrosshairCursor("Sketcher_Pointer_Extension");
     }
 
 protected:
@@ -6461,13 +6549,13 @@ CmdSketcherExtend::CmdSketcherExtend()
   : Command("Sketcher_Extend")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Extend edge");
     sToolTipText    = QT_TR_NOOP("Extend an edge with respect to the picked position");
     sWhatsThis      = "Sketcher_Extend";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Extend";
-    sAccel          = "T,E";
+    sAccel          = "G, Q";
     eType           = ForEdit;
 }
 
@@ -6491,7 +6579,7 @@ namespace SketcherGui {
         App::DocumentObject* object;
     public:
         SplittingSelection(App::DocumentObject* obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
+            : Gui::SelectionFilterGate(nullPointer()), object(obj)
         {}
 
         bool allow(App::Document * /*pDoc*/, App::DocumentObject *pObj, const char *sSubName)
@@ -6525,28 +6613,20 @@ public:
         Gui::Selection().rmvSelectionGate();
     }
 
-    virtual void activated(ViewProviderSketch *sketchgui)
-    {
-        Gui::Selection().clearSelection();
-        Gui::Selection().rmvSelectionGate();
-        Gui::Selection().addSelectionGate(new SplittingSelection(sketchgui->getObject()));
-        setCrosshairCursor("Sketcher_Pointer_Splitting");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
-        int GeoId = sketchgui->getPreselectCurve();
+        int GeoId = getPreselectCurve();
         if (GeoId >= 0) {
             const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
             if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()
@@ -6571,6 +6651,15 @@ public:
 
         return true;
     }
+
+private:
+    virtual void activated() override
+    {
+        Gui::Selection().clearSelection();
+        Gui::Selection().rmvSelectionGate();
+        Gui::Selection().addSelectionGate(new SplittingSelection(sketchgui->getObject()));
+        setCrosshairCursor("Sketcher_Pointer_Splitting");
+    }
 };
 
 DEF_STD_CMD_A(CmdSketcherSplit)
@@ -6580,13 +6669,13 @@ CmdSketcherSplit::CmdSketcherSplit()
   : Command("Sketcher_Split")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Split edge");
     sToolTipText    = QT_TR_NOOP("Splits an edge into two while preserving constraints");
     sWhatsThis      = "Sketcher_Split";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Split";
-    sAccel          = "T,S";
+    sAccel          = "G, Z";
     eType           = ForEdit;
 }
 
@@ -6608,7 +6697,7 @@ namespace SketcherGui {
         App::DocumentObject* object;
     public:
         ExternalSelection(App::DocumentObject* obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
+            : Gui::SelectionFilterGate(nullPointer()), object(obj)
         {}
 
         bool allow(App::Document *pDoc, App::DocumentObject *pObj, const char *sSubName)
@@ -6671,41 +6760,20 @@ public:
         Gui::Selection().rmvSelectionGate();
     }
 
-    virtual void activated(ViewProviderSketch *sketchgui)
-    {
-        sketchgui->setAxisPickStyle(false);
-        Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-        Gui::View3DInventorViewer *viewer;
-        viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
-
-        SoNode* root = viewer->getSceneGraph();
-        static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
-
-        Gui::Selection().clearSelection();
-        Gui::Selection().rmvSelectionGate();
-        Gui::Selection().addSelectionGate(new ExternalSelection(sketchgui->getObject()));
-        setCrosshairCursor("Sketcher_Pointer_External");
-    }
-
-    virtual void deactivated(ViewProviderSketch *sketchgui)
-    {
-        sketchgui->setAxisPickStyle(true);
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Gui::Selection().getPreselection().pObjectName)
             applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         /* this is ok not to call to purgeHandler
@@ -6715,11 +6783,11 @@ public:
         return true;
     }
 
-    virtual bool onSelectionChanged(const Gui::SelectionChanges& msg)
+    virtual bool onSelectionChanged(const Gui::SelectionChanges& msg) override
     {
         if (msg.Type == Gui::SelectionChanges::AddSelection) {
             App::DocumentObject* obj = sketchgui->getObject()->getDocument()->getObject(msg.pObjectName);
-            if (obj == NULL)
+            if (obj == nullptr)
                 throw Base::ValueError("Sketcher: External geometry: Invalid object in selection");
             std::string subName(msg.pSubName);
             if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
@@ -6756,6 +6824,29 @@ public:
         }
         return false;
     }
+
+private:
+    virtual void activated() override
+    {
+        setAxisPickStyle(false);
+        Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+        Gui::View3DInventorViewer *viewer;
+        viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
+
+        SoNode* root = viewer->getSceneGraph();
+        static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
+
+        Gui::Selection().clearSelection();
+        Gui::Selection().rmvSelectionGate();
+        Gui::Selection().addSelectionGate(new ExternalSelection(sketchgui->getObject()));
+        setCrosshairCursor("Sketcher_Pointer_External");
+    }
+
+    virtual void deactivated() override
+    {
+        Q_UNUSED(sketchgui);
+        setAxisPickStyle(true);
+    }
 };
 
 DEF_STD_CMD_A(CmdSketcherExternal)
@@ -6764,13 +6855,13 @@ CmdSketcherExternal::CmdSketcherExternal()
   : Command("Sketcher_External")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("External geometry");
     sToolTipText    = QT_TR_NOOP("Create an edge linked to an external geometry");
     sWhatsThis      = "Sketcher_External";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_External";
-    sAccel          = "X";
+    sAccel          = "G, X";
     eType           = ForEdit;
 }
 
@@ -6793,7 +6884,7 @@ namespace SketcherGui {
         App::DocumentObject* object;
     public:
         CarbonCopySelection(App::DocumentObject* obj)
-        : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
+        : Gui::SelectionFilterGate(nullPointer()), object(obj)
         {}
 
         bool allow(App::Document *pDoc, App::DocumentObject *pObj, const char *sSubName)
@@ -6846,134 +6937,136 @@ namespace SketcherGui {
 }
 
 
-    class DrawSketchHandlerCarbonCopy: public DrawSketchHandler
+class DrawSketchHandlerCarbonCopy: public DrawSketchHandler
+{
+public:
+    DrawSketchHandlerCarbonCopy() {}
+    virtual ~DrawSketchHandlerCarbonCopy()
     {
-    public:
-        DrawSketchHandlerCarbonCopy() {}
-        virtual ~DrawSketchHandlerCarbonCopy()
-        {
-            Gui::Selection().rmvSelectionGate();
-        }
-
-        virtual void activated(ViewProviderSketch *sketchgui)
-        {
-            sketchgui->setAxisPickStyle(false);
-            Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-            Gui::View3DInventorViewer *viewer;
-            viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
-
-            SoNode* root = viewer->getSceneGraph();
-            static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
-
-            Gui::Selection().clearSelection();
-            Gui::Selection().rmvSelectionGate();
-            Gui::Selection().addSelectionGate(new CarbonCopySelection(sketchgui->getObject()));
-            setCrosshairCursor("Sketcher_Pointer_CarbonCopy");
-        }
-
-        virtual void deactivated(ViewProviderSketch *sketchgui)
-        {
-            sketchgui->setAxisPickStyle(true);
-        }
-
-        virtual void mouseMove(Base::Vector2d onSketchPos)
-        {
-            Q_UNUSED(onSketchPos);
-            if (Gui::Selection().getPreselection().pObjectName)
-                applyCursor();
-        }
-
-        virtual bool pressButton(Base::Vector2d onSketchPos)
-        {
-            Q_UNUSED(onSketchPos);
-            return true;
-        }
-
-        virtual bool releaseButton(Base::Vector2d onSketchPos)
-        {
-            Q_UNUSED(onSketchPos);
-            /* this is ok not to call to purgeHandler
-             * in continuous creation mode because the
-             * handler is destroyed by the quit() method on pressing the
-             * right button of the mouse */
-            return true;
-        }
-
-        virtual bool onSelectionChanged(const Gui::SelectionChanges& msg)
-        {
-            if (msg.Type == Gui::SelectionChanges::AddSelection) {
-                App::DocumentObject* obj = sketchgui->getObject()->getDocument()->getObject(msg.pObjectName);
-                if (obj == NULL)
-                    throw Base::ValueError("Sketcher: Carbon Copy: Invalid object in selection");
-
-                if (obj->getTypeId() == Sketcher::SketchObject::getClassTypeId()) {
-
-                    try {
-                        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add carbon copy"));
-                        Gui::cmdAppObjectArgs(sketchgui->getObject(), "carbonCopy(\"%s\",%s)",
-                                              msg.pObjectName, geometryCreationMode==Construction?"True":"False");
-
-                        Gui::Command::commitCommand();
-
-                        tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
-
-                        Gui::Selection().clearSelection();
-                        /* this is ok not to call to purgeHandler
-                         * in continuous creation mode because the
-                         * handler is destroyed by the quit() method on pressing the
-                         * right button of the mouse */
-                    }
-                    catch (const Base::Exception& e) {
-                        Base::Console().Error("Failed to add carbon copy: %s\n", e.what());
-                        Gui::Command::abortCommand();
-                    }
-                    return true;
-                    }
-            }
-            return false;
-        }
-    };
-
-    DEF_STD_CMD_AU(CmdSketcherCarbonCopy)
-
-    CmdSketcherCarbonCopy::CmdSketcherCarbonCopy()
-    : Command("Sketcher_CarbonCopy")
-    {
-        sAppModule      = "Sketcher";
-        sGroup          = QT_TR_NOOP("Sketcher");
-        sMenuText       = QT_TR_NOOP("Carbon copy");
-        sToolTipText    = QT_TR_NOOP("Copies the geometry of another sketch");
-        sWhatsThis      = "Sketcher_CarbonCopy";
-        sStatusTip      = sToolTipText;
-        sPixmap         = "Sketcher_CarbonCopy";
-        sAccel          = "C,C";
-        eType           = ForEdit;
+        Gui::Selection().rmvSelectionGate();
     }
 
-    void CmdSketcherCarbonCopy::activated(int iMsg)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
-        Q_UNUSED(iMsg);
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerCarbonCopy());
+        Q_UNUSED(onSketchPos);
+        if (Gui::Selection().getPreselection().pObjectName)
+            applyCursor();
     }
 
-    bool CmdSketcherCarbonCopy::isActive(void)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
-        return isCreateGeoActive(getActiveGuiDocument());
+        Q_UNUSED(onSketchPos);
+        return true;
     }
 
-    void CmdSketcherCarbonCopy::updateAction(int mode)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
-        switch (mode) {
-            case Normal:
-                if (getAction())
-                    getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CarbonCopy"));
-                break;
-            case Construction:
-                if (getAction())
-                    getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CarbonCopy_Constr"));
-                break;
+        Q_UNUSED(onSketchPos);
+        /* this is ok not to call to purgeHandler
+            * in continuous creation mode because the
+            * handler is destroyed by the quit() method on pressing the
+            * right button of the mouse */
+        return true;
+    }
+
+    virtual bool onSelectionChanged(const Gui::SelectionChanges& msg) override
+    {
+        if (msg.Type == Gui::SelectionChanges::AddSelection) {
+            App::DocumentObject* obj = sketchgui->getObject()->getDocument()->getObject(msg.pObjectName);
+            if (obj == nullptr)
+                throw Base::ValueError("Sketcher: Carbon Copy: Invalid object in selection");
+
+            if (obj->getTypeId() == Sketcher::SketchObject::getClassTypeId()) {
+
+                try {
+                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add carbon copy"));
+                    Gui::cmdAppObjectArgs(sketchgui->getObject(), "carbonCopy(\"%s\",%s)",
+                                            msg.pObjectName, geometryCreationMode==Construction?"True":"False");
+
+                    Gui::Command::commitCommand();
+
+                    tryAutoRecomputeIfNotSolve(static_cast<Sketcher::SketchObject *>(sketchgui->getObject()));
+
+                    Gui::Selection().clearSelection();
+                    /* this is ok not to call to purgeHandler
+                        * in continuous creation mode because the
+                        * handler is destroyed by the quit() method on pressing the
+                        * right button of the mouse */
+                }
+                catch (const Base::Exception& e) {
+                    Base::Console().Error("Failed to add carbon copy: %s\n", e.what());
+                    Gui::Command::abortCommand();
+                }
+                return true;
+                }
         }
+        return false;
     }
+
+private:
+    virtual void activated() override
+    {
+        setAxisPickStyle(false);
+        Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+        Gui::View3DInventorViewer *viewer;
+        viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
+
+        SoNode* root = viewer->getSceneGraph();
+        static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
+
+        Gui::Selection().clearSelection();
+        Gui::Selection().rmvSelectionGate();
+        Gui::Selection().addSelectionGate(new CarbonCopySelection(sketchgui->getObject()));
+        setCrosshairCursor("Sketcher_Pointer_CarbonCopy");
+    }
+
+    virtual void deactivated() override
+    {
+        Q_UNUSED(sketchgui);
+        setAxisPickStyle(true);
+    }
+};
+
+DEF_STD_CMD_AU(CmdSketcherCarbonCopy)
+
+CmdSketcherCarbonCopy::CmdSketcherCarbonCopy()
+: Command("Sketcher_CarbonCopy")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = "Sketcher";
+    sMenuText       = QT_TR_NOOP("Carbon copy");
+    sToolTipText    = QT_TR_NOOP("Copies the geometry of another sketch");
+    sWhatsThis      = "Sketcher_CarbonCopy";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_CarbonCopy";
+    sAccel          = "G, W";
+    eType           = ForEdit;
+}
+
+void CmdSketcherCarbonCopy::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerCarbonCopy());
+}
+
+bool CmdSketcherCarbonCopy::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+void CmdSketcherCarbonCopy::updateAction(int mode)
+{
+    switch (mode) {
+        case Normal:
+            if (getAction())
+                getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CarbonCopy"));
+            break;
+        case Construction:
+            if (getAction())
+                getAction()->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CarbonCopy_Constr"));
+            break;
+    }
+}
 
 
 /**
@@ -6984,6 +7077,8 @@ class DrawSketchHandlerSlot : public DrawSketchHandler
 public:
     DrawSketchHandlerSlot()
         : Mode(STATUS_SEEK_First)
+        , SnapMode(SNAP_MODE_Free)
+        , SnapDir(SNAP_DIR_Horz)
         , dx(0), dy(0), r(0)
         , EditCurve(35)
     {
@@ -6996,12 +7091,19 @@ public:
         STATUS_End
     };
 
-    virtual void activated(ViewProviderSketch*)
+    enum SNAP_MODE
     {
-        setCrosshairCursor("Sketcher_Pointer_Slot");
-    }
+        SNAP_MODE_Free,
+        SNAP_MODE_Straight
+    };
 
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    enum SNAP_DIR
+    {
+        SNAP_DIR_Horz,
+        SNAP_DIR_Vert
+    };
+
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
 
         if (Mode == STATUS_SEEK_First) {
@@ -7015,16 +7117,25 @@ public:
             dx = onSketchPos.x - StartPos.x;
             dy = onSketchPos.y - StartPos.y;
 
+            if(QApplication::keyboardModifiers() == Qt::ControlModifier)
+                SnapMode = SNAP_MODE_Straight;
+            else
+                SnapMode = SNAP_MODE_Free;
+
             double a = 0;
             double rev = 0;
             if (fabs(dx) > fabs(dy)) {
                 r = fabs(dx) / 4;
                 rev = Base::sgn(dx);
+                SnapDir = SNAP_DIR_Horz;
+                if (SnapMode == SNAP_MODE_Straight) dy = 0;
             }
             else {
                 r = fabs(dy) / 4;
                 a = 8;
                 rev = Base::sgn(dy);
+                SnapDir = SNAP_DIR_Vert;
+                if (SnapMode == SNAP_MODE_Straight) dx = 0;
             }
 
             // draw the arcs with each 16 segments
@@ -7053,8 +7164,8 @@ public:
             text.sprintf(" (%.1fR %.1fL)", r, sqrt(dx * dx + dy * dy));
             setPositionText(onSketchPos, text);
 
-            sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f, 0.f))) {
+            drawEdit(EditCurve);
+            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(dx, dy), AutoConstraint::VERTEX_NO_TANGENCY)) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
             }
@@ -7062,7 +7173,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode == STATUS_SEEK_First) {
             StartPos = onSketchPos;
@@ -7074,7 +7185,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode == STATUS_End) {
@@ -7108,6 +7219,32 @@ public:
 
             try {
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add slot"));
+
+                AutoConstraint lastCons = {Sketcher::None, Sketcher::GeoEnum::GeoUndef, Sketcher::PointPos::none};
+
+                if (!sugConstr2.empty()) lastCons = sugConstr2.back();
+
+                ostringstream snapCon = ostringstream("");
+                if (SnapMode == SNAP_MODE_Straight) {
+                    snapCon << "conList.append(Sketcher.Constraint('";
+                    if (SnapDir == SNAP_DIR_Horz) {
+                        snapCon << "Horizontal";
+                    }
+                    else {
+                        snapCon << "Vertical";
+                    }
+                    snapCon << "'," << firstCurve + 2 << "))\n";
+
+                    // If horizontal/vertical already applied because of snap, do not duplicate with Autocontraint
+                    if (lastCons.Type == Sketcher::Horizontal || lastCons.Type == Sketcher::Vertical)
+                        sugConstr2.pop_back();
+                }
+                else {
+                    // If horizontal/vertical Autoconstraint suggested, applied it on first line (rather than last arc)
+                    if (lastCons.Type == Sketcher::Horizontal || lastCons.Type == Sketcher::Vertical)
+                        sugConstr2.back().GeoId = firstCurve + 2;
+                }
+
                 Gui::Command::doCommand(Gui::Command::Doc,
                     "geoList = []\n"
                     "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f, %f, 0), App.Vector(0, 0, 1), %f), %f, %f))\n"
@@ -7121,7 +7258,9 @@ public:
                     "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, 1))\n"
                     "conList.append(Sketcher.Constraint('Tangent', %i, 2, %i, 1))\n"
                     "conList.append(Sketcher.Constraint('Equal', %i, %i))\n"
-                    "%s.addConstraint(conList)\n",
+                    "%s"
+                    "%s.addConstraint(conList)\n"
+                    "del geoList, conList\n",
                     StartPos.x, StartPos.y,           // center of the arc1
                     r,                                // radius arc1
                     start, end,                       // start and end angle of arc1
@@ -7137,19 +7276,20 @@ public:
                     firstCurve + 1, firstCurve + 3, // tangent3
                     firstCurve + 3, firstCurve,     // tangent4
                     firstCurve, firstCurve + 1,     // equal constraint
+                    snapCon.str().c_str(),          // horizontal/vertical constraint if snapping
                     Gui::Command::getObjectCmd(sketchgui->getObject()).c_str()); // the sketch
 
                 Gui::Command::commitCommand();
 
                 // add auto constraints at the center of the first arc
                 if (sugConstr1.size() > 0) {
-                    createAutoConstraints(sugConstr1, getHighestCurveIndex() - 3, Sketcher::mid);
+                    createAutoConstraints(sugConstr1, getHighestCurveIndex() - 3, Sketcher::PointPos::mid);
                     sugConstr1.clear();
                 }
 
                 // add auto constraints at the center of the second arc
                 if (sugConstr2.size() > 0) {
-                    createAutoConstraints(sugConstr2, getHighestCurveIndex() - 2, Sketcher::mid);
+                    createAutoConstraints(sugConstr2, getHighestCurveIndex() - 2, Sketcher::PointPos::mid);
                     sugConstr2.clear();
                 }
 
@@ -7168,7 +7308,7 @@ public:
                 // This code enables the continuous creation mode.
                 Mode = STATUS_SEEK_First;
                 EditCurve.clear();
-                sketchgui->drawEdit(EditCurve);
+                drawEdit(EditCurve);
                 EditCurve.resize(35);
                 applyCursor();
                 /* this is ok not to call to purgeHandler
@@ -7179,11 +7319,20 @@ public:
             else {
                 sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
             }
+            SnapMode = SNAP_MODE_Straight;
         }
         return true;
     }
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Slot");
+    }
+
 protected:
     BoxMode Mode;
+    SNAP_MODE SnapMode;
+    SNAP_DIR SnapDir;
     Base::Vector2d StartPos;
     double dx, dy, r;
     std::vector<Base::Vector2d> EditCurve;
@@ -7196,13 +7345,13 @@ CmdSketcherCreateSlot::CmdSketcherCreateSlot()
     : Command("Sketcher_CreateSlot")
 {
     sAppModule = "Sketcher";
-    sGroup = QT_TR_NOOP("Sketcher");
+    sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Create slot");
     sToolTipText = QT_TR_NOOP("Create a slot in the sketch");
     sWhatsThis = "Sketcher_CreateSlot";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateSlot";
-    sAccel = "";
+    sAccel  = "G, S";
     eType = ForEdit;
 }
 
@@ -7253,12 +7402,7 @@ public:
         STATUS_End
     };
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        setCrosshairCursor("Sketcher_Pointer_Regular_Polygon");
-    }
-
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos) override
     {
 
         if (Mode==STATUS_SEEK_First) {
@@ -7290,7 +7434,7 @@ public:
             text.sprintf(" (%.1fR %.1fdeg)", radius, angle );
             setPositionText(onSketchPos, text);
 
-            sketchgui->drawEdit(EditCurve);
+            drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
@@ -7299,7 +7443,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos) override
     {
         if (Mode==STATUS_SEEK_First){
             StartPos = onSketchPos;
@@ -7311,7 +7455,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         if (Mode==STATUS_End){
@@ -7332,13 +7476,13 @@ public:
 
                 // add auto constraints at the center of the polygon
                 if (sugConstr1.size() > 0) {
-                    createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::mid);
+                    createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::mid);
                     sugConstr1.clear();
                 }
 
                 // add auto constraints to the last side of the polygon
                 if (sugConstr2.size() > 0) {
-                    createAutoConstraints(sugConstr2, getHighestCurveIndex() - 1, Sketcher::end);
+                    createAutoConstraints(sugConstr2, getHighestCurveIndex() - 1, Sketcher::PointPos::end);
                     sugConstr2.clear();
                 }
 
@@ -7358,7 +7502,7 @@ public:
                 // This code enables the continuous creation mode.
                 Mode=STATUS_SEEK_First;
                 EditCurve.clear();
-                sketchgui->drawEdit(EditCurve);
+                drawEdit(EditCurve);
                 EditCurve.resize(Corners+1);
                 applyCursor();
                 /* this is ok not to call to purgeHandler
@@ -7371,6 +7515,12 @@ public:
             }
         }
         return true;
+    }
+
+private:
+    virtual void activated() override
+    {
+        setCrosshairCursor("Sketcher_Pointer_Regular_Polygon");
     }
 protected:
     const size_t Corners;
@@ -7389,13 +7539,13 @@ CmdSketcherCreateTriangle::CmdSketcherCreateTriangle()
   : Command("Sketcher_CreateTriangle")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create equilateral triangle");
     sToolTipText    = QT_TR_NOOP("Create an equilateral triangle in the sketch");
     sWhatsThis      = "Sketcher_CreateTriangle";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateTriangle";
-    sAccel          = "";
+    sAccel          = "G, P, 3";
     eType           = ForEdit;
 }
 
@@ -7416,13 +7566,13 @@ CmdSketcherCreateSquare::CmdSketcherCreateSquare()
   : Command("Sketcher_CreateSquare")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create square");
     sToolTipText    = QT_TR_NOOP("Create a square in the sketch");
     sWhatsThis      = "Sketcher_CreateSquare";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateSquare";
-    sAccel          = "";
+    sAccel          = "G, P, 4";
     eType           = ForEdit;
 }
 
@@ -7443,13 +7593,13 @@ CmdSketcherCreatePentagon::CmdSketcherCreatePentagon()
   : Command("Sketcher_CreatePentagon")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create pentagon");
     sToolTipText    = QT_TR_NOOP("Create a pentagon in the sketch");
     sWhatsThis      = "Sketcher_CreatePentagon";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreatePentagon";
-    sAccel          = "";
+    sAccel          = "G, P, 5";
     eType           = ForEdit;
 }
 
@@ -7471,13 +7621,13 @@ CmdSketcherCreateHexagon::CmdSketcherCreateHexagon()
   : Command("Sketcher_CreateHexagon")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create hexagon");
     sToolTipText    = QT_TR_NOOP("Create a hexagon in the sketch");
     sWhatsThis      = "Sketcher_CreateHexagon";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateHexagon";
-    sAccel          = "";
+    sAccel          = "G, P, 6";
     eType           = ForEdit;
 }
 
@@ -7498,13 +7648,13 @@ CmdSketcherCreateHeptagon::CmdSketcherCreateHeptagon()
   : Command("Sketcher_CreateHeptagon")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create heptagon");
     sToolTipText    = QT_TR_NOOP("Create a heptagon in the sketch");
     sWhatsThis      = "Sketcher_CreateHeptagon";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateHeptagon";
-    sAccel          = "";
+    sAccel          = "G, P, 7";
     eType           = ForEdit;
 }
 
@@ -7525,13 +7675,13 @@ CmdSketcherCreateOctagon::CmdSketcherCreateOctagon()
   : Command("Sketcher_CreateOctagon")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create octagon");
     sToolTipText    = QT_TR_NOOP("Create an octagon in the sketch");
     sWhatsThis      = "Sketcher_CreateOctagon";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateOctagon";
-    sAccel          = "";
+    sAccel          = "G, P, 8";
     eType           = ForEdit;
 }
 
@@ -7552,13 +7702,13 @@ CmdSketcherCreateRegularPolygon::CmdSketcherCreateRegularPolygon()
 : Command("Sketcher_CreateRegularPolygon")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create regular polygon");
     sToolTipText    = QT_TR_NOOP("Create a regular polygon in the sketch");
     sWhatsThis      = "Sketcher_CreateRegularPolygon";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateRegularPolygon";
-    sAccel          = "";
+    sAccel          = "G, P, R";
     eType           = ForEdit;
 }
 
@@ -7583,11 +7733,12 @@ CmdSketcherCompCreateRegularPolygon::CmdSketcherCompCreateRegularPolygon()
   : Command("Sketcher_CompCreateRegularPolygon")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Create regular polygon");
     sToolTipText    = QT_TR_NOOP("Create a regular polygon in the sketcher");
     sWhatsThis      = "Sketcher_CompCreateRegularPolygon";
     sStatusTip      = sToolTipText;
+    sAccel          = "G, P, P";
     eType           = ForEdit;
 }
 

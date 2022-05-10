@@ -29,6 +29,8 @@
 namespace Gui {
 namespace PropertyEditor {
 
+class PropertyEditorWidget;
+
 class PropertyItemDelegate : public QItemDelegate
 {
     Q_OBJECT
@@ -44,12 +46,15 @@ public:
     virtual QSize sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const;
     virtual bool editorEvent (QEvent *event, QAbstractItemModel *model,
                               const QStyleOptionViewItem& option, const QModelIndex& index);
+protected:
+    bool eventFilter(QObject *, QEvent *);
 
 public Q_SLOTS:
     void valueChanged();
 
 private:
     mutable QWidget *expressionEditor;
+    mutable PropertyEditorWidget *userEditor = nullptr;
     mutable bool pressed;
     bool changed;
 };

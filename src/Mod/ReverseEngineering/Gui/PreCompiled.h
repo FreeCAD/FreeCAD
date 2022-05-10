@@ -20,30 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef __PRECOMPILED_GUI__
 #define __PRECOMPILED_GUI__
 
 #include <FCConfig.h>
-
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define ReenExport    __declspec(dllimport)
-# define ReenGuiExport __declspec(dllexport)
-# define PartExport    __declspec(dllimport)
-# define MeshExport    __declspec(dllimport)
-# define MeshGuiExport __declspec(dllimport)
-# define PointsExport  __declspec(dllimport)
-# define AppExport     __declspec(dllimport)
-#else // for Linux
-# define ReenExport
-# define ReenGuiExport
-# define PartExport
-# define MeshExport
-# define MeshGuiExport
-# define PointsExport
-# define AppExport
-#endif
 
 #ifdef _MSC_VER
 #   pragma warning(disable : 4275)
@@ -51,13 +31,9 @@
 
 
 #ifdef _PreComp_
-
-// Python
-#include <Python.h>
-
 // standard
 #include <iostream>
-#include <assert.h>
+#include <cassert>
 #include <cmath>
 
 // STL
@@ -75,10 +51,9 @@
 # include <windows.h>
 #endif
 
-
 // Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
+#ifndef __QtAll__
+# include <Gui/QtAll.h>
 #endif
 
 #endif //_PreComp_

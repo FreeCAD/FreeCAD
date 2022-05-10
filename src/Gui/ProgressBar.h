@@ -20,18 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_PROGRESSBAR_H
 #define GUI_PROGRESSBAR_H
 
 #include <QProgressBar>
 #ifdef QT_WINEXTRAS_LIB
-#include <QWinTaskbarProgress>
 #include <QWinTaskbarButton>
+#include <QWinTaskbarProgress>
 #endif
 
-
 #include <Base/Sequencer.h>
+
 
 namespace Gui {
 
@@ -105,7 +104,7 @@ public:
     void resume() override;
     bool isBlocking() const override;
     /** Returns an instance of the progress bar. It creates one if needed. */
-    QProgressBar* getProgressBar(QWidget* parent=0);
+    QProgressBar* getProgressBar(QWidget* parent=nullptr);
 
     virtual void checkAbort() override;
 
@@ -146,7 +145,7 @@ class ProgressBar : public QProgressBar
 
 public:
     /** Construction */
-    ProgressBar (SequencerBar* s, QWidget * parent=0);
+    ProgressBar (SequencerBar* s, QWidget * parent=nullptr);
     /** Destruction */
     ~ProgressBar ();
 

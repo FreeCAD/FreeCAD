@@ -41,5 +41,8 @@
         <file>translations/Image_val-ES.qm</file>
         <file>translations/Image_ar.qm</file>
         <file>translations/Image_vi.qm</file>
+        <file>translations/Image_es-AR.qm</file>
+        <file>translations/Image_bg.qm</file>
+        <file>translations/Image_ka.qm</file>
     </qresource>
 </RCC> 

@@ -23,33 +23,28 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost/algorithm/string/predicate.hpp>
+# include <QColorDialog>
 # include <sstream>
 #endif
 
-#include <QColorDialog>
-
-#include <boost_bind_bind.hpp>
-#include <boost/algorithm/string/predicate.hpp>
-
-#include "ui_TaskElementColors.h"
-#include "TaskElementColors.h"
-#include "ViewProviderLink.h"
-
-#include <Base/Console.h>
 #include <App/ComplexGeoData.h>
+#include <App/Document.h>
 
+#include "TaskElementColors.h"
+#include "ui_TaskElementColors.h"
 #include "Application.h"
-#include "Control.h"
-#include "Document.h"
-#include "MainWindow.h"
-#include "Selection.h"
 #include "BitmapFactory.h"
 #include "Command.h"
+#include "Control.h"
+#include "Document.h"
+#include "FileDialog.h"
+#include "Selection.h"
+#include "SelectionObject.h"
+#include "ViewProviderLink.h"
 
-#include <App/Document.h>
-#include <App/DocumentObject.h>
 
-FC_LOG_LEVEL_INIT("Gui",true,true)
+FC_LOG_LEVEL_INIT("Gui", true, true)
 
 using namespace Gui;
 namespace bp = boost::placeholders;
@@ -237,6 +232,8 @@ public:
         auto color = item->data(Qt::UserRole).value<QColor>();
         QColorDialog cd(color, parent);
         cd.setOption(QColorDialog::ShowAlphaChannel);
+        if (DialogOptions::dontUseNativeColorDialog())
+            cd.setOptions(QColorDialog::DontUseNativeDialog);
         if (cd.exec()!=QDialog::Accepted || color==cd.selectedColor())
             return;
         color = cd.selectedColor();
@@ -274,11 +271,12 @@ public:
     }
 
     void onSelectionChanged() {
-        if(busy) return;
+        if(busy)
+            return;
         busy = true;
         std::map<std::string,int> sels;
         for(auto &sel : Selection().getSelectionEx(
-                    editDoc.c_str(),App::DocumentObject::getClassTypeId(),0))
+                    editDoc.c_str(),App::DocumentObject::getClassTypeId(), ResolveMode::NoResolve))
         {
             if(sel.getFeatName()!=editObj) continue;
             for(auto &sub : sel.getSubNames()) {
@@ -326,7 +324,7 @@ ElementColors::ElementColors(ViewProviderDocumentObject* vp, bool noHide)
     if(d->ui->onTop->isChecked())
         d->vpParent->OnTopWhenSelected.setValue(3);
 
-    Selection().addSelectionGate(d,0);
+    Selection().addSelectionGate(d, ResolveMode::NoResolve);
 
     d->connectDelDoc = Application::Instance->signalDeleteDocument.connect(boost::bind
         (&ElementColors::slotDeleteDocument, this, bp::_1));
@@ -381,7 +379,7 @@ void ElementColors::on_boxSelect_clicked()
 }
 
 void ElementColors::on_hideSelection_clicked() {
-    auto sels = Selection().getSelectionEx(d->editDoc.c_str(),App::DocumentObject::getClassTypeId(),0);
+    auto sels = Selection().getSelectionEx(d->editDoc.c_str(), App::DocumentObject::getClassTypeId(), ResolveMode::NoResolve);
     for(auto &sel : sels) {
         if(d->editObj!=sel.getFeatName())
             continue;
@@ -402,7 +400,7 @@ void ElementColors::on_hideSelection_clicked() {
 
 void ElementColors::on_addSelection_clicked()
 {
-    auto sels = Selection().getSelectionEx(d->editDoc.c_str(),App::DocumentObject::getClassTypeId(),0);
+    auto sels = Selection().getSelectionEx(d->editDoc.c_str(), App::DocumentObject::getClassTypeId(), ResolveMode::NoResolve);
     d->items.clear();
     if(sels.empty())
         d->addItem(-1,"Face",true);
@@ -426,6 +424,8 @@ void ElementColors::on_addSelection_clicked()
         auto color = d->items.front()->data(Qt::UserRole).value<QColor>();
         QColorDialog cd(color, this);
         cd.setOption(QColorDialog::ShowAlphaChannel);
+        if (DialogOptions::dontUseNativeColorDialog())
+            cd.setOptions(QColorDialog::DontUseNativeDialog);
         if (cd.exec()!=QDialog::Accepted)
             return;
         color = cd.selectedColor();
@@ -446,14 +446,14 @@ void ElementColors::on_removeAll_clicked()
 bool ElementColors::accept()
 {
     d->accept();
-    Application::Instance->setEditDocument(0);
+    Application::Instance->setEditDocument(nullptr);
     return true;
 }
 
 bool ElementColors::reject()
 {
     d->reset();
-    Application::Instance->setEditDocument(0);
+    Application::Instance->setEditDocument(nullptr);
     return true;
 }
 
@@ -487,7 +487,8 @@ void ElementColors::on_elementList_itemEntered(QListWidgetItem *item) {
     }
     Selection().setPreselect(d->editDoc.c_str(),
             d->editObj.c_str(), (d->editSub+name).c_str(),0,0,0,
-            d->ui->onTop->isChecked()?2:1);
+            d->ui->onTop->isChecked() ? Gui::SelectionChanges::MsgSource::TreeView
+                                      : Gui::SelectionChanges::MsgSource::Internal);
 }
 
 void ElementColors::on_elementList_itemSelectionChanged() {
@@ -509,7 +510,7 @@ TaskElementColors::TaskElementColors(ViewProviderDocumentObject* vp, bool noHide
 {
     widget = new ElementColors(vp,noHide);
     taskbox = new TaskView::TaskBox(
-        QPixmap(), widget->windowTitle(), true, 0);
+        QPixmap(), widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

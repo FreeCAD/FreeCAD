@@ -22,36 +22,34 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <assert.h>
-
-#include <Inventor/nodes/SoGroup.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoSwitch.h>
-#include <Inventor/nodes/SoTranslation.h>
-#include <Inventor/nodes/SoRotation.h>
-#include <Inventor/nodes/SoCone.h>
-#include <Inventor/nodes/SoCylinder.h>
-#include <Inventor/nodes/SoPickStyle.h>
-#include <Inventor/nodes/SoBaseColor.h>
-#include <Inventor/nodes/SoAnnotation.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoLineSet.h>
-#include <Inventor/nodes/SoSphere.h>
-#include <Inventor/nodes/SoOrthographicCamera.h>
-#include <Inventor/nodes/SoPerspectiveCamera.h>
-#include <Inventor/actions/SoGLRenderAction.h>
+#include <cassert>
 
 #include <Inventor/SbRotation.h>
-
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/engines/SoComposeVec3f.h>
+#include <Inventor/nodes/SoAnnotation.h>
+#include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/nodes/SoCone.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoCylinder.h>
+#include <Inventor/nodes/SoGroup.h>
+#include <Inventor/nodes/SoLineSet.h>
+#include <Inventor/nodes/SoOrthographicCamera.h>
+#include <Inventor/nodes/SoPerspectiveCamera.h>
+#include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoRotation.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSphere.h>
+#include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/nodes/SoTranslation.h>
 #endif
 
-#include <math.h>
-
 #include <Base/Quantity.h>
-#include <Gui/MainWindow.h>
-#include "SoFCDB.h"
+
 #include "SoFCCSysDragger.h"
+#include "MainWindow.h"
+#include "SoFCDB.h"
+
 
 /*
    GENERAL NOTE ON COIN3D CUSTOM DRAGGERS
@@ -314,13 +312,13 @@ SbBool TDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   if (onoff)
   {
     inherited::setUpConnections(onoff, doitalways);
-    TDragger::fieldSensorCB(this, NULL);
+    TDragger::fieldSensorCB(this, nullptr);
     if (this->fieldSensor.getAttachedField() != &this->translation)
       this->fieldSensor.attach(&this->translation);
   }
   else
   {
-    if (this->fieldSensor.getAttachedField() != NULL)
+    if (this->fieldSensor.getAttachedField() != nullptr)
       this->fieldSensor.detach();
     inherited::setUpConnections(onoff, doitalways);
   }
@@ -599,13 +597,13 @@ SbBool RDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   if (onoff)
   {
     inherited::setUpConnections(onoff, doitalways);
-    RDragger::fieldSensorCB(this, NULL);
+    RDragger::fieldSensorCB(this, nullptr);
     if (this->fieldSensor.getAttachedField() != &this->rotation)
       this->fieldSensor.attach(&this->rotation);
   }
   else
   {
-    if (this->fieldSensor.getAttachedField() != NULL)
+    if (this->fieldSensor.getAttachedField() != nullptr)
       this->fieldSensor.detach();
     inherited::setUpConnections(onoff, doitalways);
   }
@@ -859,10 +857,10 @@ SbBool SoFCCSysDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 
         inherited::setUpConnections(onoff, doitalways);
 
-        if (this->translationSensor.getAttachedField() != NULL)
+        if (this->translationSensor.getAttachedField() != nullptr)
           this->translationSensor.detach();
 
-        if (this->rotationSensor.getAttachedField() != NULL)
+        if (this->rotationSensor.getAttachedField() != nullptr)
             this->rotationSensor.detach();
     }
     return !(this->connectionsSetUp = onoff);

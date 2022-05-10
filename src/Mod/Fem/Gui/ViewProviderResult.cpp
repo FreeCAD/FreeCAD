@@ -20,18 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
+#include <Gui/Command.h>
 
 #include "ViewProviderResult.h"
-#include "Gui/Command.h"
+
 
 using namespace FemGui;
-
-
 
 PROPERTY_SOURCE(FemGui::ViewProviderResult, Gui::ViewProviderDocumentObject)
 
@@ -45,13 +41,6 @@ ViewProviderResult::~ViewProviderResult()
 
 }
 
-/* not needed since _ViewProviderFemResult.py is made
-bool ViewProviderResult::doubleClicked(void)
-{
-    Gui::Command::runCommand(Gui::Command::Gui, "Gui.runCommand('Fem_ResultShow')");
-    return true;
-}
-*/
 
 // Python feature -----------------------------------------------------------------------
 

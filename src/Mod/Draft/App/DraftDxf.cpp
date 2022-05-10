@@ -163,6 +163,9 @@ void DraftDxfRead::OnReadInsert(const double* point, const double* scale, const 
     std::string prefix = "BLOCKS ";
     prefix += name;
     prefix += " ";
+    auto checkScale = [=](double v) {
+        return v != 0.0 ? v : 1.0;
+    };
     for(std::map<std::string,std::vector<Part::TopoShape*> > ::const_iterator i = layers.begin(); i != layers.end(); ++i) {
         std::string k = i->first;
         if(k.substr(0, prefix.size()) == prefix) {
@@ -178,7 +181,7 @@ void DraftDxfRead::OnReadInsert(const double* point, const double* scale, const 
             if (!comp.IsNull()) {
                 Part::TopoShape* pcomp = new Part::TopoShape(comp);
                 Base::Matrix4D mat;
-                mat.scale(scale[0],scale[1],scale[2]);
+                mat.scale(checkScale(scale[0]),checkScale(scale[1]),checkScale(scale[2]));
                 mat.rotZ(rotation);
                 mat.move(point[0]*optionScaling,point[1]*optionScaling,point[2]*optionScaling);
                 pcomp->transformShape(mat,true);
@@ -196,7 +199,7 @@ void DraftDxfRead::OnReadDimension(const double* s, const double* e, const doubl
         Base::Interpreter().runStringArg("p1=FreeCAD.Vector(%f,%f,%f)",s[0]*optionScaling,s[1]*optionScaling,s[2]*optionScaling);
         Base::Interpreter().runStringArg("p2=FreeCAD.Vector(%f,%f,%f)",e[0]*optionScaling,e[1]*optionScaling,e[2]*optionScaling);
         Base::Interpreter().runStringArg("p3=FreeCAD.Vector(%f,%f,%f)",point[0]*optionScaling,point[1]*optionScaling,point[2]*optionScaling);
-        Base::Interpreter().runString("Draft.makeDimension(p1,p2,p3)");
+        Base::Interpreter().runString("Draft.make_dimension(p1,p2,p3)");
     }
 }
 

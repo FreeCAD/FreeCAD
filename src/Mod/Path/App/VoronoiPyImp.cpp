@@ -20,27 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
+
 #include "PreCompiled.h"
 
-
-#ifndef _PreComp_
-# include <boost/algorithm/string.hpp>
-#endif
-
-#include "Base/Exception.h"
 #include "Base/GeometryPyCXX.h"
 #include "Base/Vector3D.h"
 #include "Base/VectorPy.h"
-#include "Mod/Path/App/Voronoi.h"
-#include "Mod/Path/App/VoronoiCell.h"
-#include "Mod/Path/App/VoronoiCellPy.h"
-#include "Mod/Path/App/VoronoiEdge.h"
-#include "Mod/Path/App/VoronoiEdgePy.h"
-#include "Mod/Path/App/VoronoiPy.h"
-#include "Mod/Path/App/VoronoiVertex.h"
-#include "Mod/Path/App/VoronoiVertexPy.h"
 
-#include "Mod/Path/App/VoronoiPy.cpp"
+#include "Voronoi.h"
+#include "VoronoiCell.h"
+#include "VoronoiCellPy.h"
+#include "VoronoiEdge.h"
+#include "VoronoiEdgePy.h"
+#include "VoronoiPy.h"
+#include "VoronoiPy.cpp"
+#include "VoronoiVertex.h"
+#include "VoronoiVertexPy.h"
+
 
 using namespace Path;
 
@@ -92,7 +88,7 @@ Voronoi::point_type getPointFromPy(PyObject *obj) {
 }
 
 PyObject* VoronoiPy::addPoint(PyObject *args) {
-  PyObject *obj = 0;
+  PyObject *obj = nullptr;
   if (PyArg_ParseTuple(args, "O", &obj)) {
     getVoronoiPtr()->addPoint(getPointFromPy(obj));
   }
@@ -101,8 +97,8 @@ PyObject* VoronoiPy::addPoint(PyObject *args) {
 }
 
 PyObject* VoronoiPy::addSegment(PyObject *args) {
-  PyObject *objBegin = 0;
-  PyObject *objEnd   = 0;
+  PyObject *objBegin = nullptr;
+  PyObject *objEnd   = nullptr;
 
   if (PyArg_ParseTuple(args, "OO", &objBegin, &objEnd)) {
     auto p0 = getPointFromPy(objBegin);
@@ -192,7 +188,7 @@ static bool callbackWithVertex(Voronoi::diagram_type *dia, PyObject *callback, c
 #endif
       Py_DECREF(arglist);
       Py_DECREF(vx);
-      if (result == NULL) {
+      if (result == nullptr) {
         bail = true;
       } else {
         rc = result == Py_True;
@@ -212,7 +208,7 @@ static bool callbackWithVertex(Voronoi::diagram_type *dia, PyObject *callback, c
 
 PyObject* VoronoiPy::colorExterior(PyObject *args) {
   Voronoi::color_type color = 0;
-  PyObject *callback = 0;
+  PyObject *callback = nullptr;
   if (!PyArg_ParseTuple(args, "k|O", &color, &callback)) {
     throw  Py::RuntimeError("colorExterior requires an integer (color) argument");
   }
@@ -241,7 +237,7 @@ PyObject* VoronoiPy::colorExterior(PyObject *args) {
           }
         }
         if (bail) {
-          return NULL;
+          return nullptr;
         }
       }
     }
@@ -338,7 +334,7 @@ PyObject* VoronoiPy::numSegments(PyObject *args)
 
 PyObject *VoronoiPy::getCustomAttributes(const char* /*attr*/) const
 {
-  return 0;
+  return nullptr;
 }
 
 int VoronoiPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

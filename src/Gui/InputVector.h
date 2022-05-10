@@ -23,13 +23,10 @@
 #ifndef GUI_INPUTVECTOR_H
 #define GUI_INPUTVECTOR_H
 
-#include <cfloat>
 #include <memory>
-#include <boost/any.hpp>
+#include <QApplication>
 #include <QDialog>
 #include <QMessageBox>
-#include <QApplication>
-
 #include <Gui/propertyeditor/PropertyItem.h>
 
 class QGridLayout;
@@ -45,7 +42,7 @@ class GuiExport LocationWidget : public QWidget
     Q_OBJECT
 
 public:
-    LocationWidget (QWidget * parent = 0);
+    LocationWidget (QWidget * parent = nullptr);
     virtual ~LocationWidget();
     QSize sizeHint() const;
 
@@ -53,7 +50,7 @@ public:
     void setPosition(const Base::Vector3d&);
     void setDirection(const Base::Vector3d& dir);
     Base::Vector3d getDirection() const;
-    Base::Vector3d getUserDirection(bool* ok=0) const;
+    Base::Vector3d getUserDirection(bool* ok=nullptr) const;
 
 private Q_SLOTS:
     void on_direction_activated(int);
@@ -83,7 +80,7 @@ class GuiExport LocationDialog : public QDialog
     Q_OBJECT
 
 protected:
-    LocationDialog(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+    LocationDialog(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     virtual ~LocationDialog();
 
 protected:
@@ -94,7 +91,7 @@ private Q_SLOTS:
 
 public:
     virtual Base::Vector3d getDirection() const = 0;
-    Base::Vector3d getUserDirection(bool* ok=0) const;
+    Base::Vector3d getUserDirection(bool* ok=nullptr) const;
 
 private:
     virtual void directionActivated(int) = 0;
@@ -116,7 +113,7 @@ template <class Ui>
 class LocationDialogUi : public LocationDialog, public Ui
 {
 public:
-    LocationDialogUi(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags())  : LocationDialog(parent, fl)
+    LocationDialogUi(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags())  : LocationDialog(parent, fl)
     {
         this->setupUi(this);
         this->retranslate();
@@ -366,7 +363,7 @@ template <class Ui>
 class LocationDialogImp : public LocationDialog
 {
 public:
-    LocationDialogImp(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags())
+    LocationDialogImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags())
       : LocationDialog(parent, fl), ui(this)
     {
     }
@@ -556,7 +553,7 @@ class GuiExport LocationDialogUiImp : public LocationDialog
 {
 public:
     template<class T>
-    LocationDialogUiImp(T* t, QWidget* parent = 0, Qt::WindowFlags fl =  Qt::WindowFlags())
+    LocationDialogUiImp(T* t, QWidget* parent = nullptr, Qt::WindowFlags fl =  Qt::WindowFlags())
       : LocationDialog(parent, fl), ui(new LocationImpUi<T>(t))
     {
         std::shared_ptr<T> uit = boost::any_cast< std::shared_ptr<T> >(ui->get());

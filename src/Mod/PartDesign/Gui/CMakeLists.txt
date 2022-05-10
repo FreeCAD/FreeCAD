@@ -13,7 +13,6 @@ include_directories(
     ${COIN3D_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
 )
 link_directories(${OCC_LIBRARY_DIR})
@@ -37,8 +36,7 @@ endif()
 
 set(PartDesignGui_UIC_SRCS
     TaskFeaturePick.ui
-    TaskPadParameters.ui
-    TaskPocketParameters.ui
+    TaskPadPocketParameters.ui
     TaskChamferParameters.ui
     TaskFilletParameters.ui
     TaskDraftParameters.ui
@@ -59,6 +57,7 @@ set(PartDesignGui_UIC_SRCS
     TaskPipeScaling.ui
     TaskLoftParameters.ui
     DlgReference.ui
+    DlgActiveBody.ui
     TaskHelixParameters.ui
 )
 
@@ -146,10 +145,11 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskFeatureParameters.h
     TaskSketchBasedParameters.cpp
     TaskSketchBasedParameters.h
-    TaskPadParameters.ui
+    TaskExtrudeParameters.cpp
+    TaskExtrudeParameters.h
+    TaskPadPocketParameters.ui
     TaskPadParameters.cpp
     TaskPadParameters.h
-    TaskPocketParameters.ui
     TaskPocketParameters.cpp
     TaskPocketParameters.h
     TaskChamferParameters.ui
@@ -213,6 +213,8 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskHelixParameters.ui
     TaskHelixParameters.h
     TaskHelixParameters.cpp
+    DlgActiveBody.h
+    DlgActiveBody.cpp
 )
 SOURCE_GROUP("TaskDialogs" FILES ${PartDesignGuiTaskDlgs_SRCS})
 
@@ -221,6 +223,7 @@ SET(PartDesignGuiModule_SRCS
     Command.cpp
     CommandPrimitive.cpp
     CommandBody.cpp
+    EnumFlags.h
     Resources/PartDesign.qrc
     PreCompiled.cpp
     PreCompiled.h

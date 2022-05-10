@@ -27,14 +27,54 @@
         <file>icons/TechDraw_3PtAngleDimension.svg</file>
         <file>icons/TechDraw_DiameterDimension.svg</file>
         <file>icons/TechDraw_HorizontalDimension.svg</file>
+        <file>icons/TechDraw_ExtensionSelectLineAttributes.svg</file>
+        <file>icons/TechDraw_ExtensionExtendLine.svg</file>
+        <file>icons/TechDraw_ExtensionShortenLine.svg</file>
+        <file>icons/TechDraw_ExtensionLockUnlockView.svg</file>
+        <file>icons/TechDraw_ExtensionPositionSectionView.svg</file>
+        <file>icons/TechDraw_ExtensionChangeLineAttributes.svg</file>
+        <file>icons/TechDraw_ExtensionPosHorizChainDimension.svg</file>
+        <file>icons/TechDraw_ExtensionPosVertChainDimension.svg</file>
+        <file>icons/TechDraw_ExtensionPosObliqueChainDimension.svg</file>
+        <file>icons/TechDraw_ExtensionCascadeHorizDimension.svg</file>
+        <file>icons/TechDraw_ExtensionCascadeVertDimension.svg</file>
+        <file>icons/TechDraw_ExtensionCascadeObliqueDimension.svg</file>
+        <file>icons/TechDraw_ExtensionCircleCenterLines.svg</file>
+        <file>icons/TechDraw_ExtensionHoleCircle.svg</file>
+        <file>icons/TechDraw_ExtensionVertexAtIntersection.svg</file>
+        <file>icons/TechDraw_ExtensionDrawCosmCircle.svg</file>
+        <file>icons/TechDraw_ExtensionDrawCosmArc.svg</file>
+        <file>icons/TechDraw_ExtensionDrawCosmCircle3Points.svg</file>
+        <file>icons/TechDraw_ExtensionLineParallel.svg</file>
+        <file>icons/TechDraw_ExtensionLinePerpendicular.svg</file>
+        <file>icons/TechDraw_ExtensionThreadHoleSide.svg</file>
+        <file>icons/TechDraw_ExtensionThreadBoltSide.svg</file>
+        <file>icons/TechDraw_ExtensionThreadHoleBottom.svg</file>
+        <file>icons/TechDraw_ExtensionThreadBoltBottom.svg</file>
+        <file>icons/TechDraw_ExtensionInsertDiameter.svg</file>
+        <file>icons/TechDraw_ExtensionInsertSquare.svg</file>
+        <file>icons/TechDraw_ExtensionRemovePrefixChar.svg</file>
+        <file>icons/TechDraw_ExtensionCreateHorizChainDimension.svg</file>
+        <file>icons/TechDraw_ExtensionCreateVertChainDimension.svg</file>
+        <file>icons/TechDraw_ExtensionCreateObliqueChainDimension.svg</file>
+        <file>icons/TechDraw_ExtensionCreateHorizCoordDimension.svg</file>
+        <file>icons/TechDraw_ExtensionCreateVertCoordDimension.svg</file>
+        <file>icons/TechDraw_ExtensionCreateObliqueCoordDimension.svg</file>
+        <file>icons/TechDraw_ExtensionCreateHorizChamferDimension.svg</file>
+        <file>icons/TechDraw_ExtensionCreateVertChamferDimension.svg</file>
+        <file>icons/TechDraw_ExtensionCreateLengthArc.svg</file>
+        <file>icons/TechDraw_ExtensionIncreaseDecimal.svg</file>
+        <file>icons/TechDraw_ExtensionDecreaseDecimal.svg</file>
+        <file>icons/TechDraw_ExtensionAreaAnnotation.svg</file>
+        <file>icons/TechDraw_ExtensionCustomizeFormat.svg</file>
         <file>icons/TechDraw_LengthDimension.svg</file>
         <file>icons/TechDraw_RadiusDimension.svg</file>
         <file>icons/TechDraw_Balloon.svg</file>
         <file>icons/TechDraw_VerticalDimension.svg</file>
-        <file>icons/TechDraw_Dimension_Link.svg</file>
+        <file>icons/TechDraw_LinkDimension.svg</file>
         <file>icons/TechDraw_HorizontalExtentDimension.svg</file>
         <file>icons/TechDraw_VerticalExtentDimension.svg</file>
-        <file>icons/techdraw-landmarkdistance.svg</file>
+        <file>icons/TechDraw_LandmarkDimension.svg</file>
         <file>icons/actions/techdraw-View.svg</file>
         <file>icons/actions/TechDraw_ActiveView.svg</file>
         <file>icons/actions/techdraw-multiview.svg</file>
@@ -73,6 +113,9 @@
         <file>icons/actions/TechDraw_Symbol.svg</file>
         <file>icons/actions/TechDraw_Tile.svg</file>
         <file>icons/actions/TechDraw_WeldSymbol.svg</file>
+        <file>icons/actions/TechDraw_MoveView.svg</file>
+        <file>icons/actions/TechDraw_ShareView.svg</file>
+        <file>icons/actions/TechDraw_ProjectShape.svg</file>
         <file>icons/actions/section-up.svg</file>  
         <file>icons/actions/section-down.svg</file>
         <file>icons/actions/section-left.svg</file>
@@ -104,6 +147,7 @@
         <file>icons/rectangle.svg</file>
         <file>icons/triangle.svg</file>
         <file>icons/square.svg</file>
+        <file>icons/bottomline.svg</file>
 
         <!-- MRTE -->
         <file>icons/MRTE/menu.svg</file>
@@ -168,5 +212,8 @@
         <file>translations/TechDraw_val-ES.qm</file>
         <file>translations/TechDraw_ar.qm</file>
         <file>translations/TechDraw_vi.qm</file>
+        <file>translations/TechDraw_es-AR.qm</file>
+        <file>translations/TechDraw_bg.qm</file>
+        <file>translations/TechDraw_ka.qm</file>
     </qresource>
 </RCC> 

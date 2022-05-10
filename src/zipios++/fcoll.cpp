@@ -66,7 +66,7 @@ ConstEntryPointer FileCollection::getEntry( const string &name,
   else
     iter = find_if( _entries.begin(), _entries.end(), FileEntry::MatchFileName( name ) ) ;
   if ( iter == _entries.end() )
-    return 0 ;
+    return nullptr ;
   else
     return *iter ; 
 }

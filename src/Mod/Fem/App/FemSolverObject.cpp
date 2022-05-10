@@ -79,6 +79,6 @@ template<> PyObject* Fem::FemSolverObjectPython::getPyObject(void) {
 }
 /// @endcond
 // explicit template instantiation
-template class AppFemExport FeaturePythonT<Fem::FemSolverObject>;
+template class FemExport FeaturePythonT<Fem::FemSolverObject>;
 
 }

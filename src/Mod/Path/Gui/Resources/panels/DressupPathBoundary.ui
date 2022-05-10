@@ -24,7 +24,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QWidget" name="widget_2" native="true">
+       <widget class="QWidget" name="widget_2">
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
           <widget class="QComboBox" name="stock">
@@ -94,17 +94,17 @@
       <item>
        <widget class="QFrame" name="stockFromBase">
         <layout class="QGridLayout" name="gridLayout_9">
-         <item row="1" column="3">
-          <widget class="Gui::InputField" name="stockExtYpos">
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MaxY.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="1">
           <widget class="QLabel" name="stockExtXLabel">
            <property name="text">
             <string>Ext. X</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="Gui::InputField" name="stockExtXneg">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MinX.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
           </widget>
          </item>
@@ -128,10 +128,17 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <widget class="Gui::InputField" name="stockExtXneg">
+         <item row="1" column="2">
+          <widget class="Gui::InputField" name="stockExtYneg">
            <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MinX.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MinY.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+         </item>
+        <item row="1" column="3">
+          <widget class="Gui::InputField" name="stockExtYpos">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MaxY.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
           </widget>
          </item>
@@ -156,37 +163,23 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="2">
-          <widget class="Gui::InputField" name="stockExtYneg">
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MinY.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+         </layout>
        </widget>
       </item>
       <item>
        <widget class="QFrame" name="stockCreateCylinder">
         <layout class="QGridLayout" name="gridLayout_10">
-         <item row="0" column="2">
-          <widget class="Gui::InputField" name="stockCylinderRadius">
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the Cylinder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="Gui::InputField" name="stockCylinderHeight">
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of the Cylinder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="1">
           <widget class="QLabel" name="stockCylinderRadiusLabel">
            <property name="text">
             <string>Radius</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="Gui::InputField" name="stockCylinderRadius">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the Cylinder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
           </widget>
          </item>
@@ -197,7 +190,14 @@
            </property>
           </widget>
          </item>
-        </layout>
+        <item row="1" column="2">
+          <widget class="Gui::InputField" name="stockCylinderHeight">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of the Cylinder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+         </item>
+         </layout>
        </widget>
       </item>
       <item>
@@ -210,13 +210,6 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
-          <widget class="QLabel" name="stockBoxWidthLabel">
-           <property name="text">
-            <string>Width</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="2">
           <widget class="Gui::InputField" name="stockBoxLength">
            <property name="toolTip">
@@ -224,10 +217,10 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="2">
-          <widget class="Gui::InputField" name="stockBoxHeight">
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <item row="1" column="1">
+          <widget class="QLabel" name="stockBoxWidthLabel">
+           <property name="text">
+            <string>Width</string>
            </property>
           </widget>
          </item>
@@ -245,7 +238,14 @@
            </property>
           </widget>
          </item>
-        </layout>
+        <item row="2" column="2">
+          <widget class="Gui::InputField" name="stockBoxHeight">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+         </item>
+         </layout>
        </widget>
       </item>
      </layout>

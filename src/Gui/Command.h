@@ -24,13 +24,10 @@
 #ifndef GUI_COMMAND_H
 #define GUI_COMMAND_H
 
-
 #include <list>
-#include <map>
-#include <string>
-#include <vector>
 
 #include <Base/Type.h>
+#include <Gui/Application.h>
 
 /** @defgroup CommandMacros Helper macros for running commands through Python interpreter */
 //@{
@@ -179,8 +176,8 @@
     auto __obj = _obj;\
     if(__obj && __obj->getNameInDocument()) {\
         Gui::Command::doCommand(Gui::Command::Gui,\
-            "Gui.ActiveDocument.setEdit(App.getDocument('%s').getObject('%s'))",\
-            __obj->getDocument()->getName(), __obj->getNameInDocument());\
+            "Gui.ActiveDocument.setEdit(App.getDocument('%s').getObject('%s'), %i)",\
+            __obj->getDocument()->getName(), __obj->getNameInDocument(), Gui::Application::Instance->getUserEditMode());\
     }\
 }while(0)
 
@@ -235,8 +232,8 @@ void CreateLinkCommands(void);
 class GuiExport CommandBase
 {
 protected:
-    CommandBase(const char* sMenu, const char* sToolTip=0, const char* sWhat=0,
-                const char* sStatus=0, const char* sPixmap=0, const char* sAccel=0);
+    CommandBase(const char* sMenu, const char* sToolTip=nullptr, const char* sWhat=nullptr,
+                const char* sStatus=nullptr, const char* sPixmap=nullptr, const char* sAccel=nullptr);
     virtual ~CommandBase();
 
 public:
@@ -330,6 +327,7 @@ protected:
     /// Applies the menu text, tool and status tip to the passed action object
     void applyCommandData(const char* context, Action* );
     const char* keySequenceToAccel(int) const;
+    void printConflictingAccelerators() const;
     //@}
 
 public:
@@ -343,6 +341,8 @@ public:
     void testActive(void);
     /// Enables or disables the command
     void setEnabled(bool);
+    /// (Re)Create the text for the tooltip (for example, when the shortcut is changed)
+    void recreateTooltip(const char* context, Action*);
     /// Command trigger source
     enum TriggerSource {
         /// No external trigger, e.g. invoked through Python
@@ -382,30 +382,30 @@ public:
      *  document when no name is given. NULL is returned
      *  when the name does not exist or no document is active!
      */
-    App::Document*  getDocument(const char* Name=0) const;
+    App::Document*  getDocument(const char* Name=nullptr) const;
     /// checks if the active view is of a special type or derived
     bool isViewOfType(Base::Type t) const;
     /// returns the named feature or the active one from the active document or NULL
     App::DocumentObject*  getObject(const char* Name) const;
     /// returns a python command string to retrieve an object from a document
-    static std::string getObjectCmd(const char *Name, const App::Document *doc=0,
-            const char *prefix=0, const char *postfix=0, bool gui=false);
+    static std::string getObjectCmd(const char *Name, const App::Document *doc=nullptr,
+            const char *prefix=nullptr, const char *postfix=nullptr, bool gui=false);
     /// returns a python command string to retrieve the given object
     static std::string getObjectCmd(const App::DocumentObject *obj,
-            const char *prefix=0, const char *postfix=0, bool gui=false);
+            const char *prefix=nullptr, const char *postfix=nullptr, bool gui=false);
     /** Get unique Feature name from the active document
      *
      *  @param BaseName: the base name
      *  @param obj: if not zero, then request the unique name in the document of
      *  the given object.
      */
-    std::string getUniqueObjectName(const char *BaseName, const App::DocumentObject *obj=0) const;
+    std::string getUniqueObjectName(const char *BaseName, const App::DocumentObject *obj=nullptr) const;
     //@}
 
     /** @name Helper methods for the Undo/Redo and Update handling */
     //@{
     /// Open a new Undo transaction on the active document
-    static void openCommand(const char* sName=0);
+    static void openCommand(const char* sName=nullptr);
     /// Commit the Undo transaction on the active document
     static void commitCommand(void);
     /// Abort the Undo transaction on the active document
@@ -450,7 +450,7 @@ public:
      *
      * @sa Command::_doCommand()
      */
-#ifdef FC_OS_WIN32
+#ifdef _MSC_VER
 #define doCommand(_type,...) _doCommand(__FILE__,__LINE__,_type,##__VA_ARGS__)
 #else
 #define doCommand(...) _doCommand(__FILE__,__LINE__,__VA_ARGS__)
@@ -564,6 +564,7 @@ public:
     /// Get the name of the grouping of the command
     const char* getGroupName() const { return sGroup; }
     void setGroupName(const char*);
+    QString translatedGroupName() const;
     //@}
 
 
@@ -633,7 +634,7 @@ public:
      * @param reg: whether to register the command with CommandManager
      * @return Return the command index.
      */
-    int addCommand(Command *cmd = 0, bool reg=true);
+    int addCommand(Command *cmd = nullptr, bool reg=true);
     /** Add child command
      * @param cmd: child command name.
      * @return Return the found command, or NULL if not found.
@@ -869,6 +870,21 @@ public:
 
     void addCommandMode(const char* sContext, const char* sName);
     void updateCommands(const char* sContext, int mode);
+
+    /** 
+     * Returns a pointer to a conflicting command, or nullptr if there is no conflict.
+     * In the case of multiple conflicts, only the first is returned. 
+     * \param accel The accelerator to check
+     * \param ignore (optional) A command to ignore matches with
+     */
+    const Command* checkAcceleratorForConflicts(const char* accel, const Command *ignore = nullptr) const;
+
+    /**
+     * Returns the first available command name for a new macro (e.g. starting from 1,
+     * examines the existing user preferences for Std_Macro_%1 and returns the lowest
+     * available numbered string).
+     */
+    std::string newMacroName() const;
 
 private:
     /// Destroys all commands in the manager and empties the list.

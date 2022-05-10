@@ -23,12 +23,12 @@
 #ifndef DRAWINGGUI_QGIMATTING_H
 #define DRAWINGGUI_QGIMATTING_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsItem>
 #include <QGraphicsItemGroup>
-#include <QGraphicsRectItem>
 #include <QGraphicsPathItem>
-#include <QPainterPath>
-#include <QPointF>
+
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -48,7 +48,7 @@ public:
     enum {Type = QGraphicsItem::UserType + 205};
     int type() const { return Type;}
 
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr );
     virtual QRectF boundingRect() const;
 
     virtual void setSize(double w, double h) {m_height = h; m_width = w;}

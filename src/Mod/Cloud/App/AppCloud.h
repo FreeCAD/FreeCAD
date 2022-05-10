@@ -20,25 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Base64.h>
-#include <Base/TimeInfo.h>
-//#include <xlocale.h>
-
-#include <App/PropertyContainer.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyLinks.h>
 #include <App/Document.h>
 
-#include <xercesc/framework/XMLPScanToken.hpp>
-#include <xercesc/sax2/Attributes.hpp>
-#include <xercesc/sax2/DefaultHandler.hpp>
+#include <Base/Base64.h>
+#include <Base/Interpreter.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 
+#include <xercesc/framework/MemBufInputSource.hpp>
+#include <xercesc/framework/XMLPScanToken.hpp>
 #include <xercesc/parsers/XercesDOMParser.hpp>
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/sax/HandlerBase.hpp>
-#include <xercesc/framework/MemBufInputSource.hpp>
+#include <xercesc/sax2/Attributes.hpp>
+#include <xercesc/sax2/DefaultHandler.hpp>
+
 
 XERCES_CPP_NAMESPACE_BEGIN
     class DOMNode;
@@ -70,7 +66,7 @@ std::string getHexValue(unsigned char *input, unsigned int HMACLength);
 void eraseSubStr(std::string & Str, const std::string & toErase);
 size_t CurlWrite_CallbackFunc_StdString(void *contents, size_t size, size_t nmemb, std::string *s);
 struct AmzData *ComputeDigestAmzS3v2(char *operation, char *data_type, const char *target, const char *Secret, const char *ptr, long size);
-struct AmzDatav4 *ComputeDigestAmzS3v4(char *operation, const char *server, char *data_type, const char *target, const char *Secret, const char *ptr, long size, char *paramters, std::string Region);
+struct AmzDatav4 *ComputeDigestAmzS3v4(char *operation, const char *server, char *data_type, const char *target, const char *Secret, const char *ptr, long size, char *parameters, std::string Region);
 struct curl_slist *BuildHeaderAmzS3v2(const char *URL, const char *TCPPort, const char *PublicKey, struct AmzData *Data);
 struct curl_slist *BuildHeaderAmzS3v4(const char *URL, const char *PublicKey, struct AmzDatav4 *Data);
 char *MD5Sum(const char *ptr, long size);
@@ -176,7 +172,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 

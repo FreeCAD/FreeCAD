@@ -25,28 +25,33 @@ import FreeCAD
 import PathScripts.PathOpGui as PathOpGui
 import PathScripts.PathProfile as PathProfile
 import PathScripts.PathProfileGui as PathProfileGui
-from PySide import QtCore
-
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "Path Profile Faces Operation UI (depreciated)"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecadweb.org"
-__doc__ = "Profile Faces operation page controller and command implementation (depreciated)."
+__doc__ = (
+    "Profile Faces operation page controller and command implementation (deprecated)."
+)
 
 
 class TaskPanelOpPage(PathProfileGui.TaskPanelOpPage):
-    '''Psuedo page controller class for Profile operation,
-    allowing for backward compatibility with pre-existing "Profile Faces" operations.'''
+    """Pseudo page controller class for Profile operation,
+    allowing for backward compatibility with pre-existing "Profile Faces" operations."""
+
     pass
-# Eclass
 
 
-Command = PathOpGui.SetupOperation('Profile',
-        PathProfile.Create,
-        TaskPanelOpPage,
-        'Path_Contour',
-        QtCore.QT_TRANSLATE_NOOP("Path_Profile", "Profile"),
-        QtCore.QT_TRANSLATE_NOOP("Path_Profile", "Profile entire model, selected face(s) or selected edge(s)"),
-        PathProfile.SetupProperties)
+Command = PathOpGui.SetupOperation(
+    "Profile",
+    PathProfile.Create,
+    TaskPanelOpPage,
+    "Path_Contour",
+    QT_TRANSLATE_NOOP("Path_Profile", "Profile"),
+    QT_TRANSLATE_NOOP(
+        "Path_Profile", "Profile entire model, selected face(s) or selected edge(s)"
+    ),
+    PathProfile.SetupProperties,
+)
 
 FreeCAD.Console.PrintLog("Loading PathProfileFacesGui... done\n")

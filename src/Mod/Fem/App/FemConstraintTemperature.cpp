@@ -42,7 +42,7 @@ using namespace Fem;
 
 PROPERTY_SOURCE(Fem::ConstraintTemperature, Fem::Constraint)
 
-static const char* ConstraintTypes[] = {"CFlux","Temperature", NULL};
+static const char* ConstraintTypes[] = {"CFlux","Temperature", nullptr};
 
 ConstraintTemperature::ConstraintTemperature()
 {

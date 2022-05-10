@@ -47,7 +47,7 @@ PyObject *BoundedCurvePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  
     // never create such objects with the constructor
     PyErr_SetString(PyExc_RuntimeError,
                     "You cannot create an instance of the abstract class 'BoundedCurve'.");
-    return 0;
+    return nullptr;
 }
 
 // constructor method
@@ -68,7 +68,7 @@ Py::Object BoundedCurvePy::getEndPoint(void) const
 
 PyObject *BoundedCurvePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int BoundedCurvePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

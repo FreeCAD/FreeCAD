@@ -20,45 +20,31 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoShapeHints.h>
+# include <cstring>
 # include <Inventor/SbClip.h>
-# include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoComplexity.h>
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoFaceSet.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoTexture3.h>
 # include <Inventor/nodes/SoTextureCoordinate3.h>
-# include <Inventor/nodes/SoFaceSet.h>
-# include <Inventor/nodes/SoLineSet.h>
-# include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/draggers/SoTransformerDragger.h>
-
-# include <float.h>
-# include <cstring>
 #endif
 
-#include "../Base/Console.h"
-
-
-#include "View3DInventorExamples.h"
-
-#include <Inventor/SbPlane.h>
 #include <Inventor/SoDB.h>
+#include <Inventor/SbPlane.h>
 #include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/manips/SoPointLightManip.h>
-#include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/draggers/SoTransformerDragger.h>
-#include <Inventor/SbBasic.h>
-#include <Inventor/nodes/SoShapeHints.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoTexture2.h>
+#include <Inventor/manips/SoPointLightManip.h>
 #include <Inventor/nodes/SoCube.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/nodes/SoTexture2.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 
+#include "View3DInventorExamples.h"
 
 
 unsigned char * generateTexture(int w, int h, int d)
@@ -238,7 +224,7 @@ void Texture3D(SoSeparator * root)
 
   SoTransformerDragger * dragger = new SoTransformerDragger;
   dragger->scaleFactor.setValue(5,5,5);
-  dragger->addValueChangedCallback(draggerCB, NULL);
+  dragger->addValueChangedCallback(draggerCB, nullptr);
   root->addChild(dragger);
 
   SoCoordinate3 * clippedCoords = new SoCoordinate3;
@@ -290,7 +276,8 @@ void LightManip(SoSeparator * root)
   SoInput in;
   in.setBuffer((void *)scenegraph, std::strlen(scenegraph));
   SoSeparator * _root = SoDB::readAll( &in );
-  if ( _root == NULL ) return; // Shouldn't happen.
+  if ( _root == nullptr ) // Shouldn't happen.
+      return;
   root->addChild(_root);
   root->ref();
 
@@ -303,7 +290,8 @@ void LightManip(SoSeparator * root)
     sa.setSearchingAll( false );
     sa.apply( root );
     SoPath * path = sa.getPath();
-    if ( path == NULL) return; // Shouldn't happen.
+    if ( path == nullptr) // Shouldn't happen.
+        return;
 
     SoPointLightManip * manip = new SoPointLightManip;
     manip->replaceNode( path );
@@ -408,7 +396,8 @@ timersensorcallback(void * data, SoSensor *)
 void AnimationTexture(SoSeparator * root)
 {
   // Scene graph
-  if ( root == NULL ) return; // Shouldn't happen.
+  if ( root == nullptr ) // Shouldn't happen.
+      return;
 
   // Generate a julia set to use as a texturemap
   julia(global_cr, global_ci, 2.5, texturewidth, textureheight, 4, bitmap, 64);

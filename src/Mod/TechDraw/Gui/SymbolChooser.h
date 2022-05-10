@@ -22,28 +22,28 @@
 #ifndef TECHDRAWGUI_SYMBOLCHOOSER_H
 #define TECHDRAWGUI_SYMBOLCHOOSER_H
 
-#include <QPushButton>
 #include <QDialog>
-#include <QListWidget>
 
-#include <Mod/TechDraw/Gui/ui_SymbolChooser.h>
+class QListWidgetItem;
 
 namespace TechDrawGui {
 
+class Ui_SymbolChooser;
 class TechDrawGuiExport SymbolChooser : public QDialog
 {
     Q_OBJECT
 
 public:
-    SymbolChooser(QWidget *parent = 0,
+    SymbolChooser(QWidget *parent = nullptr,
                   QString startDir = QString(),
                   QString source = QString());
+    ~SymbolChooser();
 
 public Q_SLOTS:
     void onOKClicked();
     void onCancelClicked();
     void onItemClicked(QListWidgetItem* item);
-    void onDirectorySelected(const QString& newDir);
+    void onDirectoryChanged(const QString& newDir);
 
 Q_SIGNALS:
     void symbolSelected(QString symbolPath,

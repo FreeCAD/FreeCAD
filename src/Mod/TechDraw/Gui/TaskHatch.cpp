@@ -41,6 +41,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 
+#include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
@@ -173,7 +174,7 @@ TaskDlgHatch::TaskDlgHatch(TechDraw::DrawHatch* inHatch, TechDrawGui::ViewProvid
 {
     widget  = new TaskHatch(inHatch, inVp, mode);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_TreeView"),
-                                         widget->windowTitle(), true, 0);
+                                         widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

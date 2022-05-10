@@ -24,7 +24,6 @@
 #ifndef GUI_MACRO_H
 #define GUI_MACRO_H
 
-// Std. configurations
 #include <QString>
 #include <QStringList>
 #include <Base/Observer.h>
@@ -77,7 +76,7 @@ public:
     void commit(void);
     /// cancels the recording session
     void cancel(void);
-    /// indicates if a macro recording in in progress
+    /// indicates if a macro recording is in progress
     bool isOpen(void) const {return openMacro;}
     /// insert a new line in the macro
     void addLine(LineType Type,const char* sLine,bool pending=false);

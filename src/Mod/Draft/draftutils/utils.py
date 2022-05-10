@@ -41,7 +41,7 @@ import PySide.QtCore as QtCore
 import FreeCAD as App
 
 from draftutils.messages import _msg, _wrn, _err, _log
-from draftutils.translate import _tr
+from draftutils.translate import translate
 
 # TODO: move the functions that require the graphical interface
 # This module should not import any graphical commands; those should be
@@ -167,23 +167,23 @@ def get_param_type(param):
                  "precision", "defaultWP", "snapRange", "gridEvery",
                  "linewidth", "UiMode", "modconstrain", "modsnap",
                  "maxSnapEdges", "modalt", "HatchPatternResolution",
-                 "snapStyle", "dimstyle", "gridSize","gridTransparency"):
+                 "snapStyle", "dimstyle", "gridSize", "gridTransparency"):
         return "int"
     elif param in ("constructiongroupname", "textfont",
                    "patternFile", "template", "snapModes",
-                   "FontFile", "ClonePrefix","overrideUnit",
+                   "FontFile", "ClonePrefix", "overrideUnit",
                    "labeltype") or "inCommandShortcut" in param:
         return "string"
     elif param in ("textheight", "tolerance", "gridSpacing",
                    "arrowsize", "extlines", "dimspacing",
-                   "dimovershoot", "extovershoot","HatchPatternSize"):
+                   "dimovershoot", "extovershoot", "HatchPatternSize"):
         return "float"
     elif param in ("selectBaseObjects", "alwaysSnap", "grid",
                    "fillmode", "saveonexit", "maxSnap",
                    "SvgLinesBlack", "dxfStdSize", "showSnapBar",
                    "hideSnapBar", "alwaysShowGrid", "renderPolylineWidth",
                    "showPlaneTracker", "UsePartPrimitives",
-                   "DiscretizeEllipses", "showUnit","coloredGridAxes",
+                   "DiscretizeEllipses", "showUnit", "coloredGridAxes",
                    "Draft_array_fuse", "Draft_array_Link", "gridBorder"):
         return "bool"
     elif param in ("color", "constructioncolor",
@@ -463,7 +463,7 @@ def get_objects_of_type(objects, typ):
 getObjectsOfType = get_objects_of_type
 
 
-def is_clone(obj, objtype, recursive=False):
+def is_clone(obj, objtype=None, recursive=False):
     """Return True if the given object is a clone of a certain type.
 
     A clone is of type `'Clone'`, and has a reference
@@ -509,17 +509,21 @@ def is_clone(obj, objtype, recursive=False):
         if `obj` is not even a clone.
     """
     if isinstance(objtype, list):
-        return any([isClone(obj, t, recursive) for t in objtype])
-
+        return any([is_clone(obj, t, recursive) for t in objtype])
     if getType(obj) == "Clone":
         if len(obj.Objects) == 1:
-            if getType(obj.Objects[0]) == objtype:
-                return True
+            if objtype:
+                if getType(obj.Objects[0]) == objtype:
+                    return True
             elif recursive and (getType(obj.Objects[0]) == "Clone"):
-                return isClone(obj.Objects[0], objtype, recursive)
+                return is_clone(obj.Objects[0], objtype, recursive)
     elif hasattr(obj, "CloneOf"):
         if obj.CloneOf:
-            return True
+            if objtype:
+                if getType(obj.CloneOf) == objtype:
+                    return True
+            else:
+                return True
     return False
 
 
@@ -643,20 +647,20 @@ def print_shape(shape):
     shape : Part::TopoShape
         Any topological shape in an object, usually obtained from `obj.Shape`.
     """
-    _msg(_tr("Solids:") + " {}".format(len(shape.Solids)))
-    _msg(_tr("Faces:") + " {}".format(len(shape.Faces)))
-    _msg(_tr("Wires:") + " {}".format(len(shape.Wires)))
-    _msg(_tr("Edges:") + " {}".format(len(shape.Edges)))
-    _msg(_tr("Vertices:") + " {}".format(len(shape.Vertexes)))
+    _msg(translate("draft", "Solids:") + " {}".format(len(shape.Solids)))
+    _msg(translate("draft", "Faces:") + " {}".format(len(shape.Faces)))
+    _msg(translate("draft", "Wires:") + " {}".format(len(shape.Wires)))
+    _msg(translate("draft", "Edges:") + " {}".format(len(shape.Edges)))
+    _msg(translate("draft", "Vertices:") + " {}".format(len(shape.Vertexes)))
 
     if shape.Faces:
         for f in range(len(shape.Faces)):
-            _msg(_tr("Face") + " {}:".format(f))
+            _msg(translate("draft", "Face") + " {}:".format(f))
             for v in shape.Faces[f].Vertexes:
                 _msg("    {}".format(v.Point))
     elif shape.Wires:
         for w in range(len(shape.Wires)):
-            _msg(_tr("Wire") + " {}:".format(w))
+            _msg(translate("draft", "Wire") + " {}:".format(w))
             for v in shape.Wires[w].Vertexes:
                 _msg("    {}".format(v.Point))
     else:
@@ -688,11 +692,11 @@ def compare_objects(obj1, obj2):
     if obj1.TypeId != obj2.TypeId:
         _msg("'{0}' ({1}), '{2}' ({3}): ".format(obj1.Name, obj1.TypeId,
                                                  obj2.Name, obj2.TypeId)
-             + _tr("different types") + " (TypeId)")
+             + translate("draft", "different types") + " (TypeId)")
     elif getType(obj1) != getType(obj2):
         _msg("'{0}' ({1}), '{2}' ({3}): ".format(obj1.Name, get_type(obj1),
                                                  obj2.Name, get_type(obj2))
-             + _tr("different types") + " (Proxy.Type)")
+             + translate("draft", "different types") + " (Proxy.Type)")
     else:
         for p in obj1.PropertiesList:
             if p in obj2.PropertiesList:
@@ -700,15 +704,15 @@ def compare_objects(obj1, obj2):
                     pass
                 elif p == "Placement":
                     delta = obj1.Placement.Base.sub(obj2.Placement.Base)
-                    text = _tr("Objects have different placements. "
-                               "Distance between the two base points: ")
+                    text = translate("draft", "Objects have different placements. "
+                                              "Distance between the two base points: ")
                     _msg(text + str(delta.Length))
                 else:
                     if getattr(obj1, p) != getattr(obj2, p):
-                        _msg("'{}' ".format(p) + _tr("has a different value"))
+                        _msg("'{}' ".format(p) + translate("draft", "has a different value"))
             else:
                 _msg("{} ".format(p)
-                     + _tr("doesn't exist in one of the objects"))
+                     + translate("draft", "doesn't exist in one of the objects"))
 
 
 compareObjects = compare_objects
@@ -820,13 +824,13 @@ def filter_objects_for_modifiers(objects, isCopied=False):
                 if parent.isDerivedFrom("Part::Feature"):
                     parents.append(parent.Name)
             if len(parents) > 1:
-                warningMessage = _tr("%s shares a base with %d other objects. Please check if you want to modify this.") % (obj.Name,len(parents) - 1)
+                warningMessage = translate("draft", "%s shares a base with %d other objects. Please check if you want to modify this.") % (obj.Name,len(parents) - 1)
                 App.Console.PrintError(warningMessage)
                 if App.GuiUp:
                     Gui.getMainWindow().showMessage(warningMessage, 0)
             filteredObjects.append(obj.Base)
         elif hasattr(obj,"Placement") and obj.getEditorMode("Placement") == ["ReadOnly"] and not isCopied:
-            App.Console.PrintError(_tr("%s cannot be modified because its placement is readonly.") % obj.Name)
+            App.Console.PrintError(translate("draft", "%s cannot be modified because its placement is readonly.") % obj.Name)
             continue
         else:
             filteredObjects.append(obj)
@@ -970,7 +974,7 @@ def find_doc(doc=None):
             doc = App.getDocument(doc)
         except NameError:
             _msg("document: {}".format(doc))
-            _err(_tr("Wrong input: unknown document."))
+            _err(translate("draft", "Wrong input: unknown document."))
             return not FOUND, None
 
     return FOUND, doc
@@ -1007,7 +1011,7 @@ def find_object(obj, doc=None):
 
     found, doc = find_doc(doc)
     if not found:
-        _err(_tr("No active document. Aborting."))
+        _err(translate("draft", "No active document. Aborting."))
         return not FOUND, None
 
     if isinstance(obj, str):
@@ -1046,15 +1050,12 @@ def use_instead(function, version=""):
         If we don't know when this command will be deprecated
         then we should not give a version.
     """
-    text = "This function will be deprecated in "
-    text2 = "This function will be deprecated. "
-    text3 = "Please use "
-
     if version:
-        _wrn(_tr(text) + "{}. ".format(version)
-             + _tr(text3) + "'{}'.".format(function))
+        _wrn(translate("draft", "This function will be deprecated in ")
+             + "{}. ".format(version)
+             + translate("draft", "Please use ") + "'{}'.".format(function))
     else:
-        _wrn(_tr(text2)
-             + _tr(text3) + "'{}'.".format(function))
+        _wrn(translate("draft", "This function will be deprecated. ")
+             + translate("draft", "Please use ") + "'{}'.".format(function))
 
 ## @}

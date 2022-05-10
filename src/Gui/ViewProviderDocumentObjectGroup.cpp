@@ -20,28 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <QApplication>
-# include <QPixmap>
-# include <QMessageBox>
-#endif
-
 #include <App/DocumentObjectGroup.h>
-#include <App/Document.h>
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "ViewProviderDocumentObjectGroup.h"
 #include "Application.h"
-#include "Command.h"
 #include "BitmapFactory.h"
 #include "Document.h"
-#include "Tree.h"
-#include "View3DInventor.h"
-#include "View3DInventorViewer.h"
-#include <Base/Console.h>
 
 
 using namespace Gui;

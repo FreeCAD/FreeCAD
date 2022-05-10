@@ -25,9 +25,9 @@
 
 #include <string>
 
-#include <QString>
 #include <QByteArray>
 #include <QPointF>
+#include <QString>
 
 #include <gp_Ax2.hxx>
 #include <gp_Dir.hxx>
@@ -36,17 +36,12 @@
 #include <gp_Pnt2d.hxx>
 #include <gp_Vec.hxx>
 #include <TopoDS.hxx>
-#include <TopoDS_Vertex.hxx>
 #include <TopoDS_Edge.hxx>
-#include <TopoDS_Wire.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Shape.hxx>
+#include <TopoDS_Vertex.hxx>
 
-#include <App/DocumentObject.h>
-#include <Base/Tools2D.h>
 #include <Base/Vector3D.h>
-#include <Base/Matrix.h>
-
 #include <Mod/Part/App/PartFeature.h>
 
 #include "LineGroup.h"
@@ -109,6 +104,8 @@ class TechDrawExport DrawUtil {
         //! find intersection in 2d for 2 lines in point+direction form
         static Base::Vector3d Intersect2d(Base::Vector3d p1, Base::Vector3d d1,
                                    Base::Vector3d p2, Base::Vector3d d2);
+        static Base::Vector2d Intersect2d(Base::Vector2d p1, Base::Vector2d d1,
+                                   Base::Vector2d p2, Base::Vector2d d2);
         static Base::Vector3d gpPnt2V3(const gp_Pnt gp) { return Base::Vector3d(gp.X(),gp.Y(),gp.Z()); }
         static gp_Pnt         V32gpPnt(const Base::Vector3d v)  { return gp_Pnt(v.x,v.y,v.z); }
         static std::string shapeToString(TopoDS_Shape s);
@@ -121,6 +118,9 @@ class TechDrawExport DrawUtil {
         static PyObject* colorToPyTuple(App::Color color);
         static bool isCrazy(TopoDS_Edge e);
         static Base::Vector3d getFaceCenter(TopoDS_Face f);
+        static bool circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C);
+        static int countSubShapes(TopoDS_Shape shape, TopAbs_ShapeEnum subShape);
+
 
         // Supplementary mathematical functions
         static int sgn(double x);

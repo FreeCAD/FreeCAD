@@ -27,33 +27,18 @@
 #ifndef _PreComp_
 #endif
 
-#include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-
-#include <Base/Console.h>
 #include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-
 #include <Gui/Application.h>
+#include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <Gui/Application.h>
-#include <Gui/Selection.h>
-#include <Gui/MainWindow.h>
-#include <Gui/Utilities.h>
-#include <Gui/Control.h>
-
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
-#include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/LineGroup.h>
 
+#include "QGIView.h"
 #include "TaskGeomHatch.h"
 #include "PreferencesGui.h"
 #include "ViewProviderDrawingView.h"
@@ -110,7 +95,7 @@ bool ViewProviderGeomHatch::setEdit(int ModNum)
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
     TaskDlgGeomHatch *projDlg = qobject_cast<TaskDlgGeomHatch *>(dlg);
     if (projDlg && (projDlg->getViewProvider() != this))
-        projDlg = 0; // somebody left task panel open
+        projDlg = nullptr; // somebody left task panel open
 
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
@@ -209,8 +194,10 @@ TechDraw::DrawGeomHatch* ViewProviderGeomHatch::getViewObject() const
 Gui::MDIView *ViewProviderGeomHatch::getMDIView() const
 {
     auto obj = getViewObject();
-    if(!obj) return 0;
+    if(!obj)
+        return nullptr;
     auto vp = Gui::Application::Instance->getViewProvider(obj->getSourceView());
-    if(!vp) return 0;
+    if(!vp)
+        return nullptr;
     return vp->getMDIView();
 }

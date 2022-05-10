@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>307</width>
-    <height>118</height>
+    <width>300</width>
+    <height>57</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,7 +30,10 @@
       <string>300 K</string>
      </property>
      <property name="unit" stdset="0">
-      <string notr="true"/>
+      <string notr="true">K</string>
+     </property>
+     <property name="quantity" stdset="0">
+      <double>300.000000000000000</double>
      </property>
     </widget>
    </item>

@@ -45,13 +45,13 @@
 #ifdef _PreComp_
 
 // standard
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 #include <fcntl.h>
-#include <ctype.h>
+#include <cctype>
 #include <typeinfo>
-#include <float.h>
-#include <limits.h>
+#include <cfloat>
+#include <climits>
 
 #ifdef FC_OS_WIN32
 #include <Windows.h>
@@ -63,8 +63,8 @@
 #include <iostream>
 #include <iomanip>
 
-
 // STL
+#include <atomic>
 #include <vector>
 #include <map>
 #include <string>
@@ -80,21 +80,23 @@
 #include <tuple>
 
 // Boost
-#include <boost_signals2.hpp>
-#include <boost/bind/bind.hpp>
-#include <boost/program_options.hpp>
-#include <boost/utility.hpp>
 #include <boost_graph_adjacency_list.hpp>
+#include <boost_signals2.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/bind/bind.hpp>
+#include <boost/filesystem/exception.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
-#include <boost/filesystem/exception.hpp>
+#include <boost/interprocess/sync/file_lock.hpp>
+#include <boost/program_options.hpp>
+#include <boost/utility.hpp>
 
-
-// Python
-#include <Python.h>
+// Xerces
+#include <xercesc/util/TranscodingException.hpp>
+#include <xercesc/util/XMLString.hpp>
 
 #include "InventorAll.h"
-#include "Qt4All.h"
+#include "QtAll.h"
 
 #elif defined(FC_OS_WIN32)
 #include <windows.h>

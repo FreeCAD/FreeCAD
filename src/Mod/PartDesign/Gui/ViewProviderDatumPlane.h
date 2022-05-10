@@ -25,7 +25,6 @@
 #ifndef PARTGUI_ViewProviderDatumPlane_H
 #define PARTGUI_ViewProviderDatumPlane_H
 
-#include "Gui/ViewProviderGeometryObject.h"
 #include "ViewProviderDatum.h"
 
 namespace PartDesignGui {

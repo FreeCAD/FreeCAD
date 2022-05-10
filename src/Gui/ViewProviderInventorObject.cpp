@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -31,13 +30,12 @@
 # include <QFile>
 #endif
 
-#include "ViewProviderInventorObject.h"
-#include <Gui/SoFCSelection.h>
-#include <App/InventorObject.h>
 #include <App/Document.h>
-#include <Base/FileInfo.h>
-#include <Base/Stream.h>
-#include <sstream>
+#include <App/InventorObject.h>
+
+#include "ViewProviderInventorObject.h"
+#include "SoFCSelection.h"
+
 
 using namespace Gui;
 
@@ -96,7 +94,8 @@ void ViewProviderInventorObject::updateData(const App::Property* prop)
         SoInput in;
         std::string buffer = ivObj->Buffer.getValue();
         coinRemoveAllChildren(pcBuffer);
-        if (buffer.empty()) return;
+        if (buffer.empty())
+            return;
         in.setBuffer((void *)buffer.c_str(), buffer.size());
         SoSeparator * node = SoDB::readAll(&in);
         if (node) {

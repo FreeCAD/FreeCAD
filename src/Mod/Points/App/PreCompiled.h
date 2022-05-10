@@ -26,13 +26,6 @@
 
 #include <FCConfig.h>
 
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-# define PointsExport __declspec(dllexport)
-#else // for Linux
-# define PointsExport
-#endif
-
 // here get the warnings of too long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
 # pragma warning( disable : 4181 )
@@ -43,8 +36,8 @@
 #ifdef _PreComp_
 
 // standard
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 
 // STL
 #include <algorithm>
@@ -59,9 +52,9 @@
 #include <string>
 #include <vector>
 #include <bitset>
-#include <float.h>
+#include <cfloat>
 #include <cmath>
-#include <stdlib.h>
+#include <cstdlib>
 
 #endif //_PreComp_
 

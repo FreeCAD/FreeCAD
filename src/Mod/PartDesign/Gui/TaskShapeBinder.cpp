@@ -24,24 +24,22 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
 # include <QMessageBox>
 #endif
 
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 
-#include <Mod/PartDesign/App/ShapeBinder.h>
 #include <Mod/Part/App/PartFeature.h>
-
-#include "ReferenceSelection.h"
-#include "Workbench.h"
+#include <Mod/PartDesign/App/ShapeBinder.h>
 
 #include "ui_TaskShapeBinder.h"
 #include "TaskShapeBinder.h"
+
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -56,9 +54,9 @@ using namespace Gui;
 
 // TODO Review and cleanup the file (2015-09-11, Fat-Zer)
 
-TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder *view, bool /*newObj*/, QWidget *parent)
+TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder* view, bool /*newObj*/, QWidget* parent)
     : Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("PartDesign_ShapeBinder"),
-                             tr("Datum shape parameters"), true, parent)
+        tr("Datum shape parameters"), true, parent)
     , SelectionObserver(view)
     , ui(new Ui_TaskShapeBinder)
 {
@@ -68,45 +66,45 @@ TaskShapeBinder::TaskShapeBinder(ViewProviderShapeBinder *view, bool /*newObj*/,
     QMetaObject::connectSlotsByName(this);
 
     connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonRefAdd(bool)));
+        this, SLOT(onButtonRefAdd(bool)));
     connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonRefRemove(bool)));
+        this, SLOT(onButtonRefRemove(bool)));
     connect(ui->buttonBase, SIGNAL(toggled(bool)),
-            this, SLOT(onBaseButton(bool)));
-    
+        this, SLOT(onBaseButton(bool)));
+
     this->groupLayout()->addWidget(proxy);
-    
-    Gui::Document* doc = Gui::Application::Instance->activeDocument(); 
+
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
     vp = view;
-    
+
     //add initial values   
     App::GeoFeature* obj = nullptr;
     std::vector<std::string> subs;
-            
-    PartDesign::ShapeBinder::getFilteredReferences(&static_cast<PartDesign::ShapeBinder*>(vp->getObject())->Support, obj, subs);            
-     
-    if(obj)
+
+    PartDesign::ShapeBinder::getFilteredReferences(&static_cast<PartDesign::ShapeBinder*>(vp->getObject())->Support, obj, subs);
+
+    if (obj)
         ui->baseEdit->setText(QString::fromUtf8(obj->getNameInDocument()));
 
     for (auto sub : subs)
         ui->listWidgetReferences->addItem(QString::fromStdString(sub));
- 
-    //make sure th euser sees al important things: the base feature to select edges and the 
-    //spine/auxiliary spine he already selected
-    if(obj) {
+
+    //make sure the user sees all important things: the base feature to select edges and the 
+    //spine/auxiliary spine they already selected
+    if (obj) {
         auto* svp = doc->getViewProvider(obj);
-        if(svp) {
+        if (svp) {
             supportShow = svp->isShow();
             svp->setVisible(true);
         }
     }
-    
+
     updateUI();
 }
 
 void TaskShapeBinder::updateUI()
 {
-    
+
 }
 
 void TaskShapeBinder::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -118,26 +116,27 @@ void TaskShapeBinder::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (referenceSelected(msg)) {
             if (selectionMode == refAdd) {
                 QString sub = QString::fromStdString(msg.pSubName);
-                if(!sub.isEmpty())
+                if (!sub.isEmpty())
                     ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
-                
+
                 ui->baseEdit->setText(QString::fromStdString(msg.pObjectName));
             }
             else if (selectionMode == refRemove) {
                 QString sub = QString::fromStdString(msg.pSubName);
-                if(!sub.isEmpty())
+                if (!sub.isEmpty())
                     removeFromListWidget(ui->listWidgetReferences, QString::fromUtf8(msg.pSubName));
                 else {
                     ui->baseEdit->clear();
-                }                
-            } else if(selectionMode == refObjAdd) {
+                }
+            }
+            else if (selectionMode == refObjAdd) {
                 ui->listWidgetReferences->clear();
                 ui->baseEdit->setText(QString::fromUtf8(msg.pObjectName));
             }
             clearButtons();
             static_cast<ViewProviderShapeBinder*>(vp)->highlightReferences(false, false);
             vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
-        } 
+        }
         clearButtons();
         exitSelectionMode();
     }
@@ -146,10 +145,10 @@ void TaskShapeBinder::onSelectionChanged(const Gui::SelectionChanges& msg)
 TaskShapeBinder::~TaskShapeBinder()
 {/*
     PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(vp->getObject());
-    Gui::Document* doc = Gui::Application::Instance->activeDocument(); 
-    
-    //make sure th euser sees al important things: the base feature to select edges and the 
-    //spine/auxiliary spine he already selected
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+
+    //make sure the user sees all important things: the base feature to select edges and the
+    //spine/auxiliary spine they already selected
     if(pipe->BaseFeature.getValue())
         doc->getViewProvider(pipe->BaseFeature.getValue())->hide();
     if(pipe->Spine.getValue()) {
@@ -161,12 +160,12 @@ TaskShapeBinder::~TaskShapeBinder()
     */
 }
 
-void TaskShapeBinder::changeEvent(QEvent *)
+void TaskShapeBinder::changeEvent(QEvent*)
 {
 }
 
 void TaskShapeBinder::onButtonRefAdd(bool checked) {
-    
+
     if (checked) {
         //clearButtons(refAdd);
         //hideObject();
@@ -181,7 +180,7 @@ void TaskShapeBinder::onButtonRefRemove(bool checked) {
     if (checked) {
         //clearButtons(refRemove);
         //hideObject();
-        Gui::Selection().clearSelection();        
+        Gui::Selection().clearSelection();
         selectionMode = refRemove;
         vp->highlightReferences(true, false);
     }
@@ -192,7 +191,7 @@ void TaskShapeBinder::onBaseButton(bool checked) {
     if (checked) {
         //clearButtons(refRemove);
         //hideObject();
-        Gui::Selection().clearSelection();        
+        Gui::Selection().clearSelection();
         selectionMode = refObjAdd;
         //DressUpView->highlightReferences(true);
     }
@@ -210,19 +209,19 @@ void TaskShapeBinder::removeFromListWidget(QListWidget* widget, QString itemstr)
 }
 
 bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const {
-    
+
     if ((msg.Type == Gui::SelectionChanges::AddSelection) && (
-                (selectionMode == refAdd) || (selectionMode == refRemove) 
-                || (selectionMode == refObjAdd))) {
+        (selectionMode == refAdd) || (selectionMode == refRemove)
+        || (selectionMode == refObjAdd))) {
 
         if (strcmp(msg.pDocName, vp->getObject()->getDocument()->getName()) != 0)
             return false;
 
         // not allowed to reference ourself
-        const char* fname = vp->getObject()->getNameInDocument();        
+        const char* fname = vp->getObject()->getNameInDocument();
         if (strcmp(msg.pObjectName, fname) == 0)
             return false;
-       
+
         //change the references 
         std::string subName(msg.pSubName);
 
@@ -247,7 +246,7 @@ bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const {
             obj = selectedObj;
         }
 
-        if(selectionMode != refObjAdd) {
+        if (selectionMode != refObjAdd) {
             // ensure the new selected subref belongs to the same object
             if (strcmp(msg.pObjectName, obj->getNameInDocument()) != 0)
                 return false;
@@ -259,7 +258,8 @@ bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const {
                     refs.push_back(subName);
                 else
                     return false; // duplicate selection
-            } else {
+            }
+            else {
                 if (f != refs.end())
                     refs.erase(f);
                 else
@@ -271,7 +271,7 @@ bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const {
             refs.clear();
             obj = selectedObj;
         }
-        
+
         static_cast<PartDesign::ShapeBinder*>(vp->getObject())->Support.setValue(obj, refs);
 
         return true;
@@ -298,11 +298,11 @@ void TaskShapeBinder::exitSelectionMode() {
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgShapeBinder::TaskDlgShapeBinder(ViewProviderShapeBinder *view, bool newObj)
-   : Gui::TaskView::TaskDialog()
+TaskDlgShapeBinder::TaskDlgShapeBinder(ViewProviderShapeBinder* view, bool newObj)
+    : Gui::TaskView::TaskDialog()
 {
     assert(view);
-    parameter    = new TaskShapeBinder(view, newObj);
+    parameter = new TaskShapeBinder(view, newObj);
     vp = view;
 
     Content.push_back(parameter);
@@ -321,10 +321,10 @@ bool TaskDlgShapeBinder::accept()
     std::string name = vp->getObject()->getNameInDocument();
 
     try {
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         if (!vp->getObject()->isValid())
             throw Base::RuntimeError(vp->getObject()->getStatusString());
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
         Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {
@@ -337,11 +337,11 @@ bool TaskDlgShapeBinder::accept()
 
 bool TaskDlgShapeBinder::reject()
 {
-  // roll back the done things
-  Gui::Command::abortCommand();
-  Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-  Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-  return true;
+    // roll back the done things
+    Gui::Command::abortCommand();
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+    return true;
 }
 
 #include "moc_TaskShapeBinder.cpp"

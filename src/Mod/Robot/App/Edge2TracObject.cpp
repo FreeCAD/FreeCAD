@@ -51,7 +51,7 @@ PROPERTY_SOURCE(Robot::Edge2TracObject, Robot::TrajectoryObject)
 Edge2TracObject::Edge2TracObject()
 {
 
-    ADD_PROPERTY_TYPE( Source,      (0)  , "Edge2Trac",Prop_None,"Edges to generate the Trajectory");
+    ADD_PROPERTY_TYPE( Source,      (nullptr)  , "Edge2Trac",Prop_None,"Edges to generate the Trajectory");
     ADD_PROPERTY_TYPE( SegValue,    (0.5), "Edge2Trac",Prop_None,"Max deviation from original geometry");
     ADD_PROPERTY_TYPE( UseRotation, (0)  , "Edge2Trac",Prop_None,"use orientation of the edge");
     NbrOfEdges = 0;

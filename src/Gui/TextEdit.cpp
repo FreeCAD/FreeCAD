@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -34,20 +33,36 @@
 #include "SyntaxHighlighter.h"
 #include "Tools.h"
 
+
 using namespace Gui;
 
 /**
  *  Constructs a TextEdit which is a child of 'parent'.
  */
 TextEdit::TextEdit(QWidget* parent)
-    : QPlainTextEdit(parent), cursorPosition(0), listBox(0)
+    : QPlainTextEdit(parent), cursorPosition(0), listBox(nullptr)
 {
     //Note: Set the correct context to this shortcut as we may use several instances of this
     //class at a time
     QShortcut* shortcut = new QShortcut(this);
-    shortcut->setKey(Qt::CTRL+Qt::Key_Space);
+    shortcut->setKey(QKeySequence(QString::fromLatin1("CTRL+Space")));
     shortcut->setContext(Qt::WidgetShortcut);
     connect(shortcut, SIGNAL(activated()), this, SLOT(complete()));
+
+    QShortcut* shortcutFind = new QShortcut(this);
+    shortcutFind->setKey(QKeySequence::Find);
+    shortcutFind->setContext(Qt::WidgetShortcut);
+    connect(shortcutFind, SIGNAL(activated()), this, SIGNAL(showSearchBar()));
+
+    QShortcut* shortcutNext = new QShortcut(this);
+    shortcutNext->setKey(QKeySequence::FindNext);
+    shortcutNext->setContext(Qt::WidgetShortcut);
+    connect(shortcutNext, SIGNAL(activated()), this, SIGNAL(findNext()));
+
+    QShortcut* shortcutPrev = new QShortcut(this);
+    shortcutPrev->setKey(QKeySequence::FindPrevious);
+    shortcutPrev->setContext(Qt::WidgetShortcut);
+    connect(shortcutPrev, SIGNAL(activated()), this, SIGNAL(findPrevious()));
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -163,7 +178,8 @@ void TextEdit::complete()
 void TextEdit::createListBox()
 {
     listBox = new CompletionList(this);
-    listBox->setFrameStyle(QFrame::Box|QFrame::Raised);
+    listBox->setFrameStyle(QFrame::Box);
+    listBox->setFrameShadow(QFrame::Raised);
     listBox->setLineWidth(2);
     installEventFilter(listBox);
     viewport()->installEventFilter(listBox);
@@ -203,7 +219,7 @@ struct TextEditorP
  *  syntax highlighting for the Python language.
  */
 TextEditor::TextEditor(QWidget* parent)
-  : TextEdit(parent), WindowParameter("Editor"), highlighter(0)
+  : TextEdit(parent), WindowParameter("Editor"), highlighter(nullptr)
 {
     d = new TextEditorP();
     lineNumberArea = new LineMarker(this);
@@ -212,8 +228,6 @@ TextEditor::TextEditor(QWidget* parent)
     setFont(serifFont);
 
     ParameterGrp::handle hPrefGrp = getWindowParameter();
-    // set default to 4 characters
-    hPrefGrp->SetInt( "TabSize", 4 );
     hPrefGrp->Attach( this );
 
     // set colors and font
@@ -433,7 +447,9 @@ void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReaso
 
         QFont font(fontFamily, fontSize);
         setFont(font);
-    } else {
+        lineNumberArea->setFont(font);
+    }
+    else {
         QMap<QString, QColor>::ConstIterator it = d->colormap.find(QString::fromLatin1(sReason));
         if (it != d->colormap.end()) {
             QColor color = it.value();
@@ -459,12 +475,23 @@ void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReaso
     }
 
     // Enables/Disables Line number in the Macro Editor from Edit->Preferences->Editor menu.
-    QRect cr = contentsRect();
-    bool show = hPrefGrp->GetBool( "EnableLineNumber", true );
-    if(show) {
-        lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
-    } else {
-        lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), 0, cr.height()));
+    if (strcmp(sReason, "EnableLineNumber") == 0) {
+        QRect cr = contentsRect();
+        bool show = hPrefGrp->GetBool("EnableLineNumber", true);
+        if(show)
+            lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
+        else
+            lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), 0, cr.height()));
+    }
+
+    if (strcmp(sReason, "EnableBlockCursor") == 0 ||
+        strcmp(sReason, "FontSize") == 0 ||
+        strcmp(sReason, "Font") == 0) {
+        bool block = hPrefGrp->GetBool("EnableBlockCursor", false);
+        if (block)
+            setCursorWidth(QFontMetrics(font()).averageCharWidth());
+        else
+            setCursorWidth(1);
     }
 }
 

@@ -38,9 +38,11 @@
 #include <Base/Parameter.h>
 
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 
-#include "DrawGuiStd.h"
 #include "PreferencesGui.h"
+#include "Rez.h"
+#include "ZVALUE.h"
 #include "QGIPrimPath.h"
 #include "QGIVertex.h"
 #include "QGIView.h"
@@ -208,7 +210,7 @@ void QGEPath::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 void QGEPath::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     QGIView *view = dynamic_cast<QGIView *> (parentItem());
-    assert(view != 0);
+    assert(view != nullptr);
     Q_UNUSED(view);
 
     Q_EMIT hover(false);

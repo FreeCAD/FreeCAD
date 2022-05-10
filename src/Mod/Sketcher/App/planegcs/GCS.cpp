@@ -1521,8 +1521,8 @@ void System::initSolution(Algorithm alg)
                 clist1.push_back(*constr);
         }
 
-        subSystems.push_back(NULL);
-        subSystemsAux.push_back(NULL);
+        subSystems.push_back(nullptr);
+        subSystemsAux.push_back(nullptr);
         if (clist0.size() > 0)
             subSystems[cid] = new SubSystem(clist0, plists[cid], reductionmaps[cid]);
         if (clist1.size() > 0)
@@ -4477,7 +4477,7 @@ void System::identifyConflictingRedundantConstraints(   Algorithm alg,
             break;
 
         int maxPopularity = 0;
-        Constraint *mostPopular = NULL;
+        Constraint *mostPopular = nullptr;
         for (std::map< Constraint *, SET_I >::const_iterator it=conflictingMap.begin();
                 it != conflictingMap.end(); ++it) {
             if (static_cast<int>(it->second.size()) > maxPopularity ||

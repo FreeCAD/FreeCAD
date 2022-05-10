@@ -26,7 +26,6 @@
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
-#include <App/PropertyLinks.h>
 #include "FeatureDressUp.h"
 
 namespace PartDesign
@@ -40,6 +39,7 @@ public:
     Fillet();
 
     App::PropertyQuantityConstraint Radius;
+    App::PropertyBool UseAllEdges;
 
     /** @name methods override feature */
     //@{
@@ -54,7 +54,7 @@ public:
 
 protected:
     void Restore(Base::XMLReader &reader);
-
+    void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop);
 };
 
 } //namespace Part

@@ -15,7 +15,6 @@ include_directories(
     ${EIGEN3_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
-    ${XercesC_INCLUDE_DIRS}
 )
 link_directories(${OCC_LIBRARY_DIR})
 
@@ -129,6 +128,10 @@ unset(_flag_found CACHE)
 check_cxx_compiler_flag("-Wno-deprecated-copy" _flag_found)
 if (_flag_found)
   target_compile_options(Robot PRIVATE -Wno-deprecated-copy)
+endif()
+
+if(MINGW)
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--export-all-symbols")
 endif()
 
 SET_BIN_DIR(Robot Robot /Mod/Robot)

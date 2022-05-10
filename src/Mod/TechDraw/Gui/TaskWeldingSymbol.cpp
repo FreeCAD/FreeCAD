@@ -26,16 +26,18 @@
 #include <cmath>
 #include <BRepBndLib.hxx>
 #include <Bnd_Box.hxx>
-
+#include <QApplication>
+#include <QGraphicsScene>
+#include <QPushButton>
+#include <QStatusBar>
 #endif // #ifndef _PreComp_
 
-#include <QApplication>
-#include <QStatusBar>
-#include <QGraphicsScene>
 
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
+
+#include <App/Document.h>
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -57,11 +59,8 @@
 #include <Mod/TechDraw/App/DrawTileWeld.h>
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
-//#include <Mod/TechDraw/App/Preferences.h>
-
 #include <Mod/TechDraw/Gui/ui_TaskWeldingSymbol.h>
 
-#include "DrawGuiStd.h"
 #include "PreferencesGui.h"
 #include "QGVPage.h"
 #include "QGIView.h"
@@ -74,6 +73,7 @@
 #include "Rez.h"
 
 #include "TaskWeldingSymbol.h"
+#include "ui_TaskWeldingSymbol.h"
 
 using namespace Gui;
 using namespace TechDraw;
@@ -92,12 +92,8 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawLeaderLine* leader) :
     m_otherDirty(false)
 {
 //TODO: why does DWS need DLL as parent?
-//    Base::Console().Message("TWS::TWS() - create mode\n");
-    if  (m_leadFeat == nullptr)  {
-        //should be caught in CMD caller
-        Base::Console().Error("TaskWeldingSymbol - bad parameters. Can not proceed.\n");
-        return;
-    }
+
+    //existence of leader is guaranteed by CmdTechDrawWeldSymbol (CommandAnnotate.cpp)
     ui->setupUi(this);
 
     setUiPrimary();
@@ -126,12 +122,8 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weld) :
     m_createMode(false),
     m_otherDirty(false)
 {
-//    Base::Console().Message("TWS::TWS() - edit mode\n");
-    if  (m_weldFeat == nullptr)  {
-        //should be caught in CMD caller
-        Base::Console().Error("TaskWeldingSymbol - bad parameters.  Can not proceed.\n");
-        return;
-    }
+    //existence of weld is guaranteed by CmdTechDrawWeldSymbol (CommandAnnotate.cpp)
+    //                                or ViewProviderWeld.setEdit
 
     App::DocumentObject* obj = m_weldFeat->Leader.getValue();
     if ( (obj != nullptr) &&
@@ -692,7 +684,7 @@ TaskDlgWeldingSymbol::TaskDlgWeldingSymbol(TechDraw::DrawLeaderLine* leader)
 {
     widget  = new TaskWeldingSymbol(leader);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_WeldSymbol"),
-                                             widget->windowTitle(), true, 0);
+                                             widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }
@@ -702,7 +694,7 @@ TaskDlgWeldingSymbol::TaskDlgWeldingSymbol(TechDraw::DrawWeldSymbol* weld)
 {
     widget  = new TaskWeldingSymbol(weld);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_WeldSymbol"),
-                                             widget->windowTitle(), true, 0);
+                                             widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

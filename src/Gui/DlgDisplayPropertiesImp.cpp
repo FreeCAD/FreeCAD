@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <algorithm>
@@ -29,25 +28,18 @@
 # include <QDockWidget>
 #endif
 
+#include <Base/Console.h>
+
 #include "DlgDisplayPropertiesImp.h"
 #include "ui_DlgDisplayProperties.h"
+#include "Application.h"
+#include "Document.h"
 #include "DlgMaterialPropertiesImp.h"
 #include "DockWindowManager.h"
-#include "View3DInventorViewer.h"
-#include "View3DInventor.h"
-#include "Command.h"
-#include "Application.h"
-#include "Widgets.h"
 #include "Selection.h"
-#include "Document.h"
 #include "ViewProvider.h"
 #include "WaitCursor.h"
-#include "SpinBox.h"
 
-#include <Base/Console.h>
-#include <App/Application.h>
-#include <App/DocumentObject.h>
-#include <App/Material.h>
 
 using namespace Gui::Dialog;
 using namespace std;
@@ -260,7 +252,7 @@ void DlgDisplayPropertiesImp::on_buttonUserDefinedMaterial_clicked()
 void DlgDisplayPropertiesImp::on_buttonColorPlot_clicked()
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
-    static QPointer<DlgMaterialPropertiesImp> dlg = 0;
+    static QPointer<DlgMaterialPropertiesImp> dlg = nullptr;
     if (!dlg)
         dlg = new DlgMaterialPropertiesImp("TextureMaterial", this);
     dlg->setModal(false);
@@ -407,7 +399,8 @@ void DlgDisplayPropertiesImp::setDisplayModes(const std::vector<Gui::ViewProvide
         App::Property* prop = (*it)->getPropertyByName("DisplayMode");
         if (prop && prop->getTypeId() == App::PropertyEnumeration::getClassTypeId()) {
             App::PropertyEnumeration* display = static_cast<App::PropertyEnumeration*>(prop);
-            if (!display->getEnums()) return;
+            if (!display->getEnums())
+                return;
             const std::vector<std::string>& value = display->getEnumVector();
             if (it == views.begin()) {
                 for (std::vector<std::string>::const_iterator jt = value.begin(); jt != value.end(); ++jt)
@@ -646,7 +639,7 @@ TaskDisplayProperties::TaskDisplayProperties()
     this->setButtonPosition(TaskDisplayProperties::South);
     widget = new DlgDisplayPropertiesImp(false);
     widget->showDefaultButtons(false);
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(),true, 0);
+    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(),true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 }

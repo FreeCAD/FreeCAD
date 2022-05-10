@@ -23,20 +23,12 @@
 #ifndef TECHDRAWGUI_TASKACTIVEVIEW_H
 #define TECHDRAWGUI_TASKACTIVEVIEW_H
 
-#include <QPushButton>
-
-#include <App/DocumentObject.h>
-#include <Base/Vector3D.h>
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskActiveView.h>
 
+class QPushButton;
 class Ui_TaskActiveView;
-
-namespace App {
-class DocumentObject;
-}
 
 namespace TechDraw
 {

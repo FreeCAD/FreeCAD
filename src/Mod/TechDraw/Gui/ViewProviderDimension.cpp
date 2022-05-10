@@ -26,22 +26,14 @@
 
 #ifndef _PreComp_
 # include <QAction>
+# include <QColor>
 # include <QMenu>
 #endif
 
-#include <QColor>
-
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
 #include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
 #include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/Material.h>
 #include <Gui/ActionFunction.h>
-#include <Gui/Command.h>
 #include <Gui/Control.h>
 
 #include <Mod/TechDraw/App/LineGroup.h>
@@ -56,10 +48,10 @@ using namespace TechDrawGui;
 using namespace TechDraw;
 
 const char *ViewProviderDimension::StandardAndStyleEnums[]=
-    { "ISO Oriented", "ISO Referencing", "ASME Inlined", "ASME Referencing", NULL };
+    { "ISO Oriented", "ISO Referencing", "ASME Inlined", "ASME Referencing", nullptr };
 
 const char *ViewProviderDimension::RenderingExtentEnums[]=
-    { "None", "Minimal", "Confined", "Reduced", "Normal", "Expanded", NULL };
+    { "None", "Minimal", "Confined", "Reduced", "Normal", "Expanded", nullptr };
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderDimension, TechDrawGui::ViewProviderDrawingView)
 
@@ -102,7 +94,7 @@ void ViewProviderDimension::attach(App::DocumentObject *pcFeat)
 
     sPixmap = "TechDraw_Dimension";
     if (getViewObject()->isDerivedFrom(TechDraw::LandmarkDimension::getClassTypeId())) {
-        sPixmap = "techdraw-landmarkdistance";
+        sPixmap = "TechDraw_LandmarkDimension";
     }
 }
 
@@ -133,17 +125,6 @@ void ViewProviderDimension::setupContextMenu(QMenu* menu, QObject* receiver, con
     func->trigger(act, boost::bind(&ViewProviderDimension::startDefaultEditMode, this));
 
     ViewProviderDrawingView::setupContextMenu(menu, receiver, member);
-}
-
-void ViewProviderDimension::startDefaultEditMode()
-{
-    QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
-    Gui::Command::openCommand(text.toUtf8());
-
-    Gui::Document* document = this->getDocument();
-    if (document) {
-        document->setEdit(this, ViewProvider::Default);
-    }
 }
 
 bool ViewProviderDimension::setEdit(int ModNum)
@@ -270,6 +251,9 @@ void ViewProviderDimension::handleChangedPropertyType(Base::XMLReader &reader, c
         // restore the PropertyFloat to be able to set its value
         LineWidthProperty.Restore(reader);
         LineWidth.setValue(LineWidthProperty.getValue());
+    }
+    else {
+        ViewProviderDrawingView::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 

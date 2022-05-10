@@ -3,16 +3,11 @@
  *   LGPL                                                                  *
  ***************************************************************************/
 
-
 #ifndef __PRECOMPILED__
 
 #define __PRECOMPILED__
 
-
-
 #include <FCConfig.h>
-
-
 
 // Importing of App classes
 #ifdef FC_OS_WIN32
@@ -25,8 +20,6 @@
 
 #ifdef _PreComp_
 
-
-
 /// here get the warnings of to long specifieres disabled (needed for VC6)
 
 #ifdef _MSC_VER
@@ -36,15 +29,14 @@
 # pragma warning( disable : 4786 )  // specifier longer then 255 chars
 #endif
 
-
 // standard
 
-#include <stdio.h>
-#include <assert.h>
-
+#include <cstdio>
+#include <cassert>
 
 // STL
 #include <algorithm>
+#include <bitset>
 #include <iostream>
 #include <list>
 #include <map>
@@ -53,17 +45,12 @@
 #include <sstream>
 #include <stack>
 #include <string>
+#include <strstream>
 #include <vector>
-#include <bitset>
-// Xerces
-#include <xercesc/util/XercesDefs.hpp>
 
-
-
+// sys
+#include <sys/types.h>
 
 #endif //_PreComp_
 
 #endif
-
-
-

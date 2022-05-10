@@ -28,6 +28,9 @@
 #include <Mod/Mesh/App/WildMagic4/Wm4QuadricSurface.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4Eigen.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4ImplicitSurface.h>
+#ifndef MESH_GLOBAL_H
+#include <Mod/Mesh/MeshGlobal.h>
+#endif
 #include <algorithm>
 #include <list>
 #include <set>
@@ -144,7 +147,7 @@ public:
      * Determines the number of the current added points.
      * @return Number of points
      */
-    unsigned long CountPoints() const;
+    std::size_t CountPoints() const;
     /**
      * Deletes the inserted points and frees any allocated resources.
      */
@@ -277,7 +280,7 @@ public:
      * @param ulIndex Number of coefficient (0..9)
      * @return double value of coefficient
      */
-    double GetCoeff(unsigned long ulIndex) const;
+    double GetCoeff(std::size_t ulIndex) const;
     /**
      * Get the quadric coefficients as reference to the
      * internal array
@@ -511,7 +514,7 @@ public:
             dKoeff[ ct ] = pKoef[ ct ];
     }
     /**
-     * Destruktor. Deletes the ImpicitSurface instance
+     * Destructor. Deletes the ImpicitSurface instance
      * of the WildMagic library
      */
     ~FunctionContainer(){ delete pImplSurf; }

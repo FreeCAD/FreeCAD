@@ -40,56 +40,10 @@
         <property name="spacing">
          <number>6</number>
         </property>
-        <item row="1" column="2">
-         <widget class="Gui::QuantitySpinBox" name="tubeInnerRadius">
-          <property name="keyboardTracking">
-           <bool>false</bool>
-          </property>
-          <property name="unit" stdset="0">
-           <string notr="true">mm</string>
-          </property>
-          <property name="minimum">
-           <double>0.000000000000000</double>
-          </property>
-          <property name="value">
-           <double>2.000000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="2">
-         <widget class="Gui::QuantitySpinBox" name="tubeHeight">
-          <property name="keyboardTracking">
-           <bool>false</bool>
-          </property>
-          <property name="unit" stdset="0">
-           <string notr="true">mm</string>
-          </property>
-          <property name="minimum">
-           <double>0.000000000000000</double>
-          </property>
-          <property name="value">
-           <double>10.000000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="textLabel3">
-          <property name="text">
-           <string>Height:</string>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="0">
          <widget class="QLabel" name="textLabel1">
           <property name="text">
            <string>Outer radius</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="textLabel2">
-          <property name="text">
-           <string>Inner radius</string>
           </property>
          </widget>
         </item>
@@ -109,7 +63,53 @@
           </property>
          </widget>
         </item>
-       </layout>
+       <item row="1" column="0">
+         <widget class="QLabel" name="textLabel2">
+          <property name="text">
+           <string>Inner radius</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="Gui::QuantitySpinBox" name="tubeInnerRadius">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">mm</string>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="value">
+           <double>2.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="textLabel3">
+          <property name="text">
+           <string>Height:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="Gui::QuantitySpinBox" name="tubeHeight">
+          <property name="keyboardTracking">
+           <bool>false</bool>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">mm</string>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="value">
+           <double>10.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        </layout>
       </item>
      </layout>
     </widget>

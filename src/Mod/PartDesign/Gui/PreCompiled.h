@@ -26,23 +26,6 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define PartDesignExport     __declspec(dllimport)
-# define PartDesignGuiExport  __declspec(dllexport)
-# define PartExport           __declspec(dllimport)
-# define PartGuiExport        __declspec(dllimport)
-# define SketcherExport       __declspec(dllimport)
-# define SketcherGuiExport    __declspec(dllimport)
-#else // for Linux
-# define PartDesignExport
-# define PartDesignGuiExport
-# define PartExport
-# define PartGuiExport
-# define SketcherExport
-# define SketcherGuiExport
-#endif
-
 
 #ifdef _MSC_VER
 #   pragma warning(disable : 4005)
@@ -50,16 +33,12 @@
 
 #ifdef _PreComp_
 
-// Python
-#include <Python.h>
-
 // standard
-#include <iostream>
-#include <assert.h>
-#include <cmath>
-#include <sstream>
-
 #include <algorithm>
+#include <cassert>
+#include <cmath>
+#include <iostream>
+#include <sstream>
 
 // Boost
 #include <boost/bind/bind.hpp>
@@ -96,8 +75,8 @@
 
 
 // Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
+#ifndef __QtAll__
+# include <Gui/QtAll.h>
 #endif
 
 #include <QMessageBox>

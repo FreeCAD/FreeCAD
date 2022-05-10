@@ -32,7 +32,7 @@
 namespace Fem
 {
 
-class AppFemExport ConstraintTemperature : public Fem::Constraint
+class FemExport ConstraintTemperature : public Fem::Constraint
 {
     PROPERTY_HEADER(Fem::ConstraintTemperature);
 

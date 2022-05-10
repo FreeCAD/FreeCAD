@@ -20,13 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_VIEW3DVIEWERPY_H
 #define GUI_VIEW3DVIEWERPY_H
 
-#include <Base/PyObjectBase.h>
 #include <CXX/Extensions.hxx>
 #include <list>
+
 
 namespace Gui {
 
@@ -61,7 +60,7 @@ public:
     Py::Object seekToPoint(const Py::Tuple&);
     Py::Object setFocalDistance(const Py::Tuple& args);
     Py::Object getFocalDistance(const Py::Tuple& args);
-    Py::Object getPoint(const Py::Tuple& args);
+    Py::Object getPointOnFocalPlane(const Py::Tuple& args);
     Py::Object getPickRadius(const Py::Tuple& args);
     Py::Object setPickRadius(const Py::Tuple& args);
 

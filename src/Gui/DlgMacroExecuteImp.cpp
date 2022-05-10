@@ -20,33 +20,31 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QInputDialog>
 # include <QLabel>
-# include <QHeaderView>
 # include <QMessageBox>
 # include <QComboBox>
+# include <QSignalBlocker>
 #endif
+
+#include <App/Document.h>
+#include <Base/Interpreter.h>
 
 #include "DlgMacroExecuteImp.h"
 #include "ui_DlgMacroExecute.h"
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Command.h"
-#include "MainWindow.h"
-#include "FileDialog.h"
-#include "Macro.h"
-#include "Document.h"
-#include "EditorView.h"
-#include "PythonEditor.h"
 #include "DlgCustomizeImp.h"
 #include "DlgToolbarsImp.h"
+#include "Document.h"
+#include "EditorView.h"
+#include "Macro.h"
+#include "MainWindow.h"
+#include "PythonEditor.h"
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Base/Interpreter.h>
 
 using namespace Gui;
 using namespace Gui::Dialog;
@@ -84,10 +82,13 @@ DlgMacroExecuteImp::DlgMacroExecuteImp( QWidget* parent, Qt::WindowFlags fl )
 {
     ui->setupUi(this);
     // retrieve the macro path from parameter or use the user data as default
-    std::string path = getWindowParameter()->GetASCII("MacroPath",
-        App::Application::getUserMacroDir().c_str());
-    this->macroPath = QString::fromUtf8(path.c_str());
-    ui->fileChooser->setFileName(this->macroPath);
+    {
+        QSignalBlocker blocker(ui->fileChooser);
+        std::string path = getWindowParameter()->GetASCII("MacroPath",
+            App::Application::getUserMacroDir().c_str());
+        this->macroPath = QString::fromUtf8(path.c_str());
+        ui->fileChooser->setFileName(this->macroPath);
+    }
 
     // Fill the List box
     QStringList labels; labels << tr("Macros");
@@ -121,7 +122,7 @@ void DlgMacroExecuteImp::fillUpList(void)
         item->setText(0, dir[i]);
     }
 
-    QString dirstr = QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro");
+    QString dirstr = QString::fromStdString(App::Application::getHomePath()) + QString::fromLatin1("Macro");
     dir = QDir(dirstr, QLatin1String("*.FCMacro *.py"));
 
     ui->systemMacroListBox->clear();
@@ -268,7 +269,7 @@ void DlgMacroExecuteImp::accept()
         dir =QDir(this->macroPath);
     }
     else {
-        QString dirstr = QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro");
+        QString dirstr = QString::fromStdString(App::Application::getHomePath()) + QString::fromLatin1("Macro");
         dir = QDir(dirstr);
     }
 
@@ -309,7 +310,7 @@ void DlgMacroExecuteImp::on_fileChooser_fileNameChanged(const QString& fn)
 void DlgMacroExecuteImp::on_editButton_clicked()
 {
     QDir dir;
-    QTreeWidgetItem* item = 0;
+    QTreeWidgetItem* item = nullptr;
 
     int index = ui->tabMacroWidget->currentIndex();
     if (index == 0) { //user-specific
@@ -319,7 +320,7 @@ void DlgMacroExecuteImp::on_editButton_clicked()
     else {
         //index == 1 system-wide
         item = ui->systemMacroListBox->currentItem();
-        dir.setPath(QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro"));
+        dir.setPath(QString::fromStdString(App::Application::getHomePath()) + QString::fromLatin1("Macro"));
     }
 
     if (!item)
@@ -350,8 +351,16 @@ void DlgMacroExecuteImp::on_editButton_clicked()
 void DlgMacroExecuteImp::on_createButton_clicked()
 {
     // query file name
+    bool replaceSpaces = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->GetBool("ReplaceSpaces", true);
+    App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->SetBool("ReplaceSpaces", replaceSpaces); //create parameter
+
     QString fn = QInputDialog::getText(this, tr("Macro file"), tr("Enter a file name, please:"),
         QLineEdit::Normal, QString(), nullptr, Qt::MSWindowsFixedSizeDialogHint);
+
+    if(replaceSpaces){
+        fn = fn.replace(QString::fromStdString(" "),QString::fromStdString("_"));
+    }
+
     if (!fn.isEmpty())
     {
         QString suffix = QFileInfo(fn).suffix().toLower();
@@ -524,7 +533,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
             Base::Console().Warning("Toolbar walkthrough: Unable to find actionMacros combo box\n");
         } else {
             int macroIndex = macroListBox->findText(fn); //fn is the macro filename
-            macroListBox->setCurrentIndex(macroIndex); //select it for the user so he doesn't have to
+            macroListBox->setCurrentIndex(macroIndex); //select it for the user so they don't have to
         }
 
         QLineEdit* menuText = setupCustomMacrosPage->findChild<QLineEdit*>(QString::fromLatin1("actionMenu"));
@@ -568,7 +577,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
         moveActionRightButton->setStyleSheet(QString::fromLatin1("background-color: red"));
     }
     /** tailor instructions depending on whether user already has custom toolbar created
-     * if not he needs to click New button to create one first
+     * if not, they need to click New button to create one first
     **/
 
     QString instructions2 = tr("Walkthrough instructions: Click right arrow button (->), then Close.");
@@ -663,7 +672,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
 void DlgMacroExecuteImp::on_renameButton_clicked()
 {
     QDir dir;
-    QTreeWidgetItem* item = 0;
+    QTreeWidgetItem* item = nullptr;
 
     int index = ui->tabMacroWidget->currentIndex();
     if (index == 0) { //user-specific
@@ -674,6 +683,9 @@ void DlgMacroExecuteImp::on_renameButton_clicked()
     if (!item)
         return;
 
+    bool replaceSpaces = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->GetBool("ReplaceSpaces", true);
+    App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->SetBool("ReplaceSpaces", replaceSpaces); //create parameter
+
     QString oldName = item->text(0);
     QFileInfo oldfi(dir, oldName);
     QFile oldfile(oldfi.absoluteFilePath());
@@ -681,6 +693,11 @@ void DlgMacroExecuteImp::on_renameButton_clicked()
     // query new name
     QString fn = QInputDialog::getText(this, tr("Renaming Macro File"),
         tr("Enter new name:"), QLineEdit::Normal, oldName, nullptr, Qt::MSWindowsFixedSizeDialogHint);
+
+    if(replaceSpaces){
+        fn = fn.replace(QString::fromStdString(" "),QString::fromStdString("_"));
+    }
+
     if (!fn.isEmpty() && fn != oldName) {
         QString suffix = QFileInfo(fn).suffix().toLower();
         if (suffix != QLatin1String("fcmacro") && suffix != QLatin1String("py"))
@@ -712,7 +729,25 @@ void DlgMacroExecuteImp::on_renameButton_clicked()
 void DlgMacroExecuteImp::on_duplicateButton_clicked()
 {
     QDir dir;
-    QTreeWidgetItem* item = 0;
+    QTreeWidgetItem* item = nullptr;
+
+    //When duplicating a macro we can either begin trying to find a unique name with @001 or begin with the current @NNN if applicable
+
+    bool from001 = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->GetBool("DuplicateFrom001", false);
+    App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->SetBool("DuplicateFrom001", from001); //create parameter
+
+    //A user may wish to add a note to end of the filename when duplicating
+    //example: mymacro@005.fix_bug_in_dialog.FCMacro
+    //and then when duplicating to have the extra note removed so the suggested new name is:
+    //mymacro@006.FCMacro instead of mymacro@006.fix_bug_in_dialog.FCMacro since the new duplicate will be given a new note
+
+    bool ignoreExtra = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->GetBool("DuplicateIgnoreExtraNote", false);
+    App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->SetBool("DuplicateIgnoreExtraNote", ignoreExtra); //create parameter
+
+    //when creating a note it will be convenient to convert spaces to underscores if the user desires this behavior
+
+    bool replaceSpaces = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->GetBool("ReplaceSpaces", true);
+    App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")->SetBool("ReplaceSpaces", replaceSpaces); //create parameter
 
     int index = ui->tabMacroWidget->currentIndex();
     if (index == 0) { //user-specific
@@ -728,15 +763,19 @@ void DlgMacroExecuteImp::on_duplicateButton_clicked()
     QFileInfo oldfi(dir, oldName);
     QFile oldfile(oldfi.absoluteFilePath());
     QString completeSuffix = oldfi.completeSuffix(); //everything after the first "."
+    QString extraNote = completeSuffix.left(completeSuffix.size()-oldfi.suffix().size());
     QString baseName = oldfi.baseName(); //everything before first "."
     QString neutralSymbol = QString::fromStdString("@");
     QString last3 = baseName.right(3);
     bool ok = true; //was conversion to int successful?
     int nLast3 = last3.toInt(&ok);
-    last3 = QString::fromStdString("001"); //increment beginning with 001 no matter what
+    last3 = QString::fromStdString("001"); //increment beginning with 001 unless from001 = false
     if (ok ){
         //last3 were all digits, so we strip them from the base name
         if (baseName.size()>3){ //if <= 3 leave be (e.g. 2.py becomes 2@001.py)
+            if(!from001){
+                last3 = baseName.right(3); //use these instead of 001
+            }
             baseName = baseName.left(baseName.size()-3); //strip digits
             if (baseName.endsWith(neutralSymbol)){
                 baseName = baseName.left(baseName.size()-1); //trim the "@", will be added back later
@@ -745,13 +784,28 @@ void DlgMacroExecuteImp::on_duplicateButton_clicked()
     }
     //at this point baseName = the base name without any digits, e.g. "MyMacro"
     //neutralSymbol = "@"
-    //last3 is a string representing 3 digits, always "001" at this time
+    //last3 is a string representing 3 digits, always "001"
+    //unless from001 = false, in which case we begin with previous numbers
     //completeSuffix = FCMacro or py or FCMacro.py or else suffix will become FCMacro below
+    //if ignoreExtra any extra notes added between @NN. and .FCMacro will be ignored
+    //when suggesting a new filename
+
+    if(ignoreExtra && !extraNote.isEmpty()){
+        nLast3++;
+        last3 = QString::number(nLast3);
+        while (last3.size()<3){
+            last3.prepend(QString::fromStdString("0")); //pad 0's if needed
+        }
+    }
+
 
     QString oldNameDigitized = baseName+neutralSymbol+last3+QString::fromStdString(".")+completeSuffix;
     QFileInfo fi(dir, oldNameDigitized);
+
+
     // increment until we find available name with smallest digits
     // test from "001" through "999", then give up and let user enter name of choice
+
     while (fi.exists()) {
         nLast3 = last3.toInt()+1;
         if (nLast3 >=1000){ //avoid infinite loop, 999 files will have to be enough
@@ -765,10 +819,17 @@ void DlgMacroExecuteImp::on_duplicateButton_clicked()
         fi = QFileInfo(dir,oldNameDigitized);
     }
 
+    if(ignoreExtra && !extraNote.isEmpty()){
+        oldNameDigitized = oldNameDigitized.remove(extraNote);
+    }
+
     // give user a chance to pick a different name from digitized name suggested
     QString fn = QInputDialog::getText(this, tr("Duplicate Macro"),
         tr("Enter new name:"), QLineEdit::Normal, oldNameDigitized, 
         nullptr, Qt::MSWindowsFixedSizeDialogHint);
+    if (replaceSpaces){
+        fn = fn.replace(QString::fromStdString(" "),QString::fromStdString("_"));
+    }
     if (!fn.isEmpty() && fn != oldName) {
         QString suffix = QFileInfo(fn).suffix().toLower();
         if (suffix != QLatin1String("fcmacro") && suffix != QLatin1String("py")){

@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include <sstream>
@@ -28,13 +27,13 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Base/Interpreter.h>
+#include <Gui/SelectionObjectPy.h>
 
 #include "SelectionObject.h"
 #include "Selection.h"
 #include "Application.h"
 #include "Command.h"
-#include <Gui/SelectionObjectPy.h>
+
 
 using namespace Gui;
 
@@ -74,7 +73,7 @@ const App::DocumentObject * SelectionObject::getObject(void) const
         if (doc && !FeatName.empty())
             return doc->getObject(FeatName.c_str());
     }
-    return 0;
+    return nullptr;
 }
 
 App::DocumentObject * SelectionObject::getObject(void)
@@ -84,7 +83,7 @@ App::DocumentObject * SelectionObject::getObject(void)
         if (doc && !FeatName.empty())
             return doc->getObject(FeatName.c_str());
     }
-    return 0;
+    return nullptr;
 }
 
 bool SelectionObject::isObjectTypeOf(const Base::Type& typeId) const

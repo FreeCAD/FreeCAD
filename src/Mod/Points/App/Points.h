@@ -32,8 +32,10 @@
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 
+#include <App/ComplexGeoData.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyGeo.h>
+#include <Mod/Points/PointsGlobal.h>
 
 namespace Points
 {
@@ -51,7 +53,7 @@ public:
     typedef std::vector<value_type>::difference_type difference_type;
     typedef std::vector<value_type>::size_type size_type;
 
-    PointKernel(void)
+    PointKernel()
     {
     }
     PointKernel(size_type size)
@@ -71,14 +73,14 @@ public:
      *  List of different subelement types
      *  its NOT a list of the subelements itself
      */
-    virtual std::vector<const char*> getElementTypes(void) const;
+    virtual std::vector<const char*> getElementTypes() const;
     virtual unsigned long countSubElements(const char* Type) const;
     /// get the subelement by type and number
     virtual Data::Segment* getSubElement(const char* Type, unsigned long) const;
     //@}
 
     inline void setTransform(const Base::Matrix4D& rclTrf){_Mtrx = rclTrf;}
-    inline Base::Matrix4D getTransform(void) const{return _Mtrx;}
+    inline Base::Matrix4D getTransform() const{return _Mtrx;}
     std::vector<value_type>& getBasicPoints()
     { return this->_Points; }
     const std::vector<value_type>& getBasicPoints() const
@@ -92,12 +94,12 @@ public:
         std::vector<Base::Vector3d> &Normals,
         float Accuracy, uint16_t flags=0) const;
     virtual void transformGeometry(const Base::Matrix4D &rclMat);
-    virtual Base::BoundBox3d getBoundBox(void)const;
+    virtual Base::BoundBox3d getBoundBox()const;
 
     /** @name I/O */
     //@{
     // Implemented from Persistence
-    unsigned int getMemSize (void) const;
+    unsigned int getMemSize () const;
     void Save (Base::Writer &writer) const;
     void SaveDocFile (Base::Writer &writer) const;
     void Restore(Base::XMLReader &reader);
@@ -113,9 +115,9 @@ private:
     std::vector<value_type> _Points;
 
 public:
-    /// number of points stored 
-    size_type size(void) const {return this->_Points.size();}
-    size_type countValid(void) const;
+    /// number of points stored
+    size_type size() const {return this->_Points.size();}
+    size_type countValid() const;
     std::vector<value_type> getValidPoints() const;
     void resize(size_type n){_Points.resize(n);}
     void reserve(size_type n){_Points.reserve(n);}
@@ -123,7 +125,7 @@ public:
         _Points.erase(_Points.begin()+first,_Points.begin()+last);
     }
 
-    void clear(void){_Points.clear();}
+    void clear(){_Points.clear();}
 
 
     /// get the points
@@ -194,4 +196,4 @@ public:
 } // namespace Points
 
 
-#endif // POINTS_POINTPROPERTIES_H 
+#endif // POINTS_POINTPROPERTIES_H

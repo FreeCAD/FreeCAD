@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
+#include <Gui/Application.h>
 
 #include "DlgStartPreferencesImp.h"
 #include "ui_DlgStartPreferences.h"
-#include <Gui/PrefWidgets.h>
-#include <Base/Console.h>
-#include <Gui/Application.h>
+
 
 using namespace StartGui;
 

@@ -86,13 +86,13 @@
       <source>Base</source>
       <translation>Basis</translation>
     </message>
+    <message>
+      <source>Enum</source>
+      <translation type="unfinished">Enum</translation>
+    </message>
   </context>
   <context>
     <name>CmdTestConsoleOutput</name>
-    <message>
-      <source>Standard-Test</source>
-      <translation>Standaard-Test</translation>
-    </message>
     <message>
       <source>Test console output</source>
       <translation>Console uitvoer van testen</translation>
@@ -101,20 +101,12 @@
   <context>
     <name>CmdViewMeasureClearAll</name>
     <message>
-      <source>Measure</source>
-      <translation>Meten</translation>
-    </message>
-    <message>
       <source>Clear measurement</source>
       <translation>Metingen uitwissen</translation>
     </message>
   </context>
   <context>
     <name>CmdViewMeasureToggleAll</name>
-    <message>
-      <source>Measure</source>
-      <translation>Meten</translation>
-    </message>
     <message>
       <source>Toggle measurement</source>
       <translation>Metingen schakelen</translation>
@@ -193,6 +185,73 @@
     <message>
       <source>Measure distance</source>
       <translation>Afstand meten</translation>
+    </message>
+    <message>
+      <source>Toggle array elements</source>
+      <translation type="unfinished">Toggle array elements</translation>
+    </message>
+  </context>
+  <context>
+    <name>CommandGroup</name>
+    <message>
+      <source>File</source>
+      <translation>Bestand</translation>
+    </message>
+    <message>
+      <source>Edit</source>
+      <translation>Bewerken</translation>
+    </message>
+    <message>
+      <source>Help</source>
+      <translation>Help</translation>
+    </message>
+    <message>
+      <source>Link</source>
+      <translation>Link</translation>
+    </message>
+    <message>
+      <source>Tools</source>
+      <translation>Gereedschap</translation>
+    </message>
+    <message>
+      <source>View</source>
+      <translation>Aanzicht</translation>
+    </message>
+    <message>
+      <source>Window</source>
+      <translation>Venster</translation>
+    </message>
+    <message>
+      <source>Standard</source>
+      <translation>Standaard</translation>
+    </message>
+    <message>
+      <source>Macros</source>
+      <translation>Macro's</translation>
+    </message>
+    <message>
+      <source>Macro</source>
+      <translation>Macro</translation>
+    </message>
+    <message>
+      <source>Structure</source>
+      <translation>Structuur</translation>
+    </message>
+    <message>
+      <source>Standard-Test</source>
+      <translation>Standaard-Test</translation>
+    </message>
+    <message>
+      <source>Standard-View</source>
+      <translation>Standaardweergave</translation>
+    </message>
+    <message>
+      <source>TreeView</source>
+      <translation>StructuurWeergave</translation>
+    </message>
+    <message>
+      <source>Measure</source>
+      <translation>Meten</translation>
     </message>
   </context>
   <context>
@@ -277,6 +336,25 @@
     </message>
   </context>
   <context>
+    <name>EditMode</name>
+    <message>
+      <source>Default</source>
+      <translation>Standaard</translation>
+    </message>
+    <message>
+      <source>Transform</source>
+      <translation>Transformeren</translation>
+    </message>
+    <message>
+      <source>Cutting</source>
+      <translation>Snijden</translation>
+    </message>
+    <message>
+      <source>Color</source>
+      <translation>Kleur</translation>
+    </message>
+  </context>
+  <context>
     <name>ExpressionLabel</name>
     <message>
       <source>Enter an expression...</source>
@@ -292,6 +370,10 @@
     <message>
       <source>none</source>
       <translation>geen</translation>
+    </message>
+    <message>
+      <source>Press a keyboard shortcut</source>
+      <translation type="unfinished">Press a keyboard shortcut</translation>
     </message>
   </context>
   <context>
@@ -391,13 +473,6 @@
       <source>Scroll middle mouse button or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
       <translation>Scroll of middelste muisknop of laar dezen onbediend terwijl linker of rechter muisknop wordt bediend en beweeg de muis omhoog of omlaag</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui::Command</name>
-    <message>
-      <source>Standard</source>
-      <translation>Standaard</translation>
     </message>
   </context>
   <context>
@@ -505,7 +580,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
       <source>FreeCAD would not be possible without the contributions of</source>
-      <translation type="unfinished">FreeCAD would not be possible without the contributions of</translation>
+      <translation>FreeCAD zou niet mogelijk zijn met het werk van</translation>
     </message>
     <message>
       <source>Individuals</source>
@@ -516,6 +591,25 @@ while doing a left or right click and move the mouse up or down</source>
       <source>Organizations</source>
       <extracomment>Header for the list of companies/organizations in the Credits list.</extracomment>
       <translation>Organisaties</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::ApplicationCache</name>
+    <message>
+      <source>Cache directory</source>
+      <translation type="unfinished">Cache directory</translation>
+    </message>
+    <message>
+      <source>The cache directory %1 exceeds the size of %2.</source>
+      <translation type="unfinished">The cache directory %1 exceeds the size of %2.</translation>
+    </message>
+    <message>
+      <source>Do you want to clear it now?</source>
+      <translation type="unfinished">Do you want to clear it now?</translation>
+    </message>
+    <message>
+      <source>Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</source>
+      <translation type="unfinished">Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</translation>
     </message>
   </context>
   <context>
@@ -792,6 +886,32 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgCreateNewPreferencePack</name>
+    <message>
+      <source>Create New Preference Pack</source>
+      <translation type="unfinished">Create New Preference Pack</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>Naam</translation>
+    </message>
+    <message>
+      <source>Property group templates</source>
+      <translation type="unfinished">Property group templates</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgCreateNewPreferencePackImp</name>
+    <message>
+      <source>Pack already exists</source>
+      <translation type="unfinished">Pack already exists</translation>
+    </message>
+    <message>
+      <source>A preference pack with that name already exists. Do you want to overwrite it?</source>
+      <translation type="unfinished">A preference pack with that name already exists. Do you want to overwrite it?</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgCustomActions</name>
     <message>
       <source>Macros</source>
@@ -855,14 +975,6 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
     <message>
       <source>Macros</source>
       <translation>Macro's</translation>
-    </message>
-    <message>
-      <source>No macro</source>
-      <translation>Geen macro</translation>
-    </message>
-    <message>
-      <source>No macros found.</source>
-      <translation>Geen macro's gevonden.</translation>
     </message>
     <message>
       <source>Macro not found</source>
@@ -1422,7 +1534,15 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
     </message>
     <message>
       <source>Code lines will be numbered</source>
-      <translation type="unfinished">Code lines will be numbered</translation>
+      <translation>Code-regels worden genummerd</translation>
+    </message>
+    <message>
+      <source>The cursor shape will be a block</source>
+      <translation type="unfinished">The cursor shape will be a block</translation>
+    </message>
+    <message>
+      <source>Enable block cursor</source>
+      <translation type="unfinished">Enable block cursor</translation>
     </message>
   </context>
   <context>
@@ -1470,14 +1590,6 @@ Als dit niet is aangevinkt, dan moet de eigenschap uniek worden benoemd en is ka
     <message>
       <source>Style sheet:</source>
       <translation>Stijlblad:</translation>
-    </message>
-    <message>
-      <source>Python console</source>
-      <translation>Python Console</translation>
-    </message>
-    <message>
-      <source>Enable word wrap</source>
-      <translation>Tekstterugloop inschakelen</translation>
     </message>
     <message>
       <source>Language of the application's user interface</source>
@@ -1534,10 +1646,64 @@ after FreeCAD launches</source>
 nadat FreeCAD opgestart is</translation>
     </message>
     <message>
-      <source>Words will be wrapped when they exceed available
-horizontal space in Python console</source>
-      <translation>Woorden worden verborgen wanneer ze de beschikbare
-horizontale ruimte in de Python-console overschrijden</translation>
+      <source>Number format:</source>
+      <translation type="unfinished">Number format:</translation>
+    </message>
+    <message>
+      <source>Operating system</source>
+      <translation>Besturingssysteem</translation>
+    </message>
+    <message>
+      <source>Selected language</source>
+      <translation type="unfinished">Selected language</translation>
+    </message>
+    <message>
+      <source>C/POSIX</source>
+      <translation type="unfinished">C/POSIX</translation>
+    </message>
+    <message>
+      <source>If enabled, numerical keypad decimal separator will be substituted with locale separator</source>
+      <translation type="unfinished">If enabled, numerical keypad decimal separator will be substituted with locale separator</translation>
+    </message>
+    <message>
+      <source>Substitute decimal separator (needs restart)</source>
+      <translation type="unfinished">Substitute decimal separator (needs restart)</translation>
+    </message>
+    <message>
+      <source>Preference packs</source>
+      <translation type="unfinished">Preference packs</translation>
+    </message>
+    <message>
+      <source>Name</source>
+      <translation>Naam</translation>
+    </message>
+    <message>
+      <source>Type</source>
+      <translation>Type</translation>
+    </message>
+    <message>
+      <source>Load</source>
+      <translation>Laad</translation>
+    </message>
+    <message>
+      <source>Save new...</source>
+      <translation type="unfinished">Save new...</translation>
+    </message>
+    <message>
+      <source>Manage...</source>
+      <translation type="unfinished">Manage...</translation>
+    </message>
+    <message>
+      <source>Revert...</source>
+      <translation type="unfinished">Revert...</translation>
+    </message>
+    <message>
+      <source>The text cursor will be blinking</source>
+      <translation type="unfinished">The text cursor will be blinking</translation>
+    </message>
+    <message>
+      <source>Enable cursor blinking</source>
+      <translation type="unfinished">Enable cursor blinking</translation>
     </message>
   </context>
   <context>
@@ -1577,6 +1743,26 @@ horizontale ruimte in de Python-console overschrijden</translation>
     <message>
       <source>Both</source>
       <translation>Beide</translation>
+    </message>
+    <message>
+      <source>Manage preference packs</source>
+      <translation type="unfinished">Manage preference packs</translation>
+    </message>
+    <message>
+      <source>Preference Pack Name</source>
+      <translation type="unfinished">Preference Pack Name</translation>
+    </message>
+    <message>
+      <source>Tags</source>
+      <translation type="unfinished">Tags</translation>
+    </message>
+    <message>
+      <source>Apply</source>
+      <translation>Toepassen</translation>
+    </message>
+    <message>
+      <source>Apply the %1 preference pack</source>
+      <translation type="unfinished">Apply the %1 preference pack</translation>
     </message>
   </context>
   <context>
@@ -1648,12 +1834,20 @@ horizontale ruimte in de Python-console overschrijden</translation>
       <translation>Dupliceer</translation>
     </message>
     <message>
-      <source>Addons...</source>
-      <translation>Uitbreidingen...</translation>
-    </message>
-    <message>
       <source>Toolbar</source>
       <translation>Werkbalk</translation>
+    </message>
+    <message>
+      <source>Launch a guide on how to set up a macro in a custom global toolbar.</source>
+      <translation type="unfinished">Launch a guide on how to set up a macro in a custom global toolbar.</translation>
+    </message>
+    <message>
+      <source>Open Addon Manager where macros created by the community and other addons can be downloaded.</source>
+      <translation type="unfinished">Open Addon Manager where macros created by the community and other addons can be downloaded.</translation>
+    </message>
+    <message>
+      <source>Download</source>
+      <translation>Downloaden</translation>
     </message>
   </context>
   <context>
@@ -2036,6 +2230,48 @@ Kies een andere map, alstublieft.</translation>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgPreferencePackManagement</name>
+    <message>
+      <source>Manage Preference Packs</source>
+      <translation type="unfinished">Manage Preference Packs</translation>
+    </message>
+    <message>
+      <source>Open Addon Manager...</source>
+      <translation type="unfinished">Open Addon Manager...</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgPreferencePackManagementImp</name>
+    <message>
+      <source>User-Saved Preference Packs</source>
+      <translation type="unfinished">User-Saved Preference Packs</translation>
+    </message>
+    <message>
+      <source>Built-In Preference Packs</source>
+      <translation type="unfinished">Built-In Preference Packs</translation>
+    </message>
+    <message>
+      <source>Toggle visibility of built-in preference pack '%1'</source>
+      <translation type="unfinished">Toggle visibility of built-in preference pack '%1'</translation>
+    </message>
+    <message>
+      <source>Delete user-saved preference pack '%1'</source>
+      <translation type="unfinished">Delete user-saved preference pack '%1'</translation>
+    </message>
+    <message>
+      <source>Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</source>
+      <translation type="unfinished">Toggle visibility of Addon preference pack '%1' (use Addon Manager to permanently remove)</translation>
+    </message>
+    <message>
+      <source>Delete saved preference pack?</source>
+      <translation type="unfinished">Delete saved preference pack?</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to delete the preference pack named '%1'? This cannot be undone.</source>
+      <translation type="unfinished">Are you sure you want to delete the preference pack named '%1'? This cannot be undone.</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgPreferences</name>
     <message>
       <source>Preferences</source>
@@ -2378,6 +2614,28 @@ van de Python-console naar het rapportweergavepaneel</translation>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgRevertToBackupConfig</name>
+    <message>
+      <source>Revert to Backup Config</source>
+      <translation type="unfinished">Revert to Backup Config</translation>
+    </message>
+    <message>
+      <source>WARNING: this process will undo any preference changes made since the specified date, and will also reset your Recent files and Macros to their state on that date.</source>
+      <translation type="unfinished">WARNING: this process will undo any preference changes made since the specified date, and will also reset your Recent files and Macros to their state on that date.</translation>
+    </message>
+    <message>
+      <source>Available backup files:</source>
+      <translation type="unfinished">Available backup files:</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgRevertToBackupConfigImp</name>
+    <message>
+      <source>No selection in dialog, cannot load backup file</source>
+      <translation type="unfinished">No selection in dialog, cannot load backup file</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgRunExternal</name>
     <message>
       <source>Running external program</source>
@@ -2643,15 +2901,29 @@ Het wijzigen van deze optie vereist een herstart van de toepassing.</translation
     </message>
     <message>
       <source>What kind of multisample anti-aliasing is used</source>
-      <translation type="unfinished">What kind of multisample anti-aliasing is used</translation>
+      <translation>Wat voor soort multisample anti-aliasing wordt gebruikt</translation>
     </message>
     <message>
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
-      <translation type="unfinished">Eye-to-eye distance used for stereo projections.
-The specified value is a factor that will be multiplied with the
-bounding box size of the 3D object that is currently displayed.</translation>
+      <translation>Oog-naar-oog afstand wordt gebruikt voor stereo projecties.
+De opgegeven waarde is een factor die zal worden vermenigvuldigd met
+de begrenzingsvakgrootte van het 3D-object dat op dat moment wordt weergegeven.</translation>
+    </message>
+    <message>
+      <source>Relative size :   </source>
+      <translation type="unfinished">Relative size :   </translation>
+    </message>
+    <message>
+      <source>Size of main coordinate system representation
+in the corner -- in % of height/width of viewport</source>
+      <translation type="unfinished">Size of main coordinate system representation
+in the corner -- in % of height/width of viewport</translation>
+    </message>
+    <message>
+      <source>%</source>
+      <translation>%</translation>
     </message>
   </context>
   <context>
@@ -2687,6 +2959,69 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <source>15px</source>
       <translation>15px</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsCacheDirectory</name>
+    <message>
+      <source>Cache</source>
+      <translation type="unfinished">Cache</translation>
+    </message>
+    <message>
+      <source>Cache directory</source>
+      <translation type="unfinished">Cache directory</translation>
+    </message>
+    <message>
+      <source>Location:</source>
+      <translation type="unfinished">Location:</translation>
+    </message>
+    <message>
+      <source>Check periodically at program start:</source>
+      <translation type="unfinished">Check periodically at program start:</translation>
+    </message>
+    <message>
+      <source>Always</source>
+      <translation type="unfinished">Always</translation>
+    </message>
+    <message>
+      <source>Daily</source>
+      <translation type="unfinished">Daily</translation>
+    </message>
+    <message>
+      <source>Weekly</source>
+      <translation type="unfinished">Weekly</translation>
+    </message>
+    <message>
+      <source>Monthly</source>
+      <translation type="unfinished">Monthly</translation>
+    </message>
+    <message>
+      <source>Yearly</source>
+      <translation type="unfinished">Yearly</translation>
+    </message>
+    <message>
+      <source>Never</source>
+      <translation type="unfinished">Never</translation>
+    </message>
+    <message>
+      <source>Cache size limit:</source>
+      <translation type="unfinished">Cache size limit:</translation>
+    </message>
+    <message>
+      <source>Check now...</source>
+      <translation type="unfinished">Check now...</translation>
+    </message>
+    <message>
+      <source>Notify the user if the cache size exceeds the specified limit</source>
+      <translation type="unfinished">Notify the user if the cache size exceeds the specified limit</translation>
+    </message>
+    <message>
+      <source>Unknown</source>
+      <translation>Onbekend</translation>
+    </message>
+    <message>
+      <source>Current cache size: %1</source>
+      <translation type="unfinished">Current cache size: %1</translation>
     </message>
   </context>
   <context>
@@ -2726,10 +3061,6 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <source>Alt+R</source>
       <translation>Alt+R</translation>
-    </message>
-    <message>
-      <source>Out &amp;invisible</source>
-      <translation>Uit onzichtbaar</translation>
     </message>
     <message>
       <source>Alt+I</source>
@@ -2782,6 +3113,40 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <source>Color-gradient settings</source>
       <translation>Kleurverloop instellingen</translation>
+    </message>
+    <message>
+      <source>Color gradient is used with its full color range</source>
+      <translation type="unfinished">Color gradient is used with its full color range</translation>
+    </message>
+    <message>
+      <source>Color gradient starts from the zero value</source>
+      <translation type="unfinished">Color gradient starts from the zero value</translation>
+    </message>
+    <message>
+      <source>Data outside the specified min-max range
+will be displayed in gray</source>
+      <translation type="unfinished">Data outside the specified min-max range
+will be displayed in gray</translation>
+    </message>
+    <message>
+      <source>Data outside the specified min-max range
+will be displayed with transparency</source>
+      <translation type="unfinished">Data outside the specified min-max range
+will be displayed with transparency</translation>
+    </message>
+    <message>
+      <source>Out &amp;transparent</source>
+      <translation type="unfinished">Out &amp;transparent</translation>
+    </message>
+    <message>
+      <source>Number of labels besides the color bar</source>
+      <translation type="unfinished">Number of labels besides the color bar</translation>
+    </message>
+    <message>
+      <source>Number of decimals for labels
+besides the color bar</source>
+      <translation type="unfinished">Number of decimals for labels
+besides the color bar</translation>
     </message>
   </context>
   <context>
@@ -3270,24 +3635,55 @@ U kunt ook het formulier gebruiken: John Doe &lt;john@doe.com&gt;</translation>
   <context>
     <name>Gui::Dialog::DlgSettingsLazyLoaded</name>
     <message>
-      <source>Unloaded Workbenches</source>
-      <translation>Ongeladen werkbanken</translation>
+      <source>Workbench Name</source>
+      <translation>Werkbank Naam</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load the selected workbenches, adding their preference windows to the preferences dialog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Laad de geselecteerde werkbanken, waarbij de voorkeur vensters wordt toegevoegd aan het voorkeuren dialoog.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Autoload?</source>
+      <translation>Automatisch laden?</translation>
     </message>
     <message>
-      <source>Load Selected</source>
-      <translation>Laad geselecteerde</translation>
+      <source>Load Now</source>
+      <translation>Laad nu</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Available unloaded workbenches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Beschikbare niet-ingeladen werkbanken&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Om hulpbronnen te behouden, laadt FreeCAD geen werkbanken totdat ze worden gebruikt. Het laden ervan kan toegang bieden tot extra voorkeuren met betrekking tot hun functionaliteit.&lt;/p&gt;&lt;p&gt;De volgende werkbanken zijn beschikbaar in uw installatie:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To preserve resources, FreeCAD does not load workbenches until they are used. Loading them may provide access to additional preferences related to their functionality.&lt;/p&gt;&lt;p&gt;The following workbenches are available in your installation, but are not yet loaded:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Om werkgeheugen te sparen, laadt FreeCAD geen werkbanken totdat ze worden gebruikt. Het laden ervan kan toegang bieden tot extra voorkeuren met betrekking tot hun functionaliteit.&lt;/p&gt;&lt;p&gt;De volgende werkbanken zijn beschikbaar in uw installatie, maar zijn nog niet ingeladen:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <source>Available Workbenches</source>
+      <translation>Beschikbare werkbanken</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsLazyLoadedImp</name>
+    <message>
+      <source>Workbench</source>
+      <translation>Werkbank</translation>
+    </message>
+    <message>
+      <source>Autoload</source>
+      <translation>Automatisch laden</translation>
+    </message>
+    <message>
+      <source>If checked</source>
+      <translation>Indien aangevinkt</translation>
+    </message>
+    <message>
+      <source>will be loaded automatically when FreeCAD starts up</source>
+      <translation>wordt automatisch geladen wanneer FreeCAD opstart</translation>
+    </message>
+    <message>
+      <source>This is the current startup module, and must be autoloaded. See Preferences/General/Autoload to change.</source>
+      <translation>Dit is de huidige opstartmodule, en moet automatisch geladen worden. Zie Voorkeuren/General/Autoload om te wijzigen.</translation>
+    </message>
+    <message>
+      <source>Loaded</source>
+      <translation>Geladen</translation>
+    </message>
+    <message>
+      <source>Load now</source>
+      <translation>Laad nu</translation>
     </message>
   </context>
   <context>
@@ -3470,10 +3866,6 @@ Draaitafel: het deel wordt rond de z-as gedraaid.</translation>
       <translation>Trackball</translation>
     </message>
     <message>
-      <source>New document scale</source>
-      <translation>Nieuwe documentschaal</translation>
-    </message>
-    <message>
       <source>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</source>
       <translation>Stelt de camerazoom in voor nieuwe documenten.
@@ -3593,7 +3985,7 @@ De kanteling van de muis wordt niet uitgeschakeld door deze instelling.</transla
     </message>
     <message>
       <source>Rotates to nearest possible state when clicking a cube face</source>
-      <translation type="unfinished">Rotates to nearest possible state when clicking a cube face</translation>
+      <translation>Draait naar dichtstbijzijnde mogelijke status bij het klikken op een kubus</translation>
     </message>
     <message>
       <source>Rotate to nearest</source>
@@ -3601,17 +3993,58 @@ De kanteling van de muis wordt niet uitgeschakeld door deze instelling.</transla
     </message>
     <message>
       <source>Cube size</source>
-      <translation type="unfinished">Cube size</translation>
+      <translation>Kubus grootte</translation>
     </message>
     <message>
       <source>Size of the navigation cube</source>
-      <translation type="unfinished">Size of the navigation cube</translation>
+      <translation>Grootte van de navigatie kubus</translation>
     </message>
     <message>
       <source>How much will be zoomed.
 Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
-      <translation type="unfinished">How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
+      <translation>Hoeveel zal er worden ingezoomd.
+Zoomstap van '1' betekent een factor 7,5 voor elke zoomstap.</translation>
+    </message>
+    <message>
+      <source>Camera zoom</source>
+      <translation type="unfinished">Camera zoom</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::Dialog::DlgSettingsPythonConsole</name>
+    <message>
+      <source>Python console</source>
+      <translation>Python Console</translation>
+    </message>
+    <message>
+      <source>Settings</source>
+      <translation>Instellingen</translation>
+    </message>
+    <message>
+      <source>Words will be wrapped when they exceed available
+horizontal space in Python console</source>
+      <translation>Woorden worden verborgen wanneer ze de beschikbare
+horizontale ruimte in de Python-console overschrijden</translation>
+    </message>
+    <message>
+      <source>Enable word wrap</source>
+      <translation>Tekstterugloop inschakelen</translation>
+    </message>
+    <message>
+      <source>The cursor shape will be a block</source>
+      <translation type="unfinished">The cursor shape will be a block</translation>
+    </message>
+    <message>
+      <source>Enable block cursor</source>
+      <translation type="unfinished">Enable block cursor</translation>
+    </message>
+    <message>
+      <source>Saves Python history across sessions</source>
+      <translation type="unfinished">Saves Python history across sessions</translation>
+    </message>
+    <message>
+      <source>Save history</source>
+      <translation>Geschiedenis opslaan</translation>
     </message>
   </context>
   <context>
@@ -3881,12 +4314,6 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</translation>
       <translation>Resultaat</translation>
     </message>
     <message>
-      <source>List of last used calculations 
-To add a calculation press Return in the value input field</source>
-      <translation>Lijst van laatst gebruikte berekeningen 
-Om een berekening toe te voegen, druk op Terug in het invoerveld voor de waarde</translation>
-    </message>
-    <message>
       <source>Quantity</source>
       <translation>Aantal</translation>
     </message>
@@ -3919,6 +4346,12 @@ Het voorkeurssysteem is het systeem dat in de algemene voorkeuren is ingesteld.<
     <message>
       <source>Copy the result into the clipboard</source>
       <translation>Kopieer het resultaat naar het klembord</translation>
+    </message>
+    <message>
+      <source>List of last used calculations.
+To add a calculation press Return in the value input field</source>
+      <translation type="unfinished">List of last used calculations.
+To add a calculation press Return in the value input field</translation>
     </message>
   </context>
   <context>
@@ -4069,10 +4502,6 @@ Het voorkeurssysteem is het systeem dat in de algemene voorkeuren is ingesteld.<
       <translation>Weet u zeker dat u alle voorbijgaande mappen wilt verwijderen?</translation>
     </message>
     <message>
-      <source>Finished</source>
-      <translation>Afgerond</translation>
-    </message>
-    <message>
       <source>Transient directories deleted.</source>
       <translation>Tijdelijke mappen verwijderd.</translation>
     </message>
@@ -4085,6 +4514,10 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <source>When deleting all transient directories you won't be able to recover any files afterwards.</source>
       <translation>Herstel van bestanden is niet mogelijk na het verwijderen van alle tijdelijke mappen.</translation>
+    </message>
+    <message>
+      <source>Transient deleted</source>
+      <translation type="unfinished">Transient deleted</translation>
     </message>
   </context>
   <context>
@@ -4454,32 +4887,32 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Gelieve 1, 2 of 3 punten te selecteren voordat u op deze knop klikt. Een punt kan op een eindpunt, vlak of rand zijn. Indien op een vlak of rand, zal het gebruikte punt het punt zijn dat zich op de positie van de muis langs het vlak of de rand bevindt. Als 1 punt wordt geselecteerd, wordt het gebruikt als draaipunt. Als 2 punten worden geselecteerd, is het middelpunt daarvan het draaipunt en wordt er zo nodig een nieuwe aangepaste as gemaakt. Als 3 punten worden geselecteerd, wordt het eerste punt het draaipunt en ligt het op de vector die normaal is voor het vlak gedefinieerd door de 3 punten. Enige informatie over afstand en hoek wordt in de rapportweergave gegeven, wat nuttig kan zijn bij het uitlijnen van objecten. Voor uw gemak wordt, wanneer Shift + klik gebruikt worden, de juiste afstand of hoek naar het klembord gekopieerd.</translation>
     </message>
     <message>
-      <source>Around y-axis:</source>
-      <translation>Rond de y-as:</translation>
+      <source>Pitch (around y-axis):</source>
+      <translation>Pitch (rond y-as):</translation>
     </message>
     <message>
-      <source>Around z-axis:</source>
-      <translation>Rond de z-as:</translation>
+      <source>Roll (around x-axis):</source>
+      <translation>Rol (rond x-as):</translation>
     </message>
     <message>
-      <source>Around x-axis:</source>
-      <translation>Rond de x-as:</translation>
+      <source>Yaw (around z-axis):</source>
+      <translation>Rol (rond z-as):</translation>
     </message>
     <message>
-      <source>Rotation around the x-axis</source>
-      <translation>Rotatie rond de x-as</translation>
+      <source>Yaw (around z-axis)</source>
+      <translation>Rol (rond z-as)</translation>
     </message>
     <message>
-      <source>Rotation around the y-axis</source>
-      <translation>Rotatie rond de y-as</translation>
+      <source>Pitch (around y-axis)</source>
+      <translation>Pitch (rond y-as)</translation>
     </message>
     <message>
-      <source>Rotation around the z-axis</source>
-      <translation>Rotatie rond de z-as</translation>
+      <source>Roll (around the x-axis)</source>
+      <translation>Rol (rond x-as)</translation>
     </message>
     <message>
-      <source>Euler angles (xy'z'')</source>
-      <translation>Hoeken van Euler (xy'z'')</translation>
+      <source>Euler angles (zy'x'')</source>
+      <translation>Euler hoeken (zy'x'')</translation>
     </message>
   </context>
   <context>
@@ -4615,10 +5048,6 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>De geselecteerde objecten bevatten andere afhankelijkheden. Selecteer welke objecten u wilt exporteren. Alle afhankelijkheden zijn standaard automatisch geselecteerd.</translation>
     </message>
     <message>
-      <source>Dependency</source>
-      <translation>Afhankelijkheid</translation>
-    </message>
-    <message>
       <source>Document</source>
       <translation>Document</translation>
     </message>
@@ -4627,20 +5056,34 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Naam</translation>
     </message>
     <message>
-      <source>State</source>
-      <translation>Staat/Provincie</translation>
+      <source>&amp;Use Original Selections</source>
+      <translation>&amp;Originele selecties gebruiken</translation>
     </message>
     <message>
-      <source>Hierarchy</source>
-      <translation>Hiërarchie</translation>
+      <source>Ignore dependencies and proceed with objects
+originally selected prior to opening this dialog</source>
+      <translation>Afhankelijkheden negeren en doorgaan met objecten
+oorspronkelijk geselecteerd voorafgaand aan het openen van dit dialoogvenster</translation>
     </message>
     <message>
-      <source>Selected</source>
-      <translation>Geselecteerd</translation>
+      <source>Auto select depending objects</source>
+      <translation type="unfinished">Auto select depending objects</translation>
     </message>
     <message>
-      <source>Partial</source>
-      <translation>Gedeeltelijk</translation>
+      <source>Depending on</source>
+      <translation type="unfinished">Depending on</translation>
+    </message>
+    <message>
+      <source>Depended by</source>
+      <translation type="unfinished">Depended by</translation>
+    </message>
+    <message>
+      <source>Selections</source>
+      <translation>Selecties</translation>
+    </message>
+    <message>
+      <source>All</source>
+      <translation>Alle</translation>
     </message>
   </context>
   <context>
@@ -4735,8 +5178,8 @@ The 'Status' column shows whether the document could be recovered.</source>
       <translation>Foutmeldingen</translation>
     </message>
     <message>
-      <source>Show report view on</source>
-      <translation>Rapportweergave weergeven</translation>
+      <source>Show output window on</source>
+      <translation type="unfinished">Show output window on</translation>
     </message>
   </context>
   <context>
@@ -5181,6 +5624,18 @@ Do you want to save the document now?</source>
       <translation>Om een link naar externe objecten te kunnen maken, moet het document minstens één keer worden opgeslagen.
 Wilt u het document nu opslaan?</translation>
     </message>
+    <message>
+      <source>Help addon needed!</source>
+      <translation type="unfinished">Help addon needed!</translation>
+    </message>
+    <message>
+      <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
+      <translation type="unfinished">The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</translation>
+    </message>
+    <message>
+      <source>Open Addon Manager</source>
+      <translation type="unfinished">Open Addon Manager</translation>
+    </message>
   </context>
   <context>
     <name>Gui::ManualAlignment</name>
@@ -5290,6 +5745,13 @@ How do you want to proceed?</source>
     </message>
   </context>
   <context>
+    <name>Gui::ModifierLineEdit</name>
+    <message>
+      <source>Press modifier keys</source>
+      <translation type="unfinished">Press modifier keys</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::NetworkRetriever</name>
     <message>
       <source>Download started...</source>
@@ -5313,6 +5775,25 @@ How do you want to proceed?</source>
     <message>
       <source>Press CTRL and left mouse button</source>
       <translation>Druk op CTRL en de linker muisknop</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::OpenSCADNavigationStyle</name>
+    <message>
+      <source>Press left mouse button</source>
+      <translation>Druk op de linker muisknop</translation>
+    </message>
+    <message>
+      <source>Press right mouse button and move mouse</source>
+      <translation type="unfinished">Press right mouse button and move mouse</translation>
+    </message>
+    <message>
+      <source>Press left mouse button and move mouse</source>
+      <translation type="unfinished">Press left mouse button and move mouse</translation>
+    </message>
+    <message>
+      <source>Press middle mouse button or SHIFT and right mouse button</source>
+      <translation type="unfinished">Press middle mouse button or SHIFT and right mouse button</translation>
     </message>
   </context>
   <context>
@@ -5407,6 +5888,14 @@ How do you want to proceed?</source>
     <message>
       <source>Auto expand</source>
       <translation>Automatisch uitbreiden</translation>
+    </message>
+    <message>
+      <source>Rename property group</source>
+      <translation type="unfinished">Rename property group</translation>
+    </message>
+    <message>
+      <source>Group name:</source>
+      <translation type="unfinished">Group name:</translation>
     </message>
   </context>
   <context>
@@ -5563,6 +6052,10 @@ Do you want to exit without saving your data?</source>
       <source>The file '%1' cannot be opened.</source>
       <translation>Het bestand '%1' kan niet worden geopend.</translation>
     </message>
+    <message>
+      <source>none</source>
+      <translation>geen</translation>
+    </message>
   </context>
   <context>
     <name>Gui::RevitNavigationStyle</name>
@@ -5584,6 +6077,25 @@ Do you want to exit without saving your data?</source>
     </message>
   </context>
   <context>
+    <name>Gui::SearchBar</name>
+    <message>
+      <source>Previous</source>
+      <translation>Vorige</translation>
+    </message>
+    <message>
+      <source>Next</source>
+      <translation type="unfinished">Next</translation>
+    </message>
+    <message>
+      <source>Case sensitive</source>
+      <translation type="unfinished">Case sensitive</translation>
+    </message>
+    <message>
+      <source>Whole words</source>
+      <translation type="unfinished">Whole words</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::SelectModule</name>
     <message>
       <source>Select module</source>
@@ -5601,10 +6113,6 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::StdCmdDescription</name>
     <message>
-      <source>Help</source>
-      <translation>Help</translation>
-    </message>
-    <message>
       <source>Des&amp;cription</source>
       <translation>Oms&amp;chrijving</translation>
     </message>
@@ -5615,10 +6123,6 @@ Do you want to exit without saving your data?</source>
   </context>
   <context>
     <name>Gui::StdCmdDownloadOnlineHelp</name>
-    <message>
-      <source>Help</source>
-      <translation>Help</translation>
-    </message>
     <message>
       <source>Download online help</source>
       <translation>Download online-help</translation>
@@ -5656,10 +6160,6 @@ Wilt u een andere map opgeven?</translation>
   </context>
   <context>
     <name>Gui::StdCmdPythonHelp</name>
-    <message>
-      <source>Tools</source>
-      <translation>Gereedschap</translation>
-    </message>
     <message>
       <source>Automatic python modules documentation</source>
       <translation>Automatische python module documentatie</translation>
@@ -5822,6 +6322,25 @@ Wilt u een andere map opgeven?</translation>
     <message>
       <source>Edit text</source>
       <translation>Tekst bewerken</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::TinkerCADNavigationStyle</name>
+    <message>
+      <source>Press left mouse button</source>
+      <translation>Druk op de linker muisknop</translation>
+    </message>
+    <message>
+      <source>Press middle mouse button</source>
+      <translation>Druk op de middelste muisknop</translation>
+    </message>
+    <message>
+      <source>Press right mouse button</source>
+      <translation type="unfinished">Press right mouse button</translation>
+    </message>
+    <message>
+      <source>Scroll middle mouse button</source>
+      <translation>Scroll middelste muisknop</translation>
     </message>
   </context>
   <context>
@@ -5989,6 +6508,22 @@ Wilt u een andere map opgeven?</translation>
       <source>Vietnamese</source>
       <translation>Vietnamees</translation>
     </message>
+    <message>
+      <source>Bulgarian</source>
+      <translation>Bulgaars</translation>
+    </message>
+    <message>
+      <source>Greek</source>
+      <translation>Grieks</translation>
+    </message>
+    <message>
+      <source>Spanish, Argentina</source>
+      <translation>Spaans, Argentinië</translation>
+    </message>
+    <message>
+      <source>Georgian</source>
+      <translation type="unfinished">Georgian</translation>
+    </message>
   </context>
   <context>
     <name>Gui::TreeDockWidget</name>
@@ -6133,6 +6668,14 @@ Wilt u een andere map opgeven?</translation>
     <message>
       <source> (but must be executed)</source>
       <translation> (maar moet worden uitgevoerd)</translation>
+    </message>
+    <message>
+      <source>Add dependent objects to selection</source>
+      <translation type="unfinished">Add dependent objects to selection</translation>
+    </message>
+    <message>
+      <source>Adds all dependent objects to the selection</source>
+      <translation type="unfinished">Adds all dependent objects to the selection</translation>
     </message>
   </context>
   <context>
@@ -6610,24 +7153,6 @@ Open een browservenster en typ: http://localhost:%1.</translation>
       <translation>Het document kan nu niet gesloten worden.</translation>
     </message>
     <message>
-      <source>No OpenGL</source>
-      <translation>Geen OpenGL</translation>
-    </message>
-    <message>
-      <source>This system does not support OpenGL</source>
-      <translation>Dit systeem biedt geen ondersteuning voor OpenGL</translation>
-    </message>
-    <message>
-      <source>Help</source>
-      <translation>Help</translation>
-    </message>
-    <message>
-      <source>Unable to load documentation.
-In order to load it Qt 4.4 or higher is required.</source>
-      <translation>Niet in staat om documenten te laden. 
-Om het te kunnen laden is Qt 4.4 of hoger nodig.</translation>
-    </message>
-    <message>
       <source>Exporting PDF...</source>
       <translation>Exporteren van PDF ...</translation>
     </message>
@@ -6904,26 +7429,6 @@ Kies 'Afbreken' om af te breken</translation>
       <translation>Weet u zeker dat u wilt doorgaan?</translation>
     </message>
     <message>
-      <source>
-
-Please check report view for more...</source>
-      <translation>
-
-Controleer de rapportweergave voor meer...</translation>
-    </message>
-    <message>
-      <source>
-Document: </source>
-      <translation>
-Document: </translation>
-    </message>
-    <message>
-      <source>
-  Path: </source>
-      <translation>
-  Traject: </translation>
-    </message>
-    <message>
       <source>Identical physical path</source>
       <translation>Identische fysieke pad</translation>
     </message>
@@ -6944,12 +7449,132 @@ Document: </translation>
       <translation>Werkbanken</translation>
     </message>
     <message>
-      <source>
+      <source>Could not save document</source>
+      <translation>Kan verzending niet opslaan</translation>
+    </message>
+    <message>
+      <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
-Physical path: </source>
-      <translation>
+"%1"
 
-Fysiek pad: </translation>
+Would you like to save the file with a different name?</source>
+      <translation>Er is een probleem opgetreden bij het opslaan van het bestand. Dit kan komen doordat sommige van de bovenliggende mappen niet bestaan, of omdat je niet voldoende rechten hebt, of om andere redenen. Foutdetails:
+
+"%1"
+
+Wilt u het bestand met een andere naam opslaan?</translation>
+    </message>
+    <message>
+      <source>Document not saved</source>
+      <translation>Document niet opgeslagen</translation>
+    </message>
+    <message>
+      <source>The document%1 could not be saved. Do you want to cancel closing it?</source>
+      <translation>Het document%1 kon niet worden opgeslagen. Wilt u het sluiten annuleren?</translation>
+    </message>
+    <message>
+      <source>%1 Document(s) not saved</source>
+      <translation>%1 Document(en) niet opgeslagen</translation>
+    </message>
+    <message>
+      <source>Some documents could not be saved. Do you want to cancel closing?</source>
+      <translation>Sommige documenten konden niet worden opgeslagen. Wilt u het sluiten annuleren?</translation>
+    </message>
+    <message>
+      <source>Please check report view for more...</source>
+      <translation type="unfinished">Please check report view for more...</translation>
+    </message>
+    <message>
+      <source>Physical path:</source>
+      <translation type="unfinished">Physical path:</translation>
+    </message>
+    <message>
+      <source>Document:</source>
+      <translation type="unfinished">Document:</translation>
+    </message>
+    <message>
+      <source>Path:</source>
+      <translation>PAD:</translation>
+    </message>
+    <message>
+      <source>Edit %1</source>
+      <translation>Bewerken %1</translation>
+    </message>
+    <message>
+      <source>Setup configurable object</source>
+      <translation type="unfinished">Setup configurable object</translation>
+    </message>
+    <message>
+      <source>Select which object to copy or exclude when configuration changes.All external linked object are excluded by default.</source>
+      <translation type="unfinished">Select which object to copy or exclude when configuration changes.All external linked object are excluded by default.</translation>
+    </message>
+    <message>
+      <source>Please select which objects to copy when the configuration is changed</source>
+      <translation type="unfinished">Please select which objects to copy when the configuration is changed</translation>
+    </message>
+    <message>
+      <source>Apply to all</source>
+      <translation type="unfinished">Apply to all</translation>
+    </message>
+    <message>
+      <source>Apply the setting to all links. Or, uncheck this
+option to apply only to this link.</source>
+      <translation type="unfinished">Apply the setting to all links. Or, uncheck this
+option to apply only to this link.</translation>
+    </message>
+    <message>
+      <source>Copy on change</source>
+      <translation type="unfinished">Copy on change</translation>
+    </message>
+    <message>
+      <source>Enable</source>
+      <translation>Schakel in</translation>
+    </message>
+    <message>
+      <source>Enable auto copy of linked object when its configuration is changed</source>
+      <translation type="unfinished">Enable auto copy of linked object when its configuration is changed</translation>
+    </message>
+    <message>
+      <source>Tracking</source>
+      <translation>Volgen</translation>
+    </message>
+    <message>
+      <source>Copy the linked object when its configuration is changed.
+Also auto redo the copy if the original linked object is changed.
+</source>
+      <translation type="unfinished">Copy the linked object when its configuration is changed.
+Also auto redo the copy if the original linked object is changed.
+</translation>
+    </message>
+    <message>
+      <source>Disable copy on change</source>
+      <translation type="unfinished">Disable copy on change</translation>
+    </message>
+    <message>
+      <source>Rerefresh configurable object</source>
+      <translation type="unfinished">Rerefresh configurable object</translation>
+    </message>
+    <message>
+      <source>Synchronize the original configurable source object by
+creating a new deep copy. Note that any changes made to
+the current copy will be lost.
+</source>
+      <translation type="unfinished">Synchronize the original configurable source object by
+creating a new deep copy. Note that any changes made to
+the current copy will be lost.
+</translation>
+    </message>
+    <message>
+      <source>Toggle array elements</source>
+      <translation type="unfinished">Toggle array elements</translation>
+    </message>
+    <message>
+      <source>Change whether show each link array element as individual objects</source>
+      <translation type="unfinished">Change whether show each link array element as individual objects</translation>
+    </message>
+    <message>
+      <source>Transform at the origin of the placement</source>
+      <translation type="unfinished">Transform at the origin of the placement</translation>
     </message>
   </context>
   <context>
@@ -6966,10 +7591,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdBoxElementSelection</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Box element selection</source>
       <translation>Selectie van dooselement</translation>
     </message>
@@ -6977,20 +7598,12 @@ Fysiek pad: </translation>
   <context>
     <name>StdBoxSelection</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Box selection</source>
       <translation>Rechthoekselectie</translation>
     </message>
   </context>
   <context>
     <name>StdCmdAbout</name>
-    <message>
-      <source>Help</source>
-      <translation>Help</translation>
-    </message>
     <message>
       <source>&amp;About %1</source>
       <translation>&amp;Info over %1</translation>
@@ -7003,10 +7616,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdAboutQt</name>
     <message>
-      <source>Help</source>
-      <translation>Help</translation>
-    </message>
-    <message>
       <source>About &amp;Qt</source>
       <translation>Info over Qt</translation>
     </message>
@@ -7017,10 +7626,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdActivateNextWindow</name>
-    <message>
-      <source>Window</source>
-      <translation>Venster</translation>
-    </message>
     <message>
       <source>Ne&amp;xt</source>
       <translation>Volge&amp;nde</translation>
@@ -7033,10 +7638,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdActivatePrevWindow</name>
     <message>
-      <source>Window</source>
-      <translation>Venster</translation>
-    </message>
-    <message>
       <source>Pre&amp;vious</source>
       <translation>&amp;Vorige</translation>
     </message>
@@ -7047,10 +7648,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdAlignment</name>
-    <message>
-      <source>Edit</source>
-      <translation>Bewerken</translation>
-    </message>
     <message>
       <source>Alignment...</source>
       <translation>Uitlijning...</translation>
@@ -7063,10 +7660,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdArrangeIcons</name>
     <message>
-      <source>Window</source>
-      <translation>Venster</translation>
-    </message>
-    <message>
       <source>Arrange &amp;Icons</source>
       <translation>Schikken p&amp;ictogrammen</translation>
     </message>
@@ -7078,20 +7671,12 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdAxisCross</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Toggle axis cross</source>
       <translation>Schakel assenkruis</translation>
     </message>
   </context>
   <context>
     <name>StdCmdCascadeWindows</name>
-    <message>
-      <source>Window</source>
-      <translation>Venster</translation>
-    </message>
     <message>
       <source>&amp;Cascade</source>
       <translation>&amp;Trapsgewijs</translation>
@@ -7104,10 +7689,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdCloseActiveWindow</name>
     <message>
-      <source>Window</source>
-      <translation>Venster</translation>
-    </message>
-    <message>
       <source>Cl&amp;ose</source>
       <translation>&amp;Sluiten</translation>
     </message>
@@ -7118,10 +7699,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdCloseAllWindows</name>
-    <message>
-      <source>Window</source>
-      <translation>Venster</translation>
-    </message>
     <message>
       <source>Close Al&amp;l</source>
       <translation>A&amp;lles sluiten</translation>
@@ -7134,10 +7711,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdCommandLine</name>
     <message>
-      <source>Tools</source>
-      <translation>Gereedschap</translation>
-    </message>
-    <message>
       <source>Start command &amp;line...</source>
       <translation>Command &amp;line opstarten...</translation>
     </message>
@@ -7148,10 +7721,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdCopy</name>
-    <message>
-      <source>Edit</source>
-      <translation>Bewerken</translation>
-    </message>
     <message>
       <source>C&amp;opy</source>
       <translation>K&amp;opiëren</translation>
@@ -7164,10 +7733,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdCut</name>
     <message>
-      <source>Edit</source>
-      <translation>Bewerken</translation>
-    </message>
-    <message>
       <source>&amp;Cut</source>
       <translation>&amp;Knippen</translation>
     </message>
@@ -7178,10 +7743,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdDelete</name>
-    <message>
-      <source>Edit</source>
-      <translation>Bewerken</translation>
-    </message>
     <message>
       <source>&amp;Delete</source>
       <translation>&amp;Verwijderen</translation>
@@ -7194,10 +7755,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdDemoMode</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>View turntable...</source>
       <translation>Draaitafel tonen...</translation>
     </message>
@@ -7209,10 +7766,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdDependencyGraph</name>
     <message>
-      <source>Tools</source>
-      <translation>Gereedschap</translation>
-    </message>
-    <message>
       <source>Dependency graph...</source>
       <translation>Afhankelijkheden grafiek...</translation>
     </message>
@@ -7223,10 +7776,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdDlgCustomize</name>
-    <message>
-      <source>Tools</source>
-      <translation>Gereedschap</translation>
-    </message>
     <message>
       <source>Cu&amp;stomize...</source>
       <translation>&amp;Personalisatie...</translation>
@@ -7246,17 +7795,9 @@ Fysiek pad: </translation>
       <source>Opens a dialog to let you execute a recorded macro</source>
       <translation>Opent een dialoogvenster om u een opgenomen macro te laten uitvoeren</translation>
     </message>
-    <message>
-      <source>Macro</source>
-      <translation>Macro</translation>
-    </message>
   </context>
   <context>
     <name>StdCmdDlgMacroExecuteDirect</name>
-    <message>
-      <source>Macro</source>
-      <translation>Macro</translation>
-    </message>
     <message>
       <source>Execute macro</source>
       <translation>Macro uitvoeren</translation>
@@ -7276,17 +7817,9 @@ Fysiek pad: </translation>
       <source>Opens a dialog to record a macro</source>
       <translation>Opent een dialoogvenster om een macro op te nemen</translation>
     </message>
-    <message>
-      <source>Macro</source>
-      <translation>Macro</translation>
-    </message>
   </context>
   <context>
     <name>StdCmdDlgParameter</name>
-    <message>
-      <source>Tools</source>
-      <translation>Gereedschap</translation>
-    </message>
     <message>
       <source>E&amp;dit parameters ...</source>
       <translation>E&amp;dit parameters...</translation>
@@ -7299,10 +7832,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdDlgPreferences</name>
     <message>
-      <source>Tools</source>
-      <translation>Gereedschap</translation>
-    </message>
-    <message>
       <source>&amp;Preferences ...</source>
       <translation>&amp;Opties...</translation>
     </message>
@@ -7313,10 +7842,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdDockViewMenu</name>
-    <message>
-      <source>View</source>
-      <translation>Aanzicht</translation>
-    </message>
     <message>
       <source>Panels</source>
       <translation>Panelen</translation>
@@ -7329,10 +7854,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdDrawStyle</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Draw style</source>
       <translation>Tekenstijl</translation>
     </message>
@@ -7344,10 +7865,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdDuplicateSelection</name>
     <message>
-      <source>Edit</source>
-      <translation>Bewerken</translation>
-    </message>
-    <message>
       <source>Duplicate selection</source>
       <translation>Dupliceer selectie</translation>
     </message>
@@ -7358,10 +7875,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdEdit</name>
-    <message>
-      <source>Edit</source>
-      <translation>Bewerken</translation>
-    </message>
     <message>
       <source>Toggle &amp;Edit mode</source>
       <translation>Bewerkingsmode</translation>
@@ -7377,10 +7890,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdExport</name>
-    <message>
-      <source>File</source>
-      <translation>Bestand</translation>
-    </message>
     <message>
       <source>&amp;Export...</source>
       <translation>&amp;Exporteren...</translation>
@@ -7401,20 +7910,12 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdExpression</name>
     <message>
-      <source>Edit</source>
-      <translation>Bewerken</translation>
-    </message>
-    <message>
       <source>Expression actions</source>
       <translation>Expressieacties</translation>
     </message>
   </context>
   <context>
     <name>StdCmdFeatRecompute</name>
-    <message>
-      <source>File</source>
-      <translation>Bestand</translation>
-    </message>
     <message>
       <source>&amp;Recompute</source>
       <translation>&amp;Herberekenen</translation>
@@ -7427,10 +7928,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdFreeCADDonation</name>
     <message>
-      <source>Help</source>
-      <translation>Help</translation>
-    </message>
-    <message>
       <source>Donate</source>
       <translation>Doneer</translation>
     </message>
@@ -7441,10 +7938,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdFreeCADFAQ</name>
-    <message>
-      <source>Help</source>
-      <translation>Help</translation>
-    </message>
     <message>
       <source>FreeCAD FAQ</source>
       <translation>FreeCAD FAQ</translation>
@@ -7461,10 +7954,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdFreeCADForum</name>
     <message>
-      <source>Help</source>
-      <translation>Help</translation>
-    </message>
-    <message>
       <source>FreeCAD Forum</source>
       <translation>FreeCAD Forum</translation>
     </message>
@@ -7479,10 +7968,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdFreeCADPowerUserHub</name>
-    <message>
-      <source>Help</source>
-      <translation>Help</translation>
-    </message>
     <message>
       <source>Python scripting documentation</source>
       <translation>Python scripting documentatie</translation>
@@ -7499,10 +7984,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdFreeCADUserHub</name>
     <message>
-      <source>Help</source>
-      <translation>Help</translation>
-    </message>
-    <message>
       <source>Users documentation</source>
       <translation>Gebruikersdocumentatie</translation>
     </message>
@@ -7513,10 +7994,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdFreeCADWebsite</name>
-    <message>
-      <source>Help</source>
-      <translation>Help</translation>
-    </message>
     <message>
       <source>FreeCAD Website</source>
       <translation>FreeCAD Webpagina</translation>
@@ -7529,10 +8006,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdFreezeViews</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Freeze display</source>
       <translation>Bevries aanzicht</translation>
     </message>
@@ -7543,10 +8016,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdGroup</name>
-    <message>
-      <source>Structure</source>
-      <translation>Structuur</translation>
-    </message>
     <message>
       <source>Create group</source>
       <translation>Groep maken</translation>
@@ -7559,10 +8028,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdHideObjects</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Hide all objects</source>
       <translation>Verberg alle objecten</translation>
     </message>
@@ -7574,10 +8039,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdHideSelection</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Hide selection</source>
       <translation>Selectie verbergen</translation>
     </message>
@@ -7588,10 +8049,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdImport</name>
-    <message>
-      <source>File</source>
-      <translation>Bestand</translation>
-    </message>
     <message>
       <source>&amp;Import...</source>
       <translation>&amp;Importeren...</translation>
@@ -7612,20 +8069,12 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdLinkActions</name>
     <message>
-      <source>View</source>
-      <translation>Aanzicht</translation>
-    </message>
-    <message>
       <source>Link actions</source>
       <translation>Linkacties</translation>
     </message>
   </context>
   <context>
     <name>StdCmdLinkImport</name>
-    <message>
-      <source>Link</source>
-      <translation>Link</translation>
-    </message>
     <message>
       <source>Import links</source>
       <translation>Importeer links</translation>
@@ -7638,10 +8087,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdLinkImportAll</name>
     <message>
-      <source>Link</source>
-      <translation>Link</translation>
-    </message>
-    <message>
       <source>Import all links</source>
       <translation>Importeer alle links</translation>
     </message>
@@ -7652,10 +8097,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdLinkMake</name>
-    <message>
-      <source>Link</source>
-      <translation>Link</translation>
-    </message>
     <message>
       <source>Make link</source>
       <translation>Maak link</translation>
@@ -7668,10 +8109,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdLinkMakeGroup</name>
     <message>
-      <source>Link</source>
-      <translation>Link</translation>
-    </message>
-    <message>
       <source>Make link group</source>
       <translation>Maak linkgroep</translation>
     </message>
@@ -7682,10 +8119,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdLinkMakeRelative</name>
-    <message>
-      <source>Link</source>
-      <translation>Link</translation>
-    </message>
     <message>
       <source>Make sub-link</source>
       <translation>Maak sublink</translation>
@@ -7698,10 +8131,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdLinkReplace</name>
     <message>
-      <source>Link</source>
-      <translation>Link</translation>
-    </message>
-    <message>
       <source>Replace with link</source>
       <translation>Vervang door link</translation>
     </message>
@@ -7712,10 +8141,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdLinkSelectActions</name>
-    <message>
-      <source>View</source>
-      <translation>Aanzicht</translation>
-    </message>
     <message>
       <source>Link navigation</source>
       <translation>Linknavigatie</translation>
@@ -7728,10 +8153,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdLinkSelectAllLinks</name>
     <message>
-      <source>Link</source>
-      <translation>Link</translation>
-    </message>
-    <message>
       <source>Select all links</source>
       <translation>Selecteer alle links</translation>
     </message>
@@ -7742,10 +8163,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdLinkSelectLinked</name>
-    <message>
-      <source>Link</source>
-      <translation>Link</translation>
-    </message>
     <message>
       <source>Go to linked object</source>
       <translation>Ga naar gekoppeld object</translation>
@@ -7758,10 +8175,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdLinkSelectLinkedFinal</name>
     <message>
-      <source>Link</source>
-      <translation>Link</translation>
-    </message>
-    <message>
       <source>Go to the deepest linked object</source>
       <translation>Ga naar het diepste gekoppelde object</translation>
     </message>
@@ -7772,10 +8185,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdLinkUnlink</name>
-    <message>
-      <source>Link</source>
-      <translation>Link</translation>
-    </message>
     <message>
       <source>Unlink</source>
       <translation>Ontkoppel</translation>
@@ -7788,10 +8197,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdMacroAttachDebugger</name>
     <message>
-      <source>Macro</source>
-      <translation>Macro</translation>
-    </message>
-    <message>
       <source>Attach to remote debugger...</source>
       <translation>Koppel aan debugger op afstand...</translation>
     </message>
@@ -7802,10 +8207,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdMacroStartDebug</name>
-    <message>
-      <source>Macro</source>
-      <translation>Macro</translation>
-    </message>
     <message>
       <source>Debug macro</source>
       <translation>Debug macro</translation>
@@ -7818,10 +8219,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdMacroStepInto</name>
     <message>
-      <source>Macro</source>
-      <translation>Macro</translation>
-    </message>
-    <message>
       <source>Step into</source>
       <translation>Stap in</translation>
     </message>
@@ -7829,20 +8226,12 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdMacroStepOver</name>
     <message>
-      <source>Macro</source>
-      <translation>Macro</translation>
-    </message>
-    <message>
       <source>Step over</source>
       <translation>Stap over</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMacroStopDebug</name>
-    <message>
-      <source>Macro</source>
-      <translation>Macro</translation>
-    </message>
     <message>
       <source>Stop debugging</source>
       <translation>Stop debugging</translation>
@@ -7855,10 +8244,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdMacroStopRecord</name>
     <message>
-      <source>Macro</source>
-      <translation>Macro</translation>
-    </message>
-    <message>
       <source>S&amp;top macro recording</source>
       <translation>S&amp;top macro-opname</translation>
     </message>
@@ -7870,20 +8255,12 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdMeasureDistance</name>
     <message>
-      <source>View</source>
-      <translation>Aanzicht</translation>
-    </message>
-    <message>
       <source>Measure distance</source>
       <translation>Afstand meten</translation>
     </message>
   </context>
   <context>
     <name>StdCmdMeasurementSimple</name>
-    <message>
-      <source>Tools</source>
-      <translation>Gereedschap</translation>
-    </message>
     <message>
       <source>Measures distance between two selected objects</source>
       <translation>Meet afstand tussen twee geselecteerde objecten</translation>
@@ -7895,10 +8272,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdMergeProjects</name>
-    <message>
-      <source>File</source>
-      <translation>Bestand</translation>
-    </message>
     <message>
       <source>Merge project...</source>
       <translation>Voeg project samen...</translation>
@@ -7918,10 +8291,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdNew</name>
-    <message>
-      <source>File</source>
-      <translation>Bestand</translation>
-    </message>
     <message>
       <source>&amp;New</source>
       <translation>&amp;Nieuw</translation>
@@ -7949,10 +8318,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdOnlineHelpWebsite</name>
     <message>
-      <source>Help</source>
-      <translation>Help</translation>
-    </message>
-    <message>
       <source>Help Website</source>
       <translation>Help Webpagina</translation>
     </message>
@@ -7963,10 +8328,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdOpen</name>
-    <message>
-      <source>File</source>
-      <translation>Bestand</translation>
-    </message>
     <message>
       <source>&amp;Open...</source>
       <translation>&amp;Openen...</translation>
@@ -7995,10 +8356,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdPart</name>
     <message>
-      <source>Structure</source>
-      <translation>Structuur</translation>
-    </message>
-    <message>
       <source>Create part</source>
       <translation>Onderdeel maken</translation>
     </message>
@@ -8009,10 +8366,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdPaste</name>
-    <message>
-      <source>Edit</source>
-      <translation>Bewerken</translation>
-    </message>
     <message>
       <source>&amp;Paste</source>
       <translation>&amp;Plakken</translation>
@@ -8025,10 +8378,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdPlacement</name>
     <message>
-      <source>Edit</source>
-      <translation>Bewerken</translation>
-    </message>
-    <message>
       <source>Placement...</source>
       <translation>Plaatsing...</translation>
     </message>
@@ -8039,10 +8388,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdPrint</name>
-    <message>
-      <source>File</source>
-      <translation>Bestand</translation>
-    </message>
     <message>
       <source>&amp;Print...</source>
       <translation>Afdru&amp;kken...</translation>
@@ -8055,10 +8400,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdPrintPdf</name>
     <message>
-      <source>File</source>
-      <translation>Bestand</translation>
-    </message>
-    <message>
       <source>&amp;Export PDF...</source>
       <translation>&amp;Exporteren als PDF...</translation>
     </message>
@@ -8069,10 +8410,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdPrintPreview</name>
-    <message>
-      <source>File</source>
-      <translation>Bestand</translation>
-    </message>
     <message>
       <source>&amp;Print preview...</source>
       <translation>&amp;Afdrukvoorbeeld...</translation>
@@ -8089,10 +8426,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdProjectInfo</name>
     <message>
-      <source>File</source>
-      <translation>Bestand</translation>
-    </message>
-    <message>
       <source>Project i&amp;nformation...</source>
       <translation>Project&amp;informatie...</translation>
     </message>
@@ -8103,10 +8436,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdProjectUtil</name>
-    <message>
-      <source>Tools</source>
-      <translation>Gereedschap</translation>
-    </message>
     <message>
       <source>Project utility...</source>
       <translation>Project hulpprogramma...</translation>
@@ -8119,10 +8448,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdPythonWebsite</name>
     <message>
-      <source>Help</source>
-      <translation>Help</translation>
-    </message>
-    <message>
       <source>Python Website</source>
       <translation>Python-webpagina</translation>
     </message>
@@ -8133,10 +8458,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdQuit</name>
-    <message>
-      <source>File</source>
-      <translation>Bestand</translation>
-    </message>
     <message>
       <source>E&amp;xit</source>
       <translation>Afsl&amp;uiten</translation>
@@ -8149,20 +8470,12 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdRandomColor</name>
     <message>
-      <source>File</source>
-      <translation>Bestand</translation>
-    </message>
-    <message>
       <source>Random color</source>
       <translation>Willekeurige kleur</translation>
     </message>
   </context>
   <context>
     <name>StdCmdRecentFiles</name>
-    <message>
-      <source>File</source>
-      <translation>Bestand</translation>
-    </message>
     <message>
       <source>Recent files</source>
       <translation>Recente Bestanden</translation>
@@ -8175,10 +8488,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdRecentMacros</name>
     <message>
-      <source>Macro</source>
-      <translation>Macro</translation>
-    </message>
-    <message>
       <source>Recent macros</source>
       <translation>Recente macro's</translation>
     </message>
@@ -8189,10 +8498,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdRedo</name>
-    <message>
-      <source>Edit</source>
-      <translation>Bewerken</translation>
-    </message>
     <message>
       <source>&amp;Redo</source>
       <translation>&amp;Opnieuw</translation>
@@ -8205,10 +8510,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdRefresh</name>
     <message>
-      <source>Edit</source>
-      <translation>Bewerken</translation>
-    </message>
-    <message>
       <source>&amp;Refresh</source>
       <translation>&amp;Verversen</translation>
     </message>
@@ -8218,11 +8519,18 @@ Fysiek pad: </translation>
     </message>
   </context>
   <context>
-    <name>StdCmdRevert</name>
+    <name>StdCmdReportBug</name>
     <message>
-      <source>File</source>
-      <translation>Bestand</translation>
+      <source>Report a bug</source>
+      <translation type="unfinished">Report a bug</translation>
     </message>
+    <message>
+      <source>Report a bug or suggest a feature</source>
+      <translation type="unfinished">Report a bug or suggest a feature</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdRevert</name>
     <message>
       <source>Revert</source>
       <translation>Ongedaan maken</translation>
@@ -8235,10 +8543,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdSave</name>
     <message>
-      <source>File</source>
-      <translation>Bestand</translation>
-    </message>
-    <message>
       <source>&amp;Save</source>
       <translation>O&amp;pslaan</translation>
     </message>
@@ -8249,10 +8553,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdSaveAll</name>
-    <message>
-      <source>File</source>
-      <translation>Bestand</translation>
-    </message>
     <message>
       <source>Save All</source>
       <translation>Alles opslaan</translation>
@@ -8265,10 +8565,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdSaveAs</name>
     <message>
-      <source>File</source>
-      <translation>Bestand</translation>
-    </message>
-    <message>
       <source>Save &amp;As...</source>
       <translation>Opslaan &amp;als...</translation>
     </message>
@@ -8279,10 +8575,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdSaveCopy</name>
-    <message>
-      <source>File</source>
-      <translation>Bestand</translation>
-    </message>
     <message>
       <source>Save a &amp;Copy...</source>
       <translation>&amp;Kopie opslaan...</translation>
@@ -8295,10 +8587,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdSceneInspector</name>
     <message>
-      <source>Tools</source>
-      <translation>Gereedschap</translation>
-    </message>
-    <message>
       <source>Scene inspector...</source>
       <translation>Scènekeuring...</translation>
     </message>
@@ -8309,10 +8597,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdSelBack</name>
-    <message>
-      <source>View</source>
-      <translation>Aanzicht</translation>
-    </message>
     <message>
       <source>&amp;Back</source>
       <translation>&amp;Terug</translation>
@@ -8325,10 +8609,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdSelBoundingBox</name>
     <message>
-      <source>View</source>
-      <translation>Aanzicht</translation>
-    </message>
-    <message>
       <source>&amp;Bounding box</source>
       <translation>&amp;Selectiekader</translation>
     </message>
@@ -8339,10 +8619,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdSelForward</name>
-    <message>
-      <source>View</source>
-      <translation>Aanzicht</translation>
-    </message>
     <message>
       <source>&amp;Forward</source>
       <translation>&amp;Vooruit</translation>
@@ -8355,10 +8631,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdSelectAll</name>
     <message>
-      <source>Edit</source>
-      <translation>Bewerken</translation>
-    </message>
-    <message>
       <source>Select &amp;All</source>
       <translation>&amp;Alles selecteren</translation>
     </message>
@@ -8369,10 +8641,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdSelectVisibleObjects</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
     <message>
       <source>Select visible objects</source>
       <translation>Selecteer zichtbare objecten</translation>
@@ -8385,10 +8653,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdSendToPythonConsole</name>
     <message>
-      <source>Edit</source>
-      <translation>Bewerken</translation>
-    </message>
-    <message>
       <source>&amp;Send to Python Console</source>
       <translation>&amp;Verzenden naar Python-console</translation>
     </message>
@@ -8399,10 +8663,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdSetAppearance</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
     <message>
       <source>Appearance...</source>
       <translation>Uiterlijk...</translation>
@@ -8415,10 +8675,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdShowObjects</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Show all objects</source>
       <translation>Toon alle objecten</translation>
     </message>
@@ -8429,10 +8685,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdShowSelection</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
     <message>
       <source>Show selection</source>
       <translation>Toon selectie</translation>
@@ -8445,10 +8697,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdStatusBar</name>
     <message>
-      <source>View</source>
-      <translation>Aanzicht</translation>
-    </message>
-    <message>
       <source>Status bar</source>
       <translation>statusregel</translation>
     </message>
@@ -8459,10 +8707,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdTextDocument</name>
-    <message>
-      <source>Tools</source>
-      <translation>Gereedschap</translation>
-    </message>
     <message>
       <source>Add text document</source>
       <translation>Voeg document toe</translation>
@@ -8475,10 +8719,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdTextureMapping</name>
     <message>
-      <source>Tools</source>
-      <translation>Gereedschap</translation>
-    </message>
-    <message>
       <source>Texture mapping...</source>
       <translation>Textuurmapping...</translation>
     </message>
@@ -8489,10 +8729,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdTileWindows</name>
-    <message>
-      <source>Window</source>
-      <translation>Venster</translation>
-    </message>
     <message>
       <source>&amp;Tile</source>
       <translation>&amp;Naast elkaar</translation>
@@ -8505,20 +8741,12 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdToggleBreakpoint</name>
     <message>
-      <source>Macro</source>
-      <translation>Macro</translation>
-    </message>
-    <message>
       <source>Toggle breakpoint</source>
       <translation>Schakel breekpunt aan/uit</translation>
     </message>
   </context>
   <context>
     <name>StdCmdToggleClipPlane</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
     <message>
       <source>Clipping plane</source>
       <translation>Snijvlak</translation>
@@ -8531,10 +8759,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdToggleNavigation</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Toggle navigation/Edit mode</source>
       <translation>Schakel tussen navigatie en aanpassing modus</translation>
     </message>
@@ -8545,10 +8769,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdToggleObjects</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
     <message>
       <source>Toggle all objects</source>
       <translation>Alle objecten [de]selecteren</translation>
@@ -8561,10 +8781,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdToggleSelectability</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Toggle selectability</source>
       <translation>Schakel selecteerbaarheid aan/uit</translation>
     </message>
@@ -8575,10 +8791,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdToggleVisibility</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
     <message>
       <source>Toggle visibility</source>
       <translation>Wissel zichtbaarheid</translation>
@@ -8591,10 +8803,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdToolBarMenu</name>
     <message>
-      <source>View</source>
-      <translation>Aanzicht</translation>
-    </message>
-    <message>
       <source>Tool&amp;bars</source>
       <translation>Werk&amp;balk</translation>
     </message>
@@ -8605,10 +8813,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdTransform</name>
-    <message>
-      <source>Edit</source>
-      <translation>Bewerken</translation>
-    </message>
     <message>
       <source>Transform...</source>
       <translation>Verander...</translation>
@@ -8621,10 +8825,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdTransformManip</name>
     <message>
-      <source>Edit</source>
-      <translation>Bewerken</translation>
-    </message>
-    <message>
       <source>Transform</source>
       <translation>Transformeren</translation>
     </message>
@@ -8635,10 +8835,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdTreeCollapse</name>
-    <message>
-      <source>View</source>
-      <translation>Aanzicht</translation>
-    </message>
     <message>
       <source>Collapse selected item</source>
       <translation>Klap geselecteerde item in</translation>
@@ -8651,10 +8847,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdTreeExpand</name>
     <message>
-      <source>View</source>
-      <translation>Aanzicht</translation>
-    </message>
-    <message>
       <source>Expand selected item</source>
       <translation>Vouw geselecteerde item uit</translation>
     </message>
@@ -8665,10 +8857,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdTreeSelectAllInstances</name>
-    <message>
-      <source>View</source>
-      <translation>Aanzicht</translation>
-    </message>
     <message>
       <source>Select all instances</source>
       <translation>Selecteer alle instanties</translation>
@@ -8681,10 +8869,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdTreeViewActions</name>
     <message>
-      <source>View</source>
-      <translation>Aanzicht</translation>
-    </message>
-    <message>
       <source>TreeView actions</source>
       <translation>StructuurWeergave acties</translation>
     </message>
@@ -8695,10 +8879,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdUndo</name>
-    <message>
-      <source>Edit</source>
-      <translation>Bewerken</translation>
-    </message>
     <message>
       <source>&amp;Undo</source>
       <translation>&amp;Ongedaan maken</translation>
@@ -8711,10 +8891,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdUnitsCalculator</name>
     <message>
-      <source>Tools</source>
-      <translation>Gereedschap</translation>
-    </message>
-    <message>
       <source>&amp;Units calculator...</source>
       <translation>&amp;Eenheden rekenmachine...</translation>
     </message>
@@ -8724,11 +8900,18 @@ Fysiek pad: </translation>
     </message>
   </context>
   <context>
-    <name>StdCmdUserInterface</name>
+    <name>StdCmdUserEditMode</name>
     <message>
-      <source>View</source>
-      <translation>Aanzicht</translation>
+      <source>Edit mode</source>
+      <translation>Bewerk modus</translation>
     </message>
+    <message>
+      <source>Defines behavior when editing an object from tree</source>
+      <translation>Definieert gedrag bij het bewerken van een object vanaf de boom</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdUserInterface</name>
     <message>
       <source>Dock views</source>
       <translation>Weergaves klampen</translation>
@@ -8741,10 +8924,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdViewBottom</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Bottom</source>
       <translation>Onder</translation>
     </message>
@@ -8755,10 +8934,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdViewCreate</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
     <message>
       <source>Create new view</source>
       <translation>Nieuwe weergave aanmaken</translation>
@@ -8771,10 +8946,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdViewDimetric</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Dimetric</source>
       <translation>Dimetrisch</translation>
     </message>
@@ -8785,10 +8956,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdViewExample1</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
     <message>
       <source>Inventor example #1</source>
       <translation>Inventor voorbeeld #1</translation>
@@ -8801,10 +8968,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdViewExample2</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Inventor example #2</source>
       <translation>Inventor bijvoorbeeld #2</translation>
     </message>
@@ -8815,10 +8978,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdViewExample3</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
     <message>
       <source>Inventor example #3</source>
       <translation>Inventor bijvoorbeeld #3</translation>
@@ -8831,10 +8990,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdViewFitAll</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Fit all</source>
       <translation>Passend</translation>
     </message>
@@ -8845,10 +9000,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdViewFitSelection</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
     <message>
       <source>Fit selection</source>
       <translation>Selectie passend</translation>
@@ -8861,10 +9012,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdViewFront</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Front</source>
       <translation>Voorkant</translation>
     </message>
@@ -8875,10 +9022,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdViewHome</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
     <message>
       <source>Home</source>
       <translation>Startpagina</translation>
@@ -8891,10 +9034,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdViewIsometric</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Isometric</source>
       <translation>Isometrisch</translation>
     </message>
@@ -8905,10 +9044,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdViewIvIssueCamPos</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
     <message>
       <source>Issue camera position</source>
       <translation>De camerapositie weergeven</translation>
@@ -8921,10 +9056,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdViewIvStereoInterleavedColumns</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Stereo Interleaved Columns</source>
       <translation>Stereoscopisch, vervlochten kolommen</translation>
     </message>
@@ -8935,10 +9066,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdViewIvStereoInterleavedRows</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
     <message>
       <source>Stereo Interleaved Rows</source>
       <translation>Stereoscopisch, vervlochten regels</translation>
@@ -8951,10 +9078,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdViewIvStereoOff</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Stereo Off</source>
       <translation>Stereo Uit</translation>
     </message>
@@ -8965,10 +9088,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdViewIvStereoQuadBuff</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
     <message>
       <source>Stereo quad buffer</source>
       <translation>Stereoscopisch, quad buffer</translation>
@@ -8981,10 +9100,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdViewIvStereoRedGreen</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Stereo red/cyan</source>
       <translation>Stereo rood/cyaan</translation>
     </message>
@@ -8995,10 +9110,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdViewLeft</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
     <message>
       <source>Left</source>
       <translation>Links</translation>
@@ -9011,10 +9122,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdViewRear</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Rear</source>
       <translation>Achter</translation>
     </message>
@@ -9025,10 +9132,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdViewRestoreCamera</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
     <message>
       <source>Restore saved camera</source>
       <translation>Opgeslagen camera herstellen</translation>
@@ -9041,10 +9144,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdViewRight</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Right</source>
       <translation>Rechts</translation>
     </message>
@@ -9055,10 +9154,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdViewRotateLeft</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
     <message>
       <source>Rotate Left</source>
       <translation>Linksom draaien</translation>
@@ -9071,10 +9166,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdViewRotateRight</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Rotate Right</source>
       <translation>Rechtsom draaien</translation>
     </message>
@@ -9085,10 +9176,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdViewSaveCamera</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
     <message>
       <source>Save current camera</source>
       <translation>Huidige camera opslaan</translation>
@@ -9101,10 +9188,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdViewTop</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Top</source>
       <translation>Boven</translation>
     </message>
@@ -9115,10 +9198,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdViewTrimetric</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
     <message>
       <source>Trimetric</source>
       <translation>Trimetrisch</translation>
@@ -9131,10 +9210,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdViewVR</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>FreeCAD-VR</source>
       <translation>FreeCAD-VR</translation>
     </message>
@@ -9145,10 +9220,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdCmdWhatsThis</name>
-    <message>
-      <source>Help</source>
-      <translation>Help</translation>
-    </message>
     <message>
       <source>&amp;What's This?</source>
       <translation>&amp;Wat is dit?</translation>
@@ -9161,10 +9232,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdWindows</name>
     <message>
-      <source>Window</source>
-      <translation>Venster</translation>
-    </message>
-    <message>
       <source>&amp;Windows...</source>
       <translation>&amp;Vensters...</translation>
     </message>
@@ -9176,20 +9243,12 @@ Fysiek pad: </translation>
   <context>
     <name>StdCmdWindowsMenu</name>
     <message>
-      <source>Window</source>
-      <translation>Venster</translation>
-    </message>
-    <message>
       <source>Activates this window</source>
       <translation>Activeert dit venster</translation>
     </message>
   </context>
   <context>
     <name>StdCmdWorkbench</name>
-    <message>
-      <source>View</source>
-      <translation>Aanzicht</translation>
-    </message>
     <message>
       <source>Workbench</source>
       <translation>Werkbank</translation>
@@ -9202,10 +9261,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdMainFullscreen</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Fullscreen</source>
       <translation>Schermvullend</translation>
     </message>
@@ -9217,10 +9272,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdOrthographicCamera</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Orthographic view</source>
       <translation>Orthogonale weergave</translation>
     </message>
@@ -9231,10 +9282,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdPerspectiveCamera</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
     <message>
       <source>Perspective view</source>
       <translation>Perspectief weergave</translation>
@@ -9254,17 +9301,9 @@ Fysiek pad: </translation>
       <source>Expand active document and collapse all others</source>
       <translation>Actieve document uitvouwen en alle andere documenten invouwen</translation>
     </message>
-    <message>
-      <source>TreeView</source>
-      <translation>StructuurWeergave</translation>
-    </message>
   </context>
   <context>
     <name>StdTreeDrag</name>
-    <message>
-      <source>TreeView</source>
-      <translation>StructuurWeergave</translation>
-    </message>
     <message>
       <source>Initiate dragging</source>
       <translation>Begin slepen</translation>
@@ -9281,20 +9320,12 @@ Fysiek pad: </translation>
       <translation>Alle documenten in de structuurweergave weergeven</translation>
     </message>
     <message>
-      <source>TreeView</source>
-      <translation>StructuurWeergave</translation>
-    </message>
-    <message>
       <source>Multi document</source>
       <translation>Multidocument</translation>
     </message>
   </context>
   <context>
     <name>StdTreePreSelection</name>
-    <message>
-      <source>TreeView</source>
-      <translation>StructuurWeergave</translation>
-    </message>
     <message>
       <source>Pre-selection</source>
       <translation>Voorselectie</translation>
@@ -9307,10 +9338,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdTreeRecordSelection</name>
     <message>
-      <source>TreeView</source>
-      <translation>StructuurWeergave</translation>
-    </message>
-    <message>
       <source>Record selection</source>
       <translation>Selectie opnemen</translation>
     </message>
@@ -9321,10 +9348,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdTreeSelection</name>
-    <message>
-      <source>TreeView</source>
-      <translation>StructuurWeergave</translation>
-    </message>
     <message>
       <source>Go to selection</source>
       <translation>Ga naar selectie</translation>
@@ -9341,20 +9364,12 @@ Fysiek pad: </translation>
       <translation>Geef alleen het actieve document weer in de boomstructuurweergave</translation>
     </message>
     <message>
-      <source>TreeView</source>
-      <translation>StructuurWeergave</translation>
-    </message>
-    <message>
       <source>Single document</source>
       <translation>Enkel document</translation>
     </message>
   </context>
   <context>
     <name>StdTreeSyncPlacement</name>
-    <message>
-      <source>TreeView</source>
-      <translation>StructuurWeergave</translation>
-    </message>
     <message>
       <source>Sync placement</source>
       <translation>Synchroniseer plaatsing</translation>
@@ -9367,10 +9382,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdTreeSyncSelection</name>
     <message>
-      <source>TreeView</source>
-      <translation>StructuurWeergave</translation>
-    </message>
-    <message>
       <source>Sync selection</source>
       <translation>Synchroniseer selectie</translation>
     </message>
@@ -9381,10 +9392,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdTreeSyncView</name>
-    <message>
-      <source>TreeView</source>
-      <translation>StructuurWeergave</translation>
-    </message>
     <message>
       <source>Sync view</source>
       <translation>Synchroniseer weergave</translation>
@@ -9397,20 +9404,12 @@ Fysiek pad: </translation>
   <context>
     <name>StdViewBoxZoom</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Box zoom</source>
       <translation>Vensterzoom</translation>
     </message>
   </context>
   <context>
     <name>StdViewDock</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
     <message>
       <source>Docked</source>
       <translation>Gedokt</translation>
@@ -9423,10 +9422,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Document window</source>
       <translation>Documentvenster</translation>
     </message>
@@ -9437,10 +9432,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdViewFullscreen</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
     <message>
       <source>Fullscreen</source>
       <translation>Schermvullend</translation>
@@ -9453,10 +9444,6 @@ Fysiek pad: </translation>
   <context>
     <name>StdViewScreenShot</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Save picture...</source>
       <translation>Afbeelding opslaan...</translation>
     </message>
@@ -9467,10 +9454,6 @@ Fysiek pad: </translation>
   </context>
   <context>
     <name>StdViewUndock</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
     <message>
       <source>Undocked</source>
       <translation>Afgekoppeld</translation>
@@ -9483,20 +9466,12 @@ Fysiek pad: </translation>
   <context>
     <name>StdViewZoomIn</name>
     <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
-    <message>
       <source>Zoom In</source>
       <translation>Inzoomen</translation>
     </message>
   </context>
   <context>
     <name>StdViewZoomOut</name>
-    <message>
-      <source>Standard-View</source>
-      <translation>Standaardweergave</translation>
-    </message>
     <message>
       <source>Zoom Out</source>
       <translation>Uitzoomen</translation>
@@ -9747,37 +9722,13 @@ Wilt u toch doorgaan?</translation>
       <source>Special Ops</source>
       <translation>Speciale functies</translation>
     </message>
-  </context>
-  <context>
-    <name>testClass</name>
     <message>
-      <source>test</source>
-      <translation>Test</translation>
+      <source>Axonometric</source>
+      <translation>Axonometrisch</translation>
     </message>
     <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;&lt;span style=" font-size:20pt; font-weight:600;"&gt;iisTaskPanel&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;span style=" font-size:12pt;"&gt;Created for Qt 4.3.x&lt;/span&gt;&lt;/p&gt;
-&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;www.ii-system.com&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;"&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; &lt;span style=" font-size:20pt; font-weight:600;"&gt;iisTaskPanel&lt;/span&gt; &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:20pt; font-weight:600;"&gt; &lt;span style=" font-size:12pt;"&gt;Gemaakt voor Qt 4.3.x&lt;/span&gt; &lt;/p&gt;&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt;&lt;/p&gt;&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:600;"&gt; www.ii-system.com &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Choose the style of the Task Panel</source>
-      <translation>Kies de stijl van het taken-panel</translation>
-    </message>
-    <message>
-      <source>Default</source>
-      <translation>Standaard</translation>
-    </message>
-    <message>
-      <source>Windows XP</source>
-      <translation>Windows XP</translation>
+      <source>Link actions</source>
+      <translation>Linkacties</translation>
     </message>
   </context>
 </TS>

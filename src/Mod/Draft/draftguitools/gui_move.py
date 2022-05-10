@@ -165,7 +165,8 @@ class Move(gui_base_original.Modifier):
         else:
             last = self.node[0]
             self.vector = self.point.sub(last)
-            self.move()
+            self.move(self.ui.isCopy.isChecked()
+                      or gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT))
             if gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
                 self.extendedCopy = True
             else:
@@ -173,31 +174,36 @@ class Move(gui_base_original.Modifier):
 
     def set_ghosts(self):
         """Set the ghost to display."""
+        for ghost in self.ghosts:
+            ghost.remove()
         if self.ui.isSubelementMode.isChecked():
-            return self.set_subelement_ghosts()
-        self.ghosts = [trackers.ghostTracker(self.selected_objects)]
+            self.ghosts = self.get_subelement_ghosts()
+        else:
+            self.ghosts = [trackers.ghostTracker(self.selected_objects)]
 
-    def set_subelement_ghosts(self):
-        """Set ghost for the subelements."""
+    def get_subelement_ghosts(self):
+        """Get ghost for the subelements (vertices, edges)."""
         import Part
 
+        ghosts = []
         for object in self.selected_subelements:
             for subelement in object.SubObjects:
-                if (isinstance(subelement, Part.Vertex)
-                        or isinstance(subelement, Part.Edge)):
-                    self.ghosts.append(trackers.ghostTracker(subelement))
+                if isinstance(subelement, (Part.Vertex, Part.Edge)):
+                    ghosts.append(trackers.ghostTracker(subelement))
+        return ghosts
 
-    def move(self):
+    def move(self, is_copy=False):
         """Perform the move of the subelements or the entire object."""
         if self.ui.isSubelementMode.isChecked():
-            self.move_subelements()
+            self.move_subelements(is_copy)
         else:
-            self.move_object()
+            self.move_object(is_copy)
 
-    def move_subelements(self):
+    def move_subelements(self, is_copy):
         """Move the subelements."""
+        Gui.addModule("Draft")
         try:
-            if self.ui.isCopy.isChecked():
+            if is_copy:
                 self.commit(translate("draft", "Copy"),
                             self.build_copy_subelements_command())
             else:
@@ -263,7 +269,7 @@ class Move(gui_base_original.Modifier):
         command.append('FreeCAD.ActiveDocument.recompute()')
         return command
 
-    def move_object(self):
+    def move_object(self, is_copy):
         """Move the object."""
         _doc = 'FreeCAD.ActiveDocument.'
         _selected = self.selected_objects
@@ -277,12 +283,12 @@ class Move(gui_base_original.Modifier):
         _cmd += '('
         _cmd += objects + ', '
         _cmd += DraftVecUtils.toString(self.vector) + ', '
-        _cmd += 'copy=' + str(self.ui.isCopy.isChecked())
+        _cmd += 'copy=' + str(is_copy)
         _cmd += ')'
         _cmd_list = [_cmd,
                      'FreeCAD.ActiveDocument.recompute()']
 
-        _mode = "Copy" if self.ui.isCopy.isChecked() else "Move"
+        _mode = "Copy" if is_copy else "Move"
         self.commit(translate("draft", _mode),
                     _cmd_list)
 
@@ -303,7 +309,7 @@ class Move(gui_base_original.Modifier):
         else:
             last = self.node[-1]
             self.vector = self.point.sub(last)
-            self.move()
+            self.move(self.ui.isCopy.isChecked())
             self.finish()
 
 

@@ -31,14 +31,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include "ContextMenu.h"
-
 #include <QMenu>
 
-#include <Inventor/SoEventManager.h>
-#include <Inventor/scxml/SoScXMLStateMachine.h>
+#include "ContextMenu.h"
+#include "QuarterWidget.h"
 
-#include <Quarter/QuarterWidget.h>
 
 using namespace SIM::Coin3D::Quarter;
 
@@ -58,9 +55,9 @@ ContextMenu::ContextMenu(QuarterWidget * quarterwidget)
 
   SoRenderManager * sorendermanager = quarterwidget->getSoRenderManager();
 
-  QActionGroup * rendermodegroup = NULL;
-  QActionGroup * stereomodegroup = NULL;
-  QActionGroup * transparencytypegroup = NULL;
+  QActionGroup * rendermodegroup = nullptr;
+  QActionGroup * stereomodegroup = nullptr;
+  QActionGroup * transparencytypegroup = nullptr;
 
   foreach (QAction * action, quarterwidget->renderModeActions()) {
     if (!rendermodegroup) {
@@ -138,7 +135,7 @@ ContextMenu::~ContextMenu()
 }
 
 QMenu *
-ContextMenu::getMenu(void) const
+ContextMenu::getMenu() const
 {
   return this->contextmenu;
 }

@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#   include <assert.h>
+#   include <cassert>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -256,7 +256,7 @@ bool PropertyConstraintList::getPyPathValue(const App::ObjectIdentifier &path, P
 
     const ObjectIdentifier::Component & c1 = path.getPropertyComponent(1);
 
-    const Constraint *cstr = 0;
+    const Constraint *cstr = nullptr;
 
     if (c1.isArray())
         cstr = _lValueList[c1.getIndex(_lValueList.size())];
@@ -404,10 +404,10 @@ bool PropertyConstraintList::checkGeometry(const std::vector<Part::Geometry *> &
 bool PropertyConstraintList::checkConstraintIndices(int geomax, int geomin)
 {
     int mininternalgeoid = std::numeric_limits<int>::max();
-    int maxinternalgeoid = Constraint::GeoUndef;
+    int maxinternalgeoid = GeoEnum::GeoUndef;
 
     auto cmin = [] (int previousmin, int cindex) {
-        if( cindex == Constraint::GeoUndef )
+        if( cindex == GeoEnum::GeoUndef )
             return previousmin;
 
         return ( cindex < previousmin )? cindex : previousmin;

@@ -24,23 +24,23 @@ template <class Real>
 MeshSmoother<Real>::MeshSmoother ()
 {
     m_iVQuantity = 0;
-    m_akVertex = 0;
+    m_akVertex = nullptr;
     m_iTQuantity = 0;
-    m_aiIndex = 0;
-    m_akNormal = 0;
-    m_akMean = 0;
-    m_aiNeighborCount = 0;
+    m_aiIndex = nullptr;
+    m_akNormal = nullptr;
+    m_akMean = nullptr;
+    m_aiNeighborCount = nullptr;
 }
 //----------------------------------------------------------------------------
 template <class Real>
 MeshSmoother<Real>::MeshSmoother (int iVQuantity, Vector3<Real>* akVertex,
     int iTQuantity, const int* aiIndex)
 {
-    m_akVertex = 0;
-    m_akNormal = 0;
-    m_aiIndex = 0;
-    m_akMean = 0;
-    m_aiNeighborCount = 0;
+    m_akVertex = nullptr;
+    m_akNormal = nullptr;
+    m_aiIndex = nullptr;
+    m_akMean = nullptr;
+    m_aiNeighborCount = nullptr;
 
     Create(iVQuantity,akVertex,iTQuantity,aiIndex);
 }

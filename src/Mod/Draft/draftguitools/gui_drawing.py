@@ -126,8 +126,8 @@ class Drawing(gui_base_original.Modifier):
                     # oldobj = self.page.getObject(name)
                     # if oldobj:
                     #     self.doc.removeObject(oldobj.Name)
-                    Draft.makeDrawingView(obj, self.page,
-                                          otherProjection=otherProjection)
+                    Draft.make_drawing_view(obj, self.page,
+                                            otherProjection=otherProjection)
             self.doc.recompute()
 
     def createDefaultPage(self):

@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ORIGINFEATURE_H_6ZWJPB5V
-#define ORIGINFEATURE_H_6ZWJPB5V
+#ifndef ORIGINFEATURE_H
+#define ORIGINFEATURE_H
 
 #include "GeoFeature.h"
 
@@ -66,4 +66,4 @@ public:
 
 } //namespace App
 
-#endif /* end of include guard: ORIGINFEATURE_H_6ZWJPB5V */
+#endif /* end of include guard: ORIGINFEATURE_H */

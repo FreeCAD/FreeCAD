@@ -27,8 +27,8 @@ class TestWorkbench ( Workbench ):
     "Test workbench object"
     def __init__(self):
         self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Test/Resources/icons/TestWorkbench.svg"
-        self.__class__.MenuText = "Test framework"
-        self.__class__.ToolTip = "Test framework"
+        self.__class__.MenuText = "Test Framework"
+        self.__class__.ToolTip = "Test Framework"
 
     def Initialize(self):
         import TestGui

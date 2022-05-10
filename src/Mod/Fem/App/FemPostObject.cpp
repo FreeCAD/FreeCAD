@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -44,7 +43,7 @@ PROPERTY_SOURCE(Fem::FemPostObject, App::GeoFeature)
 
 FemPostObject::FemPostObject()
 {
-    ADD_PROPERTY(Data,(0));
+    ADD_PROPERTY(Data,(nullptr));
 }
 
 FemPostObject::~FemPostObject()

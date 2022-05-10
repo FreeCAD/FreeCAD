@@ -20,21 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef __PRECOMPILED_GUI__
 #define __PRECOMPILED_GUI__
 
 #include <FCConfig.h>
-
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define ImageExport __declspec(dllimport)
-# define ImageGuiExport __declspec(dllexport)
-#else // for Linux
-# define ImageExport
-# define ImageGuiExport
-#endif
-
 
 // here get the warnings of too long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
@@ -46,34 +35,39 @@
 
 #ifdef _PreComp_
 
-// Python
-#include <Python.h>
-
 // standard
-#include <iostream>
-#include <assert.h>
+#include <cassert>
 #include <cmath>
+#include <iostream>
+#include <sstream>
 
 // STL
-#include <vector>
-#include <map>
-#include <string>
-#include <list>
-#include <set>
 #include <algorithm>
-#include <stack>
-#include <queue>
 #include <bitset>
+#include <list>
+#include <map>
+#include <queue>
+#include <set>
+#include <stack>
+#include <string>
+#include <vector>
 
 #ifdef FC_OS_WIN32
 # include <windows.h>
 #endif
 
-// Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
-#endif
+// Inventor
+# include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoFaceSet.h>
+# include <Inventor/nodes/SoMaterial.h>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoTexture2.h>
+# include <Inventor/nodes/SoTextureCoordinate2.h>
 
+// Qt Toolkit
+#ifndef __QtAll__
+# include <Gui/QtAll.h>
+#endif
 
 #endif //_PreComp_
 

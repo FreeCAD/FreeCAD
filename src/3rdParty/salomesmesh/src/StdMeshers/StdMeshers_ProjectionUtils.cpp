@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH SMESH : idl implementation based on 'SMESH' unit's calsses
+//  SMESH SMESH : idl implementation based on 'SMESH' unit's classes
 // File      : StdMeshers_ProjectionUtils.cxx
 // Created   : Fri Oct 27 10:24:28 2006
 // Author    : Edward AGAPOV (eap)
@@ -102,11 +102,11 @@ namespace HERE = StdMeshers_ProjectionUtils;
 namespace {
 
   static SMESHDS_Mesh* theMeshDS[2] = { 0, 0 }; // used for debug only
-  inline long shapeIndex(const TopoDS_Shape& S)
+  inline intptr_t shapeIndex(const TopoDS_Shape& S)
   {
     if ( theMeshDS[0] && theMeshDS[1] )
       return max(theMeshDS[0]->ShapeToIndex(S), theMeshDS[1]->ShapeToIndex(S) );
-    return long(S.TShape().operator->());
+    return intptr_t(S.TShape().operator->());
   }
 
   //================================================================================
@@ -2562,7 +2562,7 @@ namespace StdMeshers_ProjectionUtils
 
   //================================================================================
   /*!
-   * \brief Computes transformation beween two sets of 2D points using
+   * \brief Computes transformation between two sets of 2D points using
    *        a least square approximation
    *
    * See "Surface Mesh Projection For Hexahedral Mesh Generation By Sweeping"
@@ -2645,7 +2645,7 @@ namespace StdMeshers_ProjectionUtils
 
   //================================================================================
   /*!
-   * \brief Computes transformation beween two sets of 3D points using
+   * \brief Computes transformation between two sets of 3D points using
    *        a least square approximation
    *
    * See "Surface Mesh Projection For Hexahedral Mesh Generation By Sweeping"

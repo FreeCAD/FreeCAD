@@ -20,11 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -47,7 +43,6 @@
 #include "PropertyConstraintList.h"
 
 
-
 namespace Sketcher {
 extern PyObject* initModule();
 }
@@ -61,7 +56,7 @@ PyMOD_INIT_FUNC(Sketcher)
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
 
     PyObject* sketcherModule = Sketcher::initModule();

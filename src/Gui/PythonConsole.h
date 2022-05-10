@@ -20,13 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_PYTHONCONSOLE_H
 #define GUI_PYTHONCONSOLE_H
 
+#include <Python.h>
 #include "PythonEditor.h"
 
-#include <Base/PyObjectBase.h>
 
 class QPlainTextEdit;
 class QPushButton;
@@ -106,7 +105,7 @@ public:
         Special    = 3
     };
 
-    PythonConsole(QWidget *parent = 0);
+    PythonConsole(QWidget *parent = nullptr);
     ~PythonConsole();
 
     void OnChange( Base::Subject<const char*> &rCaller,const char* rcReason );

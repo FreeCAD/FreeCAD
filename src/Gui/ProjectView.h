@@ -20,17 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_ProjectView_H
 #define GUI_ProjectView_H
 
 #include <QTreeView>
 
-#include <App/Document.h>
-#include <App/Application.h>
-
-#include <Gui/DockWindow.h>
-#include <Gui/Selection.h>
 
 class QFileSystemModel;
 
@@ -45,14 +39,13 @@ class ProjectWidget : public QTreeView
     Q_OBJECT
 
 public:
-    ProjectWidget(QWidget* parent=0);
+    ProjectWidget(QWidget* parent=nullptr);
     ~ProjectWidget();
 
 private:
     QFileSystemModel *fileModel;
 
 };
-
 
 
 }

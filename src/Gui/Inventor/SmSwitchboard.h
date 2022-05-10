@@ -33,11 +33,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <Inventor/nodes/SoGroup.h>
 #include <Inventor/fields/SoMFBool.h>
-#include <Inventor/nodes/SoSubNode.h>
-
-//#include <SmallChange/basic.h>
+#include <Inventor/nodes/SoGroup.h>
 
 
 class GuiExport SmSwitchboard : public SoGroup {
@@ -45,8 +42,8 @@ class GuiExport SmSwitchboard : public SoGroup {
   SO_NODE_HEADER(SmSwitchboard);
 
 public:
-  static void initClass(void);
-  SmSwitchboard(void);
+  static void initClass();
+  SmSwitchboard();
   SmSwitchboard(int numchildren);
 
   SoMFBool enable;
@@ -61,7 +58,7 @@ public:
   virtual void search(SoSearchAction * action);
 
 protected:
-  virtual ~SmSwitchboard(void);
+  virtual ~SmSwitchboard();
 
 };
 

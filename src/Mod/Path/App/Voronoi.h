@@ -22,16 +22,14 @@
 #ifndef PATH_VORONOI_H
 #define PATH_VORONOI_H
 
+#include <climits>
 #include <map>
-#include <string>
+#include <vector>
 #include <Base/BaseClass.h>
 #include <Base/Handle.h>
 #include <Base/Vector3D.h>
 
-#include <vector>
-#include <boost/polygon/point_concept.hpp>
 #include <boost/polygon/polygon.hpp>
-#include <boost/polygon/segment_concept.hpp>
 #include <boost/polygon/voronoi.hpp>
 
 #if (SIZE_MAX == UINT_MAX)
@@ -94,7 +92,7 @@ namespace Path
       segment_type  retrieveSegment(const cell_type *cell) const;
 
       typedef std::map<int, double> angle_map_t;
-      double angleOfSegment(int i, angle_map_t *angle = 0) const;
+      double angleOfSegment(int i, angle_map_t *angle = nullptr) const;
       bool segmentsAreConnected(int i, int j) const;
 
     private:

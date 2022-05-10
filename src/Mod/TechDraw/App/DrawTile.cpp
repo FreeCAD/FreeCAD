@@ -47,7 +47,7 @@ DrawTile::DrawTile(void)
 {
     static const char *group = "Tile";
 
-    ADD_PROPERTY_TYPE(TileParent,(0),group,(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(TileParent,(nullptr),group,(App::PropertyType)(App::Prop_None),
                       "Object to which this tile is attached");
     ADD_PROPERTY_TYPE(TileRow, (0), group, App::Prop_None, "Row in parent object\n 0 for arrow side, -1 for other side");
     ADD_PROPERTY_TYPE(TileColumn, (0), group, App::Prop_None, "Column in parent object");

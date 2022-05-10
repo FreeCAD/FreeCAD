@@ -23,18 +23,17 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <memory>
 # include <cstring>
 # include <sstream>
 #endif
 
-
 #include "Matrix.h"
 #include "Converter.h"
 
+
 using namespace Base;
 
-Matrix4D::Matrix4D (void)
+Matrix4D::Matrix4D ()
 {
     setToUnity();
 }
@@ -91,7 +90,7 @@ Matrix4D::Matrix4D (const Vector3d& rclBase, const Vector3d& rclDir, double fAng
     this->rotLine(rclBase,rclDir,fAngle);
 }
 
-void Matrix4D::setToUnity (void)
+void Matrix4D::setToUnity ()
 {
     dMtrx4D[0][0] = 1.0; dMtrx4D[0][1] = 0.0; dMtrx4D[0][2] = 0.0; dMtrx4D[0][3] = 0.0;
     dMtrx4D[1][0] = 0.0; dMtrx4D[1][1] = 1.0; dMtrx4D[1][2] = 0.0; dMtrx4D[1][3] = 0.0;
@@ -99,12 +98,42 @@ void Matrix4D::setToUnity (void)
     dMtrx4D[3][0] = 0.0; dMtrx4D[3][1] = 0.0; dMtrx4D[3][2] = 0.0; dMtrx4D[3][3] = 1.0;
 }
 
-void Matrix4D::nullify(void)
+bool Matrix4D::isUnity() const
+{
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (i == j) {
+                if (dMtrx4D[i][j] != 1.0)
+                    return false;
+            }
+            else {
+                if (dMtrx4D[i][j] != 0.0)
+                    return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+void Matrix4D::nullify()
 {
     dMtrx4D[0][0] = 0.0; dMtrx4D[0][1] = 0.0; dMtrx4D[0][2] = 0.0; dMtrx4D[0][3] = 0.0;
     dMtrx4D[1][0] = 0.0; dMtrx4D[1][1] = 0.0; dMtrx4D[1][2] = 0.0; dMtrx4D[1][3] = 0.0;
     dMtrx4D[2][0] = 0.0; dMtrx4D[2][1] = 0.0; dMtrx4D[2][2] = 0.0; dMtrx4D[2][3] = 0.0;
     dMtrx4D[3][0] = 0.0; dMtrx4D[3][1] = 0.0; dMtrx4D[3][2] = 0.0; dMtrx4D[3][3] = 0.0;
+}
+
+bool Matrix4D::isNull() const
+{
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (dMtrx4D[i][j] != 0.0)
+                return false;
+        }
+    }
+
+    return true;
 }
 
 double Matrix4D::determinant() const
@@ -123,6 +152,18 @@ double Matrix4D::determinant() const
     double fB5 = dMtrx4D[2][2]*dMtrx4D[3][3] - dMtrx4D[2][3]*dMtrx4D[3][2];
     double fDet = fA0*fB5-fA1*fB4+fA2*fB3+fA3*fB2-fA4*fB1+fA5*fB0;
     return fDet;
+}
+
+double Matrix4D::determinant3() const
+{
+    double a = dMtrx4D[0][0] * dMtrx4D[1][1] * dMtrx4D[2][2];
+    double b = dMtrx4D[0][1] * dMtrx4D[1][2] * dMtrx4D[2][0];
+    double c = dMtrx4D[1][0] * dMtrx4D[2][1] * dMtrx4D[0][2];
+    double d = dMtrx4D[0][2] * dMtrx4D[1][1] * dMtrx4D[2][0];
+    double e = dMtrx4D[1][0] * dMtrx4D[0][1] * dMtrx4D[2][2];
+    double f = dMtrx4D[0][0] * dMtrx4D[2][1] * dMtrx4D[1][2];
+    double det = (a + b + c) - (d + e + f);
+    return det;
 }
 
 void Matrix4D::move (const Vector3f& rclVct)
@@ -436,7 +477,7 @@ void Matrix4D::transform (const Vector3d& rclVct, const Matrix4D& rclMtrx)
     move(rclVct);
 }
 
-void Matrix4D::inverse (void)
+void Matrix4D::inverse ()
 {
   Matrix4D clInvTrlMat, clInvRotMat;
   short  iz, is;
@@ -498,7 +539,8 @@ void Matrix_gauss(Matrix a, Matrix b)
     }
     indxr[i] = irow;
     indxc[i] = icol;
-    if (a[4*icol+icol] == 0.0) return;
+    if (a[4*icol+icol] == 0.0)
+        return;
     pivinv = 1.0/a[4*icol+icol];
     a[4*icol+icol] = 1.0;
     for (l = 0; l < 4; l++)
@@ -526,41 +568,8 @@ void Matrix_gauss(Matrix a, Matrix b)
     }
   }
 }
-/* ------------------------------------------------------------------------
-   Matrix_identity(Matrix a)
 
-   Puts an identity matrix in matrix a
-   ------------------------------------------------------------------------ */
-
-void Matrix_identity (Matrix a)
-{
-  int i;
-  for (i = 0; i < 16; i++) a[i] = 0;
-  a[0] = 1;
-  a[5] = 1;
-  a[10] = 1;
-  a[15] = 1;
-}
-
-/* ------------------------------------------------------------------------
-   Matrix_invert(Matrix a, Matrix inva)
-
-   Inverts Matrix a and places the result in inva.
-   Relies on the Gaussian Elimination code above. (See Numerical recipes).
-   ------------------------------------------------------------------------ */
-void Matrix_invert (Matrix a, Matrix inva)
-{
-
-  double  temp[16];
-  int     i;
-
-  for (i = 0; i < 16; i++)
-    temp[i] = a[i];
-  Matrix_identity(inva);
-  Matrix_gauss(temp,inva);
-}
-
-void  Matrix4D::inverseOrthogonal(void)
+void  Matrix4D::inverseOrthogonal()
 {
     Base::Vector3d c(dMtrx4D[0][3],dMtrx4D[1][3],dMtrx4D[2][3]);
     transpose();
@@ -570,7 +579,7 @@ void  Matrix4D::inverseOrthogonal(void)
     dMtrx4D[2][3] = -c.z; dMtrx4D[3][2] = 0;
 }
 
-void Matrix4D::inverseGauss (void)
+void Matrix4D::inverseGauss ()
 {
   double matrix        [16];
   double inversematrix [16] = { 1 ,0 ,0 ,0 ,
@@ -579,7 +588,6 @@ void Matrix4D::inverseGauss (void)
                                 0 ,0 ,0 ,1 };
   getGLMatrix(matrix);
 
-//  Matrix_invert(matrix, inversematrix);
   Matrix_gauss(matrix,inversematrix);
 
   setGLMatrix(inversematrix);
@@ -621,19 +629,19 @@ void Matrix4D::setGLMatrix (const double dMtrx[16])
       dMtrx4D[iz][is] = dMtrx[ iz + 4*is ];
 }
 
-unsigned long Matrix4D::getMemSpace (void)
+unsigned long Matrix4D::getMemSpace ()
 {
     return sizeof(Matrix4D);
 }
 
-void Matrix4D::Print (void) const
+void Matrix4D::Print () const
 {
     short i;
     for (i = 0; i < 4; i++)
         printf("%9.3f %9.3f %9.3f %9.3f\n", dMtrx4D[i][0], dMtrx4D[i][1], dMtrx4D[i][2], dMtrx4D[i][3]);
 }
 
-void Matrix4D::transpose (void)
+void Matrix4D::transpose ()
 {
   double  dNew[4][4];
 
@@ -649,7 +657,7 @@ void Matrix4D::transpose (void)
 
 
 // write the 12 double of the matrix in a stream
-std::string Matrix4D::toString(void) const
+std::string Matrix4D::toString() const
 {
   std::stringstream str;
   for (int i = 0; i < 4; i++)
@@ -675,7 +683,7 @@ void Matrix4D::fromString(const std::string &str)
 }
 
 // Analyse the a transformation Matrix and describe the transformation
-std::string Matrix4D::analyse(void) const
+std::string Matrix4D::analyse() const
 {
     const double eps=1.0e-06;
     bool hastranslation = (dMtrx4D[0][3] != 0.0 ||
@@ -825,28 +833,46 @@ Matrix4D& Matrix4D::Hat(const Vector3d& rV)
     return *this;
 }
 
-int Matrix4D::hasScale(double tol) const
+ScaleType Matrix4D::hasScale(double tol) const
 {
     // check for uniform scaling
     //
-    // scaling factors are the column vector length. We use square distance and
-    // ignore the actual scaling signess
-    //
+    // For a scaled rotation matrix it matters whether
+    // the scaling was applied from the left or right side.
+    // Only in case of uniform scaling it doesn't make a difference.
     if (tol == 0.0)
         tol = 1e-9;
+
+    // get column vectors
     double dx = Vector3d(dMtrx4D[0][0],dMtrx4D[1][0],dMtrx4D[2][0]).Sqr();
     double dy = Vector3d(dMtrx4D[0][1],dMtrx4D[1][1],dMtrx4D[2][1]).Sqr();
-    if (fabs(dx-dy) > tol) {
-        return -1;
-    }
-    else {
-        double dz = Vector3d(dMtrx4D[0][2],dMtrx4D[1][2],dMtrx4D[2][2]).Sqr();
-        if (fabs(dy-dz) > tol)
-            return -1;
+    double dz = Vector3d(dMtrx4D[0][2],dMtrx4D[1][2],dMtrx4D[2][2]).Sqr();
+    double dxyz = sqrt(dx * dy * dz);
+
+    // get row vectors
+    double du = Vector3d(dMtrx4D[0][0],dMtrx4D[0][1],dMtrx4D[0][2]).Sqr();
+    double dv = Vector3d(dMtrx4D[1][0],dMtrx4D[1][1],dMtrx4D[1][2]).Sqr();
+    double dw = Vector3d(dMtrx4D[2][0],dMtrx4D[2][1],dMtrx4D[2][2]).Sqr();
+    double duvw = sqrt(du * dv * dw);
+
+    double d3 = determinant3();
+
+    // This could be e.g. a projection, a shearing,... matrix
+    if (fabs(dxyz - d3) > tol && fabs(duvw - d3) > tol) {
+        return ScaleType::Other;
     }
 
-    if (fabs(dx-1.0) > tol)
-        return 1;
-    else
-        return 0;
+    if (fabs(duvw - d3) <= tol && (fabs(du - dv) > tol || fabs(dv - dw) > tol)) {
+        return ScaleType::NonUniformLeft;
+    }
+
+    if (fabs(dxyz - d3) <= tol && (fabs(dx - dy) > tol || fabs(dy - dz) > tol)) {
+        return ScaleType::NonUniformRight;
+    }
+
+    if (fabs(dx - 1.0) > tol) {
+        return ScaleType::Uniform;
+    }
+
+    return ScaleType::NoScaling;
 }

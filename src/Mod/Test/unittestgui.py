@@ -29,12 +29,11 @@ __version__ = "$Revision: 2.0 $"[11:-2]
 
 import unittest
 import sys
-import Tkinter
-import tkMessageBox
+import tkinter as tk
+from tkinter import messagebox as tkMessageBox
 import traceback
 
 import string
-tk = Tkinter # Alternative to the messy 'from Tkinter import *' often seen
 
 
 ##############################################################################

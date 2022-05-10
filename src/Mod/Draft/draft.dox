@@ -17,11 +17,11 @@ Part::TopoShape property that most 2D and 3D objects have.
 
 The Draft workbench is similar to the Sketcher workbench in that both
 can be used to create 2D objects in a planar surface. However, there is
-an import difference:
+an important difference:
 - The Sketcher defines a local coordinate system; all geometrical elements
   created within it are referenced to this local origin. In addition,
   the position of those elements, as well as various relationships,
-  are kept through the use of mathematical constraints (verticla, horizontal,
+  are kept through the use of mathematical constraints (vertical, horizontal,
   parallelism, etc.).
 - On the other hand, the elements created with Draft are placed in the global
   coordinate system. The elements in Draft don't have constraints, they are

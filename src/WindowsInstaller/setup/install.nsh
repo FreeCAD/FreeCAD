@@ -20,8 +20,13 @@ Section -ProgramFiles SecProgramFiles
   ${if} $Pointer == "-1"
    StrCpy $INSTDIR "$INSTDIR\${APP_DIR}"
   ${endif}
+  
+  # turn on logging
+  # Note that this can first be done here since the log file is written to $INSTDIR
+  # to $INSTDIR must have a valid path before logging can be turned on
+  LogSet on
 
-   # Install and register the core FreeCAD files
+  # Install and register the core FreeCAD files
   
   # Initializes the plug-ins dir ($PLUGINSDIR) if not already initialized.
   # $PLUGINSDIR is automatically deleted when the installer exits.

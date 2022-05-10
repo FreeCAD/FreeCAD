@@ -26,13 +26,13 @@
 # include <algorithm>
 # include <QFileInfo>
 # include <QInputDialog>
-# include <Python.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 #endif
 
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
 #include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -95,7 +95,7 @@ void CmdPointsImport::activated(int iMsg)
     }
 }
 
-bool CmdPointsImport::isActive(void)
+bool CmdPointsImport::isActive()
 {
     if (getActiveGuiDocument())
         return true;
@@ -138,7 +138,7 @@ void CmdPointsExport::activated(int iMsg)
     }
 }
 
-bool CmdPointsExport::isActive(void)
+bool CmdPointsExport::isActive()
 {
     return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 0;
 }
@@ -175,7 +175,7 @@ void CmdPointsTransform::activated(int iMsg)
     commitCommand();
 }
 
-bool CmdPointsTransform::isActive(void)
+bool CmdPointsTransform::isActive()
 {
     return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 0;
 }
@@ -197,10 +197,16 @@ CmdPointsConvert::CmdPointsConvert()
 void CmdPointsConvert::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    double STD_OCC_TOLERANCE = 1e-6;
+
+    int decimals = Base::UnitsApi::getDecimals();
+    double tolerance_from_decimals = pow(10., -decimals);
+
+    double minimal_tolerance = tolerance_from_decimals < STD_OCC_TOLERANCE ? STD_OCC_TOLERANCE : tolerance_from_decimals;
 
     bool ok;
     double tol = QInputDialog::getDouble(Gui::getMainWindow(), QObject::tr("Distance"),
-        QObject::tr("Enter maximum distance:"), 0.1, 0.05, 10.0, 2, &ok, Qt::MSWindowsFixedSizeDialogHint);
+        QObject::tr("Enter maximum distance:"), 0.1, minimal_tolerance, 10.0, decimals, &ok, Qt::MSWindowsFixedSizeDialogHint);
     if (!ok)
         return;
 
@@ -220,7 +226,7 @@ void CmdPointsConvert::activated(int iMsg)
             std::vector<Base::Vector3d> normals;
             data->getPoints(vertexes, normals, static_cast<float>(tol));
             if (!vertexes.empty()) {
-                Points::Feature* fea = 0;
+                Points::Feature* fea = nullptr;
                 if (vertexes.size() == normals.size()) {
                     fea = static_cast<Points::Feature*>(Base::Type::fromName("Points::FeatureCustom").createInstance());
                     if (!fea) {
@@ -261,7 +267,7 @@ void CmdPointsConvert::activated(int iMsg)
         abortCommand();
 }
 
-bool CmdPointsConvert::isActive(void)
+bool CmdPointsConvert::isActive()
 {
     return getSelection().countObjectsOfType(Base::Type::fromName("App::GeoFeature")) > 0;
 }
@@ -305,7 +311,7 @@ void CmdPointsPolyCut::activated(int iMsg)
     }
 }
 
-bool CmdPointsPolyCut::isActive(void)
+bool CmdPointsPolyCut::isActive()
 {
     // Check for the selected mesh feature (all Mesh types)
     return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 0;
@@ -349,7 +355,7 @@ void CmdPointsMerge::activated(int iMsg)
     updateActive();
 }
 
-bool CmdPointsMerge::isActive(void)
+bool CmdPointsMerge::isActive()
 {
     return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) > 1;
 }
@@ -457,12 +463,12 @@ void CmdPointsStructure::activated(int iMsg)
     updateActive();
 }
 
-bool CmdPointsStructure::isActive(void)
+bool CmdPointsStructure::isActive()
 {
     return getSelection().countObjectsOfType(Points::Feature::getClassTypeId()) == 1;
 }
 
-void CreatePointsCommands(void)
+void CreatePointsCommands()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdPointsImport());

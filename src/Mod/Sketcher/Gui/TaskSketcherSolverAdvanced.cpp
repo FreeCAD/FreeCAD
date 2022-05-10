@@ -61,7 +61,7 @@ using namespace SketcherGui;
 using namespace Gui::TaskView;
 
 TaskSketcherSolverAdvanced::TaskSketcherSolverAdvanced(ViewProviderSketch *sketchView) :
-    TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Advanced solver control"), true, 0),
+    TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Advanced solver control"), true, nullptr),
     sketchView(sketchView),
     ui(new Ui_TaskSketcherSolverAdvanced)
 {

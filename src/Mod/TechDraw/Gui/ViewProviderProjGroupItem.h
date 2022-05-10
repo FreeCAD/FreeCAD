@@ -23,10 +23,10 @@
 #ifndef DRAWINGGUI_VIEWPROVIDERVIEWGROUPITEM_H
 #define DRAWINGGUI_VIEWPROVIDERVIEWGROUPITEM_H
 
-#include "ViewProviderViewPart.h"
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
+
+#include "ViewProviderViewPart.h"
+
 
 namespace TechDrawGui {
 

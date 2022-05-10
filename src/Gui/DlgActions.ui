@@ -55,21 +55,74 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="4" colspan="2">
-       <spacer>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+      <item row="0" column="2" colspan="4">
+       <widget class="QComboBox" name="actionMacros"/>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="TextLabel3">
+        <property name="text">
+         <string>Menu text:</string>
         </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Expanding</enum>
+       </widget>
+      </item>
+      <item row="1" column="2" colspan="4">
+       <widget class="QLineEdit" name="actionMenu"/>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="TextLabel2_2">
+        <property name="text">
+         <string>Tool tip:</string>
         </property>
-        <property name="sizeHint">
-         <size>
-          <width>20</width>
-          <height>20</height>
-         </size>
+       </widget>
+      </item>
+      <item row="2" column="2" colspan="4">
+       <widget class="QLineEdit" name="actionToolTip">
+        <property name="sizePolicy">
+         <sizepolicy>
+          <hsizetype>7</hsizetype>
+          <vsizetype>0</vsizetype>
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
-       </spacer>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLabel" name="TextLabel3_2">
+        <property name="text">
+         <string>Status text:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2" colspan="4">
+       <widget class="QLineEdit" name="actionStatus"/>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLabel" name="TextLabel2">
+        <property name="text">
+         <string>What's this:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2" colspan="4">
+       <widget class="QLineEdit" name="actionWhatsThis"/>
+      </item>
+      <item row="5" column="1">
+       <widget class="QLabel" name="TextLabel1">
+        <property name="text">
+         <string>Accelerator:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2" colspan="4">
+       <widget class="Gui::AccelLineEdit" name="actionAccel"/>
+      </item>
+      <item row="6" column="1">
+       <widget class="QLabel" name="TextLabel5_2">
+        <property name="text">
+         <string>Pixmap</string>
+        </property>
+       </widget>
       </item>
       <item row="6" column="2">
        <widget class="QToolButton" name="buttonChoosePixmap">
@@ -98,75 +151,6 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="1">
-       <widget class="QLabel" name="TextLabel5_2">
-        <property name="text">
-         <string>Pixmap</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="2" colspan="4">
-       <widget class="Gui::AccelLineEdit" name="actionAccel"/>
-      </item>
-      <item row="5" column="1">
-       <widget class="QLabel" name="TextLabel1">
-        <property name="text">
-         <string>Accelerator:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="2" colspan="4">
-       <widget class="QLineEdit" name="actionWhatsThis"/>
-      </item>
-      <item row="4" column="1">
-       <widget class="QLabel" name="TextLabel2">
-        <property name="text">
-         <string>What's this:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="2" colspan="4">
-       <widget class="QLineEdit" name="actionStatus"/>
-      </item>
-      <item row="3" column="1">
-       <widget class="QLabel" name="TextLabel3_2">
-        <property name="text">
-         <string>Status text:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="2" colspan="4">
-       <widget class="QLineEdit" name="actionToolTip">
-        <property name="sizePolicy">
-         <sizepolicy>
-          <hsizetype>7</hsizetype>
-          <vsizetype>0</vsizetype>
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLabel" name="TextLabel2_2">
-        <property name="text">
-         <string>Tool tip:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2" colspan="4">
-       <widget class="QLineEdit" name="actionMenu"/>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLabel" name="TextLabel3">
-        <property name="text">
-         <string>Menu text:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2" colspan="4">
-       <widget class="QComboBox" name="actionMacros"/>
-      </item>
       <item row="6" column="3">
        <widget class="QLabel" name="pixmapLabel">
         <property name="minimumSize">
@@ -186,10 +170,10 @@
         </property>
        </widget>
       </item>
-      <item row="7" column="1">
+      <item row="6" column="4" colspan="2">
        <spacer>
         <property name="orientation">
-         <enum>Qt::Vertical</enum>
+         <enum>Qt::Horizontal</enum>
         </property>
         <property name="sizeType">
          <enum>QSizePolicy::Expanding</enum>
@@ -202,17 +186,17 @@
         </property>
        </spacer>
       </item>
-      <item row="8" column="5">
+      <item row="7" column="1">
        <spacer>
         <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+         <enum>Qt::Vertical</enum>
         </property>
         <property name="sizeType">
          <enum>QSizePolicy::Expanding</enum>
         </property>
         <property name="sizeHint">
          <size>
-          <width>41</width>
+          <width>20</width>
           <height>20</height>
          </size>
         </property>
@@ -239,7 +223,23 @@
         </property>
        </widget>
       </item>
-     </layout>
+     <item row="8" column="5">
+       <spacer>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Expanding</enum>
+        </property>
+        <property name="sizeHint">
+         <size>
+          <width>41</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      </layout>
     </widget>
    </item>
   </layout>

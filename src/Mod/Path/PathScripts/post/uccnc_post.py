@@ -35,12 +35,13 @@ from FreeCAD import Units
 import Path
 import argparse
 import datetime
+
 # import shlex
 from PathScripts import PostUtils
 
 VERSION = "0.0.4"
 
-TOOLTIP = ''' Post processor for UC-CNC.
+TOOLTIP = """ Post processor for UC-CNC.
 
 This is a postprocessor file for the Path workbench. It is used to
 take a pseudo-gcode fragment outputted by a Path object, and output
@@ -55,57 +56,57 @@ This postprocessor was tested on UC-CNC v1.2111, an UC100 and a Stepcraft 420.
 It was tested on FreeCAD v0.17, v0.18 and v0.19
 
 Other (Stepcraft) machines using UC-CNC and UC* controllers should be easy to adapt.
-'''
+"""
 
 # PREAMBLE_ possible values:
 #    Multi line text with gcode. Preamble gcode
 #    The preamble text will appear at the beginning of the GCODE output file.
-PREAMBLE_DEFAULT = '''G17 (Default: XY-plane)
+PREAMBLE_DEFAULT = """G17 (Default: XY-plane)
 G54 (Default: First coordinate system)
 G40 (Default: Cutter radius compensation none)
 G49 (Default: Tool Length Offsets: cancel tool length)
 G90 (Default: Absolute distance mode selection)
 G80 (Cancel canned cycle)
-'''
+"""
 
-PREAMBLE_DEFAULT_NO_COMMENT = '''G17
+PREAMBLE_DEFAULT_NO_COMMENT = """G17
 G54
 G40
 G49
 G90
 G80
-'''
+"""
 
 
 # POSTAMBLE possible values:
 #    Multi line text with gcode. Postable gcode
 #    The postamble text will appear following the last operation.
-POSTAMBLE_DEFAULT = '''M05 (stop spindel)
+POSTAMBLE_DEFAULT = """M05 (stop spindle)
 G17 (Default: XY-plane)
 G54 (Default: First coordinate system)
 G40 (Default: Cutter radius compensation none)
 G90 (Default: Absolute distance mode selection)
 G80 (Cancel canned cycle)
 M30 (Stop program and rewind code)
-'''
+"""
 
-POSTAMBLE_DEFAULT_NO_COMMENT = '''M05
+POSTAMBLE_DEFAULT_NO_COMMENT = """M05
 G17
 G54
 G40
 G90
 G80
 M30
-'''
+"""
 
 # PRE_OPERATION: Pre operation text will be inserted before every operation
-PRE_OPERATION = ''''''
+PRE_OPERATION = """"""
 
 # POST_OPERATION: Post operation text will be inserted after every operation
-POST_OPERATION = ''''''
+POST_OPERATION = """"""
 
 # TOOL_CHANGE: Tool Change commands will be inserted before a tool change
-TOOL_CHANGE = ''''''
+TOOL_CHANGE = """"""
 
 ################################
 # Other configuration settings #
@@ -209,8 +210,8 @@ PRECISION = 3
 # note: G20/G21 are not supported by UC-CNC, units are configured in a program profile.
 #       In code G20/G21 commands are silently ignored by UC-CNC
 #       UNITS is included in the post processor to mirror the profile settings.
-UNITS_US_IMP = 'G20'
-UNITS_METRIC = 'G21'
+UNITS_US_IMP = "G20"
+UNITS_METRIC = "G21"
 UNITS = UNITS_METRIC
 
 # UNIT_FORMAT possible values: (see UNITS)
@@ -220,8 +221,8 @@ UNITS = UNITS_METRIC
 # note: G20/G21 are not supported by UC-CNC, units are configured in a program profile.
 #       In code G20/G21 commands are silently ignored by UC-CNC
 #       UNITS is included in the post processor to mirror the profile settings.
-UNIT_FORMAT_US_IMP = 'in'
-UNIT_FORMAT_METRIC = 'mm'
+UNIT_FORMAT_US_IMP = "in"
+UNIT_FORMAT_METRIC = "mm"
 UNIT_FORMAT = UNIT_FORMAT_METRIC
 
 # UNIT_SPEED_FORMAT possible values: (see UNITS)
@@ -231,8 +232,8 @@ UNIT_FORMAT = UNIT_FORMAT_METRIC
 # note: G20/G21 are not supported by UC-CNC, units are configured in a program profile.
 #       In code G20/G21 commands are silently ignored by UC-CNC
 #       UNITS is included in the post processor to mirror the profile settings.
-UNIT_SPEED_FORMAT_US_IMP = 'in/min'
-UNIT_SPEED_FORMAT_METRIC = 'mm/min'
+UNIT_SPEED_FORMAT_US_IMP = "in/min"
+UNIT_SPEED_FORMAT_METRIC = "mm/min"
 UNIT_SPEED_FORMAT = UNIT_SPEED_FORMAT_METRIC
 
 ##################################################
@@ -241,40 +242,49 @@ UNIT_SPEED_FORMAT = UNIT_SPEED_FORMAT_METRIC
 
 # see: https://docs.python.org/3/library/argparse.html
 parser = argparse.ArgumentParser(prog=__name__, add_help=False)
-parser.add_argument('--name',
-                    help='GCode program name')
-parser.add_argument('--no-header', action='store_true',
-                    help='suppress header output')
-parser.add_argument('--no-comments', action='store_true',
-                    help='suppress comment output')
-parser.add_argument('--line-numbers', action='store_true',
-                    help='suppress prefix with line numbers')
-parser.add_argument('--no-show-editor', action='store_true',
-                    help='don\'t pop up editor before writing output')
-parser.add_argument('--precision', default='3',
-                    help='number of digits of precision, default=3')
-parser.add_argument('--preamble',
-                    help='set commands to be issued before the first command, default="G17\nG90\nG54"')
-parser.add_argument('--postamble',
-                    help='set commands to be issued after the last command, default="M05\nM30"')
-parser.add_argument('--inches', action='store_true',
-                    help='lengths in [in], G20')
-parser.add_argument('--metric', action='store_true',
-                    help='lengths in [mm], G21')
-parser.add_argument('--modal', action='store_true',
-                    help='repeat/suppress repeated command arguments')
-parser.add_argument('--tool-length-offset', action='store_true',
-                    help='suppress tool length offset G43 following tool changes')
-parser.add_argument('--repeat', action='store_true',
-                    help='repeat axis arguments')
+parser.add_argument("--name", help="GCode program name")
+parser.add_argument("--no-header", action="store_true", help="suppress header output")
+parser.add_argument(
+    "--no-comments", action="store_true", help="suppress comment output"
+)
+parser.add_argument(
+    "--line-numbers", action="store_true", help="suppress prefix with line numbers"
+)
+parser.add_argument(
+    "--no-show-editor",
+    action="store_true",
+    help="don't pop up editor before writing output",
+)
+parser.add_argument(
+    "--precision", default="3", help="number of digits of precision, default=3"
+)
+parser.add_argument(
+    "--preamble",
+    help='set commands to be issued before the first command, default="G17\nG90\nG54"',
+)
+parser.add_argument(
+    "--postamble",
+    help='set commands to be issued after the last command, default="M05\nM30"',
+)
+parser.add_argument("--inches", action="store_true", help="lengths in [in], G20")
+parser.add_argument("--metric", action="store_true", help="lengths in [mm], G21")
+parser.add_argument(
+    "--modal", action="store_true", help="repeat/suppress repeated command arguments"
+)
+parser.add_argument(
+    "--tool-length-offset",
+    action="store_true",
+    help="suppress tool length offset G43 following tool changes",
+)
+parser.add_argument("--repeat", action="store_true", help="repeat axis arguments")
 TOOLTIP_ARGS = parser.format_help()
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ in ['__builtin__', 'io']:
+if open.__module__ in ["__builtin__", "io"]:
     pythonopen = open
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ == '__builtin__':
+if open.__module__ == "__builtin__":
     pythonopen = open
 
 # debug option, trace to screen while processing to see where things break up.
@@ -291,29 +301,29 @@ UNIT_DEFAULT_CHANGED = False
 warnings_count = 0
 problems_count = 0
 
-HEADER = '''(Exported by FreeCAD for {})
+HEADER = """(Exported by FreeCAD for {})
 (Post Processor: {}, version {})
 (CAM file: {})
 (Output Time: {})
-'''
+"""
 
 
 def processArguments(argstring):
-    global SHOW_EDITOR              # Show gcode before saving.
-    global PROG_NAME                # Name of the G-Code program
-    global OUTPUT_HEADER            # Use of a document header
-    global OUTPUT_COMMENTS          # (Dont) use comments in output
-    global OUTPUT_LINE_NUMBERS      # (Dont) use line numbers in output
-    global PREAMBLE                 # Preamble gcode
-    global POSTAMBLE                # Postable gcode
-    global MODAL                    # Repeat/suppress repeated command arguments.
-    global USE_TLO                  # Set tool length offset
-    global PRECISION                # Number of digits in feed and axis values
-    global UNITS                    # Code to switch to specific units
-    global UNIT_FORMAT              # Text with specific units
-    global UNIT_SPEED_FORMAT        # Text with specific units over time units
-    global UNIT_DEFAULT_CHANGED     # tracing changes in UNIT settings.
-    global REPEAT_ARGUMENTS         # Repeat or suppress axis values if the same as previous line.
+    global SHOW_EDITOR  # Show gcode before saving.
+    global PROG_NAME  # Name of the G-Code program
+    global OUTPUT_HEADER  # Use of a document header
+    global OUTPUT_COMMENTS  # (Dont) use comments in output
+    global OUTPUT_LINE_NUMBERS  # (Dont) use line numbers in output
+    global PREAMBLE  # Preamble gcode
+    global POSTAMBLE  # Postable gcode
+    global MODAL  # Repeat/suppress repeated command arguments.
+    global USE_TLO  # Set tool length offset
+    global PRECISION  # Number of digits in feed and axis values
+    global UNITS  # Code to switch to specific units
+    global UNIT_FORMAT  # Text with specific units
+    global UNIT_SPEED_FORMAT  # Text with specific units over time units
+    global UNIT_DEFAULT_CHANGED  # tracing changes in UNIT settings.
+    global REPEAT_ARGUMENTS  # Repeat or suppress axis values if the same as previous line.
 
     try:
         UNIT_DEFAULT_CHANGED = False
@@ -381,14 +391,14 @@ def processArguments(argstring):
 
 def append0(line):
     result = line
-    if (trace_gcode):
+    if trace_gcode:
         print("export: >>" + result)
     return result
 
 
 def append(line):
     result = linenumber() + line
-    if (trace_gcode):
+    if trace_gcode:
         print("export: >>" + result)
     return result
 
@@ -407,7 +417,11 @@ def export(objectslist, filename, argstring):
 
     for obj in objectslist:
         if not hasattr(obj, "Path"):
-            print("the object " + obj.Name + " is not a path. Please select only path and Compounds.")
+            print(
+                "the object "
+                + obj.Name
+                + " is not a path. Please select only path and Compounds."
+            )
             return None
 
     print("export: postprocessing...")
@@ -419,16 +433,20 @@ def export(objectslist, filename, argstring):
 
     # write header
     if OUTPUT_HEADER:
-        for line in HEADER.format(GCODE_PROCESSOR,
-                                  __name__, VERSION,
-                                  FreeCAD.ActiveDocument.FileName, str(now)).splitlines(False):
-            if (line):
+        for line in HEADER.format(
+            GCODE_PROCESSOR,
+            __name__,
+            VERSION,
+            FreeCAD.ActiveDocument.FileName,
+            str(now),
+        ).splitlines(False):
+            if line:
                 gcode += append(line + "\n")
 
     # Write the preamble
     # G20/G21 not supported by UC-CNC, *always* report the configured units.
     gcode += append("(Units: '" + UNIT_FORMAT + "' and '" + UNIT_SPEED_FORMAT + "')\n")
-    if (UNIT_DEFAULT_CHANGED):
+    if UNIT_DEFAULT_CHANGED:
         gcode += append("(WARNING: Units default changed, check your UC-CNC profile)\n")
         warnings_count += 1
 
@@ -455,12 +473,12 @@ def export(objectslist, filename, argstring):
         # turn coolant on if required
         if hasattr(obj, "CoolantMode"):
             coolantMode = obj.CoolantMode
-            if coolantMode == 'Mist':
+            if coolantMode == "Mist":
                 if OUTPUT_COMMENTS:
                     gcode += append("M7 (coolant: mist on)\n")
                 else:
                     gcode += append("M7\n")
-            if coolantMode == 'Flood':
+            if coolantMode == "Flood":
                 if OUTPUT_COMMENTS:
                     gcode += append("M8 (coolant: flood on)\n")
                 else:
@@ -480,7 +498,7 @@ def export(objectslist, filename, argstring):
         # turn coolant off if required
         if hasattr(obj, "CoolantMode"):
             coolantMode = obj.CoolantMode
-            if not coolantMode == 'None':
+            if not coolantMode == "None":
                 if OUTPUT_COMMENTS:
                     gcode += append("M9 (coolant: off)\n")
                 else:
@@ -509,12 +527,15 @@ def export(objectslist, filename, argstring):
         final = gcode
 
     if (0 < problems_count) or (0 < warnings_count):
-        print("export: postprocessing: done, warnings: {}, problems: {}, see GCode for details."
-              .format(warnings_count, problems_count))
+        print(
+            "export: postprocessing: done, warnings: {}, problems: {}, see GCode for details.".format(
+                warnings_count, problems_count
+            )
+        )
     else:
         print("export: postprocessing: done (none of the problems detected).")
 
-    if not filename == '-':
+    if not filename == "-":
         print("export: writing to '{}'".format(filename))
         gfile = pythonopen(filename, "w")
         gfile.write(final)
@@ -526,7 +547,7 @@ def export(objectslist, filename, argstring):
 def linenumber():
     global LINENR
 
-    if (LINENR <= 0):
+    if LINENR <= 0:
         LINENR = LINE_NUMBER_START
     if OUTPUT_LINE_NUMBERS is True:
         line = LINENR
@@ -538,11 +559,28 @@ def linenumber():
 def parse(pathobj):
     out = ""
     lastcommand = None
-    precision_string = '.' + str(PRECISION) + 'f'
+    precision_string = "." + str(PRECISION) + "f"
     currLocation = {}  # keep track for no doubles
 
     # The params list control the order of parameters
-    params = ['X', 'Y', 'Z', 'A', 'B', 'C', 'I', 'J', 'K', 'R', 'F', 'S', 'T', 'H', 'L', 'Q']
+    params = [
+        "X",
+        "Y",
+        "Z",
+        "A",
+        "B",
+        "C",
+        "I",
+        "J",
+        "K",
+        "R",
+        "F",
+        "S",
+        "T",
+        "H",
+        "L",
+        "Q",
+    ]
     firstmove = Path.Command("G0", {"X": -1, "Y": -1, "Z": -1, "F": 0.0})
     currLocation.update(firstmove.Parameters)  # set First location Parameters
 
@@ -574,49 +612,67 @@ def parse(pathobj):
                 if command == lastcommand:
                     commandlist.pop(0)
 
-            if c.Name[0] == '(' and not OUTPUT_COMMENTS:  # command is a comment
+            if c.Name[0] == "(" and not OUTPUT_COMMENTS:  # command is a comment
                 continue
 
             # Now add the remaining parameters in order
             for param in params:
                 if param in c.Parameters:
-                    if param == 'F' and (currLocation[param] != c.Parameters[param] or REPEAT_ARGUMENTS):
+                    if param == "F" and (
+                        currLocation[param] != c.Parameters[param] or REPEAT_ARGUMENTS
+                    ):
                         if c.Name not in ["G0", "G00"]:  # No F in G0
-                            speed = Units.Quantity(c.Parameters['F'], FreeCAD.Units.Velocity)
+                            speed = Units.Quantity(
+                                c.Parameters["F"], FreeCAD.Units.Velocity
+                            )
                             if speed.getValueAs(UNIT_SPEED_FORMAT) > 0.0:
                                 commandlist.append(
-                                    param + format(float(speed.getValueAs(UNIT_SPEED_FORMAT)),
-                                                   precision_string))
+                                    param
+                                    + format(
+                                        float(speed.getValueAs(UNIT_SPEED_FORMAT)),
+                                        precision_string,
+                                    )
+                                )
                         else:
                             continue
-                    elif param == 'T':
-                        commandlist.append(param + str(int(c.Parameters['T'])))
-                    elif param == 'H':
-                        commandlist.append(param + str(int(c.Parameters['H'])))
-                    elif param == 'D':
-                        commandlist.append(param + str(int(c.Parameters['D'])))
-                    elif param == 'S':
-                        commandlist.append(param + str(int(c.Parameters['S'])))
+                    elif param == "T":
+                        commandlist.append(param + str(int(c.Parameters["T"])))
+                    elif param == "H":
+                        commandlist.append(param + str(int(c.Parameters["H"])))
+                    elif param == "D":
+                        commandlist.append(param + str(int(c.Parameters["D"])))
+                    elif param == "S":
+                        commandlist.append(param + str(int(c.Parameters["S"])))
                     else:
-                        if (not REPEAT_ARGUMENTS) and (param in currLocation) and (currLocation[param] == c.Parameters[param]):
+                        if (
+                            (not REPEAT_ARGUMENTS)
+                            and (param in currLocation)
+                            and (currLocation[param] == c.Parameters[param])
+                        ):
                             continue
                         else:
-                            pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
-                            commandlist.append(param + format(float(pos.getValueAs(UNIT_FORMAT)),
-                                                              precision_string))
+                            pos = Units.Quantity(
+                                c.Parameters[param], FreeCAD.Units.Length
+                            )
+                            commandlist.append(
+                                param
+                                + format(
+                                    float(pos.getValueAs(UNIT_FORMAT)), precision_string
+                                )
+                            )
 
             # store the latest command
             lastcommand = command
             currLocation.update(c.Parameters)
 
             # Check for Tool Change:
-            if command == 'M6':
+            if command == "M6":
                 for line in TOOL_CHANGE.splitlines(True):
                     out += linenumber() + line
 
                 # add height offset
                 if USE_TLO:
-                    tool_height = '\nG43 H' + str(int(c.Parameters['T']))
+                    tool_height = "\nG43 H" + str(int(c.Parameters["T"]))
                     commandlist.append(tool_height)
 
             if command == "message":
@@ -633,7 +689,7 @@ def parse(pathobj):
                 # append the line to the final output
                 for w in commandlist:
                     out += w.strip() + COMMAND_SPACE
-                if (trace_gcode):
+                if trace_gcode:
                     print("parse : >>{}".format(out))
                 out = out.strip() + "\n"
 

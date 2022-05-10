@@ -17,42 +17,22 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QPushButton" name="enableExtensions">
+      <widget class="QCheckBox" name="enableExtensions">
        <property name="text">
-        <string>Click to disable Extensions</string>
+        <string>Enable Extensions</string>
        </property>
        <property name="checkable">
         <bool>true</bool>
        </property>
        <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="includeEdges">
-       <property name="text">
-        <string>Ignore Edges and Wires</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QLabel" name="enableExtensionsWarning">
-     <property name="text">
-      <string>---</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QWidget" name="extensionEdit" native="true">
+    <widget class="QWidget" name="extensionEdit">
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <property name="leftMargin">
        <number>0</number>
@@ -67,9 +47,19 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QWidget" name="widget_2" native="true">
+       <widget class="QWidget" name="widget_2">
         <layout class="QGridLayout" name="gridLayout">
-         <item row="2" column="1">
+         <item row="2" column="0">
+          <widget class="QCheckBox" name="showExtensions">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected all potential extensions are visualised. Enabled extensions in purple and not enabled extensions in yellow.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="text">
+            <string>Show All</string>
+           </property>
+          </widget>
+         </item>
+        <item row="2" column="1">
           <widget class="QCheckBox" name="extendCorners">
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extend the corner between two edges of a pocket. If selected adjacent edges are combined.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -79,6 +69,13 @@
            </property>
            <property name="checked">
             <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Default Length</string>
            </property>
           </widget>
          </item>
@@ -95,24 +92,7 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string>Default Length</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QCheckBox" name="showExtensions">
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected all potential extensions are visualised. Enabled extensions in purple and not enabled extensions in yellow.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="text">
-            <string>Show All</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+         </layout>
        </widget>
       </item>
       <item>
@@ -138,7 +118,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QWidget" name="widget" native="true">
+       <widget class="QWidget" name="widget">
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
           <widget class="QPushButton" name="buttonEnable">

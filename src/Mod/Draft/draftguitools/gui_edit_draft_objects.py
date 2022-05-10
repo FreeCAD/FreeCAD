@@ -344,7 +344,7 @@ class DraftCircleGuiTools(GuiTools):
                 ]
             elif node_idx == 1:  # user is over arc start point
                 return [
-                    ("mset first angle", lambda: self.handle_set_first_angle(edit_command, obj, node_idx)),
+                    ("set first angle", lambda: self.handle_set_first_angle(edit_command, obj, node_idx)),
                 ]
             elif node_idx == 2:  # user is over arc end point
                 return [

@@ -23,15 +23,14 @@
 #ifndef BASE_IINPUTSOURCE_H
 #define BASE_IINPUTSOURCE_H
 
-
 #include <iosfwd>
 
-#include <xercesc/sax2/Attributes.hpp>
 #include <xercesc/util/BinInputStream.hpp>
-#include <xercesc/util/PlatformUtils.hpp>
-#include <xercesc/util/XercesVersion.hpp>
 #include <xercesc/sax/InputSource.hpp>
 #include <QTextCodec>
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
 
 
 XERCES_CPP_NAMESPACE_BEGIN
@@ -57,7 +56,7 @@ public :
 #else
   virtual XMLFilePos curPos() const;
   virtual XMLSize_t readBytes( XMLByte* const toFill, const XMLSize_t maxToRead );
-  virtual const XMLCh* getContentType() const {return 0;}
+  virtual const XMLCh* getContentType() const {return nullptr;}
 #endif
 
 private :

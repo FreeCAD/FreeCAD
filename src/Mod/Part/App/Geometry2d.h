@@ -43,6 +43,7 @@
 #include <memory>
 #include <Base/Persistence.h>
 #include <Base/Tools2D.h>
+#include <Mod/Part/PartGlobal.h>
 
 namespace Part {
 
@@ -266,6 +267,8 @@ public:
     virtual PyObject *getPyObject(void);
 
     const Handle(Geom2d_Geometry)& handle() const;
+
+    static Base::Vector2d getCircleCenter (const Base::Vector2d &p1, const Base::Vector2d &p2, const Base::Vector2d &p3);
 
 private:
     Handle(Geom2d_Circle) myCurve;

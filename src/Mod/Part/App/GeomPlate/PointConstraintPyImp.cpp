@@ -249,7 +249,7 @@ PyObject* PointConstraintPy::pnt2dOnSurf(PyObject *args)
 
 PyObject *PointConstraintPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int PointConstraintPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

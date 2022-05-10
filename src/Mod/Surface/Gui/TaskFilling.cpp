@@ -31,12 +31,13 @@
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopTools_ListIteratorOfListOfShape.hxx>
 
+#include <Base/Console.h>
+#include <App/Document.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Command.h>
 #include <Gui/SelectionObject.h>
-#include <Base/Console.h>
 #include <Gui/Control.h>
 #include <Gui/BitmapFactory.h>
 #include <Mod/Part/Gui/ViewProvider.h>
@@ -183,7 +184,7 @@ class FillingPanel::ShapeSelection : public Gui::SelectionFilterGate
 {
 public:
     ShapeSelection(FillingPanel::SelectionMode& mode, Surface::Filling* editedObject)
-        : Gui::SelectionFilterGate(static_cast<Gui::SelectionFilter*>(nullptr))
+        : Gui::SelectionFilterGate(nullPointer())
         , mode(mode)
         , editedObject(editedObject)
     {
@@ -532,7 +533,7 @@ void FillingPanel::on_listBoundary_itemDoubleClicked(QListWidgetItem* item)
                 const TopTools_ListOfShape& adj_faces = edge2Face.FindFromKey(edge);
                 if (adj_faces.Extent() > 0) {
                     int n = adj_faces.Extent();
-                    ui->statusLabel->setText(tr("Edge has %n adjacent faces", 0, n));
+                    ui->statusLabel->setText(tr("Edge has %n adjacent faces", nullptr, n));
 
                     // fill up the combo boxes
                     modifyBoundary(true);
@@ -548,7 +549,7 @@ void FillingPanel::on_listBoundary_itemDoubleClicked(QListWidgetItem* item)
                         ui->comboBoxFaces->addItem(text, text.toLatin1());
                     }
 
-                    // activste face and continuity
+                    // activate face and continuity
                     if (data.size() == 5) {
                         int index = ui->comboBoxFaces->findData(data[3]);
                         ui->comboBoxFaces->setCurrentIndex(index);
@@ -858,14 +859,14 @@ TaskFilling::TaskFilling(ViewProviderFilling* vp, Surface::Filling* obj)
     widget1 = new FillingPanel(vp, obj);
     Gui::TaskView::TaskBox* taskbox1 = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Surface_Filling"),
-        widget1->windowTitle(), true, 0);
+        widget1->windowTitle(), true, nullptr);
     taskbox1->groupLayout()->addWidget(widget1);
     Content.push_back(taskbox1);
 
     // second task box
     widget2 = new FillingEdgePanel(vp, obj);
     Gui::TaskView::TaskBox* taskbox2 = new Gui::TaskView::TaskBox(
-        QPixmap(), widget2->windowTitle(), true, 0);
+        QPixmap(), widget2->windowTitle(), true, nullptr);
     taskbox2->groupLayout()->addWidget(widget2);
     Content.push_back(taskbox2);
     taskbox2->hideGroupBox();
@@ -873,7 +874,7 @@ TaskFilling::TaskFilling(ViewProviderFilling* vp, Surface::Filling* obj)
     // third task box
     widget3 = new FillingVertexPanel(vp, obj);
     Gui::TaskView::TaskBox* taskbox3 = new Gui::TaskView::TaskBox(
-        QPixmap(), widget3->windowTitle(), true, 0);
+        QPixmap(), widget3->windowTitle(), true, nullptr);
     taskbox3->groupLayout()->addWidget(widget3);
     Content.push_back(taskbox3);
     taskbox3->hideGroupBox();

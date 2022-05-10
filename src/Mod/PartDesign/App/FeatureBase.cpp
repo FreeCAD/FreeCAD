@@ -26,7 +26,6 @@
 # include <Standard_Failure.hxx>
 #endif
 
-#include <Base/Exception.h>
 #include <App/FeaturePythonPyImp.h>
 #include "Body.h"
 #include "FeatureBase.h"

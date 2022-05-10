@@ -123,7 +123,7 @@ class Draft_SetStyle_TaskPanel:
         return QtGui.QColor.fromRgbF(r,g,b)
 
     def getValues(self):
-        
+
         preset = {}
         preset["LineColor"] = self.form.LineColor.property("color").rgb()<<8
         preset["LineWidth"] = self.form.LineWidth.value()
@@ -143,7 +143,7 @@ class Draft_SetStyle_TaskPanel:
         return preset
 
     def setValues(self,preset):
-        
+
         from PySide import QtCore,QtGui
         self.form.LineColor.setProperty("color",self.getColor(preset.get("LineColor",255)))
         self.form.LineWidth.setValue(preset.get("LineWidth",1))
@@ -169,6 +169,8 @@ class Draft_SetStyle_TaskPanel:
 
         FreeCAD.ParamGet(self.p+"View").SetUnsigned("DefaultShapeLineColor",self.form.LineColor.property("color").rgb()<<8)
         FreeCAD.ParamGet(self.p+"View").SetInt("DefaultShapeLineWidth",self.form.LineWidth.value())
+        FreeCAD.ParamGet(self.p+"View").SetUnsigned("DefaultShapeVertexColor",self.form.LineColor.property("color").rgb()<<8)
+        FreeCAD.ParamGet(self.p+"View").SetInt("DefaultShapePointSize",self.form.LineWidth.value())
         FreeCAD.ParamGet(self.p+"Mod/Draft").SetInt("DefaultDrawStyle",self.form.DrawStyle.currentIndex())
         FreeCAD.ParamGet(self.p+"Mod/Draft").SetInt("DefaultDisplayMode",self.form.DisplayMode.currentIndex())
         FreeCAD.ParamGet(self.p+"View").SetUnsigned("DefaultShapeColor",self.form.ShapeColor.property("color").rgb()<<8)
@@ -192,23 +194,22 @@ class Draft_SetStyle_TaskPanel:
             vobj = obj.ViewObject
             if vobj:
                 if "LineColor" in vobj.PropertiesList:
-                    vobj.LineColor = self.form.LineColor.property("color").rgb()<<8
+                    vobj.LineColor = self.form.LineColor.property("color").getRgbF()
                 if "LineWidth" in vobj.PropertiesList:
                     vobj.LineWidth = self.form.LineWidth.value()
+                if "PointColor" in vobj.PropertiesList:
+                    vobj.PointColor = self.form.LineColor.property("color").getRgbF()
+                if "PointSize" in vobj.PropertiesList:
+                    vobj.PointSize = self.form.LineWidth.value()
                 if "DrawStyle" in vobj.PropertiesList:
                     vobj.DrawStyle = ["Solid","Dashed","Dotted","Dashdot"][self.form.DrawStyle.currentIndex()]
                 if "DisplayMode" in vobj.PropertiesList:
                     dmodes = ["Flat Lines","Wireframe","Shaded","Points"]
                     dm = dmodes[self.form.DisplayMode.currentIndex()]
-                    if hasattr(vobj,"Proxy") and hasattr(vobj.Proxy,"getDisplayModes"):
-                        dmodes = vobj.Proxy.getDisplayModes(vobj)
-                    if dm in dmodes:
-                        try:
-                            vobj.DisplayMode = dm
-                        except Exception:
-                            pass
+                    if dm in vobj.getEnumerationsOfProperty("DisplayMode"):
+                        vobj.DisplayMode = dm
                 if "ShapeColor" in vobj.PropertiesList:
-                    vobj.ShapeColor = self.form.ShapeColor.property("color").rgb()<<8
+                    vobj.ShapeColor = self.form.ShapeColor.property("color").getRgbF()
                 if "Transparency" in vobj.PropertiesList:
                     vobj.Transparency = self.form.Transparency.value()
                 if "FontName" in vobj.PropertiesList:
@@ -218,7 +219,7 @@ class Draft_SetStyle_TaskPanel:
                 if "FontSize" in vobj.PropertiesList:
                     vobj.FontSize = FreeCAD.Units.Quantity(self.form.TextSize.text()).Value
                 if "TextColor" in vobj.PropertiesList:
-                    vobj.TextColor = self.form.TextColor.property("color").rgb()<<8
+                    vobj.TextColor = self.form.TextColor.property("color").getRgbF()
                 if "ArrowType" in vobj.PropertiesList:
                     vobj.ArrowType = ["Dot", "Circle", "Arrow", "Tick", "Tick-2"][self.form.ArrowStyle.currentIndex()]
                 if "ArrowSize" in vobj.PropertiesList:
@@ -233,7 +234,7 @@ class Draft_SetStyle_TaskPanel:
                     vobj.LineSpacing = self.form.LineSpacing.value()
 
     def onApplyDim(self,index):
-        
+
         import Draft
         objs = FreeCAD.ActiveDocument.Objects
         dims = Draft.getObjectsOfType(objs,"LinearDimension")
@@ -243,7 +244,7 @@ class Draft_SetStyle_TaskPanel:
             vobj = obj.ViewObject
             vobj.FontName = self.form.TextFont.currentFont().family()
             vobj.FontSize = FreeCAD.Units.Quantity(self.form.TextSize.text()).Value
-            vobj.LineColor = self.form.TextColor.property("color").rgb()<<8
+            vobj.LineColor = self.form.TextColor.property("color").getRgbF()
             vobj.ArrowType = ["Dot", "Circle", "Arrow", "Tick", "Tick-2"][self.form.ArrowStyle.currentIndex()]
             vobj.ArrowSize = FreeCAD.Units.Quantity(self.form.ArrowSize.text()).Value
             vobj.ShowUnit = self.form.ShowUnit.isChecked()
@@ -255,7 +256,7 @@ class Draft_SetStyle_TaskPanel:
             vobj = obj.ViewObject
             vobj.FontName = self.form.TextFont.currentFont().family()
             vobj.FontSize = FreeCAD.Units.Quantity(self.form.TextSize.text()).Value
-            vobj.TextColor = self.form.TextColor.property("color").rgb()<<8
+            vobj.TextColor = self.form.TextColor.property("color").getRgbF()
             vobj.LineSpacing = self.form.LineSpacing.value()
 
     def onLoadStyle(self,index):
@@ -297,7 +298,7 @@ class Draft_SetStyle_TaskPanel:
         try:
             import json
             from json.decoder import JSONDecodeError
-        except:
+        except Exception:
             return
         if os.path.exists(PRESETPATH):
             with open(PRESETPATH,"r") as f:
@@ -313,7 +314,7 @@ class Draft_SetStyle_TaskPanel:
 
         try:
             import json
-        except:
+        except Exception:
             FreeCAD.Console.PrintError(translate("Draft","Error: json module not found. Unable to save style")+"\n")
             return
         folder = os.path.dirname(PRESETPATH)

@@ -20,15 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
 
 #include "DlgSettingsViewColor.h"
 #include "ui_DlgSettingsViewColor.h"
-#include "PrefWidgets.h"
+
 
 using namespace Gui::Dialog;
 

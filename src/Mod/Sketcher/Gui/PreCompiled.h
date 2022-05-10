@@ -26,21 +26,6 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define SketcherExport    __declspec(dllimport)
-# define PartExport        __declspec(dllimport)
-# define PartGuiExport     __declspec(dllimport)
-# define SketcherGuiExport __declspec(dllexport)
-#else // for Linux
-# define SketcherExport
-# define PartExport
-# define PartAppExport
-# define PartGuiExport
-# define SketcherGuiExport
-#endif
-
-
 #ifdef _MSC_VER
 #   pragma warning(disable : 4005)
 #endif
@@ -52,7 +37,7 @@
 #include <cassert>
 #include <cmath>
 
-#include <stdlib.h>
+#include <cstdlib>
 
 // STL
 #include <vector>
@@ -91,8 +76,8 @@
 #include <TopoDS_Vertex.hxx>
 
 // Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
+#ifndef __QtAll__
+# include <Gui/QtAll.h>
 #endif
 
 # include <QGuiApplication>
@@ -105,6 +90,7 @@
 # include <Gui/InventorAll.h>
 #endif
 
+#include <Inventor/SbImage.h>
 #include <Inventor/sensors/SoSensor.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoFontNameElement.h>
@@ -124,9 +110,6 @@
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoInfo.h>
 #include <Inventor/SbTime.h>
-
-// Python
-#include <Python.h>
 
 
 #endif //_PreComp_

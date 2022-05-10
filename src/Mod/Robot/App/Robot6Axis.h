@@ -29,20 +29,21 @@
 
 #include <Base/Persistence.h>
 #include <Base/Placement.h>
+#include <Mod/Robot/RobotGlobal.h>
 
 namespace Robot
 {
 
 /// Definition of the Axis properties
 struct AxisDefinition {
-    double a;        // a of the Denavit-Hartenberg parameters (mm) 
-    double alpha;    // alpha of the Denavit-Hartenberg parameters (°)
-    double d;        // d of the Denavit-Hartenberg parameters (mm)
-    double theta;    // a of the Denavit-Hartenberg parameters (°) 
-    double rotDir;   // rotational direction (1|-1)
-    double maxAngle; // soft ends + in °
-    double minAngle; // soft ends - in ° 
-    double velocity; // max vlocity of the axle in °/s
+    double a        = 0.0; // a of the Denavit-Hartenberg parameters (mm)
+    double alpha    = 0.0; // alpha of the Denavit-Hartenberg parameters (°)
+    double d        = 0.0; // d of the Denavit-Hartenberg parameters (mm)
+    double theta    = 0.0; // a of the Denavit-Hartenberg parameters (°)
+    double rotDir   = 0.0; // rotational direction (1|-1)
+    double maxAngle = 0.0; // soft ends + in °
+    double minAngle = 0.0; // soft ends - in °
+    double velocity = 0.0; // max vlocity of the axle in °/s
 };
 
 
@@ -56,40 +57,39 @@ public:
     Robot6Axis();
     ~Robot6Axis();
 
-	// from base class
+    // from base class
     virtual unsigned int getMemSize (void) const;
-	virtual void Save (Base::Writer &/*writer*/) const;
+    virtual void Save (Base::Writer &/*writer*/) const;
     virtual void Restore(Base::XMLReader &/*reader*/);
 
-	// interface
+    // interface
     /// set the kinematic parameters of the robot
     void setKinematic(const AxisDefinition KinDef[6]);
     /// read the kinematic parameters of the robot from a file
     void readKinematic(const char * FileName);
     
     /// set the robot to that position, calculates the Axis
-	bool setTo(const Base::Placement &To);
-	bool setAxis(int Axis,double Value);
-	double getAxis(int Axis);
+    bool setTo(const Base::Placement &To);
+    bool setAxis(int Axis,double Value);
+    double getAxis(int Axis);
     double getMaxAngle(int Axis);
     double getMinAngle(int Axis);
-	/// calculate the new Tcp out of the Axis
-	bool calcTcp(void);
-	Base::Placement getTcp(void);
+    /// calculate the new Tcp out of the Axis
+    bool calcTcp(void);
+    Base::Placement getTcp(void);
 
     //void setKinematik(const std::vector<std::vector<float> > &KinTable);
 
 
 protected:
-	KDL::Chain Kinematic;
-	KDL::JntArray Actuall;
-	KDL::JntArray Min;
-	KDL::JntArray Max;
-	KDL::Frame Tcp;
+    KDL::Chain Kinematic;
+    KDL::JntArray Actuall;
+    KDL::JntArray Min;
+    KDL::JntArray Max;
+    KDL::Frame Tcp;
 
-	double Velocity[6];
-	double RotDir  [6];
-
+    double Velocity[6];
+    double RotDir  [6];
 };
 
 } //namespace Part

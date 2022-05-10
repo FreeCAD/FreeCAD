@@ -25,7 +25,6 @@
 #define APP_PROPERTYCONTAINER_H
 
 #include <map>
-#include <climits>
 #include <cstring>
 #include <Base/Persistence.h>
 
@@ -114,7 +113,7 @@ struct AppExport PropertyData
 
   const PropertyData*     parentPropertyData;
 
-  void addProperty(OffsetBase offsetBase,const char* PropName, Property *Prop, const char* PropertyGroup= 0, PropertyType = Prop_None, const char* PropertyDocu= 0 );
+  void addProperty(OffsetBase offsetBase,const char* PropName, Property *Prop, const char* PropertyGroup= nullptr, PropertyType = Prop_None, const char* PropertyDocu= nullptr );
 
   const PropertySpec *findProperty(OffsetBase offsetBase,const char* PropName) const;
   const PropertySpec *findProperty(OffsetBase offsetBase,const Property* prop) const;
@@ -130,8 +129,9 @@ struct AppExport PropertyData
   Property *getPropertyByName(OffsetBase offsetBase,const char* name) const;
   void getPropertyMap(OffsetBase offsetBase,std::map<std::string,Property*> &Map) const;
   void getPropertyList(OffsetBase offsetBase,std::vector<Property*> &List) const;
+  void getPropertyNamedList(OffsetBase offsetBase, std::vector<std::pair<const char*,Property*> > &List) const;
 
-  void merge(PropertyData *other=0) const;
+  void merge(PropertyData *other=nullptr) const;
   void split(PropertyData *other);
 };
 
@@ -168,6 +168,8 @@ public:
   virtual void getPropertyMap(std::map<std::string,Property*> &Map) const;
   /// get all properties of the class (including properties of the parent)
   virtual void getPropertyList(std::vector<Property*> &List) const;
+  /// get all properties with their names, may contain duplicates and aliases
+  virtual void getPropertyNamedList(std::vector<std::pair<const char*,Property*> > &List) const;
   /// set the Status bit of all properties at once
   void setPropertyStatus(unsigned char bit,bool value);
 
@@ -192,12 +194,16 @@ public:
   /// check if the named property is hidden
   bool isHidden(const char *name) const;
   virtual App::Property* addDynamicProperty(
-        const char* type, const char* name=0,
-        const char* group=0, const char* doc=0,
+        const char* type, const char* name=nullptr,
+        const char* group=nullptr, const char* doc=nullptr,
         short attr=0, bool ro=false, bool hidden=false);
 
   DynamicProperty::PropData getDynamicPropertyData(const Property* prop) const {
       return dynamicProps.getDynamicPropertyData(prop);
+  }
+
+  bool changeDynamicProperty(const Property *prop, const char *group, const char *doc) {
+      return dynamicProps.changeDynamicProperty(prop,group,doc);
   }
 
   virtual bool removeDynamicProperty(const char* name) {
@@ -214,6 +220,8 @@ public:
 
   virtual void Save (Base::Writer &writer) const;
   virtual void Restore(Base::XMLReader &reader);
+
+  virtual void editProperty(const char * /*propName*/) {}
 
   const char *getPropertyPrefix() const {
       return _propertyPrefix.c_str();

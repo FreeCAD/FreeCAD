@@ -24,14 +24,15 @@
 #define DAGVIEW_H
 
 #include <memory>
-
 #include <QGraphicsView>
+#include <boost_signals2.hpp>
 
 #include <Gui/DockWindow.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 
 #include "DAGModel.h"
+
 
 namespace Gui
 {
@@ -42,7 +43,7 @@ namespace Gui
     {
       Q_OBJECT
     public:
-      View(QWidget *parentIn = 0);
+      View(QWidget *parentIn = nullptr);
       virtual ~View() override;
       
     public Q_SLOTS:
@@ -56,6 +57,8 @@ namespace Gui
       
       typedef std::map<const Gui::Document*, std::shared_ptr<Model> > ModelMap;
       ModelMap modelMap;
+      boost::signals2::scoped_connection conActive;
+      boost::signals2::scoped_connection conDelete;
     };
     
     //! @brief dock window for DAG viewer
@@ -63,8 +66,8 @@ namespace Gui
     {
         Q_OBJECT
     public:
-        DockWindow(Gui::Document* gDocumentIn = 0, QWidget *parent = 0);
-        ~DockWindow(){};
+        DockWindow(Gui::Document* gDocumentIn = nullptr, QWidget *parent = nullptr);
+        ~DockWindow(){}
 
     private:
         View *dagView;

@@ -31,6 +31,7 @@
 #include <App/PropertyStandard.h>
 #include <App/PropertyGeo.h>
 #include <App/FeaturePython.h>
+#include <Mod/Drawing/DrawingGlobal.h>
 
 
 namespace Drawing

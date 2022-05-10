@@ -20,14 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef FEM_PROPERTYPOSTDATASET_H
 #define FEM_PROPERTYPOSTDATASET_H
 
-#include <App/Property.h>
-#include <vtkSmartPointer.h>
 #include <vtkDataObject.h>
 #include <vtkDataSet.h>
+#include <vtkSmartPointer.h>
+
+#include <App/Property.h>
+#include <Mod/Fem/FemGlobal.h>
+
 
 namespace Fem
 {
@@ -45,6 +47,8 @@ public:
 
     /** @name Getter/setter */
     //@{
+    /// Scale the point coordinates of the data set with factor \a s
+    void scale(double s);
     /// set the dataset
     void setValue(const vtkSmartPointer<vtkDataObject>&);
     /// get the part shape
@@ -76,6 +80,9 @@ public:
 
     /// Get valid paths for this property; used by auto completer
     virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;
+
+private:
+    static void scaleDataObject(vtkDataObject*, double s);
 
 protected:
     void createDataObjectByExternalType(vtkSmartPointer<vtkDataObject> ex);

@@ -23,21 +23,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskFemConstraintContact_H
 #define GUI_TASKVIEW_TaskFemConstraintContact_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-#include <Base/Quantity.h>
+#include <QObject>
 
 #include "TaskFemConstraint.h"
 #include "ViewProviderFemConstraintContact.h"
 
-#include <QObject>
-#include <Base/Console.h>
-#include <App/DocumentObject.h>
 
 class Ui_TaskFemConstraintContact;
 
@@ -47,7 +40,7 @@ class TaskFemConstraintContact : public TaskFemConstraint
     Q_OBJECT
 
 public:
-    TaskFemConstraintContact(ViewProviderFemConstraintContact *ConstraintView,QWidget *parent = 0);
+    TaskFemConstraintContact(ViewProviderFemConstraintContact *ConstraintView,QWidget *parent = nullptr);
     ~TaskFemConstraintContact();
     const std::string getReferences() const;
     double get_Slope()const;

@@ -4,6 +4,9 @@
 // This program is released under the BSD license. See the file COPYING for details.
 
 #include "dxf.h"
+#include <fstream>
+#include <sstream>
+#include <iostream>
 
 using namespace std;
 static const double Pi = 3.14159265358979323846264338327950288419716939937511;
@@ -1044,7 +1047,8 @@ bool CDxfRead::ReadLwPolyLine()
 			case 70:
 				// flags
 				get_line();
-				if(sscanf(m_str, "%d", &flags) != 1)return false;
+				if(sscanf(m_str, "%d", &flags) != 1)
+				    return false;
 				closed = ((flags & 1) != 0);
 				break;
 		        case 62:
@@ -1204,7 +1208,8 @@ bool CDxfRead::ReadPolyLine()
 			case 70:
 				// flags
 				get_line();
-				if(sscanf(m_str, "%d", &flags) != 1)return false;
+				if(sscanf(m_str, "%d", &flags) != 1)
+				    return false;
 				closed = ((flags & 1) != 0);
 				break;
 		        case 62:
@@ -1449,7 +1454,8 @@ bool CDxfRead::ReadLayer()
 			case 62:
 				// layer color ; if negative, layer is off
 				get_line();
-				if(sscanf(m_str, "%d", &aci) != 1)return false;
+				if(sscanf(m_str, "%d", &aci) != 1)
+				    return false;
 				break;
 
 			case 6:	// linetype name
@@ -1473,14 +1479,16 @@ bool CDxfRead::ReadLayer()
 void CDxfRead::DoRead(const bool ignore_errors /* = false */ )
 {
 	m_ignore_errors = ignore_errors;
-	if(m_fail)return;
+	if(m_fail)
+	    return;
 
 	get_line();
 
 	while(!((*m_ifs).eof()))
 	{
 		if (!strcmp( m_str, "$INSUNITS" )){
-			if (!ReadUnits())return;
+			if (!ReadUnits())
+			    return;
 			continue;
 		} // End if - then
 

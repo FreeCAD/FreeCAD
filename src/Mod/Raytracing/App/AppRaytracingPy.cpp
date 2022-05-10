@@ -21,16 +21,12 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
-
-
-#include <Python.h>
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
 
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include "PovTools.h"
 #include "LuxTools.h"
 // automatically generated.....
@@ -39,6 +35,7 @@
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/TopoShapePy.h>
 #include <App/Application.h>
+
 
 using namespace std;
 
@@ -222,7 +219,7 @@ private:
         if (! PyArg_ParseTuple(args.ptr(), "ss",&FileName,&DestDir))
             throw Py::Exception();
 
-        std::string resName = App::GetApplication().getHomePath(); 
+        std::string resName = App::Application::getHomePath();
         resName += "Mod"; 
         resName += PATHSEP ;
         resName += "Raytracing"; 
@@ -244,7 +241,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace Raytracing

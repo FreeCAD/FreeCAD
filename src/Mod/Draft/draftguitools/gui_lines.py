@@ -33,7 +33,6 @@ like Wire, BSpline, and BezCurve.
 
 ## \addtogroup draftguitools
 # @{
-import sys
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
@@ -76,9 +75,6 @@ class Line(gui_base_original.Creator):
             self.ui.wireUi(title=translate("draft", self.featureName), icon=icon)
         else:
             self.ui.lineUi(title=translate("draft", self.featureName), icon=icon)
-        if sys.version_info.major < 3:
-            if isinstance(self.featureName, unicode):
-                self.featureName = self.featureName.encode("utf8")
 
         self.obj = self.doc.addObject("Part::Feature", self.featureName)
         gui_utils.format_object(self.obj)
@@ -137,7 +133,7 @@ class Line(gui_base_original.Creator):
         """
         self.removeTemporaryObject()
         if self.oldWP:
-            App.DraftWorkingPlane = self.oldWP
+            App.DraftWorkingPlane.setFromParameters(self.oldWP)
             if hasattr(Gui, "Snapper"):
                 Gui.Snapper.setGrid()
                 Gui.Snapper.restack()
@@ -171,7 +167,7 @@ class Line(gui_base_original.Creator):
                 rot, sup, pts, fil = self.getStrings()
 
                 _base = DraftVecUtils.toString(self.node[0])
-                _cmd = 'Draft.makeWire'
+                _cmd = 'Draft.make_wire'
                 _cmd += '('
                 _cmd += 'points, '
                 _cmd += 'placement=pl, '
@@ -266,7 +262,7 @@ class Line(gui_base_original.Creator):
                 v = self.node[-2].sub(self.node[-1])
                 v = v.negative()
                 if not self.oldWP:
-                    self.oldWP = App.DraftWorkingPlane.copy()
+                    self.oldWP = App.DraftWorkingPlane.getParameters()
                 App.DraftWorkingPlane.alignToPointAndAxis(p, n, upvec=v)
                 if hasattr(Gui, "Snapper"):
                     Gui.Snapper.setGrid()
@@ -347,7 +343,7 @@ class Wire(Line):
                     Gui.addModule("Draft")
                     # The command to run is built as a series of text strings
                     # to be committed through the `draftutils.todo.ToDo` class
-                    _cmd_list = ['wire = Draft.makeWire([' + pts + '])']
+                    _cmd_list = ['wire = Draft.make_wire([' + pts + '])']
                     _cmd_list.extend(rems)
                     _cmd_list.append('Draft.autogroup(wire)')
                     _cmd_list.append('FreeCAD.ActiveDocument.recompute()')

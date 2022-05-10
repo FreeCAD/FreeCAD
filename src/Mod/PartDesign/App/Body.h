@@ -24,10 +24,8 @@
 #ifndef PARTDESIGN_Body_H
 #define PARTDESIGN_Body_H
 
-#include <App/PropertyStandard.h>
 #include <Mod/Part/App/BodyBase.h>
-
-#include <boost_signals2.hpp>
+#include <Mod/PartDesign/PartDesignGlobal.h>
 
 namespace App {
     class Origin;
@@ -129,13 +127,13 @@ public:
       * Return the solid feature before the given feature, or before the Tip feature
       * That is, sketches and datum features are skipped
       */
-    App::DocumentObject *getPrevSolidFeature(App::DocumentObject *start = NULL);
+    App::DocumentObject *getPrevSolidFeature(App::DocumentObject *start = nullptr);
 
     /**
       * Return the next solid feature after the given feature, or after the Tip feature
       * That is, sketches and datum features are skipped
       */
-    App::DocumentObject *getNextSolidFeature(App::DocumentObject* start = NULL);
+    App::DocumentObject *getNextSolidFeature(App::DocumentObject* start = nullptr);
 
     // a body is solid if it has features that are solid according to member isSolidFeature.
     bool isSolid(void);

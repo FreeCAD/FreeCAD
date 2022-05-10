@@ -153,7 +153,7 @@ void OffsetCurvePy::setBasisCurve(Py::Object arg)
 
 PyObject *OffsetCurvePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int OffsetCurvePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

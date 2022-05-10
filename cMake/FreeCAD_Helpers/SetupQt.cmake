@@ -3,7 +3,7 @@
 find_package(Qt5Core REQUIRED)
 set(CMAKE_AUTOMOC TRUE)
 
-# For FreeCAD 0.20, pegged to Ubutu 18.04 LTS:
+# For FreeCAD 0.20, pegged to Ubuntu 18.04 LTS:
 if(${Qt5Core_VERSION} VERSION_LESS "5.9")
     message (FATAL_ERROR "FreeCAD v0.20 requires Qt5 5.9 or later")
 endif()
@@ -23,11 +23,14 @@ if(BUILD_GUI)
         elseif(${FREECAD_USE_QTWEBMODULE} MATCHES "Qt WebEngine")
             find_package(Qt5WebEngineWidgets REQUIRED)
         else() # Automatic
-            find_package(Qt5WebKitWidgets QUIET)
-            if(NOT Qt5WebKitWidgets_FOUND)
-                find_package(Qt5WebEngineWidgets REQUIRED)
+            find_package(Qt5WebEngineWidgets QUIET)
+            if(NOT Qt5WebEngineWidgets_FOUND)
+                find_package(Qt5WebKitWidgets REQUIRED)
             endif()
         endif()
+    endif()
+    if(BUILD_DESIGNER_PLUGIN)
+        find_package(Qt5Designer REQUIRED)
     endif()
     if(MSVC)
       find_package(Qt5WinExtras QUIET)

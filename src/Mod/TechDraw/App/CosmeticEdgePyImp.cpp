@@ -61,7 +61,7 @@ PyObject *CosmeticEdgePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  
     // never create such objects with the constructor
     PyErr_SetString(PyExc_RuntimeError,
         "You cannot create an instance of the abstract class 'CosmeticEdge'.");
-    return 0;
+    return nullptr;
 }
 
 // constructor method
@@ -74,17 +74,17 @@ int CosmeticEdgePy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 PyObject* CosmeticEdgePy::clone(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     TechDraw::CosmeticEdge* geom = this->getCosmeticEdgePtr();
     PyTypeObject* type = this->GetType();
-    PyObject* cpy = 0;
+    PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, 0);
+        cpy = type->tp_new(type, this, nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_TypeError, "failed to create clone of CosmeticEdge");
-        return 0;
+        return nullptr;
     }
 
     TechDraw::CosmeticEdgePy* geompy = static_cast<TechDraw::CosmeticEdgePy*>(cpy);
@@ -101,17 +101,17 @@ PyObject* CosmeticEdgePy::clone(PyObject *args)
 PyObject* CosmeticEdgePy::copy(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     TechDraw::CosmeticEdge* geom = this->getCosmeticEdgePtr();
     PyTypeObject* type = this->GetType();
-    PyObject* cpy = 0;
+    PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, 0);
+        cpy = type->tp_new(type, this, nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_TypeError, "failed to create copy of CosmeticEdge");
-        return 0;
+        return nullptr;
     }
 
     TechDraw::CosmeticEdgePy* geompy = static_cast<TechDraw::CosmeticEdgePy*>(cpy);
@@ -193,7 +193,7 @@ Py::String CosmeticEdgePy::getTag(void) const
 //      py-aware class.
 //Py::Object CosmeticEdgePy::getGeometry(void) const
 //{
-////    TechDraw::BaseGeom* bg = getCosmeticEdgePtr()->m_geometry;
+////    TechDraw::BaseGeomPtr bg = getCosmeticEdgePtr()->m_geometry;
 //    Base::Console().Message("Not implemented yet");
 //    return Py::asObject(Py_None);
 //}
@@ -239,10 +239,10 @@ void CosmeticEdgePy::setStart(Py::Object arg)
     gp_Pnt gp1(pNew.x,pNew.y,pNew.z);
     gp_Pnt gp2(pEnd.x,pEnd.y,pEnd.z);
     TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp1, gp2);
-    auto oldGeom = getCosmeticEdgePtr()->m_geometry;
+//    auto oldGeom = getCosmeticEdgePtr()->m_geometry;
     getCosmeticEdgePtr()->m_geometry = TechDraw::BaseGeom::baseFactory(e);
     getCosmeticEdgePtr()->permaStart = pNew;
-    delete oldGeom;
+//    delete oldGeom;
 }
 
 Py::Object CosmeticEdgePy::getEnd(void) const
@@ -273,10 +273,10 @@ void CosmeticEdgePy::setEnd(Py::Object arg)
     gp_Pnt gp1(pNew.x,pNew.y,pNew.z);
     gp_Pnt gp2(pStart.x,pStart.y,pStart.z);
     TopoDS_Edge e = BRepBuilderAPI_MakeEdge(gp2, gp1);
-    auto oldGeom = getCosmeticEdgePtr()->m_geometry;
+//    auto oldGeom = getCosmeticEdgePtr()->m_geometry;
     getCosmeticEdgePtr()->m_geometry = TechDraw::BaseGeom::baseFactory(e);
     getCosmeticEdgePtr()->permaEnd = pNew;
-    delete oldGeom;
+//    delete oldGeom;
 }
 
 Py::Object CosmeticEdgePy::getRadius(void) const
@@ -316,9 +316,10 @@ void CosmeticEdgePy::setRadius(Py::Object arg)
     }
 
     getCosmeticEdgePtr()->permaRadius = r;
-    auto oldGeom = getCosmeticEdgePtr()->m_geometry;
-    getCosmeticEdgePtr()->m_geometry = new TechDraw::Circle(getCosmeticEdgePtr()->permaStart, r);
-    delete oldGeom;
+//    auto oldGeom = getCosmeticEdgePtr()->m_geometry;
+    getCosmeticEdgePtr()->m_geometry =
+                std::make_shared<TechDraw::Circle> (getCosmeticEdgePtr()->permaStart, r);
+//    delete oldGeom;
 }
 
 Py::Object CosmeticEdgePy::getCenter(void) const
@@ -361,7 +362,7 @@ void CosmeticEdgePy::setCenter(Py::Object arg)
 
     pNew = DrawUtil::invertY(pNew);
     auto oldGeom = getCosmeticEdgePtr()->m_geometry;
-    TechDraw::Circle* oldCircle = dynamic_cast<TechDraw::Circle*>(oldGeom);
+    TechDraw::CirclePtr oldCircle = std::dynamic_pointer_cast<TechDraw::Circle> (oldGeom);
     if (oldCircle == nullptr) {
         throw Py::TypeError("Edge geometry is not a circle");
     }
@@ -369,13 +370,14 @@ void CosmeticEdgePy::setCenter(Py::Object arg)
     getCosmeticEdgePtr()->permaStart = pNew;
     getCosmeticEdgePtr()->permaEnd = pNew;
     getCosmeticEdgePtr()->permaRadius = oldCircle->radius;
-    getCosmeticEdgePtr()->m_geometry = new TechDraw::Circle(getCosmeticEdgePtr()->permaStart, oldCircle->radius);
-    delete oldGeom;
+    getCosmeticEdgePtr()->m_geometry =
+            std::make_shared<TechDraw::Circle> (getCosmeticEdgePtr()->permaStart, oldCircle->radius);
+//    delete oldGeom;
 }
 
 PyObject *CosmeticEdgePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int CosmeticEdgePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

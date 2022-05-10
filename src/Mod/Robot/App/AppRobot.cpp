@@ -20,11 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -45,6 +41,7 @@
 #include "Edge2TracObject.h"
 #include "TrajectoryCompound.h"
 #include "TrajectoryDressUpObject.h"
+
 
 namespace Robot {
 class Module : public Py::ExtensionModule<Module>
@@ -88,7 +85,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace Robot
@@ -103,10 +100,10 @@ PyMOD_INIT_FUNC(Robot)
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
 
-    PyObject* robotModule = (new Robot::Module())->module().ptr();
+    PyObject* robotModule = Robot::initModule();
     Base::Console().Log("Loading Robot module... done\n");
 
     // Add Types to module

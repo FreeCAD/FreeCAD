@@ -20,28 +20,30 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <boost_signals2.hpp>
 # include <boost_bind_bind.hpp>
-# include <qapplication.h>
-# include <qregexp.h>
+# include <QApplication>
+# include <QRegExp>
 # include <QEvent>
 # include <QCloseEvent>
 # include <QMdiSubWindow>
-#include <iostream>
+# include <QPrinter>
+# include <QPrinterInfo>
 #endif
 
+#include <Base/Interpreter.h>
+#include <App/Document.h>
 
 #include "MDIView.h"
 #include "MDIViewPy.h"
-#include "Command.h"
-#include "Document.h"
 #include "Application.h"
+#include "Document.h"
 #include "MainWindow.h"
 #include "ViewProviderDocumentObject.h"
+
 
 using namespace Gui;
 namespace bp = boost::placeholders;
@@ -116,7 +118,7 @@ void MDIView::deleteSelf()
     // detach from document
     if (_pcDocument)
         onClose();
-    _pcDocument = 0;
+    _pcDocument = nullptr;
 }
 
 PyObject* MDIView::getPyObject()
@@ -183,6 +185,9 @@ bool MDIView::onHasMsg(const char* pMsg) const
 
 bool MDIView::canClose(void)
 {
+    if (getAppDocument() && getAppDocument()->testStatus(App::Document::TempDoc))
+        return true;
+
     if (!bIsPassive && getGuiDocument() && getGuiDocument()->isLastView()) {
         this->setFocus(); // raises the view to front
         return (getGuiDocument()->canClose(true,true));
@@ -239,6 +244,60 @@ void MDIView::printPdf()
 void MDIView::printPreview()
 {
     std::cerr << "Printing preview not implemented for " << this->metaObject()->className() << std::endl;
+}
+
+void MDIView::savePrinterSettings(QPrinter* printer)
+{
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Printer");
+    hGrp = hGrp->GetGroup(printer->printerName().toUtf8());
+
+    hGrp->SetInt("DefaultPageSize", printer->pageLayout().pageSize().id());
+    hGrp->SetInt("DefaultPageOrientation", static_cast<int>(printer->pageLayout().orientation()));
+    hGrp->SetInt("DefaultColorMode", static_cast<int>(printer->colorMode()));
+}
+
+void MDIView::restorePrinterSettings(QPrinter* printer)
+{
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Printer");
+    hGrp = hGrp->GetGroup(printer->printerName().toUtf8());
+
+    QPrinterInfo info = QPrinterInfo::defaultPrinter();
+    int initialDefaultPageSize = info.isNull() ? QPageSize::A4 : info.defaultPageSize().id();
+    int defaultPageSize = hGrp->GetInt("DefaultPageSize", initialDefaultPageSize);
+    int defaultPageOrientation = hGrp->GetInt("DefaultPageOrientation", QPageLayout::Portrait);
+    int defaultColorMode = hGrp->GetInt("DefaultColorMode", QPrinter::ColorMode::Color);
+
+    printer->setPageSize(QPageSize(static_cast<QPageSize::PageSizeId>(defaultPageSize)));
+    printer->setPageOrientation(static_cast<QPageLayout::Orientation>(defaultPageOrientation));
+    printer->setColorMode(static_cast<QPrinter::ColorMode>(defaultColorMode));
+}
+
+QStringList MDIView::undoActions() const
+{
+    QStringList actions;
+    Gui::Document* doc = getGuiDocument();
+    if (doc) {
+        std::vector<std::string> vecUndos = doc->getUndoVector();
+        for (std::vector<std::string>::iterator i = vecUndos.begin(); i != vecUndos.end(); ++i) {
+            actions << QCoreApplication::translate("Command", i->c_str());
+        }
+    }
+
+    return actions;
+}
+
+QStringList MDIView::redoActions() const
+{
+    QStringList actions;
+    Gui::Document* doc = getGuiDocument();
+    if (doc) {
+        std::vector<std::string> vecRedos = doc->getRedoVector();
+        for (std::vector<std::string>::iterator i = vecRedos.begin(); i != vecRedos.end(); ++i) {
+            actions << QCoreApplication::translate("Command", i->c_str());
+        }
+    }
+
+    return actions;
 }
 
 QSize MDIView::minimumSizeHint () const
@@ -304,7 +363,7 @@ void MDIView::setCurrentViewMode(ViewMode mode)
                     if (qobject_cast<QMdiSubWindow*>(this->parentWidget()))
                         getMainWindow()->removeWindow(this,false);
                     setWindowFlags(windowFlags() | Qt::Window);
-                    setParent(0, Qt::Window | Qt::WindowTitleHint | Qt::WindowSystemMenuHint |
+                    setParent(nullptr, Qt::Window | Qt::WindowTitleHint | Qt::WindowSystemMenuHint |
                                  Qt::WindowMinMaxButtonsHint);
                     if (this->wstate & Qt::WindowMaximized)
                         showMaximized();
@@ -334,7 +393,7 @@ void MDIView::setCurrentViewMode(ViewMode mode)
                     if (qobject_cast<QMdiSubWindow*>(this->parentWidget()))
                         getMainWindow()->removeWindow(this,false);
                     setWindowFlags(windowFlags() | Qt::Window);
-                    setParent(0, Qt::Window);
+                    setParent(nullptr, Qt::Window);
                     showFullScreen();
                 }
                 else if (this->currentMode == TopLevel) {

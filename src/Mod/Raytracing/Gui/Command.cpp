@@ -31,16 +31,18 @@
 # include <Inventor/SoInput.h>
 # include <Inventor/nodes/SoNode.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
-# include <vector>
 # include <Inventor/nodes/SoPerspectiveCamera.h>
 # include <QApplication>
 # include <QDir>
 # include <QFile>
 # include <QFileInfo>
 # include <QMessageBox>
+# include <sstream>
+# include <vector>
 #endif
 
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Base/Exception.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -55,6 +57,7 @@
 #include <Gui/View.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
 
@@ -89,7 +92,7 @@ CmdRaytracingWriteCamera::CmdRaytracingWriteCamera()
 
 void CmdRaytracingWriteCamera::activated(int)
 {
-    const char* ppReturn=0;
+    const char* ppReturn=nullptr;
     getGuiApplication()->sendMsgToActiveView("GetCamera",&ppReturn);
     if (ppReturn) {
         std::string str(ppReturn);
@@ -193,7 +196,8 @@ void CmdRaytracingWritePart::activated(int)
     // name of the objects in the pov file
     std::string Name = "Part";
     std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Part::Feature::getClassTypeId());
-    if (obj.empty()) return;
+    if (obj.empty())
+        return;
 
     std::stringstream out;
     //Raytracing.writePartFile(App.document().GetActiveFeature().getShape())
@@ -228,7 +232,7 @@ CmdRaytracingWriteView::CmdRaytracingWriteView()
 
 void CmdRaytracingWriteView::activated(int)
 {
-    const char* ppReturn=0;
+    const char* ppReturn=nullptr;
     Gui::Application::Instance->sendMsgToActiveView("GetCamera",&ppReturn);
     if (ppReturn) {
         std::string str(ppReturn);
@@ -325,7 +329,7 @@ CmdRaytracingNewPovrayProject::CmdRaytracingNewPovrayProject()
 
 void CmdRaytracingNewPovrayProject::activated(int iMsg)
 {
-    const char* ppReturn=0;
+    const char* ppReturn=nullptr;
     Gui::Application::Instance->sendMsgToActiveView("GetCamera",&ppReturn);
     if (ppReturn) {
         std::string str(ppReturn);
@@ -638,7 +642,7 @@ void CmdRaytracingRender::activated(int)
         }
     }
 
-    std::vector<Gui::SelectionObject> Sel = getSelection().getSelectionEx(0, renderType);
+    std::vector<Gui::SelectionObject> Sel = getSelection().getSelectionEx(nullptr, renderType);
 
     if (renderType == Raytracing::RayProject::getClassTypeId()) {
         Raytracing::RayProject* proj = static_cast<Raytracing::RayProject*>(Sel[0].getObject());
@@ -678,11 +682,8 @@ void CmdRaytracingRender::activated(int)
             }
             openCommand("Render project");
             int width = hGrp->GetInt("OutputWidth", 800);
-            std::stringstream w;
-            w << width;
             int height = hGrp->GetInt("OutputHeight", 600);
-            std::stringstream h;
-            h << height;
+
             std::string par = hGrp->GetASCII("OutputParameters", "+P +A");
             doCommand(Doc,"PageFile = open(App.activeDocument().%s.PageResult,'rb')",Sel[0].getFeatName());
             doCommand(Doc,"import os,subprocess,tempfile");
@@ -691,12 +692,30 @@ void CmdRaytracingRender::activated(int)
             doCommand(Doc,"f.write(PageFile.read())");
             doCommand(Doc,"f.close()");
             doCommand(Doc,"os.close(fd)");
+
+            renderer = Base::Tools::escapeEncodeFilename(renderer);
+            std::stringstream str;
+            str << "proc = subprocess.Popen(["
+                << "\"" << renderer << "\", ";
+            std::istringstream istr(par);
+            std::string s;
+            while (std::getline(istr, s, ' ')) {
+                s = Base::Tools::escapeEncodeString(s);
+                str << "\"" << s << "\", ";
+            }
+
+            str << "\"+W" << width  << "\", "
+                << "\"+H" << height << "\", "
+                << "\"+O" << imageFile.data() << "\"";
 #ifdef FC_OS_WIN32
             // http://povray.org/documentation/view/3.6.1/603/
-            doCommand(Doc,"subprocess.call('\"%s\" %s +W%s +H%s +O\"%s\" /EXIT /RENDER '+TempFile)",renderer.c_str(),par.c_str(),w.str().c_str(),h.str().c_str(),imageFile.data());
-#else
-            doCommand(Doc,"subprocess.call('\"%s\" %s +W%s +H%s +O\"%s\" '+TempFile,shell=True)",renderer.c_str(),par.c_str(),w.str().c_str(),h.str().c_str(),imageFile.data());
+            str << ", \"/EXIT\", \"/RENDER\"";
 #endif
+            str << ", TempFile])\n"
+                << "proc.communicate()";
+
+            doCommand(Doc, str.str().c_str());
+
             if (utf8Name != imageFile) {
                 imageFile = utf8Name;
                 if (QFile::exists(fn))
@@ -756,7 +775,7 @@ CmdRaytracingNewLuxProject::CmdRaytracingNewLuxProject()
 
 void CmdRaytracingNewLuxProject::activated(int iMsg)
 {
-    const char* ppReturn=0;
+    const char* ppReturn=nullptr;
     Gui::Application::Instance->sendMsgToActiveView("GetCamera",&ppReturn);
     if (ppReturn) {
         std::string str(ppReturn);

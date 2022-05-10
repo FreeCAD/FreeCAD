@@ -40,7 +40,7 @@ using namespace TestGui;
 
 /* TRANSLATOR TestGui::UnitTestDialog */
 
-UnitTestDialog* UnitTestDialog::_instance=0;
+UnitTestDialog* UnitTestDialog::_instance=nullptr;
 
 /**
  * Creates and returns the one and only instance of this dialog.
@@ -58,9 +58,9 @@ UnitTestDialog* UnitTestDialog::instance()
  */
 void UnitTestDialog::destruct ()
 {
-    if (_instance != 0) {
+    if (_instance != nullptr) {
         UnitTestDialog *pTmp = _instance;
-        _instance = 0;
+        _instance = nullptr;
         delete pTmp;
     }
 }
@@ -70,7 +70,7 @@ void UnitTestDialog::destruct ()
  */
 bool UnitTestDialog::hasInstance()
 {
-    return _instance != 0;
+    return _instance != nullptr;
 }
 
 /**
@@ -139,6 +139,9 @@ void UnitTestDialog::on_treeViewFailure_itemDoubleClicked(QTreeWidgetItem * item
         lines.erase(lines.begin()+20, lines.end());
         text = lines.join(QLatin1String("\n"));
     }
+    if (text.size() > 1000) {
+        text = text.left(1000);
+    }
 
     msgBox.setText(text);
     msgBox.exec();
@@ -191,6 +194,12 @@ void UnitTestDialog::on_startButton_clicked()
     }
     catch (const Base::Exception& e) {
         showErrorDialog("Exception", e.what());
+    }
+    catch (const std::exception& e) {
+        showErrorDialog("C++ standard exception", e.what());
+    }
+    catch (...) {
+        showErrorDialog("Unknown exception", "Unknown exception raised");
     }
     ui->startButton->setEnabled(true);
 }

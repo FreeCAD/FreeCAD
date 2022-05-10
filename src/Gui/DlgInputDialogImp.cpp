@@ -92,7 +92,7 @@ void DlgInputDialogImp::setType( DlgInputDialogImp::Type t )
 {
     inputtype = t;
 
-    QWidget *input = 0;
+    QWidget *input = nullptr;
     switch (inputtype)
     {
     case LineEdit:

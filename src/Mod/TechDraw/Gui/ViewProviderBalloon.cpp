@@ -30,28 +30,16 @@
 # include <QMenu>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Console.h>
-#include <Base/Parameter.h>
-#include <Base/Exception.h>
-#include <Base/Sequencer.h>
-#include <App/Application.h>
-#include <App/Document.h>
 #include <App/DocumentObject.h>
-
-#include <Gui/Application.h>
 #include <Gui/ActionFunction.h>
-#include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProviderDocumentObject.h>
 
 #include <Mod/TechDraw/App/LineGroup.h>
 
 #include "PreferencesGui.h"
+#include "QGIViewBalloon.h"
 #include "TaskBalloon.h"
 #include "ViewProviderBalloon.h"
 
@@ -120,17 +108,6 @@ void ViewProviderBalloon::setupContextMenu(QMenu* menu, QObject* receiver, const
     ViewProviderDrawingView::setupContextMenu(menu, receiver, member);
 }
 
-void ViewProviderBalloon::startDefaultEditMode()
-{
-    QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
-    Gui::Command::openCommand(text.toUtf8());
-
-    Gui::Document* document = this->getDocument();
-    if (document) {
-        document->setEdit(this, ViewProvider::Default);
-    }
-}
-
 bool ViewProviderBalloon::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default ) {
@@ -194,6 +171,9 @@ void ViewProviderBalloon::handleChangedPropertyType(Base::XMLReader &reader, con
         // restore the PropertyFloat to be able to set its value
         LineWidthProperty.Restore(reader);
         LineWidth.setValue(LineWidthProperty.getValue());
+    }
+    else {
+        ViewProviderDrawingView::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 

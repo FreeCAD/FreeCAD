@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Python.h>
 # include <Inventor/SbVec3f.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTransform.h>
@@ -77,13 +75,13 @@ public:
             instance = new PathSelectionObserver();
     }
 
-    void setArrow(SoSwitch *pcSwitch=0) {
+    void setArrow(SoSwitch *pcSwitch=nullptr) {
         if(pcSwitch==pcLastArrowSwitch)
             return;
         if(pcLastArrowSwitch) {
             pcLastArrowSwitch->whichChild = -1;
             pcLastArrowSwitch->unref();
-            pcLastArrowSwitch = 0;
+            pcLastArrowSwitch = nullptr;
         }
         if(pcSwitch) {
             pcSwitch->ref();
@@ -104,7 +102,7 @@ public:
         if(!obj)
             return;
         Base::Matrix4D mat;
-        auto sobj = obj->getSubObject(msg.pSubName,0,&mat);
+        auto sobj = obj->getSubObject(msg.pSubName,nullptr,&mat);
         if(!sobj)
             return;
         Base::Matrix4D linkMat;
@@ -133,7 +131,7 @@ public:
         setArrow();
     }
 
-    SoSwitch *pcLastArrowSwitch = 0;
+    SoSwitch *pcLastArrowSwitch = nullptr;
 };
 }
 
@@ -231,7 +229,7 @@ ViewProviderPath::ViewProviderPath()
 
     DisplayMode.setStatus(App::Property::Status::Hidden, true);
 
-    static const char *SelectionStyleEnum[] = {"Shape","BoundBox","None",0};
+    static const char *SelectionStyleEnum[] = {"Shape","BoundBox","None",nullptr};
     SelectionStyle.setEnums(SelectionStyleEnum);
     unsigned long sstyle = hGrp->GetInt("DefaultSelectionStyle",0);
     SelectionStyle.setValue(sstyle);
@@ -327,7 +325,7 @@ std::string ViewProviderPath::getElement(const SoDetail* detail) const
 SoDetail* ViewProviderPath::getDetail(const char* subelement) const
 {
     int index = std::atoi(subelement);
-    SoDetail* detail = 0;
+    SoDetail* detail = nullptr;
     if (index>0 && index<=(int)command2Edge.size()) {
         index = command2Edge[index-1];
         if(index>=0 && edgeStart>=0 && edgeStart<=index) {
@@ -340,7 +338,8 @@ SoDetail* ViewProviderPath::getDetail(const char* subelement) const
 
 void ViewProviderPath::onChanged(const App::Property* prop)
 {
-    if(blockPropertyChange) return;
+    if(blockPropertyChange)
+        return;
 
     if (prop == &LineWidth) {
         pcDrawStyle->lineWidth = LineWidth.getValue();
@@ -523,7 +522,7 @@ public:
     {
         (void)last;
 
-        gx(id, NULL, pts, 0);
+        gx(id, nullptr, pts, 0);
 
         points.push_back(p[0]);
         markers.push_back(p[0]);
@@ -583,7 +582,7 @@ private:
           colorindex.push_back(color);
         }
 
-        if (next != NULL) {
+        if (next != nullptr) {
             points.push_back(*next);
             markers.push_back(*next);
             colorindex.push_back(color);
@@ -650,7 +649,8 @@ void ViewProviderPath::updateVisual(bool rebuild) {
     for(i=StartIndex.getValue();i<(int)command2Edge.size();++i)
         if((edgeStart=command2Edge[i])>=0) break;
 
-    if(edgeStart<0) return;
+    if(edgeStart<0)
+        return;
 
     if(i!=StartIndex.getValue() && StartIndex.getValue()!=0) {
         blockPropertyChange = true;

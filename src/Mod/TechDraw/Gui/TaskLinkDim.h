@@ -23,23 +23,23 @@
 #ifndef GUI_TASKVIEW_TASKLINKDIM_H
 #define GUI_TASKVIEW_TASKLINKDIM_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
 
-#include <Mod/TechDraw/Gui/ui_TaskLinkDim.h>
-
-#include <Mod/TechDraw/App/DrawViewDimension.h>
-
+class QTreeWidgetItem;
 
 namespace Gui {
 class Document;
 }
 
-class Ui_TaskLinkDim;
+namespace TechDraw {
+class DrawViewDimension;
+}
 
 namespace TechDrawGui
 {
 
+class Ui_TaskLinkDim;
 class TaskLinkDim : public QWidget
 {
     Q_OBJECT

@@ -28,13 +28,14 @@
 
 #include <boost_signals2.hpp>
 
-#include <QGraphicsScene>
 #include <QBrush>
+#include <QGraphicsScene>
 #include <QLineEdit>
 
-#include "DAGRectItem.h"
-#include "DAGModelGraph.h"
 #include "DAGFilter.h"
+#include "DAGModelGraph.h"
+#include "DAGRectItem.h"
+
 
 class QGraphicsSceneHoverEvent;
 class QGraphicsProxyWidget;
@@ -51,7 +52,7 @@ namespace Gui
     {
     Q_OBJECT
     public:
-      LineEdit(QWidget *parentIn = 0);
+      LineEdit(QWidget *parentIn = nullptr);
     Q_SIGNALS:
       void acceptedSignal();
       void rejectedSignal();

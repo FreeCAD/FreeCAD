@@ -25,13 +25,13 @@ SetCompressor /SOLID lzma
 
 !define APP_VERSION "${APP_VERSION_MAJOR}.${APP_VERSION_MINOR}.${APP_VERSION_REVISION}${APP_EMERGENCY_DOT}${APP_VERSION_EMERGENCY}" # Version to display
 
-!define COPYRIGHT_YEAR 2021
+!define COPYRIGHT_YEAR 2022
 
 #--------------------------------
 # Installer file name
 # Typical names for the release are "FreeCAD-020-Installer-1.exe" etc.
 
-!define ExeFile "${APP_NAME}-${APP_VERSION_MAJOR}${APP_VERSION_MINOR}${APP_VERSION_REVISION}${APP_VERSION_EMERGENCY}-Installer-${APP_VERSION_BUILD}.exe"
+!define ExeFile "${APP_NAME}-${APP_VERSION_MAJOR}.${APP_VERSION_MINOR}.${APP_VERSION_REVISION}${APP_VERSION_EMERGENCY}-WIN-x64-installer-${APP_VERSION_BUILD}.exe"
 
 #--------------------------------
 # installer bit type - for a 32bit or 64bit FreeCAD

@@ -20,22 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef __PRECOMPILED_GUI__
 #define __PRECOMPILED_GUI__
 
 #include <FCConfig.h>
-
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define PartExport          __declspec(dllimport)
-# define AppRaytracingExport    __declspec(dllimport)
-# define AppRaytracingGuiExport __declspec(dllexport)
-#else // for Linux
-# define PartExport
-# define AppRaytracingExport
-# define AppRaytracingGuiExport
-#endif
 
 #ifdef _MSC_VER
 #   pragma warning(disable : 4005)
@@ -44,8 +32,8 @@
 #ifdef _PreComp_
 
 // standard
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 
 // STL
 #include <algorithm>
@@ -118,20 +106,15 @@
 #include <BRepAdaptor_Curve.hxx>
 #include <GCPnts_UniformDeflection.hxx>
 
-
-// Python
-#include <Python.h>
-
 // Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
+#ifndef __QtAll__
+# include <Gui/QtAll.h>
 #endif
 
 // Inventor
 #ifndef __InventorAll__
 # include <Gui/InventorAll.h>
 #endif
-
 
 #endif //_PreComp_
 

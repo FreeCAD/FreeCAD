@@ -96,8 +96,8 @@ Py::Object UnitTestDialogPy::clearErrorList(const Py::Tuple& args)
 
 Py::Object UnitTestDialogPy::insertError(const Py::Tuple& args)
 {
-    char *failure=0;
-    char *details=0;
+    char *failure=nullptr;
+    char *details=nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "ss", &failure,&details))
         throw Py::Exception();
 
@@ -108,7 +108,7 @@ Py::Object UnitTestDialogPy::insertError(const Py::Tuple& args)
 
 Py::Object UnitTestDialogPy::setUnitTest(const Py::Tuple& args)
 {
-    char *pstr=0;
+    char *pstr=nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
@@ -125,7 +125,7 @@ Py::Object UnitTestDialogPy::getUnitTest(const Py::Tuple& args)
 
 Py::Object UnitTestDialogPy::setStatusText(const Py::Tuple& args)
 {
-    char *pstr=0;
+    char *pstr=nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "s", &pstr))
         throw Py::Exception();
 
@@ -136,7 +136,7 @@ Py::Object UnitTestDialogPy::setStatusText(const Py::Tuple& args)
 Py::Object UnitTestDialogPy::setProgressFrac(const Py::Tuple& args)
 {
     float fraction;
-    char* pColor=0;
+    char* pColor=nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "f|s",&fraction, &pColor))
         throw Py::Exception();
 
@@ -149,8 +149,8 @@ Py::Object UnitTestDialogPy::setProgressFrac(const Py::Tuple& args)
 
 Py::Object UnitTestDialogPy::errorDialog(const Py::Tuple& args)
 {
-    char *title=0;
-    char *message=0;
+    char *title=nullptr;
+    char *message=nullptr;
     if (!PyArg_ParseTuple(args.ptr(), "ss", &title, &message))
         throw Py::Exception();
     UnitTestDialog::instance()->showErrorDialog(title,message);

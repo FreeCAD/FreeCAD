@@ -8,8 +8,8 @@
 #ifndef TASKHEADER_P_H
 #define TASKHEADER_P_H
 
-#include "actionpanelscheme.h"
 #include "actionlabel.h"
+#include "actionpanelscheme.h"
 
 #include <QLabel>
 
@@ -27,7 +27,7 @@ class TaskHeader : public QFrame
   friend class ActionGroup;
 
 public:
-  TaskHeader(const QIcon &icon, const QString &title, bool expandable, QWidget *parent = 0);
+  TaskHeader(const QIcon &icon, const QString &title, bool expandable, QWidget *parent = nullptr);
 
   inline bool expandable() const { return myExpandable; }
   void setExpandable(bool expandable);

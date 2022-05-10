@@ -31,7 +31,7 @@ namespace StartGui {
 /**
  * @author Werner Mayer
  */
-class StartGuiExport Workbench : public Gui::StdWorkbench
+class Workbench : public Gui::StdWorkbench
 {
     TYPESYSTEM_HEADER();
 

@@ -29,7 +29,6 @@
 
 #include <Approx_Curve3d.hxx>
 #include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_HCurve.hxx>
 #include <BRep_Builder.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
@@ -47,6 +46,7 @@
 #include <gp_Pnt.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Vec.hxx>
+#include <Standard_Version.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Vertex.hxx>
@@ -55,6 +55,9 @@
 #include <TopExp_Explorer.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TColgp_Array1OfPnt.hxx>
+#if OCC_VERSION_HEX < 0x070600
+#include <BRepAdaptor_HCurve.hxx>
+#endif
 
 #include <Base/Console.h>
 #include <Base/Parameter.h>
@@ -67,6 +70,10 @@
 #include <Mod/Part/App/PartFeature.h>
 
 using namespace Import;
+
+#if OCC_VERSION_HEX >= 0x070600
+using BRepAdaptor_HCurve = BRepAdaptor_Curve;
+#endif
 
 
 //******************************************************************************
@@ -313,6 +320,9 @@ void ImpExpDxfRead::OnReadInsert(const double* point, const double* scale, const
     std::string prefix = "BLOCKS ";
     prefix += name;
     prefix += " ";
+    auto checkScale = [=](double v) {
+        return v != 0.0 ? v : 1.0;
+    };
     for(std::map<std::string,std::vector<Part::TopoShape*> > ::const_iterator i = layers.begin(); i != layers.end(); ++i) {
         std::string k = i->first;
         if(k.substr(0, prefix.size()) == prefix) {
@@ -328,7 +338,7 @@ void ImpExpDxfRead::OnReadInsert(const double* point, const double* scale, const
             if (!comp.IsNull()) {
                 Part::TopoShape* pcomp = new Part::TopoShape(comp);
                 Base::Matrix4D mat;
-                mat.scale(scale[0],scale[1],scale[2]);
+                mat.scale(checkScale(scale[0]),checkScale(scale[1]),checkScale(scale[2]));
                 mat.rotZ(rotation);
                 mat.move(point[0]*optionScaling,point[1]*optionScaling,point[2]*optionScaling);
                 pcomp->transformShape(mat,true);

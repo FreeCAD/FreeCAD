@@ -24,10 +24,6 @@
 #ifndef GUI_DOCUMENTOBSERVERPYTHON_H
 #define GUI_DOCUMENTOBSERVERPYTHON_H
 
-#include <CXX/Objects.hxx>
-
-#include <boost_signals2.hpp>
-#include <boost/bind/bind.hpp>
 
 namespace Gui
 {

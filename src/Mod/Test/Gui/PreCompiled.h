@@ -26,13 +26,6 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define AppTestGuiExport __declspec(dllexport)
-#else // for Linux
-# define AppTestGuiExport
-#endif
-
 #ifdef _PreComp_
 
 // here get the warnings of too long specifiers disabled (needed for VC6)
@@ -43,8 +36,8 @@
 #endif
 
 // standard
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 
 // STL
 #include <algorithm>
@@ -64,8 +57,8 @@
 #endif
 
 // Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
+#ifndef __QtAll__
+# include <Gui/QtAll.h>
 #endif
 
 #endif  //_PreComp_

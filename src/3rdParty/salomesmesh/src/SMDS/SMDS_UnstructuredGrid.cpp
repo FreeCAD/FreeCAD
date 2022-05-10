@@ -49,7 +49,7 @@ void SMDS_CellLinks::ResizeForPoint(vtkIdType vtkID)
   if ( vtkID > this->MaxId )
   {
     this->MaxId = vtkID;
-    if ( vtkID >= this->Size ) 
+    if ( vtkID >= this->Size )
       vtkCellLinks::Resize( vtkID+SMDS_Mesh::chunkSize );
   }
 }
@@ -332,8 +332,14 @@ void SMDS_UnstructuredGrid::copyBloc(vtkUnsignedCharArray *newTypes,
     {
       newTypes->SetValue(alreadyCopied, this->Types->GetValue(j));
       idCellsOldToNew[j] = alreadyCopied; // old vtkId --> new vtkId
+      // The difference is mainly the internal representation of vtkCellArray between vtk 7.x and vtk 9.x
+      // In the old version a single array of the form (n1,id1,id2,...,idn1, n2,id1,id2,...,idn2, ...) is used
+      // whereas in the new version there are two arrays for offset and connectivity of the forms
+      // (n1,n2,n3) and (id1,id2,...,idn1,id1,id2,...,idn2, ...)
+      // The Locations array in vtk 7.x kept the positions of the n's of the above array: (0, idn1 + 1, idn2 + 2).
+      // In vtk 9.x this array doesn't exist any more but its values can be determined with idni + i
 #ifdef VTK_CELL_ARRAY_V2
-      vtkIdType oldLoc = this->GetCellLocationsArray()->GetValue(j);
+      vtkIdType oldLoc = ((vtkIdTypeArray *)(this->Connectivity->GetOffsetsArray()))->GetValue( j ) + j;
 #else
       vtkIdType oldLoc = this->Locations->GetValue(j);
 #endif

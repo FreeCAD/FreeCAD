@@ -24,9 +24,8 @@
 #ifndef GUI_TASKVIEW_TASKAPPERANCE_H
 #define GUI_TASKVIEW_TASKAPPERANCE_H
 
-#include "TaskView.h"
 #include <Gui/Selection.h>
-#include <boost_signals2.hpp>
+#include "TaskView.h"
 
 
 namespace App {
@@ -46,7 +45,7 @@ class TaskAppearance : public TaskBox, public Gui::SelectionSingleton::ObserverT
     Q_OBJECT
 
 public:
-    TaskAppearance(QWidget *parent = 0);
+    TaskAppearance(QWidget *parent = nullptr);
     ~TaskAppearance();
     /// Observer message from the Selection
     void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,

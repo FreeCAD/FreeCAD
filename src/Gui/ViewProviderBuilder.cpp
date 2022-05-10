@@ -20,17 +20,18 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <Inventor/nodes/SoMaterial.h>
 #endif
 
+#include <App/PropertyStandard.h>
+
 #include "ViewProviderBuilder.h"
 #include "SoFCSelection.h"
 #include "Window.h"
-#include <App/PropertyStandard.h>
+
 
 using namespace Gui;
 
@@ -54,7 +55,7 @@ ViewProvider* ViewProviderBuilder::create(const Base::Type& type)
     std::map<Base::Type, Base::Type>::iterator it = _prop_to_view.find(type);
     if (it != _prop_to_view.end())
         return reinterpret_cast<ViewProvider*>(it->second.createInstance());
-    return 0;
+    return nullptr;
 }
 
 Gui::SoFCSelection* ViewProviderBuilder::createSelection()

@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
 # include <Inventor/nodes/SoMarkerSet.h>
 # include <vector>

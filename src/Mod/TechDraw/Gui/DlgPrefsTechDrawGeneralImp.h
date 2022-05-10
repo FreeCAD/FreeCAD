@@ -36,7 +36,7 @@ class DlgPrefsTechDrawGeneralImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgPrefsTechDrawGeneralImp( QWidget* parent = 0 );
+    DlgPrefsTechDrawGeneralImp( QWidget* parent = nullptr );
     ~DlgPrefsTechDrawGeneralImp();
 
 protected:

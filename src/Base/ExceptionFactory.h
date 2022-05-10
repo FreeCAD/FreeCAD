@@ -25,9 +25,11 @@
 #define BASE_EXCEPTIONFACTORY_H
 
 
-#include <Python.h>
-
 #include "Factory.h"
+#include <typeinfo>
+
+// Python stuff
+typedef struct _object PyObject;
 
 namespace Base
 {
@@ -36,8 +38,7 @@ namespace Base
 class BaseExport AbstractExceptionProducer : public AbstractProducer
 {
 public:
-    AbstractExceptionProducer () {}
-    ~AbstractExceptionProducer() {}
+    AbstractExceptionProducer () = default;
     // just implement it
     void* Produce () const {
         return nullptr;
@@ -51,16 +52,15 @@ public:
 class BaseExport ExceptionFactory : public Factory
 {
 public:
-    static ExceptionFactory& Instance(void);
-    static void Destruct (void);
+    static ExceptionFactory& Instance();
+    static void Destruct ();
 
     void raiseException(PyObject * pydict) const;
 
 private:
     static ExceptionFactory* _pcSingleton;
 
-    ExceptionFactory(){}
-    ~ExceptionFactory(){}
+    ExceptionFactory() = default;
 };
 
 /* Producers */

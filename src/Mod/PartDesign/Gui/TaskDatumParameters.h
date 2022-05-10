@@ -26,8 +26,6 @@
 #define GUI_TASKVIEW_TaskDatumParameters_H
 
 #include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
 #include <Mod/Part/Gui/TaskAttacher.h>
 
 #include "ViewProviderDatum.h"
@@ -52,7 +50,7 @@ class TaskDatumParameters : public PartGui::TaskAttacher
     Q_OBJECT
 
 public:
-    TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *parent = 0);
+    TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *parent = nullptr);
     ~TaskDatumParameters(); 
 };
 

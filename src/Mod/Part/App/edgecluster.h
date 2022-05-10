@@ -24,6 +24,7 @@
 #ifndef PART_EDGECLUSTER_H
 #define PART_EDGECLUSTER_H
 
+#include <Mod/Part/PartGlobal.h>
 #include <gp_Pnt.hxx>
 #include <TopoDS_Edge.hxx>
 #include <vector>

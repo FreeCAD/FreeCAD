@@ -23,10 +23,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
-
 #include "Application.h"
 
 // inclution of the generated files (generated out of PropertyContainerPy.xml)
@@ -43,7 +39,7 @@ std::string ExtensionPy::representation(void) const
 
 PyObject *ExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject * /*obj*/)

@@ -93,9 +93,9 @@ def cmdExplode():
         FreeCADGui.doCommand("input_obj = App.ActiveDocument."+obj.Name)
         FreeCADGui.doCommand("CompoundTools.Explode.explodeCompound(input_obj)")
         FreeCADGui.doCommand("input_obj.ViewObject.hide()")
-    except Exception:
+    except Exception as ex:
         FreeCAD.ActiveDocument.abortTransaction()
-        raise
+        FreeCAD.Console.PrintError("{}\n".format(ex))
         
     FreeCAD.ActiveDocument.commitTransaction()
     FreeCADGui.doCommand("App.ActiveDocument.recompute()")

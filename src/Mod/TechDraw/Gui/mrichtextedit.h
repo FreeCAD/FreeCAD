@@ -38,7 +38,7 @@
 class MRichTextEdit : public QWidget, protected Ui::MRichTextEdit {
     Q_OBJECT
   public:
-    MRichTextEdit(QWidget *parent = 0, QString textIn = QString() );
+    MRichTextEdit(QWidget *parent = nullptr, QString textIn = QString() );
 
     QString toPlainText() const { return f_textedit->toPlainText(); }
     QString toHtml() const;
@@ -52,14 +52,14 @@ class MRichTextEdit : public QWidget, protected Ui::MRichTextEdit {
     int getDefFontSizeNum(void);
     QFont getDefFont(void);
    
-  public slots:
+  public Q_SLOTS:
     void setText(const QString &text);
 
 Q_SIGNALS:
     void saveText(QString revText);
     void editorFinished();
 
-  protected slots:
+  protected Q_SLOTS:
     void onSave(void);
     void onExit(void);
     void setPlainText(const QString &text) { f_textedit->setPlainText(text); }
@@ -94,6 +94,7 @@ Q_SIGNALS:
     void list(bool checked, QTextListFormat::Style style);
     void indent(int delta);
     void focusInEvent(QFocusEvent *event);
+    void keyPressEvent(QKeyEvent *event);
     bool hasMultipleSizes(void);
 
     void addFontSize(QString fs);

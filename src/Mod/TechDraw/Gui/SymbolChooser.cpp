@@ -21,23 +21,16 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-#endif
+#include <QListWidget>
 
 #include <App/Application.h>
-#include <Gui/FileDialog.h>
-
-#include "DrawGuiStd.h"
-#include "Rez.h"
-
 #include <Mod/TechDraw/Gui/ui_SymbolChooser.h>
 
 #include "SymbolChooser.h"
 
-using namespace Gui;
-using namespace TechDraw;
-using namespace TechDrawGui;
 
+using namespace Gui;
+using namespace TechDrawGui;
 
 SymbolChooser::SymbolChooser(QWidget *parent,
                              QString startDir,
@@ -48,18 +41,23 @@ SymbolChooser::SymbolChooser(QWidget *parent,
     m_source(source)
 {
     ui->setupUi(this);
-    connect(ui->fcSymbolDir, SIGNAL(fileNameSelected(const QString&)),
-            this, SLOT(onDirectorySelected(const QString&)));
+    connect(ui->fcSymbolDir, SIGNAL(fileNameChanged(const QString&)),
+            this, SLOT(onDirectoryChanged(const QString&)));
     connect(ui->lwSymbols, SIGNAL(itemClicked(QListWidgetItem*)),    //double click?
             this, SLOT(onItemClicked(QListWidgetItem*)));
 
     setUiPrimary();
 }
 
+SymbolChooser::~SymbolChooser()
+{
+}
+
 void SymbolChooser::setUiPrimary()
 {
-//    Base::Console().Message("SC::setUiPrimary()\n");
+    // Base::Console().Message("SC::setUiPrimary()\n");
     setWindowTitle(QObject::tr("Select a symbol"));
+    resize(QSize(700, 500));
     if (!m_symbolDir.isEmpty()) {
         ui->fcSymbolDir->setFileName(m_symbolDir);
         loadSymbolNames(m_symbolDir);
@@ -67,18 +65,18 @@ void SymbolChooser::setUiPrimary()
         std::string resourceDir = App::Application::getResourceDir();
         std::string defPath = "Mod/TechDraw/Symbols/Welding/AWS/";
         resourceDir = resourceDir + defPath;
-        QString defDir = QString::fromUtf8(resourceDir.c_str());
-        ui->fcSymbolDir->setFileName(defDir);
-        loadSymbolNames(defDir);
-        m_symbolDir = defDir;
+        QString m_symbolDir = QString::fromUtf8(resourceDir.c_str());
+        ui->fcSymbolDir->setFileName(m_symbolDir);
+        loadSymbolNames(m_symbolDir);
     }
 
     ui->lwSymbols->setViewMode(QListView::IconMode);
     ui->lwSymbols->setFlow(QListView::LeftToRight);
     ui->lwSymbols->setWrapping(true);
-    ui->lwSymbols->setDragEnabled(true);
     ui->lwSymbols->setSelectionMode(QAbstractItemView::SingleSelection);
-    ui->lwSymbols->setAcceptDrops(false);
+    ui->lwSymbols->setGridSize(QSize(75, 85));
+    ui->lwSymbols->setIconSize(QSize(45, 45));
+    ui->lwSymbols->setResizeMode(QListView::Adjust);
 }
 
 void SymbolChooser::onOKClicked()
@@ -103,8 +101,8 @@ void SymbolChooser::onCancelClicked()
 void SymbolChooser::onItemClicked(QListWidgetItem* item)
 {
     Q_UNUSED(item);
-//    Base::Console().Message("SCS::onItemClicked(%s)\n", qPrintable(item->text()));
-    //are item and currentItem() the same?  should use item?
+    // Base::Console().Message("SCS::onItemClicked(%s)\n", qPrintable(item->text()));
+    // Are item and currentItem() the same? Should use item?
     QListWidgetItem* sourceItem = ui->lwSymbols->currentItem();
     QString targetText = sourceItem->text();
     m_symbolPath = m_symbolDir +
@@ -112,40 +110,32 @@ void SymbolChooser::onItemClicked(QListWidgetItem* item)
                    QString::fromUtf8(".svg");
     Q_EMIT symbolSelected(m_symbolPath, m_source);
 
-//    Base::Console().Message("SC::onOKClicked - symbol: %s\n", qPrintable(m_symbolPath));
+    // Base::Console().Message("SC::onOKClicked - symbol: %s\n", qPrintable(m_symbolPath));
     accept();
 }
 
-void SymbolChooser::onDirectorySelected(const QString& newDir)
+void SymbolChooser::onDirectoryChanged(const QString& newDir)
 {
-//    Base::Console().Message("SC::onDirectorySelected(%s)\n", qPrintable(newDir));
+    ui->lwSymbols->clear(); // Remove all previous symbols
+    // Base::Console().Message("SC::onDirectoryChanged(%s)\n", qPrintable(newDir));
     m_symbolDir = newDir + QString::fromUtf8("/");
     loadSymbolNames(m_symbolDir);
 }
 
 void SymbolChooser::loadSymbolNames(QString pathToSymbols)
 {
-    //fill selection list with names and icons
+    // Fill selection list with names and icons
     QDir symbolDir(pathToSymbols);
     symbolDir.setFilter(QDir::Files);
     QStringList fileNames = symbolDir.entryList();
 
     for (auto& fn: fileNames) {
-        QListWidgetItem* item = new QListWidgetItem(fn, ui->lwSymbols);
-        QFileInfo fi(fn);
-        item->setText(fi.baseName());
-        QIcon symbolIcon(pathToSymbols + fn);
-        item->setIcon(symbolIcon);
-        ui->lwSymbols->addItem(item);
-    }
-    ui->lwSymbols->setCurrentRow(0);
-    ui->lwSymbols->setAcceptDrops(false);       //have to do this every time you update the items
-}
+        QString text = (new QFileInfo(fn))->baseName();
+        QIcon icon(pathToSymbols + fn);
 
-//QString SymbolChooser::getSymbolPath(void)
-//{
-//    Base::Console().Message("SC::getSymbolPath returns: %s\n", qPrintable(m_symbolPath));
-//    return m_symbolPath;
-//}
+        // Create a symbol in the QListWidget lwSymbols
+        new QListWidgetItem(icon, text, ui->lwSymbols);
+    }
+}
 
 #include <Mod/TechDraw/Gui/moc_SymbolChooser.cpp>

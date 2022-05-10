@@ -90,9 +90,9 @@ ViewProviderFemConstraint::ViewProviderFemConstraint()
     FontSize.touch();
     FaceColor.touch();
 
-    wizardWidget = NULL;
-    wizardSubLayout = NULL;
-    constraintDialog = NULL;
+    wizardWidget = nullptr;
+    wizardSubLayout = nullptr;
+    constraintDialog = nullptr;
 }
 
 ViewProviderFemConstraint::~ViewProviderFemConstraint()
@@ -197,11 +197,11 @@ void ViewProviderFemConstraint::unsetEdit(int ModNum)
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
 
-    if ((wizardWidget != NULL) && (wizardSubLayout != NULL) && (constraintDialog != NULL)) {
-        wizardWidget = NULL;
-        wizardSubLayout = NULL;
+    if ((wizardWidget != nullptr) && (wizardSubLayout != nullptr) && (constraintDialog != nullptr)) {
+        wizardWidget = nullptr;
+        wizardSubLayout = nullptr;
         delete constraintDialog;
-        constraintDialog = NULL;
+        constraintDialog = nullptr;
 
         // Notify the Shaft Wizard that we have finished editing
         // See WizardShaft.py on why we do it this way
@@ -394,6 +394,30 @@ void ViewProviderFemConstraint::updateArrow(const SoNode* node, const int idx, c
     updateCylinder(sep, idx+CONE_CHILDREN+PLACEMENT_CHILDREN, length-radius, radius/5);
 }
 
+#define SPRING_CHILDREN (CUBE_CHILDREN + PLACEMENT_CHILDREN + CYLINDER_CHILDREN)
+
+void ViewProviderFemConstraint::createSpring(SoSeparator* sep, const double length, const double width)
+{
+    createCube(sep, width, width, length/2);
+    createPlacement(sep, SbVec3f(0, -length/2, 0), SbRotation());
+    createCylinder(sep, length/2, width/4);
+}
+
+SoSeparator* ViewProviderFemConstraint::createSpring(const double length, const double width)
+{
+    SoSeparator* sep = new SoSeparator();
+    createSpring(sep, length, width);
+    return sep;
+}
+
+void ViewProviderFemConstraint::updateSpring(const SoNode* node, const int idx, const double length, const double width)
+{
+    const SoSeparator* sep = static_cast<const SoSeparator*>(node);
+    updateCube(sep, idx, width, width, length/2);
+    updatePlacement(sep, idx+CUBE_CHILDREN, SbVec3f(0, -length/2, 0), SbRotation());
+    updateCylinder(sep, idx+CUBE_CHILDREN+PLACEMENT_CHILDREN, length/2, width/4);
+}
+
 #define FIXED_CHILDREN (CONE_CHILDREN + PLACEMENT_CHILDREN + CUBE_CHILDREN)
 
 void ViewProviderFemConstraint::createFixed(SoSeparator* sep, const double height, const double width, const bool gap)
@@ -465,34 +489,41 @@ QObject* ViewProviderFemConstraint::findChildByName(const QObject* parent, const
             return *o;
         if (!(*o)->children().empty()) {
             QObject* result = findChildByName(*o, name);
-            if (result != NULL)
+            if (result != nullptr)
                 return result;
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void ViewProviderFemConstraint::checkForWizard()
 {
-    wizardWidget= NULL;
-    wizardSubLayout = NULL;
+    wizardWidget= nullptr;
+    wizardSubLayout = nullptr;
     Gui::MainWindow* mw = Gui::getMainWindow();
-    if (mw == NULL) return;
+    if (mw == nullptr)
+        return;
     QDockWidget* dw = mw->findChild<QDockWidget*>(QString::fromLatin1("Combo View"));
-    if (dw == NULL) return;
+    if (dw == nullptr)
+        return;
     QWidget* cw = dw->findChild<QWidget*>(QString::fromLatin1("Combo View"));
-    if (cw == NULL) return;
+    if (cw == nullptr)
+        return;
     QTabWidget* tw = cw->findChild<QTabWidget*>(QString::fromLatin1("combiTab"));
-    if (tw == NULL) return;
+    if (tw == nullptr)
+        return;
     QStackedWidget* sw = tw->findChild<QStackedWidget*>(QString::fromLatin1("qt_tabwidget_stackedwidget"));
-    if (sw == NULL) return;
+    if (sw == nullptr)
+        return;
     QScrollArea* sa = sw->findChild<QScrollArea*>();
-    if (sa== NULL) return;
+    if (sa== nullptr)
+        return;
     QWidget* wd = sa->widget(); // This is the reason why we cannot use findChildByName() right away!!!
-    if (wd == NULL) return;
+    if (wd == nullptr)
+        return;
     QObject* wiz = findChildByName(wd, QString::fromLatin1("ShaftWizard"));
-    if (wiz != NULL) {
+    if (wiz != nullptr) {
         wizardWidget = static_cast<QVBoxLayout*>(wiz);
         wizardSubLayout = wiz->findChild<QVBoxLayout*>(QString::fromLatin1("ShaftWizardLayout"));
     }

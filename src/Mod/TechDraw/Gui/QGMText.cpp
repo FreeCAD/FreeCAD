@@ -22,17 +22,14 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <QGraphicsScene>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
-#include <QColor>
-#include <QFont>
-#include <QGraphicsScene>
 #endif
 
-#include "DrawGuiStd.h"
 #include "QGMText.h"
 
-using namespace TechDraw;
+
 using namespace TechDrawGui;
 
 QGMText::QGMText() :

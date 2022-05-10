@@ -20,12 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef PARTGUI_TASKSETCOLORS_H
 #define PARTGUI_TASKSETCOLORS_H
 
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
 
 namespace Gui {
     class Document;
@@ -41,7 +40,7 @@ class FaceColors : public QWidget, public Gui::SelectionObserver
     Q_OBJECT
 
 public:
-    FaceColors(ViewProviderPartExt* vp, QWidget* parent = 0);
+    FaceColors(ViewProviderPartExt* vp, QWidget* parent = nullptr);
     ~FaceColors();
 
     void open();

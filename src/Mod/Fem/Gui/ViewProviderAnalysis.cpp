@@ -20,33 +20,34 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Standard_math.hxx>
 # include <boost_bind_bind.hpp>
 # include <QAction>
+# include <QApplication>
 # include <QMenu>
+# include <QMessageBox>
+# include <QTextStream>
 #endif
 
-#include "ViewProviderAnalysis.h"
-#include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/Control.h>
-#include <Gui/ActionFunction.h>
-
-#include <Mod/Fem/App/FemAnalysis.h>
-#include <Mod/Fem/App/FemSolverObject.h>
-#include <Mod/Fem/App/FemResultObject.h>
-#include <Mod/Fem/App/FemMeshObject.h>
-#include <Mod/Fem/App/FemSetObject.h>
-#include <Mod/Fem/App/FemConstraint.h>
 #include <App/MaterialObject.h>
 #include <App/TextDocument.h>
+#include <Gui/ActionFunction.h>
+#include <Gui/Command.h>
+#include <Gui/Control.h>
+#include <Gui/Document.h>
+#include <Gui/MainWindow.h>
+#include <Mod/Fem/App/FemAnalysis.h>
+#include <Mod/Fem/App/FemConstraint.h>
+#include <Mod/Fem/App/FemMeshObject.h>
+#include <Mod/Fem/App/FemResultObject.h>
+#include <Mod/Fem/App/FemSetObject.h>
+#include <Mod/Fem/App/FemSolverObject.h>
 
+#include "ViewProviderAnalysis.h"
 #include "TaskDlgAnalysis.h"
+
 
 #ifdef FC_USE_VTK
     #include <Mod/Fem/App/FemPostObject.h>
@@ -82,12 +83,6 @@ bool ViewProviderFemAnalysis::doubleClicked(void)
 std::vector<App::DocumentObject*> ViewProviderFemAnalysis::claimChildren(void)const
 {
     return Gui::ViewProviderDocumentObjectGroup::claimChildren();
-}
-
-bool ViewProviderFemAnalysis::canDelete(App::DocumentObject* obj) const
-{
-    Q_UNUSED(obj)
-    return true;
 }
 
 std::vector<std::string> ViewProviderFemAnalysis::getDisplayModes(void) const
@@ -161,28 +156,6 @@ void ViewProviderFemAnalysis::unsetEdit(int ModNum)
     }
 }
 
-bool ViewProviderFemAnalysis::onDelete(const std::vector<std::string> &)
-{
-    // get the support and Sketch
-
-    //PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(getObject());
-    //Sketcher::SketchObject *pcSketch = 0;
-    //App::DocumentObject    *pcSupport = 0;
-    //if (pcPad->Sketch.getValue()){
-    //    pcSketch = static_cast<Sketcher::SketchObject*>(pcPad->Sketch.getValue());
-    //    pcSupport = pcSketch->Support.getValue();
-    //}
-
-    // if abort command deleted the object the support is visible again
-
-    //if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
-    //    Gui::Application::Instance->getViewProvider(pcSketch)->show();
-    //if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
-    //    Gui::Application::Instance->getViewProvider(pcSupport)->show();
-
-    return true;
-}
-
 bool ViewProviderFemAnalysis::canDragObjects() const
 {
     return true;
@@ -234,6 +207,45 @@ bool ViewProviderFemAnalysis::canDropObject(App::DocumentObject* obj) const
 void ViewProviderFemAnalysis::dropObject(App::DocumentObject* obj)
 {
     ViewProviderDocumentObjectGroup::dropObject(obj);
+}
+
+bool ViewProviderFemAnalysis::onDelete(const std::vector<std::string>&)
+{
+    // warn the user if the object has childs
+
+    auto objs = claimChildren();
+    if (!objs.empty())
+    {
+        // generate dialog
+        QString bodyMessage;
+        QTextStream bodyMessageStream(&bodyMessage);
+        bodyMessageStream << qApp->translate("Std_Delete",
+            "The analysis is not empty, therefore the\nfollowing referencing objects might be lost:");
+        bodyMessageStream << '\n';
+        for (auto ObjIterator : objs)
+            bodyMessageStream << '\n' << QString::fromUtf8(ObjIterator->Label.getValue());
+        bodyMessageStream << "\n\n" << QObject::tr("Are you sure you want to continue?");
+        // show and evaluate the dialog
+        int DialogResult = QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+            QMessageBox::Yes, QMessageBox::No);
+        if (DialogResult == QMessageBox::Yes)
+            return true;
+        else
+            return false;
+    }
+    else {
+        return true;
+    }
+}
+
+bool ViewProviderFemAnalysis::canDelete(App::DocumentObject* obj) const
+{
+    // deletions of objects from a FemAnalysis don't necessarily destroy anything
+    // thus we can pass this action
+    // we can warn the user if necessary in the object's ViewProvider in the onDelete() function
+    Q_UNUSED(obj)
+        return true;
 }
 
 // Python feature -----------------------------------------------------------------------

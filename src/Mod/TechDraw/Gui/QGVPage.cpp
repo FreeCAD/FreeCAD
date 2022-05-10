@@ -44,9 +44,6 @@
 #include <cmath>
 #endif
 
-#include <QXmlQuery>
-#include <QXmlResultItems>
-
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Material.h>
@@ -57,6 +54,12 @@
 #include <Gui/Selection.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/Command.h>
+#include <Gui/Application.h>
+#include <Gui/Document.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/MainWindow.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/DrawPage.h>
@@ -80,10 +83,10 @@
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
 #include <Mod/TechDraw/App/DrawTile.h>
 #include <Mod/TechDraw/App/DrawTileWeld.h>
-#include <Mod/TechDraw/App/QDomNodeModel.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
 #include "Rez.h"
+#include "PreferencesGui.h"
 #include "QGIDrawingTemplate.h"
 #include "QGITemplate.h"
 #include "QGISVGTemplate.h"
@@ -115,6 +118,7 @@
 #define DC_NS_URI "http://purl.org/dc/elements/1.1/"
 #define RDF_NS_URI "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 #define INKSCAPE_NS_URI "http://www.inkscape.org/namespaces/inkscape"
+#define SODIPODI_NS_URI "http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
 
 using namespace Gui;
 using namespace TechDraw;
@@ -122,11 +126,13 @@ using namespace TechDrawGui;
 
 QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
     : QGraphicsView(parent),
-      pageTemplate(0),
+      pageTemplate(nullptr),
       m_renderer(Native),
       drawBkg(true),
-      m_vpPage(0),
-      panningActive(false)
+      m_vpPage(nullptr),
+      balloonPlacing(false),
+      panningActive(false),
+      m_showGrid(false)
 {
     assert(vp);
     m_vpPage = vp;
@@ -166,13 +172,13 @@ QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
     setAlignment(Qt::AlignCenter);
 
     setDragMode(ScrollHandDrag);
-    setCursor(QCursor(Qt::ArrowCursor));
+    resetCursor();
     setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
     bkgBrush = new QBrush(getBackgroundColor());
 
     balloonCursor = new QLabel(this);
-    balloonCursor->setPixmap(QPixmap(QString::fromUtf8(":/icons/TechDraw_Balloon.svg")));
+    balloonCursor->setPixmap(prepareCursorPixmap("TechDraw_Balloon.svg", balloonHotspot = QPoint(8, 59)));
     balloonCursor->hide();
 
     resetCachedContent();
@@ -184,11 +190,21 @@ QGVPage::~QGVPage()
 
 }
 
+void QGVPage::startBalloonPlacing(void)
+{
+    balloonPlacing = true;
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+    activateCursor(QCursor(balloonCursor->pixmap(Qt::ReturnByValue), balloonHotspot.x(), balloonHotspot.y()));
+#else
+    activateCursor(QCursor(*balloonCursor->pixmap(), balloonHotspot.x(), balloonHotspot.y()));
+#endif
+}
+
 void QGVPage::cancelBalloonPlacing(void)
 {
-        getDrawPage()->balloonPlacing = false;
-        balloonCursor->hide();
-        QApplication::restoreOverrideCursor();
+    balloonPlacing = false;
+    balloonCursor->hide();
+    resetCursor();
 }
 
 void QGVPage::drawBackground(QPainter *p, const QRectF &)
@@ -260,7 +276,7 @@ int QGVPage::addQView(QGIView *view)
         ourScene->addItem(view);
 
         // Find if it belongs to a parent
-        QGIView *parent = 0;
+        QGIView *parent = nullptr;
         parent = findParent(view);
 
         QPointF viewPos(Rez::guiX(view->getViewObject()->X.getValue()),
@@ -445,15 +461,16 @@ QGIView * QGVPage::addViewBalloon(TechDraw::DrawViewBalloon *balloon)
     vBalloon->setViewPartFeature(balloon);
     vBalloon->dvBalloon = balloon;
 
-    QGIView *parent = 0;
+    QGIView *parent = nullptr;
     parent = findParent(vBalloon);
 
-    if(parent)
+    if (parent) {
         addBalloonToParent(vBalloon,parent);
+    }
 
-    if (getDrawPage()->balloonPlacing) {
-            vBalloon->placeBalloon(balloon->origin);
-            cancelBalloonPlacing();
+    if (balloonPlacing) {
+        vBalloon->placeBalloon(balloon->origin);
+        cancelBalloonPlacing();
     }
 
     return vBalloon;
@@ -470,6 +487,29 @@ void QGVPage::addBalloonToParent(QGIViewBalloon* balloon, QGIView* parent)
     balloon->setZValue(ZVALUE::DIMENSION);
 }
 
+void QGVPage::createBalloon(QPointF origin, DrawViewPart *parent)
+{
+    std::string featName = getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
+    std::string pageName = getDrawPage()->getNameInDocument();
+
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Balloon"));
+    Command::doCommand(Command::Doc, "App.activeDocument().addObject('TechDraw::DrawViewBalloon','%s')", featName.c_str());
+    Command::doCommand(Command::Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", pageName.c_str(), featName.c_str());
+
+    TechDraw::DrawViewBalloon *balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(getDrawPage()->getDocument()->getObject(featName.c_str()));
+    if (!balloon) {
+        throw Base::TypeError("CmdTechDrawNewBalloon - balloon not found\n");
+    }
+
+    balloon->SourceView.setValue(parent);
+    balloon->origin = origin;
+
+    Gui::Command::commitCommand();
+
+    parent->touch(true);
+    Gui::Command::updateActive();
+}
+
 QGIView * QGVPage::addViewDimension(TechDraw::DrawViewDimension *dim)
 {
     auto dimGroup( new QGIViewDimension );
@@ -482,7 +522,7 @@ QGIView * QGVPage::addViewDimension(TechDraw::DrawViewDimension *dim)
     dimGroup->dvDimension = dim;
 
     // Find if it belongs to a parent
-    QGIView *parent = 0;
+    QGIView *parent = nullptr;
     parent = findParent(dimGroup);
 
     if(parent) {
@@ -514,7 +554,7 @@ QGIView * QGVPage::addViewLeader(TechDraw::DrawLeaderLine *leader)
 
     leaderGroup->setLeaderFeature(leader);
 
-    QGIView *parent = 0;
+    QGIView *parent = nullptr;
     parent = findParent(leaderGroup);
 
     if(parent) {
@@ -596,7 +636,7 @@ QGIView * QGVPage::findQViewForDocObj(App::DocumentObject *obj) const
               return *it;
       }
   }
-    return 0;
+    return nullptr;
 }
 
 //! find the graphic for DocumentObject with name
@@ -635,7 +675,7 @@ QGIView * QGVPage::findParent(QGIView *view) const
 //    }
 
     //If type is dimension we check references first
-    TechDraw::DrawViewDimension *dim = 0;
+    TechDraw::DrawViewDimension *dim = nullptr;
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(myFeat);
     if(dim) {
         std::vector<App::DocumentObject *> objs = dim->References2D.getValues();
@@ -652,7 +692,7 @@ QGIView * QGVPage::findParent(QGIView *view) const
     }
 
     //If type is balloon we check references first
-    TechDraw::DrawViewBalloon *balloon = 0;
+    TechDraw::DrawViewBalloon *balloon = nullptr;
     balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(myFeat);
 
     if(balloon) {
@@ -670,10 +710,10 @@ QGIView * QGVPage::findParent(QGIView *view) const
 
     // Check if part of view collection
     for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
-        QGIViewCollection *grp = 0;
+        QGIViewCollection *grp = nullptr;
         grp = dynamic_cast<QGIViewCollection *>(*it);
         if(grp) {
-            TechDraw::DrawViewCollection *collection = 0;
+            TechDraw::DrawViewCollection *collection = nullptr;
             collection = dynamic_cast<TechDraw::DrawViewCollection *>(grp->getViewObject());
             if(collection) {
                 std::vector<App::DocumentObject *> objs = collection->Views.getValues();
@@ -687,7 +727,7 @@ QGIView * QGVPage::findParent(QGIView *view) const
     }
 
      //If type is LeaderLine we check LeaderParent
-    TechDraw::DrawLeaderLine *lead = 0;
+    TechDraw::DrawLeaderLine *lead = nullptr;
     lead = dynamic_cast<TechDraw::DrawLeaderLine *>(myFeat);
 
     if(lead) {
@@ -728,7 +768,7 @@ void QGVPage::removeTemplate()
     if(pageTemplate) {
         scene()->removeItem(pageTemplate);
         pageTemplate->deleteLater();
-        pageTemplate = 0;
+        pageTemplate = nullptr;
     }
 }
 void QGVPage::setRenderer(RendererType type)
@@ -871,6 +911,19 @@ void QGVPage::saveSvg(QString filename)
     postProcessXml(temporaryFile, filename, pageName);
 }
 
+static void removeEmptyGroups(QDomElement e)
+{
+    while (!e.isNull()) {
+        QDomElement next = e.nextSiblingElement();
+        if (e.hasChildNodes()) {
+            removeEmptyGroups(e.firstChildElement());
+        } else if (e.tagName() == QLatin1String("g")) {
+            e.parentNode().removeChild(e);
+        }
+        e = next;
+    }
+}
+
 void QGVPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QString pageName)
 {
     QDomDocument exportDoc(QString::fromUtf8("SvgDoc"));
@@ -902,6 +955,8 @@ void QGVPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
         QString::fromUtf8(RDF_NS_URI));
     exportDocElem.setAttribute(QString::fromUtf8("xmlns:inkscape"),
         QString::fromUtf8(INKSCAPE_NS_URI));
+    exportDocElem.setAttribute(QString::fromUtf8("xmlns:sodipodi"),
+        QString::fromUtf8(SODIPODI_NS_URI));
 
     // Create the root group which will host the drawing group and the template group
     QDomElement rootGroup = exportDoc.createElement(QString::fromUtf8("g"));
@@ -950,41 +1005,16 @@ void QGVPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
         }
     }
 
-    QXmlQuery query(QXmlQuery::XQuery10);
-    QDomNodeModel model(query.namePool(), exportDoc);
-    query.setFocus(QXmlItem(model.fromDomNode(exportDocElem)));
-
-    // XPath query to select first <g> node as direct <svg> element descendant
-    query.setQuery(QString::fromUtf8(
-        "declare default element namespace \"" SVG_NS_URI "\"; "
-        "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
-        "/svg/g[1]"));
-
-    QXmlResultItems queryResult;
-    query.evaluateTo(&queryResult);
-
     // Obtain the drawing group element, move it under root node and set its id to "DrawingContent"
-    QDomElement drawingGroup;
-    if (!queryResult.next().isNull()) {
-        drawingGroup = model.toDomNode(queryResult.current().toNodeModelIndex()).toElement();
+    QDomElement drawingGroup = exportDocElem.firstChildElement(QLatin1String("g"));
+    if (!drawingGroup.isNull()) {
         drawingGroup.setAttribute(QString::fromUtf8("id"), QString::fromUtf8("DrawingContent"));
         rootGroup.appendChild(drawingGroup);
     }
-
     exportDocElem.appendChild(rootGroup);
 
     // As icing on the cake, get rid of the empty <g>'s Qt SVG generator painting inserts.
-    // XPath query to select any <g> element anywhere with no child nodes whatsoever
-    query.setQuery(QString::fromUtf8(
-        "declare default element namespace \"" SVG_NS_URI "\"; "
-        "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
-        "//g[not(*)]"));
-
-    query.evaluateTo(&queryResult);
-    while (!queryResult.next().isNull()) {
-        QDomElement g(model.toDomNode(queryResult.current().toNodeModelIndex()).toElement());
-        g.parentNode().removeChild(g);
-    }
+    removeEmptyGroups(exportDocElem);
 
     // Time to save our product
     QFile outFile( fileName );
@@ -1119,21 +1149,14 @@ void QGVPage::kbPanScroll(int xMove, int yMove)
 void QGVPage::enterEvent(QEvent *event)
 {
     QGraphicsView::enterEvent(event);
-    if(getDrawPage()->balloonPlacing) {
+    if (balloonPlacing) {
         balloonCursor->hide();
-        QApplication::setOverrideCursor(QCursor(QPixmap(QString::fromUtf8(":/icons/TechDraw_Balloon.svg")),0,32));
-      } else {
-        QApplication::restoreOverrideCursor();
-        viewport()->setCursor(Qt::ArrowCursor);
     }
 }
 
 void QGVPage::leaveEvent(QEvent * event)
 {
-    QApplication::restoreOverrideCursor();
-    if(getDrawPage()->balloonPlacing) {
-
-
+    if (balloonPlacing) {
         int left_x;
         if (balloonCursorPos.x() < 32)
             left_x = 0;
@@ -1192,33 +1215,9 @@ void QGVPage::mouseMoveEvent(QMouseEvent *event)
 
 void QGVPage::mouseReleaseEvent(QMouseEvent *event)
 {
-    if(getDrawPage()->balloonPlacing) {
-        QApplication::restoreOverrideCursor();
+    if (balloonPlacing) {
         balloonCursor->hide();
-
-        std::string FeatName = getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
-        std::string PageName = getDrawPage()->getNameInDocument();
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Balloon"));
-        TechDraw::DrawViewBalloon *balloon = 0;
-
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Balloon"));
-        Command::doCommand(Command::Doc,"App.activeDocument().addObject('TechDraw::DrawViewBalloon','%s')",FeatName.c_str());
-        Command::doCommand(Command::Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
-
-        balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(getDrawPage()->getDocument()->getObject(FeatName.c_str()));
-        if (!balloon) {
-            throw Base::TypeError("CmdTechDrawNewBalloon - balloon not found\n");
-        }
-
-        balloon->SourceView.setValue(getDrawPage()->balloonParent);
-        balloon->origin = mapToScene(event->pos());
-
-        Gui::Command::commitCommand();
-        balloon->recomputeFeature();
-
-        //Horrible hack to force Tree update
-        double x = getDrawPage()->balloonParent->X.getValue();
-        getDrawPage()->balloonParent->X.setValue(x);
+        createBalloon(mapToScene(event->pos()), getDrawPage()->balloonParent);
     }
 
     if (event->button()&Qt::MiddleButton) {
@@ -1227,7 +1226,7 @@ void QGVPage::mouseReleaseEvent(QMouseEvent *event)
     }
 
     QGraphicsView::mouseReleaseEvent(event);
-    viewport()->setCursor(Qt::ArrowCursor);
+    resetCursor();
 }
 
 TechDraw::DrawPage* QGVPage::getDrawPage()
@@ -1242,6 +1241,98 @@ QColor QGVPage::getBackgroundColor()
     App::Color fcColor;
     fcColor.setPackedValue(hGrp->GetUnsigned("Background", 0x70707000));
     return fcColor.asValue<QColor>();
+}
+
+double QGVPage::getDevicePixelRatio() const {
+    for (Gui::MDIView *view : m_vpPage->getDocument()->getMDIViews()) {
+        if (view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+            return static_cast<Gui::View3DInventor *>(view)->getViewer()->devicePixelRatio();
+        }
+    }
+
+    return 1.0;
+}
+
+QPixmap QGVPage::prepareCursorPixmap(const char *iconName, QPoint &hotspot) {
+
+    QPointF floatHotspot(hotspot);
+    double pixelRatio = getDevicePixelRatio();
+
+    // Due to impossibility to query cursor size via Qt API, we stick to (32x32)*device_pixel_ratio
+    // as FreeCAD Wiki suggests - see https://wiki.freecadweb.org/HiDPI_support#Custom_cursor_size
+    double cursorSize = 32.0*pixelRatio;
+
+    QPixmap pixmap = Gui::BitmapFactory().pixmapFromSvg(iconName, QSizeF(cursorSize, cursorSize));
+    pixmap.setDevicePixelRatio(pixelRatio);
+
+    // The default (and here expected) SVG cursor graphics size is 64x64 pixels, thus we must adjust
+    // the 64x64 based hotspot position for our 32x32 based cursor pixmaps accordingly
+    floatHotspot *= 0.5;
+
+#if !defined(Q_OS_WIN32) && !defined(Q_OS_MAC)
+    // On XCB platform, the pixmap device pixel ratio is not taken into account for cursor hot spot,
+    // therefore we must take care of the transformation ourselves...
+    // Refer to QTBUG-68571 - https://bugreports.qt.io/browse/QTBUG-68571
+    if (qGuiApp->platformName() == QLatin1String("xcb")) {
+        floatHotspot *= pixelRatio;
+    }
+#endif
+
+    hotspot = floatHotspot.toPoint();
+    return pixmap;
+}
+
+void QGVPage::activateCursor(QCursor cursor) {
+    this->setCursor(cursor);
+    viewport()->setCursor(cursor);
+}
+
+void QGVPage::resetCursor() {
+    this->setCursor(Qt::ArrowCursor);
+    viewport()->setCursor(Qt::ArrowCursor);
+}
+
+void QGVPage::drawForeground(QPainter *painter, const QRectF &rect)
+{
+    Q_UNUSED(rect);
+    if (m_showGrid) {
+        QPen gridPen(PreferencesGui::gridQColor());
+        QPen savePen = painter->pen();
+        painter->setPen(gridPen);
+        painter->drawPath(m_gridPath);
+        painter->setPen(savePen);
+    }
+}
+
+void QGVPage::makeGrid(int gridWidth, int gridHeight, double gridStep)
+{
+    QPainterPath grid;
+    double width = Rez::guiX(gridWidth);
+    double height = Rez::guiX(gridHeight);
+    double step = Rez::guiX(gridStep);
+    double horizStart = 0.0;
+    double vPos = 0;
+    int rows = (height / step) + 1;
+    //draw horizontal lines
+    for (int i = 0; i < rows; i++) {
+        vPos = i * step;
+        QPointF start (horizStart, -vPos);
+        QPointF end (width, -vPos);
+        grid.moveTo(start);
+        grid.lineTo(end);
+    }
+    //draw vertical lines
+    double vertStart = 0.0;
+    double hPos = 0.0;
+    int cols = (width / step) + 1;
+    for (int i = 0; i < cols; i++) {
+        hPos = i * step;
+        QPointF start(hPos, -vertStart);
+        QPointF end(hPos, -height);
+        grid.moveTo(start);
+        grid.lineTo(end);
+    }
+    m_gridPath = grid;
 }
 
 #include <Mod/TechDraw/Gui/moc_QGVPage.cpp>

@@ -43,7 +43,7 @@ import FreeCAD as App
 import draftutils.utils as utils
 
 from draftutils.messages import _msg, _wrn, _err
-from draftutils.translate import _tr, translate
+from draftutils.translate import translate
 
 if App.GuiUp:
     import FreeCADGui as Gui
@@ -64,6 +64,10 @@ def get_3d_view():
         Return `None` if the graphical interface is not available.
     """
     if App.GuiUp:
+        # FIXME The following two imports were added as part of PR4926
+        # Also see discussion https://forum.freecadweb.org/viewtopic.php?f=3&t=60251
+        import FreeCADGui as Gui
+        from pivy import coin
         if Gui.ActiveDocument:
             v = Gui.ActiveDocument.ActiveView
             if "View3DInventor" in str(type(v)):
@@ -74,7 +78,7 @@ def get_3d_view():
             if v:
                 return v[0]
 
-    _wrn(_tr("No graphical interface"))
+    _wrn(translate("draft", "No graphical interface"))
     return None
 
 
@@ -111,6 +115,13 @@ def autogroup(obj):
     if Gui.draftToolBar.isConstructionMode():
         return
 
+    # check first for objects that do autogroup themselves
+    # at the moment only Arch_BuildingPart, which is an App::GeometryPython
+    for par in App.ActiveDocument.findObjects(Type="App::GeometryPython"):
+        if hasattr(par.Proxy,"autogroup"):
+            if par.Proxy.autogroup(par,obj):
+                return
+
     # autogroup code
     if Gui.draftToolBar.autogroup is not None:
         active_group = App.ActiveDocument.getObject(Gui.draftToolBar.autogroup)
@@ -143,8 +154,8 @@ def autogroup(obj):
                 # do not autogroup if obj points to active_part to prevent cyclic references
                 return
             matrix = parent.getSubObject(sub, retType=4)
-            if matrix.hasScale() == 1:
-                err = translate("Draft",
+            if matrix.hasScale() == App.ScaleType.Uniform:
+                err = translate("draft",
                                 "Unable to insert new object into "
                                 "a scaled part")
                 App.Console.PrintMessage(err)
@@ -183,7 +194,7 @@ def dim_symbol(symbol=None, invert=False):
 
         A numerical value defines different markers
          * 0, `SoSphere`
-         * 1, `SoMarkerSet` with a circle
+         * 1, `SoSeparator` with a `SoLineSet`, a circle (in fact a 24 sided polygon)
          * 2, `SoSeparator` with a `soCone`
          * 3, `SoSeparator` with a `SoFaceSet`
          * 4, `SoSeparator` with a `SoLineSet`, calling `dim_dash`
@@ -198,8 +209,7 @@ def dim_symbol(symbol=None, invert=False):
     Returns
     -------
     Coin.SoNode
-        A `Coin.SoSphere`, or `Coin.SoMarkerSet` (circle),
-        or `Coin.SoSeparator` (cone, face, line)
+        A `Coin.SoSphere`, or `Coin.SoSeparator` (circle, cone, face, line)
         that will be used as a dimension symbol.
     """
     if symbol is None:
@@ -215,10 +225,14 @@ def dim_symbol(symbol=None, invert=False):
         marker = coin.SoSphere()
         return marker
     elif symbol == 1:
-        marker = coin.SoMarkerSet()
-        # Should be the same as
-        # marker.markerIndex = 10
-        marker.markerIndex = Gui.getMarkerIndex("circle", 9)
+        marker = coin.SoSeparator()
+        v = coin.SoVertexProperty()
+        for i in range(25):
+            ang = math.radians(i * 15)
+            v.vertex.set1Value(i, (math.sin(ang), math.cos(ang), 0))
+        p = coin.SoLineSet()
+        p.vertexProperty = v
+        marker.addChild(p)
         return marker
     elif symbol == 2:
         marker = coin.SoSeparator()
@@ -236,17 +250,21 @@ def dim_symbol(symbol=None, invert=False):
         return marker
     elif symbol == 3:
         marker = coin.SoSeparator()
+        # hints are required otherwise only the bottom of the face is colored
+        h = coin.SoShapeHints()
+        h.vertexOrdering = h.COUNTERCLOCKWISE
         c = coin.SoCoordinate3()
         c.point.setValues([(-1, -2, 0), (0, 2, 0),
                            (1, 2, 0), (0, -2, 0)])
         f = coin.SoFaceSet()
+        marker.addChild(h)
         marker.addChild(c)
         marker.addChild(f)
         return marker
     elif symbol == 4:
-        return dimDash((-1.5, -1.5, 0), (1.5, 1.5, 0))
+        return dim_dash((-1.5, -1.5, 0), (1.5, 1.5, 0))
     else:
-        _wrn(_tr("Symbol not implemented. Use a default symbol."))
+        _wrn(translate("draft", "Symbol not implemented. Using a default symbol."))
         return coin.SoSphere()
 
 
@@ -312,7 +330,7 @@ def remove_hidden(objectslist):
         if obj.ViewObject:
             if not obj.ViewObject.isVisible():
                 newlist.remove(obj)
-                _msg(_tr("Visibility off; removed from list: ") + obj.Label)
+                _msg(translate("draft", "Visibility off; removed from list: ") + obj.Label)
     return newlist
 
 
@@ -582,13 +600,13 @@ def load_texture(filename, size=None, gui=App.GuiUp):
             p = QtGui.QImage(filename)
 
             if p.isNull():
-                _wrn("load_texture: " + _tr("image is Null"))
+                _wrn("load_texture: " + translate("draft", "image is Null"))
 
                 if not os.path.exists(filename):
                     raise FileNotFoundError(-1,
-                                            _tr("filename does not exist "
-                                                "on the system or "
-                                                "on the resource file"),
+                                            translate("draft", "filename does not exist "
+                                                               "on the system or "
+                                                               "in the resource file"),
                                             filename)
 
             # This is buggy so it was de-activated.
@@ -647,7 +665,7 @@ def load_texture(filename, size=None, gui=App.GuiUp):
             return None
         except Exception as exc:
             _wrn(str(exc))
-            _wrn("load_texture: " + _tr("unable to load texture"))
+            _wrn("load_texture: " + translate("draft", "unable to load texture"))
             return None
         else:
             return img
@@ -699,7 +717,7 @@ def get_bbox(obj, debug=False):
 
     found, doc = utils.find_doc(App.activeDocument())
     if not found:
-        _err(_tr("No active document. Aborting."))
+        _err(translate("draft", "No active document. Aborting."))
         return None
 
     if isinstance(obj, str):
@@ -708,7 +726,7 @@ def get_bbox(obj, debug=False):
     found, obj = utils.find_object(obj, doc)
     if not found:
         _msg("obj: {}".format(obj_str))
-        _err(_tr("Wrong input: object not in document."))
+        _err(translate("draft", "Wrong input: object not in document."))
         return None
 
     if debug:
@@ -717,7 +735,7 @@ def get_bbox(obj, debug=False):
     if (not hasattr(obj, "ViewObject")
             or not obj.ViewObject
             or not hasattr(obj.ViewObject, "RootNode")):
-        _err(_tr("Does not have 'ViewObject.RootNode'."))
+        _err(translate("draft", "Does not have 'ViewObject.RootNode'."))
 
     # For Draft Dimensions
     # node = obj.ViewObject.Proxy.node

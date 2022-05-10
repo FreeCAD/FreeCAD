@@ -35,7 +35,7 @@ class PoissonWidget : public QWidget
     Q_OBJECT
 
 public:
-    PoissonWidget(const App::DocumentObjectT&, QWidget* parent = 0);
+    PoissonWidget(const App::DocumentObjectT&, QWidget* parent = nullptr);
     ~PoissonWidget();
 
     bool accept();

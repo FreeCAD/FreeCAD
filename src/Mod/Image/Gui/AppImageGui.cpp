@@ -9,20 +9,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
+
+#include "ImageView.h"
 #include "Workbench.h"
 #include "ViewProviderImagePlane.h"
 
+
 // use a different name to CreateCommand()
-void CreateImageCommands(void);
+void CreateImageCommands();
 
 void loadImageResource()
 {
@@ -41,7 +41,7 @@ PyMOD_INIT_FUNC(ImageGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
 
     PyObject* mod = ImageGui::initModule();
@@ -50,6 +50,7 @@ PyMOD_INIT_FUNC(ImageGui)
     // instantiating the commands
     CreateImageCommands();
 
+    ImageGui::ImageView::init();
     ImageGui::ViewProviderImagePlane::init();
     ImageGui::Workbench::init();
 

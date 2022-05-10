@@ -23,26 +23,17 @@
 #ifndef TECHDRAWGUI_TASKCOSVERTEX_H
 #define TECHDRAWGUI_TASKCOSVERTEX_H
 
-#include <App/DocumentObject.h>
-#include <Base/Vector3D.h>
-#include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
-
-#include <Mod/TechDraw/Gui/ui_TaskCosVertex.h>
+#include <Gui/TaskView/TaskView.h>
 
 #include "QGTracker.h"
+
 
 //TODO: make this a proper enum
 #define TRACKERPICK 0
 #define TRACKEREDIT 1
 #define TRACKERCANCEL 2
 #define TRACKERCANCELEDIT 3
-
-class Ui_TaskCosVertex;
-
-namespace App {
-class DocumentObject;
-}
 
 namespace TechDraw
 {
@@ -62,6 +53,7 @@ class QGEPath;
 class QGMText;
 class QGICosVertex;
 class ViewProviderLeader;
+class Ui_TaskCosVertex;
 
 class TaskCosVertex : public QWidget
 {

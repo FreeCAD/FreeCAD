@@ -7,9 +7,8 @@
 
 #include "taskgroup_p.h"
 
-#include <QVariant>
-#include <QKeyEvent>
 #include <QApplication>
+#include <QKeyEvent>
 
 
 namespace QSint

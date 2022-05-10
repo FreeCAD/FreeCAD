@@ -23,11 +23,14 @@
 #ifndef _PreferencesGui_h_
 #define _PreferencesGui_h_
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 class QFont;
 class QString;
 class QColor;
 
 #include <Mod/TechDraw/App/Preferences.h>
+#include <QColor>
 
 namespace TechDrawGui
 {
@@ -59,9 +62,13 @@ static double      dimArrowSize();
 static double      edgeFuzz();
 
 static Qt::PenStyle  sectionLineStyle();
-static int         mattingStyle();
 
 static QString     weldingDirectory();
+
+static bool showGrid();
+static App::Color gridColor();
+static QColor gridQColor();
+static double gridSpacing();
 
 };
 

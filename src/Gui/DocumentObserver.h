@@ -20,12 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_DOCUMENTOBSERVER_H
 #define GUI_DOCUMENTOBSERVER_H
 
 #include <Base/BaseClass.h>
 #include <boost_signals2.hpp>
+
 
 namespace App { class Property; }
 namespace Gui
@@ -165,7 +165,7 @@ private:
 /**
  * @brief The ViewProviderWeakPtrT class
  */
-class AppExport ViewProviderWeakPtrT
+class GuiExport ViewProviderWeakPtrT
 {
 public:
     ViewProviderWeakPtrT(ViewProviderDocumentObject*);
@@ -255,9 +255,9 @@ public:
     }
     /*!
      * \brief operator ->
-     * \return pointer to the document
+     * \return pointer to the view provider
      */
-    T* operator->() {
+    T* operator->() const {
         return ptr.get<T>();
     }
     /*!
@@ -273,6 +273,11 @@ public:
      */
     bool operator!= (const WeakPtrT<T>& p) const {
         return ptr != p.ptr;
+    }
+    /*! Get a pointer to the object or 0 if it doesn't exist any more. */
+    T* get() const noexcept
+    {
+        return ptr.get<T>();
     }
 
 private:

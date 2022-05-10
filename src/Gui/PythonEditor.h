@@ -20,13 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_PYTHONEDITOR_H
 #define GUI_PYTHONEDITOR_H
 
-#include "Window.h"
-#include "TextEdit.h"
 #include "SyntaxHighlighter.h"
+#include "TextEdit.h"
+
 
 namespace Gui {
 
@@ -42,7 +41,7 @@ class GuiExport PythonEditor : public TextEditor
     Q_OBJECT
 
 public:
-    PythonEditor(QWidget *parent = 0);
+    PythonEditor(QWidget *parent = nullptr);
     ~PythonEditor();
 
     void toggleBreakpoint();

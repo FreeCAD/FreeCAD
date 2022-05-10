@@ -24,9 +24,7 @@
 #ifndef PARTDESIGN_FeatureBase_H
 #define PARTDESIGN_FeatureBase_H
 
-#include <App/PropertyStandard.h>
 #include "Feature.h"
-
 
 /// Base class of all additive features in PartDesign
 namespace PartDesign

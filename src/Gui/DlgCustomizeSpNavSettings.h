@@ -39,7 +39,7 @@ namespace Gui
             Q_OBJECT
 
         public:
-            explicit DlgCustomizeSpNavSettings(QWidget *parent = 0);
+            explicit DlgCustomizeSpNavSettings(QWidget *parent = nullptr);
             ~DlgCustomizeSpNavSettings();
 
         protected Q_SLOTS:

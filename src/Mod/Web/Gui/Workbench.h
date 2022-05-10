@@ -31,7 +31,7 @@ namespace WebGui {
 /**
  * @author Werner Mayer
  */
-class WebGuiExport Workbench : public Gui::StdWorkbench
+class Workbench : public Gui::StdWorkbench
 {
     TYPESYSTEM_HEADER();
 

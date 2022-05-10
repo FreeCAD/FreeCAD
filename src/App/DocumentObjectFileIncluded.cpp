@@ -23,11 +23,7 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "DocumentObjectFileIncluded.h"
-#include "Document.h"
 
 using namespace App;
 
@@ -36,7 +32,7 @@ PROPERTY_SOURCE(App::DocumentObjectFileIncluded, App::DocumentObject)
 
 DocumentObjectFileIncluded::DocumentObjectFileIncluded()
 {
-    ADD_PROPERTY_TYPE(File,(0),"",(App::PropertyType)(Prop_None),"File to include into Project File");
+    ADD_PROPERTY_TYPE(File,(nullptr),"",(App::PropertyType)(Prop_None),"File to include into Project File");
 }
 
 DocumentObjectFileIncluded::~DocumentObjectFileIncluded()

@@ -27,7 +27,6 @@
 # include <cstring>
 #endif
 
-#include <Base/Exception.h>
 #include "Material.h"
 
 using namespace App;
@@ -36,18 +35,24 @@ using namespace App;
 //===========================================================================
 // Material
 //===========================================================================
-Material::Material(void)
+Material::Material()
+  : shininess{0.2000f}
+  , transparency{}
 {
     setType(STEEL);
     setType(USER_DEFINED);
 }
 
 Material::Material(const char* MatName)
+  : shininess{0.2000f}
+  , transparency{}
 {
     set(MatName);
 }
 
 Material::Material(const MaterialType MatType)
+  : shininess{0.2000f}
+  , transparency{}
 {
     setType(MatType);
 }

@@ -60,7 +60,7 @@ FeatureView::FeatureView(void)
     ADD_PROPERTY_TYPE(Visible, (true),group,propType,"Control whether view is visible in page object");
 
     App::PropertyType type = (App::PropertyType)(App::Prop_Hidden);
-    ADD_PROPERTY_TYPE(ViewResult ,(0),group,type,"Resulting SVG fragment of that view");
+    ADD_PROPERTY_TYPE(ViewResult ,(nullptr),group,type,"Resulting SVG fragment of that view");
 }
 
 FeatureView::~FeatureView()

@@ -55,7 +55,7 @@ DirectoryCollection::getEntry( const string &name,
     if ( ent->isValid() )
       return ent ;
     else
-      return 0 ;
+      return nullptr ;
   }
 }
 
@@ -81,8 +81,8 @@ std::istream *DirectoryCollection::getInputStream( const string &entry_name,
 
     ConstEntryPointer ent = getEntry( entry_name, matchpath ) ;
     
-    if ( ent == 0 )
-      return 0 ;
+    if ( ent == nullptr )
+      return nullptr ;
     else {
       string real_path( _filepath + entry_name ) ;
       return new ifstream( real_path.c_str(), ios::in | ios::binary ) ;
@@ -94,7 +94,7 @@ std::istream *DirectoryCollection::getInputStream( const string &entry_name,
     ifstream *ifs = new ifstream( real_path.c_str(), ios::in | ios::binary ) ;
     if( ! *ifs ) {
       delete ifs ;
-      return 0 ;
+      return nullptr ;
     } else 
       return ifs ;
   }  

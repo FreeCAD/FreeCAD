@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
@@ -30,15 +29,16 @@
 #endif
 
 #include "ToolBoxManager.h"
-#include "ToolBarManager.h"
 #include "Application.h"
 #include "Command.h"
+#include "ToolBarManager.h"
 #include "ToolBox.h"
+
 
 using namespace Gui;
 using DockWnd::ToolBox;
 
-ToolBoxManager* ToolBoxManager::_instance=0;
+ToolBoxManager* ToolBoxManager::_instance=nullptr;
 
 ToolBoxManager* ToolBoxManager::getInstance()
 {
@@ -50,10 +50,10 @@ ToolBoxManager* ToolBoxManager::getInstance()
 void ToolBoxManager::destruct()
 {
     delete _instance;
-    _instance = 0;
+    _instance = nullptr;
 }
 
-ToolBoxManager::ToolBoxManager() : _toolBox(0L)
+ToolBoxManager::ToolBoxManager() : _toolBox(nullptr)
 {
 }
 

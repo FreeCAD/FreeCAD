@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>350</width>
-    <height>500</height>
+    <width>300</width>
+    <height>79</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -49,15 +49,15 @@
            <enum>Qt::LeftToRight</enum>
           </property>
           <property name="text">
-           <string>0.0</string>
+           <string>0 mm</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="singleStep" stdset="0">
+          <property name="singleStep">
            <double>1.000000000000000</double>
           </property>
-          <property name="maximum" stdset="0">
+          <property name="maximum">
            <double>1000000000.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
@@ -82,19 +82,6 @@
       </item>
      </layout>
     </widget>
-   </item>
-   <item>
-    <spacer name="verticalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>

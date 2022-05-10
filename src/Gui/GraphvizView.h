@@ -20,12 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_GRAPHVIZVIEW_H
 #define GUI_GRAPHVIZVIEW_H
 
 #include "MDIView.h"
-#include <boost_signals2.hpp>
 
 
 class QGraphicsScene;
@@ -44,7 +42,7 @@ class GuiExport GraphvizView : public MDIView
     Q_OBJECT
 
 public:
-    GraphvizView(App::Document &_doc, QWidget* parent=0);
+    GraphvizView(App::Document &_doc, QWidget* parent=nullptr);
     ~GraphvizView();
 
     QByteArray exportGraph(const QString& filter);

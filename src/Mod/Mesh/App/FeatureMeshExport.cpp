@@ -39,9 +39,9 @@ using namespace MeshCore;
 
 PROPERTY_SOURCE(Mesh::Export, App::DocumentObject)
 
-Export::Export(void)
+Export::Export()
 {
-    ADD_PROPERTY(Source  ,(0));
+    ADD_PROPERTY(Source  ,(nullptr));
     ADD_PROPERTY(FileName,(""));
     ADD_PROPERTY(Format  ,(""));
 }
@@ -59,7 +59,7 @@ short Export::mustExecute() const
     return 0;
 }
 
-App::DocumentObjectExecReturn *Export::execute(void)
+App::DocumentObjectExecReturn *Export::execute()
 {
     Mesh::Feature *pcFeat  = dynamic_cast<Mesh::Feature*>(Source.getValue());
     if(!pcFeat || pcFeat->isError()) {

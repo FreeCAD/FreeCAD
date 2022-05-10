@@ -25,42 +25,25 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
-# include <QRegExp>
-# include <QTextStream>
 # include <QMessageBox>
-# include <Precision.hxx>
 # include <Standard_Failure.hxx>
 #endif
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <ui_DlgReference.h>
-#include <App/Application.h>
-#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <App/Origin.h>
-#include <App/OriginFeature.h>
 #include <App/Part.h>
-#include <App/ObjectIdentifier.h>
-#include <App/PropertyExpressionEngine.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
 #include <Gui/MainWindow.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
 #include <Gui/Selection.h>
-#include <Gui/Command.h>
-#include <Gui/ViewProviderOrigin.h>
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/PartDesign/App/Body.h>
-#include <Mod/Part/Gui/AttacherTexts.h>
 
-#include "ReferenceSelection.h"
-#include "Utils.h"
+#include <ui_DlgReference.h>
 
 #include "TaskDatumParameters.h"
+#include "ReferenceSelection.h"
 #include "TaskFeaturePick.h"
+#include "Utils.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -70,7 +53,7 @@ using namespace Attacher;
 
 TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *ViewProvider,QWidget *parent)
     : PartGui::TaskAttacher(ViewProvider, parent, QString::fromLatin1("PartDesign_") + ViewProvider->datumType,
-              ViewProvider->datumText + tr(" parameters"))
+              ViewProvider->datumMenuText)
 {
     Gui::Selection().addSelectionGate(new NoDependentsSelection(ViewProvider->getObject()));
     ViewProvider->setPickable(false);

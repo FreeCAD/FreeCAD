@@ -60,7 +60,8 @@ namespace MeshIO {
         PY,
         AMF,
         SMF,
-        ASY
+        ASY,
+        ThreeMF
     };
     enum Binding {
         OVERALL,
@@ -79,7 +80,7 @@ struct MeshExport Material
 
 struct MeshExport Group
 {
-    std::vector<unsigned long> indices;
+    std::vector<FacetIndex> indices;
     std::string name;
 };
 
@@ -91,10 +92,10 @@ class MeshExport MeshInput
 {
 public:
     MeshInput (MeshKernel &rclM)
-        : _rclMesh(rclM), _material(0){}
+        : _rclMesh(rclM), _material(nullptr){}
     MeshInput (MeshKernel &rclM, Material* m)
         : _rclMesh(rclM), _material(m){}
-    virtual ~MeshInput (void) { }
+    virtual ~MeshInput () { }
     const std::vector<std::string>& GetGroupNames() const {
         return _groupNames;
     }
@@ -149,10 +150,10 @@ class MeshExport MeshOutput
 {
 public:
     MeshOutput (const MeshKernel &rclM)
-        : _rclMesh(rclM), _material(0), apply_transform(false){}
+        : _rclMesh(rclM), _material(nullptr), apply_transform(false){}
     MeshOutput (const MeshKernel &rclM, const Material* m)
         : _rclMesh(rclM), _material(m), apply_transform(false){}
-    virtual ~MeshOutput (void) { }
+    virtual ~MeshOutput () { }
     void SetObjectName(const std::string& n)
     { objectName = n; }
     void SetGroups(const std::vector<Group>& g) {
@@ -197,6 +198,8 @@ public:
     bool SaveAsymptote (std::ostream &rstrOut) const;
     /** Saves the mesh object into an XML file. */
     void SaveXML (Base::Writer &writer) const;
+    /** Saves the mesh object into a 3MF file. */
+    bool Save3MF (std::ostream &str) const;
     /** Saves a node to an OpenInventor file. */
     bool SaveMeshNode (std::ostream &rstrIn);
     /** Writes an IDTF file. */
@@ -223,6 +226,9 @@ public:
 protected:
     /** Writes an X3D file. */
     bool SaveX3DContent (std::ostream &rstrOut, bool exportViewpoints) const;
+    bool Save3MFModel(std::ostream &str) const;
+    bool Save3MFRels(std::ostream &str) const;
+    bool Save3MFContent(std::ostream &str) const;
 
 protected:
     const MeshKernel &_rclMesh;   /**< reference to mesh data structure */

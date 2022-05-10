@@ -92,7 +92,7 @@ def sortEdges(edges):
     ret = list()
     # store the hash code of the last edge, to avoid picking the same edge back
     eh = None
-    for i in range(len(nedges)):
+    for _ in range(len(nedges)):
         try:
             eset = sdict[v]
             e = eset.pop()

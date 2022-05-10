@@ -170,7 +170,7 @@ public:
     /** Declare all parameters defined in #AREA_PARAMS_ALL as member variable */
     PARAM_ENUM_DECLARE(AREA_PARAMS_ALL)
 
-    Area(const AreaParams *params = NULL);
+    Area(const AreaParams *params = nullptr);
     Area(const Area &other, bool deep_copy=true);
     virtual ~Area();
 
@@ -197,7 +197,7 @@ public:
      * If no workplane is set using setPlane(), the active workplane is derived from
      * the added children shapes using the same algorithm empolyed by setPlane().
      */
-    TopoDS_Shape getPlane(gp_Trsf *trsf=0);
+    TopoDS_Shape getPlane(gp_Trsf *trsf=nullptr);
 
     /** Add a child shape with given operation code
      *
@@ -287,7 +287,7 @@ public:
      * \arg \c to_edges: if true, discretize all curves, and insert as open
      * line segments
      * */
-    static void addWire(CArea &area, const TopoDS_Wire &wire, const gp_Trsf *trsf=NULL,
+    static void addWire(CArea &area, const TopoDS_Wire &wire, const gp_Trsf *trsf=nullptr,
             double deflection=0.01, bool to_edges=false);
 
     /** Add a OCC generic shape to CArea
@@ -307,9 +307,9 @@ public:
      * \return Returns the number of non coplaner. Planar testing only happens
      * if \c plane is supplied
      * */
-    static int addShape(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf=NULL,
-            double deflection=0.01,const TopoDS_Shape *plane = NULL,
-            bool force_coplanar=true, CArea *areaOpen=NULL, bool to_edges=false,
+    static int addShape(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf=nullptr,
+            double deflection=0.01,const TopoDS_Shape *plane = nullptr,
+            bool force_coplanar=true, CArea *areaOpen=nullptr, bool to_edges=false,
             bool reorient=true);
 
     /** Convert curves in CArea into an OCC shape
@@ -320,7 +320,7 @@ public:
      * its original position.
      * */
     static TopoDS_Shape toShape(const CArea &area, bool fill,
-            const gp_Trsf *trsf=NULL, int reoirent=0);
+            const gp_Trsf *trsf=nullptr, int reoirent=0);
 
     /** Convert a single curve into an OCC wire
      *
@@ -328,7 +328,7 @@ public:
      * \arg \c trsf: optional transform matrix to transform the shape back into
      * its original position.
      * */
-    static TopoDS_Shape toShape(const CCurve &curve, const gp_Trsf *trsf=NULL, int reorient=0);
+    static TopoDS_Shape toShape(const CCurve &curve, const gp_Trsf *trsf=nullptr, int reorient=0);
 
     /** Check if two OCC shape is coplanar */
     static bool isCoplanar(const TopoDS_Shape &s1, const TopoDS_Shape &s2);
@@ -354,8 +354,8 @@ public:
      * \return sorted wires
      */
     static std::list<TopoDS_Shape> sortWires(const std::list<TopoDS_Shape> &shapes,
-            bool has_start=false, gp_Pnt *pstart=NULL, gp_Pnt *pend=NULL, double *stepdown_hint=NULL,
-            short *arc_plane = NULL, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_SORT));
+            bool has_start=false, gp_Pnt *pstart=nullptr, gp_Pnt *pend=nullptr, double *stepdown_hint=nullptr,
+            short *arc_plane = nullptr, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_SORT));
 
     /** Convert a list of wires to gcode
      *
@@ -367,7 +367,7 @@ public:
      * See #AREA_PARAMS_PATH for other arguments
      */
     static void toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
-            const gp_Pnt *pstart=NULL, gp_Pnt *pend=NULL,
+            const gp_Pnt *pstart=nullptr, gp_Pnt *pend=nullptr,
             PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_PATH));
 
     static int project(TopoDS_Shape &out, const TopoDS_Shape &in,
@@ -384,7 +384,7 @@ public:
     static void setDefaultParams(const AreaStaticParams &params);
     static const AreaStaticParams &getDefaultParams();
 
-    static void showShape(const TopoDS_Shape &shape, const char *name, const char *fmt=0, ...);
+    static void showShape(const TopoDS_Shape &shape, const char *name, const char *fmt=nullptr, ...);
 };
 
 } //namespace Path

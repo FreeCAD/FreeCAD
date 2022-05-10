@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>440</width>
-    <height>342</height>
+    <height>368</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -426,53 +426,6 @@
           </property>
          </widget>
         </item>
-        <item row="7" column="0">
-         <widget class="Gui::PrefCheckBox" name="pcb_PaintFaces">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>Object faces will be transparent</string>
-          </property>
-          <property name="text">
-           <string>Transparent Faces</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ClearFace</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Colors</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="1">
-         <widget class="Gui::PrefColorButton" name="pcb_Face">
-          <property name="toolTip">
-           <string>Face color (if not transparent)</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>255</red>
-            <green>255</green>
-            <blue>255</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>FaceColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Colors</cstring>
-          </property>
-         </widget>
-        </item>
         <item row="6" column="0">
          <widget class="QLabel" name="label_18">
           <property name="font">
@@ -482,6 +435,23 @@
           </property>
           <property name="text">
            <string>Detail Highlight</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="Gui::PrefColorButton" name="pcbHighlight">
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>HighlightColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Decorations</cstring>
           </property>
          </widget>
         </item>
@@ -517,8 +487,15 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
-         <widget class="Gui::PrefColorButton" name="pcbHighlight">
+        <item row="7" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Grid Color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="1">
+         <widget class="Gui::PrefColorButton" name="pcb_Grid">
           <property name="color">
            <color>
             <red>0</red>
@@ -527,14 +504,61 @@
            </color>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>HighlightColor</cstring>
+           <cstring>gridColor</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Decorations</cstring>
+           <cstring>/Mod/TechDraw/Colors</cstring>
           </property>
          </widget>
         </item>
-       </layout>
+       <item row="8" column="0">
+         <widget class="Gui::PrefCheckBox" name="pcb_PaintFaces">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Object faces will be transparent</string>
+          </property>
+          <property name="text">
+           <string>Transparent Faces</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ClearFace</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Colors</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="1">
+         <widget class="Gui::PrefColorButton" name="pcb_Face">
+          <property name="toolTip">
+           <string>Face color (if not transparent)</string>
+          </property>
+          <property name="color">
+           <color>
+            <red>255</red>
+            <green>255</green>
+            <blue>255</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>FaceColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Colors</cstring>
+          </property>
+         </widget>
+        </item>
+        </layout>
       </item>
      </layout>
     </widget>

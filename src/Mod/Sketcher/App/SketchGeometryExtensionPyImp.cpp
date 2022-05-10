@@ -145,11 +145,11 @@ PyObject* SketchGeometryExtensionPy::testGeometryMode(PyObject *args)
             return new_reference_to(Py::Boolean(getSketchGeometryExtensionPtr()->testGeometryMode(mode)));
 
         PyErr_SetString(PyExc_TypeError, "Flag string does not exist.");
-        return NULL;
+        return nullptr;
     }
 
     PyErr_SetString(PyExc_TypeError, "No flag string provided.");
-    return NULL;
+    return nullptr;
 }
 
 PyObject* SketchGeometryExtensionPy::setGeometryMode(PyObject *args)
@@ -166,19 +166,30 @@ PyObject* SketchGeometryExtensionPy::setGeometryMode(PyObject *args)
         }
 
         PyErr_SetString(PyExc_TypeError, "Flag string does not exist.");
-        return NULL;
+        return nullptr;
     }
 
     PyErr_SetString(PyExc_TypeError, "No flag string provided.");
     Py_Return;
 }
 
+Py::Long SketchGeometryExtensionPy::getGeometryLayerId(void) const
+{
+    return Py::Long(this->getSketchGeometryExtensionPtr()->getGeometryLayerId());
+}
+
+void SketchGeometryExtensionPy::setGeometryLayerId(Py::Long Id)
+{
+    this->getSketchGeometryExtensionPtr()->setGeometryLayerId(long(Id));
+}
+
 PyObject *SketchGeometryExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int SketchGeometryExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }
+

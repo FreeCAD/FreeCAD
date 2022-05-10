@@ -403,6 +403,11 @@ class Component(ArchIFC.IfcProduct):
             if hasattr(parent,"Group"):
                 if obj in parent.Group:
                     return self.getParentHeight(parent)
+        # still not found? check if we are embedded
+        for parent in obj.InList:
+            if hasattr(parent,"Additions"):
+                if obj in parent.Additions:
+                    return self.getParentHeight(parent)
         return 0
 
     def clone(self,obj):
@@ -972,7 +977,7 @@ class Component(ArchIFC.IfcProduct):
             obj.PerimeterLength = 0
             return
 
-        import Drawing,Part
+        import TechDraw, Part
         fmax = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("MaxComputeAreas",20)
         if len(obj.Shape.Faces) > fmax:
             obj.VerticalArea = 0
@@ -1008,7 +1013,7 @@ class Component(ArchIFC.IfcProduct):
                     pset.append(f)
                 else:
                     try:
-                        pf = Part.Face(Part.Wire(Drawing.project(f,FreeCAD.Vector(0,0,1))[0].Edges))
+                        pf = Part.Face(Part.Wire(TechDraw.project(f,FreeCAD.Vector(0,0,1))[0].Edges))
                     except Part.OCCError:
                         # error in computing the areas. Better set them to zero than show a wrong value
                         if obj.HorizontalArea.Value != 0:
@@ -1060,7 +1065,6 @@ class Component(ArchIFC.IfcProduct):
         if obj.IfcType.endswith("Standard Case"):
             return True
         # Try to guess
-        import ArchIFC
         if obj.IfcType + " Standard Case" in ArchIFC.IfcTypes:
             # this type has a standard case
             if obj.Additions or obj.Subtractions:
@@ -1229,7 +1233,7 @@ class ViewProviderComponent:
             if hasattr(self.Object,"CloneOf"):
                 if self.Object.CloneOf:
                     return ":/icons/Arch_Component_Clone.svg"
-        return ":/icons/Arch_Component.svg"
+        return ":/icons/Arch_Component_Tree.svg"
 
     def onChanged(self,vobj,prop):
         """Method called when the view provider has a property changed.
@@ -1537,7 +1541,7 @@ class ViewProviderComponent:
         return False
 
     def colorize(self,obj,force=False):
-        """If an object is a clone, set it it to copy the color of its parent.
+        """If an object is a clone, set it to copy the color of its parent.
 
         Only change the color of the clone if the clone and its parent have
         colors that are distinguishably different from each other.

@@ -52,7 +52,7 @@ class DlgProjectionOnSurface : public QWidget,
     Q_OBJECT
 
 public:
-    explicit DlgProjectionOnSurface(QWidget *parent = 0);
+    explicit DlgProjectionOnSurface(QWidget *parent = nullptr);
     ~DlgProjectionOnSurface();
 
     void apply(void);
@@ -89,11 +89,11 @@ private:
     std::vector<TopoDS_Wire> aProjectedWireInParametricSpaceVec;
     TopoDS_Face aProjectedFace;
     TopoDS_Shape aProjectedSolid;
-    Part::Feature* partFeature;
+    Part::Feature* partFeature = nullptr;
     std::string partName;
-    bool is_selectable;
-    long transparency;
-    float exrudeValue;
+    bool is_selectable = false;
+    long transparency = 0;
+    float exrudeValue = 0.0f;
   };
 
   //from Gui::SelectionObserver

@@ -20,15 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
-#ifndef _PreComp_
-# include <qobject.h>
-#endif
 
 #include "Workbench.h"
 #include <Gui/ToolBarManager.h>
+
 
 using namespace ImageGui;
 

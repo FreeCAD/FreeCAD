@@ -41,7 +41,7 @@ PROPERTY_SOURCE(Part::Compound, Part::Feature)
 
 Compound::Compound()
 {
-    ADD_PROPERTY(Links,(0));
+    ADD_PROPERTY(Links,(nullptr));
     Links.setSize(0);
 }
 

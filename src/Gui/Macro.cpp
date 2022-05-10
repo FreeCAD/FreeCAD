@@ -24,25 +24,22 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <assert.h>
-# include <stdio.h>
-# include <QApplication>
+# include <cassert>
 # include <QFile>
 # include <QTextStream>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include "Macro.h"
-
-#include <Base/Interpreter.h>
+#include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <App/Application.h>
+#include <Base/Interpreter.h>
 
+#include "Macro.h"
 #include "MainWindow.h"
 #include "PythonConsole.h"
 #include "PythonConsolePy.h"
 #include "PythonDebugger.h"
+
 
 using namespace Gui;
 
@@ -53,7 +50,7 @@ MacroManager::MacroManager()
     guiAsComment(true),
     scriptToPyConsole(true),
     localEnv(true),
-    pyConsole(0),
+    pyConsole(nullptr),
     pyDebugger(new PythonDebugger()),
     totalLines(0)
 {
@@ -238,7 +235,7 @@ namespace Gui {
     class PythonRedirector
     {
     public:
-        PythonRedirector(const char* type, PyObject* obj) : std_out(type), out(obj), old(0)
+        PythonRedirector(const char* type, PyObject* obj) : std_out(type), out(obj), old(nullptr)
         {
             if (out) {
                 Base::PyGILStateLocker lock;
@@ -268,8 +265,8 @@ void MacroManager::run(MacroType eType, const char *sName)
     try {
         ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter()
             .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("OutputWindow");
-        PyObject* pyout = hGrp->GetBool("RedirectPythonOutput",true) ? new OutputStdout : 0;
-        PyObject* pyerr = hGrp->GetBool("RedirectPythonErrors",true) ? new OutputStderr : 0;
+        PyObject* pyout = hGrp->GetBool("RedirectPythonOutput",true) ? new OutputStdout : nullptr;
+        PyObject* pyerr = hGrp->GetBool("RedirectPythonErrors",true) ? new OutputStderr : nullptr;
         PythonRedirector std_out("stdout",pyout);
         PythonRedirector std_err("stderr",pyerr);
         //The given path name is expected to be Utf-8

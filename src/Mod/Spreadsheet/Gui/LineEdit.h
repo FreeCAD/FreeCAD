@@ -33,16 +33,20 @@ class LineEdit : public Gui::ExpressionLineEdit
 {
     Q_OBJECT
 public:
-    explicit LineEdit(QWidget *parent = 0);
+    explicit LineEdit(QWidget *parent = nullptr);
 
     bool event(QEvent *event);
-    void setIndex(QModelIndex _current);
-    QModelIndex next() const;
+
+Q_SIGNALS:
+    void finishedWithKey(int key, Qt::KeyboardModifiers modifiers);
 
 private:
-    QModelIndex current;
-    int deltaCol;
-    int deltaRow;
+    bool eventFilter(QObject* object, QEvent* event);
+
+
+private:
+    int lastKeyPressed;
+    Qt::KeyboardModifiers lastModifiers;
 };
 
 }

@@ -47,9 +47,9 @@ class Check(run.Check):
 
     def run(self):
         self.pushStatus("Checking analysis...\n")
-        if (self.checkMesh()):
+        if (self.check_mesh_exists()):
             self.checkMeshType()
-        self.checkMaterial()
+        self.check_material_exists()
         self.checkEquations()
 
     def checkMeshType(self):
@@ -84,7 +84,7 @@ class Prepare(run.Prepare):
             FreeCAD.Console.PrintLog("Machine testmode: {}\n".format(self.testmode))
             w = writer.Writer(self.solver, self.directory)
         try:
-            w.write()
+            w.write_solver_input()
             self.checkHandled(w)
         except writer.WriteError as e:
             self.report.error(str(e))
@@ -161,6 +161,7 @@ class Results(run.Results):
             self._createResults()
         postPath = self._getResultFile()
         self.solver.ElmerResult.read(postPath)
+        self.solver.ElmerResult.scale(1000)
         self.solver.ElmerResult.getLastPostObject().touch()
         self.solver.Document.recompute()
 
@@ -169,6 +170,8 @@ class Results(run.Results):
             "Fem::FemPostPipeline", self.solver.Name + "Result")
         self.solver.ElmerResult.Label = self.solver.Label + "Result"
         self.analysis.addObject(self.solver.ElmerResult)
+        # to assure the user sees something, set the default to Surface
+        self.solver.ElmerResult.ViewObject.DisplayMode = "Surface"
 
     def _getResultFile(self):
         postPath = None

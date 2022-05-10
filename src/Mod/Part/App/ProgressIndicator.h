@@ -27,6 +27,7 @@
 #include <Message_ProgressIndicator.hxx>
 #include <Standard_Version.hxx>
 #include <Base/Sequencer.h>
+#include <Mod/Part/PartGlobal.h>
 #include <memory>
 
 namespace Part {

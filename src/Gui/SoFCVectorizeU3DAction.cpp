@@ -20,19 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
 # include <qglobal.h>
 # include <iomanip>
 # include <ios>
+# include <Inventor/SbBSPTree.h>
 #endif
-#include <Inventor/SbBasic.h>
-#include <Inventor/SbBSPTree.h>
 
 #include <Base/FileInfo.h>
 #include <Base/Tools.h>
+
 #include "SoFCVectorizeU3DAction.h"
+
 
 using namespace Gui;
 
@@ -121,7 +122,7 @@ class SoVectorizeImage : public SoVectorizeItem {
 public:
     SoVectorizeImage(void) {
         this->type = IMAGE;
-        this->image.data = 0;
+        this->image.data = nullptr;
         this->image.nc = 0;
     }
 
@@ -227,7 +228,8 @@ void SoFCVectorizeU3DActionP::printTriangle(const SoVectorizeTriangle * item) co
 
 void SoFCVectorizeU3DActionP::printTriangle(const SbVec3f * v, const SbColor * c) const
 {
-    if (v[0] == v[1] || v[1] == v[2] || v[0] == v[2]) return;
+    if (v[0] == v[1] || v[1] == v[2] || v[0] == v[2])
+        return;
     //uint32_t cc = c->getPackedValue();
 
     //std::ostream& str = publ->getU3DOutput()->getFileStream();

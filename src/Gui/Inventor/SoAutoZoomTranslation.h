@@ -23,9 +23,9 @@
 #ifndef GUI_SOAUTOZOOMTRANSLATION_H
 #define GUI_SOAUTOZOOMTRANSLATION_H
 
-#include <Inventor/nodes/SoTranslation.h>
-#include <Inventor/nodes/SoSubNode.h>
+#include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/nodes/SoTransformation.h>
+
 
 namespace Gui {
 
@@ -37,12 +37,11 @@ class GuiExport SoAutoZoomTranslation : public SoTransformation  {
 public:
     static void initClass();
     SoAutoZoomTranslation();
-    //SoSFVec3f abPos;
 
     SoSFFloat scaleFactor;
 
 protected:
-    virtual ~SoAutoZoomTranslation() {};
+    virtual ~SoAutoZoomTranslation() {}
     virtual void doAction(SoAction * action);
     virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
     virtual void getMatrix(SoGetMatrixAction * action);
@@ -53,7 +52,7 @@ protected:
     float getScaleFactor(SoAction*) const;
 
 private:
-    //void setAutoScale(void);
+
 };
 
 }

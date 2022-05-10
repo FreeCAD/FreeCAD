@@ -20,26 +20,21 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QApplication>
 # include <QMenu>
-# include <QPixmap>
-# include <boost_bind_bind.hpp>
 #endif
 
-#include <App/Part.h>
 #include <App/Document.h>
-
-#include "ActiveObjectList.h"
-#include "ActionFunction.h"
-#include "BitmapFactory.h"
-#include "Command.h"
+#include <App/DocumentObject.h>
+#include <App/Part.h>
 
 #include "ViewProviderPart.h"
+#include "ActionFunction.h"
 #include "Application.h"
+#include "BitmapFactory.h"
+#include "Command.h"
 #include "MDIView.h"
 
 
@@ -57,6 +52,7 @@ ViewProviderPart::ViewProviderPart()
     initExtension(this);
 
     sPixmap = "Geofeaturegroup.svg";
+    aPixmap = "Geoassembly.svg";
 }
 
 ViewProviderPart::~ViewProviderPart()
@@ -111,6 +107,19 @@ bool ViewProviderPart::doubleClicked(void)
 
     return true;
 }
+
+QIcon ViewProviderPart::getIcon(void) const
+{
+    // the original Part object for this ViewProviderPart
+    App::Part* part = static_cast<App::Part*>(this->getObject());
+    // the normal case for Std_Part
+    const char* pixmap = sPixmap;
+    // if it's flagged as an Assembly in its Type, it gets another icon
+    if (part->Type.getStrValue() == "Assembly") { pixmap = aPixmap; }
+    
+    return mergeGreyableOverlayIcons (Gui::BitmapFactory().pixmap(pixmap));
+}
+
 
 // Python feature -----------------------------------------------------------------------
 

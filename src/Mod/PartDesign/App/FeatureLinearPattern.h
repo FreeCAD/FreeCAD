@@ -24,7 +24,6 @@
 #ifndef PARTDESIGN_FeatureLinearPattern_H
 #define PARTDESIGN_FeatureLinearPattern_H
 
-#include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 #include "FeatureTransformed.h"
 
@@ -66,6 +65,7 @@ public:
 
 protected:
     virtual void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop);
+    static const App::PropertyIntegerConstraint::Constraints intOccurrences;
 };
 
 } //namespace PartDesign

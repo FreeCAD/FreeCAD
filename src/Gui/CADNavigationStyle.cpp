@@ -20,28 +20,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cfloat>
-# include "InventorAll.h"
-# include <QAction>
-# include <QActionGroup>
+# include <Inventor/nodes/SoCamera.h>
 # include <QApplication>
-# include <QByteArray>
-# include <QCursor>
-# include <QList>
-# include <QMenu>
-# include <QMetaObject>
-# include <QRegExp>
 #endif
 
-#include <App/Application.h>
 #include "NavigationStyle.h"
 #include "View3DInventorViewer.h"
-#include "Application.h"
-#include "MenuManager.h"
-#include "MouseSelection.h"
+
 
 using namespace Gui;
 
@@ -82,7 +69,9 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
     // Events when in "ready-to-seek" mode are ignored, except those
     // which influence the seek mode itself -- these are handled further
     // up the inheritance hierarchy.
-    if (this->isSeekMode()) { return inherited::processSoEvent(ev); }
+    if (this->isSeekMode()) {
+        return inherited::processSoEvent(ev);
+    }
 #else
     // Switch off viewing mode (Bug #0000911)
     if (!this->isSeekMode() && !this->isAnimating() && this->isViewing())
@@ -92,12 +81,10 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
     const SoType type(ev->getTypeId());
 
     const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
-    const SbVec2s size(vp.getViewportSizePixels());
-    const SbVec2f prevnormalized = this->lastmouseposition;
     const SbVec2s pos(ev->getPosition());
-    const SbVec2f posn((float) pos[0] / (float) std::max((int)(size[0] - 1), 1),
-                       (float) pos[1] / (float) std::max((int)(size[1] - 1), 1));
+    const SbVec2f posn = normalizePixelPos(pos);
 
+    const SbVec2f prevnormalized = this->lastmouseposition;
     this->lastmouseposition = posn;
 
     // Set to true if any event processing happened. Note that it is not
@@ -111,15 +98,7 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Mismatches in state of the modifier keys happens if the user
     // presses or releases them outside the viewer window.
-    if (this->ctrldown != ev->wasCtrlDown()) {
-        this->ctrldown = ev->wasCtrlDown();
-    }
-    if (this->shiftdown != ev->wasShiftDown()) {
-        this->shiftdown = ev->wasShiftDown();
-    }
-    if (this->altdown != ev->wasAltDown()) {
-        this->altdown = ev->wasAltDown();
-    }
+    syncModifierKeys(ev);
 
     // give the nodes in the foreground root the chance to handle events (e.g color bar)
     if (!viewer->isEditing()) {
@@ -130,37 +109,8 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // Keyboard handling
     if (type.isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
-        const SoKeyboardEvent * const event = (const SoKeyboardEvent *) ev;
-        const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
-        switch (event->getKey()) {
-        case SoKeyboardEvent::LEFT_CONTROL:
-        case SoKeyboardEvent::RIGHT_CONTROL:
-            this->ctrldown = press;
-            break;
-        case SoKeyboardEvent::LEFT_SHIFT:
-        case SoKeyboardEvent::RIGHT_SHIFT:
-            this->shiftdown = press;
-            break;
-        case SoKeyboardEvent::LEFT_ALT:
-        case SoKeyboardEvent::RIGHT_ALT:
-            this->altdown = press;
-            break;
-        case SoKeyboardEvent::H:
-            processed = true;
-            viewer->saveHomePosition();
-            break;
-        case SoKeyboardEvent::S:
-        case SoKeyboardEvent::HOME:
-        case SoKeyboardEvent::LEFT_ARROW:
-        case SoKeyboardEvent::UP_ARROW:
-        case SoKeyboardEvent::RIGHT_ARROW:
-        case SoKeyboardEvent::DOWN_ARROW:
-            if (!this->isViewing())
-                this->setViewing(true);
-            break;
-        default:
-            break;
-        }
+        const SoKeyboardEvent * const event = static_cast<const SoKeyboardEvent *>(ev);
+        processed = processKeyboardEvent(event);
     }
 
     // Mouse Button / Spaceball Button handling
@@ -174,39 +124,11 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
         case SoMouseButtonEvent::BUTTON1:
             this->lockrecenter = true;
             this->button1down = press;
-#if 0 // disable to avoid interferences where this key combination is used, too
-            if (press && ev->wasShiftDown() &&
-                (this->currentmode != NavigationStyle::SELECTION)) {
-                this->centerTime = ev->getTime();
-                float ratio = vp.getViewportAspectRatio();
-                SbViewVolume vv = viewer->getCamera()->getViewVolume(ratio);
-                this->panningplane = vv.getPlane(viewer->getCamera()->focalDistance.getValue());
-                this->lockrecenter = false;
-            }
-            else if (!press && ev->wasShiftDown() &&
-                (this->currentmode != NavigationStyle::SELECTION)) {
-                SbTime tmp = (ev->getTime() - this->centerTime);
-                float dci = (float)QApplication::doubleClickInterval()/1000.0f;
-                // is it just a left click?
-                if (tmp.getValue() < dci && !this->lockrecenter) {
-                    if (!this->moveToPoint(pos)) {
-                        panToCenter(panningplane, posn);
-                        this->interactiveCountDec();
-                    }
-                    processed = true;
-                }
-            }
-            else
-#endif
             if (press && (this->currentmode == NavigationStyle::SEEK_WAIT_MODE)) {
                 newmode = NavigationStyle::SEEK_MODE;
                 this->seekToPoint(pos); // implicitly calls interactiveCountInc()
                 processed = true;
             }
-            //else if (press && (this->currentmode == NavigationStyle::IDLE)) {
-            //    this->setViewing(true);
-            //    processed = true;
-            //}
             else if (press && (this->currentmode == NavigationStyle::PANNING ||
                                this->currentmode == NavigationStyle::ZOOMING)) {
                 newmode = NavigationStyle::DRAGGING;
@@ -225,30 +147,8 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
             else if (viewer->isEditing() && (this->currentmode == NavigationStyle::SPINNING)) {
                 processed = true;
             }
-            // issue #0002433: avoid to swallow the UP event if down the
-            // scene graph somewhere a dialog gets opened
-            else if (press) {
-                SbTime tmp = (ev->getTime() - mouseDownConsumedEvent.getTime());
-                float dci = (float)QApplication::doubleClickInterval()/1000.0f;
-                // a double-click?
-                if (tmp.getValue() < dci) {
-                    mouseDownConsumedEvent = *event;
-                    mouseDownConsumedEvent.setTime(ev->getTime());
-                    processed = true;
-                }
-                else {
-                    mouseDownConsumedEvent.setTime(ev->getTime());
-                    // 'ANY' is used to mark that we don't know yet if it will
-                    // be a double-click event.
-                    mouseDownConsumedEvent.setButton(SoMouseButtonEvent::ANY);
-                }
-            }
-            else if (!press) {
-                if (mouseDownConsumedEvent.getButton() == SoMouseButtonEvent::BUTTON1) {
-                    // now handle the postponed event
-                    inherited::processSoEvent(&mouseDownConsumedEvent);
-                    mouseDownConsumedEvent.setButton(SoMouseButtonEvent::ANY);
-                }
+            else {
+                processed = processClickEvent(event);
             }
             break;
         case SoMouseButtonEvent::BUTTON2:
@@ -366,11 +266,6 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
             this->lockButton1 = false;
             processed = true;
         }
-
-        //if (curmode == NavigationStyle::DRAGGING) {
-        //    if (doSpin())
-        //        newmode = NavigationStyle::SPINNING;
-        //}
         break;
     case BUTTON1DOWN:
         // make sure not to change the selection when stopping spinning
@@ -403,16 +298,6 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
     case CTRLDOWN|SHIFTDOWN|BUTTON2DOWN:
         newmode = NavigationStyle::ZOOMING;
         break;
-    //case CTRLDOWN:
-    //case CTRLDOWN|BUTTON1DOWN:
-    //case CTRLDOWN|SHIFTDOWN:
-    //case CTRLDOWN|SHIFTDOWN|BUTTON1DOWN:
-    //    newmode = NavigationStyle::SELECTION;
-    //    break;
-    //case BUTTON1DOWN|BUTTON3DOWN:
-    //case CTRLDOWN|BUTTON3DOWN:
-    //    newmode = NavigationStyle::ZOOMING;
-    //    break;
 
         // There are many cases we don't handle that just falls through to
         // the default case, like SHIFTDOWN, CTRLDOWN, CTRLDOWN|SHIFTDOWN,
@@ -424,10 +309,6 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
     default:
         // The default will make a spin stop and otherwise not do
         // anything.
-        //if ((curmode != NavigationStyle::SEEK_WAIT_MODE) &&
-        //    (curmode != NavigationStyle::SEEK_MODE)) {
-        //    newmode = NavigationStyle::IDLE;
-        //}
         break;
     }
 
@@ -443,10 +324,8 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     // If not handled in this class, pass on upwards in the inheritance
     // hierarchy.
-    if (/*(curmode == NavigationStyle::SELECTION || viewer->isEditing()) && */!processed)
+    if (!processed)
         processed = inherited::processSoEvent(ev);
-    else
-        return true;
 
     return processed;
 }

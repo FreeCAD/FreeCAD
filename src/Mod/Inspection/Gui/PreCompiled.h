@@ -26,19 +26,6 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define MeshExport          __declspec(dllimport)
-# define PointsExport     __declspec(dllimport)
-# define InspectionExport __declspec(dllimport)
-# define InspectionGuiExport __declspec(dllexport)
-#else // for Linux
-# define MeshExport
-# define PointsExport
-# define InspectionExport
-# define InspectionGuiExport
-#endif
-
 #ifdef FC_OS_WIN32
 # ifndef NOMINMAX
 # define NOMINMAX
@@ -67,16 +54,32 @@
 #include <string>
 #include <vector>
 
-// Xerces
-#include <xercesc/util/XercesDefs.hpp>
-
 #ifdef FC_OS_WIN32
 # include <windows.h>
 #endif
 
+// Inventor
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/details/SoFaceDetail.h>
+#include <Inventor/events/SoButtonEvent.h>
+#include <Inventor/events/SoKeyboardEvent.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/lists/SoPickedPointList.h> 
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoIndexedFaceSet.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoMaterialBinding.h>
+#include <Inventor/nodes/SoNormal.h>
+#include <Inventor/nodes/SoPointSet.h>
+#include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/errors/SoDebugError.h>
+
 // Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
+#ifndef __QtAll__
+# include <Gui/QtAll.h>
 #endif
 
 #endif  //_PreComp_

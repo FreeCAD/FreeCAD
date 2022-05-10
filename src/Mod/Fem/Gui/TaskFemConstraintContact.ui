@@ -6,40 +6,54 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>354</width>
-    <height>251</height>
+    <width>300</width>
+    <height>234</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_3">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout">
+    <widget class="QLabel" name="lbl_info_2">
+     <property name="text">
+      <string>Select master face, click Add or Remove</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="hLayout1_2">
      <item>
-      <widget class="QLabel" name="lbl_info_2">
+      <widget class="QToolButton" name="btnAddMaster">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
-        <string>Select master face, click Add or Remove</string>
+        <string>Add</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
-       <item>
-        <widget class="QPushButton" name="btnAddMaster">
-         <property name="text">
-          <string>Add</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="btnRemoveMaster">
-         <property name="text">
-          <string>Remove</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <widget class="QToolButton" name="btnRemoveMaster">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Remove</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -60,31 +74,45 @@
     </widget>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
+    <widget class="QLabel" name="lbl_info">
+     <property name="text">
+      <string>Select slave face, click Add or Remove</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="hLayout1_3">
      <item>
-      <widget class="QLabel" name="lbl_info">
+      <widget class="QToolButton" name="btnAddSlave">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
-        <string>Select slave face, click Add or Remove</string>
+        <string>Add</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QPushButton" name="btnAddSlave">
-         <property name="text">
-          <string>Add</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="btnRemoveSlave">
-         <property name="text">
-          <string>Remove</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <widget class="QToolButton" name="btnRemoveSlave">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Remove</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -118,17 +146,17 @@
      </item>
      <item>
       <widget class="Gui::InputField" name="spSlope">
-       <property name="maximum">
-        <double>1000000000.000000000000000</double>
-       </property>
        <property name="singleStep">
         <double>1.000000000000000</double>
        </property>
-       <property name="value">
-        <double>1000000.000000000000000</double>
+       <property name="maximum">
+        <double>1000000000.000000000000000</double>
        </property>
        <property name="unit" stdset="0">
         <string notr="true">Pa</string>
+       </property>
+       <property name="value" stdset="0">
+        <double>1000000.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -146,7 +174,7 @@
      <item>
       <widget class="QDoubleSpinBox" name="spFriction">
        <property name="decimals">
-        <number>1</number>
+        <number>2</number>
        </property>
        <property name="maximum">
         <double>1.000000000000000</double>
@@ -159,10 +187,10 @@
     </layout>
    </item>
   </layout>
+  <zorder>lbl_info_2</zorder>
   <zorder>lbl_info</zorder>
   <zorder>lw_referencesSlave</zorder>
   <zorder>lw_referencesMaster</zorder>
-  <zorder>lbl_info_2</zorder>
  </widget>
  <customwidgets>
   <customwidget>

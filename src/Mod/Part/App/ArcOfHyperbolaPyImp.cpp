@@ -150,7 +150,7 @@ Py::Object ArcOfHyperbolaPy::getHyperbola(void) const
 
 PyObject *ArcOfHyperbolaPy::getCustomAttributes(const char* ) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ArcOfHyperbolaPy::setCustomAttributes(const char* , PyObject *)

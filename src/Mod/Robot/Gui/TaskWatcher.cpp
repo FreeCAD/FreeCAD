@@ -30,6 +30,7 @@
 
 
 #include "TaskWatcher.h"
+#include <Gui/SelectionObject.h>
 
 
 using namespace RobotGui;
@@ -43,8 +44,8 @@ using namespace RobotGui;
 TaskWatcherRobot::TaskWatcherRobot()
     : Gui::TaskView::TaskWatcher("SELECT Robot::RobotObject COUNT 1")
 {
-    rob  = new TaskRobot6Axis(0);
-    ctr  = new TaskRobotControl(0);
+    rob  = new TaskRobot6Axis(nullptr);
+    ctr  = new TaskRobotControl(nullptr);
 
     Content.push_back(rob);
     Content.push_back(ctr);

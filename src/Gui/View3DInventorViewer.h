@@ -29,17 +29,19 @@
 #include <set>
 #include <vector>
 
-#include <Base/Type.h>
-#include <Base/Placement.h>
-#include <Inventor/nodes/SoEventCallback.h>
-#include <Inventor/nodes/SoSwitch.h>
-#include <Inventor/SbRotation.h>
-#include <Gui/Quarter/SoQTQuarterAdaptor.h>
 #include <QCursor>
 #include <QImage>
 
-#include <Gui/Selection.h>
-#include <Gui/Namespace.h>
+#include <Inventor/SbRotation.h>
+#include <Inventor/nodes/SoEventCallback.h>
+#include <Inventor/nodes/SoSwitch.h>
+
+#include <Base/Placement.h>
+
+#include "Namespace.h"
+#include "Selection.h"
+#include "Quarter/SoQTQuarterAdaptor.h"
+
 
 class SoTranslation;
 class SoTransform;
@@ -128,8 +130,8 @@ public:
     };
     //@}
 
-    View3DInventorViewer (QWidget *parent, const QtGLWidget* sharewidget = 0);
-    View3DInventorViewer (const QtGLFormat& format, QWidget *parent, const QtGLWidget* sharewidget = 0);
+    View3DInventorViewer (QWidget *parent, const QtGLWidget* sharewidget = nullptr);
+    View3DInventorViewer (const QtGLFormat& format, QWidget *parent, const QtGLWidget* sharewidget = nullptr);
     virtual ~View3DInventorViewer();
 
     void init();
@@ -202,7 +204,7 @@ public:
     SbBool isEditingViewProvider() const;
     /// reset from edit mode
     void resetEditingViewProvider();
-    void setupEditingRoot(SoNode *node=0, const Base::Matrix4D *mat=0);
+    void setupEditingRoot(SoNode *node=nullptr, const Base::Matrix4D *mat=nullptr);
     void resetEditingRoot(bool updateLinks=true);
     void setEditingTransform(const Base::Matrix4D &mat);
     /** Helper method to get picked entities while editing.
@@ -236,11 +238,12 @@ public:
     /** @name Selection methods */
     //@{
     void startSelection(SelectionMode = Lasso);
+    void abortSelection();
     void stopSelection();
     bool isSelecting() const;
-    std::vector<SbVec2f> getGLPolygon(SelectionRole* role=0) const;
+    std::vector<SbVec2f> getGLPolygon(SelectionRole* role=nullptr) const;
     std::vector<SbVec2f> getGLPolygon(const std::vector<SbVec2s>&) const;
-    const std::vector<SbVec2s>& getPolygon(SelectionRole* role=0) const;
+    const std::vector<SbVec2s>& getPolygon(SelectionRole* role=nullptr) const;
     void setSelectionEnabled(const SbBool enable);
     SbBool isSelectionEnabled(void) const;
     //@}
@@ -275,11 +278,11 @@ public:
      * Set up a callback function \a cb which will be invoked for the given eventtype.
      * \a userdata will be given as the first argument to the callback function.
      */
-    void addEventCallback(SoType eventtype, SoEventCallbackCB * cb, void* userdata = 0);
+    void addEventCallback(SoType eventtype, SoEventCallbackCB * cb, void* userdata = nullptr);
     /**
      * Unregister the given callback function \a cb.
      */
-    void removeEventCallback(SoType eventtype, SoEventCallbackCB * cb, void* userdata = 0);
+    void removeEventCallback(SoType eventtype, SoEventCallbackCB * cb, void* userdata = nullptr);
 
     /** @name Clipping plane, near and far plane */
     //@{
@@ -294,7 +297,9 @@ public:
     /** Returns the orientation of the camera. */
     SbRotation getCameraOrientation() const;
     /** Returns the 3d point on the focal plane to the given 2d point. */
-    SbVec3f getPointOnScreen(const SbVec2s&) const;
+    SbVec3f getPointOnFocalPlane(const SbVec2s&) const;
+    /** Returns the 2d coordinates on the screen to the given 3d point. */
+    SbVec2s getPointOnScreen(const SbVec3f&) const;
     /** Returns the near plane represented by its normal and base point. */
     void getNearPlane(SbVec3f& rcPt, SbVec3f& rcNormal) const;
     /** Returns the far plane represented by its normal and base point. */
@@ -308,6 +313,10 @@ public:
     SbVec3f projectOnNearPlane(const SbVec2f&) const;
     /** Project the given normalized 2d point onto the far plane */
     SbVec3f projectOnFarPlane(const SbVec2f&) const;
+    /** Project the given 2d point to a line */
+    void projectPointToLine(const SbVec2s&, SbVec3f& pt1, SbVec3f& pt2) const;
+    /** Get the normalized position of the 2d point. */
+    SbVec2f getNormalizedPosition(const SbVec2s&) const;
     //@}
 
     /** @name Dimension controls
@@ -347,6 +356,11 @@ public:
 
     /// Breaks out a VR window for a Rift
     void viewVR(void);
+
+    /**
+     * Returns the bounding box of the scene graph.
+     */
+    SbBox3f getBoundingBox() const;
 
     /**
      * Reposition the current camera so we can see all selected objects

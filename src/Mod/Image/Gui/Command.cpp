@@ -11,7 +11,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QAction>
 # include <QFileDialog>
 # include <QImage>
 # include <QImageReader>
@@ -19,20 +18,22 @@
 # include <QTextStream>
 #endif
 
-#include <time.h>
+#include <ctime>
 #if defined(FC_OS_WIN32)
 #include <sys/timeb.h>
 #endif
 
-#include <Base/Exception.h>
-#include <Base/Tools.h>
-#include <Base/Interpreter.h>
 #include <App/Document.h>
+#include <Base/Exception.h>
+#include <Base/Interpreter.h>
+#include <Base/Tools.h>
+
 #include <Gui/Application.h>
-#include <Gui/MainWindow.h>
 #include <Gui/Command.h>
-#include <Gui/BitmapFactory.h>
+#include <Gui/MainWindow.h>
+
 #include "ImageOrientationDialog.h"
+
 
 #if HAVE_OPENCV2
 #  include "opencv2/opencv.hpp"
@@ -82,7 +83,7 @@ void CmdImageOpen::activated(int iMsg)
             Command::doCommand(Command::Gui, "import Image, ImageGui");
             Command::doCommand(Command::Gui, "ImageGui.open(\"%s\",\"utf-8\")", (const char*)s.toUtf8());
         }
-        catch (const Base::PyException& e){
+        catch (const Base::PyException& e) {
             // Usually thrown if the file is invalid somehow
             e.ReportException();
         }
@@ -147,13 +148,14 @@ void CmdCreateImagePlane::activated(int iMsg)
         QString pyfile = Base::Tools::escapeEncodeFilename(s);
 
         openCommand(QT_TRANSLATE_NOOP("Command", "Create ImagePlane"));
-        doCommand(Doc,"App.activeDocument().addObject('Image::ImagePlane','%s\')",FeatName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.ImageFile = '%s'",FeatName.c_str(),(const char*)pyfile.toUtf8());
-        doCommand(Doc,"App.activeDocument().%s.XSize = %f",FeatName.c_str(),width);
-        doCommand(Doc,"App.activeDocument().%s.YSize = %f",FeatName.c_str(),height);
-        doCommand(Doc,"App.activeDocument().%s.Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))"
-                     ,FeatName.c_str(),p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
-        doCommand(Doc,"Gui.SendMsgToActiveView('ViewFit')");
+        doCommand(Doc, "App.activeDocument().addObject('Image::ImagePlane','%s\')", FeatName.c_str());
+        doCommand(Doc, "App.activeDocument().%s.ImageFile = '%s'", FeatName.c_str(), (const char*)pyfile.toUtf8());
+        doCommand(Doc, "App.activeDocument().%s.XSize = %f", FeatName.c_str(), width);
+        doCommand(Doc, "App.activeDocument().%s.YSize = %f", FeatName.c_str(), height);
+        doCommand(Doc, "App.activeDocument().%s.Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))"
+                     , FeatName.c_str(), p.x, p.y, p.z, r[0], r[1], r[2], r[3]);
+        doCommand(Doc, "App.activeDocument().%s.ViewObject.ShapeColor=(1.,1.,1.)", FeatName.c_str());
+        doCommand(Doc, "Gui.SendMsgToActiveView('ViewFit')");
         commitCommand();
     }
 }
@@ -187,7 +189,7 @@ void CmdImageScaling::activated(int iMsg)
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #if HAVE_OPENCV2
-DEF_STD_CMD(CmdImageCapturerTest);
+DEF_STD_CMD(CmdImageCapturerTest)
 
 CmdImageCapturerTest::CmdImageCapturerTest()
   : Command("Image_CapturerTest")
@@ -226,13 +228,13 @@ void CmdImageCapturerTest::activated(int iMsg)
 }
 #endif
 
-void CreateImageCommands(void)
+void CreateImageCommands()
 {
-    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+    Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
 
     rcCmdMgr.addCommand(new CmdImageOpen());
     rcCmdMgr.addCommand(new CmdCreateImagePlane());
 #if HAVE_OPENCV2
-	rcCmdMgr.addCommand(new CmdImageCapturerTest());
+    rcCmdMgr.addCommand(new CmdImageCapturerTest());
 #endif
 }

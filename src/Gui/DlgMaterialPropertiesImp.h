@@ -25,8 +25,8 @@
 #define GUI_DIALOG_DLGMATERIALPROPERTIES_IMP_H
 
 #include <QDialog>
-#include <vector>
 #include <memory>
+#include <vector>
 
 namespace Gui {
 class ViewProvider;
@@ -39,7 +39,7 @@ class DlgMaterialPropertiesImp : public QDialog
     Q_OBJECT
 
 public:
-    DlgMaterialPropertiesImp(const std::string& mat, QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+    DlgMaterialPropertiesImp(const std::string& mat, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgMaterialPropertiesImp();
     void setViewProviders(const std::vector<Gui::ViewProvider*>&);
     QColor diffuseColor() const;

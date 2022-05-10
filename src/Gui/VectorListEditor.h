@@ -23,12 +23,14 @@
 #ifndef GUI_VECTORLISTEDITOR_H
 #define GUI_VECTORLISTEDITOR_H
 
-#include <QDialog>
-#include <QList>
 #include <QAbstractTableModel>
+#include <QDialog>
 #include <QItemDelegate>
+#include <QList>
+
 #include <memory>
 #include <Base/Vector3D.h>
+
 
 namespace Gui {
 
@@ -61,7 +63,7 @@ class VectorTableDelegate : public QItemDelegate
     Q_OBJECT
 
 public:
-    VectorTableDelegate(int decimals, QObject *parent = 0);
+    VectorTableDelegate(int decimals, QObject *parent = nullptr);
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
                           const QModelIndex &index) const;

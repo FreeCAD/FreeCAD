@@ -66,7 +66,7 @@ class TemplatePyMod_Cmd2:
                         self.node=[]
                         self.view.removeEventCallback("SoMouseButtonEvent",self.call)
 
-        p=PolygonCreator(d,v,10)
+        self.polycreator = PolygonCreator(d,v,10)
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is None:

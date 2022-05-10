@@ -22,11 +22,14 @@
 
 #include "PreCompiled.h"
 
-#include "SoTouchEvents.h"
 #include <QApplication>
 #include <QGestureEvent>
 #include <QWidget>
+
 #include <Base/Exception.h>
+
+#include "SoTouchEvents.h"
+
 
 SO_EVENT_SOURCE(SoGestureEvent);
 
@@ -108,8 +111,7 @@ SbBool SoGesturePinchEvent::isSoGesturePinchEvent(const SoEvent *ev) const
  */
 double SoGesturePinchEvent::unbranchAngle(double ang)
 {
-    const double Pi = 3.14159265358979323846;
-    return ang - 2.0*Pi*floor((ang+Pi)/(2.0*Pi));
+    return ang - 2.0 * M_PI * floor((ang + M_PI) / (2.0 * M_PI));
 }
 
 
@@ -198,5 +200,5 @@ const SoEvent* GesturesDevice::translateEvent(QEvent* event)
             return new SoGesturePanEvent(pg,this->widget);
         }
     }
-    return 0;
+    return nullptr;
 }

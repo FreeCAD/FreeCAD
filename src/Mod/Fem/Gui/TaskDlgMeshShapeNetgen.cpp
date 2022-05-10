@@ -51,12 +51,12 @@ using namespace FemGui;
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgMeshShapeNetgen::TaskDlgMeshShapeNetgen(FemGui::ViewProviderFemMeshShapeNetgen *obj)
-    : TaskDialog(), param(0), ViewProviderFemMeshShapeNetgen(obj)
+TaskDlgMeshShapeNetgen::TaskDlgMeshShapeNetgen(FemGui::ViewProviderFemMeshShapeNetgen* obj)
+    : TaskDialog(), param(nullptr), ViewProviderFemMeshShapeNetgen(obj)
 {
-    FemMeshShapeNetgenObject = dynamic_cast<Fem::FemMeshShapeNetgenObject *>(obj->getObject());
+    FemMeshShapeNetgenObject = dynamic_cast<Fem::FemMeshShapeNetgenObject*>(obj->getObject());
     if (FemMeshShapeNetgenObject) {
-        param   = new TaskTetParameter(FemMeshShapeNetgenObject);
+        param = new TaskTetParameter(FemMeshShapeNetgenObject);
         Content.push_back(param);
     }
 }
@@ -81,7 +81,7 @@ void TaskDlgMeshShapeNetgen::open()
 void TaskDlgMeshShapeNetgen::clicked(int button)
 {
     try {
-        if(QDialogButtonBox::Apply == button && param->touched)
+        if (QDialogButtonBox::Apply == button && param->touched)
         {
             Gui::WaitCursor wc;
             // May throw an exception which we must handle here
@@ -98,14 +98,14 @@ void TaskDlgMeshShapeNetgen::clicked(int button)
 bool TaskDlgMeshShapeNetgen::accept()
 {
     try {
-        if(param->touched)
+        if (param->touched)
         {
             Gui::WaitCursor wc;
             bool ret = FemMeshShapeNetgenObject->recomputeFeature();
             if (!ret) {
                 wc.restoreCursor();
                 QMessageBox::critical(Gui::getMainWindow(), tr("Meshing failure"),
-                                      QString::fromStdString(FemMeshShapeNetgenObject->getStatusString()));
+                    QString::fromStdString(FemMeshShapeNetgenObject->getStatusString()));
                 return true;
             }
         }
@@ -117,7 +117,7 @@ bool TaskDlgMeshShapeNetgen::accept()
         }
 
         //FemSetNodesObject->Label.setValue(name->name);
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
         Gui::Command::commitCommand();
 
         return true;
@@ -137,7 +137,7 @@ bool TaskDlgMeshShapeNetgen::reject()
     //    //    doc->resetEdit();
     //param->MeshViewProvider->resetHighlightNodes();
     Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
 
     return true;
 }
@@ -146,6 +146,5 @@ void TaskDlgMeshShapeNetgen::helpRequested()
 {
 
 }
-
 
 #include "moc_TaskDlgMeshShapeNetgen.cpp"

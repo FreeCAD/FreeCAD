@@ -104,7 +104,87 @@ class TestSolverCalculix(unittest.TestCase):
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
-    def test_ccxcantilever_faceload(
+    def test_ccx_cantilever_beam_circle(
+        self
+    ):
+        from femexamples.ccx_cantilever_beam_circle import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_ccx_cantilever_beam_pipe(
+        self
+    ):
+        from femexamples.ccx_cantilever_beam_pipe import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_ccx_cantilever_beam_rect(
+        self
+    ):
+        from femexamples.ccx_cantilever_beam_rect import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_ccx_cantilever_ele_hexa20(
+        self
+    ):
+        from femexamples.ccx_cantilever_ele_hexa20 import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_ccx_cantilever_ele_quad4(
+        self
+    ):
+        from femexamples.ccx_cantilever_ele_quad4 import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_ccx_cantilever_ele_quad8(
+        self
+    ):
+        from femexamples.ccx_cantilever_ele_quad8 import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_ccx_cantilever_ele_seg2(
+        self
+    ):
+        from femexamples.ccx_cantilever_ele_seg2 import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_ccx_cantilever_ele_seg3(
+        self
+    ):
+        from femexamples.ccx_cantilever_ele_seg3 import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_ccx_cantilever_ele_tria3(
+        self
+    ):
+        from femexamples.ccx_cantilever_ele_tria3 import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_ccx_cantilever_ele_tria6(
+        self
+    ):
+        from femexamples.ccx_cantilever_ele_tria6 import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_ccx_cantilever_faceload(
         self
     ):
         from femexamples.ccx_cantilever_faceload import setup
@@ -112,15 +192,7 @@ class TestSolverCalculix(unittest.TestCase):
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
-    def test_ccxcantilever_hexa20(
-        self
-    ):
-        from femexamples.ccx_cantilever_hexa20faceload import setup
-        setup(self.document, "calculix")
-        self.input_file_writing_test(get_namefromdef("test_"))
-
-    # ********************************************************************************************
-    def test_ccxcantilever_nodeload(
+    def test_ccx_cantilever_nodeload(
         self
     ):
         from femexamples.ccx_cantilever_nodeload import setup
@@ -128,10 +200,21 @@ class TestSolverCalculix(unittest.TestCase):
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
-    def test_ccxcantilever_prescribeddisplacement(
+    def test_ccx_cantilever_prescribeddisplacement(
         self
     ):
         from femexamples.ccx_cantilever_prescribeddisplacement import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_constraint_centrif(
+        self
+    ):
+        # TODO does pass on my local machine, but not on ci
+        return
+
+        from femexamples.constraint_centrif import setup
         setup(self.document, "calculix")
         self.input_file_writing_test(get_namefromdef("test_"))
 
@@ -147,7 +230,7 @@ class TestSolverCalculix(unittest.TestCase):
     def test_constraint_contact_solid_solid(
         self
     ):
-        # TODO does pass on my local machine, but not on travis
+        # TODO does pass on my local machine, but not on ci
         return
 
         from femexamples.constraint_contact_solid_solid import setup
@@ -175,6 +258,22 @@ class TestSolverCalculix(unittest.TestCase):
         self
     ):
         from femexamples.constraint_tie import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_constraint_transform_beam_hinged(
+        self
+    ):
+        from femexamples.constraint_transform_beam_hinged import setup
+        setup(self.document, "calculix")
+        self.input_file_writing_test(get_namefromdef("test_"))
+
+    # ********************************************************************************************
+    def test_constraint_transform_torque(
+        self
+    ):
+        from femexamples.constraint_transform_torque import setup
         setup(self.document, "calculix")
         self.input_file_writing_test(get_namefromdef("test_"))
 

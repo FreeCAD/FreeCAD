@@ -20,16 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_PROGRESSDIALOG_H
 #define GUI_PROGRESSDIALOG_H
 
 #include <Base/Sequencer.h>
 #include <QProgressDialog>
 #ifdef QT_WINEXTRAS_LIB
-#include <QWinTaskbarProgress>
 #include <QWinTaskbarButton>
+#include <QWinTaskbarProgress>
 #endif
+
 
 namespace Gui {
 
@@ -83,7 +83,7 @@ class ProgressDialog : public QProgressDialog
 
 public:
     /** Construction */
-    ProgressDialog (SequencerDialog* s, QWidget * parent=0);
+    ProgressDialog (SequencerDialog* s, QWidget * parent=nullptr);
     /** Destruction */
     ~ProgressDialog ();
 

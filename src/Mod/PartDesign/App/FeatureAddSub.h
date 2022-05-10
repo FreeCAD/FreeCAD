@@ -24,9 +24,6 @@
 #ifndef PARTDESIGN_FeatureAdditive_H
 #define PARTDESIGN_FeatureAdditive_H
 
-#include <App/PropertyStandard.h>
-#include <Mod/Part/App/PropertyTopoShape.h>
-
 #include "Feature.h"
 
 /// Base class of all additive features in PartDesign

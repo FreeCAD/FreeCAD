@@ -26,7 +26,6 @@
 # include <QButtonGroup>
 # include <QPushButton>
 # include <sstream>
-# include <Python.h>
 # include <boost_bind_bind.hpp>
 
 # include <TopoDS_Shape.hxx>
@@ -67,8 +66,10 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <Base/UnitsApi.h>
 #include "../App/PartFeature.h"
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Selection.h>
 #include <Gui/Document.h>
@@ -120,7 +121,7 @@ bool PartGui::getShapeFromStrings(TopoDS_Shape &shapeOut, const std::string &doc
 
 bool PartGui::evaluateLinearPreSelection(TopoDS_Shape &shape1, TopoDS_Shape &shape2)
 {
-  std::vector<Gui::SelectionSingleton::SelObj> selections = Gui::Selection().getSelection(0,false);
+  std::vector<Gui::SelectionSingleton::SelObj> selections = Gui::Selection().getSelection(nullptr, Gui::ResolveMode::NoResolve);
   if (selections.size() != 2)
     return false;
   std::vector<Gui::SelectionSingleton::SelObj>::iterator it;
@@ -228,13 +229,13 @@ Gui::View3DInventorViewer * PartGui::getViewer()
 {
   Gui::Document *doc = Gui::Application::Instance->activeDocument();
   if (!doc)
-    return 0;
+    return nullptr;
   Gui::View3DInventor *view = dynamic_cast<Gui::View3DInventor*>(doc->getActiveView());
   if (!view)
-    return 0;
+    return nullptr;
   Gui::View3DInventorViewer *viewer = view->getViewer();
   if (!viewer)
-    return 0;
+    return nullptr;
   return viewer;
 }
 
@@ -514,7 +515,7 @@ void PartGui::DimensionLinear::setupDimension()
 }
 
 PartGui::TaskMeasureLinear::TaskMeasureLinear()
-    : Gui::SelectionObserver(true,false)
+    : Gui::SelectionObserver(true, Gui::ResolveMode::NoResolve)
     , selections1(), selections2(), buttonSelectedIndex(0)
 {
   setUpGui();
@@ -583,9 +584,9 @@ void PartGui::TaskMeasureLinear::selectionClearDelayedSlot()
   //clearing selections are not working as I hoped. Apparently the observer callback gets called
   //before the actual selection takes place. Resulting in selections being left. this addresses this
   //by being called from the event loop.
-  this->blockConnection(true);
+  this->blockSelection(true);
   Gui::Selection().clearSelection();
-  this->blockConnection(false);
+  this->blockSelection(false);
 }
 
 void PartGui::TaskMeasureLinear::buildDimension() {
@@ -628,14 +629,14 @@ void PartGui::TaskMeasureLinear::setUpGui()
   QPixmap mainIcon = Gui::BitmapFactory().pixmap("Part_Measure_Linear");
 
   Gui::TaskView::TaskBox* selectionTaskBox = new Gui::TaskView::TaskBox
-    (mainIcon, QObject::tr("Selections"), false, 0);
+    (mainIcon, QObject::tr("Selections"), false, nullptr);
   QVBoxLayout *selectionLayout = new QVBoxLayout();
   stepped = new SteppedSelection(2, selectionTaskBox);
   selectionLayout->addWidget(stepped);
   selectionTaskBox->groupLayout()->addLayout(selectionLayout);
 
   Gui::TaskView::TaskBox* controlTaskBox = new Gui::TaskView::TaskBox
-    (mainIcon, QObject::tr("Control"), false, 0);
+    (mainIcon, QObject::tr("Control"), false, nullptr);
   QVBoxLayout *controlLayout = new QVBoxLayout();
 
   DimensionControl *control = new DimensionControl(controlTaskBox);
@@ -663,13 +664,13 @@ void PartGui::TaskMeasureLinear::selection1Slot(bool checked)
   }
   buttonSelectedIndex = 0;
 
-  this->blockConnection(true);
+  this->blockSelection(true);
   Gui::Selection().clearSelection();
   //we should only be working with 1 entity, but oh well do the loop anyway.
   std::vector<DimSelections::DimSelection>::const_iterator it;
   for (it = selections1.selections.begin(); it != selections1.selections.end(); ++it)
     Gui::Selection().addSelection(it->documentName.c_str(), it->objectName.c_str(), it->subObjectName.c_str());
-  this->blockConnection(false);
+  this->blockSelection(false);
 }
 
 void PartGui::TaskMeasureLinear::selection2Slot(bool checked)
@@ -677,22 +678,22 @@ void PartGui::TaskMeasureLinear::selection2Slot(bool checked)
   if (!checked)
     return;
   buttonSelectedIndex = 1;
-  this->blockConnection(true);
+  this->blockSelection(true);
   Gui::Selection().clearSelection();
   std::vector<DimSelections::DimSelection>::const_iterator it;
   for (it = selections2.selections.begin(); it != selections2.selections.end(); ++it)
     Gui::Selection().addSelection(it->documentName.c_str(), it->objectName.c_str(), it->subObjectName.c_str());
-  this->blockConnection(false);
+  this->blockSelection(false);
 }
 
 void PartGui::TaskMeasureLinear::resetDialogSlot(bool)
 {
   clearSelectionStrings();
-  this->blockConnection(true);
+  this->blockSelection(true);
   Gui::Selection().clearSelection();
   stepped->getButton(0)->setChecked(true);
   stepped->getButton(1)->setEnabled(false);
-  this->blockConnection(false);
+  this->blockSelection(false);
 }
 
 void PartGui::TaskMeasureLinear::toggle3dSlot(bool)
@@ -831,7 +832,7 @@ void PartGui::goDimensionAngularRoot()
 
 bool PartGui::evaluateAngularPreSelection(VectorAdapter &vector1Out, VectorAdapter &vector2Out)
 {
-  std::vector<Gui::SelectionSingleton::SelObj> selections = Gui::Selection().getSelection(0,false);
+  std::vector<Gui::SelectionSingleton::SelObj> selections = Gui::Selection().getSelection(nullptr, Gui::ResolveMode::NoResolve);
   if (selections.size() > 4 || selections.size() < 2)
     return false;
   std::vector<Gui::SelectionSingleton::SelObj>::iterator it;
@@ -1379,8 +1380,8 @@ void PartGui::ArcEngine::defaultValues()
 
 PartGui::SteppedSelection::SteppedSelection(const uint& buttonCountIn, QWidget* parent)
   : QWidget(parent)
-  , stepActive(0)
-  , stepDone(0)
+  , stepActive(nullptr)
+  , stepDone(nullptr)
 {
   if (buttonCountIn < 1)
     return;
@@ -1394,10 +1395,10 @@ PartGui::SteppedSelection::SteppedSelection(const uint& buttonCountIn, QWidget* 
   for (uint index = 0; index < buttonCountIn; ++index)
   {
     ButtonIconPairType tempPair;
-
+    QString text = QObject::tr("Selection ");
     std::ostringstream stream;
-    stream << "Selection " << ((index < 10) ? "0" : "") <<  index + 1;
-    QString buttonText = QObject::tr(stream.str().c_str());
+    stream << text.toStdString() << ((index < 10) ? "0" : "") <<  index + 1;
+    QString buttonText = QString::fromStdString(stream.str());
     QPushButton *button = new QPushButton(buttonText, this);
     button->setCheckable(true);
     button->setEnabled(false);
@@ -1427,12 +1428,12 @@ PartGui::SteppedSelection::~SteppedSelection()
   if(stepActive)
   {
     delete stepActive;
-    stepActive = 0;
+    stepActive = nullptr;
   }
   if (stepDone)
   {
     delete stepDone;
-    stepDone = 0;
+    stepDone = nullptr;
   }
 }
 
@@ -1449,7 +1450,7 @@ void PartGui::SteppedSelection::buildPixmaps()
 void PartGui::SteppedSelection::selectionSlot(bool checked)
 {
   QPushButton *sender = qobject_cast<QPushButton*>(QObject::sender());
-  assert(sender != 0);
+  assert(sender != nullptr);
   std::vector<ButtonIconPairType>::iterator it;
   for (it = buttons.begin(); it != buttons.end(); ++it)
     if (it->first == sender)
@@ -1513,7 +1514,7 @@ void PartGui::DimensionControl::clearAllSlot(bool)
 }
 
 PartGui::TaskMeasureAngular::TaskMeasureAngular()
-    : Gui::SelectionObserver(true,false)
+    : Gui::SelectionObserver(true, Gui::ResolveMode::NoResolve)
     , selections1(), selections2(), buttonSelectedIndex(0)
 {
   setUpGui();
@@ -1664,9 +1665,9 @@ void PartGui::TaskMeasureAngular::selectionClearDelayedSlot()
   //clearing selections are not working as I hoped. Apparently the observer callback gets called
   //before the actual selection takes place. Resulting in selections being left. this addresses this
   //by being called from the event loop.
-  this->blockConnection(true);
+  this->blockSelection(true);
   Gui::Selection().clearSelection();
-  this->blockConnection(false);
+  this->blockSelection(false);
 }
 
 PartGui::VectorAdapter PartGui::TaskMeasureAngular::buildAdapter(const PartGui::DimSelections& selection)
@@ -1766,14 +1767,14 @@ void PartGui::TaskMeasureAngular::setUpGui()
   QPixmap mainIcon = Gui::BitmapFactory().pixmap("Part_Measure_Angular");
 
   Gui::TaskView::TaskBox* selectionTaskBox = new Gui::TaskView::TaskBox
-    (mainIcon, QObject::tr("Selections"), false, 0);
+    (mainIcon, QObject::tr("Selections"), false, nullptr);
   QVBoxLayout *selectionLayout = new QVBoxLayout();
   stepped = new SteppedSelection(2, selectionTaskBox);
   selectionLayout->addWidget(stepped);
   selectionTaskBox->groupLayout()->addLayout(selectionLayout);
 
   Gui::TaskView::TaskBox* controlTaskBox = new Gui::TaskView::TaskBox
-    (mainIcon, QObject::tr("Control"), false, 0);
+    (mainIcon, QObject::tr("Control"), false, nullptr);
   QVBoxLayout *controlLayout = new QVBoxLayout();
 
   DimensionControl *control = new DimensionControl(controlTaskBox);
@@ -1796,12 +1797,12 @@ void PartGui::TaskMeasureAngular::selection1Slot(bool checked)
   if (checked)
   {
     buttonSelectedIndex = 0;
-    this->blockConnection(true);
+    this->blockSelection(true);
     Gui::Selection().clearSelection();
     std::vector<DimSelections::DimSelection>::const_iterator it;
     for (it = selections1.selections.begin(); it != selections1.selections.end(); ++it)
       Gui::Selection().addSelection(it->documentName.c_str(), it->objectName.c_str(), it->subObjectName.c_str());
-    this->blockConnection(false);
+    this->blockSelection(false);
   }
   else
   {
@@ -1814,22 +1815,22 @@ void PartGui::TaskMeasureAngular::selection2Slot(bool checked)
 {
   if (checked)
     buttonSelectedIndex = 1;
-  this->blockConnection(true);
+  this->blockSelection(true);
   Gui::Selection().clearSelection();
   std::vector<DimSelections::DimSelection>::const_iterator it;
   for (it = selections2.selections.begin(); it != selections2.selections.end(); ++it)
     Gui::Selection().addSelection(it->documentName.c_str(), it->objectName.c_str(), it->subObjectName.c_str());
-  this->blockConnection(false);
+  this->blockSelection(false);
 }
 
 void PartGui::TaskMeasureAngular::resetDialogSlot(bool)
 {
   clearSelection();
-  this->blockConnection(true);
+  this->blockSelection(true);
   Gui::Selection().clearSelection();
   stepped->getButton(0)->setChecked(true);
   stepped->getButton(1)->setEnabled(false);
-  this->blockConnection(false);
+  this->blockSelection(false);
 }
 
 void PartGui::TaskMeasureAngular::toggle3dSlot(bool)

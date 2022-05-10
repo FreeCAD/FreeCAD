@@ -171,7 +171,7 @@ PyObject* TooltablePy::addTools(PyObject * args)
         Py_INCREF(Py_None);
         return Py_None;
     }
-    Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters - tool or list of tools expected");
+    Py_Error(PyExc_TypeError, "Wrong parameters - tool or list of tools expected");
 }
 
 PyObject* TooltablePy::setTool(PyObject * args)
@@ -185,7 +185,7 @@ PyObject* TooltablePy::setTool(PyObject * args)
         Py_INCREF(Py_None);
         return Py_None;
     }
-    Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters - expected tool and optional integer");
+    Py_Error(PyExc_TypeError, "Wrong parameters - expected tool and optional integer");
 }
 
 PyObject* TooltablePy::getTool(PyObject * args)
@@ -203,7 +203,7 @@ PyObject* TooltablePy::getTool(PyObject * args)
             return Py_None;
         }
     }
-    Py_Error(Base::BaseExceptionFreeCADError, "Argument must be integer");
+    Py_Error(PyExc_TypeError, "Argument must be integer");
 }
 
 PyObject* TooltablePy::deleteTool(PyObject * args)
@@ -215,14 +215,14 @@ PyObject* TooltablePy::deleteTool(PyObject * args)
         Py_INCREF(Py_None);
         return Py_None;
     }
-    Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters - expected an integer (optional)");
+    Py_Error(PyExc_TypeError, "Wrong parameters - expected an integer (optional)");
 }
 
 // custom attributes get/set
 
 PyObject *TooltablePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int TooltablePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
@@ -252,7 +252,7 @@ void TooltablePy::setName(Py::String arg)
 
 PyObject* TooltablePy::setFromTemplate(PyObject * args)
 {
-    PyObject *dict = 0;
+    PyObject *dict = nullptr;
     if (PyArg_ParseTuple(args, "O!", &PyDict_Type, &dict)) {
       Py::Dict d(dict);
       setTools(d);
@@ -260,7 +260,7 @@ PyObject* TooltablePy::setFromTemplate(PyObject * args)
     }
 
     PyErr_SetString(PyExc_TypeError, "argument must be a dictionary returned from templateAttrs()");
-    return 0;
+    return nullptr;
 }
 
 PyObject* TooltablePy::templateAttrs(PyObject * args)
@@ -272,7 +272,7 @@ PyObject* TooltablePy::templateAttrs(PyObject * args)
         // will fail to properly track the reference counts and aborts
         // in debug mode.
         Path::ToolPy* tool = new Path::ToolPy(new Path::Tool(*i->second));
-        PyObject *attrs = tool->templateAttrs(0);
+        PyObject *attrs = tool->templateAttrs(nullptr);
         PyDict_SetItem(dict, PYINT_FROMLONG(i->first), attrs);
         Py_DECREF(tool);
     }

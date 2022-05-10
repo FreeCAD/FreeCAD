@@ -44,22 +44,20 @@
 // FIXME: implement proper writing / WriteAction handling  2002-02-07 larsa
 
 #include "PreCompiled.h"
+
+#ifndef _PreComp_
+# include <Inventor/actions/SoCallbackAction.h>
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <Inventor/actions/SoGetMatrixAction.h>
+# include <Inventor/actions/SoGLRenderAction.h>
+# include <Inventor/actions/SoHandleEventAction.h>
+# include <Inventor/actions/SoPickAction.h>
+# include <Inventor/actions/SoSearchAction.h>
+# include <Inventor/misc/SoChildList.h>
+#endif
+
 #include "SmSwitchboard.h"
-#include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/misc/SoChildList.h>
 
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoPickAction.h>
-#include <Inventor/actions/SoHandleEventAction.h>
-#include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/actions/SoGetPrimitiveCountAction.h>
-#include <Inventor/actions/SoWriteAction.h>
-#include <Inventor/SoOutput.h>
-
-#include <Inventor/errors/SoDebugError.h>
 
 /*!
   \var SoMFBool SmSwitchboard::enable
@@ -79,7 +77,7 @@
 
 // doc in super
 void
-SmSwitchboard::initClass(void)
+SmSwitchboard::initClass()
 {
   SO_NODE_INIT_CLASS(SmSwitchboard, SoGroup, SoGroup);
 }
@@ -89,7 +87,7 @@ SO_NODE_SOURCE(SmSwitchboard)
 /*!
   Default constructor.
 */
-SmSwitchboard::SmSwitchboard(void)
+SmSwitchboard::SmSwitchboard()
 {
   SO_NODE_CONSTRUCTOR(SmSwitchboard);
 
@@ -115,7 +113,7 @@ SmSwitchboard::SmSwitchboard(int numchildren)
 /*!
   Destructor.
 */
-SmSwitchboard::~SmSwitchboard(void) // virtual, protected
+SmSwitchboard::~SmSwitchboard() // virtual, protected
 {
 }
 
@@ -204,7 +202,8 @@ SmSwitchboard::handleEvent(SoHandleEventAction *action)
 void
 SmSwitchboard::search(SoSearchAction * action)
 {
-  SoNode::search(action);
-  if (action->isFound()) return;
+  SoNode::search(action); // clazy:exclude=skipped-base-method
+  if (action->isFound())
+      return;
   SmSwitchboard::doAction(action);
 }

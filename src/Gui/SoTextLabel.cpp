@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -33,28 +32,26 @@
 # include <GL/gl.h>
 # endif
 # include <cfloat>
-# include <algorithm>
 # include <QFontMetrics>
 # include <QPainter>
 # include <QPen>
 # include <Inventor/actions/SoGLRenderAction.h>
 # include <Inventor/bundles/SoMaterialBundle.h>
 # include <Inventor/elements/SoLazyElement.h>
-# include <Inventor/nodes/SoSurroundScale.h>
 # include <Inventor/misc/SoState.h>
 #endif
 
 #include <Inventor/C/basic.h>
 #include <Inventor/draggers/SoTranslate2Dragger.h>
-#include <Inventor/elements/SoFontNameElement.h>
-#include <Inventor/elements/SoFontSizeElement.h>
 #include <Inventor/elements/SoCullElement.h>
+#include <Inventor/elements/SoFontNameElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
+
 #if COIN_MAJOR_VERSION > 3
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #else
@@ -62,10 +59,12 @@
 #endif
 
 #include <QtOpenGL.h>
+
 #include "SoTextLabel.h"
-#include "SoFCInteractiveElement.h"
 #include "BitmapFactory.h"
+#include "SoFCInteractiveElement.h"
 #include "Tools.h"
+
 
 using namespace Gui;
 
@@ -115,7 +114,8 @@ SoTextLabel::SoTextLabel()
  */
 void SoTextLabel::GLRender(SoGLRenderAction *action)
 {
-    if (!this->shouldGLRender(action)) return;
+    if (!this->shouldGLRender(action))
+        return;
 
     // only draw text without background
     if (!this->background.getValue()) {
@@ -377,10 +377,10 @@ void SoStringLabel::GLRender(SoGLRenderAction *action)
     QStringList list;
     for (int i=0; i<this->string.getNum(); i++)
         list << QLatin1String(this->string[i].getString());
-#if !defined(HAVE_QT5_OPENGL)
+#if 0 // Old OpenGL API
     window->renderText(nil[0],nil[1],nil[2],list.join(QLatin1String("\n")),font);
 #else
-    //FIXME: HAVE_QT5_OPENGL
+    //FIXME: renderText
 #endif
 
     // Leave 2D screen mode

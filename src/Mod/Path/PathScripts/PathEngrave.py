@@ -27,46 +27,72 @@ import PathScripts.PathLog as PathLog
 import PathScripts.PathOp as PathOp
 import PathScripts.PathUtils as PathUtils
 
-from PySide import QtCore
-
-# lazily loaded modules
-from lazy_loader.lazy_loader import LazyLoader
-ArchPanel = LazyLoader('ArchPanel', globals(), 'ArchPanel')
-Part = LazyLoader('Part', globals(), 'Part')
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __doc__ = "Class and implementation of Path Engrave operation"
 
-PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
-#PathLog.trackModule(PathLog.thisModule())
+if False:
+    PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
+    PathLog.trackModule(PathLog.thisModule())
+else:
+    PathLog.setLevel(PathLog.Level.INFO, PathLog.thisModule())
 
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
 
-# Qt translation handling
-def translate(context, text, disambig=None):
-    return QtCore.QCoreApplication.translate(context, text, disambig)
+Part = LazyLoader("Part", globals(), "Part")
 
 
 class ObjectEngrave(PathEngraveBase.ObjectOp):
-    '''Proxy class for Engrave operation.'''
+    """Proxy class for Engrave operation."""
 
-    def __init__(self, obj, name):
-        super(ObjectEngrave, self).__init__(obj, name)
+    def __init__(self, obj, name, parentJob):
+        super(ObjectEngrave, self).__init__(obj, name, parentJob)
         self.wires = []
 
     def opFeatures(self, obj):
-        '''opFeatures(obj) ... return all standard features and edges based geomtries'''
-        return PathOp.FeatureTool | PathOp.FeatureDepths | PathOp.FeatureHeights | PathOp.FeatureStepDown | PathOp.FeatureBaseEdges | PathOp.FeatureCoolant
+        """opFeatures(obj) ... return all standard features and edges based geomtries"""
+        return (
+            PathOp.FeatureTool
+            | PathOp.FeatureDepths
+            | PathOp.FeatureHeights
+            | PathOp.FeatureStepDown
+            | PathOp.FeatureBaseEdges
+            | PathOp.FeatureCoolant
+        )
 
     def setupAdditionalProperties(self, obj):
-        if not hasattr(obj, 'BaseShapes'):
-            obj.addProperty("App::PropertyLinkList", "BaseShapes", "Path", QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Additional base objects to be engraved"))
-        obj.setEditorMode('BaseShapes', 2)  # hide
-        if not hasattr(obj, 'BaseObject'):
-            obj.addProperty("App::PropertyLink", "BaseObject", "Path", QtCore.QT_TRANSLATE_NOOP("PathEngrave", "Additional base objects to be engraved"))
-        obj.setEditorMode('BaseObject', 2)  # hide
+        if not hasattr(obj, "BaseShapes"):
+            obj.addProperty(
+                "App::PropertyLinkList",
+                "BaseShapes",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Additional base objects to be engraved"
+                ),
+            )
+        obj.setEditorMode("BaseShapes", 2)  # hide
+        if not hasattr(obj, "BaseObject"):
+            obj.addProperty(
+                "App::PropertyLink",
+                "BaseObject",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Additional base objects to be engraved"
+                ),
+            )
+        obj.setEditorMode("BaseObject", 2)  # hide
 
     def initOperation(self, obj):
-        '''initOperation(obj) ... create engraving specific properties.'''
-        obj.addProperty("App::PropertyInteger", "StartVertex", "Path", QtCore.QT_TRANSLATE_NOOP("PathEngrave", "The vertex index to start the path from"))
+        """initOperation(obj) ... create engraving specific properties."""
+        obj.addProperty(
+            "App::PropertyInteger",
+            "StartVertex",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The vertex index to start the path from"
+            ),
+        )
         self.setupAdditionalProperties(obj)
 
     def opOnDocumentRestored(self, obj):
@@ -74,7 +100,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
         self.setupAdditionalProperties(obj)
 
     def opExecute(self, obj):
-        '''opExecute(obj) ... process engraving operation'''
+        """opExecute(obj) ... process engraving operation"""
         PathLog.track()
 
         jobshapes = []
@@ -106,36 +132,36 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             PathLog.track(self.model)
             for base in self.model:
                 PathLog.track(base.Label)
-                if base.isDerivedFrom('Part::Part2DObject'):
+                if base.isDerivedFrom("Part::Part2DObject"):
                     jobshapes.append(base.Shape)
-                elif base.isDerivedFrom('Sketcher::SketchObject'):
+                elif base.isDerivedFrom("Sketcher::SketchObject"):
                     jobshapes.append(base.Shape)
-                elif hasattr(base, 'ArrayType'):
+                elif hasattr(base, "ArrayType"):
                     jobshapes.append(base.Shape)
-                elif isinstance(base.Proxy, ArchPanel.PanelSheet):
-                    for tag in self.model[0].Proxy.getTags(self.model[0], transform=True):
-                        tagWires = []
-                        for w in tag.Wires:
-                            tagWires.append(Part.Wire(w.Edges))
-                        jobshapes.append(Part.makeCompound(tagWires))
 
         if len(jobshapes) > 0:
-            PathLog.debug('processing {} jobshapes'.format(len(jobshapes)))
+            PathLog.debug("processing {} jobshapes".format(len(jobshapes)))
             wires = []
             for shape in jobshapes:
                 shapeWires = shape.Wires
-                PathLog.debug('jobshape has {} edges'.format(len(shape.Edges)))
-                self.commandlist.append(Path.Command('G0', {'Z': obj.ClearanceHeight.Value, 'F': self.vertRapid}))
+                PathLog.debug("jobshape has {} edges".format(len(shape.Edges)))
+                self.commandlist.append(
+                    Path.Command(
+                        "G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid}
+                    )
+                )
                 self.buildpathocc(obj, shapeWires, self.getZValues(obj))
                 wires.extend(shapeWires)
             self.wires = wires
-            PathLog.debug('processing {} jobshapes -> {} wires'.format(len(jobshapes), len(wires)))
+            PathLog.debug(
+                "processing {} jobshapes -> {} wires".format(len(jobshapes), len(wires))
+            )
         # the last command is a move to clearance, which is automatically added by PathOp
         if self.commandlist:
             self.commandlist.pop()
 
     def opUpdateDepths(self, obj):
-        '''updateDepths(obj) ... engraving is always done at the top most z-value'''
+        """updateDepths(obj) ... engraving is always done at the top most z-value"""
         job = PathUtils.findParentJob(obj)
         self.opSetDefaultValues(obj, job)
 
@@ -144,9 +170,9 @@ def SetupProperties():
     return ["StartVertex"]
 
 
-def Create(name, obj=None):
-    '''Create(name) ... Creates and returns an Engrave operation.'''
+def Create(name, obj=None, parentJob=None):
+    """Create(name) ... Creates and returns an Engrave operation."""
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-    obj.Proxy = ObjectEngrave(obj, name)
+    obj.Proxy = ObjectEngrave(obj, name, parentJob)
     return obj

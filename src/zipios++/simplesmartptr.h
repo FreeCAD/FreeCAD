@@ -118,10 +118,10 @@ class ReferenceCount {
   friend class Bogus ;
   
 public:
-  /** Constructor intializes count to zero. */
+  /** Constructor initializes count to zero. */
   ReferenceCount() : _ref_count( 0 ) {}
 
-  /** Copy-constructor intializes count to zero. It doesn't copy it
+  /** Copy-constructor initializes count to zero. It doesn't copy it
       from src. */
   ReferenceCount( const ReferenceCount & /*src*/ ) : _ref_count( 0 ) {}
 

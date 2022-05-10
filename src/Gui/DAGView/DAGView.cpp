@@ -25,20 +25,15 @@
 #include <boost_bind_bind.hpp>
 #include <QAbstractEventDispatcher>
 #include <QVBoxLayout>
+#include <memory>
 #endif
 
-#include <memory>
-
-#include <sstream>
-
-#include <Base/Console.h>
-
-#include <App/Document.h>
-#include <Gui/Document.h>
 #include <Gui/Application.h>
+#include <Gui/Document.h>
 
-#include "DAGModel.h"
 #include "DAGView.h"
+#include "DAGModel.h"
+
 
 using namespace Gui;
 using namespace DAG;
@@ -56,8 +51,8 @@ View::View(QWidget* parentIn): QGraphicsView(parentIn)
 {
   this->setRenderHint(QPainter::Antialiasing, true);
   this->setRenderHint(QPainter::TextAntialiasing, true);
-  Application::Instance->signalActiveDocument.connect(boost::bind(&View::slotActiveDocument, this, bp::_1));
-  Application::Instance->signalDeleteDocument.connect(boost::bind(&View::slotDeleteDocument, this, bp::_1));
+  conActive = Application::Instance->signalActiveDocument.connect(boost::bind(&View::slotActiveDocument, this, bp::_1));
+  conDelete = Application::Instance->signalDeleteDocument.connect(boost::bind(&View::slotDeleteDocument, this, bp::_1));
   
   //just update the dagview when the gui process is idle.
   connect(QAbstractEventDispatcher::instance(), SIGNAL(awake()), this, SLOT(awakeSlot()));
@@ -65,8 +60,6 @@ View::View(QWidget* parentIn): QGraphicsView(parentIn)
 
 View::~View()
 {
-  Application::Instance->signalActiveDocument.disconnect(boost::bind(&View::slotActiveDocument, this, bp::_1));
-  Application::Instance->signalDeleteDocument.disconnect(boost::bind(&View::slotDeleteDocument, this, bp::_1));
 }
 
 void View::slotActiveDocument(const Document &documentIn)
@@ -121,7 +114,8 @@ void View::onSelectionChanged(const SelectionChanges& msg)
     return;
   }
   auto doc = Gui::Application::Instance->getDocument(msg.pDocName);
-  if (!doc) return;
+  if (!doc)
+      return;
   auto &model = modelMap[doc];
   if(!model)
     model = std::make_shared<Model>(this, *doc);

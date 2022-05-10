@@ -30,19 +30,18 @@
 #include <GC_MakeArcOfCircle.hxx>
 #include <Geom_Circle.hxx>
 #include <Geom_TrimmedCurve.hxx>
-#include <Python.h>
 #include <QMessageBox>
 #include <QSignalMapper>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #endif
 
-#include <CXX/WrapPython.h>
 #include <Base/Interpreter.h>
 #include <Base/Rotation.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
 #include <App/Application.h>
+#include <App/Part.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -63,6 +62,20 @@
 using namespace PartGui;
 
 namespace PartGui {
+
+    QString getAutoGroupCommandStr(QString objectName)
+        // Helper function to get the python code to add the newly created object to the active Part object if present
+    {
+        App::Part* activePart = Gui::Application::Instance->activeView()->getActiveObject<App::Part*>("part");
+        if (activePart) {
+            QString activeObjectName = QString::fromLatin1(activePart->getNameInDocument());
+            return QString::fromLatin1("App.ActiveDocument.getObject('%1\')."
+                "addObject(App.ActiveDocument.getObject('%2\'))\n")
+                .arg(activeObjectName)
+                .arg(objectName);
+        }
+        return QString::fromLatin1("# Object %1 created at document root").arg(objectName);
+    }
 
 const char* gce_ErrorStatusText(gce_ErrorType et)
 {
@@ -170,8 +183,8 @@ public:
         return QString::fromLatin1(
             "App.ActiveDocument.addObject(\"Part::Circle\",\"%1\")\n"
             "App.ActiveDocument.%1.Radius=%2\n"
-            "App.ActiveDocument.%1.Angle0=%3\n"
-            "App.ActiveDocument.%1.Angle1=%4\n"
+            "App.ActiveDocument.%1.Angle1=%3\n"
+            "App.ActiveDocument.%1.Angle2=%4\n"
             "App.ActiveDocument.%1.Placement=%5\n")
             .arg(name)
             .arg(circle->Radius(),0,'g',Base::UnitsApi::getDecimals())
@@ -264,13 +277,13 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
     ui->helixAngle->setRange(-90, 90);
     // circle
     ui->circleRadius->setRange(0, INT_MAX);
-    ui->circleAngle0->setRange(0, 360);
     ui->circleAngle1->setRange(0, 360);
+    ui->circleAngle2->setRange(0, 360);
     // ellipse
     ui->ellipseMajorRadius->setRange(0, INT_MAX);
     ui->ellipseMinorRadius->setRange(0, INT_MAX);
-    ui->ellipseAngle0->setRange(0, 360);
     ui->ellipseAngle1->setRange(0, 360);
+    ui->ellipseAngle2->setRange(0, 360);
     // vertex
     ui->vertexX->setMaximum(INT_MAX);
     ui->vertexY->setMaximum(INT_MAX);
@@ -548,16 +561,16 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
             Part::Circle* circle = static_cast<Part::Circle*>(feature);
             ui->circleRadius->setValue(circle->Radius.getQuantityValue());
             ui->circleRadius->bind(circle->Radius);
-            ui->circleAngle0->setValue(circle->Angle0.getQuantityValue());
-            ui->circleAngle0->bind(circle->Angle0);
             ui->circleAngle1->setValue(circle->Angle1.getQuantityValue());
             ui->circleAngle1->bind(circle->Angle1);
+            ui->circleAngle2->setValue(circle->Angle2.getQuantityValue());
+            ui->circleAngle2->bind(circle->Angle2);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeCircle(QWidget*)));
             connectSignalMapper(ui->circleRadius, SIGNAL(valueChanged(double)), mapper);
-            connectSignalMapper(ui->circleAngle0, SIGNAL(valueChanged(double)), mapper);
             connectSignalMapper(ui->circleAngle1, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui->circleAngle2, SIGNAL(valueChanged(double)), mapper);
         }
         else if (type == Part::Ellipse::getClassTypeId()) {
             Part::Ellipse* ell = static_cast<Part::Ellipse*>(feature);
@@ -565,17 +578,17 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
             ui->ellipseMajorRadius->bind(ell->MajorRadius);
             ui->ellipseMinorRadius->setValue(ell->MinorRadius.getQuantityValue());
             ui->ellipseMinorRadius->bind(ell->MinorRadius);
-            ui->ellipseAngle0->setValue(ell->Angle0.getQuantityValue());
-            ui->ellipseAngle0->bind(ell->Angle0);
             ui->ellipseAngle1->setValue(ell->Angle1.getQuantityValue());
             ui->ellipseAngle1->bind(ell->Angle1);
+            ui->ellipseAngle2->setValue(ell->Angle2.getQuantityValue());
+            ui->ellipseAngle2->bind(ell->Angle2);
 
             QSignalMapper* mapper = new QSignalMapper(this);
             connect(mapper, SIGNAL(mapped(QWidget*)), this, SLOT(onChangeEllipse(QWidget*)));
             connectSignalMapper(ui->ellipseMajorRadius, SIGNAL(valueChanged(double)), mapper);
             connectSignalMapper(ui->ellipseMinorRadius, SIGNAL(valueChanged(double)), mapper);
-            connectSignalMapper(ui->ellipseAngle0, SIGNAL(valueChanged(double)), mapper);
             connectSignalMapper(ui->ellipseAngle1, SIGNAL(valueChanged(double)), mapper);
+            connectSignalMapper(ui->ellipseAngle2, SIGNAL(valueChanged(double)), mapper);
         }
         else if (type == Part::Vertex::getClassTypeId()) {
             Part::Vertex* v = static_cast<Part::Vertex*>(feature);
@@ -942,14 +955,14 @@ QString DlgPrimitives::createCircle(const QString& objectName, const QString& pl
     return QString::fromLatin1(
         "App.ActiveDocument.addObject(\"Part::Circle\",\"%1\")\n"
         "App.ActiveDocument.%1.Radius=%2\n"
-        "App.ActiveDocument.%1.Angle0=%3\n"
-        "App.ActiveDocument.%1.Angle1=%4\n"
+        "App.ActiveDocument.%1.Angle1=%3\n"
+        "App.ActiveDocument.%1.Angle2=%4\n"
         "App.ActiveDocument.%1.Placement=%5\n"
         "App.ActiveDocument.%1.Label='%6'\n")
         .arg(objectName)
         .arg(Base::UnitsApi::toNumber(ui->circleRadius->value()))
-        .arg(Base::UnitsApi::toNumber(ui->circleAngle0->value()))
         .arg(Base::UnitsApi::toNumber(ui->circleAngle1->value()))
+        .arg(Base::UnitsApi::toNumber(ui->circleAngle2->value()))
         .arg(placement)
         .arg(tr("Circle"));
 }
@@ -960,15 +973,15 @@ QString DlgPrimitives::createEllipse(const QString& objectName, const QString& p
         "App.ActiveDocument.addObject(\"Part::Ellipse\",\"%1\")\n"
         "App.ActiveDocument.%1.MajorRadius=%2\n"
         "App.ActiveDocument.%1.MinorRadius=%3\n"
-        "App.ActiveDocument.%1.Angle0=%4\n"
-        "App.ActiveDocument.%1.Angle1=%5\n"
+        "App.ActiveDocument.%1.Angle1=%4\n"
+        "App.ActiveDocument.%1.Angle2=%5\n"
         "App.ActiveDocument.%1.Placement=%6\n"
         "App.ActiveDocument.%1.Label='%7'\n")
         .arg(objectName)
         .arg(Base::UnitsApi::toNumber(ui->ellipseMajorRadius->value()))
         .arg(Base::UnitsApi::toNumber(ui->ellipseMinorRadius->value()))
-        .arg(Base::UnitsApi::toNumber(ui->ellipseAngle0->value()))
         .arg(Base::UnitsApi::toNumber(ui->ellipseAngle1->value()))
+        .arg(Base::UnitsApi::toNumber(ui->ellipseAngle2->value()))
         .arg(placement)
         .arg(tr("Ellipse"));
 }
@@ -1107,6 +1120,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
         QString prim = tr("Create %1").arg(ui->PrimitiveTypeCB->currentText());
         Gui::Application::Instance->activeDocument()->openCommand(prim.toUtf8());
         Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
+        Gui::Command::runCommand(Gui::Command::Doc, getAutoGroupCommandStr(name).toUtf8());
         Gui::Application::Instance->activeDocument()->commitCommand();
         Gui::Command::runCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         Gui::Command::runCommand(Gui::Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
@@ -1309,13 +1323,13 @@ QString DlgPrimitives::changeCircle(const QString& objectName, const QString& pl
 {
     return QString::fromLatin1(
         "%1.Radius=%2\n"
-        "%1.Angle0=%3\n"
-        "%1.Angle1=%4\n"
+        "%1.Angle1=%3\n"
+        "%1.Angle2=%4\n"
         "%1.Placement=%5\n")
         .arg(objectName)
         .arg(Base::UnitsApi::toNumber(ui->circleRadius->value()))
-        .arg(Base::UnitsApi::toNumber(ui->circleAngle0->value()))
         .arg(Base::UnitsApi::toNumber(ui->circleAngle1->value()))
+        .arg(Base::UnitsApi::toNumber(ui->circleAngle2->value()))
         .arg(placement);
 }
 
@@ -1324,14 +1338,14 @@ QString DlgPrimitives::changeEllipse(const QString& objectName, const QString& p
     return QString::fromLatin1(
         "%1.MajorRadius=%2\n"
         "%1.MinorRadius=%3\n"
-        "%1.Angle0=%4\n"
-        "%1.Angle1=%5\n"
+        "%1.Angle1=%4\n"
+        "%1.Angle2=%5\n"
         "%1.Placement=%6\n")
         .arg(objectName)
         .arg(Base::UnitsApi::toNumber(ui->ellipseMajorRadius->value()))
         .arg(Base::UnitsApi::toNumber(ui->ellipseMinorRadius->value()))
-        .arg(Base::UnitsApi::toNumber(ui->ellipseAngle0->value()))
         .arg(Base::UnitsApi::toNumber(ui->ellipseAngle1->value()))
+        .arg(Base::UnitsApi::toNumber(ui->ellipseAngle2->value()))
         .arg(placement);
 }
 
@@ -1720,11 +1734,11 @@ void DlgPrimitives::onChangeCircle(QWidget* widget)
     if (widget == ui->circleRadius) {
         circle->Radius.setValue(ui->circleRadius->value().getValue());
     }
-    else if (widget == ui->circleAngle0) {
-        circle->Angle0.setValue(ui->circleAngle0->value().getValue());
-    }
     else if (widget == ui->circleAngle1) {
         circle->Angle1.setValue(ui->circleAngle1->value().getValue());
+    }
+    else if (widget == ui->circleAngle2) {
+        circle->Angle2.setValue(ui->circleAngle2->value().getValue());
     }
 
     circle->recomputeFeature();
@@ -1741,11 +1755,11 @@ void DlgPrimitives::onChangeEllipse(QWidget* widget)
     else if (widget == ui->ellipseMinorRadius) {
         ell->MinorRadius.setValue(ui->ellipseMinorRadius->value().getValue());
     }
-    else if (widget == ui->ellipseAngle0) {
-        ell->Angle0.setValue(ui->ellipseAngle0->value().getValue());
-    }
     else if (widget == ui->ellipseAngle1) {
         ell->Angle1.setValue(ui->ellipseAngle1->value().getValue());
+    }
+    else if (widget == ui->ellipseAngle2) {
+        ell->Angle2.setValue(ui->ellipseAngle2->value().getValue());
     }
 
     ell->recomputeFeature();
@@ -1966,7 +1980,7 @@ void Location::pickCallback(void * ud, SoEventCallback * n)
             view->setEditing(false);
             view->setRedirectToSceneGraph(false);
             Location* dlg = reinterpret_cast<Location*>(ud);
-            dlg->activeView = 0;
+            dlg->activeView = nullptr;
             view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), pickCallback,ud);
             SoNode* root = view->getSceneGraph();
             if (root && root->getTypeId().isDerivedFrom(Gui::SoFCUnifiedSelection::getClassTypeId()))
@@ -2009,12 +2023,12 @@ TaskPrimitives::TaskPrimitives()
 {
     Gui::TaskView::TaskBox* taskbox;
     widget = new DlgPrimitives();
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), true, 0);
+    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 
     location = new Location();
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), location->windowTitle() ,true, 0);
+    taskbox = new Gui::TaskView::TaskBox(QPixmap(), location->windowTitle() ,true, nullptr);
     taskbox->groupLayout()->addWidget(location);
     Content.push_back(taskbox);
 }
@@ -2056,13 +2070,13 @@ TaskPrimitivesEdit::TaskPrimitivesEdit(Part::Primitive* feature)
     // create and show dialog for the primitives
     Gui::TaskView::TaskBox* taskbox;
     widget = new DlgPrimitives(nullptr, feature);
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), true, 0);
+    taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 
     // create and show dialog for the location
     location = new Location(nullptr, feature);
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), location->windowTitle(), true, 0);
+    taskbox = new Gui::TaskView::TaskBox(QPixmap(), location->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(location);
     Content.push_back(taskbox);
 }

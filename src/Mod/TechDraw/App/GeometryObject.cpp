@@ -76,6 +76,7 @@
 
 #include <Mod/Part/App/PartFeature.h>
 
+#include "Cosmetic.h"
 #include "DrawUtil.h"
 #include "GeometryObject.h"
 #include "DrawViewPart.h"
@@ -105,9 +106,9 @@ GeometryObject::~GeometryObject()
     clear();
 }
 
-const std::vector<BaseGeom *> GeometryObject::getVisibleFaceEdges(const bool smooth, const bool seam) const
+const BaseGeomPtrVector GeometryObject::getVisibleFaceEdges(const bool smooth, const bool seam) const
 {
-    std::vector<BaseGeom *> result;
+    BaseGeomPtrVector result;
     bool smoothOK = smooth;
     bool seamOK = seam;
 
@@ -150,20 +151,7 @@ const std::vector<BaseGeom *> GeometryObject::getVisibleFaceEdges(const bool smo
 
 void GeometryObject::clear()
 {
-    for(std::vector<BaseGeom *>::iterator it = edgeGeom.begin(); it != edgeGeom.end(); ++it) {
-        delete *it;
-        *it = 0;
-    }
-
-    for(std::vector<Face *>::iterator it = faceGeom.begin(); it != faceGeom.end(); ++it) {
-        delete *it;
-        *it = 0;
-    }
-
-    for(std::vector<Vertex *>::iterator it = vertexGeom.begin(); it != vertexGeom.end(); ++it) {
-        delete *it;
-        *it = 0;
-    }
+    //shared pointers will delete v/e/f when reference counts go to zero.
 
     vertexGeom.clear();
     faceGeom.clear();
@@ -181,7 +169,7 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
 
     auto start = chrono::high_resolution_clock::now();
 
-    Handle(HLRBRep_Algo) brep_hlr = NULL;
+    Handle(HLRBRep_Algo) brep_hlr;
     try {
         brep_hlr = new HLRBRep_Algo();
         brep_hlr->Add(input, m_isoCount);
@@ -316,7 +304,7 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input,
 
     auto start = chrono::high_resolution_clock::now();
 
-    Handle(HLRBRep_PolyAlgo) brep_hlrPoly = NULL;
+    Handle(HLRBRep_PolyAlgo) brep_hlrPoly;
 
     try {
         TopExp_Explorer faces(inCopy, TopAbs_FACE);
@@ -487,7 +475,7 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
         return; // There is no OpenCascade Geometry to be calculated
     }
 
-    BaseGeom* base;
+    BaseGeomPtr base;
     TopExp_Explorer edges(edgeCompound, TopAbs_EDGE);
     int i = 1;
     for ( ; edges.More(); edges.Next(),i++) {
@@ -520,29 +508,29 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
 
         //add vertices of new edge if not already in list
         if (hlrVisible) {
-            BaseGeom* lastAdded = edgeGeom.back();
+            BaseGeomPtr lastAdded = edgeGeom.back();
             bool v1Add = true, v2Add = true;
             bool c1Add = true;
-            TechDraw::Vertex* v1 = new TechDraw::Vertex(lastAdded->getStartPoint());
-            TechDraw::Vertex* v2 = new TechDraw::Vertex(lastAdded->getEndPoint());
-            TechDraw::Circle* circle = dynamic_cast<TechDraw::Circle*>(lastAdded);
-            TechDraw::Vertex* c1 = nullptr;
+            TechDraw::VertexPtr v1 = std::make_shared<TechDraw::Vertex>(lastAdded->getStartPoint());
+            TechDraw::VertexPtr v2 = std::make_shared<TechDraw::Vertex>(lastAdded->getEndPoint());
+            TechDraw::CirclePtr circle = std::dynamic_pointer_cast<TechDraw::Circle>(lastAdded);
+            TechDraw::VertexPtr c1;
             if (circle) {
-                c1 = new TechDraw::Vertex(circle->center);
+                c1 = std::make_shared<TechDraw::Vertex>(circle->center);
                 c1->isCenter = true;
                 c1->hlrVisible = true;
             }
 
-            std::vector<Vertex *>::iterator itVertex = vertexGeom.begin();
+            std::vector<VertexPtr>::iterator itVertex = vertexGeom.begin();
             for (; itVertex != vertexGeom.end(); itVertex++) {
-                if ((*itVertex)->isEqual(v1,Precision::Confusion())) {
+                if ((*itVertex)->isEqual(*v1,Precision::Confusion())) {
                     v1Add = false;
                 }
-                if ((*itVertex)->isEqual(v2,Precision::Confusion())) {
+                if ((*itVertex)->isEqual(*v2,Precision::Confusion())) {
                     v2Add = false;
                 }
                 if (circle ) {
-                    if ((*itVertex)->isEqual(c1,Precision::Confusion())) {
+                    if ((*itVertex)->isEqual(*c1,Precision::Confusion())) {
                         c1Add = false;
                     }
                 }
@@ -552,13 +540,13 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
                 vertexGeom.push_back(v1);
                 v1->hlrVisible = true;
             } else {
-                delete v1;
+            //    delete v1;
             }
             if (v2Add) {
                 vertexGeom.push_back(v2);
                 v2->hlrVisible = true;
             } else {
-                delete v2;
+            //    delete v2;
             }
 
             if (circle) {
@@ -566,19 +554,19 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
                     vertexGeom.push_back(c1);
                     c1->hlrVisible = true;
                 } else {
-                    delete c1;
+                //    delete c1;
                 }
             }
         }
     }  //end TopExp
 }
 
-void GeometryObject::addVertex(TechDraw::Vertex* v)
+void GeometryObject::addVertex(TechDraw::VertexPtr v)
 {
     vertexGeom.push_back(v);
 }
 
-void GeometryObject::addEdge(TechDraw::BaseGeom* bg)
+void GeometryObject::addEdge(TechDraw::BaseGeomPtr bg)
 {
     edgeGeom.push_back(bg);
 }
@@ -593,7 +581,7 @@ int GeometryObject::addCosmeticVertex(CosmeticVertex* cv)
 //    Base::Console().Message("GO::addCosmeticVertex(%X)\n", cv);
     double scale = m_parent->getScale();
     Base::Vector3d pos = cv->scaled(scale);
-    TechDraw::Vertex* v = new TechDraw::Vertex(pos.x, pos.y);
+    TechDraw::VertexPtr v(std::make_shared<TechDraw::Vertex>(pos.x, pos.y));
     v->cosmetic = true;
     v->cosmeticLink = -1;  //obs??
     v->cosmeticTag = cv->getTagAsString();
@@ -608,7 +596,7 @@ int GeometryObject::addCosmeticVertex(CosmeticVertex* cv)
 int GeometryObject::addCosmeticVertex(Base::Vector3d pos)
 {
     Base::Console().Message("GO::addCosmeticVertex() 1 - deprec?\n");
-    TechDraw::Vertex* v = new TechDraw::Vertex(pos.x, pos.y);
+    TechDraw::VertexPtr v(std::make_shared<TechDraw::Vertex>(pos.x, pos.y));
     v->cosmetic = true;
     v->cosmeticTag = "tbi";        //not connected to CV
     v->hlrVisible = true;
@@ -620,7 +608,7 @@ int GeometryObject::addCosmeticVertex(Base::Vector3d pos)
 int GeometryObject::addCosmeticVertex(Base::Vector3d pos, std::string tagString)
 {
 //    Base::Console().Message("GO::addCosmeticVertex() 2\n");
-    TechDraw::Vertex* v = new TechDraw::Vertex(pos.x, pos.y);
+    TechDraw::VertexPtr v(std::make_shared<TechDraw::Vertex>(pos.x, pos.y));
     v->cosmetic = true;
     v->cosmeticTag = tagString;     //connected to CV
     v->hlrVisible = true;
@@ -638,7 +626,7 @@ int GeometryObject::addCosmeticEdge(CosmeticEdge* ce)
 {
 //    Base::Console().Message("GO::addCosmeticEdge(%X) 0\n", ce);
     double scale = m_parent->getScale();
-    TechDraw::BaseGeom* e = ce->scaledGeometry(scale);
+    TechDraw::BaseGeomPtr e = ce->scaledGeometry(scale);
     e->cosmetic = true;
     e->setCosmeticTag(ce->getTagAsString());
     e->hlrVisible = true;
@@ -656,7 +644,7 @@ int GeometryObject::addCosmeticEdge(Base::Vector3d start,
     gp_Pnt gp1(start.x, start.y, start.z);
     gp_Pnt gp2(end.x, end.y, end.z);
     TopoDS_Edge occEdge = BRepBuilderAPI_MakeEdge(gp1, gp2);
-    TechDraw::BaseGeom* e = BaseGeom::baseFactory(occEdge);
+    TechDraw::BaseGeomPtr e = BaseGeom::baseFactory(occEdge);
     e->cosmetic = true;
 //    e->cosmeticLink = link;
     e->setCosmeticTag("tbi");
@@ -674,7 +662,7 @@ int GeometryObject::addCosmeticEdge(Base::Vector3d start,
     gp_Pnt gp1(start.x, start.y, start.z);
     gp_Pnt gp2(end.x, end.y, end.z);
     TopoDS_Edge occEdge = BRepBuilderAPI_MakeEdge(gp1, gp2);
-    TechDraw::BaseGeom* base = BaseGeom::baseFactory(occEdge);
+    TechDraw::BaseGeomPtr base = BaseGeom::baseFactory(occEdge);
     base->cosmetic = true;
     base->setCosmeticTag(tagString);
     base->source(1);           //1-CosmeticEdge, 2-CenterLine
@@ -684,7 +672,7 @@ int GeometryObject::addCosmeticEdge(Base::Vector3d start,
     return idx;
 }
 
-int GeometryObject::addCosmeticEdge(TechDraw::BaseGeom* base,
+int GeometryObject::addCosmeticEdge(TechDraw::BaseGeomPtr base,
                                     std::string tagString)
 {
 //    Base::Console().Message("GO::addCosmeticEdge(%X, %s) 3\n", base, tagString.c_str());
@@ -698,7 +686,7 @@ int GeometryObject::addCosmeticEdge(TechDraw::BaseGeom* base,
     return idx;
 }
 
-int GeometryObject::addCenterLine(TechDraw::BaseGeom* base,
+int GeometryObject::addCenterLine(TechDraw::BaseGeomPtr base,
                                   std::string tag)
 //                                    int s, int si)
 {
@@ -720,7 +708,7 @@ void GeometryObject::clearFaceGeom()
 }
 
 //! add a Face to Face Geometry
-void GeometryObject::addFaceGeom(Face* f)
+void GeometryObject::addFaceGeom(FacePtr f)
 {
     faceGeom.push_back(f);
 }
@@ -783,9 +771,9 @@ Base::BoundBox3d GeometryObject::calcBoundingBox() const
     Bnd_Box testBox;
     testBox.SetGap(0.0);
     if (!edgeGeom.empty()) {
-        for (std::vector<BaseGeom *>::const_iterator it( edgeGeom.begin() );
+        for (BaseGeomPtrVector::const_iterator it( edgeGeom.begin() );
                 it != edgeGeom.end(); ++it) {
-             BRepBndLib::Add((*it)->occEdge, testBox);
+             BRepBndLib::AddOptimal((*it)->occEdge, testBox);
         }
     }
     
@@ -802,8 +790,8 @@ Base::BoundBox3d GeometryObject::calcBoundingBox() const
 
 void GeometryObject::pruneVertexGeom(Base::Vector3d center, double radius)
 {
-    const std::vector<Vertex *>&  oldVerts = getVertexGeometry();
-    std::vector<Vertex *> newVerts;
+    const std::vector<VertexPtr>&  oldVerts = getVertexGeometry();
+    std::vector<VertexPtr> newVerts;
     for (auto& v: oldVerts) {
         Base::Vector3d v3 = v->point();
         double length = (v3 - center).Length();
@@ -820,7 +808,7 @@ void GeometryObject::pruneVertexGeom(Base::Vector3d center, double radius)
 bool GeometryObject::findVertex(Base::Vector3d v)
 {
     bool found = false;
-    std::vector<Vertex*>::iterator it = vertexGeom.begin();
+    std::vector<VertexPtr>::iterator it = vertexGeom.begin();
     for (; it != vertexGeom.end(); it++) {
         double dist = (v - (*it)->pnt).Length();
         if (dist < Precision::Confusion()) {
@@ -950,9 +938,9 @@ gp_Pnt TechDraw::findCentroid(const TopoDS_Shape &shape,
     BRepBuilderAPI_Transform builder(shape, tempTransform);
 
     Bnd_Box tBounds;
-    BRepBndLib::Add(builder.Shape(), tBounds);
-
     tBounds.SetGap(0.0);
+    BRepBndLib::AddOptimal(builder.Shape(), tBounds, true, false);
+
     Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
     tBounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
 

@@ -99,19 +99,21 @@ class ViewProviderDraft(object):
     def _set_properties(self, vobj):
         """Set the properties of objects if they don't exist."""
         if not hasattr(vobj, "Pattern"):
-            _tip = "Defines a hatch pattern."
             vobj.addProperty("App::PropertyEnumeration",
                              "Pattern",
                              "Draft",
-                             QT_TRANSLATE_NOOP("App::Property", _tip))
-            vobj.Pattern = ["None"] + list(utils.svg_patterns().keys())
+                             QT_TRANSLATE_NOOP("App::Property",
+                                               "Defines an SVG pattern."))
+            patterns = list(utils.svg_patterns().keys())
+            patterns.sort()
+            vobj.Pattern = ["None"] + patterns
 
         if not hasattr(vobj, "PatternSize"):
-            _tip = "Defines the size of the hatch pattern."
             vobj.addProperty("App::PropertyFloat",
                              "PatternSize",
                              "Draft",
-                             QT_TRANSLATE_NOOP("App::Property", _tip))
+                             QT_TRANSLATE_NOOP("App::Property",
+                                               "Defines the size of the SVG pattern."))
             vobj.PatternSize = utils.get_param("HatchPatternSize", 1)
 
     def __getstate__(self):
@@ -388,15 +390,17 @@ class ViewProviderDraft(object):
             None if mode is not zero.
             It is `False` otherwise.
         """
-        if mode == 0 and App.GuiUp: #remove guard after splitting every viewprovider
-            Gui.runCommand("Draft_Edit")
-            return True
-        elif mode != 0:
+        if mode != 0:
             # Act like this function doesn't even exist, so the command falls back to Part (e.g. in the
             # case of an unrecognized context menu action)
-            return None 
-
-        return False
+            return None
+        elif App.GuiUp and "Draft_Edit" in Gui.listCommands(): # remove App.GuiUp guard after splitting every viewprovider
+            Gui.runCommand("Draft_Edit")
+            return True
+        else:
+            App.Console.PrintWarning(QT_TRANSLATE_NOOP("draft",
+                                                       "Please load the Draft Workbench to enable editing this object"))
+            return False
 
     def unsetEdit(self, vobj, mode=0):
         """Terminate the edit mode of the object.
@@ -423,7 +427,7 @@ class ViewProviderDraft(object):
             This is `obj.ViewObject`.
 
         mode : int, optional
-            It defaults to 0. It is not used.
+            It defaults to 0.
             It indicates the type of edit in the underlying C++ code.
 
         Returns
@@ -432,6 +436,8 @@ class ViewProviderDraft(object):
             This method always returns `False` so it passes
             control to the base class to finish the edit mode.
         """
+        if mode != 0:
+            return False
         if App.activeDraftCommand:
             App.activeDraftCommand.finish()
         if App.GuiUp: # remove guard after splitting every viewprovider
@@ -465,6 +471,9 @@ class ViewProviderDraft(object):
                 return ":/icons/Draft_N-Curve.svg"
             elif tp in ("ShapeString"):
                 return ":/icons/Draft_ShapeString_tree.svg"
+        if hasattr(self.Object,"AutoUpdate") and not self.Object.AutoUpdate:
+            import TechDrawGui
+            return ":/icons/TechDraw_TreePageUnsync.svg"
         return ":/icons/Draft_Draft.svg"
 
     def claimChildren(self):

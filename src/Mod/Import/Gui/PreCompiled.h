@@ -26,19 +26,6 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define ImportGuiExport __declspec(dllexport)
-# define ImportExport    __declspec(dllimport)
-# define PartExport      __declspec(dllimport)
-# define PartGuiExport   __declspec(dllimport)
-#else // for Linux
-# define ImportGuiExport
-# define ImportExport
-# define PartExport
-# define PartGuiExport
-#endif
-
 
 // here get the warnings of too long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
@@ -50,13 +37,10 @@
 
 #ifdef _PreComp_
 
-// Python
-#include <Python.h>
-
 // standard
 #include <list>
 #include <iostream>
-#include <assert.h>
+#include <cassert>
 
 // STL
 #include <vector>
@@ -64,13 +48,9 @@
 #include <string>
 #include <set>
 
-#include <Python.h>
 #ifndef FC_OS_WIN32
 # include <windows.h>
 #endif
-
-// Xerces
-#include <xercesc/util/XercesDefs.hpp>
 
 // OpenCasCade Base
 #include "OpenCascadeAll.h"
@@ -112,8 +92,8 @@
 #endif
 
 // Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
+#ifndef __QtAll__
+# include <Gui/QtAll.h>
 #endif
 
 

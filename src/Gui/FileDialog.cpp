@@ -26,18 +26,16 @@
 # include <QApplication>
 # include <QButtonGroup>
 # include <QCompleter>
-# include <QComboBox>
-# include <QDesktopServices>
-# include <QDialogButtonBox>
 # include <QDir>
 # include <QGridLayout>
 # include <QGroupBox>
 # include <QLineEdit>
 # include <QPushButton>
 # include <QRadioButton>
+# include <QResizeEvent>
+# include <QStandardPaths>
 # include <QStyle>
 # include <QUrl>
-# include <QResizeEvent>
 #endif
 
 #include <Base/Parameter.h>
@@ -45,13 +43,12 @@
 
 #include "FileDialog.h"
 #include "MainWindow.h"
-#include "BitmapFactory.h"
 #include "Tools.h"
+
 
 using namespace Gui;
 
-namespace {
-bool dontUseNativeDialog()
+bool DialogOptions::dontUseNativeFileDialog()
 {
 #if defined(USE_QT_FILEDIALOG)
     bool notNativeDialog = true;
@@ -64,6 +61,12 @@ bool dontUseNativeDialog()
     notNativeDialog = group->GetBool("DontUseNativeDialog", notNativeDialog);
     return notNativeDialog;
 }
+
+bool DialogOptions::dontUseNativeColorDialog()
+{
+    ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Dialog");
+    return group->GetBool("DontUseNativeColorDialog", true);
 }
 
 /* TRANSLATOR Gui::FileDialog */
@@ -177,7 +180,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
     // existing file. Hence we must extract the first matching suffix from the filter list and append it
     // before showing the file dialog.
     QString file;
-    if (dontUseNativeDialog()) {
+    if (DialogOptions::dontUseNativeFileDialog()) {
         QList<QUrl> urls;
 
         options |= QFileDialog::DontUseNativeDialog;
@@ -259,7 +262,7 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
         windowTitle = FileDialog::tr("Open");
 
     QString file;
-    if (dontUseNativeDialog()) {
+    if (DialogOptions::dontUseNativeFileDialog()) {
         QList<QUrl> urls;
 
         options |= QFileDialog::DontUseNativeDialog;
@@ -320,7 +323,7 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
         windowTitle = FileDialog::tr("Open");
 
     QStringList files;
-    if (dontUseNativeDialog()) {
+    if (DialogOptions::dontUseNativeFileDialog()) {
         QList<QUrl> urls;
 
         options |= QFileDialog::DontUseNativeDialog;
@@ -708,16 +711,16 @@ void FileChooser::chooseFile()
     }
 
     QFileDialog::Options dlgOpt;
-    if (dontUseNativeDialog()) {
+    if (DialogOptions::dontUseNativeFileDialog()) {
         dlgOpt = QFileDialog::DontUseNativeDialog;
     }
 
     QString fn;
     if ( mode() == File ) {
         if (acceptMode() == AcceptOpen)
-            fn = QFileDialog::getOpenFileName(this, tr( "Select a file" ), prechosenDirectory, _filter, 0, dlgOpt);
+            fn = QFileDialog::getOpenFileName(this, tr( "Select a file" ), prechosenDirectory, _filter, nullptr, dlgOpt);
         else
-            fn = QFileDialog::getSaveFileName(this, tr( "Select a file" ), prechosenDirectory, _filter, 0, dlgOpt);
+            fn = QFileDialog::getSaveFileName(this, tr( "Select a file" ), prechosenDirectory, _filter, nullptr, dlgOpt);
     } else {
         QFileDialog::Options option = QFileDialog::ShowDirsOnly | dlgOpt;
         fn = QFileDialog::getExistingDirectory( this, tr( "Select a directory" ), prechosenDirectory,option );

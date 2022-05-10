@@ -21,13 +21,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_VIEWPROVIDERCLIP_H
 #define DRAWINGGUI_VIEWPROVIDERCLIP_H
 
-#include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewClip.h>
+
 #include "ViewProviderDrawingView.h"
+
 
 namespace TechDrawGui {
 

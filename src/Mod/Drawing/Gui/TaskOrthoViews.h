@@ -159,7 +159,7 @@ class TaskOrthoViews : public QWidget//: public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    TaskOrthoViews(QWidget *parent = 0);
+    TaskOrthoViews(QWidget *parent = nullptr);
     ~TaskOrthoViews();
     bool user_input();
     void clean_up();

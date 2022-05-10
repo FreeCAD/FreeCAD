@@ -236,7 +236,7 @@ double Ellipse::getRadMaj(double *derivparam, double &ret_dRadMaj) const
 double Ellipse::getRadMaj() const
 {
     double dradmaj;//dummy
-    return getRadMaj(0,dradmaj);
+    return getRadMaj(nullptr,dradmaj);
 }
 
 DeriVector2 Ellipse::CalculateNormal(const Point &p, const double* derivparam) const
@@ -394,7 +394,7 @@ double Hyperbola::getRadMaj(double *derivparam, double &ret_dRadMaj) const
 double Hyperbola::getRadMaj() const
 {
     double dradmaj;//dummy
-    return getRadMaj(0,dradmaj);
+    return getRadMaj(nullptr,dradmaj);
 }
 
 DeriVector2 Hyperbola::CalculateNormal(const Point &p, const double* derivparam) const

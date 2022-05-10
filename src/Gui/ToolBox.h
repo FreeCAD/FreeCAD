@@ -20,11 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_DOCKWND_TOOLBOX_H
 #define GUI_DOCKWND_TOOLBOX_H
-
-#include "DockWindow.h"
 
 class QToolBox;
 
@@ -59,7 +56,7 @@ class GuiExport ToolBox : public QWidget
   Q_OBJECT
 
 public:
-  ToolBox( QWidget *parent=0 );
+  ToolBox( QWidget *parent=nullptr );
   virtual ~ToolBox();
 
   int addItem ( QWidget * w, const QString & label );

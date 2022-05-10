@@ -20,24 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cfloat>
 #endif
-#include "VisualInspection.h"
-#include "ui_VisualInspection.h"
 
-#include <Base/UnitsApi.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/ViewProvider.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
 #include <Gui/PrefWidgets.h>
+#include <Gui/ViewProvider.h>
+
+#include "VisualInspection.h"
+#include "ui_VisualInspection.h"
+
 
 using namespace InspectionGui;
 
@@ -46,12 +45,12 @@ class SingleSelectionItem : public QTreeWidgetItem
 {
 public:
     SingleSelectionItem (QTreeWidget* parent)
-        : QTreeWidgetItem(parent), _compItem(0)
+        : QTreeWidgetItem(parent), _compItem(nullptr)
     {
     }
 
     SingleSelectionItem (QTreeWidgetItem* parent)
-        : QTreeWidgetItem (parent), _compItem(0)
+        : QTreeWidgetItem (parent), _compItem(nullptr)
     {
     }
 
@@ -210,7 +209,7 @@ void VisualInspection::onActivateItem(QTreeWidgetItem* item)
 
 void VisualInspection::accept()
 {
-    onActivateItem(0);
+    onActivateItem(nullptr);
     if (buttonOk->isEnabled()) {
         QDialog::accept();
         saveSettings();

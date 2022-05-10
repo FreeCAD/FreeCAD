@@ -47,8 +47,8 @@ class Draft_WorkingPlaneProxy:
         """Set icon, menu and tooltip."""
 
         d = {'Pixmap': 'Draft_PlaneProxy',
-             'MenuText': QT_TRANSLATE_NOOP("Draft_SetWorkingPlaneProxy","Create working plane proxy"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_SetWorkingPlaneProxy","Creates a proxy object from the current working plane.\nOnce the object is created double click it in the tree view to restore the camera position and objects' visibilities.\nThen you can use it to save a different camera position and objects' states any time you need.")}
+             'MenuText': QT_TRANSLATE_NOOP("Draft_WorkingPlaneProxy","Create working plane proxy"),
+             'ToolTip': QT_TRANSLATE_NOOP("Draft_WorkingPlaneProxy","Creates a proxy object from the current working plane.\nOnce the object is created double click it in the tree view to restore the camera position and objects' visibilities.\nThen you can use it to save a different camera position and objects' states any time you need.")}
         return d
 
     def IsActive(self):
@@ -61,9 +61,10 @@ class Draft_WorkingPlaneProxy:
     def Activated(self):
         """Execute when the command is called."""
         if hasattr(App, "DraftWorkingPlane"):
+            App.DraftWorkingPlane.setup()
             App.ActiveDocument.openTransaction("Create WP proxy")
             Gui.addModule("Draft")
-            _cmd = "Draft.makeWorkingPlaneProxy("
+            _cmd = "Draft.make_workingplaneproxy("
             _cmd += "FreeCAD.DraftWorkingPlane.getPlacement()"
             _cmd += ")"
             Gui.doCommand(_cmd)

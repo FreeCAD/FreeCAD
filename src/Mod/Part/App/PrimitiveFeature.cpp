@@ -132,59 +132,33 @@ PyObject* Primitive::getPyObject()
 
 void Primitive::Restore(Base::XMLReader &reader)
 {
-    reader.readElement("Properties");
-    int Cnt = reader.getAttributeAsInteger("Count");
+    Part::Feature::Restore(reader);
+}
 
-    for (int i=0 ;i<Cnt ;i++) {
-        reader.readElement("Property");
-        const char* PropName = reader.getAttribute("name");
-        const char* TypeName = reader.getAttribute("type");
-        App::Property* prop = getPropertyByName(PropName);
-        // For #0001652 the property types of many primitive features have changed
-        // from PropertyFloat or PropertyFloatConstraint to a more meaningful type.
-        // In order to load older project files there must be checked in case the
-        // types don't match if both inherit from PropertyFloat because all derived
-        // classes do not re-implement the Save/Restore methods.
-        try {
-            if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0) {
-                prop->Restore(reader);
-            }
-            else if (prop) {
-                Base::Type inputType = Base::Type::fromName(TypeName);
-                if (prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId()) &&
-                    inputType.isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
-                    // Do not directly call the property's Restore method in case the implementation
-                    // has changed. So, create a temporary PropertyFloat object and assign the value.
-                    App::PropertyFloat floatProp;
-                    floatProp.Restore(reader);
-                    static_cast<App::PropertyFloat*>(prop)->setValue(floatProp.getValue());
-                }
-            }
-            else {
-                extHandleChangedPropertyName(reader, TypeName, PropName); // AttachExtension
-            }
-        }
-        catch (const Base::XMLParseException&) {
-            throw; // re-throw
-        }
-        catch (const Base::Exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        catch (const std::exception &e) {
-            Base::Console().Error("%s\n", e.what());
-        }
-        catch (const char* e) {
-            Base::Console().Error("%s\n", e);
-        }
-#ifndef FC_DEBUG
-        catch (...) {
-            Base::Console().Error("Primitive::Restore: Unknown C++ exception thrown\n");
-        }
-#endif
+void Primitive::handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName)
+{
+    extHandleChangedPropertyName(reader, TypeName, PropName); // AttachExtension
+}
 
-        reader.readEndElement("Property");
+void Primitive::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
+{
+    // For #0001652 the property types of many primitive features have changed
+    // from PropertyFloat or PropertyFloatConstraint to a more meaningful type.
+    // In order to load older project files there must be checked in case the
+    // types don't match if both inherit from PropertyFloat because all derived
+    // classes do not re-implement the Save/Restore methods.
+    Base::Type inputType = Base::Type::fromName(TypeName);
+    if (prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId()) &&
+        inputType.isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
+        // Do not directly call the property's Restore method in case the implementation
+        // has changed. So, create a temporary PropertyFloat object and assign the value.
+        App::PropertyFloat floatProp;
+        floatProp.Restore(reader);
+        static_cast<App::PropertyFloat*>(prop)->setValue(floatProp.getValue());
     }
-    reader.readEndElement("Properties");
+    else {
+        Part::Feature::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 void Primitive::onChanged(const App::Property* prop)
@@ -262,8 +236,8 @@ PROPERTY_SOURCE(Part::Line, Part::Primitive)
 Line::Line()
 {
     ADD_PROPERTY_TYPE(X1,(0.0),"Vertex 1 - Start",App::Prop_None,"X value of the start vertex");
-    ADD_PROPERTY_TYPE(Y1,(0.0),"Vertex 1 - Start",App::Prop_None,"Y value of the Start vertex");
-    ADD_PROPERTY_TYPE(Z1,(0.0),"Vertex 1 - Start",App::Prop_None,"Z value of the Start vertex");
+    ADD_PROPERTY_TYPE(Y1,(0.0),"Vertex 1 - Start",App::Prop_None,"Y value of the start vertex");
+    ADD_PROPERTY_TYPE(Z1,(0.0),"Vertex 1 - Start",App::Prop_None,"Z value of the start vertex");
     ADD_PROPERTY_TYPE(X2,(0.0),"Vertex 2 - Finish",App::Prop_None,"X value of the finish vertex");
     ADD_PROPERTY_TYPE(Y2,(0.0),"Vertex 2 - Finish",App::Prop_None,"Y value of the finish vertex");
     ADD_PROPERTY_TYPE(Z2,(1.0),"Vertex 2 - Finish",App::Prop_None,"Z value of the finish vertex");
@@ -356,7 +330,7 @@ App::DocumentObjectExecReturn *Plane::execute(void)
 #endif
     );
 
-    const char *error=0;
+    const char *error=nullptr;
     switch (mkFace.Error())
     {
     case BRepBuilderAPI_FaceDone:
@@ -786,8 +760,8 @@ App::DocumentObjectExecReturn *Torus::execute(void)
 
 PROPERTY_SOURCE(Part::Helix, Part::Primitive)
 
-const char* Part::Helix::LocalCSEnums[]= {"Right-handed","Left-handed",NULL};
-const char* Part::Helix::StyleEnums  []= {"Old style","New style",NULL};
+const char* Part::Helix::LocalCSEnums[]= {"Right-handed","Left-handed",nullptr};
+const char* Part::Helix::StyleEnums  []= {"Old style","New style",nullptr};
 
 Helix::Helix(void)
 {
@@ -797,7 +771,7 @@ Helix::Helix(void)
     Height.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Radius,(1.0),"Helix",App::Prop_None,"The radius of the helix");
     Radius.setConstraints(&quantityRange);
-    ADD_PROPERTY_TYPE(SegmentLength,(1.0),"Helix",App::Prop_None,"The number of turns per helix subdivision");
+    ADD_PROPERTY_TYPE(SegmentLength,(0.0),"Helix",App::Prop_None,"The number of turns per helix subdivision");
     SegmentLength.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Angle,(0.0),"Helix",App::Prop_None,"If angle is != 0 a conical otherwise a cylindircal surface is used");
     Angle.setConstraints(&apexRange);
@@ -1035,10 +1009,10 @@ Ellipse::Ellipse()
 {
     ADD_PROPERTY(MajorRadius,(4.0f));
     ADD_PROPERTY(MinorRadius,(4.0f));
-    ADD_PROPERTY(Angle0,(0.0f));
-    Angle0.setConstraints(&angleRange);
-    ADD_PROPERTY(Angle1,(360.0f));
+    ADD_PROPERTY(Angle1,(0.0f));
     Angle1.setConstraints(&angleRange);
+    ADD_PROPERTY(Angle2,(360.0f));
+    Angle2.setConstraints(&angleRange);
 }
 
 Ellipse::~Ellipse()
@@ -1047,8 +1021,8 @@ Ellipse::~Ellipse()
 
 short Ellipse::mustExecute() const
 {
-    if (Angle0.isTouched() ||
-        Angle1.isTouched() ||
+    if (Angle1.isTouched() ||
+        Angle2.isTouched() ||
         MajorRadius.isTouched() ||
         MinorRadius.isTouched())
         return 1;
@@ -1066,8 +1040,8 @@ App::DocumentObjectExecReturn *Ellipse::execute(void)
     ellipse.SetMajorRadius(this->MajorRadius.getValue());
     ellipse.SetMinorRadius(this->MinorRadius.getValue());
 
-    BRepBuilderAPI_MakeEdge clMakeEdge(ellipse, Base::toRadians<double>(this->Angle0.getValue()),
-                                                Base::toRadians<double>(this->Angle1.getValue()));
+    BRepBuilderAPI_MakeEdge clMakeEdge(ellipse, Base::toRadians<double>(this->Angle1.getValue()),
+                                                Base::toRadians<double>(this->Angle2.getValue()));
     const TopoDS_Edge& edge = clMakeEdge.Edge();
     this->Shape.setValue(edge);
 
@@ -1077,7 +1051,7 @@ App::DocumentObjectExecReturn *Ellipse::execute(void)
 void Ellipse::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
-        if (prop == &MajorRadius || prop == &MinorRadius || prop == &Angle0 || prop == &Angle1){
+        if (prop == &MajorRadius || prop == &MinorRadius || prop == &Angle1 || prop == &Angle2){
             try {
                 App::DocumentObjectExecReturn *ret = recompute();
                 delete ret;
@@ -1087,4 +1061,29 @@ void Ellipse::onChanged(const App::Property* prop)
         }
     }
     Part::Primitive::onChanged(prop);
+}
+
+void Ellipse::Restore(Base::XMLReader &reader)
+{
+    Base::ObjectStatusLocker<App::Property::Status, App::Property> lock(App::Property::User1, &Angle2, false);
+    Primitive::Restore(reader);
+
+    if (Angle2.testStatus(App::Property::User1)) {
+        double tmp = Angle1.getValue();
+        Angle1.setValue(Angle2.getValue());
+        Angle2.setValue(tmp);
+    }
+}
+
+void Ellipse::handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName)
+{
+    Base::Type type = Base::Type::fromName(TypeName);
+    if (Angle2.getTypeId() == type && strcmp(PropName, "Angle0") == 0) {
+        Angle2.Restore(reader);
+        // set the flag to swap Angle1/Angle2 afterwards
+        Angle2.setStatus(App::Property::User1, true);
+    }
+    else {
+        Primitive::handleChangedPropertyName(reader, TypeName, PropName);
+    }
 }

@@ -25,11 +25,10 @@
 #ifndef BASE_HANDLE_H
 #define BASE_HANDLE_H
 
-// Std. configurations
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
 
-#include <string>
-#include <map>
-#include <typeinfo>
 
 class QAtomicInt;
 
@@ -49,7 +48,7 @@ public:
     // construction & destruction
 
     /** Pointer and default constructor */
-    Reference() : _toHandle(0) {
+    Reference() : _toHandle(nullptr) {
     }
 
     Reference(T* p) : _toHandle(p) {
@@ -135,17 +134,17 @@ public:
     // checking on the state
 
     /// Test if it handles something
-    bool isValid(void) const {
-        return _toHandle != 0;
+    bool isValid() const {
+        return _toHandle != nullptr;
     }
 
     /// Test if it does not handle anything
-    bool isNull(void) const {
-        return _toHandle == 0;
+    bool isNull() const {
+        return _toHandle == nullptr;
     }
 
     /// Get number of references on the object, including this one
-    int getRefCount(void) const {
+    int getRefCount() const {
         if (_toHandle)
             return _toHandle->getRefCount();
         return 0;
@@ -167,7 +166,7 @@ public:
     void ref() const;
     void unref() const;
 
-    int getRefCount(void) const;
+    int getRefCount() const;
     const Handled& operator = (const Handled&);
 
 private:

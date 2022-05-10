@@ -29,7 +29,7 @@ GVector<Real>::GVector (int iSize)
     else
     {
         m_iSize = 0;
-        m_afTuple = 0;
+        m_afTuple = nullptr;
     }
 }
 //----------------------------------------------------------------------------
@@ -62,7 +62,7 @@ GVector<Real>::GVector (const GVector& rkV)
     }
     else
     {
-        m_afTuple = 0;
+        m_afTuple = nullptr;
     }
 }
 //----------------------------------------------------------------------------

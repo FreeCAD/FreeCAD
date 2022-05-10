@@ -187,25 +187,24 @@ def setup(doc=None, solvertype="elmer"):
     analysis.addObject(material_obj)
 
     # constraint potential 0V
-    name_pot1 = "ConstraintElectrostaticPotential"
+    name_pot1 = "ElectrostaticPotential1"
     con_elect_pot1 = ObjectsFem.makeConstraintElectrostaticPotential(doc, name_pot1)
     con_elect_pot1.References = [(geom_obj, "Face2")]
-    con_elect_pot1.Potential = 0.00
+    con_elect_pot1.Potential = "0 V"
     con_elect_pot1.CapacitanceBody = 1
     con_elect_pot1.CapacitanceBodyEnabled = True
     con_elect_pot1.PotentialEnabled = True
     analysis.addObject(con_elect_pot1)
 
-    # constraint potential 1e6V
-    # TODO: use a better name for the constraint, but unit test needs to be changed
-    name_pot2 = "ConstraintElectrostaticPotential001"
+    # constraint potential 1V
+    name_pot2 = "ElectrostaticPotential2"
     con_elect_pot2 = ObjectsFem.makeConstraintElectrostaticPotential(doc, name_pot2)
     con_elect_pot2.References = [
         (geom_obj, "Face4"),
         (geom_obj, "Face5"),
         (geom_obj, "Face6"),
         (geom_obj, "Face11")]
-    con_elect_pot2.Potential = 1000000.00
+    con_elect_pot2.Potential = "1 V"
     con_elect_pot2.CapacitanceBody = 2
     con_elect_pot2.CapacitanceBodyEnabled = True
     con_elect_pot2.PotentialEnabled = True

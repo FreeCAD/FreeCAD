@@ -51,7 +51,7 @@ DrawViewDraft::DrawViewDraft(void)
 {
     static const char *group = "Draft view";
 
-    ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"Draft object for this view");
+    ADD_PROPERTY_TYPE(Source ,(nullptr),group,App::Prop_None,"Draft object for this view");
     Source.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(LineWidth,(0.35),group,App::Prop_None,"Line width of this view. If Override Style is false, this value multiplies the object line width");
     ADD_PROPERTY_TYPE(FontSize,(12.0),group,App::Prop_None,"Text size for this view");
@@ -102,7 +102,7 @@ App::DocumentObjectExecReturn *DrawViewDraft::execute(void)
         std::string svgTail = getSVGTail();
         std::string FeatName = getNameInDocument();
         std::string SourceName = sourceObj->getNameInDocument();
-        // Draft.getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direction=None,linestyle=None,color=None,linespacing=None,techdraw=False)
+        // Draft.get_svg(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direction=None,linestyle=None,color=None,linespacing=None,techdraw=False)
 
         std::stringstream paramStr;
         App::Color col = Color.getValue();
@@ -122,7 +122,7 @@ App::DocumentObjectExecReturn *DrawViewDraft::execute(void)
 // (Arch section, etc)
 // like Draft.makeDrawingView, but we don't need to create the actual document objects in Draft, just the svg.
         Base::Interpreter().runString("import Draft");
-        Base::Interpreter().runStringArg("svgBody = Draft.getSVG(App.activeDocument().%s %s)",
+        Base::Interpreter().runStringArg("svgBody = Draft.get_svg(App.activeDocument().%s %s)",
                                          SourceName.c_str(),paramStr.str().c_str());
 //        Base::Interpreter().runString("print svgBody");
         Base::Interpreter().runStringArg("App.activeDocument().%s.Symbol = '%s' + svgBody + '%s'",

@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <assert.h>
+#include <cassert>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QGraphicsSceneHoverEvent>
@@ -199,6 +199,10 @@ void QGTracker::sleep(bool b)
 
 QPointF QGTracker::snapToAngle(QPointF dumbPt)
 {
+    // If no point selected yet, snapping has no sense
+    if (m_points.size() < 1)
+        return dumbPt;
+
     QPointF result(dumbPt);
     double angleIncr = M_PI / 8.0;   //15*
     //mirror last clicked point and event point to get sensible coords

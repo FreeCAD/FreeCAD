@@ -24,17 +24,18 @@
 #ifndef PY_GEOMETRYPY_H
 #define PY_GEOMETRYPY_H
 
-#include <CXX/Objects.hxx>
 #include <CXX/Extensions.hxx>
-#include <Base/Vector3D.h>
+#include <FCGlobal.h>
+
+#include <Base/BoundBoxPy.h>
 #include <Base/Matrix.h>
 #include <Base/MatrixPy.h>
 #include <Base/Rotation.h>
 #include <Base/RotationPy.h>
 #include <Base/Placement.h>
 #include <Base/PlacementPy.h>
-#include <Base/BoundBoxPy.h>
-#include <Base/Tools2D.h>
+#include <Base/Vector3D.h>
+
 
 namespace Base {
 template <typename T>
@@ -50,6 +51,12 @@ inline Vector3<T> getVectorFromTuple(PyObject* o)
 class BaseExport Vector2dPy : public Py::PythonClass<Vector2dPy>
 {
 public:
+    static Py::PythonType &behaviors();
+    static PyTypeObject *type_object();
+    static bool check( PyObject *p );
+
+    static Py::PythonClassObject<Vector2dPy> create(const Vector2d&);
+    static Py::PythonClassObject<Vector2dPy> create(double x, double y);
     Vector2dPy(Py::PythonClassInstance *self, Py::Tuple &args, Py::Dict &kwds);
     virtual ~Vector2dPy();
 
@@ -67,6 +74,41 @@ public:
         v.x = x;
         v.y = y;
     }
+
+    /** @name methods for group handling */
+    //@{
+    virtual Py::Object number_negative();
+    virtual Py::Object number_positive();
+    virtual Py::Object number_absolute();
+    virtual Py::Object number_invert();
+    virtual Py::Object number_int();
+    virtual Py::Object number_float();
+    virtual Py::Object number_long();
+    virtual Py::Object number_add( const Py::Object & );
+    virtual Py::Object number_subtract( const Py::Object & );
+    virtual Py::Object number_multiply( const Py::Object & );
+    virtual Py::Object number_remainder( const Py::Object & );
+    virtual Py::Object number_divmod( const Py::Object & );
+    virtual Py::Object number_lshift( const Py::Object & );
+    virtual Py::Object number_rshift( const Py::Object & );
+    virtual Py::Object number_and( const Py::Object & );
+    virtual Py::Object number_xor( const Py::Object & );
+    virtual Py::Object number_or( const Py::Object & );
+    virtual Py::Object number_power( const Py::Object &, const Py::Object & );
+    //@}
+
+    Py::Object isNull(const Py::Tuple&);
+    Py::Object length(const Py::Tuple&);
+    Py::Object atan2(const Py::Tuple&);
+    Py::Object square(const Py::Tuple&);
+    Py::Object scale(const Py::Tuple&);
+    Py::Object rotate(const Py::Tuple&);
+    Py::Object normalize(const Py::Tuple&);
+    Py::Object perpendicular(const Py::Tuple&);
+    Py::Object distance(const Py::Tuple&);
+    Py::Object isEqual(const Py::Tuple&);
+    Py::Object getAngle(const Py::Tuple&);
+    Py::Object projectToLine(const Py::Tuple&);
 
 private:
     Vector2d v;
@@ -108,6 +150,10 @@ public:
         validate();
     }
     Vector& operator= (const Object& rhs)
+    {
+        return (*this = *rhs);
+    }
+    Vector& operator= (const Vector& rhs)
     {
         return (*this = *rhs);
     }

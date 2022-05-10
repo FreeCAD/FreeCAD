@@ -24,7 +24,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <Python.h>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
@@ -34,8 +33,11 @@
 #include <gp_Vec.hxx>
 #include <BRep_Builder.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
-
 #endif
+
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
+#include <boost/regex.hpp>
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
@@ -58,7 +60,6 @@
 #include <Mod/Part/App/TopoShapeCompoundPy.h>
 #include <Mod/Part/App/OCCError.h>
 
-#include <Mod/Drawing/App/DrawingExport.h>
 #include <Mod/Import/App/ImpExpDxf.h>
 
 #include "DrawProjectSplit.h"
@@ -78,6 +79,10 @@
 #include "HatchLine.h"
 #include "DrawGeomHatch.h"
 
+#include "TechDrawExport.h"
+#include "ProjectionAlgos.h"
+
+
 namespace TechDraw {
 //module level static C++ functions go here
 }
@@ -90,7 +95,38 @@ using Part::TopoShapeWirePy;
 using Part::TopoShapeCompoundPy;
 using Import::ImpExpDxfWrite;
 
+using TechDraw::ProjectionAlgos;
+
+using namespace std;
+
 namespace TechDraw {
+
+/** Copies a Python dictionary of Python strings to a C++ container.
+ *
+ * After the function call, the key-value pairs of the Python
+ * dictionary are copied into the target buffer as C++ pairs
+ * (pair<string, string>).
+ *
+ * @param sourceRange is a Python dictionary (Py::Dict). Both, the
+ * keys and the values must be Python strings.
+ *
+ * @param targetIt refers to where the data should be inserted. Must
+ * be of concept output iterator.
+ */
+template<typename OutputIt>
+void copy(Py::Dict sourceRange, OutputIt targetIt)
+{
+  string key;
+  string value;
+
+  for (auto keyPy : sourceRange.keys()) {
+    key = Py::String(keyPy);
+    value = Py::String(sourceRange[keyPy]);
+    *targetIt = {key, value};
+    ++targetIt;
+  }
+}
+
 
 class Module : public Py::ExtensionModule<Module>
 {
@@ -132,6 +168,26 @@ public:
         );
         add_varargs_method("makeGeomHatch",&Module::makeGeomHatch,
             "makeGeomHatch(face, [patScale], [patName], [patFile]) -- draw a geom hatch on a given face, using optionally the given scale (default 1) and a given pattern name (ex. Diamond) and .pat file (the default pattern name and/or .pat files set in preferences are used if none are given). Returns a Part compound shape."
+        );
+        add_varargs_method("project",&Module::project,
+            "[visiblyG0,visiblyG1,hiddenG0,hiddenG1] = project(TopoShape[,App.Vector Direction, string type])\n"
+            " -- Project a shape and return the visible/invisible parts of it."
+        );
+        add_varargs_method("projectEx",&Module::projectEx,
+            "[V,V1,VN,VO,VI,H,H1,HN,HO,HI] = projectEx(TopoShape[,App.Vector Direction, string type])\n"
+            " -- Project a shape and return the all parts of it."
+        );
+        add_keyword_method("projectToSVG",&Module::projectToSVG,
+            "string = projectToSVG(TopoShape[, App.Vector direction, string type, float tolerance, dict vStyle, dict v0Style, dict v1Style, dict hStyle, dict h0Style, dict h1Style])\n"
+            " -- Project a shape and return the SVG representation as string."
+        );
+        add_varargs_method("projectToDXF",&Module::projectToDXF,
+            "string = projectToDXF(TopoShape[,App.Vector Direction, string type])\n"
+            " -- Project a shape and return the DXF representation as string."
+        );
+        add_varargs_method("removeSvgTags",&Module::removeSvgTags,
+            "string = removeSvgTags(string) -- Removes the opening and closing svg tags\n"
+            "and other metatags from a svg code, making it embeddable"
         );
         initialize("This is a module for making drawings"); // register with Python
     }
@@ -227,7 +283,8 @@ private:
             }
         }
         catch (Base::Exception &e) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
         return result;
     }
@@ -277,7 +334,8 @@ private:
             }
         }
         catch (Base::Exception &e) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
         if (!success) {
             return Py::None();
@@ -343,7 +401,8 @@ private:
             }
         }
         catch (Base::Exception &e) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
         if (!success) {
             return Py::None();
@@ -360,9 +419,9 @@ private:
         Py::String dxfReturn;
 
         try {
-            App::DocumentObject* obj = 0;
-            TechDraw::DrawViewPart* dvp = 0;
-            Drawing::DXFOutput dxfOut;
+            App::DocumentObject* obj = nullptr;
+            TechDraw::DrawViewPart* dvp = nullptr;
+            TechDraw::DXFOutput dxfOut;
             std::string dxfText;
             std::stringstream ss;
             if (PyObject_TypeCheck(viewObj, &(TechDraw::DrawViewPartPy::Type))) {
@@ -400,7 +459,8 @@ private:
            }
         }
         catch (Base::Exception &e) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
 
         return dxfReturn;
@@ -417,9 +477,9 @@ private:
         std::string grpHead2 = "\" stroke-linecap=\"butt\" stroke-linejoin=\"miter\" stroke-miterlimit=\"4\">\n";
         std::string grpTail  = "</g>\n";
         try {
-            App::DocumentObject* obj = 0;
-            TechDraw::DrawViewPart* dvp = 0;
-            Drawing::SVGOutput svgOut;
+            App::DocumentObject* obj = nullptr;
+            TechDraw::DrawViewPart* dvp = nullptr;
+            TechDraw::SVGOutput svgOut;
             std::string svgText;
             std::stringstream ss;
             if (PyObject_TypeCheck(viewObj, &(TechDraw::DrawViewPartPy::Type))) {
@@ -478,7 +538,8 @@ private:
            }
         }
         catch (Base::Exception &e) {
-            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+            e.setPyException();
+            throw Py::Exception();
         }
 
         return svgReturn;
@@ -575,8 +636,8 @@ private:
         try {
             ImpExpDxfWrite writer(filePath);
             writer.init();
-            App::DocumentObject* obj = 0;
-            TechDraw::DrawViewPart* dvp = 0;
+            App::DocumentObject* obj = nullptr;
+            TechDraw::DrawViewPart* dvp = nullptr;
             if (PyObject_TypeCheck(viewObj, &(TechDraw::DrawViewPartPy::Type))) {
                 obj = static_cast<App::DocumentObjectPy*>(viewObj)->getDocumentObjectPtr();
                 dvp = static_cast<TechDraw::DrawViewPart*>(obj);
@@ -609,8 +670,8 @@ private:
         try {
             ImpExpDxfWrite writer(filePath);
             writer.init();
-            App::DocumentObject* obj = 0;
-            TechDraw::DrawPage* dp = 0;
+            App::DocumentObject* obj = nullptr;
+            TechDraw::DrawPage* dp = nullptr;
             if (PyObject_TypeCheck(pageObj, &(TechDraw::DrawPagePy::Type))) {
                 obj = static_cast<App::DocumentObjectPy*>(pageObj)->getDocumentObjectPtr();
                 dp = static_cast<TechDraw::DrawPage*>(obj);
@@ -652,7 +713,13 @@ private:
                         double parentX = dvp->X.getValue() + grandParentX;
                         double parentY = dvp->Y.getValue() + grandParentY;
                         Base::Vector3d parentPos(parentX,parentY,0.0);
-                        std::string sDimText = dvd->getFormattedDimensionValue();
+                        std::string sDimText;
+                        //this is the same code as in QGIViewDimension::updateDim
+                        if (dvd->isMultiValueSchema()) {
+                            sDimText = dvd->getFormattedDimensionValue(0); //don't format multis
+                        } else {
+                            sDimText = dvd->getFormattedDimensionValue(1);
+                        }
                         char* dimText = &sDimText[0u];                  //hack for const-ness
                         float gap = 5.0;                                //hack. don't know font size here.
                         layerName = dvd->getNameInDocument();
@@ -711,9 +778,13 @@ private:
                         } else if(dvd->Type.isValue("Diameter")){
                             Base::Vector3d textLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY, 0.0);
                             arcPoints pts = dvd->getArcPoints();
-                            Base::Vector3d end1 = pts.onCurve.first;
+                            Base::Vector3d center = pts.center;
+                            center.y = -center.y;
+                            double radius = pts.radius;
+                            Base::Vector3d lineDir = (textLocn - center).Normalize();
+                            Base::Vector3d end1 = center + lineDir * radius;
                             end1.y = -end1.y;
-                            Base::Vector3d end2 = pts.onCurve.second;
+                            Base::Vector3d end2 = center - lineDir * radius;
                             end2.y = -end2.y;
                             end1 = end1 + parentPos;
                             end2 = end2 + parentPos;
@@ -898,8 +969,12 @@ private:
         if (!PyArg_ParseTuple(args.ptr(), "O|detet", &pFace, &scale, "utf-8", &pPatName, "utf-8", &pPatFile)) {
             throw Py::TypeError("expected (face, [scale], [patName], [patFile])");
         }
+
         std::string patName = std::string(pPatName);
+        PyMem_Free(pPatName);
         std::string patFile = std::string(pPatFile);
+        PyMem_Free(pPatFile);
+
         if (PyObject_TypeCheck(pFace, &(TopoShapeFacePy::Type))) {
             const TopoDS_Shape& sh = static_cast<TopoShapePy*>(pFace)->getTopoShapePtr()->getShape();
             face = TopoDS::Face(sh);
@@ -939,7 +1014,8 @@ private:
                 }
             }
             catch (Base::Exception &e) {
-                throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+                e.setPyException();
+                throw Py::Exception();
             }
             return result;
             */
@@ -957,7 +1033,8 @@ private:
                 }
             }
             catch (Base::Exception &e) {
-                throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+                e.setPyException();
+                throw Py::Exception();
             }
             PyObject* pycomp = new TopoShapeCompoundPy(new TopoShape(comp));
             return Py::asObject(pycomp);
@@ -965,12 +1042,198 @@ private:
         return Py::None();
     }
 
+    Py::Object project(const Py::Tuple& args)
+    {
+        PyObject *pcObjShape;
+        PyObject *pcObjDir=nullptr;
+
+        if (!PyArg_ParseTuple(args.ptr(), "O!|O!",
+            &(Part::TopoShapePy::Type), &pcObjShape,
+            &(Base::VectorPy::Type), &pcObjDir))
+            throw Py::Exception();
+
+        Part::TopoShapePy* pShape = static_cast<Part::TopoShapePy*>(pcObjShape);
+        Base::Vector3d Vector(0,0,1);
+        if (pcObjDir)
+            Vector = *static_cast<Base::VectorPy*>(pcObjDir)->getVectorPtr();
+
+        ProjectionAlgos Alg(pShape->getTopoShapePtr()->getShape(),Vector);
+
+        Py::List list;
+        list.append(Py::Object(new Part::TopoShapePy(new Part::TopoShape(Alg.V)) , true));
+        list.append(Py::Object(new Part::TopoShapePy(new Part::TopoShape(Alg.V1)), true));
+        list.append(Py::Object(new Part::TopoShapePy(new Part::TopoShape(Alg.H)) , true));
+        list.append(Py::Object(new Part::TopoShapePy(new Part::TopoShape(Alg.H1)), true));
+
+        return list;
+    }
+    Py::Object projectEx(const Py::Tuple& args)
+    {
+        PyObject *pcObjShape;
+        PyObject *pcObjDir=nullptr;
+
+        if (!PyArg_ParseTuple(args.ptr(), "O!|O!",
+            &(TopoShapePy::Type), &pcObjShape,
+            &(Base::VectorPy::Type), &pcObjDir))
+            throw Py::Exception();
+
+        TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObjShape);
+        Base::Vector3d Vector(0,0,1);
+        if (pcObjDir)
+            Vector = *static_cast<Base::VectorPy*>(pcObjDir)->getVectorPtr();
+
+        ProjectionAlgos Alg(pShape->getTopoShapePtr()->getShape(),Vector);
+
+        Py::List list;
+        list.append(Py::Object(new TopoShapePy(new TopoShape(Alg.V)) , true));
+        list.append(Py::Object(new TopoShapePy(new TopoShape(Alg.V1)), true));
+        list.append(Py::Object(new TopoShapePy(new TopoShape(Alg.VN)), true));
+        list.append(Py::Object(new TopoShapePy(new TopoShape(Alg.VO)), true));
+        list.append(Py::Object(new TopoShapePy(new TopoShape(Alg.VI)), true));
+        list.append(Py::Object(new TopoShapePy(new TopoShape(Alg.H)) , true));
+        list.append(Py::Object(new TopoShapePy(new TopoShape(Alg.H1)), true));
+        list.append(Py::Object(new TopoShapePy(new TopoShape(Alg.HN)), true));
+        list.append(Py::Object(new TopoShapePy(new TopoShape(Alg.HO)), true));
+        list.append(Py::Object(new TopoShapePy(new TopoShape(Alg.HI)), true));
+
+        return list;
+    }
+
+    Py::Object projectToSVG(const Py::Tuple& args, const Py::Dict& keys)
+        {
+            static char* argNames[] = {"topoShape", "direction", "type", "tolerance", "vStyle", "v0Style", "v1Style", "hStyle", "h0Style", "h1Style", nullptr};
+            PyObject *pcObjShape = nullptr;
+            PyObject *pcObjDir = nullptr;
+            const char *extractionTypePy = nullptr;
+            ProjectionAlgos::ExtractionType extractionType = ProjectionAlgos::Plain;
+            const float tol = 0.1f;
+            PyObject* vStylePy = nullptr;
+            ProjectionAlgos::XmlAttributes vStyle;
+            PyObject* v0StylePy = nullptr;
+            ProjectionAlgos::XmlAttributes v0Style;
+            PyObject* v1StylePy = nullptr;
+            ProjectionAlgos::XmlAttributes v1Style;
+            PyObject* hStylePy = nullptr;
+            ProjectionAlgos::XmlAttributes hStyle;
+            PyObject* h0StylePy = nullptr;
+            ProjectionAlgos::XmlAttributes h0Style;
+            PyObject* h1StylePy = nullptr;
+            ProjectionAlgos::XmlAttributes h1Style;
+        
+            // Get the arguments
+
+            if (!PyArg_ParseTupleAndKeywords(
+                    args.ptr(), keys.ptr(), 
+                    "O!|O!sfOOOOOO", 
+                    argNames,
+                    &(TopoShapePy::Type), &pcObjShape,
+                    &(Base::VectorPy::Type), &pcObjDir, 
+                    &extractionTypePy, &tol, 
+                    &vStylePy, &v0StylePy, &v1StylePy, 
+                    &hStylePy, &h0StylePy, &h1StylePy))
+          
+                throw Py::Exception();
+
+            // Convert all arguments into the right format
+
+            TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObjShape);
+
+            Base::Vector3d directionVector(0,0,1);
+            if (pcObjDir)
+                directionVector = static_cast<Base::VectorPy*>(pcObjDir)->value();
+
+            if (extractionTypePy && std::string(extractionTypePy) == "ShowHiddenLines")
+                extractionType = ProjectionAlgos::WithHidden;
+
+            if (vStylePy)
+                copy(Py::Dict(vStylePy), inserter(vStyle, vStyle.begin()));
+            if (v0StylePy)
+                copy(Py::Dict(v0StylePy), inserter(v0Style, v0Style.begin()));
+            if (v1StylePy)
+                copy(Py::Dict(v1StylePy), inserter(v1Style, v1Style.begin()));
+            if (hStylePy)
+                copy(Py::Dict(hStylePy), inserter(hStyle, hStyle.begin()));
+            if (h0StylePy)
+                copy(Py::Dict(h0StylePy), inserter(h0Style, h0Style.begin()));
+            if (h1StylePy)
+                copy(Py::Dict(h1StylePy), inserter(h1Style, h1Style.begin()));
+        
+            // Execute the SVG generation
+
+            ProjectionAlgos Alg(pShape->getTopoShapePtr()->getShape(), 
+                                directionVector);
+            Py::String result(Alg.getSVG(extractionType, tol, 
+                                         vStyle, v0Style, v1Style, 
+                                         hStyle, h0Style, h1Style));
+            return result;
+        }
+
+    Py::Object projectToDXF(const Py::Tuple& args)
+    {
+        PyObject *pcObjShape;
+        PyObject *pcObjDir=nullptr;
+        const char *type=nullptr;
+        float scale=1.0f;
+        float tol=0.1f;
+
+        if (!PyArg_ParseTuple(args.ptr(), "O!|O!sff",
+            &(TopoShapePy::Type), &pcObjShape,
+            &(Base::VectorPy::Type), &pcObjDir, &type, &scale, &tol))
+            throw Py::Exception();
+
+        TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObjShape);
+        Base::Vector3d Vector(0,0,1);
+        if (pcObjDir)
+            Vector = static_cast<Base::VectorPy*>(pcObjDir)->value();
+        ProjectionAlgos Alg(pShape->getTopoShapePtr()->getShape(),Vector);
+
+        bool hidden = false;
+        if (type && std::string(type) == "ShowHiddenLines")
+            hidden = true;
+
+        Py::String result(Alg.getDXF(hidden?ProjectionAlgos::WithHidden:ProjectionAlgos::Plain, scale, tol));
+        return result;
+    }
+    Py::Object removeSvgTags(const Py::Tuple& args)
+    {
+        const char* svgcode;
+        if (!PyArg_ParseTuple(args.ptr(), "s",&svgcode))
+            throw Py::Exception();
+
+        std::string svg(svgcode);
+        std::string empty = "";
+        std::string endline = "--endOfLine--";
+        std::string linebreak = "\\n";
+        // removing linebreaks for regex to work
+        boost::regex e1 ("\\n");
+        svg = boost::regex_replace(svg, e1, endline);
+        // removing starting xml definition
+        boost::regex e2 ("<\\?xml.*?\\?>");
+        svg = boost::regex_replace(svg, e2, empty);
+        // removing starting svg tag
+        boost::regex e3 ("<svg.*?>");
+        svg = boost::regex_replace(svg, e3, empty);
+        // removing sodipodi tags -- DANGEROUS, some sodipodi tags are single, better leave it
+        //boost::regex e4 ("<sodipodi.*?>");
+        //svg = boost::regex_replace(svg, e4, empty);
+        // removing metadata tags
+        boost::regex e5 ("<metadata.*?</metadata>");
+        svg = boost::regex_replace(svg, e5, empty);
+        // removing closing svg tags
+        boost::regex e6 ("</svg>");
+        svg = boost::regex_replace(svg, e6, empty);
+        // restoring linebreaks
+        boost::regex e7 ("--endOfLine--");
+        svg = boost::regex_replace(svg, e7, linebreak);
+        Py::String result(svg);
+        return result;
+    }
 
  };
 
  PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace TechDraw

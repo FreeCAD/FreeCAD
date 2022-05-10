@@ -20,17 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include <App/PropertyStandard.h>
-#include <App/Material.h>
 
 #include "DlgMaterialPropertiesImp.h"
 #include "ui_DlgMaterialProperties.h"
-#include "Widgets.h"
-#include "SpinBox.h"
 #include "ViewProvider.h"
+
 
 using namespace Gui::Dialog;
 

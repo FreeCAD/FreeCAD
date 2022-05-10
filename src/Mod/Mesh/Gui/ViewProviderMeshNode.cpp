@@ -258,7 +258,8 @@ std::vector<std::string> ViewProviderMeshNode::getDisplayModes(void) const
 
 bool ViewProviderMeshNode::setEdit(int ModNum)
 {
-  if ( m_bEdit ) return true;
+  if ( m_bEdit )
+      return true;
   m_bEdit = true;
   return true;
 }

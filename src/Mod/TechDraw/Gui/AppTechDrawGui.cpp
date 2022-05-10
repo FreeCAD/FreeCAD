@@ -23,7 +23,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Python.h>
 # include <QFontDatabase>
 #endif
 
@@ -75,6 +74,8 @@ void CreateTechDrawCommands(void);
 void CreateTechDrawCommandsDims(void);
 void CreateTechDrawCommandsDecorate(void);
 void CreateTechDrawCommandsAnnotate(void);
+void CreateTechDrawCommandsExtensionDims(void);
+void CreateTechDrawCommandsExtensions(void);
 
 void loadTechDrawResource()
 {
@@ -101,7 +102,7 @@ PyMOD_INIT_FUNC(TechDrawGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
     // load dependent module
     try {
@@ -109,7 +110,7 @@ PyMOD_INIT_FUNC(TechDrawGui)
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
     PyObject* mod = TechDrawGui::initModule();
 
@@ -120,9 +121,12 @@ PyMOD_INIT_FUNC(TechDrawGui)
     CreateTechDrawCommandsDims();
     CreateTechDrawCommandsDecorate();
     CreateTechDrawCommandsAnnotate();
+    CreateTechDrawCommandsExtensionDims();
+    CreateTechDrawCommandsExtensions();
 
     TechDrawGui::Workbench::init();
     TechDrawGui::MDIViewPage::init();
+    TechDrawGui::MDIViewPagePy::init_type();
 
     TechDrawGui::ViewProviderPage::init();
     TechDrawGui::ViewProviderDrawingView::init();

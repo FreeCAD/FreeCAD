@@ -53,7 +53,7 @@ PARAM_ENUM_STRING_DECLARE(static const char *Enums,AREA_PARAMS_PATH)
 
 FeatureShape::FeatureShape()
 {
-    ADD_PROPERTY(Sources,(0));
+    ADD_PROPERTY(Sources,(nullptr));
     ADD_PROPERTY_TYPE(StartPoint,(Base::Vector3d()),"Path",App::Prop_None,"Feed start position");
     ADD_PROPERTY_TYPE(UseStartPoint,(false),"Path",App::Prop_None,"Enable feed start position");
     PARAM_PROP_ADD("Path",AREA_PARAMS_PATH);
@@ -86,7 +86,7 @@ App::DocumentObjectExecReturn *FeatureShape::execute(void)
         shapes.push_back(shape);
     }
 
-    Area::toPath(path,shapes,UseStartPoint.getValue()?&pstart:0,0,PARAM_PROP_ARGS(AREA_PARAMS_PATH));
+    Area::toPath(path,shapes,UseStartPoint.getValue()?&pstart:nullptr,nullptr,PARAM_PROP_ARGS(AREA_PARAMS_PATH));
 
     Path.setValue(path);
     return App::DocumentObject::StdReturn;

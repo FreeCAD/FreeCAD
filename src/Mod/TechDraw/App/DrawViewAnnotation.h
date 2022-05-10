@@ -21,18 +21,15 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
-
 #ifndef _DrawViewAnnotation_h_
 #define _DrawViewAnnotation_h_
 
 #include <App/DocumentObject.h>
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
 #include <App/FeaturePython.h>
+#include <App/PropertyUnits.h>
 
 #include "DrawView.h"
+
 
 namespace TechDraw
 {

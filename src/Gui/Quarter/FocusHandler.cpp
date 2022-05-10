@@ -37,11 +37,13 @@
   focus out events, if installed on QuarterWidget.
 */
 
-#include <Quarter/eventhandlers/FocusHandler.h>
-#include <Quarter/QuarterWidget.h>
-#include <QtCore/QEvent>
+#include <QEvent>
 #include <Inventor/SoEventManager.h>
 #include <Inventor/scxml/SoScXMLStateMachine.h>
+
+#include "QuarterWidget.h"
+#include "eventhandlers/FocusHandler.h"
+
 
 using namespace SIM::Coin3D::Quarter;
 

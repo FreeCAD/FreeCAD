@@ -20,31 +20,29 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cstring>
 # include <algorithm>
 # include <QApplication>
 # include <QDebug>
-# include <QDesktopWidget>
 # include <QGenericReturnArgument>
 # include <QMessageBox>
+# include <QScreen>
 # include <QScrollArea>
 # include <QScrollBar>
 #endif
 
-#include <QScreen>
-
-#include <Base/Exception.h>
-#include <Base/Console.h>
 #include <App/Application.h>
+#include <Base/Console.h>
+#include <Base/Exception.h>
+
 #include "DlgPreferencesImp.h"
 #include "ui_DlgPreferences.h"
-#include "PropertyPage.h"
-#include "WidgetFactory.h"
 #include "BitmapFactory.h"
 #include "MainWindow.h"
+#include "WidgetFactory.h"
+
 
 using namespace Gui::Dialog;
 
@@ -361,7 +359,7 @@ void DlgPreferencesImp::applyChanges()
                 int index = page->metaObject()->indexOfMethod("checkSettings()");
                 try {
                     if (index >= 0) {
-                        page->qt_metacall(QMetaObject::InvokeMetaMethod, index, 0);
+                        page->qt_metacall(QMetaObject::InvokeMetaMethod, index, nullptr);
                     }
                 }
                 catch (const Base::Exception& e) {
@@ -433,6 +431,8 @@ void DlgPreferencesImp::resizeEvent(QResizeEvent* ev)
                     Q_ARG(int, newWidth),
                     Q_ARG(int, newHeight));
             }
+            QPoint center = rect.center();
+            move(center.x() - width() * 0.5, 10);
         }
     }
     QDialog::resizeEvent(ev);
@@ -464,6 +464,19 @@ void DlgPreferencesImp::changeEvent(QEvent *e)
     } else {
         QWidget::changeEvent(e);
     }
+}
+
+void DlgPreferencesImp::reload()
+{
+    for (int i = 0; i < ui->tabWidgetStack->count(); i++) {
+        QTabWidget* tabWidget = (QTabWidget*)ui->tabWidgetStack->widget(i);
+        for (int j = 0; j < tabWidget->count(); j++) {
+            PreferencePage* page = qobject_cast<PreferencePage*>(tabWidget->widget(j));
+            if (page)
+                page->loadSettings();
+        }
+    }
+    applyChanges();
 }
 
 #include "moc_DlgPreferencesImp.cpp"

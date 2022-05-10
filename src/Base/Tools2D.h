@@ -28,11 +28,14 @@
 #include <algorithm>
 #include <cmath>
 #include <cfloat>
-#include <stdio.h>
+#include <cstdio>
 #include <list>
 #include <vector>
 
 #include "Vector3D.h"
+#ifndef FC_GLOBAL_H
+#include <FCGlobal.h>
+#endif
 
 namespace Base {
 
@@ -49,7 +52,7 @@ class BaseExport Vector2d
 public:
   double x, y;
 
-  inline Vector2d(void);
+  inline Vector2d();
   inline Vector2d(float x, float y);
   inline Vector2d(double x, double y);
   inline Vector2d(const Vector2d &v);
@@ -71,15 +74,15 @@ public:
 
   // methods
   inline bool IsNull(double tolerance = 0.0) const;
-  inline double Length(void) const;
-  inline double Angle(void) const;
-  inline double Sqr(void) const;
+  inline double Length() const;
+  inline double Angle() const;
+  inline double Sqr() const;
 
   inline Vector2d& Set(double x, double y);
-  inline Vector2d& Negate(void);
+  inline Vector2d& Negate();
   inline Vector2d& Scale(double factor);
   inline Vector2d& Rotate(double angle);
-  inline Vector2d& Normalize(void);
+  inline Vector2d& Normalize();
 
   inline Vector2d Perpendicular(bool clockwise = false) const;
   static inline Vector2d FromPolar(double r, double fi);
@@ -101,10 +104,10 @@ class BaseExport BoundBox2d
 public:
   double MinX, MinY, MaxX, MaxY;
 
-  inline BoundBox2d (void);
+  inline BoundBox2d ();
   inline BoundBox2d (const BoundBox2d &rclBB);
   inline BoundBox2d (double fX1, double fY1, double fX2, double fY2);
-  inline bool IsValid (void);
+  inline bool IsValid ();
   inline bool IsEqual(const BoundBox2d&, double tolerance) const;
 
   // operators
@@ -112,13 +115,13 @@ public:
   inline bool operator== (const BoundBox2d& rclBB) const;
 
   // methods
-  inline double Width(void) const;
-  inline double Height(void) const;
+  inline double Width() const;
+  inline double Height() const;
   inline bool Contains(const Vector2d &v) const;
   inline bool Contains(const Vector2d &v, double tolerance) const;
-  inline Vector2d GetCenter(void) const;
+  inline Vector2d GetCenter() const;
 
-  inline void SetVoid(void);
+  inline void SetVoid();
   inline void Add(const Vector2d &v);
 
   bool Intersect(const Line2d &rclLine) const;
@@ -136,13 +139,13 @@ class BaseExport Line2d
 public:
   Vector2d clV1, clV2;
 
-  Line2d (void) {}
+  Line2d () {}
   inline Line2d (const Line2d &rclLine);
   inline Line2d (const Vector2d &rclV1, const Vector2d &rclV2);
 
   // methods
-  inline double Length (void) const;
-  BoundBox2d CalcBoundBox (void) const;
+  inline double Length () const;
+  BoundBox2d CalcBoundBox () const;
 
   // operators
   inline Line2d& operator= (const Line2d& rclLine);
@@ -164,22 +167,24 @@ public:
 class BaseExport Polygon2d
 {
 public:
-  Polygon2d (void) {}
+  Polygon2d () {}
   inline Polygon2d (const Polygon2d &rclPoly);
   virtual ~Polygon2d () {}
 
   inline Polygon2d& operator = (const Polygon2d &rclP);
 
   // admin-interface
-  inline size_t GetCtVectors (void) const;
+  inline size_t GetCtVectors () const;
   inline bool Add (const Vector2d &rclVct);
-  inline Vector2d& operator[] (size_t ulNdx) const;
-  inline Vector2d& At (size_t ulNdx) const;
+  inline const Vector2d& operator[] (size_t ulNdx) const;
+  inline const Vector2d& At (size_t ulNdx) const;
+  inline Vector2d& operator[] (size_t ulNdx);
+  inline Vector2d& At (size_t ulNdx);
   inline bool Delete (size_t ulNdx);
-  inline void  DeleteAll (void);
+  inline void  DeleteAll ();
 
   // misc
-  BoundBox2d CalcBoundBox (void) const;
+  BoundBox2d CalcBoundBox () const;
   bool Contains (const Vector2d &rclV) const;
   void Intersect (const Polygon2d &rclPolygon, std::list<Polygon2d> &rclResultPolygonList) const;
   bool Intersect (const Polygon2d &rclPolygon) const;
@@ -191,13 +196,13 @@ private:
 
 /** INLINES ********************************************/
 
-inline Vector2d::Vector2d(void)
+inline Vector2d::Vector2d()
 : x(0.0), y(0.0)
 {
 }
 
 inline Vector2d::Vector2d(float x, float y)
-: x(x), y(y)
+: x(double(x)), y(double(y))
 {
 }
 
@@ -223,7 +228,7 @@ inline bool Vector2d::operator== (const Vector2d &v) const
   return (x == v.x) && (y == v.y);
 }
 
-inline Vector2d Vector2d::operator+ (void) const
+inline Vector2d Vector2d::operator+ () const
 {
   return Vector2d(x, y);
 }
@@ -240,7 +245,7 @@ inline Vector2d& Vector2d::operator+= (const Vector2d &v)
   return *this;
 }
 
-inline Vector2d Vector2d::operator- (void) const
+inline Vector2d Vector2d::operator- () const
 {
   return Vector2d(-x, -y);
 }
@@ -296,17 +301,17 @@ inline bool Vector2d::IsNull(double tolerance) const
   return x*x + y*y <= tolerance*tolerance;
 }
 
-inline double Vector2d::Length(void) const
+inline double Vector2d::Length() const
 {
   return sqrt(x*x + y*y);
 }
 
-inline double Vector2d::Angle(void) const
+inline double Vector2d::Angle() const
 {
   return atan2(y, x);
 }
 
-inline double Vector2d::Sqr(void) const
+inline double Vector2d::Sqr() const
 {
   return x*x + y*y;
 }
@@ -318,7 +323,7 @@ inline Vector2d& Vector2d::Set(double x, double y)
   return *this;
 }
 
-inline Vector2d& Vector2d::Negate(void)
+inline Vector2d& Vector2d::Negate()
 {
   x = -x;
   y = -y;
@@ -339,7 +344,7 @@ inline Vector2d& Vector2d::Rotate(double angle)
   return *this;
 }
 
-inline Vector2d& Vector2d::Normalize(void)
+inline Vector2d& Vector2d::Normalize()
 {
   double length = Length();
   if (length > 0.0)
@@ -387,12 +392,12 @@ inline Polygon2d& Polygon2d::operator = (const Polygon2d &rclP)
   return *this;
 }
 
-inline void Polygon2d::DeleteAll (void)
+inline void Polygon2d::DeleteAll ()
 {
   _aclVct.clear();
 }
 
-inline size_t Polygon2d::GetCtVectors (void) const
+inline size_t Polygon2d::GetCtVectors () const
 {
   return _aclVct.size ();
 }
@@ -407,7 +412,8 @@ inline bool Polygon2d::Delete (size_t ulNdx)
 {
   if ( ulNdx < _aclVct.size() )
   {
-    std::vector<Vector2d>::iterator it = _aclVct.begin() + ulNdx;
+    std::vector<Vector2d>::iterator it = _aclVct.begin();
+    std::advance(it, ulNdx);
     _aclVct.erase ( it );
     return true;
   }
@@ -415,15 +421,26 @@ inline bool Polygon2d::Delete (size_t ulNdx)
   return false;
 }
 
-inline Vector2d& Polygon2d::operator[] (size_t ulNdx) const
+inline const Vector2d& Polygon2d::operator[] (size_t ulNdx) const
 {
-  return (Vector2d&) _aclVct[ulNdx];
+  return _aclVct[ulNdx];
 }
 
-inline Vector2d& Polygon2d::At (size_t ulNdx) const
+inline const Vector2d& Polygon2d::At (size_t ulNdx) const
 {
-  return (Vector2d&) _aclVct[ulNdx];
+  return _aclVct.at(ulNdx);
 }
+
+inline Vector2d& Polygon2d::operator[] (size_t ulNdx)
+{
+  return _aclVct[ulNdx];
+}
+
+inline Vector2d& Polygon2d::At (size_t ulNdx)
+{
+  return _aclVct.at(ulNdx);
+}
+
 
 inline Line2d::Line2d (const Line2d &rclLine)
     : clV1 (rclLine.clV1),
@@ -436,7 +453,7 @@ inline Line2d::Line2d (const Vector2d &rclV1, const Vector2d &rclV2)
 {
 }
 
-inline double Line2d::Length (void) const
+inline double Line2d::Length () const
 {
   return (clV2 - clV1).Length ();
 }
@@ -458,7 +475,7 @@ inline bool Line2d::Contains (const Vector2d &rclV) const
   return CalcBoundBox ().Contains (rclV);
 }
 
-inline BoundBox2d::BoundBox2d (void)
+inline BoundBox2d::BoundBox2d ()
 {
   MinX = MinY = DOUBLE_MAX;
   MaxX = MaxY = - DOUBLE_MAX;
@@ -480,7 +497,7 @@ inline BoundBox2d::BoundBox2d (double fX1, double fY1, double fX2, double fY2)
     MaxY = std::max<double>( fY1, fY2 );
 }
 
-inline bool BoundBox2d::IsValid (void)
+inline bool BoundBox2d::IsValid ()
 {
   return (MaxX >= MinX) && (MaxY >= MinY);
 }
@@ -508,12 +525,12 @@ inline bool BoundBox2d::operator== (const BoundBox2d& rclBB) const
          (MaxY == rclBB.MaxY);
 }
 
-inline double BoundBox2d::Width(void) const
+inline double BoundBox2d::Width() const
 {
   return MaxX - MinX;
 }
 
-inline double BoundBox2d::Height(void) const
+inline double BoundBox2d::Height() const
 {
   return MaxY - MinY;
 }
@@ -530,12 +547,12 @@ inline bool BoundBox2d::Contains(const Vector2d &v, double tolerance) const
       && v.y >= MinY - tolerance && v.y <= MaxY + tolerance;
 }
 
-inline Vector2d BoundBox2d::GetCenter(void) const
+inline Vector2d BoundBox2d::GetCenter() const
 {
   return Vector2d((MinX + MaxX)*0.5, (MinY + MaxY)*0.5);
 }
 
-inline void BoundBox2d::SetVoid(void)
+inline void BoundBox2d::SetVoid()
 {
   MinX = MinY = DOUBLE_MAX;
   MaxX = MaxY = -DOUBLE_MAX;

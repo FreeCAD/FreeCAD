@@ -180,6 +180,7 @@ class DraftTool:
             self.ui.sourceCmd = None
         if self.planetrack:
             self.planetrack.finalize()
+        App.DraftWorkingPlane.restore()
         if hasattr(Gui, "Snapper"):
             Gui.Snapper.off()
         if self.call:
@@ -302,4 +303,9 @@ class Modifier(DraftTool):
         super(Modifier, self).__init__()
         self.copymode = False
 
+    def Activated(self, name="None", noplanesetup=False, is_subtool=False):
+        super(Modifier, self).Activated(name, noplanesetup, is_subtool)
+        # call DraftWorkingPlane.save to sync with
+        # DraftWorkingPlane.restore called in finish method
+        App.DraftWorkingPlane.save()
 ## @}

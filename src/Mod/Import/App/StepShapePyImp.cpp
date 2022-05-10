@@ -38,7 +38,7 @@ int StepShapePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 PyObject* StepShapePy::read(PyObject * /*args*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    return nullptr;
 }
 
 
@@ -47,7 +47,7 @@ PyObject* StepShapePy::read(PyObject * /*args*/)
 
 PyObject *StepShapePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int StepShapePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

@@ -47,7 +47,7 @@ DrawRichAnno::DrawRichAnno(void)
 {
     static const char *group = "Text Block";
 
-    ADD_PROPERTY_TYPE(AnnoParent,(0),group,(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(AnnoParent,(nullptr),group,(App::PropertyType)(App::Prop_None),
                       "Object to which this annontation is attached");
     ADD_PROPERTY_TYPE(AnnoText, (""), group, App::Prop_None, "Annotation text");
     ADD_PROPERTY_TYPE(ShowFrame, (true), group, App::Prop_None, "Outline rectangle on/off");

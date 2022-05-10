@@ -20,10 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#include <stdio.h>
-#include <cmath>
+#include <cstdio>
+#include <iostream>
 
 #include <QByteArray>
 #include <QDockWidget>
@@ -35,17 +34,18 @@
 #include <QFileIconProvider>
 #include <QUrlQuery>
 
-#include "DownloadItem.h"
 #include "DownloadManager.h"
 #include "ui_DownloadManager.h"
 #include "DockWindowManager.h"
+#include "DownloadItem.h"
 #include "MainWindow.h"
+
 
 using namespace Gui::Dialog;
 
 /* TRANSLATOR Gui::Dialog::DownloadManager */
 
-DownloadManager* DownloadManager::self = 0;
+DownloadManager* DownloadManager::self = nullptr;
 
 DownloadManager* DownloadManager::getInstance()
 {
@@ -58,7 +58,7 @@ DownloadManager::DownloadManager(QWidget *parent)
     : QDialog(parent)
     , m_autoSaver(new AutoSaver(this))
     , m_manager(new NetworkAccessManager(this))
-    , m_iconProvider(0)
+    , m_iconProvider(nullptr)
     , m_removePolicy(Never)
     , ui(new Ui_DownloadManager())
 {
@@ -90,7 +90,7 @@ DownloadManager::~DownloadManager()
     if (m_iconProvider)
         delete m_iconProvider;
     delete ui;
-    self = 0;
+    self = nullptr;
 }
 
 void DownloadManager::closeEvent(QCloseEvent* e)
@@ -264,7 +264,7 @@ void DownloadManager::load()
         QString fileName = settings.value(key + QLatin1String("location")).toString();
         bool done = settings.value(key + QLatin1String("done"), true).toBool();
         if (!url.isEmpty() && !fileName.isEmpty()) {
-            DownloadItem *item = new DownloadItem(0, false, this);
+            DownloadItem *item = new DownloadItem(nullptr, false, this);
             item->m_output.setFileName(fileName);
             item->fileNameLabel->setText(QFileInfo(item->m_output.fileName()).fileName());
             item->m_url = url;
@@ -288,7 +288,7 @@ void DownloadManager::cleanup()
     updateItemCount();
     if (m_downloads.isEmpty() && m_iconProvider) {
         delete m_iconProvider;
-        m_iconProvider = 0;
+        m_iconProvider = nullptr;
     }
     m_autoSaver->changeOccurred();
 }

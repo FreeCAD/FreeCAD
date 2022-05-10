@@ -26,21 +26,6 @@
 
 #include <FCConfig.h>
 
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-# define AppFemExport   __declspec(dllexport)
-# define FemExport      __declspec(dllexport)
-# define PartExport     __declspec(dllimport)
-# define MeshExport     __declspec(dllimport)
-# define BaseExport     __declspec(dllimport)
-#else // for Linux
-# define AppFemExport
-# define FemExport
-# define PartExport
-# define MeshExport
-# define BaseExport
-#endif
-
 #ifdef _MSC_VER
 # pragma warning(disable : 4290)
 # pragma warning(disable : 4275)
@@ -51,8 +36,8 @@
 // standard
 #include <iostream>
 #include <sstream>
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 #include <string>
 #include <map>
 #include <vector>
@@ -62,16 +47,14 @@
 #include <memory>
 #include <cmath>
 
-#include <math.h>
-
 #include <algorithm>
 #include <stdexcept>
-// Python
-#include <Python.h>
 
 // Boost
 #include <boost/assign/list_of.hpp>
 #include <boost/tokenizer.hpp>
+
+#include <Python.h>
 
 // Salomesh
 #include <SMESH_Version.h>

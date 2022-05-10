@@ -28,30 +28,28 @@
 # include <QFileDialog>
 # include <QMutex>
 # include <QMutexLocker>
-# include <QThread>
-# include <QTimer>
 # include <QMdiArea>
 # include <QMdiSubWindow>
-# include <QWaitCondition>
-# include <QTranslator>
 # include <QRunnable>
+# include <QThread>
 # include <QThreadPool>
+# include <QTimer>
+# include <QTranslator>
+# include <QWaitCondition>
 #endif
 
 #include <Base/Console.h>
+#include <Base/Sequencer.h>
+
+#include "CommandT.h"
 #include "Application.h"
+#include "Command.h"
 #include "MainWindow.h"
 #include "MDIView.h"
-#include "Command.h"
-#include "CommandT.h"
 #include "Language/Translator.h"
-
-#include "ProgressBar.h"
 
 
 using namespace Gui;
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 //===========================================================================
 // Std_TestQM
@@ -164,7 +162,7 @@ void FCCmdTest2::activated(int iMsg)
 
 bool FCCmdTest2::isActive(void)
 {
-    return (getDocument()!=NULL);
+    return (getDocument()!=nullptr);
 }
 
 //===========================================================================
@@ -187,13 +185,14 @@ void FCCmdTest3::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document *pcDoc = getDocument();
-    if (!pcDoc) return;
+    if (!pcDoc)
+        return;
 }
 
 
 bool FCCmdTest3::isActive(void)
 {
-    return (getDocument()!=NULL);
+    return (getDocument()!=nullptr);
 }
 
 //===========================================================================
@@ -217,13 +216,14 @@ void FCCmdTest4::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document *pcDoc = getDocument();
-    if(!pcDoc) return;
+    if(!pcDoc)
+        return;
 }
 
 
 bool FCCmdTest4::isActive(void)
 {
-    return (getDocument()!=NULL);
+    return (getDocument()!=nullptr);
 }
 
 //===========================================================================
@@ -246,12 +246,13 @@ void FCCmdTest5::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document *pcDoc = getDocument();
-    if(!pcDoc) return;
+    if(!pcDoc)
+        return;
 }
 
 bool FCCmdTest5::isActive(void)
 {
-  return (getDocument()!=NULL);
+  return (getDocument()!=nullptr);
 }
 
 
@@ -275,12 +276,13 @@ void FCCmdTest6::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document *pcDoc = getDocument();
-    if(!pcDoc) return;
+    if(!pcDoc)
+        return;
 }
 
 bool FCCmdTest6::isActive(void)
 {
-    return (getDocument()!=NULL);
+    return (getDocument()!=nullptr);
 }
 
 //===========================================================================
@@ -303,7 +305,8 @@ void CmdTestCmdFuncs::activated(int iMsg)
     Q_UNUSED(iMsg);
     App::Document *doc = getDocument();
     auto obj = doc->addObject("App::Annotation", "obj");
-    if (!obj) return;
+    if (!obj)
+        return;
 
     std::string objName = obj->getNameInDocument();
 
@@ -329,7 +332,7 @@ void CmdTestCmdFuncs::activated(int iMsg)
 
 bool CmdTestCmdFuncs::isActive(void)
 {
-    return (getDocument()!=NULL);
+    return (getDocument()!=nullptr);
 }
 
 //===========================================================================
@@ -519,7 +522,7 @@ void CmdTestProgress4::activated(int iMsg)
             QWaitCondition().wait(&mutex, 5);
             if (i == 45) {
                 delete seq;
-                seq = 0;
+                seq = nullptr;
             }
             if (seq) {
                 seq->next(false);
@@ -694,7 +697,7 @@ void CmdTestMDI3::activated(int iMsg)
     Q_UNUSED(iMsg);
     MDIView* mdi = getMainWindow()->activeWindow();
     getMainWindow()->removeWindow(mdi);
-    mdi->setParent(0, Qt::Window | Qt::WindowTitleHint |
+    mdi->setParent(nullptr, Qt::Window | Qt::WindowTitleHint |
                    Qt::WindowSystemMenuHint |
                    Qt::WindowMinMaxButtonsHint);
     mdi->show();
@@ -710,7 +713,7 @@ DEF_STD_CMD(CmdTestConsoleOutput)
 CmdTestConsoleOutput::CmdTestConsoleOutput()
   : Command("Std_TestConsoleOutput")
 {
-    sGroup      = QT_TR_NOOP("Standard-Test");
+    sGroup      = "Standard-Test";
     sMenuText   = QT_TR_NOOP("Test console output");
     sToolTipText= QT_TR_NOOP("Test console output");
     sStatusTip  = QT_TR_NOOP("Test console output");

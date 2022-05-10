@@ -87,6 +87,7 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
           << Base::Unit::ElectricPotential
           << Base::Unit::Frequency
           << Base::Unit::Force
+          << Base::Unit::Stiffness
           << Base::Unit::HeatFlux
           << Base::Unit::Length
           << Base::Unit::LuminousIntensity

@@ -39,7 +39,7 @@ PROPERTY_SOURCE(Sketcher::SketchObjectSF, Part::Part2DObject)
 
 SketchObjectSF::SketchObjectSF()
 {
-    ADD_PROPERTY_TYPE(SketchFlatFile,(0),"",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(SketchFlatFile,(nullptr),"",(App::PropertyType)(App::Prop_None),
         "SketchFlat file (*.skf) which defines this sketch");
 }
 

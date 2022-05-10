@@ -29,7 +29,6 @@
 # include <TColgp_Array1OfPnt.hxx>
 # include <TopoDS.hxx>
 # include <TopExp_Explorer.hxx>
-# include <Python.h>
 # include <Inventor/nodes/SoComplexity.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
@@ -68,7 +67,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderCurveNet,PartGui::ViewProviderPart)
 
        
 ViewProviderCurveNet::ViewProviderCurveNet()
-  : bInEdit(false),bMovePointMode(false),EdgeRoot(0),VertexRoot(0)
+  : bInEdit(false),bMovePointMode(false),EdgeRoot(nullptr),VertexRoot(nullptr)
 {
     LineWidth.setValue(4.0f);
     PointSize.setValue(0.05f);

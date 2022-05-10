@@ -41,7 +41,7 @@ namespace KDTree
          NoLeakAlloc(_Alloc_base * b) : base(b), new_node(base->_M_allocate_node()) {}
 
          _Node_ * get() { return new_node; }
-         void disconnect() { new_node = NULL; }
+         void disconnect() { new_node = nullptr; }
 
          ~NoLeakAlloc() { if (new_node) base->_M_deallocate_node(new_node); }
       };

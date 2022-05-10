@@ -30,6 +30,9 @@
 #include <QStandardItemModel>
 #include <QItemDelegate>
 
+namespace Base {
+    class Quantity;
+}
 namespace Part { 
     class FilletBase;
     class Fillet;
@@ -44,7 +47,7 @@ class FilletRadiusDelegate : public QItemDelegate
     Q_OBJECT
 
 public:
-    FilletRadiusDelegate(QObject *parent = 0);
+    FilletRadiusDelegate(QObject *parent = nullptr);
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
                           const QModelIndex &index) const;
@@ -62,7 +65,7 @@ class FilletRadiusModel : public QStandardItemModel
     Q_OBJECT
 
 public:
-    FilletRadiusModel(QObject * parent = 0);
+    FilletRadiusModel(QObject * parent = nullptr);
 
     Qt::ItemFlags flags (const QModelIndex & index) const;
     bool setData (const QModelIndex & index, const QVariant & value,
@@ -81,7 +84,7 @@ class DlgFilletEdges : public QWidget, public Gui::SelectionObserver
 public:
     enum FilletType { FILLET, CHAMFER };
 
-    DlgFilletEdges(FilletType type, Part::FilletBase*, QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+    DlgFilletEdges(FilletType type, Part::FilletBase*, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgFilletEdges();
     bool accept();
 
@@ -121,7 +124,7 @@ class FilletEdgesDialog : public QDialog
     Q_OBJECT
 
 public:
-    FilletEdgesDialog(DlgFilletEdges::FilletType type, Part::FilletBase* fillet, QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+    FilletEdgesDialog(DlgFilletEdges::FilletType type, Part::FilletBase* fillet, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~FilletEdgesDialog();
     void accept();
 
@@ -134,7 +137,7 @@ class DlgChamferEdges : public DlgFilletEdges
     Q_OBJECT
 
 public:
-    DlgChamferEdges(Part::FilletBase*, QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+    DlgChamferEdges(Part::FilletBase*, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgChamferEdges();
 
 protected:

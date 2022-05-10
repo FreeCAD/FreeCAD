@@ -20,7 +20,7 @@
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
 
-//  SMESH SMESH : implementaion of SMESH idl descriptions
+//  SMESH SMESH : implementation of SMESH idl descriptions
 //  File   : SMESH_subMesh.cxx
 //  Author : Paul RASCLE, EDF
 //  Module : SMESH
@@ -518,7 +518,7 @@ const TopoDS_Shape & SMESH_subMesh::GetSubShape() const
 //=======================================================================
 //function : CanAddHypothesis
 //purpose  : return true if theHypothesis can be attached to me:
-//           its dimention is checked
+//           its dimension is checked
 //=======================================================================
 
 bool SMESH_subMesh::CanAddHypothesis(const SMESH_Hypothesis* theHypothesis) const
@@ -2312,7 +2312,7 @@ EventListenerData* SMESH_subMesh::GetEventListenerData(const string& listenerNam
 
 //================================================================================
 /*!
- * \brief Notify stored event listeners on the occured event
+ * \brief Notify stored event listeners on the occurred event
  * \param event - algo_event or compute_event itself
  * \param eventType - algo_event or compute_event
  * \param hyp - hypothesis, if eventType is algo_event
@@ -2418,7 +2418,7 @@ void SMESH_subMesh::loadDependentMeshes()
  * \brief Do something on a certain event
  * \param event - algo_event or compute_event itself
  * \param eventType - algo_event or compute_event
- * \param subMesh - the submesh where the event occures
+ * \param subMesh - the submesh where the event occurs
  * \param data - listener data stored in the subMesh
  * \param hyp - hypothesis, if eventType is algo_event
  * 

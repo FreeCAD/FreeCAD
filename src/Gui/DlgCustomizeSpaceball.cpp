@@ -23,26 +23,28 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <QComboBox>
 #include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QLabel>
-#include <QSplitter>
-#include <QPushButton>
 #include <QHeaderView>
+#include <QLabel>
+#include <QPainter>
 #include <QPrintDialog>
 #include <QPrinter>
-#include <QPainter>
+#include <QPushButton>
+#include <QSplitter>
 #include <QTableView>
-#include <QComboBox>
+#include <QVBoxLayout>
 #endif
 
 #include "Base/Console.h"
+
+#include "Command.h"
+#include "DlgCustomizeSpaceball.h"
 #include "Application.h"
+#include "BitmapFactory.h"
 #include "GuiApplicationNativeEventAware.h"
 #include "SpaceballEvent.h"
-#include "Command.h"
-#include "BitmapFactory.h"
-#include "DlgCustomizeSpaceball.h"
+
 
 typedef std::vector<Base::Reference<ParameterGrp> > GroupVector;
 
@@ -336,9 +338,9 @@ void CommandView::goClicked(const QModelIndex &index)
 CommandNode::CommandNode(NodeType typeIn)
 {
     nodeType = typeIn;
-    parent = 0;
+    parent = nullptr;
     children.clear();
-    aCommand = 0;
+    aCommand = nullptr;
 }
 
 CommandNode::~CommandNode()
@@ -350,14 +352,14 @@ CommandNode::~CommandNode()
 
 CommandModel::CommandModel(QObject *parent) : QAbstractItemModel(parent)
 {
-    rootNode = 0;
+    rootNode = nullptr;
     initialize();
 }
 
 CommandModel::~CommandModel()
 {
     delete rootNode;
-    rootNode = 0;
+    rootNode = nullptr;
 }
 
 QModelIndex CommandModel::index(int row, int column, const QModelIndex &parent) const
@@ -422,7 +424,7 @@ QVariant CommandModel::data(const QModelIndex &index, int role) const
             if (node->children.size() < 1)
                 return QVariant();
             CommandNode *childNode = node->children.at(0);
-            return QVariant(qApp->translate(childNode->aCommand->className(), childNode->aCommand->getGroupName()));
+            return QVariant(childNode->aCommand->translatedGroupName());
         }
         return QVariant();
     }
@@ -507,7 +509,7 @@ void CommandModel::goAddMacro(const QByteArray &macroName)
     else
         macrosIndex = indexList.at(0);
 
-    Command *command = 0;
+    Command *command = nullptr;
     command = Application::Instance->commandManager().getCommandByName(macroName);
     if (!command)
         return;

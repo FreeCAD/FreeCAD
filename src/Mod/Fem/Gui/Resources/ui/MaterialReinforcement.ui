@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>396</width>
-    <height>448</height>
+    <width>400</width>
+    <height>274</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,6 +31,13 @@
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>
        <layout class="QGridLayout" name="gridLayout_2">
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Material</string>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="1">
          <widget class="QComboBox" name="cb_materials_m">
           <item>
@@ -40,10 +47,17 @@
           </item>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_2">
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_4">
           <property name="text">
-           <string>Material</string>
+           <string>Properties</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QPushButton" name="pb_edit_m">
+          <property name="text">
+           <string>Edit</string>
           </property>
          </widget>
         </item>
@@ -58,20 +72,6 @@
          <widget class="QLabel" name="l_name_m">
           <property name="text">
            <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QPushButton" name="pb_edit_m">
-          <property name="text">
-           <string>Edit</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>Properties</string>
           </property>
          </widget>
         </item>
@@ -104,6 +104,13 @@
      <layout class="QVBoxLayout" name="verticalLayout_6">
       <item>
        <layout class="QGridLayout" name="gridLayout_3">
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Material</string>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="1">
          <widget class="QComboBox" name="cb_materials_r">
           <item>
@@ -113,10 +120,17 @@
           </item>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_6">
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_8">
           <property name="text">
-           <string>Material</string>
+           <string>Properties</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QPushButton" name="pb_edit_r">
+          <property name="text">
+           <string>Edit</string>
           </property>
          </widget>
         </item>
@@ -131,20 +145,6 @@
          <widget class="QLabel" name="l_name_r">
           <property name="text">
            <string>TextLabel</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QPushButton" name="pb_edit_r">
-          <property name="text">
-           <string>Edit</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_8">
-          <property name="text">
-           <string>Properties</string>
           </property>
          </widget>
         </item>

@@ -40,7 +40,7 @@ std::string SketchObjectSFPy::representation(void) const
 
 PyObject *SketchObjectSFPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int SketchObjectSFPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

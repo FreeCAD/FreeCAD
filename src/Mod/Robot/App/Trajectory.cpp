@@ -61,13 +61,13 @@ using namespace Base;
 TYPESYSTEM_SOURCE(Robot::Trajectory , Base::Persistence)
 
 Trajectory::Trajectory()
-:pcTrajectory(0)
+:pcTrajectory(nullptr)
 {
 
 }
 
 Trajectory::Trajectory(const Trajectory& Trac)
-:vpcWaypoints(Trac.vpcWaypoints.size()),pcTrajectory(0)
+:vpcWaypoints(Trac.vpcWaypoints.size()),pcTrajectory(nullptr)
 {
     operator=(Trac);
 }
@@ -148,7 +148,7 @@ void Trajectory::deleteLast(unsigned int n)
 
 void Trajectory::generateTrajectory(void)
 {
-    if (vpcWaypoints.size()==0)
+    if (vpcWaypoints.size() == 0)
         return;
 
     // delete the old and create a new one
@@ -164,60 +164,60 @@ void Trajectory::generateTrajectory(void)
 
     try {
         // handle the first waypoint special
-        bool first=true;
+        bool first = true;
 
-        for (std::vector<Waypoint*>::const_iterator it = vpcWaypoints.begin();it!=vpcWaypoints.end();++it) {
+        for (std::vector<Waypoint*>::const_iterator it = vpcWaypoints.begin(); it != vpcWaypoints.end(); ++it) {
             if (first) {
                 Last = toFrame((*it)->EndPos);
                 first = false;
             }
             else {
                 // destinct the type of movement
-                switch((*it)->Type){
+                switch ((*it)->Type) {
                 case Waypoint::LINE:
-                case Waypoint::PTP:{
+                case Waypoint::PTP: {
                     KDL::Frame Next = toFrame((*it)->EndPos);
                     // continues the movement until no continuous waypoint or the end
-                    bool Cont = (*it)->Cont && !(it==--vpcWaypoints.end());
+                    bool Cont = (*it)->Cont && !(it == --vpcWaypoints.end());
                     // start of a continue block
                     if (Cont && !pcRoundComp) {
                         pcRoundComp.reset(new KDL::Path_RoundedComposite(3, 3,
-                                          new KDL::RotationalInterpolation_SingleAxis()));
+                            new KDL::RotationalInterpolation_SingleAxis()));
                         // the velocity of the first waypoint is used
-                        pcVelPrf.reset(new KDL::VelocityProfile_Trap((*it)->Velocity,(*it)->Accelaration));
+                        pcVelPrf.reset(new KDL::VelocityProfile_Trap((*it)->Velocity, (*it)->Acceleration));
                         pcRoundComp->Add(Last);
                         pcRoundComp->Add(Next);
 
-                    // continue a continues block
+                        // continue a continues block
                     }
                     else if (Cont && pcRoundComp) {
                         pcRoundComp->Add(Next);
                         // end a continuous block
                     }
-                    else if (Cont==false && pcRoundComp) {
+                    else if (Cont == false && pcRoundComp) {
                         // add the last one
                         pcRoundComp->Add(Next);
                         pcRoundComp->Finish();
-                        pcVelPrf->SetProfile(0,pcRoundComp->PathLength());
-                        pcTrak.reset(new KDL::Trajectory_Segment(pcRoundComp.release(),pcVelPrf.release()));
+                        pcVelPrf->SetProfile(0, pcRoundComp->PathLength());
+                        pcTrak.reset(new KDL::Trajectory_Segment(pcRoundComp.release(), pcVelPrf.release()));
 
                         // normal block
                     }
-                    else if (Cont==false && !pcRoundComp){
+                    else if (Cont == false && !pcRoundComp) {
                         KDL::Path* pcPath;
                         pcPath = new KDL::Path_Line(Last,
-                                                    Next,
-                                                    new KDL::RotationalInterpolation_SingleAxis(),
-                                                    1.0,
-                                                    true
-                                                    );
+                            Next,
+                            new KDL::RotationalInterpolation_SingleAxis(),
+                            1.0,
+                            true
+                        );
 
-                        pcVelPrf.reset(new KDL::VelocityProfile_Trap((*it)->Velocity,(*it)->Accelaration));
-                        pcVelPrf->SetProfile(0,pcPath->PathLength());
-                        pcTrak.reset(new KDL::Trajectory_Segment(pcPath,pcVelPrf.release()));
+                        pcVelPrf.reset(new KDL::VelocityProfile_Trap((*it)->Velocity, (*it)->Acceleration));
+                        pcVelPrf->SetProfile(0, pcPath->PathLength());
+                        pcTrak.reset(new KDL::Trajectory_Segment(pcPath, pcVelPrf.release()));
                     }
                     Last = Next;
-                    break;}
+                    break; }
                 case Waypoint::WAIT:
                     break;
                 default:
@@ -230,7 +230,7 @@ void Trajectory::generateTrajectory(void)
             }
         }
     }
-    catch (KDL::Error &e) {
+    catch (KDL::Error& e) {
         throw Base::RuntimeError(e.Description());
     }
 }

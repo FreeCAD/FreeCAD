@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Python.h>
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
@@ -183,7 +182,7 @@ void ViewProviderPoints::setDisplayMode(const char* ModeName)
                     SoDebugError::postWarning("ViewProviderPoints::setDisplayMode",
                                               "The number of points (%d) doesn't match with the number of colors (%d).", numPoints, colors->getSize());
 #endif
-                    // fallback 
+                    // fallback
                     setDisplayMaskMode("Point");
                 }
                 else {
@@ -229,7 +228,7 @@ void ViewProviderPoints::setDisplayMode(const char* ModeName)
                     SoDebugError::postWarning("ViewProviderPoints::setDisplayMode",
                                               "The number of points (%d) doesn't match with the number of normals (%d).", numPoints, normals->getSize());
 #endif
-                    // fallback 
+                    // fallback
                     setDisplayMaskMode("Point");
                 }
                 else {
@@ -247,7 +246,7 @@ void ViewProviderPoints::setDisplayMode(const char* ModeName)
     ViewProviderGeometryObject::setDisplayMode(ModeName);
 }
 
-std::vector<std::string> ViewProviderPoints::getDisplayModes(void) const
+std::vector<std::string> ViewProviderPoints::getDisplayModes() const
 {
     std::vector<std::string> StrList;
     StrList.push_back("Points");
@@ -498,7 +497,7 @@ void ViewProviderScattered::cut(const std::vector<SbVec2f>& picked, Gui::View3DI
                     remainValue.push_back( *jt );
                 else if (index != *pos)
                     remainValue.push_back( *jt );
-                else 
+                else
                     ++pos;
             }
 
@@ -650,8 +649,8 @@ template class PointsGuiExport ViewProviderPythonFeatureT<PointsGui::ViewProvide
 
 void ViewProviderPointsBuilder::buildNodes(const App::Property* prop, std::vector<SoNode*>& nodes) const
 {
-    SoCoordinate3 *pcPointsCoord=0;
-    SoPointSet *pcPoints=0;
+    SoCoordinate3 *pcPointsCoord=nullptr;
+    SoPointSet *pcPoints=nullptr;
 
     if (nodes.empty()) {
         pcPointsCoord = new SoCoordinate3();

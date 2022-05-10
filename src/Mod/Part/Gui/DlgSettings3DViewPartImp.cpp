@@ -23,7 +23,6 @@
 
 #include "PreCompiled.h"
 
-#include <Python.h>
 #include <QMessageBox>
 #include "ViewProvider.h"
 #include "DlgSettings3DViewPartImp.h"

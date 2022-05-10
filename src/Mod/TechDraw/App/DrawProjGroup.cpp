@@ -58,7 +58,7 @@ using namespace TechDraw;
 const char* DrawProjGroup::ProjectionTypeEnums[] = {"First Angle",
                                                     "Third Angle",
                                                     "Default",          //Use Page setting
-                                                    NULL};
+                                                    nullptr};
 
 PROPERTY_SOURCE(TechDraw::DrawProjGroup, TechDraw::DrawViewCollection)
 
@@ -72,12 +72,12 @@ DrawProjGroup::DrawProjGroup(void) :
                                                                GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     bool autoDist = hGrp->GetBool("AutoDist",true);
     
-    ADD_PROPERTY_TYPE(Source, (0), group, App::Prop_None, "Shape to view");
+    ADD_PROPERTY_TYPE(Source, (nullptr), group, App::Prop_None, "Shape to view");
     Source.setScope(App::LinkScope::Global);
     Source.setAllowExternal(true);
-    ADD_PROPERTY_TYPE(XSource, (0), group,App::Prop_None, "External 3D Shape to view");
+    ADD_PROPERTY_TYPE(XSource, (nullptr), group,App::Prop_None, "External 3D Shape to view");
 
-    ADD_PROPERTY_TYPE(Anchor, (0), group, App::Prop_None, "The root view to align projections with");
+    ADD_PROPERTY_TYPE(Anchor, (nullptr), group, App::Prop_None, "The root view to align projections with");
     Anchor.setScope(App::LinkScope::Global);
 
     ProjectionType.setEnums(ProjectionTypeEnums);
@@ -143,15 +143,15 @@ void DrawProjGroup::onChanged(const App::Property* prop)
         }
 
         if (prop == &ScaleType) {
-            double newScale = getScale();
             if (ScaleType.isValue("Automatic")) {
                 //Nothing in particular
             } else if (ScaleType.isValue("Page")) {
-                newScale = page->Scale.getValue();
+                double newScale = page->Scale.getValue();
                 if(std::abs(getScale() - newScale) > FLT_EPSILON) {
                     Scale.setValue(newScale);
                 }
             }
+            updateChildrenScale();
         }
         if (prop == &Rotation) {
             if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
@@ -220,7 +220,8 @@ short DrawProjGroup::mustExecute() const
                  spacingX.isTouched() ||
                  spacingY.isTouched();
     }
-    if (result) return result;
+    if (result)
+        return result;
     return TechDraw::DrawViewCollection::mustExecute();
 }
 
@@ -267,7 +268,7 @@ TechDraw::DrawPage * DrawProjGroup::getPage(void) const
 double DrawProjGroup::calculateAutomaticScale() const
 {
     TechDraw::DrawPage *page = getPage();
-    if (page == NULL)
+    if (page == nullptr)
       throw Base::RuntimeError("No page is assigned to this feature");
 
     DrawProjGroupItem *viewPtrs[10];
@@ -285,7 +286,7 @@ double DrawProjGroup::calculateAutomaticScale() const
     // C++ Standard says casting bool to int gives 0 or 1
     int numVertSpaces = (viewPtrs[0] || viewPtrs[3] || viewPtrs[7]) +
                         (viewPtrs[2] || viewPtrs[5] || viewPtrs[9]) +
-                        (viewPtrs[6] != NULL);
+                        (viewPtrs[6] != nullptr);
     int numHorizSpaces = (viewPtrs[0] || viewPtrs[1] || viewPtrs[2]) +
                          (viewPtrs[7] || viewPtrs[8] || viewPtrs[9]);
 
@@ -369,7 +370,7 @@ App::DocumentObject * DrawProjGroup::getProjObj(const char *viewProjType) const
         }
     }
 
-    return 0;
+    return nullptr;
 }
 
 DrawProjGroupItem* DrawProjGroup::getProjItem(const char *viewProjType) const
@@ -508,7 +509,7 @@ int DrawProjGroup::removeProjection(const char *viewProjType)
     }
 
     return -1;
-}
+} 
 
 //removes all DPGI - used when deleting DPG
 int DrawProjGroup::purgeProjections()
@@ -1008,8 +1009,8 @@ void DrawProjGroup::updateChildrenScale(void)
             Base::Console().Log("PROBLEM - DPG::updateChildrenScale - non DPGI entry in Views! %s\n",
                                     getNameInDocument());
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
-        } else if(view->Scale.getValue() != Scale.getValue()) {
-            view->Scale.setValue(Scale.getValue());
+        } else {
+            view->Scale.setValue(getScale());
             view->recomputeFeature();
         }
     }
@@ -1063,7 +1064,7 @@ void DrawProjGroup::updateViews(void) {
         auto view(dynamic_cast<DrawProjGroupItem *>(it));
         if (view == nullptr) {
             //if an element in Views is not a DPGI, something really bad has happened somewhere
-            Base::Console().Log("PROBLEM - DPG::updateChildrenScale - non DPGI entry in Views! %s\n",
+            Base::Console().Log("PROBLEM - DPG::updateViews - non DPGI entry in Views! %s\n",
                 getNameInDocument());
             throw Base::TypeError("Error: projection in DPG list is not a DPGI!");
         }
@@ -1093,7 +1094,7 @@ App::Enumeration DrawProjGroup::usedProjectionType(void)
     App::Enumeration ret(ProjectionTypeEnums, ProjectionType.getValueAsString());
     if (ret.isValue("Default")) {
         TechDraw::DrawPage * page = getPage();
-        if ( page != NULL ) {
+        if ( page != nullptr ) {
             ret.setValue(page->ProjectionType.getValueAsString());
         }
     }
@@ -1231,72 +1232,31 @@ void DrawProjGroup::updateSecondaryDirs()
     recomputeChildren();
 }
 
-void DrawProjGroup::rotateRight()
-{
-//Front -> Right -> Rear -> Left -> Front
+void DrawProjGroup::rotate(const std::string &rotationdirection) {
     std::pair<Base::Vector3d,Base::Vector3d> newDirs;
-    newDirs  = getDirsFromFront("Left");
+    if(rotationdirection == "Right") newDirs = getDirsFromFront("Left"); // Front -> Right -> Rear -> Left -> Front
+    else if(rotationdirection == "Left") newDirs = getDirsFromFront("Right"); // Front -> Left -> Rear -> Right -> Front
+    else if(rotationdirection == "Up") newDirs = getDirsFromFront("Bottom"); // Front -> Top -> Rear -> Bottom -> Front
+    else if(rotationdirection == "Down") newDirs = getDirsFromFront("Top"); // Front -> Bottom -> Rear -> Top -> Front
+
     DrawProjGroupItem* anchor = getAnchor();
     anchor->Direction.setValue(newDirs.first);
     anchor->XDirection.setValue(newDirs.second);
+
     updateSecondaryDirs();
 }
 
-void DrawProjGroup::rotateLeft()
+void DrawProjGroup::spin(const std::string &spindirection)
 {
-//Front -> Left -> Rear -> Right -> Front
-    std::pair<Base::Vector3d,Base::Vector3d> newDirs;
-    newDirs  = getDirsFromFront("Right");
-    DrawProjGroupItem* anchor = getAnchor();
-    anchor->Direction.setValue(newDirs.first);
-    anchor->XDirection.setValue(newDirs.second);
-    updateSecondaryDirs();
-}
+    double angle;
+    if(spindirection == "CW") angle = M_PI / 2.0; // Top -> Right -> Bottom -> Left -> Top
+    if(spindirection == "CCW") angle = - M_PI / 2.0; // Top -> Left -> Bottom -> Right -> Top
 
-void DrawProjGroup::rotateUp()
-{
-//Front -> Top -> Rear -> Bottom -> Front
-    std::pair<Base::Vector3d,Base::Vector3d> newDirs;
-    newDirs  = getDirsFromFront("Bottom");
     DrawProjGroupItem* anchor = getAnchor();
-    anchor->Direction.setValue(newDirs.first);
-    anchor->XDirection.setValue(newDirs.second);
-    updateSecondaryDirs();
-}
-
-void DrawProjGroup::rotateDown()
-{
-//Front -> Bottom -> Rear -> Top -> Front
-    std::pair<Base::Vector3d,Base::Vector3d> newDirs;
-    newDirs  = getDirsFromFront("Top");
-    DrawProjGroupItem* anchor = getAnchor();
-    anchor->Direction.setValue(newDirs.first);
-    anchor->XDirection.setValue(newDirs.second);
-    updateSecondaryDirs();
-}
-
-void DrawProjGroup::spinCW()
-{
-//Top -> Right -> Bottom -> Left -> Top
-    DrawProjGroupItem* anchor = getAnchor();
-    double angle = M_PI / 2.0;
     Base::Vector3d org(0.0,0.0,0.0);
     Base::Vector3d curRot = anchor->getXDirection();
     Base::Vector3d curDir = anchor->Direction.getValue();
     Base::Vector3d newRot = DrawUtil::vecRotate(curRot,angle,curDir,org);
-    anchor->XDirection.setValue(newRot);
-    updateSecondaryDirs();
-}
-
-void DrawProjGroup::spinCCW()
-{
-//Top -> Left -> Bottom -> Right -> Top
-    DrawProjGroupItem* anchor = getAnchor();
-    double angle = M_PI / 2.0;
-    Base::Vector3d org(0.0,0.0,0.0);
-    Base::Vector3d curRot = anchor->getXDirection();
-    Base::Vector3d curDir = anchor->Direction.getValue();
-    Base::Vector3d newRot = DrawUtil::vecRotate(curRot,-angle,curDir,org);
     anchor->XDirection.setValue(newRot);
 
     updateSecondaryDirs();

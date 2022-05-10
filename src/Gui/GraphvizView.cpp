@@ -20,36 +20,33 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
 # include <QApplication>
 # include <QFile>
+# include <QGraphicsScene>
+# include <QGraphicsSvgItem>
+# include <QGraphicsView>
+# include <QMessageBox>
+# include <QMouseEvent>
 # include <QPrinter>
 # include <QPrintDialog>
 # include <QPrintPreviewDialog>
 # include <QProcess>
 # include <QSvgRenderer>
-# include <QGraphicsSvgItem>
-# include <QMessageBox>
-# include <QMouseEvent>
-# include <QGraphicsScene>
-# include <QGraphicsView>
 # include <QScrollBar>
 # include <QThread>
-# include <QProcess>
-# include <boost_bind_bind.hpp>
 #endif
-#include "GraphicsViewZoom.h"
-#include "FileDialog.h"
 
-
-#include "GraphvizView.h"
-#include "Application.h"
-#include "MainWindow.h"
 #include <App/Application.h>
 #include <App/Document.h>
+
+#include "GraphvizView.h"
+#include "GraphicsViewZoom.h"
+#include "FileDialog.h"
+#include "MainWindow.h"
+
 
 using namespace Gui;
 namespace bp = boost::placeholders;
@@ -67,7 +64,7 @@ namespace Gui {
 class GraphvizWorker : public QThread {
     Q_OBJECT
 public:
-    GraphvizWorker(QObject * parent = 0)
+    GraphvizWorker(QObject * parent = nullptr)
         : QThread(parent)
     {
     }
@@ -229,7 +226,7 @@ void GraphvizGraphicsView::mouseReleaseEvent(QMouseEvent* e)
 /* TRANSLATOR Gui::GraphvizView */
 
 GraphvizView::GraphvizView(App::Document & _doc, QWidget* parent)
-  : MDIView(0, parent)
+  : MDIView(nullptr, parent)
   , doc(_doc)
   , nPending(0)
 {

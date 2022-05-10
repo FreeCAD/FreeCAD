@@ -56,7 +56,7 @@ public:
     typedef boost::function<void (bool, const std::string &, Gui::ViewProviderDocumentObject*,
                                   App::DocumentObject *, const std::string&)>  VisibilityFunction;
 
-    TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidget *parent = 0,
+    TaskAttacher(Gui::ViewProviderDocumentObject *ViewProvider, QWidget *parent = nullptr,
                  QString picture = QString(),
                  QString text = QString::fromLatin1("Attachment"), VisibilityFunction func = 0);
     ~TaskAttacher();

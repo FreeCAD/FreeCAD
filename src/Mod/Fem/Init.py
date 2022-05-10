@@ -66,6 +66,8 @@ FreeCAD.addExportType("FEM mesh TetGen (*.poly)", "feminout.convert2TetGen")
 FreeCAD.addImportType("FEM mesh formats (*.bdf *.dat *.inp *.med *.unv *.vtk *.vtu *.z88)", "Fem")
 FreeCAD.addExportType("FEM mesh formats (*.dat *.inp *.med *.stl *.unv *.vtk *.vtu *.z88)", "Fem")
 
+FreeCAD.addExportType("FEM mesh Nastran (*.bdf)", "feminout.exportNastranMesh")
+
 FreeCAD.addImportType("FEM result CalculiX (*.frd)", "feminout.importCcxFrdResults")
 
 FreeCAD.addImportType("FEM mesh Fenics (*.xml *.xdmf)", "feminout.importFenicsMesh")

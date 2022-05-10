@@ -32,8 +32,6 @@ __url__ = "https://www.freecadweb.org"
 
 import FreeCAD
 import FreeCADGui
-from FreeCAD import Units
-
 from femguiutils import selection_widgets
 from femtools import femutils
 from femtools import membertools
@@ -92,11 +90,8 @@ class _TaskPanel(object):
                 self._part.ViewObject.hide()
 
     def _initParamWidget(self):
-        unit = "V"
-        q = Units.Quantity("{} {}".format(self._obj.Potential, unit))
-
-        self._paramWidget.potentialTxt.setText(
-            q.UserString)
+        self._paramWidget.potentialQSB.setProperty(
+            'value', self._obj.Potential)
         self._paramWidget.potentialBox.setChecked(
             not self._obj.PotentialEnabled)
         self._paramWidget.potentialConstantBox.setChecked(
@@ -112,6 +107,8 @@ class _TaskPanel(object):
             not self._obj.CapacitanceBodyEnabled)
         self._paramWidget.capacitanceBody_spinBox.setValue(
             self._obj.CapacitanceBody)
+        self._paramWidget.capacitanceBody_spinBox.setEnabled(
+            not self._paramWidget.capacitanceBodyBox.isChecked())
 
     def _applyWidgetChanges(self):
         unit = "V"
@@ -119,19 +116,19 @@ class _TaskPanel(object):
             not self._paramWidget.potentialBox.isChecked()
         if self._obj.PotentialEnabled:
             # if the input widget shows not a green hook, but the user presses ok
-            # we could run into a syntax error on getting the quantity, try mV
-            quantity = None
+            # we could run into a syntax error on getting the quantity
+            potential = None
             try:
-                quantity = Units.Quantity(self._paramWidget.potentialTxt.text())
+                potential = self._paramWidget.potentialQSB.property('value')
             except ValueError:
                 FreeCAD.Console.PrintMessage(
-                    "Wrong input. OK has been triggered without a green hook "
-                    "in the input field. Not recognised input: '{}' "
+                    "Wrong input. Not recognised input: '{}' "
                     "Potential has not been set.\n"
-                    .format(self._paramWidget.potentialTxt.text())
+                    .format(self._paramWidget.potentialQSB.text())
                 )
-            if quantity is not None:
-                self._obj.Potential = float(quantity.getValueAs(unit))
+            if potential is not None:
+                self._obj.Potential = potential
+
         self._obj.PotentialConstant = self._paramWidget.potentialConstantBox.isChecked()
 
         self._obj.ElectricInfinity = self._paramWidget.electricInfinityBox.isChecked()

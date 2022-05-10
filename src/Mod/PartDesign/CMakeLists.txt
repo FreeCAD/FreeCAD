@@ -52,6 +52,7 @@ set(PartDesign_TestScripts
     PartDesignTests/TestChamfer.py
     PartDesignTests/TestDraft.py
     PartDesignTests/TestThickness.py
+    PartDesignTests/TestInvoluteGear.py
 )
 
 set(PartDesign_GearScripts

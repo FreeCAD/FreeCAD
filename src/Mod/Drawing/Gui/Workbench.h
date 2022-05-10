@@ -31,7 +31,7 @@ namespace DrawingGui {
 /**
  * @author Werner Mayer
  */
-class DrawingGuiExport Workbench : public Gui::StdWorkbench
+class Workbench : public Gui::StdWorkbench
 {
     TYPESYSTEM_HEADER();
 

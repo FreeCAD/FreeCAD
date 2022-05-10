@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost_bind_bind.hpp>
 # include <QAbstractSpinBox>
 # include <QActionEvent>
 # include <QApplication>
@@ -35,32 +33,22 @@
 # include <QTimer>
 #endif
 
-#include "TaskView.h"
-#include "TaskDialog.h"
-#include "TaskAppearance.h"
-#include "TaskEditControl.h"
-#include <Gui/Document.h>
-#include <Gui/Application.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/Control.h>
 #include <Gui/ActionFunction.h>
+#include <Gui/Application.h>
+#include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 
-#if defined (QSINT_ACTIONPANEL)
+#include "TaskView.h"
+#include "TaskDialog.h"
+#include "TaskEditControl.h"
+
 #include <Gui/QSint/actionpanel/taskgroup_p.h>
 #include <Gui/QSint/actionpanel/taskheader_p.h>
 #include <Gui/QSint/actionpanel/freecadscheme.h>
-#endif
+
 
 using namespace Gui::TaskView;
 namespace bp = boost::placeholders;
-
-//**************************************************************************
-//**************************************************************************
-// TaskContent
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
 
 
 //**************************************************************************
@@ -83,69 +71,6 @@ TaskWidget::~TaskWidget()
 // TaskGroup
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-#if !defined (QSINT_ACTIONPANEL)
-TaskGroup::TaskGroup(QWidget *parent)
-    : iisTaskGroup(parent, false)
-{
-    setScheme(iisFreeCADTaskPanelScheme::defaultScheme());
-}
-
-TaskGroup::~TaskGroup()
-{
-}
-
-namespace Gui { namespace TaskView {
-class TaskIconLabel : public iisIconLabel {
-public:
-    TaskIconLabel(const QIcon &icon, 
-                  const QString &title,
-                  QWidget *parent = 0)
-      : iisIconLabel(icon, title, parent) {
-          // do not allow to get the focus because when hiding the task box
-          // it could cause to activate another MDI view.
-          setFocusPolicy(Qt::NoFocus);
-    }
-    void setTitle(const QString &text) {
-        myText = text;
-        update();
-    }
-};
-}
-}
-
-void TaskGroup::actionEvent (QActionEvent* e)
-{
-    QAction *action = e->action();
-    switch (e->type()) {
-    case QEvent::ActionAdded:
-        {
-            TaskIconLabel *label = new TaskIconLabel(
-                action->icon(), action->text(), this);
-            this->addIconLabel(label);
-            connect(label,SIGNAL(clicked()),action,SIGNAL(triggered()),Qt::QueuedConnection);
-            break;
-        }
-    case QEvent::ActionChanged:
-        {
-            // update label when action changes
-            QBoxLayout* bl = this->groupLayout();
-            int index = this->actions().indexOf(action);
-            if (index < 0) break;
-            QWidgetItem* item = static_cast<QWidgetItem*>(bl->itemAt(index));
-            TaskIconLabel* label = static_cast<TaskIconLabel*>(item->widget());
-            label->setTitle(action->text());
-            break;
-        }
-    case QEvent::ActionRemoved:
-        {
-            // cannot change anything
-            break;
-        }
-    default:
-        break;
-    }
-}
-#else
 TaskGroup::TaskGroup(QWidget *parent)
     : QSint::ActionBox(parent)
 {
@@ -187,19 +112,12 @@ void TaskGroup::actionEvent (QActionEvent* e)
         break;
     }
 }
-#endif
+
 //**************************************************************************
 //**************************************************************************
 // TaskBox
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-#if !defined (QSINT_ACTIONPANEL)
-TaskBox::TaskBox(const QPixmap &icon, const QString &title, bool expandable, QWidget *parent)
-    : iisTaskBox(icon, title, expandable, parent), wasShown(false)
-{
-    setScheme(iisFreeCADTaskPanelScheme::defaultScheme());
-}
-#else
 TaskBox::TaskBox(QWidget *parent)
   : QSint::ActionGroup(parent), wasShown(false)
 {
@@ -238,7 +156,6 @@ QSize TaskBox::minimumSizeHint() const
     QSize s2 = QWidget::minimumSizeHint();
     return QSize(qMax(s1.width(), s2.width()), qMax(s1.height(), s2.height()));
 }
-#endif
 
 TaskBox::~TaskBox()
 {
@@ -302,28 +219,12 @@ void TaskBox::actionEvent (QActionEvent* e)
     switch (e->type()) {
     case QEvent::ActionAdded:
         {
-#if !defined (QSINT_ACTIONPANEL)
-            TaskIconLabel *label = new TaskIconLabel(
-                action->icon(), action->text(), this);
-            this->addIconLabel(label);
-            connect(label,SIGNAL(clicked()),action,SIGNAL(triggered()));
-#else
             QSint::ActionLabel *label = new QSint::ActionLabel(action, this);
             this->addActionLabel(label, true, false);
-#endif
             break;
         }
     case QEvent::ActionChanged:
         {
-#if !defined (QSINT_ACTIONPANEL)
-            // update label when action changes
-            QBoxLayout* bl = myGroup->groupLayout();
-            int index = this->actions().indexOf(action);
-            if (index < 0) break;
-            QWidgetItem* item = static_cast<QWidgetItem*>(bl->itemAt(index));
-            TaskIconLabel* label = static_cast<TaskIconLabel*>(item->widget());
-            label->setTitle(action->text());
-#endif
             break;
         }
     case QEvent::ActionRemoved:
@@ -341,7 +242,6 @@ void TaskBox::actionEvent (QActionEvent* e)
 // TaskPanel
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-#if defined (QSINT_ACTIONPANEL)
 TaskPanel::TaskPanel(QWidget *parent)
   : QSint::ActionPanel(parent)
 {
@@ -365,7 +265,7 @@ QSize TaskPanel::minimumSizeHint() const
     QSize s2 = QWidget::minimumSizeHint();
     return QSize(qMax(s1.width(), s2.width()), qMax(s1.height(), s2.height()));
 }
-#endif
+
 
 //**************************************************************************
 //**************************************************************************
@@ -373,15 +273,11 @@ QSize TaskPanel::minimumSizeHint() const
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskView::TaskView(QWidget *parent)
-    : QScrollArea(parent),ActiveDialog(0),ActiveCtrl(0)
+    : QScrollArea(parent),ActiveDialog(nullptr),ActiveCtrl(nullptr)
 {
     //addWidget(new TaskEditControl(this));
     //addWidget(new TaskAppearance(this));
     //addStretch();
-#if !defined (QSINT_ACTIONPANEL)
-    taskPanel = new iisTaskPanel(this);
-    taskPanel->setScheme(iisFreeCADTaskPanelScheme::defaultScheme());
-#else
     taskPanel = new TaskPanel(this);
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     sizePolicy.setHorizontalStretch(0);
@@ -389,7 +285,7 @@ TaskView::TaskView(QWidget *parent)
     sizePolicy.setHeightForWidth(taskPanel->sizePolicy().hasHeightForWidth());
     taskPanel->setSizePolicy(sizePolicy);
     taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
-#endif
+
     this->setWidget(taskPanel);
     setWidgetResizable(true);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -614,9 +510,7 @@ void TaskView::showDialog(TaskDialog *dlg)
         taskPanel->addWidget(ActiveCtrl);
     }
 
-#if defined (QSINT_ACTIONPANEL)
     taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
-#endif
 
     if (!dlg->needsFullSpace())
         taskPanel->addStretch();
@@ -636,10 +530,10 @@ void TaskView::removeDialog(void)
     if (ActiveCtrl) {
         taskPanel->removeWidget(ActiveCtrl);
         delete ActiveCtrl;
-        ActiveCtrl = 0;
+        ActiveCtrl = nullptr;
     }
 
-    TaskDialog* remove = NULL;
+    TaskDialog* remove = nullptr;
     if (ActiveDialog) {
         // See 'accept' and 'reject'
         if (ActiveDialog->property("taskview_accept_or_reject").isNull()) {
@@ -648,7 +542,7 @@ void TaskView::removeDialog(void)
                 taskPanel->removeWidget(*it);
             }
             remove = ActiveDialog;
-            ActiveDialog = 0;
+            ActiveDialog = nullptr;
         }
         else {
             ActiveDialog->setProperty("taskview_remove_dialog", true);
@@ -736,7 +630,6 @@ void TaskView::addTaskWatcher(void)
         taskPanel->addStretch();
     updateWatcher();
 
-#if defined (QSINT_ACTIONPANEL)
 #if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
     // Workaround to avoid a crash in Qt. See also
     // https://forum.freecadweb.org/viewtopic.php?f=8&t=39187
@@ -751,7 +644,6 @@ void TaskView::addTaskWatcher(void)
 #endif
 
     taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
-#endif
 }
 
 void TaskView::removeTaskWatcher(void)
@@ -829,18 +721,14 @@ void TaskView::clicked (QAbstractButton * button)
 
 void TaskView::clearActionStyle()
 {
-#if defined (QSINT_ACTIONPANEL)
     static_cast<QSint::FreeCADPanelScheme*>(QSint::FreeCADPanelScheme::defaultScheme())->clearActionStyle();
     taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
-#endif
 }
 
 void TaskView::restoreActionStyle()
 {
-#if defined (QSINT_ACTIONPANEL)
     static_cast<QSint::FreeCADPanelScheme*>(QSint::FreeCADPanelScheme::defaultScheme())->restoreActionStyle();
     taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
-#endif
 }
 
 

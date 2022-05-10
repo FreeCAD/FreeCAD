@@ -22,11 +22,11 @@
 
 #ifndef _ARROWENUMS_H_
 #define _ARROWENUMS_H_
-#include <cstddef>
-#include <cstdlib>
+
 #include <vector>
 #include <string>
 #include <QCoreApplication>
+
 
 namespace TechDraw
 {

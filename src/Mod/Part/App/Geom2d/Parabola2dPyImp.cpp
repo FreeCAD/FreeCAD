@@ -76,13 +76,7 @@ Py::Object Parabola2dPy::getFocus(void) const
 {
     Handle(Geom2d_Parabola) curve = Handle(Geom2d_Parabola)::DownCast(getGeometry2dPtr()->handle());
     gp_Pnt2d loc = curve->Focus();
-
-    Py::Module module("__FreeCADBase__");
-    Py::Callable method(module.getAttr("Vector2d"));
-    Py::Tuple arg(2);
-    arg.setItem(0, Py::Float(loc.X()));
-    arg.setItem(1, Py::Float(loc.Y()));
-    return method.apply(arg);
+    return Base::Vector2dPy::create(loc.X(), loc.Y());
 }
 
 Py::Float Parabola2dPy::getParameter(void) const
@@ -93,7 +87,7 @@ Py::Float Parabola2dPy::getParameter(void) const
 
 PyObject *Parabola2dPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int Parabola2dPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

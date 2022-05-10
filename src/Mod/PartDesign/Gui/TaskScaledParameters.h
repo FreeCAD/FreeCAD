@@ -20,16 +20,12 @@
  *                                                                            *
  ******************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskScaledParameters_H
 #define GUI_TASKVIEW_TaskScaledParameters_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
-
 #include "TaskTransformedParameters.h"
 #include "ViewProviderScaled.h"
+
 
 class Ui_TaskScaledParameters;
 
@@ -51,7 +47,7 @@ class TaskScaledParameters : public TaskTransformedParameters
 
 public:
     /// Constructor for task with ViewProvider
-    TaskScaledParameters(ViewProviderTransformed *TransformedView, QWidget *parent = 0);
+    TaskScaledParameters(ViewProviderTransformed *TransformedView, QWidget *parent = nullptr);
     /// Constructor for task with parent task (MultiTransform mode)
     TaskScaledParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
     virtual ~TaskScaledParameters();

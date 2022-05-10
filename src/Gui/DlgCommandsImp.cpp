@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
 #ifndef _PreComp_
 # include <QHeaderView>
 # include <QTreeWidgetItemIterator>
@@ -32,9 +32,9 @@
 #include "DlgCommandsImp.h"
 #include "ui_DlgCommands.h"
 #include "Application.h"
-#include "Command.h"
 #include "BitmapFactory.h"
-#include "Widgets.h"
+#include "Command.h"
+
 
 using namespace Gui::Dialog;
 
@@ -93,7 +93,7 @@ DlgCustomCommandsImp::DlgCustomCommandsImp( QWidget* parent  )
 
     for (std::map<std::string,Command*>::iterator it = sCommands.begin(); it != sCommands.end(); ++it) {
         QLatin1String group(it->second->getGroupName());
-        QString text = qApp->translate(it->second->className(), it->second->getGroupName());
+        QString text = it->second->translatedGroupName();
         GroupMap::iterator jt;
         jt = std::find_if(groupMap.begin(), groupMap.end(), GroupMap_find(group));
         if (jt != groupMap.end()) {
@@ -263,7 +263,7 @@ void DlgCustomCommandsImp::changeEvent(QEvent *e)
             QVariant data = (*it)->data(0, Qt::UserRole);
             std::vector<Command*> aCmds = cCmdMgr.getGroupCommands(data.toByteArray());
             if (!aCmds.empty()) {
-                QString text = qApp->translate(aCmds[0]->className(), aCmds[0]->getGroupName());
+                QString text = aCmds[0]->translatedGroupName();
                 (*it)->setText(0, text);
             }
             ++it;

@@ -21,18 +21,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskFemConstraintForce_H
 #define GUI_TASKVIEW_TaskFemConstraintForce_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
-#include <Gui/TaskView/TaskDialog.h>
+#include <QObject>
 
-#include "TaskFemConstraint.h"
+#include "TaskFemConstraintOnBoundary.h"
 #include "ViewProviderFemConstraintForce.h"
 
-#include <QKeyEvent>
 
 class Ui_TaskFemConstraintForce;
 
@@ -47,12 +43,12 @@ class ViewProvider;
 
 namespace FemGui {
 
-class TaskFemConstraintForce : public TaskFemConstraint
+class TaskFemConstraintForce : public TaskFemConstraintOnBoundary
 {
     Q_OBJECT
 
 public:
-    TaskFemConstraintForce(ViewProviderFemConstraintForce *ConstraintView,QWidget *parent = 0);
+    TaskFemConstraintForce(ViewProviderFemConstraintForce *ConstraintView,QWidget *parent = nullptr);
     virtual ~TaskFemConstraintForce();
     double getForce(void) const;
     const std::string getReferences() const;
@@ -71,6 +67,7 @@ private Q_SLOTS:
 protected:
     bool event(QEvent *e);
     virtual void changeEvent(QEvent *e);
+    void clearButtons(const SelectionChangeModes notThis) override;
 
 private:
     std::pair<App::DocumentObject*, std::string> getDirection(const std::vector<Gui::SelectionObject>&) const;

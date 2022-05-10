@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_SPLASHSCREEN_H
 #define GUI_SPLASHSCREEN_H
 
-#include <QSplashScreen>
 #include <QDialog>
+#include <QSplashScreen>
 #include <QTextBrowser>
-#include <Gui/MDIView.h>
+#include "MDIView.h"
 
 namespace Gui {
 
@@ -75,7 +74,7 @@ class GuiExport LicenseView : public Gui::MDIView
     Q_OBJECT
 
 public:
-    LicenseView(QWidget* parent=0);
+    LicenseView(QWidget* parent=nullptr);
     virtual ~LicenseView();
 
     void setSource(const QUrl & url);
@@ -96,7 +95,7 @@ class GuiExport AboutDialog : public QDialog
     Q_OBJECT
 
 public:
-    AboutDialog(bool showLic, QWidget* parent = 0);
+    AboutDialog(bool showLic, QWidget* parent = nullptr);
     ~AboutDialog();
 
 protected:

@@ -37,7 +37,7 @@ class SheetModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit SheetModel(Spreadsheet::Sheet * _sheet, QObject *parent = 0);
+    explicit SheetModel(Spreadsheet::Sheet * _sheet, QObject *parent = nullptr);
     ~SheetModel();
     
     SheetModel(QObject *parent);
@@ -50,8 +50,10 @@ public:
 
 private:
     void cellUpdated(App::CellAddress address);
+    void rangeUpdated(const App::Range &range);
 
     boost::signals2::scoped_connection cellUpdatedConnection;
+    boost::signals2::scoped_connection rangeUpdatedConnection;
     Spreadsheet::Sheet * sheet;
     QColor aliasBgColor;
     QColor textFgColor;

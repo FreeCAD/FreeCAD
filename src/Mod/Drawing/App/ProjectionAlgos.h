@@ -24,8 +24,9 @@
 #ifndef _ProjectionAlgos_h_
 #define _ProjectionAlgos_h_
 
-#include <TopoDS_Shape.hxx>
+#include <Mod/Drawing/DrawingGlobal.h>
 #include <Base/Vector3D.h>
+#include <TopoDS_Shape.hxx>
 #include <string>
 
 class BRepAdaptor_Curve;

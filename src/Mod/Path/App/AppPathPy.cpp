@@ -20,11 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
@@ -49,10 +45,7 @@
 #include <TopExp_Explorer.hxx>
 #include <gp_Lin.hxx>
 #include <BRep_Tool.hxx>
-#include <BRepAdaptor_CompCurve.hxx>
-#include <BRepAdaptor_HCompCurve.hxx>
-#include <Approx_Curve3d.hxx>
-#include <BRepAdaptor_HCurve.hxx>
+#include <BRepAdaptor_Curve.hxx>
 
 #include "CommandPy.h"
 #include "PathPy.h"
@@ -60,6 +53,7 @@
 #include "FeaturePath.h"
 #include "FeaturePathCompound.h"
 #include "Area.h"
+
 
 #define PATH_CATCH catch (Standard_Failure &e)                      \
     {                                                               \
@@ -79,7 +73,7 @@
         str += e.what();                                            \
         str += ")";                                                 \
         e.ReportException();                                        \
-        PyErr_SetString(Base::BaseExceptionFreeCADError,str.c_str());\
+        PyErr_SetString(Base::PyExc_FC_GeneralError,str.c_str());\
     }                                                               \
     catch(std::exception &e)                                        \
     {                                                               \
@@ -88,11 +82,11 @@
         str += e.what();                                            \
         str += ")";                                                 \
         Base::Console().Error(str.c_str());                         \
-        PyErr_SetString(Base::BaseExceptionFreeCADError,str.c_str());\
+        PyErr_SetString(Base::PyExc_FC_GeneralError,str.c_str());\
     }                                                               \
     catch(const char *e)                                            \
     {                                                               \
-        PyErr_SetString(Base::BaseExceptionFreeCADError,e);         \
+        PyErr_SetString(Base::PyExc_FC_GeneralError,e);         \
     } throw Py::Exception();
 
 namespace Path {
@@ -173,7 +167,7 @@ private:
     Py::Object read(const Py::Tuple& args)
     {
         char* Name;
-        const char* DocName=0;
+        const char* DocName=nullptr;
         if (!PyArg_ParseTuple(args.ptr(), "et|s","utf-8",&Name,&DocName))
             throw Py::Exception();
         std::string EncodedName = std::string(Name);
@@ -322,11 +316,11 @@ private:
     Py::Object fromShapes(const Py::Tuple& args, const Py::Dict &kwds)
     {
         PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_PATH)
-        PyObject *pShapes=NULL;
-        PyObject *start=NULL;
+        PyObject *pShapes=nullptr;
+        PyObject *start=nullptr;
         PyObject *return_end=Py_False;
         static char* kwd_list[] = {"shapes", "start", "return_end",
-                PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_PATH), NULL};
+                PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_PATH), nullptr};
         if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(),
                 "O|O!O" PARAM_PY_KWDS(AREA_PARAMS_PATH),
                 kwd_list, &pShapes, &(Base::VectorPy::Type), &start, &return_end,
@@ -359,7 +353,7 @@ private:
         try {
             gp_Pnt pend;
             std::unique_ptr<Toolpath> path(new Toolpath);
-            Area::toPath(*path,shapes,start?&pstart:0, &pend,
+            Area::toPath(*path,shapes,start?&pstart:nullptr, &pend,
                     PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_PATH));
             if(!PyObject_IsTrue(return_end))
                 return Py::asObject(new PathPy(path.release()));
@@ -374,11 +368,11 @@ private:
     {
         PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_ARC_PLANE)
         PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_SORT)
-        PyObject *pShapes=NULL;
-        PyObject *start=NULL;
+        PyObject *pShapes=nullptr;
+        PyObject *start=nullptr;
         static char* kwd_list[] = {"shapes", "start",
                 PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_ARC_PLANE),
-                PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_SORT), NULL};
+                PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_SORT), nullptr};
         if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(),
                 "O|O!"
                 PARAM_PY_KWDS(AREA_PARAMS_ARC_PLANE)
@@ -413,8 +407,8 @@ private:
 
         try {
             bool need_arc_plane = arc_plane==Area::ArcPlaneAuto;
-            std::list<TopoDS_Shape> wires = Area::sortWires(shapes,start!=0,&pstart,
-                    &pend, 0, &arc_plane, PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
+            std::list<TopoDS_Shape> wires = Area::sortWires(shapes,start!=nullptr,&pstart,
+                    &pend, nullptr, &arc_plane, PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
             Py::List list;
             for(auto &wire : wires) {
                 list.append(Part::shape2pyshape(TopoDS::Wire(wire)));
@@ -433,7 +427,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace Path

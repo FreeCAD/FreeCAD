@@ -54,7 +54,7 @@ PyObject *Ellipse2dPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // 
 // constructor method
 int Ellipse2dPy::PyInit(PyObject* args, PyObject* kwds)
 {
-    char* keywords_n[] = {NULL};
+    char* keywords_n[] = {nullptr};
     if (PyArg_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
         Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
         ellipse->SetMajorRadius(2.0);
@@ -62,7 +62,7 @@ int Ellipse2dPy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    char* keywords_e[] = {"Ellipse",NULL};
+    char* keywords_e[] = {"Ellipse",nullptr};
     PyErr_Clear();
     PyObject *pElips;
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!",keywords_e, &(Ellipse2dPy::Type), &pElips)) {
@@ -75,7 +75,7 @@ int Ellipse2dPy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    char* keywords_ssc[] = {"S1","S2","Center",NULL};
+    char* keywords_ssc[] = {"S1","S2","Center",nullptr};
     PyErr_Clear();
     PyObject *pV1, *pV2, *pV3;
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!O!O!", keywords_ssc,
@@ -98,7 +98,7 @@ int Ellipse2dPy::PyInit(PyObject* args, PyObject* kwds)
         return 0;
     }
 
-    char* keywords_cmm[] = {"Center","MajorRadius","MinorRadius",NULL};
+    char* keywords_cmm[] = {"Center","MajorRadius","MinorRadius",nullptr};
     PyErr_Clear();
     PyObject *pV;
     double major, minor;
@@ -160,31 +160,19 @@ Py::Object Ellipse2dPy::getFocus1(void) const
 {
     Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
     gp_Pnt2d loc = ellipse->Focus1();
-
-    Py::Module module("__FreeCADBase__");
-    Py::Callable method(module.getAttr("Vector2d"));
-    Py::Tuple arg(2);
-    arg.setItem(0, Py::Float(loc.X()));
-    arg.setItem(1, Py::Float(loc.Y()));
-    return method.apply(arg);
+    return Base::Vector2dPy::create(loc.X(), loc.Y());
 }
 
 Py::Object Ellipse2dPy::getFocus2(void) const
 {
     Handle(Geom2d_Ellipse) ellipse = Handle(Geom2d_Ellipse)::DownCast(getGeom2dEllipsePtr()->handle());
     gp_Pnt2d loc = ellipse->Focus2();
-
-    Py::Module module("__FreeCADBase__");
-    Py::Callable method(module.getAttr("Vector2d"));
-    Py::Tuple arg(2);
-    arg.setItem(0, Py::Float(loc.X()));
-    arg.setItem(1, Py::Float(loc.Y()));
-    return method.apply(arg);
+    return Base::Vector2dPy::create(loc.X(), loc.Y());
 }
 
 PyObject *Ellipse2dPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int Ellipse2dPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

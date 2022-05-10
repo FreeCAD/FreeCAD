@@ -14,7 +14,7 @@ ${LangFileString} TEXT_WELCOME "Program ini akan memandu anda dalam melakukan in
 #${LangFileString} TEXT_CONFIGURE_PYTHON "Proses kompilasi skrip Python ..."
 
 ${LangFileString} TEXT_FINISH_DESKTOP "Membuat pintasan ikon di destop"
-${LangFileString} TEXT_FINISH_WEBSITE "Kunjungi freecadweb.org untuk berita terbaru serta dukungan"
+${LangFileString} TEXT_FINISH_WEBSITE "Kunjungi freecad.org untuk berita terbaru serta dukungan"
 
 #${LangFileString} FileTypeTitle "Dokumen-FreeCAD"
 

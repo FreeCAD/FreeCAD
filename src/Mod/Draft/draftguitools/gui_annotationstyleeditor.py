@@ -73,13 +73,11 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        _tip = "Manage or create annotation styles"
-
         return {'Pixmap': ":icons/Draft_Annotation_Style.svg",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_AnnotationStyleEditor",
                                               "Annotation styles..."),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_AnnotationStyleEditor",
-                                             _tip)}
+                                             "Manage or create annotation styles")}
 
     def Activated(self):
         """Execute when the command is called.

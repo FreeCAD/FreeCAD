@@ -29,7 +29,7 @@
 namespace Fem
 {
 
-class AppFemExport ConstraintTransform : public Fem::Constraint
+class FemExport ConstraintTransform : public Fem::Constraint
 {
     PROPERTY_HEADER(Fem::ConstraintTransform);
 

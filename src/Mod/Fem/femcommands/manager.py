@@ -46,9 +46,9 @@ class CommandManager(object):
 
         self.command = "FEM" + self.__class__.__name__
         self.pixmap = self.command
-        self.menuetext = self.__class__.__name__.lstrip("_")
+        self.menutext = self.__class__.__name__.lstrip("_")
         self.accel = ""
-        self.tooltip = "Creates a {}".format(self.menuetext)
+        self.tooltip = "Creates a {}".format(self.menutext)
         self.resources = None
 
         self.is_active = None
@@ -61,7 +61,7 @@ class CommandManager(object):
         if self.resources is None:
             self.resources = {
                 "Pixmap": self.pixmap,
-                "MenuText": QtCore.QT_TRANSLATE_NOOP(self.command, self.menuetext),
+                "MenuText": QtCore.QT_TRANSLATE_NOOP(self.command, self.menutext),
                 "Accel": self.accel,
                 "ToolTip": QtCore.QT_TRANSLATE_NOOP(self.command, self.tooltip)
             }

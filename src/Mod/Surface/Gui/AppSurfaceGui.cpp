@@ -21,12 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
-
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Python.h>
-#endif
 
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
@@ -38,6 +33,7 @@
 #include "TaskFilling.h"
 #include "TaskSections.h"
 #include "ViewProviderExtend.h"
+
 
 // use a different name to CreateCommand()
 void CreateSurfaceCommands(void);
@@ -59,7 +55,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace SurfaceGui
@@ -69,7 +65,7 @@ PyMOD_INIT_FUNC(SurfaceGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        PyMOD_Return(0);
+        PyMOD_Return(nullptr);
     }
 
     Base::Interpreter().runString("import Surface");

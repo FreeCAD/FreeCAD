@@ -32,9 +32,8 @@
 # else
 #  include <GL/gl.h>
 # endif
-# include <float.h>
+# include <cfloat>
 # include <algorithm>
-# include <Python.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/SoPrimitiveVertex.h>
 # include <Inventor/actions/SoCallbackAction.h>

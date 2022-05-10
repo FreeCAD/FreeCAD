@@ -48,7 +48,7 @@ PROPERTY_SOURCE(Surface::Extend, Part::Spline)
 
 Extend::Extend() : lockOnChangeMutex(false)
 {
-    ADD_PROPERTY(Face,(0));
+    ADD_PROPERTY(Face,(nullptr));
     Face.setScope(App::LinkScope::Global);
     ADD_PROPERTY(Tolerance, (0.1));
     Tolerance.setConstraints(&ToleranceRange);

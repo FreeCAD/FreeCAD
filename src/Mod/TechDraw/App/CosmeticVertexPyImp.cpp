@@ -52,7 +52,7 @@ PyObject *CosmeticVertexPy::PyMake(struct _typeobject *, PyObject *, PyObject *)
     // never create such objects with the constructor
     PyErr_SetString(PyExc_RuntimeError,
         "You cannot create an instance of the abstract class 'CosmeticVertex'.");
-    return 0;
+    return nullptr;
 }
 
 // constructor method
@@ -64,18 +64,18 @@ int CosmeticVertexPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 PyObject* CosmeticVertexPy::clone(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     TechDraw::CosmeticVertex* geom = this->getCosmeticVertexPtr();
 //    geom->dump("CEPYI::clone");
     PyTypeObject* type = this->GetType();
-    PyObject* cpy = 0;
+    PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, 0);
+        cpy = type->tp_new(type, this, nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_TypeError, "failed to create clone of CosmeticVertex");
-        return 0;
+        return nullptr;
     }
 
     TechDraw::CosmeticVertexPy* geompy = static_cast<TechDraw::CosmeticVertexPy*>(cpy);
@@ -92,18 +92,18 @@ PyObject* CosmeticVertexPy::clone(PyObject *args)
 PyObject* CosmeticVertexPy::copy(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     TechDraw::CosmeticVertex* geom = this->getCosmeticVertexPtr();
 //    geom->dump("CEPYI::copy");
     PyTypeObject* type = this->GetType();
-    PyObject* cpy = 0;
+    PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, 0);
+        cpy = type->tp_new(type, this, nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_TypeError, "failed to create copy of CosmeticVertex");
-        return 0;
+        return nullptr;
     }
 
     TechDraw::CosmeticVertexPy* geompy = static_cast<TechDraw::CosmeticVertexPy*>(cpy);
@@ -238,7 +238,7 @@ void CosmeticVertexPy::setStyle(Py::Object arg)
 
 PyObject *CosmeticVertexPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int CosmeticVertexPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

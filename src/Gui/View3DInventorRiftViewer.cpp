@@ -20,15 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 
 #if BUILD_VR
 
-#include <Base/Console.h>
-#include "View3DInventorRiftViewer.h"
 #include <App/Application.h>
+#include <Base/Console.h>
+
+#include "View3DInventorRiftViewer.h"
+
 
 using namespace Gui;
 

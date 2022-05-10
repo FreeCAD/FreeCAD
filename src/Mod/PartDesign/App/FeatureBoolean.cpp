@@ -23,26 +23,20 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
 # include <BRepAlgoAPI_Common.hxx>
-# include <gp_Trsf.hxx>
-# include <gp_Pnt.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Vec.hxx>
-# include <gp_Ax1.hxx>
+# include <BRepAlgoAPI_Cut.hxx>
+# include <BRepAlgoAPI_Fuse.hxx>
 # include <Standard_Failure.hxx>
 #endif
 
-#include "Body.h"
-#include "FeatureBoolean.h"
-
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/Parameter.h>
 #include <App/Application.h>
-#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <Base/Parameter.h>
 #include <Mod/Part/App/modelRefine.h>
+
+#include "FeatureBoolean.h"
+#include "Body.h"
+
 
 using namespace PartDesign;
 
@@ -50,7 +44,7 @@ namespace PartDesign {
 
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesign::Boolean, PartDesign::Feature)
 
-const char* Boolean::TypeEnums[]= {"Fuse","Cut","Common",NULL};
+const char* Boolean::TypeEnums[]= {"Fuse","Cut","Common",nullptr};
 
 Boolean::Boolean()
 {

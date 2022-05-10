@@ -23,19 +23,9 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <cinttypes>
-# include <iomanip>
-# include <boost/algorithm/string.hpp>
-# include <boost/lexical_cast.hpp>
-#endif
-
-#include <Base/Vector3D.h>
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Exception.h>
 #include "Voronoi.h"
 #include "VoronoiEdge.h"
+
 
 using namespace Base;
 using namespace Path;
@@ -45,7 +35,7 @@ TYPESYSTEM_SOURCE(Path::VoronoiEdge , Base::Persistence)
 VoronoiEdge::VoronoiEdge(Voronoi::diagram_type *d, long index)
   : dia(d)
   , index(index)
-  , ptr(0)
+  , ptr(nullptr)
 {
   if (dia && long(dia->num_edges()) > index) {
     ptr = &(dia->edges()[index]);
@@ -66,11 +56,11 @@ VoronoiEdge::~VoronoiEdge() {
 }
 
 bool VoronoiEdge::isBound(void) const {
-  if (ptr != 0 && dia.isValid() && index != Voronoi::InvalidIndex) {
+  if (ptr != nullptr && dia.isValid() && index != Voronoi::InvalidIndex) {
     if (&(dia->edges()[index]) == ptr) {
       return true;
     }
   }
-  ptr = 0;
+  ptr = nullptr;
   return false;
 }

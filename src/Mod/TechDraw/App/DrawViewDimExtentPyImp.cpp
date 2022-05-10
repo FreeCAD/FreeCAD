@@ -53,7 +53,7 @@ PyObject* DrawViewDimExtentPy::tbd(PyObject* args)
 
 PyObject *DrawViewDimExtentPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DrawViewDimExtentPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

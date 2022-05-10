@@ -20,29 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Standard_math.hxx>
-
+# include <QApplication>
+# include <QMessageBox>
+# include <QTextStream>
 #endif
 
-#include "ViewProviderSolver.h"
-#include <Gui/Command.h>
 #include <Gui/Document.h>
-#include <Gui/Control.h>
+#include <Gui/MainWindow.h>
 
-#include <Mod/Fem/App/FemAnalysis.h>
+#include "ViewProviderSolver.h"
 
-#include "TaskDlgAnalysis.h"
 
 using namespace FemGui;
 
-
-
 PROPERTY_SOURCE(FemGui::ViewProviderSolver, Gui::ViewProviderDocumentObject)
-
 
 ViewProviderSolver::ViewProviderSolver()
 {
@@ -59,6 +53,44 @@ std::vector<std::string> ViewProviderSolver::getDisplayModes(void) const
     return { "Solver" };
 }
 
+bool ViewProviderSolver::onDelete(const std::vector<std::string>&)
+{
+    // warn the user if the object has childs
+
+    auto objs = claimChildren();
+    if (!objs.empty())
+    {
+        // generate dialog
+        QString bodyMessage;
+        QTextStream bodyMessageStream(&bodyMessage);
+        bodyMessageStream << qApp->translate("Std_Delete",
+            "The solver is not empty, therefore the\nfollowing referencing objects might be lost:");
+        bodyMessageStream << '\n';
+        for (auto ObjIterator : objs)
+            bodyMessageStream << '\n' << QString::fromUtf8(ObjIterator->Label.getValue());
+        bodyMessageStream << "\n\n" << QObject::tr("Are you sure you want to continue?");
+        // show and evaluate the dialog
+        int DialogResult = QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("Std_Delete", "Object dependencies"), bodyMessage,
+            QMessageBox::Yes, QMessageBox::No);
+        if (DialogResult == QMessageBox::Yes)
+            return true;
+        else
+            return false;
+    }
+    else {
+        return true;
+    }
+}
+
+bool ViewProviderSolver::canDelete(App::DocumentObject* obj) const
+{
+    // deletions of objects from a FemSolver don't necessarily destroy anything
+    // thus we can pass this action
+    // we can warn the user if necessary in the object's ViewProvider in the onDelete() function
+    Q_UNUSED(obj)
+    return true;
+}
 
 
 // Python feature -----------------------------------------------------------------------

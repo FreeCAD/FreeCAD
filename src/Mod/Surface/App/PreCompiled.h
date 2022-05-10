@@ -21,21 +21,10 @@
  ***************************************************************************/
 
 
-//#ifndef APP_PRECOMPILED_H
-//#define APP_PRECOMPILED_H
 #ifndef PRECOMPILED_H
 #define PRECOMPILED_H
 
 #include <FCConfig.h>
-
-// Exporting of App classes
-#ifdef FC_OS_WIN32
-# define SurfaceExport __declspec(dllexport)
-# define PartExport     __declspec(dllimport)
-#else // for Linux
-# define SurfaceExport
-# define PartExport
-#endif
 
 #ifdef _PreComp_
 
@@ -55,9 +44,6 @@
 #include <stack>
 #include <string>
 #include <vector>
-
-// Xerces
-#include <xercesc/util/XercesDefs.hpp>
 
 //opencascade
 #include "OpenCascadeAll.h"

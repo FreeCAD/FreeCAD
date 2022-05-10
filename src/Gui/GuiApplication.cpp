@@ -25,13 +25,13 @@
 
 #ifndef _PreComp_
 # include <sstream>
-# include <stdexcept>
+# include <QAbstractSpinBox>
 # include <QByteArray>
 # include <QComboBox>
 # include <QDataStream>
-# include <QDebug>
 # include <QFileInfo>
 # include <QFileOpenEvent>
+# include <QKeyEvent>
 # include <QSessionManager>
 # include <QTimer>
 #endif
@@ -39,24 +39,21 @@
 #include <QLocalServer>
 #include <QLocalSocket>
 
-#if defined(Q_OS_WIN)
-# include <Windows.h>
-#endif
 #if defined(Q_OS_UNIX)
 # include <sys/types.h>
-# include <time.h>
+# include <ctime>
 # include <unistd.h>
 #endif
 
-#include "GuiApplication.h"
-#include "Application.h"
-#include "SpaceballEvent.h"
-#include "MainWindow.h"
-
+#include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 
-#include <App/Application.h>
+#include "GuiApplication.h"
+#include "Application.h"
+#include "MainWindow.h"
+#include "SpaceballEvent.h"
+
 
 using namespace Gui;
 
@@ -171,11 +168,11 @@ public:
     Private(GUISingleApplication *q_ptr)
       : q_ptr(q_ptr)
       , timer(new QTimer(q_ptr))
-      , server(0)
+      , server(nullptr)
       , running(false)
     {
         timer->setSingleShot(true);
-        std::string exeName = App::GetApplication().getExecutableName();
+        std::string exeName = App::Application::getExecutableName();
         serverName = QString::fromStdString(exeName);
     }
 
@@ -318,6 +315,30 @@ bool WheelEventFilter::eventFilter(QObject* obj, QEvent* ev)
         }
         else if (ev->type() == QEvent::Wheel) {
             return !sb->hasFocus();
+        }
+    }
+    return false;
+}
+
+KeyboardFilter::KeyboardFilter(QObject* parent)
+  : QObject(parent)
+{
+}
+
+bool KeyboardFilter::eventFilter(QObject* obj, QEvent* ev)
+{
+    if (ev->type() == QEvent::KeyPress || ev->type() == QEvent::KeyRelease) {
+        QKeyEvent *kev = static_cast<QKeyEvent *>(ev);
+        Qt::KeyboardModifiers mod = kev->modifiers();
+        int key = kev->key();
+        if ((mod & Qt::KeypadModifier) && (key == Qt::Key_Period || key == Qt::Key_Comma))
+        {
+            QChar dp = QLocale().decimalPoint();
+            if (key != dp) {
+                QKeyEvent modifiedKeyEvent(kev->type(), dp.digitValue(), mod, QString(dp), kev->isAutoRepeat(), kev->count());
+                qApp->sendEvent(obj, &modifiedKeyEvent);
+                return true;
+            }
         }
     }
     return false;

@@ -31,14 +31,13 @@
 # include <QPointer>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include "Control.h"
-#include "TaskView/TaskView.h"
-
 #include <App/AutoTransaction.h>
-#include <Gui/MainWindow.h>
 #include <Gui/ComboView.h>
 #include <Gui/DockWindowManager.h>
+#include <Gui/MainWindow.h>
+
+#include "Control.h"
+#include "TaskView/TaskView.h"
 
 
 using namespace Gui;
@@ -46,11 +45,11 @@ using namespace std;
 
 /* TRANSLATOR Gui::ControlSingleton */
 
-ControlSingleton* ControlSingleton::_pcSingleton = 0;
-static QPointer<Gui::TaskView::TaskView> _taskPanel = 0;
+ControlSingleton* ControlSingleton::_pcSingleton = nullptr;
+static QPointer<Gui::TaskView::TaskView> _taskPanel = nullptr;
 
 ControlSingleton::ControlSingleton()
-  : ActiveDialog(0)
+  : ActiveDialog(nullptr)
 {
 
 }
@@ -72,7 +71,7 @@ Gui::TaskView::TaskView* ControlSingleton::taskPanel() const
         return _taskPanel;
     // no task panel available
     else
-        return 0;
+        return nullptr;
 }
 
 void ControlSingleton::showTaskView()
@@ -165,7 +164,7 @@ QTabWidget* ControlSingleton::tabPanel() const
     // should return the pointer to combo view
     if (pcComboView)
         return pcComboView->getTabPanel();
-    return 0;
+    return nullptr;
 }
 
 Gui::TaskView::TaskDialog* ControlSingleton::activeDialog() const
@@ -217,7 +216,7 @@ void ControlSingleton::closeDialog()
 
 void ControlSingleton::closedDialog()
 {
-    ActiveDialog = 0;
+    ActiveDialog = nullptr;
     Gui::DockWnd::ComboView* pcComboView = qobject_cast<Gui::DockWnd::ComboView*>
         (Gui::DockWindowManager::instance()->getDockWindow("Combo View"));
     // should return the pointer to combo view
@@ -257,16 +256,16 @@ bool ControlSingleton::isAllowedAlterSelection(void) const
 
 ControlSingleton& ControlSingleton::instance(void)
 {
-    if (_pcSingleton == NULL)
+    if (_pcSingleton == nullptr)
         _pcSingleton = new ControlSingleton;
     return *_pcSingleton;
 }
 
 void ControlSingleton::destruct (void)
 {
-    if (_pcSingleton != NULL)
+    if (_pcSingleton != nullptr)
         delete _pcSingleton;
-    _pcSingleton = 0;
+    _pcSingleton = nullptr;
 }
 
 

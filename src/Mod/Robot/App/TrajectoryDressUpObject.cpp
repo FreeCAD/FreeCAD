@@ -46,13 +46,13 @@ using namespace App;
 
 PROPERTY_SOURCE(Robot::TrajectoryDressUpObject, Robot::TrajectoryObject)
 
-const char* TrajectoryDressUpObject::ContTypeEnums[]= {"DontChange","Continues","Discontinues",NULL};
-const char* TrajectoryDressUpObject::AddTypeEnums[] = {"DontChange","UseOrientation","AddPosition","AddOrintation","AddPositionAndOrientation",NULL};
+const char* TrajectoryDressUpObject::ContTypeEnums[]= {"DontChange","Continues","Discontinues",nullptr};
+const char* TrajectoryDressUpObject::AddTypeEnums[] = {"DontChange","UseOrientation","AddPosition","AddOrintation","AddPositionAndOrientation",nullptr};
 
 TrajectoryDressUpObject::TrajectoryDressUpObject()
 {
 
-    ADD_PROPERTY_TYPE( Source,          (0)                 , "TrajectoryDressUp",Prop_None,"Trajectory to dress up");
+    ADD_PROPERTY_TYPE( Source,          (nullptr)                 , "TrajectoryDressUp",Prop_None,"Trajectory to dress up");
     ADD_PROPERTY_TYPE( Speed,           (1000)              , "TrajectoryDressUp",Prop_None,"Speed to use");
     ADD_PROPERTY_TYPE( UseSpeed    ,    (0)                 , "TrajectoryDressUp",Prop_None,"Switch the speed usage on");
     ADD_PROPERTY_TYPE( Acceleration,    (1000)              , "TrajectoryDressUp",Prop_None,"Acceleration to use");
@@ -69,7 +69,7 @@ TrajectoryDressUpObject::~TrajectoryDressUpObject()
 {
 }
 
-App::DocumentObjectExecReturn *TrajectoryDressUpObject::execute(void)
+App::DocumentObjectExecReturn* TrajectoryDressUpObject::execute(void)
 {
     Robot::Trajectory result;
 
@@ -79,39 +79,39 @@ App::DocumentObjectExecReturn *TrajectoryDressUpObject::execute(void)
     if (!link->getTypeId().isDerivedFrom(Robot::TrajectoryObject::getClassTypeId()))
         return new App::DocumentObjectExecReturn("Linked object is not a Trajectory object");
 
-    const std::vector<Waypoint*> &wps = static_cast<Robot::TrajectoryObject*>(link)->Trajectory.getValue().getWaypoints();
-    for (std::vector<Waypoint*>::const_iterator it= wps.begin();it!=wps.end();++it) {
+    const std::vector<Waypoint*>& wps = static_cast<Robot::TrajectoryObject*>(link)->Trajectory.getValue().getWaypoints();
+    for (std::vector<Waypoint*>::const_iterator it = wps.begin(); it != wps.end(); ++it) {
         Waypoint wpt = **it;
-        if(UseSpeed.getValue())
+        if (UseSpeed.getValue())
             wpt.Velocity = Speed.getValue();
-        if(UseAcceleration.getValue())
-            wpt.Accelaration = Acceleration.getValue();
-        switch(ContType.getValue()){
-            case 0: break;
-            case 1: wpt.Cont = true;break;
-            case 2: wpt.Cont = false;break;
-            default: assert(0); // must not happen!
+        if (UseAcceleration.getValue())
+            wpt.Acceleration = Acceleration.getValue();
+        switch (ContType.getValue()) {
+        case 0: break;
+        case 1: wpt.Cont = true; break;
+        case 2: wpt.Cont = false; break;
+        default: assert(0); // must not happen!
         }
-        switch(AddType.getValue()){
+        switch (AddType.getValue()) {
             // do nothing 
-            case 0: break;
+        case 0: break;
             // use orientation  
-            case 1:
-                wpt.EndPos.setRotation(PosAdd.getValue().getRotation());
-                break;
+        case 1:
+            wpt.EndPos.setRotation(PosAdd.getValue().getRotation());
+            break;
             // add position 
-            case 2:
-                wpt.EndPos.setPosition(wpt.EndPos.getPosition() + PosAdd.getValue().getPosition());
-                break;
+        case 2:
+            wpt.EndPos.setPosition(wpt.EndPos.getPosition() + PosAdd.getValue().getPosition());
+            break;
             // add orientation 
-            case 3:
-                wpt.EndPos.setRotation(wpt.EndPos.getRotation() * PosAdd.getValue().getRotation());
-                break;
+        case 3:
+            wpt.EndPos.setRotation(wpt.EndPos.getRotation() * PosAdd.getValue().getRotation());
+            break;
             // add orientation & position 
-            case 4:
-                wpt.EndPos= wpt.EndPos * PosAdd.getValue();
-                break;
-            default: assert(0); // must not happen!
+        case 4:
+            wpt.EndPos = wpt.EndPos * PosAdd.getValue();
+            break;
+        default: assert(0); // must not happen!
         }
 
         result.addWaypoint(wpt);
@@ -119,12 +119,11 @@ App::DocumentObjectExecReturn *TrajectoryDressUpObject::execute(void)
 
     // set the resulting Trajectory to the object
     Trajectory.setValue(result);
-    
+
     return App::DocumentObject::StdReturn;
 }
 
 void TrajectoryDressUpObject::onChanged(const Property* prop)
 {
- 
     App::GeoFeature::onChanged(prop);
 }

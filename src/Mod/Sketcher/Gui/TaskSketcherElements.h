@@ -44,7 +44,7 @@ class ElementView : public QListWidget
     Q_OBJECT
 
 public:
-    explicit ElementView(QWidget *parent = 0);
+    explicit ElementView(QWidget *parent = nullptr);
     ~ElementView();
 
 

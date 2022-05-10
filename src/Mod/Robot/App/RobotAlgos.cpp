@@ -36,7 +36,7 @@
 #include "kdl_cp/chainjnttojacsolver.hpp"
 #include "kdl_cp/chainiksolverpos_nr.hpp"
 
-#include <stdio.h>
+#include <cstdio>
 #include <iostream>
 
 #include <Base/Console.h>

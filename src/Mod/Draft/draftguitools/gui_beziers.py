@@ -24,7 +24,7 @@
 # ***************************************************************************
 """Provides GUI tools to create BezCurve objects.
 
-In particular, a cubic Bezier curve is defined, as it is one of the most
+In particular, a cubic Bézier curve is defined, as it is one of the most
 useful curves for many applications.
 
 See https://en.wikipedia.org/wiki/B%C3%A9zier_curve
@@ -50,7 +50,7 @@ from draftutils.translate import translate
 
 
 class BezCurve(gui_lines.Line):
-    """Gui command for the Bezier Curve tool."""
+    """Gui command for the Bézier Curve tool."""
 
     def __init__(self):
         super(BezCurve, self).__init__(wiremode=True)
@@ -59,15 +59,15 @@ class BezCurve(gui_lines.Line):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {'Pixmap': 'Draft_BezCurve',
-                'Accel': "B, Z",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_BezCurve", "Bezier curve"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_BezCurve", "Creates an N-degree Bezier curve. The more points you pick, the higher the degree.\nCTRL to snap, SHIFT to constrain.")}
+        return {"Pixmap": "Draft_BezCurve",
+                "Accel": "B, Z",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_BezCurve", "Bézier curve"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_BezCurve", "Creates an N-degree Bézier curve. The more points you pick, the higher the degree.\nCTRL to snap, SHIFT to constrain.")}
 
     def Activated(self):
         """Execute when the command is called.
 
-        Activate the specific bezier curve tracker.
+        Activate the specific Bézier curve tracker.
         """
         super(BezCurve, self).Activated(name="BezCurve",
                                         icon="Draft_BezCurve")
@@ -129,7 +129,7 @@ class BezCurve(gui_lines.Line):
                         self.undolast()
                         self.finish(True, cont=True)
                         _msg(translate("draft",
-                                       "Bezier curve has been closed"))
+                                       "Bézier curve has been closed"))
 
     def undolast(self):
         """Undo last line segment."""
@@ -197,7 +197,7 @@ class BezCurve(gui_lines.Line):
             try:
                 rot, sup, pts, fil = self.getStrings()
                 Gui.addModule("Draft")
-                _cmd = 'Draft.makeBezCurve'
+                _cmd = 'Draft.make_bezcurve'
                 _cmd += '('
                 _cmd += 'points, '
                 _cmd += 'closed=' + str(closed) + ', '
@@ -228,7 +228,7 @@ Gui.addCommand('Draft_BezCurve', BezCurve())
 
 
 class CubicBezCurve(gui_lines.Line):
-    """Gui command for the 3rd degree Bezier Curve tool."""
+    """Gui command for the 3rd degree Bézier Curve tool."""
 
     def __init__(self):
         super(CubicBezCurve, self).__init__(wiremode=True)
@@ -237,10 +237,10 @@ class CubicBezCurve(gui_lines.Line):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {'Pixmap': 'Draft_CubicBezCurve',
-                # 'Accel': "B, Z",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Cubic bezier curve"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Creates a Bezier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.\nAfter the curve is created you can go back to edit each control point and set the properties of each knot.\nCTRL to snap, SHIFT to constrain.")}
+        return {"Pixmap": "Draft_CubicBezCurve",
+                # "Accel": "B, Z",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Cubic Bézier curve"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_CubicBezCurve", "Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.\nAfter the curve is created you can go back to edit each control point and set the properties of each knot.\nCTRL to snap, SHIFT to constrain.")}
 
     def Activated(self):
         """Execute when the command is called.
@@ -329,7 +329,7 @@ class CubicBezCurve(gui_lines.Line):
                                 self.node.append(_sym)
                                 self.finish(True, cont=True)
                                 _msg(translate("draft",
-                                               "Bezier curve has been closed"))
+                                               "Bézier curve has been closed"))
 
             # Release the held button
             if arg["State"] == "UP" and arg["Button"] == "BUTTON1":
@@ -437,7 +437,7 @@ class CubicBezCurve(gui_lines.Line):
                 # to be committed through the `draftutils.todo.ToDo` class.
                 rot, sup, pts, fil = self.getStrings()
                 Gui.addModule("Draft")
-                _cmd = 'Draft.makeBezCurve'
+                _cmd = 'Draft.make_bezcurve'
                 _cmd += '('
                 _cmd += 'points, '
                 _cmd += 'closed=' + str(closed) + ', '
@@ -468,12 +468,12 @@ Gui.addCommand('Draft_CubicBezCurve', CubicBezCurve())
 
 
 class BezierGroup:
-    """Gui Command group for the Bezier curve tools."""
+    """Gui Command group for the Bézier curve tools."""
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-        return {'MenuText': QT_TRANSLATE_NOOP("Draft_BezierTools", "Bezier tools"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_BezierTools", "Create various types of Bezier curves.")}
+        return {"MenuText": QT_TRANSLATE_NOOP("Draft_BezierTools", "Bézier tools"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_BezierTools", "Create various types of Bézier curves.")}
 
     def GetCommands(self):
         """Return a tuple of commands in the group."""

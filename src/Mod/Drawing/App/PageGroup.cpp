@@ -41,7 +41,7 @@ PROPERTY_SOURCE(Drawing::PageGroup, App::DocumentObjectGroup)
 PageGroup::PageGroup(void) 
 {
   static const char *group = "Drawings";
-  ADD_PROPERTY_TYPE(Pages,(0),group,App::Prop_None,"List of pages");
+  ADD_PROPERTY_TYPE(Pages,(nullptr),group,App::Prop_None,"List of pages");
 }
 
 PageGroup::~PageGroup()

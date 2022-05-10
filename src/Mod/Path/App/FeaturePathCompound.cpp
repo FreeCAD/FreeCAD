@@ -40,7 +40,7 @@ PROPERTY_SOURCE(Path::FeatureCompound, Path::Feature)
 
 FeatureCompound::FeatureCompound()
 {
-    ADD_PROPERTY_TYPE( Group,         (0),   "Base",Prop_None,"Ordered list of paths to combine");
+    ADD_PROPERTY_TYPE( Group,         (nullptr),   "Base",Prop_None,"Ordered list of paths to combine");
     ADD_PROPERTY_TYPE( UsePlacements, (false), "Base",Prop_None,"Specifies if the placements of children must be computed");
 }
 

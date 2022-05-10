@@ -247,7 +247,7 @@ PyObject* UnifySameDomainPy::shape(PyObject *args)
 
 PyObject *UnifySameDomainPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int UnifySameDomainPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

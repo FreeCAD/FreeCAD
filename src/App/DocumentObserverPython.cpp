@@ -23,16 +23,13 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <boost_bind_bind.hpp>
-#endif
-
+#include <CXX/Objects.hxx>
 #include "Application.h"
 #include "Document.h"
 #include "DocumentObject.h"
 #include "DocumentObserverPython.h"
 #include <Base/Interpreter.h>
-#include <Base/Console.h>
+
 
 using namespace App;
 namespace bp = boost::placeholders;
@@ -46,7 +43,7 @@ void DocumentObserverPython::addObserver(const Py::Object& obj)
 
 void DocumentObserverPython::removeObserver(const Py::Object& obj)
 {
-    DocumentObserverPython* obs=0;
+    DocumentObserverPython* obs=nullptr;
     for (std::vector<DocumentObserverPython*>::iterator it =
         _instances.begin(); it != _instances.end(); ++it) {
         if ((*it)->inst == obj) {

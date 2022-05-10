@@ -23,10 +23,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <sstream>
-#endif
-
 // inclution of the generated files (generated out of PropertyContainerPy.xml)
 #include "DocumentObjectExtensionPy.h"
 #include "DocumentObjectExtensionPy.cpp"
@@ -41,7 +37,7 @@ std::string DocumentObjectExtensionPy::representation(void) const
 
 PyObject *DocumentObjectExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DocumentObjectExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject * /*obj*/)

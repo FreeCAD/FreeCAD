@@ -32,7 +32,7 @@
 # else
 #  include <GL/gl.h>
 # endif
-# include <float.h>
+# include <cfloat>
 # include <algorithm>
 # include <Inventor/actions/SoCallbackAction.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -81,9 +81,11 @@ void SoFCControlPoints::GLRender(SoGLRenderAction *action)
     {
         SoState*  state = action->getState();
         const SoCoordinateElement * coords = SoCoordinateElement::getInstance(state);
-        if (!coords) return;
+        if (!coords)
+            return;
         const SbVec3f * points = coords->getArrayPtr3();
-        if (!points) return;
+        if (!points)
+            return;
 
         SoMaterialBundle mb(action);
         SoTextureCoordinateBundle tb(action, true, false);
@@ -159,9 +161,11 @@ void SoFCControlPoints::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &cen
 {
     SoState*  state = action->getState();
     const SoCoordinateElement * coords = SoCoordinateElement::getInstance(state);
-    if (!coords) return;
+    if (!coords)
+        return;
     const SbVec3f * points = coords->getArrayPtr3();
-    if (!points) return;
+    if (!points)
+        return;
     float maxX=-FLT_MAX, minX=FLT_MAX,
           maxY=-FLT_MAX, minY=FLT_MAX,
           maxZ=-FLT_MAX, minZ=FLT_MAX;

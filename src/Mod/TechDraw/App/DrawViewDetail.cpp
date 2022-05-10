@@ -39,6 +39,7 @@
 #include <BRepPrimAPI_MakeCylinder.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
 #include <BRepPrim_Cylinder.hxx>
+#include <BRepProj_Projection.hxx>
 #include <BRepTools.hxx>
 #include <Geom_Plane.hxx>
 #include <gp_Ax1.hxx>
@@ -105,7 +106,7 @@ DrawViewDetail::DrawViewDetail()
 {
     static const char *dgroup = "Detail";
 
-    ADD_PROPERTY_TYPE(BaseView ,(0),dgroup,App::Prop_None,"2D View source for this Section");
+    ADD_PROPERTY_TYPE(BaseView ,(nullptr),dgroup,App::Prop_None,"2D View source for this Section");
     BaseView.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(AnchorPoint ,(0,0,0) ,dgroup,App::Prop_None,"Location of detail in BaseView");
     ADD_PROPERTY_TYPE(Radius,(10.0),dgroup, App::Prop_None, "Size of detail area");
@@ -276,6 +277,8 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     return DrawView::execute();
 }
 
+//try to create a detail of the solids & shells in shape
+//if there are no solids/shells in shape, use the edges in shape
 void DrawViewDetail::detailExec(TopoDS_Shape shape,
                                 DrawViewPart* dvp,
                                 DrawViewSection* dvs)
@@ -285,6 +288,9 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
 
     double radius = getFudgeRadius();
     double scale = getScale();
+
+    int solidCount = DrawUtil::countSubShapes(shape, TopAbs_SOLID);
+    int shellCount = DrawUtil::countSubShapes(shape, TopAbs_SHELL);
 
     BRepBuilderAPI_Copy BuilderCopy(shape);
     TopoDS_Shape myShape = BuilderCopy.Shape();
@@ -307,12 +313,12 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
     gp_Ax2 viewAxis;
 
     viewAxis = dvp->getProjectionCS(shapeCenter);
-    anchor = Base::Vector3d(anchor.x,anchor.y, 0.0);
-    Base::Vector3d anchorOffset3d = DrawUtil::toR3(viewAxis, anchor);     //anchor displacement in R3
+    anchor = Base::Vector3d(anchor.x,anchor.y, 0.0);   //anchor coord in projection CS
+    Base::Vector3d anchorOffset3d = DrawUtil::toR3(viewAxis, anchor);     //actual anchor coords in R3
 
     Bnd_Box bbxSource;
     bbxSource.SetGap(0.0);
-    BRepBndLib::Add(myShape, bbxSource);
+    BRepBndLib::AddOptimal(myShape, bbxSource);
     double diag = sqrt(bbxSource.SquareExtent());
 
     Base::Vector3d toolPlaneOrigin = anchorOffset3d + dirDetail * diag * -1.0;    //center tool about anchor
@@ -320,68 +326,96 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
 
     gp_Pnt gpnt(toolPlaneOrigin.x,toolPlaneOrigin.y,toolPlaneOrigin.z);
     gp_Dir gdir(dirDetail.x,dirDetail.y,dirDetail.z);
-    gp_Pln gpln(gpnt,gdir);
-    double hideToolRadius = radius * 1.0;
-    BRepBuilderAPI_MakeFace mkFace(gpln, -hideToolRadius,hideToolRadius,-hideToolRadius,hideToolRadius);
-    TopoDS_Face aProjFace = mkFace.Face();
-    if(aProjFace.IsNull()) {
-        Base::Console().Warning("DVD::execute - %s - failed to create tool base face\n", getNameInDocument());
-        return;
-    }
 
+    double hideToolRadius = radius * 1.0;
+    TopoDS_Face aProjFace;
     Base::Vector3d extrudeVec = dirDetail * extrudeLength;
     gp_Vec extrudeDir(extrudeVec.x,extrudeVec.y,extrudeVec.z);
-    TopoDS_Shape tool = BRepPrimAPI_MakePrism(aProjFace, extrudeDir, false, true).Shape();
-
+    TopoDS_Shape tool;
+    if (Preferences::mattingStyle()) {
+        //square mat
+        gp_Pln gpln(gpnt,gdir);
+        BRepBuilderAPI_MakeFace mkFace(gpln, -hideToolRadius,hideToolRadius,-hideToolRadius,hideToolRadius);
+        aProjFace = mkFace.Face();
+        if(aProjFace.IsNull()) {
+            Base::Console().Warning("DVD::detailExec - %s - failed to create tool base face\n", getNameInDocument());
+            return;
+        }
+        tool = BRepPrimAPI_MakePrism(aProjFace, extrudeDir, false, true).Shape();
+        if(tool.IsNull()) {
+            Base::Console().Warning("DVD::detailExec - %s - failed to create tool (prism)\n", getNameInDocument());
+            return;
+        }
+    } else {
+        //circular mat
+        gp_Ax2 cs(gpnt, gdir);
+        BRepPrimAPI_MakeCylinder mkTool(cs, hideToolRadius, extrudeLength);
+        tool = mkTool.Shape();
+        if(tool.IsNull()) {
+            Base::Console().Warning("DVD::detailExec - %s - failed to create tool (cylinder)\n", getNameInDocument());
+            return;
+        }
+    }
 
     BRep_Builder builder;
     TopoDS_Compound pieces;
     builder.MakeCompound(pieces);
-    TopExp_Explorer expl(myShape, TopAbs_SOLID);
-    int indb = 0;
-    int outdb = 0;
-    for (; expl.More(); expl.Next()) {
-        indb++;
-        const TopoDS_Solid& s = TopoDS::Solid(expl.Current());
+    if (solidCount > 0)  {
+        TopExp_Explorer expl(myShape, TopAbs_SOLID);
+        for (; expl.More(); expl.Next()) {
+            const TopoDS_Solid& s = TopoDS::Solid(expl.Current());
 
-        BRepAlgoAPI_Common mkCommon(s,tool);
-        if (!mkCommon.IsDone()) {
-//            Base::Console().Warning("DVD::execute - %s - detail cut operation failed (1)\n", getNameInDocument());
-            continue;
+            BRepAlgoAPI_Common mkCommon(s,tool);
+            if (!mkCommon.IsDone()) {
+    //            Base::Console().Warning("DVD::execute - %s - detail cut operation failed (1)\n", getNameInDocument());
+                continue;
+            }
+            if (mkCommon.Shape().IsNull()) {
+    //            Base::Console().Warning("DVD::execute - %s - detail cut operation failed (2)\n", getNameInDocument());
+                continue;
+            }
+            //this might be overkill for piecewise algo
+            //Did we get at least 1 solid?
+            TopExp_Explorer xp;
+            xp.Init(mkCommon.Shape(),TopAbs_SOLID);
+            if (!(xp.More() == Standard_True)) {
+    //            Base::Console().Warning("DVD::execute - mkCommon.Shape is not a solid!\n");
+                continue;
+            }
+            builder.Add(pieces, mkCommon.Shape());
         }
-        if (mkCommon.Shape().IsNull()) {
-//            Base::Console().Warning("DVD::execute - %s - detail cut operation failed (2)\n", getNameInDocument());
-            continue;
+    }
+
+    if (shellCount > 0) {
+        TopExp_Explorer expl(myShape, TopAbs_SHELL);
+        for (; expl.More(); expl.Next()) {
+            const TopoDS_Shell& s = TopoDS::Shell(expl.Current());
+
+            BRepAlgoAPI_Common mkCommon(s,tool);
+            if (!mkCommon.IsDone()) {
+    //            Base::Console().Warning("DVD::execute - %s - detail cut operation failed (1)\n", getNameInDocument());
+                continue;
+            }
+            if (mkCommon.Shape().IsNull()) {
+    //            Base::Console().Warning("DVD::execute - %s - detail cut operation failed (2)\n", getNameInDocument());
+                continue;
+            }
+            //this might be overkill for piecewise algo
+            //Did we get at least 1 shell?
+            TopExp_Explorer xp;
+            xp.Init(mkCommon.Shape(),TopAbs_SHELL);
+            if (!(xp.More() == Standard_True)) {
+    //            Base::Console().Warning("DVD::execute - mkCommon.Shape is not a shell!\n");
+                continue;
+            }
+            builder.Add(pieces, mkCommon.Shape());
         }
-        //this might be overkill for piecewise algo
-        //Did we get at least 1 solid?
-        TopExp_Explorer xp;
-        xp.Init(mkCommon.Shape(),TopAbs_SOLID);
-        if (!(xp.More() == Standard_True)) {
-//            Base::Console().Warning("DVD::execute - mkCommon.Shape is not a solid!\n");
-            continue;
-        }
-        builder.Add(pieces, mkCommon.Shape());
-        outdb++;
     }
 
     if (debugDetail()) {
         BRepTools::Write(tool, "DVDTool.brep");            //debug
         BRepTools::Write(myShape, "DVDCopy.brep");       //debug
         BRepTools::Write(pieces, "DVDCommon.brep");        //debug
-    }
-
-    Bnd_Box testBox;
-    testBox.SetGap(0.0);
-    BRepBndLib::Add(pieces, testBox);
-    if (testBox.IsVoid()) {
-        TechDraw::GeometryObject* go = getGeometryObject();
-        if (go != nullptr) {
-            go->clear();
-        }
-        dvp->requestPaint();
-        Base::Console().Warning("DVD::execute - %s - detail area contains no geometry\n", getNameInDocument());
-        return;
     }
 
 //for debugging show compound instead of common
@@ -393,31 +427,45 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
 
     gp_Pnt inputCenter;
     try {
-        inputCenter = TechDraw::findCentroid(tool,
+        //centroid of result
+        inputCenter = TechDraw::findCentroid(pieces,
                                              dirDetail);
     Base::Vector3d centroid(inputCenter.X(),
                             inputCenter.Y(),
                             inputCenter.Z());
     m_saveCentroid += centroid;              //center of massaged shape
 
+    TopoDS_Shape scaledShape;
+    if ((solidCount > 0) ||
+        (shellCount > 0)) {
+        //align shape with detail anchor
+        TopoDS_Shape centeredShape = TechDraw::moveShape(pieces,
+                                                         anchorOffset3d * -1.0);
+        scaledShape = TechDraw::scaleShape(centeredShape,
+                                           getScale());
+        if (debugDetail()) {
+            BRepTools::Write(scaledShape, "DVDScaled.brep");            //debug
+        }
+    } else {
+        //no solids, no shells, do what you can with edges
+        TopoDS_Shape projectedEdges = projectEdgesOntoFace(myShape, aProjFace, gdir);
+        TopoDS_Shape centeredShape = TechDraw::moveShape(projectedEdges,
+                                                         anchorOffset3d * -1.0);
+        if (debugDetail()) {
+            BRepTools::Write(projectedEdges, "DVDProjectedEdges.brep");            //debug
+            BRepTools::Write(centeredShape, "DVDCenteredShape.brep");            //debug
+        }
+        scaledShape = TechDraw::scaleShape(centeredShape,
+                                           getScale());
+    }
+
     Base::Vector3d stdOrg(0.0,0.0,0.0);
-    gp_Ax2 viewAxis = dvp->getProjectionCS(stdOrg);  //sb same CS as base view. 
+    gp_Ax2 viewAxis = dvp->getProjectionCS(stdOrg);
 
-    //center shape on origin
-//    TopoDS_Shape centeredShape = TechDraw::moveShape(detail,
-    TopoDS_Shape centeredShape = TechDraw::moveShape(pieces,
-                                                     centroid * -1.0);
-
-    TopoDS_Shape scaledShape = TechDraw::scaleShape(centeredShape,
-                                                    getScale());
     if (!DrawUtil::fpCompare(Rotation.getValue(),0.0)) {
         scaledShape = TechDraw::rotateShape(scaledShape,
                                             viewAxis,
                                             Rotation.getValue());
-    }
-
-    if (debugDetail()) {
-        BRepTools::Write(tool, "DVDScaled.brep");            //debug
     }
 
     geometryObject =  buildGeometryObject(scaledShape,viewAxis);
@@ -448,6 +496,36 @@ void DrawViewDetail::detailExec(TopoDS_Shape shape,
 
     addReferencesToGeom();   //what if landmarks are outside detail area??
 
+}
+
+TopoDS_Shape DrawViewDetail::projectEdgesOntoFace(TopoDS_Shape edgeShape, TopoDS_Face projFace, gp_Dir projDir)
+{
+    BRep_Builder builder;
+    TopoDS_Compound edges;
+    builder.MakeCompound(edges);
+    TopExp_Explorer Ex(edgeShape, TopAbs_EDGE);
+    while (Ex.More())
+    {
+        TopoDS_Edge e = TopoDS::Edge(Ex.Current());
+        BRepProj_Projection mkProj(e, projFace, projDir);
+        if (mkProj.IsDone()) {
+            builder.Add(edges, mkProj.Shape());
+        }
+        Ex.Next();
+    }
+    if (debugDetail()) {
+        BRepTools::Write(edges, "DVDEdges.brep");            //debug
+    }
+
+    return TopoDS_Shape(std::move(edges));
+}
+
+//we don't want to paint detail highlights on top of detail views,
+//so tell the Gui that there are no details for this view
+std::vector<DrawViewDetail*> DrawViewDetail::getDetailRefs(void) const
+{
+    std::vector<DrawViewDetail*> result;
+    return result;
 }
 
 double DrawViewDetail::getFudgeRadius()

@@ -140,19 +140,19 @@
 //  \subpage examiner
 //*/
 
-#include <cstdio>
 #include <Inventor/SoDB.h>
-#include <Inventor/nodekits/SoNodeKit.h>
 #include <Inventor/SoInteraction.h>
+#include <Inventor/nodekits/SoNodeKit.h>
 
-#include <Quarter/Quarter.h>
 #include "SensorManager.h"
 
+#include "Quarter.h"
 #include "QuarterP.h"
+
 
 using namespace SIM::Coin3D::Quarter;
 
-static QuarterP * self = NULL;
+static QuarterP * self = nullptr;
 
 /*!
   initialize Quarter, and implicitly Coin
@@ -182,14 +182,14 @@ Quarter::init(bool initCoin)
   clean up resources
  */
 void
-Quarter::clean(void)
+Quarter::clean()
 {
   COMPILE_ONLY_BEFORE(2,0,0,"Should not be encapsulated in double Quarter namespace");
   assert(self);
   bool initCoin = self->initCoin;
 
   delete self;
-  self = NULL;
+  self = nullptr;
 
   if (initCoin) {
     // SoDB::finish() will clean up everything that has been

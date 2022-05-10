@@ -24,10 +24,9 @@
 #ifndef BASE_UNITSSCHEMACENTIMETERS_H
 #define BASE_UNITSSCHEMACENTIMETERS_H
 
-
-#include <string>
 #include <QString>
 #include "UnitsSchema.h"
+
 
 namespace Base {
 

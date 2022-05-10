@@ -373,7 +373,7 @@ PyObject* AttacherGuiPy::sGetModeStrings(PyObject * /*self*/, PyObject *args)
     int modeIndex = 0;
     char* attacherType;
     if (!PyArg_ParseTuple(args, "si", &attacherType, &modeIndex))
-        return NULL;
+        return nullptr;
 
     try {
         Base::Type t = Base::Type::fromName(attacherType);
@@ -392,10 +392,10 @@ PyObject* AttacherGuiPy::sGetModeStrings(PyObject * /*self*/, PyObject *args)
 
         return Py::new_reference_to(result);
     } catch (const Py::Exception&) {
-        return 0;
+        return nullptr;
     } catch (const Base::Exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
-        return 0;
+        e.setPyException();
+        return nullptr;
     }
 }
 
@@ -403,16 +403,16 @@ PyObject* AttacherGuiPy::sGetRefTypeUserFriendlyName(PyObject * /*self*/, PyObje
 {
     int refTypeIndex = 0;
     if (!PyArg_ParseTuple(args, "i", &refTypeIndex))
-        return NULL;
+        return nullptr;
 
     try {
         QByteArray ba_utf8 = getShapeTypeText(eRefType(refTypeIndex)).toUtf8();
         return Py::new_reference_to(Py::String(ba_utf8.data(), "utf-8"));
     } catch (const Py::Exception&) {
-        return 0;
+        return nullptr;
     } catch (const Base::Exception& e) {
-        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
-        return 0;
+        e.setPyException();
+        return nullptr;
     }
 }
 
@@ -422,7 +422,7 @@ PyMethodDef AttacherGuiPy::Methods[] = {
      "getModeStrings(attacher_type, mode_index) - gets mode user-friendly name and brief description."},
     {"getRefTypeUserFriendlyName", (PyCFunction) AttacherGuiPy::sGetRefTypeUserFriendlyName, METH_VARARGS,
      "getRefTypeUserFriendlyName(type_index) - gets user-friendly name of AttachEngine's shape type."},
-    {NULL, NULL, 0, NULL}  /* Sentinel */
+    {nullptr, nullptr, 0, nullptr}  /* Sentinel */
 };
 
 

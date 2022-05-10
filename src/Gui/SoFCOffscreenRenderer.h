@@ -20,16 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_SOFCOFFSCREENRENDERER_H
 #define GUI_SOFCOFFSCREENRENDERER_H
 
-#include <Inventor/SoOffscreenRenderer.h>
-#include <Inventor/SbMatrix.h>
 #include <Inventor/SbColor4f.h>
+#include <Inventor/SbMatrix.h>
+#include <Inventor/SoOffscreenRenderer.h>
+
 #include <QImage>
 #include <QStringList>
 #include <QtOpenGL.h>
+
 
 namespace Gui {
 
@@ -120,9 +121,6 @@ public:
     void setInternalTextureFormat(GLenum internalTextureFormat);
     GLenum internalTextureFormat() const;
 
-    void setPbufferEnable(SbBool enable);
-    SbBool getPbufferEnable(void) const;
-
     SbBool render(SoNode * scene);
     SbBool render(SoPath * scene);
 
@@ -130,17 +128,11 @@ public:
     QStringList getWriteImageFiletypeInfo() const;
 
 private:
-    void init(const SbViewportRegion & vpr, SoGLRenderAction * glrenderaction = NULL);
+    void init(const SbViewportRegion & vpr, SoGLRenderAction * glrenderaction = nullptr);
     static void pre_render_cb(void * userdata, SoGLRenderAction * action);
     SbBool renderFromBase(SoBase * base);
-#if !defined(HAVE_QT5_OPENGL)
-    void makePixelBuffer(int width, int height, int samples);
-#endif
     void makeFrameBuffer(int width, int height, int samples);
 
-#if !defined(HAVE_QT5_OPENGL)
-    QGLPixelBuffer*         pixelbuffer; // the offscreen rendering supported by Qt
-#endif
     QtGLFramebufferObject*  framebuffer;
     uint32_t                cache_context; // our unique context id
 
@@ -149,12 +141,9 @@ private:
     SbColor4f backgroundopaque;
     SoGLRenderAction * renderaction;
     SbBool didallocation;
-    SbBool pbuffer;
     int numSamples;
     GLenum texFormat;
-#if defined(HAVE_QT5_OPENGL)
     QImage glImage;
-#endif
 };
 
 } // namespace Gui

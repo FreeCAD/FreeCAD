@@ -92,6 +92,15 @@ public:
     bool eventFilter(QObject* obj, QEvent* ev);
 };
 
+class KeyboardFilter : public QObject
+{
+    Q_OBJECT
+
+public:
+    KeyboardFilter(QObject* parent);
+    bool eventFilter(QObject* obj, QEvent* ev);
+};
+
 }
 
 #endif // GUI_APPLICATION_H

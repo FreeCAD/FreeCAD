@@ -169,7 +169,7 @@ class BSpline(gui_lines.Line):
                 rot, sup, pts, fil = self.getStrings()
                 Gui.addModule("Draft")
 
-                _cmd = 'Draft.makeBSpline'
+                _cmd = 'Draft.make_bspline'
                 _cmd += '('
                 _cmd += 'points, '
                 _cmd += 'closed=' + str(closed) + ', '

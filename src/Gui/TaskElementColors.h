@@ -24,8 +24,9 @@
 #define GUI_TASKELEMENTCOLORS_H
 
 #include <QListWidgetItem>
-#include "TaskView/TaskView.h"
 #include "TaskView/TaskDialog.h"
+#include "TaskView/TaskView.h"
+
 
 namespace Gui {
 class Document;

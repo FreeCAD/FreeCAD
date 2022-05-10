@@ -41,7 +41,7 @@ PROPERTY_SOURCE(Part::Mirroring, Part::Feature)
 
 Mirroring::Mirroring()
 {
-    ADD_PROPERTY(Source,(0));
+    ADD_PROPERTY(Source,(nullptr));
     ADD_PROPERTY_TYPE(Base,(Base::Vector3d()),"Plane",App::Prop_None,"The base point of the plane");
     ADD_PROPERTY_TYPE(Normal,(Base::Vector3d(0,0,1)),"Plane",App::Prop_None,"The normal of the plane");
 }
@@ -87,6 +87,9 @@ void Mirroring::handleChangedPropertyType(Base::XMLReader &reader, const char *T
         v.Restore(reader);
 
         Normal.setValue(v.getValue());
+    }
+    else {
+        Part::Feature::handleChangedPropertyType(reader, TypeName, prop);
     }
 }
 

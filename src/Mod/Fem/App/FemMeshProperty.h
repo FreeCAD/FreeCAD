@@ -35,7 +35,7 @@ namespace Fem
 /** The part shape property class.
  * @author Werner Mayer
  */
-class AppFemExport PropertyFemMesh : public App::PropertyComplexGeoData
+class FemExport PropertyFemMesh : public App::PropertyComplexGeoData
 {
     TYPESYSTEM_HEADER();
 

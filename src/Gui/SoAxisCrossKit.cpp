@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -32,30 +31,30 @@
 # else
 # include <GL/gl.h>
 # endif
+
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/actions/SoGLRenderAction.h>
 # include <Inventor/bundles/SoMaterialBundle.h>
 # include <Inventor/bundles/SoTextureCoordinateBundle.h>
 # include <Inventor/elements/SoLazyElement.h>
+# include <Inventor/elements/SoModelMatrixElement.h>
 # include <Inventor/elements/SoViewportRegionElement.h>
 # include <Inventor/elements/SoViewVolumeElement.h>
-# include <Inventor/elements/SoModelMatrixElement.h>
+# include <Inventor/nodekits/SoShapeKit.h>
 # include <Inventor/nodes/SoBaseColor.h>
-# include <Inventor/nodes/SoShape.h>
-# include <Inventor/nodes/SoScale.h>
 # include <Inventor/nodes/SoCone.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoCube.h>
 # include <Inventor/nodes/SoFontStyle.h>
 # include <Inventor/nodes/SoLineSet.h>
+# include <Inventor/nodes/SoScale.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoText2.h>
 # include <Inventor/nodes/SoTranslation.h>
-# include <Inventor/nodekits/SoShapeKit.h>
 #endif
 
-
 #include "SoAxisCrossKit.h"
+
 
 using namespace Gui;
 

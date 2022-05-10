@@ -24,17 +24,22 @@
 #ifndef _AppComplexGeoData_h_
 #define _AppComplexGeoData_h_
 
-#include <Base/Placement.h>
-#include <Base/Persistence.h>
 #include <Base/Handle.h>
 #include <Base/Matrix.h>
-#include <Base/BoundBox.h>
-#include <Base/Rotation.h>
+#include <Base/Persistence.h>
 
 #ifdef __GNUC__
-# include <stdint.h>
+# include <cstdint>
 #endif
 
+
+namespace Base
+{
+class Placement;
+class Rotation;
+template <class _Precision> class BoundBox3;
+typedef BoundBox3<double> BoundBox3d;
+}
 
 namespace Data
 {
@@ -68,7 +73,7 @@ public:
     };
 
     /// Constructor
-    ComplexGeoData(void);
+    ComplexGeoData();
     /// Destructor
     virtual ~ComplexGeoData();
 
@@ -78,19 +83,19 @@ public:
      *  List of different subelement types
      *  its NOT a list of the subelements itself
      */
-    virtual std::vector<const char*> getElementTypes(void) const=0;
+    virtual std::vector<const char*> getElementTypes() const=0;
     virtual unsigned long countSubElements(const char* Type) const=0;
     /// get the subelement by type and number
     virtual Segment* getSubElement(const char* Type, unsigned long) const=0;
     /// get subelement by combined name
     virtual Segment* getSubElementByName(const char* Name) const;
     /** Get lines from segment */
-    virtual void getLinesFromSubelement(
+    virtual void getLinesFromSubElement(
         const Segment*,
         std::vector<Base::Vector3d> &Points,
         std::vector<Line> &lines) const;
     /** Get faces from segment */
-    virtual void getFacesFromSubelement(
+    virtual void getFacesFromSubElement(
         const Segment*,
         std::vector<Base::Vector3d> &Points,
         std::vector<Base::Vector3d> &PointNormals,
@@ -122,7 +127,7 @@ public:
      * This method has to be handled by the child classes.
      * the actual placement and matrix is not part of this class.
      */
-    virtual Base::Matrix4D getTransform(void) const = 0;
+    virtual Base::Matrix4D getTransform() const = 0;
     //@}
 
     /** @name Modification */
@@ -134,7 +139,7 @@ public:
     /** @name Getting basic geometric entities */
     //@{
     /// Get the bound box
-    virtual Base::BoundBox3d getBoundBox(void)const=0;
+    virtual Base::BoundBox3d getBoundBox()const=0;
     /** Get point from line object intersection  */
     virtual Base::Vector3d getPointFromLineIntersection(
         const Base::Vector3f& base,
@@ -196,7 +201,9 @@ protected:
     /// from local to outside
     inline Base::Vector3d transformToOutside(const Base::Vector3f& vec) const
     {
-        return getTransform() * Base::Vector3d(vec.x,vec.y,vec.z);
+        return getTransform() * Base::Vector3d(static_cast<double>(vec.x),
+                                               static_cast<double>(vec.y),
+                                               static_cast<double>(vec.z));
     }
     /// from local to inside
     inline Base::Vector3f transformToInside(const Base::Vector3d& vec) const
@@ -204,7 +211,9 @@ protected:
         Base::Matrix4D tmpM(getTransform());
         tmpM.inverse();
         Base::Vector3d tmp = tmpM * vec;
-        return Base::Vector3f((float)tmp.x,(float)tmp.y,(float)tmp.z);
+        return Base::Vector3f(static_cast<float>(tmp.x),
+                              static_cast<float>(tmp.y),
+                              static_cast<float>(tmp.z));
     }
 public:
     mutable long Tag;

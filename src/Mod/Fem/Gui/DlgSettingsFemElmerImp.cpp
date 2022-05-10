@@ -22,19 +22,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include "DlgSettingsFemElmerImp.h"
 #include "ui_DlgSettingsFemElmer.h"
-#include <Gui/Application.h>
-#include <Gui/PrefWidgets.h>
+
 
 using namespace FemGui;
 
-DlgSettingsFemElmerImp::DlgSettingsFemElmerImp( QWidget* parent )
-  : PreferencePage( parent )
-  , ui(new Ui_DlgSettingsFemElmerImp)
+DlgSettingsFemElmerImp::DlgSettingsFemElmerImp(QWidget* parent)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgSettingsFemElmerImp)
 {
     ui->setupUi(this);
 }
@@ -65,7 +63,7 @@ void DlgSettingsFemElmerImp::loadSettings()
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsFemElmerImp::changeEvent(QEvent *e)
+void DlgSettingsFemElmerImp::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);

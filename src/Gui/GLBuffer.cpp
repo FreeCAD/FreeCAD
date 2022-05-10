@@ -55,7 +55,7 @@ OpenGLBuffer::OpenGLBuffer(GLenum type)
   , bufferId(0)
   , context(-1)
   , currentContext(-1)
-  , glue(0)
+  , glue(nullptr)
 {
     SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
 }
@@ -191,9 +191,9 @@ void OpenGLBuffer::buffer_delete(void * closure, uint32_t contextid)
 
 OpenGLMultiBuffer::OpenGLMultiBuffer(GLenum type)
   : target(type)
-  , currentBuf(0)
+  , currentBuf(nullptr)
   , currentContext(-1)
-  , glue(0)
+  , glue(nullptr)
 {
     SoContextHandler::addContextDestructionCallback(context_destruction_cb, this);
 }
@@ -245,7 +245,7 @@ void OpenGLMultiBuffer::destroy()
     }
 
     bufs.clear();
-    currentBuf = 0;
+    currentBuf = nullptr;
 }
 
 void OpenGLMultiBuffer::allocate(const void *data, int count)
@@ -296,7 +296,7 @@ void OpenGLMultiBuffer::context_destruction_cb(uint32_t context, void * userdata
         GLuint buffer = it->second;
         cc_glglue_glDeleteBuffers(glue, 1, &buffer);
         if (self->currentBuf == &it->second)
-            self->currentBuf = 0;
+            self->currentBuf = nullptr;
         self->bufs.erase(it);
     }
 }

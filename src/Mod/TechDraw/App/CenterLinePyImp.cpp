@@ -47,7 +47,7 @@ PyObject *CenterLinePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  //
     // never create such objects with the constructor
     PyErr_SetString(PyExc_RuntimeError,
         "You cannot create an instance of the abstract class 'CenterLine'.");
-    return 0;
+    return nullptr;
 }
 
 // constructor method
@@ -59,17 +59,17 @@ int CenterLinePy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 PyObject* CenterLinePy::clone(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     TechDraw::CenterLine* geom = this->getCenterLinePtr();
     PyTypeObject* type = this->GetType();
-    PyObject* cpy = 0;
+    PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, 0);
+        cpy = type->tp_new(type, this, nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_TypeError, "failed to create clone of CenterLine");
-        return 0;
+        return nullptr;
     }
 
     TechDraw::CenterLinePy* geompy = static_cast<TechDraw::CenterLinePy*>(cpy);
@@ -86,17 +86,17 @@ PyObject* CenterLinePy::clone(PyObject *args)
 PyObject* CenterLinePy::copy(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        return NULL;
+        return nullptr;
 
     TechDraw::CenterLine* geom = this->getCenterLinePtr();
     PyTypeObject* type = this->GetType();
-    PyObject* cpy = 0;
+    PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, 0);
+        cpy = type->tp_new(type, this, nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_TypeError, "failed to create copy of CenterLine");
-        return 0;
+        return nullptr;
     }
 
     TechDraw::CenterLinePy* geompy = static_cast<TechDraw::CenterLinePy*>(cpy);
@@ -413,7 +413,7 @@ void CenterLinePy::setPoints(Py::Object arg)
 
 PyObject *CenterLinePy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int CenterLinePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

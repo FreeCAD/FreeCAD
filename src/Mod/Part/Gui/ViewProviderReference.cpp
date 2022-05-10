@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Python.h>
 # include <Poly_Polygon3D.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepMesh_IncrementalMesh.hxx>
@@ -100,15 +99,15 @@ PROPERTY_SOURCE(PartGui::ViewProviderPartReference, Gui::ViewProviderGeometryObj
 // Construction/Destruction
 
 ViewProviderPartReference::ViewProviderPartReference()
-  : EdgeRoot(0)
-  , FaceRoot(0)
-  , VertexRoot(0)
-  , pcLineMaterial(0)
-  , pcPointMaterial(0)
-  , pcLineStyle(0)
-  , pcPointStyle(0)
-  , pcControlPoints(0)
-  , pShapeHints(0)
+  : EdgeRoot(nullptr)
+  , FaceRoot(nullptr)
+  , VertexRoot(nullptr)
+  , pcLineMaterial(nullptr)
+  , pcPointMaterial(nullptr)
+  , pcLineStyle(nullptr)
+  , pcPointStyle(nullptr)
+  , pcControlPoints(nullptr)
+  , pShapeHints(nullptr)
   , meshDeviation(0.01f)
   , noPerVertexNormals(true)
   , qualityNormals(false)

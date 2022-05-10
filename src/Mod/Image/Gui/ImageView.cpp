@@ -17,30 +17,33 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <cmath>
 # include <QAction>
 # include <QApplication>
 # include <QMenu>
 # include <QMouseEvent>
-# include <QSlider>
 # include <QStatusBar>
 # include <QToolBar>
-# include <cmath>
 #endif
 
+#include <App/Application.h>
+#include <Base/Parameter.h>
+
 #include "ImageView.h"
-#include "../App/ImageBase.h"
 #include "XpmImages.h"
+
 
 using namespace ImageGui;
 
 
 /* TRANSLATOR ImageGui::ImageView */
 
+TYPESYSTEM_SOURCE_ABSTRACT(ImageGui::ImageView, Gui::MDIView)
+
 ImageView::ImageView(QWidget* parent)
-  : MDIView(0, parent), _ignoreCloseEvent(false)
+  : MDIView(nullptr, parent), _ignoreCloseEvent(false)
 {
-  // Create an OpenGL widget for displaying images
-#if QT_VERSION >=0x050000
+    // Create an OpenGL widget for displaying images
     // Since Qt5 there is a weird behaviour when creating a GLImageBox.
     // It works correctly for the first time when creating an image view
     // but only when no 3d view is created. For the second time or if a
@@ -64,14 +67,7 @@ ImageView::ImageView(QWidget* parent)
     // Since Qt5 the class QGLWidget is marked as deprecated and should be
     // replaced by QOpenGLWidget.
 
-#if defined(HAVE_QT5_OPENGL)
   _pGLImageBox = new GLImageBox(this);
-#else
-  _pGLImageBox = new GLImageBox(parent);
-#endif // HAVE_QT5_OPENGL
-#else
-  _pGLImageBox = new GLImageBox(this);
-#endif
   setCentralWidget(_pGLImageBox);
 
   // enable mouse tracking when moving even if no buttons are pressed
@@ -486,11 +482,7 @@ void ImageView::wheelEvent(QWheelEvent * cEvent)
 #endif
 
        // Zoom around centrally displayed image point
-#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
        int numTicks = cEvent->angleDelta().y() / 120;
-#else
-       int numTicks = cEvent->delta() / 120;
-#endif
        if (_invertZoom)
            numTicks = -numTicks;
 

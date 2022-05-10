@@ -138,7 +138,7 @@ void CrossSection::sliceSolid(double d, const TopoDS_Shape& shape, std::list<Top
 
 void CrossSection::connectEdges (const std::list<TopoDS_Edge>& edges, std::list<TopoDS_Wire>& wires) const
 {
-    // FIXME: Use ShapeAnalysis_FreeBounds::ConnectEdgesToWires() as an alternative
+    // Hint: Use ShapeAnalysis_FreeBounds::ConnectEdgesToWires() as an alternative
     std::list<TopoDS_Edge> edge_list = edges;
     while (edge_list.size() > 0) {
         BRepBuilderAPI_MakeWire mkWire;

@@ -38,7 +38,7 @@ std::string DrawSVGTemplatePy::representation(void) const
 
 PyObject *DrawSVGTemplatePy::getCustomAttributes(const char* ) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DrawSVGTemplatePy::setCustomAttributes(const char* attr, PyObject* obj)

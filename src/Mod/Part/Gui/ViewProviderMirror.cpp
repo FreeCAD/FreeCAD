@@ -27,7 +27,6 @@
 # include <QAction>
 # include <QMenu>
 # include <QTimer>
-# include <Python.h>
 # include <Standard_math.hxx>
 # include <TopExp.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
@@ -524,9 +523,7 @@ ViewProviderOffset::~ViewProviderOffset()
 
 void ViewProviderOffset::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    QAction* act;
-    act = menu->addAction(QObject::tr("Edit offset"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Default));
+    addDefaultAction(menu, QObject::tr("Edit offset"));
     PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
@@ -536,7 +533,7 @@ bool ViewProviderOffset::setEdit(int ModNum)
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         TaskOffset* offsetDlg = qobject_cast<TaskOffset*>(dlg);
         if (offsetDlg && offsetDlg->getObject() != this->getObject())
-            offsetDlg = 0; // another pad left open its task panel
+            offsetDlg = nullptr; // another pad left open its task panel
         if (dlg && !offsetDlg) {
             if (dlg->canClose())
                 Gui::Control().closeDialog();
@@ -610,9 +607,7 @@ ViewProviderThickness::~ViewProviderThickness()
 
 void ViewProviderThickness::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    QAction* act;
-    act = menu->addAction(QObject::tr("Edit thickness"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Default));
+    addDefaultAction(menu, QObject::tr("Edit thickness"));
     PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
@@ -622,7 +617,7 @@ bool ViewProviderThickness::setEdit(int ModNum)
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         TaskThickness* thicknessDlg = qobject_cast<TaskThickness*>(dlg);
         if (thicknessDlg && thicknessDlg->getObject() != this->getObject())
-            thicknessDlg = 0; // another pad left open its task panel
+            thicknessDlg = nullptr; // another pad left open its task panel
         if (dlg && !thicknessDlg) {
             if (dlg->canClose())
                 Gui::Control().closeDialog();

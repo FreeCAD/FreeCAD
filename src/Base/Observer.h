@@ -25,15 +25,12 @@
 #ifndef BASE_OBSERVER_H
 #define BASE_OBSERVER_H
 
-// Std. configurations
-
-#include <assert.h>
-#include <set>
+#include <cassert>
 #include <cstring>
-#include <cstdio>
-#include <exception>
-#include "Exception.h"
+#include <set>
 #include "Console.h"
+#include "Exception.h"
+
 
 namespace Base
 {
@@ -88,7 +85,7 @@ public:
    * and returns the name of the observer. Needed to use the Get
    * Method of the Subject.
    */
-  virtual const char *Name(void){return 0L;}
+  virtual const char *Name(){return nullptr;}
 };
 
 /** Subject class
@@ -202,7 +199,7 @@ public:
         return *Iter;
     }
 
-    return 0L;
+    return nullptr;
   }
 
   /** Clears the list of all registered observers.

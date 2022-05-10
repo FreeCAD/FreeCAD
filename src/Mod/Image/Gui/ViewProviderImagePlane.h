@@ -20,11 +20,12 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef IMAGE_ViewProviderImagePlane_H
 #define IMAGE_ViewProviderImagePlane_H
 
 #include <Gui/ViewProviderGeometryObject.h>
+#include <Mod/Image/ImageGlobal.h>
+
 
 class SoCoordinate3;
 class SoDrawStyle;

@@ -98,7 +98,7 @@ void GeometryStringExtensionPy::setValue(Py::String value)
 
 PyObject *GeometryStringExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int GeometryStringExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

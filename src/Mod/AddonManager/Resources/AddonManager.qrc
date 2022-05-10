@@ -1,5 +1,6 @@
 <RCC>
     <qresource>
+        <file>icons/preferences-addon_manager.svg</file>
         <file>icons/3D_Printing_Tools_workbench_icon.svg</file>
         <file>icons/A2plus_workbench_icon.svg</file>
         <file>icons/AirPlaneDesign_workbench_icon.svg</file>
@@ -61,6 +62,8 @@
         <file>icons/WebTools_workbench_icon.svg</file>
         <file>icons/workfeature_workbench_icon.svg</file>
         <file>icons/yaml-workspace_workbench_icon.svg</file>
+        <file>icons/expanded_view.svg</file>
+        <file>icons/compact_view.svg</file>
         <file>translations/AddonManager_af.qm</file>
         <file>translations/AddonManager_ar.qm</file>
         <file>translations/AddonManager_ca.qm</file>
@@ -98,5 +101,8 @@
         <file>translations/AddonManager_vi.qm</file>
         <file>translations/AddonManager_zh-CN.qm</file>
         <file>translations/AddonManager_zh-TW.qm</file>
+        <file>translations/AddonManager_es-AR.qm</file>
+        <file>translations/AddonManager_bg.qm</file>
+        <file>translations/AddonManager_ka.qm</file>
     </qresource>
 </RCC>

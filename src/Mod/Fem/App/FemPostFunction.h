@@ -20,23 +20,24 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef Fem_FemPostFunction_H
 #define Fem_FemPostFunction_H
 
-#include "FemPostObject.h"
-#include <App/PropertyUnits.h>
-
-#include <vtkSmartPointer.h>
+#include <vtkBoundingBox.h>
 #include <vtkImplicitFunction.h>
 #include <vtkPlane.h>
 #include <vtkSphere.h>
-#include <vtkBoundingBox.h>
+#include <vtkSmartPointer.h>
+
+#include <App/PropertyUnits.h>
+
+#include "FemPostObject.h"
+
 
 namespace Fem
 {
 
-class AppFemExport FemPostFunction : public App::DocumentObject
+class FemExport FemPostFunction : public App::DocumentObject
 {
     PROPERTY_HEADER(Fem::FemPostFunction);
 
@@ -62,7 +63,7 @@ protected:
     vtkBoundingBox                        m_boundingBox;
 };
 
-class AppFemExport FemPostFunctionProvider : public App::DocumentObject {
+class FemExport FemPostFunctionProvider : public App::DocumentObject {
 
     PROPERTY_HEADER(Fem::FemPostFunctionProvider);
 
@@ -83,7 +84,7 @@ protected:
 
 // ---------------------------------------------------------------------------
 
-class AppFemExport FemPostPlaneFunction : public FemPostFunction
+class FemExport FemPostPlaneFunction : public FemPostFunction
 {
     PROPERTY_HEADER(Fem::FemPostPlaneFunction);
 
@@ -101,13 +102,15 @@ public:
 
 protected:
     virtual void onChanged(const App::Property* prop);
+    /// get called after a document has been fully restored
+    virtual void onDocumentRestored();
 
     vtkSmartPointer<vtkPlane> m_plane;
 };
 
 // ---------------------------------------------------------------------------
 
-class AppFemExport FemPostSphereFunction : public FemPostFunction
+class FemExport FemPostSphereFunction : public FemPostFunction
 {
     PROPERTY_HEADER(Fem::FemPostSphereFunction);
 

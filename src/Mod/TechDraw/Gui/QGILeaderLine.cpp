@@ -37,7 +37,7 @@
 #include <QPaintDevice>
 #include <QSvgGenerator>
 #include <QVector2D>
-#include <math.h>
+#include <cmath>
 #endif
 
 #include <App/Application.h>

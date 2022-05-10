@@ -38,7 +38,7 @@ const char* ArrowPropEnum::ArrowTypeEnums[]= { "Filled Arrow",
                                "Fork",
                                "Filled Triangle",
                                "None",
-                               NULL};
+                               nullptr};
 
 const std::vector<std::string> ArrowPropEnum::ArrowTypeIcons = { ":icons/arrowfilled.svg",
                                             ":icons/arrowopen.svg",

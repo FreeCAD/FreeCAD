@@ -23,11 +23,18 @@
 #ifndef TECHDRAWGUI_QGVIEW_H
 #define TECHDRAWGUI_QGVIEW_H
 
-#include <QGraphicsView>
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QGraphicsScene>
+#include <QGraphicsView>
 #include <QLabel>
+#include <QPainterPath>
 
 class QTemporaryFile;
+
+namespace App {
+class DocumentObject;
+}
 
 namespace TechDraw {
 class DrawView;
@@ -66,7 +73,7 @@ class TechDrawGuiExport QGVPage : public QGraphicsView
 public:
     enum RendererType { Native, OpenGL, Image };
 
-    QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent = 0);
+    QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent = nullptr);
     virtual ~QGVPage();
 
     void setRenderer(RendererType type = Native);
@@ -93,6 +100,10 @@ public:
     QGIView* findParent(QGIView *) const;
 
     void addBalloonToParent(QGIViewBalloon* balloon, QGIView* parent);
+    void createBalloon(QPointF origin, TechDraw::DrawViewPart *parent);
+    void startBalloonPlacing(void);
+    void cancelBalloonPlacing(void);
+
     void addDimToParent(QGIViewDimension* dim, QGIView* parent);
     void addLeaderToParent(QGILeaderLine* lead, QGIView* parent);
 
@@ -118,6 +129,10 @@ public:
     void saveSvg(QString filename);
     void postProcessXml(QTemporaryFile& tempFile, QString filename, QString pagename);
 
+    void makeGrid(int width, int height, double step);
+    void showGrid(bool state) {m_showGrid = state;}
+    void updateViewport(void) {viewport()->repaint();}
+
 public Q_SLOTS:
     void setHighQualityAntialiasing(bool highQualityAntialiasing);
 
@@ -140,6 +155,13 @@ protected:
 
     QGITemplate *pageTemplate;
 
+    double getDevicePixelRatio() const;
+    QPixmap prepareCursorPixmap(const char *iconName, QPoint &hotspot);
+
+    void activateCursor(QCursor cursor);
+    void resetCursor();
+    virtual void drawForeground(QPainter *painter, const QRectF &rect) override;
+
 private:
     RendererType m_renderer;
 
@@ -153,12 +175,17 @@ private:
     double m_zoomIncrement;
     int m_reversePan;
     int m_reverseScroll;
+
+    bool balloonPlacing;
     QLabel *balloonCursor;
     QPoint balloonCursorPos;
-    void cancelBalloonPlacing(void);
+    QPoint balloonHotspot;
 
     QPoint panOrigin;
     bool panningActive;
+
+    bool m_showGrid;
+    QPainterPath m_gridPath;
 };
 
 } // namespace 

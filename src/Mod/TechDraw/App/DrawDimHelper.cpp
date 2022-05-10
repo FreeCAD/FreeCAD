@@ -27,7 +27,7 @@
 # include <cstring>
 # include <cstdlib>
 #include <cmath>
-#include <float.h>
+#include <cfloat>
 #include <string>
 # include <exception>
 
@@ -85,7 +85,7 @@ hTrimCurve::hTrimCurve(Handle(Geom2d_Curve) hCurveIn,
     //just a convenient struct for now.
 }
 
-//All this OCC math is being done on on edges(&vertices) that have been through the center/scale/mirror process.
+//All this OCC math is being done on edges(&vertices) that have been through the center/scale/mirror process.
 
 //TODO: this needs to be exposed to Python
 void DrawDimHelper::makeExtentDim(DrawViewPart* dvp,
@@ -126,8 +126,8 @@ void DrawDimHelper::makeExtentDim(DrawViewPart* dvp,
     std::vector<std::string> cvTags;
     std::string tag0;
     std::string tag1;
-    TechDraw::Vertex* v0 = nullptr;
-    TechDraw::Vertex* v1 = nullptr;
+    TechDraw::VertexPtr v0;
+    TechDraw::VertexPtr v1;
     if (subElements.size() > 1) {
         int idx0 = DrawUtil::getIndexFromName(subElements[0]);
         int idx1 = DrawUtil::getIndexFromName(subElements[1]);
@@ -166,14 +166,14 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax(DrawViewPart* dv
     gp_Ax3 projAx3(stdOrg, stdZ, stdX);
     gp_Pln projPlane(projAx3);                     // OZX
 
-    std::vector<BaseGeom*> bgList;
+    BaseGeomPtrVector bgList;
     if (!edgeNames.empty()) {
         for (auto& n: edgeNames) {
             if (!n.empty()) {
                 std::string geomType = DrawUtil::getGeomTypeFromName(n);
                 if (!n.empty() && (geomType == "Edge")) {
                     int i = DrawUtil::getIndexFromName(n);
-                    BaseGeom* bg = dvp->getGeomByIndex(i);
+                    BaseGeomPtr bg = dvp->getGeomByIndex(i);
                     if (bg != nullptr) {
                         bgList.push_back(bg);
                     }
@@ -182,7 +182,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax(DrawViewPart* dv
         }
     }
 
-    std::vector<BaseGeom*> selEdges = bgList;
+    BaseGeomPtrVector selEdges = bgList;
     if (selEdges.empty()) {
         selEdges = dvp->getEdgeGeometry();                  //do the whole View
     }
@@ -194,7 +194,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawDimHelper::minMax(DrawViewPart* dv
     std::vector<hTrimCurve> hTCurve2dList;
     for (auto& bg: selEdges) {
         TopoDS_Edge e = bg->occEdge;
-        BRepBndLib::Add(e, edgeBbx);
+        BRepBndLib::AddOptimal(e, edgeBbx);
         double first = 0.0;
         double last = 0.0;
         Handle(Geom_Curve) hCurve = BRep_Tool::Curve(e, first, last);
@@ -343,7 +343,7 @@ DrawViewDimension* DrawDimHelper::makeDistDim(DrawViewPart* dvp,
     TechDraw::DrawPage* page = dvp->findParentPage();
     std::string pageName = page->getNameInDocument();
 
-    TechDraw::DrawViewDimension *dim = 0;
+    TechDraw::DrawViewDimension *dim = nullptr;
     App::Document* doc = dvp->getDocument();
     std::string dimName = doc->getUniqueObjectName("Dimension");
     if (extent) {

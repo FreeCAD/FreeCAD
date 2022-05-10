@@ -20,20 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_VIEWPROVIDERWELD_H
 #define DRAWINGGUI_VIEWPROVIDERWELD_H
 
 #include <Gui/ViewProviderFeature.h>
 
 #include "ViewProviderDrawingView.h"
-#include <Mod/TechDraw/App/DrawView.h>
-#include <Mod/TechDraw/App/DrawWeldSymbol.h>
 #include <Mod/TechDraw/App/DrawTile.h>
+#include <Mod/TechDraw/App/DrawWeldSymbol.h>
 
 
 namespace TechDrawGui {
-
 
 class TechDrawGuiExport ViewProviderWeld : public ViewProviderDrawingView
 {

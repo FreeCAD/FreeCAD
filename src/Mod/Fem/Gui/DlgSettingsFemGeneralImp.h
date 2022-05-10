@@ -36,7 +36,7 @@ class DlgSettingsFemGeneralImp : public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    DlgSettingsFemGeneralImp( QWidget* parent = 0 );
+    DlgSettingsFemGeneralImp( QWidget* parent = nullptr );
     ~DlgSettingsFemGeneralImp();
 
 protected:

@@ -1,24 +1,24 @@
 # -*- coding: utf-8 -*-
-#***************************************************************************
-#*   Copyright (c) 2016 Christoph Blaue <blaue@fh-westkueste.de>           *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *   Copyright (c) 2016 Christoph Blaue <blaue@fh-westkueste.de>           *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 
 # 03-24-2021  Sliptonic:  I've removed the PathUtils import and job lookup
 # post processors shouldn't be reaching back to the job.  This can cause a
@@ -30,7 +30,7 @@ import time
 from PathScripts import PostUtils
 import math
 
-TOOLTIP = '''Post processor for Maho M 600E mill
+TOOLTIP = """Post processor for Maho M 600E mill
 
 Machines with Philips or Heidenhain control should be very easy to adapt.
 
@@ -39,18 +39,18 @@ No programming experience required. This can make a generated g-code
 program more readable and since older machines have very
 limited memory it seems sensible to reduce the number of commands and
 parameters, like e.g. suppress the units in the header and at every hop.
-'''
+"""
 
-#***************************************************************************
+# ***************************************************************************
 # user editable stuff here
 
 COMMAND_SPACE = " "
 
-MACHINE_NAME = 'Maho 600E'
-CORNER_MIN = {'x': -51.877, 'y': 0, 'z': 0}           # use metric for internal units
-CORNER_MAX = {'x': 591.5,  'y': 391.498,  'z': 391.5} # use metric for internal units
+MACHINE_NAME = "Maho 600E"
+CORNER_MIN = {"x": -51.877, "y": 0, "z": 0}  # use metric for internal units
+CORNER_MAX = {"x": 591.5, "y": 391.498, "z": 391.5}  # use metric for internal units
 
-UNITS = 'G21'  # use metric units
+UNITS = "G21"  # use metric units
 # possible values:
 #                  'G20'     for inches,
 #                  'G21'     for metric units.
@@ -63,7 +63,7 @@ UNITS_INCLUDED = False  # do not include the units in the GCode program
 # usually the units to be used are defined in the machine constants and almost never change,
 # so this can be set to False.
 
-COMMENT = ''
+COMMENT = ""
 # possible values:
 #                  ';'        centroid or sinumerik comment symbol,
 #                  ''         leave blank for bracketed comments style "(comment comment comment)"
@@ -108,7 +108,7 @@ MODAL = True
 #                            G1 X15 Y30
 
 # suppress these parameters if they haven't changed
-MODALPARAMS = ['X', 'Y', 'Z', 'S', 'F']
+MODALPARAMS = ["X", "Y", "Z", "S", "F"]
 # possible values:
 #                  any list of GCode parameters
 # if a parameter doesn't change from one line to the next ( or even further) it is suppressed.
@@ -126,7 +126,9 @@ SWAP_G2_G3 = True  # some machines have the sign of the X-axis swapped, so they 
 # this might be special with some maho machines or even with mine and
 # might be changed in the machine constants as well
 
-SWAP_Y_Z = True   # machines with an angle milling head do not switch axes, so we do it here
+SWAP_Y_Z = (
+    True  # machines with an angle milling head do not switch axes, so we do it here
+)
 # possible values:
 #                  True      if Y and Z values have to be swapped
 #                  False     do not swap
@@ -161,8 +163,12 @@ RADIUS_COMMENT = True
 # and never with the comment symbol, because the radius might appear in
 # the middle of a line.
 
-GCODE_MAP = {'M1': 'M0', 'M6': 'M66', 'G20': 'G70',
-             'G21': 'G71'}  # cb: this could be used to swap G2/G3
+GCODE_MAP = {
+    "M1": "M0",
+    "M6": "M66",
+    "G20": "G70",
+    "G21": "G71",
+}  # cb: this could be used to swap G2/G3
 # possible values:
 # Comma separated list of values of the form 'sourceGCode':'targetGCode'
 #
@@ -200,43 +206,56 @@ SUPPRESS_ZERO_FEED = True
 # def mkHeader(selection):
 #   return ''
 
-parser = argparse.ArgumentParser(prog='philips', add_help=False)
-parser.add_argument('--header', action='store_true', help='create header output')
-parser.add_argument('--no-header', action='store_true', help='suppress header output')
+parser = argparse.ArgumentParser(prog="philips", add_help=False)
+parser.add_argument("--header", action="store_true", help="create header output")
+parser.add_argument("--no-header", action="store_true", help="suppress header output")
 
-parser.add_argument('--comments', action='store_true', help='create comment output')
-parser.add_argument('--no-comments', action='store_true', help='suppress comment output')
+parser.add_argument("--comments", action="store_true", help="create comment output")
+parser.add_argument(
+    "--no-comments", action="store_true", help="suppress comment output"
+)
 
-parser.add_argument('--line-numbers', action='store_true', help='prefix with line numbers')
-parser.add_argument('--no-line-numbers', action='store_true', help='omit line number prefixes')
+parser.add_argument(
+    "--line-numbers", action="store_true", help="prefix with line numbers"
+)
+parser.add_argument(
+    "--no-line-numbers", action="store_true", help="omit line number prefixes"
+)
 
-parser.add_argument('--show-editor', action='store_true', help='pop up editor before writing output')
-parser.add_argument('--no-show-editor', action='store_true', help='don\'t pop up editor before writing output')
+parser.add_argument(
+    "--show-editor", action="store_true", help="pop up editor before writing output"
+)
+parser.add_argument(
+    "--no-show-editor",
+    action="store_true",
+    help="don't pop up editor before writing output",
+)
 
 TOOLTIP_ARGS = parser.format_help()
 
+
 def processArguments(argstring):
-    # pylint: disable=global-statement
     global LINENUMBERS
     global SHOW_EDITOR
 
     for arg in argstring.split():
-        if arg == '--line-numbers':
+        if arg == "--line-numbers":
             LINENUMBERS = True
-        elif arg == '--no-line-numbers':
+        elif arg == "--no-line-numbers":
             LINENUMBERS = False
-        elif arg == '--show-editor':
+        elif arg == "--show-editor":
             SHOW_EDITOR = True
-        elif arg == '--no-show-editor':
+        elif arg == "--no-show-editor":
             SHOW_EDITOR = False
+
 
 def mkHeader(selection):
     # job = PathUtils.findParentJob(selection[0])
-  # this is within a function, because otherwise filename and time don't change when changing the FreeCAD project
+    # this is within a function, because otherwise filename and time don't change when changing the FreeCAD project
     #  now = datetime.datetime.now()
     now = time.strftime("%Y-%m-%d %H:%M")
     originfile = FreeCAD.ActiveDocument.FileName
-    headerNoNumber = "%PM\n"     # this line gets no linenumber
+    headerNoNumber = "%PM\n"  # this line gets no linenumber
     # if hasattr(job, "Description"):
     #     description = job.Description
     # else:
@@ -245,18 +264,19 @@ def mkHeader(selection):
     # this line gets no linenumber, it is already a specially numbered
     headerNoNumber += "N9XXX (" + description + ", " + now + ")\n"
     header = ""
-#  header += "(Output Time:" + str(now) + ")\n"
+    #  header += "(Output Time:" + str(now) + ")\n"
     header += "(" + originfile + ")\n"
-#    header += "(Exported by FreeCAD)\n"
+    #    header += "(Exported by FreeCAD)\n"
     header += "(Post Processor: " + __name__ + ")\n"
-#    header += "(Target machine: " + MACHINE_NAME + ")\n"
-    header += "G18\n"                 # Select XY plane
-    header += "G90\n"                 # Absolute coordinates
-    header += "G51\n"                 # Reset Zero
-    header += "G52 (ersetze G55-G59)" # set zero
+    #    header += "(Target machine: " + MACHINE_NAME + ")\n"
+    header += "G18\n"  # Select XY plane
+    header += "G90\n"  # Absolute coordinates
+    header += "G51\n"  # Reset Zero
+    header += "G52 (ersetze G55-G59)"  # set zero
     return headerNoNumber + linenumberify(header)
 
-GCODE_HEADER = ""   # do not terminate with a newline, it is inserted by linenumberify
+
+GCODE_HEADER = ""  # do not terminate with a newline, it is inserted by linenumberify
 # GCODE_HEADER = "G40 G90"   # do not terminate with a newline, it is inserted by linenumberify
 # possible values:
 #                 any sequence of GCode, multiple lines are welcome
@@ -271,11 +291,11 @@ GCODE_FOOTER = "M30"
 # linenumbers are inserted automatically if LINENUMBERS is True
 
 # don't edit with the stuff below the next line unless you know what you're doing :)
-#***************************************************************************
+# ***************************************************************************
 
 linenr = 0  # variable has to be global because it is used by linenumberify and export
 
-if open.__module__ in ['__builtin__','io']:
+if open.__module__ in ["__builtin__", "io"]:
     pythonopen = open
 
 
@@ -287,8 +307,21 @@ def angleUnder180(command, lastX, lastY, x, y, i, j):
     # (or on) the connection line
     middleOfLineY = (lastY + y) / 2
     centerY = lastY + j
-    if ((command == 'G2' and ((lastX == x and ((lastY < y and i >= 0) or (lastY > y and i <= 0))) or (lastX < x and centerY <= middleOfLineY) or (lastX > x and centerY >= middleOfLineY)))
-            or (command == 'G3' and ((lastX == x and ((lastY < y and i <= 0) or (lastY > y and i >= 0))) or (lastX < x and centerY >= middleOfLineY) or (lastX > x and centerY <= middleOfLineY)))):
+    if (
+        command == "G2"
+        and (
+            (lastX == x and ((lastY < y and i >= 0) or (lastY > y and i <= 0)))
+            or (lastX < x and centerY <= middleOfLineY)
+            or (lastX > x and centerY >= middleOfLineY)
+        )
+    ) or (
+        command == "G3"
+        and (
+            (lastX == x and ((lastY < y and i <= 0) or (lastY > y and i >= 0)))
+            or (lastX < x and centerY >= middleOfLineY)
+            or (lastX > x and centerY <= middleOfLineY)
+        )
+    ):
         return True
     else:
         return False
@@ -300,20 +333,20 @@ def mapGCode(command):
     else:
         mappedCommand = command
     if SWAP_G2_G3:
-        if command == 'G2':
-            mappedCommand = 'G3'
-        elif command == 'G3':
-            mappedCommand = 'G2'
+        if command == "G2":
+            mappedCommand = "G3"
+        elif command == "G3":
+            mappedCommand = "G2"
     return mappedCommand
 
 
 def linenumberify(GCodeString):
     # add a linenumber at every beginning of line
-    global linenr # pylint: disable=global-statement
+    global linenr
     if not LINENUMBERS:
         result = GCodeString + "\n"
     else:
-        result = ''
+        result = ""
         strList = GCodeString.split("\n")
         for s in strList:
             if s:
@@ -326,8 +359,8 @@ def linenumberify(GCodeString):
                 result += s + "\n"
     return result
 
+
 def export(objectslist, filename, argstring):
-    # pylint: disable=unused-argument,global-statement
     global UNITS
     global linenr
 
@@ -335,14 +368,32 @@ def export(objectslist, filename, argstring):
     lastX = 0
     lastY = 0
     lastZ = 0
-    params = ['X', 'Y', 'Z', 'A', 'B', 'I', 'J', 'F', 'H', 'S', 'T',
-              'Q', 'R', 'L']  # Using XY plane most of the time so skipping K
+    params = [
+        "X",
+        "Y",
+        "Z",
+        "A",
+        "B",
+        "I",
+        "J",
+        "F",
+        "H",
+        "S",
+        "T",
+        "Q",
+        "R",
+        "L",
+    ]  # Using XY plane most of the time so skipping K
     modalParamsDict = dict()
     for mp in MODALPARAMS:
         modalParamsDict[mp] = None
     for obj in objectslist:
         if not hasattr(obj, "Path"):
-            print("the object " + obj.Name + " is not a path. Please select only path and Compounds.")
+            print(
+                "the object "
+                + obj.Name
+                + " is not a path. Please select only path and Compounds."
+            )
             return
     myMachine = None
     for pathobj in objectslist:
@@ -356,23 +407,23 @@ def export(objectslist, filename, argstring):
     if myMachine is None:
         print("philips_post: No machine found in this selection")
 
-    gcode = ''
+    gcode = ""
     gcode += mkHeader(objectslist)
     gcode += linenumberify(GCODE_HEADER)
     if UNITS_INCLUDED:
         gcode += linenumberify(mapGCode(UNITS))
     lastcommand = None
     for obj in objectslist:
-        if hasattr(obj, 'Comment'):
-            gcode += linenumberify('(' + obj.Comment + ')')
+        if hasattr(obj, "Comment"):
+            gcode += linenumberify("(" + obj.Comment + ")")
         for c in obj.Path.Commands:
             outstring = []
             command = c.Name
-            if command != 'G0':
-                command = command.replace('G0','G') # normalize: G01 -> G1
+            if command != "G0":
+                command = command.replace("G0", "G")  # normalize: G01 -> G1
 
-            if (command != UNITS or UNITS_INCLUDED):
-                if command[0] == '(':
+            if command != UNITS or UNITS_INCLUDED:
+                if command[0] == "(":
                     command = PostUtils.fcoms(command, COMMENT)
                 # the mapping is done for output only! For internal things we
                 # still use the old value.
@@ -380,63 +431,90 @@ def export(objectslist, filename, argstring):
 
                 if not MODAL or command != lastcommand:
                     outstring.append(mappedCommand)
-#               if MODAL == True:
-# #\better:   append iff MODAL == False
-#                   if command == lastcommand:
-#                       outstring.pop(0)
+                #               if MODAL == True:
+                # #\better:   append iff MODAL == False
+                #                   if command == lastcommand:
+                #                       outstring.pop(0)
                 if len(c.Parameters) >= 1:
                     for param in params:
                         # test   print("param: " + param + ",  command: " + command)
                         if param in c.Parameters:
-                            if (param in MODALPARAMS) and (modalParamsDict[str(param)] == c.Parameters[str(param)]):
+                            if (param in MODALPARAMS) and (
+                                modalParamsDict[str(param)] == c.Parameters[str(param)]
+                            ):
                                 # do nothing or append white space
-                                outstring.append('  ')
-                            elif param == 'F':
-                                feed = c.Parameters['F']
+                                outstring.append("  ")
+                            elif param == "F":
+                                feed = c.Parameters["F"]
                                 if SUPPRESS_ZERO_FEED and feed == 0:
                                     pass
                                 else:
                                     outstring.append(
-                                        param + PostUtils.fmt(feed, FEED_DECIMALS, UNITS))
-                            elif param == 'H':
-                                outstring.append(
-                                    param + str(int(c.Parameters['H'])))
-                            elif param == 'S':
+                                        param
+                                        + PostUtils.fmt(feed, FEED_DECIMALS, UNITS)
+                                    )
+                            elif param == "H":
+                                outstring.append(param + str(int(c.Parameters["H"])))
+                            elif param == "S":
                                 # rpm is unitless-therefore I had to 'fake it
                                 # out' by using metric units which don't get
                                 # converted from entered value
                                 outstring.append(
-                                    param + PostUtils.fmt(c.Parameters['S'], SPINDLE_DECIMALS, 'G21'))
-                            elif param == 'T':
-                                outstring.append(
-                                    param + str(int(c.Parameters['T'])))
-                            elif param == 'I' and (command == 'G2' or command == 'G3'):
-                                #test print("param = 'I'")
+                                    param
+                                    + PostUtils.fmt(
+                                        c.Parameters["S"], SPINDLE_DECIMALS, "G21"
+                                    )
+                                )
+                            elif param == "T":
+                                outstring.append(param + str(int(c.Parameters["T"])))
+                            elif param == "I" and (command == "G2" or command == "G3"):
+                                # test print("param = 'I'")
                                 # this is the special case for circular paths,
                                 # where relative coordinates have to be changed
                                 # to absolute
-                                i = c.Parameters['I']
+                                i = c.Parameters["I"]
                                 # calculate the radius r
-                                j = c.Parameters['J']
+                                j = c.Parameters["J"]
                                 r = math.sqrt(i**2 + j**2)
-                                if USE_RADIUS_IF_POSSIBLE and angleUnder180(command, lastX, lastY, c.Parameters['X'], c.Parameters['Y'], i, j):
+                                if USE_RADIUS_IF_POSSIBLE and angleUnder180(
+                                    command,
+                                    lastX,
+                                    lastY,
+                                    c.Parameters["X"],
+                                    c.Parameters["Y"],
+                                    i,
+                                    j,
+                                ):
                                     outstring.append(
-                                        'R' + PostUtils.fmt(r, AXIS_DECIMALS, UNITS))
+                                        "R" + PostUtils.fmt(r, AXIS_DECIMALS, UNITS)
+                                    )
                                 else:
                                     if RADIUS_COMMENT:
                                         outstring.append(
-                                            '(R' + PostUtils.fmt(r, AXIS_DECIMALS, UNITS) + ')')
+                                            "(R"
+                                            + PostUtils.fmt(r, AXIS_DECIMALS, UNITS)
+                                            + ")"
+                                        )
                                     if ABSOLUTE_CIRCLE_CENTER:
                                         i += lastX
                                     outstring.append(
-                                        param + PostUtils.fmt(i, AXIS_DECIMALS, UNITS))
-                            elif param == 'J' and (command == 'G2' or command == 'G3'):
+                                        param + PostUtils.fmt(i, AXIS_DECIMALS, UNITS)
+                                    )
+                            elif param == "J" and (command == "G2" or command == "G3"):
                                 # this is the special case for circular paths,
                                 # where incremental center has to be changed to
                                 # absolute center
-                                i = c.Parameters['I']
-                                j = c.Parameters['J']
-                                if USE_RADIUS_IF_POSSIBLE and angleUnder180(command, lastX, lastY, c.Parameters['X'], c.Parameters['Y'], i, j):
+                                i = c.Parameters["I"]
+                                j = c.Parameters["J"]
+                                if USE_RADIUS_IF_POSSIBLE and angleUnder180(
+                                    command,
+                                    lastX,
+                                    lastY,
+                                    c.Parameters["X"],
+                                    c.Parameters["Y"],
+                                    i,
+                                    j,
+                                ):
                                     # R is handled with the I parameter, here:
                                     # do nothing at all, keep the structure as
                                     # with I command
@@ -447,19 +525,36 @@ def export(objectslist, filename, argstring):
                                     if SWAP_Y_Z:
                                         # we have to swap j and k as well
                                         outstring.append(
-                                            'K' + PostUtils.fmt(j, AXIS_DECIMALS, UNITS))
+                                            "K" + PostUtils.fmt(j, AXIS_DECIMALS, UNITS)
+                                        )
                                     else:
                                         outstring.append(
-                                            param + PostUtils.fmt(j, AXIS_DECIMALS, UNITS))
-                            elif param == 'K' and (command == 'G2' or command == 'G3'):
+                                            param
+                                            + PostUtils.fmt(j, AXIS_DECIMALS, UNITS)
+                                        )
+                            elif param == "K" and (command == "G2" or command == "G3"):
                                 # this is the special case for circular paths,
                                 # where incremental center has to be changed to
                                 # absolute center
                                 outstring.append(
-                                    '(' + param + PostUtils.fmt(c.Parameters[param], AXIS_DECIMALS, UNITS) + ')')
-                                z = c.Parameters['Z'] # pylint: disable=unused-variable
-                                k = c.Parameters['K']
-                                if USE_RADIUS_IF_POSSIBLE and angleUnder180(command, lastX, lastY, c.Parameters['X'], c.Parameters['Y'], i, j):
+                                    "("
+                                    + param
+                                    + PostUtils.fmt(
+                                        c.Parameters[param], AXIS_DECIMALS, UNITS
+                                    )
+                                    + ")"
+                                )
+                                z = c.Parameters["Z"]
+                                k = c.Parameters["K"]
+                                if USE_RADIUS_IF_POSSIBLE and angleUnder180(
+                                    command,
+                                    lastX,
+                                    lastY,
+                                    c.Parameters["X"],
+                                    c.Parameters["Y"],
+                                    i,
+                                    j,
+                                ):
                                     # R is handled with the I parameter, here:
                                     # do nothing at all, keep the structure as
                                     # with I command
@@ -470,47 +565,60 @@ def export(objectslist, filename, argstring):
                                 if SWAP_Y_Z:
                                     # we have to swap j and k as well
                                     outstring.append(
-                                        'J' + PostUtils.fmt(j, AXIS_DECIMALS, UNITS))
+                                        "J" + PostUtils.fmt(j, AXIS_DECIMALS, UNITS)
+                                    )
                                 else:
                                     outstring.append(
-                                        param + PostUtils.fmt(j, AXIS_DECIMALS, UNITS))
-                            elif param == 'Y' and SWAP_Y_Z:
+                                        param + PostUtils.fmt(j, AXIS_DECIMALS, UNITS)
+                                    )
+                            elif param == "Y" and SWAP_Y_Z:
                                 outstring.append(
-                                    'Z' + PostUtils.fmt(c.Parameters[param], AXIS_DECIMALS, UNITS))
-                            elif param == 'Z' and SWAP_Y_Z:
+                                    "Z"
+                                    + PostUtils.fmt(
+                                        c.Parameters[param], AXIS_DECIMALS, UNITS
+                                    )
+                                )
+                            elif param == "Z" and SWAP_Y_Z:
                                 outstring.append(
-                                    'Y' + PostUtils.fmt(c.Parameters[param], AXIS_DECIMALS, UNITS))
+                                    "Y"
+                                    + PostUtils.fmt(
+                                        c.Parameters[param], AXIS_DECIMALS, UNITS
+                                    )
+                                )
                             else:
-# To Do: suppress unknown commands, if this is done here, all X parameters are suppressed
+                                # To Do: suppress unknown commands, if this is done here, all X parameters are suppressed
                                 # this is an unknown command, don't create GCode for it
-#                                print("parameter " + param + " for command " + command + " ignored")
+                                #                                print("parameter " + param + " for command " + command + " ignored")
                                 outstring.append(
-                                    param + PostUtils.fmt(c.Parameters[param], AXIS_DECIMALS, UNITS))
+                                    param
+                                    + PostUtils.fmt(
+                                        c.Parameters[param], AXIS_DECIMALS, UNITS
+                                    )
+                                )
 
                             if param in MODALPARAMS:
-                                modalParamsDict[str(param)] = c.Parameters[
-                                    param]
+                                modalParamsDict[str(param)] = c.Parameters[param]
                     # save the last X, Y, Z values
-                    if 'X' in c.Parameters:
-                        lastX = c.Parameters['X']
-                    if 'Y' in c.Parameters:
-                        lastY = c.Parameters['Y']
-                    if 'Z' in c.Parameters:
-                        lastZ = c.Parameters['Z']
+                    if "X" in c.Parameters:
+                        lastX = c.Parameters["X"]
+                    if "Y" in c.Parameters:
+                        lastY = c.Parameters["Y"]
+                    if "Z" in c.Parameters:
+                        lastZ = c.Parameters["Z"]
 
-                outstr = ''
+                outstr = ""
                 for w in outstring:
                     outstr += w + COMMAND_SPACE
-                outstr = outstr.replace(']', '')
-                outstr = outstr.replace('[', '')
-                outstr = outstr.replace("'", '')
-                outstr = outstr.replace(",", '.')
+                outstr = outstr.replace("]", "")
+                outstr = outstr.replace("[", "")
+                outstr = outstr.replace("'", "")
+                outstr = outstr.replace(",", ".")
                 if LINENUMBERS:
                     gcode += "N" + str(linenr) + " "
                     linenr += LINENUMBER_INCREMENT
-                gcode += outstr + '\n'
+                gcode += outstr + "\n"
                 lastcommand = c.Name
-    gcode = gcode.replace("_","-")
+    gcode = gcode.replace("_", "-")
     gcode += linenumberify(GCODE_FOOTER)
     if SHOW_EDITOR:
         PostUtils.editor(gcode)

@@ -49,7 +49,7 @@ std::string DrawViewAnnotationPy::representation(void) const
 
 PyObject *DrawViewAnnotationPy::getCustomAttributes(const char* ) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DrawViewAnnotationPy::setCustomAttributes(const char* , PyObject *)

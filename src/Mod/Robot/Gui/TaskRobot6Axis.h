@@ -51,7 +51,7 @@ class TaskRobot6Axis : public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    TaskRobot6Axis(Robot::RobotObject *pcRobotObject,QWidget *parent = 0);
+    TaskRobot6Axis(Robot::RobotObject *pcRobotObject,QWidget *parent = nullptr);
     ~TaskRobot6Axis();
 
     void setRobot(Robot::RobotObject *pcRobotObject);

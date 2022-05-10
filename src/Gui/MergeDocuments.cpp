@@ -23,17 +23,18 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <stack>
-# include <boost_bind_bind.hpp>
 #endif
-#include "MergeDocuments.h"
-#include <Base/Console.h>
-#include <Base/Reader.h>
-#include <Base/Writer.h>
+
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProvider.h>
+
+#include "MergeDocuments.h"
+
 
 using namespace Gui;
 namespace bp = boost::placeholders;
@@ -120,7 +121,7 @@ private:
 };
 }
 
-MergeDocuments::MergeDocuments(App::Document* doc) : stream(0), appdoc(doc)
+MergeDocuments::MergeDocuments(App::Document* doc) : stream(nullptr), appdoc(doc)
 {
     connectExport = doc->signalExportObjects.connect
         (boost::bind(&MergeDocuments::exportObject, this, bp::_1, bp::_2));
@@ -149,7 +150,7 @@ MergeDocuments::importObjects(std::istream& input)
     std::vector<App::DocumentObject*> objs = appdoc->importObjects(reader);
 
     delete this->stream;
-    this->stream = 0;
+    this->stream = nullptr;
 
     return objs;
 }

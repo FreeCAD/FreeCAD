@@ -116,7 +116,6 @@ class Edit(gui_base_original.Modifier):
     3 - when in editing, lineUi support clicking destination point
         by self.startEditing
         self.ui.lineUi()
-        self.ui.isRelative.show()
 
     Tracker selection
     -----------------
@@ -332,15 +331,13 @@ class Edit(gui_base_original.Modifier):
         # self.alignWorkingPlane()
 
 
-    def numericInput(self, v, numy=None, numz=None):
+    def numericInput(self, numx, numy, numz):
         """Execute callback by the toolbar to activate the update function.
 
         This function gets called by the toolbar
         or by the mouse click and activate the update function.
         """
-        if numy:
-            v = App.Vector(v, numy, numz)
-        self.endEditing(self.obj, self.editing, v)
+        self.endEditing(self.obj, self.editing, App.Vector(numx, numy, numz))
         App.ActiveDocument.recompute()
 
 
@@ -505,7 +502,6 @@ class Edit(gui_base_original.Modifier):
                                  + str(node_idx) + "\n")
 
         self.ui.lineUi()
-        self.ui.isRelative.show()
         self.editing = node_idx
         self.trackers[obj.Name][node_idx].off()
 
@@ -594,6 +590,7 @@ class Edit(gui_base_original.Modifier):
                 pointswithmarkers.append((poles[-1],knotmarkers[knotmarkeri]))
         for index, pwm in enumerate(pointswithmarkers):
             p, marker = pwm
+            p = obj.Placement.inverse().multVec(p)
             p = obj.getGlobalPlacement().multVec(p)
             self.trackers[obj.Name].append(trackers.editTracker(p, obj.Name,
                 index, obj.ViewObject.LineColor, marker=marker))

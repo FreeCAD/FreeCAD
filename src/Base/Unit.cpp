@@ -23,12 +23,12 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <sstream>
-# include <stdlib.h>
 #endif
 
 #include "Unit.h"
-#include "Quantity.h"
 #include "Exception.h"
+#include "Quantity.h"
+
 
 using namespace Base;
 
@@ -65,14 +65,14 @@ Unit::Unit(int8_t Length,
            int8_t Angle)
 {
     checkRange("unit",
-               (int32_t)Length,
-               (int32_t)Mass,
-               (int32_t)Time,
-               (int32_t)ElectricCurrent,
-               (int32_t)ThermodynamicTemperature,
-               (int32_t)AmountOfSubstance,
-               (int32_t)LuminousIntensity,
-               (int32_t)Angle);
+               Length,
+               Mass,
+               Time,
+               ElectricCurrent,
+               ThermodynamicTemperature,
+               AmountOfSubstance,
+               LuminousIntensity,
+               Angle);
 
     Sig.Length                   = Length;
     Sig.Mass                     = Mass;
@@ -107,7 +107,7 @@ Unit::Unit(const QString& expr)
     try {
         *this = Quantity::parse(expr).getUnit();
     }
-    catch (...) {
+    catch (const Base::ParserError&) {
         Sig.Length                   = 0;
         Sig.Mass                     = 0;
         Sig.Time                     = 0;
@@ -122,14 +122,14 @@ Unit::Unit(const QString& expr)
 Unit Unit::pow(signed char exp) const
 {
     checkRange("pow()",
-               (int32_t)Sig.Length * (int32_t)exp,
-               (int32_t)Sig.Mass * (int32_t)exp,
-               (int32_t)Sig.Time * (int32_t)exp,
-               (int32_t)Sig.ElectricCurrent * (int32_t)exp,
-               (int32_t)Sig.ThermodynamicTemperature * (int32_t)exp,
-               (int32_t)Sig.AmountOfSubstance * (int32_t)exp,
-               (int32_t)Sig.LuminousIntensity * (int32_t)exp,
-               (int32_t)Sig.Angle * (int32_t)exp);
+               Sig.Length * exp,
+               Sig.Mass * exp,
+               Sig.Time * exp,
+               Sig.ElectricCurrent * exp,
+               Sig.ThermodynamicTemperature * exp,
+               Sig.AmountOfSubstance * exp,
+               Sig.LuminousIntensity * exp,
+               Sig.Angle * exp);
 
     Unit result;
     result.Sig.Length                   = Sig.Length                    * exp;
@@ -144,7 +144,7 @@ Unit Unit::pow(signed char exp) const
     return result;
 }
 
-bool Unit::isEmpty(void)const
+bool Unit::isEmpty()const
 {
     return (this->Sig.Length == 0)
         && (this->Sig.Mass == 0)
@@ -172,14 +172,14 @@ bool Unit::operator ==(const Unit& that) const
 Unit Unit::operator *(const Unit &right) const
 {
     checkRange("* operator",
-               (int32_t)Sig.Length + (int32_t)right.Sig.Length,
-               (int32_t)Sig.Mass + (int32_t)right.Sig.Mass,
-               (int32_t)Sig.Time + (int32_t)right.Sig.Time,
-               (int32_t)Sig.ElectricCurrent + (int32_t)right.Sig.ElectricCurrent,
-               (int32_t)Sig.ThermodynamicTemperature + (int32_t)right.Sig.ThermodynamicTemperature,
-               (int32_t)Sig.AmountOfSubstance + (int32_t)right.Sig.AmountOfSubstance,
-               (int32_t)Sig.LuminousIntensity + (int32_t)right.Sig.LuminousIntensity,
-               (int32_t)Sig.Angle + (int32_t)right.Sig.Angle);
+               Sig.Length +right.Sig.Length,
+               Sig.Mass + right.Sig.Mass,
+               Sig.Time + right.Sig.Time,
+               Sig.ElectricCurrent + right.Sig.ElectricCurrent,
+               Sig.ThermodynamicTemperature + right.Sig.ThermodynamicTemperature,
+               Sig.AmountOfSubstance + right.Sig.AmountOfSubstance,
+               Sig.LuminousIntensity + right.Sig.LuminousIntensity,
+               Sig.Angle + right.Sig.Angle);
 
     Unit result;
     result.Sig.Length                   = Sig.Length                    + right.Sig.Length;
@@ -197,14 +197,14 @@ Unit Unit::operator *(const Unit &right) const
 Unit Unit::operator /(const Unit &right) const
 {
     checkRange("/ operator",
-               (int32_t)Sig.Length - (int32_t)right.Sig.Length,
-               (int32_t)Sig.Mass - (int32_t)right.Sig.Mass,
-               (int32_t)Sig.Time - (int32_t)right.Sig.Time,
-               (int32_t)Sig.ElectricCurrent - (int32_t)right.Sig.ElectricCurrent,
-               (int32_t)Sig.ThermodynamicTemperature - (int32_t)right.Sig.ThermodynamicTemperature,
-               (int32_t)Sig.AmountOfSubstance - (int32_t)right.Sig.AmountOfSubstance,
-               (int32_t)Sig.LuminousIntensity - (int32_t)right.Sig.LuminousIntensity,
-               (int32_t)Sig.Angle - (int32_t)right.Sig.Angle);
+               Sig.Length - right.Sig.Length,
+               Sig.Mass - right.Sig.Mass,
+               Sig.Time - right.Sig.Time,
+               Sig.ElectricCurrent - right.Sig.ElectricCurrent,
+               Sig.ThermodynamicTemperature - right.Sig.ThermodynamicTemperature,
+               Sig.AmountOfSubstance - right.Sig.AmountOfSubstance,
+               Sig.LuminousIntensity - right.Sig.LuminousIntensity,
+               Sig.Angle - right.Sig.Angle);
 
     Unit result;
     result.Sig.Length                   = Sig.Length                    - right.Sig.Length;
@@ -233,7 +233,7 @@ Unit& Unit::operator = (const Unit &New)
     return *this;
 }
 
-QString Unit::getString(void) const
+QString Unit::getString() const
 {
     std::stringstream ret;
 
@@ -424,46 +424,86 @@ QString Unit::getString(void) const
     return QString::fromUtf8(ret.str().c_str());
 }
 
-QString Unit::getTypeString(void) const
+QString Unit::getTypeString() const
 {
-    if(*this == Unit::Length                      )       return QString::fromLatin1("Length");
-    if(*this == Unit::Area                        )       return QString::fromLatin1("Area");
-    if(*this == Unit::Volume                      )       return QString::fromLatin1("Volume");
-    if(*this == Unit::Mass                        )       return QString::fromLatin1("Mass");
-    if(*this == Unit::Angle                       )       return QString::fromLatin1("Angle");
-    if(*this == Unit::Density                     )       return QString::fromLatin1("Density");
-    if(*this == Unit::TimeSpan                    )       return QString::fromLatin1("TimeSpan");
-    if(*this == Unit::Frequency                   )       return QString::fromLatin1("Frequency");
-    if(*this == Unit::Velocity                    )       return QString::fromLatin1("Velocity");
-    if(*this == Unit::Acceleration                )       return QString::fromLatin1("Acceleration");
-    if(*this == Unit::Temperature                 )       return QString::fromLatin1("Temperature");
-    if(*this == Unit::ElectricCurrent             )       return QString::fromLatin1("ElectricCurrent");
-    if(*this == Unit::ElectricPotential           )       return QString::fromLatin1("ElectricPotential");
-    if(*this == Unit::ElectricCharge              )       return QString::fromLatin1("ElectricCharge");
-    if(*this == Unit::MagneticFieldStrength       )       return QString::fromLatin1("MagneticFieldStrength");
-    if(*this == Unit::MagneticFlux                )       return QString::fromLatin1("MagneticFlux");
-    if(*this == Unit::MagneticFluxDensity         )       return QString::fromLatin1("MagneticFluxDensity");
-    if(*this == Unit::ElectricalCapacitance       )       return QString::fromLatin1("ElectricalCapacitance");
-    if(*this == Unit::ElectricalInductance        )       return QString::fromLatin1("ElectricalInductance");
-    if(*this == Unit::ElectricalConductance       )       return QString::fromLatin1("ElectricalConductance");
-    if(*this == Unit::ElectricalResistance        )       return QString::fromLatin1("ElectricalResistance");
-    if(*this == Unit::ElectricalConductivity      )       return QString::fromLatin1("ElectricalConductivity");
-    if(*this == Unit::AmountOfSubstance           )       return QString::fromLatin1("AmountOfSubstance");
-    if(*this == Unit::LuminousIntensity           )       return QString::fromLatin1("LuminousIntensity");
-    if(*this == Unit::Pressure                    )       return QString::fromLatin1("Pressure");
-    if(*this == Unit::Force                       )       return QString::fromLatin1("Force");
-    if(*this == Unit::Work                        )       return QString::fromLatin1("Work");
-    if(*this == Unit::Power                       )       return QString::fromLatin1("Power");
-    if(*this == Unit::SpecificEnergy              )       return QString::fromLatin1("SpecificEnergy");
-    if(*this == Unit::ThermalConductivity         )       return QString::fromLatin1("ThermalConductivity");
-    if(*this == Unit::ThermalExpansionCoefficient )       return QString::fromLatin1("ThermalExpansionCoefficient");
-    if(*this == Unit::VolumetricThermalExpansionCoefficient )       return QString::fromLatin1("VolumetricThermalExpansionCoefficient");
-    if(*this == Unit::SpecificHeat                )       return QString::fromLatin1("SpecificHeat");
-    if(*this == Unit::ThermalTransferCoefficient  )       return QString::fromLatin1("ThermalTransferCoefficient");
-    if(*this == Unit::HeatFlux                    )       return QString::fromLatin1("HeatFlux");
-    if(*this == Unit::DynamicViscosity            )       return QString::fromLatin1("DynamicViscosity");
-    if(*this == Unit::KinematicViscosity          )       return QString::fromLatin1("KinematicViscosity");
-    if(*this == Unit::VacuumPermittivity          )       return QString::fromLatin1("VacuumPermittivity");
+    if(*this == Unit::Length                      )
+        return QString::fromLatin1("Length");
+    if(*this == Unit::Area                        )
+        return QString::fromLatin1("Area");
+    if(*this == Unit::Volume                      )
+        return QString::fromLatin1("Volume");
+    if(*this == Unit::Mass                        )
+        return QString::fromLatin1("Mass");
+    if(*this == Unit::Angle                       )
+        return QString::fromLatin1("Angle");
+    if(*this == Unit::Density                     )
+        return QString::fromLatin1("Density");
+    if(*this == Unit::TimeSpan                    )
+        return QString::fromLatin1("TimeSpan");
+    if(*this == Unit::Frequency                   )
+        return QString::fromLatin1("Frequency");
+    if(*this == Unit::Velocity                    )
+        return QString::fromLatin1("Velocity");
+    if(*this == Unit::Acceleration                )
+        return QString::fromLatin1("Acceleration");
+    if(*this == Unit::Temperature                 )
+        return QString::fromLatin1("Temperature");
+    if(*this == Unit::ElectricCurrent             )
+        return QString::fromLatin1("ElectricCurrent");
+    if(*this == Unit::ElectricPotential           )
+        return QString::fromLatin1("ElectricPotential");
+    if(*this == Unit::ElectricCharge              )
+        return QString::fromLatin1("ElectricCharge");
+    if(*this == Unit::MagneticFieldStrength       )
+        return QString::fromLatin1("MagneticFieldStrength");
+    if(*this == Unit::MagneticFlux                )
+        return QString::fromLatin1("MagneticFlux");
+    if(*this == Unit::MagneticFluxDensity         )
+        return QString::fromLatin1("MagneticFluxDensity");
+    if(*this == Unit::ElectricalCapacitance       )
+        return QString::fromLatin1("ElectricalCapacitance");
+    if(*this == Unit::ElectricalInductance        )
+        return QString::fromLatin1("ElectricalInductance");
+    if(*this == Unit::ElectricalConductance       )
+        return QString::fromLatin1("ElectricalConductance");
+    if(*this == Unit::ElectricalResistance        )
+        return QString::fromLatin1("ElectricalResistance");
+    if(*this == Unit::ElectricalConductivity      )
+        return QString::fromLatin1("ElectricalConductivity");
+    if(*this == Unit::AmountOfSubstance           )
+        return QString::fromLatin1("AmountOfSubstance");
+    if(*this == Unit::LuminousIntensity           )
+        return QString::fromLatin1("LuminousIntensity");
+    if(*this == Unit::Pressure                    )
+        return QString::fromLatin1("Pressure");
+    if(*this == Unit::Force                       )
+        return QString::fromLatin1("Force");
+    if(*this == Unit::Work                        )
+        return QString::fromLatin1("Work");
+    if(*this == Unit::Power                       )
+        return QString::fromLatin1("Power");
+    if(*this == Unit::Stiffness                   )
+        return QString::fromLatin1("Stiffness");
+    if(*this == Unit::SpecificEnergy              )
+        return QString::fromLatin1("SpecificEnergy");
+    if(*this == Unit::ThermalConductivity         )
+        return QString::fromLatin1("ThermalConductivity");
+    if(*this == Unit::ThermalExpansionCoefficient )
+        return QString::fromLatin1("ThermalExpansionCoefficient");
+    if(*this == Unit::VolumetricThermalExpansionCoefficient )
+        return QString::fromLatin1("VolumetricThermalExpansionCoefficient");
+    if(*this == Unit::SpecificHeat                )
+        return QString::fromLatin1("SpecificHeat");
+    if(*this == Unit::ThermalTransferCoefficient  )
+        return QString::fromLatin1("ThermalTransferCoefficient");
+    if(*this == Unit::HeatFlux                    )
+        return QString::fromLatin1("HeatFlux");
+    if(*this == Unit::DynamicViscosity            )
+        return QString::fromLatin1("DynamicViscosity");
+    if(*this == Unit::KinematicViscosity          )
+        return QString::fromLatin1("KinematicViscosity");
+    if(*this == Unit::VacuumPermittivity          )
+        return QString::fromLatin1("VacuumPermittivity");
 
     return QString();
 
@@ -508,6 +548,9 @@ Unit Unit::Stress                  (-1,1,-2);
 Unit Unit::UltimateTensileStrength (-1,1,-2);
 Unit Unit::YieldStrength           (-1,1,-2);
 Unit Unit::YoungsModulus           (-1,1,-2);
+
+// Stiffness [kg/s^-2]
+Unit Unit::Stiffness               (0,1,-2);
 
 Unit Unit::Force   (1,1,-2);
 Unit Unit::Work    (2,1,-2);

@@ -20,32 +20,33 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
+#ifndef _PreComp_
 #include <numeric>
+
 #include <gp_Pnt.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepClass3d_SolidClassifier.hxx>
 #include <BRepGProp_Face.hxx>
 #include <TopoDS.hxx>
-#include <TopoDS_Vertex.hxx>
 
+#include <QtConcurrentMap>
 #include <QEventLoop>
 #include <QFuture>
 #include <QFutureWatcher>
-#include <QtConcurrentMap>
 
 #include <boost_bind_bind.hpp>
+#endif
 
+#include <App/Application.h>
 #include <Base/Console.h>
-#include <Base/Exception.h>
 #include <Base/FutureWatcherProgress.h>
 #include <Base/Parameter.h>
 #include <Base/Sequencer.h>
-#include <Base/Tools.h>
-#include <App/Application.h>
-#include <Mod/Mesh/App/Mesh.h>
+#include <Base/Stream.h>
+
 #include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/Core/Grid.h>
@@ -714,8 +715,8 @@ Feature::Feature()
 {
     ADD_PROPERTY(SearchRadius,(0.05));
     ADD_PROPERTY(Thickness,(0.0));
-    ADD_PROPERTY(Actual,(0));
-    ADD_PROPERTY(Nominals,(0));
+    ADD_PROPERTY(Actual,(nullptr));
+    ADD_PROPERTY(Nominals,(nullptr));
     ADD_PROPERTY(Distances,(0.0));
 }
 
@@ -744,7 +745,7 @@ App::DocumentObjectExecReturn* Feature::execute(void)
     if (!pcActual)
         throw Base::ValueError("No actual geometry to inspect specified");
 
-    InspectActualGeometry* actual = 0;
+    InspectActualGeometry* actual = nullptr;
     if (pcActual->getTypeId().isDerivedFrom(Mesh::Feature::getClassTypeId())) {
         Mesh::Feature* mesh = static_cast<Mesh::Feature*>(pcActual);
         actual = new InspectActualMesh(mesh->Mesh.getValue());
@@ -766,7 +767,7 @@ App::DocumentObjectExecReturn* Feature::execute(void)
     std::vector<InspectNominalGeometry*> inspectNominal;
     const std::vector<App::DocumentObject*>& nominals = Nominals.getValues();
     for (std::vector<App::DocumentObject*>::const_iterator it = nominals.begin(); it != nominals.end(); ++it) {
-        InspectNominalGeometry* nominal = 0;
+        InspectNominalGeometry* nominal = nullptr;
         if ((*it)->getTypeId().isDerivedFrom(Mesh::Feature::getClassTypeId())) {
             Mesh::Feature* mesh = static_cast<Mesh::Feature*>(*it);
             nominal = new InspectNominalMesh(mesh->Mesh.getValue(), this->SearchRadius.getValue());
@@ -909,7 +910,7 @@ App::DocumentObjectExecReturn* Feature::execute(void)
     for (std::vector<InspectNominalGeometry*>::iterator it = inspectNominal.begin(); it != inspectNominal.end(); ++it)
         delete *it;
 
-    return 0;
+    return nullptr;
 }
 
 // ----------------------------------------------------------------

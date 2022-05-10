@@ -11,12 +11,14 @@
 
 
 /* No need for Boost (version info is always included in the source) */
-/* No need for Coin (version info is always included in the source) */
 /* No need for Python (version info is always included in the source) */
 /* No need for Qt (version info is always included in the source) */
 /* No need for zlib (version info is always included in the source) */
 
 // No CMake version info for SMESH, libarea, Zipios, or KDL
+
+// Coin3D
+constexpr char * FC_COIN3D_VERSION = "${COIN3D_VERSION}";
 
 // Eigen3
 constexpr char * FC_EIGEN3_VERSION = "${EIGEN3_VERSION}";

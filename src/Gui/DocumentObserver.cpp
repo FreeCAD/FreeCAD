@@ -28,11 +28,13 @@
 #endif
 
 #include <functional>
+
+#include "DocumentObserver.h"
 #include "Application.h"
 #include "Document.h"
 #include "ViewProviderDocumentObject.h"
-#include "DocumentObserver.h"
 #include <App/Document.h>
+
 
 using namespace Gui;
 namespace sp = std::placeholders;
@@ -202,7 +204,7 @@ std::string ViewProviderT::getAppDocumentPython() const
 
 ViewProviderDocumentObject* ViewProviderT::getViewProvider() const
 {
-    ViewProviderDocumentObject* obj = 0;
+    ViewProviderDocumentObject* obj = nullptr;
     Document* doc = getDocument();
     if (doc) {
         obj = dynamic_cast<ViewProviderDocumentObject*>(doc->getViewProviderByName(object.c_str()));

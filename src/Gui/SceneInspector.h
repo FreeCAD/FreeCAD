@@ -23,9 +23,9 @@
 #ifndef GUI_SCENEINSPECTOR_H
 #define GUI_SCENEINSPECTOR_H
 
-#include <QStandardItemModel>
 #include <QDialog>
 #include <QHash>
+#include <QStandardItemModel>
 
 class SoNode;
 
@@ -71,7 +71,7 @@ class DlgInspector : public QDialog
     Q_OBJECT
 
 public:
-    DlgInspector(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags());
+    DlgInspector(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgInspector();
 
     void setDocument(Gui::Document* doc);

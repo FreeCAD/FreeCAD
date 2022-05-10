@@ -21,15 +21,14 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef GUI_TASKVIEW_TaskBooleanParameters_H
 #define GUI_TASKVIEW_TaskBooleanParameters_H
 
-#include <Gui/TaskView/TaskView.h>
-#include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/TaskView/TaskView.h>
 
 #include "ViewProviderBoolean.h"
+
 
 class Ui_TaskBooleanParameters;
 
@@ -49,7 +48,7 @@ class TaskBooleanParameters : public Gui::TaskView::TaskBox, public Gui::Selecti
     Q_OBJECT
 
 public:
-    TaskBooleanParameters(ViewProviderBoolean *BooleanView, QWidget *parent=0);
+    TaskBooleanParameters(ViewProviderBoolean *BooleanView, QWidget *parent=nullptr);
     ~TaskBooleanParameters();
 
     const std::vector<std::string> getBodies(void) const;

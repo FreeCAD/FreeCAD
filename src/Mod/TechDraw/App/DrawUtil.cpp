@@ -297,15 +297,15 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawUtil::boxIntersect2d(Base::Vector3
     // y = mx + b
     // m = (y1 - y0) / (x1 - x0)
     if (DrawUtil::fpCompare(dir.x, 0.0) ) {                 //vertical case
-        p1 = Base::Vector3d(point.x, - yRange / 2.0, 0.0);  
-        p2 = Base::Vector3d(point.x, yRange / 2.0, 0.0);
+        p1 = Base::Vector3d(point.x, point.y - (yRange / 2.0), 0.0);
+        p2 = Base::Vector3d(point.x, point.y + (yRange / 2.0), 0.0);
     } else {
         double slope = dir.y / dir.x;
         double left = -xRange / 2.0;
         double right = xRange / 2.0;
         if (DrawUtil::fpCompare(slope, 0.0)) {               //horizontal case
-            p1 = Base::Vector3d(left, point.y);
-            p2 = Base::Vector3d(right, point.y);
+            p1 = Base::Vector3d(point.x - (xRange / 2.0), point.y);
+            p2 = Base::Vector3d(point.x + (xRange / 2.0), point.y);
         } else {                                           //normal case
             double top = yRange / 2.0;
             double bottom = -yRange / 2.0;
@@ -584,7 +584,7 @@ bool DrawUtil::isBetween(const Base::Vector3d pt, const Base::Vector3d end1, con
 Base::Vector3d DrawUtil::Intersect2d(Base::Vector3d p1, Base::Vector3d d1,
                                      Base::Vector3d p2, Base::Vector3d d2)
 {
-    Base::Vector3d result(0,0,0);
+    Base::Vector3d result(0.0, 0.0, 0.0);
     Base::Vector3d p12(p1.x+d1.x, p1.y+d1.y, 0.0);
     double A1 = d1.y;
     double B1 = -d1.x;
@@ -596,7 +596,34 @@ Base::Vector3d DrawUtil::Intersect2d(Base::Vector3d p1, Base::Vector3d d1,
     double C2 = A2*p2.x + B2*p2.y;
 
     double det = A1*B2 - A2*B1;
-    if(det == 0){
+    if (fpCompare(det, 0.0, Precision::Confusion())) {
+        Base::Console().Message("Lines are parallel\n");
+    } else {
+        double x = (B2*C1 - B1*C2)/det;
+        double y = (A1*C2 - A2*C1)/det;
+        result.x = x;
+        result.y = y;
+    }
+
+    return result;
+}
+
+Base::Vector2d DrawUtil::Intersect2d(Base::Vector2d p1, Base::Vector2d d1,
+                                     Base::Vector2d p2, Base::Vector2d d2)
+{
+    Base::Vector2d result(0.0, 0.0);
+    Base::Vector2d p12(p1.x+d1.x, p1.y+d1.y);
+    double A1 = d1.y;
+    double B1 = -d1.x;
+    double C1 = A1*p1.x + B1*p1.y;
+
+    Base::Vector2d p22(p2.x+d2.x, p2.y+d2.y);
+    double A2 = d2.y;
+    double B2 = -d2.x;
+    double C2 = A2*p2.x + B2*p2.y;
+
+    double det = A1*B2 - A2*B1;
+    if (fpCompare(det, 0.0, Precision::Confusion())) {
         Base::Console().Message("Lines are parallel\n");
     }else{
         double x = (B2*C1 - B1*C2)/det;
@@ -607,6 +634,7 @@ Base::Vector3d DrawUtil::Intersect2d(Base::Vector3d p1, Base::Vector3d d1,
 
     return result;
 }
+
 
 std::string DrawUtil::shapeToString(TopoDS_Shape s)
 {
@@ -788,6 +816,29 @@ Base::Vector3d DrawUtil::getFaceCenter(TopoDS_Face f)
     Base::Vector3d v(gv.X(), gv.Y(), gv.Z());
     return v;
 }
+
+// test the circulation of the triangle A-B-C
+bool DrawUtil::circulation(Base::Vector3d A, Base::Vector3d B, Base::Vector3d C) 
+{
+    if (A.x * B.y + A.y * C.x + B.x * C.y - C.x * B.y - C.y * A.x - B.x * A.y > 0.0)
+        return true;
+    else
+        return false;
+}
+
+int DrawUtil::countSubShapes(TopoDS_Shape shape, TopAbs_ShapeEnum subShape)
+{
+    int count = 0;
+    TopExp_Explorer Ex(shape, subShape);
+    while (Ex.More())
+    {
+        count++;
+        Ex.Next();
+    }
+    return count;
+}
+
+
 
 // Supplementary mathematical functions
 // ====================================

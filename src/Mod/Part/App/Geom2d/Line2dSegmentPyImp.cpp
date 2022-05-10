@@ -180,7 +180,7 @@ PyObject* Line2dSegmentPy::setParameterRange(PyObject *args)
 {
     double first, last;
     if (!PyArg_ParseTuple(args, "dd", &first, &last))
-        return NULL;
+        return nullptr;
 
     try {
         Handle(Geom2d_TrimmedCurve) this_curve = Handle(Geom2d_TrimmedCurve)::DownCast
@@ -190,7 +190,7 @@ PyObject* Line2dSegmentPy::setParameterRange(PyObject *args)
     catch (Standard_Failure& e) {
 
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return NULL;
+        return nullptr;
     }
 
     Py_Return; 
@@ -201,13 +201,7 @@ Py::Object Line2dSegmentPy::getStartPoint(void) const
     Handle(Geom2d_TrimmedCurve) this_curve = Handle(Geom2d_TrimmedCurve)::DownCast
         (this->getGeom2dLineSegmentPtr()->handle());
     gp_Pnt2d pnt = this_curve->StartPoint();
-
-    Py::Module module("__FreeCADBase__");
-    Py::Callable method(module.getAttr("Vector2d"));
-    Py::Tuple arg(2);
-    arg.setItem(0, Py::Float(pnt.X()));
-    arg.setItem(1, Py::Float(pnt.Y()));
-    return method.apply(arg);
+    return Base::Vector2dPy::create(pnt.X(), pnt.Y());
 }
 
 void Line2dSegmentPy::setStartPoint(Py::Object arg)
@@ -261,13 +255,7 @@ Py::Object Line2dSegmentPy::getEndPoint(void) const
     Handle(Geom2d_TrimmedCurve) this_curve = Handle(Geom2d_TrimmedCurve)::DownCast
         (this->getGeom2dLineSegmentPtr()->handle());
     gp_Pnt2d pnt = this_curve->EndPoint();
-
-    Py::Module module("__FreeCADBase__");
-    Py::Callable method(module.getAttr("Vector2d"));
-    Py::Tuple arg(2);
-    arg.setItem(0, Py::Float(pnt.X()));
-    arg.setItem(1, Py::Float(pnt.Y()));
-    return method.apply(arg);
+    return Base::Vector2dPy::create(pnt.X(), pnt.Y());
 }
 
 void Line2dSegmentPy::setEndPoint(Py::Object arg)
@@ -318,7 +306,7 @@ void Line2dSegmentPy::setEndPoint(Py::Object arg)
 
 PyObject *Line2dSegmentPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int Line2dSegmentPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

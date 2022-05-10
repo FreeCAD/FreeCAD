@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QApplication>
 # include <QMessageBox>
 # include <iostream>
 # include <string>
@@ -32,20 +33,22 @@
 
 #include <QGraphicsView>
 
-# include <App/DocumentObject.h>
-# include <Base/Exception.h>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <Base/Exception.h>
 #include <Base/Console.h>
 #include <Base/Type.h>
-# include <Gui/Action.h>
-# include <Gui/Application.h>
-# include <Gui/BitmapFactory.h>
-# include <Gui/Command.h>
-# include <Gui/Control.h>
-# include <Gui/Document.h>
-# include <Gui/Selection.h>
-# include <Gui/MainWindow.h>
-# include <Gui/FileDialog.h>
-# include <Gui/ViewProvider.h>
+#include <Gui/Action.h>
+#include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
+#include <Gui/Control.h>
+#include <Gui/Document.h>
+#include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
+#include <Gui/MainWindow.h>
+#include <Gui/FileDialog.h>
+#include <Gui/ViewProvider.h>
 
 # include <Mod/Part/App/PartFeature.h>
 
@@ -58,9 +61,9 @@
 # include <Mod/TechDraw/App/DrawPage.h>
 # include <Mod/TechDraw/App/DrawUtil.h>
 # include <Mod/TechDraw/App/Geometry.h>
+# include <Mod/TechDraw/App/Preferences.h>
 
 #include <Mod/TechDraw/Gui/QGVPage.h>
-
 
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
@@ -266,7 +269,7 @@ void CmdTechDrawRadiusDimension::activated(int iMsg)
         return;
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawViewPart * objFeat = 0;
+    TechDraw::DrawViewPart * objFeat = nullptr;
     std::vector<std::string> SubNames;
 
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
@@ -279,7 +282,7 @@ void CmdTechDrawRadiusDimension::activated(int iMsg)
     TechDraw::DrawPage* page = objFeat->findParentPage();
     std::string PageName = page->getNameInDocument();
 
-    TechDraw::DrawViewDimension *dim = 0;
+    TechDraw::DrawViewDimension *dim = nullptr;
     std::string FeatName = getUniqueObjectName("Dimension");
 
     std::vector<App::DocumentObject *> objs;
@@ -388,7 +391,7 @@ void CmdTechDrawDiameterDimension::activated(int iMsg)
         return;
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawViewPart * objFeat = 0;
+    TechDraw::DrawViewPart * objFeat = nullptr;
     std::vector<std::string> SubNames;
 
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
@@ -401,7 +404,7 @@ void CmdTechDrawDiameterDimension::activated(int iMsg)
     TechDraw::DrawPage* page = objFeat->findParentPage();
     std::string PageName = page->getNameInDocument();
 
-    TechDraw::DrawViewDimension *dim = 0;
+    TechDraw::DrawViewDimension *dim = nullptr;
     std::string FeatName = getUniqueObjectName("Dimension");
 
     std::vector<App::DocumentObject *> objs;
@@ -509,7 +512,7 @@ void CmdTechDrawLengthDimension::activated(int iMsg)
         return;
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawViewPart * objFeat = 0;
+    TechDraw::DrawViewPart * objFeat = nullptr;
     std::vector<std::string> SubNames;
 
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
@@ -522,7 +525,7 @@ void CmdTechDrawLengthDimension::activated(int iMsg)
     TechDraw::DrawPage* page = objFeat->findParentPage();
     std::string PageName = page->getNameInDocument();
 
-    TechDraw::DrawViewDimension *dim = 0;
+    TechDraw::DrawViewDimension *dim = nullptr;
     std::string FeatName = getUniqueObjectName("Dimension");
     std::string dimType;
 
@@ -563,10 +566,12 @@ void CmdTechDrawLengthDimension::activated(int iMsg)
 
     commitCommand();
     dim->recomputeFeature();
+
     TechDraw::pointPair pp = dim->getLinearPoints();
     Base::Vector3d mid = (pp.first + pp.second)/2.0;
     dim->X.setValue(mid.x);
-    dim->Y.setValue(-mid.y);
+    double fontSize = Preferences::dimFontSizeMM();
+    dim->Y.setValue(-mid.y + 0.5 * fontSize);
 
     //Horrible hack to force Tree update (claimChildren)
     double x = objFeat->X.getValue();
@@ -610,7 +615,7 @@ void CmdTechDrawHorizontalDimension::activated(int iMsg)
         return;
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawViewPart * objFeat = 0;
+    TechDraw::DrawViewPart * objFeat = nullptr;
     std::vector<std::string> SubNames;
 
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
@@ -623,7 +628,7 @@ void CmdTechDrawHorizontalDimension::activated(int iMsg)
     TechDraw::DrawPage* page = objFeat->findParentPage();
     std::string PageName = page->getNameInDocument();
 
-    TechDraw::DrawViewDimension *dim = 0;
+    TechDraw::DrawViewDimension *dim = nullptr;
     std::string FeatName = getUniqueObjectName("Dimension");
     std::string dimType;
 
@@ -668,7 +673,8 @@ void CmdTechDrawHorizontalDimension::activated(int iMsg)
     TechDraw::pointPair pp = dim->getLinearPoints();
     Base::Vector3d mid = (pp.first + pp.second)/2.0;
     dim->X.setValue(mid.x);
-    dim->Y.setValue(-mid.y);
+    double fontSize = Preferences::dimFontSizeMM();
+    dim->Y.setValue(-mid.y + 0.5 * fontSize);
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -712,7 +718,7 @@ void CmdTechDrawVerticalDimension::activated(int iMsg)
         return;
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawViewPart * objFeat = 0;
+    TechDraw::DrawViewPart * objFeat = nullptr;
     std::vector<std::string> SubNames;
 
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
@@ -725,7 +731,7 @@ void CmdTechDrawVerticalDimension::activated(int iMsg)
     TechDraw::DrawPage* page = objFeat->findParentPage();
     std::string PageName = page->getNameInDocument();
 
-    TechDraw::DrawViewDimension *dim = 0;
+    TechDraw::DrawViewDimension *dim = nullptr;
     std::string FeatName = getUniqueObjectName("Dimension");
     std::string dimType;
 
@@ -769,7 +775,8 @@ void CmdTechDrawVerticalDimension::activated(int iMsg)
     TechDraw::pointPair pp = dim->getLinearPoints();
     Base::Vector3d mid = (pp.first + pp.second)/2.0;
     dim->X.setValue(mid.x);
-    dim->Y.setValue(-mid.y);
+    double fontSize = Preferences::dimFontSizeMM();
+    dim->Y.setValue(-mid.y + 0.5 * fontSize);
 
     //Horrible hack to force Tree update
     double x = objFeat->X.getValue();
@@ -812,7 +819,7 @@ void CmdTechDrawAngleDimension::activated(int iMsg)
         return;
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawViewPart * objFeat = 0;
+    TechDraw::DrawViewPart * objFeat = nullptr;
     std::vector<std::string> SubNames;
 
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
@@ -825,7 +832,7 @@ void CmdTechDrawAngleDimension::activated(int iMsg)
     TechDraw::DrawPage* page = objFeat->findParentPage();
     std::string PageName = page->getNameInDocument();
 
-    TechDraw::DrawViewDimension *dim = 0;
+    TechDraw::DrawViewDimension *dim = nullptr;
     std::string FeatName = getUniqueObjectName("Dimension");
 
     std::vector<App::DocumentObject *> objs;
@@ -900,7 +907,7 @@ void CmdTechDraw3PtAngleDimension::activated(int iMsg)
         return;
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    TechDraw::DrawViewPart * objFeat = 0;
+    TechDraw::DrawViewPart * objFeat = nullptr;
     std::vector<std::string> SubNames;
 
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
@@ -913,7 +920,7 @@ void CmdTechDraw3PtAngleDimension::activated(int iMsg)
     TechDraw::DrawPage* page = objFeat->findParentPage();
     std::string PageName = page->getNameInDocument();
 
-    TechDraw::DrawViewDimension *dim = 0;
+    TechDraw::DrawViewDimension *dim = nullptr;
     std::string FeatName = getUniqueObjectName("Dimension");
 
     std::vector<App::DocumentObject *> objs;
@@ -976,9 +983,9 @@ CmdTechDrawLinkDimension::CmdTechDrawLinkDimension()
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Link Dimension to 3D Geometry");
     sToolTipText    = sMenuText;
-    sWhatsThis      = "TechDraw_Dimension_Link";
+    sWhatsThis      = "TechDraw_LinkDimension";
     sStatusTip      = sToolTipText;
-    sPixmap         = "TechDraw_Dimension_Link";
+    sPixmap         = "TechDraw_LinkDimension";
 }
 
 void CmdTechDrawLinkDimension::activated(int iMsg)
@@ -988,16 +995,15 @@ void CmdTechDrawLinkDimension::activated(int iMsg)
     if (!page) {
         return;
     }
-    std::string PageName = page->getNameInDocument();
 
     bool result = _checkSelection(this,2);
     if (!result)
         return;
 
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(0,
-            App::DocumentObject::getClassTypeId(),0);
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(nullptr,
+            App::DocumentObject::getClassTypeId(), Gui::ResolveMode::NoResolve);
 
-    App::DocumentObject* obj3D = 0;
+    App::DocumentObject* obj3D = nullptr;
     std::vector<App::DocumentObject*> parts;
     std::vector<std::string> subs;
 
@@ -1319,7 +1325,7 @@ CmdTechDrawLandmarkDimension::CmdTechDrawLandmarkDimension()
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_LandmarkDimension";
     sStatusTip      = sToolTipText;
-    sPixmap         = "techdraw-landmarkdistance";
+    sPixmap         = "TechDraw_LandmarkDimension";
 }
 
 void CmdTechDrawLandmarkDimension::activated(int iMsg)
@@ -1356,7 +1362,7 @@ void CmdTechDrawLandmarkDimension::activated(int iMsg)
     std::string parentName = dvp->getNameInDocument();
     std::string PageName = page->getNameInDocument();
 
-    TechDraw::LandmarkDimension *dim = 0;
+    TechDraw::LandmarkDimension *dim = nullptr;
     std::string FeatName = getUniqueObjectName("LandmarkDim");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Dimension"));
@@ -1493,14 +1499,14 @@ int _isValidSingleEdge(Gui::Command* cmd) {
     if (SubNames.size() == 1) {                                                 //only 1 subshape selected
         if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge") {                                //the Name starts with "Edge"
             int GeoId( TechDraw::DrawUtil::getIndexFromName(SubNames[0]) );
-            TechDraw::BaseGeom* geom = objFeat->getGeomByIndex(GeoId);
+            TechDraw::BaseGeomPtr geom = objFeat->getGeomByIndex(GeoId);
             if (!geom) {
                 Base::Console().Error("Logic Error: no geometry for GeoId: %d\n",GeoId);
                 return isInvalid;
             }
 
             if(geom->geomType == TechDraw::GENERIC) {
-                TechDraw::Generic* gen1 = static_cast<TechDraw::Generic *>(geom);
+                TechDraw::GenericPtr gen1 = std::static_pointer_cast<TechDraw::Generic>(geom);
                 if(gen1->points.size() > 2) {                                   //the edge is a polyline
                     return isInvalid;
                 }
@@ -1519,7 +1525,7 @@ int _isValidSingleEdge(Gui::Command* cmd) {
                        geom->geomType == TechDraw::ARCOFELLIPSE) {
                 edgeType = isEllipse;
             } else if (geom->geomType == TechDraw::BSPLINE) {
-                TechDraw::BSpline* spline = static_cast<TechDraw::BSpline*>(geom);
+                TechDraw::BSplinePtr  spline = static_pointer_cast<TechDraw::BSpline> (geom);
                 if (spline->isCircle()) {
                     edgeType = isBSplineCircle;
                 } else {
@@ -1569,8 +1575,8 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
             TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge") {
             int GeoId0( TechDraw::DrawUtil::getIndexFromName(SubNames[0]) );
             int GeoId1( TechDraw::DrawUtil::getIndexFromName(SubNames[1]) );
-            TechDraw::BaseGeom* geom0 = objFeat0->getGeomByIndex(GeoId0);
-            TechDraw::BaseGeom* geom1 = objFeat0->getGeomByIndex(GeoId1);
+            TechDraw::BaseGeomPtr geom0 = objFeat0->getGeomByIndex(GeoId0);
+            TechDraw::BaseGeomPtr geom1 = objFeat0->getGeomByIndex(GeoId1);
 
             if ((!geom0) || (!geom1)) {                                         // missing gometry
                 Base::Console().Error("Logic Error: no geometry for GeoId: %d or GeoId: %d\n",GeoId0,GeoId1);
@@ -1579,8 +1585,8 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
 
             if(geom0->geomType == TechDraw::GENERIC &&
                geom1->geomType == TechDraw::GENERIC) {
-                TechDraw::Generic *gen0 = static_cast<TechDraw::Generic *>(geom0);
-                TechDraw::Generic *gen1 = static_cast<TechDraw::Generic *>(geom1);
+                TechDraw::GenericPtr gen0 = std::static_pointer_cast<TechDraw::Generic> (geom0);
+                TechDraw::GenericPtr gen1 = std::static_pointer_cast<TechDraw::Generic> (geom1);
                 if(gen0->points.size() > 2 ||
                    gen1->points.size() > 2) {                          //the edge is a polyline
                     return isInvalid;                                  //not supported yet
@@ -1609,8 +1615,8 @@ bool _isValidVertexToEdge(Gui::Command* cmd) {
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if(SubNames.size() == 2) {                                         //there are 2
         int eId,vId;
-        TechDraw::BaseGeom* e;
-        TechDraw::Vertex* v;
+        TechDraw::BaseGeomPtr e;
+        TechDraw::VertexPtr v;
         if (TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&
             TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Vertex") {
             eId = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);

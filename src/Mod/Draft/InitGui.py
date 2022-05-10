@@ -95,22 +95,37 @@ class DraftWorkbench(FreeCADGui.Workbench):
         self.drawing_commands = it.get_draft_drawing_commands()
         self.annotation_commands = it.get_draft_annotation_commands()
         self.modification_commands = it.get_draft_modification_commands()
+        self.utility_commands_menu = it.get_draft_utility_commands_menu()
+        self.utility_commands_toolbar = it.get_draft_utility_commands_toolbar()
         self.context_commands = it.get_draft_context_commands()
-        self.line_commands = it.get_draft_line_commands()
-        self.utility_commands = it.get_draft_utility_commands()
-        self.utility_small = it.get_draft_small_commands()
 
         # Set up toolbars
-        self.appendToolbar(QT_TRANSLATE_NOOP("Draft", "Draft creation tools"), self.drawing_commands)
-        self.appendToolbar(QT_TRANSLATE_NOOP("Draft", "Draft annotation tools"), self.annotation_commands)
-        self.appendToolbar(QT_TRANSLATE_NOOP("Draft", "Draft modification tools"), self.modification_commands)
-        self.appendToolbar(QT_TRANSLATE_NOOP("Draft", "Draft utility tools"), self.utility_small)
+        it.init_toolbar(self,
+                        QT_TRANSLATE_NOOP("Workbench", "Draft creation tools"),
+                        self.drawing_commands)
+        it.init_toolbar(self,
+                        QT_TRANSLATE_NOOP("Workbench", "Draft annotation tools"),
+                        self.annotation_commands)
+        it.init_toolbar(self,
+                        QT_TRANSLATE_NOOP("Workbench", "Draft modification tools"),
+                        self.modification_commands)
+        it.init_toolbar(self,
+                        QT_TRANSLATE_NOOP("Workbench", "Draft utility tools"),
+                        self.utility_commands_toolbar)
 
         # Set up menus
-        self.appendMenu(QT_TRANSLATE_NOOP("Draft", "&Drafting"), self.drawing_commands)
-        self.appendMenu(QT_TRANSLATE_NOOP("Draft", "&Annotation"), self.annotation_commands)
-        self.appendMenu(QT_TRANSLATE_NOOP("Draft", "&Modification"), self.modification_commands)
-        self.appendMenu(QT_TRANSLATE_NOOP("Draft", "&Utilities"), self.utility_commands + self.context_commands)
+        it.init_menu(self,
+                     [QT_TRANSLATE_NOOP("Workbench", "&Drafting")],
+                     self.drawing_commands)
+        it.init_menu(self,
+                     [QT_TRANSLATE_NOOP("Workbench", "&Annotation")],
+                     self.annotation_commands)
+        it.init_menu(self,
+                     [QT_TRANSLATE_NOOP("Workbench", "&Modification")],
+                     self.modification_commands)
+        it.init_menu(self,
+                     [QT_TRANSLATE_NOOP("Workbench", "&Utilities")],
+                     self.utility_commands_menu)
 
         # Set up preferences pages
         if hasattr(FreeCADGui, "draftToolBar"):
@@ -121,6 +136,8 @@ class DraftWorkbench(FreeCADGui.Workbench):
                 FreeCADGui.addPreferencePage(":/ui/preferences-draftvisual.ui", QT_TRANSLATE_NOOP("Draft", "Draft"))
                 FreeCADGui.addPreferencePage(":/ui/preferences-drafttexts.ui", QT_TRANSLATE_NOOP("Draft", "Draft"))
                 FreeCADGui.draftToolBar.loadedPreferences = True
+
+        FreeCADGui.getMainWindow().mainWindowClosed.connect(self.Deactivated)
 
         FreeCAD.Console.PrintLog('Loading Draft workbench, done.\n')
 
@@ -146,25 +163,7 @@ class DraftWorkbench(FreeCADGui.Workbench):
 
     def ContextMenu(self, recipient):
         """Define an optional custom context menu."""
-        from DraftGui import translate
-        if recipient == "View":
-            if FreeCAD.activeDraftCommand is None:
-                if FreeCADGui.Selection.getSelection():
-                    self.appendContextMenu("Draft", self.drawing_commands + self.modification_commands)
-                    self.appendContextMenu("Utilities", self.context_commands)
-                else:
-                    self.appendContextMenu("Draft", self.drawing_commands)
-            else:
-                if FreeCAD.activeDraftCommand.featureName in ("Line",
-                                                              "Wire",
-                                                              "Polyline",
-                                                              "BSpline",
-                                                              "BezCurve",
-                                                              "CubicBezCurve"):
-                    self.appendContextMenu("", self.line_commands)
-        else:
-            if FreeCADGui.Selection.getSelection():
-                self.appendContextMenu("Utilities", self.context_commands)
+        self.appendContextMenu("Utilities", self.context_commands)
 
     def GetClassName(self):
         """Type of workbench."""

@@ -119,7 +119,7 @@ Py::Object ArcOfEllipse2dPy::getEllipse(void) const
 
 PyObject *ArcOfEllipse2dPy::getCustomAttributes(const char* ) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ArcOfEllipse2dPy::setCustomAttributes(const char* , PyObject *)

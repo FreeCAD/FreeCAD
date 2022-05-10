@@ -42,8 +42,11 @@
 # include <GL/glext.h>
 # endif
 # include <Inventor/actions/SoGLRenderAction.h>
+# include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/bundles/SoMaterialBundle.h>
+# include <Inventor/bundles/SoTextureCoordinateBundle.h>
 # include <Inventor/elements/SoCoordinateElement.h>
+# include <Inventor/elements/SoGLCacheContextElement.h>
 # include <Inventor/elements/SoGLCoordinateElement.h>
 # include <Inventor/elements/SoGLLazyElement.h>
 # include <Inventor/elements/SoMaterialBindingElement.h>
@@ -51,6 +54,7 @@
 # include <Inventor/elements/SoProjectionMatrixElement.h>
 # include <Inventor/elements/SoViewingMatrixElement.h>
 # include <Inventor/errors/SoDebugError.h>
+# include <Inventor/nodes/SoCoordinate3.h>
 #endif
 
 #include <Inventor/C/glue/gl.h>
@@ -96,7 +100,7 @@ private:
 MeshRenderer::Private::Private()
   : vertices(GL_ARRAY_BUFFER)
   , indices(GL_ELEMENT_ARRAY_BUFFER)
-  , pcolors(0)
+  , pcolors(nullptr)
   , matbinding(SoMaterialBindingElement::OVERALL)
   , initialized(false)
 {
@@ -168,12 +172,12 @@ void MeshRenderer::Private::renderGLArray(SoGLRenderAction *action, GLenum mode)
     indices.bind();
 
     if (matbinding != SoMaterialBindingElement::OVERALL)
-        glInterleavedArrays(GL_C4F_N3F_V3F, 0, 0);
+        glInterleavedArrays(GL_C4F_N3F_V3F, 0, nullptr);
     else
-        glInterleavedArrays(GL_N3F_V3F, 0, 0);
+        glInterleavedArrays(GL_N3F_V3F, 0, nullptr);
 
     glDrawElements(mode, indices.size() / sizeof(uint32_t),
-                   GL_UNSIGNED_INT, NULL);
+                   GL_UNSIGNED_INT, nullptr);
 
     vertices.release();
     indices.release();
@@ -429,7 +433,7 @@ bool MeshRenderer::matchMaterial(SoState* state) const
     // the buffer doesn't contain color information
     if (matbind == SoMaterialBindingElement::OVERALL)
         return true;
-    const SbColor * pcolors = 0;
+    const SbColor * pcolors = nullptr;
     SoGLLazyElement* gl = SoGLLazyElement::getInstance(state);
     if (gl) {
         pcolors = gl->getDiffusePointer();
@@ -489,7 +493,7 @@ void SoFCIndexedFaceSet::initClass()
 
 SoFCIndexedFaceSet::SoFCIndexedFaceSet()
   : renderTriangleLimit(UINT_MAX)
-  , selectBuf(0)
+  , selectBuf(nullptr)
 {
     SO_NODE_CONSTRUCTOR(SoFCIndexedFaceSet);
     SO_NODE_ADD_FIELD(updateGLArray, (false));
@@ -639,7 +643,7 @@ void SoFCIndexedFaceSet::drawCoords(const SoGLCoordinateElement * const vertexli
                                     const SoTextureCoordinateBundle * const /*texcoords*/,
                                     const int32_t * /*texindices*/)
 {
-    const SbVec3f * coords3d = 0;
+    const SbVec3f * coords3d = nullptr;
     coords3d = vertexlist->getArrayPtr3();
 
     int mod = numindices/(4*this->renderTriangleLimit)+1;
@@ -716,8 +720,8 @@ void SoFCIndexedFaceSet::generateGLArrays(SoGLRenderAction * action)
     const SoCoordinateElement * coords;
     const SbVec3f * normals;
     const int32_t * cindices;
-    const SbColor * pcolors = 0;
-    const float * transp = 0;
+    const SbColor * pcolors = nullptr;
+    const float * transp = nullptr;
     int numindices, numcolors = 0, numtransp = 0;
     const int32_t * nindices;
     const int32_t * tindices;
@@ -905,7 +909,8 @@ void SoFCIndexedFaceSet::doAction(SoAction * action)
 {
     if (action->getTypeId() == Gui::SoGLSelectAction::getClassTypeId()) {
         SoNode* node = action->getNodeAppliedTo();
-        if (!node) return; // on no node applied
+        if (!node) // on no node applied
+            return;
 
         // The node we have is the parent of this node and the coordinate node
         // thus we search there for it.
@@ -915,7 +920,8 @@ void SoFCIndexedFaceSet::doAction(SoAction * action)
         sa.setType(SoCoordinate3::getClassTypeId(), 1);
         sa.apply(node);
         SoPath * path = sa.getPath();
-        if (!path) return;
+        if (!path)
+            return;
 
         // make sure we got the node we wanted
         SoNode* coords = path->getNodeFromTail(0);
@@ -927,7 +933,8 @@ void SoFCIndexedFaceSet::doAction(SoAction * action)
     }
     else if (action->getTypeId() == Gui::SoVisibleFaceAction::getClassTypeId()) {
         SoNode* node = action->getNodeAppliedTo();
-        if (!node) return; // on no node applied
+        if (!node) // on no node applied
+            return;
 
         // The node we have is the parent of this node and the coordinate node
         // thus we search there for it.
@@ -937,7 +944,8 @@ void SoFCIndexedFaceSet::doAction(SoAction * action)
         sa.setType(SoCoordinate3::getClassTypeId(), 1);
         sa.apply(node);
         SoPath * path = sa.getPath();
-        if (!path) return;
+        if (!path)
+            return;
 
         // make sure we got the node we wanted
         SoNode* coords = path->getNodeFromTail(0);
@@ -1013,7 +1021,7 @@ void SoFCIndexedFaceSet::stopSelection(SoAction * action)
     }
 
     delete [] selectBuf;
-    selectBuf = 0;
+    selectBuf = nullptr;
     std::sort(hit.begin(),hit.end());
 
     Gui::SoGLSelectAction *doaction = static_cast<Gui::SoGLSelectAction*>(action);

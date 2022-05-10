@@ -20,20 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
+
 #include <QDialogButtonBox>
 #include <QSignalMapper>
 
+#include <App/GeoFeature.h>
+#include <App/PropertyGeo.h>
+
 #include "Transform.h"
-#include "Selection.h"
-#include "ViewProvider.h"
-#include "ui_Placement.h"
 #include "Application.h"
 #include "Document.h"
+#include "Selection.h"
+#include "ui_Placement.h"
+#include "ViewProvider.h"
 #include "WaitCursor.h"
-#include <App/PropertyGeo.h>
-#include <App/GeoFeature.h>
+
 
 using namespace Gui::Dialog;
 
@@ -280,7 +282,7 @@ void DefaultTransformStrategy::onSelectionChanged(const Gui::SelectionChanges& m
 /* TRANSLATOR Gui::Dialog::Transform */
 
 Transform::Transform(QWidget* parent, Qt::WindowFlags fl)
-  : Gui::LocationDialog(parent, fl), strategy(0)
+  : Gui::LocationDialog(parent, fl), strategy(nullptr)
 {
     ui = new Ui_TransformComp(this);
     ui->resetButton->hide();
@@ -429,7 +431,7 @@ TaskTransform::TaskTransform()
     this->setButtonPosition(TaskTransform::South);
     dialog = new Transform();
     dialog->showStandardButtons(false);
-    taskbox = new Gui::TaskView::TaskBox(QPixmap(), dialog->windowTitle(), true, 0);
+    taskbox = new Gui::TaskView::TaskBox(QPixmap(), dialog->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(dialog);
     Content.push_back(taskbox);
 }

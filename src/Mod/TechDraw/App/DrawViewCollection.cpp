@@ -47,7 +47,7 @@ DrawViewCollection::DrawViewCollection()
 {
     nowUnsetting = false;
     static const char *group = "Collection";
-    ADD_PROPERTY_TYPE(Views     ,(0), group, App::Prop_None,"Collection Views");
+    ADD_PROPERTY_TYPE(Views     ,(nullptr), group, App::Prop_None,"Collection Views");
     Views.setScope(App::LinkScope::Global);
 }
 

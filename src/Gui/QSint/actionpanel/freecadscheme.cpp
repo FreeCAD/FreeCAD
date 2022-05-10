@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "freecadscheme.h"
 #include "macpanelscheme.h"
-#include "winxppanelscheme.h"
 #include "winvistapanelscheme.h"
+#include "winxppanelscheme.h"
+
 #include <QApplication>
 #include <QImage>
 #include <QPainter>

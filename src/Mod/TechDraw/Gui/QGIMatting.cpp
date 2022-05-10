@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <assert.h>
+#include <cassert>
 #include <QPainter>
 #include <QPainterPath>
 #include <QStyleOptionGraphicsItem>
@@ -81,7 +81,7 @@ QGIMatting::QGIMatting() :
 void QGIMatting::draw()
 {
     prepareGeometryChange();
-    double radiusFudge = 1.5;       //keep slightly larger than fudge in App/DVDetail to prevent bleed through
+    double radiusFudge = 1.2;       //keep slightly larger than fudge in App/DVDetail (1.1) to prevent bleed through
     m_width = m_radius * radiusFudge;
     m_height = m_radius * radiusFudge;
     QRectF outline(-m_width,-m_height,2.0 * m_width,2.0 * m_height);
@@ -92,7 +92,7 @@ void QGIMatting::draw()
         QRectF roundCutout (-m_radius,-m_radius,2.0 * m_radius,2.0 * m_radius);
         ppCut.addEllipse(roundCutout);
     } else {
-        double squareSize = m_radius/ 1.4142;                                 //fit just within radius
+        double squareSize = m_radius;
         QRectF squareCutout (-squareSize,-squareSize,2.0 * squareSize,2.0 * squareSize);
         ppCut.addRect(squareCutout);
     }
@@ -105,7 +105,7 @@ void QGIMatting::draw()
 
 int QGIMatting::getHoleStyle()
 {
-    return PreferencesGui::mattingStyle();
+    return TechDraw::Preferences::mattingStyle();
 }
 
 //need this because QQGIG only updates BR when items added/deleted.

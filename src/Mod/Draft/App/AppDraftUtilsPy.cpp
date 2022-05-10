@@ -58,7 +58,7 @@ private:
     {
         Base::Console().Warning("DraftUtils.readDXF is deprecated. Use Import.readDxf instead.\n");
         char* Name;
-        const char* DocName=0;
+        const char* DocName=nullptr;
         bool IgnoreErrors=true;
         if (!PyArg_ParseTuple(args.ptr(), "et|sb","utf-8",&Name,&DocName,&IgnoreErrors))
             throw Py::Exception();
@@ -94,7 +94,7 @@ private:
 
 PyObject* initModule()
 {
-    return (new Module)->module().ptr();
+    return Base::Interpreter().addModule(new Module);
 }
 
 } // namespace DraftUtils

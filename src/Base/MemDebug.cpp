@@ -41,17 +41,15 @@
 
 #ifndef _PreComp_
 # ifdef _MSC_VER
-#  include <cstdio>
-#  include <time.h>
-#  include <Windows.h>
+#  include <ctime>
 #  include <crtdbg.h>
 # endif
 #endif
 
-
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "MemDebug.h"
 #include <stdexcept>
+
 
 using namespace Base;
 

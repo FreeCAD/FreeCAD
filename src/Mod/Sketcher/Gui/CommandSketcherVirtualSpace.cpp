@@ -36,6 +36,7 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
+#include <Gui/SelectionObject.h>
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Gui/DlgEditFileIncludePropertyExternal.h>
@@ -49,7 +50,7 @@
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
-#include "CommandConstraints.h"
+#include "Utils.h"
 
 using namespace std;
 using namespace SketcherGui;
@@ -89,13 +90,13 @@ CmdSketcherSwitchVirtualSpace::CmdSketcherSwitchVirtualSpace()
     : Command("Sketcher_SwitchVirtualSpace")
 {
     sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
+    sGroup          = "Sketcher";
     sMenuText       = QT_TR_NOOP("Switch virtual space");
     sToolTipText    = QT_TR_NOOP("Switches the selected constraints or the view to the other virtual space");
     sWhatsThis      = "Sketcher_SwitchVirtualSpace";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_SwitchVirtualSpace";
-    sAccel          = "";
+    sAccel          = "Z, Z";
     eType           = ForEdit;
 }
 

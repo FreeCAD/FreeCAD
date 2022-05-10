@@ -46,7 +46,7 @@ PROPERTY_SOURCE(Raytracing::RayFeature, Raytracing::RaySegment)
 
 RayFeature::RayFeature(void)
 {
-    ADD_PROPERTY(Source,(0));
+    ADD_PROPERTY(Source,(nullptr));
     ADD_PROPERTY(Color,(App::Color(0.5f,0.5f,0.5f)));
     ADD_PROPERTY(Transparency,(0));
 }

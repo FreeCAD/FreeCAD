@@ -22,14 +22,9 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to return the SVG representation of various shapes.
-
-Warning: this still uses the `Drawing.projectToSVG` method to provide
-the SVG representation of certain objects.
-Therefore, even if the Drawing Workbench is obsolete, the `Drawing` module
-may not be removed completely yet. This must be checked.
 """
 ## @package svg
-# \ingroup draftfuctions
+# \ingroup draftfunctions
 # \brief Provides functions to return the SVG representation of shapes.
 
 import math
@@ -48,10 +43,9 @@ from draftutils.messages import _wrn, _err
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
 DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
-# Drawing = lz.LazyLoader("Drawing", globals(), "Drawing")
 
 
-## \addtogroup draftfuctions
+## \addtogroup draftfunctions
 # @{
 
 
@@ -428,7 +422,7 @@ def get_svg(obj,
     # all the SVG strings from the contents of the group
     if hasattr(obj, "isDerivedFrom"):
         if (obj.isDerivedFrom("App::DocumentObjectGroup")
-                or utils.get_type(obj) == "Layer"):
+                or utils.get_type(obj) in ["Layer","BuildingPart"]):
             svg = ""
             for child in obj.Group:
                 svg += get_svg(child,
@@ -474,11 +468,13 @@ def get_svg(obj,
             plane = direction
 
     stroke = "#000000"
+    tstroke = stroke
     if color and override:
         if "#" in color:
             stroke = color
         else:
             stroke = utils.get_rgb(color)
+        tstroke = stroke
     elif App.GuiUp:
         # find print color
         pc = get_print_color(obj)
@@ -492,9 +488,6 @@ def get_svg(obj,
                 stroke = utils.get_rgb(obj.ViewObject.TextColor)
             if hasattr(obj.ViewObject, "TextColor"):
                 tstroke = utils.get_rgb(obj.ViewObject.TextColor)
-            else:
-                tstroke = stroke
-
 
     lstyle = "none"
     if override:
@@ -622,7 +615,7 @@ def get_svg(obj,
             svg_path += 'fill="none" '
             svg_path += 'stroke="{}" '.format(stroke)
             svg_path += 'stroke-width="{}" '.format(linewidth)
-            svg_path += 'stroke-linecap:square;'
+            svg_path += 'stroke-linecap="square" '
             svg_path += 'd="{}"'.format(path_dir_str)
             svg_path += '/>'
             svg += svg_path
@@ -648,7 +641,7 @@ def get_svg(obj,
             fontname = obj.ViewObject.TextFont
             position = get_proj(obj.Placement.Base, plane)
             rotation = obj.Placement.Rotation
-            justification = obj.ViewObject.TextAlignment
+            justification = obj.ViewObject.Justification
             text = obj.Text
             svg += svgtext.get_text(plane, techdraw,
                                     stroke, fontsize, fontname,
@@ -684,55 +677,32 @@ def get_svg(obj,
 
         if App.GuiUp:
             vobj = obj.ViewObject
-            lorig = lstyle
+            fn = obj.ViewObject.FontName
             fill = 'none'
             rad = vobj.BubbleSize.Value/2
             n = 0
             for e in obj.Shape.Edges:
-                lstyle = lorig
                 svg += get_path(obj, plane,
                                 fill, pathdata, stroke, linewidth, lstyle,
                                 fill_opacity=None,
                                 edges=[e])
-                lstyle = "none"
-                pos = ["Start"]
-                if hasattr(vobj, "BubblePosition"):
-                    if vobj.BubblePosition == "Both":
-                        pos = ["Start", "End"]
-                    else:
-                        pos = [vobj.BubblePosition]
-                for p in pos:
-                    if p == "Start":
-                        p1 = e.Vertexes[0].Point
-                        p2 = e.Vertexes[1].Point
-                    else:
-                        p1 = e.Vertexes[1].Point
-                        p2 = e.Vertexes[0].Point
-                    dv = p2.sub(p1)
-                    dv.normalize()
-                    center = p2.add(dv.scale(rad, rad, rad))
+            for t in obj.ViewObject.Proxy.getTextData():
+                pos = t[1].add(App.Vector(0,-fontsize/2,0))
+                svg += svgtext.get_text(plane, techdraw,
+                                        tstroke, fontsize, fn,
+                                        0.0, pos, t[0],
+                                        1.0, "center")
+            for b in obj.ViewObject.Proxy.getShapeData():
+                if hasattr(b,"Curve") and isinstance(b.Curve,Part.Circle):
                     svg += get_circle(plane,
-                                      fill, stroke, linewidth, lstyle,
-                                      Part.makeCircle(rad, center))
-                    if (hasattr(vobj.Proxy, "bubbletexts")
-                            and len(vobj.Proxy.bubbletexts) >= n):
-                        bubb = vobj.Proxy.bubbletexts
-                        svg += '<text '
-                        svg += 'fill="{}" '.format(stroke)
-                        svg += 'font-size="{}" '.format(rad)
-                        svg += 'style="text-anchor:middle;'
-                        svg += 'text-align:center;'
-                        svg += 'font-family: sans;" '
-                        svg += 'transform="'
-                        svg += 'translate({},{}) '.format(center.x + rad/4.0,
-                                                          center.y - rad/3.0)
-                        svg += 'scale(1,-1)"> '
-                        svg += '<tspan>'
-                        svg += bubb[n].string.getValues()[0]
-                        svg += '</tspan>\n'
-                        svg += '</text>\n'
-                        n += 1
-            lstyle = lorig
+                                      fill, stroke, linewidth, "none",
+                                      b)
+                else:
+                    sfill = stroke
+                    svg += get_path(obj, plane,
+                                    sfill, pathdata, stroke, linewidth, "none",
+                                    fill_opacity=None,
+                                    edges=b.Edges)
 
     elif utils.get_type(obj) == "Pipe":
         fill = stroke
@@ -783,7 +753,7 @@ def get_svg(obj,
                     obj.Proxy.getArea(obj, notouch=True)
                 if hasattr(obj.Proxy, "face"):
                     # setting fill
-                    if App.GuiUp:
+                    if App.GuiUp and hasattr(vobj,"ShapeColor"):
                         fill = utils.get_rgb(vobj.ShapeColor,
                                              testbw=False)
                         fill_opacity = 1 - vobj.Transparency / 100.0
@@ -852,7 +822,7 @@ def get_svg(obj,
 
                 vobj = obj.ViewObject
                 if m != "Wireframe":
-                    if fillstyle == "shape color":
+                    if (fillstyle == "shape color") and hasattr(vobj,"ShapeColor"):
                         fill = utils.get_rgb(vobj.ShapeColor,
                                              testbw=False)
                         fill_opacity = 1 - vobj.Transparency / 100.0

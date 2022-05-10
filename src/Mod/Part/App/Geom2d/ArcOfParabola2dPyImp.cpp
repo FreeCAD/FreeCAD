@@ -109,7 +109,7 @@ Py::Object ArcOfParabola2dPy::getParabola(void) const
 
 PyObject *ArcOfParabola2dPy::getCustomAttributes(const char* ) const
 {
-    return 0;
+    return nullptr;
 }
 
 int ArcOfParabola2dPy::setCustomAttributes(const char* , PyObject *)

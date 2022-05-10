@@ -49,7 +49,7 @@ class GuiExport QuantitySpinBox : public QAbstractSpinBox, public ExpressionSpin
     Q_PROPERTY(QString expression READ expressionText)
 
 public:
-    explicit QuantitySpinBox(QWidget *parent = 0);
+    explicit QuantitySpinBox(QWidget *parent = nullptr);
     virtual ~QuantitySpinBox();
 
     /// Get the current quantity
@@ -138,9 +138,10 @@ public Q_SLOTS:
 
 protected Q_SLOTS:
     void userInput(const QString & text);
-    void handlePendingEmit();
+    void handlePendingEmit(bool updateUnit = true);
 
 protected:
+    virtual void setExpression(std::shared_ptr<App::Expression> expr);
     virtual void openFormulaDialog();
     virtual StepEnabled stepEnabled() const;
     virtual void showEvent(QShowEvent * event);
@@ -153,8 +154,9 @@ protected:
     virtual void paintEvent(QPaintEvent *event);
 
 private:
+    void validateInput();
     void updateText(const Base::Quantity&);
-    void updateFromCache(bool);
+    void updateFromCache(bool notify, bool updateUnit = true);
     QString getUserString(const Base::Quantity& val, double& factor, QString& unitString) const;
     QString getUserString(const Base::Quantity& val) const;
 

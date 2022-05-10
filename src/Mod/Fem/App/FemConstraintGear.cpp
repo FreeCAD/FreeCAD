@@ -48,7 +48,7 @@ ConstraintGear::ConstraintGear()
     ADD_PROPERTY(Diameter,(100.0));
     ADD_PROPERTY(Force,(1000.0));
     ADD_PROPERTY(ForceAngle,(0.0));
-    ADD_PROPERTY_TYPE(Direction,(0),"ConstraintGear",(App::PropertyType)(App::Prop_None),
+    ADD_PROPERTY_TYPE(Direction,(nullptr),"ConstraintGear",(App::PropertyType)(App::Prop_None),
                       "Element giving direction of gear force");
     ADD_PROPERTY(Reversed,(0));
     ADD_PROPERTY_TYPE(DirectionVector,(Base::Vector3d(1,1,1).Normalize()),"ConstraintGear",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),

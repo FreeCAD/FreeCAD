@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,23 +26,6 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define MeshExport        __declspec(dllimport)
-# define PartExport        __declspec(dllimport)
-# define MeshGuiExport     __declspec(dllimport)
-# define PartGuiExport     __declspec(dllimport)
-# define MeshPartAppExport __declspec(dllimport)
-# define MeshPartGuiExport __declspec(dllexport)
-#else // for Linux
-# define MeshExport
-# define PartExport
-# define MeshGuiExport
-# define PartGuiExport
-# define MeshPartAppExport
-# define MeshPartGuiExport
-#endif
-
 #ifdef _MSC_VER
 # pragma warning(disable : 4005)
 # pragma warning(disable : 4290)
@@ -51,12 +34,9 @@
 
 #ifdef _PreComp_
 
-// Python
-#include <Python.h>
-
 // standard
 #include <iostream>
-#include <assert.h>
+#include <cassert>
 #include <cmath>
 
 // STL
@@ -76,8 +56,8 @@
 
 
 // Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
+#ifndef __QtAll__
+# include <Gui/QtAll.h>
 #endif
 
 // OCCT

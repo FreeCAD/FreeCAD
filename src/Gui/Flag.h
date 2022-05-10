@@ -28,7 +28,6 @@
 #include <QRect>
 #include <QWidgetItem>
 #include <Inventor/SbVec3f.h>
-#include <QtOpenGL.h>
 #include <Gui/GLPainter.h>
 
 namespace Gui {
@@ -43,7 +42,7 @@ class GuiExport Flag : public QtGLWidget
     Q_OBJECT
 
 public:
-    Flag(QWidget* parent=0);
+    Flag(QWidget* parent=nullptr);
     ~Flag();
 
     QSize sizeHint() const;

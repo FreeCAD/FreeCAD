@@ -20,15 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #ifndef DRAWINGGUI_VIEWPROVIDERSPREADSHEET_H
 #define DRAWINGGUI_VIEWPROVIDERSPREADSHEET_H
 
-#include "ViewProviderSymbol.h"
 #include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
-#include <Mod/TechDraw/App/DrawViewSymbol.h>
 
 #include "ViewProviderSymbol.h"
+
 
 namespace TechDrawGui {
 

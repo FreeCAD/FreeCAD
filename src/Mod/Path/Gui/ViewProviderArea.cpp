@@ -148,7 +148,7 @@ bool ViewProviderAreaView::canDragObject(App::DocumentObject* obj) const
 void ViewProviderAreaView::dragObject(App::DocumentObject* )
 {
     Path::FeatureAreaView* feature = static_cast<Path::FeatureAreaView*>(getObject());
-    feature->Source.setValue(NULL);
+    feature->Source.setValue(nullptr);
 }
 
 bool ViewProviderAreaView::canDropObjects() const

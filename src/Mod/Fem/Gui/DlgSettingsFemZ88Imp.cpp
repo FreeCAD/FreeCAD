@@ -22,19 +22,19 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#include "Gui/Application.h"
+#include <Gui/Application.h>
+
 #include "DlgSettingsFemZ88Imp.h"
 #include "ui_DlgSettingsFemZ88.h"
-#include <Gui/PrefWidgets.h>
+
 
 using namespace FemGui;
 
-DlgSettingsFemZ88Imp::DlgSettingsFemZ88Imp( QWidget* parent )
-  : PreferencePage( parent )
-  , ui(new Ui_DlgSettingsFemZ88Imp)
+DlgSettingsFemZ88Imp::DlgSettingsFemZ88Imp(QWidget* parent)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgSettingsFemZ88Imp)
 {
     ui->setupUi(this);
 }
@@ -48,18 +48,41 @@ void DlgSettingsFemZ88Imp::saveSettings()
 {
     ui->cb_z88_binary_std->onSave();
     ui->fc_z88_binary_path->onSave();
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Fem/Z88");
+    hGrp->SetInt("Solver", ui->cmb_solver->currentIndex());
+    ui->cmb_solver->onSave();
+    hGrp->SetInt("MaxGS", ui->sb_Z88_MaxGS->value());
+    ui->sb_Z88_MaxGS->onSave();
+    hGrp->SetInt("MaxKOI", ui->sb_Z88_MaxKOI->value());
+    ui->sb_Z88_MaxKOI->onSave();
 }
 
 void DlgSettingsFemZ88Imp::loadSettings()
 {
     ui->cb_z88_binary_std->onRestore();
     ui->fc_z88_binary_path->onRestore();
+    ui->cmb_solver->onRestore();
+    ui->sb_Z88_MaxGS->onRestore();
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Fem/Z88");
+    int index = hGrp->GetInt("Solver", 0);
+    if (index > -1)
+        ui->cmb_solver->setCurrentIndex(index);
+    int places = hGrp->GetInt("MaxGS", 100000000);
+    if (places > -1)
+        ui->sb_Z88_MaxGS->setValue(places);
+    places = hGrp->GetInt("MaxKOI", 2800000);
+    if (places > -1)
+        ui->sb_Z88_MaxKOI->setValue(places);
 }
 
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void DlgSettingsFemZ88Imp::changeEvent(QEvent *e)
+void DlgSettingsFemZ88Imp::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);

@@ -24,16 +24,9 @@
 #ifndef APP_PROPERTYUNITS_H
 #define APP_PROPERTYUNITS_H
 
-// Std. configurations
-
-
-#include <string>
-#include <list>
-#include <vector>
-#include <boost/filesystem/path.hpp>
-
-#include <Base/Unit.h>
 #include <Base/Quantity.h>
+#include <Base/Unit.h>
+
 #include "PropertyStandard.h"
 
 namespace Base {
@@ -71,6 +64,14 @@ public:
     virtual void setPathValue(const App::ObjectIdentifier &path, const boost::any &value);
     virtual const boost::any getPathValue(const App::ObjectIdentifier &path) const;
 
+    virtual bool isSame(const Property &other) const {
+        if (&other == this)
+            return true;
+        return getTypeId() == other.getTypeId()
+            && getValue() == static_cast<decltype(this)>(&other)->getValue()
+            && _Unit == static_cast<decltype(this)>(&other)->_Unit;
+    }
+
 protected:
     Base::Quantity createQuantityFromPy(PyObject *value);
     Base::Unit _Unit;
@@ -84,7 +85,7 @@ class AppExport PropertyQuantityConstraint : public PropertyQuantity
     TYPESYSTEM_HEADER();
 
 public:
-    PropertyQuantityConstraint(void):_ConstStruct(0){}
+    PropertyQuantityConstraint(void):_ConstStruct(nullptr){}
     virtual ~PropertyQuantityConstraint(){}
 
     /// Constraint methods
@@ -227,6 +228,18 @@ public:
     virtual ~PropertyPressure(){}
 };
 
+/** Stiffness property
+ * This is a property for representing stiffness. It is basically a float
+ * property. On the Gui it has a quantity like m/s^2.
+ */
+class AppExport PropertyStiffness: public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyStiffness(void);
+    virtual ~PropertyStiffness(){}
+};
+
 /** Force property
  * This is a property for representing acceleration. It is basically a float
  * property. On the Gui it has a quantity like m/s^2.
@@ -237,6 +250,18 @@ class AppExport PropertyForce: public PropertyQuantity
 public:
     PropertyForce(void);
     virtual ~PropertyForce(){}
+};
+
+/** ElectricPotential property
+ * This is a property for electric potentials. It is basically a float
+ * property. On the Gui it has a quantity of Volt.
+ */
+class AppExport PropertyElectricPotential : public PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyElectricPotential(void);
+    virtual ~PropertyElectricPotential() {}
 };
 
 /** VacuumPermittivity property

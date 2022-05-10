@@ -33,13 +33,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <Gui/Quarter/Basic.h>
+#include "Basic.h"
 
 namespace SIM { namespace Coin3D { namespace Quarter {
 
 namespace Quarter {
   void QUARTER_DLL_API init(bool initCoin = true);
-  void QUARTER_DLL_API clean(void);
+  void QUARTER_DLL_API clean();
   void QUARTER_DLL_API setTimerEpsilon(double sec);
 }
 

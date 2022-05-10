@@ -25,27 +25,23 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
 # include <QAction>
+# include <QMessageBox>
 #endif
+
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
+#include <Gui/Selection.h>
+#include <Gui/ViewProvider.h>
+#include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/FeatureBoolean.h>
 
 #include "ui_TaskBooleanParameters.h"
 #include "TaskBooleanParameters.h"
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/BitmapFactory.h>
-#include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
-#include <Base/Console.h>
-#include <Gui/Selection.h>
-#include <Gui/Command.h>
-#include <Gui/MainWindow.h>
-#include <Mod/PartDesign/App/FeatureBoolean.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Mod/PartDesign/Gui/ReferenceSelection.h>
+
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -111,13 +107,13 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (body.empty())
             return;
         App::DocumentObject* pcBody = pcBoolean->getDocument()->getObject(body.c_str());
-        if (pcBody == NULL)
+        if (pcBody == nullptr)
             return;
 
         // if the selected object is not a body then get the body it is part of
         if (!pcBody->getTypeId().isDerivedFrom(PartDesign::Body::getClassTypeId())) {
             pcBody = PartDesign::Body::findBodyOf(pcBody);
-            if (pcBody == NULL)
+            if (pcBody == nullptr)
                 return;
             body = pcBody->getNameInDocument();
         }
@@ -143,18 +139,18 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                     // Hide base body and added body
                     Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
                                 Gui::Application::Instance->getViewProvider(pcBoolean->BaseFeature.getValue()));
-                    if (vp != NULL)
+                    if (vp != nullptr)
                         vp->hide();
                     vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
                                                     Gui::Application::Instance->getViewProvider(bodies.front()));
-                    if (vp != NULL)
+                    if (vp != nullptr)
                         vp->hide();
                     BooleanView->show();
                 } else {
                     // Hide newly added body
                     Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
                                 Gui::Application::Instance->getViewProvider(bodies.back()));
-                    if (vp != NULL)
+                    if (vp != nullptr)
                         vp->hide();
                 }
             }
@@ -183,12 +179,12 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                 // Make bodies visible again
                 Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
                             Gui::Application::Instance->getViewProvider(pcBody));
-                if (vp != NULL)
+                if (vp != nullptr)
                     vp->show();
                 if (bodies.size() == 0) {
                     Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
                                 Gui::Application::Instance->getViewProvider(pcBoolean->BaseFeature.getValue()));
-                    if (vp != NULL)
+                    if (vp != nullptr)
                         vp->show();
                     BooleanView->hide();
                 }
@@ -216,7 +212,7 @@ void TaskBooleanParameters::onButtonBodyRemove(bool checked)
 {
     if (checked) {
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
-        if (doc != NULL)
+        if (doc != nullptr)
             BooleanView->show();
         selectionMode = bodyRemove;
         Gui::Selection().clearSelection();
@@ -277,12 +273,12 @@ void TaskBooleanParameters::onBodyDeleted(void)
     // Make bodies visible again
     Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
                 Gui::Application::Instance->getViewProvider(body));
-    if (vp != NULL)
+    if (vp != nullptr)
         vp->show();
     if (bodies.empty()) {
         Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(
                     Gui::Application::Instance->getViewProvider(pcBoolean->BaseFeature.getValue()));
-        if (vp != NULL)
+        if (vp != nullptr)
             vp->show();
         BooleanView->hide();
     }
@@ -307,7 +303,7 @@ void TaskBooleanParameters::exitSelectionMode()
 {
     selectionMode = none;
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (doc != NULL)
+    if (doc != nullptr)
         doc->setShow(BooleanView->getObject()->getNameInDocument());
 }
 
@@ -382,8 +378,8 @@ bool TaskDlgBooleanParameters::reject()
     // Show the bodies again
     PartDesign::Boolean* obj = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (doc != NULL) {
-        if (obj->BaseFeature.getValue() != NULL) {
+    if (doc != nullptr) {
+        if (obj->BaseFeature.getValue() != nullptr) {
             doc->setShow(obj->BaseFeature.getValue()->getNameInDocument());
             std::vector<App::DocumentObject*> bodies = obj->Group.getValues();
             for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++)

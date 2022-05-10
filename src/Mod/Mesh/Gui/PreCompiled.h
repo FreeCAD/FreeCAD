@@ -26,15 +26,6 @@
 
 #include <FCConfig.h>
 
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define MeshExport    __declspec(dllimport)
-# define MeshGuiExport __declspec(dllexport)
-#else // for Linux
-# define MeshExport
-# define MeshGuiExport
-#endif
-
 // here get the warnings of too long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
 #   pragma warning( disable : 4005 )
@@ -52,8 +43,8 @@
 #  include <gts.h>
 #endif
 // standard
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 
 // STL
 #include <algorithm>
@@ -69,14 +60,13 @@
 #include <string>
 #include <vector>
 
-#include <Python.h>
 #ifdef FC_OS_WIN32
 # include <windows.h>
 #endif
 
 // Qt Toolkit
-#ifndef __Qt4All__
-# include <Gui/Qt4All.h>
+#ifndef __QtAll__
+# include <Gui/QtAll.h>
 #endif
 
 // Inventor

@@ -24,8 +24,6 @@
 #include "PreCompiled.h"
 
 #include "DocumentObjectGroup.h"
-#include "Document.h"
-#include <CXX/Objects.hxx>
 
 // inclusion of the generated files (generated out of DocumentObjectGroupPy.xml)
 #include "DocumentObjectGroupPy.h"
@@ -41,7 +39,7 @@ std::string DocumentObjectGroupPy::representation(void) const
 
 PyObject *DocumentObjectGroupPy::getCustomAttributes(const char* /*attr*/) const
 {
-    return 0;
+    return nullptr;
 }
 
 int DocumentObjectGroupPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)

@@ -31,12 +31,14 @@
 # define PathExport  __declspec(dllexport)
 //# define RobotExport __declspec(dllexport) uncomment this to use KDL
 # define PartExport __declspec(dllimport)
-# define BaseExport  __declspec(dllimport)
 #else // for Linux
 # define PathExport
 //# define RobotExport uncomment this to use KDL
 # define PartExport
-# define BaseExport
+#endif
+
+#ifdef _MSC_VER
+#pragma warning( disable : 5208 )
 #endif
 
 #ifdef _PreComp_
@@ -44,8 +46,8 @@
 // standard
 #include <iostream>
 #include <sstream>
-#include <stdio.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 #include <string>
 #include <map>
 #include <vector>
@@ -55,9 +57,6 @@
 
 #include <cinttypes>
 #include <iomanip>
-
-// Python
-#include <Python.h>
 
 // Boost
 #include <boost/version.hpp>

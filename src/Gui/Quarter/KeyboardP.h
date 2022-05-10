@@ -33,8 +33,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-#include <QtGui/QKeyEvent>
+#include <QKeyEvent>
 #include <Inventor/events/SoKeyboardEvent.h>
+
 
 class SoEvent;
 template <class Key, class T> class QMap;
@@ -49,8 +50,8 @@ public:
   ~KeyboardP();
 
   const SoEvent * keyEvent(QKeyEvent * event);
-  void initKeyMap(void);
-  static bool debugKeyEvents(void);
+  void initKeyMap();
+  static bool debugKeyEvents();
 
   typedef QMap<Qt::Key, SoKeyboardEvent::Key> KeyMap;
   static KeyMap * keyboardmap;

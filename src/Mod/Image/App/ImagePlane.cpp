@@ -20,15 +20,10 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#endif
-
 #include "ImagePlane.h"
-#include <App/DocumentObjectPy.h>
-#include <Base/Placement.h>
+
 
 using namespace Image;
 using namespace App;
@@ -38,7 +33,7 @@ PROPERTY_SOURCE(Image::ImagePlane, App::GeoFeature)
 
 ImagePlane::ImagePlane()
 {
-    ADD_PROPERTY_TYPE( ImageFile,(0)  , "ImagePlane",Prop_None,"File of the image");
+    ADD_PROPERTY_TYPE( ImageFile,(nullptr)  , "ImagePlane",Prop_None,"File of the image");
     ADD_PROPERTY_TYPE( XSize,    (100), "ImagePlane",Prop_None,"Size of a pixel in X");
     ADD_PROPERTY_TYPE( YSize,    (100), "ImagePlane",Prop_None,"Size of a pixel in Y");
 }

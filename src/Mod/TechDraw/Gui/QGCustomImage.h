@@ -23,12 +23,13 @@
 #ifndef DRAWINGGUI_QGCUSTOMIMAGE_H
 #define DRAWINGGUI_QGCUSTOMIMAGE_H
 
+#include <QByteArray>
 #include <QGraphicsItem>
 #include <QGraphicsPixmapItem>
 #include <QPointF>
 #include <QSize>
-#include <QByteArray>
 #include <QPixmap>
+
 
 QT_BEGIN_NAMESPACE
 class QPainter;

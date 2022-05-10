@@ -26,6 +26,7 @@
 #include <map>
 #include <App/Property.h>
 #include <CXX/Objects.hxx>
+#include <Mod/Spreadsheet/SpreadsheetGlobal.h>
 
 namespace Spreadsheet {
 
