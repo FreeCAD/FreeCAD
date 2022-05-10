@@ -64,6 +64,10 @@ class Instruction (object):
         '''positionEnd() ... returns a Vector of the end position'''
         return FreeCAD.Vector(self.x(self.begin.x), self.y(self.begin.y), self.z(self.begin.z))
 
+    def pathLength(self):
+        '''pathLength() ... returns the lenght in mm'''
+        return 0
+
     def isMove(self):
         return False
 
@@ -112,13 +116,16 @@ class MoveStraight (Instruction):
     def isMove(self):
         return True
 
+    def pathLength(self):
+        return (self.positionEnd() - self.positionBegin()).Length
+
 class MoveArc (Instruction):
 
     def anglesOfTangents(self):
         '''anglesOfTangents() ... return a tuple with the tangent angles at begin and end position'''
         begin = self.xyBegin()
         end = self.xyEnd()
-        center = FreeCAD.Vector(self.begin.x + self.i(), self.begin.y + self.j(), 0)
+        center = self.xyCenter()
         # calculate angle of the hypotenuse at begin and end
         s0 = PathGeom.getAngle(begin - center)
         s1 = PathGeom.getAngle(end - center)
@@ -128,6 +135,43 @@ class MoveArc (Instruction):
 
     def isMove(self):
         return True
+
+    def isArc(self):
+        return True
+
+    def isCW(self):
+        return self.arcDirection() < 0
+
+    def isCCW(self):
+        return self.arcDirection() > 0
+
+    def arcAngle(self):
+        '''arcAngle() ... return the angle of the arc opening'''
+        begin = self.xyBegin()
+        end = self.xyEnd()
+        center = self.xyCenter()
+        s0 = PathGeom.getAngle(begin - center)
+        s1 = PathGeom.getAngle(end - center)
+
+        if self.isCW():
+            while s0 < s1:
+                s0 = s0 + 2 * PI
+            return s0 - s1
+
+        # CCW
+        while s1 < s0:
+            s1 = s1 + 2 * PI
+        return s1 - s0
+
+    def arcRadius(self):
+        '''arcRadius() ... return the radius'''
+        return (self.xyBegin() - self.xyCenter()).Length
+
+    def pathLength(self):
+        return self.arcAngle() * self.arcRadius()
+
+    def xyCenter(self):
+        return FreeCAD.Vector(self.begin.x + self.i(), self.begin.y + self.j(), 0)
 
 class MoveArcCW (MoveArc):
     def arcDirection(self):
@@ -270,7 +314,6 @@ def generate_tbone_horizontal(kink, length):
 def generate_tbone_vertical(kink, length):
     return generate_tbone(kink, length, 'Y')
 
-
 def MNVR(gcode, begin=None):
     # 'turns out the replace() isn't really necessary
     # leave it here anyway for clarity
@@ -334,6 +377,23 @@ class TestDressupDogboneII(PathTestBase):
         self.assertEqual(str(Maneuver.FromGCode('G3X2Y2I1')), "G3{'I': 1.0, 'X': 2.0, 'Y': 2.0}")
         self.assertEqual(len(Maneuver.FromGCode('G3X2Y2I1').instr), 1)
         self.assertEqual(type(Maneuver.FromGCode('G3X2Y2I1').instr[0]), MoveArcCCW)
+
+    def test04(self):
+        """Verify pathLength correctness"""
+        self.assertRoughly(Maneuver.FromGCode('G1X3').instr[0].pathLength(), 3)
+        self.assertRoughly(Maneuver.FromGCode('G1X-7').instr[0].pathLength(), 7)
+        self.assertRoughly(Maneuver.FromGCode('G1X3').instr[0].pathLength(), 3)
+
+        self.assertRoughly(Maneuver.FromGCode('G1X3Y4').instr[0].pathLength(), 5)
+        self.assertRoughly(Maneuver.FromGCode('G1X3Y-4').instr[0].pathLength(), 5)
+        self.assertRoughly(Maneuver.FromGCode('G1X-3Y-4').instr[0].pathLength(), 5)
+        self.assertRoughly(Maneuver.FromGCode('G1X-3Y4').instr[0].pathLength(), 5)
+
+        self.assertRoughly(Maneuver.FromGCode('G2X2I1').instr[0].pathLength(), PI)
+        self.assertRoughly(Maneuver.FromGCode('G2X1Y1I1').instr[0].pathLength(), PI/2)
+
+        self.assertRoughly(Maneuver.FromGCode('G3X2I1').instr[0].pathLength(), PI)
+        self.assertRoughly(Maneuver.FromGCode('G3X1Y1I1').instr[0].pathLength(), 3*PI/2)
 
 
     def test10(self):
