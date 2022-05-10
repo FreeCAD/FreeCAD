@@ -477,8 +477,6 @@ bool TaskCenterLine::accept()
 
 bool TaskCenterLine::reject()
 {
-    Gui::Command::abortCommand();
-
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
     if (!doc)
         return false;
