@@ -247,30 +247,28 @@ class Bone (object):
     def addInstruction(self, instr):
         self.instr.append(instr)
 
+def generate_tbone(kink, length, dim):
+    def getAxisX(v):
+        return v.x
+    def getAxisY(v):
+        return v.y
+    axis = getAxisY if dim == 'Y' else getAxisX
+    d0 = axis(kink.position())
+    dd = axis(kink.m0.positionEnd()) - axis(kink.m0.positionBegin())
+    if dd < 0 or (PathGeom.isRoughly(dd, 0) and (axis(kink.m1.positionEnd()) > axis(kink.m1.positionBegin()))):
+        length = -length
+
+    d1 = d0 + length
+
+    moveIn = MoveStraight(kink.position(), 'G1', {dim: d1})
+    moveOut = MoveStraight(moveIn.positionEnd(), 'G1', {dim: d0})
+    return Bone(kink, [moveIn, moveOut])
 
 def generate_tbone_horizontal(kink, length):
-    x0 = kink.position().x
-    dx = kink.m0.positionEnd().x - kink.m0.positionBegin().x
-    if dx < 0 or (PathGeom.isRoughly(dx, 0) and (kink.m1.positionEnd().x > kink.m1.positionBegin().x)):
-        length = -length
-
-    x1 = x0 + length
-
-    moveIn = MoveStraight(kink.position(), 'G1', {'X': x1})
-    moveOut = MoveStraight(moveIn.positionEnd(), 'G1', {'X': x0})
-    return Bone(kink, [moveIn, moveOut])
+    return generate_tbone(kink, length, 'X')
 
 def generate_tbone_vertical(kink, length):
-    y0 = kink.position().y
-    dy = kink.m0.positionEnd().y - kink.m0.positionBegin().y
-    if dy < 0 or (PathGeom.isRoughly(dy, 0) and (kink.m1.positionEnd().y > kink.m1.positionBegin().y)):
-        length = -length
-
-    y1 = y0 + length
-
-    moveIn = MoveStraight(kink.position(), 'G1', {'Y': y1})
-    moveOut = MoveStraight(moveIn.positionEnd(), 'G1', {'Y': y0})
-    return Bone(kink, [moveIn, moveOut])
+    return generate_tbone(kink, length, 'Y')
 
 
 def MNVR(gcode, begin=None):
