@@ -350,6 +350,13 @@ def generate_tbone_on_short(kink, length):
         a = normalizeAngle(kink.m1.anglesOfTangents()[0] + PI/2)
     return generate_tbone_on(kink, length, a)
 
+def generate_tbone_on_long(kink, length):
+    if kink.m0.pathLength() > kink.m1.pathLength():
+        a = normalizeAngle(kink.m0.anglesOfTangents()[1] + PI/2)
+    else:
+        a = normalizeAngle(kink.m1.anglesOfTangents()[0] + PI/2)
+    return generate_tbone_on(kink, length, a)
+
 
 def MNVR(gcode, begin=None):
     # 'turns out the replace() isn't really necessary
@@ -639,7 +646,7 @@ class TestDressupDogboneII(PathTestBase):
         bone = generate_tbone_on_short(KINK('G1X-2Y-1/G1Y3'), 5)
         self.assertBone(bone, "[G1{X: 0.24, Y: -5.5}, G1{X: -2.0, Y: -1.0}]", 2)
 
-        # horizontal short edge - the 2nd
+        # short edge - the 2nd
         bone = generate_tbone_on_short(KINK('G1Y2/G1X1'), 1)
         self.assertBone(bone, "[G1{Y: 3}, G1{Y: 2}]")
         bone = generate_tbone_on_short(KINK('G1Y2/G1X-1'), 1)
@@ -650,3 +657,15 @@ class TestDressupDogboneII(PathTestBase):
 
         bone = generate_tbone_on_short(KINK('G1Y3/G1X-2Y2'), 5)
         self.assertBone(bone, "[G1{X: -2.2, Y: 7.5}, G1{X: 0.0, Y: 3.0}]", 2)
+
+        # long edge
+        bone = generate_tbone_on_long(KINK('G1X2/G1Y1'), 1)
+        self.assertBone(bone, "[G1{Y: -1}, G1{Y: 0}]")
+        bone = generate_tbone_on_long(KINK('G1X-2/G1Y1'), 1)
+        self.assertBone(bone, "[G1{Y: -1}, G1{Y: 0}]")
+
+        bone = generate_tbone_on_long(KINK('G1Y-1/G1X2Y0'), 5)
+        self.assertBone(bone, "[G1{X: 2.2, Y: -5.5}, G1{X: 0.0, Y: -1.0}]", 2)
+
+        bone = generate_tbone_on_long(KINK('G1Y1/G1X-2Y0'), 5)
+        self.assertBone(bone, "[G1{X: -2.2, Y: 5.5}, G1{X: 0.0, Y: 1.0}]", 2)
