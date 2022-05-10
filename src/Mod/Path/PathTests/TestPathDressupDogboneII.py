@@ -202,8 +202,11 @@ A positive kink angle represents a move to the left, and a negative angle repres
         self.t0 = m0.anglesOfTangents()[1]
         self.t1 = m1.anglesOfTangents()[0]
 
-    def angle(self):
+    def deflection(self):
         return normalizeAngle(self.t1 - self.t0)
+
+    def normAngle(self):
+        return normalizeAngle((self.t1 + self.t0 + PI) / 2)
 
     def position(self):
         return self.m0.positionEnd()
@@ -285,9 +288,9 @@ def findDogboneKinks(maneuver, threshold):
     '''findDogboneKinks(maneuver, threshold) ... return all kinks fitting the criteria.
 A positive threshold angle returns all kinks on the right side, and a negative all kinks on the left side'''
     if threshold > 0:
-        return [k for k in createKinks(maneuver) if k.angle() > threshold]
+        return [k for k in createKinks(maneuver) if k.deflection() > threshold]
     if threshold < 0:
-        return [k for k in createKinks(maneuver) if k.angle() < threshold]
+        return [k for k in createKinks(maneuver) if k.deflection() < threshold]
     # you asked for it ...
     return createKinks(maneuver)
 
@@ -334,7 +337,7 @@ def generate_bone(kink, length, a):
     if PathGeom.isRoughly(abs(a), PI/2):
         return generate_tbone_vertical(kink, length)
 
-    if kink.angle() > 0:
+    if kink.deflection() > 0:
         length = -length
 
     dx = length * math.cos(a)
@@ -361,7 +364,8 @@ def generate_tbone_on_long(kink, length):
     return generate_bone(kink, length, a)
 
 def generate_dogbone(kink, length):
-    return generate_bone(kink, length, normalizeAngle((kink.angle() + PI) / 2))
+    #return generate_bone(kink, length, normalizeAngle((kink.deflection() + PI) / 2))
+    return generate_bone(kink, length, kink.normAngle())
 
 
 def MNVR(gcode, begin=None):
@@ -388,7 +392,7 @@ class TestDressupDogboneII(PathTestBase):
         self.assertRoughly(t0[1], t1[1])
 
     def assertKinks(self, maneuver, s):
-        kinks = [f"{k.angle():4.2f}" for k in createKinks(maneuver)]
+        kinks = [f"{k.deflection():4.2f}" for k in createKinks(maneuver)]
         self.assertEqual(f"[{', '.join(kinks)}]", s)
 
     def assertBones(self, maneuver, threshold, s):
@@ -684,3 +688,6 @@ class TestDressupDogboneII(PathTestBase):
 
         bone = generate_dogbone(KINK('G1X1/G1X3Y-1'), 1)
         self.assertBone(bone, "[G1{X: 1.2, Y: 0.97}, G1{X: 1.0, Y: 0.0}]", 2)
+
+        bone = generate_dogbone(KINK('G1X1Y1/G1X2'), 1)
+        self.assertBone(bone, "[G1{X: 0.62, Y: 1.9}, G1{X: 1.0, Y: 1.0}]", 2)
