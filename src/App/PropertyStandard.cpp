@@ -392,9 +392,9 @@ void PropertyEnumeration::setEnumVector(const std::vector<std::string> &values)
         hasSetValue();
 }
 
-const char ** PropertyEnumeration::getEnums() const
+bool PropertyEnumeration::hasEnums() const
 {
-    return _enum.getEnums();
+    return _enum.hasEnums();
 }
 
 bool PropertyEnumeration::isValid() const
@@ -447,7 +447,7 @@ void PropertyEnumeration::Restore(Base::XMLReader &reader)
 
     if (val < 0) {
         // If the enum is empty at this stage do not print a warning
-        if (_enum.getEnums())
+        if (_enum.hasEnums())
             Base::Console().Warning("Enumeration index %d is out of range, ignore it\n", val);
         val = getValue();
     }
@@ -598,13 +598,13 @@ bool PropertyEnumeration::getPyPathValue(const ObjectIdentifier &path, Py::Objec
     if (p == ".Enum" || p == ".All") {
         Base::PyGILStateLocker lock;
         Py::Tuple res(_enum.maxValue()+1);
-        const char **enums = _enum.getEnums();
+        std::vector<std::string> enums = _enum.getEnumVector();
         PropertyString tmp;
-        for(int i=0;i<=_enum.maxValue();++i) {
+        for(int i=0;i< int(enums.size());++i) {
             tmp.setValue(enums[i]);
             res.setItem(i,Py::asObject(tmp.getPyObject()));
         }
-        if(p == ".Enum")
+        if (p == ".Enum")
             r = res;
         else {
             Py::Tuple tuple(2);

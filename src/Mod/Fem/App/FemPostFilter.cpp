@@ -427,7 +427,7 @@ FemPostScalarClipFilter::~FemPostScalarClipFilter() {
 DocumentObjectExecReturn* FemPostScalarClipFilter::execute(void) {
 
     std::string val;
-    if (m_scalarFields.getEnums() && Scalars.getValue() >= 0)
+    if (m_scalarFields.hasEnums() && Scalars.getValue() >= 0)
         val = Scalars.getValueAsString();
 
     std::vector<std::string> array;
@@ -526,7 +526,7 @@ FemPostWarpVectorFilter::~FemPostWarpVectorFilter() {
 DocumentObjectExecReturn* FemPostWarpVectorFilter::execute(void) {
 
     std::string val;
-    if (m_vectorFields.getEnums() && Vector.getValue() >= 0)
+    if (m_vectorFields.hasEnums() && Vector.getValue() >= 0)
         val = Vector.getValueAsString();
 
     std::vector<std::string> array;
