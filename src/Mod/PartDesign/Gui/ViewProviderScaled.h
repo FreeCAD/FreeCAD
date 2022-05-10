@@ -30,10 +30,12 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderScaled : public ViewProviderTransformed
 {
+    Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderScaled)
     PROPERTY_HEADER(PartDesignGui::ViewProviderScaled);
 public:
     ViewProviderScaled() {
         featureName = std::string("Scaled");
+        menuName = tr("Scaled parameters");
         sPixmap = "PartDesign_Scaled.svg";
     }
 

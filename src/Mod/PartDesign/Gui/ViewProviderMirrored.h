@@ -30,10 +30,12 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderMirrored : public ViewProviderTransformed
 {
+    Q_DECLARE_TR_FUNCTIONS(PartDesignGuii::ViewProviderMirrored)
     PROPERTY_HEADER(PartDesignGui::ViewProviderMirrored);
 public:
     ViewProviderMirrored() {
         featureName = std::string("Mirrored");
+        menuName = tr("Mirrored parameters");
         sPixmap = "PartDesign_Mirrored.svg";
     }
 

@@ -275,16 +275,12 @@ std::string FileInfo::fileNamePure () const
 std::wstring FileInfo::toStdWString() const
 {
     // As FileName is UTF-8 is encoded we have to convert it
-    // for Windows because the path names are UCS-2 encoded.
+    // for Windows because the path names are UTF-16 encoded.
 #ifdef FC_OS_WIN32
     return ConvertToWideString(FileName);
 #else
-    // FIXME: For MacOS the path names are UCS-4 encoded.
-    // For the moment we cannot handle path names containing
-    // non-ASCII characters.
-    // For Linux the paths names are encoded in UTF-8 so we actually
-    // don't need this method therefore.
-    return std::wstring();
+    // On other platforms it's discouraged to use wchar_t for file names
+    throw Base::FileException("Cannot use FileInfo::toStdWString() on this platform");
 #endif
 }
 

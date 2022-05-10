@@ -2484,8 +2484,8 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
             QAction *act = menu->addAction(
                     QObject::tr("Setup configurable object"));
             act->setToolTip(QObject::tr(
-                        "Select which object to copy or exclude when configuration changes."
-                        "All external linked object are excluded by default."));
+                        "Select which object to copy or exclude when configuration changes. "
+                        "All external linked objects are excluded by default."));
             act->setData(-1);
             if (!func) func = new Gui::ActionFunction(menu);
             func->trigger(act, [ext](){

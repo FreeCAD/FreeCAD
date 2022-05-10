@@ -67,7 +67,8 @@ public:
     std::string fileName () const;
     /// Returns the name of the file, excluding the path and the extension.
     std::string fileNamePure () const;
-    /// Convert the path name into a UCS-2 encoded wide string format.
+    /// Convert the path name into a UTF-16 encoded wide string format.
+    /// @note: Use this function on Windows only.
     std::wstring toStdWString() const;
     /** Returns the extension of the file.
      * The extension consists of all characters in the file after (but not including)

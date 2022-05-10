@@ -125,9 +125,11 @@ struct DocumentP
     Connection connectTransactionRemove;
     Connection connectTouchedObject;
     Connection connectChangePropertyEditor;
+    Connection connectChangeDocument;
 
     typedef boost::signals2::shared_connection_block ConnectionBlock;
     ConnectionBlock connectActObjectBlocker;
+    ConnectionBlock connectChangeDocumentBlocker;
 };
 
 } // namespace Gui
@@ -181,6 +183,10 @@ Document::Document(App::Document* pcDocument,Application * app)
 
     d->connectChangePropertyEditor = pcDocument->signalChangePropertyEditor.connect
         (boost::bind(&Gui::Document::slotChangePropertyEditor, this, bp::_1, bp::_2));
+    d->connectChangeDocument = d->_pcDocument->signalChanged.connect // use the same slot function
+        (boost::bind(&Gui::Document::slotChangePropertyEditor, this, bp::_1, bp::_2));
+    d->connectChangeDocumentBlocker = boost::signals2::shared_connection_block
+        (d->connectChangeDocument, true);
     d->connectFinishRestoreObject = pcDocument->signalFinishRestoreObject.connect
         (boost::bind(&Gui::Document::slotFinishRestoreObject, this, bp::_1));
     d->connectExportObjects = pcDocument->signalExportViewObjects.connect
@@ -246,6 +252,7 @@ Document::~Document()
     d->connectTransactionRemove.disconnect();
     d->connectTouchedObject.disconnect();
     d->connectChangePropertyEditor.disconnect();
+    d->connectChangeDocument.disconnect();
 
     // e.g. if document gets closed from within a Python command
     d->_isClosing = true;
@@ -1942,6 +1949,8 @@ void Document::onRelabel(void)
     for (it = d->passiveViews.begin();it != d->passiveViews.end();++it) {
         (*it)->onRelabel(this);
     }
+
+    d->connectChangeDocumentBlocker.unblock();
 }
 
 bool Document::isLastView(void)

@@ -1228,6 +1228,54 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(ss2.get("A3"), 4)
         self.assertEqual(ss2.get("A4"), 4)
 
+    def testIssue6844(self):
+        body = self.doc.addObject("App::FeaturePython", "Body")
+        body.addProperty("App::PropertyEnumeration", "Configuration")
+        body.Configuration = ["Item1", "Item2", "Item3"]
+
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Sheet")
+        sheet.addProperty("App::PropertyString", "A2")
+        sheet.A2 = "Item2"
+        sheet.addProperty("App::PropertyEnumeration", "body")
+        sheet.body = ["Item1", "Item2", "Item3"]
+
+        sheet.setExpression(".body.Enum", "cells[<<A2:|>>]")
+        sheet.setExpression(".cells.Bind.B1.ZZ1", "tuple(.cells; <<B>> + str(hiddenref(Body.Configuration) + 2); <<ZZ>> + str(hiddenref(Body.Configuration) + 2))")
+
+        self.doc.recompute()
+        self.doc.UndoMode = 0
+        self.doc.removeObject("Body")
+        sheet.clearAll()
+
+    def testIssue6840(self):
+        body = self.doc.addObject("App::FeaturePython", "Body")
+        body.addProperty("App::PropertyEnumeration", "Configuration")
+        body.Configuration = ["Item1", "Item2", "Item3"]
+
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Sheet")
+        sheet.addProperty("App::PropertyString", "A2")
+        sheet.A2 = "Item2"
+        sheet.addProperty("App::PropertyEnumeration", "body")
+        sheet.body = ["Item1", "Item2", "Item3"]
+
+        sheet.setExpression(".body.Enum", "cells[<<A2:|>>]")
+        sheet.setExpression(".cells.Bind.B1.ZZ1", "tuple(.cells; <<B>> + str(hiddenref(Body.Configuration) + 2); <<ZZ>> + str(hiddenref(Body.Configuration) + 2))")
+
+        self.doc.recompute()
+        self.doc.clearDocument()
+
+    def testFixPR6843(self):
+        sheet = self.doc.addObject("Spreadsheet::Sheet", "Sheet")
+        sheet.set("A5", "a")
+        sheet.set("A6", "b")
+        self.doc.recompute()
+        sheet.insertRows("6", 1)
+        self.doc.recompute()
+        self.assertEqual(sheet.A5, "a")
+        self.assertEqual(sheet.A7, "b")
+        with self.assertRaises(AttributeError):
+            self.assertEqual(sheet.A6, "")
+
     def tearDown(self):
         #closing doc
         FreeCAD.closeDocument(self.doc.Name)
