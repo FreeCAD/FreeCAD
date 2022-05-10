@@ -202,9 +202,9 @@ void TaskAppearance::setDisplayModes(const std::vector<Gui::ViewProvider*>& view
         App::Property* prop = (*it)->getPropertyByName("DisplayMode");
         if (prop && prop->getTypeId() == App::PropertyEnumeration::getClassTypeId()) {
             App::PropertyEnumeration* display = static_cast<App::PropertyEnumeration*>(prop);
-            if (!display->getEnums())
+            if (!display->hasEnums())
                 return;
-            const std::vector<std::string>& value = display->getEnumVector();
+            std::vector<std::string> value = display->getEnumVector();
             if (it == views.begin()) {
                 for (std::vector<std::string>::const_iterator jt = value.begin(); jt != value.end(); ++jt)
                     commonModes << QLatin1String(jt->c_str());

@@ -100,7 +100,7 @@ FeatureTest::FeatureTest()
   ADD_PROPERTY_TYPE(TypeTransient,(4711),group,Prop_Transient ,"An example property which has the type 'Transient'"  );
   ADD_PROPERTY_TYPE(TypeNoRecompute,(4711),group,Prop_NoRecompute,"An example property which has the type 'NoRecompute'");
   ADD_PROPERTY_TYPE(TypeAll     ,(4711),group,(App::PropertyType) (Prop_Output|Prop_ReadOnly |Prop_Hidden ),
-      "An example property which has the types 'Output', 'ReadOnly', and 'Hidden'");
+      "An example property which has the types 'Output', 'ReadOnly' and 'Hidden'");
 
   ADD_PROPERTY(QuantityLength,(1.0));
   QuantityLength.setUnit(Base::Unit::Length);
@@ -118,13 +118,46 @@ FeatureTest::~FeatureTest()
 
 }
 
-short FeatureTest::mustExecute(void) const
+short FeatureTest::mustExecute() const
 {
     return DocumentObject::mustExecute();
 }
 
-DocumentObjectExecReturn *FeatureTest::execute(void)
+DocumentObjectExecReturn *FeatureTest::execute()
 {
+    // Enum handling
+    Enumeration enumObj1 = Enum.getEnum();
+    enumObj1.setValue(7, false);
+    enumObj1.setValue(4, true);
+
+    Enumeration enumObj2 = Enum.getEnum();
+    enumObj2.setValue(4, true);
+
+    Enumeration enumObj3(enumObj2);
+    const char* val = enumObj3.getCStr();
+    enumObj3.isValue(val);
+    enumObj3.getEnumVector();
+
+    Enumeration enumObj4("Single item");
+    enumObj4.setEnums(enums);
+    std::ignore = enumObj4 == enumObj2;
+    enumObj4.setEnums(nullptr);
+    enumObj4 = enumObj2;
+    std::ignore = enumObj4 == enumObj4.getCStr();
+
+    Enumeration enumObj5(enums, enums[3]);
+    enumObj5.isValue(enums[2]);
+    enumObj5.isValue(enums[3]);
+    enumObj5.contains(enums[1]);
+
+    Enumeration enumObj6;
+    enumObj6.setEnums(enums);
+    enumObj6.setValue(enums[1]);
+    std::vector<std::string> list;
+    list.emplace_back("Hello");
+    list.emplace_back("World");
+    enumObj6.setEnums(list);
+    enumObj6.setValue(list.back());
     /*
 doc=App.newDocument()
 obj=doc.addObject("App::FeatureTest")
@@ -189,7 +222,7 @@ FeatureTestException::FeatureTestException()
     ADD_PROPERTY(ExceptionType,(Base::Exception::getClassTypeId().getKey())  );
 }
 
-DocumentObjectExecReturn *FeatureTestException::execute(void)
+DocumentObjectExecReturn *FeatureTestException::execute()
 {
     //ExceptionType;
     throw Base::RuntimeError("FeatureTestException::execute(): Testexception  ;-)");

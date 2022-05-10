@@ -2800,8 +2800,9 @@ QStringList PropertyEnumItem::getEnum() const
     auto prop = getFirstProperty();
     if (prop && prop->getTypeId().isDerivedFrom(App::PropertyEnumeration::getClassTypeId())) {
         const App::PropertyEnumeration* prop_enum = static_cast<const App::PropertyEnumeration*>(prop);
-        for(int i=0; i<prop_enum->getEnum().maxValue(); ++i)
-            res.push_back(QString::fromUtf8(prop_enum->getEnums()[i]));
+        std::vector<std::string> enums = prop_enum->getEnumVector();
+        for (const auto& it : enums)
+            res.push_back(QString::fromStdString(it));
     }
     return res;
 }
@@ -2887,7 +2888,7 @@ QWidget* PropertyEnumItem::createEditor(QWidget* parent, const QObject* receiver
     for (std::vector<App::Property*>::const_iterator it = items.begin(); it != items.end(); ++it) {
         if ((*it)->getTypeId() == App::PropertyEnumeration::getClassTypeId()) {
             App::PropertyEnumeration* prop = static_cast<App::PropertyEnumeration*>(*it);
-            if (prop->getEnums() == nullptr) {
+            if (!prop->hasEnums()) {
                 commonModes.clear();
                 return nullptr;
             }

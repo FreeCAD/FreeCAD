@@ -249,7 +249,7 @@ void ViewProviderFemPostObject::updateProperties() {
 
     //coloring
     std::string val;
-    if (Field.getEnums() && Field.getValue() >= 0)
+    if (Field.hasEnums() && Field.getValue() >= 0)
         val = Field.getValueAsString();
 
     std::vector<std::string> colorArrays;
@@ -278,7 +278,7 @@ void ViewProviderFemPostObject::updateProperties() {
     Field.purgeTouched();
 
     //Vector mode
-    if (VectorMode.getEnums() && VectorMode.getValue() >= 0)
+    if (VectorMode.hasEnums() && VectorMode.getValue() >= 0)
         val = VectorMode.getValueAsString();
 
     colorArrays.clear();
