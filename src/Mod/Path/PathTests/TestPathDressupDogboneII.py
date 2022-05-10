@@ -325,7 +325,10 @@ def generate_tbone_horizontal(kink, length):
 def generate_tbone_vertical(kink, length):
     return generate_tbone(kink, length, 'Y')
 
-def generate_tbone_on(kink, length, a):
+def generate_bone(kink, length, a):
+    # These two special cases could be removed, they are more efficient though because they
+    # don't require trigonometric function calls. They are also a gentle introduction into
+    # the dog/t/bone world, so we'll leave them here for now
     if PathGeom.isRoughly(0, a) or PathGeom.isRoughly(abs(a), PI):
         return generate_tbone_horizontal(kink, length)
     if PathGeom.isRoughly(abs(a), PI/2):
@@ -348,14 +351,17 @@ def generate_tbone_on_short(kink, length):
         a = normalizeAngle(kink.m0.anglesOfTangents()[1] + PI/2)
     else:
         a = normalizeAngle(kink.m1.anglesOfTangents()[0] + PI/2)
-    return generate_tbone_on(kink, length, a)
+    return generate_bone(kink, length, a)
 
 def generate_tbone_on_long(kink, length):
     if kink.m0.pathLength() > kink.m1.pathLength():
         a = normalizeAngle(kink.m0.anglesOfTangents()[1] + PI/2)
     else:
         a = normalizeAngle(kink.m1.anglesOfTangents()[0] + PI/2)
-    return generate_tbone_on(kink, length, a)
+    return generate_bone(kink, length, a)
+
+def generate_dogbone(kink, length):
+    return generate_bone(kink, length, normalizeAngle((kink.angle() + PI) / 2))
 
 
 def MNVR(gcode, begin=None):
@@ -669,3 +675,12 @@ class TestDressupDogboneII(PathTestBase):
 
         bone = generate_tbone_on_long(KINK('G1Y1/G1X-2Y0'), 5)
         self.assertBone(bone, "[G1{X: -2.2, Y: 5.5}, G1{X: 0.0, Y: 1.0}]", 2)
+
+    def test70(self):
+        """Verify dogbones"""
+
+        bone = generate_dogbone(KINK('G1X1/G1Y1'), 1)
+        self.assertBone(bone, "[G1{X: 1.7, Y: -0.71}, G1{X: 1.0, Y: 0.0}]", 2)
+
+        bone = generate_dogbone(KINK('G1X1/G1X3Y-1'), 1)
+        self.assertBone(bone, "[G1{X: 1.2, Y: 0.97}, G1{X: 1.0, Y: 0.0}]", 2)
