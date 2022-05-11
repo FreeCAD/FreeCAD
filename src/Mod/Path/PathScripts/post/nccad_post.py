@@ -21,7 +21,7 @@
 # *                                                                           *
 # ****************************************************************************/
 """Postprocessor to output real GCode for Max Computer GmbH nccad9."""
-import FreeCAD as App
+import FreeCAD
 from PathScripts import PostUtils
 import datetime
 
@@ -43,9 +43,7 @@ import nccad_post
 nccad_post.export([object], "/path/to/file.knc", "")
 """
 
-
 MACHINE_NAME = """Max Computer GmbH nccad9 MCS/KOSY"""
-
 
 # gCode for changing tools
 # M01 <String> ; Displays <String> and waits for user interaction
@@ -63,12 +61,17 @@ M10 O6.0 ; Stop spindle"""
 
 # gCode header with information about CAD-software, post-processor
 # and date/time
+if FreeCAD.ActiveDocument:
+    cam_file = FreeCAD.ActiveDocument.FileName
+else:
+    cam_file = "<None>"
+
 HEADER = """;Exported by FreeCAD
 ;Post Processor: {}
 ;CAM file: {}
 ;Output Time: {}
 """.format(
-    __name__, App.ActiveDocument.FileName, str(datetime.datetime.now())
+    __name__, FreeCAD.ActiveDocument.FileName, str(datetime.datetime.now())
 )
 
 
@@ -116,7 +119,7 @@ def export(objectslist, filename, argstring):
     gcode += POSTAMBLE + "\n"
 
     # Open editor window
-    if App.GuiUp:
+    if FreeCAD.GuiUp:
         dia = PostUtils.GCodeEditorDialog()
         dia.editor.setText(gcode)
         result = dia.exec_()
