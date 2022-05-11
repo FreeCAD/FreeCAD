@@ -71,7 +71,7 @@ HEADER = """;Exported by FreeCAD
 ;CAM file: {}
 ;Output Time: {}
 """.format(
-    __name__, FreeCAD.ActiveDocument.FileName, str(datetime.datetime.now())
+    __name__, cam_file, str(datetime.datetime.now())
 )
 
 
