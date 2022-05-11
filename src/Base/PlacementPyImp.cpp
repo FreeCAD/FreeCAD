@@ -40,7 +40,7 @@ using namespace Base;
 std::string PlacementPy::representation() const
 {
     double A,B,C;
-    PlacementPy::PointerType ptr = reinterpret_cast<PlacementPy::PointerType>(_pcTwinPointer);
+    PlacementPy::PointerType ptr = getPlacementPtr();
     std::stringstream str;
     ptr->getRotation().getYawPitchRoll(A,B,C);
 

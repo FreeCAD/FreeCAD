@@ -36,7 +36,7 @@ using namespace Base;
 // returns a string which represents the object e.g. when printed in python
 std::string AxisPy::representation() const
 {
-    AxisPy::PointerType ptr = reinterpret_cast<AxisPy::PointerType>(_pcTwinPointer);
+    AxisPy::PointerType ptr = getAxisPtr();
     std::stringstream str;
     str << "Axis [Base=(";
     str << ptr->getBase().x << ","<< ptr->getBase().y << "," << ptr->getBase().z;

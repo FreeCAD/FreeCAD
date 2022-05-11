@@ -54,7 +54,7 @@ int  ExtensionContainerPy::initialization() {
         // The PyTypeObject is shared by all instances of this type and therefore
         // we have to add new methods only once.
         PyObject* obj = (*it).second->getExtensionPyObject();
-        PyMethodDef* meth = reinterpret_cast<PyMethodDef*>(obj->ob_type->tp_methods);
+        PyMethodDef* meth = obj->ob_type->tp_methods;
         PyTypeObject *type = this->ob_type;
         PyObject *dict = type->tp_dict;
 
@@ -214,7 +214,7 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
         str << "No extension found of type '" << typeId << "'" << std::ends;
         throw Py::TypeError(str.str());
     }
-    
+
     //register the extension
     App::Extension* ext = static_cast<App::Extension*>(extension.createInstance());
     //check if this really is a python extension!
@@ -224,14 +224,14 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
         str << "Extension is not a python addable version: '" << typeId << "'" << std::ends;
         throw Py::TypeError(str.str());
     }
-    
+
     GetApplication().signalBeforeAddingDynamicExtension(*getExtensionContainerPtr(), typeId);
     ext->initExtension(getExtensionContainerPtr());
 
-      // The PyTypeObject is shared by all instances of this type and therefore
+    // The PyTypeObject is shared by all instances of this type and therefore
     // we have to add new methods only once.
     PyObject* obj = ext->getExtensionPyObject();
-    PyMethodDef* meth = reinterpret_cast<PyMethodDef*>(obj->ob_type->tp_methods);
+    PyMethodDef* meth = obj->ob_type->tp_methods;
     PyTypeObject *type = this->ob_type;
     PyObject *dict = type->tp_dict;
 
