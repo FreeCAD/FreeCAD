@@ -4369,8 +4369,10 @@ unsigned int GeomBezierSurface::getMemSize (void) const
 {
     unsigned int size = sizeof(Geom_BezierSurface);
     if (!mySurface.IsNull()) {
-        size += mySurface->NbUPoles() * mySurface->NbVPoles() * sizeof(gp_Pnt);
-        size += mySurface->NbUPoles() * mySurface->NbVPoles() * sizeof(Standard_Real);
+        unsigned int poles = mySurface->NbUPoles();
+        poles *= mySurface->NbVPoles();
+        size += poles * sizeof(gp_Pnt);
+        size += poles * sizeof(Standard_Real);
     }
     return size;
 }
@@ -4448,8 +4450,10 @@ unsigned int GeomBSplineSurface::getMemSize (void) const
         size += mySurface->NbUKnots() * sizeof(Standard_Integer);
         size += mySurface->NbVKnots() * sizeof(Standard_Real);
         size += mySurface->NbVKnots() * sizeof(Standard_Integer);
-        size += mySurface->NbUPoles() * mySurface->NbVPoles() * sizeof(gp_Pnt);
-        size += mySurface->NbUPoles() * mySurface->NbVPoles() * sizeof(Standard_Real);
+        unsigned int poles = mySurface->NbUPoles();
+        poles *= mySurface->NbVPoles();
+        size += poles * sizeof(gp_Pnt);
+        size += poles * sizeof(Standard_Real);
     }
     return size;
 }
