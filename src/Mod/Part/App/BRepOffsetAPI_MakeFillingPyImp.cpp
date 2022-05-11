@@ -35,6 +35,8 @@
 #include "TopoShapeEdgePy.h"
 #include "TopoShapeFacePy.h"
 #include <Base/VectorPy.h>
+// For std::unique_ptr
+#include <memory>
 
 using namespace Part;
 /*!
