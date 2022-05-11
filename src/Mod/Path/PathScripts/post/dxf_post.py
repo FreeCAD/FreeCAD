@@ -143,5 +143,3 @@ def parse(pathobj):
 
     return objlist
 
-
-print(__name__ + " gcode postprocessor loaded.")
