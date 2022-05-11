@@ -1910,7 +1910,7 @@ void execCreateHorizChamferDimension(Gui::Command* cmd) {
             float alpha = round(abs(atan(dy / dx)) * Pi180);
             std::string sAlpha = std::to_string((int)alpha);
             std::string formatSpec = dim->FormatSpec.getStrValue();
-            formatSpec = formatSpec + "x" + sAlpha + "°";
+            formatSpec = formatSpec + " x" + sAlpha + "°";
             dim->FormatSpec.setValue(formatSpec);
             objFeat->requestPaint();
             cmd->getSelection().clearSelection();
@@ -1979,7 +1979,7 @@ void execCreateVertChamferDimension(Gui::Command* cmd) {
             float alpha = round(abs(atan(dx / dy)) * Pi180);
             std::string sAlpha = std::to_string((int)alpha);
             std::string formatSpec = dim->FormatSpec.getStrValue();
-            formatSpec = formatSpec + "x" + sAlpha + "°";
+            formatSpec = formatSpec + " x" + sAlpha + "°";
             dim->FormatSpec.setValue(formatSpec);
             objFeat->requestPaint();
             cmd->getSelection().clearSelection();
