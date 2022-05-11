@@ -456,7 +456,7 @@ QString UnitsSchemaMKS::schemaTranslate(const Quantity &quant, double &factor, Q
         factor = 0.001;
     }
     else if (unit == Unit::KinematicViscosity) {
-        unitString = QString::fromLatin1("m^2/s)");
+        unitString = QString::fromLatin1("m^2/s");
         factor = 1e6;
     }
     else {
