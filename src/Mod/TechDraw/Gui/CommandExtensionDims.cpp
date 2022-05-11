@@ -156,8 +156,8 @@ CmdTechDrawExtensionInsertSquare::CmdTechDrawExtensionInsertSquare()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert '〼' Prefix");
-    sToolTipText    = QT_TR_NOOP("Insert a '〼' symbol at the beginning of the dimension text:<br>\
+    sMenuText       = QT_TR_NOOP("Insert '□' Prefix");
+    sToolTipText    = QT_TR_NOOP("Insert a '□' symbol at the beginning of the dimension text:<br>\
 - Select one or more dimensions<br>\
 - Click this tool");
     sWhatsThis      = "TechDraw_ExtensionInsertSquare";
@@ -168,7 +168,7 @@ CmdTechDrawExtensionInsertSquare::CmdTechDrawExtensionInsertSquare()
 void CmdTechDrawExtensionInsertSquare::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    execInsertPrefixChar(this, "〼");
+    execInsertPrefixChar(this, "□");    //□ white square U+25A1
 }
 
 bool CmdTechDrawExtensionInsertSquare::isActive(void)
@@ -269,8 +269,8 @@ void CmdTechDrawExtensionInsertPrefixGroup::activated(int iMsg)
     case 0:                 //insert "⌀" as prefix
         execInsertPrefixChar(this, "⌀");
         break;
-    case 1:                 //insert "〼" as prefix
-        execInsertPrefixChar(this, "〼");
+    case 1:                 //insert "□" as prefix
+        execInsertPrefixChar(this, "□");
         break;
     case 2:                 //remove prefix characters
         execRemovePrefixChar(this);
@@ -326,9 +326,9 @@ void CmdTechDrawExtensionInsertPrefixGroup::languageChange()
 - Click this tool"));
     arc1->setStatusTip(arc1->text());
     QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("CmdTechDrawExtensionInsertSquare", "Insert '〼' Prefix"));
+    arc2->setText(QApplication::translate("CmdTechDrawExtensionInsertSquare", "Insert '□' Prefix"));
     arc2->setToolTip(QApplication::translate("CmdTechDrawExtensionInsertSquare",
-"Insert a '〼' symbol at the beginning of the dimension text:<br>\
+"Insert a '□' symbol at the beginning of the dimension text:<br>\
 - Select one or more dimensions<br>\
 - Click this tool"));
     arc2->setStatusTip(arc2->text());
@@ -2178,7 +2178,7 @@ void CmdTechDrawExtensionCreateLengthArc::activated(int iMsg) {
             float alpha = acos((radVec1 * radVec2) / (radVec1.Length() * radVec2.Length()));
             float arcLength = alpha * radius / scale;
             dim->Arbitrary.setValue(true);
-            formatSpec << "∩ " << arcLength;
+            formatSpec << "◠ " << arcLength;
             dim->FormatSpec.setValue(formatSpec.str());
             objFeat->refreshCEGeoms();
             objFeat->requestPaint();
