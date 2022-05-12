@@ -368,7 +368,7 @@ GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, cons
 	QImage image(texSize, texSize, QImage::Format_ARGB32);
 	image.fill(qRgba(255, 255, 255, 0));
 	QPainter paint;
-	QPen pen(Qt::black, 6 * m_BorderWidth);
+	QPen pen(Qt::black, 10);
 	paint.begin(&image);
 	paint.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
 
