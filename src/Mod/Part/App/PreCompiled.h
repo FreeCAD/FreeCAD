@@ -43,9 +43,7 @@
 #include <list>
 #include <iostream>
 #include <sstream>
-#include <cstdio>
 #include <fcntl.h>
-#include <cassert>
 
 #include <array>
 #include <vector>
@@ -55,12 +53,13 @@
 
 #include <fstream>
 #include <string>
-#include <cstdio>
-#include <cstdlib>
 #include <stdexcept>
 #include <tuple>
 
+#include <cassert>
 #include <cmath>
+#include <cstdio>
+#include <cstdlib>
 #include <ctime>
 
 // QT
