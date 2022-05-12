@@ -29,6 +29,8 @@
 
 // Needed for OCCT 7.5.2
 #include <TopoDS_Edge.hxx>
+// Needed for std::unique_ptr
+#include <memory>
 
 #include "ShapeUpgrade/UnifySameDomainPy.h"
 #include "ShapeUpgrade/UnifySameDomainPy.cpp"
