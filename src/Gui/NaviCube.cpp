@@ -85,6 +85,7 @@ public:
 	GLuint m_TextureId;
 	QColor m_Color;
 	int m_PickId;
+	int m_PickTexId;
 	GLuint m_PickTextureId;
 	int m_RenderPass;
 	Face(
@@ -92,6 +93,7 @@ public:
 		 int vertexCount,
 		 GLuint textureId,
 		 int pickId,
+		 int pickTexId,
 		 GLuint pickTextureId,
 		 const QColor& color,
 		 int  renderPass
@@ -101,6 +103,7 @@ public:
 		m_VertexCount = vertexCount;
 		m_TextureId = textureId;
 		m_PickId = pickId;
+		m_PickTexId = pickTexId;
 		m_PickTextureId = pickTextureId;
 		m_Color = color;
 		m_RenderPass = renderPass;
@@ -131,7 +134,7 @@ private:
 	void setHilite(int);
 
 	void initNaviCube(QtGLWidget*);
-	void addFace(const Vector3f&, const Vector3f&, int, int, int, bool flag=false);
+	void addFace(float gap, const Vector3f&, const Vector3f&, int, int, int, bool flag=false);
 
 	GLuint createCubeFaceTex(QtGLWidget* gl, float gap, const char* text, int shape);
 	GLuint createButtonTex(QtGLWidget*, int);
@@ -204,11 +207,13 @@ public:
 	QColor m_HiliteColor;
 	QColor m_ButtonColor;
 	QColor m_FrontFaceColor;
+	QColor m_BorderColor;
 	int m_HiliteId = 0;
 	bool m_MouseDown = false;
 	bool m_Dragging = false;
 	bool m_MightDrag = false;
-    NaviCube::Corner m_Corner = NaviCube::TopRightCorner;
+	double m_BorderWidth;
+	NaviCube::Corner m_Corner = NaviCube::TopRightCorner;
 
 	QtGLFramebufferObject* m_PickingFramebuffer;
 
@@ -217,6 +222,7 @@ public:
 	vector<GLubyte> m_IndexArray;
 	vector<Vector2f> m_TextureCoordArray;
 	vector<Vector3f> m_VertexArray;
+	vector<Vector3f> m_VertexArray2;
 	map<int,GLuint> m_Textures;
 	vector<Face*> m_Faces;
 	vector<int> m_Buttons;
@@ -269,6 +275,8 @@ NaviCubeImplementation::NaviCubeImplementation(
 	OnChange(*hGrp, "HiliteColor");
 	OnChange(*hGrp, "ButtonColor");
 	OnChange(*hGrp, "CubeSize");
+	OnChange(*hGrp, "BorderWidth");
+	OnChange(*hGrp, "BorderColor");
 
 	m_PickingFramebuffer = nullptr;
 	m_Menu = createNaviCubeMenu();
@@ -301,7 +309,11 @@ void NaviCubeImplementation::OnChange(ParameterGrp::SubjectType &rCaller, Parame
 		m_ButtonColor.setRgba(rGrp.GetUnsigned(reason, QColor(226, 233, 239, 128).rgba()));
 	} else if (strcmp(reason,"CubeSize") == 0) {
 		m_CubeWidgetSize = (rGrp.GetInt(reason, 132));
-	}
+	} else if (strcmp(reason,"BorderWidth") == 0) {
+		m_BorderWidth = rGrp.GetFloat("BorderWidth", 1.1);
+	} else if (strcmp(reason,"BorderColor") == 0) {
+		m_BorderColor.setRgba(rGrp.GetUnsigned(reason, QColor(50, 50, 50, 255).rgba()));
+    }
 }
 
 char* NaviCubeImplementation::enum2str(int e) {
@@ -350,8 +362,9 @@ GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, cons
 	QImage image(texSize, texSize, QImage::Format_ARGB32);
 	image.fill(qRgba(255, 255, 255, 0));
 	QPainter paint;
-	QPen pen(Qt::black, 10);
+	QPen pen(Qt::black, 6 * m_BorderWidth);
 	paint.begin(&image);
+	paint.setRenderHints(QPainter::Antialiasing|QPainter::TextAntialiasing|QPainter::SmoothPixmapTransform);
 
 	if (text) {
 		ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
@@ -380,8 +393,6 @@ GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, cons
 		QPainterPath pathSquare;
 		pathSquare.addRect(QRectF(gapi, gapi, (qreal)texSize - 2.0 * gapi, (qreal)texSize - 2.0 * gapi));
 		paint.fillPath(pathSquare, Qt::white);
-		paint.setPen(pen);
-		paint.drawPath(pathSquare);
 	}
 	else if (shape == SHAPE_CORNER) {
 		QPainterPath pathCorner;
@@ -397,10 +408,8 @@ GLuint NaviCubeImplementation::createCubeFaceTex(QtGLWidget* gl, float gap, cons
 	else if (shape == SHAPE_EDGE) {
 		QPainterPath pathEdge;
 		// sice the gap is 0.12, the rect must be geometriclly shifted up with a factor
-		pathEdge.addRect(QRectF(gapi, 3.46 * gapi, (qreal)texSize - 2.0 * gapi, sqrt(2) * gapi));
+		pathEdge.addRect(QRectF(gapi, ((qreal)texSize - sqrt(2) * gapi) * 0.5, (qreal)texSize - 2.0 * gapi, sqrt(2) * gapi));
 		paint.fillPath(pathEdge, Qt::white);
-		paint.setPen(pen);
-		paint.drawPath(pathEdge);
 	}
 
 	paint.end();
@@ -419,6 +428,7 @@ GLuint NaviCubeImplementation::createButtonTex(QtGLWidget* gl, int button) {
 	image.fill(qRgba(255, 255, 255, 0));
 	QPainter painter;
 	painter.begin(&image);
+	painter.setRenderHints(QPainter::Antialiasing|QPainter::TextAntialiasing|QPainter::SmoothPixmapTransform);
 
 	QTransform transform;
 	transform.translate(texSize / 2, texSize / 2);
@@ -522,6 +532,7 @@ GLuint NaviCubeImplementation::createMenuTex(QtGLWidget* gl, bool forPicking) {
 	image.fill(qRgba(0, 0, 0, 0));
 	QPainter painter;
 	painter.begin(&image);
+	painter.setRenderHints(QPainter::Antialiasing|QPainter::TextAntialiasing|QPainter::SmoothPixmapTransform);
 
 	QTransform transform;
 	transform.translate(texSize * 12 / 16, texSize * 13 / 16);
@@ -582,24 +593,32 @@ GLuint NaviCubeImplementation::createMenuTex(QtGLWidget* gl, bool forPicking) {
     Q_UNUSED(gl);
     QOpenGLTexture *texture = new QOpenGLTexture(image.mirrored());
     m_glTextures.push_back(texture);
-    texture->setMinificationFilter(QOpenGLTexture::Nearest);
+    texture->setMinificationFilter(QOpenGLTexture::Linear);
     texture->setMagnificationFilter(QOpenGLTexture::Linear);
     return texture->textureId();
 }
 
-void NaviCubeImplementation::addFace(const Vector3f& x, const Vector3f& z, int frontTex, int pickTex, int pickId, bool text) {
+void NaviCubeImplementation::addFace(float gap, const Vector3f& x, const Vector3f& z, int frontTex, int pickTex, int pickId, bool text) {
 	Vector3f y = x.cross(-z);
 	y = y / y.norm() * x.norm();
+
+	auto x2 = x * (1 - gap * 2);
+	auto y2 = x2.cross(-z);
+	y2 = y2 / y2.norm() * x2.norm();
 
 	int t = m_VertexArray.size();
 
 	m_VertexArray.push_back(z - x - y);
+	m_VertexArray2.push_back(z - x2 - y2);
 	m_TextureCoordArray.emplace_back(0, 0);
 	m_VertexArray.push_back(z + x - y);
+	m_VertexArray2.push_back(z + x2 - y2);
 	m_TextureCoordArray.emplace_back(1, 0);
 	m_VertexArray.push_back(z + x + y);
+	m_VertexArray2.push_back(z + x2 + y2);
 	m_TextureCoordArray.emplace_back(1, 1);
 	m_VertexArray.push_back(z - x + y);
+	m_VertexArray2.push_back(z - x2 + y2);
 	m_TextureCoordArray.emplace_back(0, 1);
 
 	// TEX_TOP, TEX_FRONT_FACE, TEX_TOP
@@ -611,6 +630,7 @@ void NaviCubeImplementation::addFace(const Vector3f& x, const Vector3f& z, int f
 		4,
 		m_Textures[pickTex],
 		pickId,
+		pickTex,
 		m_Textures[pickTex],
 		m_FrontFaceColor,
 		1);
@@ -622,6 +642,7 @@ void NaviCubeImplementation::addFace(const Vector3f& x, const Vector3f& z, int f
 			4,
 			m_Textures[frontTex],
 			pickId,
+			pickTex,
 			m_Textures[pickTex],
 			m_TextColor,
 			2);
@@ -704,22 +725,22 @@ void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
 	m_Textures[TEX_VIEW_MENU_FACE] = createMenuTex(gl, true);
 
 			// front,back,pick,pickid
-	addFace(x, z, TEX_TOP, TEX_FRONT_FACE, TEX_TOP, true);
+	addFace(gap, x, z, TEX_TOP, TEX_FRONT_FACE, TEX_TOP, true);
 	x = r90x * x;
 	z = r90x * z;
-	addFace(x, z, TEX_FRONT, TEX_FRONT_FACE, TEX_FRONT, true);
+	addFace(gap, x, z, TEX_FRONT, TEX_FRONT_FACE, TEX_FRONT, true);
 	x = r90z * x;
 	z = r90z * z;
-	addFace(x, z, TEX_LEFT, TEX_FRONT_FACE, TEX_LEFT, true);
+	addFace(gap, x, z, TEX_LEFT, TEX_FRONT_FACE, TEX_LEFT, true);
 	x = r90z * x;
 	z = r90z * z;
-	addFace(x, z, TEX_REAR, TEX_FRONT_FACE, TEX_REAR, true);
+	addFace(gap, x, z, TEX_REAR, TEX_FRONT_FACE, TEX_REAR, true);
 	x = r90z * x;
 	z = r90z * z;
-	addFace(x, z, TEX_RIGHT, TEX_FRONT_FACE, TEX_RIGHT, true);
+	addFace(gap, x, z, TEX_RIGHT, TEX_FRONT_FACE, TEX_RIGHT, true);
 	x = r90x * r90z * x;
 	z = r90x * r90z * z;
-	addFace(x, z, TEX_BOTTOM, TEX_FRONT_FACE, TEX_BOTTOM, true);
+	addFace(gap, x, z, TEX_BOTTOM, TEX_FRONT_FACE, TEX_BOTTOM, true);
 
 	// add corner faces
 	m_Textures[TEX_CORNER_FACE] = createCubeFaceTex(gl, gap, nullptr, SHAPE_CORNER);
@@ -733,30 +754,30 @@ void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
 
 	z = r45z * r54x * z;
 	x = r45z * r54x * x;
-	z *= 1.46f; // corner face position
+	z *= sqrt(3) * (1 - 4 * gap / 3); // corner face position
 
-	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_BOTTOM_RIGHT_REAR);
+	addFace(gap, x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_BOTTOM_RIGHT_REAR);
 	x = r90z * x;
 	z = r90z * z;
-	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_BOTTOM_FRONT_RIGHT);
+	addFace(gap, x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_BOTTOM_FRONT_RIGHT);
 	x = r90z * x;
 	z = r90z * z;
-	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_BOTTOM_LEFT_FRONT);
+	addFace(gap, x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_BOTTOM_LEFT_FRONT);
 	x = r90z * x;
 	z = r90z * z;
-	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_BOTTOM_REAR_LEFT);
+	addFace(gap, x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_BOTTOM_REAR_LEFT);
 	x = r90x * r90x * r90z * x;
 	z = r90x * r90x * r90z * z;
-	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_TOP_RIGHT_FRONT);
+	addFace(gap, x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_TOP_RIGHT_FRONT);
 	x = r90z * x;
 	z = r90z * z;
-	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_TOP_FRONT_LEFT);
+	addFace(gap, x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_TOP_FRONT_LEFT);
 	x = r90z * x;
 	z = r90z * z;
-	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_TOP_LEFT_REAR);
+	addFace(gap, x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_TOP_LEFT_REAR);
 	x = r90z * x;
 	z = r90z * z;
-	addFace(x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_TOP_REAR_RIGHT);
+	addFace(gap, x, z, TEX_CORNER_FACE, TEX_CORNER_FACE, TEX_TOP_REAR_RIGHT);
 
 	// add edge faces
 	m_Textures[TEX_EDGE_FACE] = createCubeFaceTex(gl, gap, nullptr, SHAPE_EDGE);
@@ -766,41 +787,41 @@ void NaviCubeImplementation::initNaviCube(QtGLWidget* gl) {
 	// rotate 45 degrees up
 	z = r45x * z;
 	x = r45x * x;
-	z *= 1.25f; // edge face position
-	addFace(x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_FRONT_TOP);
+	z *= sqrt(2) * (1 - gap);
+	addFace(gap, x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_FRONT_TOP);
 	x = r90x * x;
 	z = r90x * z;
-	addFace(x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_FRONT_BOTTOM);
+	addFace(gap, x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_FRONT_BOTTOM);
 	x = r90x * x;
 	z = r90x * z;
-	addFace(x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_REAR_BOTTOM);
+	addFace(gap, x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_REAR_BOTTOM);
 	x = r90x * x;
 	z = r90x * z;
-	addFace(x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_REAR_TOP);
+	addFace(gap, x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_REAR_TOP);
 	x = r90y * x;
 	z = r90y * z;
-	addFace(x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_REAR_RIGHT);
+	addFace(gap, x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_REAR_RIGHT);
 	x = r90z * x;
 	z = r90z * z;
-	addFace(x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_FRONT_RIGHT);
+	addFace(gap, x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_FRONT_RIGHT);
 	x = r90z * x;
 	z = r90z * z;
-	addFace(x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_FRONT_LEFT);
+	addFace(gap, x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_FRONT_LEFT);
 	x = r90z * x;
 	z = r90z * z;
-	addFace(x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_REAR_LEFT);
+	addFace(gap, x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_REAR_LEFT);
 	x = r90x * x;
 	z = r90x * z;
-	addFace(x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_TOP_LEFT);
+	addFace(gap, x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_TOP_LEFT);
 	x = r90y * x;
 	z = r90y * z;
-	addFace(x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_TOP_RIGHT);
+	addFace(gap, x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_TOP_RIGHT);
 	x = r90y * x;
 	z = r90y * z;
-	addFace(x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_BOTTOM_RIGHT);
+	addFace(gap, x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_BOTTOM_RIGHT);
 	x = r90y * x;
 	z = r90y * z;
-	addFace(x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_BOTTOM_LEFT);
+	addFace(gap, x, z, TEX_EDGE_FACE, TEX_EDGE_FACE, TEX_BOTTOM_LEFT);
 
 	m_Buttons.push_back(TEX_ARROW_NORTH);
 	m_Buttons.push_back(TEX_ARROW_SOUTH);
@@ -1023,12 +1044,42 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode) {
 			}
 		}
 	}
-
-
 	// Draw the rotate buttons
-	glEnable(GL_CULL_FACE);
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	if (!pickMode && m_BorderWidth >= 1.0f) {
+		glDisable(GL_DEPTH_TEST);
+		glDisable(GL_TEXTURE_2D);
+		const auto& borderColor = m_BorderColor;
+		glColor4f(borderColor.redF(), borderColor.greenF(), borderColor.blueF(), borderColor.alphaF());
+		glLineWidth(m_BorderWidth);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glBegin(GL_QUADS);
+		for (int pass = 0; pass < 3; pass++) {
+			for (const auto& f : m_Faces) {
+				if (pass != f->m_RenderPass)
+					continue;
+				if (f->m_TextureId == f->m_PickTextureId) {
+					if (f->m_PickTexId == TEX_FRONT_FACE) {
+						int idx = f->m_FirstVertex;
+						const Vector3f& mv1 = m_VertexArray2[m_IndexArray[idx]];
+						const Vector3f& mv2 = m_VertexArray2[m_IndexArray[idx + 1]];
+						const Vector3f& mv3 = m_VertexArray2[m_IndexArray[idx + 2]];
+						const Vector3f& mv4 = m_VertexArray2[m_IndexArray[idx + 3]];
+						glVertex3f(mv1[0], mv1[1], mv1[2]);
+						glVertex3f(mv2[0], mv2[1], mv2[2]);
+						glVertex3f(mv3[0], mv3[1], mv3[2]);
+						glVertex3f(mv4[0], mv4[1], mv4[2]);
+					}
+				}
+			}
+		}
+		glEnd();
+		glEnable(GL_TEXTURE_2D);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+
 
 	glDisable(GL_DEPTH_TEST);
 	glClear(GL_DEPTH_BUFFER_BIT);
