@@ -50,6 +50,7 @@
 #include <list>
 #include <set>
 #include <map>
+#include <memory>
 
 #include <fstream>
 #include <string>
