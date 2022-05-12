@@ -155,17 +155,18 @@ App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
 void DrawProjGroupItem::autoPosition()
 {
 //    Base::Console().Message("DPGI::autoPosition(%s)\n",Label.getValue());
+    if (LockPosition.getValue()) {
+        return;
+    }
     auto pgroup = getPGroup();
     Base::Vector3d newPos;
     if (pgroup != nullptr) {
         if (pgroup->AutoDistribute.getValue()) {
-            if (!LockPosition.getValue()) {
-                newPos = pgroup->getXYPosition(Type.getValueAsString());
-                X.setValue(newPos.x);
-                Y.setValue(newPos.y);
-                requestPaint();
-                purgeTouched();               //prevents "still touched after recompute" message
-            }
+            newPos = pgroup->getXYPosition(Type.getValueAsString());
+            X.setValue(newPos.x);
+            Y.setValue(newPos.y);
+            requestPaint();
+            purgeTouched();               //prevents "still touched after recompute" message
         }
     }
 }
