@@ -2462,10 +2462,10 @@ Expression *FunctionExpression::_copy() const
 
 void FunctionExpression::_visit(ExpressionVisitor &v)
 {
-    auto i = args.begin();
+    auto i = args.cbegin();
 
     HiddenReference ref(f == HIDDENREF || f == HREF);
-    while (i != args.end()) {
+    while (i != args.cend()) {
         (*i)->visit(v);
         ++i;
     }
