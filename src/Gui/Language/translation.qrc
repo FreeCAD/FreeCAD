@@ -18,9 +18,11 @@
         <file>qtbase_it.qm</file>
         <file>qtbase_ja.qm</file>
         <file>qtbase_ko.qm</file>
+        <file>qtbase_pl.qm</file>
         <file>qtbase_ru.qm</file>
         <file>qtbase_sk.qm</file>
         <file>qtbase_uk.qm</file>
+        <file>qtmultimedia_pl.qm</file>
         <file>FreeCAD_af.qm</file>
         <file>FreeCAD_de.qm</file>
         <file>FreeCAD_fi.qm</file>
@@ -61,5 +63,6 @@
         <file>FreeCAD_es-AR.qm</file>
         <file>FreeCAD_bg.qm</file>
         <file>FreeCAD_ka.qm</file>
+        
     </qresource>
 </RCC> 
