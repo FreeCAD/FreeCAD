@@ -1073,25 +1073,28 @@ PyObject* Application::sAddIconPath(PyObject * /*self*/, PyObject *args)
 PyObject* Application::sAddIcon(PyObject * /*self*/, PyObject *args)
 {
     const char *iconName;
-    const char *content;
-    Py_ssize_t size = 0;
+    Py_buffer content;
     const char *format = "XPM";
-    if (!PyArg_ParseTuple(args, "ss#|s", &iconName,&content,&size,&format))
+    if (!PyArg_ParseTuple(args, "ss*|s", &iconName, &content, &format))
         return NULL;
 
     QPixmap icon;
     if (BitmapFactory().findPixmapInCache(iconName, icon)) {
         PyErr_SetString(PyExc_AssertionError, "Icon with this name already registered");
+        PyBuffer_Release(&content);
         return NULL;
     }
 
-    QByteArray ary(content,size);
+    const char* contentStr = static_cast<const char*>(content.buf);
+    QByteArray ary(contentStr, content.len);
     icon.loadFromData(ary, format);
 
     if (icon.isNull()){
-        QString file = QString::fromUtf8(content);
+        QString file = QString::fromUtf8(contentStr, content.len);
         icon.load(file);
     }
+
+    PyBuffer_Release(&content);
 
     if (icon.isNull()) {
         PyErr_SetString(Base::BaseExceptionFreeCADError, "Invalid icon added to application");
