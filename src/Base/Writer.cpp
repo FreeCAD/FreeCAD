@@ -45,7 +45,10 @@ using namespace zipios;
 // ---------------------------------------------------------------------------
 
 Writer::Writer()
-  : indent(0),forceXML(false),fileVersion(1)
+  : indent(0)
+  , indBuf{}
+  , forceXML(false)
+  , fileVersion(1)
 {
     indBuf[0] = '\0';
 }

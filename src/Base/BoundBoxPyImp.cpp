@@ -91,14 +91,12 @@ int BoundBoxPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear(); // set by PyArg_ParseTuple()
     if (PyArg_ParseTuple(args,"O!O!",&(Base::VectorPy::Type), &object1,
                                      &(Base::VectorPy::Type), &object2)) {
-        // Note: must be static_cast, not reinterpret_cast
         ptr->Add(*(static_cast<Base::VectorPy*>(object1)->getVectorPtr()));
         ptr->Add(*(static_cast<Base::VectorPy*>(object2)->getVectorPtr()));
         return 0;
     }
     PyErr_Clear(); // set by PyArg_ParseTuple()
     if (PyArg_ParseTuple(args,"O!",&(Base::BoundBoxPy::Type), &object1)) {
-        // Note: must be static_cast, not reinterpret_cast
         *ptr = *(static_cast<Base::BoundBoxPy*>(object1)->getBoundBoxPtr());
         return 0;
     }

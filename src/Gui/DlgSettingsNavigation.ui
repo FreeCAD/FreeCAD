@@ -176,17 +176,17 @@
      <property name="title">
       <string>Navigation</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="0">
-         <widget class="QLabel" name="navigationLabel">
-          <property name="text">
-           <string>3D Navigation</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="navigationLabel">
+        <property name="text">
+         <string>3D Navigation</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
          <spacer name="horizontalSpacer_3">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -202,7 +202,7 @@
           </property>
          </spacer>
         </item>
-        <item row="0" column="2">
+        <item>
          <widget class="QPushButton" name="mouseButton">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -225,334 +225,328 @@ Select a set and then press the button to view said configurations.</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="3">
-         <widget class="QComboBox" name="comboNavigationStyle">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Navigation settings set</string>
-          </property>
-          <property name="currentIndex">
-           <number>-1</number>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="orbitLabel">
-          <property name="text">
-           <string>Orbit style</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="3">
-         <widget class="QComboBox" name="comboOrbitStyle">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Rotation orbit style.
+       </layout>
+      </item>
+      <item row="0" column="2">
+       <widget class="QComboBox" name="comboNavigationStyle">
+        <property name="minimumSize">
+         <size>
+          <width>120</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Navigation settings set</string>
+        </property>
+        <property name="currentIndex">
+         <number>-1</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="orbitLabel">
+        <property name="text">
+         <string>Orbit style</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QComboBox" name="comboOrbitStyle">
+        <property name="minimumSize">
+         <size>
+          <width>120</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Rotation orbit style.
 Trackball: moving the mouse horizontally will rotate the part around the y-axis
 Turntable: the part will be rotated around the z-axis.</string>
-          </property>
-          <property name="currentIndex">
-           <number>1</number>
-          </property>
-          <item>
-           <property name="text">
-            <string>Turntable</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Trackball</string>
-           </property>
-          </item>
-         </widget>
+        </property>
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <item>
+         <property name="text">
+          <string>Turntable</string>
+         </property>
         </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="labelRotationMode">
-          <property name="text">
-           <string>Rotation mode</string>
-          </property>
-         </widget>
+        <item>
+         <property name="text">
+          <string>Trackball</string>
+         </property>
         </item>
-        <item row="2" column="3">
-         <widget class="QComboBox" name="comboRotationMode">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>0</height>
-           </size>
-          </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="labelRotationMode">
+        <property name="text">
+         <string>Rotation mode</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QComboBox" name="comboRotationMode">
+        <property name="minimumSize">
+         <size>
+          <width>120</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Rotations in 3D will use current cursor position as center for rotation</string>
+        </property>
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <item>
+         <property name="text">
+          <string>Window center</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Drag at cursor</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Object center</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="newDocViewLabel">
+        <property name="text">
+         <string>Default camera orientation</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QComboBox" name="comboNewDocView">
+        <property name="minimumSize">
+         <size>
+          <width>120</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Default camera orientation when creating a new document or selecting the home view</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Camera zoom</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="PrefUnitSpinBox" name="qspinNewDocScale" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>120</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Sets camera zoom for new documents.
+The value is the diameter of the sphere to fit on the screen.</string>
+        </property>
+        <property name="unit" stdset="0">
+         <string>mm</string>
+        </property>
+        <property name="minimum" stdset="0">
+         <double>0.000010000000000</double>
+        </property>
+        <property name="maximum" stdset="0">
+         <double>10000000.000000000000000</double>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>NewDocumentCameraScale</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+        <property name="rawValue" stdset="0">
+         <double>100.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxUseAutoRotation">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>Enable animated rotations</string>
+        </property>
+        <property name="text">
+         <string>Enable animation</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UseAutoRotation</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxZoomAtCursor">
+        <property name="toolTip">
+         <string>Zoom operations will be performed at position of mouse pointer</string>
+        </property>
+        <property name="text">
+         <string>Zoom at cursor</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ZoomAtCursor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string> Zoom step</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="2">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="Gui::PrefDoubleSpinBox" name="spinBoxZoomStep">
           <property name="maximumSize">
            <size>
-            <width>16777215</width>
+            <width>60</width>
             <height>16777215</height>
            </size>
           </property>
           <property name="toolTip">
-           <string>Rotations in 3D will use current cursor position as center for rotation</string>
+           <string>How much will be zoomed.
+Zoom step of '1' means a factor of 7.5 for every zoom step.</string>
           </property>
-          <property name="currentIndex">
-           <number>1</number>
+          <property name="minimum">
+           <double>0.010000000000000</double>
           </property>
-          <item>
-           <property name="text">
-            <string>Window center</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Drag at cursor</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Object center</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="newDocViewLabel">
-          <property name="text">
-           <string>Default camera orientation</string>
+          <property name="maximum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.050000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.200000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ZoomStep</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
           </property>
          </widget>
         </item>
-        <item row="3" column="3">
-         <widget class="QComboBox" name="comboNewDocView">
-          <property name="minimumSize">
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::MinimumExpanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
            <size>
-            <width>120</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Default camera orientation when creating a new document or selecting the home view</string>
-          </property>
-         </widget>
-        </item>
-       <item row="4" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Camera zoom</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="3">
-         <widget class="PrefUnitSpinBox" name="qspinNewDocScale">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
+            <width>10</width>
             <height>20</height>
            </size>
           </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Sets camera zoom for new documents.
-The value is the diameter of the sphere to fit on the screen.</string>
-          </property>
-          <property name="unit" stdset="0">
-           <string>mm</string>
-          </property>
-          <property name="minimum" stdset="0">
-           <double>0.000010000000000</double>
-          </property>
-          <property name="maximum" stdset="0">
-           <double>10000000.000000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>NewDocumentCameraScale</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-          <property name="rawValue" stdset="0">
-           <double>100.000000000000000</double>
-          </property>
-         </widget>
+         </spacer>
         </item>
-        <item row="5" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBoxUseAutoRotation">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="toolTip">
-           <string>Enable animated rotations</string>
-          </property>
-          <property name="text">
-           <string>Enable animation</string>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>UseAutoRotation</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBoxZoomAtCursor">
-          <property name="toolTip">
-           <string>Zoom operations will be performed at position of mouse pointer</string>
-          </property>
-          <property name="text">
-           <string>Zoom at cursor</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ZoomAtCursor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="3">
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <item>
-           <widget class="QLabel" name="label">
-            <property name="maximumSize">
-             <size>
-              <width>100</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Zoom step</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="Gui::PrefDoubleSpinBox" name="spinBoxZoomStep">
-            <property name="maximumSize">
-             <size>
-              <width>60</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="toolTip">
-             <string>How much will be zoomed.
-Zoom step of '1' means a factor of 7.5 for every zoom step.</string>
-            </property>
-            <property name="minimum">
-             <double>0.010000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>1.000000000000000</double>
-            </property>
-            <property name="singleStep">
-             <double>0.050000000000000</double>
-            </property>
-            <property name="value">
-             <double>0.200000000000000</double>
-            </property>
-            <property name="prefEntry" stdset="0">
-             <cstring>ZoomStep</cstring>
-            </property>
-            <property name="prefPath" stdset="0">
-             <cstring>View</cstring>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::MinimumExpanding</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>10</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </item>
-        <item row="7" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBoxInvertZoom">
-          <property name="toolTip">
-           <string>Direction of zoom operations will be inverted</string>
-          </property>
-          <property name="text">
-           <string>Invert zoom</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>InvertZoom</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBoxDisableTilt">
-          <property name="toolTip">
-           <string>Prevents view tilting when pinch-zooming.
+       </layout>
+      </item>
+      <item row="7" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxInvertZoom">
+        <property name="toolTip">
+         <string>Direction of zoom operations will be inverted</string>
+        </property>
+        <property name="text">
+         <string>Invert zoom</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>InvertZoom</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxDisableTilt">
+        <property name="toolTip">
+         <string>Prevents view tilting when pinch-zooming.
 Affects only gesture navigation style.
 Mouse tilting is not disabled by this setting.</string>
-          </property>
-          <property name="text">
-           <string>Disable touchscreen tilt gesture</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>DisableTouchTilt</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        </layout>
+        </property>
+        <property name="text">
+         <string>Disable touchscreen tilt gesture</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DisableTouchTilt</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

@@ -51,7 +51,6 @@ Arguments for centroid:
     --axis-precision=4               ... number of digits of precision for axis moves.  Default=4
     --inches                         ... Convert output for US imperial mode (G20)
 """
-now = datetime.datetime.now()
 
 # These globals set common customization preferences
 OUTPUT_COMMENTS = True
@@ -79,13 +78,19 @@ SPINDLE_DECIMALS = 0
 
 COMMENT = ";"
 
-HEADER = """
-;Exported by FreeCAD
+# gCode header with information about CAD-software, post-processor
+# and date/time
+if FreeCAD.ActiveDocument:
+    cam_file = FreeCAD.ActiveDocument.FileName
+else:
+    cam_file = "<None>"
+
+HEADER = """;Exported by FreeCAD
 ;Post Processor: {}
 ;CAM file: {}
 ;Output Time: {}
 """.format(
-    __name__, FreeCAD.ActiveDocument.FileName, str(now)
+    __name__, cam_file, str(datetime.datetime.now())
 )
 
 # Preamble text will appear at the beginning of the GCODE output file.
@@ -354,6 +359,3 @@ def parse(pathobj):
                 out = out.strip() + "\n"
 
         return out
-
-
-print(__name__ + " gcode postprocessor loaded.")

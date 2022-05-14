@@ -505,7 +505,9 @@ def parse(pathobj):
                                         precision_string,
                                     )
                                 )
-                    elif param in ["T", "H", "D", "S", "P", "L"]:
+                    elif param in ["T", "H", "S"]:
+                        outstring.append(param + str(int(c.Parameters[param])))
+                    elif param in ["D", "P", "L"]:
                         outstring.append(param + str(c.Parameters[param]))
                     elif param in ["A", "B", "C"]:
                         outstring.append(

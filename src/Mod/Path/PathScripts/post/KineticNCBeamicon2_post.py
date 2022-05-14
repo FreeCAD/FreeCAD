@@ -436,6 +436,3 @@ def parse(pathobj):
                 out = out.strip() + "\n"
 
         return out
-
-
-print(__name__ + " gcode postprocessor loaded.")

@@ -68,7 +68,7 @@ int MatrixPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                           &a21,&a22,&a23,&a24,
                           &a31,&a32,&a33,&a34,
                           &a41,&a42,&a43,&a44)) {
-        MatrixPy::PointerType ptr = reinterpret_cast<MatrixPy::PointerType>(_pcTwinPointer);
+        MatrixPy::PointerType ptr = getMatrixPtr();
         (*ptr) = Matrix4D(a11,a12,a13,a14,
                           a21,a22,a23,a24,
                           a31,a32,a33,a34,
@@ -79,7 +79,7 @@ int MatrixPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear();
     PyObject *o;
     if (PyArg_ParseTuple(args, "O!", &(Base::MatrixPy::Type), &o)) {
-        MatrixPy::PointerType ptr = reinterpret_cast<MatrixPy::PointerType>(_pcTwinPointer);
+        MatrixPy::PointerType ptr = getMatrixPtr();
         (*ptr) = static_cast<MatrixPy*>(o)->value();
         return 0;
     }
