@@ -437,9 +437,10 @@ void QGIViewBalloon::updateBalloon(bool obtuse)
         return;
     }
 
-    QFont font = balloonLabel->getFont();
-    font.setPixelSize(calculateFontPixelSize(vp->Fontsize.getValue()));
+    QFont font;
     font.setFamily(QString::fromUtf8(vp->Font.getValue()));
+    font.setPixelSize(exactFontSize(vp->Font.getValue(),
+                                    vp->Fontsize.getValue()));
     balloonLabel->setFont(font);
 
     QString labelText = QString::fromUtf8(balloon->Text.getStrValue().data());
@@ -575,7 +576,10 @@ void QGIViewBalloon::placeBalloon(QPointF pos)
     QFont font = balloonLabel->getFont();
     font.setPixelSize(calculateFontPixelSize(vp->Fontsize.getValue()));
     font.setFamily(QString::fromUtf8(vp->Font.getValue()));
+    font.setPixelSize(exactFontSize(vp->Font.getValue(),
+                                    vp->Fontsize.getValue()));
     balloonLabel->setFont(font);
+
     prepareGeometryChange();
 
     // Default label position

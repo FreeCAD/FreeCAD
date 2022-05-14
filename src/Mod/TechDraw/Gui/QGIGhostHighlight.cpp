@@ -54,7 +54,7 @@ QGIGhostHighlight::QGIGhostHighlight()
     m_dragging = false;
 
     //make the ghost very visible
-    QFont f(QGIView::getPrefFont());
+    QFont f(Preferences::labelFontQString());
     double fontSize = Preferences::labelFontSizeMM();
     setFont(f, fontSize);
     setReference("drag");

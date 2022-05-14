@@ -43,6 +43,7 @@
 #include <App/DocumentObject.h>
 #include <App/Material.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 #include <Gui/Application.h>
@@ -103,10 +104,6 @@ QGIView::QGIView()
     m_colNormal = prefNormalColor();
     m_colCurrent = m_colNormal;
     m_pen.setColor(m_colCurrent);
-
-    //Border/Label styling
-//    m_font.setPixelSize(calculateFontPixelSize(getPrefFontSize()));
-    m_font.setPixelSize(PreferencesGui::labelFontSizePX());
 
     m_decorPen.setStyle(Qt::DashLine);
     m_decorPen.setWidth(0); // 0 => 1px "cosmetic pen"
@@ -445,8 +442,10 @@ void QGIView::drawCaption()
     prepareGeometryChange();
     QRectF displayArea = customChildrenBoundingRect();
     m_caption->setDefaultTextColor(m_colCurrent);
-    m_font.setFamily(getPrefFont());
-    m_font.setPixelSize(PreferencesGui::labelFontSizePX());
+    m_font.setFamily(Preferences::labelFontQString());
+    int fontSize = exactFontSize(Preferences::labelFont(),
+                                 Preferences::labelFontSizeMM());
+    m_font.setPixelSize(fontSize);
     m_caption->setFont(m_font);
     QString captionStr = QString::fromUtf8(getViewObject()->Caption.getValue());
     m_caption->setPlainText(captionStr);
@@ -485,10 +484,12 @@ void QGIView::drawBorder()
     m_lock->hide();
 
     m_label->setDefaultTextColor(m_colCurrent);
-    m_font.setFamily(getPrefFont());
-    m_font.setPixelSize(PreferencesGui::labelFontSizePX());
-
+    m_font.setFamily(Preferences::labelFontQString());
+    int fontSize = exactFontSize(Preferences::labelFont(),
+                                 Preferences::labelFontSizeMM());
+    m_font.setPixelSize(fontSize);
     m_label->setFont(m_font);
+
     QString labelStr = QString::fromUtf8(getViewObject()->Label.getValue());
     m_label->setPlainText(labelStr);
     QRectF labelArea = m_label->boundingRect();                //m_label coords
@@ -728,21 +729,10 @@ Base::Reference<ParameterGrp> QGIView::getParmGroupCol()
     return hGrp;
 }
 
-QString QGIView::getPrefFont()
-{
-    return Preferences::labelFontQString();
-}
-
-double QGIView::getPrefFontSize()
-{
-    return Preferences::labelFontSizeMM();
-}
-
-double QGIView::getDimFontSize()
-{
-    return Preferences::dimFontSizeMM();
-}
-
+//convert input font size in mm to scene units
+//note that when used to set font size this will result in
+//text that is smaller than sizeInMillimetres.  If exactly
+//correct sized text is required, use exactFontSize.
 int QGIView::calculateFontPixelSize(double sizeInMillimetres)
 {
     // Calculate font size in pixels by using resolution conversion
@@ -763,15 +753,30 @@ void QGIView::dumpRect(const char* text, QRectF rect) {
                             rect.left(), rect.top(), rect.right(), rect.bottom());
 }
 
-void QGIView::makeMark(double xPos, double yPos, QColor c)
+//determine the required font size to generate text with upper case
+//letter height = nominalSize
+int QGIView::exactFontSize(std::string fontFamily, double nominalSize)
+{
+    double sceneSize = Rez::guiX(nominalSize);      //desired height in scene units
+    QFont font;
+    font.setFamily(QString::fromUtf8(fontFamily.c_str()));
+    font.setPixelSize(sceneSize);
+
+    QFontMetricsF fm(font);
+    double capHeight = fm.capHeight();
+    double ratio = sceneSize / capHeight;
+    return (int) sceneSize * ratio;
+}
+
+void QGIView::makeMark(double xPos, double yPos, QColor color)
 {
     QGIVertex* vItem = new QGIVertex(-1);
     vItem->setParentItem(this);
     vItem->setPos(xPos, yPos);
     vItem->setWidth(2.0);
     vItem->setRadius(20.0);
-    vItem->setNormalColor(c);
-    vItem->setFillColor(c);
+    vItem->setNormalColor(color);
+    vItem->setFillColor(color);
     vItem->setPrettyNormal();
     vItem->setZValue(ZVALUE::VERTEX);
 }

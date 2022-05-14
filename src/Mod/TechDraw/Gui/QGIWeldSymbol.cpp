@@ -197,9 +197,8 @@ void QGIWeldSymbol::drawTile(TechDraw::DrawTileWeld* tileFeat)
     if (!vp)
         return;
     std::string fontName = vp->Font.getValue();
-    double      sizeMM = vp->TileFontSize.getValue();
-    double      fontSize = QGIView::calculateFontPixelSize(sizeMM);
-
+    int         fontSize = QGIView::exactFontSize(vp->Font.getValue(),
+                                                  vp->TileFontSize.getValue());
     double featScale = m_leadFeat->getScale();
 
     std::string tileTextL = tileFeat->LeftText.getValue();
@@ -268,12 +267,12 @@ void QGIWeldSymbol::drawTailText()
     if (!sym)
         return;
     auto vp = static_cast<ViewProviderWeld*>(getViewProvider(getViewObject()));
-    if (!vp)
+    if (!vp) {
         return;
-    std::string fontName = vp->Font.getValue();
-    QString qFontName = Base::Tools::fromStdString(fontName);
-    double sizeMM = vp->FontSize.getValue();
-    double fontSize = QGIView::calculateFontPixelSize(sizeMM);
+    }
+    QString qFontName = Base::Tools::fromStdString(vp->Font.getValue());
+    int fontSize = QGIView::exactFontSize(vp->Font.getValue(),
+                                          vp->FontSize.getValue());
 
     m_font.setFamily(qFontName);
     m_font.setPixelSize(fontSize);

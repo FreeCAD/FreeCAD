@@ -48,6 +48,7 @@
 #include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 #include <Base/Vector3D.h>
 #include <Gui/ViewProvider.h>
 
