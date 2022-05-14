@@ -655,7 +655,9 @@ void QGIViewDimension::updateDim()
 
     QFont font = datumLabel->getFont();
     font.setFamily(QString::fromUtf8(vp->Font.getValue()));
-    font.setPixelSize(calculateFontPixelSize(vp->Fontsize.getValue()));
+    int fontSize = QGIView::exactFontSize(vp->Font.getValue(),
+                                          vp->Fontsize.getValue());
+    font.setPixelSize(fontSize);
     datumLabel->setFont(font);
 
     prepareGeometryChange();

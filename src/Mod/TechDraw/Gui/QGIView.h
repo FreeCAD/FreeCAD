@@ -149,6 +149,9 @@ public:
     static double getDimFontSize();
     QFont getFont() { return m_font; };
     void setFont(QFont font) { m_font = font; }
+
+    static int exactFontSize(std::string fontFamily, double nominalSize);
+
     virtual void removeChild(QGIView* child);
 
     virtual void addArbitraryItem(QGraphicsItem* qgi);

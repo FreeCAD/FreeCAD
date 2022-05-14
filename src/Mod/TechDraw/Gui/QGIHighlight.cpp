@@ -31,6 +31,7 @@
 #include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include <Mod/TechDraw/App/DrawUtil.h>
 
@@ -94,7 +95,9 @@ void QGIHighlight::makeHighlight()
 void QGIHighlight::makeReference()
 {
     prepareGeometryChange();
-    m_refFont.setPixelSize(QGIView::calculateFontPixelSize(m_refSize));
+    int fontSize = QGIView::exactFontSize(Base::Tools::toStdString(m_refFont.family()),
+                                          m_refSize);
+    m_refFont .setPixelSize(fontSize);
     m_reference->setFont(m_refFont);
     m_reference->setPlainText(m_refText);
     double fudge = Rez::guiX(1.0);

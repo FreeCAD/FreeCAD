@@ -33,6 +33,7 @@
 #include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 //#include <Mod/TechDraw/App/Preferences.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
@@ -189,7 +190,9 @@ void QGISectionLine::makeSymbols()
 void QGISectionLine::makeSymbolsTrad()
 {
     prepareGeometryChange();
-    m_symFont.setPixelSize(QGIView::calculateFontPixelSize(m_symSize));
+//    m_symFont.setPixelSize(QGIView::calculateFontPixelSize(m_symSize));
+    int fontSize = QGIView::exactFontSize(Base::Tools::toStdString(m_symFont.family()), m_symSize);
+    m_symFont.setPixelSize(fontSize);
     m_symbol1->setFont(m_symFont);
     m_symbol1->setPlainText(QString::fromUtf8(m_symbol));
     m_symbol2->setFont(m_symFont);
@@ -222,7 +225,9 @@ void QGISectionLine::makeSymbolsTrad()
 void QGISectionLine::makeSymbolsISO()
 {
     prepareGeometryChange();
-    m_symFont.setPixelSize(QGIView::calculateFontPixelSize(m_symSize));
+//    m_symFont.setPixelSize(QGIView::calculateFontPixelSize(m_symSize));
+    int fontSize = QGIView::exactFontSize(Base::Tools::toStdString(m_symFont.family()), m_symSize);
+    m_symFont.setPixelSize(fontSize);
     m_symbol1->setFont(m_symFont);
     m_symbol1->setPlainText(QString::fromUtf8(m_symbol));
     m_symbol2->setFont(m_symFont);
