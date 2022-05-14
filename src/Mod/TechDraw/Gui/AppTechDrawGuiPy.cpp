@@ -116,6 +116,7 @@ private:
             Base::Console().Error("%s\n", str.c_str());
             throw Py::RuntimeError(str);
         }
+        return Py::None(); //only here to prevent warning re no return value
     }
 
 //! hook for FC Gui export function
@@ -325,7 +326,7 @@ private:
     {
         PyObject *viewPy = nullptr;
         PyObject *qgiPy = nullptr;
-        if (!PyArg_ParseTuple(args.ptr(), "OO", &viewPy, &qgiPy)) {
+        if (!PyArg_ParseTuple(args.ptr(), "O!O", &(TechDraw::DrawViewPy::Type), &viewPy, &qgiPy)) {
             throw Py::TypeError("expected (view, item)");
         } 
 
@@ -333,28 +334,23 @@ private:
            App::DocumentObject* obj = nullptr;
            Gui::ViewProvider* vp = nullptr;
            QGIView* qgiv = nullptr;
-           if (PyObject_TypeCheck(viewPy, &(TechDraw::DrawViewPy::Type))) {
-               obj = static_cast<App::DocumentObjectPy*>(viewPy)->getDocumentObjectPtr();
-               vp = Gui::Application::Instance->getViewProvider(obj);
-               if (vp) {
-                   TechDrawGui::ViewProviderDrawingView* vpdv = 
-                                dynamic_cast<TechDrawGui::ViewProviderDrawingView*>(vp);
-                   if (vpdv) {
-                       qgiv = vpdv->getQView();
-                       if (qgiv != nullptr) {
-                           Gui::PythonWrapper wrap;
-                           if (!wrap.loadCoreModule() ||
-                               !wrap.loadGuiModule() ||
-                               !wrap.loadWidgetsModule()) {
-                               PyErr_SetString(PyExc_RuntimeError, "Failed to load Python wrapper for Qt");
-                               return Py::None();
-                            }
-                            QGraphicsItem* item = wrap.toQGraphicsItem(qgiPy);
-                            if (item != nullptr) {
-                                qgiv->addArbitraryItem(item);
-                            }
+           obj = static_cast<App::DocumentObjectPy*>(viewPy)->getDocumentObjectPtr();
+           vp = Gui::Application::Instance->getViewProvider(obj);
+           if (vp) {
+               TechDrawGui::ViewProviderDrawingView* vpdv =
+                            dynamic_cast<TechDrawGui::ViewProviderDrawingView*>(vp);
+               if (vpdv) {
+                   qgiv = vpdv->getQView();
+                   if (qgiv != nullptr) {
+                       Gui::PythonWrapper wrap;
+                       if (!wrap.loadGuiModule()) {
+                           throw Py::RuntimeError("Failed to load Python wrapper for Qt::Gui");
+                       }
+                        QGraphicsItem* item = wrap.toQGraphicsItem(qgiPy);
+                        if (item != nullptr) {
+                            qgiv->addArbitraryItem(item);
                         }
-                   }
+                    }
                }
            }
         }
@@ -373,7 +369,7 @@ private:
     {
         PyObject *viewPy = nullptr;
         PyObject *qgiPy = nullptr;
-        if (!PyArg_ParseTuple(args.ptr(), "OO", &viewPy, &qgiPy)) {
+        if (!PyArg_ParseTuple(args.ptr(), "O!O", &(TechDraw::DrawViewPy::Type), &viewPy, &qgiPy)) {
             throw Py::TypeError("expected (view, item)");
         }
 
@@ -381,28 +377,23 @@ private:
            App::DocumentObject* obj = nullptr;
            Gui::ViewProvider* vp = nullptr;
            QGIView* qgiv = nullptr;
-           if (PyObject_TypeCheck(viewPy, &(TechDraw::DrawViewPy::Type))) {
-               obj = static_cast<App::DocumentObjectPy*>(viewPy)->getDocumentObjectPtr();
-               vp = Gui::Application::Instance->getViewProvider(obj);
-               if (vp) {
-                   TechDrawGui::ViewProviderDrawingView* vpdv =
-                                dynamic_cast<TechDrawGui::ViewProviderDrawingView*>(vp);
-                   if (vpdv) {
-                       qgiv = vpdv->getQView();
-                       if (qgiv != nullptr) {
-                           Gui::PythonWrapper wrap;
-                           if (!wrap.loadCoreModule() ||
-                               !wrap.loadGuiModule() ||
-                               !wrap.loadWidgetsModule()) {
-                               PyErr_SetString(PyExc_RuntimeError, "Failed to load Python wrapper for Qt");
-                               return Py::None();
-                            }
-                            QGraphicsObject* item = wrap.toQGraphicsObject(qgiPy);
-                            if (item != nullptr) {
-                                qgiv->addArbitraryItem(item);
-                            }
+           obj = static_cast<App::DocumentObjectPy*>(viewPy)->getDocumentObjectPtr();
+           vp = Gui::Application::Instance->getViewProvider(obj);
+           if (vp) {
+               TechDrawGui::ViewProviderDrawingView* vpdv =
+                            dynamic_cast<TechDrawGui::ViewProviderDrawingView*>(vp);
+               if (vpdv) {
+                   qgiv = vpdv->getQView();
+                   if (qgiv != nullptr) {
+                       Gui::PythonWrapper wrap;
+                       if (!wrap.loadGuiModule()) {
+                           throw Py::RuntimeError("Failed to load Python wrapper for Qt::Gui");
                         }
-                   }
+                        QGraphicsObject* item = wrap.toQGraphicsObject(qgiPy);
+                        if (item != nullptr) {
+                            qgiv->addArbitraryItem(item);
+                        }
+                    }
                }
            }
         }

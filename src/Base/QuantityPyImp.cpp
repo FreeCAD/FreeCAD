@@ -86,7 +86,6 @@ int QuantityPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear(); // set by PyArg_ParseTuple()
     PyObject *object;
     if (PyArg_ParseTuple(args,"O!",&(Base::QuantityPy::Type), &object)) {
-        // Note: must be static_cast, not reinterpret_cast
         *self = *(static_cast<Base::QuantityPy*>(object)->getQuantityPtr());
         return 0;
     }
@@ -94,7 +93,6 @@ int QuantityPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_Clear(); // set by PyArg_ParseTuple()
     double f = DOUBLE_MAX;
     if (PyArg_ParseTuple(args,"dO!",&f,&(Base::UnitPy::Type), &object)) {
-        // Note: must be static_cast, not reinterpret_cast
         *self = Quantity(f,*(static_cast<Base::UnitPy*>(object)->getUnitPtr()));
         return 0;
     }
@@ -187,7 +185,6 @@ PyObject* QuantityPy::getValueAs(PyObject *args)
     if (!quant.isValid()) {
         PyObject *object;
         if (PyArg_ParseTuple(args,"O!",&(Base::QuantityPy::Type), &object)) {
-            // Note: must be static_cast, not reinterpret_cast
             quant = * static_cast<Base::QuantityPy*>(object)->getQuantityPtr();
         }
     }
@@ -196,7 +193,6 @@ PyObject* QuantityPy::getValueAs(PyObject *args)
         PyObject *object;
         PyErr_Clear();
         if (PyArg_ParseTuple(args,"O!",&(Base::UnitPy::Type), &object)) {
-            // Note: must be static_cast, not reinterpret_cast
             quant.setUnit(*static_cast<Base::UnitPy*>(object)->getUnitPtr());
             quant.setValue(1.0);
         }
@@ -207,7 +203,6 @@ PyObject* QuantityPy::getValueAs(PyObject *args)
         double value;
         PyErr_Clear();
         if (PyArg_ParseTuple(args,"dO!",&value, &(Base::UnitPy::Type), &object)) {
-            // Note: must be static_cast, not reinterpret_cast
             quant.setUnit(*static_cast<Base::UnitPy*>(object)->getUnitPtr());
             quant.setValue(value);
         }
