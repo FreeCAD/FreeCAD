@@ -87,6 +87,7 @@
 # include <ShapeFix_Wire.hxx>
 # include <ShapeAnalysis_FreeBounds.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
+#include <GeomAPI_ProjectPointOnCurve.hxx>
 #endif
 
 #include <Base/Exception.h>
@@ -2610,6 +2611,18 @@ struct ShapeInfo{
                 if(mySupportEdge) {
                     //if best point is on some edge, split the edge in half
                     if(edge.IsEqual(mySupport)) {
+                        //to fix PointProjectionFailed.     
+                        GeomAPI_ProjectPointOnCurve gpp;
+                        gpp.Init( myBestPt,curve);
+                        gpp.Perform(myBestPt);
+                        myBestPt=c.NearestPoint();
+                            
+                        gpp.Perform(pprev);
+                        pprev = gpp.NearestPoint();
+                        
+                        gpp.Perform(pt);
+                        pt = gpp.NearestPoint();
+                            
                         double d1 = pprev.SquareDistance(myBestPt);
                         double d2 = pt.SquareDistance(myBestPt);
 
