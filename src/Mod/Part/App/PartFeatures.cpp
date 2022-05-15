@@ -61,8 +61,6 @@ RuledSurface::RuledSurface()
     ADD_PROPERTY_TYPE(Curve2,(nullptr),"Ruled Surface",App::Prop_None,"Curve of ruled surface");
     ADD_PROPERTY_TYPE(Orientation,((long)0),"Ruled Surface",App::Prop_None,"Orientation of ruled surface");
     Orientation.setEnums(OrientationEnums);
-    ADD_PROPERTY_TYPE(ResetPlacement,(false),"Ruled Surface",App::Prop_None,
-                      "Whether to reset placement");
 }
 
 short RuledSurface::mustExecute() const
@@ -72,8 +70,6 @@ short RuledSurface::mustExecute() const
     if (Curve2.isTouched())
         return 1;
     if (Orientation.isTouched())
-        return 1;
-    if (ResetPlacement.isTouched())
         return 1;
     return 0;
 }
@@ -87,24 +83,23 @@ App::DocumentObjectExecReturn* RuledSurface::getShape(const App::PropertyLinkSub
                                                       TopoDS_Shape& shape) const
 {
     App::DocumentObject* obj = link.getValue();
-    const Part::TopoShape part = Part::Feature::getTopoShape(obj);
-    if (part.isNull()) {
+    if (!(obj && obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))) {
         return new App::DocumentObjectExecReturn("No shape linked.");
     }
 
     // if no explicit sub-shape is selected use the whole part
     const std::vector<std::string>& element = link.getSubValues();
     if (element.empty()) {
-        shape = part.getShape();
+        shape = static_cast<Part::Feature*>(obj)->Shape.getValue();
         return nullptr;
     }
     else if (element.size() != 1) {
         return new App::DocumentObjectExecReturn("Not exactly one sub-shape linked.");
     }
 
+    const Part::TopoShape& part = static_cast<Part::Feature*>(obj)->Shape.getValue();
     if (!part.getShape().IsNull()) {
         if (!element[0].empty()) {
-            //shape = Part::Feature::getTopoShape(obj, element[0].c_str(), true /*need element*/).getShape();
             shape = part.getSubShape(element[0].c_str());
         }
         else {
@@ -242,22 +237,19 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
         }
 
         // re-apply the placement in case we reset it
-        if (!Loc.IsIdentity())
+        if (!Loc.IsIdentity()) {
             ruledShape.Move(Loc);
+        }
 
         Loc = ruledShape.Location();
 
-        if (!Loc.IsIdentity() && ResetPlacement.getValue()) {
+        if (!Loc.IsIdentity()) {
             // reset the placement of the shape because the Placement
             // property will be changed
             ruledShape.Location(TopLoc_Location());
             Base::Matrix4D transform;
             TopoShape::convertToMatrix(Loc.Transformation(), transform);
             this->Placement.setValue(Base::Placement(transform));
-        } else {
-            if (!Loc.IsIdentity()){ //Reset Placement property = False
-                this->Placement.setValue(Base::Placement());
-            }
         }
 
         this->Shape.setValue(ruledShape);
