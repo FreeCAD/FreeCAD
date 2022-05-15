@@ -228,12 +228,18 @@ SET(PathTests_SRCS
     PathTests/test_centroid_imperial_ref.ngc
     PathTests/test_centroid_metric_ref.ngc
     PathTests/test_centroid_other_way_ref.ngc
+    PathTests/test_centroid_split_1_ref.ngc
+    PathTests/test_centroid_split_2_ref.ngc
+    PathTests/test_centroid_split_3_ref.ngc
     PathTests/test_geomop.fcstd
     PathTests/test_holes00.fcstd
     PathTests/test_linuxcnc_00.ngc
     PathTests/test_linuxcnc_imperial_ref.ngc
     PathTests/test_linuxcnc_metric_ref.ngc
     PathTests/test_linuxcnc_other_way_ref.ngc
+    PathTests/test_linuxcnc_split_1_ref.ngc
+    PathTests/test_linuxcnc_split_2_ref.ngc
+    PathTests/test_linuxcnc_split_3_ref.ngc
     PathTests/TestPathAdaptive.py
     PathTests/TestPathCore.py
     PathTests/TestPathDeburr.py
@@ -418,4 +424,3 @@ INSTALL(
     DESTINATION
         Mod/Path/Data/Threads
 )
-
