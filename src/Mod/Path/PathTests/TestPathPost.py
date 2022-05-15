@@ -51,6 +51,13 @@ class TestPathPost(unittest.TestCase):
     and centroid postprocessors.
     """
 
+    #
+    # This variable is used when there is more than one
+    # file output while testing a postprocessor.  This may
+    # happen when the "split%s" test is run, for example.
+    #
+    subpart = 1
+
     def setUp(self):
         """Set up the postprocessor tests."""
         pass
@@ -77,6 +84,8 @@ class TestPathPost(unittest.TestCase):
             ("boxtest1", "Job", "--no-header --no-show-editor --inches", "imperial"),
             # test in metric, G55, M4, the other way around the part
             ("boxtest1", "Job001", "--no-header --no-show-editor", "other_way"),
+            # test in metric, split by fixtures, G54, G55, G56
+            ("boxtest1", "Job002", "--no-header --no-show-editor", "split%s"),
         )
         #
         # The postprocessors to test.
@@ -124,6 +133,7 @@ class TestPathPost(unittest.TestCase):
                 processor = PostProcessor.load(postprocessor_id)
                 output_file_pattern = "test_%s_%s.ngc" % (postprocessor_id, output_file_id)
                 output_file_path = FreeCAD.getHomePath() + PATHTESTS_LOCATION + output_file_pattern
+                self.subpart = 1
                 for slist in postlist:
                     output_filename = PathPost.CommandPathPost.processFileNameSubstitutions(
                         self, job, output_file_path
@@ -140,6 +150,7 @@ class TestPathPost(unittest.TestCase):
                         self.fail(postprocessor_id + " output doesn't match: " + msg)
                     if not KEEP_DEBUG_OUTPUT:
                         os.remove(output_filename)
+                self.subpart = 1
         if current_document != "":
             FreeCAD.closeDocument(current_document)
 
