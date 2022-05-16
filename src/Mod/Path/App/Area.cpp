@@ -2615,7 +2615,7 @@ struct ShapeInfo{
                         GeomAPI_ProjectPointOnCurve gpp;
                         gpp.Init( myBestPt,curve);
                         gpp.Perform(myBestPt);
-                        myBestPt=c.NearestPoint();
+                        myBestPt= gpp.NearestPoint();
                             
                         gpp.Perform(pprev);
                         pprev = gpp.NearestPoint();
