@@ -1591,14 +1591,15 @@ class svgHandler(xml.sax.ContentHandler):
                 cy = 0
                 angle = argsplit[0]
                 if len(argsplit) >= 3:
+                    # Rotate around a non-origin centerpoint (note: SVG y axis is opposite FreeCAD y axis)
                     cx = argsplit[1]
                     cy = argsplit[2]
-                    m.move(Vector(cx, -cy, 0))
+                    m.move(Vector(-cx, cy, 0)) # Reposition for rotation
                 # Mirroring one axis is equal to changing the direction
                 # of rotation
                 m.rotateZ(math.radians(-angle))
                 if len(argsplit) >= 3:
-                    m.move(Vector(-cx, cy, 0))
+                    m.move(Vector(cx, -cy, 0)) # Reverse repositioning
             elif transformation == 'skewX':
                 _m = FreeCAD.Matrix(1,
                                     -math.tan(math.radians(argsplit[0])))
