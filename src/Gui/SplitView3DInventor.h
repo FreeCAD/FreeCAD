@@ -29,6 +29,9 @@
 #include <Base/Parameter.h>
 #include <vector>
 
+#if !defined(ssize_t)
+    typedef long ssize_t;
+#endif
 
 namespace Gui {
 class View3DInventorViewer;
