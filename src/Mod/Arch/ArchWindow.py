@@ -100,7 +100,7 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
                 if baseobj.Shape.Wires:
                     tp = "Frame"
                     if len(baseobj.Shape.Wires) == 1:
-                        tp = "Panel"
+                        tp = "Solid Panel"
                     i = 0
                     ws = ''
                     for w in baseobj.Shape.Wires:
