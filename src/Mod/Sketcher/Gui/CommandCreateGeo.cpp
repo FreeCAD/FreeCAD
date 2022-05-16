@@ -195,9 +195,9 @@ public:
 
 private:
 
-    virtual void activated() override
+    virtual QString getCrosshairCursorSVGName() const override
     {
-        setCrosshairCursor("Sketcher_Pointer_Create_Line");
+        return QString::fromLatin1("Sketcher_Pointer_Create_Line");
     }
 
 protected:
@@ -503,9 +503,9 @@ public:
 
 private:
 
-    virtual void activated() override
+    virtual QString getCrosshairCursorSVGName() const override
     {
-        setCrosshairCursor("Sketcher_Pointer_Create_Box");
+        return QString::fromLatin1("Sketcher_Pointer_Create_Box");
     }
 protected:
     BoxMode Mode;
@@ -870,9 +870,9 @@ public:
     }
 
 private:
-    virtual void activated() override
+    virtual QString getCrosshairCursorSVGName() const override
     {
-        setCrosshairCursor("Sketcher_Pointer_Oblong");
+        return QString::fromLatin1("Sketcher_Pointer_Oblong");
     }
 
 protected:
@@ -1627,9 +1627,9 @@ public:
     }
 
 private:
-    virtual void activated() override
+    virtual QString getCrosshairCursorSVGName() const override
     {
-        setCrosshairCursor("Sketcher_Pointer_Create_Lineset");
+        return QString::fromLatin1("Sketcher_Pointer_Create_Lineset");
     }
 
 protected:
@@ -1917,9 +1917,9 @@ public:
     }
 
 private:
-    virtual void activated() override
+    virtual QString getCrosshairCursorSVGName() const override
     {
-        setCrosshairCursor("Sketcher_Pointer_Create_Arc");
+        return QString::fromLatin1("Sketcher_Pointer_Create_Arc");
     }
 protected:
     SelectMode Mode;
@@ -2187,9 +2187,9 @@ public:
     }
 
 private:
-    virtual void activated() override
+    virtual QString getCrosshairCursorSVGName() const override
     {
-        setCrosshairCursor("Sketcher_Pointer_Create_3PointArc");
+        return QString::fromLatin1("Sketcher_Pointer_Create_3PointArc");
     }
 
 protected:
@@ -2453,9 +2453,9 @@ public:
     }
 
 private:
-    virtual void activated() override
+    virtual QString getCrosshairCursorSVGName() const override
     {
-        setCrosshairCursor("Sketcher_Pointer_Create_Circle");
+        return QString::fromLatin1("Sketcher_Pointer_Create_Circle");
     }
 
 protected:
@@ -2719,7 +2719,6 @@ private:
      */
     virtual void activated() override
     {
-        setCrosshairCursor("Sketcher_Pointer_Create_Ellipse");
         if (constrMethod == 0) {
             method = CENTER_PERIAPSIS_B;
             mode = STATUS_SEEK_CENTROID;
@@ -2727,6 +2726,10 @@ private:
             method = PERIAPSIS_APOAPSIS_B;
             mode = STATUS_SEEK_PERIAPSIS;
         }
+    }
+    virtual QString getCrosshairCursorSVGName() const override
+    {
+        return QString::fromLatin1("Sketcher_Pointer_Create_Ellipse");
     }
 
 protected:
@@ -3610,9 +3613,9 @@ public:
     }
 
 private:
-    virtual void activated() override
+    virtual QString getCrosshairCursorSVGName() const override
     {
-        setCrosshairCursor("Sketcher_Pointer_Create_ArcOfEllipse");
+        return QString::fromLatin1("Sketcher_Pointer_Create_ArcOfEllipse");
     }
 
 protected:
@@ -3955,9 +3958,9 @@ public:
     }
 
 private:
-    virtual void activated() override
+    virtual QString getCrosshairCursorSVGName() const override
     {
-        setCrosshairCursor("Sketcher_Pointer_Create_ArcOfHyperbola");
+        return QString::fromLatin1("Sketcher_Pointer_Create_ArcOfHyperbola");
     }
 
 protected:
@@ -4256,9 +4259,9 @@ public:
     }
 
 private:
-    virtual void activated() override
+    virtual QString getCrosshairCursorSVGName() const override
     {
-        setCrosshairCursor("Sketcher_Pointer_Create_ArcOfParabola");
+        return QString::fromLatin1("Sketcher_Pointer_Create_ArcOfParabola");
     }
 
 protected:
@@ -4745,9 +4748,9 @@ private:
         IsClosed = false;
     }
 
-    virtual void activated() override
+    virtual QString getCrosshairCursorSVGName() const override
     {
-        setCrosshairCursor("Sketcher_Pointer_Create_BSpline");
+        return QString::fromLatin1("Sketcher_Pointer_Create_BSpline");
     }
 
     void addSugConstraint() {
@@ -5261,9 +5264,9 @@ public:
     }
 
 private:
-    virtual void activated() override
+    virtual QString getCrosshairCursorSVGName() const override
     {
-        setCrosshairCursor("Sketcher_Pointer_Create_3PointCircle");
+        return QString::fromLatin1("Sketcher_Pointer_Create_3PointCircle");
     }
 
 protected:
@@ -5472,9 +5475,9 @@ public:
     }
 
 private:
-    virtual void activated() override
+    virtual QString getCrosshairCursorSVGName() const override
     {
-        setCrosshairCursor("Sketcher_Pointer_Create_Point");
+        return QString::fromLatin1("Sketcher_Pointer_Create_Point");
     }
 
 protected:
@@ -5752,11 +5755,11 @@ public:
     }
 
 private:
-    virtual void activated() override
+    virtual QString getCrosshairCursorSVGName() const override
     {
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new FilletSelection(sketchgui->getObject()));
-        setCrosshairCursor("Sketcher_Pointer_Create_Fillet");
+        return QString::fromLatin1("Sketcher_Pointer_Create_Fillet");
     }
 
 protected:
@@ -6046,12 +6049,12 @@ public:
     }
 
 private:
-    virtual void activated() override
+    virtual QString getCrosshairCursorSVGName() const override
     {
         Gui::Selection().clearSelection();
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new TrimmingSelection(sketchgui->getObject()));
-        setCrosshairCursor("Sketcher_Pointer_Trimming");
+        return QString::fromLatin1("Sketcher_Pointer_Trimming");
     }
 
 private:
@@ -6353,7 +6356,11 @@ private:
         Gui::Selection().rmvSelectionGate();
         filterGate = new ExtendSelection(sketchgui->getObject());
         Gui::Selection().addSelectionGate(filterGate);
-        setCrosshairCursor("Sketcher_Pointer_Extension");
+    }
+
+    virtual QString getCrosshairCursorSVGName() const override
+    {
+        return QString::fromLatin1("Sketcher_Pointer_Extension");
     }
 
 protected:
@@ -6483,12 +6490,12 @@ public:
     }
 
 private:
-    virtual void activated() override
+    virtual QString getCrosshairCursorSVGName() const override
     {
         Gui::Selection().clearSelection();
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new SplittingSelection(sketchgui->getObject()));
-        setCrosshairCursor("Sketcher_Pointer_Splitting");
+        return QString::fromLatin1("Sketcher_Pointer_Splitting");
     }
 };
 
@@ -6669,7 +6676,11 @@ private:
         Gui::Selection().clearSelection();
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new ExternalSelection(sketchgui->getObject()));
-        setCrosshairCursor("Sketcher_Pointer_External");
+    }
+
+    virtual QString getCrosshairCursorSVGName() const override
+    {
+        return QString::fromLatin1("Sketcher_Pointer_External");
     }
 
     virtual void deactivated() override
@@ -6847,7 +6858,11 @@ private:
         Gui::Selection().clearSelection();
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new CarbonCopySelection(sketchgui->getObject()));
-        setCrosshairCursor("Sketcher_Pointer_CarbonCopy");
+    }
+
+    virtual QString getCrosshairCursorSVGName() const override
+    {
+        return QString::fromLatin1("Sketcher_Pointer_CarbonCopy");
     }
 
     virtual void deactivated() override
@@ -7154,9 +7169,9 @@ public:
         return true;
     }
 private:
-    virtual void activated() override
+    virtual QString getCrosshairCursorSVGName() const override
     {
-        setCrosshairCursor("Sketcher_Pointer_Slot");
+        return QString::fromLatin1("Sketcher_Pointer_Slot");
     }
 
 protected:
@@ -7348,9 +7363,9 @@ public:
     }
 
 private:
-    virtual void activated() override
+    virtual QString getCrosshairCursorSVGName() const override
     {
-        setCrosshairCursor("Sketcher_Pointer_Regular_Polygon");
+        return QString::fromLatin1("Sketcher_Pointer_Regular_Polygon");
     }
 protected:
     const size_t Corners;

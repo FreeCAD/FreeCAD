@@ -369,10 +369,6 @@ void ViewProviderSketch::deactivateHandler()
 {
     assert(isInEditMode());
     if(sketchHandler){
-        std::vector<Base::Vector2d> editCurve;
-        editCurve.clear();
-        drawEdit(editCurve); // erase any line
-        resetPositionText();
         sketchHandler->deactivate();
         sketchHandler = nullptr;
     }
