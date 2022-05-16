@@ -98,7 +98,7 @@ public:
     Py::Object viewTop(const Py::Tuple&);
     Py::Object viewIsometric(const Py::Tuple&);
     Py::Object getViewer(const Py::Tuple&);
-    Py::Object sequence_item(ssize_t);
+    Py::Object sequence_item(Py_ssize_t);
     Py::Object close(const Py::Tuple&);
     int sequence_length();
 
