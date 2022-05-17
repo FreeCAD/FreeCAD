@@ -913,7 +913,7 @@ void ViewProviderMesh::clipMeshCallback(void * ud, SoEventCallback * n)
     Gui::WaitCursor wc;
 
     // When this callback function is invoked we must in either case leave the edit mode
-    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
     view->setEditing(false);
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), clipMeshCallback,ud);
     n->setHandled();
@@ -974,7 +974,7 @@ void ViewProviderMesh::trimMeshCallback(void * ud, SoEventCallback * n)
     Gui::WaitCursor wc;
 
     // When this callback function is invoked we must in either case leave the edit mode
-    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
     view->setEditing(false);
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), trimMeshCallback,ud);
     n->setHandled();
@@ -1035,7 +1035,7 @@ void ViewProviderMesh::partMeshCallback(void * ud, SoEventCallback * cb)
     Gui::WaitCursor wc;
 
     // When this callback function is invoked we must in either case leave the edit mode
-    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(cb->getUserData());
+    Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(cb->getUserData());
     view->setEditing(false);
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), partMeshCallback,ud);
     cb->setHandled();
@@ -1099,7 +1099,7 @@ void ViewProviderMesh::segmMeshCallback(void * ud, SoEventCallback * cb)
     Gui::WaitCursor wc;
 
     // When this callback function is invoked we must in either case leave the edit mode
-    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(cb->getUserData());
+    Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(cb->getUserData());
     view->setEditing(false);
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), segmMeshCallback,ud);
     cb->setHandled();
@@ -1160,7 +1160,7 @@ void ViewProviderMesh::segmMeshCallback(void * ud, SoEventCallback * cb)
 void ViewProviderMesh::selectGLCallback(void * ud, SoEventCallback * n)
 {
     // When this callback function is invoked we must in either case leave the edit mode
-    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
     view->setEditing(false);
     view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), selectGLCallback,ud);
     n->setHandled();
@@ -1332,7 +1332,7 @@ std::vector<Mesh::FacetIndex> ViewProviderMesh::getVisibleFacetsAfterZoom(const 
 void ViewProviderMesh::renderGLCallback(void * ud, SoAction * action)
 {
     if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
-        ViewProviderMesh* mesh = reinterpret_cast<ViewProviderMesh*>(ud);
+        ViewProviderMesh* mesh = static_cast<ViewProviderMesh*>(ud);
         Gui::SoVisibleFaceAction fa;
         fa.apply(mesh->getRoot());
     }
@@ -1411,11 +1411,6 @@ std::vector<Mesh::FacetIndex> ViewProviderMesh::getVisibleFacets(const SbViewpor
     root->ref();
     root->addChild(camera);
 
-#if 0
-    SoCallback* cb = new SoCallback;
-    cb->setCallback(renderGLCallback, const_cast<ViewProviderMesh*>(this));
-    root->addChild(cb);
-#else
     SoLightModel* lm = new SoLightModel();
     lm->model = SoLightModel::BASE_COLOR;
     root->addChild(lm);
@@ -1438,20 +1433,13 @@ std::vector<Mesh::FacetIndex> ViewProviderMesh::getVisibleFacets(const SbViewpor
     //root->addChild(hints);
     root->addChild(mat);
     root->addChild(bind);
-#endif
     root->addChild(this->getCoordNode());
     root->addChild(this->getShapeNode());
 
     // Coin3d's off-screen renderer doesn't work out-of-the-box any more on most recent Linux systems.
     // So, use FreeCAD's offscreen renderer now.
-#if 0
-    Gui::SoFCOffscreenRenderer& renderer = Gui::SoFCOffscreenRenderer::instance();
-    renderer.setViewportRegion(vp);
-    renderer.setBackgroundColor(SbColor(0.0f, 0.0f, 0.0f));
-#else
     Gui::SoQtOffscreenRenderer renderer(vp);
     renderer.setBackgroundColor(SbColor4f(0.0f, 0.0f, 0.0f));
-#endif
 
     QImage img;
     renderer.render(root);
@@ -1569,7 +1557,7 @@ void ViewProviderMesh::segmentMesh(const MeshCore::MeshKernel& toolMesh, const B
 void ViewProviderMesh::faceInfoCallback(void * ud, SoEventCallback * n)
 {
     const SoMouseButtonEvent * mbe = (SoMouseButtonEvent *)n->getEvent();
-    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
 
     // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
     n->getAction()->setHandled();
@@ -1651,7 +1639,7 @@ void ViewProviderMesh::faceInfoCallback(void * ud, SoEventCallback * n)
 void ViewProviderMesh::fillHoleCallback(void * ud, SoEventCallback * n)
 {
     const SoMouseButtonEvent * mbe = (SoMouseButtonEvent *)n->getEvent();
-    Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
 
     // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
     n->getAction()->setHandled();
@@ -1697,7 +1685,7 @@ void ViewProviderMesh::markPartCallback(void * ud, SoEventCallback * n)
     // handle only mouse button events
     if (n->getEvent()->isOfType(SoMouseButtonEvent::getClassTypeId())) {
         const SoMouseButtonEvent * mbe = static_cast<const SoMouseButtonEvent*>(n->getEvent());
-        Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
+        Gui::View3DInventorViewer* view  = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
 
         // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
         n->getAction()->setHandled();
@@ -1786,7 +1774,7 @@ void ViewProviderMesh::fillHole(Mesh::FacetIndex uFacet)
 
     // get the boundary to the picked facet
     std::list<Mesh::PointIndex> aBorder;
-    Mesh::Feature* fea = reinterpret_cast<Mesh::Feature*>(this->getObject());
+    Mesh::Feature* fea = static_cast<Mesh::Feature*>(this->getObject());
     const MeshCore::MeshKernel& rKernel = fea->Mesh.getValue().getKernel();
     MeshCore::MeshRefPointToFacets cPt2Fac(rKernel);
     MeshCore::MeshAlgorithm meshAlg(rKernel);
