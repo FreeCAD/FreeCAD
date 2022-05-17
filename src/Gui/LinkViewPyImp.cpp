@@ -171,11 +171,11 @@ PyObject* LinkViewPy::setTransform(PyObject *args) {
 PyObject* LinkViewPy::setType(PyObject *args) {
     short type;
     PyObject *sublink = Py_True;
-    if (!PyArg_ParseTuple(args, "h|O", &type,&sublink))
+    if (!PyArg_ParseTuple(args, "h|O!", &type, &PyBool_Type, &sublink))
         return nullptr;
 
     PY_TRY{
-        getLinkViewPtr()->setNodeType((LinkView::SnapshotType)type,PyObject_IsTrue(sublink));
+        getLinkViewPtr()->setNodeType((LinkView::SnapshotType)type, PyObject_IsTrue(sublink) ? true : false);
         Py_Return;
     } PY_CATCH;
 }
