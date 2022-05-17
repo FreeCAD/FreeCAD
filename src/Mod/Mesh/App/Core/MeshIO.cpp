@@ -297,7 +297,7 @@ bool MeshInput::LoadSTL (std::istream &rstrIn)
 /** Loads an OBJ file. */
 bool MeshInput::LoadOBJ (std::istream &rstrIn)
 {
-    boost::regex rx_m("^mtllib\\s+([\\x21-\\x7E]+)\\s*$");
+    boost::regex rx_m("^mtllib\\s+(.+)\\s*$");
     boost::regex rx_u("^usemtl\\s+([\\x21-\\x7E]+)\\s*$");
     boost::regex rx_g("^g\\s+([\\x21-\\x7E]+)\\s*$");
     boost::regex rx_p("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
