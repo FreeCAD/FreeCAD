@@ -219,7 +219,12 @@ bool Origin::OriginExtension::extensionGetSubObject(DocumentObject *&ret, const 
         ret = obj->getOriginFeature(name.c_str());
         if (!ret)
             return false;
-        ret = ret->getSubObject(subname + name.size() + 1, pyobj, mat, true, depth+1);
+        const char *dot = strchr(subname, '.');
+        if (dot)
+            subname = dot+1;
+        else
+            subname = "";
+        ret = ret->getSubObject(subname, pyobj, mat, true, depth+1);
         return true;
     }
     catch (const Base::Exception& e) {
