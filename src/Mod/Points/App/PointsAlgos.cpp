@@ -213,19 +213,25 @@ void AscReader::read(const std::string& filename)
 namespace Points {
 class Converter {
 public:
-    virtual ~Converter() {
-    }
-    virtual std::string toString(float) const = 0;
+    Converter() = default;
+    virtual ~Converter() = default;
+    virtual std::string toString(double) const = 0;
     virtual double toDouble(Base::InputStream&) const = 0;
     virtual int getSizeOf() const = 0;
+
+private:
+    Converter(const Converter&) = delete;
+    Converter(Converter&&) = delete;
+    Converter& operator= (const Converter&) = delete;
+    Converter& operator= (Converter&&) = delete;
 };
 template <typename T>
 class ConverterT : public Converter {
 public:
-    virtual std::string toString(float f) const {
+    virtual std::string toString(double f) const {
         T c = static_cast<T>(f);
         std::ostringstream oss;
-        oss.precision(6);
+        oss.precision(7);
         oss.setf(std::ostringstream::showpoint);
         oss << c;
         return oss.str();
@@ -1818,7 +1824,7 @@ void PcdWriter::write(const std::string& filename)
     std::size_t numPoints = points.size();
     const std::vector<Base::Vector3f>& pts = points.getBasicPoints();
 
-    Eigen::MatrixXf data(numPoints, fields.size());
+    Eigen::MatrixXd data(numPoints, fields.size());
 
     if (placement.isIdentity()) {
         for (std::size_t i=0; i<numPoints; i++) {
@@ -1929,7 +1935,7 @@ void PcdWriter::write(const std::string& filename)
 
     for (std::size_t r=0; r<numPoints; r++) {
         for (std::size_t c=0; c<col; c++) {
-            float value = data(r,c);
+            double value = data(r,c);
             if (boost::math::isnan(value))
                 out << "nan ";
             else
