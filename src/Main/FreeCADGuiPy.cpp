@@ -101,7 +101,7 @@ FreeCADGui_showMainWindow(PyObject * /*self*/, PyObject *args)
 
     static bool thr = false;
     if (!qApp) {
-        if (PyObject_IsTrue(inThread) && !thr) {
+        if ((PyObject_IsTrue(inThread) ? true : false) && !thr) {
             thr = true;
             std::thread t([]() {
                 static int argc = 0;
