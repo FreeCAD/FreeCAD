@@ -92,14 +92,14 @@ PyObject* CommandPy::listByShortcut(PyObject *args)
 
     std::vector <Command*> cmds = Application::Instance->commandManager().getAllCommands();
     std::vector <std::string> matches;
-    for (Command* c : cmds){
+    for (Command* c : cmds) {
         Action* action = c->getAction();
-        if (action){
+        if (action) {
             QString spc = QString::fromLatin1(" ");
-            if(PyObject_IsTrue(bIsRegularExp)){
+            if (PyObject_IsTrue(bIsRegularExp) ? true : false) {
                QRegExp re = QRegExp(QString::fromLatin1(shortcut_to_find));
                re.setCaseSensitivity(Qt::CaseInsensitive);
-               if (!re.isValid()){
+               if (!re.isValid()) {
                    std::stringstream str;
                    str << "Invalid regular expression:" << ' ' << shortcut_to_find;
                    throw Py::RuntimeError(str.str());

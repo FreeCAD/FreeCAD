@@ -2072,7 +2072,7 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args)
     float x = 0, y = 0, z = 0;
     if (PyArg_ParseTuple(args, "ss|sfffO!", &docname, &objname ,
                 &subname,&x,&y,&z,&PyBool_Type,&clearPreselect)) {
-        Selection().addSelection(docname,objname,subname,x,y,z,nullptr,PyObject_IsTrue(clearPreselect));
+        Selection().addSelection(docname,objname,subname,x,y,z,nullptr,PyObject_IsTrue(clearPreselect) ? true : false);
         Py_Return;
     }
 
@@ -2091,7 +2091,7 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args)
 
         Selection().addSelection(docObj->getDocument()->getName(),
                                  docObj->getNameInDocument(),
-                                 subname,x,y,z,nullptr,PyObject_IsTrue(clearPreselect));
+                                 subname,x,y,z,nullptr,PyObject_IsTrue(clearPreselect) ? true : false);
         Py_Return;
     }
 
@@ -2114,7 +2114,7 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args)
                     std::string subname = static_cast<std::string>(Py::String(*it));
                     Selection().addSelection(docObj->getDocument()->getName(),
                                              docObj->getNameInDocument(),
-                                             subname.c_str(),0,0,0,nullptr,PyObject_IsTrue(clearPreselect));
+                                             subname.c_str(),0,0,0,nullptr,PyObject_IsTrue(clearPreselect) ? true : false);
                 }
 
                 Py_Return;
@@ -2146,7 +2146,7 @@ PyObject *SelectionSingleton::sUpdateSelection(PyObject * /*self*/, PyObject *ar
         return nullptr;
     }
 
-    Selection().updateSelection(PyObject_IsTrue(show),
+    Selection().updateSelection(PyObject_IsTrue(show) ? true : false,
             docObj->getDocument()->getName(), docObj->getNameInDocument(), subname);
 
     Py_Return;
@@ -2193,7 +2193,7 @@ PyObject *SelectionSingleton::sClearSelection(PyObject * /*self*/, PyObject *arg
         if (!PyArg_ParseTuple(args, "|sO!", &documentName, &PyBool_Type, &clearPreSelect))
             return nullptr;
     }
-    Selection().clearSelection(documentName,PyObject_IsTrue(clearPreSelect));
+    Selection().clearSelection(documentName,PyObject_IsTrue(clearPreSelect) ? true : false);
 
     Py_Return;
 }
@@ -2263,7 +2263,7 @@ PyObject *SelectionSingleton::sGetSelection(PyObject * /*self*/, PyObject *args)
 
     try {
         std::vector<SelectionSingleton::SelObj> sel;
-        sel = Selection().getSelection(documentName, toEnum(resolve), PyObject_IsTrue(single));
+        sel = Selection().getSelection(documentName, toEnum(resolve), PyObject_IsTrue(single) ? true : false);
 
         std::set<App::DocumentObject*> noduplicates;
         std::vector<App::DocumentObject*> selectedObjects; // keep the order of selection
@@ -2293,7 +2293,7 @@ PyObject *SelectionSingleton::sEnablePickedList(PyObject * /*self*/, PyObject *a
     if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &enable))
         return nullptr;
 
-    Selection().enablePickedList(PyObject_IsTrue(enable));
+    Selection().enablePickedList(PyObject_IsTrue(enable) ? true : false);
 
     Py_Return;
 }
@@ -2382,7 +2382,7 @@ PyObject *SelectionSingleton::sGetSelectionEx(PyObject * /*self*/, PyObject *arg
     try {
         std::vector<SelectionObject> sel;
         sel = Selection().getSelectionEx(documentName,
-                App::DocumentObject::getClassTypeId(), toEnum(resolve), PyObject_IsTrue(single));
+                App::DocumentObject::getClassTypeId(), toEnum(resolve), PyObject_IsTrue(single) ? true : false);
 
         Py::List list;
         for (std::vector<SelectionObject>::iterator it = sel.begin(); it != sel.end(); ++it) {
@@ -2563,7 +2563,7 @@ PyObject *SelectionSingleton::sPushSelStack(PyObject * /*self*/, PyObject *args)
     if (!PyArg_ParseTuple(args, "|O!O!", &PyBool_Type, &clear, &PyBool_Type, &overwrite))
         return nullptr;
 
-    Selection().selStackPush(PyObject_IsTrue(clear), PyObject_IsTrue(overwrite));
+    Selection().selStackPush(PyObject_IsTrue(clear), PyObject_IsTrue(overwrite) ? true : false);
 
     Py_Return;
 }
@@ -2596,7 +2596,7 @@ PyObject *SelectionSingleton::sHasSubSelection(PyObject * /*self*/, PyObject *ar
 
     PY_TRY {
         return Py::new_reference_to(
-                Py::Boolean(Selection().hasSubSelection(doc,PyObject_IsTrue(subElement))));
+                Py::Boolean(Selection().hasSubSelection(doc,PyObject_IsTrue(subElement) ? true : false)));
     }
     PY_CATCH;
 }
