@@ -45,6 +45,10 @@ struct Point3d
    {
    }
 
+   Point3d(Point3d&& pnt) : p(pnt.p), i(pnt.i)
+   {
+   }
+
    ~Point3d()
    {
    }
@@ -65,6 +69,12 @@ struct Point3d
    }
 
    inline void operator=(const Point3d& other)
+   {
+       this->p = other.p;
+       this->i = other.i;
+   }
+
+   inline void operator=(Point3d&& other)
    {
        this->p = other.p;
        this->i = other.i;
