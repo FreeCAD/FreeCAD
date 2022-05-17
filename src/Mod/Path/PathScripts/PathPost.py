@@ -59,51 +59,15 @@ class _TempObject:
     Label = "Fixture"
 
 
-def resolveFileName(job, subpartname, sequencenumber):
-    PathLog.track(subpartname, sequencenumber)
-
-    validPathSubstitutions = ["D", "d", "M", "j"]
-    validFilenameSubstitutions = ["j", "d", "T", "t", "W", "O", "S"]
-
-    # Look for preference default
-    outputpath, filename = os.path.split(PathPreferences.defaultOutputFile())
-    filename, ext = os.path.splitext(filename)
-
-    # Override with document default if it exists
-    if job.PostProcessorOutputFile:
-        matchstring = job.PostProcessorOutputFile
-        candidateOutputPath, candidateFilename = os.path.split(matchstring)
-
-        if candidateOutputPath:
-            outputpath = candidateOutputPath
-
-        if candidateFilename:
-            filename, ext = os.path.splitext(candidateFilename)
-
-    # Strip any invalid substitutions from the ouputpath
-    for match in re.findall("%(.)", outputpath):
-        if match not in validPathSubstitutions:
-            outputpath = outputpath.replace(f"%{match}", "")
-
-    # if nothing else, use current directory
-    if not outputpath:
-        outputpath = "."
-
-    # Strip any invalid substitutions from the filename
-    for match in re.findall("%(.)", filename):
-        if match not in validFilenameSubstitutions:
-            filename = filename.replace(f"%{match}", "")
-
-    # if no filename, use the active document label
-    if not filename:
-        filename = FreeCAD.ActiveDocument.Label
-
-    # if no extension, use something sensible
-    if not ext:
-        ext = ".nc"
-
-    # By now we should have a sanitized path, filename and extension to work with
-    PathLog.track(f"path: {outputpath} name: {filename} ext: {ext}")
+def processFileNameSubstitutions(
+    job,
+    subpartname,
+    sequencenumber,
+    outputpath,
+    filename,
+    ext,
+):
+    """Process any substitutions in the outputpath or filename."""
 
     # The following section allows substitution within the path part
     PathLog.track(f"path before substitution: {outputpath}")
@@ -116,9 +80,7 @@ def resolveFileName(job, subpartname, sequencenumber):
             if not D:
                 D = "."
         else:
-            FreeCAD.Console.PrintError(
-                "Please save document in order to resolve output path!\n"
-            )
+            FreeCAD.Console.PrintError("Please save document in order to resolve output path!\n")
             return None
         outputpath = outputpath.replace("%D", D)
 
@@ -171,9 +133,7 @@ def resolveFileName(job, subpartname, sequencenumber):
         if "%O" in filename and job.OrderOutputBy == "Operation":
             filename = filename.replace("%O", subpartname)
 
-        if (
-            "%S" in filename
-        ):  # We always add a sequence number but the user can say where
+        if "%S" in filename:  # We always add a sequence number but the user can say where
             filename = filename.replace("%S", str(sequencenumber))
         else:
             filename = f"{filename}-{sequencenumber}"
@@ -187,11 +147,68 @@ def resolveFileName(job, subpartname, sequencenumber):
     fullPath = f"{outputpath}{os.path.sep}{filename}{ext}"
 
     PathLog.track(f"full filepath: {fullPath}")
+    return fullPath
+
+
+def resolveFileName(job, subpartname, sequencenumber):
+    PathLog.track(subpartname, sequencenumber)
+
+    validPathSubstitutions = ["D", "d", "M", "j"]
+    validFilenameSubstitutions = ["j", "d", "T", "t", "W", "O", "S"]
+
+    # Look for preference default
+    outputpath, filename = os.path.split(PathPreferences.defaultOutputFile())
+    filename, ext = os.path.splitext(filename)
+
+    # Override with document default if it exists
+    if job.PostProcessorOutputFile:
+        matchstring = job.PostProcessorOutputFile
+        candidateOutputPath, candidateFilename = os.path.split(matchstring)
+
+        if candidateOutputPath:
+            outputpath = candidateOutputPath
+
+        if candidateFilename:
+            filename, ext = os.path.splitext(candidateFilename)
+
+    # Strip any invalid substitutions from the ouputpath
+    for match in re.findall("%(.)", outputpath):
+        if match not in validPathSubstitutions:
+            outputpath = outputpath.replace(f"%{match}", "")
+
+    # if nothing else, use current directory
+    if not outputpath:
+        outputpath = "."
+
+    # Strip any invalid substitutions from the filename
+    for match in re.findall("%(.)", filename):
+        if match not in validFilenameSubstitutions:
+            filename = filename.replace(f"%{match}", "")
+
+    # if no filename, use the active document label
+    if not filename:
+        filename = FreeCAD.ActiveDocument.Label
+
+    # if no extension, use something sensible
+    if not ext:
+        ext = ".nc"
+
+    # By now we should have a sanitized path, filename and extension to work with
+    PathLog.track(f"path: {outputpath} name: {filename} ext: {ext}")
+
+    fullPath = processFileNameSubstitutions(
+        job,
+        subpartname,
+        sequencenumber,
+        outputpath,
+        filename,
+        ext,
+    )
 
     # This section determines whether user interaction is necessary
     policy = PathPreferences.defaultOutputPolicy()
 
-    openDialog = policy == "Open File Dialog"
+    openDialog = (policy == "Open File Dialog")
     # if os.path.isdir(filename) or not os.path.isdir(os.path.dirname(filename)):
     #     # Either the entire filename resolves into a directory or the parent directory doesn't exist.
     #     # Either way I don't know what to do - ask for help
@@ -256,8 +273,7 @@ def buildPostList(job):
                 c2 = Path.Command(
                     "G0 Z"
                     + str(
-                        job.Stock.Shape.BoundBox.ZMax
-                        + job.SetupSheet.ClearanceHeightOffset.Value
+                        job.Stock.Shape.BoundBox.ZMax + job.SetupSheet.ClearanceHeightOffset.Value
                     )
                 )
                 fobj.Path.addCommands(c2)
@@ -292,10 +308,7 @@ def buildPostList(job):
             c1 = Path.Command(f)
             c2 = Path.Command(
                 "G0 Z"
-                + str(
-                    job.Stock.Shape.BoundBox.ZMax
-                    + job.SetupSheet.ClearanceHeightOffset.Value
-                )
+                + str(job.Stock.Shape.BoundBox.ZMax + job.SetupSheet.ClearanceHeightOffset.Value)
             )
             fobj.Path = Path.Path([c1, c2])
             fobj.InList.append(job)
@@ -395,9 +408,7 @@ def buildPostList(job):
         return postlist
     else:
         PathLog.track()
-        finalpostlist = [
-            ("allitems", [item for slist in postlist for item in slist[1]])
-        ]
+        finalpostlist = [("allitems", [item for slist in postlist for item in slist[1]])]
         return finalpostlist
 
 
@@ -407,9 +418,7 @@ class DlgSelectPostProcessor:
         firstItem = None
         for post in PathPreferences.allEnabledPostProcessors():
             item = QtGui.QListWidgetItem(post)
-            item.setFlags(
-                QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled
-            )
+            item.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
             self.dialog.lwPostProcessor.addItem(item)
             if not firstItem:
                 firstItem = item
@@ -518,9 +527,7 @@ class CommandPathPost:
 
         selected = FreeCADGui.Selection.getSelectionEx()
         if len(selected) > 1:
-            FreeCAD.Console.PrintError(
-                "Please select a single job or other path object\n"
-            )
+            FreeCAD.Console.PrintError("Please select a single job or other path object\n")
             return
         elif len(selected) == 1:
             sel = selected[0].Object

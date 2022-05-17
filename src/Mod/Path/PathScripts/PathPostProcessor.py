@@ -69,23 +69,6 @@ class PostProcessor:
             else:
                 instance.units = "Inch"
 
-        if hasattr(current_post, "MACHINE_NAME"):
-            instance.machineName = current_post.MACHINE_NAME
-
-        if hasattr(current_post, "CORNER_MAX"):
-            instance.cornerMax = {
-                "x": current_post.CORNER_MAX["x"],
-                "y": current_post.CORNER_MAX["y"],
-                "z": current_post.CORNER_MAX["z"],
-            }
-
-        if hasattr(current_post, "CORNER_MIN"):
-            instance.cornerMin = {
-                "x": current_post.CORNER_MIN["x"],
-                "y": current_post.CORNER_MIN["y"],
-                "z": current_post.CORNER_MIN["z"],
-            }
-
         if hasattr(current_post, "TOOLTIP"):
             instance.tooltip = current_post.TOOLTIP
             if hasattr(current_post, "TOOLTIP_ARGS"):
@@ -96,8 +79,6 @@ class PostProcessor:
         self.script = script
         self.tooltip = None
         self.tooltipArgs = None
-        self.cornerMax = None
-        self.cornerMin = None
         self.units = None
         self.machineName = None
 
