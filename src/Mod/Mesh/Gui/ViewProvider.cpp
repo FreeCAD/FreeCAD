@@ -741,14 +741,20 @@ void ViewProviderMesh::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     QAction* act = menu->addAction(QObject::tr("Display components"));
     act->setCheckable(true);
     act->setChecked(pcMatBinding->value.getValue() == SoMaterialBinding::PER_FACE &&
-                    highlightMode == "Component");
+                    highlightMode == HighlighMode::Component);
     func->toggle(act, boost::bind(&ViewProviderMesh::setHighlightedComponents, this, bp::_1));
 
     QAction* seg = menu->addAction(QObject::tr("Display segments"));
     seg->setCheckable(true);
     seg->setChecked(pcMatBinding->value.getValue() == SoMaterialBinding::PER_FACE &&
-                    highlightMode == "Segment");
+                    highlightMode == HighlighMode::Segment);
     func->toggle(seg, boost::bind(&ViewProviderMesh::setHighlightedSegments, this, bp::_1));
+
+    QAction* col = menu->addAction(QObject::tr("Display colors"));
+    col->setVisible(canHighlightColors());
+    col->setCheckable(true);
+    col->setChecked(highlightMode == HighlighMode::Color);
+    func->toggle(col, boost::bind(&ViewProviderMesh::setHighlightedColors, this, bp::_1));
 }
 
 bool ViewProviderMesh::setEdit(int ModNum)
@@ -2136,11 +2142,11 @@ void ViewProviderMesh::unhighlightSelection()
 void ViewProviderMesh::setHighlightedComponents(bool on)
 {
     if (on) {
-        highlightMode = "Component";
+        highlightMode = HighlighMode::Component;
         highlightComponents();
     }
     else {
-        highlightMode.clear();
+        highlightMode = HighlighMode::None;
         unhighlightSelection();
     }
 }
@@ -2171,11 +2177,11 @@ void ViewProviderMesh::highlightComponents()
 void ViewProviderMesh::setHighlightedSegments(bool on)
 {
     if (on) {
-        highlightMode = "Segment";
+        highlightMode = HighlighMode::Segment;
         highlightSegments();
     }
     else {
-        highlightMode.clear();
+        highlightMode = HighlighMode::None;
         unhighlightSelection();
     }
 }
@@ -2225,6 +2231,52 @@ void ViewProviderMesh::highlightSegments(const std::vector<App::Color>& colors)
         float fBlu = colors[0].b;
         pcShapeMaterial->diffuseColor.setValue(fRed,fGrn,fBlu);
     }
+}
+
+void ViewProviderMesh::setHighlightedColors(bool on)
+{
+    if (on) {
+        highlightMode = HighlighMode::Color;
+        highlightColors();
+    }
+    else {
+        highlightMode = HighlighMode::None;
+        unhighlightSelection();
+    }
+}
+
+void ViewProviderMesh::highlightColors()
+{
+    const Mesh::MeshObject& rMesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue();
+    {
+        App::PropertyColorList* prop = Base::freecad_dynamic_cast<App::PropertyColorList>(pcObject->getPropertyByName("FaceColors"));
+        if (prop && prop->getSize() == int(rMesh.countFacets())) {
+            setColorPerFace(prop);
+        }
+    }
+    {
+        App::PropertyColorList* prop = Base::freecad_dynamic_cast<App::PropertyColorList>(pcObject->getPropertyByName("VertexColors"));
+        if (prop && prop->getSize() == int(rMesh.countPoints())) {
+            setColorPerVertex(prop);
+        }
+    }
+}
+
+bool ViewProviderMesh::canHighlightColors() const
+{
+    const Mesh::MeshObject& rMesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue();
+    {
+        App::PropertyColorList* prop = Base::freecad_dynamic_cast<App::PropertyColorList>(pcObject->getPropertyByName("FaceColors"));
+        if (prop && prop->getSize() == int(rMesh.countFacets()))
+            return true;
+    }
+    {
+        App::PropertyColorList* prop = Base::freecad_dynamic_cast<App::PropertyColorList>(pcObject->getPropertyByName("VertexColors"));
+        if (prop && prop->getSize() == int(rMesh.countPoints()))
+            return true;
+    }
+
+    return false;
 }
 
 PyObject* ViewProviderMesh::getPyObject()
