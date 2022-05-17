@@ -1394,13 +1394,13 @@ PyObject*  TopoShapePy::transformShape(PyObject *args)
     PyObject *obj;
     PyObject *copy = Py_False;
     PyObject *checkScale = Py_False;
-    if (!PyArg_ParseTuple(args, "O!|O!O", &(Base::MatrixPy::Type),&obj,&(PyBool_Type), &copy,&checkScale))
+    if (!PyArg_ParseTuple(args, "O!|O!O!", &(Base::MatrixPy::Type),&obj,&(PyBool_Type), &copy, &(PyBool_Type), &checkScale))
         return nullptr;
 
     Base::Matrix4D mat = static_cast<Base::MatrixPy*>(obj)->value();
     PY_TRY {
         this->getTopoShapePtr()->transformShape(mat, PyObject_IsTrue(copy) ? true : false, 
-                PyObject_IsTrue(checkScale));
+                PyObject_IsTrue(checkScale) ? true : false);
         return IncRef();
     }
     PY_CATCH_OCC
@@ -1413,15 +1413,15 @@ PyObject* TopoShapePy::transformed(PyObject *args, PyObject *keywds)
     PyObject* copy = Py_False;
     PyObject* checkScale = Py_False;
     const char *op = nullptr;
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "O!|OOs", kwlist,
-                &Base::MatrixPy::Type, &pymat,&copy,&checkScale,&op))
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "O!|O!O!s", kwlist,
+                &Base::MatrixPy::Type, &pymat, &PyBool_Type, &copy, &PyBool_Type, &checkScale, &op))
         return nullptr;
 
     Base::Matrix4D mat = static_cast<Base::MatrixPy*>(pymat)->value();
     (void)op;
     PY_TRY {
         TopoShape s(*getTopoShapePtr());
-        s.transformShape(mat,PyObject_IsTrue(copy),PyObject_IsTrue(checkScale));
+        s.transformShape(mat,PyObject_IsTrue(copy) ? true : false,PyObject_IsTrue(checkScale) ? true : false);
         return Py::new_reference_to(shape2pyshape(s));
     }
     PY_CATCH_OCC
@@ -1954,7 +1954,7 @@ PyObject* TopoShapePy::tessellate(PyObject *args)
     try {
         std::vector<Base::Vector3d> Points;
         std::vector<Data::ComplexGeoData::Facet> Facets;
-        if (PyObject_IsTrue(ok))
+        if (PyObject_IsTrue(ok) ? true : false)
             BRepTools::Clean(getTopoShapePtr()->getShape());
         getTopoShapePtr()->getFaces(Points, Facets,tolerance);
         Py::Tuple tuple(2);
@@ -2148,7 +2148,7 @@ PyObject* TopoShapePy::makeShapeFromMesh(PyObject *args)
         }
 
         getTopoShapePtr()->setFaces(Points, Facets, tolerance);
-        if (PyObject_IsTrue(sewShape))
+        if (PyObject_IsTrue(sewShape) ? true : false)
             getTopoShapePtr()->sewShape(tolerance);
 
         Py_Return;
@@ -2221,7 +2221,7 @@ PyObject*  TopoShapePy::isInside(PyObject *args)
             solidClassifier.Perform(vertex, tolerance);
             Standard_Boolean test = (solidClassifier.State() == stateIn);
 
-            if (PyObject_IsTrue(checkFace) && (solidClassifier.IsOnAFace()))
+            if ((PyObject_IsTrue(checkFace) ? true : false) && (solidClassifier.IsOnAFace()))
                 test = Standard_True;
             return Py_BuildValue("O", (test ? Py_True : Py_False));
         }

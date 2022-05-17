@@ -1362,7 +1362,7 @@ private:
                 Standard_Failure::Raise("Cannot create polygon because less than two vertices are given");
 
             // if the polygon should be closed
-            if (PyObject_IsTrue(pclosed)) {
+            if (PyObject_IsTrue(pclosed) ? true : false) {
                 if (!mkPoly.FirstVertex().IsSame(mkPoly.LastVertex())) {
                     mkPoly.Add(mkPoly.FirstVertex());
                 }
@@ -2287,9 +2287,10 @@ private:
         short retType = 0;
         static char* kwd_list[] = {"obj", "subname", "mat", 
             "needSubElement","transform","retType","noElementMap","refine",nullptr};
-        if(!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|sO!OOhOO", kwd_list,
+        if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "O!|sO!O!O!hO!O!", kwd_list,
                 &App::DocumentObjectPy::Type, &pObj, &subname, &Base::MatrixPy::Type, &pyMat, 
-                &needSubElement,&transform,&retType,&noElementMap,&refine))
+                &PyBool_Type,&needSubElement,&PyBool_Type,&transform,&retType,
+                &PyBool_Type,&noElementMap,&PyBool_Type,&refine))
             throw Py::Exception();
 
         App::DocumentObject *obj = 
@@ -2298,9 +2299,10 @@ private:
         Base::Matrix4D mat;
         if(pyMat)
             mat = *static_cast<Base::MatrixPy*>(pyMat)->getMatrixPtr();
-        auto shape = Feature::getTopoShape(obj,subname,PyObject_IsTrue(needSubElement),
-                &mat,&subObj,retType==2,PyObject_IsTrue(transform),PyObject_IsTrue(noElementMap));
-        if(PyObject_IsTrue(refine)) {
+        auto shape = Feature::getTopoShape(obj,subname,PyObject_IsTrue(needSubElement) ? true : false,
+                &mat,&subObj,retType==2,PyObject_IsTrue(transform) ? true : false,
+                PyObject_IsTrue(noElementMap) ? true : false);
+        if (PyObject_IsTrue(refine) ? true : false) {
             // shape = TopoShape(0,shape.Hasher).makERefine(shape);
             BRepBuilderAPI_RefineModel mkRefine(shape.getShape());
             shape.setShape(mkRefine.Shape());
