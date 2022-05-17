@@ -89,6 +89,7 @@ SET(SketcherGui_SRCS
     DrawSketchHandlerArcSlot.h
     DrawSketchHandlerRectangularArray.h
     DrawSketchHandlerTranslate.h
+    DrawSketchHandlerRotate.h
     CommandCreateGeo.cpp
     CommandConstraints.h
     CommandConstraints.cpp
