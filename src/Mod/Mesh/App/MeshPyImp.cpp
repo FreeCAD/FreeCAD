@@ -526,7 +526,7 @@ PyObject*  MeshPy::section(PyObject *args, PyObject *kwds)
 
     MeshPy* pcObject = static_cast<MeshPy*>(pcObj);
 
-    std::vector< std::vector<Base::Vector3f> > curves = getMeshObjectPtr()->section(*pcObject->getMeshObjectPtr(), PyObject_IsTrue(connectLines), fMinDist);
+    std::vector< std::vector<Base::Vector3f> > curves = getMeshObjectPtr()->section(*pcObject->getMeshObjectPtr(), PyObject_IsTrue(connectLines) ? true : false, fMinDist);
     Py::List outer;
     for (const auto& it : curves) {
         Py::List inner;
