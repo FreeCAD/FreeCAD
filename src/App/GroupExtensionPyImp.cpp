@@ -256,12 +256,12 @@ PyObject*  GroupExtensionPy::getObject(PyObject *args)
 PyObject*  GroupExtensionPy::hasObject(PyObject *args)
 {
     PyObject *object;
-    PyObject *recursivePy = nullptr;
-    int recursive = 0;
-    if (!PyArg_ParseTuple(args, "O!|O", &(DocumentObjectPy::Type), &object, &recursivePy))
+    PyObject *recursivePy = Py_False;
+    if (!PyArg_ParseTuple(args, "O!|O!", &(DocumentObjectPy::Type), &object, &PyBool_Type, &recursivePy))
         return nullptr;
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(object);
+    bool recursive = PyObject_IsTrue(recursivePy) ? true : false;
     if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->getNameInDocument()) {
         PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot check an invalid object");
         return nullptr;
@@ -269,14 +269,6 @@ PyObject*  GroupExtensionPy::hasObject(PyObject *args)
     if (docObj->getDocumentObjectPtr()->getDocument() != getGroupExtensionPtr()->getExtendedObject()->getDocument()) {
         PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot check an object from another document with this group");
         return nullptr;
-    }
-    if (recursivePy) {
-        recursive = PyObject_IsTrue(recursivePy);
-        if ( recursive == -1) {
-            // Note: shouldn't happen
-            PyErr_SetString(PyExc_ValueError, "The recursive parameter should be of boolean type");
-            return nullptr;
-        }
     }
 
     bool v = getGroupExtensionPtr()->hasObject(docObj->getDocumentObjectPtr(), recursive);

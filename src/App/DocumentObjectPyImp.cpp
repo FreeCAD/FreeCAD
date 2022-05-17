@@ -374,12 +374,12 @@ PyObject*  DocumentObjectPy::evalExpression(PyObject *self, PyObject * args)
 
 PyObject*  DocumentObjectPy::recompute(PyObject *args)
 {
-    PyObject *recursive=Py_False;
-    if (!PyArg_ParseTuple(args, "|O",&recursive))
+    PyObject *recursive = Py_False;
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &recursive))
         return nullptr;
 
     try {
-        bool ok = getDocumentObjectPtr()->recomputeFeature(PyObject_IsTrue(recursive));
+        bool ok = getDocumentObjectPtr()->recomputeFeature(PyObject_IsTrue(recursive) ? true : false);
         return Py_BuildValue("O", (ok ? Py_True : Py_False));
     }
     catch (const Base::Exception& e) {
@@ -434,8 +434,8 @@ PyObject* DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
     short depth = 0;
 
     static char *kwlist[] = {"subname", "retType", "matrix", "transform", "depth", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "O|hO!Oh", kwlist,
-                                     &obj, &retType, &Base::MatrixPy::Type, &pyMat, &doTransform, &depth))
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "O|hO!O!h", kwlist,
+                                     &obj, &retType, &Base::MatrixPy::Type, &pyMat, &PyBool_Type, &doTransform, &depth))
         return nullptr;
 
     if (retType < 0 || retType > 6) {
@@ -469,7 +469,7 @@ PyObject* DocumentObjectPy::getSubObject(PyObject *args, PyObject *keywds)
         return nullptr;
     }
 
-    bool transform = PyObject_IsTrue(doTransform);
+    bool transform = PyObject_IsTrue(doTransform) ? true : false;
 
     struct SubInfo {
         App::DocumentObject *sobj;
@@ -578,8 +578,8 @@ PyObject*  DocumentObjectPy::getLinkedObject(PyObject *args, PyObject *keywds)
     PyObject *transform = Py_True;
     short depth = 0;
     static char *kwlist[] = {"recursive","matrix","transform","depth", nullptr};
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "|OOOh", kwlist,
-                &recursive,&pyMat,&transform,&depth))
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "|O!OO!h", kwlist,
+                &PyBool_Type,&recursive,&pyMat,&PyBool_Type,&transform,&depth))
         return nullptr;
 
     Base::Matrix4D _mat;
@@ -595,7 +595,7 @@ PyObject*  DocumentObjectPy::getLinkedObject(PyObject *args, PyObject *keywds)
 
     PY_TRY {
         auto linked = getDocumentObjectPtr()->getLinkedObject(
-                PyObject_IsTrue(recursive), mat, PyObject_IsTrue(transform),depth);
+                PyObject_IsTrue(recursive) ? true : false, mat, PyObject_IsTrue(transform) ? true : false, depth);
         if(!linked)
             linked = getDocumentObjectPtr();
         auto pyObj = Py::Object(linked->getPyObject(),true);
@@ -623,10 +623,10 @@ PyObject*  DocumentObjectPy::setElementVisible(PyObject *args)
 {
     char *element = nullptr;
     PyObject *visible = Py_True;
-    if (!PyArg_ParseTuple(args, "s|O", &element,&visible))
+    if (!PyArg_ParseTuple(args, "s|O!", &element, &PyBool_Type, &visible))
         return nullptr;
     PY_TRY {
-        return Py_BuildValue("h", getDocumentObjectPtr()->setElementVisible(element,PyObject_IsTrue(visible)));
+        return Py_BuildValue("h", getDocumentObjectPtr()->setElementVisible(element,PyObject_IsTrue(visible) ? true : false));
     } PY_CATCH;
 }
 
@@ -830,13 +830,13 @@ PyObject *DocumentObjectPy::resolveSubElement(PyObject *args)
     const char *subname;
     PyObject *append = Py_False;
     int type = 0;
-    if (!PyArg_ParseTuple(args, "s|Oi",&subname,&append,&type))
+    if (!PyArg_ParseTuple(args, "s|O!i",&subname,&PyBool_Type,&append,&type))
         return nullptr;
 
     PY_TRY {
         std::pair<std::string,std::string> elementName;
         auto obj = GeoFeature::resolveElement(getDocumentObjectPtr(), subname,elementName,
-                PyObject_IsTrue(append),(GeoFeature::ElementNameType)type);
+                PyObject_IsTrue(append) ? true : false,(GeoFeature::ElementNameType)type);
         Py::Tuple ret(3);
         ret.setItem(0,obj?Py::Object(obj->getPyObject(),true):Py::None());
         ret.setItem(1,Py::String(elementName.first));
@@ -866,7 +866,7 @@ PyObject *DocumentObjectPy::adjustRelativeLinks(PyObject *args) {
         std::set<App::DocumentObject *> visited;
         return Py::new_reference_to(Py::Boolean(
                     getDocumentObjectPtr()->adjustRelativeLinks(inList,
-                        PyObject_IsTrue(recursive)?&visited:nullptr)));
+                        PyObject_IsTrue(recursive) ? &visited : nullptr)));
     }PY_CATCH
 }
 
