@@ -369,6 +369,13 @@ class MatrixTestCase(unittest.TestCase):
     def setUp(self):
         self.mat = FreeCAD.Matrix()
 
+    def testOrder(self):
+        self.mat = FreeCAD.Matrix(1.0,2.0,3.0,4.0)
+        self.assertEqual(self.mat.A11, 1.0)
+        self.assertEqual(self.mat.A12, 2.0)
+        self.assertEqual(self.mat.A13, 3.0)
+        self.assertEqual(self.mat.A14, 4.0)
+
     def testScalar(self):
         res = self.mat * 0.0
         for i in range(16):
