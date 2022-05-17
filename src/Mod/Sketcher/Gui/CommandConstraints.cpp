@@ -72,10 +72,6 @@ namespace SketcherGui
 
 ConstraintCreationMode constraintCreationMode = Driving;
 
-void ActivateHandler(Gui::Document *doc, DrawSketchHandler *handler);
-
-bool isCreateGeoActive(Gui::Document *doc);
-
 bool isCreateConstraintActive(Gui::Document *doc)
 {
     if (doc) {

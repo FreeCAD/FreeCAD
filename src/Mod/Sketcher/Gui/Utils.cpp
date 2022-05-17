@@ -279,3 +279,141 @@ bool SketcherGui::checkConstraint(const std::vector< Sketcher::Constraint * > &v
 
     return false;
 }
+
+/* helper functions ======================================================*/
+
+// Return counter-clockwise angle from horizontal out of p1 to p2 in radians.
+double SketcherGui::GetPointAngle (const Base::Vector2d &p1, const Base::Vector2d &p2)
+{
+  double dX = p2.x - p1.x;
+  double dY = p2.y - p1.y;
+  return dY >= 0 ? atan2(dY, dX) : atan2(dY, dX) + 2*M_PI;
+}
+
+void SketcherGui::ActivateHandler(Gui::Document *doc, DrawSketchHandler *handler)
+{
+    std::unique_ptr<DrawSketchHandler> ptr(handler);
+    if (doc) {
+        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*> (doc->getInEdit());
+            vp->purgeHandler();
+            vp->activateHandler(ptr.release());
+        }
+    }
+}
+
+bool SketcherGui::isCreateGeoActive(Gui::Document *doc)
+{
+    if (doc) {
+        // checks if a Sketch Viewprovider is in Edit and is in no special mode
+        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom
+            (SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            /*if (dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->
+                getSketchMode() == ViewProviderSketch::STATUS_NONE)*/
+                return true;
+        }
+    }
+    return false;
+}
+
+SketcherGui::ViewProviderSketch* SketcherGui::getSketchViewprovider(Gui::Document *doc)
+{
+    if (doc) {
+        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom
+            (SketcherGui::ViewProviderSketch::getClassTypeId()) )
+            return dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    }
+    return nullptr;
+}
+
+void SketcherGui::removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
+                                       std::vector<AutoConstraint> &sug1,
+                                       std::vector<AutoConstraint> &sug2)
+{
+    if(!sug1.empty() && !sug2.empty()) {
+
+        bool rmvhorvert = false;
+
+        // we look for:
+        // 1. Coincident to external on both endpoints
+        // 2. Coincident in one endpoint to origin and pointonobject/tangent to an axis on the other
+        auto detectredundant = [psketch](std::vector<AutoConstraint> &sug, bool &ext, bool &orig, bool &axis) {
+
+            ext = false;
+            orig = false;
+            axis = false;
+
+            for(std::vector<AutoConstraint>::const_iterator it = sug.begin(); it!=sug.end(); ++it) {
+                if( (*it).Type == Sketcher::Coincident && ext == false) {
+                    const std::map<int, Sketcher::PointPos> coincidents = psketch->getAllCoincidentPoints((*it).GeoId, (*it).PosId);
+
+                    if(!coincidents.empty()) {
+                        // the keys are ordered, so if the first is negative, it is coincident with external
+                        ext = coincidents.begin()->first < 0;
+
+                        std::map<int, Sketcher::PointPos>::const_iterator geoId1iterator;
+
+                        geoId1iterator = coincidents.find(-1);
+
+                        if( geoId1iterator != coincidents.end()) {
+                            if( (*geoId1iterator).second == Sketcher::PointPos::start )
+                                orig = true;
+                        }
+                    }
+                    else { // it may be that there is no constraint at all, but there is external geometry
+                        ext = (*it).GeoId < 0;
+                        orig = ((*it).GeoId == -1 && (*it).PosId == Sketcher::PointPos::start);
+                    }
+                }
+                else if( (*it).Type == Sketcher::PointOnObject && axis == false) {
+                    axis = (((*it).GeoId == -1 && (*it).PosId == Sketcher::PointPos::none) || ((*it).GeoId == -2 && (*it).PosId == Sketcher::PointPos::none));
+                }
+
+            }
+        };
+
+        bool firstext = false, secondext = false, firstorig = false, secondorig = false, firstaxis = false, secondaxis = false;
+
+        detectredundant(sug1, firstext, firstorig, firstaxis);
+        detectredundant(sug2, secondext, secondorig, secondaxis);
+
+
+        rmvhorvert = ((firstext && secondext)   ||  // coincident with external on both endpoints
+                      (firstorig && secondaxis) ||  // coincident origin and point on object on other
+                      (secondorig && firstaxis));
+
+        if(rmvhorvert) {
+            for(std::vector<AutoConstraint>::reverse_iterator it = sug2.rbegin(); it!=sug2.rend(); ++it) {
+                if( (*it).Type == Sketcher::Horizontal || (*it).Type == Sketcher::Vertical) {
+                    sug2.erase(std::next(it).base());
+                    it = sug2.rbegin(); // erase invalidates the iterator
+                }
+            }
+        }
+    }
+}
+
+void SketcherGui::ConstraintToAttachment(Sketcher::GeoElementId element, Sketcher::GeoElementId attachment, double distance, App::DocumentObject* obj) {
+    if (distance == 0.) {
+
+        if(attachment.isCurve()) {
+            Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                element.GeoId, element.posIdAsInt(), attachment.GeoId);
+
+        }
+        else {
+            Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
+                element.GeoId, element.posIdAsInt(), attachment.GeoId, attachment.posIdAsInt());
+        }
+    }
+    else {
+        if(attachment == Sketcher::GeoElementId::VAxis) {
+            Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
+                element.GeoId, element.posIdAsInt(), distance);
+        }
+        else if(attachment == Sketcher::GeoElementId::HAxis) {
+            Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
+                element.GeoId, element.posIdAsInt(), distance);
+        }
+    }
+}

@@ -61,6 +61,7 @@ SET(SketcherGui_SRCS
     AppSketcherGui.cpp
     GeometryCreationMode.h
     Command.cpp
+    AutoConstraint.h
     Utils.h
     Utils.cpp
     CommandCreateGeo.cpp

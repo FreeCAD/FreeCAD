@@ -28,6 +28,8 @@
 #include <Mod/Sketcher/App/Constraint.h>
 #include <Gui/Selection.h>
 
+#include "AutoConstraint.h"
+
 class QPixmap;
 
 namespace Sketcher {
@@ -87,20 +89,6 @@ private:
     static inline int getPreselectCross(const ViewProviderSketch &vp);
 
     friend class DrawSketchHandler;
-};
-
-// A Simple data type to hold basic information for suggested constraints
-struct AutoConstraint
-{
-    enum TargetType
-    {
-        VERTEX,
-        CURVE,
-        VERTEX_NO_TANGENCY
-    };
-    Sketcher::ConstraintType Type;
-    int GeoId;
-    Sketcher::PointPos PosId;
 };
 
 /** Handler to create new sketch geometry

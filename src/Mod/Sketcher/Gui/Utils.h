@@ -24,12 +24,26 @@
 #ifndef SKETCHERGUI_Recompute_H
 #define SKETCHERGUI_Recompute_H
 
+#include <Base/Tools.h>
+#include <Mod/Sketcher/App/GeoEnum.h>
+#include "AutoConstraint.h"
+
+namespace App {
+    class DocumentObject;
+}
+
+namespace Gui {
+    class DocumentObject;
+}
+
 namespace Sketcher {
     enum class PointPos : int;
     class SketchObject;
 }
 
 namespace SketcherGui {
+    class DrawSketchHandler;
+    class ViewProviderSketch;
 
 /// This function tries to auto-recompute the active document if the option
 /// is set in the user parameter. If the option is not set nothing will be done
@@ -89,6 +103,25 @@ inline bool isEdge(int GeoId, Sketcher::PointPos PosId)
 {
     return (GeoId != Sketcher::GeoEnum::GeoUndef && PosId == Sketcher::PointPos::none);
 }
+
+
+/* helper functions ======================================================*/
+
+// Return counter-clockwise angle from horizontal out of p1 to p2 in radians.
+double GetPointAngle (const Base::Vector2d &p1, const Base::Vector2d &p2);
+
+void ActivateHandler(Gui::Document *doc, DrawSketchHandler *handler);
+
+bool isCreateGeoActive(Gui::Document *doc);
+
+SketcherGui::ViewProviderSketch* getSketchViewprovider(Gui::Document *doc);
+
+
+void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
+                                       std::vector<AutoConstraint> &sug1,
+                                       std::vector<AutoConstraint> &sug2);
+
+void ConstraintToAttachment(Sketcher::GeoElementId element, Sketcher::GeoElementId attachment, double distance, App::DocumentObject* obj);
 
 }
 #endif // SKETCHERGUI_Recompute_H
