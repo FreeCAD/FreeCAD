@@ -216,6 +216,8 @@ public:
     /// Transform the real mesh data
     void transformGeometry(const Base::Matrix4D &rclMat);
     void setPointIndices( const std::vector<std::pair<PointIndex, Base::Vector3f> >& );
+    void setTransform(const Base::Matrix4D& rclTrf);
+    Base::Matrix4D getTransform() const;
     //@}
 
     /** @name Python interface */

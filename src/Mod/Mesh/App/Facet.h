@@ -43,7 +43,7 @@ class MeshObject;
 class MeshExport Facet : public MeshCore::MeshGeomFacet
 {
 public:
-    Facet(const MeshCore::MeshFacet& face = MeshCore::MeshFacet(), MeshObject* obj = nullptr, MeshCore::FacetIndex index = MeshCore::FACET_INDEX_MAX);
+    Facet(const MeshCore::MeshFacet& face = MeshCore::MeshFacet(), const MeshObject* obj = nullptr, MeshCore::FacetIndex index = MeshCore::FACET_INDEX_MAX);
     Facet(const Facet& f);
     ~Facet();
 
@@ -54,7 +54,7 @@ public:
     MeshCore::FacetIndex Index;
     MeshCore::PointIndex PIndex[3];
     MeshCore::FacetIndex NIndex[3];
-    Base::Reference<MeshObject> Mesh;
+    Base::Reference<const MeshObject> Mesh;
 };
 
 } // namespace Mesh
