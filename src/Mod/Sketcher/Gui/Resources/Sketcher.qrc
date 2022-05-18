@@ -204,6 +204,7 @@
         <file>icons/pointers/Sketcher_Pointer_Create_Ellipse.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_Fillet.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_Line.svg</file>
+        <file>icons/pointers/Sketcher_Pointer_Create_Line_Polar.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_Lineset.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_Point.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Extension.svg</file>
