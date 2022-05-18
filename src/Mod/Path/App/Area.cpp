@@ -2613,9 +2613,9 @@ struct ShapeInfo{
                     if(edge.IsEqual(mySupport)) {
                         //to fix PointProjectionFailed.     
                         GeomAPI_ProjectPointOnCurve gpp;
-                        gpp.Init( myBestPt,curve);
+                        gpp.Init(myBestPt, curve);
                         gpp.Perform(myBestPt);
-                        myBestPt= gpp.NearestPoint();
+                        myBestPt = gpp.NearestPoint();
                             
                         gpp.Perform(pprev);
                         pprev = gpp.NearestPoint();
