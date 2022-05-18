@@ -146,6 +146,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         ENUMS = self.helixOpPropertyEnumerations()
         for n in ENUMS:
             setattr(obj, n[0], n[1])
+        obj.StepOver = 50
 
     def opOnDocumentRestored(self, obj):
         if not hasattr(obj, "StartRadius"):
