@@ -259,7 +259,7 @@ protected:
 protected:
   const MeshKernel& _rclMesh;
   const MeshPointArray& _rclPAry;
-  MeshPoint _clPoint;
+  mutable MeshPoint _clPoint;
   MeshPointArray::_TConstIterator _clIter;
   bool _bApply;
   Base::Matrix4D _clTrf;
@@ -443,10 +443,11 @@ inline void MeshPointIterator::Transform( const Base::Matrix4D& rclTrf )
 }
 
 inline const MeshPoint& MeshPointIterator::Dereference () const
-{ // We change only the value of the point but not the actual iterator
-  const_cast<MeshPointIterator*>(this)->_clPoint = *_clIter;
+{
+  // We change only the value of the point but not the actual iterator
+  _clPoint = *_clIter;
   if ( _bApply )
-    const_cast<MeshPointIterator*>(this)->_clPoint = _clTrf * _clPoint;
+    _clPoint = _clTrf * _clPoint;
   return _clPoint; 
 }
 

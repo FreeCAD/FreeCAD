@@ -488,7 +488,7 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
         trim = prefixEnd - pos;
 
     // Extract last tokens that can be rebuilt to a variable
-    ssize_t i = static_cast<ssize_t>(tokens.size()) - 1;
+    long i = static_cast<long>(tokens.size()) - 1;
 
     // First, check if we have unclosing string starting from the end
     bool stringing = false;
@@ -515,7 +515,7 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
     }
 
     if(!stringing) {
-        i = static_cast<ssize_t>(tokens.size()) - 1;
+        i = static_cast<long>(tokens.size()) - 1;
         for(;i>=0;--i) {
             int token = get<0>(tokens[i]);
             if (token != '.' && token != '#' &&
@@ -529,13 +529,13 @@ void ExpressionCompleter::slotUpdate(const QString & prefix, int pos)
     }
 
     // Set prefix start for use when replacing later
-    if (i == static_cast<ssize_t>(tokens.size()))
+    if (i == static_cast<long>(tokens.size()))
         prefixStart = prefixEnd;
     else
         prefixStart = start + get<1>(tokens[i]);
 
     // Build prefix from tokens
-    while (i < static_cast<ssize_t>(tokens.size())) {
+    while (i < static_cast<long>(tokens.size())) {
         completionPrefix += get<2>(tokens[i]);
         ++i;
     }

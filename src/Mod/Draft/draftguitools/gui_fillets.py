@@ -95,13 +95,8 @@ class Fillet(gui_base_original.Creator):
                                                     "Create chamfer"))
             self.ui.check_chamfer.show()
 
-            # TODO: change to Qt5 style
-            QtCore.QObject.connect(self.ui.check_delete,
-                                   QtCore.SIGNAL("stateChanged(int)"),
-                                   self.set_delete)
-            QtCore.QObject.connect(self.ui.check_chamfer,
-                                   QtCore.SIGNAL("stateChanged(int)"),
-                                   self.set_chamfer)
+            self.ui.check_delete.stateChanged.connect(self.set_delete)
+            self.ui.check_chamfer.stateChanged.connect(self.set_chamfer)
 
             # TODO: somehow we need to set up the trackers
             # to show a preview of the fillet.

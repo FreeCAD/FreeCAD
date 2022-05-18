@@ -1053,7 +1053,7 @@ void MeshKernel::Smooth(int iterations, float stepsize)
     LaplaceSmoothing(*this).Smooth(iterations);
 }
 
-void MeshKernel::RecalcBoundBox ()
+void MeshKernel::RecalcBoundBox () const
 {
     _clBoundBox.SetVoid();
     for (MeshPointArray::_TConstIterator pI = _aclPointArray.begin(); pI != _aclPointArray.end(); pI++)
