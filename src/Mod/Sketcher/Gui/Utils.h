@@ -124,5 +124,15 @@ void removeRedundantHorizontalVertical(Sketcher::SketchObject* psketch,
 void ConstraintToAttachment(Sketcher::GeoElementId element, Sketcher::GeoElementId attachment, double distance, App::DocumentObject* obj);
 
 }
+
+template <typename T>
+auto toPointerVector(const std::vector<std::unique_ptr<T>> & vector) {
+    std::vector<T *> vp (vector.size());
+
+    std::transform(vector.begin(), vector.end(), vp.begin(), [](auto &p) {return p.get();});
+
+    return vp;
+}
+
 #endif // SKETCHERGUI_Recompute_H
 
