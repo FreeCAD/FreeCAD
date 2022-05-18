@@ -1129,11 +1129,10 @@ std::string Application::getResourceDir()
 #ifdef RESOURCEDIR
     std::string path(RESOURCEDIR);
     path.append("/");
-    QDir dir(QString::fromUtf8(RESOURCEDIR));
+    QDir dir(QString::fromStdString(path));
     if (dir.isAbsolute())
         return path;
-    else
-        return mConfig["AppHomePath"] + path;
+    return mConfig["AppHomePath"] + path;
 #else
     return mConfig["AppHomePath"];
 #endif
@@ -1157,11 +1156,10 @@ std::string Application::getHelpDir()
 #ifdef DOCDIR
     std::string path(DOCDIR);
     path.append("/");
-    QDir dir(QString::fromUtf8(DOCDIR));
+    QDir dir(QString::fromStdString(path));
     if (dir.isAbsolute())
         return path;
-    else
-        return mConfig["AppHomePath"] + path;
+    return mConfig["AppHomePath"] + path;
 #else
     return mConfig["DocPath"];
 #endif
