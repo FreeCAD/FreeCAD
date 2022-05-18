@@ -63,6 +63,19 @@ def All():
 
     return suite
 
+def PrintAll():
+    # Registered tests
+    tests = FreeCAD.__unit_test__
+
+    suite = unittest.TestSuite()
+
+    FreeCAD.Console.PrintMessage("\nRegistered test units:\n\n")
+    for test in tests:
+        FreeCAD.Console.PrintMessage(("%s\n" % test))
+    FreeCAD.Console.PrintMessage("\nPlease choose one or use 0 for all\n")
+
+    return suite
+
 
 def TestText(s):
     s = unittest.defaultTestLoader.loadTestsFromName(s)
