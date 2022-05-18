@@ -1143,6 +1143,9 @@ std::string Application::getLibraryDir()
 {
 #ifdef LIBRARYDIR
     std::string path(LIBRARYDIR);
+    QDir dir(QString::fromStdString(path));
+    if (dir.isAbsolute())
+        return path;
     return mConfig["AppHomePath"] + path;
 #else
     return mConfig["AppHomePath"] + "lib";
