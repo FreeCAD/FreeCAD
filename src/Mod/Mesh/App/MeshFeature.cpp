@@ -75,13 +75,12 @@ void Feature::onChanged(const App::Property* prop)
 {
     // if the placement has changed apply the change to the mesh data as well
     if (prop == &this->Placement) {
-        MeshObject& mesh = const_cast<MeshObject&>(this->Mesh.getValue());
-        mesh.setTransform(this->Placement.getValue().toMatrix());
+        this->Mesh.setTransform(this->Placement.getValue().toMatrix());
     }
     // if the mesh data has changed check and adjust the transformation as well
     else if (prop == &this->Mesh) {
         Base::Placement p;
-        p.fromMatrix(this->Mesh.getValue().getTransform());
+        p.fromMatrix(this->Mesh.getTransform());
         if (p != this->Placement.getValue())
             this->Placement.setValue(p);
     }

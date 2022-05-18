@@ -36,14 +36,14 @@
 
 using namespace Mesh;
 
-Segment::Segment(MeshObject* mesh, bool mod)
+Segment::Segment(const MeshObject* mesh, bool mod)
   : _mesh(mesh)
   , _save(false)
   , _modifykernel(mod)
 {
 }
 
-Segment::Segment(MeshObject* mesh, const std::vector<FacetIndex>& inds, bool mod)
+Segment::Segment(const MeshObject* mesh, const std::vector<FacetIndex>& inds, bool mod)
   : _mesh(mesh)
   , _indices(inds)
   , _save(false)
@@ -135,7 +135,7 @@ Segment::const_facet_iterator& Segment::const_facet_iterator::operator=(const Se
     return *this;
 }
 
-void Segment::const_facet_iterator::dereference()
+void Segment::const_facet_iterator::dereference() const
 {
     this->_f_it.Set(*_it);
     this->_facet.MeshCore::MeshGeomFacet::operator = (*_f_it);
@@ -149,13 +149,13 @@ void Segment::const_facet_iterator::dereference()
 
 const Facet& Segment::const_facet_iterator::operator*() const
 {
-    const_cast<const_facet_iterator*>(this)->dereference();
+    this->dereference();
     return this->_facet;
 }
 
 const Facet* Segment::const_facet_iterator::operator->() const
 {
-    const_cast<const_facet_iterator*>(this)->dereference();
+    this->dereference();
     return &(this->_facet);
 }
 

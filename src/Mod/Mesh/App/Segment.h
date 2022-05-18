@@ -38,8 +38,8 @@ class MeshObject;
 class MeshExport Segment
 {
 public:
-    Segment(MeshObject*, bool mod);
-    Segment(MeshObject*, const std::vector<FacetIndex>& inds, bool mod);
+    Segment(const MeshObject*, bool mod);
+    Segment(const MeshObject*, const std::vector<FacetIndex>& inds, bool mod);
     void addIndices(const std::vector<FacetIndex>& inds);
     void removeIndices(const std::vector<FacetIndex>& inds);
     const std::vector<FacetIndex>& getIndices() const;
@@ -62,7 +62,7 @@ public:
     friend class MeshObject;
 
 private:
-    MeshObject* _mesh;
+    const MeshObject* _mesh;
     std::vector<FacetIndex> _indices;
     std::string _name;
     std::string _color;
@@ -85,10 +85,10 @@ public:
         const_facet_iterator& operator++();
         const_facet_iterator& operator--();
     private:
-        void dereference();
+        void dereference() const;
         const Segment* _segment;
-        Facet _facet;
-        MeshCore::MeshFacetIterator _f_it;
+        mutable Facet _facet;
+        mutable MeshCore::MeshFacetIterator _f_it;
         std::vector<FacetIndex>::const_iterator _it;
     };
 

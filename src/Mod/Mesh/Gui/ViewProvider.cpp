@@ -1252,8 +1252,8 @@ std::vector<Mesh::FacetIndex> ViewProviderMesh::getFacetsOfRegion(const SbViewpo
     SoSeparator* root = new SoSeparator();
     root->ref();
     root->addChild(camera);
-    root->addChild(const_cast<ViewProviderMesh*>(this)->getCoordNode());
-    root->addChild(const_cast<ViewProviderMesh*>(this)->getShapeNode());
+    root->addChild(this->getCoordNode());
+    root->addChild(this->getShapeNode());
     Gui::SoGLSelectAction gl(region, select);
     gl.apply(root);
     root->unref();

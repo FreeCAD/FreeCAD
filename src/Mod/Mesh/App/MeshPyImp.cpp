@@ -828,6 +828,34 @@ PyObject*  MeshPy::setPoint(PyObject *args)
     Py_Return;
 }
 
+PyObject* MeshPy::movePoint(PyObject *args)
+{
+    unsigned long index;
+    Base::Vector3d vec;
+
+    do {
+        double  x=0.0,y=0.0,z=0.0;
+        if (PyArg_ParseTuple(args, "kddd", &index,&x,&y,&z)) {
+            vec.Set(x,y,z);
+            break;
+        }
+
+        PyErr_Clear(); // set by PyArg_ParseTuple()
+        PyObject *object;
+        if (PyArg_ParseTuple(args,"kO!", &index, &(Base::VectorPy::Type), &object)) {
+            vec = *(static_cast<Base::VectorPy*>(object)->getVectorPtr());
+            break;
+        }
+
+        PyErr_SetString(PyExc_TypeError, "Tuple of three floats or Vector expected");
+        return nullptr;
+    }
+    while (false);
+
+    getMeshObjectPtr()->movePoint(index, vec);
+    Py_Return;
+}
+
 PyObject*  MeshPy::getPointNormals(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))

@@ -32,16 +32,6 @@ work!
 			  </UserDocu>
 		  </Documentation>
 	  </Methode>
-	  <Methode Name="move">
-		  <Documentation>
-			  <UserDocu>method move(Vector)
-This method moves the point in the mesh along the 
-given vector. This affects the geometry of the mesh.
-Be aware that after moving point(s) the mesh can 
-have self intersections!
-              </UserDocu>
-		  </Documentation>
-	  </Methode>
 	  <Attribute Name="Index" ReadOnly="true">
 		<Documentation>
 			<UserDocu>The index of this point in the MeshObject</UserDocu>
@@ -66,24 +56,21 @@ have self intersections!
 		  </Documentation>
 		  <Parameter Name="Normal" Type="Object"/>
 	  </Attribute>
-	  <Attribute Name="x" ReadOnly="false">
+      <Attribute Name="x" ReadOnly="true">
 		  <Documentation>
-			  <UserDocu>The X component of the point.
-Setting this value also affects the mesh if this point is connected to it.</UserDocu>
+              <UserDocu>The X component of the point.</UserDocu>
 		  </Documentation>
 		  <Parameter Name="x" Type="Float"/>
 	  </Attribute>
-	  <Attribute Name="y" ReadOnly="false">
+      <Attribute Name="y" ReadOnly="true">
 		  <Documentation>
-			  <UserDocu>The Y component of the point.
-Setting this value also affects the mesh if this point is connected to it.</UserDocu>
+              <UserDocu>The Y component of the point.</UserDocu>
 		  </Documentation>
 		  <Parameter Name="y" Type="Float"/>
 	  </Attribute>
-	  <Attribute Name="z" ReadOnly="false">
+      <Attribute Name="z" ReadOnly="true">
 		  <Documentation>
-			  <UserDocu>The Z component of the point.
-Setting this value also affects the mesh if this point is connected to it.</UserDocu>
+              <UserDocu>The Z component of the point.</UserDocu>
 		  </Documentation>
 		  <Parameter Name="z" Type="Float"/>
 	  </Attribute>
