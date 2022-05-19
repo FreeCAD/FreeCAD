@@ -1062,15 +1062,18 @@ class gridTracker(Tracker):
         if self.space == 0:
             self.lines1.numVertices.deleteValues(0)
             self.lines2.numVertices.deleteValues(0)
+            self.pts = []
             FreeCAD.Console.PrintWarning("Draft Grid: Spacing value is zero\n")
             return
         if self.mainlines == 0:
             self.lines1.numVertices.deleteValues(0)
             self.lines2.numVertices.deleteValues(0)
+            self.pts = []
             return
         if self.numlines == 0:
             self.lines1.numVertices.deleteValues(0)
             self.lines2.numVertices.deleteValues(0)
+            self.pts = []
             return
         numlines = self.numlines // self.mainlines // 2 * 2 * self.mainlines
         bound = (numlines // 2) * self.space
