@@ -405,7 +405,7 @@ PyObject *PropertyMatrix::getPyObject()
 void PropertyMatrix::setPyObject(PyObject *value)
 {
     if (PyObject_TypeCheck(value, &(Base::MatrixPy::Type))) {
-        Base::MatrixPy  *pcObject = (Base::MatrixPy*)value;
+        Base::MatrixPy  *pcObject = static_cast<Base::MatrixPy*>(value);
         setValue( pcObject->value() );
     }
     else if (PyTuple_Check(value)&&PyTuple_Size(value)==16) {
@@ -630,7 +630,7 @@ PyObject *PropertyPlacement::getPyObject()
 void PropertyPlacement::setPyObject(PyObject *value)
 {
     if (PyObject_TypeCheck(value, &(Base::MatrixPy::Type))) {
-        Base::MatrixPy  *pcObject = (Base::MatrixPy*)value;
+        Base::MatrixPy  *pcObject = static_cast<Base::MatrixPy*>(value);
         Base::Matrix4D mat = pcObject->value();
         Base::Placement p;
         p.fromMatrix(mat);

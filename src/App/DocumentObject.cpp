@@ -90,7 +90,7 @@ DocumentObject::~DocumentObject()
         // not to dec'ref the Python object any more.
         // But we must still invalidate the Python object because it need not to be
         // destructed right now because the interpreter can own several references to it.
-        Base::PyObjectBase* obj = (Base::PyObjectBase*)PythonObject.ptr();
+        Base::PyObjectBase* obj = static_cast<Base::PyObjectBase*>(PythonObject.ptr());
         // Call before decrementing the reference counter, otherwise a heap error can occur
         obj->setInvalid();
     }
