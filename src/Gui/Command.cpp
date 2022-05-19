@@ -369,7 +369,7 @@ void Command::invoke(int i, TriggerSource trigger)
 {
     CommandTrigger cmdTrigger(_trigger,trigger);
     if (displayText.empty()) {
-        displayText = getMenuText();
+        displayText = getMenuText() ? getMenuText() : "";
         boost::replace_all(displayText,"&","");
         if (displayText.empty())
             displayText = getName();

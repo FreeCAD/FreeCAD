@@ -274,7 +274,7 @@ QToolBar::separator:bottom,
 QToolBar::separator:horizontal {
     width: 1px;
     margin: 6px 4px;
-    background-color: rgba(0,0,0,30);
+    background-color: #949494;
 }
 
 QToolBar::separator:left,
@@ -282,7 +282,7 @@ QToolBar::separator:right,
 QToolBar::separator:vertical {
     height: 1px;
     margin: 4px 6px;
-    background-color: rgba(0,0,0,30);
+    background-color: #949494;
 }
 
 
@@ -1043,7 +1043,7 @@ QSplitter::handle {
 }
 
 QSplitter::handle:horizontal {
-    background-image: url(qss:images_dark-light/splitter_vertical_dark.svg);
+    background-image: url(qss:images_dark-light/splitter_vertical_light.svg);
     background-position: center center;
     background-repeat: none;
     margin: 4px 2px 4px 2px;
@@ -1051,7 +1051,7 @@ QSplitter::handle:horizontal {
 }
 
 QSplitter::handle:vertical {
-    background-image: url(qss:images_dark-light/splitter_horizontal_dark.svg);
+    background-image: url(qss:images_dark-light/splitter_horizontal_light.svg);
     background-position: center center;
     background-repeat: none;
     margin: 2px 4px 2px 4px;
@@ -1066,13 +1066,13 @@ QMainWindow::separator {
 
 QMainWindow::separator:horizontal {
     height: 2px;
-    background-image: url(qss:images_dark-light/splitter_horizontal_dark.svg);
+    background-image: url(qss:images_dark-light/splitter_horizontal_light.svg);
     margin: 4px 2px 4px 2px;
 }
 
 QMainWindow::separator:vertical {
     width: 2px;
-    background-image: url(qss:images_dark-light/splitter_vertical_dark.svg);
+    background-image: url(qss:images_dark-light/splitter_vertical_light.svg);
     margin: 2px 4px 2px 4px;
 }
 
@@ -1568,7 +1568,9 @@ QDockWidget#InspectWidgets QPushButton:pressed {
 }
 
 /* CAD Navigation Style */
-
+QMenu::item#NavigationIndicator {
+    image: url(qss:images_dark-light/NavigationBlender_light.svg);
+}
 QPushButton#NavigationIndicator {
     background-color: #557bb6;
     padding: 2px;
@@ -2262,15 +2264,13 @@ QToolBar QToolButton#qt_toolbar_ext_button:on {
 /*==================================================================================================
 Tables (spreadsheets)
 ==================================================================================================*/
+QMdiArea > QWidget > QMdiSubWindow > SpreadsheetGui--SheetView > QWidget > SpreadsheetGui--SheetTableView > {
+    background-color: #cecece; /* Default Spreadsheet background color */
+}
 QTableView {
     gridline-color: #a8a8a8;
     selection-color: #ffffff;
     selection-background-color: #557bb6; /* Default Spreadsheet cell selection background color */
-    background-color: #cecece; /* Default Spreadsheet cell background color */
-}
-
-QTableView::item:hover  {
-    background-color: #557bb6;  /* temporal: is it displayed in Linux or Windows? on OSX it isn't */
 }
 
 QTableView::item:disabled  {
@@ -2278,9 +2278,10 @@ QTableView::item:disabled  {
 }
 
 QTableView::item:selected  {
-    color: #a0a0a0;
+    color: #ffffff;
     border-color: #cecece; /* same as focused background color */
     border-bottom-color: #557BB6; /* same as focused border color */
+    background-color: #557BB6; /* cell background color */
 }
 
 /* fix for elements inside the cells */
@@ -2530,4 +2531,11 @@ Gui--StatefulLabel[state="solver_failed"] {
 Gui--StatefulLabel[state="fully_constrained"] {
     color : rgba(0,255,0,255); /* Green */
     font-weight: bold;
+}
+
+/*==================================================================================================
+PREFERENCES PACKS
+==================================================================================================*/
+Gui--Dialog--DlgGeneralImp > QGroupBox > QGroupBox > QTableWidget > QWidget > QPushButton {
+    margin: 0px;
 }

@@ -24,6 +24,7 @@
 # Workbench test module
 
 import FreeCAD, FreeCADGui, os, unittest
+import tempfile
 
 from PySide2 import QtWidgets, QtCore
 from PySide2.QtWidgets import QApplication
@@ -79,3 +80,16 @@ class WorkbenchTestCase(unittest.TestCase):
     def tearDown(self):
         FreeCADGui.activateWorkbench(self.Active.name())
         FreeCAD.Console.PrintLog(self.Active.name())
+
+class CommandTestCase(unittest.TestCase):
+    def testPR6889(self):
+        # Fixes a crash
+        TempPath = tempfile.gettempdir()
+        macroName = TempPath + os.sep + "testmacro.py"
+        macroFile = open(macroName, "w")
+        macroFile.write("print ('Hello, World!')")
+        macroFile.close()
+
+        name = FreeCADGui.Command.createCustomCommand(macroName)
+        cmd = FreeCADGui.Command.get(name)
+        cmd.run()

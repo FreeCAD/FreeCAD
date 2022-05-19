@@ -32,7 +32,7 @@ __doc__ = "Generates the helix for a single spot targetshape"
 __contributors__ = "russ4262 (Russell Johnson), Lorenz Hüdepohl"
 
 
-if False:
+if True:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
@@ -47,7 +47,7 @@ def generate(
     tool_diameter,
     inner_radius=0.0,
     direction="CW",
-    startAt="Inside",
+    startAt="Outside",
 ):
     """generate(edge, hole_radius, inner_radius, step_over) ... generate helix commands.
     hole_radius, inner_radius: outer and inner radius of the hole
@@ -120,17 +120,7 @@ def generate(
     if startPoint.z < endPoint.z:
         raise ValueError("start point is below end point")
 
-    if inner_radius > 0:
-        PathLog.debug("(annulus mode)\n")
-        outer_radius = hole_radius - tool_diameter / 2
-        step_radius = inner_radius + tool_diameter / 2
-        if abs((outer_radius - step_radius) / step_over_distance) < 1e-5:
-            radii = [(outer_radius + inner_radius) / 2]
-        else:
-            nr = max(int(ceil((outer_radius - inner_radius) / step_over_distance)), 2)
-            radii = linspace(outer_radius, step_radius, nr)
-
-    elif hole_radius <= 2 * tool_diameter:
+    if hole_radius <= tool_diameter:
         PathLog.debug("(single helix mode)\n")
         radii = [hole_radius - tool_diameter / 2]
         if radii[0] <= 0:
@@ -140,19 +130,17 @@ def generate(
                 )
             )
         outer_radius = hole_radius
-    else:
-        PathLog.debug("(full hole mode)\n")
-        outer_radius = hole_radius - tool_diameter / 2
 
-        nr = max(1 + int(ceil((outer_radius - inner_radius) / step_over_distance)), 2)
-        PathLog.debug("nr: {}".format(nr))
-        radii = [r for r in linspace(outer_radius, inner_radius, nr) if r > 0]
-        if not radii:
-            raise ValueError(
-                "Cannot helix a hole of diameter {0} with a tool of diameter {1}".format(
-                    2 * hole_radius, tool_diameter
-                )
-            )
+    else:  # inner_radius > 0:
+        PathLog.debug("(annulus mode / full hole)\n")
+        outer_radius = hole_radius - tool_diameter / 2
+        step_radius = inner_radius + tool_diameter / 2
+        if abs((outer_radius - step_radius) / step_over_distance) < 1e-5:
+            radii = [(outer_radius + inner_radius) / 2]
+        else:
+            nr = max(int(ceil((outer_radius - inner_radius) / step_over_distance)), 2)
+            radii = linspace(outer_radius, step_radius, nr)
+
     PathLog.debug("Radii: {}".format(radii))
     # calculate the number of full and partial turns required
     # Each full turn is two 180 degree arcs. Zsteps is equally spaced step

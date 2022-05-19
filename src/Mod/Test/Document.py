@@ -268,6 +268,55 @@ class DocumentBasicCases(unittest.TestCase):
       self.failUnless(False)
     del L2
 
+  def testSubObject(self):
+    obj = self.Doc.addObject("App::Origin", "Origin")
+    self.Doc.recompute()
+
+    self.assertEqual(obj.getSubObject("XY_Plane", retType=1).Label, "XY_Plane")
+    self.assertEqual(obj.getSubObject("XZ_Plane", retType=1).Label, "XZ_Plane")
+    self.assertEqual(obj.getSubObject("YZ_Plane", retType=1).Label, "YZ_Plane")
+    self.assertEqual(obj.getSubObject("X_Axis", retType=1).Label, "X_Axis")
+    self.assertEqual(obj.getSubObject("Y_Axis", retType=1).Label, "Y_Axis")
+    self.assertEqual(obj.getSubObject("Z_Axis", retType=1).Label, "Z_Axis")
+
+    res = obj.getSubObject("X_Axis", retType=2)
+    self.assertEqual(res[1].multVec(FreeCAD.Vector(1,0,0)).getAngle(FreeCAD.Vector(1,0,0)), 0.0)
+
+    res = obj.getSubObject("Y_Axis", retType=2)
+    self.assertEqual(res[1].multVec(FreeCAD.Vector(1,0,0)).getAngle(FreeCAD.Vector(0,1,0)), 0.0)
+
+    res = obj.getSubObject("Z_Axis", retType=2)
+    self.assertEqual(res[1].multVec(FreeCAD.Vector(1,0,0)).getAngle(FreeCAD.Vector(0,0,1)), 0.0)
+
+    res = obj.getSubObject("XY_Plane", retType=2)
+    self.assertEqual(res[1].multVec(FreeCAD.Vector(0,0,1)).getAngle(FreeCAD.Vector(0,0,1)), 0.0)
+
+    res = obj.getSubObject("XZ_Plane", retType=2)
+    self.assertEqual(res[1].multVec(FreeCAD.Vector(0,0,1)).getAngle(FreeCAD.Vector(0,-1,0)), 0.0)
+
+    res = obj.getSubObject("YZ_Plane", retType=2)
+    self.assertEqual(res[1].multVec(FreeCAD.Vector(0,0,1)).getAngle(FreeCAD.Vector(1,0,0)), 0.0)
+
+    res = obj.getSubObject("YZ_Plane", retType=3)
+    self.assertEqual(res.multVec(FreeCAD.Vector(0,0,1)).getAngle(FreeCAD.Vector(1,0,0)), 0.0)
+
+    res = obj.getSubObject("YZ_Plane", retType=4)
+    self.assertEqual(res.multVec(FreeCAD.Vector(0,0,1)).getAngle(FreeCAD.Vector(1,0,0)), 0.0)
+
+    self.assertEqual(obj.getSubObject(("XY_Plane", "YZ_Plane"), retType=4)[0], obj.getSubObject("XY_Plane", retType=4))
+    self.assertEqual(obj.getSubObject(("XY_Plane", "YZ_Plane"), retType=4)[1], obj.getSubObject("YZ_Plane", retType=4))
+
+    # Create a second origin object
+    obj2 = self.Doc.addObject("App::Origin", "Origin2")
+    self.Doc.recompute()
+
+    # Use the names of the origin's out-list
+    for i in obj2.OutList:
+        self.assertEqual(obj2.getSubObject(i.Name, retType=1).Name, i.Name)
+    # Add a '.' to the names
+    for i in obj2.OutList:
+        self.assertEqual(obj2.getSubObject(i.Name + '.', retType=1).Name, i.Name)
+
   def testExtensions(self):
     #we try to create a normal python object and add an extension to it
     obj = self.Doc.addObject("App::DocumentObject", "Extension_1")
