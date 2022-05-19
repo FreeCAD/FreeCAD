@@ -110,13 +110,13 @@ FC_LOG_LEVEL_INIT("Expression", true, true)
 
 #define EXPR_THROW(_msg) _EXPR_THROW(_msg,this)
 
-#define RUNTIME_THROW(_msg) __EXPR_THROW(Base::RuntimeError,_msg, (Expression*)0)
+#define RUNTIME_THROW(_msg) __EXPR_THROW(Base::RuntimeError,_msg, static_cast<Expression*>(nullptr))
 
-#define TYPE_THROW(_msg) __EXPR_THROW(Base::TypeError,_msg, (Expression*)0)
+#define TYPE_THROW(_msg) __EXPR_THROW(Base::TypeError,_msg, static_cast<Expression*>(nullptr))
 
-#define PARSER_THROW(_msg) __EXPR_THROW(Base::ParserError,_msg, (Expression*)0)
+#define PARSER_THROW(_msg) __EXPR_THROW(Base::ParserError,_msg, static_cast<Expression*>(nullptr))
 
-#define PY_THROW(_msg) __EXPR_THROW(Py::RuntimeError,_msg, (Expression*)0)
+#define PY_THROW(_msg) __EXPR_THROW(Py::RuntimeError,_msg, static_cast<Expression*>(nullptr))
 
 static inline std::ostream &operator<<(std::ostream &os, const App::Expression *expr) {
     if(expr) {

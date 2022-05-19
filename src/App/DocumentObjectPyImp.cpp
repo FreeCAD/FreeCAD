@@ -761,7 +761,7 @@ PyObject *DocumentObjectPy::resolveSubElement(PyObject *args)
     PY_TRY {
         std::pair<std::string,std::string> elementName;
         auto obj = GeoFeature::resolveElement(getDocumentObjectPtr(), subname,elementName,
-                Base::asBoolean(append), (GeoFeature::ElementNameType)type);
+                Base::asBoolean(append), static_cast<GeoFeature::ElementNameType>(type));
         Py::Tuple ret(3);
         ret.setItem(0,obj?Py::Object(obj->getPyObject(),true):Py::None());
         ret.setItem(1,Py::String(elementName.first));

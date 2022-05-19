@@ -565,7 +565,7 @@ Property *PropertyData::getPropertyByName(OffsetBase offsetBase,const char* name
   const PropertyData::PropertySpec* Spec = findProperty(offsetBase,name);
 
   if(Spec)
-    return (Property *) (Spec->Offset + offsetBase.getOffset());
+    return reinterpret_cast<Property *>(Spec->Offset + offsetBase.getOffset());
   else
     return nullptr;
 }
@@ -574,7 +574,7 @@ void PropertyData::getPropertyMap(OffsetBase offsetBase,std::map<std::string,Pro
 {
     merge();
     for(auto &spec : propertyData.get<0>()) 
-        Map[spec.Name] = (Property *) (spec.Offset + offsetBase.getOffset());
+        Map[spec.Name] = reinterpret_cast<Property *>(spec.Offset + offsetBase.getOffset());
 }
 
 void PropertyData::getPropertyList(OffsetBase offsetBase,std::vector<Property*> &List) const
@@ -583,7 +583,7 @@ void PropertyData::getPropertyList(OffsetBase offsetBase,std::vector<Property*> 
     size_t base = List.size();
     List.reserve(base+propertyData.size());
     for (auto &spec : propertyData.get<0>())
-        List.push_back((Property *) (spec.Offset + offsetBase.getOffset()));
+        List.push_back(reinterpret_cast<Property *>(spec.Offset + offsetBase.getOffset()));
 }
 
 void PropertyData::getPropertyNamedList(OffsetBase offsetBase,
@@ -593,7 +593,7 @@ void PropertyData::getPropertyNamedList(OffsetBase offsetBase,
     size_t base = List.size();
     List.reserve(base+propertyData.size());
     for (auto &spec : propertyData.get<0>()) {
-        auto prop = (Property *) (spec.Offset + offsetBase.getOffset());
+        auto prop = reinterpret_cast<Property *>(spec.Offset + offsetBase.getOffset());
         List.emplace_back(prop->getName(),prop);
     }
 }

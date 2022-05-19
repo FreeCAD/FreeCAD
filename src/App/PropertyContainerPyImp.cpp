@@ -247,7 +247,7 @@ PyObject*  PropertyContainerPy::setPropertyStatus(PyObject *args)
         bool value = true;
         if (item.isString()) {
             const auto &statusMap = getStatusMap();
-            auto v = (std::string)Py::String(item);
+            auto v = static_cast<std::string>(Py::String(item));
             if(v.size()>1 && v[0] == '-') {
                 value = false;
                 v = v.substr(1);

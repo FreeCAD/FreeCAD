@@ -461,7 +461,7 @@ PyObject *PropertyLink::getPyObject()
 void PropertyLink::setPyObject(PyObject *value)
 {
     if (PyObject_TypeCheck(value, &(DocumentObjectPy::Type))) {
-        DocumentObjectPy  *pcObject = (DocumentObjectPy*)value;
+        DocumentObjectPy  *pcObject = static_cast<DocumentObjectPy*>(value);
         setValue(pcObject->getDocumentObjectPtr());
     }
     else if (Py_None == value) {
@@ -1025,7 +1025,7 @@ PyObject *PropertyLinkSub::getPyObject()
 void PropertyLinkSub::setPyObject(PyObject *value)
 {
     if (PyObject_TypeCheck(value, &(DocumentObjectPy::Type))) {
-        DocumentObjectPy  *pcObject = (DocumentObjectPy*)value;
+        DocumentObjectPy  *pcObject = static_cast<DocumentObjectPy*>(value);
         setValue(pcObject->getDocumentObjectPtr());
     }
     else if (PyTuple_Check(value) || PyList_Check(value)) {
@@ -1035,7 +1035,7 @@ void PropertyLinkSub::setPyObject(PyObject *value)
         else if(seq.size()!=2)
             throw Base::ValueError("Expect input sequence of size 2");
         else if (PyObject_TypeCheck(seq[0].ptr(), &(DocumentObjectPy::Type))) {
-            DocumentObjectPy  *pcObj = (DocumentObjectPy*)seq[0].ptr();
+            DocumentObjectPy  *pcObj = static_cast<DocumentObjectPy*>(seq[0].ptr());
             static const char *errMsg = "type of second element in tuple must be str or sequence of str";
             PropertyString propString;
             if (seq[1].isString()) {
