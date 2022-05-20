@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>322</width>
-    <height>149</height>
+    <width>377</width>
+    <height>175</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -52,10 +52,13 @@
         </property>
        </spacer>
       </item>
-     <item row="0" column="2">
+      <item row="0" column="2">
        <widget class="Gui::PrefComboBox" name="delimiterComboBox">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter.  Default is tab, but also commonly used are commas (,) and semicolons (;). Select from the list or enter your own in the field. Must be a single character or the words &lt;span style=" font-style:italic;"&gt;tab&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;comma&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;semicolon&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Character to use as field delimiter. Default is tab, but also
+commonly used are commas (,) and semicolons (;). Select 
+from the list or enter your own in the field. Must be a single
+character or the words tab, comma, or semicolon.</string>
         </property>
         <property name="editable">
          <bool>true</bool>
@@ -102,13 +105,14 @@
       <item row="1" column="2">
        <widget class="Gui::PrefLineEdit" name="quoteCharLineEdit">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to delimit strings, typically is single quote (') or double quote (&amp;quot;). Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Character used to delimit strings, typically is single quote (') 
+or double quote (&quot;). Must be a single character.</string>
         </property>
         <property name="whatsThis">
          <string/>
         </property>
         <property name="text">
-         <string>"</string>
+         <string>&quot;</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ImportExportQuoteCharacter</cstring>
@@ -134,7 +138,9 @@
       <item row="2" column="2">
        <widget class="Gui::PrefLineEdit" name="escapeCharLineEdit">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>Escape character, typically the backslash (\), used to indicate
+special unprintable characters, e.g. \t = tab. Must be a single
+character.</string>
         </property>
         <property name="text">
          <string>\</string>
@@ -147,7 +153,7 @@
         </property>
        </widget>
       </item>
-      </layout>
+     </layout>
     </widget>
    </item>
    <item row="1" column="0">
