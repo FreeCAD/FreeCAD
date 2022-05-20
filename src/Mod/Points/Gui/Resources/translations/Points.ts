@@ -140,14 +140,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ignore lines starting with:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cluster by lines starting with:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>First line:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -160,7 +152,51 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Cluster by lines starting with:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore lines starting with:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Point format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number separator:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>,</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>\t</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>\w</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Points format:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>X,Y,Z</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>X,Y</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Next block:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -181,42 +217,6 @@
     </message>
     <message>
         <source>I (Gray value)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Number separator:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Next block:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>,</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>\t</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>\w</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>X,Y,Z</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>X,Y</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Points format:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

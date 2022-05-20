@@ -268,22 +268,6 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Mesh export settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Max mesh deviation:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Do not calculate vertex normals</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Write u,v coordinates</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Render</source>
         <translation type="unfinished"></translation>
     </message>
@@ -332,11 +316,7 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Part file name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Camera file name:</source>
+        <source>Default Project dir:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -344,7 +324,7 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Default Project dir:</source>
+        <source>Camera file name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -352,7 +332,27 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Part file name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>TempPart.inc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mesh export settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max mesh deviation:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do not calculate vertex normals</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Write u,v coordinates</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -240,6 +240,14 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>User-defined u/v directions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create placement</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Smoothing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -257,14 +265,6 @@
     </message>
     <message>
         <source>Curvature variation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User-defined u/v directions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Create placement</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -339,10 +339,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Create compound</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Smooth mesh</source>
         <translation type="unfinished"></translation>
     </message>
@@ -366,6 +362,10 @@
         <source>Create mesh from unused triangles</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Create compound</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,19 +378,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Components</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Region</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Select whole component</source>
+        <source>All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Pick triangle</source>
+        <source>Components</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -398,7 +394,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>All</source>
+        <source>Pick triangle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select whole component</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -410,15 +410,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Detect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Tolerance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Minimum number of faces</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Detect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

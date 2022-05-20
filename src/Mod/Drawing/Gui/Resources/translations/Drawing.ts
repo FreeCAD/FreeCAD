@@ -296,15 +296,59 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Projection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Third Angle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First Angle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View from:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>X +ve</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Y +ve</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Z +ve</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>X -ve</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Y -ve</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Z -ve</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Axis aligned right:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Secondary Views</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Right click for axonometric settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Primary view</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Secondary Views</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -340,35 +384,7 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Axis out and right</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Vertical tilt</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>X +ve</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Y +ve</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Z +ve</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>X -ve</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Y -ve</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Z -ve</source>
+        <source>View projection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -384,15 +400,15 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source> Scale</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>View projection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source> Axis aligned up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Axis out and right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Vertical tilt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -400,27 +416,11 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source> Scale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source> Trimetric</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Projection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Third Angle</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>First Angle</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>View from:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Axis aligned right:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
