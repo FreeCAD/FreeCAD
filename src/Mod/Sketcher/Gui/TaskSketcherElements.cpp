@@ -279,9 +279,8 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
     QString cmdKey = QShortcut::tr(ctrlKey);
 #endif
     QString zKey = QString::fromLatin1("Z");
-    ui->Explanation->setText(tr("<html><head/><body><p>&quot;%1&quot;: multiple selection</p>"
-                                "<p>&quot;%2&quot;: switch to next valid type</p></body></html>")
-                             .arg(cmdKey).arg(zKey));
+    ui->Explanation->setText(tr("\"%1\": multiple selection").arg(cmdKey));
+    ui->Explanation2->setText(tr("\"%1\": switch to next valid type").arg(zKey));
     ui->listWidgetElements->setSelectionMode(QAbstractItemView::ExtendedSelection);
     ui->listWidgetElements->setEditTriggers(QListWidget::NoEditTriggers);
     ui->listWidgetElements->setMouseTracking(true);
