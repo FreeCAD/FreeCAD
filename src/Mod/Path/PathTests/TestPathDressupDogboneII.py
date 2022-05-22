@@ -367,6 +367,30 @@ def generate_dogbone(kink, length):
     #return generate_bone(kink, length, normalizeAngle((kink.deflection() + PI) / 2))
     return generate_bone(kink, length, kink.normAngle())
 
+def calc_adaptive_length(kink, angle, nominal_length):
+    # If the kink poses a 180deg turn the adaptive length is undefined. Mathematically
+    # it's infinite but that is not practical.
+    # We define the adaptive length to be the nominal length for this case.
+    if PathGeom.isRoughly(abs(kink.deflection()), PI):
+        return nominal_length
+
+    # In order to determine the actual (estimated) corner we construct a right-angled
+    # triangle with one corner being the kink position, and the nominal_length which
+    # is the length of the leg perpendicular to the incoming or outgoing tangent.
+    # The corner is in the direction of the kink's normAngle and we can calculate
+    # its length.
+    a1 = kink.t1 + PI / 2 # global angle of perpendicular triangle leg
+    ab = kink.normAngle() # global angle of actual corner from kink position
+    a = normalizeAngle(a1 - ab)
+    d = nominal_length / math.cos(a) # distance of actual corner from kink position
+
+    # Now that we know where the actual corner is we need to determine the projection
+    # of that on the actual bone
+    al = normalizeAngle(ab - angle)
+    l = abs(d * math.cos(al))
+    print(f"a1={a1/(PI/4)}, ab={ab/(PI/4)}, a={a/(PI/4)}, d={d}  ->  al={al/(PI/4)},  l={l}")
+
+    return l
 
 def MNVR(gcode, begin=None):
     # 'turns out the replace() isn't really necessary
@@ -691,3 +715,18 @@ class TestDressupDogboneII(PathTestBase):
 
         bone = generate_dogbone(KINK('G1X1Y1/G1X2'), 1)
         self.assertBone(bone, "[G1{X: 0.62, Y: 1.9}, G1{X: 1.0, Y: 1.0}]", 2)
+
+    def test80(self):
+        """Verify adaptive length for horizontal bone"""
+
+        print()
+        self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X2'), 0, 1), 0)
+        self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X1Y1'), 0, 1), 1)
+        self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X2Y1'), 0, 1), 0.414214)
+        self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X0Y1'), 0, 1), 2.414211)
+        self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X0'), 0, 1), 1)
+        self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X0Y-1'), 0, 1), 2.414211)
+        self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X1Y-1'), 0, 1), 1)
+        self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X2Y-1'), 0, 1), 0.414214)
+
+        #self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1X1'), PI, 1), 1)
