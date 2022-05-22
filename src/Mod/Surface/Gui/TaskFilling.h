@@ -24,8 +24,11 @@
 #define SURFACEGUI_TASKFILLING_H
 
 #include <Gui/DocumentObserver.h>
+#include <Gui/SelectionFilter.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
+#include <Gui/Widgets.h>
+#include <Base/BoundBox.h>
 #include <Mod/Part/Gui/ViewProviderSpline.h>
 #include <Mod/Surface/App/FeatureFilling.h>
 
@@ -69,6 +72,7 @@ protected:
 private:
     Ui_TaskFilling* ui;
     ViewProviderFilling* vp;
+    Gui::ButtonGroup *buttonGroup;
 
 public:
     FillingPanel(ViewProviderFilling* vp, Surface::Filling* obj);
@@ -93,8 +97,8 @@ protected:
 
 private Q_SLOTS:
     void on_buttonInitFace_clicked();
-    void on_buttonEdgeAdd_clicked();
-    void on_buttonEdgeRemove_clicked();
+    void on_buttonEdgeAdd_toggled(bool checked);
+    void on_buttonEdgeRemove_toggled(bool checked);
     void on_lineInitFaceName_textChanged(const QString&);
     void on_listBoundary_itemDoubleClicked(QListWidgetItem*);
     void on_buttonAccept_clicked();
@@ -102,6 +106,9 @@ private Q_SLOTS:
     void onDeleteEdge();
     void onIndexesMoved();
     void clearSelection();
+
+private:
+    void exitSelectionMode();
 };
 
 class TaskFilling : public Gui::TaskView::TaskDialog

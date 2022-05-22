@@ -25,6 +25,9 @@
 
 #include <Gui/DocumentObserver.h>
 #include <Gui/SelectionFilter.h>
+#include <Gui/Widgets.h>
+#include <Base/BoundBox.h>
+#include <Mod/Part/Gui/ViewProviderSpline.h>
 #include <Mod/Surface/App/FeatureFilling.h>
 
 
@@ -52,6 +55,7 @@ protected:
 private:
     Ui_TaskFillingVertex* ui;
     ViewProviderFilling* vp;
+    Gui::ButtonGroup *buttonGroup;
 
 public:
     FillingVertexPanel(ViewProviderFilling* vp, Surface::Filling* obj);
@@ -73,10 +77,13 @@ protected:
     void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
 
 private Q_SLOTS:
-    void on_buttonVertexAdd_clicked();
-    void on_buttonVertexRemove_clicked();
-    void onDeleteVertex();
+    void on_buttonVertexAdd_toggled(bool checked);
+    void on_buttonVertexRemove_toggled(bool checked);
+    void onDeleteVertex(void);
     void clearSelection();
+
+private:
+    void exitSelectionMode();
 };
 
 } //namespace SurfaceGui
