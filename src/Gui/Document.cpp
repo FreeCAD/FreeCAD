@@ -667,21 +667,22 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
                 FC_LOG(Obj.getFullName() << " has no view provider specified");
                 return;
             }
-            Base::BaseClass* base = static_cast<Base::BaseClass*>(
-                    Base::Type::createInstanceByName(cName.c_str(),true));
-            pcProvider = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(base);
+            Base::Type type = Base::Type::getTypeIfDerivedFrom(cName.c_str(), ViewProviderDocumentObject::getClassTypeId(), true);
+            pcProvider = static_cast<ViewProviderDocumentObject*>(type.createInstance());
+            // createInstance could return a null pointer
             if (!pcProvider) {
                 // type not derived from ViewProviderDocumentObject!!!
                 FC_ERR("Invalid view provider type '" << cName << "' for " << Obj.getFullName());
-                delete base;
                 return;
-            } else if (cName!=Obj.getViewProviderName() && !pcProvider->allowOverride(Obj)) {
+            }
+            else if (cName!=Obj.getViewProviderName() && !pcProvider->allowOverride(Obj)) {
                 FC_WARN("View provider type '" << cName << "' does not support " << Obj.getFullName());
-                delete base;
                 pcProvider = nullptr;
                 cName = Obj.getViewProviderName();
-            } else
+            }
+             else {
                 break;
+            }
         }
 
         setModified(true);
