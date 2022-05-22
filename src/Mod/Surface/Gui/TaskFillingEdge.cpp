@@ -124,6 +124,12 @@ FillingEdgePanel::FillingEdgePanel(ViewProviderFilling* vp, Surface::Filling* ob
     checkCommand = true;
     setEditedObject(obj);
 
+    // Set up button group
+    buttonGroup = new Gui::ButtonGroup(this);
+    buttonGroup->setExclusive(true);
+    buttonGroup->addButton(ui->buttonUnboundEdgeAdd, (int)SelectionMode::AppendEdge);
+    buttonGroup->addButton(ui->buttonUnboundEdgeRemove, (int)SelectionMode::RemoveEdge);
+
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
     action->setShortcut(QString::fromLatin1("Del"));
@@ -286,18 +292,28 @@ bool FillingEdgePanel::reject()
     return true;
 }
 
-void FillingEdgePanel::on_buttonUnboundEdgeAdd_clicked()
+void FillingEdgePanel::on_buttonUnboundEdgeAdd_toggled(bool checked)
 {
-    // 'selectionMode' is passed by reference and changed when the filter is deleted
-    Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
-    selectionMode = AppendEdge;
+    if (checked) {
+        selectionMode = AppendEdge;
+        // 'selectionMode' is passed by reference and changed when the filter is deleted
+        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
+    }
+    else if (selectionMode == AppendEdge) {
+        exitSelectionMode();
+    }
 }
 
-void FillingEdgePanel::on_buttonUnboundEdgeRemove_clicked()
+void FillingEdgePanel::on_buttonUnboundEdgeRemove_toggled(bool checked)
 {
-    // 'selectionMode' is passed by reference and changed when the filter is deleted
-    Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
-    selectionMode = RemoveEdge;
+    if (checked) {
+        selectionMode = RemoveEdge;
+        // 'selectionMode' is passed by reference and changed when the filter is deleted
+        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
+    }
+    else if (selectionMode == RemoveEdge) {
+        exitSelectionMode();
+    }
 }
 
 void FillingEdgePanel::on_listUnbound_itemDoubleClicked(QListWidgetItem* item)
@@ -588,6 +604,13 @@ void FillingEdgePanel::modifyBoundary(bool on)
     ui->buttonUnboundAccept->setEnabled(on);
     ui->buttonUnboundIgnore->setEnabled(on);
 }
+}
+
+void FillingEdgePanel::exitSelectionMode()
+{
+    // 'selectionMode' is passed by reference to the filter and changed when the filter is deleted
+    Gui::Selection().clearSelection();
+    Gui::Selection().rmvSelectionGate();
 }
 
 #include "moc_TaskFillingEdge.cpp"

@@ -265,6 +265,12 @@ FillingPanel::FillingPanel(ViewProviderFilling* vp, Surface::Filling* obj)
     checkCommand = true;
     setEditedObject(obj);
 
+    // Set up button group
+    buttonGroup = new Gui::ButtonGroup(this);
+    buttonGroup->setExclusive(true);
+    buttonGroup->addButton(ui->buttonEdgeAdd, (int)SelectionMode::AppendEdge);
+    buttonGroup->addButton(ui->buttonEdgeRemove, (int)SelectionMode::RemoveEdge);
+
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
     action->setShortcut(QString::fromLatin1("Del"));
@@ -382,7 +388,7 @@ void FillingPanel::open()
 
     // if the surface is not yet created then automatically start "AppendEdge" mode
     if (editedObject->Shape.getShape().isNull()) {
-        on_buttonEdgeAdd_clicked();
+        ui->buttonEdgeAdd->setChecked(true);
     }
 }
 
@@ -492,18 +498,28 @@ void FillingPanel::on_buttonInitFace_clicked()
     selectionMode = InitFace;
 }
 
-void FillingPanel::on_buttonEdgeAdd_clicked()
+void FillingPanel::on_buttonEdgeAdd_toggled(bool checked)
 {
-    // 'selectionMode' is passed by reference and changed when the filter is deleted
-    Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
-    selectionMode = AppendEdge;
+    if (checked) {
+        selectionMode = AppendEdge;
+        // 'selectionMode' is passed by reference and changed when the filter is deleted
+        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
+    }
+    else if (selectionMode == AppendEdge) {
+        exitSelectionMode();
+    }
 }
 
-void FillingPanel::on_buttonEdgeRemove_clicked()
+void FillingPanel::on_buttonEdgeRemove_toggled(bool checked)
 {
-    // 'selectionMode' is passed by reference and changed when the filter is deleted
-    Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
-    selectionMode = RemoveEdge;
+    if (checked) {
+        selectionMode = RemoveEdge;
+        // 'selectionMode' is passed by reference and changed when the filter is deleted
+        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject));
+    }
+    else if (selectionMode == RemoveEdge) {
+        exitSelectionMode();
+    }
 }
 
 void FillingPanel::on_listBoundary_itemDoubleClicked(QListWidgetItem* item)
@@ -850,6 +866,13 @@ void FillingPanel::modifyBoundary(bool on)
     ui->comboBoxCont->setEnabled(on);
     ui->buttonAccept->setEnabled(on);
     ui->buttonIgnore->setEnabled(on);
+}
+
+void FillingPanel::exitSelectionMode()
+{
+    // 'selectionMode' is passed by reference to the filter and changed when the filter is deleted
+    Gui::Selection().clearSelection();
+    Gui::Selection().rmvSelectionGate();
 }
 
 // ----------------------------------------------------------------------------

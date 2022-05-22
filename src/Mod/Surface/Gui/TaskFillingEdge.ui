@@ -46,6 +46,9 @@ that is, the surface will be forced to pass through these edges.</string>
           <property name="text">
            <string>Add Edge</string>
           </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
           <property name="checked">
            <bool>false</bool>
           </property>
@@ -61,6 +64,9 @@ that is, the surface will be forced to pass through these edges.</string>
           </property>
           <property name="text">
            <string>Remove Edge</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
           </property>
          </widget>
         </item>

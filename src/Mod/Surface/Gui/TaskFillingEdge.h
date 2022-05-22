@@ -26,6 +26,9 @@
 
 #include <Gui/DocumentObserver.h>
 #include <Gui/SelectionFilter.h>
+#include <Gui/Widgets.h>
+#include <Base/BoundBox.h>
+#include <Mod/Part/Gui/ViewProviderSpline.h>
 #include <Mod/Surface/App/FeatureFilling.h>
 
 
@@ -53,6 +56,7 @@ protected:
 private:
     Ui_TaskFillingEdge* ui;
     ViewProviderFilling* vp;
+    Gui::ButtonGroup *buttonGroup;
 
 public:
     FillingEdgePanel(ViewProviderFilling* vp, Surface::Filling* obj);
@@ -76,13 +80,16 @@ protected:
     void modifyBoundary(bool);
 
 private Q_SLOTS:
-    void on_buttonUnboundEdgeAdd_clicked();
-    void on_buttonUnboundEdgeRemove_clicked();
+    void on_buttonUnboundEdgeAdd_toggled(bool checked);
+    void on_buttonUnboundEdgeRemove_toggled(bool checked);
     void on_listUnbound_itemDoubleClicked(QListWidgetItem*);
     void on_buttonUnboundAccept_clicked();
     void on_buttonUnboundIgnore_clicked();
     void onDeleteUnboundEdge();
     void clearSelection();
+
+private:
+    void exitSelectionMode();
 };
 
 } //namespace SurfaceGui

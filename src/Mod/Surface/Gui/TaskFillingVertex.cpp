@@ -116,6 +116,12 @@ FillingVertexPanel::FillingVertexPanel(ViewProviderFilling* vp, Surface::Filling
     checkCommand = true;
     setEditedObject(obj);
 
+    // Set up button group
+    buttonGroup = new Gui::ButtonGroup(this);
+    buttonGroup->setExclusive(true);
+    buttonGroup->addButton(ui->buttonVertexAdd, (int)SelectionMode::AppendVertex);
+    buttonGroup->addButton(ui->buttonVertexRemove, (int)SelectionMode::RemoveVertex);
+
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
     action->setShortcut(QString::fromLatin1("Del"));
@@ -223,18 +229,28 @@ void FillingVertexPanel::slotDeletedObject(const Gui::ViewProviderDocumentObject
     }
 }
 
-void FillingVertexPanel::on_buttonVertexAdd_clicked()
+void FillingVertexPanel::on_buttonVertexAdd_toggled(bool checked)
 {
-    // 'selectionMode' is passed by reference and changed when the filter is deleted
-    Gui::Selection().addSelectionGate(new VertexSelection(selectionMode, editedObject));
-    selectionMode = AppendVertex;
+    if (checked) {
+        selectionMode = AppendVertex;
+        // 'selectionMode' is passed by reference and changed when the filter is deleted
+        Gui::Selection().addSelectionGate(new VertexSelection(selectionMode, editedObject));
+    }
+    else if (selectionMode == AppendVertex) {
+        exitSelectionMode();
+    }
 }
 
-void FillingVertexPanel::on_buttonVertexRemove_clicked()
+void FillingVertexPanel::on_buttonVertexRemove_toggled(bool checked)
 {
-    // 'selectionMode' is passed by reference and changed when the filter is deleted
-    Gui::Selection().addSelectionGate(new VertexSelection(selectionMode, editedObject));
-    selectionMode = RemoveVertex;
+    if (checked) {
+        selectionMode = RemoveVertex;
+        // 'selectionMode' is passed by reference and changed when the filter is deleted
+        Gui::Selection().addSelectionGate(new VertexSelection(selectionMode, editedObject));
+    }
+    else if (selectionMode == RemoveVertex) {
+        exitSelectionMode();
+    }
 }
 
 void FillingVertexPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -341,6 +357,13 @@ void FillingVertexPanel::onDeleteVertex()
         this->vp->highlightReferences(ViewProviderFilling::Vertex,
             editedObject->Points.getSubListValues(), true);
     }
+}
+
+void FillingVertexPanel::exitSelectionMode()
+{
+    // 'selectionMode' is passed by reference to the filter and changed when the filter is deleted
+    Gui::Selection().clearSelection();
+    Gui::Selection().rmvSelectionGate();
 }
 
 }

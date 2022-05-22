@@ -196,6 +196,12 @@ GeomFillSurface::GeomFillSurface(ViewProviderGeomFillSurface* vp, Surface::GeomF
     checkCommand = true;
     setEditedObject(obj);
 
+    // Set up button group
+    buttonGroup = new Gui::ButtonGroup(this);
+    buttonGroup->setExclusive(true);
+    buttonGroup->addButton(ui->buttonEdgeAdd, (int)SelectionMode::Append);
+    buttonGroup->addButton(ui->buttonEdgeRemove, (int)SelectionMode::Remove);
+
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
     remove->setShortcut(QString::fromLatin1("Del"));
@@ -400,16 +406,26 @@ void GeomFillSurface::changeFillType(GeomFill_FillingStyle fillType)
     }
 }
 
-void GeomFillSurface::on_buttonEdgeAdd_clicked()
+void GeomFillSurface::on_buttonEdgeAdd_toggled(bool checked)
 {
-    selectionMode = Append;
-    Gui::Selection().addSelectionGate(new EdgeSelection(true, editedObject));
+    if (checked) {
+        selectionMode = Append;
+        Gui::Selection().addSelectionGate(new EdgeSelection(true, editedObject));
+    }
+    else if (selectionMode == Append) {
+        exitSelectionMode();
+    }
 }
 
-void GeomFillSurface::on_buttonEdgeRemove_clicked()
+void GeomFillSurface::on_buttonEdgeRemove_toggled(bool checked)
 {
-    selectionMode = Remove;
-    Gui::Selection().addSelectionGate(new EdgeSelection(false, editedObject));
+    if (checked) {
+        selectionMode = Remove;
+        Gui::Selection().addSelectionGate(new EdgeSelection(false, editedObject));
+    }
+    else if (selectionMode == Remove) {
+        exitSelectionMode();
+    }
 }
 
 void GeomFillSurface::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -579,6 +595,13 @@ void GeomFillSurface::onFlipOrientation()
     if (item) {
         flipOrientation(item);
     }
+}
+
+void GeomFillSurface::exitSelectionMode()
+{
+    selectionMode = None;
+    Gui::Selection().clearSelection();
+    Gui::Selection().rmvSelectionGate();
 }
 
 // ----------------------------------------------------------------------------
