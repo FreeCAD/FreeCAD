@@ -84,7 +84,8 @@ Type::~Type()
 
 void *Type::createInstance()
 {
-  return (typedata[index]->instMethod)();
+  instantiationMethod method = typedata[index]->instMethod;
+  return method ? (*method)() : nullptr;
 }
 
 
