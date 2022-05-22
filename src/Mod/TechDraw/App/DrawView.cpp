@@ -388,7 +388,6 @@ bool DrawView::checkFit(void) const
 }
 
 //!check if View is too big for page
-//should check if unscaled rect is too big for page
 bool DrawView::checkFit(TechDraw::DrawPage* p) const
 {
     bool result = true;
@@ -396,12 +395,12 @@ bool DrawView::checkFit(TechDraw::DrawPage* p) const
 
     double width = 0.0;
     double height = 0.0;
-    QRectF viewBox = getRect();    //rect is scaled
+    QRectF viewBox = getRect();         //rect is scaled
     if (!viewBox.isValid()) {
         result = true;
     } else {
-        width = viewBox.width() / getScale();        //unscaled rect w x h
-        height = viewBox.height() / getScale(); 
+        width = viewBox.width();        //scaled rect w x h
+        height = viewBox.height();
         width *= fudge;
         height *= fudge;
         if ( (width > p->getPageWidth()) ||
