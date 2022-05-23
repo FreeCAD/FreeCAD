@@ -36,7 +36,7 @@ struct CellAddress;
 AppExport CellAddress stringToAddress(const char *strAddress, bool silent=false);
 AppExport int decodeColumn(const std::string &colstr, bool silent=false);
 AppExport int decodeRow(const std::string &rowstr, bool silent=false);
-AppExport int validColumn(const std::string &colstr);
+AppExport bool validColumn(const std::string &colstr);
 AppExport int validRow(const std::string &rowstr);
 
 struct AppExport CellAddress {
