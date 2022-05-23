@@ -143,7 +143,7 @@ bool PropertySheet::isValidAlias(const std::string &candidate)
             const boost::sub_match<const char *> rowstr = cm[2];
 
             // A valid cell address?
-            if (App::validRow(rowstr.str()) >= 0 && App::validColumn(colstr.str()) >= 0)
+            if (App::validRow(rowstr.str()) >= 0 && App::validColumn(colstr.str()))
                 return false;
         }
         return true;
