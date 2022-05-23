@@ -96,7 +96,11 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
     else:
         if baseobj:
             if baseobj.getLinkedObject().isDerivedFrom("Part::Part2DObject"):
+                # create default component
                 if baseobj.Shape.Wires:
+                    tp = "Frame"
+                    if len(baseobj.Shape.Wires) == 1:
+                        tp = "Solid panel"
                     i = 0
                     ws = ''
                     for w in baseobj.Shape.Wires:
@@ -104,7 +108,7 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=None):
                             if ws: ws += ","
                             ws += "Wire" + str(i)
                             i += 1
-                    obj.WindowParts = ["Default","Frame",ws,"1","0"]
+                    obj.WindowParts = ["Default",tp,ws,"1","0"]
             else:
                 # bind properties from base obj if existing
                 for prop in ["Height","Width","Subvolume","Tag","Description","Material"]:

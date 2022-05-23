@@ -57,39 +57,7 @@
 
 using namespace MeshCore;
 
-char *upper(char * string)
-{
-    int i;
-    int l;
-
-    if (string != nullptr) {
-        l = std::strlen(string);
-        for (i=0; i<l; i++)
-            string[i] = toupper(string[i]);
-    }
-
-    return string;
-}
-
-char *ltrim (char *psz)
-{
-    int i, sl;
-
-    if (psz) {
-        for (i = 0; (psz[i] == 0x20) || (psz[i] == 0x09); i++);
-        sl = std::strlen (psz + i);
-        memmove (psz, psz + i, sl);
-        psz[sl] = 0;
-    }
-    return psz;
-}
-
-std::string& upper(std::string& str)
-{
-    for (std::string::iterator it = str.begin(); it != str.end(); ++it)
-        *it = toupper(*it);
-    return str;
-}
+namespace MeshCore {
 
 std::string& ltrim(std::string& str)
 {
@@ -120,8 +88,6 @@ int numDigits(int number)
 struct NODE {float x, y, z;};
 struct TRIA {int iV[3];};
 struct QUAD {int iV[4];};
-
-namespace MeshCore {
 
 struct Color_Less
 {
@@ -155,6 +121,35 @@ std::vector<std::string> MeshInput::supportedMeshFormats()
     fmt.emplace_back("off");
     fmt.emplace_back("smf");
     return fmt;
+}
+
+MeshIO::Format MeshInput::getFormat(const char* FileName)
+{
+     Base::FileInfo fi(FileName);
+     if (fi.hasExtension("bms")) {
+         return MeshIO::Format::BMS;
+     }
+     else if (fi.hasExtension("ply")) {
+         return MeshIO::Format::PLY;
+     }
+     else if (fi.hasExtension("stl")) {
+         return MeshIO::Format::STL;
+     }
+     else if (fi.hasExtension("ast")) {
+         return MeshIO::Format::ASTL;
+     }
+     else if (fi.hasExtension("obj")) {
+         return MeshIO::Format::OBJ;
+     }
+     else if (fi.hasExtension("off")) {
+         return MeshIO::Format::OFF;
+     }
+     else if (fi.hasExtension("smf")) {
+         return MeshIO::Format::SMF;
+     }
+     else {
+         throw Base::FileException("File extension not supported",FileName);
+     }
 }
 
 bool MeshInput::LoadAny(const char* FileName)
@@ -219,6 +214,8 @@ bool  MeshInput::LoadFormat(std::istream &str, MeshIO::Format fmt)
         return LoadAsciiSTL(str);
     case MeshIO::BSTL:
         return LoadBinarySTL(str);
+    case MeshIO::STL:
+        return LoadSTL(str);
     case MeshIO::OBJ:
         return LoadOBJ(str);
     case MeshIO::SMF:
@@ -262,7 +259,7 @@ bool MeshInput::LoadSTL (std::istream &rstrIn)
     if (!rstrIn.read(szBuf, ulBytes))
         return (ulCt==0);
     szBuf[ulBytes] = 0;
-    upper(szBuf);
+    boost::algorithm::to_upper(szBuf);
 
     try {
         if ((strstr(szBuf, "SOLID") == nullptr)  && (strstr(szBuf, "FACET") == nullptr)    && (strstr(szBuf, "NORMAL") == nullptr) &&
@@ -300,7 +297,7 @@ bool MeshInput::LoadSTL (std::istream &rstrIn)
 /** Loads an OBJ file. */
 bool MeshInput::LoadOBJ (std::istream &rstrIn)
 {
-    boost::regex rx_m("^mtllib\\s+([\\x21-\\x7E]+)\\s*$");
+    boost::regex rx_m("^mtllib\\s+(.+)\\s*$");
     boost::regex rx_u("^usemtl\\s+([\\x21-\\x7E]+)\\s*$");
     boost::regex rx_g("^g\\s+([\\x21-\\x7E]+)\\s*$");
     boost::regex rx_p("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
@@ -1343,8 +1340,7 @@ bool MeshInput::LoadAsciiSTL (std::istream &rstrIn)
 
     // count facets
     while (std::getline(rstrIn, line)) {
-        for (std::string::iterator it = line.begin(); it != line.end(); ++it)
-            *it = toupper(*it);
+        boost::algorithm::to_upper(line);
         if (line.find("ENDFACET") != std::string::npos)
             ulFacetCt++;
         // prevent from reading EOF (as I don't know how to reread the file then)
@@ -1366,8 +1362,7 @@ bool MeshInput::LoadAsciiSTL (std::istream &rstrIn)
 
     ulVertexCt = 0;
     while (std::getline(rstrIn, line)) {
-        for (std::string::iterator it = line.begin(); it != line.end(); ++it)
-            *it = toupper(*it);
+        boost::algorithm::to_upper(line);
         if (boost::regex_match(line.c_str(), what, rx_f)) {
             fX = (float)std::atof(what[1].first);
             fY = (float)std::atof(what[4].first);
@@ -1527,8 +1522,7 @@ bool MeshInput::LoadInventor (std::istream &rstrIn)
     bool points = false;
     bool facets = false;
     while (std::getline(rstrIn, line) && !facets) {
-        for (std::string::iterator it = line.begin(); it != line.end(); ++it)
-            *it = toupper(*it);
+        boost::algorithm::to_upper(line);
 
         // read the normals if they are defined
         if (!normals && line.find("NORMAL {") != std::string::npos) {
@@ -1540,8 +1534,7 @@ bool MeshInput::LoadInventor (std::istream &rstrIn)
             // This is a special case to support also file formats directly written by
             // Inventor 2.1 classes.
             std::getline(rstrIn, line);
-            for (std::string::iterator it = line.begin(); it != line.end(); ++it)
-                *it = toupper(*it);
+            boost::algorithm::to_upper(line);
             std::string::size_type pos = line.find("VECTOR [");
             if (pos != std::string::npos)
                 line = line.substr(pos+8); // 8 = length of 'VECTOR ['
@@ -1567,8 +1560,7 @@ bool MeshInput::LoadInventor (std::istream &rstrIn)
             // This is a special case to support also file formats directly written by
             // Inventor 2.1 classes.
             std::getline(rstrIn, line);
-            for (std::string::iterator it = line.begin(); it != line.end(); ++it)
-                *it = toupper(*it);
+            boost::algorithm::to_upper(line);
             std::string::size_type pos = line.find("POINT [");
             if (pos != std::string::npos)
                 line = line.substr(pos+7); // 7 = length of 'POINT ['
@@ -1595,8 +1587,7 @@ bool MeshInput::LoadInventor (std::istream &rstrIn)
             // Furthermore we must check whether more than one triple is given per line, which
             // is handled in the while-loop.
             std::getline(rstrIn, line);
-            for (std::string::iterator it = line.begin(); it != line.end(); ++it)
-                *it = toupper(*it);
+            boost::algorithm::to_upper(line);
             std::string::size_type pos = line.find("COORDINDEX [");
             if (pos != std::string::npos)
                 line = line.substr(pos+12); // 12 = length of 'COORDINDEX ['
@@ -1660,7 +1651,7 @@ bool MeshInput::LoadNastran (std::istream &rstrIn)
     int badElementCounter = 0;
 
     while (std::getline(rstrIn, line)) {
-        upper(ltrim(line));
+        boost::algorithm::to_upper(ltrim(line));
         if (line.empty()) {
             // Skip all the following tests
         }

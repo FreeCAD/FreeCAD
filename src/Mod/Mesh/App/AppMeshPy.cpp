@@ -244,7 +244,7 @@ private:
 
         // collect all object types that can be exported as mesh
         std::vector<App::DocumentObject*> objectList;
-        for (auto it : list) {
+        for (const auto& it : list) {
             PyObject *item = it.ptr();
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
                 auto obj( static_cast<App::DocumentObjectPy *>(item)->getDocumentObjectPtr() );

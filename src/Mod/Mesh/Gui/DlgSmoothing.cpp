@@ -107,7 +107,7 @@ bool DlgSmoothing::smoothSelection() const
 
 void DlgSmoothing::on_checkBoxSelection_toggled(bool on)
 {
-    /*emit*/ toggledSelection(on);
+    Q_EMIT toggledSelection(on);
 }
 
 // ------------------------------------------------

@@ -44,6 +44,7 @@ namespace MeshIO {
         BMS,
         ASTL,
         BSTL,
+        STL,
         OBJ,
         OFF,
         IDTF,
@@ -74,7 +75,7 @@ struct MeshExport Material
 {
     Material() : binding(MeshIO::OVERALL) {}
     MeshIO::Binding binding;
-    std::string library;
+    mutable std::string library;
     std::vector<App::Color> diffuseColor;
 };
 
@@ -134,6 +135,7 @@ public:
     bool LoadCadmouldFE (std::ifstream &rstrIn);
 
     static std::vector<std::string> supportedMeshFormats();
+    static MeshIO::Format getFormat(const char* FileName);
 
 protected:
     MeshKernel &_rclMesh;   /**< reference to mesh data structure */

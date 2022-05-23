@@ -174,13 +174,9 @@
 #include <gp_Torus.hxx>
 #include <gp_Vec.hxx>
 #include <gp_Vec2d.hxx>
-#include <MMgt_TShared.hxx>
 #include <Precision.hxx>
-#include <Quantity_Factor.hxx>
-#include <Quantity_Length.hxx>
 #include <Quantity_NameOfColor.hxx>
 #include <Quantity_PhysicalQuantity.hxx>
-#include <Quantity_PlaneAngle.hxx>
 #include <Quantity_TypeOfColor.hxx>
 #include <Standard_Boolean.hxx>
 #include <Standard_CString.hxx>

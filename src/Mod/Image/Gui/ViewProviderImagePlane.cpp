@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
- #include <sstream>
+# include <sstream>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoFaceSet.h>
 # include <Inventor/nodes/SoMaterial.h>
