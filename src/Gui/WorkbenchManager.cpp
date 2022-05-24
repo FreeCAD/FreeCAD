@@ -71,7 +71,7 @@ Workbench* WorkbenchManager::createWorkbench (const std::string& name, const std
 
     if (!wb) {
         // try to create an instance now
-        Base::Type type = Base::Type::getTypeIfDerivedFrom(className.c_str(), Workbench::getClassTypeId(), true);
+        Base::Type type = Base::Type::getTypeIfDerivedFrom(className.c_str(), Workbench::getClassTypeId(), false);
         wb = static_cast<Workbench*>(type.createInstance());
         // createInstance could return a null pointer
         if (!wb) {
