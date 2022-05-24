@@ -119,7 +119,6 @@
 #include <Bnd_Box.hxx>
 #include <BRep_Tool.hxx>
 #include <BRepAdaptor_Curve.hxx>
-#include <BRepAdaptor_HSurface.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
@@ -143,6 +142,7 @@
 #include <GProp_GProps.hxx>
 #include <Precision.hxx>
 #include <Standard_Real.hxx>
+#include <Standard_Version.hxx>
 #include <ShapeAnalysis_ShapeTolerance.hxx>
 #include <TColgp_Array2OfPnt.hxx>
 #include <TopoDS.hxx>
@@ -151,6 +151,9 @@
 #include <TopoDS_Solid.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Vertex.hxx>
+#if OCC_VERSION_HEX < 0x070600
+#include <BRepAdaptor_HSurface.hxx>
+#endif
 
 // VTK
 #include <vtkFieldData.h>

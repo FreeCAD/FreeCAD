@@ -77,6 +77,18 @@ class WorkbenchTestCase(unittest.TestCase):
         wbs=FreeCADGui.listWorkbenches()
         self.failUnless(not "UnitWorkbench" in wbs, "Test on removing workbench handler failed")
 
+    def testInvalidType(self):
+        class MyExtWorkbench(FreeCADGui.Workbench):
+            def Initialize(self):
+                pass
+            def GetClassName(self):
+                return "App::Extension"
+
+        FreeCADGui.addWorkbench(MyExtWorkbench())
+        with self.assertRaises(TypeError):
+            FreeCADGui.activateWorkbench("MyExtWorkbench")
+        FreeCADGui.removeWorkbench("MyExtWorkbench")
+
     def tearDown(self):
         FreeCADGui.activateWorkbench(self.Active.name())
         FreeCAD.Console.PrintLog(self.Active.name())
@@ -93,3 +105,14 @@ class CommandTestCase(unittest.TestCase):
         name = FreeCADGui.Command.createCustomCommand(macroName)
         cmd = FreeCADGui.Command.get(name)
         cmd.run()
+
+class TestNavigationStyle(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("CreateTest")
+
+    def testInvalidStyle(self):
+        FreeCADGui.getDocument(self.Doc).ActiveView.setNavigationType("App::Extension")
+        self.assertNotEqual(FreeCADGui.getDocument(self.Doc).ActiveView.getNavigationType(), "App::Extension")
+
+    def tearDown(self):
+        FreeCAD.closeDocument("CreateTest")

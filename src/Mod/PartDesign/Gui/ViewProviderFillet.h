@@ -38,7 +38,7 @@ public:
     /// constructor
     ViewProviderFillet()
         { sPixmap = "PartDesign_Fillet.svg";
-          menuName = tr("Fillet parrameters"); }
+          menuName = tr("Fillet parameters"); }
 
     /// return "Fillet"
     virtual const std::string & featureName() const;

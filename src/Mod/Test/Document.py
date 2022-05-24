@@ -222,6 +222,13 @@ class DocumentBasicCases(unittest.TestCase):
     with self.assertRaises(TypeError):
       self.Doc.findObjects(Type="App::DocumentObjectExtension")
 
+    e = FreeCAD.Base.TypeId.fromName("App::LinkExtensionPython")
+    self.assertIsNone(e.createInstance())
+
+    if FreeCAD.GuiUp:
+      obj = self.Doc.addObject("App::DocumentObject", viewType="App::Extension")
+      self.assertIsNone(obj.ViewObject)
+
   def testMem(self):
     self.Doc.MemSize
 
