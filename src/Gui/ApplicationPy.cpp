@@ -1007,7 +1007,7 @@ PyObject* Application::sActivateWorkbenchHandler(PyObject * /*self*/, PyObject *
     catch (const Base::Exception& e) {
         std::stringstream err;
         err << psKey << ": " << e.what();
-        PyErr_SetString(Base::PyExc_FC_GeneralError, err.str().c_str());
+        PyErr_SetString(e.getPyExceptionType(), err.str().c_str());
         return nullptr;
     }
     catch (const XERCES_CPP_NAMESPACE_QUALIFIER TranscodingException& e) {
