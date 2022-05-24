@@ -529,6 +529,11 @@ void Body::onDocumentRestored()
             static_cast<PartDesign::Feature*>(obj)->_Body.setValue(this);
     }
     _GroupTouched.setStatus(App::Property::Output,true);
+
+    // trigger ViewProviderBody::copyColorsfromTip
+    if (Tip.getValue())
+        Tip.touch();
+
     DocumentObject::onDocumentRestored();
 }
 

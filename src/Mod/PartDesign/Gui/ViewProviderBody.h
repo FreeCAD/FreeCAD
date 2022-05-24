@@ -94,6 +94,10 @@ protected:
     void unifyVisualProperty(const App::Property* prop);
     /// Set Feature viewprovider into visual body mode
     void setVisualBodyMode(bool bodymode);
+
+private:
+    void copyColorsfromTip(App::DocumentObject* tip);
+
 private:
     static const char* BodyModeEnum[];
 
