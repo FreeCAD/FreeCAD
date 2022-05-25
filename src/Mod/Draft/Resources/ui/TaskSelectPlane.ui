@@ -171,7 +171,7 @@ will be moved to the center of the view</string>
         <string>The spacing between the smaller grid lines</string>
        </property>
        <property name="unit" stdset="0">
-        <string notr="true"/>
+        <string notr="true">mm</string>
        </property>
       </widget>
      </item>
