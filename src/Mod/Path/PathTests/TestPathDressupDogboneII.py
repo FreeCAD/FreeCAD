@@ -23,9 +23,13 @@
 import FreeCAD
 import Path
 import PathScripts.PathGeom as PathGeom
+import PathScripts.PathLog as PathLog
 import math
+import time
 
 from PathTests.PathTestUtils import PathTestBase
+
+DebugMode = True
 
 CmdMoveStraight = PathGeom.CmdMoveStraight + PathGeom.CmdMoveRapid
 
@@ -203,12 +207,21 @@ A positive kink angle represents a move to the left, and a negative angle repres
         self.t1 = m1.anglesOfTangents()[0]
 
     def deflection(self):
+        '''deflection() ... returns the tangential difference of the two edges at their intersection'''
         return normalizeAngle(self.t1 - self.t0)
 
     def normAngle(self):
-        return normalizeAngle((self.t1 + self.t0 + PI) / 2)
+        '''normAngle() ... returns the angle opposite between the two tangents'''
+
+        # The normal angle is perpendicular to the "average tangent" of the kink. The question
+        # is into which direction to turn. One lies in the center between the two edges and the
+        # other is opposite to that. As it turns out, the magnitude of the tangents tell it all.
+        if self.t0 > self.t1:
+            return normalizeAngle((self.t0 + self.t1 + PI) / 2)
+        return normalizeAngle((self.t0 + self.t1 - PI) / 2)
 
     def position(self):
+        '''position() ... position of the edge's intersection'''
         return self.m0.positionEnd()
 
     def x(self):
@@ -216,6 +229,9 @@ A positive kink angle represents a move to the left, and a negative angle repres
 
     def y(self):
         return self.position().y
+
+    def __repr__(self):
+        return f"({self.x():.4f}, {self.y():.4f})[t0={180*self.t0/PI:.2f}, t1={180*self.t1/PI:.2f}, deflection={180*self.deflection()/PI:.2f}, normAngle={180*self.normAngle()/PI:.2f}]"
 
 class Maneuver (object):
     '''A series of instructions and moves'''
@@ -298,12 +314,34 @@ A positive threshold angle returns all kinks on the right side, and a negative a
 class Bone (object):
     '''A Bone holds all the information of a bone and the kink it is attached to'''
 
-    def __init__(self, kink, instr=None):
+    def __init__(self, kink, angle, instr=None):
         self.kink = kink
+        self.angle = angle
         self.instr = [] if instr is None else instr
 
     def addInstruction(self, instr):
         self.instr.append(instr)
+
+def instruction_to_command(instr):
+    return Path.Command(instr.cmd, instr.param)
+
+def kink_to_path(kink, g0=False):
+    return Path.Path([instruction_to_command(instr) for instr in [kink.m0, kink.m1]])
+
+def bone_to_path(bone, g0=False):
+    kink = bone.kink
+    cmds = []
+    if g0 and not PathGeom.pointsCoincide(kink.m0.positionBegin(), FreeCAD.Vector(0, 0, 0)):
+        pos = kink.m0.positionBegin()
+        param = {}
+        if not PathGeom.isRoughly(pos.x, 0):
+            param['X'] = pos.x
+        if not PathGeom.isRoughly(pos.y, 0):
+            param['Y'] = pos.y
+        cmds.append(Path.Command('G0', param))
+    for instr in [kink.m0, bone.instr[0], bone.instr[1], kink.m1]:
+        cmds.append(instruction_to_command(instr))
+    return Path.Path(cmds)
 
 def generate_tbone(kink, length, dim):
     def getAxisX(v):
@@ -311,16 +349,19 @@ def generate_tbone(kink, length, dim):
     def getAxisY(v):
         return v.y
     axis = getAxisY if dim == 'Y' else getAxisX
+    angle = 0 if dim == 'X' else PI/2
+
     d0 = axis(kink.position())
     dd = axis(kink.m0.positionEnd()) - axis(kink.m0.positionBegin())
     if dd < 0 or (PathGeom.isRoughly(dd, 0) and (axis(kink.m1.positionEnd()) > axis(kink.m1.positionBegin()))):
         length = -length
+        angle = angle - PI
 
     d1 = d0 + length
 
     moveIn = MoveStraight(kink.position(), 'G1', {dim: d1})
     moveOut = MoveStraight(moveIn.positionEnd(), 'G1', {dim: d0})
-    return Bone(kink, [moveIn, moveOut])
+    return Bone(kink, angle, [moveIn, moveOut])
 
 def generate_tbone_horizontal(kink, length):
     return generate_tbone(kink, length, 'X')
@@ -328,39 +369,39 @@ def generate_tbone_horizontal(kink, length):
 def generate_tbone_vertical(kink, length):
     return generate_tbone(kink, length, 'Y')
 
-def generate_bone(kink, length, a):
+def generate_bone(kink, length, angle):
     # These two special cases could be removed, they are more efficient though because they
     # don't require trigonometric function calls. They are also a gentle introduction into
     # the dog/t/bone world, so we'll leave them here for now
-    if PathGeom.isRoughly(0, a) or PathGeom.isRoughly(abs(a), PI):
+    if PathGeom.isRoughly(0, angle) or PathGeom.isRoughly(abs(angle), PI):
         return generate_tbone_horizontal(kink, length)
-    if PathGeom.isRoughly(abs(a), PI/2):
+    if PathGeom.isRoughly(abs(angle), PI/2):
         return generate_tbone_vertical(kink, length)
 
-    if kink.deflection() > 0:
-        length = -length
+    #if kink.deflection() > 0:
+    #    length = -length
 
-    dx = length * math.cos(a)
-    dy = length * math.sin(a)
+    dx = length * math.cos(angle)
+    dy = length * math.sin(angle)
     p0 = kink.position()
 
     moveIn = MoveStraight(kink.position(), 'G1', {'X': p0.x + dx, 'Y': p0.y + dy})
     moveOut = MoveStraight(moveIn.positionEnd(), 'G1', {'X': p0.x, 'Y': p0.y})
 
-    return Bone(kink, [moveIn, moveOut])
+    return Bone(kink, angle, [moveIn, moveOut])
 
 def generate_tbone_on_short(kink, length):
     if kink.m0.pathLength() < kink.m1.pathLength():
-        a = normalizeAngle(kink.m0.anglesOfTangents()[1] + PI/2)
+        a = normalizeAngle(kink.t0 + PI/2)
     else:
-        a = normalizeAngle(kink.m1.anglesOfTangents()[0] + PI/2)
+        a = normalizeAngle(kink.t1 - PI/2)
     return generate_bone(kink, length, a)
 
 def generate_tbone_on_long(kink, length):
     if kink.m0.pathLength() > kink.m1.pathLength():
-        a = normalizeAngle(kink.m0.anglesOfTangents()[1] + PI/2)
+        a = normalizeAngle(kink.t0 + PI/2)
     else:
-        a = normalizeAngle(kink.m1.anglesOfTangents()[0] + PI/2)
+        a = normalizeAngle(kink.t1 - PI/2)
     return generate_bone(kink, length, a)
 
 def generate_dogbone(kink, length):
@@ -368,29 +409,74 @@ def generate_dogbone(kink, length):
     return generate_bone(kink, length, kink.normAngle())
 
 def calc_adaptive_length(kink, angle, nominal_length):
+    if PathGeom.isRoughly(abs(kink.deflection()), 0):
+        return 0
+
     # If the kink poses a 180deg turn the adaptive length is undefined. Mathematically
     # it's infinite but that is not practical.
     # We define the adaptive length to be the nominal length for this case.
     if PathGeom.isRoughly(abs(kink.deflection()), PI):
         return nominal_length
 
-    # In order to determine the actual (estimated) corner we construct a right-angled
-    # triangle with one corner being the kink position, and the nominal_length which
-    # is the length of the leg perpendicular to the incoming or outgoing tangent.
-    # The corner is in the direction of the kink's normAngle and we can calculate
-    # its length.
-    a1 = kink.t1 + PI / 2 # global angle of perpendicular triangle leg
-    ab = kink.normAngle() # global angle of actual corner from kink position
-    a = normalizeAngle(a1 - ab)
-    d = nominal_length / math.cos(a) # distance of actual corner from kink position
+    # The distance of the (estimated) corner from the kink position depends only on the
+    # deflection of the kink.
+    # Some sample values to build up intuition:
+    #           deflection :   dog bone  : norm distance : calc
+    #      ----------------:-------------:---------------:--------------
+    #               0      :    -PI/2    :   1
+    #              PI/6    :  -5*PI/12   :   1.03528     : 1/cos(  (pi/6) / 2)
+    #              PI/4    :  -3*PI/8    :   1.08239     : 1/cos(  (pi/4) / 2)
+    #              PI/3    :    -PI/3    :   1.1547      : 1/cos(  (pi/3) / 2)
+    #              PI/2    :    -PI/4    :   1.41421     : 1/cos(  (pi/2) / 2)
+    #            2*PI/3    :    -PI/6    :   2           : 1/cos((2*pi/3) / 2)
+    #            3*PI/4    :    -PI/8    :   2.61313     : 1/cos((3*pi/4) / 2)
+    #            5*PI/6    :    -PI/12   :   3.8637      : 1/cos((5*pi/6) / 2)
+    #              PI      :      0      :   nan  <-- see above
+    # The last column can be geometrically derived or found by experimentation.
+    dist = nominal_length / math.cos(kink.deflection() / 2)
 
-    # Now that we know where the actual corner is we need to determine the projection
-    # of that on the actual bone
-    al = normalizeAngle(ab - angle)
-    l = abs(d * math.cos(al))
-    print(f"a1={a1/(PI/4)}, ab={ab/(PI/4)}, a={a/(PI/4)}, d={d}  ->  al={al/(PI/4)},  l={l}")
+    # The depth of the bone depends on the direction of the bone in relation to the
+    # direction of the corner. If the direction is identical then the depth is the same
+    # as the distance of the corner minus the nominal_length (which corresponds to the
+    # radius of the tool).
+    # If the corner's direction is PI/4 off the bone angle the intersecion of the tool
+    # with the corner is the projection of the corner onto the bone.
+    # If the corner's direction is perpendicular to the bone's angle there is, strictly
+    # speaking no intersection and the bone is ineffective. However, giving it our 
+    # best shot we should probably move the entire depth.
 
-    return l
+    da = normalizeAngle(kink.normAngle() - angle)
+    depth = dist * math.cos(da)
+    if depth < 0:
+        depth = 0
+    else:
+        height = dist * abs(math.sin(da))
+        if height < nominal_length:
+            depth = depth - math.sqrt(nominal_length * nominal_length - height * height)
+
+        print(f"{kink}: angle={180*angle/PI}, dist={dist:.4f}, da={180*da/PI}, depth={depth:.4f}")
+
+    if DebugMode and FreeCAD.GuiUp:
+        import Part
+        FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","Group")
+        group = FreeCAD.ActiveDocument.ActiveObject
+        bone = generate_dogbone(kink, dist)
+        Path.show(bone_to_path(bone, True), 'adaptive')
+        group.addObject(FreeCAD.ActiveDocument.ActiveObject)
+        instr = bone.instr[0]
+        Part.show(Part.Edge(Part.makeCircle(.025, instr.positionEnd())), 'adaptive')
+        group.addObject(FreeCAD.ActiveDocument.ActiveObject)
+        if depth != 0:
+            x = kink.position().x + depth * math.cos(angle)
+            y = kink.position().y + depth * math.sin(angle)
+            pos = FreeCAD.Vector(x, y, 0)
+            Part.show(Part.Edge(Part.makeLine(kink.position(), pos)), 'adaptive')
+            group.addObject(FreeCAD.ActiveDocument.ActiveObject)
+            Part.show(Part.Edge(Part.makeCircle(nominal_length, pos)), 'adaptive')
+            group.addObject(FreeCAD.ActiveDocument.ActiveObject)
+        group.Visibility = False
+
+    return depth
 
 def MNVR(gcode, begin=None):
     # 'turns out the replace() isn't really necessary
@@ -424,6 +510,13 @@ class TestDressupDogboneII(PathTestBase):
         self.assertEqual(f"[{', '.join(bones)}]", s)
 
     def assertBone(self, bone, s, digits=0):
+        if DebugMode and FreeCAD.GuiUp:
+            Path.show(kink_to_path(bone.kink))
+            FreeCAD.ActiveDocument.Objects[-1].Visibility = False
+            Path.show(bone_to_path(bone))
+            FreeCAD.ActiveDocument.Objects[-1].Visibility = False
+            print(f"{bone.kink} : {bone.angle / PI:.2f}")
+
         b = [i.str(digits) for i in bone.instr]
         self.assertEqual(f"[{', '.join(b)}]", s)
 
@@ -505,6 +598,7 @@ class TestDressupDogboneII(PathTestBase):
     def test20(self):
         """Verify kinks of maneuvers"""
         self.assertKinks(MNVR('G1X1/G1Y1'), '[1.57]')
+        self.assertKinks(MNVR('G1X1/G1Y-1'), '[-1.57]')
         self.assertKinks(MNVR('G1X1/G1Y1/G1X0'), '[1.57, 1.57]')
         self.assertKinks(MNVR('G1X1/G1Y1/G1X0/G1Y0'), '[1.57, 1.57, 1.57, 1.57]')
 
@@ -705,6 +799,24 @@ class TestDressupDogboneII(PathTestBase):
         self.assertBone(bone, "[G1{X: -2.2, Y: 5.5}, G1{X: 0.0, Y: 1.0}]", 2)
 
     def test70(self):
+        """Verify dogbone angles"""
+        print()
+        self.assertRoughly(180 * KINK('G1X1/G1Y+1').normAngle() / PI, -45)
+        self.assertRoughly(180 * KINK('G1X1/G1Y-1').normAngle() / PI, 45)
+
+        self.assertRoughly(180 * KINK('G1X1/G1X2Y1').normAngle() / PI, -67.5)
+        self.assertRoughly(180 * KINK('G1X1/G1X2Y-1').normAngle() / PI, 67.5)
+
+        self.assertRoughly(180 * KINK('G1Y1/G1X+1').normAngle() / PI, 135)
+        self.assertRoughly(180 * KINK('G1Y1/G1X-1').normAngle() / PI, 45)
+
+        self.assertRoughly(180 * KINK('G1X-1/G1Y+1').normAngle() / PI, -135)
+        self.assertRoughly(180 * KINK('G1X-1/G1Y-1').normAngle() / PI, 135)
+
+        self.assertRoughly(180 * KINK('G1Y-1/G1X-1').normAngle() / PI, -45)
+        self.assertRoughly(180 * KINK('G1Y-1/G1X+1').normAngle() / PI, -135)
+
+    def test71(self):
         """Verify dogbones"""
 
         bone = generate_dogbone(KINK('G1X1/G1Y1'), 1)
@@ -719,14 +831,31 @@ class TestDressupDogboneII(PathTestBase):
     def test80(self):
         """Verify adaptive length for horizontal bone"""
 
-        print()
-        self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X2'), 0, 1), 0)
-        self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X1Y1'), 0, 1), 1)
-        self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X2Y1'), 0, 1), 0.414214)
-        self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X0Y1'), 0, 1), 2.414211)
-        self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X0'), 0, 1), 1)
-        self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X0Y-1'), 0, 1), 2.414211)
-        self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X1Y-1'), 0, 1), 1)
-        self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X2Y-1'), 0, 1), 0.414214)
+        if True:
+            print()
+            self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X2'), 0, 1), 0)
+            self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1Y1'), 0, 1), 1)
+            self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X2Y1'), 0, 1), 0.414214)
+            self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X0Y1'), 0, 1), 2.414211)
+            self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X0'), 0, 1), 1)
+            self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X0Y-1'), 0, 1), 2.414211)
+            self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X1Y-1'), 0, 1), 1)
+            self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X2Y-1'), 0, 1), 0.414214)
 
-        #self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1X1'), PI, 1), 1)
+        if True:
+            print()
+            self.assertRoughly(calc_adaptive_length(KINK('G1X1Y1/G1X0Y2'), 0, 1), 0.414214)
+
+        if True:
+            print()
+            self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y2'), 0, 1), 0)
+            self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y1X1'), PI, 1), 1)
+            self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y2X1'), PI, 1), 0.089820)
+            self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y2X1'), PI/2, 1), 0.414214)
+            self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y0X1'), PI/2, 1), 2.414211)
+            self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y0'), 0, 1), 1)
+            self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y0X-1'), PI/2, 1), 2.414211)
+            self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y1X-1'), 0, 1), 1)
+            self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y2X-1'), 0, 1), 0.089820)
+            self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y2X-1'), PI/2, 1), 0.414214)
+
