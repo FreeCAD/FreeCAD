@@ -24,12 +24,14 @@ import FreeCAD
 import Path
 import PathScripts.PathGeom as PathGeom
 import PathScripts.PathLog as PathLog
+import PathTests.PathTestUtils as PathTestUtils
 import math
 import time
 
-from PathTests.PathTestUtils import PathTestBase
 
-DebugMode = True
+# PathLog.setLevel(PathLog.Level.DEBUG)
+
+DebugMode = PathLog.getLevel(PathLog.thisModule()) == PathLog.Level.DEBUG
 
 CmdMoveStraight = PathGeom.CmdMoveStraight + PathGeom.CmdMoveRapid
 
@@ -448,13 +450,13 @@ def calc_adaptive_length(kink, angle, nominal_length):
     da = normalizeAngle(kink.normAngle() - angle)
     depth = dist * math.cos(da)
     if depth < 0:
+        PathLog.debug(f"depth={depth:4f}: kink={kink}, angle={180*angle/PI}, dist={dist:.4f}, da={180*da/PI} -> depth=0.0")
         depth = 0
     else:
         height = dist * abs(math.sin(da))
         if height < nominal_length:
             depth = depth - math.sqrt(nominal_length * nominal_length - height * height)
-
-        print(f"{kink}: angle={180*angle/PI}, dist={dist:.4f}, da={180*da/PI}, depth={depth:.4f}")
+        PathLog.debug(f"{kink}: angle={180*angle/PI}, dist={dist:.4f}, da={180*da/PI}, depth={depth:.4f}")
 
     if DebugMode and FreeCAD.GuiUp:
         import Part
@@ -492,7 +494,7 @@ def KINK(gcode, begin=None):
         return None
     return Kink(maneuver.instr[0], maneuver.instr[1])
 
-class TestDressupDogboneII(PathTestBase):
+class TestDressupDogboneII(PathTestUtils.PathTestBase):
     """Unit tests for the Dogbone dressup."""
 
     def assertTangents(self, instr, t1):
@@ -515,7 +517,7 @@ class TestDressupDogboneII(PathTestBase):
             FreeCAD.ActiveDocument.Objects[-1].Visibility = False
             Path.show(bone_to_path(bone))
             FreeCAD.ActiveDocument.Objects[-1].Visibility = False
-            print(f"{bone.kink} : {bone.angle / PI:.2f}")
+        PathLog.debug(f"{bone.kink} : {bone.angle / PI:.2f}")
 
         b = [i.str(digits) for i in bone.instr]
         self.assertEqual(f"[{', '.join(b)}]", s)
@@ -800,7 +802,6 @@ class TestDressupDogboneII(PathTestBase):
 
     def test70(self):
         """Verify dogbone angles"""
-        print()
         self.assertRoughly(180 * KINK('G1X1/G1Y+1').normAngle() / PI, -45)
         self.assertRoughly(180 * KINK('G1X1/G1Y-1').normAngle() / PI, 45)
 
@@ -829,10 +830,9 @@ class TestDressupDogboneII(PathTestBase):
         self.assertBone(bone, "[G1{X: 0.62, Y: 1.9}, G1{X: 1.0, Y: 1.0}]", 2)
 
     def test80(self):
-        """Verify adaptive length for horizontal bone"""
+        """Verify adaptive length"""
 
         if True:
-            print()
             self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X2'), 0, 1), 0)
             self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1Y1'), 0, 1), 1)
             self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X2Y1'), 0, 1), 0.414214)
@@ -843,11 +843,9 @@ class TestDressupDogboneII(PathTestBase):
             self.assertRoughly(calc_adaptive_length(KINK('G1X1/G1X2Y-1'), 0, 1), 0.414214)
 
         if True:
-            print()
             self.assertRoughly(calc_adaptive_length(KINK('G1X1Y1/G1X0Y2'), 0, 1), 0.414214)
 
         if True:
-            print()
             self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y2'), 0, 1), 0)
             self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y1X1'), PI, 1), 1)
             self.assertRoughly(calc_adaptive_length(KINK('G1Y1/G1Y2X1'), PI, 1), 0.089820)
