@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepFill.hxx>
+# include <BRepBuilderAPI_Copy.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_CompCurve.hxx>
 # include <BRepLib_MakeWire.hxx>
@@ -61,8 +62,6 @@ RuledSurface::RuledSurface()
     ADD_PROPERTY_TYPE(Curve2,(nullptr),"Ruled Surface",App::Prop_None,"Curve of ruled surface");
     ADD_PROPERTY_TYPE(Orientation,((long)0),"Ruled Surface",App::Prop_None,"Orientation of ruled surface");
     Orientation.setEnums(OrientationEnums);
-    ADD_PROPERTY_TYPE(ResetPlacement,(false),"Ruled Surface",App::Prop_None,
-                      "Whether to reset placement");
 }
 
 short RuledSurface::mustExecute() const
@@ -72,8 +71,6 @@ short RuledSurface::mustExecute() const
     if (Curve2.isTouched())
         return 1;
     if (Orientation.isTouched())
-        return 1;
-    if (ResetPlacement.isTouched())
         return 1;
     return 0;
 }
@@ -147,16 +144,9 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
         //
         // if both shapes are sub-elements of one common shape then the fill algorithm
         // leads to problems if the shape has set a placement
-        // The workaround is to reset the placement before calling BRepFill and then
-        // applying the placement to the output shape
-        TopLoc_Location Loc;
-        if (Curve1.getValue() == Curve2.getValue()) {
-            Loc = S1.Location();
-            if (!Loc.IsIdentity() && Loc == S2.Location()) {
-                S1.Location(TopLoc_Location());
-                S2.Location(TopLoc_Location());
-            }
-        }
+        // The workaround is to copy the sub-shape
+        S1 = BRepBuilderAPI_Copy(S1).Shape();
+        S2 = BRepBuilderAPI_Copy(S2).Shape();
 
         // make both shapes to have the same type
         Standard_Boolean isWire = Standard_False;
@@ -239,25 +229,6 @@ App::DocumentObjectExecReturn *RuledSurface::execute(void)
         }
         else {
             ruledShape = BRepFill::Shell(TopoDS::Wire(S1), TopoDS::Wire(S2));
-        }
-
-        // re-apply the placement in case we reset it
-        if (!Loc.IsIdentity())
-            ruledShape.Move(Loc);
-
-        Loc = ruledShape.Location();
-
-        if (!Loc.IsIdentity() && ResetPlacement.getValue()) {
-            // reset the placement of the shape because the Placement
-            // property will be changed
-            ruledShape.Location(TopLoc_Location());
-            Base::Matrix4D transform;
-            TopoShape::convertToMatrix(Loc.Transformation(), transform);
-            this->Placement.setValue(Base::Placement(transform));
-        } else {
-            if (!Loc.IsIdentity()){ //Reset Placement property = False
-                this->Placement.setValue(Base::Placement());
-            }
         }
 
         this->Shape.setValue(ruledShape);
