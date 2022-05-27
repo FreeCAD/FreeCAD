@@ -20,7 +20,8 @@
 #**************************************************************************
 
 import FreeCAD, unittest, Part
-import copy 
+import copy
+import math
 from FreeCAD import Units
 from FreeCAD import Base
 App = FreeCAD
@@ -201,3 +202,31 @@ class PartTestCircle2D(unittest.TestCase):
         p3 = App.Base.Vector2d(0.04, 0.0399)
         with self.assertRaises(ValueError):
             Part.Geom2d.Circle2d.getCircleCenter(p1, p2, p3)
+
+class PartTestCone(unittest.TestCase):
+    def testderivatives(self):
+        def get_dn(surface, u, v):
+            pos = surface.value(u, v)
+            v10 = surface.getDN(u, v, 1, 0)
+            v01 = surface.getDN(u, v, 0, 1)
+            v11 = surface.getDN(u, v, 1, 1)
+            return (pos, v10, v01, v11)
+
+        cone = Part.Cone()
+        cone.SemiAngle = 0.2
+        cone.Radius = 2.0
+
+        u, v = (5.0, 5.0)
+        vp, v1, v2, v3 = get_dn(cone, u, v)
+
+        shape = cone.toShape(0, 2*math.pi, 0, 10)
+        shape = shape.toNurbs()
+        spline = shape.Face1.Surface
+
+        u, v = spline.parameter(vp)
+        wp, w1, w2, w3 = get_dn(spline, u, v)
+
+        self.assertAlmostEqual(vp.distanceToPoint(wp), 0)
+        self.assertAlmostEqual(v1.getAngle(w1), 0)
+        self.assertAlmostEqual(v2.getAngle(w2), 0)
+        self.assertAlmostEqual(v3.getAngle(w3), 0)

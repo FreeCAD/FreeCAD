@@ -4591,6 +4591,10 @@ PyObject *GeomCone::getPyObject(void)
 
 gp_Vec GeomCone::getDN(double u, double v, int Nu, int Nv) const
 {
+    // Will be fixed in OCC 7.7
+#if OCC_VERSION_HEX >= 0x070700
+    return GeomSurface::getDN(u, v, Nu, Nv);
+#else
     // Copied from ElSLib::ConeDN() and applied the needed fix
     auto ElSLib__ConeDN = [](const Standard_Real U,
                              const Standard_Real V,
@@ -4602,7 +4606,6 @@ gp_Vec GeomCone::getDN(double u, double v, int Nu, int Nv) const
     {
        gp_XYZ Xdir = Pos.XDirection().XYZ();
        gp_XYZ Ydir = Pos.YDirection().XYZ();
-       gp_XYZ ZDir = Pos.Direction ().XYZ();
        Standard_Real Um = U + Nu * M_PI_2;  // M_PI * 0.5
        Xdir.Multiply(cos(Um));
        Ydir.Multiply(sin(Um));
@@ -4614,8 +4617,8 @@ gp_Vec GeomCone::getDN(double u, double v, int Nu, int Nv) const
        }
        else if(Nv == 1) {
          Xdir.Multiply(sin(SAngle));
-         ZDir.Multiply(cos(SAngle));
-         Xdir.Add(ZDir);
+         if (Nu == 0)
+           Xdir.Add(Pos.Direction().XYZ() * cos(SAngle));
          return gp_Vec(Xdir);
        }
        return gp_Vec(0.0,0.0,0.0);
@@ -4631,6 +4634,7 @@ gp_Vec GeomCone::getDN(double u, double v, int Nu, int Nv) const
     else {
       return ElSLib__ConeDN(u, v, s->Position(), s->RefRadius(), s->SemiAngle(), Nu, Nv);
     }
+#endif
 }
 
 // -------------------------------------------------
