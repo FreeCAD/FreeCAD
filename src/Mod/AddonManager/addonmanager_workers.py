@@ -1639,9 +1639,10 @@ class UpdateAllWorker(QtCore.QThread):
         for repo in self.repos:
             self.repo_queue.put(repo)
 
-        # Following the QNetworkAccessManager model, we'll spawn six threads to process these requests in parallel:
+        # The original design called for multiple update threads at the same time, but the updater
+        # itself is not thread-safe, so for the time being only spawn one update thread.
         workers = []
-        for _ in range(6):
+        for _ in range(1):
             worker = UpdateSingleWorker(self.repo_queue)
             worker.success.connect(self.on_success)
             worker.failure.connect(self.on_failure)
