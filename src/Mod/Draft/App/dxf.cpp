@@ -1702,7 +1702,13 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */ )
         
         else if(!strcmp(m_str, "0"))
         {
-            get_line();
+            // try to force reading until an entity type string is found (skip followup numeric values)
+            while(!((*m_ifs).eof())) {
+              if (m_str[0]>='0' && m_str[0]<='9')
+                get_line();
+              else
+                break;
+            }
             if (!strcmp( m_str, "SECTION" )){
               get_line();
               get_line();
