@@ -15,140 +15,150 @@
 		FatherNamespace="Base">
 	<Documentation>
 		<Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
-		<UserDocu>Placement
-A placement defines an orientation (rotation) and a position (base) in 3D space.
-It is used when no scaling or other distortion is needed.
-
-The following constructors are supported:
-Placement() -- empty constructor
-Placement(Placement) -- copy constructor
-Placement(Matrix) -- 4D matrix consisting of rotation and translation
-Placement(Base, Rotation) -- define position and rotation
-Placement(Base, Rotation,Center) -- define position and rotation with center
-Placement(Base, Axis, Angle) -- define position and rotation
-		</UserDocu>
+		<UserDocu>Base.Placement class\n
+A Placement defines an orientation (rotation) and a position (base) in 3D space.
+It is used when no scaling or other distortion is needed.\n
+The following constructors are supported:\n
+Placement()
+Empty constructor.\n
+Placement(placement)
+Copy constructor.
+placement : Base.Placement\n
+Placement(matrix)
+Define from a 4D matrix consisting of rotation and translation.
+matrix : Base.Matrix\n
+Placement(base, rotation)
+Define from position and rotation.
+base : Base.Vector
+rotation : Base.Rotation\n
+Placement(base, rotation, center)
+Define from position and rotation with center.
+base : Base.Vector
+rotation : Base.Rotation
+center : Base.Vector\n
+Placement(base, axis, angle)
+define position and rotation
+base : Base.Vector
+axis : Base.Vector
+angle : float</UserDocu>
 		<DeveloperDocu>Placement</DeveloperDocu>
 	</Documentation>
         <Methode Name="copy" Const="true">
             <Documentation>
-                <UserDocu>
-                    copy()
-                    Returns a copy of this Placement
-                </UserDocu>
+                <UserDocu>copy() -> Base.Placement\n
+Returns a copy of this placement.</UserDocu>
             </Documentation>
         </Methode>
 		<Methode Name="move">
 			<Documentation>
-				<UserDocu>
-					move(Vector) 
-					Move the placement along the vector
-				</UserDocu>
+				<UserDocu>move(vector) -> None\n
+Move the placement along a vector.\n
+vector : Base.Vector\n    Vector by which to move the placement.</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="translate">
 			<Documentation>
-				<UserDocu>
-					translate(Vector) 
-					alias to move(), to be compatible with TopoShape.translate()
-				</UserDocu>
+				<UserDocu>translate(vector) -> None\n
+Alias to move(), to be compatible with TopoShape.translate().\n
+vector : Base.Vector\n    Vector by which to move the placement.</UserDocu>
 			</Documentation>
 		</Methode>
         <Methode Name="rotate">
         <Documentation>
-            <UserDocu>
-                rotate(center,axis,degree) - rotate the current placement around center and axis with degree
-                This method is compatible with TopoShape.rotate()
-            </UserDocu>
+            <UserDocu>rotate(center, axis, angle) -> None\n
+Rotate the current placement around center and axis with the given angle.
+This method is compatible with TopoShape.rotate().\n
+center : Base.Vector, sequence of float\n    Rotation center.
+axis : Base.Vector, sequence of float\n    Rotation axis.
+angle : float\n    Rotation angle in degrees.</UserDocu>
         </Documentation>
         </Methode>
                 <Methode Name="multiply" Const="true">
 			<Documentation>
-				<UserDocu>
-					multiply(Placement)
-					Multiply this placement with another placement
-				</UserDocu>
+				<UserDocu>multiply(placement) -> Base.Placement\n
+Right multiply this placement with another placement.
+Also available as `*` operator.\n
+placement : Base.Placement\n    Placement by which to multiply this placement.</UserDocu>
 			</Documentation>
 		</Methode>
                 <Methode Name="multVec" Const="true">
 			<Documentation>
-				<UserDocu>
-					multVector(Vector) -> Vector
-					Compute the transformed vector using the placement
-				</UserDocu>
+				<UserDocu>multVec(vector) -> Base.Vector\n
+Compute the transformed vector using the placement.\n
+vector : Base.Vector\n    Vector to be transformed.</UserDocu>
 			</Documentation>
 		</Methode>
                 <Methode Name="toMatrix" Const="true">
 			<Documentation>
-				<UserDocu>
-					toMatrix()
-					convert the placement to a matrix representation
-				</UserDocu>
+				<UserDocu>toMatrix() -> Base.Matrix\n
+Compute the matrix representation of the placement.</UserDocu>
 			</Documentation>
 		</Methode>
         <Methode Name="inverse" Const="true">
 			<Documentation>
-				<UserDocu>
-					inverse() -> Placement
-					compute the inverse placement
-				</UserDocu>
+				<UserDocu>inverse() -> Base.Placement\n
+Compute the inverse placement.</UserDocu>
 			</Documentation>
 		</Methode>
         <Methode Name="pow" Const="true">
 			<Documentation>
-				<UserDocu>
-					pow(t, shorten = true): raise this placement to real power using ScLERP interpolation.
-                    If 'shorten' is true, ensures rotation quaternion is net positive, to make the path shorter.
-                    Also available as ** operator.
-				</UserDocu>
+				<UserDocu>pow(t, shorten=True) -> Base.Placement\n
+Raise this placement to real power using ScLERP interpolation.
+Also available as `**` operator.\n
+t : float\n    Real power.
+shorten : bool\n    If True, ensures rotation quaternion is net positive to make
+    the path shorter.</UserDocu>
 			</Documentation>
 		</Methode>
         <Methode Name="sclerp" Const="true">
 			<Documentation>
-				<UserDocu>
-                    sclerp(placement2, t, shorten = True): interpolate between self and placement2.
-                    Interpolation is a continuous motion along a helical path, made of equal transforms if discretized.
-                    t = 0.0 - return self. t = 1.0 - return placement2. t can also be outside of 0..1 range, for extrapolation.
-                    If quaternions of rotations of the two placements differ in sign, the interpolation will 
-                     take a long path. If 'shorten' is true, the signs are harmonized before interpolation, and the 
-                     interpolation takes the shorter path.
-				</UserDocu>
+				<UserDocu>sclerp(placement2, t, shorten=True) -> Base.Placement\n
+Screw Linear Interpolation (ScLERP) between this placement and `placement2`.
+Interpolation is a continuous motion along a helical path parametrized by `t`
+made of equal transforms if discretized.
+If quaternions of rotations of the two placements differ in sign, the interpolation
+will take a long path.\n
+placement2 : Base.Placement
+t : float\n    Parameter of helical path. t=0 returns this placement, t=1 returns
+    `placement2`. t can also be outside of [0, 1] range for extrapolation.
+shorten : bool\n    If True, the signs are harmonized before interpolation and the interpolation
+    takes the shorter path.</UserDocu>
 			</Documentation>
 		</Methode>
         <Methode Name="slerp" Const="true">
 			<Documentation>
-				<UserDocu>
-					slerp(placement2, t, shorten = True): interpolate between self and placement2.
-                    This function performs independent interpolation of rotation and movement.
-                    Result of such interpolation might be not what application expects, thus this
-                    tool might be considered for simple cases or for interpolating between small intervals.
-                    
-                    For more complex cases you better use the advanced sclerp() function.
-				</UserDocu>
+				<UserDocu>slerp(placement2, t) -> Base.Placement\n
+Spherical Linear Interpolation (SLERP) between this placement and `placement2`.
+This function performs independent interpolation of rotation and movement.
+Result of such interpolation might be not what application expects, thus this tool
+might be considered for simple cases or for interpolating between small intervals.
+For more complex cases you better use the advanced sclerp() function.\n
+placement2 : Base.Placement
+t : float\n    Parameter of the path. t=0 returns this placement, t=1 returns `placement2`.</UserDocu>
 			</Documentation>
 		</Methode>
         <Methode Name="isIdentity" Const="true">
 			<Documentation>
-				<UserDocu>
-                    isIdentity() -> Bool
-					returns True if the placement has no displacement and no rotation
-				</UserDocu>
+				<UserDocu>isIdentity() -> bool\n
+Returns True if the placement has no displacement and no rotation.
+Matrix representation is the 4D identity matrix.</UserDocu>
 			</Documentation>
 		</Methode>
         <Attribute Name="Base" ReadOnly="false">
 			<Documentation>
-				<UserDocu>Vector to the Base Position of the Placement</UserDocu>
+				<UserDocu>Vector to the Base Position of the Placement.</UserDocu>
 			</Documentation>
 			<Parameter Name="Base" Type="Object" />
 		</Attribute>
 		<Attribute Name="Rotation" ReadOnly="false">
 			<Documentation>
-				<UserDocu>Orientation of the placement expressed as rotation</UserDocu>
+				<UserDocu>Orientation of the placement expressed as rotation.</UserDocu>
 			</Documentation>
 			<Parameter Name="Rotation" Type="Object" />
 		</Attribute>
 		<Attribute Name="Matrix" ReadOnly="false">
 			<Documentation>
-                <UserDocu>Set/get matrix representation of this placement</UserDocu>
+                <UserDocu>Set/get matrix representation of the placement.</UserDocu>
 			</Documentation>
 			<Parameter Name="Matrix" Type="Object" />
 		</Attribute>
