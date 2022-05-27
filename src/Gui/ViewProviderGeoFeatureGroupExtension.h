@@ -42,7 +42,9 @@ public:
 
     virtual std::vector<App::DocumentObject*> extensionClaimChildren3D(void)const override;
     virtual std::vector< App::DocumentObject* > extensionClaimChildren(void) const override;
-    virtual SoGroup* extensionGetChildRoot(void) const override {return pcGroupChildren;};
+    virtual SoSeparator* extensionGetFrontRoot() const override {return pcGroupFront;}
+    virtual SoSeparator* extensionGetBackRoot() const override {return pcGroupBack;}
+    virtual SoGroup* extensionGetChildRoot(void) const override {return pcGroupChildren;}
     virtual void extensionAttach(App::DocumentObject* pcObject) override;
     virtual void extensionSetDisplayMode(const char* ModeName) override;
     virtual std::vector<std::string> extensionGetDisplayModes(void) const override;
@@ -60,6 +62,8 @@ public:
     virtual void extensionUpdateData(const App::Property*) override;
 
 protected:
+    SoSeparator *pcGroupFront;
+    SoSeparator *pcGroupBack;
     SoGroup *pcGroupChildren;
 };
 

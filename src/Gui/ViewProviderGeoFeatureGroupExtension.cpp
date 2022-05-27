@@ -24,6 +24,10 @@
 
 #include "PreCompiled.h"
 
+#ifndef _PreComp_
+#include <Inventor/nodes/SoSeparator.h>
+#endif
+
 #include <App/DocumentObject.h>
 #include <App/GeoFeatureGroupExtension.h>
 
@@ -43,12 +47,20 @@ ViewProviderGeoFeatureGroupExtension::ViewProviderGeoFeatureGroupExtension()
 
     pcGroupChildren = new SoFCSelectionRoot;
     pcGroupChildren->ref();
+    pcGroupFront = new SoSeparator();
+    pcGroupFront->ref();
+    pcGroupBack = new SoSeparator();
+    pcGroupBack->ref();
 }
 
 ViewProviderGeoFeatureGroupExtension::~ViewProviderGeoFeatureGroupExtension()
 {
     pcGroupChildren->unref();
     pcGroupChildren = nullptr;
+    pcGroupFront->unref();
+    pcGroupFront = nullptr;
+    pcGroupBack->unref();
+    pcGroupBack = nullptr;
 }
 
 
