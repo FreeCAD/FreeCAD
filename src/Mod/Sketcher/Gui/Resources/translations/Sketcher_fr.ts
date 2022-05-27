@@ -9,7 +9,7 @@
       <translation>Créer un profil hexagonal</translation>
     </message>
     <message>
-      <location filename="../../../Profiles.py" line="56"/>
+      <location filename="../../../Profiles.py" line="58"/>
       <source>Creates a hexagonal profile in the sketch</source>
       <translation>Créer un profil hexagonal dans l'esquisse</translation>
     </message>
@@ -1212,12 +1212,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1165"/>
       <source>Insert knot</source>
-      <translation type="unfinished">Insert knot</translation>
+      <translation>Insérer un noeud</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1166"/>
       <source>Inserts knot at given parameter. If a knot already exists at that parameter, it's multiplicity is increased by one.</source>
-      <translation type="unfinished">Inserts knot at given parameter. If a knot already exists at that parameter, it's multiplicity is increased by one.</translation>
+      <translation>Insère un noeud au paramètre donné. Si un noeud existe déjà à ce paramètre, sa multiplicité est augmentée de un.</translation>
     </message>
   </context>
   <context>
@@ -2088,7 +2088,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1059"/>
       <source>Insert knot</source>
-      <translation type="unfinished">Insert knot</translation>
+      <translation>Insérer un noeud</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1027"/>
@@ -2270,17 +2270,17 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="5941"/>
       <source>Knot cannot have zero multiplicity.</source>
-      <translation type="unfinished">Knot cannot have zero multiplicity.</translation>
+      <translation>Le nœud ne peut pas avoir zéro de multiplicité.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="5955"/>
       <source>Knot multiplicity cannot be higher than the degree of the BSpline.</source>
-      <translation type="unfinished">Knot multiplicity cannot be higher than the degree of the BSpline.</translation>
+      <translation>La multiplicité du nœud ne peut pas être supérieure au degré de la courbe BSpline.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="5958"/>
       <source>Knot cannot be inserted outside the BSpline parameter range.</source>
-      <translation type="unfinished">Knot cannot be inserted outside the BSpline parameter range.</translation>
+      <translation>Le nœud ne peut pas être inséré en dehors de la plage de paramètres de la B-spline.</translation>
     </message>
   </context>
   <context>
@@ -2539,7 +2539,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="163"/>
       <source>Cannot add a constraint between two fixed geometries. Fixed geometries include external geometry, blocked geometry, and special points such as B-spline knot points.</source>
-      <translation type="unfinished">Cannot add a constraint between two fixed geometries. Fixed geometries include external geometry, blocked geometry, and special points such as B-spline knot points.</translation>
+      <translation>Impossible d'ajouter une contrainte entre deux géométries fixes. Les géométries fixes comprennent la géométrie externe, la géométrie bloquée et les points spéciaux tels que les points de nœuds des B-splines.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="486"/>
@@ -2556,12 +2556,12 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="544"/>
       <location filename="../../CommandConstraints.cpp" line="556"/>
       <source>Only sketch and its support are allowed to be selected.</source>
-      <translation type="unfinished">Only sketch and its support are allowed to be selected.</translation>
+      <translation>Seule l'esquisse et son support peuvent être sélectionnés.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="565"/>
       <source>One of the selected has to be on the sketch.</source>
-      <translation type="unfinished">One of the selected has to be on the sketch.</translation>
+      <translation>Une des sélections doit être sur l'esquisse.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="912"/>
@@ -2597,7 +2597,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="1176"/>
       <location filename="../../CommandConstraints.cpp" line="1269"/>
       <source>The selected edge is not a line segment.</source>
-      <translation type="unfinished">The selected edge is not a line segment.</translation>
+      <translation>L'arête sélectionnée n'est pas un segment de ligne.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="946"/>
@@ -2714,7 +2714,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="1980"/>
       <location filename="../../CommandConstraints.cpp" line="1990"/>
       <source>Select two or more vertices from the sketch.</source>
-      <translation type="unfinished">Select two or more vertices from the sketch.</translation>
+      <translation>Sélectionnez deux sommets de l'esquisse ou plus.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2147"/>
@@ -2730,7 +2730,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2370"/>
       <source>This constraint does not make sense for non-linear curves.</source>
-      <translation type="unfinished">This constraint does not make sense for non-linear curves.</translation>
+      <translation>Cette contrainte n'a pas de sens pour les courbes non linéaires.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2487"/>
@@ -2773,7 +2773,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="6173"/>
       <location filename="../../CommandConstraints.cpp" line="6863"/>
       <source>Select an edge that is not a B-spline weight.</source>
-      <translation type="unfinished">Select an edge that is not a B-spline weight.</translation>
+      <translation>Sélectionnez une arête qui n'est pas une B-spline.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2583"/>
@@ -2812,7 +2812,7 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
       <location filename="../../CommandConstraints.cpp" line="2881"/>
       <location filename="../../CommandConstraints.cpp" line="3130"/>
       <source>This constraint only makes sense on a line segment or a pair of points.</source>
-      <translation type="unfinished">This constraint only makes sense on a line segment or a pair of points.</translation>
+      <translation>Cette contrainte n’a de sens que sur un segment de ligne ou une paire de points.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3021"/>
@@ -2838,13 +2838,13 @@ les contraintes invalides, les géométries dégénérées, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3258"/>
       <source>Select a valid line.</source>
-      <translation type="unfinished">Select a valid line.</translation>
+      <translation>Sélectionnez une ligne valide.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3274"/>
       <location filename="../../CommandConstraints.cpp" line="3312"/>
       <source>The selected edge is not a valid line.</source>
-      <translation type="unfinished">The selected edge is not a valid line.</translation>
+      <translation>L'arête sélectionnée n'est pas une ligne valide.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3376"/>
@@ -3000,12 +3000,12 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
       <location filename="../../CommandConstraints.cpp" line="6319"/>
       <location filename="../../CommandConstraints.cpp" line="7022"/>
       <source>Select two or more compatible edges.</source>
-      <translation type="unfinished">Select two or more compatible edges.</translation>
+      <translation>Sélectionnez deux arêtes compatibles ou plus.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6324"/>
       <source>Sketch axes cannot be used in equality constraints.</source>
-      <translation type="unfinished">Sketch axes cannot be used in equality constraints.</translation>
+      <translation>Les axes de l'esquisse ne peuvent pas être utilisés comme contrainte d'alignement interne.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6343"/>
@@ -3017,7 +3017,7 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
       <location filename="../../CommandConstraints.cpp" line="6388"/>
       <location filename="../../CommandConstraints.cpp" line="6440"/>
       <source>Select two or more edges of similar type.</source>
-      <translation type="unfinished">Select two or more edges of similar type.</translation>
+      <translation>Sélectionnez deux arêtes de type similaire ou plus.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6522"/>
@@ -3080,7 +3080,7 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
     <message>
       <location filename="../../CommandConstraints.cpp" line="6999"/>
       <source>Sketch axes cannot be used in internal alignment constraint.</source>
-      <translation type="unfinished">Sketch axes cannot be used in internal alignment constraint.</translation>
+      <translation>Les axes de l'esquisse ne peuvent pas être utilisés comme contrainte d'alignement interne.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7044"/>
@@ -3165,12 +3165,12 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4739"/>
       <source>B-Spline Degree</source>
-      <translation type="unfinished">B-Spline Degree</translation>
+      <translation>Degré de la B-spline</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="4740"/>
       <source>Define B-Spline Degree, between 1 and %1:</source>
-      <translation type="unfinished">Define B-Spline Degree, between 1 and %1:</translation>
+      <translation>Définit le degré de la B-spline, entre 1 et %1 :</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="5890"/>
@@ -3230,12 +3230,12 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1203"/>
       <source>Nothing is selected. Please select a b-spline.</source>
-      <translation type="unfinished">Nothing is selected. Please select a b-spline.</translation>
+      <translation>Rien n'est sélectionné. Veuillez sélectionner une courbe b-spline.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1217"/>
       <source>Please select a b-spline curve to insert a knot (not a knot on it). If the curve is not a b-spline, please convert it into one first.</source>
-      <translation type="unfinished">Please select a b-spline curve to insert a knot (not a knot on it). If the curve is not a b-spline, please convert it into one first.</translation>
+      <translation>Veuillez sélectionner une courbe B-spline pour insérer un nœud (et non un nœud sur celle-ci). Si la courbe n'est pas une B-spline, veuillez d'abord la convertir en une B-spline.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="131"/>
@@ -3370,12 +3370,12 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="23"/>
       <source>Multiple filter selection</source>
-      <translation type="unfinished">Multiple filter selection</translation>
+      <translation>Sélection de plusieurs filtres</translation>
     </message>
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="29"/>
       <source>Check the filters to aggregate:</source>
-      <translation type="unfinished">Check the filters to aggregate:</translation>
+      <translation>Vérifiez les filtres à agréger:</translation>
     </message>
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="52"/>
@@ -3505,7 +3505,7 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="189"/>
       <source>Check All</source>
-      <translation type="unfinished">Check All</translation>
+      <translation>Tout sélectionner</translation>
     </message>
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="202"/>
@@ -3515,7 +3515,7 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="205"/>
       <source>Uncheck All</source>
-      <translation type="unfinished">Uncheck All</translation>
+      <translation>Tout désélectionner</translation>
     </message>
   </context>
   <context>
@@ -3523,12 +3523,12 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
     <message>
       <location filename="../../ConstraintSettingsDialog.ui" line="23"/>
       <source>Constraint widget settings</source>
-      <translation type="unfinished">Constraint widget settings</translation>
+      <translation>Paramètres du widget de contrainte</translation>
     </message>
     <message>
       <location filename="../../ConstraintSettingsDialog.ui" line="35"/>
       <source>List control</source>
-      <translation type="unfinished">List control</translation>
+      <translation>Contrôle de la liste</translation>
     </message>
     <message>
       <location filename="../../ConstraintSettingsDialog.ui" line="47"/>
@@ -3553,7 +3553,7 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
     <message>
       <location filename="../../ConstraintSettingsDialog.ui" line="100"/>
       <source>3D view control</source>
-      <translation type="unfinished">3D view control</translation>
+      <translation>Contrôle de la vue 3D</translation>
     </message>
     <message>
       <location filename="../../ConstraintSettingsDialog.ui" line="112"/>
@@ -3563,7 +3563,7 @@ Combinaisons acceptés : deux courbes ; un point d'extrémité et une courbe ; d
     <message>
       <location filename="../../ConstraintSettingsDialog.ui" line="115"/>
       <source>Show only filtered constraints</source>
-      <translation type="unfinished">Show only filtered constraints</translation>
+      <translation>Afficher uniquement les contraintes filtrées</translation>
     </message>
   </context>
   <context>
@@ -4737,27 +4737,27 @@ Toutefois, aucune contrainte liée aux extrémités n'a été trouvée.</transla
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="177"/>
       <source>Multiple Filters</source>
-      <translation type="unfinished">Multiple Filters</translation>
+      <translation>Filtres multiples</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="182"/>
       <source>Selection Filter</source>
-      <translation type="unfinished">Selection Filter</translation>
+      <translation>Sélectionner un filtre</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="187"/>
       <source>Associated Constraint Filter</source>
-      <translation type="unfinished">Associated Constraint Filter</translation>
+      <translation>Filtre de contrainte associé</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="207"/>
       <source>Click to select multiple filters</source>
-      <translation type="unfinished">Click to select multiple filters</translation>
+      <translation>Cliquez pour sélectionner plusieurs filtres</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="210"/>
       <source>Select Multiple</source>
-      <translation type="unfinished">Select Multiple</translation>
+      <translation>Sélectionner plusieurs</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="223"/>
@@ -4772,7 +4772,7 @@ Toutefois, aucune contrainte liée aux extrémités n'a été trouvée.</transla
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="250"/>
       <source>Show Listed</source>
-      <translation type="unfinished">Show Listed</translation>
+      <translation>Afficher la liste</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="263"/>
@@ -4782,17 +4782,17 @@ Toutefois, aucune contrainte liée aux extrémités n'a été trouvée.</transla
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="266"/>
       <source>Hide Listed</source>
-      <translation type="unfinished">Hide Listed</translation>
+      <translation>Masquer la liste</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="279"/>
       <source>Restricts 3D visibility to the listed elements</source>
-      <translation type="unfinished">Restricts 3D visibility to the listed elements</translation>
+      <translation>Restreint la visibilité 3D aux éléments listés</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="282"/>
       <source>Restrict Visibility</source>
-      <translation type="unfinished">Restrict Visibility</translation>
+      <translation>Restreindre la visibilité</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="640"/>
@@ -5087,24 +5087,24 @@ Les points doivent être placés à une distance de la ligne inférieure à 20% 
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="20"/>
       <source>Open and non-manifold vertexes</source>
-      <translation type="unfinished">Open and non-manifold vertexes</translation>
+      <translation>Sommets ouverts et non maniables</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="38"/>
       <source>Highlights open and non-manifold vertexes that could lead to error if sketch is used to generate solids
 This is purely based on topological shape of the sketch and not on its geometry/constrain set.</source>
-      <translation type="unfinished">Highlights open and non-manifold vertexes that could lead to error if sketch is used to generate solids
-This is purely based on topological shape of the sketch and not on its geometry/constrain set.</translation>
+      <translation>Met en évidence les sommets ouverts et non maniables qui pourraient entraîner une erreur si l'esquisse est utilisée pour générer des solides.
+Cette erreur est purement basée sur la forme topologique de l'esquisse et non sur sa géométrie/son ensemble de contraintes.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="42"/>
       <source>Highlight troublesome vertexes</source>
-      <translation type="unfinished">Highlight troublesome vertexes</translation>
+      <translation>Met en évidence les sommets posant problème</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="52"/>
       <source>Fixes found missing coincidences by adding extra coincident constrains</source>
-      <translation type="unfinished">Fixes found missing coincidences by adding extra coincident constrains</translation>
+      <translation>Correction des coïncidences manquantes en ajoutant des contraintes de coïncidence supplémentaires</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="55"/>
@@ -5119,12 +5119,12 @@ This is purely based on topological shape of the sketch and not on its geometry/
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="68"/>
       <source>Defines the X/Y tolerance inside which missing coincidences are searched.</source>
-      <translation type="unfinished">Defines the X/Y tolerance inside which missing coincidences are searched.</translation>
+      <translation>Définit la tolérance X/Y à l'intérieur de laquelle les coïncidences manquantes sont recherchées.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="75"/>
       <source>If checked, construction geometries are ignored in the search</source>
-      <translation type="unfinished">If checked, construction geometries are ignored in the search</translation>
+      <translation>Si coché, les géométries de construction sont ignorées dans la recherche</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="78"/>
@@ -5135,8 +5135,8 @@ This is purely based on topological shape of the sketch and not on its geometry/
       <location filename="../../TaskSketcherValidation.ui" line="88"/>
       <source>Finds and displays missing coincidences found in the sketch
 This is done by analyzing the sketch geometries and constraints</source>
-      <translation type="unfinished">Finds and displays missing coincidences found in the sketch
-This is done by analyzing the sketch geometries and constraints</translation>
+      <translation>Trouve et affiche les coïncidences manquantes dans l'esquisse.
+Cela se fait en analysant les géométries et contraintes de l'esquisse.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="92"/>
@@ -5161,17 +5161,17 @@ This is done by analyzing the sketch geometries and constraints</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="115"/>
       <source>Finds invalid/malformed constrains in the sketch</source>
-      <translation type="unfinished">Finds invalid/malformed constrains in the sketch</translation>
+      <translation>Trouve des contraintes invalides/malformées dans l'esquisse</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="125"/>
       <source>Tries to fix found invalid constraints</source>
-      <translation type="unfinished">Tries to fix found invalid constraints</translation>
+      <translation>Tente de corriger les contraintes invalides trouvées</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="135"/>
       <source>Deletes constraints referring to external geometry</source>
-      <translation type="unfinished">Deletes constraints referring to external geometry</translation>
+      <translation>Supprime les contraintes liées à une géométrie externe.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="138"/>
@@ -5186,12 +5186,12 @@ This is done by analyzing the sketch geometries and constraints</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="154"/>
       <source>Finds degenerated geometries in the sketch</source>
-      <translation type="unfinished">Finds degenerated geometries in the sketch</translation>
+      <translation>Trouve les géométries dégénérées dans l'esquisse</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="164"/>
       <source>Tries to fix found degenerated geometries</source>
-      <translation type="unfinished">Tries to fix found degenerated geometries</translation>
+      <translation>Tente de corriger les géométries dégénérées trouvées</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="177"/>
@@ -5201,12 +5201,12 @@ This is done by analyzing the sketch geometries and constraints</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="183"/>
       <source>Finds reversed external geometries</source>
-      <translation type="unfinished">Finds reversed external geometries</translation>
+      <translation>Découvertes de géométries externes inversées</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="193"/>
       <source>Fixes found reversed external geometries by swapping their endpoints</source>
-      <translation type="unfinished">Fixes found reversed external geometries by swapping their endpoints</translation>
+      <translation>Corrige les géométries externes inversées en échangeant leurs extrémités</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="196"/>
@@ -5221,7 +5221,7 @@ This is done by analyzing the sketch geometries and constraints</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="212"/>
       <source>Enables/updates constraint orientation locking</source>
-      <translation type="unfinished">Enables/updates constraint orientation locking</translation>
+      <translation>Active/met à jour le verrouillage de l'orientation des contraintes</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="215"/>
@@ -5231,7 +5231,7 @@ This is done by analyzing the sketch geometries and constraints</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="222"/>
       <source>Disables constraint orientation locking</source>
-      <translation type="unfinished">Disables constraint orientation locking</translation>
+      <translation>Désactive le verrouillage de l'orientation des contraintes</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="225"/>
@@ -5319,32 +5319,32 @@ This is done by analyzing the sketch geometries and constraints</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2883"/>
       <source>Over-constrained: </source>
-      <translation type="unfinished">Over-constrained: </translation>
+      <translation>L'esquisse possède trop de contraintes: </translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2889"/>
       <source>Malformed constraints: </source>
-      <translation type="unfinished">Malformed constraints: </translation>
+      <translation>Contraintes mal formées : </translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2895"/>
       <source>Redundant constraints:</source>
-      <translation type="unfinished">Redundant constraints:</translation>
+      <translation>Contraintes redondantes :</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2901"/>
       <source>Partially redundant:</source>
-      <translation type="unfinished">Partially redundant:</translation>
+      <translation>Contraintes partiellement redondantes:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2907"/>
       <source>Solver failed to converge</source>
-      <translation type="unfinished">Solver failed to converge</translation>
+      <translation>Le solveur n'a pas pu converger</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2912"/>
       <source>Under constrained:</source>
-      <translation type="unfinished">Under constrained:</translation>
+      <translation>L'esquisse manque de contraintes:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2914"/>
@@ -5354,7 +5354,7 @@ This is done by analyzing the sketch geometries and constraints</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2917"/>
       <source>Fully constrained</source>
-      <translation type="unfinished">Fully constrained</translation>
+      <translation>Entièrement contrainte</translation>
     </message>
   </context>
   <context>
@@ -5814,7 +5814,7 @@ Voulez-vous la détacher de son support ?</translation>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="22"/>
       <source>DOF</source>
-      <translation type="unfinished">DOF</translation>
+      <translation>DOF</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.ui" line="29"/>
@@ -6162,7 +6162,7 @@ L'algoritheme Eigen Sparse QR est optimisé pour les matrices légères; génér
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2863"/>
       <source>and %1 more</source>
-      <translation type="unfinished">and %1 more</translation>
+      <translation>et %1 de plus</translation>
     </message>
   </context>
   <context>

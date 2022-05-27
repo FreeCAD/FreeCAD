@@ -240,6 +240,14 @@
       <translation>Groottefactor</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation>Gebruiker gedefinieerde u/v richtingen</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation>Maak plaatsing</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>Vloeiend maken</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>Krommingsvariatie</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation>Gebruiker gedefinieerde u/v richtingen</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation>Maak plaatsing</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>Meshsegmentatie</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation>Samenstelling aanmaken</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>Glad gaas</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation>Genereer maaswerk vanuit ongebruikte driehoeken</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation>Samenstelling aanmaken</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>Selecteer</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>Onderdelen</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Sectie</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Selecteer gehele component</translation>
+      <source>All</source>
+      <translation>Alle</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>Kies driehoek</translation>
+      <source>Components</source>
+      <translation>Onderdelen</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>&lt; vlakken dan</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>Alle</translation>
+      <source>Pick triangle</source>
+      <translation>Kies driehoek</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Selecteer gehele component</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>Vlak</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation>Detecteer</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>Tolerantie</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>Minimum aantal vlakken</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation>Detecteer</translation>
     </message>
     <message>
       <source>Cylinder</source>

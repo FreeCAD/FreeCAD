@@ -9,7 +9,7 @@
       <translation>Crea un profilo esagonale</translation>
     </message>
     <message>
-      <location filename="../../../Profiles.py" line="56"/>
+      <location filename="../../../Profiles.py" line="58"/>
       <source>Creates a hexagonal profile in the sketch</source>
       <translation>Crea un profilo esagonale nello schizzo</translation>
     </message>
@@ -1215,7 +1215,7 @@ rispetto a una linea o a un terzo punto</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1165"/>
       <source>Insert knot</source>
-      <translation type="unfinished">Insert knot</translation>
+      <translation>Inserisci nodo</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1166"/>
@@ -2094,7 +2094,7 @@ vincoli non validi, geometria degenerata, ecc.</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1059"/>
       <source>Insert knot</source>
-      <translation type="unfinished">Insert knot</translation>
+      <translation>Inserisci nodo</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1027"/>
@@ -2567,7 +2567,7 @@ vincoli non validi, geometria degenerata, ecc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="565"/>
       <source>One of the selected has to be on the sketch.</source>
-      <translation type="unfinished">One of the selected has to be on the sketch.</translation>
+      <translation>Uno dei selezionati deve essere sullo schizzo.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="912"/>
@@ -2603,7 +2603,7 @@ vincoli non validi, geometria degenerata, ecc.</translation>
       <location filename="../../CommandConstraints.cpp" line="1176"/>
       <location filename="../../CommandConstraints.cpp" line="1269"/>
       <source>The selected edge is not a line segment.</source>
-      <translation type="unfinished">The selected edge is not a line segment.</translation>
+      <translation>Il bordo selezionato non è un segmento di linea.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="946"/>
@@ -2720,7 +2720,7 @@ vincoli non validi, geometria degenerata, ecc.</translation>
       <location filename="../../CommandConstraints.cpp" line="1980"/>
       <location filename="../../CommandConstraints.cpp" line="1990"/>
       <source>Select two or more vertices from the sketch.</source>
-      <translation type="unfinished">Select two or more vertices from the sketch.</translation>
+      <translation>Seleziona due o più vertici dallo schizzo.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2147"/>
@@ -2736,7 +2736,7 @@ vincoli non validi, geometria degenerata, ecc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2370"/>
       <source>This constraint does not make sense for non-linear curves.</source>
-      <translation type="unfinished">This constraint does not make sense for non-linear curves.</translation>
+      <translation>Questo vincolo non ha senso per le curve non lineari.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2487"/>
@@ -2844,13 +2844,13 @@ vincoli non validi, geometria degenerata, ecc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3258"/>
       <source>Select a valid line.</source>
-      <translation type="unfinished">Select a valid line.</translation>
+      <translation>Selezionare una linea valida.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3274"/>
       <location filename="../../CommandConstraints.cpp" line="3312"/>
       <source>The selected edge is not a valid line.</source>
-      <translation type="unfinished">The selected edge is not a valid line.</translation>
+      <translation>Il bordo selezionato non è una linea valida.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3376"/>
@@ -3006,7 +3006,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
       <location filename="../../CommandConstraints.cpp" line="6319"/>
       <location filename="../../CommandConstraints.cpp" line="7022"/>
       <source>Select two or more compatible edges.</source>
-      <translation type="unfinished">Select two or more compatible edges.</translation>
+      <translation>Selezionare due o più spigoli compatibili.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6324"/>
@@ -3023,7 +3023,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
       <location filename="../../CommandConstraints.cpp" line="6388"/>
       <location filename="../../CommandConstraints.cpp" line="6440"/>
       <source>Select two or more edges of similar type.</source>
-      <translation type="unfinished">Select two or more edges of similar type.</translation>
+      <translation>Seleziona due o più bordi di tipo simile.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6522"/>
@@ -3236,7 +3236,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1203"/>
       <source>Nothing is selected. Please select a b-spline.</source>
-      <translation type="unfinished">Nothing is selected. Please select a b-spline.</translation>
+      <translation>Nessuna selezione. Si prega di selezionare una b-spline.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1217"/>
@@ -3381,7 +3381,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="29"/>
       <source>Check the filters to aggregate:</source>
-      <translation type="unfinished">Check the filters to aggregate:</translation>
+      <translation>Controllare i filtri da aggregare:</translation>
     </message>
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="52"/>
@@ -3511,7 +3511,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="189"/>
       <source>Check All</source>
-      <translation type="unfinished">Check All</translation>
+      <translation>Seleziona tutti</translation>
     </message>
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="202"/>
@@ -3521,7 +3521,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
       <location filename="../../ConstraintMultiFilterDialog.ui" line="205"/>
       <source>Uncheck All</source>
-      <translation type="unfinished">Uncheck All</translation>
+      <translation>Deseleziona Tutto</translation>
     </message>
   </context>
   <context>
@@ -3559,7 +3559,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
       <location filename="../../ConstraintSettingsDialog.ui" line="100"/>
       <source>3D view control</source>
-      <translation type="unfinished">3D view control</translation>
+      <translation>Controllo visualizzazione 3D</translation>
     </message>
     <message>
       <location filename="../../ConstraintSettingsDialog.ui" line="112"/>
@@ -4764,7 +4764,7 @@ Tuttavia, non sono stati trovati i vincoli che riguardano i punti finali.</trans
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="210"/>
       <source>Select Multiple</source>
-      <translation type="unfinished">Select Multiple</translation>
+      <translation>Seleziona Multipla</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="223"/>
@@ -4779,7 +4779,7 @@ Tuttavia, non sono stati trovati i vincoli che riguardano i punti finali.</trans
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="250"/>
       <source>Show Listed</source>
-      <translation type="unfinished">Show Listed</translation>
+      <translation>Mostra Elenco</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="263"/>
@@ -4789,7 +4789,7 @@ Tuttavia, non sono stati trovati i vincoli che riguardano i punti finali.</trans
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="266"/>
       <source>Hide Listed</source>
-      <translation type="unfinished">Hide Listed</translation>
+      <translation>Nascondi Elenco</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="279"/>
@@ -4799,7 +4799,7 @@ Tuttavia, non sono stati trovati i vincoli che riguardano i punti finali.</trans
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="282"/>
       <source>Restrict Visibility</source>
-      <translation type="unfinished">Restrict Visibility</translation>
+      <translation>Limita Visibilità</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="640"/>
@@ -5208,7 +5208,7 @@ This is done by analyzing the sketch geometries and constraints</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="183"/>
       <source>Finds reversed external geometries</source>
-      <translation type="unfinished">Finds reversed external geometries</translation>
+      <translation>Trova geometrie esterne invertite</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="193"/>
@@ -5341,7 +5341,7 @@ This is done by analyzing the sketch geometries and constraints</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2901"/>
       <source>Partially redundant:</source>
-      <translation type="unfinished">Partially redundant:</translation>
+      <translation>Parzialmente ridondante:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2907"/>
@@ -5351,7 +5351,7 @@ This is done by analyzing the sketch geometries and constraints</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2912"/>
       <source>Under constrained:</source>
-      <translation type="unfinished">Under constrained:</translation>
+      <translation>Sotto vincolati:</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2914"/>
@@ -5361,7 +5361,7 @@ This is done by analyzing the sketch geometries and constraints</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="2917"/>
       <source>Fully constrained</source>
-      <translation type="unfinished">Fully constrained</translation>
+      <translation>Completamente vincolato</translation>
     </message>
   </context>
   <context>

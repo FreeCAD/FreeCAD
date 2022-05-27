@@ -9,7 +9,7 @@
       <translation>Sposta vista</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandMoveView.py" line="48"/>
+      <location filename="../../../TechDrawTools/CommandMoveView.py" line="50"/>
       <source>Move a View to a new Page</source>
       <translation>Sposta una vista in una nuova pagina</translation>
     </message>
@@ -34,6 +34,7 @@
       <translation>Seleziona dalla pagina.</translation>
     </message>
     <message>
+      <location filename="../../../TechDrawTools/TaskMoveView.py" line="94"/>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="113"/>
       <source>Select Page</source>
       <translation>Seleziona pagina</translation>
@@ -46,16 +47,6 @@
   </context>
   <context>
     <name>ShareView</name>
-    <message>
-      <location filename="../../../TechDrawTools/CommandShareView.py" line="47"/>
-      <source>Share View</source>
-      <translation>Condividi vista</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandShareView.py" line="48"/>
-      <source>Share a View on a second Page</source>
-      <translation>Condividi una vista su una seconda pagina</translation>
-    </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="46"/>
       <source>Share View with another Page</source>
@@ -82,6 +73,7 @@
       <translation>Seleziona dalla pagina.</translation>
     </message>
     <message>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="94"/>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="113"/>
       <source>Select Page</source>
       <translation>Seleziona pagina</translation>
@@ -90,6 +82,16 @@
       <location filename="../../../TechDrawTools/TaskShareView.py" line="112"/>
       <source>Select To Page.</source>
       <translation>Selezione alla pagina.</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandShareView.py" line="47"/>
+      <source>Share View</source>
+      <translation>Condividi vista</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandShareView.py" line="50"/>
+      <source>Share a View on a second Page</source>
+      <translation>Condividi una vista su una seconda pagina</translation>
     </message>
   </context>
   <context>
@@ -437,12 +439,12 @@
     <message>
       <location filename="../../Command.cpp" line="1445"/>
       <source>Save DXF file</source>
-      <translation type="unfinished">Save DXF file</translation>
+      <translation>Salva file DXF</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1447"/>
       <source>DXF (*.dxf)</source>
-      <translation type="unfinished">DXF (*.dxf)</translation>
+      <translation>DXF (*.dxf)</translation>
     </message>
   </context>
   <context>
@@ -468,7 +470,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1642"/>
       <source>Extend Line</source>
-      <translation type="unfinished">Extend Line</translation>
+      <translation>Estendi Linea</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1643"/>
@@ -600,7 +602,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="746"/>
       <source>Change Line Attributes</source>
-      <translation type="unfinished">Change Line Attributes</translation>
+      <translation>Cambia Attributi Linea</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="747"/>
@@ -619,7 +621,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="240"/>
       <location filename="../../CommandExtensionPack.cpp" line="340"/>
       <source>Add Circle Centerlines</source>
-      <translation type="unfinished">Add Circle Centerlines</translation>
+      <translation>Aggiungi Linee centrali del Cerchio</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="241"/>
@@ -638,7 +640,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="274"/>
       <source>Add Circle Centerlines</source>
-      <translation type="unfinished">Add Circle Centerlines</translation>
+      <translation>Aggiungi Linee centrali del Cerchio</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="275"/>
@@ -752,7 +754,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2131"/>
       <source>Create Arc Length Dimension</source>
-      <translation type="unfinished">Create Arc Length Dimension</translation>
+      <translation>Crea Quota Lunghezza Arco</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2132"/>
@@ -870,7 +872,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2209"/>
       <source>Customize Format Label</source>
-      <translation type="unfinished">Customize Format Label</translation>
+      <translation>Personalizza Etichetta Formato</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2210"/>
@@ -908,7 +910,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1056"/>
       <source>Add Cosmetic Circle</source>
-      <translation type="unfinished">Add Cosmetic Circle</translation>
+      <translation>Aggiungi Cerchio Cosmetico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1057"/>
@@ -927,7 +929,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="895"/>
       <location filename="../../CommandExtensionPack.cpp" line="1141"/>
       <source>Add Cosmetic Arc</source>
-      <translation type="unfinished">Add Cosmetic Arc</translation>
+      <translation>Aggiungi Arco Cosmetico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="896"/>
@@ -947,7 +949,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="956"/>
       <location filename="../../CommandExtensionPack.cpp" line="1132"/>
       <source>Add Cosmetic Circle</source>
-      <translation type="unfinished">Add Cosmetic Circle</translation>
+      <translation>Aggiungi Cerchio Cosmetico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="957"/>
@@ -967,7 +969,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="1021"/>
       <location filename="../../CommandExtensionPack.cpp" line="1151"/>
       <source>Add Cosmetic Circle 3 Points</source>
-      <translation type="unfinished">Add Cosmetic Circle 3 Points</translation>
+      <translation>Aggiungi Cerchio Cosmetico 3 Punti</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1022"/>
@@ -991,7 +993,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="1572"/>
       <location filename="../../CommandExtensionPack.cpp" line="1710"/>
       <source>Extend Line</source>
-      <translation type="unfinished">Extend Line</translation>
+      <translation>Estendi Linea</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1573"/>
@@ -1106,14 +1108,14 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="159"/>
       <location filename="../../CommandExtensionDims.cpp" line="329"/>
-      <source>Insert &apos;〼&apos; Prefix</source>
-      <translation type="unfinished">Insert &apos;〼&apos; Prefix</translation>
+      <source>Insert &apos;□&apos; Prefix</source>
+      <translation type="unfinished">Insert &apos;□&apos; Prefix</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="160"/>
       <location filename="../../CommandExtensionDims.cpp" line="330"/>
-      <source>Insert a &apos;〼&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Insert a &apos;〼&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <source>Insert a &apos;□&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
+      <translation type="unfinished">Insert a &apos;□&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
     </message>
   </context>
   <context>
@@ -1126,7 +1128,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1288"/>
       <source>Add Cosmetic Parallel Line</source>
-      <translation type="unfinished">Add Cosmetic Parallel Line</translation>
+      <translation>Aggiungi Linea Parallela Cosmetica</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1289"/>
@@ -1145,7 +1147,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="1220"/>
       <location filename="../../CommandExtensionPack.cpp" line="1356"/>
       <source>Add Cosmetic Parallel Line</source>
-      <translation type="unfinished">Add Cosmetic Parallel Line</translation>
+      <translation>Aggiungi Linea Parallela Cosmetica</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1221"/>
@@ -1184,7 +1186,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1391"/>
       <source>Lock/Unlock View</source>
-      <translation type="unfinished">Lock/Unlock View</translation>
+      <translation>Blocca/Sblocca Vista</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1392"/>
@@ -1280,7 +1282,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1434"/>
       <source>Position Section View</source>
-      <translation type="unfinished">Position Section View</translation>
+      <translation>Posizione Vista Sezione</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1435"/>
@@ -1298,7 +1300,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="215"/>
       <source>Remove Prefix</source>
-      <translation type="unfinished">Remove Prefix</translation>
+      <translation>Rimuovi Prefisso</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="216"/>
@@ -1335,7 +1337,7 @@
       <location filename="../../CommandExtensionPack.cpp" line="1607"/>
       <location filename="../../CommandExtensionPack.cpp" line="1718"/>
       <source>Shorten Line</source>
-      <translation type="unfinished">Shorten Line</translation>
+      <translation>Accorcia la Linea</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1608"/>
@@ -2066,9 +2068,9 @@
       <translation>Crea vista di sezione</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="465"/>
+      <location filename="../../TaskSectionView.cpp" line="463"/>
       <source>Edit SectionView</source>
-      <translation type="unfinished">Edit SectionView</translation>
+      <translation>Modifica Vista Sezione</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.cpp" line="644"/>
@@ -2093,7 +2095,7 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="189"/>
       <source>Remove Prefix</source>
-      <translation type="unfinished">Remove Prefix</translation>
+      <translation>Rimuovi Prefisso</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="359"/>
@@ -2208,7 +2210,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="763"/>
       <source>Change Line Attributes</source>
-      <translation type="unfinished">Change Line Attributes</translation>
+      <translation>Cambia Attributi Linea</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="822"/>
@@ -2218,17 +2220,17 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="868"/>
       <source>Cosmetic Arc</source>
-      <translation type="unfinished">Cosmetic Arc</translation>
+      <translation>Arco Cosmetico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="931"/>
       <source>Cosmetic Circle</source>
-      <translation type="unfinished">Cosmetic Circle</translation>
+      <translation>Cerchio Cosmetico</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="991"/>
       <source>Cosmetic Circle 3 Points</source>
-      <translation type="unfinished">Cosmetic Circle 3 Points</translation>
+      <translation>Cerchio Cosmetico 3 Punti</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1177"/>
@@ -2238,12 +2240,12 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1407"/>
       <source>Lock/Unlock View</source>
-      <translation type="unfinished">Lock/Unlock View</translation>
+      <translation>Blocca/Sblocca Vista</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1500"/>
       <source>Extend/Shorten Line</source>
-      <translation type="unfinished">Extend/Shorten Line</translation>
+      <translation>Estende/accorcia Linea</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1806"/>
@@ -2253,7 +2255,7 @@
     <message>
       <location filename="../../TaskCustomizeFormat.cpp" line="221"/>
       <source>Customize Format</source>
-      <translation type="unfinished">Customize Format</translation>
+      <translation>Personalizza Formato</translation>
     </message>
   </context>
   <context>
@@ -3137,7 +3139,7 @@
       <translation>Modifica la vista in sezione</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="504"/>
+      <location filename="../../TaskSectionView.cpp" line="500"/>
       <source>Operation Failed</source>
       <translation>Operazione non riuscita</translation>
     </message>
@@ -3266,7 +3268,7 @@
     <message>
       <location filename="../../TaskDimension.cpp" line="412"/>
       <source>Select 2 Vertexes or 1 Edge</source>
-      <translation type="unfinished">Select 2 Vertexes or 1 Edge</translation>
+      <translation>Seleziona 2 Vertici o 1 Bordo</translation>
     </message>
   </context>
   <context>
@@ -3479,12 +3481,12 @@ dal bordo superiore e sinistro della vista</translation>
     <message>
       <location filename="../../TaskMoveView.ui" line="43"/>
       <source>From Page</source>
-      <translation type="unfinished">From Page</translation>
+      <translation>Dalla Pagina</translation>
     </message>
     <message>
       <location filename="../../TaskMoveView.ui" line="64"/>
       <source>To Page</source>
-      <translation type="unfinished">To Page</translation>
+      <translation>Alla Pagina</translation>
     </message>
   </context>
   <context>
@@ -3639,7 +3641,7 @@ This directory will be used for the symbol selection.</translation>
     <message>
       <location filename="../../DlgPageChooser.ui" line="17"/>
       <source>Page Chooser</source>
-      <translation type="unfinished">Page Chooser</translation>
+      <translation>Selettore Pagina</translation>
     </message>
     <message>
       <location filename="../../DlgPageChooser.ui" line="29"/>
@@ -3649,7 +3651,7 @@ This directory will be used for the symbol selection.</translation>
     <message>
       <location filename="../../DlgPageChooser.ui" line="39"/>
       <source>Select a Page that should be used</source>
-      <translation type="unfinished">Select a Page that should be used</translation>
+      <translation>Seleziona una Pagina che dovrebbe essere usata</translation>
     </message>
   </context>
   <context>
@@ -4242,7 +4244,7 @@ quando si tratteggia una faccia con un modello PAT</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="493"/>
       <source>Grid Color</source>
-      <translation type="unfinished">Grid Color</translation>
+      <translation>Colore Griglia</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="528"/>
@@ -4336,7 +4338,7 @@ quando si tratteggia una faccia con un modello PAT</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="219"/>
       <source>Dimension Format</source>
-      <translation type="unfinished">Dimension Format</translation>
+      <translation>Formato Quota</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="226"/>
@@ -4639,12 +4641,12 @@ I cambiamenti non hanno effetto sulle quote esistenti.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="808"/>
       <source>Show Grid</source>
-      <translation type="unfinished">Show Grid</translation>
+      <translation>Mostra Griglia</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="829"/>
       <source>Grid Spacing</source>
-      <translation type="unfinished">Grid Spacing</translation>
+      <translation>Spaziatura Griglia</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="849"/>
@@ -4936,12 +4938,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../MDIViewPage.cpp" line="902"/>
       <source>Save DXF file</source>
-      <translation type="unfinished">Save DXF file</translation>
+      <translation>Salva file DXF</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="904"/>
       <source>DXF (*.dxf)</source>
-      <translation type="unfinished">DXF (*.dxf)</translation>
+      <translation>DXF (*.dxf)</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="1389"/>
@@ -5383,102 +5385,102 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="26"/>
       <source>Format Symbols</source>
-      <translation type="unfinished">Format Symbols</translation>
+      <translation>Formato Simboli</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="34"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="32"/>
       <source>GD&amp;T</source>
-      <translation type="unfinished">GD&amp;T</translation>
+      <translation>GD&amp;T</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="41"/>
       <source>Straightness</source>
-      <translation type="unfinished">Straightness</translation>
+      <translation>Rettilineità</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="44"/>
       <source>⏤</source>
-      <translation type="unfinished">⏤</translation>
+      <translation>⏤</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="51"/>
       <source>Flatness</source>
-      <translation type="unfinished">Flatness</translation>
+      <translation>Planarità</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="54"/>
       <source>⏥</source>
-      <translation type="unfinished">⏥</translation>
+      <translation>⏥</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="61"/>
       <source>Circularity</source>
-      <translation type="unfinished">Circularity</translation>
+      <translation>Circolarità</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="64"/>
       <source>○</source>
-      <translation type="unfinished">○</translation>
+      <translation>○</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="71"/>
       <source>Cylindricity</source>
-      <translation type="unfinished">Cylindricity</translation>
+      <translation>Cilindricità</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="74"/>
       <source>⌭</source>
-      <translation type="unfinished">⌭</translation>
+      <translation>⌭</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="81"/>
       <source>Parallelism</source>
-      <translation type="unfinished">Parallelism</translation>
+      <translation>Parallelismo</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="84"/>
       <source>∥</source>
-      <translation type="unfinished">∥</translation>
+      <translation>∥</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="91"/>
       <source>Perpendicularity</source>
-      <translation type="unfinished">Perpendicularity</translation>
+      <translation>Perpendicolarità</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="94"/>
       <source>⟂</source>
-      <translation type="unfinished">⟂</translation>
+      <translation>⟂</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="101"/>
       <source>Angularity</source>
-      <translation type="unfinished">Angularity</translation>
+      <translation>Angolarità</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="104"/>
       <source>∠</source>
-      <translation type="unfinished">∠</translation>
+      <translation>∠</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="116"/>
       <source>Profile of a line</source>
-      <translation type="unfinished">Profile of a line</translation>
+      <translation>Profilo di una linea</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="119"/>
       <source>⌒</source>
-      <translation type="unfinished">⌒</translation>
+      <translation>⌒</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="126"/>
       <source>Profile of a surface</source>
-      <translation type="unfinished">Profile of a surface</translation>
+      <translation>Profilo di una superficie</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="129"/>
       <source>⌓</source>
-      <translation type="unfinished">⌓</translation>
+      <translation>⌓</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="136"/>
@@ -5488,7 +5490,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="139"/>
       <source>↗</source>
-      <translation type="unfinished">↗</translation>
+      <translation>↗</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="146"/>
@@ -5508,17 +5510,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="159"/>
       <source>⌖</source>
-      <translation type="unfinished">⌖</translation>
+      <translation>⌖</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="166"/>
       <source>Concentricity</source>
-      <translation type="unfinished">Concentricity</translation>
+      <translation>Concentricità</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="169"/>
       <source>◎</source>
-      <translation type="unfinished">◎</translation>
+      <translation>◎</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="176"/>
@@ -5678,7 +5680,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="409"/>
       <source>Radius &amp; Diameter</source>
-      <translation type="unfinished">Radius &amp; Diameter</translation>
+      <translation>Raggio &amp; Diametro</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="418"/>
@@ -5703,22 +5705,22 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="438"/>
       <source>Radius of sphere</source>
-      <translation type="unfinished">Radius of sphere</translation>
+      <translation>Raggio della sfera</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="441"/>
       <source>SR</source>
-      <translation type="unfinished">SR</translation>
+      <translation>SR</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="448"/>
       <source>Diameter of sphere</source>
-      <translation type="unfinished">Diameter of sphere</translation>
+      <translation>Diametro della sfera</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="451"/>
       <source>S⌀</source>
-      <translation type="unfinished">S⌀</translation>
+      <translation>S⌀</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="458"/>
@@ -5728,12 +5730,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="461"/>
       <source>□</source>
-      <translation type="unfinished">□</translation>
+      <translation>□</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="470"/>
       <source>Angles</source>
-      <translation type="unfinished">Angles</translation>
+      <translation>Angoli</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="479"/>
@@ -5748,22 +5750,22 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="489"/>
       <source>(Arc) Minute</source>
-      <translation type="unfinished">(Arc) Minute</translation>
+      <translation>(Arc) Primo</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="492"/>
       <source>′</source>
-      <translation type="unfinished">′</translation>
+      <translation>′</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="499"/>
       <source>(Arc) Second</source>
-      <translation type="unfinished">(Arc) Second</translation>
+      <translation>(Arc) Secondo</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="502"/>
       <source>″</source>
-      <translation type="unfinished">″</translation>
+      <translation>′′</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="509"/>
@@ -5788,7 +5790,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="536"/>
       <source>⌲</source>
-      <translation type="unfinished">⌲</translation>
+      <translation>⌲</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="543"/>
@@ -5798,7 +5800,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="546"/>
       <source>⌳</source>
-      <translation type="unfinished">⌳</translation>
+      <translation>⌳</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="553"/>
@@ -5808,7 +5810,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="556"/>
       <source>⌴</source>
-      <translation type="unfinished">⌴</translation>
+      <translation>⌴</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="563"/>
@@ -5818,17 +5820,17 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="566"/>
       <source>⌵</source>
-      <translation type="unfinished">⌵</translation>
+      <translation>⌵</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="573"/>
       <source>Plus - Minus</source>
-      <translation type="unfinished">Plus - Minus</translation>
+      <translation>Plus - Minus</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="576"/>
       <source>±</source>
-      <translation type="unfinished">±</translation>
+      <translation>±</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="583"/>
@@ -5838,117 +5840,117 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="586"/>
       <source>℄</source>
-      <translation type="unfinished">℄</translation>
+      <translation>℄</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="593"/>
       <source>Left/right arrow</source>
-      <translation type="unfinished">Left/right arrow</translation>
+      <translation>Freccia sinistra/destra</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="596"/>
       <source>↔</source>
-      <translation type="unfinished">↔</translation>
+      <translation>↔</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="603"/>
       <source>Downward arrow</source>
-      <translation type="unfinished">Downward arrow</translation>
+      <translation>Freccia verso il basso</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="606"/>
       <source>↧</source>
-      <translation type="unfinished">↧</translation>
+      <translation>↧</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="613"/>
       <source>Multiplication sign</source>
-      <translation type="unfinished">Multiplication sign</translation>
+      <translation>Segno di moltiplicazione</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="616"/>
       <source>×</source>
-      <translation type="unfinished">×</translation>
+      <translation>×</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="625"/>
       <source>Greek Letters</source>
-      <translation type="unfinished">Greek Letters</translation>
+      <translation>Lettere Greche</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="634"/>
       <source>Capital delta</source>
-      <translation type="unfinished">Capital delta</translation>
+      <translation>Delta maiuscola</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="637"/>
       <source>Δ</source>
-      <translation type="unfinished">Δ</translation>
+      <translation>Δ</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="644"/>
       <source>Capital sigma</source>
-      <translation type="unfinished">Capital sigma</translation>
+      <translation>Sigma maiuscola</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="647"/>
       <source>Σ</source>
-      <translation type="unfinished">Σ</translation>
+      <translation>Σ</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="654"/>
       <source>Capital omega</source>
-      <translation type="unfinished">Capital omega</translation>
+      <translation>Omega maiuscola</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="657"/>
       <source>Ω</source>
-      <translation type="unfinished">Ω</translation>
+      <translation>Ω</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="664"/>
       <source>Small mu</source>
-      <translation type="unfinished">Small mu</translation>
+      <translation>Mu minuscola</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="667"/>
       <source>μ</source>
-      <translation type="unfinished">μ</translation>
+      <translation>μ</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="674"/>
       <source>Small sigma</source>
-      <translation type="unfinished">Small sigma</translation>
+      <translation>Sigma minuscola</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="677"/>
       <source>σ</source>
-      <translation type="unfinished">σ</translation>
+      <translation>σ</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="684"/>
       <source>Small phi</source>
-      <translation type="unfinished">Small phi</translation>
+      <translation>Phi minuscola</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="687"/>
       <source>φ</source>
-      <translation type="unfinished">φ</translation>
+      <translation>φ</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="694"/>
       <source>Small omega</source>
-      <translation type="unfinished">Small omega</translation>
+      <translation>Omega minuscola</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="697"/>
       <source>⍵</source>
-      <translation type="unfinished">⍵</translation>
+      <translation>⍵</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="708"/>
       <source>Format:</source>
-      <translation type="unfinished">Format:</translation>
+      <translation>Formato:</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="718"/>
@@ -5958,7 +5960,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.cpp" line="111"/>
       <source>Customize Format</source>
-      <translation type="unfinished">Customize Format</translation>
+      <translation>Personalizza Formato</translation>
     </message>
   </context>
   <context>
@@ -6277,7 +6279,7 @@ al posto del valore di quotatura</translation>
       <location filename="../../TaskDimension.ui" line="355"/>
       <location filename="../../TaskDimension.ui" line="398"/>
       <source>Use default</source>
-      <translation type="unfinished">Use default</translation>
+      <translation>Usa predefinito</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="362"/>
@@ -6288,7 +6290,7 @@ al posto del valore di quotatura</translation>
       <location filename="../../TaskDimension.ui" line="365"/>
       <location filename="../../TaskDimension.ui" line="408"/>
       <source>Use selection</source>
-      <translation type="unfinished">Use selection</translation>
+      <translation>Usa selezione</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="372"/>
@@ -7205,7 +7207,7 @@ usando la spaziatura X/Y specificata</translation>
       <translation>Nulla da applicare. Nessuna direzione di sezione selezionata</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="503"/>
+      <location filename="../../TaskSectionView.cpp" line="499"/>
       <source>Can not continue. Object * %1 * not found.</source>
       <translation>Impossibile continuare. Oggetto * %1 * non trovato.</translation>
     </message>
@@ -7215,7 +7217,7 @@ usando la spaziatura X/Y specificata</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="26"/>
       <source>Line attributes</source>
-      <translation type="unfinished">Line attributes</translation>
+      <translation>Attributi linea</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="34"/>
@@ -7255,17 +7257,17 @@ usando la spaziatura X/Y specificata</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="110"/>
       <source>Thin 0,18</source>
-      <translation type="unfinished">Thin 0,18</translation>
+      <translation>Sottile 0,18</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="123"/>
       <source>Middle 0,35</source>
-      <translation type="unfinished">Middle 0,35</translation>
+      <translation>Media 0,35</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="139"/>
       <source>Thick 0,70</source>
-      <translation type="unfinished">Thick 0,70</translation>
+      <translation>Grossa 0,70</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="156"/>
@@ -7285,7 +7287,7 @@ usando la spaziatura X/Y specificata</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="192"/>
       <source>Grey</source>
-      <translation type="unfinished">Grey</translation>
+      <translation>Grigio</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="205"/>
@@ -7325,7 +7327,7 @@ usando la spaziatura X/Y specificata</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.cpp" line="229"/>
       <source>Select line attributes</source>
-      <translation type="unfinished">Select line attributes</translation>
+      <translation>Seleziona attributi linea</translation>
     </message>
   </context>
   <context>
@@ -7405,7 +7407,7 @@ usando la spaziatura X/Y specificata</translation>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="336"/>
       <source>Remove Prefix</source>
-      <translation type="unfinished">Remove Prefix</translation>
+      <translation>Rimuovi Prefisso</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="337"/>

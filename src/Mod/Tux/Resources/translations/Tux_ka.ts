@@ -4,57 +4,57 @@
   <context>
     <name>NavigationIndicator</name>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="66"/>
+      <location filename="../../NavigationIndicatorGui.py" line="67"/>
       <source>Select</source>
       <translation>არჩევა</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="67"/>
+      <location filename="../../NavigationIndicatorGui.py" line="68"/>
       <source>Zoom</source>
       <translation>გადიდება</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="68"/>
+      <location filename="../../NavigationIndicatorGui.py" line="69"/>
       <source>Rotate</source>
       <translation>შებრუნება</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="69"/>
+      <location filename="../../NavigationIndicatorGui.py" line="70"/>
       <source>Pan</source>
       <translation>პანორამა</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="70"/>
+      <location filename="../../NavigationIndicatorGui.py" line="71"/>
       <source>Tilt</source>
       <translation>ტრიალი</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="71"/>
+      <location filename="../../NavigationIndicatorGui.py" line="72"/>
       <source>Navigation style</source>
       <translation>ნავიგაციის სტილი</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="72"/>
+      <location filename="../../NavigationIndicatorGui.py" line="73"/>
       <source>Page Up or Page Down key.</source>
       <translation>ღილაკები PageUp ან PageDown.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="73"/>
+      <location filename="../../NavigationIndicatorGui.py" line="74"/>
       <source>Rotation focus</source>
       <translation>ტრიალის ცენტრი</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="74"/>
+      <location filename="../../NavigationIndicatorGui.py" line="75"/>
       <source>Middle mouse button or H key.</source>
       <translation>თაგუნის შუა ღილაკი ან ღილაკი H.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="75"/>
+      <location filename="../../NavigationIndicatorGui.py" line="77"/>
       <source>Middle mouse button.</source>
       <translation>თაგუნის შუა ღილაკი.</translation>
     </message>
     <message>
-      <location filename="../../NavigationIndicatorGui.py" line="78"/>
+      <location filename="../../NavigationIndicatorGui.py" line="80"/>
       <source>Navigation style not recognized.</source>
       <translation>ნავიგაციის უცნობი სტილი.</translation>
     </message>

@@ -9,7 +9,7 @@
       <translation>Евольвентна шестерня...</translation>
     </message>
     <message>
-      <location filename="../../../InvoluteGearFeature.py" line="59"/>
+      <location filename="../../../InvoluteGearFeature.py" line="61"/>
       <source>Creates or edit the involute gear definition.</source>
       <translation>Створює або редагує параметри евольвентної шестерні.</translation>
     </message>
@@ -22,7 +22,7 @@
       <translation>Зірочка...</translation>
     </message>
     <message>
-      <location filename="../../../SprocketFeature.py" line="64"/>
+      <location filename="../../../SprocketFeature.py" line="66"/>
       <source>Creates or edit the sprocket definition.</source>
       <translation>Створює або редагує зірочку ланцюгової передачі.</translation>
     </message>
@@ -30,12 +30,14 @@
   <context>
     <name>WizardShaft</name>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="210"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="186"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
       <source>Shaft design wizard...</source>
       <translation>Майстер конструювання валів ...</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="187"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="212"/>
       <source>Start the shaft design wizard</source>
       <translation>Запусткає майстер конструювання валів</translation>
     </message>
@@ -78,7 +80,7 @@
       <translation>Тип кінцевого ребра</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="50"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="53"/>
       <source>End edge size</source>
       <translation>Розмір кінцевого ребра</translation>
     </message>
@@ -88,79 +90,79 @@
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="72"/>
       <source>The center point of the helix' start; derived from the reference axis.</source>
-      <translation type="unfinished">The center point of the helix' start; derived from the reference axis.</translation>
+      <translation>Центральна точка початку спіралі; береться із опорної осі.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="74"/>
       <source>The helix' direction; derived from the reference axis.</source>
-      <translation type="unfinished">The helix' direction; derived from the reference axis.</translation>
+      <translation>Напрямок спіралі; обраховується від опорної осі.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="76"/>
       <source>The reference axis of the helix.</source>
-      <translation type="unfinished">The reference axis of the helix.</translation>
+      <translation>Опорна вісь спіралі.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="78"/>
       <source>The helix input mode specifies which properties are set by the user.
 Dependent properties are then calculated.</source>
-      <translation type="unfinished">The helix input mode specifies which properties are set by the user.
-Dependent properties are then calculated.</translation>
+      <translation>Режим введення спіралі визначає, які властивості задаються користувачем.
+Потім розраховуються залежні властивості.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="82"/>
       <source>The axial distance between two turns.</source>
-      <translation type="unfinished">The axial distance between two turns.</translation>
+      <translation>Осьова відстань між двома витками.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="84"/>
       <source>The height of the helix' path, not accounting for the extent of the profile.</source>
-      <translation type="unfinished">The height of the helix' path, not accounting for the extent of the profile.</translation>
+      <translation>Висота траєкторії спіралі, що не враховує довжину профілю.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="86"/>
       <source>The number of turns in the helix.</source>
-      <translation type="unfinished">The number of turns in the helix.</translation>
+      <translation>Кількість витків у спіралі.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="89"/>
       <source>The angle of the cone that forms a hull around the helix.
 Non-zero values turn the helix into a conical spiral.
 Positive values make the radius grow, nevatige shrink.</source>
-      <translation type="unfinished">The angle of the cone that forms a hull around the helix.
-Non-zero values turn the helix into a conical spiral.
-Positive values make the radius grow, nevatige shrink.</translation>
+      <translation>Кут конуса, що утворює обводи довкола спіралі.
+Ненульові значення перетворюють спіраль на конічну спіраль.
+При позитивних значеннях радіус збільшується, при негативних зменшується.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="94"/>
       <source>The growth of the helix' radius per turn.
 Non-zero values turn the helix into a conical spiral.</source>
-      <translation type="unfinished">The growth of the helix' radius per turn.
-Non-zero values turn the helix into a conical spiral.</translation>
+      <translation>Приріст радіусу спіралі за один виток.
+Ненульові значення перетворюють спіраль на конічну спіраль.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="97"/>
       <source>Sets the turning direction to left handed,
 i.e. counter-clockwise when moving along its axis.</source>
-      <translation type="unfinished">Sets the turning direction to left handed,
-i.e. counter-clockwise when moving along its axis.</translation>
+      <translation>Встановлює напрямок обертання на лівостороннє,
+тобто. проти годинникової стрілки при переміщенні вздовж осі.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="100"/>
       <source>Determines whether the helix points in the opposite direction of the axis.</source>
-      <translation type="unfinished">Determines whether the helix points in the opposite direction of the axis.</translation>
+      <translation>Визначає, чи спрямована спіраль у протилежний бік від напрямку осі.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="102"/>
       <source>If set, the result will be the intersection of the profile and the preexisting body.</source>
-      <translation type="unfinished">If set, the result will be the intersection of the profile and the preexisting body.</translation>
+      <translation>Якщо встановлено, то результатом буде перетин профілю та наявного тіла.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="104"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
-      <translation type="unfinished">If false, the tool will propose an initial value for the pitch based on the profile bounding box,
-so that self intersection is avoided.</translation>
+      <translation>Якщо не встановлено, інструмент запропонує початкове значення кроку на основі 
+обмежувальної границі профілю, щоб уникнути самоперетину.</translation>
     </message>
   </context>
   <context>
@@ -335,12 +337,12 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="603"/>
       <source>Duplicate selected object</source>
-      <translation>Дублювати виділений об'єкт</translation>
+      <translation>Дублювати виділений обʼєкт</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="604"/>
       <source>Duplicates the selected object and adds it to the active body</source>
-      <translation>Дублює виділений об'єкт і додає його до активного тіла</translation>
+      <translation>Дублює виділений обʼєкт і додає його до активного тіла</translation>
     </message>
   </context>
   <context>
@@ -443,12 +445,12 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="309"/>
       <source>Migrate</source>
-      <translation>Перенесення</translation>
+      <translation>Мігрувати</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="310"/>
       <source>Migrate document to the modern PartDesign workflow</source>
-      <translation>Переносить документ на новий робочий процес PartDesign</translation>
+      <translation>Мігрує документ на новий робочий процес ДизайнуДеталі</translation>
     </message>
   </context>
   <context>
@@ -461,12 +463,12 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="2275"/>
       <source>Mirrored</source>
-      <translation>Дзеркально відобразити</translation>
+      <translation>Дзеркальне зображення</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2276"/>
       <source>Create a mirrored feature</source>
-      <translation>Створює дзеркальне зображення об'єкта</translation>
+      <translation>Створює дзеркальне зображення обʼєкта</translation>
     </message>
   </context>
   <context>
@@ -479,12 +481,12 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="659"/>
       <source>Move object to other body</source>
-      <translation>Переміщення об'єкта до іншого тіла</translation>
+      <translation>Перемістити обʼєкт до іншого тіла</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="660"/>
       <source>Moves the selected object to another body</source>
-      <translation>Переміщує виділений об'єкт до іншого тіла</translation>
+      <translation>Переміщує виділений обʼєкт до іншого тіла</translation>
     </message>
   </context>
   <context>
@@ -497,12 +499,12 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="826"/>
       <source>Move object after other object</source>
-      <translation>Переміщення об'єкта слідом за іншим об'єктом</translation>
+      <translation>Перемістити обʼєкт за іншим обʼєктом</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="827"/>
       <source>Moves the selected object and insert it after another object</source>
-      <translation>Переміщує виділений об'єкт та вставляє його слідом за іншим об'єктом</translation>
+      <translation>Переміщує виділений обʼєкт та вставляє його слідом за іншим обʼєктом</translation>
     </message>
   </context>
   <context>
@@ -714,7 +716,7 @@ so that self intersection is avoided.</translation>
       <location filename="../../Command.cpp" line="344"/>
       <location filename="../../Command.cpp" line="345"/>
       <source>Create a sub-object(s) shape binder</source>
-      <translation>Створити сполучну форму для підоб'єкта</translation>
+      <translation>Створити сполучну форму для підобʼєкта</translation>
     </message>
   </context>
   <context>
@@ -786,7 +788,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="2127"/>
       <source>Make a thick solid</source>
-      <translation>Перетворює тверде тіло на порожнине, із зазначенням товщини граней</translation>
+      <translation>Перетворює суцільне тіло на порожнине, із зазначенням товщини граней</translation>
     </message>
   </context>
   <context>
@@ -912,7 +914,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../Command.cpp" line="390"/>
       <source>Create SubShapeBinder</source>
-      <translation>Створити Сполучну Форму для Підоб'єкта</translation>
+      <translation>Створити Сполучну Форму для Підобʼєкта</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="445"/>
@@ -954,7 +956,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="426"/>
       <source>Migrate legacy part design features to Bodies</source>
-      <translation>Конвертувати застарілі функції PartDesign у Тіла</translation>
+      <translation>Мігрувати застарілі функції ДизайнуДеталі у Тіло</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="571"/>
@@ -964,7 +966,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="616"/>
       <source>Duplicate a PartDesign object</source>
-      <translation>Дублювати PartDesign об'єкт</translation>
+      <translation>Дублювати обʼєкт ДизайнуДеталі</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="739"/>
@@ -979,7 +981,7 @@ so that self intersection is avoided.</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="292"/>
       <source>Mirrored</source>
-      <translation>Дзеркально відобразити</translation>
+      <translation>Дзеркальне зображення</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="320"/>
@@ -1152,7 +1154,7 @@ so that self intersection is avoided.</translation>
       <source>To create a new PartDesign object, there must be an active Body object in the document.
 
 Please select a body from below, or create a new body.</source>
-      <translation>Щоб створити новий об’єкт PartDesign, у документі має бути активнє Тіло.
+      <translation>Щоб створити новий об’єкт ДизійнуДеталі, у документі має бути активнє Тіло.
 
 Виберіть тіло нижче або створіть нове тіло.</translation>
     </message>
@@ -1489,7 +1491,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="48"/>
       <source>Fuse</source>
-      <translation>Об'єднання</translation>
+      <translation>Обʼєднання</translation>
     </message>
     <message>
       <location filename="../../TaskBooleanParameters.ui" line="53"/>
@@ -1623,7 +1625,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="138"/>
       <source>Use All Edges</source>
-      <translation type="unfinished">Use All Edges</translation>
+      <translation>Використовувати Всі Ребра</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="165"/>
@@ -1655,14 +1657,6 @@ click again to end selection</source>
     </message>
   </context>
   <context>
-    <name>PartDesignGui::TaskDatumParameters</name>
-    <message>
-      <location filename="../../TaskDatumParameters.cpp" line="56"/>
-      <source> parameters</source>
-      <translation> параметри</translation>
-    </message>
-  </context>
-  <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
       <location filename="../../TaskBooleanParameters.cpp" line="352"/>
@@ -1690,7 +1684,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskDatumParameters.cpp" line="105"/>
       <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
-      <translation>Немає режиму прив'язки, який би відповідав поточному набору орієнтирів. Якщо ви вирішите продовжити, елемент залишиться на поточному місці та не буде переміщений при зміні орієнтиру. Продовжити?</translation>
+      <translation>Немає режиму привʼязки, який би відповідав поточному набору орієнтирів. Якщо ви вирішите продовжити, елемент залишиться на поточному місці та не буде переміщений при зміні орієнтиру. Продовжити?</translation>
     </message>
   </context>
   <context>
@@ -1786,12 +1780,12 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="276"/>
       <source>Add all edges</source>
-      <translation type="unfinished">Add all edges</translation>
+      <translation>Додати Всі Ребра</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="284"/>
       <source>Adds all edges to the list box (active only when in add selection mode).</source>
-      <translation type="unfinished">Adds all edges to the list box (active only when in add selection mode).</translation>
+      <translation>Додає всі грані у поле списку (активно лише у режимі додавання виділення).</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="293"/>
@@ -1827,7 +1821,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="362"/>
       <source>Face normal</source>
-      <translation type="unfinished">Face normal</translation>
+      <translation>Нормаль Грані</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="365"/>
@@ -1838,7 +1832,7 @@ click again to end selection</source>
       <location filename="../../TaskExtrudeParameters.cpp" line="369"/>
       <location filename="../../TaskExtrudeParameters.cpp" line="371"/>
       <source>Custom direction</source>
-      <translation type="unfinished">Custom direction</translation>
+      <translation>Довільний напрямок</translation>
     </message>
   </context>
   <context>
@@ -1975,7 +1969,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="81"/>
       <source>Use All Edges</source>
-      <translation type="unfinished">Use All Edges</translation>
+      <translation>Використовувати Всі Ребра</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="134"/>
@@ -2108,7 +2102,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="233"/>
       <source>Radial growth:</source>
-      <translation type="unfinished">Radial growth:</translation>
+      <translation>Радіальний приріст:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="255"/>
@@ -2143,7 +2137,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="333"/>
       <source>Error: unsupported mode</source>
-      <translation type="unfinished">Error: unsupported mode</translation>
+      <translation>Помилка: не підтримуваний режим</translation>
     </message>
   </context>
   <context>
@@ -2297,7 +2291,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="42"/>
       <source>Object</source>
-      <translation>Об'єкт</translation>
+      <translation>Обʼєкт</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="65"/>
@@ -2471,7 +2465,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="42"/>
       <source>Offset from face at which pad will end</source>
-      <translation type="unfinished">Offset from face at which pad will end</translation>
+      <translation>Зсув до грані, на якій закінчиться накладка</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="43"/>
@@ -2529,7 +2523,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="58"/>
       <source>Offset to face</source>
-      <translation>Зміщення до грані</translation>
+      <translation>Зсув до грані</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="77"/>
@@ -2545,8 +2539,7 @@ click again to end selection</source>
       <location filename="../../TaskPadPocketParameters.ui" line="92"/>
       <source>Set a direction or select an edge
 from the model as reference</source>
-      <translation type="unfinished">Set a direction or select an edge
-from the model as reference</translation>
+      <translation>Встановіть напрямок або виберіть ребро з моделі як орієнтир</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="97"/>
@@ -2561,12 +2554,12 @@ from the model as reference</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="107"/>
       <source>Custom direction</source>
-      <translation type="unfinished">Custom direction</translation>
+      <translation>Довільний напрямок</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="117"/>
       <source>Show direction</source>
-      <translation type="unfinished">Show direction</translation>
+      <translation>Показати напрямок</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="127"/>
@@ -2636,12 +2629,12 @@ measured along the specified direction</source>
       <location filename="../../TaskPadPocketParameters.ui" line="272"/>
       <location filename="../../TaskPadPocketParameters.ui" line="317"/>
       <source>Angle to taper the extrusion</source>
-      <translation type="unfinished">Angle to taper the extrusion</translation>
+      <translation>Кут конусності екструзії</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="275"/>
       <source>Taper angle</source>
-      <translation type="unfinished">Taper angle</translation>
+      <translation>Кут конусності</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="296"/>
@@ -2651,7 +2644,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="320"/>
       <source>2nd taper angle</source>
-      <translation type="unfinished">2nd taper angle</translation>
+      <translation>Конусність 2ї довжини</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="341"/>
@@ -2679,7 +2672,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="36"/>
       <source>Standard</source>
-      <translation>Стандартно</translation>
+      <translation>Стандартний</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="41"/>
@@ -2714,7 +2707,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="91"/>
       <source>Object</source>
-      <translation>Об'єкт</translation>
+      <translation>Обʼєкт</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="125"/>
@@ -2773,7 +2766,7 @@ measured along the specified direction</source>
       <location filename="../../TaskPipeParameters.ui" line="28"/>
       <location filename="../../TaskPipeParameters.ui" line="93"/>
       <source>Object</source>
-      <translation>Об'єкт</translation>
+      <translation>Обʼєкт</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="51"/>
@@ -2842,7 +2835,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="22"/>
       <source>Transform mode</source>
-      <translation>Режим трансформації</translation>
+      <translation>Режим перетворення</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="36"/>
@@ -2890,12 +2883,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="43"/>
       <source>Offset from face at which pocket will end</source>
-      <translation type="unfinished">Offset from face at which pocket will end</translation>
+      <translation>Зсув до грані, на якій закінчиться виріз</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="44"/>
       <source>Reverses pocket direction</source>
-      <translation type="unfinished">Reverses pocket direction</translation>
+      <translation>Змінює напрямок вирізу</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="73"/>
@@ -3119,7 +3112,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskShapeBinder.ui" line="22"/>
       <source>Object</source>
-      <translation>Об'єкт</translation>
+      <translation>Обʼєкт</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBinder.ui" line="48"/>
@@ -3206,7 +3199,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="120"/>
       <source>Join Type</source>
-      <translation>Тип з'єднання</translation>
+      <translation>Тип зʼєднання</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="128"/>
@@ -3320,6 +3313,101 @@ click again to end selection</source>
     </message>
   </context>
   <context>
+    <name>PartDesignGui::ViewProviderChamfer</name>
+    <message>
+      <location filename="../../ViewProviderChamfer.h" line="41"/>
+      <source>Chamfer parameters</source>
+      <translation>Параметри Фаски</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderDatum</name>
+    <message>
+      <location filename="../../ViewProviderDatum.cpp" line="111"/>
+      <source>Datum Plane parameters</source>
+      <translation>Параметри Базисної Поверхні</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderDatum.cpp" line="116"/>
+      <source>Datum Line parameters</source>
+      <translation>Параметри Базисної Лінії</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderDatum.cpp" line="121"/>
+      <source>Datum Point parameters</source>
+      <translation>Параметри Базисної Точки</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderDatum.cpp" line="126"/>
+      <source>Local Coordinate System parameters</source>
+      <translation>Параметри Локальної Системи Координат</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderDraft</name>
+    <message>
+      <location filename="../../ViewProviderDraft.h" line="42"/>
+      <source>Draft parameters</source>
+      <translation>Параметри Ухилу</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderFillet</name>
+    <message>
+      <location filename="../../ViewProviderFillet.h" line="41"/>
+      <source>Fillet parrameters</source>
+      <translation>Параметри заокруглення</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderLinearPattern</name>
+    <message>
+      <location filename="../../ViewProviderLinearPattern.h" line="38"/>
+      <source>LinearPattern parameters</source>
+      <translation>Параметри Лінійного Масиву</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderMultiTransform</name>
+    <message>
+      <location filename="../../ViewProviderMultiTransform.h" line="38"/>
+      <source>MultiTransform parameters</source>
+      <translation>Параметри Множинного Перетворення</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderPolarPattern</name>
+    <message>
+      <location filename="../../ViewProviderPolarPattern.h" line="38"/>
+      <source>PolarPattern parameters</source>
+      <translation>Параметри Кругового Масиву</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderScaled</name>
+    <message>
+      <location filename="../../ViewProviderScaled.h" line="38"/>
+      <source>Scaled parameters</source>
+      <translation>Параметри Масштабування</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderThickness</name>
+    <message>
+      <location filename="../../ViewProviderThickness.h" line="41"/>
+      <source>Thickness parameters</source>
+      <translation>Параметри Створення Порожнини</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGuii::ViewProviderMirrored</name>
+    <message>
+      <location filename="../../ViewProviderMirrored.h" line="38"/>
+      <source>Mirrored parameters</source>
+      <translation>Параметри Дзеркального Зображення</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesign_CompPrimitiveAdditive</name>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="200"/>
@@ -3428,7 +3516,7 @@ click again to end selection</source>
     <message>
       <location filename="../../CommandBody.cpp" line="882"/>
       <source>Select a feature from the list</source>
-      <translation>Оберіть функцію зі списку</translation>
+      <translation>Оберіть елемент зі списку</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="953"/>
@@ -3456,7 +3544,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="138"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
-      <translation>Немає режимів приєднання, які відповідають вибраним об'єктам. Оберіть щось інше.</translation>
+      <translation>Немає режимів приєднання, які відповідають вибраним обʼєктам. Оберіть щось інше.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="144"/>
@@ -3468,12 +3556,12 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="144"/>
       <source>There is no active body. Please make a body active before inserting a datum entity.</source>
-      <translation>Нема активного тіла. Будь ласка, створіть нове тіло або зробіть наявне активним, перш ніж вставляти опорний об'єкт.</translation>
+      <translation>Нема активного тіла. Будь ласка, створіть нове тіло або зробіть наявне активним, перш ніж вставляти опорний обʼєкт.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="408"/>
       <source>Sub-Shape Binder</source>
-      <translation>Сполучна Форма для Підоб'єкта</translation>
+      <translation>Сполучна Форма для Підобʼєкта</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="590"/>
@@ -3521,7 +3609,7 @@ click again to end selection</source>
       <location filename="../../Command.cpp" line="2225"/>
       <location filename="../../ViewProvider.cpp" line="98"/>
       <location filename="../../ViewProviderBoolean.cpp" line="80"/>
-      <location filename="../../ViewProviderDatum.cpp" line="242"/>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
       <location filename="../../ViewProviderHole.cpp" line="79"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
@@ -3534,7 +3622,7 @@ click again to end selection</source>
       <location filename="../../Command.cpp" line="2226"/>
       <location filename="../../ViewProvider.cpp" line="99"/>
       <location filename="../../ViewProviderBoolean.cpp" line="81"/>
-      <location filename="../../ViewProviderDatum.cpp" line="243"/>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
       <location filename="../../ViewProviderHole.cpp" line="80"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
@@ -3544,7 +3632,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="1106"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
-      <translation>Неможливо використати команду, тому що відсутнє тверде тіло для віднімання.</translation>
+      <translation>Неможливо використати команду, тому що відсутнє суцільне тіло для віднімання.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1107"/>
@@ -3554,7 +3642,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="1128"/>
       <source>Cannot use selected object. Selected object must belong to the active body</source>
-      <translation>Неможливо використати вибраний об’єкт. Вибраний об'єкт повинен належати до активного тіла</translation>
+      <translation>Неможливо використати виділений об’єкт. Виділений обʼєкт повинен належати до активного тіла</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1129"/>
@@ -3603,7 +3691,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="1910"/>
       <source>Wrong object type</source>
-      <translation>Невірний тип об'єкта</translation>
+      <translation>Невірний тип обʼєкта</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1911"/>
@@ -3643,7 +3731,7 @@ click again to end selection</source>
     <message>
       <location filename="../../CommandBody.cpp" line="68"/>
       <source>Failed to create a part object.</source>
-      <translation>Не вдалося створити об'єкт Деталь.</translation>
+      <translation>Не вдалося створити обʼєкт Деталь.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="115"/>
@@ -3656,7 +3744,7 @@ click again to end selection</source>
     <message>
       <location filename="../../CommandBody.cpp" line="116"/>
       <source>Body can't be based on a PartDesign feature.</source>
-      <translation>Тіло не може бути створене на елементі PartDesign.</translation>
+      <translation>Тіло не може бути створене на функціїї ДизайнуДеталі.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="121"/>
@@ -3666,13 +3754,13 @@ click again to end selection</source>
     <message>
       <location filename="../../CommandBody.cpp" line="134"/>
       <source>Base feature (%1) belongs to other part.</source>
-      <translation>Базовий елемент (%1) належить до іншої деталі.</translation>
+      <translation>Базова функція (%1) належить до іншої деталі.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="158"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
-      <translation>Вибрана форма складається з кількох твердих тіл.
+      <translation>Вибрана форма складається з кількох суцільних тіл.
 Це може призвести до несподіваних результатів.</translation>
     </message>
     <message>
@@ -3693,7 +3781,7 @@ This may lead to unexpected results.</source>
       <location filename="../../CommandBody.cpp" line="170"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
-      <translation>Вибрана форма складається з кількох твердих тіл або оболонок.
+      <translation>Вибрана форма складається з кількох суцільних тіл або оболонок.
 Це може призвести до несподіваних результатів.</translation>
     </message>
     <message>
@@ -3704,7 +3792,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="183"/>
       <source>Body may be based on no more than one feature.</source>
-      <translation>Тіло може бути засноване не більше ніж на одному елементі.</translation>
+      <translation>Тіло може бути засноване не більше ніж на одній функції.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="339"/>
@@ -3714,7 +3802,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="340"/>
       <source>No PartDesign features found that don't belong to a body. Nothing to migrate.</source>
-      <translation>Не знайдено жодних елементів PartDesign, які не належить тілу. Мігрувати нема чого.</translation>
+      <translation>Не знайдено жодної функції ДизайнуДеталі, яка не належить тілу. Мігрувати нема чого.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="488"/>
@@ -3738,7 +3826,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="552"/>
       <source>Select exactly one PartDesign feature or a body.</source>
-      <translation>Виділіть один елемент PartDesign або тіло.</translation>
+      <translation>Виділіть один елемент ДизайнуДеталі або тіло.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="556"/>
@@ -3748,14 +3836,14 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="561"/>
       <source>Only a solid feature can be the tip of a body.</source>
-      <translation>Тільки елемент твердого тіла може бути кінцевою точкою розрахунку.</translation>
+      <translation>Тільки елемент суцільного тіла може бути кінцевою точкою розрахунку.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="679"/>
       <location filename="../../CommandBody.cpp" line="701"/>
       <location filename="../../CommandBody.cpp" line="716"/>
       <source>Features cannot be moved</source>
-      <translation>Елементи не можуть бути переміщені</translation>
+      <translation>Функції не можуть бути переміщені</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="680"/>
@@ -3775,7 +3863,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="854"/>
       <source>Impossible to move the base feature of a body.</source>
-      <translation>Неможливо перемістити базові елементи тіла.</translation>
+      <translation>Неможливо перемістити базові функції тіла.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="861"/>
@@ -3838,9 +3926,9 @@ This may lead to unexpected results.</source>
       <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one.
 
 If you have a legacy document with PartDesign objects without Body, use the migrate function in PartDesign to put them into a Body.</source>
-      <translation>Для використання PartDesign в документі вам потрібен активний об'єкт Тіла. Зробіть один з об'єктів активним (подвійний клік) або створіть новий.
+      <translation>Для використання ДизайнуДеталі в документі вам потрібен активний обʼєкт Тіло. Зробіть один з обʼєктів активним (подвійний клац) або створіть новий.
 
-Якщо у вас є застарілий документ з об'єктами PartDesign без Тіла, використайте функцію міграції PartDesign для введення їх в Body.</translation>
+Якщо у вас є застарілий документ з обʼєктами ДизайнуДеталі без Тіла, використайте функцію міграції ДизайнуДеталі для введення їх в Тіло.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="169"/>
@@ -3850,7 +3938,7 @@ If you have a legacy document with PartDesign objects without Body, use the migr
     <message>
       <location filename="../../Utils.cpp" line="170"/>
       <source>To create a new PartDesign object, there must be an active Body object in the document. Please make one active (double click) or create a new Body.</source>
-      <translation>Щоб створити новий об’єкт PartDesign, у документі має бути активний об’єкт Тіла. Активуйте (подвійник клік) або створіть нове Тіло.</translation>
+      <translation>Щоб створити новий об’єкт ДизайнуДеталі, у документі має бути активний об’єкт Тіло. Активуйте (подвійник клац) або створіть нове Тіло.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="205"/>
@@ -3860,7 +3948,7 @@ If you have a legacy document with PartDesign objects without Body, use the migr
     <message>
       <location filename="../../Utils.cpp" line="206"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
-      <translation>Щоб використовувати цей елемент, він повинен належати об'єкту Тіло в документі.</translation>
+      <translation>Щоб використовувати цей елемент, він повинен належати обʼєкту Тіло в документі.</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="238"/>
@@ -3870,7 +3958,7 @@ If you have a legacy document with PartDesign objects without Body, use the migr
     <message>
       <location filename="../../Utils.cpp" line="239"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
-      <translation>Щоб використовувати цей елемент, він повинен належати об'єкту Деталь в документі.</translation>
+      <translation>Щоб використовувати цю функцію, вона повина належати обʼєкту Деталь в документі.</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="65"/>
@@ -3893,29 +3981,29 @@ If you have a legacy document with PartDesign objects without Body, use the migr
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="110"/>
-      <location filename="../../ViewProviderDatum.cpp" line="200"/>
+      <location filename="../../ViewProviderDatum.cpp" line="204"/>
       <source>Plane</source>
       <translation>Площини</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="114"/>
-      <location filename="../../ViewProviderDatum.cpp" line="196"/>
+      <location filename="../../ViewProviderDatum.cpp" line="115"/>
+      <location filename="../../ViewProviderDatum.cpp" line="200"/>
       <source>Line</source>
       <translation>Лінія</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="118"/>
-      <location filename="../../ViewProviderDatum.cpp" line="204"/>
+      <location filename="../../ViewProviderDatum.cpp" line="120"/>
+      <location filename="../../ViewProviderDatum.cpp" line="208"/>
       <source>Point</source>
       <translation>Точка</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="122"/>
+      <location filename="../../ViewProviderDatum.cpp" line="125"/>
       <source>Coordinate System</source>
       <translation>Система координат</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="221"/>
+      <location filename="../../ViewProviderDatum.cpp" line="225"/>
       <source>Edit datum</source>
       <translation>Редагувати опору</translation>
     </message>
@@ -3984,7 +4072,7 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="310"/>
       <source>Select bound object</source>
-      <translation>Виберіть пов'язаний об'єкт</translation>
+      <translation>Виберіть повʼязаний обʼєкт</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTransformed.cpp" line="169"/>
@@ -4004,17 +4092,17 @@ This feature is broken and can't be edited.</source>
     <message>
       <location filename="../../WorkflowManager.cpp" line="138"/>
       <source>The document "%1" you are editing was designed with an old version of PartDesign workbench.</source>
-      <translation>Редагований документ "%1" був створений за допомогою старої версії робочого середовища PartDesign.</translation>
+      <translation>Редагований документ "%1" був створений за допомогою старої версії робочого середовища ДизайнуДеталі.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="141"/>
       <source>Do you want to migrate in order to use modern PartDesign features?</source>
-      <translation>Ви бажаєте здійснити міграцію для того, щоб почати використовувати сучасні можливості робочого середовища PartDesign?</translation>
+      <translation>Ви бажаєте здійснити міграцію для того, щоб почати використовувати сучасні можливості робочого середовища ДизайнуДеталі?</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="144"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
-      <translation>Схоже, що документ "%1" або знаходиться в середині процесу міграції зі застарілого PartDesign, або має трохи порушену структуру.</translation>
+      <translation>Схоже, що документ "%1" або знаходиться в середині процесу міграції зі застарілого ДизайнуДеталі, або має трохи порушену структуру.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="148"/>
@@ -4027,8 +4115,8 @@ This feature is broken and can't be edited.</source>
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
       <translation>Примітка: Якщо ви оберете міграцію, ви не зможете редагувати файл у старій версії FreeCAD.
-Якщо ви відмовитеся від міграції, ви не зможете використовувати нові елементи PartDesign, такі як Тіло та Деталь. В результаті ви також не зможете використовувати свої деталі у складальному робочому середовищі.
-Хоча ви зможете мігрувати будь-якої миті пізніше за допомогою 'Part Design -&gt; Мігрувати'.</translation>
+Якщо ви відмовитеся від міграції, ви не зможете використовувати нові функції ДизайнуДеталі, такі як Тіла та Деталі. В результаті ви також не зможете використовувати свої деталі у складальному робочому середовищі.
+Хоча ви зможете мігрувати будь-якої миті пізніше за допомогою 'Дизайн Деталі -&gt; Мігрувати'.</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="159"/>
@@ -4415,7 +4503,7 @@ Note that the calculation can take some time</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="111"/>
       <source>Custom Thread</source>
-      <translation type="unfinished">Custom Thread</translation>
+      <translation>Довільна різьба</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="124"/>
@@ -4459,7 +4547,7 @@ Only available for holes without thread</source>
       <location filename="../../TaskHoleParameters.ui" line="251"/>
       <location filename="../../TaskHoleParameters.cpp" line="586"/>
       <source>Standard</source>
-      <translation>Стандартно</translation>
+      <translation>Стандартний</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="256"/>
@@ -4650,7 +4738,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>&amp;Part Design</source>
-      <translation>&amp;Part Design</translation>
+      <translation>&amp;ДизайнДеталі</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
@@ -4670,12 +4758,12 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Apply a pattern</source>
-      <translation>Застосувати шаблон</translation>
+      <translation>Операції з шаблоном</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Apply a dress-up feature</source>
-      <translation>Застосувати функцію накладання шаблону</translation>
+      <translation>Застосувати функції фінальної обробки</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
@@ -4705,7 +4793,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
       <source>Toggle 3D</source>
-      <translation type="unfinished">Toggle 3D</translation>
+      <translation>Перемкнути 3D виміри</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>

@@ -9,7 +9,7 @@
       <translation>Egy hatszög profilt hoz létre</translation>
     </message>
     <message>
-      <location filename="../../../Profiles.py" line="56"/>
+      <location filename="../../../Profiles.py" line="58"/>
       <source>Creates a hexagonal profile in the sketch</source>
       <translation>Egy hatszög profilt hoz létre a vázlatban</translation>
     </message>

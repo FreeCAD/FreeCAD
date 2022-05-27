@@ -9,7 +9,7 @@
       <translation>渐开线齿轮...</translation>
     </message>
     <message>
-      <location filename="../../../InvoluteGearFeature.py" line="59"/>
+      <location filename="../../../InvoluteGearFeature.py" line="61"/>
       <source>Creates or edit the involute gear definition.</source>
       <translation>创建或编辑渐开线齿轮定义。</translation>
     </message>
@@ -22,7 +22,7 @@
       <translation>链轮...</translation>
     </message>
     <message>
-      <location filename="../../../SprocketFeature.py" line="64"/>
+      <location filename="../../../SprocketFeature.py" line="66"/>
       <source>Creates or edit the sprocket definition.</source>
       <translation>创建或编辑链轮定义。</translation>
     </message>
@@ -30,12 +30,14 @@
   <context>
     <name>WizardShaft</name>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="210"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="186"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
       <source>Shaft design wizard...</source>
       <translation>轴设计向导...</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="187"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="212"/>
       <source>Start the shaft design wizard</source>
       <translation>启动轴设计向导</translation>
     </message>
@@ -78,7 +80,7 @@
       <translation>结束边缘类型</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="50"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="53"/>
       <source>End edge size</source>
       <translation>结束边缘大小</translation>
     </message>
@@ -88,79 +90,78 @@
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="72"/>
       <source>The center point of the helix' start; derived from the reference axis.</source>
-      <translation type="unfinished">The center point of the helix' start; derived from the reference axis.</translation>
+      <translation>螺旋线开始的中心点; 源自参考轴。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="74"/>
       <source>The helix' direction; derived from the reference axis.</source>
-      <translation type="unfinished">The helix' direction; derived from the reference axis.</translation>
+      <translation>螺旋方向；派生自参考轴。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="76"/>
       <source>The reference axis of the helix.</source>
-      <translation type="unfinished">The reference axis of the helix.</translation>
+      <translation>螺旋参考轴。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="78"/>
       <source>The helix input mode specifies which properties are set by the user.
 Dependent properties are then calculated.</source>
-      <translation type="unfinished">The helix input mode specifies which properties are set by the user.
-Dependent properties are then calculated.</translation>
+      <translation>螺旋线输入模式指定了那些需要用户设置的属性。
+然后计算依赖的属性。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="82"/>
       <source>The axial distance between two turns.</source>
-      <translation type="unfinished">The axial distance between two turns.</translation>
+      <translation>两圈之间的参考轴方向的距离。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="84"/>
       <source>The height of the helix' path, not accounting for the extent of the profile.</source>
-      <translation type="unfinished">The height of the helix' path, not accounting for the extent of the profile.</translation>
+      <translation>螺旋线路径的高度，不计入剖面的大小。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="86"/>
       <source>The number of turns in the helix.</source>
-      <translation type="unfinished">The number of turns in the helix.</translation>
+      <translation>螺旋线的圈数</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="89"/>
       <source>The angle of the cone that forms a hull around the helix.
 Non-zero values turn the helix into a conical spiral.
 Positive values make the radius grow, nevatige shrink.</source>
-      <translation type="unfinished">The angle of the cone that forms a hull around the helix.
-Non-zero values turn the helix into a conical spiral.
-Positive values make the radius grow, nevatige shrink.</translation>
+      <translation>在螺旋线周围形成外壳的圆锥的角度。
+非零值将螺旋变成锥形螺旋。
+正值使半径增大，负值缩小。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="94"/>
       <source>The growth of the helix' radius per turn.
 Non-zero values turn the helix into a conical spiral.</source>
-      <translation type="unfinished">The growth of the helix' radius per turn.
-Non-zero values turn the helix into a conical spiral.</translation>
+      <translation>螺旋线每圈的半径的增长。
+非零值将螺旋线变成锥形螺旋。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="97"/>
       <source>Sets the turning direction to left handed,
 i.e. counter-clockwise when moving along its axis.</source>
-      <translation type="unfinished">Sets the turning direction to left handed,
-i.e. counter-clockwise when moving along its axis.</translation>
+      <translation>将转向方向设置为左行，
+即沿其轴移动时逆时针。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="100"/>
       <source>Determines whether the helix points in the opposite direction of the axis.</source>
-      <translation type="unfinished">Determines whether the helix points in the opposite direction of the axis.</translation>
+      <translation>确定螺旋点是否位于轴的相反方向。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="102"/>
       <source>If set, the result will be the intersection of the profile and the preexisting body.</source>
-      <translation type="unfinished">If set, the result will be the intersection of the profile and the preexisting body.</translation>
+      <translation>如果设置，如果设定，结果将是轮廓与先存体的交集。</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="104"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
-      <translation type="unfinished">If false, the tool will propose an initial value for the pitch based on the profile bounding box,
-so that self intersection is avoided.</translation>
+      <translation>如果是假的，该工具将基于轮廓边界框为螺距提出初始值，，从而避免自相交。</translation>
     </message>
   </context>
   <context>
@@ -1623,7 +1624,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="138"/>
       <source>Use All Edges</source>
-      <translation type="unfinished">Use All Edges</translation>
+      <translation>使用所有边</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="165"/>
@@ -1652,14 +1653,6 @@ click again to end selection</source>
       <location filename="../../TaskChamferParameters.cpp" line="225"/>
       <source>At least one item must be kept.</source>
       <translation>必须至少选定一项。</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::TaskDatumParameters</name>
-    <message>
-      <location filename="../../TaskDatumParameters.cpp" line="56"/>
-      <source> parameters</source>
-      <translation> 参数</translation>
     </message>
   </context>
   <context>
@@ -1786,12 +1779,12 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="276"/>
       <source>Add all edges</source>
-      <translation type="unfinished">Add all edges</translation>
+      <translation>添加所有边</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="284"/>
       <source>Adds all edges to the list box (active only when in add selection mode).</source>
-      <translation type="unfinished">Adds all edges to the list box (active only when in add selection mode).</translation>
+      <translation>将所有边添加到列表框中（仅当处于添加选择模式时才处于活动状态）。</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="293"/>
@@ -1827,7 +1820,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="362"/>
       <source>Face normal</source>
-      <translation type="unfinished">Face normal</translation>
+      <translation>面法线</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="365"/>
@@ -1838,7 +1831,7 @@ click again to end selection</source>
       <location filename="../../TaskExtrudeParameters.cpp" line="369"/>
       <location filename="../../TaskExtrudeParameters.cpp" line="371"/>
       <source>Custom direction</source>
-      <translation type="unfinished">Custom direction</translation>
+      <translation>自定义方向：</translation>
     </message>
   </context>
   <context>
@@ -1975,7 +1968,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="81"/>
       <source>Use All Edges</source>
-      <translation type="unfinished">Use All Edges</translation>
+      <translation>使用所有边</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="134"/>
@@ -2108,7 +2101,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="233"/>
       <source>Radial growth:</source>
-      <translation type="unfinished">Radial growth:</translation>
+      <translation>径向增长</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="255"/>
@@ -2143,7 +2136,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="333"/>
       <source>Error: unsupported mode</source>
-      <translation type="unfinished">Error: unsupported mode</translation>
+      <translation>错误：不支持的模式</translation>
     </message>
   </context>
   <context>
@@ -2471,7 +2464,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="42"/>
       <source>Offset from face at which pad will end</source>
-      <translation type="unfinished">Offset from face at which pad will end</translation>
+      <translation>偏移，从凸台结束的面</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="43"/>
@@ -2545,8 +2538,8 @@ click again to end selection</source>
       <location filename="../../TaskPadPocketParameters.ui" line="92"/>
       <source>Set a direction or select an edge
 from the model as reference</source>
-      <translation type="unfinished">Set a direction or select an edge
-from the model as reference</translation>
+      <translation>设置一个方向或从模型中选择边
+作为参考值</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="97"/>
@@ -2561,19 +2554,19 @@ from the model as reference</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="107"/>
       <source>Custom direction</source>
-      <translation type="unfinished">Custom direction</translation>
+      <translation>自定义方向：</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="117"/>
       <source>Show direction</source>
-      <translation type="unfinished">Show direction</translation>
+      <translation>显示方向</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="127"/>
       <source>Use custom vector for pad direction, otherwise
 the sketch plane's normal vector will be used</source>
-      <translation type="unfinished">Use custom vector for pad direction, otherwise
-the sketch plane's normal vector will be used</translation>
+      <translation>否则，请将自定义向量用于凸台方向
+将使用草图平面的法向量</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="140"/>
@@ -2583,7 +2576,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="147"/>
       <source>x-component of direction vector</source>
-      <translation type="unfinished">x-component of direction vector</translation>
+      <translation>方向向量的x分量</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="169"/>
@@ -2593,7 +2586,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="176"/>
       <source>y-component of direction vector</source>
-      <translation type="unfinished">y-component of direction vector</translation>
+      <translation>方向向量的y分量</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="198"/>
@@ -2603,7 +2596,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="205"/>
       <source>z-component of direction vector</source>
-      <translation type="unfinished">z-component of direction vector</translation>
+      <translation>方向向量的z分量</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="236"/>
@@ -2635,12 +2628,12 @@ measured along the specified direction</source>
       <location filename="../../TaskPadPocketParameters.ui" line="272"/>
       <location filename="../../TaskPadPocketParameters.ui" line="317"/>
       <source>Angle to taper the extrusion</source>
-      <translation type="unfinished">Angle to taper the extrusion</translation>
+      <translation>倾斜拉伸的角度</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="275"/>
       <source>Taper angle</source>
-      <translation type="unfinished">Taper angle</translation>
+      <translation>锥度</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="296"/>
@@ -2650,7 +2643,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="320"/>
       <source>2nd taper angle</source>
-      <translation type="unfinished">2nd taper angle</translation>
+      <translation>第二锥角</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="341"/>
@@ -2889,12 +2882,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="43"/>
       <source>Offset from face at which pocket will end</source>
-      <translation type="unfinished">Offset from face at which pocket will end</translation>
+      <translation>偏移，从凹坑结束的面</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="44"/>
       <source>Reverses pocket direction</source>
-      <translation type="unfinished">Reverses pocket direction</translation>
+      <translation>反转凹坑方向</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="73"/>
@@ -3319,6 +3312,101 @@ click again to end selection</source>
     </message>
   </context>
   <context>
+    <name>PartDesignGui::ViewProviderChamfer</name>
+    <message>
+      <location filename="../../ViewProviderChamfer.h" line="41"/>
+      <source>Chamfer parameters</source>
+      <translation type="unfinished">Chamfer parameters</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderDatum</name>
+    <message>
+      <location filename="../../ViewProviderDatum.cpp" line="111"/>
+      <source>Datum Plane parameters</source>
+      <translation type="unfinished">Datum Plane parameters</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderDatum.cpp" line="116"/>
+      <source>Datum Line parameters</source>
+      <translation type="unfinished">Datum Line parameters</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderDatum.cpp" line="121"/>
+      <source>Datum Point parameters</source>
+      <translation type="unfinished">Datum Point parameters</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderDatum.cpp" line="126"/>
+      <source>Local Coordinate System parameters</source>
+      <translation type="unfinished">Local Coordinate System parameters</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderDraft</name>
+    <message>
+      <location filename="../../ViewProviderDraft.h" line="42"/>
+      <source>Draft parameters</source>
+      <translation type="unfinished">Draft parameters</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderFillet</name>
+    <message>
+      <location filename="../../ViewProviderFillet.h" line="41"/>
+      <source>Fillet parrameters</source>
+      <translation type="unfinished">Fillet parrameters</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderLinearPattern</name>
+    <message>
+      <location filename="../../ViewProviderLinearPattern.h" line="38"/>
+      <source>LinearPattern parameters</source>
+      <translation type="unfinished">LinearPattern parameters</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderMultiTransform</name>
+    <message>
+      <location filename="../../ViewProviderMultiTransform.h" line="38"/>
+      <source>MultiTransform parameters</source>
+      <translation type="unfinished">MultiTransform parameters</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderPolarPattern</name>
+    <message>
+      <location filename="../../ViewProviderPolarPattern.h" line="38"/>
+      <source>PolarPattern parameters</source>
+      <translation type="unfinished">PolarPattern parameters</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderScaled</name>
+    <message>
+      <location filename="../../ViewProviderScaled.h" line="38"/>
+      <source>Scaled parameters</source>
+      <translation type="unfinished">Scaled parameters</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderThickness</name>
+    <message>
+      <location filename="../../ViewProviderThickness.h" line="41"/>
+      <source>Thickness parameters</source>
+      <translation type="unfinished">Thickness parameters</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGuii::ViewProviderMirrored</name>
+    <message>
+      <location filename="../../ViewProviderMirrored.h" line="38"/>
+      <source>Mirrored parameters</source>
+      <translation type="unfinished">Mirrored parameters</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesign_CompPrimitiveAdditive</name>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="200"/>
@@ -3472,7 +3560,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="408"/>
       <source>Sub-Shape Binder</source>
-      <translation type="unfinished">Sub-Shape Binder</translation>
+      <translation>子形状投影器</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="590"/>
@@ -3520,7 +3608,7 @@ click again to end selection</source>
       <location filename="../../Command.cpp" line="2225"/>
       <location filename="../../ViewProvider.cpp" line="98"/>
       <location filename="../../ViewProviderBoolean.cpp" line="80"/>
-      <location filename="../../ViewProviderDatum.cpp" line="242"/>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
       <location filename="../../ViewProviderHole.cpp" line="79"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
@@ -3533,7 +3621,7 @@ click again to end selection</source>
       <location filename="../../Command.cpp" line="2226"/>
       <location filename="../../ViewProvider.cpp" line="99"/>
       <location filename="../../ViewProviderBoolean.cpp" line="81"/>
-      <location filename="../../ViewProviderDatum.cpp" line="243"/>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
       <location filename="../../ViewProviderHole.cpp" line="80"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
@@ -3558,7 +3646,7 @@ click again to end selection</source>
     <message>
       <location filename="../../Command.cpp" line="1129"/>
       <source>Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body.</source>
-      <translation type="unfinished">Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body.</translation>
+      <translation>考虑使用 ShapeBinder 或 BaseFeature 来参考物体的外部几何形状。</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1151"/>
@@ -3892,29 +3980,29 @@ If you have a legacy document with PartDesign objects without Body, use the migr
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="110"/>
-      <location filename="../../ViewProviderDatum.cpp" line="200"/>
+      <location filename="../../ViewProviderDatum.cpp" line="204"/>
       <source>Plane</source>
       <translation>平面</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="114"/>
-      <location filename="../../ViewProviderDatum.cpp" line="196"/>
+      <location filename="../../ViewProviderDatum.cpp" line="115"/>
+      <location filename="../../ViewProviderDatum.cpp" line="200"/>
       <source>Line</source>
       <translation>线</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="118"/>
-      <location filename="../../ViewProviderDatum.cpp" line="204"/>
+      <location filename="../../ViewProviderDatum.cpp" line="120"/>
+      <location filename="../../ViewProviderDatum.cpp" line="208"/>
       <source>Point</source>
       <translation>点</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="122"/>
+      <location filename="../../ViewProviderDatum.cpp" line="125"/>
       <source>Coordinate System</source>
       <translation>坐标系</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="221"/>
+      <location filename="../../ViewProviderDatum.cpp" line="225"/>
       <source>Edit datum</source>
       <translation>编辑基准</translation>
     </message>
@@ -4412,7 +4500,7 @@ Note that the calculation can take some time</source>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="111"/>
       <source>Custom Thread</source>
-      <translation type="unfinished">Custom Thread</translation>
+      <translation>自定义线程</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="124"/>

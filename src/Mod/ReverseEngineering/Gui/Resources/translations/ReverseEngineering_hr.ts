@@ -240,6 +240,14 @@
       <translation>Faktor veličine</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation>Korisnički definirani u/v smijerovi</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation>Stvorite položaj</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>Izglađivanje</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>Varijacija zakrivljenosti</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation>Korisnički definirani u/v smijerovi</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation>Stvorite položaj</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>Segmentiranje mreže</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation>Izradi složenu komponentu</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>Izgladi mrežu</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation>Stvori mrežu od nekorištenih trokuta</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation>Izradi složenu komponentu</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>Odaberite</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>Komponente</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Regija</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Odznači cijelu komponentu</translation>
+      <source>All</source>
+      <translation>Sve</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>Odaberite trokut</translation>
+      <source>Components</source>
+      <translation>Komponente</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>&lt; lica od</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>Sve</translation>
+      <source>Pick triangle</source>
+      <translation>Odaberite trokut</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Odznači cijelu komponentu</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>Površina</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation>Otkri</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>Tolerancija</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>Minimalan broj ploha</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation>Otkri</translation>
     </message>
     <message>
       <source>Cylinder</source>

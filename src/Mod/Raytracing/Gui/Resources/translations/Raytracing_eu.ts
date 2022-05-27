@@ -270,22 +270,6 @@ Jarraitu nahi duzu?</translation>
       <translation>Izpi-hedaketa</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>Amarauna esportatzeko ezarpenak</translation>
-    </message>
-    <message>
-      <source>Max mesh deviation:</source>
-      <translation>Amaraunaren desbideratze maximoa:</translation>
-    </message>
-    <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>Ez kalkulatu erpinen normalak</translation>
-    </message>
-    <message>
-      <source>Write u,v coordinates</source>
-      <translation>Idatzi u.v koordenatuak</translation>
-    </message>
-    <message>
       <source>Render</source>
       <translation>Errendatu</translation>
     </message>
@@ -334,28 +318,44 @@ Jarraitu nahi duzu?</translation>
       <translation>Direktorioak</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation>Piezaren fitxategiaren izena:</translation>
-    </message>
-    <message>
-      <source>Camera file name:</source>
-      <translation>Kameraren fitxategiaren izena:</translation>
+      <source>Default Project dir:</source>
+      <translation>Proiektu-direktorio lehenetsia:</translation>
     </message>
     <message>
       <source>Used by utility tools</source>
       <translation>Utilitate-tresnek erabilia</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>Proiektu-direktorio lehenetsia:</translation>
+      <source>Camera file name:</source>
+      <translation>Kameraren fitxategiaren izena:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
       <translation>TempCamera.inc</translation>
     </message>
     <message>
+      <source>Part file name:</source>
+      <translation>Piezaren fitxategiaren izena:</translation>
+    </message>
+    <message>
       <source>TempPart.inc</source>
       <translation>TempPart.inc</translation>
+    </message>
+    <message>
+      <source>Mesh export settings</source>
+      <translation>Amarauna esportatzeko ezarpenak</translation>
+    </message>
+    <message>
+      <source>Max mesh deviation:</source>
+      <translation>Amaraunaren desbideratze maximoa:</translation>
+    </message>
+    <message>
+      <source>Do not calculate vertex normals</source>
+      <translation>Ez kalkulatu erpinen normalak</translation>
+    </message>
+    <message>
+      <source>Write u,v coordinates</source>
+      <translation>Idatzi u.v koordenatuak</translation>
     </message>
   </context>
   <context>

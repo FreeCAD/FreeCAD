@@ -754,20 +754,20 @@
       <translation>Verkkopinnan tiedot</translation>
     </message>
     <message>
-      <source>Number of points:</source>
-      <translation>Pisteiden määrä:</translation>
+      <source>Number of faces:</source>
+      <translation>Pintojen määrät:</translation>
     </message>
     <message>
       <source>No information</source>
       <translation>Ei tietoja</translation>
     </message>
     <message>
-      <source>Number of faces:</source>
-      <translation>Pintojen määrät:</translation>
-    </message>
-    <message>
       <source>Number of edges:</source>
       <translation>Reunojen määrä:</translation>
+    </message>
+    <message>
+      <source>Number of points:</source>
+      <translation>Pisteiden määrä:</translation>
     </message>
     <message>
       <source>Refresh</source>
@@ -985,22 +985,6 @@ Aja ensin komento jolla taitteet poistetaan</translation>
       <translation>Säännöllinen monitahokas</translation>
     </message>
     <message>
-      <source>&amp;Create</source>
-      <translation>&amp;Luo</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt+C</translation>
-    </message>
-    <message>
-      <source>Cl&amp;ose</source>
-      <translation>Sulje</translation>
-    </message>
-    <message>
-      <source>Alt+O</source>
-      <translation>Alt+O</translation>
-    </message>
-    <message>
       <source>Solid:</source>
       <translation>Monitahokas:</translation>
     </message>
@@ -1029,10 +1013,6 @@ Aja ensin komento jolla taitteet poistetaan</translation>
       <translation>Torus</translation>
     </message>
     <message>
-      <source>Height:</source>
-      <translation>Korkeus:</translation>
-    </message>
-    <message>
       <source>Length:</source>
       <translation>Pituus:</translation>
     </message>
@@ -1041,20 +1021,24 @@ Aja ensin komento jolla taitteet poistetaan</translation>
       <translation>Leveys:</translation>
     </message>
     <message>
+      <source>Height:</source>
+      <translation>Korkeus:</translation>
+    </message>
+    <message>
       <source>Radius:</source>
       <translation>Säde:</translation>
     </message>
     <message>
-      <source>Closed</source>
-      <translation>Suljettu</translation>
+      <source>Edge length:</source>
+      <translation>Reunan pituus:</translation>
     </message>
     <message>
       <source>Sampling:</source>
       <translation>Näytteistys:</translation>
     </message>
     <message>
-      <source>Edge length:</source>
-      <translation>Reunan pituus:</translation>
+      <source>Closed</source>
+      <translation>Suljettu</translation>
     </message>
     <message>
       <source>Radius 1:</source>
@@ -1063,6 +1047,22 @@ Aja ensin komento jolla taitteet poistetaan</translation>
     <message>
       <source>Radius 2:</source>
       <translation>Säde 2:</translation>
+    </message>
+    <message>
+      <source>&amp;Create</source>
+      <translation>&amp;Luo</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt+C</translation>
+    </message>
+    <message>
+      <source>Cl&amp;ose</source>
+      <translation>Sulje</translation>
+    </message>
+    <message>
+      <source>Alt+O</source>
+      <translation>Alt+O</translation>
     </message>
   </context>
   <context>
@@ -1087,10 +1087,6 @@ Aja ensin komento jolla taitteet poistetaan</translation>
       <translation>Vie</translation>
     </message>
     <message>
-      <source>Maximal deviation between mesh and object</source>
-      <translation>Suurin poikkeama verkkopinnan ja kohteen välillä</translation>
-    </message>
-    <message>
       <source>Deviation of tessellation to the actual surface</source>
       <translation>Ruudutuksen poikkeama todellisesta pinnasta</translation>
     </message>
@@ -1101,6 +1097,10 @@ Aja ensin komento jolla taitteet poistetaan</translation>
     <message>
       <source>Maximum mesh deviation</source>
       <translation>Suurin verkkopinnan poikkeama</translation>
+    </message>
+    <message>
+      <source>Maximal deviation between mesh and object</source>
+      <translation>Suurin poikkeama verkkopinnan ja kohteen välillä</translation>
     </message>
     <message>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
@@ -1136,36 +1136,36 @@ käytössä kirjoitettaessa tiedostoa AMF muodossa</translation>
       <translation>Uusien pintaverkkojen oletusulkoasu</translation>
     </message>
     <message>
-      <source>Default line color</source>
-      <translation>Viivan oletusväri</translation>
-    </message>
-    <message>
-      <source>Mesh transparency</source>
-      <translation>Pintaverkon läpinäkyvyys</translation>
+      <source>Default mesh color</source>
+      <translation>Pintaverkon oletusväri</translation>
     </message>
     <message>
       <source>Default color for new meshes</source>
       <translation>Uusien verkkopintojen oletusväri</translation>
     </message>
     <message>
+      <source>Mesh transparency</source>
+      <translation>Pintaverkon läpinäkyvyys</translation>
+    </message>
+    <message>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <source>Default mesh color</source>
-      <translation>Pintaverkon oletusväri</translation>
-    </message>
-    <message>
-      <source>A bounding box will be displayed</source>
-      <translation>Ponnahduslaatikko tullaan näyttämään</translation>
-    </message>
-    <message>
-      <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Näytä rajaavalaatikko korostetulle tai valitulle</translation>
+      <source>Default line color</source>
+      <translation>Viivan oletusväri</translation>
     </message>
     <message>
       <source>Default line color for new meshes</source>
       <translation>Uusien verkkopintojen linjojen oletusväri</translation>
+    </message>
+    <message>
+      <source>Line transparency</source>
+      <translation>Viivan läpinäkyvyys</translation>
+    </message>
+    <message>
+      <source>Backface color</source>
+      <translation>Takapuolen väri</translation>
     </message>
     <message>
       <source>The bottom side of surface will be rendered the same way than top side.
@@ -1182,24 +1182,16 @@ käytetään tai se on musta.</translation>
       <translation>Kaksipuoleinen renderöinti</translation>
     </message>
     <message>
-      <source>Line transparency</source>
-      <translation>Viivan läpinäkyvyys</translation>
+      <source>A bounding box will be displayed</source>
+      <translation>Ponnahduslaatikko tullaan näyttämään</translation>
     </message>
     <message>
-      <source>Backface color</source>
-      <translation>Takapuolen väri</translation>
+      <source>Show bounding-box for highlighted or selected meshes</source>
+      <translation>Näytä rajaavalaatikko korostetulle tai valitulle</translation>
     </message>
     <message>
       <source>Smoothing</source>
       <translation>Tasoitus</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Tämä on pienin kulma kahden pinnan normaalien välillä jotta tasainen varjostus tehtäisiin pintojen välillä.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Jos vierekkäisten pintojen normaalien välinen kulma on on vähemmän kuin "rasvakulma" pinnat siloitetaan yhteisen reunansa mukaan.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Crease angle</source>
-      <translation>Kahden yhteisen reunan omaavan pinnan normaalien välinen kulma</translation>
     </message>
     <message>
       <source>If this option is set Phong shading is used, otherwise flat shading.
@@ -1220,6 +1212,14 @@ sileämpään ulkonäköön.
     <message>
       <source>Define normal per vertex</source>
       <translation>Määritä yksi normaali kärkipistettä kohden</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Tämä on pienin kulma kahden pinnan normaalien välillä jotta tasainen varjostus tehtäisiin pintojen välillä.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Jos vierekkäisten pintojen normaalien välinen kulma on on vähemmän kuin "rasvakulma" pinnat siloitetaan yhteisen reunansa mukaan.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Crease angle</source>
+      <translation>Kahden yhteisen reunan omaavan pinnan normaalien välinen kulma</translation>
     </message>
     <message>
       <source>Crease angle is a threshold angle between two faces.
@@ -1386,6 +1386,10 @@ sileämpään ulkonäköön.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
+    </message>
+    <message>
       <source>Remeshing Parameter</source>
       <translation>Verkkopinnan uudistuksen muuttujat</translation>
     </message>
@@ -1425,10 +1429,6 @@ sileämpään ulkonäköön.
       <source>Clear</source>
       <translation>Tyhjennä</translation>
     </message>
-    <message>
-      <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
@@ -1441,40 +1441,40 @@ sileämpään ulkonäköön.
       <translation>Valitse</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Valitse koko osa</translation>
-    </message>
-    <message>
-      <source>Pick triangle</source>
-      <translation>Valitse kolmio</translation>
-    </message>
-    <message>
-      <source>&lt; faces than</source>
-      <translation>&lt; pintoja vähemmän kuin</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Alue</translation>
-    </message>
-    <message>
-      <source>Components</source>
-      <translation>Osat</translation>
     </message>
     <message>
       <source>All</source>
       <translation>Kaikki</translation>
     </message>
     <message>
+      <source>Components</source>
+      <translation>Osat</translation>
+    </message>
+    <message>
+      <source>&lt; faces than</source>
+      <translation>&lt; pintoja vähemmän kuin</translation>
+    </message>
+    <message>
+      <source>Pick triangle</source>
+      <translation>Valitse kolmio</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Valitse koko osa</translation>
+    </message>
+    <message>
       <source>Deselect</source>
       <translation>Poista valinta</translation>
     </message>
     <message>
-      <source>Deselect whole component</source>
-      <translation>Poista koko osan valinta</translation>
-    </message>
-    <message>
       <source>&gt; faces than</source>
       <translation>&gt; pintoja enemmän kuin</translation>
+    </message>
+    <message>
+      <source>Deselect whole component</source>
+      <translation>Poista koko osan valinta</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -1551,8 +1551,12 @@ sileämpään ulkonäköön.
       <translation>Verkkopinnan lohkominen</translation>
     </message>
     <message>
-      <source>Sphere</source>
-      <translation>Pallo</translation>
+      <source>Plane</source>
+      <translation>Taso</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Muuttujat...</translation>
     </message>
     <message>
       <source>Tolerance</source>
@@ -1563,16 +1567,12 @@ sileämpään ulkonäköön.
       <translation>Pintojen vähimmäismäärä</translation>
     </message>
     <message>
-      <source>Parameters...</source>
-      <translation>Muuttujat...</translation>
-    </message>
-    <message>
-      <source>Plane</source>
-      <translation>Taso</translation>
-    </message>
-    <message>
       <source>Cylinder</source>
       <translation>Lieriö</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Pallo</translation>
     </message>
     <message>
       <source>Base</source>
@@ -1759,6 +1759,10 @@ osoittweessa asentaaksesi ohjelman.</translation>
       <translation>Asymptoottinen Muoto</translation>
     </message>
     <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
+    <message>
       <source>Export mesh</source>
       <translation>Vie verkkopinta</translation>
     </message>
@@ -1815,6 +1819,10 @@ osoittweessa asentaaksesi ohjelman.</translation>
       <translation>Näytä segmentit</translation>
     </message>
     <message>
+      <source>Display colors</source>
+      <translation type="unfinished">Display colors</translation>
+    </message>
+    <message>
       <source>Leave info mode</source>
       <translation>Poistu Tieto tilasta</translation>
     </message>
@@ -1842,10 +1850,6 @@ osoittweessa asentaaksesi ohjelman.</translation>
       <source>Annotation</source>
       <translation>Huomautus</translation>
     </message>
-    <message>
-      <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1862,12 +1866,32 @@ osoittweessa asentaaksesi ohjelman.</translation>
       <translation>&amp;Verkkopinta</translation>
     </message>
     <message>
+      <source>Cutting</source>
+      <translation>Leikataan</translation>
+    </message>
+    <message>
       <source>Mesh tools</source>
       <translation>Verkkopintatyökalut</translation>
     </message>
     <message>
-      <source>Cutting</source>
-      <translation>Leikataan</translation>
+      <source>Mesh modify</source>
+      <translation type="unfinished">Mesh modify</translation>
+    </message>
+    <message>
+      <source>Mesh boolean</source>
+      <translation type="unfinished">Mesh boolean</translation>
+    </message>
+    <message>
+      <source>Mesh cutting</source>
+      <translation type="unfinished">Mesh cutting</translation>
+    </message>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Verkkopinnan lohkominen</translation>
+    </message>
+    <message>
+      <source>Mesh analyze</source>
+      <translation type="unfinished">Mesh analyze</translation>
     </message>
   </context>
 </TS>

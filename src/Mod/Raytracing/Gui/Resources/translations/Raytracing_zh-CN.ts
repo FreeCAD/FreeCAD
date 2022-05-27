@@ -270,22 +270,6 @@ Do you want to continue?</source>
       <translation>光线追踪</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>网格导出设置</translation>
-    </message>
-    <message>
-      <source>Max mesh deviation:</source>
-      <translation>最大网格偏差:</translation>
-    </message>
-    <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>不计算顶点法线</translation>
-    </message>
-    <message>
-      <source>Write u,v coordinates</source>
-      <translation>写入 U,V 坐标</translation>
-    </message>
-    <message>
       <source>Render</source>
       <translation>渲染</translation>
     </message>
@@ -334,28 +318,44 @@ Do you want to continue?</source>
       <translation>目录</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation>零件文件名称:</translation>
-    </message>
-    <message>
-      <source>Camera file name:</source>
-      <translation>相机文件的名称:</translation>
+      <source>Default Project dir:</source>
+      <translation>默认项目路径:</translation>
     </message>
     <message>
       <source>Used by utility tools</source>
       <translation>由实用工具使用</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>默认项目路径:</translation>
+      <source>Camera file name:</source>
+      <translation>相机文件的名称:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
       <translation>TempCamera.inc</translation>
     </message>
     <message>
+      <source>Part file name:</source>
+      <translation>零件文件名称:</translation>
+    </message>
+    <message>
       <source>TempPart.inc</source>
       <translation>TempPart.inc</translation>
+    </message>
+    <message>
+      <source>Mesh export settings</source>
+      <translation>网格导出设置</translation>
+    </message>
+    <message>
+      <source>Max mesh deviation:</source>
+      <translation>最大网格偏差:</translation>
+    </message>
+    <message>
+      <source>Do not calculate vertex normals</source>
+      <translation>不计算顶点法线</translation>
+    </message>
+    <message>
+      <source>Write u,v coordinates</source>
+      <translation>写入 U,V 坐标</translation>
     </message>
   </context>
   <context>

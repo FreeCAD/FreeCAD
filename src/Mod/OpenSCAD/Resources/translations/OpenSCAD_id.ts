@@ -4,24 +4,30 @@
   <context>
     <name>OpenSCAD</name>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="709"/>
+      <location filename="../../OpenSCADUtils.py" line="710"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
       <translation type="unfinished">OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="721"/>
+      <location filename="../../OpenSCADUtils.py" line="722"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
       <translation>Kesalahan semua bentuk harus 2D atau keduanya harus 3D</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="1385"/>
-      <source>Unsupported Function</source>
-      <translation>Fungsi Tidak Didukung</translation>
+      <location filename="../../InitGui.py" line="130"/>
+      <source>It looks like you may be using a Snap version of OpenSCAD.</source>
+      <translation type="unfinished">It looks like you may be using a Snap version of OpenSCAD.</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="1385"/>
-      <source>Press OK</source>
-      <translation>Tekan OK</translation>
+      <location filename="../../InitGui.py" line="135"/>
+      <location filename="../../InitGui.py" line="148"/>
+      <source>If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</source>
+      <translation type="unfinished">If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="143"/>
+      <source>It looks like you may be using a sandboxed version of FreeCAD.</source>
+      <translation type="unfinished">It looks like you may be using a sandboxed version of FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="101"/>
@@ -29,7 +35,7 @@
       <translation>Tidak dapat meledak % s</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="146"/>
+      <location filename="../../OpenSCADCommands.py" line="148"/>
       <source>Convert Edges to Faces</source>
       <translation>Mengkonversi Tepi ke Wajah</translation>
     </message>
@@ -39,49 +45,70 @@
       <translation>Silahkan pilih 3 objek terlebih dahulu</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="340"/>
       <location filename="../../OpenSCADCommands.py" line="363"/>
       <source>Add</source>
       <translation>Menambahkan</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="341"/>
       <location filename="../../OpenSCADCommands.py" line="367"/>
       <source>Clear</source>
       <translation>Bersih</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="342"/>
       <location filename="../../OpenSCADCommands.py" line="364"/>
       <source>Load</source>
       <translation>Muat</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="343"/>
       <location filename="../../OpenSCADCommands.py" line="365"/>
       <source>Save</source>
       <translation>Simpan</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="344"/>
       <location filename="../../OpenSCADCommands.py" line="366"/>
       <source>Refresh</source>
       <translation>Menyegarkan</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="345"/>
       <location filename="../../OpenSCADCommands.py" line="368"/>
       <source>as Mesh</source>
       <translation>sebagai Mesh</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="358"/>
       <location filename="../../OpenSCADCommands.py" line="369"/>
       <source>Add OpenSCAD Element</source>
       <translation>Tambahkan Elemen OpenSCAD</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="443"/>
       <location filename="../../OpenSCADCommands.py" line="472"/>
       <source>Perform</source>
       <translation>Melakukan</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="469"/>
       <location filename="../../OpenSCADCommands.py" line="473"/>
       <source>Mesh Boolean</source>
       <translation>Mesh Boolean</translation>
+    </message>
+    <message>
+      <location filename="../../importCSG.py" line="549"/>
+      <location filename="../../importCSG.py" line="1385"/>
+      <source>Unsupported Function</source>
+      <translation>Fungsi Tidak Didukung</translation>
+    </message>
+    <message>
+      <location filename="../../importCSG.py" line="549"/>
+      <location filename="../../importCSG.py" line="1385"/>
+      <source>Press OK</source>
+      <translation>Tekan OK</translation>
     </message>
   </context>
   <context>
@@ -92,7 +119,7 @@
       <translation>Tambahkan Elemen OpenSCAD...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="517"/>
+      <location filename="../../OpenSCADCommands.py" line="520"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
       <translation>Tambahkan elemen OpenSCAD dengan memasukkan kode OpenSCAD dan jalankan biner OpenSCAD</translation>
     </message>
@@ -105,7 +132,7 @@
       <translation>Bentuk Warna</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="126"/>
+      <location filename="../../OpenSCADCommands.py" line="128"/>
       <source>Color Shapes by validity and type</source>
       <translation>Bentuk Warna menurut validitas dan tipe</translation>
     </message>
@@ -126,7 +153,7 @@
       <translation>Perluas Penempatan</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="291"/>
+      <location filename="../../OpenSCADCommands.py" line="293"/>
       <source>Expand all placements downwards the FeatureTree</source>
       <translation>Perluas semua penempatan ke bawah FeatureTree</translation>
     </message>
@@ -139,7 +166,7 @@
       <translation>Grup Explode</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="110"/>
+      <location filename="../../OpenSCADCommands.py" line="112"/>
       <source>Remove fusion, apply placement to children, and color randomly</source>
       <translation>Menghapus fusion, menerapkan penempatan untuk anak-anak, dan warna secara acak</translation>
     </message>
@@ -152,7 +179,7 @@
       <translation>Lambung kapal</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="552"/>
+      <location filename="../../OpenSCADCommands.py" line="554"/>
       <source>Perform Hull</source>
       <translation>Lakukan Hull</translation>
     </message>
@@ -165,7 +192,7 @@
       <translation>Tingkatkan Fitur Toleransi</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="274"/>
+      <location filename="../../OpenSCADCommands.py" line="276"/>
       <source>Create Feature that allows to increase the tolerance</source>
       <translation>Buat Fitur yang memungkinkan untuk meningkatkan toleransi</translation>
     </message>
@@ -178,7 +205,7 @@
       <translation>Mesh Boolean...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="532"/>
+      <location filename="../../OpenSCADCommands.py" line="535"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
       <translation>Ekspor benda-benda seperti jerat dan menggunakan OpenSCAD untuk melakukan operasi boolean</translation>
     </message>
@@ -191,7 +218,7 @@
       <translation>Minkowski</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="571"/>
+      <location filename="../../OpenSCADCommands.py" line="573"/>
       <source>Perform Minkowski</source>
       <translation>Lakukan Minkowski</translation>
     </message>
@@ -204,7 +231,7 @@
       <translation type="unfinished">Mirror Mesh Feature...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="195"/>
+      <location filename="../../OpenSCADCommands.py" line="197"/>
       <source>Create Mirror Mesh Feature</source>
       <translation type="unfinished">Create Mirror Mesh Feature</translation>
     </message>
@@ -217,7 +244,7 @@
       <translation>Pertajam Bentuk Fitur</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="165"/>
+      <location filename="../../OpenSCADCommands.py" line="167"/>
       <source>Create Refine Shape Feature</source>
       <translation>Buat Perbaiki Bentuk Fitur</translation>
     </message>
@@ -230,7 +257,7 @@
       <translation>Hapus Objek dan Anak-anak mereka</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="324"/>
+      <location filename="../../OpenSCADCommands.py" line="326"/>
       <source>Removes the selected objects and all children that are not referenced from other objects</source>
       <translation>Menghapus objek yang dipilih dan semua anak yang tidak dirujuk dari benda lain</translation>
     </message>
@@ -243,7 +270,7 @@
       <translation>Ganti Objek</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="312"/>
+      <location filename="../../OpenSCADCommands.py" line="314"/>
       <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
       <translation>Mengganti sebuah objek di Pohon Fitur. Silahkan pilih tua, baru, dan objek induk</translation>
     </message>
@@ -256,7 +283,7 @@
       <translation>Ubah ukuran fitur Mesh...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="254"/>
+      <location filename="../../OpenSCADCommands.py" line="257"/>
       <source>Create Resize Mesh Feature</source>
       <translation type="unfinished">Create Resize Mesh Feature</translation>
     </message>
@@ -269,7 +296,7 @@
       <translation type="unfinished">Scale Mesh Feature...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="224"/>
+      <location filename="../../OpenSCADCommands.py" line="227"/>
       <source>Create Scale Mesh Feature</source>
       <translation type="unfinished">Create Scale Mesh Feature</translation>
     </message>
@@ -277,7 +304,7 @@
   <context>
     <name>Workbech</name>
     <message>
-      <location filename="../../InitGui.py" line="155"/>
+      <location filename="../../InitGui.py" line="156"/>
       <source>OpenSCAD Part tools</source>
       <translation>OpenSCAD bagian alat</translation>
     </message>
@@ -285,7 +312,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="151"/>
+      <location filename="../../InitGui.py" line="152"/>
       <source>OpenSCADTools</source>
       <translation>OpenSCADTools</translation>
     </message>

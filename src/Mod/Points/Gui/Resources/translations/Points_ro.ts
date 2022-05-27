@@ -140,14 +140,6 @@
       <translation>Linii speciale</translation>
     </message>
     <message>
-      <source>Ignore lines starting with:</source>
-      <translation>Ignoraţi linii care încep cu:</translation>
-    </message>
-    <message>
-      <source>Cluster by lines starting with:</source>
-      <translation>Grupeaza dupa linii incepand cu:</translation>
-    </message>
-    <message>
       <source>First line:</source>
       <translation>Prima linie:</translation>
     </message>
@@ -160,8 +152,52 @@
       <translation>Numărul de puncte</translation>
     </message>
     <message>
+      <source>Cluster by lines starting with:</source>
+      <translation>Grupeaza dupa linii incepand cu:</translation>
+    </message>
+    <message>
+      <source>Ignore lines starting with:</source>
+      <translation>Ignoraţi linii care încep cu:</translation>
+    </message>
+    <message>
       <source>Point format</source>
       <translation>Formataţi Punctul</translation>
+    </message>
+    <message>
+      <source>Number separator:</source>
+      <translation>Separator pentru cifre:</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>\t</source>
+      <translation>\t</translation>
+    </message>
+    <message>
+      <source>\w</source>
+      <translation>\w</translation>
+    </message>
+    <message>
+      <source>Points format:</source>
+      <translation>Formataţi Punctele:</translation>
+    </message>
+    <message>
+      <source>X,Y,Z</source>
+      <translation>X, Y, Z</translation>
+    </message>
+    <message>
+      <source>X,Y</source>
+      <translation>X, Y</translation>
+    </message>
+    <message>
+      <source>Next block:</source>
+      <translation>Blocul următor:</translation>
     </message>
     <message>
       <source>none</source>
@@ -182,42 +218,6 @@
     <message>
       <source>I (Gray value)</source>
       <translation>I (tonuri de gri)</translation>
-    </message>
-    <message>
-      <source>Number separator:</source>
-      <translation>Separator pentru cifre:</translation>
-    </message>
-    <message>
-      <source>Next block:</source>
-      <translation>Blocul următor:</translation>
-    </message>
-    <message>
-      <source>,</source>
-      <translation>,</translation>
-    </message>
-    <message>
-      <source>;</source>
-      <translation>;</translation>
-    </message>
-    <message>
-      <source>\t</source>
-      <translation>\t</translation>
-    </message>
-    <message>
-      <source>\w</source>
-      <translation>\w</translation>
-    </message>
-    <message>
-      <source>X,Y,Z</source>
-      <translation>X, Y, Z</translation>
-    </message>
-    <message>
-      <source>X,Y</source>
-      <translation>X, Y</translation>
-    </message>
-    <message>
-      <source>Points format:</source>
-      <translation>Formataţi Punctele:</translation>
     </message>
     <message>
       <source>Preview</source>

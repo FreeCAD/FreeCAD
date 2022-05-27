@@ -240,6 +240,14 @@
       <translation>მასშტაბირება</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation>მომხმარებლის u/v მიმართულებები</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation>მდებარეობის შექმნა</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>მოგლუვება</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>მრუდის ვარიანტები</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation>მომხმარებლის u/v მიმართულებები</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation>მდებარეობის შექმნა</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>მრავალკუთხა ბადის სეგმენტაცია</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation>ნაკრების შექმნა</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>მრავალკუთხა ბადის მოგლუვება</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation>გამოუყენებელი სამკუთხედებისგან ბადის შექმნა</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation>ნაკრების შექმნა</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>არჩევა</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>კომპონენტები</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>რეგიონი</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>მთლიანი კომპონენტის მონიშვნა</translation>
+      <source>All</source>
+      <translation>ყველა</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>აირჩიეთ სამკუთხედი</translation>
+      <source>Components</source>
+      <translation>კომპონენტები</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>&lt; ზედაპირი, ვიდრე</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>ყველა</translation>
+      <source>Pick triangle</source>
+      <translation>აირჩიეთ სამკუთხედი</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>მთლიანი კომპონენტის მონიშვნა</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>სიბრტყე</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation>აღმოჩენა</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>სიზუსტე</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>ზედაპირების მინიმალური რაოდენობა</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation>აღმოჩენა</translation>
     </message>
     <message>
       <source>Cylinder</source>

@@ -754,20 +754,20 @@
       <translation>Informazioni sulla mesh</translation>
     </message>
     <message>
-      <source>Number of points:</source>
-      <translation>Numero di punti:</translation>
+      <source>Number of faces:</source>
+      <translation>Numero di facce:</translation>
     </message>
     <message>
       <source>No information</source>
       <translation>Nessuna informazione</translation>
     </message>
     <message>
-      <source>Number of faces:</source>
-      <translation>Numero di facce:</translation>
-    </message>
-    <message>
       <source>Number of edges:</source>
       <translation>Numero di spigoli:</translation>
+    </message>
+    <message>
+      <source>Number of points:</source>
+      <translation>Numero di punti:</translation>
     </message>
     <message>
       <source>Refresh</source>
@@ -984,22 +984,6 @@ Please run the command to repair folds first</source>
       <translation>Solido regolare</translation>
     </message>
     <message>
-      <source>&amp;Create</source>
-      <translation>&amp;Crea</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt+C</translation>
-    </message>
-    <message>
-      <source>Cl&amp;ose</source>
-      <translation>Ch&amp;iudi</translation>
-    </message>
-    <message>
-      <source>Alt+O</source>
-      <translation>Alt+O</translation>
-    </message>
-    <message>
       <source>Solid:</source>
       <translation>Solido:</translation>
     </message>
@@ -1028,10 +1012,6 @@ Please run the command to repair folds first</source>
       <translation>Toro</translation>
     </message>
     <message>
-      <source>Height:</source>
-      <translation>Altezza:</translation>
-    </message>
-    <message>
       <source>Length:</source>
       <translation>Lunghezza:</translation>
     </message>
@@ -1040,20 +1020,24 @@ Please run the command to repair folds first</source>
       <translation>Larghezza:</translation>
     </message>
     <message>
+      <source>Height:</source>
+      <translation>Altezza:</translation>
+    </message>
+    <message>
       <source>Radius:</source>
       <translation>Raggio:</translation>
     </message>
     <message>
-      <source>Closed</source>
-      <translation>Chiuso</translation>
+      <source>Edge length:</source>
+      <translation>Lunghezza spigolo:</translation>
     </message>
     <message>
       <source>Sampling:</source>
       <translation>Campionatura:</translation>
     </message>
     <message>
-      <source>Edge length:</source>
-      <translation>Lunghezza spigolo:</translation>
+      <source>Closed</source>
+      <translation>Chiuso</translation>
     </message>
     <message>
       <source>Radius 1:</source>
@@ -1062,6 +1046,22 @@ Please run the command to repair folds first</source>
     <message>
       <source>Radius 2:</source>
       <translation>Raggio 2:</translation>
+    </message>
+    <message>
+      <source>&amp;Create</source>
+      <translation>&amp;Crea</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt+C</translation>
+    </message>
+    <message>
+      <source>Cl&amp;ose</source>
+      <translation>Ch&amp;iudi</translation>
+    </message>
+    <message>
+      <source>Alt+O</source>
+      <translation>Alt+O</translation>
     </message>
   </context>
   <context>
@@ -1086,10 +1086,6 @@ Please run the command to repair folds first</source>
       <translation>Esporta</translation>
     </message>
     <message>
-      <source>Maximal deviation between mesh and object</source>
-      <translation>Deviazione massima tra la mesh e l'oggetto</translation>
-    </message>
-    <message>
       <source>Deviation of tessellation to the actual surface</source>
       <translation>Deviazione della tessellazione della superficie attuale</translation>
     </message>
@@ -1100,6 +1096,10 @@ Please run the command to repair folds first</source>
     <message>
       <source>Maximum mesh deviation</source>
       <translation>Massima deviazione della maglia</translation>
+    </message>
+    <message>
+      <source>Maximal deviation between mesh and object</source>
+      <translation>Deviazione massima tra la mesh e l'oggetto</translation>
     </message>
     <message>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
@@ -1135,36 +1135,36 @@ is used when writing a file in AMF format</source>
       <translation>Aspetto predefinito per le nuove mesh</translation>
     </message>
     <message>
-      <source>Default line color</source>
-      <translation>Colore predefinito della linea</translation>
-    </message>
-    <message>
-      <source>Mesh transparency</source>
-      <translation>Trasparenza della mesh</translation>
+      <source>Default mesh color</source>
+      <translation>Colore predefinito della mesh</translation>
     </message>
     <message>
       <source>Default color for new meshes</source>
       <translation>Colore predefinito per le nuove mesh</translation>
     </message>
     <message>
+      <source>Mesh transparency</source>
+      <translation>Trasparenza della mesh</translation>
+    </message>
+    <message>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <source>Default mesh color</source>
-      <translation>Colore predefinito della mesh</translation>
-    </message>
-    <message>
-      <source>A bounding box will be displayed</source>
-      <translation>Verrà visualizzato un contenitore di delimitazione</translation>
-    </message>
-    <message>
-      <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Mostra contenitore per le mesh evidenziate o selezionate</translation>
+      <source>Default line color</source>
+      <translation>Colore predefinito della linea</translation>
     </message>
     <message>
       <source>Default line color for new meshes</source>
       <translation>Colore predefinito della linea per le nuove mesh</translation>
+    </message>
+    <message>
+      <source>Line transparency</source>
+      <translation>Trasparenza della linea</translation>
+    </message>
+    <message>
+      <source>Backface color</source>
+      <translation>Colore della faccia posteriore</translation>
     </message>
     <message>
       <source>The bottom side of surface will be rendered the same way than top side.
@@ -1181,24 +1181,16 @@ o il nero.</translation>
       <translation>Render di entrambi i lati</translation>
     </message>
     <message>
-      <source>Line transparency</source>
-      <translation>Trasparenza della linea</translation>
+      <source>A bounding box will be displayed</source>
+      <translation>Verrà visualizzato un contenitore di delimitazione</translation>
     </message>
     <message>
-      <source>Backface color</source>
-      <translation>Colore della faccia posteriore</translation>
+      <source>Show bounding-box for highlighted or selected meshes</source>
+      <translation>Mostra contenitore per le mesh evidenziate o selezionate</translation>
     </message>
     <message>
       <source>Smoothing</source>
       <translation>Leviga</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt; &lt;body style="white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt; &lt;p style="margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; Questo è il più piccolo angolo tra due facce nel caso in cui le normali sono calcolate per ottenere un’ombreggiatura di tipo flat. &lt;/p&gt;&lt;p style="margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; Se l'angolo tra le normali di due facce vicine è minore dell'angolo di piega, le facce saranno levigate in prossimità del loro spigolo comune.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Crease angle</source>
-      <translation>Angolo di piega</translation>
     </message>
     <message>
       <source>If this option is set Phong shading is used, otherwise flat shading.
@@ -1215,6 +1207,14 @@ Usando l'ombreggiatura piana, le normali alla superficie non saranno determinate
     <message>
       <source>Define normal per vertex</source>
       <translation>Definisci le normali per vertice</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt; &lt;body style="white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt; &lt;p style="margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; Questo è il più piccolo angolo tra due facce nel caso in cui le normali sono calcolate per ottenere un’ombreggiatura di tipo flat. &lt;/p&gt;&lt;p style="margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; Se l'angolo tra le normali di due facce vicine è minore dell'angolo di piega, le facce saranno levigate in prossimità del loro spigolo comune.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Crease angle</source>
+      <translation>Angolo di piega</translation>
     </message>
     <message>
       <source>Crease angle is a threshold angle between two faces.
@@ -1381,6 +1381,10 @@ Usando l'ombreggiatura piana, le normali alla superficie non saranno determinate
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
+    </message>
+    <message>
       <source>Remeshing Parameter</source>
       <translation>Parametri di ricostruzione della maglie</translation>
     </message>
@@ -1420,10 +1424,6 @@ Usando l'ombreggiatura piana, le normali alla superficie non saranno determinate
       <source>Clear</source>
       <translation>Pulisci</translation>
     </message>
-    <message>
-      <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
@@ -1436,40 +1436,40 @@ Usando l'ombreggiatura piana, le normali alla superficie non saranno determinate
       <translation>Seleziona</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Seleziona l'intero componente</translation>
-    </message>
-    <message>
-      <source>Pick triangle</source>
-      <translation>Scegli il triangolo</translation>
-    </message>
-    <message>
-      <source>&lt; faces than</source>
-      <translation>Meno facce di</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Regione</translation>
-    </message>
-    <message>
-      <source>Components</source>
-      <translation>Componenti</translation>
     </message>
     <message>
       <source>All</source>
       <translation>Tutti</translation>
     </message>
     <message>
+      <source>Components</source>
+      <translation>Componenti</translation>
+    </message>
+    <message>
+      <source>&lt; faces than</source>
+      <translation>Meno facce di</translation>
+    </message>
+    <message>
+      <source>Pick triangle</source>
+      <translation>Scegli il triangolo</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Seleziona l'intero componente</translation>
+    </message>
+    <message>
       <source>Deselect</source>
       <translation>Deseleziona</translation>
     </message>
     <message>
-      <source>Deselect whole component</source>
-      <translation>Deseleziona l'intero componente</translation>
-    </message>
-    <message>
       <source>&gt; faces than</source>
       <translation>Più facce di</translation>
+    </message>
+    <message>
+      <source>Deselect whole component</source>
+      <translation>Deseleziona l'intero componente</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -1546,8 +1546,12 @@ Usando l'ombreggiatura piana, le normali alla superficie non saranno determinate
       <translation>Segmentazione della mesh</translation>
     </message>
     <message>
-      <source>Sphere</source>
-      <translation>Sfera</translation>
+      <source>Plane</source>
+      <translation>Piano</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Parametri...</translation>
     </message>
     <message>
       <source>Tolerance</source>
@@ -1558,16 +1562,12 @@ Usando l'ombreggiatura piana, le normali alla superficie non saranno determinate
       <translation>Numero minimo di facce</translation>
     </message>
     <message>
-      <source>Parameters...</source>
-      <translation>Parametri...</translation>
-    </message>
-    <message>
-      <source>Plane</source>
-      <translation>Piano</translation>
-    </message>
-    <message>
       <source>Cylinder</source>
       <translation>Cilindro</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Sfera</translation>
     </message>
     <message>
       <source>Base</source>
@@ -1753,6 +1753,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>Formato Asymptote</translation>
     </message>
     <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
+    <message>
       <source>Export mesh</source>
       <translation>Esporta mesh</translation>
     </message>
@@ -1809,6 +1813,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>Mostra i segmenti</translation>
     </message>
     <message>
+      <source>Display colors</source>
+      <translation type="unfinished">Display colors</translation>
+    </message>
+    <message>
       <source>Leave info mode</source>
       <translation>Esci dalla modalità info</translation>
     </message>
@@ -1836,10 +1844,6 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <source>Annotation</source>
       <translation>Annotazione</translation>
     </message>
-    <message>
-      <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1856,12 +1860,32 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>&amp;Mesh</translation>
     </message>
     <message>
+      <source>Cutting</source>
+      <translation>Taglio</translation>
+    </message>
+    <message>
       <source>Mesh tools</source>
       <translation>Strumenti Mesh</translation>
     </message>
     <message>
-      <source>Cutting</source>
-      <translation>Taglio</translation>
+      <source>Mesh modify</source>
+      <translation type="unfinished">Mesh modify</translation>
+    </message>
+    <message>
+      <source>Mesh boolean</source>
+      <translation type="unfinished">Mesh boolean</translation>
+    </message>
+    <message>
+      <source>Mesh cutting</source>
+      <translation type="unfinished">Mesh cutting</translation>
+    </message>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Segmentazione della mesh</translation>
+    </message>
+    <message>
+      <source>Mesh analyze</source>
+      <translation type="unfinished">Mesh analyze</translation>
     </message>
   </context>
 </TS>

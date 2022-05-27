@@ -240,6 +240,14 @@
       <translation>Kadahilanan ng Sukat</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation>Tinukoy-ng-Gumamit u/v na mga direksyon</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation type="unfinished">Create placement</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>Smoothing</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>Pagkaka-iba ng Kurbada</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation>Tinukoy-ng-Gumamit u/v na mga direksyon</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation type="unfinished">Create placement</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>Segmentation ng mesh</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation type="unfinished">Create compound</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>Smooth mesh</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation type="unfinished">Create mesh from unused triangles</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation type="unfinished">Create compound</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>Piliin</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>Mga component</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Rehiyon</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Piliin ang buong component</translation>
+      <source>All</source>
+      <translation>Lahat</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>Pumili ng tatsulok</translation>
+      <source>Components</source>
+      <translation>Mga component</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>&lt; faces than</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>Lahat</translation>
+      <source>Pick triangle</source>
+      <translation>Pumili ng tatsulok</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Piliin ang buong component</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>Plane</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation type="unfinished">Detect</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>Pahintulot</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>Pinakamababang bilang ng faces</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation type="unfinished">Detect</translation>
     </message>
     <message>
       <source>Cylinder</source>

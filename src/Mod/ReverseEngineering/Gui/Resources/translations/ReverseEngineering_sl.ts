@@ -240,6 +240,14 @@
       <translation>Faktor velikosti</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation>Uporabniško določeni smeri u/v</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation>Ustvari postavitev</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>Glajenje</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>Variacija ukrivljenosti</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation>Uporabniško določeni smeri u/v</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation>Ustvari postavitev</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>Razčlenitev ploskovja</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation>Ustvari sestav</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>Zgladi ploskovje</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation>Iz neuporabljenih trikotnikov sestavi ploskovje</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation>Ustvari sestav</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>Izberite</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>Sestavine</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Območje</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Izberite celo sestavino</translation>
+      <source>All</source>
+      <translation>Vse</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>Izberite trikotnik</translation>
+      <source>Components</source>
+      <translation>Sestavine</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>&lt; ploskev od</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>Vse</translation>
+      <source>Pick triangle</source>
+      <translation>Izberite trikotnik</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Izberite celo sestavino</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>Ravnina</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation>Zaznaj</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>Dopustno odstopanje</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>Najmanjše št. ploskev</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation>Zaznaj</translation>
     </message>
     <message>
       <source>Cylinder</source>

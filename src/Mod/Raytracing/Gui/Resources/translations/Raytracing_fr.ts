@@ -268,22 +268,6 @@ Do you want to continue?</source>
       <translation>Lancer de rayon</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>Paramètres d'exportation de maillage</translation>
-    </message>
-    <message>
-      <source>Max mesh deviation:</source>
-      <translation>Écart maximum de la grille:</translation>
-    </message>
-    <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>Ne pas calculer les normales des sommets</translation>
-    </message>
-    <message>
-      <source>Write u,v coordinates</source>
-      <translation>Écrire les coordonnées (u,v)</translation>
-    </message>
-    <message>
       <source>Render</source>
       <translation>Rendu</translation>
     </message>
@@ -332,28 +316,44 @@ Do you want to continue?</source>
       <translation>Répertoires</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation>Nom du fichier pièce :</translation>
-    </message>
-    <message>
-      <source>Camera file name:</source>
-      <translation>Nom du fichier caméra :</translation>
+      <source>Default Project dir:</source>
+      <translation>Répertoire par défaut du projet :</translation>
     </message>
     <message>
       <source>Used by utility tools</source>
       <translation>Utilisé par les outils de l'utilitaire</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>Répertoire par défaut du projet :</translation>
+      <source>Camera file name:</source>
+      <translation>Nom du fichier caméra :</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
       <translation>TempCamera.inc</translation>
     </message>
     <message>
+      <source>Part file name:</source>
+      <translation>Nom du fichier pièce :</translation>
+    </message>
+    <message>
       <source>TempPart.inc</source>
       <translation>TempPart.inc</translation>
+    </message>
+    <message>
+      <source>Mesh export settings</source>
+      <translation>Paramètres d'exportation de maillage</translation>
+    </message>
+    <message>
+      <source>Max mesh deviation:</source>
+      <translation>Écart maximum de la grille:</translation>
+    </message>
+    <message>
+      <source>Do not calculate vertex normals</source>
+      <translation>Ne pas calculer les normales des sommets</translation>
+    </message>
+    <message>
+      <source>Write u,v coordinates</source>
+      <translation>Écrire les coordonnées (u,v)</translation>
     </message>
   </context>
   <context>

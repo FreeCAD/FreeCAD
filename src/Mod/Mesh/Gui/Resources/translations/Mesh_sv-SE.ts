@@ -754,20 +754,20 @@
       <translation>Nätinformation</translation>
     </message>
     <message>
-      <source>Number of points:</source>
-      <translation>Antal punkter:</translation>
+      <source>Number of faces:</source>
+      <translation>Antal ytor:</translation>
     </message>
     <message>
       <source>No information</source>
       <translation>Ingen Information</translation>
     </message>
     <message>
-      <source>Number of faces:</source>
-      <translation>Antal ytor:</translation>
-    </message>
-    <message>
       <source>Number of edges:</source>
       <translation>Antal kanter:</translation>
+    </message>
+    <message>
+      <source>Number of points:</source>
+      <translation>Antal punkter:</translation>
     </message>
     <message>
       <source>Refresh</source>
@@ -984,22 +984,6 @@ Please run the command to repair folds first</source>
       <translation>Reguljär solid</translation>
     </message>
     <message>
-      <source>&amp;Create</source>
-      <translation>&amp;Skapa</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt+C</translation>
-    </message>
-    <message>
-      <source>Cl&amp;ose</source>
-      <translation>S&amp;täng</translation>
-    </message>
-    <message>
-      <source>Alt+O</source>
-      <translation>Alt+O</translation>
-    </message>
-    <message>
       <source>Solid:</source>
       <translation>Solid:</translation>
     </message>
@@ -1028,10 +1012,6 @@ Please run the command to repair folds first</source>
       <translation>Torus</translation>
     </message>
     <message>
-      <source>Height:</source>
-      <translation>Höjd:</translation>
-    </message>
-    <message>
       <source>Length:</source>
       <translation>Längd:</translation>
     </message>
@@ -1040,20 +1020,24 @@ Please run the command to repair folds first</source>
       <translation>Bredd:</translation>
     </message>
     <message>
+      <source>Height:</source>
+      <translation>Höjd:</translation>
+    </message>
+    <message>
       <source>Radius:</source>
       <translation>Radie:</translation>
     </message>
     <message>
-      <source>Closed</source>
-      <translation>Stängd</translation>
+      <source>Edge length:</source>
+      <translation>Kantlängd:</translation>
     </message>
     <message>
       <source>Sampling:</source>
       <translation>Skanning:</translation>
     </message>
     <message>
-      <source>Edge length:</source>
-      <translation>Kantlängd:</translation>
+      <source>Closed</source>
+      <translation>Stängd</translation>
     </message>
     <message>
       <source>Radius 1:</source>
@@ -1062,6 +1046,22 @@ Please run the command to repair folds first</source>
     <message>
       <source>Radius 2:</source>
       <translation>Radie 2:</translation>
+    </message>
+    <message>
+      <source>&amp;Create</source>
+      <translation>&amp;Skapa</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt+C</translation>
+    </message>
+    <message>
+      <source>Cl&amp;ose</source>
+      <translation>S&amp;täng</translation>
+    </message>
+    <message>
+      <source>Alt+O</source>
+      <translation>Alt+O</translation>
     </message>
   </context>
   <context>
@@ -1086,10 +1086,6 @@ Please run the command to repair folds first</source>
       <translation>Exportera</translation>
     </message>
     <message>
-      <source>Maximal deviation between mesh and object</source>
-      <translation>Maximal avvikelse mellan nät och objekt</translation>
-    </message>
-    <message>
       <source>Deviation of tessellation to the actual surface</source>
       <translation>Definierar tesseleringens avvikelse till det egentliga ytan</translation>
     </message>
@@ -1100,6 +1096,10 @@ Please run the command to repair folds first</source>
     <message>
       <source>Maximum mesh deviation</source>
       <translation>Maximal nät-avvikelse</translation>
+    </message>
+    <message>
+      <source>Maximal deviation between mesh and object</source>
+      <translation>Maximal avvikelse mellan nät och objekt</translation>
     </message>
     <message>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
@@ -1135,36 +1135,36 @@ används vid skrivning av fil i AMF-format</translation>
       <translation>Standardutseende för nya nät</translation>
     </message>
     <message>
-      <source>Default line color</source>
-      <translation>Standard linjefärg</translation>
-    </message>
-    <message>
-      <source>Mesh transparency</source>
-      <translation>Nät transparens</translation>
+      <source>Default mesh color</source>
+      <translation>Standard nät färg</translation>
     </message>
     <message>
       <source>Default color for new meshes</source>
       <translation>Standardfärgen för nya nät</translation>
     </message>
     <message>
+      <source>Mesh transparency</source>
+      <translation>Nät transparens</translation>
+    </message>
+    <message>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <source>Default mesh color</source>
-      <translation>Standard nät färg</translation>
-    </message>
-    <message>
-      <source>A bounding box will be displayed</source>
-      <translation type="unfinished">A bounding box will be displayed</translation>
-    </message>
-    <message>
-      <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Visa markeringsram för markerade eller valda nät</translation>
+      <source>Default line color</source>
+      <translation>Standard linjefärg</translation>
     </message>
     <message>
       <source>Default line color for new meshes</source>
       <translation>Standard linjefärg för nya nät</translation>
+    </message>
+    <message>
+      <source>Line transparency</source>
+      <translation>Linjegenomskinlighet</translation>
+    </message>
+    <message>
+      <source>Backface color</source>
+      <translation>Bakgrundsfärg</translation>
     </message>
     <message>
       <source>The bottom side of surface will be rendered the same way than top side.
@@ -1181,24 +1181,16 @@ att användas eller vara svart.</translation>
       <translation>Två-sidig rendering</translation>
     </message>
     <message>
-      <source>Line transparency</source>
-      <translation>Linjegenomskinlighet</translation>
+      <source>A bounding box will be displayed</source>
+      <translation type="unfinished">A bounding box will be displayed</translation>
     </message>
     <message>
-      <source>Backface color</source>
-      <translation>Bakgrundsfärg</translation>
+      <source>Show bounding-box for highlighted or selected meshes</source>
+      <translation>Visa markeringsram för markerade eller valda nät</translation>
     </message>
     <message>
       <source>Smoothing</source>
       <translation>Utjämning</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Detta är den minsta vinkeln mellan två ytor där normalerna beräknas för att göra platt skuggning.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Om vinkeln mellan normalerna på två intilliggande ytor är mindre än veckvinkeln, så kommer ytorna att mjukskuggas runt deras gemensamma kant.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Crease angle</source>
-      <translation>Veckvinkel</translation>
     </message>
     <message>
       <source>If this option is set Phong shading is used, otherwise flat shading.
@@ -1219,6 +1211,14 @@ to a smoother appearance.
     <message>
       <source>Define normal per vertex</source>
       <translation>Definiera normaler för hörn</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Detta är den minsta vinkeln mellan två ytor där normalerna beräknas för att göra platt skuggning.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Om vinkeln mellan normalerna på två intilliggande ytor är mindre än veckvinkeln, så kommer ytorna att mjukskuggas runt deras gemensamma kant.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Crease angle</source>
+      <translation>Veckvinkel</translation>
     </message>
     <message>
       <source>Crease angle is a threshold angle between two faces.
@@ -1385,6 +1385,10 @@ to a smoother appearance.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
+    </message>
+    <message>
       <source>Remeshing Parameter</source>
       <translation type="unfinished">Remeshing Parameter</translation>
     </message>
@@ -1424,10 +1428,6 @@ to a smoother appearance.
       <source>Clear</source>
       <translation>Rensa</translation>
     </message>
-    <message>
-      <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
@@ -1440,40 +1440,40 @@ to a smoother appearance.
       <translation>Välj</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Välj hela komponenten</translation>
-    </message>
-    <message>
-      <source>Pick triangle</source>
-      <translation>Markera triangel</translation>
-    </message>
-    <message>
-      <source>&lt; faces than</source>
-      <translation>&lt; ytor än</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Område</translation>
-    </message>
-    <message>
-      <source>Components</source>
-      <translation>Komponenter</translation>
     </message>
     <message>
       <source>All</source>
       <translation>Alla</translation>
     </message>
     <message>
+      <source>Components</source>
+      <translation>Komponenter</translation>
+    </message>
+    <message>
+      <source>&lt; faces than</source>
+      <translation>&lt; ytor än</translation>
+    </message>
+    <message>
+      <source>Pick triangle</source>
+      <translation>Markera triangel</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Välj hela komponenten</translation>
+    </message>
+    <message>
       <source>Deselect</source>
       <translation>Avmarkera</translation>
     </message>
     <message>
-      <source>Deselect whole component</source>
-      <translation>Avmarkera hela komponenten</translation>
-    </message>
-    <message>
       <source>&gt; faces than</source>
       <translation>&gt; ytor än</translation>
+    </message>
+    <message>
+      <source>Deselect whole component</source>
+      <translation>Avmarkera hela komponenten</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -1550,8 +1550,12 @@ to a smoother appearance.
       <translation>Nätsegmentering</translation>
     </message>
     <message>
-      <source>Sphere</source>
-      <translation>Sfär</translation>
+      <source>Plane</source>
+      <translation>Plan</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Parametrar...</translation>
     </message>
     <message>
       <source>Tolerance</source>
@@ -1562,16 +1566,12 @@ to a smoother appearance.
       <translation>Minsta antal ytor</translation>
     </message>
     <message>
-      <source>Parameters...</source>
-      <translation>Parametrar...</translation>
-    </message>
-    <message>
-      <source>Plane</source>
-      <translation>Plan</translation>
-    </message>
-    <message>
       <source>Cylinder</source>
       <translation>Cylinder</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Sfär</translation>
     </message>
     <message>
       <source>Base</source>
@@ -1758,6 +1758,10 @@ Besök http://www.openscad.org/index.html för att installera det.</translation>
       <translation type="unfinished">Asymptote Format</translation>
     </message>
     <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
+    <message>
       <source>Export mesh</source>
       <translation>Exportera nät</translation>
     </message>
@@ -1814,6 +1818,10 @@ Besök http://www.openscad.org/index.html för att installera det.</translation>
       <translation>Visa segment</translation>
     </message>
     <message>
+      <source>Display colors</source>
+      <translation type="unfinished">Display colors</translation>
+    </message>
+    <message>
       <source>Leave info mode</source>
       <translation>Lämna info läge</translation>
     </message>
@@ -1841,10 +1849,6 @@ Besök http://www.openscad.org/index.html för att installera det.</translation>
       <source>Annotation</source>
       <translation>Annotering</translation>
     </message>
-    <message>
-      <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1861,12 +1865,32 @@ Besök http://www.openscad.org/index.html för att installera det.</translation>
       <translation>&amp;Nät</translation>
     </message>
     <message>
+      <source>Cutting</source>
+      <translation>Skär</translation>
+    </message>
+    <message>
       <source>Mesh tools</source>
       <translation>Nätverktyg</translation>
     </message>
     <message>
-      <source>Cutting</source>
-      <translation>Skär</translation>
+      <source>Mesh modify</source>
+      <translation type="unfinished">Mesh modify</translation>
+    </message>
+    <message>
+      <source>Mesh boolean</source>
+      <translation type="unfinished">Mesh boolean</translation>
+    </message>
+    <message>
+      <source>Mesh cutting</source>
+      <translation type="unfinished">Mesh cutting</translation>
+    </message>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Nätsegmentering</translation>
+    </message>
+    <message>
+      <source>Mesh analyze</source>
+      <translation type="unfinished">Mesh analyze</translation>
     </message>
   </context>
 </TS>

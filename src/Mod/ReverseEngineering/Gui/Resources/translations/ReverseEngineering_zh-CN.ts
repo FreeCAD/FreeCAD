@@ -240,6 +240,14 @@
       <translation>尺寸系数</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation>用户定义的 u/v 方向</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation>创建位置</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>平滑</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>曲率变化</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation>用户定义的 u/v 方向</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation>创建位置</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>网格分割</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation>创建合成</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>平滑网格</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation>从未使用的三角形创建网格</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation>创建合成</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>选择</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>组件</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>区域</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>选择整个组件</translation>
+      <source>All</source>
+      <translation>全部</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>拾取三角形</translation>
+      <source>Components</source>
+      <translation>组件</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>&lt; 面</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>全部</translation>
+      <source>Pick triangle</source>
+      <translation>拾取三角形</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>选择整个组件</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>平面</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation>检测</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>公差</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>最小面数</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation>检测</translation>
     </message>
     <message>
       <source>Cylinder</source>

@@ -9,7 +9,7 @@
       <translation>Переместить вид</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandMoveView.py" line="48"/>
+      <location filename="../../../TechDrawTools/CommandMoveView.py" line="50"/>
       <source>Move a View to a new Page</source>
       <translation>Переместить Вид на новую Страницу</translation>
     </message>
@@ -34,6 +34,7 @@
       <translation>Выберите со страницы.</translation>
     </message>
     <message>
+      <location filename="../../../TechDrawTools/TaskMoveView.py" line="94"/>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="113"/>
       <source>Select Page</source>
       <translation>Выбрать страницу</translation>
@@ -46,16 +47,6 @@
   </context>
   <context>
     <name>ShareView</name>
-    <message>
-      <location filename="../../../TechDrawTools/CommandShareView.py" line="47"/>
-      <source>Share View</source>
-      <translation>Поделиться видом</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandShareView.py" line="48"/>
-      <source>Share a View on a second Page</source>
-      <translation>Поделиться видом на вторую страницу</translation>
-    </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="46"/>
       <source>Share View with another Page</source>
@@ -82,6 +73,7 @@
       <translation>Выберите со страницы.</translation>
     </message>
     <message>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="94"/>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="113"/>
       <source>Select Page</source>
       <translation>Выбрать страницу</translation>
@@ -90,6 +82,16 @@
       <location filename="../../../TechDrawTools/TaskShareView.py" line="112"/>
       <source>Select To Page.</source>
       <translation>Выберите для страницы.</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandShareView.py" line="47"/>
+      <source>Share View</source>
+      <translation>Поделиться видом</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandShareView.py" line="50"/>
+      <source>Share a View on a second Page</source>
+      <translation>Поделиться видом на вторую страницу</translation>
     </message>
   </context>
   <context>
@@ -1106,14 +1108,14 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="159"/>
       <location filename="../../CommandExtensionDims.cpp" line="329"/>
-      <source>Insert &apos;〼&apos; Prefix</source>
-      <translation type="unfinished">Insert &apos;〼&apos; Prefix</translation>
+      <source>Insert &apos;□&apos; Prefix</source>
+      <translation type="unfinished">Insert &apos;□&apos; Prefix</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="160"/>
       <location filename="../../CommandExtensionDims.cpp" line="330"/>
-      <source>Insert a &apos;〼&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Insert a &apos;〼&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <source>Insert a &apos;□&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
+      <translation type="unfinished">Insert a &apos;□&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
     </message>
   </context>
   <context>
@@ -2066,7 +2068,7 @@
       <translation type="unfinished">Create SectionView</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="465"/>
+      <location filename="../../TaskSectionView.cpp" line="463"/>
       <source>Edit SectionView</source>
       <translation type="unfinished">Edit SectionView</translation>
     </message>
@@ -3137,7 +3139,7 @@
       <translation>Изменить Вид Сечения</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="504"/>
+      <location filename="../../TaskSectionView.cpp" line="500"/>
       <source>Operation Failed</source>
       <translation>Операция неудачна</translation>
     </message>
@@ -5385,7 +5387,7 @@ Do you want to continue?</source>
       <translation type="unfinished">Format Symbols</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="34"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="32"/>
       <source>GD&amp;T</source>
       <translation type="unfinished">GD&amp;T</translation>
     </message>
@@ -5747,7 +5749,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="489"/>
       <source>(Arc) Minute</source>
-      <translation type="unfinished">(Arc) Minute</translation>
+      <translation>(Дуга) Минута</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="492"/>
@@ -5757,7 +5759,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="499"/>
       <source>(Arc) Second</source>
-      <translation type="unfinished">(Arc) Second</translation>
+      <translation>(Дуга) Секунда</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="502"/>
@@ -7205,7 +7207,7 @@ using the given X/Y Spacing</source>
       <translation>Нечего применять. Направление раздела пока не выбрано</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="503"/>
+      <location filename="../../TaskSectionView.cpp" line="499"/>
       <source>Can not continue. Object * %1 * not found.</source>
       <translation>Невозможно продолжить. Объект * %1 * не найден.</translation>
     </message>

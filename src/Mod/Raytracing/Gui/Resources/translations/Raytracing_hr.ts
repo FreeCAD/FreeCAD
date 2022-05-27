@@ -268,22 +268,6 @@ Do you want to continue?</source>
       <translation>Metode trasiranja putem zrake</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>Izvoz postavki mreže</translation>
-    </message>
-    <message>
-      <source>Max mesh deviation:</source>
-      <translation>Max odstupanje mreže:</translation>
-    </message>
-    <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>Ne izračunati vrh normale </translation>
-    </message>
-    <message>
-      <source>Write u,v coordinates</source>
-      <translation>Napišite u,v koordinate</translation>
-    </message>
-    <message>
       <source>Render</source>
       <translation>Iscrtaj</translation>
     </message>
@@ -332,28 +316,44 @@ Do you want to continue?</source>
       <translation>Mape</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation>Dio naziva datoteke:</translation>
-    </message>
-    <message>
-      <source>Camera file name:</source>
-      <translation>Kamera, ime datoteke:</translation>
+      <source>Default Project dir:</source>
+      <translation>Osnovni Projekt dir:</translation>
     </message>
     <message>
       <source>Used by utility tools</source>
       <translation>Korišteno od alata uslužnih programa</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>Osnovni Projekt dir:</translation>
+      <source>Camera file name:</source>
+      <translation>Kamera, ime datoteke:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
       <translation>TempCamera.inc</translation>
     </message>
     <message>
+      <source>Part file name:</source>
+      <translation>Dio naziva datoteke:</translation>
+    </message>
+    <message>
       <source>TempPart.inc</source>
       <translation>TempPart.inc</translation>
+    </message>
+    <message>
+      <source>Mesh export settings</source>
+      <translation>Izvoz postavki mreže</translation>
+    </message>
+    <message>
+      <source>Max mesh deviation:</source>
+      <translation>Max odstupanje mreže:</translation>
+    </message>
+    <message>
+      <source>Do not calculate vertex normals</source>
+      <translation>Ne izračunati vrh normale </translation>
+    </message>
+    <message>
+      <source>Write u,v coordinates</source>
+      <translation>Napišite u,v koordinate</translation>
     </message>
   </context>
   <context>

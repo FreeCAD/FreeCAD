@@ -190,7 +190,7 @@
     </message>
     <message>
       <source>Placement</source>
-      <translation>Розташування</translation>
+      <translation>Розташувати</translation>
     </message>
     <message>
       <source>Fit B-Spline</source>
@@ -240,6 +240,14 @@
       <translation>Розмірний фактор</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation>Користувацькі u / v напрямки</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation type="unfinished">Create placement</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>Згладжування</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>Варіанти кривизни</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation>Користувацькі u / v напрямки</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation type="unfinished">Create placement</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>Сегментація сітки</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation type="unfinished">Create compound</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>Згладити сітку</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation type="unfinished">Create mesh from unused triangles</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation type="unfinished">Create compound</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>Вибрати</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>Компоненти</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Область</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Вибрати всі компоненти</translation>
+      <source>All</source>
+      <translation>Всі</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>Вибрати трикутник</translation>
+      <source>Components</source>
+      <translation>Компоненти</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>&gt; граней, ніж</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>Всі</translation>
+      <source>Pick triangle</source>
+      <translation>Вибрати трикутник</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Вибрати всі компоненти</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>Площини</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation type="unfinished">Detect</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>Точність</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>Мінімальна кількість граней</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation type="unfinished">Detect</translation>
     </message>
     <message>
       <source>Cylinder</source>

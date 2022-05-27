@@ -754,20 +754,20 @@
       <translation>Informacije mreže</translation>
     </message>
     <message>
-      <source>Number of points:</source>
-      <translation>Broj vrhova:</translation>
+      <source>Number of faces:</source>
+      <translation>Broj površina:</translation>
     </message>
     <message>
       <source>No information</source>
       <translation>Nema informacija</translation>
     </message>
     <message>
-      <source>Number of faces:</source>
-      <translation>Broj površina:</translation>
-    </message>
-    <message>
       <source>Number of edges:</source>
       <translation>Broj rubova:</translation>
+    </message>
+    <message>
+      <source>Number of points:</source>
+      <translation>Broj vrhova:</translation>
     </message>
     <message>
       <source>Refresh</source>
@@ -985,22 +985,6 @@ Molimo pokrenite naredbu za popravak nabora</translation>
       <translation>Obično tijelo</translation>
     </message>
     <message>
-      <source>&amp;Create</source>
-      <translation>&amp;Izradi</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt+C</translation>
-    </message>
-    <message>
-      <source>Cl&amp;ose</source>
-      <translation>Za&amp;tvori</translation>
-    </message>
-    <message>
-      <source>Alt+O</source>
-      <translation>Alt+O</translation>
-    </message>
-    <message>
       <source>Solid:</source>
       <translation>Čvrsto tijelo:</translation>
     </message>
@@ -1029,10 +1013,6 @@ Molimo pokrenite naredbu za popravak nabora</translation>
       <translation>Zavojnica</translation>
     </message>
     <message>
-      <source>Height:</source>
-      <translation>Duljina:</translation>
-    </message>
-    <message>
       <source>Length:</source>
       <translation>Duljina:</translation>
     </message>
@@ -1041,20 +1021,24 @@ Molimo pokrenite naredbu za popravak nabora</translation>
       <translation>Širina:</translation>
     </message>
     <message>
+      <source>Height:</source>
+      <translation>Duljina:</translation>
+    </message>
+    <message>
       <source>Radius:</source>
       <translation>Polumjer:</translation>
     </message>
     <message>
-      <source>Closed</source>
-      <translation>Zatvoreno</translation>
+      <source>Edge length:</source>
+      <translation>Dužina ruba:</translation>
     </message>
     <message>
       <source>Sampling:</source>
       <translation>Uzorkovanje:</translation>
     </message>
     <message>
-      <source>Edge length:</source>
-      <translation>Dužina ruba:</translation>
+      <source>Closed</source>
+      <translation>Zatvoreno</translation>
     </message>
     <message>
       <source>Radius 1:</source>
@@ -1063,6 +1047,22 @@ Molimo pokrenite naredbu za popravak nabora</translation>
     <message>
       <source>Radius 2:</source>
       <translation>Polumjer 2:</translation>
+    </message>
+    <message>
+      <source>&amp;Create</source>
+      <translation>&amp;Izradi</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt+C</translation>
+    </message>
+    <message>
+      <source>Cl&amp;ose</source>
+      <translation>Za&amp;tvori</translation>
+    </message>
+    <message>
+      <source>Alt+O</source>
+      <translation>Alt+O</translation>
     </message>
   </context>
   <context>
@@ -1087,10 +1087,6 @@ Molimo pokrenite naredbu za popravak nabora</translation>
       <translation>Izvoz</translation>
     </message>
     <message>
-      <source>Maximal deviation between mesh and object</source>
-      <translation>Maksimalno odstupanje između mreže i objekta</translation>
-    </message>
-    <message>
       <source>Deviation of tessellation to the actual surface</source>
       <translation>Odstupanje popločenja od stvarne površine</translation>
     </message>
@@ -1101,6 +1097,10 @@ Molimo pokrenite naredbu za popravak nabora</translation>
     <message>
       <source>Maximum mesh deviation</source>
       <translation>Max odstupanje mreže</translation>
+    </message>
+    <message>
+      <source>Maximal deviation between mesh and object</source>
+      <translation>Maksimalno odstupanje između mreže i objekta</translation>
     </message>
     <message>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
@@ -1135,36 +1135,36 @@ is used when writing a file in AMF format</source>
       <translation>Inicijalni izgled za nove mreže</translation>
     </message>
     <message>
-      <source>Default line color</source>
-      <translation>Zadana boja linije</translation>
-    </message>
-    <message>
-      <source>Mesh transparency</source>
-      <translation>Transparentnost mreže</translation>
+      <source>Default mesh color</source>
+      <translation>Zadana boja MESH-a</translation>
     </message>
     <message>
       <source>Default color for new meshes</source>
       <translation>Zadana boja za nove mreže</translation>
     </message>
     <message>
+      <source>Mesh transparency</source>
+      <translation>Transparentnost mreže</translation>
+    </message>
+    <message>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <source>Default mesh color</source>
-      <translation>Zadana boja MESH-a</translation>
-    </message>
-    <message>
-      <source>A bounding box will be displayed</source>
-      <translation>Granični okvir će se prikazati</translation>
-    </message>
-    <message>
-      <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>Pokaži graničnu kutiju za istaknute ili odabrane mreže</translation>
+      <source>Default line color</source>
+      <translation>Zadana boja linije</translation>
     </message>
     <message>
       <source>Default line color for new meshes</source>
       <translation>Zadana boja linije za nove mreže</translation>
+    </message>
+    <message>
+      <source>Line transparency</source>
+      <translation>Transparentnost linije</translation>
+    </message>
+    <message>
+      <source>Backface color</source>
+      <translation>Boja stražnje površine</translation>
     </message>
     <message>
       <source>The bottom side of surface will be rendered the same way than top side.
@@ -1182,24 +1182,16 @@ osvjetljenja ili crno.
       <translation>Dvostrano renderiranje</translation>
     </message>
     <message>
-      <source>Line transparency</source>
-      <translation>Transparentnost linije</translation>
+      <source>A bounding box will be displayed</source>
+      <translation>Granični okvir će se prikazati</translation>
     </message>
     <message>
-      <source>Backface color</source>
-      <translation>Boja stražnje površine</translation>
+      <source>Show bounding-box for highlighted or selected meshes</source>
+      <translation>Pokaži graničnu kutiju za istaknute ili odabrane mreže</translation>
     </message>
     <message>
       <source>Smoothing</source>
       <translation>Izglađivanje</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; To je najmanji kut između dva lica gdje se normale izračunavaju za napraviti ravno sjenčanje. &lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; Ako je kut između normale na dvije susjedne lica je manji od pregib kut, lica će biti smoothshaded oko njihove zajedničke ruba. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Crease angle</source>
-      <translation>Nabor kuta</translation>
     </message>
     <message>
       <source>If this option is set Phong shading is used, otherwise flat shading.
@@ -1220,6 +1212,14 @@ vodi do uglađenijeg izgleda.
     <message>
       <source>Define normal per vertex</source>
       <translation>Definiraj normalu po vrhu</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; To je najmanji kut između dva lica gdje se normale izračunavaju za napraviti ravno sjenčanje. &lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt; Ako je kut između normale na dvije susjedne lica je manji od pregib kut, lica će biti smoothshaded oko njihove zajedničke ruba. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Crease angle</source>
+      <translation>Nabor kuta</translation>
     </message>
     <message>
       <source>Crease angle is a threshold angle between two faces.
@@ -1387,6 +1387,10 @@ vodi do uglađenijeg izgleda.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
+    </message>
+    <message>
       <source>Remeshing Parameter</source>
       <translation>Parametar ponovnog umrežavanja</translation>
     </message>
@@ -1426,10 +1430,6 @@ vodi do uglađenijeg izgleda.
       <source>Clear</source>
       <translation>Brisanje</translation>
     </message>
-    <message>
-      <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
@@ -1442,40 +1442,40 @@ vodi do uglađenijeg izgleda.
       <translation>Odaberite</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Odznači cijelu komponentu</translation>
-    </message>
-    <message>
-      <source>Pick triangle</source>
-      <translation>Odaberite trokut</translation>
-    </message>
-    <message>
-      <source>&lt; faces than</source>
-      <translation>&lt; lica od</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Regija</translation>
-    </message>
-    <message>
-      <source>Components</source>
-      <translation>Komponente</translation>
     </message>
     <message>
       <source>All</source>
       <translation>Sve</translation>
     </message>
     <message>
+      <source>Components</source>
+      <translation>Komponente</translation>
+    </message>
+    <message>
+      <source>&lt; faces than</source>
+      <translation>&lt; lica od</translation>
+    </message>
+    <message>
+      <source>Pick triangle</source>
+      <translation>Odaberite trokut</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Odznači cijelu komponentu</translation>
+    </message>
+    <message>
       <source>Deselect</source>
       <translation>Odznači</translation>
     </message>
     <message>
-      <source>Deselect whole component</source>
-      <translation>Odznači cijelu komponentu</translation>
-    </message>
-    <message>
       <source>&gt; faces than</source>
       <translation>&gt; lica od</translation>
+    </message>
+    <message>
+      <source>Deselect whole component</source>
+      <translation>Odznači cijelu komponentu</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -1552,8 +1552,12 @@ vodi do uglađenijeg izgleda.
       <translation>Segmentiranje mreže</translation>
     </message>
     <message>
-      <source>Sphere</source>
-      <translation>Kugla</translation>
+      <source>Plane</source>
+      <translation>Površina</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>Parametara...</translation>
     </message>
     <message>
       <source>Tolerance</source>
@@ -1564,16 +1568,12 @@ vodi do uglađenijeg izgleda.
       <translation>Minimalan broj ploha</translation>
     </message>
     <message>
-      <source>Parameters...</source>
-      <translation>Parametara...</translation>
-    </message>
-    <message>
-      <source>Plane</source>
-      <translation>Površina</translation>
-    </message>
-    <message>
       <source>Cylinder</source>
       <translation>Valjak</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>Kugla</translation>
     </message>
     <message>
       <source>Base</source>
@@ -1760,6 +1760,10 @@ Posjetite http://www.openscad.org/index.html da biste ga instalirali.</translati
       <translation>Format asimptote</translation>
     </message>
     <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
+    <message>
       <source>Export mesh</source>
       <translation>Izvezi mrežu</translation>
     </message>
@@ -1816,6 +1820,10 @@ Posjetite http://www.openscad.org/index.html da biste ga instalirali.</translati
       <translation>Prikaži segmente</translation>
     </message>
     <message>
+      <source>Display colors</source>
+      <translation type="unfinished">Display colors</translation>
+    </message>
+    <message>
       <source>Leave info mode</source>
       <translation>Zatvori info način rada</translation>
     </message>
@@ -1843,10 +1851,6 @@ Posjetite http://www.openscad.org/index.html da biste ga instalirali.</translati
       <source>Annotation</source>
       <translation>Anotacija</translation>
     </message>
-    <message>
-      <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1863,12 +1867,32 @@ Posjetite http://www.openscad.org/index.html da biste ga instalirali.</translati
       <translation>&amp;Mreže</translation>
     </message>
     <message>
+      <source>Cutting</source>
+      <translation>Rezanje</translation>
+    </message>
+    <message>
       <source>Mesh tools</source>
       <translation>Alati mreže</translation>
     </message>
     <message>
-      <source>Cutting</source>
-      <translation>Rezanje</translation>
+      <source>Mesh modify</source>
+      <translation type="unfinished">Mesh modify</translation>
+    </message>
+    <message>
+      <source>Mesh boolean</source>
+      <translation type="unfinished">Mesh boolean</translation>
+    </message>
+    <message>
+      <source>Mesh cutting</source>
+      <translation type="unfinished">Mesh cutting</translation>
+    </message>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>Segmentiranje mreže</translation>
+    </message>
+    <message>
+      <source>Mesh analyze</source>
+      <translation type="unfinished">Mesh analyze</translation>
     </message>
   </context>
 </TS>

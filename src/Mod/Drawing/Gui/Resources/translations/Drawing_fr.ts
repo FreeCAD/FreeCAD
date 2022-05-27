@@ -296,16 +296,60 @@ Do you want to continue?</source>
       <translation>Projection orthogonale</translation>
     </message>
     <message>
+      <source>Projection</source>
+      <translation>Projection</translation>
+    </message>
+    <message>
+      <source>Third Angle</source>
+      <translation>américaine</translation>
+    </message>
+    <message>
+      <source>First Angle</source>
+      <translation>européenne</translation>
+    </message>
+    <message>
+      <source>View from:</source>
+      <translation>Vue de :</translation>
+    </message>
+    <message>
+      <source>X +ve</source>
+      <translation>X +ve</translation>
+    </message>
+    <message>
+      <source>Y +ve</source>
+      <translation>Y +ve</translation>
+    </message>
+    <message>
+      <source>Z +ve</source>
+      <translation>Z +ve</translation>
+    </message>
+    <message>
+      <source>X -ve</source>
+      <translation>X -ve</translation>
+    </message>
+    <message>
+      <source>Y -ve</source>
+      <translation>Y -ve</translation>
+    </message>
+    <message>
+      <source>Z -ve</source>
+      <translation>Z -ve</translation>
+    </message>
+    <message>
+      <source>Axis aligned right:</source>
+      <translation>Axe aligné à droite :</translation>
+    </message>
+    <message>
+      <source>Secondary Views</source>
+      <translation>Vues secondaires</translation>
+    </message>
+    <message>
       <source>Right click for axonometric settings</source>
       <translation>Faites un clic droit pour les paramètres d'axonométrie</translation>
     </message>
     <message>
       <source>Primary view</source>
       <translation>Vue principale</translation>
-    </message>
-    <message>
-      <source>Secondary Views</source>
-      <translation>Vues secondaires</translation>
     </message>
     <message>
       <source>General</source>
@@ -340,36 +384,8 @@ Do you want to continue?</source>
       <translation>Axonométrique</translation>
     </message>
     <message>
-      <source>Axis out and right</source>
-      <translation>Axe orienté vers l'extérieur et la droite</translation>
-    </message>
-    <message>
-      <source>Vertical tilt</source>
-      <translation>Retournement vertical</translation>
-    </message>
-    <message>
-      <source>X +ve</source>
-      <translation>X +ve</translation>
-    </message>
-    <message>
-      <source>Y +ve</source>
-      <translation>Y +ve</translation>
-    </message>
-    <message>
-      <source>Z +ve</source>
-      <translation>Z +ve</translation>
-    </message>
-    <message>
-      <source>X -ve</source>
-      <translation>X -ve</translation>
-    </message>
-    <message>
-      <source>Y -ve</source>
-      <translation>Y -ve</translation>
-    </message>
-    <message>
-      <source>Z -ve</source>
-      <translation>Z -ve</translation>
+      <source>View projection</source>
+      <translation>Vue projection</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -384,44 +400,28 @@ Do you want to continue?</source>
       <translation>Trimétrique</translation>
     </message>
     <message>
-      <source> Scale</source>
-      <translation> Échelle</translation>
-    </message>
-    <message>
-      <source>View projection</source>
-      <translation>Vue projection</translation>
-    </message>
-    <message>
       <source> Axis aligned up</source>
       <translation> Axe aligné vers le haut</translation>
+    </message>
+    <message>
+      <source>Axis out and right</source>
+      <translation>Axe orienté vers l'extérieur et la droite</translation>
+    </message>
+    <message>
+      <source>Vertical tilt</source>
+      <translation>Retournement vertical</translation>
     </message>
     <message>
       <source>Flip</source>
       <translation>Retourner</translation>
     </message>
     <message>
+      <source> Scale</source>
+      <translation> Échelle</translation>
+    </message>
+    <message>
       <source> Trimetric</source>
       <translation> Trimétrique</translation>
-    </message>
-    <message>
-      <source>Projection</source>
-      <translation>Projection</translation>
-    </message>
-    <message>
-      <source>Third Angle</source>
-      <translation>américaine</translation>
-    </message>
-    <message>
-      <source>First Angle</source>
-      <translation>européenne</translation>
-    </message>
-    <message>
-      <source>View from:</source>
-      <translation>Vue de :</translation>
-    </message>
-    <message>
-      <source>Axis aligned right:</source>
-      <translation>Axe aligné à droite :</translation>
     </message>
   </context>
   <context>

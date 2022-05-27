@@ -4,24 +4,30 @@
   <context>
     <name>OpenSCAD</name>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="709"/>
+      <location filename="../../OpenSCADUtils.py" line="710"/>
       <source>OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</source>
       <translation type="unfinished">OpenSCAD file contains both 2D and 3D shapes. That is not supported in this importer, all shapes must have the same dimensionality.</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADUtils.py" line="721"/>
+      <location filename="../../OpenSCADUtils.py" line="722"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
       <translation>Eroare toate formele trebuie să fie fie 2D sau ambele trebuie să fie 3D</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="1385"/>
-      <source>Unsupported Function</source>
-      <translation>Functia nu este suportata</translation>
+      <location filename="../../InitGui.py" line="130"/>
+      <source>It looks like you may be using a Snap version of OpenSCAD.</source>
+      <translation type="unfinished">It looks like you may be using a Snap version of OpenSCAD.</translation>
     </message>
     <message>
-      <location filename="../../importCSG.py" line="1385"/>
-      <source>Press OK</source>
-      <translation>Apasati Ok</translation>
+      <location filename="../../InitGui.py" line="135"/>
+      <location filename="../../InitGui.py" line="148"/>
+      <source>If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</source>
+      <translation type="unfinished">If OpenSCAD execution fails to load the temporary file, use FreeCAD's OpenSCAD Workbench Preferences to change the transfer mechanism.</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="143"/>
+      <source>It looks like you may be using a sandboxed version of FreeCAD.</source>
+      <translation type="unfinished">It looks like you may be using a sandboxed version of FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="101"/>
@@ -29,7 +35,7 @@
       <translation>Nu se poate exploda %s</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="146"/>
+      <location filename="../../OpenSCADCommands.py" line="148"/>
       <source>Convert Edges to Faces</source>
       <translation>Convertiti marginile in fete</translation>
     </message>
@@ -39,49 +45,70 @@
       <translation>Selectati mai intai 3 obiecte</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="340"/>
       <location filename="../../OpenSCADCommands.py" line="363"/>
       <source>Add</source>
       <translation>Adaugă</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="341"/>
       <location filename="../../OpenSCADCommands.py" line="367"/>
       <source>Clear</source>
       <translation>Șterge</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="342"/>
       <location filename="../../OpenSCADCommands.py" line="364"/>
       <source>Load</source>
-      <translation type="unfinished">Load</translation>
+      <translation>Incarcă</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="343"/>
       <location filename="../../OpenSCADCommands.py" line="365"/>
       <source>Save</source>
-      <translation type="unfinished">Save</translation>
+      <translation>Salvare</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="344"/>
       <location filename="../../OpenSCADCommands.py" line="366"/>
       <source>Refresh</source>
       <translation>Reîmprospătare</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="345"/>
       <location filename="../../OpenSCADCommands.py" line="368"/>
       <source>as Mesh</source>
       <translation>o retea</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="358"/>
       <location filename="../../OpenSCADCommands.py" line="369"/>
       <source>Add OpenSCAD Element</source>
       <translation>Adauga element OpenSCAD</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="443"/>
       <location filename="../../OpenSCADCommands.py" line="472"/>
       <source>Perform</source>
       <translation>Efectuează</translation>
     </message>
     <message>
+      <location filename="../../OpenSCADCommands.py" line="469"/>
       <location filename="../../OpenSCADCommands.py" line="473"/>
       <source>Mesh Boolean</source>
       <translation>Plasă Boolean</translation>
+    </message>
+    <message>
+      <location filename="../../importCSG.py" line="549"/>
+      <location filename="../../importCSG.py" line="1385"/>
+      <source>Unsupported Function</source>
+      <translation>Functia nu este suportata</translation>
+    </message>
+    <message>
+      <location filename="../../importCSG.py" line="549"/>
+      <location filename="../../importCSG.py" line="1385"/>
+      <source>Press OK</source>
+      <translation>Apasati Ok</translation>
     </message>
   </context>
   <context>
@@ -92,7 +119,7 @@
       <translation>Adauga element OpenSCAD...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="517"/>
+      <location filename="../../OpenSCADCommands.py" line="520"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
       <translation>Adauga u element OpenSCAD prin introducerea unui cod OpenSCAD si executarea codului binar</translation>
     </message>
@@ -105,7 +132,7 @@
       <translation>Forme de culoare</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="126"/>
+      <location filename="../../OpenSCADCommands.py" line="128"/>
       <source>Color Shapes by validity and type</source>
       <translation>Forme de culoare dupa validitate si tip</translation>
     </message>
@@ -126,7 +153,7 @@
       <translation>Amplasamente expandate</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="291"/>
+      <location filename="../../OpenSCADCommands.py" line="293"/>
       <source>Expand all placements downwards the FeatureTree</source>
       <translation>Extinde toate amplasamentele mai jos de FeatureTree</translation>
     </message>
@@ -139,7 +166,7 @@
       <translation>Explodare grup</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="110"/>
+      <location filename="../../OpenSCADCommands.py" line="112"/>
       <source>Remove fusion, apply placement to children, and color randomly</source>
       <translation>Scoateţi fusion, aplica plasarea copiilor şi culoare la întâmplare</translation>
     </message>
@@ -152,7 +179,7 @@
       <translation>carenă</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="552"/>
+      <location filename="../../OpenSCADCommands.py" line="554"/>
       <source>Perform Hull</source>
       <translation>Efectuează Hull</translation>
     </message>
@@ -165,7 +192,7 @@
       <translation>Crește funcția toleranței</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="274"/>
+      <location filename="../../OpenSCADCommands.py" line="276"/>
       <source>Create Feature that allows to increase the tolerance</source>
       <translation>Creează o funcție care permite creșterea toleranței</translation>
     </message>
@@ -178,7 +205,7 @@
       <translation>Ochiurilor de plasă Boolean...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="532"/>
+      <location filename="../../OpenSCADCommands.py" line="535"/>
       <source>Export objects as meshes and use OpenSCAD to perform a boolean operation</source>
       <translation>Exporta obiectele ca plase şi de a folosi OpenSCAD pentru a efectua o operaţiune tip boolean</translation>
     </message>
@@ -191,7 +218,7 @@
       <translation>Minkowski</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="571"/>
+      <location filename="../../OpenSCADCommands.py" line="573"/>
       <source>Perform Minkowski</source>
       <translation>Efectuează Minkowski</translation>
     </message>
@@ -204,7 +231,7 @@
       <translation>Funcția Reflectă Mesh...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="195"/>
+      <location filename="../../OpenSCADCommands.py" line="197"/>
       <source>Create Mirror Mesh Feature</source>
       <translation>Creează Funcția Reflectă Mesh</translation>
     </message>
@@ -217,7 +244,7 @@
       <translation>Rafineaza caracteristica de forma</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="165"/>
+      <location filename="../../OpenSCADCommands.py" line="167"/>
       <source>Create Refine Shape Feature</source>
       <translation>Creaza rafinament de forma</translation>
     </message>
@@ -230,7 +257,7 @@
       <translation>Elimina obiectele si copii lor</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="324"/>
+      <location filename="../../OpenSCADCommands.py" line="326"/>
       <source>Removes the selected objects and all children that are not referenced from other objects</source>
       <translation>Elimina obiectele selectate si toti copiii care nu sunt referentiati de alte obiecte</translation>
     </message>
@@ -243,7 +270,7 @@
       <translation>Inlocuieste obiectul</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="312"/>
+      <location filename="../../OpenSCADCommands.py" line="314"/>
       <source>Replace an object in the Feature Tree. Please select old, new, and parent object</source>
       <translation>Inlocuieste un obiect in FeatureTree. Selectati obiectul vechi, cel nou si obiectul parinte</translation>
     </message>
@@ -256,7 +283,7 @@
       <translation>Redimensionează funcția Mesh...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="254"/>
+      <location filename="../../OpenSCADCommands.py" line="257"/>
       <source>Create Resize Mesh Feature</source>
       <translation>Crează funcția Redimensionare Mesh</translation>
     </message>
@@ -269,7 +296,7 @@
       <translation>Funcția Redimensionează Mesh...</translation>
     </message>
     <message>
-      <location filename="../../OpenSCADCommands.py" line="224"/>
+      <location filename="../../OpenSCADCommands.py" line="227"/>
       <source>Create Scale Mesh Feature</source>
       <translation>Crează funcția Dimensionare Mesh</translation>
     </message>
@@ -277,7 +304,7 @@
   <context>
     <name>Workbech</name>
     <message>
-      <location filename="../../InitGui.py" line="155"/>
+      <location filename="../../InitGui.py" line="156"/>
       <source>OpenSCAD Part tools</source>
       <translation>Instrumente de OpenSCAD Part</translation>
     </message>
@@ -285,7 +312,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="151"/>
+      <location filename="../../InitGui.py" line="152"/>
       <source>OpenSCADTools</source>
       <translation>Unelte OpenSCAD</translation>
     </message>
@@ -371,7 +398,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="210"/>
       <source>User-specified directory</source>
-      <translation type="unfinished">User-specified directory</translation>
+      <translation>Directorul specificat de utilizator</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="215"/>

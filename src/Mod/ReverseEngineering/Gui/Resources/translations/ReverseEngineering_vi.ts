@@ -240,6 +240,14 @@
       <translation>Yếu tố kích thước</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation>Hướng u/v do người dùng xác định</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation type="unfinished">Create placement</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>Làm mịn</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>Sự thay đổi độ cong</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation>Hướng u/v do người dùng xác định</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation type="unfinished">Create placement</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>Phân đoạn lưới</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation type="unfinished">Create compound</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>Lưới mịn</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation type="unfinished">Create mesh from unused triangles</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation type="unfinished">Create compound</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>Chọn</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>Các bộ phận</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Khu vực</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Chọn toàn bộ thành phần</translation>
+      <source>All</source>
+      <translation>Tất cả</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>Chọn hình tam giác</translation>
+      <source>Components</source>
+      <translation>Các bộ phận</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>&lt; các mặt như</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>Tất cả</translation>
+      <source>Pick triangle</source>
+      <translation>Chọn hình tam giác</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Chọn toàn bộ thành phần</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>Mặt phẳng</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation type="unfinished">Detect</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>Dung sai</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>Số lượng mặt tối thiểu</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation type="unfinished">Detect</translation>
     </message>
     <message>
       <source>Cylinder</source>

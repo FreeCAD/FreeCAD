@@ -9,6 +9,7 @@
       <translation>Kalkulationstabelle</translation>
     </message>
     <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
       <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
       <source>Cell</source>
       <translation>Zelle</translation>
@@ -54,6 +55,7 @@
       <translation>Controller hinzufügen</translation>
     </message>
     <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
       <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
       <source>Add property controller</source>
       <translation>Eigenschafts-Controller hinzufügen</translation>
@@ -67,7 +69,7 @@
       <translation>Controller hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="920"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
       <source>Adds a cell controller to a selected spreadsheet</source>
       <translation>Einen Zellen-Controller zur ausgewählten Tabelle hinzufügen</translation>
     </message>
@@ -80,7 +82,7 @@
       <translation>Kalkulationstabelle</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="903"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
       <source>Adds a spreadsheet object to the active document</source>
       <translation>Ein Tabellen-Objekt zum aktiven Dokument hinzufügen</translation>
     </message>
@@ -93,7 +95,7 @@
       <translation>Eigenschafts-Controller hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="945"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
       <source>Adds a property controller to a selected spreadsheet</source>
       <translation>Einen Eigenschaften-Controller zur ausgewählten Tabelle hinzufügen</translation>
     </message>
@@ -619,7 +621,7 @@ by that property.
     <message>
       <location filename="../../DlgSheetConf.ui" line="57"/>
       <source>Property:</source>
-      <translation type="unfinished">Property:</translation>
+      <translation>Eigenschaft:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="64"/>
@@ -631,7 +633,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../DlgSheetConf.ui" line="72"/>
       <source>Group:</source>
-      <translation type="unfinished">Group:</translation>
+      <translation>Gruppe:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
@@ -1153,7 +1155,7 @@ Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
     <message>
       <location filename="../../SheetTableView.cpp" line="200"/>
       <source>Split cells</source>
-      <translation type="unfinished">Split cells</translation>
+      <translation>Zellen teilen</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="204"/>

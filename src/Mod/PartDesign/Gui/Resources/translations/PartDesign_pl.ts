@@ -9,7 +9,7 @@
       <translation>Przekładnia ewolwentowa ...</translation>
     </message>
     <message>
-      <location filename="../../../InvoluteGearFeature.py" line="59"/>
+      <location filename="../../../InvoluteGearFeature.py" line="61"/>
       <source>Creates or edit the involute gear definition.</source>
       <translation>Tworzy lub edytuje definicję przekładni ewolwentowej.</translation>
     </message>
@@ -22,7 +22,7 @@
       <translation>Koło łańcuchowe ...</translation>
     </message>
     <message>
-      <location filename="../../../SprocketFeature.py" line="64"/>
+      <location filename="../../../SprocketFeature.py" line="66"/>
       <source>Creates or edit the sprocket definition.</source>
       <translation>Tworzy lub edytuje koło łańcuchowe.</translation>
     </message>
@@ -30,12 +30,14 @@
   <context>
     <name>WizardShaft</name>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="210"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="186"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
       <source>Shaft design wizard...</source>
       <translation>Kreator projektowania wału ...</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaft.py" line="211"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="187"/>
+      <location filename="../../../WizardShaft/WizardShaft.py" line="212"/>
       <source>Start the shaft design wizard</source>
       <translation>Uruchom kreatora projektowania wału</translation>
     </message>
@@ -78,7 +80,7 @@
       <translation>Typ krawędzi końcowej</translation>
     </message>
     <message>
-      <location filename="../../../WizardShaft/WizardShaftTable.py" line="50"/>
+      <location filename="../../../WizardShaft/WizardShaftTable.py" line="53"/>
       <source>End edge size</source>
       <translation>Rozmiar krawędzi końcowej</translation>
     </message>
@@ -88,79 +90,79 @@
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="72"/>
       <source>The center point of the helix' start; derived from the reference axis.</source>
-      <translation type="unfinished">The center point of the helix' start; derived from the reference axis.</translation>
+      <translation>Punkt środkowy początku helisy, wyprowadzony z osi odniesienia.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="74"/>
       <source>The helix' direction; derived from the reference axis.</source>
-      <translation type="unfinished">The helix' direction; derived from the reference axis.</translation>
+      <translation>Kierunek helisy, wynikający z jej osi referencyjnej.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="76"/>
       <source>The reference axis of the helix.</source>
-      <translation type="unfinished">The reference axis of the helix.</translation>
+      <translation>Oś referencyjna helisy.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="78"/>
       <source>The helix input mode specifies which properties are set by the user.
 Dependent properties are then calculated.</source>
-      <translation type="unfinished">The helix input mode specifies which properties are set by the user.
-Dependent properties are then calculated.</translation>
+      <translation>Tryb wprowadzania helisy definiuje, które właściwości są ustawiane przez użytkownika.
+Po tym następuje obliczenie właściwości zależnych.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="82"/>
       <source>The axial distance between two turns.</source>
-      <translation type="unfinished">The axial distance between two turns.</translation>
+      <translation>Wzdłużna odległość pomiędzy dwoma zwojami.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="84"/>
       <source>The height of the helix' path, not accounting for the extent of the profile.</source>
-      <translation type="unfinished">The height of the helix' path, not accounting for the extent of the profile.</translation>
+      <translation>Wysokość ścieżki profilu helisy, bez uwzględnienia wysokości profilu.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="86"/>
       <source>The number of turns in the helix.</source>
-      <translation type="unfinished">The number of turns in the helix.</translation>
+      <translation>Liczba zwojów helisy.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="89"/>
       <source>The angle of the cone that forms a hull around the helix.
 Non-zero values turn the helix into a conical spiral.
 Positive values make the radius grow, nevatige shrink.</source>
-      <translation type="unfinished">The angle of the cone that forms a hull around the helix.
-Non-zero values turn the helix into a conical spiral.
-Positive values make the radius grow, nevatige shrink.</translation>
+      <translation>Kąt stożka, który tworzy powłokę wokół spirali.
+Wartości niezerowe zmieniają spiralę w stożkową spiralę.
+Wartości dodatnie powodują, że promień rośnie, a ujemne, że maleje.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="94"/>
       <source>The growth of the helix' radius per turn.
 Non-zero values turn the helix into a conical spiral.</source>
-      <translation type="unfinished">The growth of the helix' radius per turn.
-Non-zero values turn the helix into a conical spiral.</translation>
+      <translation>Przyrost promienia spirali na obrót.
+Wartości niezerowe zmieniają spiralę w spiralę stożkową.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="97"/>
       <source>Sets the turning direction to left handed,
 i.e. counter-clockwise when moving along its axis.</source>
-      <translation type="unfinished">Sets the turning direction to left handed,
-i.e. counter-clockwise when moving along its axis.</translation>
+      <translation>Ustawia kierunek obrotu na lewoskrętny,
+tzn. przeciwny do ruchu wskazówek zegara, poruszając się wzdłuż osi.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="100"/>
       <source>Determines whether the helix points in the opposite direction of the axis.</source>
-      <translation type="unfinished">Determines whether the helix points in the opposite direction of the axis.</translation>
+      <translation>Określa, czy helisa jest skierowana w kierunku przeciwnym do osi.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="102"/>
       <source>If set, the result will be the intersection of the profile and the preexisting body.</source>
-      <translation type="unfinished">If set, the result will be the intersection of the profile and the preexisting body.</translation>
+      <translation>Jeśli wybrane, wynikiem będzie część wspólna profilu i istniejącej już zawartości.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="104"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
-      <translation type="unfinished">If false, the tool will propose an initial value for the pitch based on the profile bounding box,
-so that self intersection is avoided.</translation>
+      <translation>Jeśli fałsz, narzędzie zaproponuje wartość początkową skoku na podstawie ramki otaczającej profil,
+aby uniknąć samoprzecięcia.</translation>
     </message>
   </context>
   <context>
@@ -1621,7 +1623,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="138"/>
       <source>Use All Edges</source>
-      <translation type="unfinished">Use All Edges</translation>
+      <translation>Użyj wszystkich krawędzi</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="165"/>
@@ -1650,14 +1652,6 @@ kliknij ponownie, aby zakończyć wybór</translation>
       <location filename="../../TaskChamferParameters.cpp" line="225"/>
       <source>At least one item must be kept.</source>
       <translation>Należy wybrać co najmniej jeden element.</translation>
-    </message>
-  </context>
-  <context>
-    <name>PartDesignGui::TaskDatumParameters</name>
-    <message>
-      <location filename="../../TaskDatumParameters.cpp" line="56"/>
-      <source> parameters</source>
-      <translation> parametry</translation>
     </message>
   </context>
   <context>
@@ -1784,12 +1778,12 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="276"/>
       <source>Add all edges</source>
-      <translation type="unfinished">Add all edges</translation>
+      <translation>Dodaj wszystkie krawędzie</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="284"/>
       <source>Adds all edges to the list box (active only when in add selection mode).</source>
-      <translation type="unfinished">Adds all edges to the list box (active only when in add selection mode).</translation>
+      <translation>Dodaje wszystkie krawędzie do pola listy (aktywne tylko w trybie dodawania zaznaczenia).</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="293"/>
@@ -1825,7 +1819,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="362"/>
       <source>Face normal</source>
-      <translation type="unfinished">Face normal</translation>
+      <translation>Wektor normalny ściany</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="365"/>
@@ -1836,7 +1830,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
       <location filename="../../TaskExtrudeParameters.cpp" line="369"/>
       <location filename="../../TaskExtrudeParameters.cpp" line="371"/>
       <source>Custom direction</source>
-      <translation type="unfinished">Custom direction</translation>
+      <translation>Kierunek niestandardowy</translation>
     </message>
   </context>
   <context>
@@ -1973,7 +1967,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskFilletParameters.ui" line="81"/>
       <source>Use All Edges</source>
-      <translation type="unfinished">Use All Edges</translation>
+      <translation>Użyj wszystkich krawędzi</translation>
     </message>
     <message>
       <location filename="../../TaskFilletParameters.cpp" line="134"/>
@@ -2106,7 +2100,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="233"/>
       <source>Radial growth:</source>
-      <translation type="unfinished">Radial growth:</translation>
+      <translation>Przyrost promieniowy:</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="255"/>
@@ -2141,7 +2135,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="333"/>
       <source>Error: unsupported mode</source>
-      <translation type="unfinished">Error: unsupported mode</translation>
+      <translation>Błąd: nieobsługiwany tryb</translation>
     </message>
   </context>
   <context>
@@ -2469,7 +2463,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="42"/>
       <source>Offset from face at which pad will end</source>
-      <translation type="unfinished">Offset from face at which pad will end</translation>
+      <translation>Odsunięcie w kierunku ściany, na której wyciągnięcie zostanie zakończone</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="43"/>
@@ -2543,8 +2537,8 @@ kliknij ponownie, aby zakończyć wybór</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="92"/>
       <source>Set a direction or select an edge
 from the model as reference</source>
-      <translation type="unfinished">Set a direction or select an edge
-from the model as reference</translation>
+      <translation>Ustaw kierunek lub wybierz krawędź
+z modelu jako odniesienie</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="97"/>
@@ -2559,12 +2553,12 @@ from the model as reference</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="107"/>
       <source>Custom direction</source>
-      <translation type="unfinished">Custom direction</translation>
+      <translation>Kierunek niestandardowy</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="117"/>
       <source>Show direction</source>
-      <translation type="unfinished">Show direction</translation>
+      <translation>Pokaż kierunek</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="127"/>
@@ -2634,12 +2628,12 @@ mierzona wzdłuż podanego kierunku</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="272"/>
       <location filename="../../TaskPadPocketParameters.ui" line="317"/>
       <source>Angle to taper the extrusion</source>
-      <translation type="unfinished">Angle to taper the extrusion</translation>
+      <translation>Kąt zwężenia wyciągnięcia</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="275"/>
       <source>Taper angle</source>
-      <translation type="unfinished">Taper angle</translation>
+      <translation>Kąt zwężenia</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="296"/>
@@ -2649,7 +2643,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="320"/>
       <source>2nd taper angle</source>
-      <translation type="unfinished">2nd taper angle</translation>
+      <translation>Kąt drugiego zwężenia</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="341"/>
@@ -2888,12 +2882,12 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="43"/>
       <source>Offset from face at which pocket will end</source>
-      <translation type="unfinished">Offset from face at which pocket will end</translation>
+      <translation>Odsunięcie w kierunku ściany, na której kieszeń zostanie zakończona</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="44"/>
       <source>Reverses pocket direction</source>
-      <translation type="unfinished">Reverses pocket direction</translation>
+      <translation>Odwraca kierunek kieszeni</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="73"/>
@@ -3318,6 +3312,101 @@ kliknij ponownie, aby zakończyć wybór</translation>
     </message>
   </context>
   <context>
+    <name>PartDesignGui::ViewProviderChamfer</name>
+    <message>
+      <location filename="../../ViewProviderChamfer.h" line="41"/>
+      <source>Chamfer parameters</source>
+      <translation>Parametry fazowania</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderDatum</name>
+    <message>
+      <location filename="../../ViewProviderDatum.cpp" line="111"/>
+      <source>Datum Plane parameters</source>
+      <translation>Parametry Płaszczyzny odniesienia</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderDatum.cpp" line="116"/>
+      <source>Datum Line parameters</source>
+      <translation>Parametry Linii odniesienia</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderDatum.cpp" line="121"/>
+      <source>Datum Point parameters</source>
+      <translation>Parametry Punktu odniesienia</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderDatum.cpp" line="126"/>
+      <source>Local Coordinate System parameters</source>
+      <translation>Parametry Lokalnego układu współrzędnych</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderDraft</name>
+    <message>
+      <location filename="../../ViewProviderDraft.h" line="42"/>
+      <source>Draft parameters</source>
+      <translation>Parametry szkicu</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderFillet</name>
+    <message>
+      <location filename="../../ViewProviderFillet.h" line="41"/>
+      <source>Fillet parrameters</source>
+      <translation>Parametry zaokrąglania</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderLinearPattern</name>
+    <message>
+      <location filename="../../ViewProviderLinearPattern.h" line="38"/>
+      <source>LinearPattern parameters</source>
+      <translation>Parametry Szyku liniowego</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderMultiTransform</name>
+    <message>
+      <location filename="../../ViewProviderMultiTransform.h" line="38"/>
+      <source>MultiTransform parameters</source>
+      <translation>Parametry Transformacji wielokrotnej</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderPolarPattern</name>
+    <message>
+      <location filename="../../ViewProviderPolarPattern.h" line="38"/>
+      <source>PolarPattern parameters</source>
+      <translation>Parametry Szyku kołowego</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderScaled</name>
+    <message>
+      <location filename="../../ViewProviderScaled.h" line="38"/>
+      <source>Scaled parameters</source>
+      <translation>Parametry skalowania</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGui::ViewProviderThickness</name>
+    <message>
+      <location filename="../../ViewProviderThickness.h" line="41"/>
+      <source>Thickness parameters</source>
+      <translation>Parametry grubości</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartDesignGuii::ViewProviderMirrored</name>
+    <message>
+      <location filename="../../ViewProviderMirrored.h" line="38"/>
+      <source>Mirrored parameters</source>
+      <translation>Parametry odbicia lustrzanego</translation>
+    </message>
+  </context>
+  <context>
     <name>PartDesign_CompPrimitiveAdditive</name>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="200"/>
@@ -3519,7 +3608,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
       <location filename="../../Command.cpp" line="2225"/>
       <location filename="../../ViewProvider.cpp" line="98"/>
       <location filename="../../ViewProviderBoolean.cpp" line="80"/>
-      <location filename="../../ViewProviderDatum.cpp" line="242"/>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
       <location filename="../../ViewProviderHole.cpp" line="79"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="73"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
@@ -3532,7 +3621,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
       <location filename="../../Command.cpp" line="2226"/>
       <location filename="../../ViewProvider.cpp" line="99"/>
       <location filename="../../ViewProviderBoolean.cpp" line="81"/>
-      <location filename="../../ViewProviderDatum.cpp" line="243"/>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
       <location filename="../../ViewProviderHole.cpp" line="80"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="74"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
@@ -3891,29 +3980,29 @@ Jeśli masz starszy dokument z obiektami Projektu części bez obiektu Zawartoś
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="110"/>
-      <location filename="../../ViewProviderDatum.cpp" line="200"/>
+      <location filename="../../ViewProviderDatum.cpp" line="204"/>
       <source>Plane</source>
       <translation>Płaszczyzna</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="114"/>
-      <location filename="../../ViewProviderDatum.cpp" line="196"/>
+      <location filename="../../ViewProviderDatum.cpp" line="115"/>
+      <location filename="../../ViewProviderDatum.cpp" line="200"/>
       <source>Line</source>
       <translation>Linia</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="118"/>
-      <location filename="../../ViewProviderDatum.cpp" line="204"/>
+      <location filename="../../ViewProviderDatum.cpp" line="120"/>
+      <location filename="../../ViewProviderDatum.cpp" line="208"/>
       <source>Point</source>
       <translation>Punkt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="122"/>
+      <location filename="../../ViewProviderDatum.cpp" line="125"/>
       <source>Coordinate System</source>
       <translation>Układ współrzędnych</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="221"/>
+      <location filename="../../ViewProviderDatum.cpp" line="225"/>
       <source>Edit datum</source>
       <translation>Edytuj odniesienie</translation>
     </message>
@@ -4219,12 +4308,12 @@ Migracja będzie możliwa w każdej chwili za pomocą "Projekt części -&gt; Mi
     <message>
       <location filename="../../../SprocketFeature.ui" line="248"/>
       <source>Roller Diameter:</source>
-      <translation>Średnica wałka:</translation>
+      <translation>Średnica rolki łańcucha:</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="292"/>
       <source>Thickness:</source>
-      <translation>Grubość:</translation>
+      <translation>Szerokość zęba:</translation>
     </message>
   </context>
   <context>
@@ -4413,7 +4502,7 @@ Zauważ, że obliczenia mogą zająć trochę czasu</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="111"/>
       <source>Custom Thread</source>
-      <translation type="unfinished">Custom Thread</translation>
+      <translation>Gwint użytkownika</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="124"/>
@@ -4708,7 +4797,7 @@ powyżej 90°: większy promień otworu u dołu</translation>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>Part Design Helper</source>
-      <translation>Projekt Części - pomocnik</translation>
+      <translation>Projekt Części — pomocnik</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>

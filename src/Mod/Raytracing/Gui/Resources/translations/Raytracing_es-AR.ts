@@ -268,22 +268,6 @@ Do you want to continue?</source>
       <translation>TrazadoRayos</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>Configuración de exportación de malla</translation>
-    </message>
-    <message>
-      <source>Max mesh deviation:</source>
-      <translation>Desviación máxima de la malla:</translation>
-    </message>
-    <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>No calcular normales de vértices</translation>
-    </message>
-    <message>
-      <source>Write u,v coordinates</source>
-      <translation>Escribe u,v coordenadas</translation>
-    </message>
-    <message>
       <source>Render</source>
       <translation>Renderizar</translation>
     </message>
@@ -332,28 +316,44 @@ Do you want to continue?</source>
       <translation>Directorios</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation>Nombre del archivo de pieza:</translation>
-    </message>
-    <message>
-      <source>Camera file name:</source>
-      <translation>Nombre del archivo de la cámara:</translation>
+      <source>Default Project dir:</source>
+      <translation>Dirección de Proyecto predeterminada:</translation>
     </message>
     <message>
       <source>Used by utility tools</source>
       <translation>Utilizado por herramientas de utilidad</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>Dirección de Proyecto predeterminada:</translation>
+      <source>Camera file name:</source>
+      <translation>Nombre del archivo de la cámara:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
       <translation>TempCamera.inc</translation>
     </message>
     <message>
+      <source>Part file name:</source>
+      <translation>Nombre del archivo de pieza:</translation>
+    </message>
+    <message>
       <source>TempPart.inc</source>
       <translation>TempPart.inc</translation>
+    </message>
+    <message>
+      <source>Mesh export settings</source>
+      <translation>Configuración de exportación de malla</translation>
+    </message>
+    <message>
+      <source>Max mesh deviation:</source>
+      <translation>Desviación máxima de la malla:</translation>
+    </message>
+    <message>
+      <source>Do not calculate vertex normals</source>
+      <translation>No calcular normales de vértices</translation>
+    </message>
+    <message>
+      <source>Write u,v coordinates</source>
+      <translation>Escribe u,v coordenadas</translation>
     </message>
   </context>
   <context>

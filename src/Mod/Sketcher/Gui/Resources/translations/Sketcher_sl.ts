@@ -9,7 +9,7 @@
       <translation>Ustvari šestkotni oris</translation>
     </message>
     <message>
-      <location filename="../../../Profiles.py" line="56"/>
+      <location filename="../../../Profiles.py" line="58"/>
       <source>Creates a hexagonal profile in the sketch</source>
       <translation>V očrtu ustvari šestkotnik</translation>
     </message>

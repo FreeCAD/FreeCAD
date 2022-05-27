@@ -240,6 +240,14 @@
       <translation>Tamany</translation>
     </message>
     <message>
+      <source>User-defined u/v directions</source>
+      <translation>Direccions u/v definides per l'usuari</translation>
+    </message>
+    <message>
+      <source>Create placement</source>
+      <translation>Crea una ubicació</translation>
+    </message>
+    <message>
       <source>Smoothing</source>
       <translation>Suavitzat</translation>
     </message>
@@ -258,14 +266,6 @@
     <message>
       <source>Curvature variation</source>
       <translation>Variació de la curvatura</translation>
-    </message>
-    <message>
-      <source>User-defined u/v directions</source>
-      <translation>Direccions u/v definides per l'usuari</translation>
-    </message>
-    <message>
-      <source>Create placement</source>
-      <translation>Crea una ubicació</translation>
     </message>
   </context>
   <context>
@@ -339,10 +339,6 @@
       <translation>Segmentació de malla</translation>
     </message>
     <message>
-      <source>Create compound</source>
-      <translation>Crea un compost</translation>
-    </message>
-    <message>
       <source>Smooth mesh</source>
       <translation>Suavitza de la malla</translation>
     </message>
@@ -366,6 +362,10 @@
       <source>Create mesh from unused triangles</source>
       <translation>Crea una malla a partir de triangles no utilitzats</translation>
     </message>
+    <message>
+      <source>Create compound</source>
+      <translation>Crea un compost</translation>
+    </message>
   </context>
   <context>
     <name>ReverseEngineeringGui::SegmentationManual</name>
@@ -378,28 +378,28 @@
       <translation>Selecciona</translation>
     </message>
     <message>
-      <source>Components</source>
-      <translation>Components</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>Regió</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>Selecciona el component sencer</translation>
+      <source>All</source>
+      <translation>Tot</translation>
     </message>
     <message>
-      <source>Pick triangle</source>
-      <translation>Seleccioneu un triangle</translation>
+      <source>Components</source>
+      <translation>Components</translation>
     </message>
     <message>
       <source>&lt; faces than</source>
       <translation>&lt; cares que</translation>
     </message>
     <message>
-      <source>All</source>
-      <translation>Tot</translation>
+      <source>Pick triangle</source>
+      <translation>Seleccioneu un triangle</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>Selecciona el component sencer</translation>
     </message>
     <message>
       <source>Clear</source>
@@ -410,16 +410,16 @@
       <translation>Pla</translation>
     </message>
     <message>
+      <source>Detect</source>
+      <translation>Detectar</translation>
+    </message>
+    <message>
       <source>Tolerance</source>
       <translation>Tolerància</translation>
     </message>
     <message>
       <source>Minimum number of faces</source>
       <translation>Nombre mínim de cares</translation>
-    </message>
-    <message>
-      <source>Detect</source>
-      <translation>Detectar</translation>
     </message>
     <message>
       <source>Cylinder</source>

@@ -296,16 +296,60 @@ Do you want to continue?</source>
       <translation>Proiecţie Ortogonală</translation>
     </message>
     <message>
+      <source>Projection</source>
+      <translation>Proiecţie</translation>
+    </message>
+    <message>
+      <source>Third Angle</source>
+      <translation>Convenția/proiecția americană</translation>
+    </message>
+    <message>
+      <source>First Angle</source>
+      <translation>Convenția/proiecția europeană</translation>
+    </message>
+    <message>
+      <source>View from:</source>
+      <translation>Vizualizare de la:</translation>
+    </message>
+    <message>
+      <source>X +ve</source>
+      <translation>X +ve</translation>
+    </message>
+    <message>
+      <source>Y +ve</source>
+      <translation>Y +ve</translation>
+    </message>
+    <message>
+      <source>Z +ve</source>
+      <translation>Z +ve</translation>
+    </message>
+    <message>
+      <source>X -ve</source>
+      <translation>X -ve</translation>
+    </message>
+    <message>
+      <source>Y -ve</source>
+      <translation>Y -ve</translation>
+    </message>
+    <message>
+      <source>Z -ve</source>
+      <translation>Z -ve</translation>
+    </message>
+    <message>
+      <source>Axis aligned right:</source>
+      <translation>Axa aliniată la dreapta:</translation>
+    </message>
+    <message>
+      <source>Secondary Views</source>
+      <translation>Vederi secundare</translation>
+    </message>
+    <message>
       <source>Right click for axonometric settings</source>
       <translation>Click dreapta pentru configurări axonometrice</translation>
     </message>
     <message>
       <source>Primary view</source>
       <translation>Vederea principală</translation>
-    </message>
-    <message>
-      <source>Secondary Views</source>
-      <translation>Vederi secundare</translation>
     </message>
     <message>
       <source>General</source>
@@ -340,36 +384,8 @@ Do you want to continue?</source>
       <translation>Axonometric</translation>
     </message>
     <message>
-      <source>Axis out and right</source>
-      <translation>Sensul axei spre dreapta</translation>
-    </message>
-    <message>
-      <source>Vertical tilt</source>
-      <translation>Înclinare verticală</translation>
-    </message>
-    <message>
-      <source>X +ve</source>
-      <translation>X +ve</translation>
-    </message>
-    <message>
-      <source>Y +ve</source>
-      <translation>Y +ve</translation>
-    </message>
-    <message>
-      <source>Z +ve</source>
-      <translation>Z +ve</translation>
-    </message>
-    <message>
-      <source>X -ve</source>
-      <translation>X -ve</translation>
-    </message>
-    <message>
-      <source>Y -ve</source>
-      <translation>Y -ve</translation>
-    </message>
-    <message>
-      <source>Z -ve</source>
-      <translation>Z -ve</translation>
+      <source>View projection</source>
+      <translation>Vizualizează proiecția</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -384,44 +400,28 @@ Do you want to continue?</source>
       <translation>Trimetric</translation>
     </message>
     <message>
-      <source> Scale</source>
-      <translation> Scală</translation>
-    </message>
-    <message>
-      <source>View projection</source>
-      <translation>Vizualizează proiecția</translation>
-    </message>
-    <message>
       <source> Axis aligned up</source>
       <translation> Axa aliniată sus</translation>
+    </message>
+    <message>
+      <source>Axis out and right</source>
+      <translation>Sensul axei spre dreapta</translation>
+    </message>
+    <message>
+      <source>Vertical tilt</source>
+      <translation>Înclinare verticală</translation>
     </message>
     <message>
       <source>Flip</source>
       <translation>Întoarce</translation>
     </message>
     <message>
+      <source> Scale</source>
+      <translation> Scală</translation>
+    </message>
+    <message>
       <source> Trimetric</source>
       <translation> Trimetric</translation>
-    </message>
-    <message>
-      <source>Projection</source>
-      <translation>Proiecţie</translation>
-    </message>
-    <message>
-      <source>Third Angle</source>
-      <translation>Convenția/proiecția americană</translation>
-    </message>
-    <message>
-      <source>First Angle</source>
-      <translation>Convenția/proiecția europeană</translation>
-    </message>
-    <message>
-      <source>View from:</source>
-      <translation>Vizualizare de la:</translation>
-    </message>
-    <message>
-      <source>Axis aligned right:</source>
-      <translation>Axa aliniată la dreapta:</translation>
     </message>
   </context>
   <context>

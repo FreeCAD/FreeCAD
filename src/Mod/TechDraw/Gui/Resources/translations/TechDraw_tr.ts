@@ -9,7 +9,7 @@
       <translation>Görünümü Taşı</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandMoveView.py" line="48"/>
+      <location filename="../../../TechDrawTools/CommandMoveView.py" line="50"/>
       <source>Move a View to a new Page</source>
       <translation>Bir Görünümü yeni bir Sayfaya Taşı</translation>
     </message>
@@ -34,6 +34,7 @@
       <translation>Sayfadan Seçin.</translation>
     </message>
     <message>
+      <location filename="../../../TechDrawTools/TaskMoveView.py" line="94"/>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="113"/>
       <source>Select Page</source>
       <translation>Sayfa Seç</translation>
@@ -46,16 +47,6 @@
   </context>
   <context>
     <name>ShareView</name>
-    <message>
-      <location filename="../../../TechDrawTools/CommandShareView.py" line="47"/>
-      <source>Share View</source>
-      <translation>Görünümü Paylaş</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandShareView.py" line="48"/>
-      <source>Share a View on a second Page</source>
-      <translation>İkinci bir Sayfada Bir Görünümü Paylaşın</translation>
-    </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="46"/>
       <source>Share View with another Page</source>
@@ -82,6 +73,7 @@
       <translation>Sayfadan Seçin.</translation>
     </message>
     <message>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="94"/>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="113"/>
       <source>Select Page</source>
       <translation>Sayfa Seç</translation>
@@ -90,6 +82,16 @@
       <location filename="../../../TechDrawTools/TaskShareView.py" line="112"/>
       <source>Select To Page.</source>
       <translation>Sayfayı Seçin.</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandShareView.py" line="47"/>
+      <source>Share View</source>
+      <translation>Görünümü Paylaş</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandShareView.py" line="50"/>
+      <source>Share a View on a second Page</source>
+      <translation>İkinci bir Sayfada Bir Görünümü Paylaşın</translation>
     </message>
   </context>
   <context>
@@ -1106,14 +1108,14 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="159"/>
       <location filename="../../CommandExtensionDims.cpp" line="329"/>
-      <source>Insert &apos;〼&apos; Prefix</source>
-      <translation type="unfinished">Insert &apos;〼&apos; Prefix</translation>
+      <source>Insert &apos;□&apos; Prefix</source>
+      <translation type="unfinished">Insert &apos;□&apos; Prefix</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="160"/>
       <location filename="../../CommandExtensionDims.cpp" line="330"/>
-      <source>Insert a &apos;〼&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Insert a &apos;〼&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <source>Insert a &apos;□&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
+      <translation type="unfinished">Insert a &apos;□&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
     </message>
   </context>
   <context>
@@ -2066,7 +2068,7 @@
       <translation>KesitGörünüm Oluştur</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="465"/>
+      <location filename="../../TaskSectionView.cpp" line="463"/>
       <source>Edit SectionView</source>
       <translation type="unfinished">Edit SectionView</translation>
     </message>
@@ -3137,7 +3139,7 @@
       <translation>Kesit Görünümünü Düzenle</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="504"/>
+      <location filename="../../TaskSectionView.cpp" line="500"/>
       <source>Operation Failed</source>
       <translation>İşlem başarısız oldu</translation>
     </message>
@@ -5383,7 +5385,7 @@ Devam etmek istiyor musun?</translation>
       <translation type="unfinished">Format Symbols</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="34"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="32"/>
       <source>GD&amp;T</source>
       <translation type="unfinished">GD&amp;T</translation>
     </message>
@@ -7203,7 +7205,7 @@ gösterimleri otomatik dağıtır</translation>
       <translation>Hiçbir şey uygulanmadı. Kesit yönü henüz seçilmedi</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="503"/>
+      <location filename="../../TaskSectionView.cpp" line="499"/>
       <source>Can not continue. Object * %1 * not found.</source>
       <translation>Devam edilemez. * %1 * nesnesi bulunamadı.</translation>
     </message>

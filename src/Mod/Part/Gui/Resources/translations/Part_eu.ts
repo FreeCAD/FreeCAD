@@ -2,6 +2,859 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="eu" sourcelanguage="en">
   <context>
+    <name>AttachmentEditor</name>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="77"/>
+      <source>No object named {name}</source>
+      <translation>Ez dago {name} izena duen objekturik</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="81"/>
+      <source>Failed to parse link (more than one colon encountered)</source>
+      <translation>Ezin izan da esteka analizatu (bi puntu marka bat baino gehiago aurkitu da)</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="194"/>
+      <source>Object {name} is neither movable nor attachable, can't edit attachment</source>
+      <translation>{name} izeneko objektua ezin da mugitu edo erantsi, ezin da eranskina editatu</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="204"/>
+      <source>{obj} is not attachable. You can still use attachment editor dialog to align the object, but the attachment won't be parametric.</source>
+      <translation>{obj} ezin da erantsi. Erabili dezakezu oraindik eranskinen edizio elkarrizketa objektua lerrokatzeko, baina eranskina ez da parametrikoa izango.</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="205"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="218"/>
+      <source>Attachment</source>
+      <translation>Eranskina</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="207"/>
+      <source>Continue</source>
+      <translation>Jarraitu</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="262"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="307"/>
+      <source>Edit attachment of {feat}</source>
+      <translation>Edititatu {feat}-(a)ren eranskina</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="352"/>
+      <source>Ignored. Can't attach object to itself!</source>
+      <translation>Ez ikusia. Ezin zaio objektu bati objektu bera erantsi!</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="355"/>
+      <source>{obj1} depends on object being attached, can't use it for attachment</source>
+      <translation>{obj1} erantsitako objektuaren araberakoa da, ezin da eranskin gisa erabili</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="495"/>
+      <source>{mode} (add {morerefs})</source>
+      <translation>{mode} (gehitu {morerefs})</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="498"/>
+      <source>{mode} (add more references)</source>
+      <translation>{mode} (gehitu erreferentzia gehiago)</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="528"/>
+      <source>Reference combinations:</source>
+      <translation>Erreferentzia-konbinazioak:</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="544"/>
+      <source>Reference{i}</source>
+      <translation>{i}. erreferentzia</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="549"/>
+      <source>Selecting...</source>
+      <translation>Hautatzen...</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="573"/>
+      <source>Failed to resolve links. {err}</source>
+      <translation>Ezin izan dira estekak konpondu. {err}</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="581"/>
+      <source>Not attached</source>
+      <translation>Ez erantsia</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="584"/>
+      <source>Attached with mode {mode}</source>
+      <translation>{mode} moduan erantsia</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="590"/>
+      <source>Error: {err}</source>
+      <translation>Errorea: {err}</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="593"/>
+      <source>Attachment Offset (in local coordinates):</source>
+      <translation>Eranskinaren desplazamendua (koordenatu lokaletan):</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="596"/>
+      <source>Attachment Offset (inactive - not attached):</source>
+      <translation>Eranskinaren desplazamendua (inaktiboa - erantsi gabea):</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/Commands.py" line="79"/>
+      <source>Attachment...</source>
+      <translation>Eranskina...</translation>
+    </message>
+    <message>
+      <location filename="../../../AttachmentEditor/Commands.py" line="83"/>
+      <source>Edit attachment of selected object.</source>
+      <translation>Editatu hautatutako objektuaren eranskina.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_CompoundFilter</name>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="40"/>
+      <source>Compound Filter</source>
+      <translation>Iragazki konposatua</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="50"/>
+      <source>Filter out objects from a selected compound by characteristics like volume,
+area, or length, or by choosing specific items.
+If a second object is selected, it will be used as reference, for example,
+for collision or distance filtering.</source>
+      <translation>Iragazi konposatu hautatu bateko objektuak beren ezaugarrien arabera, adibidez
+bolumenaren, arearen edo luzeraren arabera, edo elementu zehatzak aukeratuta.
+Bigarren objektu bat hautatzen bada, erreferentzia modura erabiliko da,
+adibidez talketarako edo distantzien iragazkietarako.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="59"/>
+      <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
+      <translation>Lehenengo, hautatu konposatua den forma bat. Bigarren elementu bat hautatzen bada (aukerakoa), txantiloi gisa erabiliko da.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="60"/>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="100"/>
+      <source>Bad selection</source>
+      <translation>Hautapen okerra</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="99"/>
+      <source>Computing the result failed with an error: 
+
+{errstr}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Emaitzaren kalkuluak huts egin du, honako errorea emanda: 
+
+{errstr}
+
+Egin klik 'Jarraitu' aukeran eginbidea sortzeko, edo 'Abortatu' bertan behera uzteko.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_ExplodeCompound</name>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="41"/>
+      <source>Explode compound</source>
+      <translation>Lehertu konposatua</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="47"/>
+      <source>Split up a compound of shapes into separate objects.
+It will create a 'Compound Filter' for each shape.</source>
+      <translation>Zatitu formen koponsatu bat banakako objektuetan.
+'Konposatu-iragazki' bat sortuko du forma bakoitzerako.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="53"/>
+      <source>First select a shape that is a compound.</source>
+      <translation>Lehenengo, aukeratu konposatua den forma bat.</translation>
+    </message>
+    <message>
+      <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="54"/>
+      <source>Bad selection</source>
+      <translation>Hautapen okerra</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinConnect</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="176"/>
+      <source>Connect objects</source>
+      <translation>Konektatu objektuak</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="181"/>
+      <source>Fuses objects, taking care to preserve voids.</source>
+      <translation>Objektuak fusionatzen ditu, hutsuneak mantentzen direla kontuan hartuta.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinCutout</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="367"/>
+      <source>Cutout for object</source>
+      <translation>Inausi objektua</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="372"/>
+      <source>Makes a cutout in one object to fit another object.</source>
+      <translation>Objektu bat inausten du beste objektu bati doitzeko.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinEmbed</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="272"/>
+      <source>Embed object</source>
+      <translation>Kapsulatu objektua</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="277"/>
+      <source>Fuses one object into another, taking care to preserve voids.</source>
+      <translation>Objektu bat beste batekin fusionatzen ditu, hutsuneei eutsita.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_JoinFeatures</name>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="69"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Errorea gertatu da emaitza kalkulatzean:
+
+{err}
+
+Hala ere elementua sortu nahi baduzu, egin klik 'Jarraitu' aukeran, edo bestela sakatu 'Abortatu' bertan behera uzteko.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="70"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="189"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="286"/>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="382"/>
+      <source>Bad selection</source>
+      <translation>Hautapen okerra</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="72"/>
+      <source>Continue</source>
+      <translation>Jarraitu</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="188"/>
+      <source>Select at least two objects, or one or more compounds</source>
+      <translation>Hautatu bi objektu gutxienez, edo konposatu bat edo gehiago</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="285"/>
+      <source>Select base object, then the object to embed, and then invoke this tool.</source>
+      <translation>Hautatu oinarri-objektua, ondoren kapsulatuko den objektua, eta ondoren aplikatu tresna hau.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/JoinFeatures.py" line="381"/>
+      <source>Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</source>
+      <translation type="unfinished">Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_SplitFeatures</name>
+    <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="102"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="150"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="295"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="491"/>
+      <source>Continue</source>
+      <translation>Jarraitu</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="147"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="292"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="488"/>
+      <source>Computing the result failed with an error:
+
+{err}
+
+Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
+      <translation>Errorea gertatu da emaitza kalkulatzean:
+
+{err}
+
+Hala ere elementua sortu nahi baduzu, egin klik 'Jarraitu' aukeran, edo bestela sakatu 'Abortatu' bertan behera uzteko.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="148"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="190"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="293"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="347"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="378"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="489"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="530"/>
+      <source>Bad selection</source>
+      <translation>Hautapen okerra</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="171"/>
+      <source>Boolean fragments</source>
+      <translation type="unfinished">Boolean fragments</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
+      <source>Create a 'Boolean Fragments' object from two or more selected objects,
+or from the shapes inside a compound.
+This is a boolean union which is then sliced at the intersections
+of the original shapes.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation type="unfinished">Create a 'Boolean Fragments' object from two or more selected objects,
+or from the shapes inside a compound.
+This is a boolean union which is then sliced at the intersections
+of the original shapes.
+A 'Compound Filter' can be used to extract the individual slices.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="189"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="529"/>
+      <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
+      <translation type="unfinished">Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="330"/>
+      <source>Slice to compound</source>
+      <translation type="unfinished">Slice to compound</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="337"/>
+      <source>Slice a selected object by using other objects as cutting tools.
+The resulting pieces will be stored in a compound.
+A 'Compound Filter' can be used to extract the individual slices.</source>
+      <translation type="unfinished">Slice a selected object by using other objects as cutting tools.
+The resulting pieces will be stored in a compound.
+A 'Compound Filter' can be used to extract the individual slices.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="346"/>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="377"/>
+      <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
+      <translation type="unfinished">Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="362"/>
+      <source>Slice apart</source>
+      <translation>Xerratu eta banandu</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="368"/>
+      <source>Slice a selected object by other objects, and split it apart.
+It will create a 'Compound Filter' for each slice.</source>
+      <translation>Xerratu objektu hautatu bat beste objektu batzuekin, eta banandu.
+'Konposatu-iragazki' bat sortuko da xerra bakoitzerako.</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="512"/>
+      <source>Boolean XOR</source>
+      <translation>XOR boolearra</translation>
+    </message>
+    <message>
+      <location filename="../../../BOPTools/SplitFeatures.py" line="520"/>
+      <source>Perform an 'exclusive OR' boolean operation with two or more selected objects,
+or with the shapes inside a compound.
+This means the overlapping volumes of the shapes will be removed.
+A 'Compound Filter' can be used to extract the remaining pieces.</source>
+      <translation>Gauzatu 'exclusive OR' eragiketa boolear bat hautatutako bi objekturekin edo gehiagorekin,
+edo konposatu baten barruko formekin.
+Horrek esan nahi du gainjarrita dauden formen bolumenak kendu egingo direla.
+'Konposatu-iragazki' bat erabili daiteke gainerako piezak erauzteko.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part_Tube</name>
+    <message>
+      <location filename="../../../BasicShapes/CommandShapes.py" line="44"/>
+      <source>Create tube</source>
+      <translation>Sortu tutua</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/CommandShapes.py" line="50"/>
+      <source>Creates a tube</source>
+      <translation>Tutu bat sortzen du</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../ViewProvider.cpp" line="50"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="66"/>
+      <source>Edit %1</source>
+      <translation>Editatu %1</translation>
+    </message>
+    <message>
+      <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
+      <source>Create tube</source>
+      <translation>Sortu tutua</translation>
+    </message>
+    <message>
+      <location filename="../../AppPartGui.cpp" line="211"/>
+      <location filename="../../AppPartGui.cpp" line="212"/>
+      <location filename="../../AppPartGui.cpp" line="213"/>
+      <source>Part design</source>
+      <translation>Piezen diseinua</translation>
+    </message>
+    <message>
+      <location filename="../../AppPartGui.cpp" line="214"/>
+      <location filename="../../AppPartGui.cpp" line="215"/>
+      <source>Import-Export</source>
+      <translation>Inportatu-Esportatu</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="313"/>
+      <location filename="../../Command.cpp" line="408"/>
+      <location filename="../../Command.cpp" line="508"/>
+      <location filename="../../Command.cpp" line="927"/>
+      <location filename="../../Command.cpp" line="984"/>
+      <location filename="../../Command.cpp" line="2154"/>
+      <source>Wrong selection</source>
+      <translation>Hautapen okerra</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="314"/>
+      <location filename="../../Command.cpp" line="985"/>
+      <source>Select two shapes please.</source>
+      <translation>Hautatu bi forma.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="323"/>
+      <location filename="../../Command.cpp" line="423"/>
+      <location filename="../../Command.cpp" line="523"/>
+      <source>Non-solids selected</source>
+      <translation>Solidoak ez direnak hautatu dira</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="324"/>
+      <location filename="../../Command.cpp" line="424"/>
+      <location filename="../../Command.cpp" line="524"/>
+      <source>The use of non-solids for boolean operations may lead to unexpected results.
+Do you want to continue?</source>
+      <translation>Solidoak ez diren objektuak eragiketa boolearretan erabiltzeak espero ez diren emaitzak eman ditzake. Jarraitu nahi duzu?</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="409"/>
+      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
+      <translation>Hautatu bi forma edo gehiago. Edo hautatu bi forma edo gehiago dituen konposatu bat, bien arteko zati komuna kalkulatzeko.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="509"/>
+      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
+      <translation>Hautatu bi forma edo gehiago, Edo hautatu bi forma edo gehiago dituen konposatu bat, fusionatuak izan daitezen.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="928"/>
+      <source>Select one shape or more, please.</source>
+      <translation>Hautatu forma bat edo gehiago.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1142"/>
+      <source>All CAD Files</source>
+      <translation>CAD fitxategi guztiak</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1147"/>
+      <source>All Files</source>
+      <translation>Fitxategi guztiak</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2155"/>
+      <source>You have to select either two edges or two wires.</source>
+      <translation>Bi ertz edo bi alanbre hautatu behar dituzu.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="73"/>
+      <location filename="../../TaskAttacher.cpp" line="109"/>
+      <source>No reference selected</source>
+      <translation>Ez da erreferentziarik hautatu</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="82"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="86"/>
+      <source>Face</source>
+      <translation>Aurpegia</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="85"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="88"/>
+      <source>Edge</source>
+      <translation>Ertza</translation>
+    </message>
+    <message>
+      <location filename="../../TaskAttacher.cpp" line="88"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="89"/>
+      <source>Vertex</source>
+      <translation>Erpina</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
+      <source>Compound</source>
+      <translation>Konposatua</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <source>Compound Solid</source>
+      <translation>Solido konposatua</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <source>Solid</source>
+      <translation>Solidoa</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
+      <source>Shell</source>
+      <translation>Oskola</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="87"/>
+      <source>Wire</source>
+      <translation>Alanbrea</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="90"/>
+      <source>Shape</source>
+      <translation>Forma</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="105"/>
+      <source>No Error</source>
+      <translation>Errorerik ez</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="106"/>
+      <source>Invalid Point On Curve</source>
+      <translation>Kurbako puntu baliogabea</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
+      <source>Invalid Point On Curve On Surface</source>
+      <translation>Kurbako edo gainazaleko puntu baliogabea</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
+      <source>Invalid Point On Surface</source>
+      <translation>Gainazaleko puntu baliogabea</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
+      <source>No 3D Curve</source>
+      <translation>3D kurbarik ez</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
+      <source>Multiple 3D Curve</source>
+      <translation>3D kurba anizkoitza</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
+      <source>Invalid 3D Curve</source>
+      <translation>Baliogabeko 3D kurba</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="112"/>
+      <source>No Curve On Surface</source>
+      <translation>Kurbarik ez gainazalean</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="113"/>
+      <source>Invalid Curve On Surface</source>
+      <translation>Kurba baliogabea gainazalean</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="114"/>
+      <source>Invalid Curve On Closed Surface</source>
+      <translation>Kurba baliogabea gainazal itxian</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="115"/>
+      <source>Invalid Same Range Flag</source>
+      <translation>Baliogabeko barruti bereko bandera</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
+      <source>Invalid Same Parameter Flag</source>
+      <translation>Baliogabeko parametro bereko bandera</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
+      <source>Invalid Degenerated Flag</source>
+      <translation>Bandera degeneratu baliogabea</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
+      <source>Free Edge</source>
+      <translation>Ertz askea</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
+      <source>Invalid MultiConnexity</source>
+      <translation>Baliogabeko konektagarritasun anitza</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
+      <source>Invalid Range</source>
+      <translation>Baliogabeko barrutia</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
+      <source>Empty Wire</source>
+      <translation>Alanbre hutsa</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
+      <source>Redundant Edge</source>
+      <translation>Ertz erredundantea</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
+      <source>Self Intersecting Wire</source>
+      <translation>Auto ebakidurako alanbrea</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
+      <source>No Surface</source>
+      <translation>Gainazalik ez</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
+      <source>Invalid Wire</source>
+      <translation>Baliogabeko alanbrea</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
+      <source>Redundant Wire</source>
+      <translation>Alanbre erredundantea</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
+      <source>Intersecting Wires</source>
+      <translation>Ebakitzen diren alanbreak</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
+      <source>Invalid Imbrication Of Wires</source>
+      <translation>Alanbreen baliogabeko teilakatzea</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
+      <source>Empty Shell</source>
+      <translation>Oskol hutsa</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
+      <source>Redundant Face</source>
+      <translation>Aurpegi erredundantea</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
+      <source>Unorientable Shape</source>
+      <translation>Forma orientaezina</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
+      <source>Not Closed</source>
+      <translation>Itxi gabea</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
+      <source>Not Connected</source>
+      <translation>Konektatu gabea</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="134"/>
+      <source>Sub Shape Not In Shape</source>
+      <translation>Azpiforma ez dago forman</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="135"/>
+      <source>Bad Orientation</source>
+      <translation>Orientazio okerra</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="136"/>
+      <source>Bad Orientation Of Sub Shape</source>
+      <translation>Azpiformaren orientazio okerra</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="137"/>
+      <source>Invalid Tolerance Value</source>
+      <translation>Baliogabeko tolerantzia-balioa</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="138"/>
+      <source>Check Failed</source>
+      <translation>Egiaztatzeak huts egin du</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="148"/>
+      <source>No Result</source>
+      <translation>Emaitzarik ez</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="152"/>
+      <source>Out Of Enum Range:</source>
+      <translation>Enumerazio-barrutitik kanpo:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
+      <source>BOPAlgo CheckUnknown</source>
+      <translation>BOPAlgo - Egiaztatze ezezaguna</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
+      <source>BOPAlgo BadType</source>
+      <translation>BOPAlgo - Mota okerra</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
+      <source>BOPAlgo SelfIntersect</source>
+      <translation>BOPAlgo - Autoebaketa</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="167"/>
+      <source>BOPAlgo TooSmallEdge</source>
+      <translation>BOPAlgo - Ertz txikiegia</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="168"/>
+      <source>BOPAlgo NonRecoverableFace</source>
+      <translation>BOPAlgo -Aurpegi berreskuraezina</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="169"/>
+      <source>BOPAlgo IncompatibilityOfVertex</source>
+      <translation>BOPAlgo - Erpinen bateraezintasuna</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="170"/>
+      <source>BOPAlgo IncompatibilityOfEdge</source>
+      <translation>BOPAlgo - Ertz-bateraezintasuna</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="171"/>
+      <source>BOPAlgo IncompatibilityOfFace</source>
+      <translation>BOPAlgo - Aupergi-bateraezintasuna</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="172"/>
+      <source>BOPAlgo OperationAborted</source>
+      <translation>BOPAlgo - Eragiketa abortatu da</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="173"/>
+      <source>BOPAlgo GeomAbs_C0</source>
+      <translation>BOPAlgo - GeomAbs_C0</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="174"/>
+      <source>BOPAlgo_InvalidCurveOnSurface</source>
+      <translation>BOPAlgo - Baliogabeko kurba gainazalean</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="175"/>
+      <source>BOPAlgo NotValid</source>
+      <translation>BOPAlgo - Baliogabea</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCheckGeometry.cpp" line="464"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="713"/>
+      <source>Invalid</source>
+      <translation>Baliogabea</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="632"/>
+      <location filename="../../TaskDimension.cpp" line="1770"/>
+      <source>Selections</source>
+      <translation>Hautapenak</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="639"/>
+      <location filename="../../TaskDimension.cpp" line="1777"/>
+      <source>Control</source>
+      <translation>Kontrola</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1398"/>
+      <source>Selection </source>
+      <translation>Hautapena </translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1482"/>
+      <source>Reset selection</source>
+      <translation>Berrezarri hautapena</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1486"/>
+      <source>Toggle direct dimensions</source>
+      <translation>Txandakatu kota zuzenak</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1491"/>
+      <source>Toggle orthogonal dimensions</source>
+      <translation>Txandakatu kota ortogonalak</translation>
+    </message>
+    <message>
+      <location filename="../../TaskDimension.cpp" line="1496"/>
+      <source>Clear all dimensions</source>
+      <translation>Garbitu kota guztiak</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderExt.cpp" line="864"/>
+      <source>Set colors...</source>
+      <translation>Ezarri koloreak...</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="78"/>
+      <source>Edit mirror plane</source>
+      <translation>Editatu ispilatze-planoa</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="278"/>
+      <source>Edit fillet edges</source>
+      <translation>Editatu ertz biribilduak</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="382"/>
+      <source>Edit chamfer edges</source>
+      <translation>Editatu alaka-ertzak</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="526"/>
+      <source>Edit offset</source>
+      <translation>Editatu desplazamendua</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderMirror.cpp" line="610"/>
+      <source>Edit thickness</source>
+      <translation>Editatu lodiera</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderSpline.cpp" line="100"/>
+      <source>Show control points</source>
+      <translation>Erakutsi kontrol-puntuak</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderAttachExtension.cpp" line="118"/>
+      <source>Attachment editor</source>
+      <translation>Eranskinen editorea</translation>
+    </message>
+  </context>
+  <context>
     <name>Attacher</name>
     <message>
       <location filename="../../AttacherTexts.cpp" line="311"/>
@@ -4587,24 +5440,24 @@ Works only if all objects have the same values.</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="342"/>
       <source>0 %</source>
-      <translation type="unfinished">0 %</translation>
+      <translation>% 0</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="361"/>
       <source>Refreshes the list of visible objects</source>
-      <translation type="unfinished">Refreshes the list of visible objects</translation>
+      <translation>Objektu ikusgaien zerrenda freskatzen du</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="364"/>
       <source>Refresh view</source>
-      <translation type="unfinished">Refresh view</translation>
+      <translation>Freskatu bista</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="394"/>
       <source>When the dialog is closed,
 only created cuts will be visible</source>
-      <translation type="unfinished">When the dialog is closed,
-only created cuts will be visible</translation>
+      <translation>Elkarrizketa-koadro ixten denean,
+sortutako mozketak soilik daude ikusgai</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="398"/>
@@ -4693,7 +5546,7 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="14"/>
       <source>Shape from mesh</source>
-      <translation type="unfinished">Shape from mesh</translation>
+      <translation>Forma amaraunetik</translation>
     </message>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="20"/>
@@ -4736,7 +5589,7 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="338"/>
       <source>Select one or more edges from a single object.</source>
-      <translation type="unfinished">Select one or more edges from a single object.</translation>
+      <translation>Hautatu objektu bakar baten ertz bat edo gehiago.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="345"/>
@@ -5515,461 +6368,6 @@ in the 3D view for the sweep path.</source>
       <location filename="../../../App/FeatureExtrusion.cpp" line="344"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation>Zuloak dituzten aurpegiak sortzea onartzen du, ez du onartzen habiaratzea.</translation>
-    </message>
-  </context>
-  <context>
-    <name>QObject</name>
-    <message>
-      <location filename="../../ViewProvider.cpp" line="50"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="66"/>
-      <source>Edit %1</source>
-      <translation>Editatu %1</translation>
-    </message>
-    <message>
-      <location filename="../../AppPartGui.cpp" line="211"/>
-      <location filename="../../AppPartGui.cpp" line="212"/>
-      <location filename="../../AppPartGui.cpp" line="213"/>
-      <source>Part design</source>
-      <translation>Piezen diseinua</translation>
-    </message>
-    <message>
-      <location filename="../../AppPartGui.cpp" line="214"/>
-      <location filename="../../AppPartGui.cpp" line="215"/>
-      <source>Import-Export</source>
-      <translation>Inportatu-Esportatu</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="313"/>
-      <location filename="../../Command.cpp" line="408"/>
-      <location filename="../../Command.cpp" line="508"/>
-      <location filename="../../Command.cpp" line="927"/>
-      <location filename="../../Command.cpp" line="984"/>
-      <location filename="../../Command.cpp" line="2154"/>
-      <source>Wrong selection</source>
-      <translation>Hautapen okerra</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="314"/>
-      <location filename="../../Command.cpp" line="985"/>
-      <source>Select two shapes please.</source>
-      <translation>Hautatu bi forma.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="323"/>
-      <location filename="../../Command.cpp" line="423"/>
-      <location filename="../../Command.cpp" line="523"/>
-      <source>Non-solids selected</source>
-      <translation>Solidoak ez direnak hautatu dira</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="324"/>
-      <location filename="../../Command.cpp" line="424"/>
-      <location filename="../../Command.cpp" line="524"/>
-      <source>The use of non-solids for boolean operations may lead to unexpected results.
-Do you want to continue?</source>
-      <translation>Solidoak ez diren objektuak eragiketa boolearretan erabiltzeak espero ez diren emaitzak eman ditzake. Jarraitu nahi duzu?</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="409"/>
-      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
-      <translation>Hautatu bi forma edo gehiago. Edo hautatu bi forma edo gehiago dituen konposatu bat, bien arteko zati komuna kalkulatzeko.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="509"/>
-      <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
-      <translation>Hautatu bi forma edo gehiago, Edo hautatu bi forma edo gehiago dituen konposatu bat, fusionatuak izan daitezen.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="928"/>
-      <source>Select one shape or more, please.</source>
-      <translation>Hautatu forma bat edo gehiago.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1142"/>
-      <source>All CAD Files</source>
-      <translation>CAD fitxategi guztiak</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1147"/>
-      <source>All Files</source>
-      <translation>Fitxategi guztiak</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2155"/>
-      <source>You have to select either two edges or two wires.</source>
-      <translation>Bi ertz edo bi alanbre hautatu behar dituzu.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="73"/>
-      <location filename="../../TaskAttacher.cpp" line="109"/>
-      <source>No reference selected</source>
-      <translation>Ez da erreferentziarik hautatu</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="82"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="86"/>
-      <source>Face</source>
-      <translation>Aurpegia</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="85"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="88"/>
-      <source>Edge</source>
-      <translation>Ertza</translation>
-    </message>
-    <message>
-      <location filename="../../TaskAttacher.cpp" line="88"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="89"/>
-      <source>Vertex</source>
-      <translation>Erpina</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
-      <source>Compound</source>
-      <translation>Konposatua</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
-      <source>Compound Solid</source>
-      <translation>Solido konposatua</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
-      <source>Solid</source>
-      <translation>Solidoa</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
-      <source>Shell</source>
-      <translation>Oskola</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="87"/>
-      <source>Wire</source>
-      <translation>Alanbrea</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="90"/>
-      <source>Shape</source>
-      <translation>Forma</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="105"/>
-      <source>No Error</source>
-      <translation>Errorerik ez</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="106"/>
-      <source>Invalid Point On Curve</source>
-      <translation>Kurbako puntu baliogabea</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
-      <source>Invalid Point On Curve On Surface</source>
-      <translation>Kurbako edo gainazaleko puntu baliogabea</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
-      <source>Invalid Point On Surface</source>
-      <translation>Gainazaleko puntu baliogabea</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
-      <source>No 3D Curve</source>
-      <translation>3D kurbarik ez</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
-      <source>Multiple 3D Curve</source>
-      <translation>3D kurba anizkoitza</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
-      <source>Invalid 3D Curve</source>
-      <translation>Baliogabeko 3D kurba</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="112"/>
-      <source>No Curve On Surface</source>
-      <translation>Kurbarik ez gainazalean</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="113"/>
-      <source>Invalid Curve On Surface</source>
-      <translation>Kurba baliogabea gainazalean</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="114"/>
-      <source>Invalid Curve On Closed Surface</source>
-      <translation>Kurba baliogabea gainazal itxian</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="115"/>
-      <source>Invalid Same Range Flag</source>
-      <translation>Baliogabeko barruti bereko bandera</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
-      <source>Invalid Same Parameter Flag</source>
-      <translation>Baliogabeko parametro bereko bandera</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
-      <source>Invalid Degenerated Flag</source>
-      <translation>Bandera degeneratu baliogabea</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
-      <source>Free Edge</source>
-      <translation>Ertz askea</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
-      <source>Invalid MultiConnexity</source>
-      <translation>Baliogabeko konektagarritasun anitza</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
-      <source>Invalid Range</source>
-      <translation>Baliogabeko barrutia</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
-      <source>Empty Wire</source>
-      <translation>Alanbre hutsa</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
-      <source>Redundant Edge</source>
-      <translation>Ertz erredundantea</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
-      <source>Self Intersecting Wire</source>
-      <translation>Auto ebakidurako alanbrea</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
-      <source>No Surface</source>
-      <translation>Gainazalik ez</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
-      <source>Invalid Wire</source>
-      <translation>Baliogabeko alanbrea</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
-      <source>Redundant Wire</source>
-      <translation>Alanbre erredundantea</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
-      <source>Intersecting Wires</source>
-      <translation>Ebakitzen diren alanbreak</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
-      <source>Invalid Imbrication Of Wires</source>
-      <translation>Alanbreen baliogabeko teilakatzea</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
-      <source>Empty Shell</source>
-      <translation>Oskol hutsa</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
-      <source>Redundant Face</source>
-      <translation>Aurpegi erredundantea</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
-      <source>Unorientable Shape</source>
-      <translation>Forma orientaezina</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
-      <source>Not Closed</source>
-      <translation>Itxi gabea</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
-      <source>Not Connected</source>
-      <translation>Konektatu gabea</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="134"/>
-      <source>Sub Shape Not In Shape</source>
-      <translation>Azpiforma ez dago forman</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="135"/>
-      <source>Bad Orientation</source>
-      <translation>Orientazio okerra</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="136"/>
-      <source>Bad Orientation Of Sub Shape</source>
-      <translation>Azpiformaren orientazio okerra</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="137"/>
-      <source>Invalid Tolerance Value</source>
-      <translation>Baliogabeko tolerantzia-balioa</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="138"/>
-      <source>Check Failed</source>
-      <translation>Egiaztatzeak huts egin du</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="148"/>
-      <source>No Result</source>
-      <translation>Emaitzarik ez</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="152"/>
-      <source>Out Of Enum Range:</source>
-      <translation>Enumerazio-barrutitik kanpo:</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
-      <source>BOPAlgo CheckUnknown</source>
-      <translation>BOPAlgo - Egiaztatze ezezaguna</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
-      <source>BOPAlgo BadType</source>
-      <translation>BOPAlgo - Mota okerra</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
-      <source>BOPAlgo SelfIntersect</source>
-      <translation>BOPAlgo - Autoebaketa</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="167"/>
-      <source>BOPAlgo TooSmallEdge</source>
-      <translation>BOPAlgo - Ertz txikiegia</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="168"/>
-      <source>BOPAlgo NonRecoverableFace</source>
-      <translation>BOPAlgo -Aurpegi berreskuraezina</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="169"/>
-      <source>BOPAlgo IncompatibilityOfVertex</source>
-      <translation>BOPAlgo - Erpinen bateraezintasuna</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="170"/>
-      <source>BOPAlgo IncompatibilityOfEdge</source>
-      <translation>BOPAlgo - Ertz-bateraezintasuna</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="171"/>
-      <source>BOPAlgo IncompatibilityOfFace</source>
-      <translation>BOPAlgo - Aupergi-bateraezintasuna</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="172"/>
-      <source>BOPAlgo OperationAborted</source>
-      <translation>BOPAlgo - Eragiketa abortatu da</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="173"/>
-      <source>BOPAlgo GeomAbs_C0</source>
-      <translation>BOPAlgo - GeomAbs_C0</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="174"/>
-      <source>BOPAlgo_InvalidCurveOnSurface</source>
-      <translation>BOPAlgo - Baliogabeko kurba gainazalean</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="175"/>
-      <source>BOPAlgo NotValid</source>
-      <translation>BOPAlgo - Baliogabea</translation>
-    </message>
-    <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="464"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="713"/>
-      <source>Invalid</source>
-      <translation>Baliogabea</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="632"/>
-      <location filename="../../TaskDimension.cpp" line="1770"/>
-      <source>Selections</source>
-      <translation>Hautapenak</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="639"/>
-      <location filename="../../TaskDimension.cpp" line="1777"/>
-      <source>Control</source>
-      <translation>Kontrola</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1482"/>
-      <source>Reset selection</source>
-      <translation>Berrezarri hautapena</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1486"/>
-      <source>Toggle direct dimensions</source>
-      <translation>Txandakatu kota zuzenak</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1491"/>
-      <source>Toggle orthogonal dimensions</source>
-      <translation>Txandakatu kota ortogonalak</translation>
-    </message>
-    <message>
-      <location filename="../../TaskDimension.cpp" line="1496"/>
-      <source>Clear all dimensions</source>
-      <translation>Garbitu kota guztiak</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderExt.cpp" line="864"/>
-      <source>Set colors...</source>
-      <translation>Ezarri koloreak...</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="78"/>
-      <source>Edit mirror plane</source>
-      <translation>Editatu ispilatze-planoa</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="278"/>
-      <source>Edit fillet edges</source>
-      <translation>Editatu ertz biribilduak</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="382"/>
-      <source>Edit chamfer edges</source>
-      <translation>Editatu alaka-ertzak</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="526"/>
-      <source>Edit offset</source>
-      <translation>Editatu desplazamendua</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderMirror.cpp" line="610"/>
-      <source>Edit thickness</source>
-      <translation>Editatu lodiera</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderSpline.cpp" line="100"/>
-      <source>Show control points</source>
-      <translation>Erakutsi kontrol-puntuak</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderAttachExtension.cpp" line="118"/>
-      <source>Attachment editor</source>
-      <translation>Eranskinen editorea</translation>
     </message>
   </context>
   <context>

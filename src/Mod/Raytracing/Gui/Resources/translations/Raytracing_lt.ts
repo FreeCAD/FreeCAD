@@ -268,22 +268,6 @@ Do you want to continue?</source>
       <translation>Spindulių seklys</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>Tinklo eksportavimo nustatymai</translation>
-    </message>
-    <message>
-      <source>Max mesh deviation:</source>
-      <translation>Didžiausias tinklo nuokrypis:</translation>
-    </message>
-    <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>Neskaičiuoti viršūnių normalių</translation>
-    </message>
-    <message>
-      <source>Write u,v coordinates</source>
-      <translation>Įrašyti u, v koordinates</translation>
-    </message>
-    <message>
       <source>Render</source>
       <translation>Atvaizdavimas</translation>
     </message>
@@ -332,28 +316,44 @@ Do you want to continue?</source>
       <translation>Aplankai</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation>Dalies failo vardas:</translation>
-    </message>
-    <message>
-      <source>Camera file name:</source>
-      <translation>Kameros failo vardas:</translation>
+      <source>Default Project dir:</source>
+      <translation>Numatytasis projekto aplankas:</translation>
     </message>
     <message>
       <source>Used by utility tools</source>
       <translation>Naudojamas įrankio</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>Numatytasis projekto aplankas:</translation>
+      <source>Camera file name:</source>
+      <translation>Kameros failo vardas:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
       <translation>TempCamera.inc</translation>
     </message>
     <message>
+      <source>Part file name:</source>
+      <translation>Dalies failo vardas:</translation>
+    </message>
+    <message>
       <source>TempPart.inc</source>
       <translation>TempPart.inc</translation>
+    </message>
+    <message>
+      <source>Mesh export settings</source>
+      <translation>Tinklo eksportavimo nustatymai</translation>
+    </message>
+    <message>
+      <source>Max mesh deviation:</source>
+      <translation>Didžiausias tinklo nuokrypis:</translation>
+    </message>
+    <message>
+      <source>Do not calculate vertex normals</source>
+      <translation>Neskaičiuoti viršūnių normalių</translation>
+    </message>
+    <message>
+      <source>Write u,v coordinates</source>
+      <translation>Įrašyti u, v koordinates</translation>
     </message>
   </context>
   <context>

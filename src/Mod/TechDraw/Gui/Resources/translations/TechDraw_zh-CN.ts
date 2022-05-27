@@ -9,7 +9,7 @@
       <translation>移动视图</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandMoveView.py" line="48"/>
+      <location filename="../../../TechDrawTools/CommandMoveView.py" line="50"/>
       <source>Move a View to a new Page</source>
       <translation>移动视图到新页面</translation>
     </message>
@@ -34,6 +34,7 @@
       <translation type="unfinished">Select From Page.</translation>
     </message>
     <message>
+      <location filename="../../../TechDrawTools/TaskMoveView.py" line="94"/>
       <location filename="../../../TechDrawTools/TaskMoveView.py" line="113"/>
       <source>Select Page</source>
       <translation>选择页面</translation>
@@ -46,16 +47,6 @@
   </context>
   <context>
     <name>ShareView</name>
-    <message>
-      <location filename="../../../TechDrawTools/CommandShareView.py" line="47"/>
-      <source>Share View</source>
-      <translation>分享视图</translation>
-    </message>
-    <message>
-      <location filename="../../../TechDrawTools/CommandShareView.py" line="48"/>
-      <source>Share a View on a second Page</source>
-      <translation>在第二网页上展示</translation>
-    </message>
     <message>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="46"/>
       <source>Share View with another Page</source>
@@ -82,6 +73,7 @@
       <translation type="unfinished">Select From Page.</translation>
     </message>
     <message>
+      <location filename="../../../TechDrawTools/TaskShareView.py" line="94"/>
       <location filename="../../../TechDrawTools/TaskShareView.py" line="113"/>
       <source>Select Page</source>
       <translation>选择页面</translation>
@@ -90,6 +82,16 @@
       <location filename="../../../TechDrawTools/TaskShareView.py" line="112"/>
       <source>Select To Page.</source>
       <translation type="unfinished">Select To Page.</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandShareView.py" line="47"/>
+      <source>Share View</source>
+      <translation>分享视图</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandShareView.py" line="50"/>
+      <source>Share a View on a second Page</source>
+      <translation>在第二网页上展示</translation>
     </message>
   </context>
   <context>
@@ -1106,14 +1108,14 @@
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="159"/>
       <location filename="../../CommandExtensionDims.cpp" line="329"/>
-      <source>Insert &apos;〼&apos; Prefix</source>
-      <translation type="unfinished">Insert &apos;〼&apos; Prefix</translation>
+      <source>Insert &apos;□&apos; Prefix</source>
+      <translation type="unfinished">Insert &apos;□&apos; Prefix</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="160"/>
       <location filename="../../CommandExtensionDims.cpp" line="330"/>
-      <source>Insert a &apos;〼&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
-      <translation type="unfinished">Insert a &apos;〼&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
+      <source>Insert a &apos;□&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
+      <translation type="unfinished">Insert a &apos;□&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</translation>
     </message>
   </context>
   <context>
@@ -2066,7 +2068,7 @@
       <translation>创建剖面视图</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="465"/>
+      <location filename="../../TaskSectionView.cpp" line="463"/>
       <source>Edit SectionView</source>
       <translation type="unfinished">Edit SectionView</translation>
     </message>
@@ -3137,7 +3139,7 @@
       <translation type="unfinished">Edit Section View</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="504"/>
+      <location filename="../../TaskSectionView.cpp" line="500"/>
       <source>Operation Failed</source>
       <translation type="unfinished">Operation Failed</translation>
     </message>
@@ -4543,7 +4545,7 @@ for ProjectionGroups</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="464"/>
       <source>Dashed</source>
-      <translation type="unfinished">Dashed</translation>
+      <translation>虚线</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="493"/>
@@ -5386,7 +5388,7 @@ Do you want to continue?</source>
       <translation type="unfinished">Format Symbols</translation>
     </message>
     <message>
-      <location filename="../../TaskCustomizeFormat.ui" line="34"/>
+      <location filename="../../TaskCustomizeFormat.ui" line="32"/>
       <source>GD&amp;T</source>
       <translation type="unfinished">GD&amp;T</translation>
     </message>
@@ -7206,7 +7208,7 @@ using the given X/Y Spacing</translation>
       <translation type="unfinished">Nothing to apply. No section direction picked yet</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="503"/>
+      <location filename="../../TaskSectionView.cpp" line="499"/>
       <source>Can not continue. Object * %1 * not found.</source>
       <translation type="unfinished">Can not continue. Object * %1 * not found.</translation>
     </message>
@@ -7221,7 +7223,7 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="34"/>
       <source>Line style:</source>
-      <translation type="unfinished">Line style:</translation>
+      <translation>线条样式:</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="41"/>
@@ -7236,17 +7238,17 @@ using the given X/Y Spacing</translation>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="57"/>
       <source>Dashed</source>
-      <translation type="unfinished">Dashed</translation>
+      <translation>虚线</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="70"/>
       <source>Dotted</source>
-      <translation type="unfinished">Dotted</translation>
+      <translation>虚线</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="83"/>
       <source>Dashdot</source>
-      <translation type="unfinished">Dashdot</translation>
+      <translation>点划线</translation>
     </message>
     <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="103"/>

@@ -298,16 +298,60 @@ Devam etmek istiyor musun?</translation>
       <translation>Dik çizgisel izdüşüm</translation>
     </message>
     <message>
+      <source>Projection</source>
+      <translation>İzdüşümler</translation>
+    </message>
+    <message>
+      <source>Third Angle</source>
+      <translation>Üçüncü açı</translation>
+    </message>
+    <message>
+      <source>First Angle</source>
+      <translation>İki açıları arasındaki fark</translation>
+    </message>
+    <message>
+      <source>View from:</source>
+      <translation>Şu adresten görüntüle:</translation>
+    </message>
+    <message>
+      <source>X +ve</source>
+      <translation>X + ve</translation>
+    </message>
+    <message>
+      <source>Y +ve</source>
+      <translation>X + ve</translation>
+    </message>
+    <message>
+      <source>Z +ve</source>
+      <translation>X + ve</translation>
+    </message>
+    <message>
+      <source>X -ve</source>
+      <translation>X + ve</translation>
+    </message>
+    <message>
+      <source>Y -ve</source>
+      <translation>X + ve</translation>
+    </message>
+    <message>
+      <source>Z -ve</source>
+      <translation>X + ve</translation>
+    </message>
+    <message>
+      <source>Axis aligned right:</source>
+      <translation>Eksen hizaya getirildi:</translation>
+    </message>
+    <message>
+      <source>Secondary Views</source>
+      <translation>İkincil Metin</translation>
+    </message>
+    <message>
       <source>Right click for axonometric settings</source>
       <translation>Aksonometrik ayarlar için sağ tıklayın</translation>
     </message>
     <message>
       <source>Primary view</source>
       <translation>Birincil anahtar</translation>
-    </message>
-    <message>
-      <source>Secondary Views</source>
-      <translation>İkincil Metin</translation>
     </message>
     <message>
       <source>General</source>
@@ -342,36 +386,8 @@ Devam etmek istiyor musun?</translation>
       <translation>Aksonometrik</translation>
     </message>
     <message>
-      <source>Axis out and right</source>
-      <translation>Eksen dışarı ve sağ</translation>
-    </message>
-    <message>
-      <source>Vertical tilt</source>
-      <translation>Dikey eğim</translation>
-    </message>
-    <message>
-      <source>X +ve</source>
-      <translation>X + ve</translation>
-    </message>
-    <message>
-      <source>Y +ve</source>
-      <translation>X + ve</translation>
-    </message>
-    <message>
-      <source>Z +ve</source>
-      <translation>X + ve</translation>
-    </message>
-    <message>
-      <source>X -ve</source>
-      <translation>X + ve</translation>
-    </message>
-    <message>
-      <source>Y -ve</source>
-      <translation>X + ve</translation>
-    </message>
-    <message>
-      <source>Z -ve</source>
-      <translation>X + ve</translation>
+      <source>View projection</source>
+      <translation>İzdüşümü görüntüle</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -386,44 +402,28 @@ Devam etmek istiyor musun?</translation>
       <translation>Trimetrik</translation>
     </message>
     <message>
-      <source> Scale</source>
-      <translation> Ölçekler</translation>
-    </message>
-    <message>
-      <source>View projection</source>
-      <translation>İzdüşümü görüntüle</translation>
-    </message>
-    <message>
       <source> Axis aligned up</source>
       <translation> Eksen hizaya getirildi</translation>
+    </message>
+    <message>
+      <source>Axis out and right</source>
+      <translation>Eksen dışarı ve sağ</translation>
+    </message>
+    <message>
+      <source>Vertical tilt</source>
+      <translation>Dikey eğim</translation>
     </message>
     <message>
       <source>Flip</source>
       <translation>Çevir</translation>
     </message>
     <message>
+      <source> Scale</source>
+      <translation> Ölçekler</translation>
+    </message>
+    <message>
       <source> Trimetric</source>
       <translation> Trimetrik</translation>
-    </message>
-    <message>
-      <source>Projection</source>
-      <translation>İzdüşümler</translation>
-    </message>
-    <message>
-      <source>Third Angle</source>
-      <translation>Üçüncü açı</translation>
-    </message>
-    <message>
-      <source>First Angle</source>
-      <translation>İki açıları arasındaki fark</translation>
-    </message>
-    <message>
-      <source>View from:</source>
-      <translation>Şu adresten görüntüle:</translation>
-    </message>
-    <message>
-      <source>Axis aligned right:</source>
-      <translation>Eksen hizaya getirildi:</translation>
     </message>
   </context>
   <context>

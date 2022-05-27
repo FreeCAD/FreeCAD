@@ -754,20 +754,20 @@
       <translation>網格資訊</translation>
     </message>
     <message>
-      <source>Number of points:</source>
-      <translation>點的數目：</translation>
+      <source>Number of faces:</source>
+      <translation>面數：</translation>
     </message>
     <message>
       <source>No information</source>
       <translation>沒有資訊</translation>
     </message>
     <message>
-      <source>Number of faces:</source>
-      <translation>面數：</translation>
-    </message>
-    <message>
       <source>Number of edges:</source>
       <translation>邊之數目：</translation>
+    </message>
+    <message>
+      <source>Number of points:</source>
+      <translation>點的數目：</translation>
     </message>
     <message>
       <source>Refresh</source>
@@ -984,22 +984,6 @@ Please run the command to repair folds first</source>
       <translation>矩形實體</translation>
     </message>
     <message>
-      <source>&amp;Create</source>
-      <translation>&amp;建立</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt+C</translation>
-    </message>
-    <message>
-      <source>Cl&amp;ose</source>
-      <translation>&amp;關閉</translation>
-    </message>
-    <message>
-      <source>Alt+O</source>
-      <translation>Alt+O</translation>
-    </message>
-    <message>
       <source>Solid:</source>
       <translation>實體：</translation>
     </message>
@@ -1028,10 +1012,6 @@ Please run the command to repair folds first</source>
       <translation>圓環</translation>
     </message>
     <message>
-      <source>Height:</source>
-      <translation>高度:</translation>
-    </message>
-    <message>
       <source>Length:</source>
       <translation>長度:</translation>
     </message>
@@ -1040,20 +1020,24 @@ Please run the command to repair folds first</source>
       <translation>寬度:</translation>
     </message>
     <message>
+      <source>Height:</source>
+      <translation>高度:</translation>
+    </message>
+    <message>
       <source>Radius:</source>
       <translation>半徑:</translation>
     </message>
     <message>
-      <source>Closed</source>
-      <translation>關閉</translation>
+      <source>Edge length:</source>
+      <translation>邊長：</translation>
     </message>
     <message>
       <source>Sampling:</source>
       <translation>採樣：</translation>
     </message>
     <message>
-      <source>Edge length:</source>
-      <translation>邊長：</translation>
+      <source>Closed</source>
+      <translation>關閉</translation>
     </message>
     <message>
       <source>Radius 1:</source>
@@ -1062,6 +1046,22 @@ Please run the command to repair folds first</source>
     <message>
       <source>Radius 2:</source>
       <translation>半徑 2:</translation>
+    </message>
+    <message>
+      <source>&amp;Create</source>
+      <translation>&amp;建立</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt+C</translation>
+    </message>
+    <message>
+      <source>Cl&amp;ose</source>
+      <translation>&amp;關閉</translation>
+    </message>
+    <message>
+      <source>Alt+O</source>
+      <translation>Alt+O</translation>
     </message>
   </context>
   <context>
@@ -1086,10 +1086,6 @@ Please run the command to repair folds first</source>
       <translation>匯出</translation>
     </message>
     <message>
-      <source>Maximal deviation between mesh and object</source>
-      <translation type="unfinished">Maximal deviation between mesh and object</translation>
-    </message>
-    <message>
       <source>Deviation of tessellation to the actual surface</source>
       <translation type="unfinished">Deviation of tessellation to the actual surface</translation>
     </message>
@@ -1100,6 +1096,10 @@ Please run the command to repair folds first</source>
     <message>
       <source>Maximum mesh deviation</source>
       <translation>網格最大偏差</translation>
+    </message>
+    <message>
+      <source>Maximal deviation between mesh and object</source>
+      <translation type="unfinished">Maximal deviation between mesh and object</translation>
     </message>
     <message>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
@@ -1135,36 +1135,36 @@ is used when writing a file in AMF format</translation>
       <translation>新網格的預設外觀</translation>
     </message>
     <message>
-      <source>Default line color</source>
-      <translation>預設線條顏色</translation>
-    </message>
-    <message>
-      <source>Mesh transparency</source>
-      <translation>網格透明度</translation>
+      <source>Default mesh color</source>
+      <translation>預設網格顏色</translation>
     </message>
     <message>
       <source>Default color for new meshes</source>
       <translation type="unfinished">Default color for new meshes</translation>
     </message>
     <message>
+      <source>Mesh transparency</source>
+      <translation>網格透明度</translation>
+    </message>
+    <message>
       <source>%</source>
       <translation>％</translation>
     </message>
     <message>
-      <source>Default mesh color</source>
-      <translation>預設網格顏色</translation>
-    </message>
-    <message>
-      <source>A bounding box will be displayed</source>
-      <translation type="unfinished">A bounding box will be displayed</translation>
-    </message>
-    <message>
-      <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>顯示突出或選定的網格邊界框</translation>
+      <source>Default line color</source>
+      <translation>預設線條顏色</translation>
     </message>
     <message>
       <source>Default line color for new meshes</source>
       <translation type="unfinished">Default line color for new meshes</translation>
+    </message>
+    <message>
+      <source>Line transparency</source>
+      <translation>線條透明度</translation>
+    </message>
+    <message>
+      <source>Backface color</source>
+      <translation>背面顏色</translation>
     </message>
     <message>
       <source>The bottom side of surface will be rendered the same way than top side.
@@ -1181,24 +1181,16 @@ will be used or black.</translation>
       <translation>雙面渲染</translation>
     </message>
     <message>
-      <source>Line transparency</source>
-      <translation>線條透明度</translation>
+      <source>A bounding box will be displayed</source>
+      <translation type="unfinished">A bounding box will be displayed</translation>
     </message>
     <message>
-      <source>Backface color</source>
-      <translation>背面顏色</translation>
+      <source>Show bounding-box for highlighted or selected meshes</source>
+      <translation>顯示突出或選定的網格邊界框</translation>
     </message>
     <message>
       <source>Smoothing</source>
       <translation>平滑</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;這是介於兩個面法線間計算平面陰影的最小角&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;若介於兩個相鄰面法線間之夾角小於界限角度，將會使其共用邊平滑化陰影&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Crease angle</source>
-      <translation>消除摺角</translation>
     </message>
     <message>
       <source>If this option is set Phong shading is used, otherwise flat shading.
@@ -1219,6 +1211,14 @@ to a smoother appearance.
     <message>
       <source>Define normal per vertex</source>
       <translation>定義每個頂點法線</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;這是介於兩個面法線間計算平面陰影的最小角&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;若介於兩個相鄰面法線間之夾角小於界限角度，將會使其共用邊平滑化陰影&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Crease angle</source>
+      <translation>消除摺角</translation>
     </message>
     <message>
       <source>Crease angle is a threshold angle between two faces.
@@ -1385,6 +1385,10 @@ to a smoother appearance.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
+      <source>Remesh by Gmsh</source>
+      <translation type="unfinished">Remesh by Gmsh</translation>
+    </message>
+    <message>
       <source>Remeshing Parameter</source>
       <translation type="unfinished">Remeshing Parameter</translation>
     </message>
@@ -1424,10 +1428,6 @@ to a smoother appearance.
       <source>Clear</source>
       <translation>清除</translation>
     </message>
-    <message>
-      <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
@@ -1440,40 +1440,40 @@ to a smoother appearance.
       <translation>選擇</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>選擇整個組件</translation>
-    </message>
-    <message>
-      <source>Pick triangle</source>
-      <translation>選取三角形</translation>
-    </message>
-    <message>
-      <source>&lt; faces than</source>
-      <translation>&lt;面數</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>面域</translation>
-    </message>
-    <message>
-      <source>Components</source>
-      <translation>組件</translation>
     </message>
     <message>
       <source>All</source>
       <translation>所有</translation>
     </message>
     <message>
+      <source>Components</source>
+      <translation>組件</translation>
+    </message>
+    <message>
+      <source>&lt; faces than</source>
+      <translation>&lt;面數</translation>
+    </message>
+    <message>
+      <source>Pick triangle</source>
+      <translation>選取三角形</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>選擇整個組件</translation>
+    </message>
+    <message>
       <source>Deselect</source>
       <translation>取消選擇</translation>
     </message>
     <message>
-      <source>Deselect whole component</source>
-      <translation>取消選擇整個組件</translation>
-    </message>
-    <message>
       <source>&gt; faces than</source>
       <translation>&gt;面數</translation>
+    </message>
+    <message>
+      <source>Deselect whole component</source>
+      <translation>取消選擇整個組件</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -1550,8 +1550,12 @@ to a smoother appearance.
       <translation>網格分割</translation>
     </message>
     <message>
-      <source>Sphere</source>
-      <translation>球體</translation>
+      <source>Plane</source>
+      <translation>平面</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation type="unfinished">Parameters...</translation>
     </message>
     <message>
       <source>Tolerance</source>
@@ -1562,16 +1566,12 @@ to a smoother appearance.
       <translation>面之最小數量</translation>
     </message>
     <message>
-      <source>Parameters...</source>
-      <translation type="unfinished">Parameters...</translation>
-    </message>
-    <message>
-      <source>Plane</source>
-      <translation>平面</translation>
-    </message>
-    <message>
       <source>Cylinder</source>
       <translation>圓柱</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>球體</translation>
     </message>
     <message>
       <source>Base</source>
@@ -1758,6 +1758,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation type="unfinished">Asymptote Format</translation>
     </message>
     <message>
+      <source>3D Manufacturing Format</source>
+      <translation type="unfinished">3D Manufacturing Format</translation>
+    </message>
+    <message>
       <source>Export mesh</source>
       <translation>匯出網格</translation>
     </message>
@@ -1814,6 +1818,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation type="unfinished">Display segments</translation>
     </message>
     <message>
+      <source>Display colors</source>
+      <translation type="unfinished">Display colors</translation>
+    </message>
+    <message>
       <source>Leave info mode</source>
       <translation>離開訊息模式</translation>
     </message>
@@ -1841,10 +1849,6 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <source>Annotation</source>
       <translation>注釋</translation>
     </message>
-    <message>
-      <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1861,12 +1865,32 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>網面(&amp;M)</translation>
     </message>
     <message>
+      <source>Cutting</source>
+      <translation>切割</translation>
+    </message>
+    <message>
       <source>Mesh tools</source>
       <translation>網面工具</translation>
     </message>
     <message>
-      <source>Cutting</source>
-      <translation>切割</translation>
+      <source>Mesh modify</source>
+      <translation type="unfinished">Mesh modify</translation>
+    </message>
+    <message>
+      <source>Mesh boolean</source>
+      <translation type="unfinished">Mesh boolean</translation>
+    </message>
+    <message>
+      <source>Mesh cutting</source>
+      <translation type="unfinished">Mesh cutting</translation>
+    </message>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>網格分割</translation>
+    </message>
+    <message>
+      <source>Mesh analyze</source>
+      <translation type="unfinished">Mesh analyze</translation>
     </message>
   </context>
 </TS>

@@ -298,16 +298,60 @@ Do you want to continue?</source>
       <translation>ორთოგრაფიული პროექტცია</translation>
     </message>
     <message>
+      <source>Projection</source>
+      <translation>პროექცია</translation>
+    </message>
+    <message>
+      <source>Third Angle</source>
+      <translation>მესამე კუთხე</translation>
+    </message>
+    <message>
+      <source>First Angle</source>
+      <translation>პირველი კუთხე</translation>
+    </message>
+    <message>
+      <source>View from:</source>
+      <translation>ხედის წყარო:</translation>
+    </message>
+    <message>
+      <source>X +ve</source>
+      <translation>X +ve</translation>
+    </message>
+    <message>
+      <source>Y +ve</source>
+      <translation>Y +ve</translation>
+    </message>
+    <message>
+      <source>Z +ve</source>
+      <translation>Z +ve</translation>
+    </message>
+    <message>
+      <source>X -ve</source>
+      <translation>X -ve</translation>
+    </message>
+    <message>
+      <source>Y -ve</source>
+      <translation>Y -ve</translation>
+    </message>
+    <message>
+      <source>Z -ve</source>
+      <translation>Z -ve</translation>
+    </message>
+    <message>
+      <source>Axis aligned right:</source>
+      <translation>მარჯვნივ სწორებული ღერძები:</translation>
+    </message>
+    <message>
+      <source>Secondary Views</source>
+      <translation>მეორადი ხედები</translation>
+    </message>
+    <message>
       <source>Right click for axonometric settings</source>
       <translation>დააწკაპუნეთ მარჯვენა ღილაკით აქსონომეტრიული პარამეტრებისთვის</translation>
     </message>
     <message>
       <source>Primary view</source>
       <translation>მთავარი ხედი</translation>
-    </message>
-    <message>
-      <source>Secondary Views</source>
-      <translation>მეორადი ხედები</translation>
     </message>
     <message>
       <source>General</source>
@@ -342,36 +386,8 @@ Do you want to continue?</source>
       <translation>აქსონომეტრიული</translation>
     </message>
     <message>
-      <source>Axis out and right</source>
-      <translation>ღერძი გარეთ და მარჯვნივ</translation>
-    </message>
-    <message>
-      <source>Vertical tilt</source>
-      <translation>ვერტიკალური დახრა</translation>
-    </message>
-    <message>
-      <source>X +ve</source>
-      <translation>X +ve</translation>
-    </message>
-    <message>
-      <source>Y +ve</source>
-      <translation>Y +ve</translation>
-    </message>
-    <message>
-      <source>Z +ve</source>
-      <translation>Z +ve</translation>
-    </message>
-    <message>
-      <source>X -ve</source>
-      <translation>X -ve</translation>
-    </message>
-    <message>
-      <source>Y -ve</source>
-      <translation>Y -ve</translation>
-    </message>
-    <message>
-      <source>Z -ve</source>
-      <translation>Z -ve</translation>
+      <source>View projection</source>
+      <translation>აქსონომეტრიის ტიპი</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -386,44 +402,28 @@ Do you want to continue?</source>
       <translation>ტრიმეტრული</translation>
     </message>
     <message>
-      <source> Scale</source>
-      <translation> მასშტაბირება</translation>
-    </message>
-    <message>
-      <source>View projection</source>
-      <translation>აქსონომეტრიის ტიპი</translation>
-    </message>
-    <message>
       <source> Axis aligned up</source>
       <translation> ზემოთ გასწორებული ღერძები</translation>
+    </message>
+    <message>
+      <source>Axis out and right</source>
+      <translation>ღერძი გარეთ და მარჯვნივ</translation>
+    </message>
+    <message>
+      <source>Vertical tilt</source>
+      <translation>ვერტიკალური დახრა</translation>
     </message>
     <message>
       <source>Flip</source>
       <translation>გადაბრუნება</translation>
     </message>
     <message>
+      <source> Scale</source>
+      <translation> მასშტაბირება</translation>
+    </message>
+    <message>
       <source> Trimetric</source>
       <translation> Trimetric</translation>
-    </message>
-    <message>
-      <source>Projection</source>
-      <translation>პროექცია</translation>
-    </message>
-    <message>
-      <source>Third Angle</source>
-      <translation>მესამე კუთხე</translation>
-    </message>
-    <message>
-      <source>First Angle</source>
-      <translation>პირველი კუთხე</translation>
-    </message>
-    <message>
-      <source>View from:</source>
-      <translation>ხედის წყარო:</translation>
-    </message>
-    <message>
-      <source>Axis aligned right:</source>
-      <translation>მარჯვნივ სწორებული ღერძები:</translation>
     </message>
   </context>
   <context>

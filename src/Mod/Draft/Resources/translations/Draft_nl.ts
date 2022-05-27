@@ -4,417 +4,257 @@
   <context>
     <name>App::Property</name>
     <message>
-      <location filename="../../draftobjects/fillet.py" line="46"/>
-      <source>The start point of this line.</source>
-      <translation>Het beginpunt van deze lijn.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/fillet.py" line="54"/>
-      <source>The end point of this line.</source>
-      <translation>Het eindpunt van deze lijn.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/fillet.py" line="62"/>
-      <source>The length of this line.</source>
-      <translation>De lengte van deze lijn.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/fillet.py" line="70"/>
-      <source>Radius to use to fillet the corner.</source>
-      <translation>Radius waarmee de hoeken worden afgerond.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="168"/>
-      <source>The base object that will be duplicated</source>
-      <translation>Het basisobject dat wordt gedupliceerd</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="86"/>
-      <source>The type of array to create.
-- Ortho: places the copies in the direction of the global X, Y, Z axes.
-- Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
-- Circular: places the copies in concentric circular layers around the base object.</source>
-      <translation>Het type array dat moet worden gemaakt.
-- Ortho: plaatst de kopieën in de richting van de globale X, Y, Z-assen.
-- Polar: plaatst de kopieën in een circulaire boog, tot een opgegeven hoek, en met bepaalde oriëntatie gedefinieerd door een centrum en een as.
-- Circular: plaatst de kopieën in concentrische circulaire lagen rond het basisobject.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="105"/>
-      <source>Specifies if the copies should be fused together if they touch each other (slower)</source>
-      <translation>Geeft aan of de kopieën samen moeten worden gevoegd als ze aanraken (langzamer process)</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="120"/>
-      <source>Number of copies in X direction</source>
-      <translation>Aantal Kopieën in X-richting</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="129"/>
-      <source>Number of copies in Y direction</source>
-      <translation>Aantal Kopieën in Y-richting</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="138"/>
-      <source>Number of copies in Z direction</source>
-      <translation>Aantal Kopieën in Z-richting</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="147"/>
-      <source>Distance and orientation of intervals in X direction</source>
-      <translation>Afstand en richting van het kopieën in X-richting</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="157"/>
-      <source>Distance and orientation of intervals in Y direction</source>
-      <translation>Afstand en richting van het kopieën in Y-richting</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="167"/>
-      <source>Distance and orientation of intervals in Z direction</source>
-      <translation>Afstand en richting van het kopieën in Z-richting</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="181"/>
-      <source>The axis direction around which the elements in a polar or a circular array will be created</source>
-      <translation>De as richting waar de elementen in een polair of een circulaire patroon worden gemaakt</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="192"/>
-      <source>Center point for polar and circular arrays.
-The 'Axis' passes through this point.</source>
-      <translation>Centreer punt voor polaire en circulaire patronen.
-De 'as' loopt door dit punt.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="205"/>
-      <source>The axis object that overrides the value of 'Axis' and 'Center', for example, a datum line.
-Its placement, position and rotation, will be used when creating polar and circular arrays.
-Leave this property empty to be able to set 'Axis' and 'Center' manually.</source>
-      <translation>De as object dat de waarde van 'Axis' en 'Center' overschrijft, bijvoorbeeld een datum lijn.
-De plaatsing, positie en rotatie zullen worden gebruikt bij het maken van polaire en circulaire arrays.
-Laat deze eigenschap leeg om 'Axis' en 'Center' handmatig in te stellen.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="226"/>
-      <source>Number of copies in the polar direction</source>
-      <translation>Aantal kopieën in de pool richting</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="235"/>
-      <source>Distance and orientation of intervals in 'Axis' direction</source>
-      <translation>Afstand en richting van het interval in As-richting</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="245"/>
-      <source>Angle to cover with copies</source>
-      <translation>Hoek om te dekken met kopieën</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="258"/>
-      <source>Distance between circular layers</source>
-      <translation>Afstand tussen cirkelvormige lagen</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="267"/>
-      <source>Distance between copies in the same circular layer</source>
-      <translation>Afstand tussen kopieën in dezelfde cirkelvormige laag</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="277"/>
-      <source>Number of circular layers. The 'Base' object counts as one layer.</source>
-      <translation>Aantal cirkelvormige lagen. Het 'Basis' object telt als één laag mee.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="287"/>
-      <source>A parameter that determines how many symmetry planes the circular array will have.</source>
-      <translation>Een parameter die bepaalt hoeveel symmetrie vlakken de ronde array zal hebben.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/array.py" line="303"/>
-      <source>Total number of elements in the array.
-This property is read-only, as the number depends on the parameters of the array.</source>
-      <translation>Totaal aantal elementen in de reeks.
-Deze eigenschap is alleen-lezen, omdat het getal afhankelijk is van de parameters van de reeks.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="207"/>
-      <source>Show the individual array elements (only for Link arrays)</source>
-      <translation>Toon de afzonderlijke reeks elementen (alleen voor link reeksen)</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/block.py" line="41"/>
+      <location filename="../../draftobjects/block.py" line="43"/>
       <source>The components of this block</source>
       <translation>De componenten van dit blok</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wpproxy.py" line="41"/>
-      <source>The placement of this object</source>
-      <translation>De plaatsing van dit object</translation>
+      <location filename="../../draftobjects/facebinder.py" line="43"/>
+      <source>Linked faces</source>
+      <translation>Gekoppelde vlakken</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/rectangle.py" line="45"/>
-      <source>Length of the rectangle</source>
-      <translation>Lengte van de rechthoek</translation>
+      <location filename="../../draftobjects/facebinder.py" line="46"/>
+      <source>Specifies if splitter lines must be removed</source>
+      <translation>Geeft aan of de splitslijnen verwijderd moeten worden</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/rectangle.py" line="48"/>
-      <source>Height of the rectangle</source>
-      <translation>Hoogte van de rechthoek</translation>
+      <location filename="../../draftobjects/facebinder.py" line="49"/>
+      <source>An optional extrusion value to be applied to all faces</source>
+      <translation>Een optionele extrusie waarde die op alle vlakken toegepast moet worden</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="75"/>
-      <source>Radius to use to fillet the corners</source>
-      <translation>Radius waarmee de hoeken worden afgerond</translation>
+      <location filename="../../draftobjects/facebinder.py" line="52"/>
+      <source>An optional offset value to be applied to all faces</source>
+      <translation>Een optionele offset waarde die op alle vlakken wordt toegepast</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="79"/>
-      <source>Size of the chamfer to give to the corners</source>
-      <translation>De grote waarmee de hoeken worden afgeschuind</translation>
+      <location filename="../../draftobjects/facebinder.py" line="55"/>
+      <source>This specifies if the shapes sew</source>
+      <translation>Dit geeft aan of de vormen naaien</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/ellipse.py" line="57"/>
+      <location filename="../../draftobjects/facebinder.py" line="58"/>
+      <source>The area of the faces of this Facebinder</source>
+      <translation>Het gebied van de vlakken van deze Vlakkenbinder</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/ellipse.py" line="45"/>
+      <source>Start angle of the elliptical arc</source>
+      <translation>Starthoek van de elliptische boog</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/ellipse.py" line="49"/>
+      <source>End angle of the elliptical arc 
+
+                (for a full circle, give it same value as First Angle)</source>
+      <translation type="unfinished">End angle of the elliptical arc 
+
+                (for a full circle, give it same value as First Angle)</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/ellipse.py" line="52"/>
+      <source>Minor radius of the ellipse</source>
+      <translation>De kleine straal van de ellips</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/ellipse.py" line="55"/>
+      <source>Major radius of the ellipse</source>
+      <translation>De grote straal van de ellips</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/ellipse.py" line="58"/>
+      <location filename="../../draftobjects/circle.py" line="58"/>
+      <location filename="../../draftobjects/polygon.py" line="68"/>
+      <location filename="../../draftobjects/rectangle.py" line="58"/>
       <source>Create a face</source>
       <translation>Maak een vlak</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/rectangle.py" line="60"/>
-      <source>Horizontal subdivisions of this rectangle</source>
-      <translation>Horizontale onderverdelingen van deze rechthoek</translation>
+      <location filename="../../draftobjects/ellipse.py" line="61"/>
+      <source>Area of this object</source>
+      <translation>Het oppervlak van dit object</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/rectangle.py" line="63"/>
-      <source>Vertical subdivisions of this rectangle</source>
-      <translation>Verticale onderverdelingen van deze rechthoek</translation>
+      <location filename="../../draftobjects/wpproxy.py" line="42"/>
+      <source>The placement of this object</source>
+      <translation>De plaatsing van dit object</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="91"/>
+      <location filename="../../draftobjects/drawingview.py" line="66"/>
+      <source>The linked object</source>
+      <translation>Het gekoppelde object</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/drawingview.py" line="73"/>
+      <source>Projection direction</source>
+      <translation>Projectie richting</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/drawingview.py" line="80"/>
+      <source>The width of the lines inside this object</source>
+      <translation>De breedte van de lijnen binnen dit object</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/drawingview.py" line="88"/>
+      <source>The size of the texts inside this object</source>
+      <translation>De grootte van de teksten binnen dit object</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/drawingview.py" line="96"/>
+      <source>The spacing between lines of text</source>
+      <translation>De afstand tussen regels tekst</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/drawingview.py" line="103"/>
+      <source>The color of the projected objects</source>
+      <translation>De kleur van de geprojecteerde objecten</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/drawingview.py" line="110"/>
+      <source>Shape Fill Style</source>
+      <translation>Vulstijl van de vorm</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/drawingview.py" line="118"/>
+      <source>Line Style</source>
+      <translation>Lijnstijl</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/drawingview.py" line="127"/>
+      <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
+      <translation>Indien aangevinkt, worden bronobjecten weergegeven ongeacht de zichtbaarheid in het 3D-model</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/bspline.py" line="46"/>
+      <source>The points of the B-spline</source>
+      <translation>De punten van de B-spline</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/bspline.py" line="50"/>
+      <source>If the B-spline is closed or not</source>
+      <translation>Of de B-spline gesloten is of niet</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/bspline.py" line="54"/>
+      <source>Create a face if this spline is closed</source>
+      <translation>Maak een vlak als de curve gesloten is</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/bspline.py" line="57"/>
+      <location filename="../../draftobjects/circle.py" line="62"/>
+      <location filename="../../draftobjects/wire.py" line="93"/>
+      <location filename="../../draftobjects/polygon.py" line="72"/>
+      <location filename="../../draftobjects/bezcurve.py" line="70"/>
+      <location filename="../../draftobjects/rectangle.py" line="67"/>
       <source>The area of this object</source>
       <translation>Het oppervlak van dit object</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="83"/>
-      <source>The base object that will be duplicated.</source>
-      <translation type="unfinished">The base object that will be duplicated.</translation>
+      <location filename="../../draftobjects/bspline.py" line="67"/>
+      <source>Parameterization factor</source>
+      <translation>Parametrisatiefactor</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="176"/>
-      <source>The object along which the copies will be distributed. It must contain 'Edges'.</source>
-      <translation>Het object waarlangs de kopieën worden verdeeld. Het moet 'Randen' bevatten.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="97"/>
-      <source>Number of copies to create.</source>
-      <translation type="unfinished">Number of copies to create.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/pathtwistedarray.py" line="104"/>
-      <source>Rotation factor of the twisted array.</source>
-      <translation type="unfinished">Rotation factor of the twisted array.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/dimension.py" line="134"/>
-      <source>The normal direction of the text of the dimension</source>
-      <translation>De normaal richting van de tekst de afmeting</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/dimension.py" line="147"/>
-      <source>The object measured by this dimension object</source>
-      <translation>Het object gemeten door dit maatobject</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/dimension.py" line="157"/>
-      <source>The object, and specific subelements of it,
-that this dimension object is measuring.
-
-There are various possibilities:
-- An object, and one of its edges.
-- An object, and two of its vertices.
-- An arc object, and its edge.</source>
-      <translation type="unfinished">The object, and specific subelements of it,
-that this dimension object is measuring.
-
-There are various possibilities:
-- An object, and one of its edges.
-- An object, and two of its vertices.
-- An arc object, and its edge.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/dimension.py" line="174"/>
-      <source>A point through which the dimension line, or an extrapolation of it, will pass.
-
-- For linear dimensions, this property controls how close the dimension line
-is to the measured object.
-- For radial dimensions, this controls the direction of the dimension line
-that displays the measured radius or diameter.
-- For angular dimensions, this controls the radius of the dimension arc
-that displays the measured angle.</source>
-      <translation>Een punt waar de maatlijn doorheen gaat, of een extrapolatie daarvan, zal slagen.
-
-- Voor lineaire afmetingen bepaalt deze eigenschap hoe dicht de maatlijn is bij het voorwerp.
-- Voor radiale afmetingen, dit bepaalt de richting van de afmetingslijn die de gemeten radius of diameter toont.
-- Voor hoekafmetingen, bepaalt dit de radius van de afmetingsboog die de afgemeten hoek toont.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/dimension.py" line="225"/>
-      <source>Starting point of the dimension line.
-
-If it is a radius dimension it will be the center of the arc.
-If it is a diameter dimension it will be a point that lies on the arc.</source>
-      <translation>Beginpunt van de maatlijn.
-
-Als het een straal is, zal het centraal staan in de boog.
-Als het een diameter dimensie is, zal het een punt zijn dat op de kunst ligt.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/dimension.py" line="240"/>
-      <source>Ending point of the dimension line.
-
-If it is a radius or diameter dimension
-it will be a point that lies on the arc.</source>
-      <translation>Eindpunt van de maatlijn.
-
-Als het een straal of diameter dimensie
-is, is het een punt dat op de boog ligt.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/dimension.py" line="254"/>
-      <source>The direction of the dimension line.
-If this remains '(0,0,0)', the direction will be calculated automatically.</source>
-      <translation>De richting van de maatlijn.
-Als dit '(0,0,0)' blijft, wordt de richting automatisch berekend.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/dimension.py" line="265"/>
-      <source>The value of the measurement.
-
-This property is read-only because the value is calculated
-from the 'Start' and 'End' properties.
-
-If the 'Linked Geometry' is an arc or circle, this 'Distance'
-is the radius or diameter, depending on the 'Diameter' property.</source>
-      <translation>De waarde van de meting.
-
-Deze eigenschap is alleen-lezen omdat de waarde wordt berekend
-vanaf de 'Start' en 'Eind' eigenschappen.
-
-Als de 'Gekoppelde Geometrie' een boog of cirkel is, is deze 'Afstand'
-de straal of diameter, afhankelijk van de 'Diameter' eigenschap.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/dimension.py" line="283"/>
-      <source>When measuring circular arcs, it determines whether to display
-the radius or the diameter value</source>
-      <translation>Bij het meten van circulaire bogen, bepaalt het of
-de radius of de diameter waarde wordt weergegeven</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/dimension.py" line="503"/>
-      <source>Starting angle of the dimension line (circular arc).
-The arc is drawn counter-clockwise.</source>
-      <translation>Beginhoek van de afmetingslijn (circulaire boog). 
-De boog wordt tegen de klok in getekend.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/dimension.py" line="514"/>
-      <source>Ending angle of the dimension line (circular arc).
-The arc is drawn counter-clockwise.</source>
-      <translation>Beginhoek van de afmetingslijn (circulaire boog). 
-De boog wordt tegen de klok in getekend.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/dimension.py" line="525"/>
-      <source>The center point of the dimension line, which is a circular arc.
-
-This is normally the point where two line segments, or their extensions
-intersect, resulting in the measured 'Angle' between them.</source>
-      <translation>Het middelpunt van de maatlijn, een cirkelboog.
-
-Dit is normaal gesproken het punt waar twee lijnsegmenten, of de verlengingen ervan
-snijden, wat resulteert in de gemeten 'hoek' tussen hen.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/dimension.py" line="540"/>
-      <source>The value of the measurement.
-
-This property is read-only because the value is calculated from
-the 'First Angle' and 'Last Angle' properties.</source>
-      <translation>De waarde van de meting.
-
-Deze eigenschap is alleen-lezen omdat de waarde wordt berekend van
-de 'Eerste hoek' en 'Laatste hoek' eigenschappen.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/text.py" line="51"/>
-      <source>The placement of the base point of the first line</source>
-      <translation>De plaatsing van het basispunt van de eerste lijn</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/text.py" line="61"/>
-      <source>The text displayed by this object.
-It is a list of strings; each element in the list will be displayed in its own line.</source>
-      <translation>De tekst die wordt weergegeven door dit object.
-Het is een lijst met tekenreeksen; elk element in de lijst wordt weergegeven in zijn eigen regel.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/circle.py" line="44"/>
+      <location filename="../../draftobjects/circle.py" line="45"/>
       <source>Start angle of the arc</source>
       <translation>Starthoek van de boog</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/circle.py" line="48"/>
-      <source>End angle of the arc (for a full circle,                 give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the arc (for a full circle,                 give it same value as First Angle)</translation>
+      <location filename="../../draftobjects/circle.py" line="50"/>
+      <source>End angle of the arc (for a full circle, 
+                give it same value as First Angle)</source>
+      <translation type="unfinished">End angle of the arc (for a full circle, 
+                give it same value as First Angle)</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/circle.py" line="53"/>
+      <location filename="../../draftobjects/circle.py" line="54"/>
       <source>Radius of the circle</source>
       <translation>Straal van de cirkel</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/polygon.py" line="46"/>
+      <location filename="../../draftobjects/wire.py" line="49"/>
+      <source>The vertices of the wire</source>
+      <translation>De hoekpunten van de lijn</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/wire.py" line="53"/>
+      <source>If the wire is closed or not</source>
+      <translation>Als de draad al dan niet gesloten is</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/wire.py" line="57"/>
+      <source>The base object is the wire, it's formed from 2 objects</source>
+      <translation>Het basisobject is de draad, deze is gevormd uit 2 objecten</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/wire.py" line="61"/>
+      <source>The tool object is the wire, it's formed from 2 objects</source>
+      <translation>Het gereedschapsobject is de draad, deze is gevormd uit 2 objecten</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/wire.py" line="65"/>
+      <source>The start point of this line</source>
+      <translation>Het beginpunt van deze lijn</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/wire.py" line="69"/>
+      <source>The end point of this line</source>
+      <translation>Het eindpunt van deze lijn</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/wire.py" line="73"/>
+      <source>The length of this line</source>
+      <translation>De lengte van deze lijn</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/wire.py" line="77"/>
+      <location filename="../../draftobjects/polygon.py" line="60"/>
+      <location filename="../../draftobjects/rectangle.py" line="52"/>
+      <source>Radius to use to fillet the corners</source>
+      <translation>Radius waarmee de hoeken worden afgerond</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/wire.py" line="81"/>
+      <location filename="../../draftobjects/polygon.py" line="64"/>
+      <location filename="../../draftobjects/rectangle.py" line="55"/>
+      <source>Size of the chamfer to give to the corners</source>
+      <translation>De grote waarmee de hoeken worden afgeschuind</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/wire.py" line="85"/>
+      <source>Create a face if this object is closed</source>
+      <translation>Maak een vlak als dit object gesloten is</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/wire.py" line="89"/>
+      <source>The number of subdivisions of each edge</source>
+      <translation>Het aantal onderverdelingen van elke rand</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/polygon.py" line="48"/>
       <source>Number of faces</source>
       <translation>Aantal vlakken</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/polygon.py" line="50"/>
+      <location filename="../../draftobjects/polygon.py" line="52"/>
       <source>Radius of the control circle</source>
       <translation>Straal van de controlecirkel</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/polygon.py" line="54"/>
+      <location filename="../../draftobjects/polygon.py" line="56"/>
       <source>How the polygon must be drawn from the control circle</source>
       <translation>Hoe de veelhoek getekend moet worden vanuit de controlecirkel</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/point.py" line="44"/>
-      <source>X Location</source>
-      <translation>X locatie</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/point.py" line="47"/>
-      <source>Y Location</source>
-      <translation>Y locatie</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/point.py" line="50"/>
-      <source>Z Location</source>
-      <translation>Z locatie</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/layer.py" line="57"/>
-      <source>The objects that are part of this layer</source>
-      <translation>De objecten die deel uitmaken van deze laag</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/label.py" line="60"/>
+      <location filename="../../draftobjects/label.py" line="65"/>
       <source>The position of the tip of the leader line.
 This point can be decorated with an arrow or another symbol.</source>
       <translation>De positie van de punt van de aanhaallijn. 
 Dit punt kan worden versierd met een pijl of een ander symbool.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="72"/>
+      <location filename="../../draftobjects/label.py" line="79"/>
       <source>Object, and optionally subelement, whose properties will be displayed
 as 'Text', depending on 'Label Type'.
 
@@ -425,7 +265,7 @@ als 'Tekst', afhankelijk van 'Label Type'.
 'Doel' zal niet worden gebruikt als 'Label Type' is ingesteld op 'Aangepast'.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="90"/>
+      <location filename="../../draftobjects/label.py" line="109"/>
       <source>The list of points defining the leader line; normally a list of three points.
 
 The first point should be the position of the text, that is, the 'Placement',
@@ -446,7 +286,7 @@ Als 'Recht richt' is ingesteld op 'aangepast', kan de 'punten'-eigenschap
 worden ingesteld als een lijst van willekeurige punten.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="116"/>
+      <location filename="../../draftobjects/label.py" line="124"/>
       <source>The direction of the straight segment of the leader line.
 
 If 'Custom' is chosen, the points of the leader can be specified by
@@ -457,7 +297,7 @@ Als 'Aangepast' is gekozen, kunnen de punten van de leider worden gespecificeerd
 een aangepaste lijst toe te wijzen aan het 'Punten' attribuut.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="131"/>
+      <location filename="../../draftobjects/label.py" line="142"/>
       <source>The length of the straight segment of the leader line.
 
 This is an oriented distance; if it is negative, the line will be drawn
@@ -470,17 +310,17 @@ aan de linkerkant of onder de 'Tekst', anders naar rechts of hoger
 afhankelijk van de waarde van 'Recht Richting'.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="153"/>
+      <location filename="../../draftobjects/label.py" line="156"/>
       <source>The placement of the 'Text' element in 3D space</source>
       <translation>De plaatsing van het 'Tekst'-element in de 3D-ruimte</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="163"/>
+      <location filename="../../draftobjects/label.py" line="166"/>
       <source>The text to display when 'Label Type' is set to 'Custom'</source>
       <translation>De tekst om weer te geven wanneer 'Label Type' is ingesteld op 'Aangepast'</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="173"/>
+      <location filename="../../draftobjects/label.py" line="181"/>
       <source>The text displayed by this label.
 
 This property is read-only, as the final text depends on 'Label Type',
@@ -493,7 +333,7 @@ en het object gedefinieerd in 'Doel'.
 De 'Aangepaste tekst' wordt alleen getoond als 'Label Type' is ingesteld op 'Aangepast'.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="197"/>
+      <location filename="../../draftobjects/label.py" line="216"/>
       <source>The type of information displayed by this label.
 
 If 'Custom' is chosen, the contents of 'Custom Text' will be used.
@@ -512,243 +352,298 @@ Voor 'Positie', 'Lengte' en 'Gebied' worden deze eigenschappen gewonnen uit het 
 of vanaf de subelement 'VertexN', 'EdgeN', respectievelijk 'FaceN', als deze is opgegeven.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="45"/>
-      <source>Text string</source>
-      <translation>Tekstreeks</translation>
+      <location filename="../../draftobjects/clone.py" line="46"/>
+      <source>The objects included in this clone</source>
+      <translation>De objecten inbegrepen in deze kloon</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="48"/>
-      <source>Font file name</source>
-      <translation>Lettertype bestandsnaam</translation>
+      <location filename="../../draftobjects/clone.py" line="51"/>
+      <source>The scale factor of this clone</source>
+      <translation>De schaalfactor van deze kloon</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="51"/>
-      <source>Height of text</source>
-      <translation>Teksthoogte</translation>
+      <location filename="../../draftobjects/clone.py" line="57"/>
+      <source>If Clones includes several objects,
+set True for fusion or False for compound</source>
+      <translation>Als klonen meerdere objecten bevat,
+zet True voor fusie of onwaar voor samenvoegen</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="54"/>
-      <source>Inter-character spacing</source>
-      <translation>Tussentekenafstand</translation>
+      <location filename="../../draftobjects/hatch.py" line="46"/>
+      <source>The base object used by this object</source>
+      <translation type="unfinished">The base object used by this object</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shapestring.py" line="57"/>
-      <source>Fill letters with faces</source>
-      <translation type="unfinished">Fill letters with faces</translation>
+      <location filename="../../draftobjects/hatch.py" line="49"/>
+      <source>The PAT file used by this object</source>
+      <translation type="unfinished">The PAT file used by this object</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/draftlink.py" line="97"/>
+      <location filename="../../draftobjects/hatch.py" line="52"/>
+      <source>The pattern name used by this object</source>
+      <translation type="unfinished">The pattern name used by this object</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/hatch.py" line="55"/>
+      <source>The pattern scale used by this object</source>
+      <translation type="unfinished">The pattern scale used by this object</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/hatch.py" line="58"/>
+      <source>The pattern rotation used by this object</source>
+      <translation type="unfinished">The pattern rotation used by this object</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/hatch.py" line="61"/>
+      <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
+      <translation type="unfinished">If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/draftlink.py" line="99"/>
       <source>Force sync pattern placements even when array elements are expanded</source>
       <translation type="unfinished">Force sync pattern placements even when array elements are expanded</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/draftlink.py" line="110"/>
+      <location filename="../../draftobjects/draftlink.py" line="112"/>
       <source>Show the individual array elements</source>
       <translation>Toon de afzonderlijke array elementen</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pointarray.py" line="78"/>
+      <location filename="../../draftobjects/array.py" line="82"/>
+      <location filename="../../draftobjects/patharray.py" line="169"/>
+      <source>The base object that will be duplicated</source>
+      <translation>Het basisobject dat wordt gedupliceerd</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="98"/>
+      <source>The type of array to create.
+- Ortho: places the copies in the direction of the global X, Y, Z axes.
+- Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
+- Circular: places the copies in concentric circular layers around the base object.</source>
+      <translation>Het type array dat moet worden gemaakt.
+- Ortho: plaatst de kopieën in de richting van de globale X, Y, Z-assen.
+- Polar: plaatst de kopieën in een circulaire boog, tot een opgegeven hoek, en met bepaalde oriëntatie gedefinieerd door een centrum en een as.
+- Circular: plaatst de kopieën in concentrische circulaire lagen rond het basisobject.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="109"/>
+      <source>Specifies if the copies should be fused together if they touch each other (slower)</source>
+      <translation>Geeft aan of de kopieën samen moeten worden gevoegd als ze aanraken (langzamer process)</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="122"/>
+      <source>Number of copies in X direction</source>
+      <translation>Aantal Kopieën in X-richting</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="131"/>
+      <source>Number of copies in Y direction</source>
+      <translation>Aantal Kopieën in Y-richting</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="140"/>
+      <source>Number of copies in Z direction</source>
+      <translation>Aantal Kopieën in Z-richting</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="150"/>
+      <source>Distance and orientation of intervals in X direction</source>
+      <translation>Afstand en richting van het kopieën in X-richting</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="160"/>
+      <source>Distance and orientation of intervals in Y direction</source>
+      <translation>Afstand en richting van het kopieën in Y-richting</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="170"/>
+      <source>Distance and orientation of intervals in Z direction</source>
+      <translation>Afstand en richting van het kopieën in Z-richting</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="185"/>
+      <source>The axis direction around which the elements in a polar or a circular array will be created</source>
+      <translation>De as richting waar de elementen in een polair of een circulaire patroon worden gemaakt</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="196"/>
+      <source>Center point for polar and circular arrays.
+The 'Axis' passes through this point.</source>
+      <translation>Centreer punt voor polaire en circulaire patronen.
+De 'as' loopt door dit punt.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="215"/>
+      <source>The axis object that overrides the value of 'Axis' and 'Center', for example, a datum line.
+Its placement, position and rotation, will be used when creating polar and circular arrays.
+Leave this property empty to be able to set 'Axis' and 'Center' manually.</source>
+      <translation>De as object dat de waarde van 'Axis' en 'Center' overschrijft, bijvoorbeeld een datum lijn.
+De plaatsing, positie en rotatie zullen worden gebruikt bij het maken van polaire en circulaire arrays.
+Laat deze eigenschap leeg om 'Axis' en 'Center' handmatig in te stellen.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="228"/>
+      <source>Number of copies in the polar direction</source>
+      <translation>Aantal kopieën in de pool richting</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="238"/>
+      <source>Distance and orientation of intervals in 'Axis' direction</source>
+      <translation>Afstand en richting van het interval in As-richting</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="247"/>
+      <source>Angle to cover with copies</source>
+      <translation>Hoek om te dekken met kopieën</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="260"/>
+      <source>Distance between circular layers</source>
+      <translation>Afstand tussen cirkelvormige lagen</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="270"/>
+      <source>Distance between copies in the same circular layer</source>
+      <translation>Afstand tussen kopieën in dezelfde cirkelvormige laag</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="280"/>
+      <source>Number of circular layers. The 'Base' object counts as one layer.</source>
+      <translation>Aantal cirkelvormige lagen. Het 'Basis' object telt als één laag mee.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="291"/>
+      <source>A parameter that determines how many symmetry planes the circular array will have.</source>
+      <translation>Een parameter die bepaalt hoeveel symmetrie vlakken de ronde array zal hebben.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="309"/>
+      <source>Total number of elements in the array.
+This property is read-only, as the number depends on the parameters of the array.</source>
+      <translation>Totaal aantal elementen in de reeks.
+Deze eigenschap is alleen-lezen, omdat het getal afhankelijk is van de parameters van de reeks.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/array.py" line="320"/>
+      <location filename="../../draftobjects/pointarray.py" line="112"/>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="114"/>
+      <location filename="../../draftobjects/patharray.py" line="208"/>
+      <source>Show the individual array elements (only for Link arrays)</source>
+      <translation>Toon de afzonderlijke reeks elementen (alleen voor link reeksen)</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/shapestring.py" line="46"/>
+      <source>Text string</source>
+      <translation>Tekstreeks</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/shapestring.py" line="49"/>
+      <source>Font file name</source>
+      <translation>Lettertype bestandsnaam</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/shapestring.py" line="52"/>
+      <source>Height of text</source>
+      <translation>Teksthoogte</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/shapestring.py" line="55"/>
+      <source>Inter-character spacing</source>
+      <translation>Tussentekenafstand</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/shapestring.py" line="58"/>
+      <source>Fill letters with faces</source>
+      <translation type="unfinished">Fill letters with faces</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/fillet.py" line="47"/>
+      <source>The start point of this line.</source>
+      <translation>Het beginpunt van deze lijn.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/fillet.py" line="55"/>
+      <source>The end point of this line.</source>
+      <translation>Het eindpunt van deze lijn.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/fillet.py" line="63"/>
+      <source>The length of this line.</source>
+      <translation>De lengte van deze lijn.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/fillet.py" line="71"/>
+      <source>Radius to use to fillet the corner.</source>
+      <translation>Radius waarmee de hoeken worden afgerond.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/pointarray.py" line="79"/>
       <source>Base object that will be duplicated</source>
       <translation>Het basisobject dat wordt gedupliceerd</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pointarray.py" line="86"/>
+      <location filename="../../draftobjects/pointarray.py" line="87"/>
       <source>Object containing points used to distribute the base object, for example, a sketch or a Part compound.
 The sketch or compound must contain at least one explicit point or vertex object.</source>
       <translation>Object met punten die worden gebruikt om het basisobject te distribueren, bijvoorbeeld een schets of een onderdeelsamenstelling.
 De schets of samenstelling moet ten minste één expliciete punt of eindpunt object bevatten.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pointarray.py" line="94"/>
+      <location filename="../../draftobjects/pointarray.py" line="95"/>
       <source>Total number of elements in the array.
 This property is read-only, as the number depends on the points contained within 'Point Object'.</source>
       <translation>Totaal aantal elementen in de reeks.
 Deze eigenschap is alleen-lezen, omdat het getal afhankelijk is van de punten in het 'Punt Object'.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/pointarray.py" line="139"/>
+      <location filename="../../draftobjects/pointarray.py" line="104"/>
+      <location filename="../../draftobjects/pointarray.py" line="140"/>
       <source>Additional placement, shift and rotation, that will be applied to each copy</source>
       <translation>Aanvullende plaatsing, verschuiving en rotatie, die zal worden toegepast op elke kopie</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/bspline.py" line="44"/>
-      <source>The points of the B-spline</source>
-      <translation>De punten van de B-spline</translation>
+      <location filename="../../draftobjects/draft_annotation.py" line="83"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="82"/>
+      <source>General scaling factor that affects the annotation consistently
+because it scales the text, and the line decorations, if any,
+in the same proportion.</source>
+      <translation>Algemene schaalfactor die van invloed is op de aantekening
+omdat het de tekst en de versieringen van de lijn, indien van toepassing,
+in dezelfde verhouding.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/bspline.py" line="48"/>
-      <source>If the B-spline is closed or not</source>
-      <translation>Of de B-spline gesloten is of niet</translation>
+      <location filename="../../draftobjects/draft_annotation.py" line="93"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="100"/>
+      <source>Annotation style to apply to this object.
+When using a saved style some of the view properties will become read-only;
+they will only be editable by changing the style through the 'Annotation style editor' tool.</source>
+      <translation>Aantekening stijl om toe te passen op dit object.
+Bij het gebruiken van een opgeslagen stijl worden sommige weergaveeigenschappen alleen-lezen gezien;
+ze kunnen alleen worden bewerkt door de stijl aan te passen via de 'Annotation style editor' tool.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/bspline.py" line="52"/>
-      <source>Create a face if this spline is closed</source>
-      <translation>Maak een vlak als de curve gesloten is</translation>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="86"/>
+      <source>The base object that will be duplicated.</source>
+      <translation type="unfinished">The base object that will be duplicated.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/bspline.py" line="66"/>
-      <source>Parameterization factor</source>
-      <translation>Parametrisatiefactor</translation>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="93"/>
+      <location filename="../../draftobjects/patharray.py" line="177"/>
+      <source>The object along which the copies will be distributed. It must contain 'Edges'.</source>
+      <translation>Het object waarlangs de kopieën worden verdeeld. Het moet 'Randen' bevatten.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shape2dview.py" line="55"/>
-      <source>The base object this 2D view must represent</source>
-      <translation>Het basisobject dat deze 2D-weergave moet weergeven</translation>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="100"/>
+      <source>Number of copies to create.</source>
+      <translation type="unfinished">Number of copies to create.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shape2dview.py" line="60"/>
-      <source>The projection vector of this object</source>
-      <translation>De vector projectie van dit object</translation>
+      <location filename="../../draftobjects/pathtwistedarray.py" line="107"/>
+      <source>Rotation factor of the twisted array.</source>
+      <translation type="unfinished">Rotation factor of the twisted array.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/shape2dview.py" line="66"/>
-      <source>The way the viewed object must be projected</source>
-      <translation>De manier waarop die het weergegeven object moet worden geprojecteerd</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/shape2dview.py" line="73"/>
-      <source>The indices of the faces to be projected in Individual Faces mode</source>
-      <translation>De indexen van de vlakken die geprojecteerd moeten worden in de individuele aanzichtmodus</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/shape2dview.py" line="78"/>
-      <source>Show hidden lines</source>
-      <translation>Toon verborgen lijnen</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/shape2dview.py" line="84"/>
-      <source>Fuse wall and structure objects of same type and material</source>
-      <translation>Verenig de muur en de structuurobjecten van hetzelfde type en hetzelfde materiaal</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/shape2dview.py" line="89"/>
-      <source>Tessellate Ellipses and B-splines into line segments</source>
-      <translation>Ellipsen en B-splines in lijnsegmenten opsplitsen</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/shape2dview.py" line="95"/>
-      <source>For Cutlines and Cutfaces modes,                     this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes,                     this leaves the faces at the cut location</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/shape2dview.py" line="102"/>
-      <source>Length of line segments if tessellating Ellipses or B-splines                     into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines                     into line segments</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/shape2dview.py" line="109"/>
-      <source>If this is True, this object will include only visible objects</source>
-      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/shape2dview.py" line="115"/>
-      <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
-      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/shape2dview.py" line="120"/>
-      <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
-      <translation>Als dit Waar is, wordt alleen ruimtelijke geometrie gebruikt. Dit is overschrijft over de Alleen Ruimtelijke Geometrie-eigenschap van het basisobject</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/shape2dview.py" line="125"/>
-      <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
-      <translation>Als dit Waar is, wordt de inhoud afgesneden aan de randen van het sectievlak, indien van toepassing. Dit overschrijft de Uitgeknipt eigenschap van het basisobject</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/shape2dview.py" line="130"/>
-      <source>This object will be recomputed only if this is True.</source>
-      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/ellipse.py" line="44"/>
-      <source>Start angle of the elliptical arc</source>
-      <translation>Starthoek van de elliptische boog</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/ellipse.py" line="47"/>
-      <source>End angle of the elliptical arc 
-                (for a full circle, give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the elliptical arc 
-                (for a full circle, give it same value as First Angle)</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/ellipse.py" line="51"/>
-      <source>Minor radius of the ellipse</source>
-      <translation>De kleine straal van de ellips</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/ellipse.py" line="54"/>
-      <source>Major radius of the ellipse</source>
-      <translation>De grote straal van de ellips</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/ellipse.py" line="60"/>
-      <source>Area of this object</source>
-      <translation>Het oppervlak van dit object</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/hatch.py" line="45"/>
-      <source>The base object used by this object</source>
-      <translation type="unfinished">The base object used by this object</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/hatch.py" line="48"/>
-      <source>The PAT file used by this object</source>
-      <translation type="unfinished">The PAT file used by this object</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/hatch.py" line="51"/>
-      <source>The pattern name used by this object</source>
-      <translation type="unfinished">The pattern name used by this object</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/hatch.py" line="54"/>
-      <source>The pattern scale used by this object</source>
-      <translation type="unfinished">The pattern scale used by this object</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/hatch.py" line="57"/>
-      <source>The pattern rotation used by this object</source>
-      <translation type="unfinished">The pattern rotation used by this object</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/hatch.py" line="60"/>
-      <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
-      <translation type="unfinished">If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/bezcurve.py" line="44"/>
-      <source>The points of the Bezier curve</source>
-      <translation>De punten van de Bezier-curve</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/bezcurve.py" line="48"/>
-      <source>The degree of the Bezier function</source>
-      <translation>De graad van de Bezier functie</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/bezcurve.py" line="52"/>
-      <source>Continuity</source>
-      <translation>Continuïteit</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/bezcurve.py" line="56"/>
-      <source>If the Bezier curve should be closed or not</source>
-      <translation>Als de Bezier-curve gesloten moet zijn of niet</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/bezcurve.py" line="60"/>
-      <source>Create a face if this curve is closed</source>
-      <translation>Maak een vlak als deze curve gesloten is</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/bezcurve.py" line="64"/>
-      <source>The length of this object</source>
-      <translation>De lengte van dit object</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="191"/>
+      <location filename="../../draftobjects/patharray.py" line="192"/>
       <source>List of connected edges in the 'Path Object'.
 If these are present, the copies will be created along these subelements only.
 Leave this property empty to create copies along the entire 'Path Object'.</source>
@@ -757,34 +652,34 @@ Als deze aanwezig zijn, worden de kopieën alleen via deze subelementen gemaakt.
 Laat deze eigenschap leeg om kopieën te maken langs het pad object.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="199"/>
+      <location filename="../../draftobjects/patharray.py" line="200"/>
       <source>Number of copies to create</source>
       <translation>Aantal te maken kopieën</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="218"/>
+      <location filename="../../draftobjects/patharray.py" line="219"/>
       <source>Additional translation that will be applied to each copy.
 This is useful to adjust for the difference between shape centre and shape reference point.</source>
       <translation>Aanvullende vertaling die zal worden toegepast op elke kopie.
 Dit is handig om aan te passen aan het verschil tussen het centrum van de vorm en het referentiepunt.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="226"/>
+      <location filename="../../draftobjects/patharray.py" line="227"/>
       <source>Alignment vector for 'Tangent' mode</source>
       <translation>Uitlijnings-vector voor 'Tangens' modus</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="234"/>
+      <location filename="../../draftobjects/patharray.py" line="235"/>
       <source>Force use of 'Vertical Vector' as local Z direction when using 'Original' or 'Tangent' alignment mode</source>
       <translation>Forceer gebruik van 'Verticale Vector' als lokale Z-richting bij gebruik van 'Oorspronkelijk' of 'Tangens' uitlijningsmodus</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="242"/>
+      <location filename="../../draftobjects/patharray.py" line="243"/>
       <source>Direction of the local Z axis when 'Force Vertical' is true</source>
       <translation>Richting van de lokale Z-as wanneer 'Verticaal Forceren' waar is</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="250"/>
+      <location filename="../../draftobjects/patharray.py" line="251"/>
       <source>Method to orient the copies along the path.
 - Original: X is curve tangent, Y is normal, and Z is the cross product.
 - Frenet: aligns the object following the local coordinate system along the path.
@@ -799,213 +694,459 @@ To get better results with 'Original' or 'Tangent' you may have to set 'Force Ve
 Om betere resultaten te krijgen met 'Origineel' of 'Tangent' moet u misschien 'Verticaal' op waarheid zetten.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="261"/>
+      <location filename="../../draftobjects/patharray.py" line="262"/>
       <source>Orient the copies along the path depending on the 'Align Mode'.
 Otherwise the copies will have the same orientation as the original Base object.</source>
       <translation>Oriënteer de kopieën op het pad afhankelijk van de 'uitlijningsmodus'.
 Anders hebben de kopieën dezelfde oriëntatie als het oorspronkelijke basisobject.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/drawingview.py" line="64"/>
-      <source>The linked object</source>
-      <translation>Het gekoppelde object</translation>
+      <location filename="../../draftobjects/point.py" line="45"/>
+      <source>X Location</source>
+      <translation>X locatie</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/drawingview.py" line="71"/>
-      <source>Projection direction</source>
-      <translation>Projectie richting</translation>
+      <location filename="../../draftobjects/point.py" line="48"/>
+      <source>Y Location</source>
+      <translation>Y locatie</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/drawingview.py" line="78"/>
-      <source>The width of the lines inside this object</source>
-      <translation>De breedte van de lijnen binnen dit object</translation>
+      <location filename="../../draftobjects/point.py" line="51"/>
+      <source>Z Location</source>
+      <translation>Z locatie</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/drawingview.py" line="86"/>
-      <source>The size of the texts inside this object</source>
-      <translation>De grootte van de teksten binnen dit object</translation>
+      <location filename="../../draftobjects/text.py" line="54"/>
+      <source>The placement of the base point of the first line</source>
+      <translation>De plaatsing van het basispunt van de eerste lijn</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/drawingview.py" line="94"/>
-      <source>The spacing between lines of text</source>
-      <translation>De afstand tussen regels tekst</translation>
+      <location filename="../../draftobjects/text.py" line="66"/>
+      <source>The text displayed by this object.
+It is a list of strings; each element in the list will be displayed in its own line.</source>
+      <translation>De tekst die wordt weergegeven door dit object.
+Het is een lijst met tekenreeksen; elk element in de lijst wordt weergegeven in zijn eigen regel.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/drawingview.py" line="101"/>
-      <source>The color of the projected objects</source>
-      <translation>De kleur van de geprojecteerde objecten</translation>
+      <location filename="../../draftobjects/bezcurve.py" line="46"/>
+      <source>The points of the Bezier curve</source>
+      <translation>De punten van de Bezier-curve</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/drawingview.py" line="108"/>
-      <source>Shape Fill Style</source>
-      <translation>Vulstijl van de vorm</translation>
+      <location filename="../../draftobjects/bezcurve.py" line="50"/>
+      <source>The degree of the Bezier function</source>
+      <translation>De graad van de Bezier functie</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/drawingview.py" line="116"/>
-      <source>Line Style</source>
-      <translation>Lijnstijl</translation>
+      <location filename="../../draftobjects/bezcurve.py" line="54"/>
+      <source>Continuity</source>
+      <translation>Continuïteit</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/drawingview.py" line="124"/>
-      <source>If checked, source objects are displayed regardless of being visible in the 3D model</source>
-      <translation>Indien aangevinkt, worden bronobjecten weergegeven ongeacht de zichtbaarheid in het 3D-model</translation>
+      <location filename="../../draftobjects/bezcurve.py" line="58"/>
+      <source>If the Bezier curve should be closed or not</source>
+      <translation>Als de Bezier-curve gesloten moet zijn of niet</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/facebinder.py" line="42"/>
-      <source>Linked faces</source>
-      <translation>Gekoppelde vlakken</translation>
+      <location filename="../../draftobjects/bezcurve.py" line="62"/>
+      <source>Create a face if this curve is closed</source>
+      <translation>Maak een vlak als deze curve gesloten is</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/facebinder.py" line="45"/>
-      <source>Specifies if splitter lines must be removed</source>
-      <translation>Geeft aan of de splitslijnen verwijderd moeten worden</translation>
+      <location filename="../../draftobjects/bezcurve.py" line="66"/>
+      <source>The length of this object</source>
+      <translation>De lengte van dit object</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/facebinder.py" line="48"/>
-      <source>An optional extrusion value to be applied to all faces</source>
-      <translation>Een optionele extrusie waarde die op alle vlakken toegepast moet worden</translation>
+      <location filename="../../draftobjects/shape2dview.py" line="57"/>
+      <source>The base object this 2D view must represent</source>
+      <translation>Het basisobject dat deze 2D-weergave moet weergeven</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/facebinder.py" line="51"/>
-      <source>An optional offset value to be applied to all faces</source>
-      <translation>Een optionele offset waarde die op alle vlakken wordt toegepast</translation>
+      <location filename="../../draftobjects/shape2dview.py" line="62"/>
+      <source>The projection vector of this object</source>
+      <translation>De vector projectie van dit object</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/facebinder.py" line="54"/>
-      <source>This specifies if the shapes sew</source>
-      <translation>Dit geeft aan of de vormen naaien</translation>
+      <location filename="../../draftobjects/shape2dview.py" line="68"/>
+      <source>The way the viewed object must be projected</source>
+      <translation>De manier waarop die het weergegeven object moet worden geprojecteerd</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/facebinder.py" line="57"/>
-      <source>The area of the faces of this Facebinder</source>
-      <translation>Het gebied van de vlakken van deze Vlakkenbinder</translation>
+      <location filename="../../draftobjects/shape2dview.py" line="75"/>
+      <source>The indices of the faces to be projected in Individual Faces mode</source>
+      <translation>De indexen van de vlakken die geprojecteerd moeten worden in de individuele aanzichtmodus</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/clone.py" line="44"/>
-      <source>The objects included in this clone</source>
-      <translation>De objecten inbegrepen in deze kloon</translation>
+      <location filename="../../draftobjects/shape2dview.py" line="80"/>
+      <source>Show hidden lines</source>
+      <translation>Toon verborgen lijnen</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/clone.py" line="49"/>
-      <source>The scale factor of this clone</source>
-      <translation>De schaalfactor van deze kloon</translation>
+      <location filename="../../draftobjects/shape2dview.py" line="86"/>
+      <source>Fuse wall and structure objects of same type and material</source>
+      <translation>Verenig de muur en de structuurobjecten van hetzelfde type en hetzelfde materiaal</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/clone.py" line="54"/>
-      <source>If Clones includes several objects,
-set True for fusion or False for compound</source>
-      <translation>Als klonen meerdere objecten bevat,
-zet True voor fusie of onwaar voor samenvoegen</translation>
+      <location filename="../../draftobjects/shape2dview.py" line="91"/>
+      <source>Tessellate Ellipses and B-splines into line segments</source>
+      <translation>Ellipsen en B-splines in lijnsegmenten opsplitsen</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="76"/>
-      <source>General scaling factor that affects the annotation consistently
-because it scales the text, and the line decorations, if any,
-in the same proportion.</source>
-      <translation>Algemene schaalfactor die van invloed is op de aantekening
-omdat het de tekst en de versieringen van de lijn, indien van toepassing,
-in dezelfde verhouding.</translation>
+      <location filename="../../draftobjects/shape2dview.py" line="98"/>
+      <source>For Cutlines and Cutfaces modes, 
+                    this leaves the faces at the cut location</source>
+      <translation type="unfinished">For Cutlines and Cutfaces modes, 
+                    this leaves the faces at the cut location</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="91"/>
-      <source>Annotation style to apply to this object.
-When using a saved style some of the view properties will become read-only;
-they will only be editable by changing the style through the 'Annotation style editor' tool.</source>
-      <translation>Aantekening stijl om toe te passen op dit object.
-Bij het gebruiken van een opgeslagen stijl worden sommige weergaveeigenschappen alleen-lezen gezien;
-ze kunnen alleen worden bewerkt door de stijl aan te passen via de 'Annotation style editor' tool.</translation>
+      <location filename="../../draftobjects/shape2dview.py" line="105"/>
+      <source>Length of line segments if tessellating Ellipses or B-splines 
+                    into line segments</source>
+      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
+                    into line segments</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="47"/>
-      <source>The vertices of the wire</source>
-      <translation>De hoekpunten van de lijn</translation>
+      <location filename="../../draftobjects/shape2dview.py" line="111"/>
+      <source>If this is True, this object will include only visible objects</source>
+      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="51"/>
-      <source>If the wire is closed or not</source>
-      <translation>Als de draad al dan niet gesloten is</translation>
+      <location filename="../../draftobjects/shape2dview.py" line="117"/>
+      <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
+      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="55"/>
-      <source>The base object is the wire, it's formed from 2 objects</source>
-      <translation>Het basisobject is de draad, deze is gevormd uit 2 objecten</translation>
+      <location filename="../../draftobjects/shape2dview.py" line="122"/>
+      <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
+      <translation>Als dit Waar is, wordt alleen ruimtelijke geometrie gebruikt. Dit is overschrijft over de Alleen Ruimtelijke Geometrie-eigenschap van het basisobject</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="59"/>
-      <source>The tool object is the wire, it's formed from 2 objects</source>
-      <translation>Het gereedschapsobject is de draad, deze is gevormd uit 2 objecten</translation>
+      <location filename="../../draftobjects/shape2dview.py" line="127"/>
+      <source>If this is True, the contents are clipped to the borders of the section plane, if applicable. This overrides the base object's Clip property</source>
+      <translation>Als dit Waar is, wordt de inhoud afgesneden aan de randen van het sectievlak, indien van toepassing. Dit overschrijft de Uitgeknipt eigenschap van het basisobject</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="63"/>
-      <source>The start point of this line</source>
-      <translation>Het beginpunt van deze lijn</translation>
+      <location filename="../../draftobjects/shape2dview.py" line="132"/>
+      <source>This object will be recomputed only if this is True.</source>
+      <translation type="unfinished">This object will be recomputed only if this is True.</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="67"/>
-      <source>The end point of this line</source>
-      <translation>Het eindpunt van deze lijn</translation>
+      <location filename="../../draftobjects/layer.py" line="59"/>
+      <source>The objects that are part of this layer</source>
+      <translation>De objecten die deel uitmaken van deze laag</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="71"/>
-      <source>The length of this line</source>
-      <translation>De lengte van deze lijn</translation>
+      <location filename="../../draftobjects/rectangle.py" line="46"/>
+      <source>Length of the rectangle</source>
+      <translation>Lengte van de rechthoek</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="83"/>
-      <source>Create a face if this object is closed</source>
-      <translation>Maak een vlak als dit object gesloten is</translation>
+      <location filename="../../draftobjects/rectangle.py" line="49"/>
+      <source>Height of the rectangle</source>
+      <translation>Hoogte van de rechthoek</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/wire.py" line="87"/>
-      <source>The number of subdivisions of each edge</source>
-      <translation>Het aantal onderverdelingen van elke rand</translation>
+      <location filename="../../draftobjects/rectangle.py" line="61"/>
+      <source>Horizontal subdivisions of this rectangle</source>
+      <translation>Horizontale onderverdelingen van deze rechthoek</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="135"/>
+      <location filename="../../draftobjects/rectangle.py" line="64"/>
+      <source>Vertical subdivisions of this rectangle</source>
+      <translation>Verticale onderverdelingen van deze rechthoek</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/dimension.py" line="137"/>
+      <source>The normal direction of the text of the dimension</source>
+      <translation>De normaal richting van de tekst de afmeting</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/dimension.py" line="150"/>
+      <source>The object measured by this dimension object</source>
+      <translation>Het object gemeten door dit maatobject</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/dimension.py" line="167"/>
+      <source>The object, and specific subelements of it,
+that this dimension object is measuring.
+
+There are various possibilities:
+- An object, and one of its edges.
+- An object, and two of its vertices.
+- An arc object, and its edge.</source>
+      <translation type="unfinished">The object, and specific subelements of it,
+that this dimension object is measuring.
+
+There are various possibilities:
+- An object, and one of its edges.
+- An object, and two of its vertices.
+- An arc object, and its edge.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/dimension.py" line="190"/>
+      <source>A point through which the dimension line, or an extrapolation of it, will pass.
+
+- For linear dimensions, this property controls how close the dimension line
+is to the measured object.
+- For radial dimensions, this controls the direction of the dimension line
+that displays the measured radius or diameter.
+- For angular dimensions, this controls the radius of the dimension arc
+that displays the measured angle.</source>
+      <translation>Een punt waar de maatlijn doorheen gaat, of een extrapolatie daarvan, zal slagen.
+
+- Voor lineaire afmetingen bepaalt deze eigenschap hoe dicht de maatlijn is bij het voorwerp.
+- Voor radiale afmetingen, dit bepaalt de richting van de afmetingslijn die de gemeten radius of diameter toont.
+- Voor hoekafmetingen, bepaalt dit de radius van de afmetingsboog die de afgemeten hoek toont.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/dimension.py" line="233"/>
+      <source>Starting point of the dimension line.
+
+If it is a radius dimension it will be the center of the arc.
+If it is a diameter dimension it will be a point that lies on the arc.</source>
+      <translation>Beginpunt van de maatlijn.
+
+Als het een straal is, zal het centraal staan in de boog.
+Als het een diameter dimensie is, zal het een punt zijn dat op de kunst ligt.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/dimension.py" line="247"/>
+      <source>Ending point of the dimension line.
+
+If it is a radius or diameter dimension
+it will be a point that lies on the arc.</source>
+      <translation>Eindpunt van de maatlijn.
+
+Als het een straal of diameter dimensie
+is, is het een punt dat op de boog ligt.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/dimension.py" line="259"/>
+      <source>The direction of the dimension line.
+If this remains '(0,0,0)', the direction will be calculated automatically.</source>
+      <translation>De richting van de maatlijn.
+Als dit '(0,0,0)' blijft, wordt de richting automatisch berekend.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/dimension.py" line="276"/>
+      <source>The value of the measurement.
+
+This property is read-only because the value is calculated
+from the 'Start' and 'End' properties.
+
+If the 'Linked Geometry' is an arc or circle, this 'Distance'
+is the radius or diameter, depending on the 'Diameter' property.</source>
+      <translation>De waarde van de meting.
+
+Deze eigenschap is alleen-lezen omdat de waarde wordt berekend
+vanaf de 'Start' en 'Eind' eigenschappen.
+
+Als de 'Gekoppelde Geometrie' een boog of cirkel is, is deze 'Afstand'
+de straal of diameter, afhankelijk van de 'Diameter' eigenschap.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/dimension.py" line="287"/>
+      <source>When measuring circular arcs, it determines whether to display
+the radius or the diameter value</source>
+      <translation>Bij het meten van circulaire bogen, bepaalt het of
+de radius of de diameter waarde wordt weergegeven</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/dimension.py" line="507"/>
+      <source>Starting angle of the dimension line (circular arc).
+The arc is drawn counter-clockwise.</source>
+      <translation>Beginhoek van de afmetingslijn (circulaire boog). 
+De boog wordt tegen de klok in getekend.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/dimension.py" line="518"/>
+      <source>Ending angle of the dimension line (circular arc).
+The arc is drawn counter-clockwise.</source>
+      <translation>Beginhoek van de afmetingslijn (circulaire boog). 
+De boog wordt tegen de klok in getekend.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/dimension.py" line="533"/>
+      <source>The center point of the dimension line, which is a circular arc.
+
+This is normally the point where two line segments, or their extensions
+intersect, resulting in the measured 'Angle' between them.</source>
+      <translation>Het middelpunt van de maatlijn, een cirkelboog.
+
+Dit is normaal gesproken het punt waar twee lijnsegmenten, of de verlengingen ervan
+snijden, wat resulteert in de gemeten 'hoek' tussen hen.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/dimension.py" line="547"/>
+      <source>The value of the measurement.
+
+This property is read-only because the value is calculated from
+the 'First Angle' and 'Last Angle' properties.</source>
+      <translation>De waarde van de meting.
+
+Deze eigenschap is alleen-lezen omdat de waarde wordt berekend van
+de 'Eerste hoek' en 'Laatste hoek' eigenschappen.</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="115"/>
+      <location filename="../../draftviewproviders/view_label.py" line="177"/>
+      <source>Line width</source>
+      <translation>Lijndikte</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="122"/>
+      <location filename="../../draftviewproviders/view_label.py" line="186"/>
+      <source>Line color</source>
+      <translation>Lijnkleur</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="67"/>
+      <source>If it is true, the objects contained within this layer will adopt the line color of the layer</source>
+      <translation>Als het waar is, zullen de objecten die in deze laag zitten de lijnkleur van de laag aannemen</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="78"/>
+      <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
+      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape color of the layer</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="89"/>
+      <source>If it is true, the print color will be used when objects in this layer are placed on a TechDraw page</source>
+      <translation>Als het waar is, wordt de print kleur gebruikt wanneer objecten in deze laag op een TechDraw pagina worden geplaatst</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="103"/>
+      <source>The line color of the objects contained within this layer</source>
+      <translation>De lijnkleur van de objecten die binnen deze laag zitten</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="117"/>
+      <source>The shape color of the objects contained within this layer</source>
+      <translation>De kleur van de vorm van de objecten binnen deze laag</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="131"/>
+      <source>The line width of the objects contained within this layer</source>
+      <translation>De lijnbreedte van de objecten die binnen deze laag zitten</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="143"/>
+      <source>The draw style of the objects contained within this layer</source>
+      <translation>De tekenstijl van de objecten in deze laag</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="154"/>
+      <source>The transparency of the objects contained within this layer</source>
+      <translation>De transparantie van de objecten die in deze laag zitten</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="165"/>
+      <source>The line color of the objects contained within this layer, when used on a TechDraw page</source>
+      <translation>De lijnkleur van de objecten die in deze laag zitten, wanneer gebruikt op een TechDraw pagina</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_text.py" line="60"/>
+      <location filename="../../draftviewproviders/view_label.py" line="74"/>
+      <source>The size of the text</source>
+      <translation>De grootte van de tekst</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_text.py" line="69"/>
+      <location filename="../../draftviewproviders/view_label.py" line="83"/>
+      <source>The font of the text</source>
+      <translation>Het lettertype van de tekst</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_text.py" line="78"/>
+      <location filename="../../draftviewproviders/view_label.py" line="92"/>
+      <location filename="../../draftviewproviders/view_label.py" line="119"/>
+      <source>The vertical alignment of the text</source>
+      <translation>De verticale uitlijning van de tekst</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_text.py" line="87"/>
+      <location filename="../../draftviewproviders/view_label.py" line="102"/>
+      <source>Text color</source>
+      <translation>Tekst kleur</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_text.py" line="95"/>
+      <location filename="../../draftviewproviders/view_label.py" line="128"/>
+      <source>Line spacing (relative to font size)</source>
+      <translation>Lijn afstand (ten opzichte van de lettergrootte)</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_label.py" line="111"/>
+      <source>The maximum number of characters on each line of the text box</source>
+      <translation>Het maximum aantal tekens op elke regel van het tekstvak</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_label.py" line="139"/>
+      <source>The size of the arrow</source>
+      <translation>De grootte van de pijl</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_label.py" line="148"/>
+      <source>The type of arrow of this label</source>
+      <translation>Het pijltype van dit label</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_label.py" line="159"/>
+      <source>The type of frame around the text of this object</source>
+      <translation>Het frametype rond de tekst van dit object</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_label.py" line="168"/>
+      <source>Display a leader line or not</source>
+      <translation>Toon een leiderslijn of niet</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_dimension.py" line="137"/>
       <source>Font name</source>
       <translation>Font naam</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="144"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="146"/>
       <source>Font size</source>
       <translation>Lettergrootte</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="153"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="155"/>
       <source>Spacing between text and dimension line</source>
       <translation>Afstand tussen tekst en maatlijn</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="162"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="164"/>
       <source>Rotate the dimension text 180 degrees</source>
       <translation>Draai de maattekst 180 graden</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="171"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="174"/>
       <source>Text Position.
 Leave '(0,0,0)' for automatic position</source>
       <translation>Tekstpositie.
 Zet '(0,0,0)' voor automatische positie</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="181"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="185"/>
       <source>Text override.
 Write '$dim' so that it is replaced by the dimension length.</source>
       <translation>Tekst overschrijven.
 Schrijf '$dim' om het te vervangen door de lengte van de maat.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="194"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="196"/>
       <source>The number of decimals to show</source>
       <translation>Het aantal weer te geven decimalen</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="203"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="205"/>
       <source>Show the unit suffix</source>
       <translation>Eenheid-achtervoegsel tonen</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="212"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="216"/>
       <source>A unit to express the measurement.
 Leave blank for system default.
 Use 'arch' to force US arch notation</source>
@@ -1014,191 +1155,132 @@ Leave blank for system default.
 Use 'arch' to force US arch notation</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="228"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="230"/>
       <source>Arrow size</source>
       <translation>Pijl grootte</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="237"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="239"/>
       <source>Arrow type</source>
       <translation>Pijl type</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="247"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="249"/>
       <source>Rotate the dimension arrows 180 degrees</source>
       <translation>Draai de dimensiepijlen 180 graden</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="256"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="260"/>
       <source>The distance the dimension line is extended
 past the extension lines</source>
       <translation>De afstand die de maatlijn is verlengd
 voorbij de verlengingslijnen</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="267"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="269"/>
       <source>Length of the extension lines</source>
       <translation>Lengte van de verlengingslijnen</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="276"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="279"/>
       <source>Length of the extension line
 beyond the dimension line</source>
       <translation>Lengte van de verlengingslijn
 buiten de maatlijn</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_dimension.py" line="286"/>
+      <location filename="../../draftviewproviders/view_dimension.py" line="288"/>
       <source>Shows the dimension line and arrows</source>
       <translation>Toont de dimensie lijn en pijlen</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="63"/>
-      <source>If it is true, the objects contained within this layer will adopt the line color of the layer</source>
-      <translation>Als het waar is, zullen de objecten die in deze laag zitten de lijnkleur van de laag aannemen</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="74"/>
-      <source>If it is true, the objects contained within this layer will adopt the shape color of the layer</source>
-      <translation type="unfinished">If it is true, the objects contained within this layer will adopt the shape color of the layer</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="85"/>
-      <source>If it is true, the print color will be used when objects in this layer are placed on a TechDraw page</source>
-      <translation>Als het waar is, wordt de print kleur gebruikt wanneer objecten in deze laag op een TechDraw pagina worden geplaatst</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="100"/>
-      <source>The line color of the objects contained within this layer</source>
-      <translation>De lijnkleur van de objecten die binnen deze laag zitten</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="114"/>
-      <source>The shape color of the objects contained within this layer</source>
-      <translation>De kleur van de vorm van de objecten binnen deze laag</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="128"/>
-      <source>The line width of the objects contained within this layer</source>
-      <translation>De lijnbreedte van de objecten die binnen deze laag zitten</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="140"/>
-      <source>The draw style of the objects contained within this layer</source>
-      <translation>De tekenstijl van de objecten in deze laag</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="151"/>
-      <source>The transparency of the objects contained within this layer</source>
-      <translation>De transparantie van de objecten die in deze laag zitten</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="161"/>
-      <source>The line color of the objects contained within this layer, when used on a TechDraw page</source>
-      <translation>De lijnkleur van de objecten die in deze laag zitten, wanneer gebruikt op een TechDraw pagina</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_label.py" line="175"/>
-      <source>Line width</source>
-      <translation>Lijndikte</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_label.py" line="184"/>
-      <source>Line color</source>
-      <translation>Lijnkleur</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_base.py" line="102"/>
+      <location filename="../../draftviewproviders/view_base.py" line="106"/>
       <source>Defines an SVG pattern.</source>
       <translation type="unfinished">Defines an SVG pattern.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_base.py" line="112"/>
+      <location filename="../../draftviewproviders/view_base.py" line="116"/>
       <source>Defines the size of the SVG pattern.</source>
       <translation type="unfinished">Defines the size of the SVG pattern.</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_label.py" line="72"/>
-      <source>The size of the text</source>
-      <translation>De grootte van de tekst</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_label.py" line="81"/>
-      <source>The font of the text</source>
-      <translation>Het lettertype van de tekst</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_label.py" line="117"/>
-      <source>The vertical alignment of the text</source>
-      <translation>De verticale uitlijning van de tekst</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_label.py" line="100"/>
-      <source>Text color</source>
-      <translation>Tekst kleur</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_label.py" line="126"/>
-      <source>Line spacing (relative to font size)</source>
-      <translation>Lijn afstand (ten opzichte van de lettergrootte)</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_label.py" line="108"/>
-      <source>The maximum number of characters on each line of the text box</source>
-      <translation>Het maximum aantal tekens op elke regel van het tekstvak</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_label.py" line="137"/>
-      <source>The size of the arrow</source>
-      <translation>De grootte van de pijl</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_label.py" line="146"/>
-      <source>The type of arrow of this label</source>
-      <translation>Het pijltype van dit label</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_label.py" line="156"/>
-      <source>The type of frame around the text of this object</source>
-      <translation>Het frametype rond de tekst van dit object</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_label.py" line="166"/>
-      <source>Display a leader line or not</source>
-      <translation>Toon een leiderslijn of niet</translation>
     </message>
   </context>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../draftobjects/pointarray.py" line="304"/>
-      <source>Point object doesn't have a discrete point, it cannot be used for an array.</source>
-      <translation>Punt object heeft geen discreet punt, het kan niet worden gebruikt voor een reeks.</translation>
+      <location filename="../../importDXF.py" line="129"/>
+      <source>Download of dxf libraries failed.
+Please install the dxf Library addon manually
+from menu Tools -&gt; Addon Manager</source>
+      <translation>Download van dxf-bibliotheken mislukt.
+Download en installeer ze handmatig
+vanuit het menu Tools -&gt; Addon Manager</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/bspline.py" line="104"/>
+      <location filename="../../draftguitools/gui_hatch.py" line="49"/>
+      <source>You must choose a base object before using this command</source>
+      <translation type="unfinished">You must choose a base object before using this command</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_clone.py" line="91"/>
+      <source>Clone</source>
+      <translation>Kopieer</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_lineslope.py" line="88"/>
+      <location filename="../../draftguitools/gui_lineslope.py" line="91"/>
+      <source>Slope</source>
+      <translation>Helling</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_offset.py" line="329"/>
+      <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
+      <translation>Offset richting is niet gedefinieerd. Beweeg de muis aan een van de zijden van het object eerst om een richting aan te geven</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_fillets.py" line="89"/>
+      <source>Delete original objects</source>
+      <translation>Originele objecten verwijderen</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_fillets.py" line="95"/>
+      <source>Create chamfer</source>
+      <translation>Afschuining maken</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_setstyle.py" line="274"/>
+      <source>Save style</source>
+      <translation type="unfinished">Save style</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_setstyle.py" line="275"/>
+      <source>Name of this new style:</source>
+      <translation>Naam van deze nieuwe stijl:</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_setstyle.py" line="282"/>
+      <source>Warning</source>
+      <translation>Waarschuwing</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_setstyle.py" line="283"/>
+      <source>Name exists. Overwrite?</source>
+      <translation>Naam bestaat al. Overschrijven?</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_setstyle.py" line="318"/>
+      <source>Error: json module not found. Unable to save style</source>
+      <translation type="unfinished">Error: json module not found. Unable to save style</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/bspline.py" line="106"/>
       <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</source>
       <translation>_BSpline.createGeometry: Gesloten met hetzelfde eerste/laatste punt. Geometrie niet bijgewerkt.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="102"/>
-      <source>Writing camera position</source>
-      <translation>Camerapositie schrijven</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="119"/>
-      <source>Writing objects shown/hidden state</source>
-      <translation>Objecten die worden getoond/verborgen status schrijven</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="137"/>
-      <source>Draft</source>
-      <translation>Schets</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="180"/>
-      <source>Import-Export</source>
-      <translation>Importeren-Exporteren</translation>
+      <location filename="../../draftobjects/pointarray.py" line="244"/>
+      <location filename="../../draftobjects/pointarray.py" line="306"/>
+      <source>Point object doesn't have a discrete point, it cannot be used for an array.</source>
+      <translation>Punt object heeft geen discreet punt, het kan niet worden gebruikt voor een reeks.</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="248"/>
@@ -1211,7 +1293,7 @@ buiten de maatlijn</translation>
       <translation>Object uitlijnen</translation>
     </message>
     <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="296"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="297"/>
       <source>Toggles Visual Aid Dimensions On/Off</source>
       <translation>Schakelt de Visuele Hulp Dimensies Aan/Uit</translation>
     </message>
@@ -1221,17 +1303,48 @@ buiten de maatlijn</translation>
       <translation>Schakelt Ortho Aan/Uit</translation>
     </message>
     <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="333"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="334"/>
       <source>Toggles Constrain to Working Plane On/Off</source>
       <translation>Schakelt beperkingen aan naar werkvlak aan/uit</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="156"/>
+      <location filename="../../InitGui.py" line="133"/>
+      <location filename="../../InitGui.py" line="134"/>
+      <location filename="../../InitGui.py" line="135"/>
+      <location filename="../../InitGui.py" line="136"/>
+      <location filename="../../InitGui.py" line="137"/>
+      <source>Draft</source>
+      <translation>Schets</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="179"/>
+      <location filename="../../InitGui.py" line="180"/>
+      <location filename="../../InitGui.py" line="181"/>
+      <location filename="../../InitGui.py" line="182"/>
+      <source>Import-Export</source>
+      <translation>Importeren-Exporteren</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="102"/>
+      <source>Writing camera position</source>
+      <translation>Camerapositie schrijven</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="119"/>
+      <source>Writing objects shown/hidden state</source>
+      <translation>Objecten die worden getoond/verborgen status schrijven</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="156"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="157"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="144"/>
       <source>True</source>
       <translation>Waar</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="157"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="160"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="159"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="148"/>
       <source>False</source>
       <translation>Onwaar</translation>
     </message>
@@ -1285,70 +1398,6 @@ buiten de maatlijn</translation>
       <source>Create a clone</source>
       <translation>Een kloon maken</translation>
     </message>
-    <message>
-      <location filename="../../importDXF.py" line="126"/>
-      <source>Download of dxf libraries failed.
-Please install the dxf Library addon manually
-from menu Tools -&gt; Addon Manager</source>
-      <translation>Download van dxf-bibliotheken mislukt.
-Download en installeer ze handmatig
-vanuit het menu Tools -&gt; Addon Manager</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_clone.py" line="91"/>
-      <source>Clone</source>
-      <translation>Kopieer</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_lineslope.py" line="91"/>
-      <source>Slope</source>
-      <translation>Helling</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="273"/>
-      <source>Save style</source>
-      <translation type="unfinished">Save style</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="273"/>
-      <source>Name of this new style:</source>
-      <translation>Naam van deze nieuwe stijl:</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="281"/>
-      <source>Warning</source>
-      <translation>Waarschuwing</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="281"/>
-      <source>Name exists. Overwrite?</source>
-      <translation>Naam bestaat al. Overschrijven?</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="318"/>
-      <source>Error: json module not found. Unable to save style</source>
-      <translation type="unfinished">Error: json module not found. Unable to save style</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_hatch.py" line="49"/>
-      <source>You must choose a base object before using this command</source>
-      <translation type="unfinished">You must choose a base object before using this command</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="88"/>
-      <source>Delete original objects</source>
-      <translation>Originele objecten verwijderen</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="94"/>
-      <source>Create chamfer</source>
-      <translation>Afschuining maken</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_offset.py" line="328"/>
-      <source>Offset direction is not defined. Please move the mouse on either side of the object first to indicate a direction</source>
-      <translation>Offset richting is niet gedefinieerd. Beweeg de muis aan een van de zijden van het object eerst om een richting aan te geven</translation>
-    </message>
   </context>
   <context>
     <name>Draft_AddConstruction</name>
@@ -1358,7 +1407,7 @@ vanuit het menu Tools -&gt; Addon Manager</translation>
       <translation>Toevoegen aan Constructiegroep</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_groups.py" line="310"/>
+      <location filename="../../draftguitools/gui_groups.py" line="312"/>
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 It creates a construction group if it doesn't exist.</source>
@@ -1375,7 +1424,7 @@ Het creëert een constructiegroep als deze niet bestaat.</translation>
       <translation type="unfinished">Add a new named group</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_groups.py" line="362"/>
+      <location filename="../../draftguitools/gui_groups.py" line="365"/>
       <source>Add a new group with a given name.</source>
       <translation type="unfinished">Add a new group with a given name.</translation>
     </message>
@@ -1388,7 +1437,7 @@ Het creëert een constructiegroep als deze niet bestaat.</translation>
       <translation>Punt toevoegen</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_line_add_delete.py" line="58"/>
+      <location filename="../../draftguitools/gui_line_add_delete.py" line="60"/>
       <source>Adds a point to an existing Wire or B-spline.</source>
       <translation>Voegt een punt toe aan een bestaande draad of B-spline.</translation>
     </message>
@@ -1401,7 +1450,7 @@ Het creëert een constructiegroep als deze niet bestaat.</translation>
       <translation type="unfinished">Move to group...</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_groups.py" line="74"/>
+      <location filename="../../draftguitools/gui_groups.py" line="76"/>
       <source>Moves the selected objects to an existing group, or removes them from any group.
 Create a group first to use this tool.</source>
       <translation>Verplaatst de geselecteerde objecten naar een bestaande groep, of verwijdert ze van elke groep.
@@ -1411,12 +1460,12 @@ Maak eerst een groep aan om dit gereedschap te gebruiken.</translation>
   <context>
     <name>Draft_AnnotationStyleEditor</name>
     <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="77"/>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="78"/>
       <source>Annotation styles...</source>
       <translation>Annotatie stijlen...</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="79"/>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="82"/>
       <source>Manage or create annotation styles</source>
       <translation type="unfinished">Manage or create annotation styles</translation>
     </message>
@@ -1429,7 +1478,7 @@ Maak eerst een groep aan om dit gereedschap te gebruiken.</translation>
       <translation>Huidige stijl toepassen</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_styles.py" line="48"/>
+      <location filename="../../draftguitools/gui_styles.py" line="50"/>
       <source>Applies the current style defined in the toolbar (line width and colors) to the selected objects and groups.</source>
       <translation>Past de huidige stijl zoals gezet in de gereedschapsbalk (lijnbreedte en kleur) toe op de geselecteerde objecten en groepen.</translation>
     </message>
@@ -1442,7 +1491,7 @@ Maak eerst een groep aan om dit gereedschap te gebruiken.</translation>
       <translation>Boog</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="67"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="69"/>
       <source>Creates a circular arc by a center point and a radius.
 CTRL to snap, SHIFT to constrain.</source>
       <translation>Maakt cirkelvormige boog doormiddel van een middelpunt en radius.
@@ -1457,7 +1506,7 @@ CTRL voor vast leggen, SHIFT om te vast te leggen.</translation>
       <translation>Booggereedschappen</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="607"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="609"/>
       <source>Create various types of circular arcs.</source>
       <translation>Creëer verschillende soorten cirkelvormige bogen.</translation>
     </message>
@@ -1470,7 +1519,7 @@ CTRL voor vast leggen, SHIFT om te vast te leggen.</translation>
       <translation>Boog met 3 punten</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="488"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="490"/>
       <source>Creates a circular arc by picking 3 points.
 CTRL to snap, SHIFT to constrain.</source>
       <translation type="unfinished">Creates a circular arc by picking 3 points.
@@ -1485,7 +1534,7 @@ CTRL to snap, SHIFT to constrain.</translation>
       <translation>Reeks</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="69"/>
+      <location filename="../../draftguitools/gui_array_simple.py" line="71"/>
       <source>Creates an array from a selected object.
 By default, it is a 2x2 orthogonal array.
 Once the array is created its type can be changed
@@ -1504,7 +1553,7 @@ naar polair of cirkel, en de eigenschappen ervan kunnen worden aangepast.</trans
       <translation>Reeks gereedschappen</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_arrays.py" line="66"/>
+      <location filename="../../draftguitools/gui_arrays.py" line="68"/>
       <source>Create various types of arrays, including rectangular, polar, circular, path, and point</source>
       <translation>Maak verschillende soorten reeksen, waaronder rechthoekige, polarisatie, circulaire, pad en punt</translation>
     </message>
@@ -1517,7 +1566,7 @@ naar polair of cirkel, en de eigenschappen ervan kunnen worden aangepast.</trans
       <translation>Autogroeperen</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_groups.py" line="209"/>
+      <location filename="../../draftguitools/gui_groups.py" line="211"/>
       <source>Select a group to add all Draft and Arch objects to.</source>
       <translation>Selecteer een groep om alle Draft en Arch objecten aan toe te voegen.</translation>
     </message>
@@ -1530,7 +1579,7 @@ naar polair of cirkel, en de eigenschappen ervan kunnen worden aangepast.</trans
       <translation>B-spline</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_splines.py" line="61"/>
+      <location filename="../../draftguitools/gui_splines.py" line="63"/>
       <source>Creates a multiple-point B-spline. CTRL to snap, SHIFT to constrain.</source>
       <translation>Maakt een B-spline met meerdere punten. CTRL om uit te lijnen, SHIFT om te beperken.</translation>
     </message>
@@ -1543,7 +1592,7 @@ naar polair of cirkel, en de eigenschappen ervan kunnen worden aangepast.</trans
       <translation type="unfinished">Bézier curve</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="65"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="67"/>
       <source>Creates an N-degree Bézier curve. The more points you pick, the higher the degree.
 CTRL to snap, SHIFT to constrain.</source>
       <translation type="unfinished">Creates an N-degree Bézier curve. The more points you pick, the higher the degree.
@@ -1558,7 +1607,7 @@ CTRL to snap, SHIFT to constrain.</translation>
       <translation type="unfinished">Bézier tools</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="476"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="478"/>
       <source>Create various types of Bézier curves.</source>
       <translation type="unfinished">Create various types of Bézier curves.</translation>
     </message>
@@ -1571,7 +1620,7 @@ CTRL to snap, SHIFT to constrain.</translation>
       <translation>Cirkel</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_circles.py" line="81"/>
+      <location filename="../../draftguitools/gui_circles.py" line="84"/>
       <source>Creates a circle (full circular arc).
 CTRL to snap, ALT to select tangent objects.</source>
       <translation>Maakt een cirkel.
@@ -1586,7 +1635,7 @@ CTRL om vast te klikken, ALT om tangens objecten te selecteren.</translation>
       <translation>Cirkelvormig patroon</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_circulararray.py" line="66"/>
+      <location filename="../../draftguitools/gui_circulararray.py" line="68"/>
       <source>Creates copies of the selected object, and places the copies in a radial pattern
 creating various circular layers.
 
@@ -1605,7 +1654,7 @@ De reeks kan worden omgezet in een orthogonal of een pool reeks door het type te
       <translation>Kopieer</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_clone.py" line="71"/>
+      <location filename="../../draftguitools/gui_clone.py" line="73"/>
       <source>Creates a clone of the selected objects.
 The resulting clone can be scaled in each of its three directions.</source>
       <translation>Maakt een kloon van de geselecteerde objecten.
@@ -1620,7 +1669,7 @@ De resulterende kloon kan in elk van zijn drie richtingen worden geschaald.</tra
       <translation type="unfinished">Cubic Bézier curve</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="243"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="245"/>
       <source>Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Click and drag to define each segment.
 After the curve is created you can go back to edit each control point and set the properties of each knot.
 CTRL to snap, SHIFT to constrain.</source>
@@ -1637,7 +1686,7 @@ CTRL to snap, SHIFT to constrain.</translation>
       <translation>Punt verwijderen</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_line_add_delete.py" line="90"/>
+      <location filename="../../draftguitools/gui_line_add_delete.py" line="92"/>
       <source>Removes a point from an existing Wire or B-spline.</source>
       <translation>Verwijdert een punt van een bestaande draad of B-spline.</translation>
     </message>
@@ -1650,7 +1699,7 @@ CTRL to snap, SHIFT to constrain.</translation>
       <translation>Afmeting</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="85"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="87"/>
       <source>Creates a dimension.
 
 - Pick three points to create a simple linear dimension.
@@ -1685,7 +1734,7 @@ om het om te zetten in een 'Ontwerpdimensie' object.</translation>
       <translation>Downgraden</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_downgrade.py" line="59"/>
+      <location filename="../../draftguitools/gui_downgrade.py" line="61"/>
       <source>Downgrades the selected objects into simpler shapes.
 The result of the operation depends on the types of objects, which may be able to be downgraded several times in a row.
 For example, it explodes the selected polylines into simpler faces, wires, and then edges. It can also subtract faces.</source>
@@ -1702,7 +1751,7 @@ Bijvoorbeeld, het explodeert de geselecteerde polylijnen in eenvoudige vlakken, 
       <translation>Van klad naar schets</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_draft2sketch.py" line="58"/>
+      <location filename="../../draftguitools/gui_draft2sketch.py" line="60"/>
       <source>Convert bidirectionally between Draft objects and Sketches.
 Many Draft objects will be converted into a single non-constrained Sketch.
 However, a single sketch with disconnected traces will be converted into several individual Draft objects.</source>
@@ -1719,7 +1768,7 @@ Een enkele schets met losgekoppelde sporen zal echter worden omgezet in verschil
       <translation>Tekening</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_drawing.py" line="72"/>
+      <location filename="../../draftguitools/gui_drawing.py" line="74"/>
       <source>Creates a 2D projection on a Drawing Workbench page from the selected objects.
 This command is OBSOLETE since the Drawing Workbench became obsolete in 0.17.
 Use TechDraw Workbench instead for generating technical drawings.</source>
@@ -1736,7 +1785,7 @@ Gebruik TechDraw Workbench voor het genereren van technische tekeningen.</transl
       <translation>Bewerken</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_edit.py" line="276"/>
+      <location filename="../../draftguitools/gui_edit.py" line="284"/>
       <source>Edits the active object.
 Press E or ALT+LeftClick to display context menu
 on supported nodes and on supported objects.</source>
@@ -1753,7 +1802,7 @@ op ondersteunde nodes en op ondersteunde objecten.</translation>
       <translation>Ellips</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_ellipses.py" line="60"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="62"/>
       <source>Creates an ellipse. CTRL to snap.</source>
       <translation>Maakt een ellips. CTRL om te klikken.</translation>
     </message>
@@ -1766,7 +1815,7 @@ op ondersteunde nodes en op ondersteunde objecten.</translation>
       <translation>Vlakenbinder</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_facebinders.py" line="61"/>
+      <location filename="../../draftguitools/gui_facebinders.py" line="62"/>
       <source>Creates a facebinder object from selected faces.</source>
       <translation>Maakt een vlakbinder object van geselecteerde vlakken.</translation>
     </message>
@@ -1779,7 +1828,7 @@ op ondersteunde nodes en op ondersteunde objecten.</translation>
       <translation>Afronding</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="65"/>
+      <location filename="../../draftguitools/gui_fillets.py" line="67"/>
       <source>Creates a fillet between two selected wires or edges.</source>
       <translation>Maakt een afronding tussen twee geselecteerde draden of randen.</translation>
     </message>
@@ -1787,12 +1836,12 @@ op ondersteunde nodes en op ondersteunde objecten.</translation>
   <context>
     <name>Draft_FlipDimension</name>
     <message>
-      <location filename="../../draftguitools/gui_dimension_ops.py" line="61"/>
+      <location filename="../../draftguitools/gui_dimension_ops.py" line="62"/>
       <source>Flip dimension</source>
       <translation>Afmeting spiegelen</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimension_ops.py" line="63"/>
+      <location filename="../../draftguitools/gui_dimension_ops.py" line="66"/>
       <source>Flip the normal direction of the selected dimensions (linear, radial, angular).
 If other objects are selected they are ignored.</source>
       <translation>Draai de normale richting van de geselecteerde afmetingen (lineair, radial, hoek).
@@ -1807,7 +1856,7 @@ Als andere objecten zijn geselecteerd worden ze genegeerd.</translation>
       <translation>Arcering</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_hatch.py" line="40"/>
+      <location filename="../../draftguitools/gui_hatch.py" line="42"/>
       <source>Creates hatches on the faces of a selected object</source>
       <translation type="unfinished">Creates hatches on the faces of a selected object</translation>
     </message>
@@ -1820,7 +1869,7 @@ Als andere objecten zijn geselecteerd worden ze genegeerd.</translation>
       <translation>Repareren</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_heal.py" line="59"/>
+      <location filename="../../draftguitools/gui_heal.py" line="61"/>
       <source>Heal faulty Draft objects saved with an earlier version of the program.
 If an object is selected it will try to heal that object in particular,
 otherwise it will try to heal all objects in the active document.</source>
@@ -1837,7 +1886,7 @@ anders zal het proberen alle objecten in het actieve document te herstellen.</tr
       <translation>Samenvoegen</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_join.py" line="67"/>
+      <location filename="../../draftguitools/gui_join.py" line="69"/>
       <source>Joins the selected lines or polylines into a single object.
 The lines must share a common point at the start or at the end for the operation to succeed.</source>
       <translation>Voegt de geselecteerde lijnen of polylijnen samen tot één object.
@@ -1852,7 +1901,7 @@ De lijnen moeten een gemeenschappelijk punt delen aan het begin of het einde van
       <translation>Label</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_labels.py" line="65"/>
+      <location filename="../../draftguitools/gui_labels.py" line="67"/>
       <source>Creates a label, optionally attached to a selected object or subelement.
 
 First select a vertex, an edge, or a face of an object, then call this command,
@@ -1880,7 +1929,7 @@ Als veel objecten of veel subelementen zijn geselecteerd, zal de informatie van 
       <translation>Laag</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_layers.py" line="53"/>
+      <location filename="../../draftguitools/gui_layers.py" line="55"/>
       <source>Adds a layer to the document.
 Objects added to this layer can share the same visual properties such as line color, line width, and shape color.</source>
       <translation>Voegt een laag toe aan het document.
@@ -1895,7 +1944,7 @@ Objecten die aan deze laag worden toegevoegd kunnen dezelfde visuele eigenschapp
       <translation>Lijn</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="64"/>
+      <location filename="../../draftguitools/gui_lines.py" line="66"/>
       <source>Creates a 2-point line. CTRL to snap, SHIFT to constrain.</source>
       <translation>Maakt een 2-puntenlijn aan. CTRL om uit te lijnen, SHIFT om te beperken.</translation>
     </message>
@@ -1908,7 +1957,7 @@ Objecten die aan deze laag worden toegevoegd kunnen dezelfde visuele eigenschapp
       <translation>LinkMatrix</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="120"/>
+      <location filename="../../draftguitools/gui_array_simple.py" line="122"/>
       <source>Like the Array tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
       <translation>Zoals het Reeks gereedschap, maakt u in plaats daarvan een 'Link reeks' aan.
@@ -1923,7 +1972,7 @@ Een 'Link reeks' is efficiënter bij het verwerken van veel kopieën, maar de 'F
       <translation>Spiegelen</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="64"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="66"/>
       <source>Mirrors the selected objects along a line defined by two points.</source>
       <translation>Spiegelt de geselecteerde objecten langs een lijn gedefinieerd door twee punten.</translation>
     </message>
@@ -1936,7 +1985,7 @@ Een 'Link reeks' is efficiënter bij het verwerken van veel kopieën, maar de 'F
       <translation>Verplaatsen</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_move.py" line="64"/>
+      <location filename="../../draftguitools/gui_move.py" line="66"/>
       <source>Moves the selected objects from one base point to another point.
 If the "copy" option is active, it will create displaced copies.
 CTRL to snap, SHIFT to constrain.</source>
@@ -1953,7 +2002,7 @@ CTRL om uit te lijnen, SHIFT om te beperken.</translation>
       <translation>Verschuiving</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_offset.py" line="64"/>
+      <location filename="../../draftguitools/gui_offset.py" line="66"/>
       <source>Offsets of the selected object.
 It can also create an offset copy of the original object.
 CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</source>
@@ -1970,7 +2019,7 @@ CTRL om uit te lijnen, SHIFT om te beperken. Houd ALT ingedrukt en klik om een k
       <translation>Reeks</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_orthoarray.py" line="66"/>
+      <location filename="../../draftguitools/gui_orthoarray.py" line="68"/>
       <source>Creates copies of the selected object, and places the copies in an orthogonal pattern,
 meaning the copies follow the specified direction in the X, Y, Z axes.
 
@@ -1989,7 +2038,7 @@ De reeks kan worden omgezet in een polair of een circulaire reeks door het type 
       <translation>Pad reeks</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_patharray.py" line="74"/>
+      <location filename="../../draftguitools/gui_patharray.py" line="76"/>
       <source>Creates copies of the selected object along a selected path.
 First select the object, and then select the path.
 The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</source>
@@ -2006,7 +2055,7 @@ Het pad kan een polyline zijn, B-spline, Bezier-curve of zelfs randen van andere
       <translation>Pad Link reeks</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_patharray.py" line="164"/>
+      <location filename="../../draftguitools/gui_patharray.py" line="166"/>
       <source>Like the PathArray tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
       <translation>Zoals het PadReeks gereedschap, maakt u in plaats daarvan een 'Link reeks' aan.
@@ -2021,7 +2070,7 @@ Een 'Link reeks' is efficiënter bij het verwerken van veel kopieën, maar de 'F
       <translation>Pad getoreerde reeks</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_pathtwistedarray.py" line="67"/>
+      <location filename="../../draftguitools/gui_pathtwistedarray.py" line="69"/>
       <source>Creates copies of the selected object along a selected path, and twists the copies.
 First select the object, and then select the path.
 The path can be a polyline, B-spline, Bezier curve, or even edges from other objects.</source>
@@ -2038,7 +2087,7 @@ Het pad kan een polyline zijn, B-spline, Bezier-curve of zelfs randen van andere
       <translation>Pad gedraaide link reeks</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_pathtwistedarray.py" line="122"/>
+      <location filename="../../draftguitools/gui_pathtwistedarray.py" line="124"/>
       <source>Like the PathTwistedArray tool, but creates a 'Link array' instead.
 A 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.</source>
       <translation>Zoals het PadDraaiReeks gereedschap, maakt u in plaats daarvan een 'Link reeks' aan.
@@ -2053,7 +2102,7 @@ Een 'Link reeks' is efficiënter bij het verwerken van veel kopieën, maar de 'F
       <translation>Punt</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_points.py" line="63"/>
+      <location filename="../../draftguitools/gui_points.py" line="65"/>
       <source>Creates a point object. Click anywhere on the 3D view.</source>
       <translation>Maakt een puntobject. Klik ergens op de 3D-weergave.</translation>
     </message>
@@ -2066,7 +2115,7 @@ Een 'Link reeks' is efficiënter bij het verwerken van veel kopieën, maar de 'F
       <translation>Punt reeks</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_pointarray.py" line="77"/>
+      <location filename="../../draftguitools/gui_pointarray.py" line="79"/>
       <source>Creates copies of the selected object, and places the copies at the position of various points.
 
 The points need to be grouped under a compound of points before using this tool.
@@ -2091,7 +2140,7 @@ Selecteer het basisobject en selecteer vervolgens de samenstelling of de schets 
       <translation>PuntLinkReeks</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_pointarray.py" line="142"/>
+      <location filename="../../draftguitools/gui_pointarray.py" line="144"/>
       <source>Like the PointArray tool, but creates a 'Point link array' instead.
 A 'Point link array' is more efficient when handling many copies.</source>
       <translation>Zoals de PuntReeks gereedschap, maar maakt er een 'Point link reeks' bij.
@@ -2106,7 +2155,7 @@ Een 'Punt linkreeks' is efficiënter bij het verwerken van veel kopieën.</trans
       <translation>Polair matrix</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_polararray.py" line="66"/>
+      <location filename="../../draftguitools/gui_polararray.py" line="68"/>
       <source>Creates copies of the selected object, and places the copies in a polar pattern
 defined by a center of rotation and its angle.
 
@@ -2125,7 +2174,7 @@ De reeks kan worden omgezet in een orthogonaal of een cirkel reeks door het type
       <translation>Veelhoek</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_polygons.py" line="58"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="60"/>
       <source>Creates a regular polygon (triangle, square, pentagon, ...), by defining the number of sides and the circumscribed radius.
 CTRL to snap, SHIFT to constrain</source>
       <translation>Creëert een reguliere veelhoek (driehoek, vierkanten, pentagon, ...), door het selecteren van het aantal zijden en de omschreven straal.
@@ -2140,7 +2189,7 @@ CTRL om uit te lijnen, SHIFT om te beperken</translation>
       <translation>Rechthoek</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rectangles.py" line="55"/>
+      <location filename="../../draftguitools/gui_rectangles.py" line="57"/>
       <source>Creates a 2-point rectangle. CTRL to snap.</source>
       <translation>Maakt een 2-puntenrechthoek aan. CTRL om te klikken.</translation>
     </message>
@@ -2153,7 +2202,7 @@ CTRL om uit te lijnen, SHIFT om te beperken</translation>
       <translation>Draaien</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="63"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="65"/>
       <source>Rotates the selected objects. Choose the center of rotation, then the initial angle, and then the final angle.
 If the "copy" option is active, it will create rotated copies.
 CTRL to snap, SHIFT to constrain. Hold ALT and click to create a copy with each click.</source>
@@ -2170,7 +2219,7 @@ CTRL om uit te lijnen, SHIFT om te beperken. Houd ALT ingedrukt en klik om een k
       <translation>Schalen</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="72"/>
+      <location filename="../../draftguitools/gui_scale.py" line="74"/>
       <source>Scales the selected objects from a base point.
 CTRL to snap, SHIFT to constrain, ALT to copy.</source>
       <translation>Schaalt de geselecteerde objecten vanaf een basispunt.
@@ -2185,7 +2234,7 @@ CTRL om uit te lijnen, SHIFT om te beperken, ALT om te kopiëren.</translation>
       <translation>Groep selecteren</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_groups.py" line="165"/>
+      <location filename="../../draftguitools/gui_groups.py" line="167"/>
       <source>Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in is selected.</source>
       <translation type="unfinished">Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in is selected.</translation>
     </message>
@@ -2198,7 +2247,7 @@ CTRL om uit te lijnen, SHIFT om te beperken, ALT om te kopiëren.</translation>
       <translation>SelecteerVlak</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="66"/>
+      <location filename="../../draftguitools/gui_selectplane.py" line="67"/>
       <source>Select the face of solid body to create a working plane on which to sketch Draft objects.
 You may also select a three vertices or a Working Plane Proxy.</source>
       <translation>Selecteer het gezicht van een solide lichaam om een werkvlak te maken waarop je Draft objecten kunt schetsen.
@@ -2213,7 +2262,7 @@ U kunt ook een drietal hoekpunten of een werkvlak proxy selecteren.</translation
       <translation>Stijl instellen</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_setstyle.py" line="56"/>
+      <location filename="../../draftguitools/gui_setstyle.py" line="57"/>
       <source>Sets default styles</source>
       <translation>Zet standaard stijlen</translation>
     </message>
@@ -2226,7 +2275,7 @@ U kunt ook een drietal hoekpunten of een werkvlak proxy selecteren.</translation
       <translation>Vorm 2D weergave</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="60"/>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="62"/>
       <source>Creates a 2D projection of the selected objects on the XY plane.
 The initial projection direction is the negative of the current active view direction.
 You can select individual faces to project, or the entire solid, and also include hidden lines.
@@ -2245,7 +2294,7 @@ Deze projecties kunnen technische tekeningen worden gebruikt in de TechDraw Werk
       <translation>Vorm uit tekst</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_shapestrings.py" line="67"/>
+      <location filename="../../draftguitools/gui_shapestrings.py" line="68"/>
       <source>Creates a shape from a text string by choosing a specific font and a placement.
 The closed shapes can be used for extrusions and boolean operations.</source>
       <translation>Maakt een vorm van een tekstreeks door een specifiek lettertype en een plaatsing te kiezen.
@@ -2260,7 +2309,7 @@ De gesloten vormen kunnen worden gebruikt voor extrusies en booleaanse operaties
       <translation>Toon uitlijn werkbalk</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="590"/>
+      <location filename="../../draftguitools/gui_snaps.py" line="592"/>
       <source>Show the snap toolbar if it is hidden.</source>
       <translation>Laat de uitlijn werkbalk zien als deze verborgen is.</translation>
     </message>
@@ -2273,7 +2322,7 @@ De gesloten vormen kunnen worden gebruikt voor extrusies en booleaanse operaties
       <translation>Helling instellen</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lineslope.py" line="71"/>
+      <location filename="../../draftguitools/gui_lineslope.py" line="73"/>
       <source>Sets the slope of the selected line by changing the value of the Z value of one of its points.
 If a polyline is selected, it will apply the slope transformation to each of its segments.
 
@@ -2294,7 +2343,7 @@ rechte ontwerplijnen die in het XY-vlak worden getrokken. Geselecteerde objecten
       <translation>Hoek</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="345"/>
+      <location filename="../../draftguitools/gui_snaps.py" line="347"/>
       <source>Set snapping to points in a circular arc located at multiples of 30 and 45 degree angles.</source>
       <translation>Stel het uitlijnen in als punten in een circulaire boog gelegen met veelvoud van 30 en 45 graden.</translation>
     </message>
@@ -2307,7 +2356,7 @@ rechte ontwerplijnen die in het XY-vlak worden getrokken. Geselecteerde objecten
       <translation>Middelpunt</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="375"/>
+      <location filename="../../draftguitools/gui_snaps.py" line="377"/>
       <source>Set snapping to the center of a circular arc.</source>
       <translation>Stel het uitlijnen in op het midden van een cirkelvorm.</translation>
     </message>
@@ -2320,7 +2369,7 @@ rechte ontwerplijnen die in het XY-vlak worden getrokken. Geselecteerde objecten
       <translation>Dimensies weergeven</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="527"/>
+      <location filename="../../draftguitools/gui_snaps.py" line="529"/>
       <source>Show temporary linear dimensions when editing an object and using other snapping methods.</source>
       <translation>Tijdelijke lineaire afmetingen weergeven bij het bewerken van een object en het gebruik van andere uitlijnings methoden.</translation>
     </message>
@@ -2333,7 +2382,7 @@ rechte ontwerplijnen die in het XY-vlak worden getrokken. Geselecteerde objecten
       <translation>Eindpunt</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="314"/>
+      <location filename="../../draftguitools/gui_snaps.py" line="316"/>
       <source>Set snapping to endpoints of an edge.</source>
       <translation>Zet uitlijning naar eindpunten van een rand.</translation>
     </message>
@@ -2346,7 +2395,7 @@ rechte ontwerplijnen die in het XY-vlak worden getrokken. Geselecteerde objecten
       <translation>Verlenging</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="405"/>
+      <location filename="../../draftguitools/gui_snaps.py" line="407"/>
       <source>Set snapping to the extension of an edge.</source>
       <translation>Stel de uitlijning in voor de verlenging van een rand.</translation>
     </message>
@@ -2359,7 +2408,7 @@ rechte ontwerplijnen die in het XY-vlak worden getrokken. Geselecteerde objecten
       <translation>Raster</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="224"/>
+      <location filename="../../draftguitools/gui_snaps.py" line="226"/>
       <source>Set snapping to the intersection of grid lines.</source>
       <translation>Stel het uitlijnen in voor het kruispunt van rasterlijnen.</translation>
     </message>
@@ -2372,7 +2421,7 @@ rechte ontwerplijnen die in het XY-vlak worden getrokken. Geselecteerde objecten
       <translation>Snijpunt</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="254"/>
+      <location filename="../../draftguitools/gui_snaps.py" line="256"/>
       <source>Set snapping to the intersection of edges.</source>
       <translation>Stel het uitlijnen in voor het snijpunt van de randen.</translation>
     </message>
@@ -2385,7 +2434,7 @@ rechte ontwerplijnen die in het XY-vlak worden getrokken. Geselecteerde objecten
       <translation>Hoofd uitlijning schakelaar aan/uit</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="134"/>
+      <location filename="../../draftguitools/gui_snaps.py" line="136"/>
       <source>Activates or deactivates all snap methods at once.</source>
       <translation>Activeert of deactiveert alle uitlijnmethoden tegelijk.</translation>
     </message>
@@ -2398,7 +2447,7 @@ rechte ontwerplijnen die in het XY-vlak worden getrokken. Geselecteerde objecten
       <translation>Middelpunt</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="164"/>
+      <location filename="../../draftguitools/gui_snaps.py" line="166"/>
       <source>Set snapping to the midpoint of an edge.</source>
       <translation>Stel het uitlijnen in tot het midpunt van een rand.</translation>
     </message>
@@ -2411,7 +2460,7 @@ rechte ontwerplijnen die in het XY-vlak worden getrokken. Geselecteerde objecten
       <translation>Dichtstbijzijnde</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="435"/>
+      <location filename="../../draftguitools/gui_snaps.py" line="437"/>
       <source>Set snapping to the nearest point of an edge.</source>
       <translation>Stel het uitlijnen in op het dichtstbijzijnde punt van een rand.</translation>
     </message>
@@ -2424,7 +2473,7 @@ rechte ontwerplijnen die in het XY-vlak worden getrokken. Geselecteerde objecten
       <translation>Orthogonaal</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="466"/>
+      <location filename="../../draftguitools/gui_snaps.py" line="468"/>
       <source>Set snapping to a direction that is a multiple of 45 degrees from a point.</source>
       <translation>Stel het uitlijnen in op een richting die een veelvoud van 45 graden vanaf een punt.</translation>
     </message>
@@ -2437,7 +2486,7 @@ rechte ontwerplijnen die in het XY-vlak worden getrokken. Geselecteerde objecten
       <translation>Evenwijdig</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="284"/>
+      <location filename="../../draftguitools/gui_snaps.py" line="286"/>
       <source>Set snapping to a direction that is parallel to an edge.</source>
       <translation>Stel het uitlijnen in op een richting die parallel is aan een rand.</translation>
     </message>
@@ -2450,7 +2499,7 @@ rechte ontwerplijnen die in het XY-vlak worden getrokken. Geselecteerde objecten
       <translation>Loodrecht</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="194"/>
+      <location filename="../../draftguitools/gui_snaps.py" line="196"/>
       <source>Set snapping to a direction that is perpendicular to an edge.</source>
       <translation>Stel het uitlijnen in op een richting die haaks staat op een rand.</translation>
     </message>
@@ -2463,7 +2512,7 @@ rechte ontwerplijnen die in het XY-vlak worden getrokken. Geselecteerde objecten
       <translation>Speciaal</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="496"/>
+      <location filename="../../draftguitools/gui_snaps.py" line="498"/>
       <source>Set snapping to the special points defined inside an object.</source>
       <translation>Stel het uitlijnen in voor de speciale punten binnen een object.</translation>
     </message>
@@ -2476,7 +2525,7 @@ rechte ontwerplijnen die in het XY-vlak worden getrokken. Geselecteerde objecten
       <translation>Werkvlak</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="560"/>
+      <location filename="../../draftguitools/gui_snaps.py" line="562"/>
       <source>Restricts snapping to a point in the current working plane.
 If you select a point outside the working plane, for example, by using other snapping methods,
 it will snap to that point's projection in the current working plane.</source>
@@ -2493,7 +2542,7 @@ het zal uitgelijnd worden naar de projectie van dat punt op het huidige werkvlak
       <translation>Delen</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_split.py" line="57"/>
+      <location filename="../../draftguitools/gui_split.py" line="59"/>
       <source>Splits the selected line or polyline into two independent lines
 or polylines by clicking anywhere along the original object.
 It works best when choosing a point on a straight segment and not a corner vertex.</source>
@@ -2510,7 +2559,7 @@ Het werkt het beste bij het kiezen van een punt op een recht segment en niet een
       <translation>Uitrekken</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_stretch.py" line="65"/>
+      <location filename="../../draftguitools/gui_stretch.py" line="67"/>
       <source>Stretches the selected objects.
 Select an object, then draw a rectangle to pick the vertices that will be stretched,
 then draw a line to specify the distance and direction of stretching.</source>
@@ -2527,7 +2576,7 @@ teken dan een lijn om de afstand en richting van stretching op te geven.</transl
       <translation>Subelement markering</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="62"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="64"/>
       <source>Highlight the subelements of the selected objects, so that they can then be edited with the move, rotate, and scale tools.</source>
       <translation>Markeer de subelementen van de geselecteerde objecten, zodat ze vervolgens kunnen worden bewerkt met de verplaatsen, draaien en schaalgereedschappen.</translation>
     </message>
@@ -2540,7 +2589,7 @@ teken dan een lijn om de afstand en richting van stretching op te geven.</transl
       <translation>Tekst</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_texts.py" line="61"/>
+      <location filename="../../draftguitools/gui_texts.py" line="63"/>
       <source>Creates a multi-line annotation. CTRL to snap.</source>
       <translation>Maakt een multi-lijn annotatie. CTRL om uit te lijnen.</translation>
     </message>
@@ -2553,7 +2602,7 @@ teken dan een lijn om de afstand en richting van stretching op te geven.</transl
       <translation>Constructiemodus omschakelen</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_togglemodes.py" line="101"/>
+      <location filename="../../draftguitools/gui_togglemodes.py" line="102"/>
       <source>Toggles the Construction mode.
 When this is active, the following objects created will be included in the construction group, and will be drawn with the specified color and properties.</source>
       <translation>Schakelt de Bouw modus in of uit.
@@ -2568,7 +2617,7 @@ Wanneer dit actief is, zullen de volgende aangemaakte objecten worden opgenomen 
       <translation>Schakel 'continu' modus in of uit</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_togglemodes.py" line="132"/>
+      <location filename="../../draftguitools/gui_togglemodes.py" line="133"/>
       <source>Toggles the Continue mode.
 When this is active, any drawing tool that is terminated will automatically start again.
 This can be used to draw several objects one after the other in succession.</source>
@@ -2585,7 +2634,7 @@ Dit kan worden gebruikt om verschillende objecten achter elkaar te tekenen.</tra
       <translation>Normaal/wireframe weergave in-/uitschakelen</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_togglemodes.py" line="167"/>
+      <location filename="../../draftguitools/gui_togglemodes.py" line="168"/>
       <source>Switches the display mode of selected objects from flatlines to wireframe and back.
 This is helpful to quickly visualize objects that are hidden by other objects.
 This is intended to be used with closed shapes and solids, and doesn't affect open wires.</source>
@@ -2615,7 +2664,7 @@ Dit is bedoeld om te worden gebruikt met gesloten vormen en vast en heeft geen i
       <translation>Trimex</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="77"/>
+      <location filename="../../draftguitools/gui_trimex.py" line="82"/>
       <source>Trims or extends the selected object, or extrudes single faces.
 CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts.</source>
       <translation>Snijdt of breidt het geselecteerde object uit of breidt het geselecteerde object uit.
@@ -2630,7 +2679,7 @@ CTRL voor uitlijnen, SHIFT beperkt tot het huidige segment of tot normaal, ALT i
       <translation>Upgraden</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_upgrade.py" line="59"/>
+      <location filename="../../draftguitools/gui_upgrade.py" line="61"/>
       <source>Upgrades the selected objects into more complex shapes.
 The result of the operation depends on the types of objects, which may be able to be upgraded several times in a row.
 For example, it can join the selected objects into one, convert simple edges into parametric polylines,
@@ -2649,7 +2698,7 @@ Zet gesloten randen om in gevulde vlakken en parametrische veelhoeken en voeg vl
       <translation>Polylijn</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="307"/>
+      <location filename="../../draftguitools/gui_lines.py" line="309"/>
       <source>Creates a multiple-points line (polyline). CTRL to snap, SHIFT to constrain.</source>
       <translation>Creëert een meerpuntslijn (polylijn). CTRL om uit te lijnen, SHIFT om te beperken.</translation>
     </message>
@@ -2662,7 +2711,7 @@ Zet gesloten randen om in gevulde vlakken en parametrische veelhoeken en voeg vl
       <translation>Draad naar B-spline</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_wire2spline.py" line="65"/>
+      <location filename="../../draftguitools/gui_wire2spline.py" line="67"/>
       <source>Converts a selected polyline to a B-spline, or a B-spline to a polyline.</source>
       <translation>Zet een geselecteerde polylijn om naar een B-spline, of een B-spline naar een polylijn.</translation>
     </message>
@@ -2675,7 +2724,7 @@ Zet gesloten randen om in gevulde vlakken en parametrische veelhoeken en voeg vl
       <translation>Proxy voor werkvlak aanmaken</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_planeproxy.py" line="51"/>
+      <location filename="../../draftguitools/gui_planeproxy.py" line="52"/>
       <source>Creates a proxy object from the current working plane.
 Once the object is created double click it in the tree view to restore the camera position and objects' visibilities.
 Then you can use it to save a different camera position and objects' states any time you need.</source>
@@ -2695,12 +2744,12 @@ Dan kun je het gebruiken om een andere camerapositie en objecten op te slaan wan
   <context>
     <name>ImportSVG</name>
     <message>
-      <location filename="../../importSVG.py" line="1794"/>
+      <location filename="../../importSVG.py" line="1796"/>
       <source>Unknown SVG export style, switching to Translated</source>
       <translation>Onbekende SVG-exportstijl, overschakelen naar Vertaald</translation>
     </message>
     <message>
-      <location filename="../../importSVG.py" line="1813"/>
+      <location filename="../../importSVG.py" line="1816"/>
       <source>The export list contains no object with a valid bounding box</source>
       <translation>De exportlijst bevat geen object met een geldig omschrijvings-vak</translation>
     </message>
@@ -2708,44 +2757,9 @@ Dan kun je het gebruiken om een andere camerapositie en objecten op te slaan wan
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../InitGui.py" line="103"/>
-      <source>Draft creation tools</source>
-      <translation>Ontwerpaanmaakgereedschap</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="106"/>
-      <source>Draft annotation tools</source>
-      <translation>Ontwerpannotatiegereedschap</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="109"/>
-      <source>Draft modification tools</source>
-      <translation>Ontwerpwijzigingsgereedschap</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="112"/>
-      <source>Draft utility tools</source>
-      <translation>Concept hulpprogramma's</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="117"/>
-      <source>&amp;Drafting</source>
-      <translation>&amp;Opstellen</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="120"/>
-      <source>&amp;Annotation</source>
-      <translation>Aantekening </translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="123"/>
-      <source>&amp;Modification</source>
-      <translation>&amp;Wijziging</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="126"/>
-      <source>&amp;Utilities</source>
-      <translation>&amp;Hulpmiddelen</translation>
+      <location filename="../../draftguitools/gui_snapper.py" line="1477"/>
+      <source>Draft Snap</source>
+      <translation>Draft Uitlijning</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_tools.py" line="50"/>
@@ -2763,37 +2777,1237 @@ Dan kun je het gebruiken om een andere camerapositie en objecten op te slaan wan
       <translation>Reeks gereedschappen</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_snapper.py" line="1477"/>
-      <source>Draft Snap</source>
-      <translation>Draft Uitlijning</translation>
+      <location filename="../../InitGui.py" line="104"/>
+      <source>Draft creation tools</source>
+      <translation>Ontwerpaanmaakgereedschap</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="107"/>
+      <source>Draft annotation tools</source>
+      <translation>Ontwerpannotatiegereedschap</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="110"/>
+      <source>Draft modification tools</source>
+      <translation>Ontwerpwijzigingsgereedschap</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="113"/>
+      <source>Draft utility tools</source>
+      <translation>Concept hulpprogramma's</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="118"/>
+      <source>&amp;Drafting</source>
+      <translation>&amp;Opstellen</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="121"/>
+      <source>&amp;Annotation</source>
+      <translation>Aantekening </translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="124"/>
+      <source>&amp;Modification</source>
+      <translation>&amp;Wijziging</translation>
+    </message>
+    <message>
+      <location filename="../../InitGui.py" line="127"/>
+      <source>&amp;Utilities</source>
+      <translation>&amp;Hulpmiddelen</translation>
     </message>
   </context>
   <context>
     <name>draft</name>
     <message>
-      <location filename="../../DraftGui.py" line="750"/>
+      <location filename="../../importDXF.py" line="146"/>
+      <source>The DXF import/export libraries needed by FreeCAD to handle
+the DXF format were not found on this system.
+Please either enable FreeCAD to download these libraries:
+  1 - Load Draft workbench
+  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
+Or download these libraries manually, as explained on
+https://github.com/yorikvanhavre/Draft-dxf-importer
+To enabled FreeCAD to download these libraries, answer Yes.</source>
+      <translation>De DXF-import-/exportbibliotheken die FreeCAD nodig heeft om
+het DXF-formaat te verwerken, zijn niet gevonden op dit systeem.
+Gelieve FreeCAD in te schakelen om deze bibliotheken te downloaden:
+  1 - Laad de ontwerpwerkbank op
+  2 - Menu Edit &gt; Voorkeuren &gt; Import-Export &gt; DXF &gt; Downloads inschakelen
+Of installeer de bibliotheken handmatig zoals uitgelegd op 
+https://github.com/yorikvanhavre/Draft-dxf-importer
+Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="68"/>
+      <location filename="../../draftguitools/gui_drawing.py" line="81"/>
+      <source>Select an object to project</source>
+      <translation>Selecteer een object om te projecteren</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_shape2dview.py" line="109"/>
+      <source>Create 2D view</source>
+      <translation>2D-weergave maken</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_styles.py" line="75"/>
+      <source>Change Style</source>
+      <translation>Stijl wijzigen</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_join.py" line="76"/>
+      <source>Select an object to join</source>
+      <translation>Selecteer een object om samen te voegen</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_join.py" line="99"/>
+      <source>Join lines</source>
+      <translation>Lijnen Samenvoegen</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_join.py" line="110"/>
+      <source>Selection:</source>
+      <translation>Selectie:</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_groups.py" line="65"/>
+      <source>Add to group</source>
+      <translation>Toevoegen aan groep</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_groups.py" line="68"/>
+      <source>Ungroup</source>
+      <translation>Degroeperen</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_groups.py" line="70"/>
+      <source>Add new group</source>
+      <translation type="unfinished">Add new group</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_groups.py" line="159"/>
+      <source>Select group</source>
+      <translation>Groep selecteren</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_groups.py" line="193"/>
+      <source>No new selection. You must select non-empty groups or objects inside groups.</source>
+      <translation type="unfinished">No new selection. You must select non-empty groups or objects inside groups.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_groups.py" line="203"/>
+      <source>Autogroup</source>
+      <translation>Autogroeperen</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_groups.py" line="239"/>
+      <location filename="../../draftguitools/gui_groups.py" line="244"/>
+      <location filename="../../DraftGui.py" line="694"/>
+      <location filename="../../DraftGui.py" line="729"/>
+      <location filename="../../DraftGui.py" line="1058"/>
+      <location filename="../../DraftGui.py" line="2047"/>
+      <location filename="../../DraftGui.py" line="2062"/>
+      <source>None</source>
+      <translation>Geen</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_groups.py" line="250"/>
+      <source>Add new Layer</source>
+      <translation>Nieuwe laag toevoegen</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_groups.py" line="304"/>
+      <source>Add to construction group</source>
+      <translation>Voeg toe aan constructiegroep</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_groups.py" line="355"/>
+      <source>Add a new group with a given name</source>
+      <translation type="unfinished">Add a new group with a given name</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_groups.py" line="383"/>
+      <source>Add group</source>
+      <translation type="unfinished">Add group</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_groups.py" line="385"/>
+      <source>Group name</source>
+      <translation type="unfinished">Group name</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_groups.py" line="392"/>
+      <source>Group</source>
+      <translation>Groep</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_upgrade.py" line="67"/>
+      <location filename="../../draftguitools/gui_downgrade.py" line="67"/>
+      <source>Select an object to upgrade</source>
+      <translation>Selecteer een object om te upgraden</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_upgrade.py" line="85"/>
+      <source>Upgrade</source>
+      <translation>Upgraden</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_array_simple.py" line="77"/>
+      <source>Select an object to array</source>
+      <translation>Selecteer een object voor de reeks</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_array_simple.py" line="101"/>
+      <source>Array</source>
+      <translation>Reeks</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_scale.py" line="87"/>
+      <source>Select an object to scale</source>
+      <translation>Selecteer een object om te schalen</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_scale.py" line="108"/>
+      <source>Pick base point</source>
+      <translation>Kies basispunt</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_scale.py" line="135"/>
+      <source>Pick reference distance from base point</source>
+      <translation>Kies een referentieafstand vanaf het basispunt</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_scale.py" line="203"/>
+      <location filename="../../draftguitools/gui_scale.py" line="227"/>
+      <location filename="../../draftguitools/gui_scale.py" line="356"/>
+      <location filename="../../draftguitools/gui_move.py" line="207"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="283"/>
+      <location filename="../../DraftGui.py" line="76"/>
+      <location filename="../../DraftGui.py" line="801"/>
+      <source>Copy</source>
+      <translation>Kopie</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_scale.py" line="206"/>
+      <location filename="../../draftguitools/gui_scale.py" line="236"/>
+      <location filename="../../draftguitools/gui_scale.py" line="359"/>
+      <source>Scale</source>
+      <translation>Schalen</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_scale.py" line="209"/>
+      <source>Some subelements could not be scaled.</source>
+      <translation>Sommige subelementen konden niet worden geschaald.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_scale.py" line="339"/>
+      <source>Unable to scale object:</source>
+      <translation type="unfinished">Unable to scale object:</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_scale.py" line="343"/>
+      <source>Unable to scale objects:</source>
+      <translation type="unfinished">Unable to scale objects:</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_scale.py" line="346"/>
+      <source>This object type cannot be scaled directly. Please use the clone method.</source>
+      <translation>Dit objecttype kan niet direct worden geschaald. Gebruik de kloon methode.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_scale.py" line="407"/>
+      <source>Pick new distance from base point</source>
+      <translation>Kies een nieuwe afstand van het basispunt</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_pointarray.py" line="104"/>
+      <source>Please select exactly two objects, the base object and the point object, before calling this command.</source>
+      <translation>Selecteer precies twee objecten, het basisobject en het punt object, voordat u deze opdracht aanroept.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_pointarray.py" line="122"/>
+      <source>Point array</source>
+      <translation>Punt reeks</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="80"/>
+      <source>Pick target point</source>
+      <translation>Kies doelpunt</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="157"/>
+      <source>Create Label</source>
+      <translation>Label maken</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="191"/>
+      <location filename="../../draftguitools/gui_labels.py" line="218"/>
+      <source>Pick endpoint of leader line</source>
+      <translation>Kies het eindpunt van de leiderslijn</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_labels.py" line="201"/>
+      <location filename="../../draftguitools/gui_labels.py" line="228"/>
+      <source>Pick text position</source>
+      <translation>Kies tekstpositie</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_move.py" line="81"/>
+      <source>Select an object to move</source>
+      <translation>Selecteer een object om te verplaatsen</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_move.py" line="103"/>
+      <source>Pick start point</source>
+      <translation>Kies startpunt</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_move.py" line="162"/>
+      <location filename="../../draftguitools/gui_move.py" line="308"/>
+      <source>Pick end point</source>
+      <translation>Kies eindpunt</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_move.py" line="210"/>
+      <source>Move</source>
+      <translation>Verplaatsen</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_move.py" line="213"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="289"/>
+      <source>Some subelements could not be moved.</source>
+      <translation>Sommige subelementen konden niet verplaatst worden.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_draft2sketch.py" line="66"/>
+      <source>Select an object to convert.</source>
+      <translation>Selecteer een object om te converteren.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_draft2sketch.py" line="99"/>
+      <source>Convert to Sketch</source>
+      <translation>Converteren naar schets</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_draft2sketch.py" line="114"/>
+      <source>Convert to Draft</source>
+      <translation>Converteren naar ontwerp</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_draft2sketch.py" line="143"/>
+      <source>Convert Draft/Sketch</source>
+      <translation>Converteer Draft/Schets</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_layers.py" line="47"/>
+      <location filename="../../draftmake/make_layer.py" line="145"/>
+      <location filename="../../draftmake/make_layer.py" line="162"/>
+      <source>Layer</source>
+      <translation>Laag</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="63"/>
+      <source>Sketch is too complex to edit: it is suggested to use sketcher default editor</source>
+      <translation>Sketch is te ingewikkeld om te bewerken: het wordt aanbevolen om de standaard schets editor te gebruiken</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_shapestrings.py" line="85"/>
+      <location filename="../../draftguitools/gui_shapestrings.py" line="98"/>
+      <source>Pick ShapeString location point</source>
+      <translation>Kies ShapeString locatiepunt</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_shapestrings.py" line="133"/>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="176"/>
+      <source>Create ShapeString</source>
+      <translation>ShapeString aanmaken</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_beziers.py" line="132"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="332"/>
+      <source>Bézier curve has been closed</source>
+      <translation type="unfinished">Bézier curve has been closed</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_beziers.py" line="140"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="368"/>
+      <location filename="../../draftguitools/gui_splines.py" line="131"/>
+      <source>Last point has been removed</source>
+      <translation>Laatste punt is verwijderd</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_beziers.py" line="148"/>
+      <location filename="../../draftguitools/gui_lines.py" line="218"/>
+      <location filename="../../draftguitools/gui_lines.py" line="226"/>
+      <location filename="../../draftguitools/gui_lines.py" line="233"/>
+      <location filename="../../draftguitools/gui_lines.py" line="241"/>
+      <location filename="../../draftguitools/gui_lines.py" line="251"/>
+      <location filename="../../draftguitools/gui_splines.py" line="140"/>
+      <source>Pick next point</source>
+      <translation>Kies het volgende punt</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_beziers.py" line="153"/>
+      <location filename="../../draftguitools/gui_splines.py" line="147"/>
+      <source>Pick next point, or finish (A) or close (O)</source>
+      <translation>Kies het volgende punt, of beëindig (A) of sluit (O)</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_beziers.py" line="211"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="451"/>
+      <source>Create BezCurve</source>
+      <translation>BezCurve maken</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_beziers.py" line="376"/>
+      <source>Click and drag to define next knot</source>
+      <translation>Klik en sleep om de volgende knoop te definiëren</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_beziers.py" line="382"/>
+      <source>Click and drag to define next knot, or finish (A) or close (O)</source>
+      <translation>Klik en sleep om volgende knop, of eindig (A) of sluit (O)</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimension_ops.py" line="55"/>
+      <source>Flip dimension</source>
+      <translation>Afmeting spiegelen</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_subelements.py" line="108"/>
+      <source>Select an object to edit</source>
+      <translation>Selecteer een object om te bewerken</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_polygons.py" line="78"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="88"/>
+      <source>Pick center point</source>
+      <translation>Kies middelpunt</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_polygons.py" line="189"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="200"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="260"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="254"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="270"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="410"/>
+      <source>Pick radius</source>
+      <translation>Kies straal</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_polygons.py" line="224"/>
+      <source>Create Polygon (Part)</source>
+      <translation>Maak Veelhoek (Onderdeel)</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_polygons.py" line="243"/>
+      <source>Create Polygon</source>
+      <translation>Polygoon maken</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_points.py" line="134"/>
+      <location filename="../../draftguitools/gui_points.py" line="147"/>
+      <source>Create Point</source>
+      <translation>Punt maken</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="122"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="71"/>
+      <location filename="../../draftguitools/gui_lines.py" line="83"/>
+      <location filename="../../draftguitools/gui_rectangles.py" line="69"/>
+      <source>Pick first point</source>
+      <translation>Kies het eerste punt</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="212"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="247"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="261"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="294"/>
+      <source>Create Dimension</source>
+      <translation>Dimensie maken</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="309"/>
+      <source>Create Dimension (radial)</source>
+      <translation>Maak dimensie (radiaal)</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="508"/>
+      <source>Edge too short!</source>
+      <translation>Rand te kort!</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_dimensions.py" line="518"/>
+      <source>Edges don't intersect!</source>
+      <translation>Randen doorsnijden elkaar niet!</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_facebinders.py" line="71"/>
+      <source>Select faces from existing objects</source>
+      <translation>Selecteer vlakken van bestaande objecten</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_patharray.py" line="102"/>
+      <location filename="../../draftguitools/gui_pathtwistedarray.py" line="79"/>
+      <source>Please select exactly two objects, the base object and the path object, before calling this command.</source>
+      <translation>Selecteer precies twee objecten, het basis object en het pad object, voordat u deze opdracht aanroept.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_patharray.py" line="143"/>
+      <source>Path array</source>
+      <translation>Pad reeks</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_texts.py" line="77"/>
+      <source>Pick location point</source>
+      <translation>Kies locatiepunt</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_texts.py" line="121"/>
+      <source>Create Text</source>
+      <translation>Tekst maken</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_ellipses.py" line="121"/>
+      <location filename="../../draftguitools/gui_ellipses.py" line="138"/>
+      <source>Create Ellipse</source>
+      <translation>Ellips aanmaken</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_ellipses.py" line="196"/>
+      <location filename="../../draftguitools/gui_rectangles.py" line="202"/>
+      <source>Pick opposite point</source>
+      <translation>Kies het tegenovergestelde punt</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="94"/>
+      <source>Select objects to trim or extend</source>
+      <translation>Selecteer objecten om te trimmen of uit te breiden</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="173"/>
+      <location filename="../../draftguitools/gui_offset.py" line="143"/>
+      <source>Pick distance</source>
+      <translation>Kies afstand</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="215"/>
+      <location filename="../../DraftGui.py" line="1042"/>
+      <location filename="../../DraftGui.py" line="1100"/>
+      <source>Distance</source>
+      <translation>Afstand</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="217"/>
+      <location filename="../../DraftGui.py" line="1043"/>
+      <location filename="../../DraftGui.py" line="1101"/>
+      <source>Offset distance</source>
+      <translation>Verschuiving afstand</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="220"/>
+      <location filename="../../DraftGui.py" line="741"/>
+      <source>Angle</source>
+      <translation>Hoek</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="222"/>
+      <source>Offset angle</source>
+      <translation type="unfinished">Offset angle</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="483"/>
+      <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
+      <translation>Kan deze objecten niet trimmen, alleen Draft draden en bogen worden ondersteund.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="488"/>
+      <source>Unable to trim these objects, too many wires</source>
+      <translation>Kan deze objecten niet trimmen, te veel draden</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="505"/>
+      <source>These objects don't intersect.</source>
+      <translation>Deze objecten doorsnijden elkaar niet.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_trimex.py" line="508"/>
+      <source>Too many intersection points.</source>
+      <translation>Te veel snijpunten.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_stretch.py" line="75"/>
+      <source>Select an object to stretch</source>
+      <translation>Selecteer een object om uit te rekken</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_stretch.py" line="127"/>
+      <source>Pick first point of selection rectangle</source>
+      <translation>Kies het eerste punt van de selectierechthoek</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_stretch.py" line="164"/>
+      <source>Pick opposite point of selection rectangle</source>
+      <translation>Kies het tegenovergestelde punt van de selectierechthoek</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_stretch.py" line="173"/>
+      <source>Pick start point of displacement</source>
+      <translation>Kies het startpunt van verplaatsing</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_stretch.py" line="236"/>
+      <source>Pick end point of displacement</source>
+      <translation>Kies het eindpunt van verplaatsing</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_stretch.py" line="448"/>
+      <source>Turning one Rectangle into a Wire</source>
+      <translation>Een rechthoek in een draad veranderen</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_stretch.py" line="477"/>
+      <source>Stretch</source>
+      <translation>Uitrekken</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_clone.py" line="79"/>
+      <source>Select an object to clone</source>
+      <translation>Selecteer een object om te klonen</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_lineslope.py" line="64"/>
+      <source>Change slope</source>
+      <translation>Helling wijzigen</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_heal.py" line="51"/>
+      <source>Heal</source>
+      <translation>Repareren</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_lines.py" line="163"/>
+      <source>Create Line</source>
+      <translation>Lijn aanmaken</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_lines.py" line="185"/>
+      <source>Create Wire</source>
+      <translation>Draad aanmaken</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_lines.py" line="330"/>
+      <source>Unable to create a Wire from selected objects</source>
+      <translation>Kan geen draad van de geselecteerde objecten maken</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_lines.py" line="352"/>
+      <source>Convert to Wire</source>
+      <translation>Converteren naar draad</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_togglemodes.py" line="73"/>
+      <source>No active Draft Toolbar.</source>
+      <translation>Geen actieve schetswerkbalk.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_togglemodes.py" line="93"/>
+      <source>Construction mode</source>
+      <translation>Constructiemodus</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_togglemodes.py" line="125"/>
+      <source>Continue mode</source>
+      <translation>Continue modus</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_togglemodes.py" line="159"/>
+      <source>Toggle display mode</source>
+      <translation>Toggle weergavemodus</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit.py" line="305"/>
+      <source>Select a Draft object to edit</source>
+      <translation>Selecteer een Draftt object om te bewerken</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit.py" line="558"/>
+      <source>No edit point found for selected object</source>
+      <translation>Geen bewerkingspunt gevonden voor het geselecteerde object</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit.py" line="811"/>
+      <source>Too many objects selected, max number set to:</source>
+      <translation type="unfinished">Too many objects selected, max number set to:</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit.py" line="819"/>
+      <source>: this object is not editable</source>
+      <translation>: dit object is niet bewerkbaar</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_rectangles.py" line="125"/>
+      <source>Create Plane</source>
+      <translation>Vlak maken</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_rectangles.py" line="142"/>
+      <source>Create Rectangle</source>
+      <translation>Rechthoek maken</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_mirror.py" line="73"/>
+      <source>Select an object to mirror</source>
+      <translation>Selecteer een object om te spiegelen</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_mirror.py" line="92"/>
+      <source>Pick start point of mirror line</source>
+      <translation>Kies het beginpunt van de spiegellijn</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_mirror.py" line="122"/>
+      <source>Mirror</source>
+      <translation>Spiegelen</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_mirror.py" line="177"/>
+      <location filename="../../draftguitools/gui_mirror.py" line="203"/>
+      <source>Pick end point of mirror line</source>
+      <translation>Kies het eindpunt van de spiegellijn</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_downgrade.py" line="85"/>
+      <source>Downgrade</source>
+      <translation>Downgraden</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_drawing.py" line="77"/>
+      <source>The Drawing Workbench is obsolete since 0.17, consider using the TechDraw Workbench instead.</source>
+      <translation>De Drawing Workbench is verouderd sinds 0,17, overweeg in plaats daarvan de TechDraw Werkbank te gebruiken.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_arcs.py" line="277"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="278"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="446"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="447"/>
+      <source>Start angle</source>
+      <translation>Starthoek</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_arcs.py" line="283"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="452"/>
+      <source>Pick start angle</source>
+      <translation>Kies starthoek</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_arcs.py" line="285"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="286"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="454"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="455"/>
+      <source>Aperture angle</source>
+      <translation>Openingshoek</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_arcs.py" line="291"/>
+      <source>Pick aperture</source>
+      <translation>Kies apertuur</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_arcs.py" line="317"/>
+      <source>Create Circle (Part)</source>
+      <translation>Maak cirkel (Onderdeel)</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_arcs.py" line="335"/>
+      <source>Create Circle</source>
+      <translation>Cirkel maken</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_arcs.py" line="369"/>
+      <source>Create Arc (Part)</source>
+      <translation>Maak boog (Onderdeel)</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_arcs.py" line="389"/>
+      <source>Create Arc</source>
+      <translation>Creëer boog</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_arcs.py" line="466"/>
+      <source>Pick aperture angle</source>
+      <translation>Kies apertuurhoek</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_arcs.py" line="509"/>
+      <location filename="../../draftguitools/gui_arcs.py" line="551"/>
+      <source>Arc by 3 points</source>
+      <translation>Boog met 3 punten</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snapper.py" line="1543"/>
+      <source>(ON)</source>
+      <translation>(AAN)</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snapper.py" line="1546"/>
+      <source>(OFF)</source>
+      <translation>(UIT)</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="68"/>
+      <source>Annotation style editor</source>
+      <translation>Stijleditor voor aantekeningen</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="290"/>
+      <source>Open styles file</source>
+      <translation>Stijlbestand openen</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="292"/>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="314"/>
+      <source>JSON file (*.json)</source>
+      <translation>JSON-bestand (*.json)</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="312"/>
+      <source>Save styles file</source>
+      <translation>Stijlbestand opslaan</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_rotate.py" line="79"/>
+      <source>Select an object to rotate</source>
+      <translation>Selecteer een object om te draaien</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_rotate.py" line="99"/>
+      <source>Pick rotation center</source>
+      <translation>Kies rotatiemiddelpunt</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_rotate.py" line="193"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="396"/>
+      <source>Base angle</source>
+      <translation>Basishoek</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_rotate.py" line="194"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="397"/>
+      <source>The base angle you wish to start the rotation from</source>
+      <translation>De basishoek waar u de rotatie van wilt starten</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_rotate.py" line="199"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="400"/>
+      <source>Pick base angle</source>
+      <translation>Kies basishoek</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_rotate.py" line="205"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="409"/>
+      <source>Rotation</source>
+      <translation>Rotatie</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_rotate.py" line="206"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="410"/>
+      <source>The amount of rotation you wish to perform.
+The final angle will be the base angle plus this amount.</source>
+      <translation>De hoeveelheid rotatie die u wilt uitvoeren.
+De eindhoek zal de basishoek plus dit getal zijn.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_rotate.py" line="213"/>
+      <location filename="../../draftguitools/gui_rotate.py" line="418"/>
+      <source>Pick rotation angle</source>
+      <translation>Kies rotatiehoek</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_rotate.py" line="286"/>
+      <location filename="../../DraftGui.py" line="986"/>
+      <source>Rotate</source>
+      <translation>Draaien</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="126"/>
+      <source>Main toggle snap</source>
+      <translation>Hoofd toggle klik</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="157"/>
+      <source>Midpoint snap</source>
+      <translation>Midpoint klik</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="187"/>
+      <source>Perpendicular snap</source>
+      <translation>Loodrechte uitlijning</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="217"/>
+      <source>Grid snap</source>
+      <translation>Raster plakken</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="247"/>
+      <source>Intersection snap</source>
+      <translation>Intersectie uitlijning</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="277"/>
+      <source>Parallel snap</source>
+      <translation>Parallelle uitlijning</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="307"/>
+      <source>Endpoint snap</source>
+      <translation>Eindpunt uitlijning</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="338"/>
+      <source>Angle snap (30 and 45 degrees)</source>
+      <translation>Hoek uitlijning (30 en 45 graden)</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="368"/>
+      <source>Arc center snap</source>
+      <translation>Boog midden uitlijning</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="398"/>
+      <source>Edge extension snap</source>
+      <translation>Rand verlenging uitlijning</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="428"/>
+      <source>Near snap</source>
+      <translation>Dichtbij uitlijning</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="459"/>
+      <source>Orthogonal snap</source>
+      <translation>Orthogonale uitlijning</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="489"/>
+      <source>Special point snap</source>
+      <translation>Speciale punt uitlijning</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="520"/>
+      <source>Dimension display</source>
+      <translation>Maat weergeven</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="553"/>
+      <source>Working plane snap</source>
+      <translation>Werkvlak uitlijning</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_snaps.py" line="583"/>
+      <source>Show snap toolbar</source>
+      <translation>Toon uitlijn werkbalk</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_selectplane.py" line="147"/>
+      <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
+      <translation>Kies een vlak, 3 hoekpunten of een WP-Proxy om het tekenvlak te definiëren</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_selectplane.py" line="269"/>
+      <location filename="../../draftguitools/gui_selectplane.py" line="324"/>
+      <location filename="../../draftguitools/gui_selectplane.py" line="527"/>
+      <location filename="../../draftguitools/gui_selectplane.py" line="538"/>
+      <location filename="../../DraftGui.py" line="836"/>
+      <source>Current working plane</source>
+      <translation>Huidig werkvlak</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_selectplane.py" line="271"/>
+      <source>Working plane aligned to global placement of</source>
+      <translation>Werkvlak is afgestemd op de globale plaatsing van</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_selectplane.py" line="371"/>
+      <location filename="../../DraftGui.py" line="659"/>
+      <location filename="../../WorkingPlane.py" line="821"/>
+      <source>Top</source>
+      <translation>Boven</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_selectplane.py" line="383"/>
+      <location filename="../../DraftGui.py" line="661"/>
+      <location filename="../../WorkingPlane.py" line="832"/>
+      <source>Front</source>
+      <translation>Voorkant</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_selectplane.py" line="395"/>
+      <location filename="../../DraftGui.py" line="663"/>
+      <location filename="../../WorkingPlane.py" line="843"/>
+      <source>Side</source>
+      <translation>Zijde</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_selectplane.py" line="520"/>
+      <source>Dir</source>
+      <translation>Richting</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_selectplane.py" line="524"/>
+      <location filename="../../draftguitools/gui_offset.py" line="243"/>
+      <location filename="../../draftguitools/gui_offset.py" line="260"/>
+      <location filename="../../draftguitools/gui_offset.py" line="324"/>
+      <location filename="../../DraftGui.py" line="1036"/>
+      <source>Offset</source>
+      <translation>Verschuiving</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_selectplane.py" line="536"/>
+      <source>Custom</source>
+      <translation>Eigen</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_offset.py" line="76"/>
+      <source>Select an object to offset</source>
+      <translation>Selecteer een object om te verschuiven</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_offset.py" line="82"/>
+      <source>Offset only works on one object at a time.</source>
+      <translation>Verschuiving werkt slechts op één object tegelijk.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_offset.py" line="92"/>
+      <source>Cannot offset this object type</source>
+      <translation>Kan dit objecttype niet verschuiven</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_offset.py" line="123"/>
+      <source>Offset of Bezier curves is currently not supported</source>
+      <translation>Offset van Bezier-curves wordt momenteel niet ondersteund</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_splines.py" line="120"/>
+      <source>Spline has been closed</source>
+      <translation>Spline is gesloten</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_splines.py" line="183"/>
+      <source>Create B-spline</source>
+      <translation>Maak B-spline aan</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="92"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="569"/>
+      <source>This object does not support possible coincident points, please try again.</source>
+      <translation>Dit object ondersteunt geen mogelijke samenvallende punten, probeer het opnieuw.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="164"/>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="608"/>
+      <source>Active object must have more than two points/nodes</source>
+      <translation>Het actieve object moet meer dan twee punten/knooppunten bevatten</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="722"/>
+      <source>Selection is not a Knot</source>
+      <translation>Selectie is geen Knoop</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="749"/>
+      <source>Endpoint of BezCurve can't be smoothed</source>
+      <translation>Het eindpunt van de BezCurve kan niet geëffend worden</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_grid.py" line="51"/>
+      <source>Toggle grid</source>
+      <translation>Wijzig raster status</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_fillets.py" line="76"/>
+      <source>Fillet radius</source>
+      <translation>Afrondinds straal</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_fillets.py" line="79"/>
+      <source>Radius of fillet</source>
+      <translation>Straal van de afronding</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_fillets.py" line="107"/>
+      <source>Enter radius.</source>
+      <translation>Voer straal in.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_fillets.py" line="126"/>
+      <source>Delete original objects:</source>
+      <translation>Verwijder originele objecten:</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_fillets.py" line="131"/>
+      <source>Chamfer mode:</source>
+      <translation>Afschuining modus:</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_fillets.py" line="148"/>
+      <source>Two elements needed.</source>
+      <translation>Twee elementen nodig.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_fillets.py" line="155"/>
+      <source>Test object</source>
+      <translation>Testobject</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_fillets.py" line="156"/>
+      <source>Test object removed</source>
+      <translation>Test object verwijderd</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_fillets.py" line="158"/>
+      <source>Fillet cannot be created</source>
+      <translation>Afronding kan niet worden gemaakt</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_fillets.py" line="188"/>
+      <source>Create fillet</source>
+      <translation>Maak afronding</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_pathtwistedarray.py" line="101"/>
+      <source>Path twisted array</source>
+      <translation>Pad getoreerde reeks</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_split.py" line="64"/>
+      <source>Click anywhere on a line to split it.</source>
+      <translation>Klik ergens op een lijn om te splitsen.</translation>
+    </message>
+    <message>
+      <location filename="../../draftguitools/gui_split.py" line="106"/>
+      <source>Split line</source>
+      <translation>Lijn splitsen</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/shapestring.py" line="69"/>
+      <source>ShapeString: string has no wires</source>
+      <translation>ShapeString: tekenreeks heeft geen draden</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/pointarray.py" line="145"/>
+      <location filename="../../draftobjects/pointarray.py" line="161"/>
+      <source>added property 'ExtraPlacement'</source>
+      <translation>toegevoegd eigenschap 'ExtraPlaatsing'</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/draft_annotation.py" line="89"/>
+      <location filename="../../draftobjects/draft_annotation.py" line="105"/>
+      <source>added view property 'ScaleMultiplier'</source>
+      <translation>toegevoegde weergave eigenschap 'SchaalVermenigvuldiger'</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/draft_annotation.py" line="125"/>
+      <location filename="../../draftobjects/draft_annotation.py" line="130"/>
+      <source>migrated 'DraftText' type to 'Text'</source>
+      <translation>'DraftText' type gemigreerd naar 'Tekst'</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/patharray.py" line="284"/>
+      <source>, path object doesn't have 'Edges'.</source>
+      <translation>, pad-object heeft geen 'Randen'.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/patharray.py" line="395"/>
+      <location filename="../../draftobjects/patharray.py" line="401"/>
+      <location filename="../../draftobjects/patharray.py" line="407"/>
+      <source>'PathObj' property will be migrated to 'PathObject'</source>
+      <translation>'PadObj' eigendom zal worden gemigreerd naar 'PathObject'</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/patharray.py" line="525"/>
+      <source>Cannot calculate path tangent. Copy not aligned.</source>
+      <translation>Kan pad tangent niet berekenen. Kopiëren niet uitgelijnd.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/patharray.py" line="541"/>
+      <source>Tangent and normal are parallel. Copy not aligned.</source>
+      <translation>Tangens en normaal zijn parallelel. Kopieer niet uitgelijnd.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/patharray.py" line="558"/>
+      <source>Cannot calculate path normal, using default.</source>
+      <translation>Kan geen pad normaal berekenen, standaard wordt gebruikt.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/patharray.py" line="565"/>
+      <source>Cannot calculate path binormal. Copy not aligned.</source>
+      <translation>Kan pad niet binormaal berekenen. Kopieer niet uitgelijnd.</translation>
+    </message>
+    <message>
+      <location filename="../../draftobjects/patharray.py" line="571"/>
+      <source>AlignMode {} is not implemented</source>
+      <translation>Uitlijningsmodus {} is niet geïmplementeerd</translation>
+    </message>
+    <message>
+      <location filename="../../importDWG.py" line="209"/>
+      <location filename="../../importDWG.py" line="281"/>
+      <source>LibreDWG error</source>
+      <translation>LibreDWG fout</translation>
+    </message>
+    <message>
+      <location filename="../../importDWG.py" line="218"/>
+      <location filename="../../importDWG.py" line="290"/>
+      <source>Converting:</source>
+      <translation type="unfinished">Converting:</translation>
+    </message>
+    <message>
+      <location filename="../../importDWG.py" line="223"/>
+      <source>Conversion successful</source>
+      <translation>Conversie succesvol</translation>
+    </message>
+    <message>
+      <location filename="../../importDWG.py" line="226"/>
+      <source>Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</source>
+      <translation>Fout tijdens DWG conversie. Probeer het DWG bestand te verplaatsen naar een map zonder spaties en niet-dubieuze tekens, of probeer op te slaan naar een lagere DWG versie.</translation>
+    </message>
+    <message>
+      <location filename="../../importDWG.py" line="229"/>
+      <location filename="../../importDWG.py" line="296"/>
+      <source>ODA File Converter not found</source>
+      <translation>Converteerder ODA-bestand niet gevonden</translation>
+    </message>
+    <message>
+      <location filename="../../importDWG.py" line="242"/>
+      <location filename="../../importDWG.py" line="306"/>
+      <source>QCAD error</source>
+      <translation>QCAD fout</translation>
+    </message>
+    <message>
+      <location filename="../../DraftGui.py" line="57"/>
+      <location filename="../../DraftGui.py" line="751"/>
       <source>Relative</source>
       <translation>Relatief</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="755"/>
+      <location filename="../../DraftGui.py" line="61"/>
+      <location filename="../../DraftGui.py" line="756"/>
       <source>Global</source>
       <translation>Overal</translation>
     </message>
     <message>
+      <location filename="../../DraftGui.py" line="66"/>
+      <location filename="../../DraftGui.py" line="774"/>
       <location filename="../../DraftGui.py" line="1126"/>
       <source>Continue</source>
       <translation>Doorgaan</translation>
     </message>
     <message>
+      <location filename="../../DraftGui.py" line="71"/>
       <location filename="../../DraftGui.py" line="790"/>
       <source>Close</source>
       <translation>Sluiten</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="283"/>
-      <source>Copy</source>
-      <translation>Kopie</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="81"/>
@@ -2841,6 +4055,7 @@ Dan kun je het gebruiken om een andere camerapositie en objecten op te slaan wan
       <translation>Z beperken</translation>
     </message>
     <message>
+      <location filename="../../DraftGui.py" line="126"/>
       <location filename="../../DraftGui.py" line="796"/>
       <source>Select edge</source>
       <translation>Selecteer rand</translation>
@@ -2856,6 +4071,7 @@ Dan kun je het gebruiken om een andere camerapositie en objecten op te slaan wan
       <translation>Lengtemodus</translation>
     </message>
     <message>
+      <location filename="../../DraftGui.py" line="141"/>
       <location filename="../../DraftGui.py" line="792"/>
       <source>Wipe</source>
       <translation>Wissen</translation>
@@ -2881,29 +4097,9 @@ Dan kun je het gebruiken om een andere camerapositie en objecten op te slaan wan
       <translation>Ontwerpopdrachtbalk</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="371"/>
-      <source>Top</source>
-      <translation>Boven</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="383"/>
-      <source>Front</source>
-      <translation>Voorkant</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="395"/>
-      <source>Side</source>
-      <translation>Zijde</translation>
-    </message>
-    <message>
       <location filename="../../DraftGui.py" line="665"/>
       <source>Auto</source>
       <translation>Automatisch</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="243"/>
-      <source>None</source>
-      <translation>Geen</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="728"/>
@@ -2921,6 +4117,7 @@ Dan kun je het gebruiken om een andere camerapositie en objecten op te slaan wan
       <translation>X-coördinaat van het volgende punt</translation>
     </message>
     <message>
+      <location filename="../../DraftGui.py" line="732"/>
       <location filename="../../DraftGui.py" line="1059"/>
       <source>X</source>
       <translation>X</translation>
@@ -2951,7 +4148,7 @@ Dan kun je het gebruiken om een andere camerapositie en objecten op te slaan wan
       <translation>Punt invoeren</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="738"/>
+      <location filename="../../DraftGui.py" line="739"/>
       <source>Enter a new point with the given coordinates</source>
       <translation>Voer een nieuw punt in met de gegeven coördinaten</translation>
     </message>
@@ -2959,11 +4156,6 @@ Dan kun je het gebruiken om een andere camerapositie en objecten op te slaan wan
       <location filename="../../DraftGui.py" line="740"/>
       <source>Length</source>
       <translation>Lengte</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="220"/>
-      <source>Angle</source>
-      <translation>Hoek</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="742"/>
@@ -2976,63 +4168,65 @@ Dan kun je het gebruiken om een andere camerapositie en objecten op te slaan wan
       <translation>Hoek van het huidige segment</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="745"/>
+      <location filename="../../DraftGui.py" line="747"/>
       <source>Check this to lock the current angle</source>
       <translation>Vink dit aan om de huidige hoek te vergrendelen</translation>
     </message>
     <message>
+      <location filename="../../DraftGui.py" line="748"/>
       <location filename="../../DraftGui.py" line="1108"/>
       <source>Radius</source>
       <translation>Straal</translation>
     </message>
     <message>
+      <location filename="../../DraftGui.py" line="749"/>
       <location filename="../../DraftGui.py" line="1109"/>
       <source>Radius of Circle</source>
       <translation>Straal van de cirkel </translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="752"/>
+      <location filename="../../DraftGui.py" line="754"/>
       <source>Coordinates relative to last point or to coordinate system origin
 if is the first point to set</source>
       <translation type="unfinished">Coordinates relative to last point or to coordinate system origin
 if is the first point to set</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="757"/>
+      <location filename="../../DraftGui.py" line="759"/>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
       <translation type="unfinished">Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="760"/>
+      <location filename="../../DraftGui.py" line="761"/>
       <source>Filled</source>
       <translation>Gevuld</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="762"/>
+      <location filename="../../DraftGui.py" line="765"/>
       <source>Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</source>
       <translation type="unfinished">Check this if the object should appear as filled, otherwise it will appear as wireframe.
 Not available if Draft preference option 'Use Part Primitives' is enabled</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="766"/>
+      <location filename="../../DraftGui.py" line="767"/>
       <source>Finish</source>
       <translation>Voltooien</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="768"/>
+      <location filename="../../DraftGui.py" line="769"/>
       <source>Finishes the current drawing or editing operation</source>
       <translation>Beëindigt de huidige tekening of bewerking</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="770"/>
+      <location filename="../../DraftGui.py" line="772"/>
       <source>If checked, command will not finish until you press the command button again</source>
       <translation>Indien ingeschakeld, zal de huidige opdracht niet beëindigen totdat u opnieuw op de command-toets druk</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="775"/>
+      <location filename="../../DraftGui.py" line="777"/>
       <source>If checked, an OCC-style offset will be performedinstead of the classic offset</source>
       <translation type="unfinished">If checked, an OCC-style offset will be performedinstead of the classic offset</translation>
     </message>
@@ -3152,11 +4346,6 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Druk op deze knop om het tekstobject aan te maken of eindig uw tekst met twee lege regels</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="537"/>
-      <source>Current working plane</source>
-      <translation>Huidig werkvlak</translation>
-    </message>
-    <message>
       <location filename="../../DraftGui.py" line="837"/>
       <source>Change default style for new objects</source>
       <translation>Standaardstijl voor nieuwe objecten wijzigen</translation>
@@ -3167,6 +4356,8 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Constructiemodus omschakelen</translation>
     </message>
     <message>
+      <location filename="../../DraftGui.py" line="839"/>
+      <location filename="../../DraftGui.py" line="2050"/>
       <location filename="../../DraftGui.py" line="2065"/>
       <source>Autogroup off</source>
       <translation>Autogroup uit</translation>
@@ -3192,11 +4383,6 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Boog</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="286"/>
-      <source>Rotate</source>
-      <translation>Draaien</translation>
-    </message>
-    <message>
       <location filename="../../DraftGui.py" line="990"/>
       <source>Point</source>
       <translation>Punt</translation>
@@ -3205,21 +4391,6 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="../../DraftGui.py" line="1018"/>
       <source>Label</source>
       <translation>Label</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_offset.py" line="324"/>
-      <source>Offset</source>
-      <translation>Verschuiving</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="215"/>
-      <source>Distance</source>
-      <translation>Afstand</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="216"/>
-      <source>Offset distance</source>
-      <translation>Verschuiving afstand</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="1097"/>
@@ -3312,12 +4483,12 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Voer een tekstreeks in.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1533"/>
+      <location filename="../../DraftGui.py" line="1534"/>
       <source>Select a Font file</source>
       <translation>Kies een lettertypebestand</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1566"/>
+      <location filename="../../DraftGui.py" line="1567"/>
       <source>Please enter a font file.</source>
       <translation>Voer een lettertypebestand in.</translation>
     </message>
@@ -3347,49 +4518,278 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Vlakenbinderelementen</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="281"/>
-      <source>LibreDWG error</source>
-      <translation>LibreDWG fout</translation>
+      <location filename="../../draftutils/utils.py" line="650"/>
+      <source>Solids:</source>
+      <translation type="unfinished">Solids:</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="290"/>
-      <source>Converting:</source>
-      <translation type="unfinished">Converting:</translation>
+      <location filename="../../draftutils/utils.py" line="651"/>
+      <source>Faces:</source>
+      <translation>Vlakken:</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="223"/>
-      <source>Conversion successful</source>
-      <translation>Conversie succesvol</translation>
+      <location filename="../../draftutils/utils.py" line="652"/>
+      <source>Wires:</source>
+      <translation type="unfinished">Wires:</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="226"/>
-      <source>Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</source>
-      <translation>Fout tijdens DWG conversie. Probeer het DWG bestand te verplaatsen naar een map zonder spaties en niet-dubieuze tekens, of probeer op te slaan naar een lagere DWG versie.</translation>
+      <location filename="../../draftutils/utils.py" line="653"/>
+      <source>Edges:</source>
+      <translation type="unfinished">Edges:</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="296"/>
-      <source>ODA File Converter not found</source>
-      <translation>Converteerder ODA-bestand niet gevonden</translation>
+      <location filename="../../draftutils/utils.py" line="654"/>
+      <source>Vertices:</source>
+      <translation type="unfinished">Vertices:</translation>
     </message>
     <message>
-      <location filename="../../importDWG.py" line="306"/>
-      <source>QCAD error</source>
-      <translation>QCAD fout</translation>
+      <location filename="../../draftutils/utils.py" line="658"/>
+      <source>Face</source>
+      <translation>Vlak</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_sketch.py" line="138"/>
-      <source>All Shapes must be coplanar</source>
-      <translation>Alle vormen moeten in het zelfde vlak liggen</translation>
+      <location filename="../../draftutils/utils.py" line="663"/>
+      <source>Wire</source>
+      <translation>Draad</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="720"/>
-      <source>Selected Shapes must define a plane</source>
-      <translation>Geselecteerde Vormen moeten een vlak definiëren</translation>
+      <location filename="../../draftutils/utils.py" line="695"/>
+      <location filename="../../draftutils/utils.py" line="699"/>
+      <source>different types</source>
+      <translation type="unfinished">different types</translation>
     </message>
     <message>
+      <location filename="../../draftutils/utils.py" line="709"/>
+      <source>Objects have different placements. Distance between the two base points: </source>
+      <translation type="unfinished">Objects have different placements. Distance between the two base points: </translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="712"/>
+      <source>has a different value</source>
+      <translation type="unfinished">has a different value</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="715"/>
+      <source>doesn't exist in one of the objects</source>
+      <translation type="unfinished">doesn't exist in one of the objects</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="827"/>
+      <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
+      <translation type="unfinished">%s shares a base with %d other objects. Please check if you want to modify this.</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="833"/>
+      <source>%s cannot be modified because its placement is readonly.</source>
+      <translation type="unfinished">%s cannot be modified because its placement is readonly.</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="977"/>
+      <source>Wrong input: unknown document.</source>
+      <translation type="unfinished">Wrong input: unknown document.</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="1014"/>
+      <location filename="../../draftutils/groups.py" line="95"/>
       <location filename="../../draftutils/gui_utils.py" line="720"/>
+      <location filename="../../draftfunctions/cut.py" line="57"/>
+      <location filename="../../draftmake/make_array.py" line="85"/>
+      <location filename="../../draftmake/make_pointarray.py" line="108"/>
+      <location filename="../../draftmake/make_label.py" line="195"/>
+      <location filename="../../draftmake/make_patharray.py" line="161"/>
+      <location filename="../../draftmake/make_patharray.py" line="330"/>
+      <location filename="../../draftmake/make_text.py" line="84"/>
+      <location filename="../../draftmake/make_text.py" line="172"/>
+      <location filename="../../draftmake/make_dimension.py" line="215"/>
+      <location filename="../../draftmake/make_dimension.py" line="308"/>
+      <location filename="../../draftmake/make_dimension.py" line="438"/>
+      <location filename="../../draftmake/make_dimension.py" line="564"/>
+      <location filename="../../draftmake/make_layer.py" line="58"/>
+      <location filename="../../draftmake/make_layer.py" line="149"/>
       <source>No active document. Aborting.</source>
       <translation>Geen actief document. Breekt hier af.</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="1055"/>
+      <source>This function will be deprecated in </source>
+      <translation type="unfinished">This function will be deprecated in </translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="1056"/>
+      <location filename="../../draftutils/utils.py" line="1059"/>
+      <source>Please use </source>
+      <translation type="unfinished">Please use </translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/utils.py" line="1059"/>
+      <source>This function will be deprecated. </source>
+      <translation type="unfinished">This function will be deprecated. </translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="51"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="58"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="65"/>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="154"/>
+      <source>custom</source>
+      <translation>eigen</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="140"/>
+      <source>Unable to convert input into a  scale factor</source>
+      <translation type="unfinished">Unable to convert input into a  scale factor</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="155"/>
+      <source>Set custom scale</source>
+      <translation type="unfinished">Set custom scale</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="157"/>
+      <source>Set custom annotation scale in format x:x, x=x</source>
+      <translation>Aangepaste aantekening schaal in formaat x:x, x=x instellen</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_draft_statusbar.py" line="214"/>
+      <source>Set the scale used by draft annotation tools</source>
+      <translation type="unfinished">Set the scale used by draft annotation tools</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="169"/>
+      <source>Snap Lock</source>
+      <translation type="unfinished">Snap Lock</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="170"/>
+      <source>Snap Endpoint</source>
+      <translation type="unfinished">Snap Endpoint</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="171"/>
+      <source>Snap Midpoint</source>
+      <translation type="unfinished">Snap Midpoint</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="172"/>
+      <source>Snap Center</source>
+      <translation type="unfinished">Snap Center</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="173"/>
+      <source>Snap Angle</source>
+      <translation type="unfinished">Snap Angle</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="174"/>
+      <source>Snap Intersection</source>
+      <translation type="unfinished">Snap Intersection</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="175"/>
+      <source>Snap Perpendicular</source>
+      <translation type="unfinished">Snap Perpendicular</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="176"/>
+      <source>Snap Extension</source>
+      <translation type="unfinished">Snap Extension</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="177"/>
+      <source>Snap Parallel</source>
+      <translation type="unfinished">Snap Parallel</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="178"/>
+      <source>Snap Special</source>
+      <translation type="unfinished">Snap Special</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="179"/>
+      <source>Snap Near</source>
+      <translation type="unfinished">Snap Near</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="180"/>
+      <source>Snap Ortho</source>
+      <translation type="unfinished">Snap Ortho</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="181"/>
+      <source>Snap Grid</source>
+      <translation type="unfinished">Snap Grid</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="182"/>
+      <source>Snap WorkingPlane</source>
+      <translation type="unfinished">Snap WorkingPlane</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="183"/>
+      <source>Snap Dimensions</source>
+      <translation type="unfinished">Snap Dimensions</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/init_tools.py" line="187"/>
+      <source>Toggle Draft Grid</source>
+      <translation>Concept raster in-/uitschakelen</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/groups.py" line="132"/>
+      <location filename="../../draftutils/gui_utils.py" line="729"/>
+      <location filename="../../draftmake/make_pointarray.py" line="117"/>
+      <location filename="../../draftmake/make_pointarray.py" line="128"/>
+      <location filename="../../draftmake/make_label.py" line="236"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="167"/>
+      <location filename="../../draftmake/make_patharray.py" line="170"/>
+      <location filename="../../draftmake/make_patharray.py" line="181"/>
+      <location filename="../../draftmake/make_patharray.py" line="339"/>
+      <location filename="../../draftmake/make_patharray.py" line="350"/>
+      <location filename="../../draftmake/make_circulararray.py" line="131"/>
+      <location filename="../../draftmake/make_polararray.py" line="103"/>
+      <location filename="../../draftmake/make_dimension.py" line="322"/>
+      <location filename="../../draftmake/make_dimension.py" line="447"/>
+      <source>Wrong input: object not in document.</source>
+      <translation>Verkeerde invoer: object niet in document.</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/gui_utils.py" line="81"/>
+      <source>No graphical interface</source>
+      <translation type="unfinished">No graphical interface</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/gui_utils.py" line="161"/>
+      <source>Unable to insert new object into a scaled part</source>
+      <translation>Kan geen nieuw object in een verschaald deel plaatsen</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/gui_utils.py" line="267"/>
+      <source>Symbol not implemented. Using a default symbol.</source>
+      <translation type="unfinished">Symbol not implemented. Using a default symbol.</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/gui_utils.py" line="333"/>
+      <source>Visibility off; removed from list: </source>
+      <translation type="unfinished">Visibility off; removed from list: </translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/gui_utils.py" line="603"/>
+      <source>image is Null</source>
+      <translation type="unfinished">image is Null</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/gui_utils.py" line="609"/>
+      <source>filename does not exist on the system or in the resource file</source>
+      <translation type="unfinished">filename does not exist on the system or in the resource file</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/gui_utils.py" line="668"/>
+      <source>unable to load texture</source>
+      <translation type="unfinished">unable to load texture</translation>
+    </message>
+    <message>
+      <location filename="../../draftutils/gui_utils.py" line="738"/>
+      <source>Does not have 'ViewObject.RootNode'.</source>
+      <translation type="unfinished">Does not have 'ViewObject.RootNode'.</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="151"/>
@@ -3407,6 +4807,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Vlakken moeten in het zelfde vlak liggen zijn om te worden verfijnd</translation>
     </message>
     <message>
+      <location filename="../../draftfunctions/upgrade.py" line="435"/>
       <location filename="../../draftfunctions/downgrade.py" line="230"/>
       <source>Upgrade: Unknown force method:</source>
       <translation>Upgrade: Onbekende methode:</translation>
@@ -3457,6 +4858,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Verschillende draden of randen gevonden: bedraden</translation>
     </message>
     <message>
+      <location filename="../../draftfunctions/upgrade.py" line="513"/>
       <location filename="../../draftfunctions/upgrade.py" line="547"/>
       <source>Found several non-treatable objects: creating compound</source>
       <translation>Verschillende niet-behandelbare objecten gevonden: samenvoeging maken</translation>
@@ -3547,9 +4949,278 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Geen downgrade meer mogelijk</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="729"/>
-      <source>Wrong input: object not in document.</source>
-      <translation>Verkeerde invoer: object niet in document.</translation>
+      <location filename="../../InitGui.py" line="46"/>
+      <source>Draft</source>
+      <translation>Schets</translation>
+    </message>
+    <message>
+      <location filename="../../WorkingPlane.py" line="713"/>
+      <location filename="../../draftmake/make_sketch.py" line="127"/>
+      <location filename="../../draftmake/make_sketch.py" line="139"/>
+      <source>All Shapes must be coplanar</source>
+      <translation>Alle vormen moeten in het zelfde vlak liggen</translation>
+    </message>
+    <message>
+      <location filename="../../WorkingPlane.py" line="721"/>
+      <source>Selected Shapes must define a plane</source>
+      <translation>Geselecteerde Vormen moeten een vlak definiëren</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="361"/>
+      <source>Activate this layer</source>
+      <translation>Activeer deze laag</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="367"/>
+      <source>Select layer contents</source>
+      <translation>Selecteer inhoud laag</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="405"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="421"/>
+      <source>Merge layer duplicates</source>
+      <translation>Dubbele laag samenvoegen</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="410"/>
+      <location filename="../../draftviewproviders/view_layer.py" line="469"/>
+      <source>Add new layer</source>
+      <translation>Nieuwe laag toevoegen</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="454"/>
+      <source>Relabeling layer:</source>
+      <translation type="unfinished">Relabeling layer:</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_layer.py" line="458"/>
+      <source>Merging layer:</source>
+      <translation type="unfinished">Merging layer:</translation>
+    </message>
+    <message>
+      <location filename="../../draftviewproviders/view_base.py" line="402"/>
+      <source>Please load the Draft Workbench to enable editing this object</source>
+      <translation type="unfinished">Please load the Draft Workbench to enable editing this object</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="56"/>
+      <source>ShapeString</source>
+      <translation>Tekenreeksvorm</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_shapestring.py" line="70"/>
+      <source>Default</source>
+      <translation>Standaard</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="83"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="83"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="83"/>
+      <source>Task panel:</source>
+      <translation>Taakpaneel:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="83"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="95"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="290"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="481"/>
+      <location filename="../../draftmake/make_circulararray.py" line="122"/>
+      <source>Circular array</source>
+      <translation>Cirkelvormig patroon</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="208"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="201"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="187"/>
+      <source>At least one element must be selected.</source>
+      <translation>Ten minste één element moet worden geselecteerd.</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="212"/>
+      <source>Number of layers must be at least 2.</source>
+      <translation>Aantal lagen moet minimaal 2 zijn.</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="219"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="212"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="194"/>
+      <source>Selection is not suitable for array.</source>
+      <translation>Selectie is niet geschikt voor reeks.</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="220"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="372"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="213"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="375"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="195"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="327"/>
+      <source>Object:</source>
+      <translation>Object:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="224"/>
+      <source>Radial distance is zero. Resulting array may not look correct.</source>
+      <translation>Radiale afstand is nul. Resulterende reeks ziet er mogelijk niet correct uit.</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="226"/>
+      <source>Radial distance is negative. It is made positive to proceed.</source>
+      <translation>Radiale afstand is negatief, het is positief gemaakt om verder te kunnen gaan.</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="230"/>
+      <source>Tangential distance cannot be zero.</source>
+      <translation>Tangentiële afstand kan niet nul zijn.</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="233"/>
+      <source>Tangential distance is negative. It is made positive to proceed.</source>
+      <translation>Tangential distance is negatief, het is positief gemaakt om verder te gaan.</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="331"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="286"/>
+      <source>Center reset:</source>
+      <translation>Middelpunt reset:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="341"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="344"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="296"/>
+      <source>Fuse:</source>
+      <translation>Samenvoegen:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="355"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="358"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="310"/>
+      <source>Create Link array:</source>
+      <translation>Link reeks aanmaken:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="373"/>
+      <source>Radial distance:</source>
+      <translation>Radiale afstand:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="374"/>
+      <source>Tangential distance:</source>
+      <translation>Tangentiële afstand:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="375"/>
+      <source>Number of circular layers:</source>
+      <translation>Aantal circulaire lagen:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="376"/>
+      <source>Symmetry parameter:</source>
+      <translation>Symmetrie parameter:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="378"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="331"/>
+      <source>Center of rotation:</source>
+      <translation>Midden van rotatie:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="481"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="396"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="434"/>
+      <source>Aborted:</source>
+      <translation>Afgebroken:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="83"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="95"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="269"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="396"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="275"/>
+      <source>Orthogonal array</source>
+      <translation>Orthogonale matrix</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="205"/>
+      <source>Number of elements must be at least 1.</source>
+      <translation>Aantal elementen moet minimaal 1 zijn.</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="316"/>
+      <source>Interval X reset:</source>
+      <translation>Interval X opnieuw instellen:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="325"/>
+      <source>Interval Y reset:</source>
+      <translation>Interval Y opnieuw instellen:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="334"/>
+      <source>Interval Z reset:</source>
+      <translation>Interval Z opnieuw instellen:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="376"/>
+      <source>Number of X elements:</source>
+      <translation>Aantal X-elementen:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="378"/>
+      <source>Interval X:</source>
+      <translation>X-interval:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="381"/>
+      <source>Number of Y elements:</source>
+      <translation>Aantal Y-elementen:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="383"/>
+      <source>Interval Y:</source>
+      <translation>Y-interval:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="386"/>
+      <source>Number of Z elements:</source>
+      <translation>Aantal Z-elementen:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="388"/>
+      <source>Interval Z:</source>
+      <translation>Z-interval:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="95"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="258"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="434"/>
+      <location filename="../../draftmake/make_polararray.py" line="94"/>
+      <source>Polar array</source>
+      <translation>Polair matrix</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="199"/>
+      <source>Number of elements must be at least 2.</source>
+      <translation>Aantal elementen moet ten minste 2 zijn.</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="203"/>
+      <source>The angle is above 360 degrees. It is set to this value to proceed.</source>
+      <translation>De hoek is hoger dan 360 graden. Het is ingesteld op deze waarde om door te gaan.</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="206"/>
+      <source>The angle is below -360 degrees. It is set to this value to proceed.</source>
+      <translation>De hoek is lager dan -360 graden. Het is ingesteld op deze waarde om door te gaan.</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="328"/>
+      <source>Number of elements:</source>
+      <translation>Aantal elementen:</translation>
+    </message>
+    <message>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="329"/>
+      <source>Polar angle:</source>
+      <translation>Polair-hoek:</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_pointarray.py" line="135"/>
@@ -3557,16 +5228,20 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Verkeerde invoer: punt object heeft geen 'Geometrie', 'Links' of 'Componenten'.</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_pointarray.py" line="147"/>
       <location filename="../../draftmake/make_label.py" line="215"/>
+      <location filename="../../draftmake/make_text.py" line="107"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
       <translation>Verkeerde invoer: moet een plaatsing, een vector, of een rotatie zijn.</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_arc_3points.py" line="125"/>
       <location filename="../../draftmake/make_arc_3points.py" line="130"/>
       <source>Points:</source>
       <translation type="unfinished">Points:</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_arc_3points.py" line="126"/>
       <location filename="../../draftmake/make_arc_3points.py" line="131"/>
       <source>Wrong input: must be list or tuple of three points exactly.</source>
       <translation>Verkeerde invoer: moet exact een lijst van drie punten zijn.</translation>
@@ -3607,6 +5282,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Creëer een primitief object</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_arc_3points.py" line="193"/>
       <location filename="../../draftmake/make_arc_3points.py" line="204"/>
       <source>Final placement:</source>
       <translation>Laatste plaatsing:</translation>
@@ -3627,6 +5303,160 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Kaartmodus:</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_sketch.py" line="104"/>
+      <source>No shape found</source>
+      <translation>Vorm niet gevonden</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_sketch.py" line="111"/>
+      <source>All Shapes must be planar</source>
+      <translation>Alle vormen moeten plat zijn</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_label.py" line="204"/>
+      <location filename="../../draftmake/make_patharray.py" line="200"/>
+      <location filename="../../draftmake/make_patharray.py" line="254"/>
+      <location filename="../../draftmake/make_patharray.py" line="265"/>
+      <location filename="../../draftmake/make_circulararray.py" line="164"/>
+      <location filename="../../draftmake/make_polararray.py" line="126"/>
+      <location filename="../../draftmake/make_dimension.py" line="222"/>
+      <location filename="../../draftmake/make_dimension.py" line="229"/>
+      <location filename="../../draftmake/make_dimension.py" line="237"/>
+      <location filename="../../draftmake/make_dimension.py" line="354"/>
+      <location filename="../../draftmake/make_dimension.py" line="371"/>
+      <location filename="../../draftmake/make_dimension.py" line="495"/>
+      <location filename="../../draftmake/make_dimension.py" line="571"/>
+      <location filename="../../draftmake/make_dimension.py" line="599"/>
+      <location filename="../../draftmake/make_dimension.py" line="607"/>
+      <source>Wrong input: must be a vector.</source>
+      <translation>Verkeerde invoer: moet een vector zijn.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_label.py" line="230"/>
+      <location filename="../../draftmake/make_dimension.py" line="316"/>
+      <source>Wrong input: object must not be a list.</source>
+      <translation>Verkeerde invoer: object mag geen lijst zijn.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_label.py" line="251"/>
+      <location filename="../../draftmake/make_patharray.py" line="213"/>
+      <source>Wrong input: must be a list or tuple of strings, or a single string.</source>
+      <translation>Verkeerde invoer: moet een lijst of tuple van tekenreeksen of een enkele tekenreeks zijn.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_label.py" line="263"/>
+      <source>Wrong input: subelement not in object.</source>
+      <translation>Verkeerde invoer: subelement niet in object.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_label.py" line="272"/>
+      <source>Wrong input: label_type must be a string.</source>
+      <translation type="unfinished">Wrong input: label_type must be a string.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_label.py" line="277"/>
+      <source>Wrong input: label_type must be one of the following: </source>
+      <translation type="unfinished">Wrong input: label_type must be one of the following: </translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_label.py" line="286"/>
+      <location filename="../../draftmake/make_label.py" line="291"/>
+      <location filename="../../draftmake/make_text.py" line="91"/>
+      <location filename="../../draftmake/make_text.py" line="96"/>
+      <source>Wrong input: must be a list of strings or a single string.</source>
+      <translation>Verkeerde invoer: moet een lijst van tekenreeksen of een enkele tekenreeks zijn.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_label.py" line="300"/>
+      <location filename="../../draftmake/make_label.py" line="304"/>
+      <source>Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</source>
+      <translation>Verkeerde invoer: moet een tekenreeks, 'Horizontaal', 'Verticaal' of 'Aangepast' zijn.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_label.py" line="313"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="151"/>
+      <location filename="../../draftmake/make_patharray.py" line="191"/>
+      <location filename="../../draftmake/make_patharray.py" line="360"/>
+      <location filename="../../draftmake/make_polararray.py" line="119"/>
+      <location filename="../../draftmake/make_layer.py" line="201"/>
+      <source>Wrong input: must be a number.</source>
+      <translation>Verkeerde invoer: moet een getal zijn.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_label.py" line="320"/>
+      <source>Wrong input: must be a list of at least two vectors.</source>
+      <translation>Verkeerde invoer: moet een lijst van ten minste twee vectoren zijn.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_label.py" line="353"/>
+      <source>Direction is not 'Custom'; points won't be used.</source>
+      <translation>Richting is niet 'Aangepast'; punten worden niet gebruikt.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_label.py" line="380"/>
+      <source>Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</source>
+      <translation>Verkeerde invoer: moet een lijst van twee elementen zijn. Bijvoorbeeld [object, 'Rand1'].</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_orthoarray.py" line="60"/>
+      <source>Internal orthogonal array</source>
+      <translation>Interne orthogonale reeks</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_orthoarray.py" line="87"/>
+      <source>Wrong input: must be a number or vector.</source>
+      <translation>Verkeerde invoer: moet een getal of vector zijn.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_orthoarray.py" line="92"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="95"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="98"/>
+      <source>Input: single value expanded to vector.</source>
+      <translation>Invoer: enkele waarde uitgevouwen naar vector.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_orthoarray.py" line="119"/>
+      <location filename="../../draftmake/make_circulararray.py" line="154"/>
+      <location filename="../../draftmake/make_polararray.py" line="112"/>
+      <source>Wrong input: must be an integer number.</source>
+      <translation>Verkeerde invoer: moet een geheel getal zijn.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_orthoarray.py" line="123"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="126"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="129"/>
+      <source>Input: number of elements must be at least 1. It is set to 1.</source>
+      <translation>Invoer: aantal elementen moet minimaal 1 zijn. Het staat ingesteld op 1.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_orthoarray.py" line="350"/>
+      <source>Orthogonal array 2D</source>
+      <translation>Orthogonale reeks 2D</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_orthoarray.py" line="424"/>
+      <source>Rectangular array</source>
+      <translation>Rechthoekige reeks</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_orthoarray.py" line="501"/>
+      <source>Rectangular array 2D</source>
+      <translation>Rechthoekige 2D-reeks</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_patharray.py" line="246"/>
+      <source>Wrong input: must be 'Original', 'Frenet', or 'Tangent'.</source>
+      <translation>Verkeerde invoer: moet 'Origineel', 'Frenet' of 'Tangent' zijn.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_circulararray.py" line="144"/>
+      <source>Wrong input: must be a number or quantity.</source>
+      <translation>Verkeerde invoer: moet een getal of aantal zijn.</translation>
+    </message>
+    <message>
+      <location filename="../../draftmake/make_fillet.py" line="58"/>
+      <location filename="../../draftmake/make_fillet.py" line="143"/>
+      <location filename="../../draftmake/make_fillet.py" line="144"/>
       <location filename="../../draftmake/make_fillet.py" line="145"/>
       <source>length:</source>
       <translation>lengte:</translation>
@@ -3642,6 +5472,8 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Straal is te groot</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_fillet.py" line="143"/>
+      <location filename="../../draftmake/make_fillet.py" line="144"/>
       <location filename="../../draftmake/make_fillet.py" line="145"/>
       <source>Segment</source>
       <translation>Segment</translation>
@@ -3650,41 +5482,6 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <location filename="../../draftmake/make_fillet.py" line="165"/>
       <source>Removed original objects.</source>
       <translation>Originele objecten zijn verwijderd.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_label.py" line="291"/>
-      <source>Wrong input: must be a list of strings or a single string.</source>
-      <translation>Verkeerde invoer: moet een lijst van tekenreeksen of een enkele tekenreeks zijn.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="481"/>
-      <source>Circular array</source>
-      <translation>Cirkelvormig patroon</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_circulararray.py" line="144"/>
-      <source>Wrong input: must be a number or quantity.</source>
-      <translation>Verkeerde invoer: moet een getal of aantal zijn.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_orthoarray.py" line="119"/>
-      <source>Wrong input: must be an integer number.</source>
-      <translation>Verkeerde invoer: moet een geheel getal zijn.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_label.py" line="204"/>
-      <source>Wrong input: must be a vector.</source>
-      <translation>Verkeerde invoer: moet een vector zijn.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="434"/>
-      <source>Polar array</source>
-      <translation>Polair matrix</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_label.py" line="313"/>
-      <source>Wrong input: must be a number.</source>
-      <translation>Verkeerde invoer: moet een getal zijn.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="173"/>
@@ -3697,11 +5494,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Gebruik een van 'make_linear_dimension', of 'make_linear_dimension_obj'.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_label.py" line="230"/>
-      <source>Wrong input: object must not be a list.</source>
-      <translation>Verkeerde invoer: object mag geen lijst zijn.</translation>
-    </message>
-    <message>
+      <location filename="../../draftmake/make_dimension.py" line="327"/>
       <location filename="../../draftmake/make_dimension.py" line="452"/>
       <source>Wrong input: object doesn't have a 'Shape' to measure.</source>
       <translation>Verkeerde invoer: object heeft geen 'Vorm' om te meten.</translation>
@@ -3712,6 +5505,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Verkeerde invoer: object heeft geen ten minste één element in 'Hoekpunten' om te gebruiken voor het meten.</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_dimension.py" line="338"/>
       <location filename="../../draftmake/make_dimension.py" line="463"/>
       <source>Wrong input: must be an integer.</source>
       <translation>Verkeerde invoer: moet een geheel getal zijn.</translation>
@@ -3722,6 +5516,7 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>i1: waarden onder 1 zijn niet toegestaan; worden ingesteld op 1.</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_dimension.py" line="347"/>
       <location filename="../../draftmake/make_dimension.py" line="363"/>
       <source>Wrong input: vertex not in object.</source>
       <translation>Verkeerde invoer: Hoekpunt niet in object.</translation>
@@ -3752,24 +5547,21 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Verkeerde invoer: index komt niet overeen met een cirkelvormige rand.</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_dimension.py" line="483"/>
       <location filename="../../draftmake/make_dimension.py" line="487"/>
       <source>Wrong input: must be a string, 'radius' or 'diameter'.</source>
       <translation>Verkeerde invoer: moet een tekenreeks, 'radius' of 'diameter' zijn.</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_dimension.py" line="579"/>
       <location filename="../../draftmake/make_dimension.py" line="586"/>
       <source>Wrong input: must be a list with two angles.</source>
       <translation>Verkeerde invoer: moet een lijst met twee hoeken zijn.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_layer.py" line="67"/>
+      <location filename="../../draftmake/make_layer.py" line="69"/>
       <source>Layers</source>
       <translation>Lagen</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_layers.py" line="47"/>
-      <source>Layer</source>
-      <translation>Laag</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_layer.py" line="157"/>
@@ -3777,11 +5569,15 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <translation>Verkeerde invoer: het moet een tekenreeks zijn.</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_layer.py" line="167"/>
+      <location filename="../../draftmake/make_layer.py" line="171"/>
+      <location filename="../../draftmake/make_layer.py" line="184"/>
       <location filename="../../draftmake/make_layer.py" line="188"/>
       <source>Wrong input: must be a tuple of three floats 0.0 to 1.0.</source>
       <translation>Verkeerde invoer: moet een hoeveelheid van drie getallen tussen de 0,0 t/m 1,0.</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_layer.py" line="208"/>
       <location filename="../../draftmake/make_layer.py" line="212"/>
       <source>Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'.</source>
       <translation>Verkeerde invoer: moet 'Massief', 'Gestreept', 'Gestippeld' of 'StreekStippel' zijn.</translation>
@@ -3791,1527 +5587,11 @@ Not available if Draft preference option 'Use Part Primitives' is enabled</trans
       <source>Wrong input: must be a number between 0 and 100.</source>
       <translation>Verkeerde invoer: moet een getal tussen 0 en 100 zijn.</translation>
     </message>
-    <message>
-      <location filename="../../draftmake/make_label.py" line="251"/>
-      <source>Wrong input: must be a list or tuple of strings, or a single string.</source>
-      <translation>Verkeerde invoer: moet een lijst of tuple van tekenreeksen of een enkele tekenreeks zijn.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_patharray.py" line="246"/>
-      <source>Wrong input: must be 'Original', 'Frenet', or 'Tangent'.</source>
-      <translation>Verkeerde invoer: moet 'Origineel', 'Frenet' of 'Tangent' zijn.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_sketch.py" line="103"/>
-      <source>No shape found</source>
-      <translation>Vorm niet gevonden</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_sketch.py" line="110"/>
-      <source>All Shapes must be planar</source>
-      <translation>Alle vormen moeten plat zijn</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_orthoarray.py" line="60"/>
-      <source>Internal orthogonal array</source>
-      <translation>Interne orthogonale reeks</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_orthoarray.py" line="87"/>
-      <source>Wrong input: must be a number or vector.</source>
-      <translation>Verkeerde invoer: moet een getal of vector zijn.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_orthoarray.py" line="98"/>
-      <source>Input: single value expanded to vector.</source>
-      <translation>Invoer: enkele waarde uitgevouwen naar vector.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_orthoarray.py" line="129"/>
-      <source>Input: number of elements must be at least 1. It is set to 1.</source>
-      <translation>Invoer: aantal elementen moet minimaal 1 zijn. Het staat ingesteld op 1.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="396"/>
-      <source>Orthogonal array</source>
-      <translation>Orthogonale matrix</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_orthoarray.py" line="350"/>
-      <source>Orthogonal array 2D</source>
-      <translation>Orthogonale reeks 2D</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_orthoarray.py" line="424"/>
-      <source>Rectangular array</source>
-      <translation>Rechthoekige reeks</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_orthoarray.py" line="501"/>
-      <source>Rectangular array 2D</source>
-      <translation>Rechthoekige 2D-reeks</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_label.py" line="263"/>
-      <source>Wrong input: subelement not in object.</source>
-      <translation>Verkeerde invoer: subelement niet in object.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_label.py" line="272"/>
-      <source>Wrong input: label_type must be a string.</source>
-      <translation type="unfinished">Wrong input: label_type must be a string.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_label.py" line="277"/>
-      <source>Wrong input: label_type must be one of the following: </source>
-      <translation type="unfinished">Wrong input: label_type must be one of the following: </translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_label.py" line="304"/>
-      <source>Wrong input: must be a string, 'Horizontal', 'Vertical', or 'Custom'.</source>
-      <translation>Verkeerde invoer: moet een tekenreeks, 'Horizontaal', 'Verticaal' of 'Aangepast' zijn.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_label.py" line="319"/>
-      <source>Wrong input: must be a list of at least two vectors.</source>
-      <translation>Verkeerde invoer: moet een lijst van ten minste twee vectoren zijn.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_label.py" line="353"/>
-      <source>Direction is not 'Custom'; points won't be used.</source>
-      <translation>Richting is niet 'Aangepast'; punten worden niet gebruikt.</translation>
-    </message>
-    <message>
-      <location filename="../../draftmake/make_label.py" line="380"/>
-      <source>Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</source>
-      <translation>Verkeerde invoer: moet een lijst van twee elementen zijn. Bijvoorbeeld [object, 'Rand1'].</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/shapestring.py" line="69"/>
-      <source>ShapeString: string has no wires</source>
-      <translation>ShapeString: tekenreeks heeft geen draden</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/pointarray.py" line="161"/>
-      <source>added property 'ExtraPlacement'</source>
-      <translation>toegevoegd eigenschap 'ExtraPlaatsing'</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="283"/>
-      <source>, path object doesn't have 'Edges'.</source>
-      <translation>, pad-object heeft geen 'Randen'.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="407"/>
-      <source>'PathObj' property will be migrated to 'PathObject'</source>
-      <translation>'PadObj' eigendom zal worden gemigreerd naar 'PathObject'</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="525"/>
-      <source>Cannot calculate path tangent. Copy not aligned.</source>
-      <translation>Kan pad tangent niet berekenen. Kopiëren niet uitgelijnd.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="541"/>
-      <source>Tangent and normal are parallel. Copy not aligned.</source>
-      <translation>Tangens en normaal zijn parallelel. Kopieer niet uitgelijnd.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="558"/>
-      <source>Cannot calculate path normal, using default.</source>
-      <translation>Kan geen pad normaal berekenen, standaard wordt gebruikt.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="565"/>
-      <source>Cannot calculate path binormal. Copy not aligned.</source>
-      <translation>Kan pad niet binormaal berekenen. Kopieer niet uitgelijnd.</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/patharray.py" line="571"/>
-      <source>AlignMode {} is not implemented</source>
-      <translation>Uitlijningsmodus {} is niet geïmplementeerd</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="105"/>
-      <source>added view property 'ScaleMultiplier'</source>
-      <translation>toegevoegde weergave eigenschap 'SchaalVermenigvuldiger'</translation>
-    </message>
-    <message>
-      <location filename="../../draftobjects/draft_annotation.py" line="130"/>
-      <source>migrated 'DraftText' type to 'Text'</source>
-      <translation>'DraftText' type gemigreerd naar 'Tekst'</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="360"/>
-      <source>Activate this layer</source>
-      <translation>Activeer deze laag</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="366"/>
-      <source>Select layer contents</source>
-      <translation>Selecteer inhoud laag</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="421"/>
-      <source>Merge layer duplicates</source>
-      <translation>Dubbele laag samenvoegen</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="469"/>
-      <source>Add new layer</source>
-      <translation>Nieuwe laag toevoegen</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="453"/>
-      <source>Relabeling layer:</source>
-      <translation type="unfinished">Relabeling layer:</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_layer.py" line="458"/>
-      <source>Merging layer:</source>
-      <translation type="unfinished">Merging layer:</translation>
-    </message>
-    <message>
-      <location filename="../../draftviewproviders/view_base.py" line="401"/>
-      <source>Please load the Draft Workbench to enable editing this object</source>
-      <translation type="unfinished">Please load the Draft Workbench to enable editing this object</translation>
-    </message>
-    <message>
-      <location filename="../../InitGui.py" line="45"/>
-      <source>Draft</source>
-      <translation>Schets</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="153"/>
-      <source>custom</source>
-      <translation>eigen</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="138"/>
-      <source>Unable to convert input into a  scale factor</source>
-      <translation type="unfinished">Unable to convert input into a  scale factor</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="154"/>
-      <source>Set custom scale</source>
-      <translation type="unfinished">Set custom scale</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="155"/>
-      <source>Set custom annotation scale in format x:x, x=x</source>
-      <translation>Aangepaste aantekening schaal in formaat x:x, x=x instellen</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_draft_statusbar.py" line="213"/>
-      <source>Set the scale used by draft annotation tools</source>
-      <translation type="unfinished">Set the scale used by draft annotation tools</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="650"/>
-      <source>Solids:</source>
-      <translation type="unfinished">Solids:</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="651"/>
-      <source>Faces:</source>
-      <translation>Vlakken:</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="652"/>
-      <source>Wires:</source>
-      <translation type="unfinished">Wires:</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="653"/>
-      <source>Edges:</source>
-      <translation type="unfinished">Edges:</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="654"/>
-      <source>Vertices:</source>
-      <translation type="unfinished">Vertices:</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="658"/>
-      <source>Face</source>
-      <translation>Vlak</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="663"/>
-      <source>Wire</source>
-      <translation>Draad</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="697"/>
-      <source>different types</source>
-      <translation type="unfinished">different types</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="707"/>
-      <source>Objects have different placements. Distance between the two base points: </source>
-      <translation type="unfinished">Objects have different placements. Distance between the two base points: </translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="712"/>
-      <source>has a different value</source>
-      <translation type="unfinished">has a different value</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="714"/>
-      <source>doesn't exist in one of the objects</source>
-      <translation type="unfinished">doesn't exist in one of the objects</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="827"/>
-      <source>%s shares a base with %d other objects. Please check if you want to modify this.</source>
-      <translation type="unfinished">%s shares a base with %d other objects. Please check if you want to modify this.</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="833"/>
-      <source>%s cannot be modified because its placement is readonly.</source>
-      <translation type="unfinished">%s cannot be modified because its placement is readonly.</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="977"/>
-      <source>Wrong input: unknown document.</source>
-      <translation type="unfinished">Wrong input: unknown document.</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="1054"/>
-      <source>This function will be deprecated in </source>
-      <translation type="unfinished">This function will be deprecated in </translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="1058"/>
-      <source>Please use </source>
-      <translation type="unfinished">Please use </translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/utils.py" line="1058"/>
-      <source>This function will be deprecated. </source>
-      <translation type="unfinished">This function will be deprecated. </translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="169"/>
-      <source>Snap Lock</source>
-      <translation type="unfinished">Snap Lock</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="170"/>
-      <source>Snap Endpoint</source>
-      <translation type="unfinished">Snap Endpoint</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="171"/>
-      <source>Snap Midpoint</source>
-      <translation type="unfinished">Snap Midpoint</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="172"/>
-      <source>Snap Center</source>
-      <translation type="unfinished">Snap Center</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="173"/>
-      <source>Snap Angle</source>
-      <translation type="unfinished">Snap Angle</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="174"/>
-      <source>Snap Intersection</source>
-      <translation type="unfinished">Snap Intersection</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="175"/>
-      <source>Snap Perpendicular</source>
-      <translation type="unfinished">Snap Perpendicular</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="176"/>
-      <source>Snap Extension</source>
-      <translation type="unfinished">Snap Extension</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="177"/>
-      <source>Snap Parallel</source>
-      <translation type="unfinished">Snap Parallel</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="178"/>
-      <source>Snap Special</source>
-      <translation type="unfinished">Snap Special</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="179"/>
-      <source>Snap Near</source>
-      <translation type="unfinished">Snap Near</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="180"/>
-      <source>Snap Ortho</source>
-      <translation type="unfinished">Snap Ortho</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="181"/>
-      <source>Snap Grid</source>
-      <translation type="unfinished">Snap Grid</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="182"/>
-      <source>Snap WorkingPlane</source>
-      <translation type="unfinished">Snap WorkingPlane</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="183"/>
-      <source>Snap Dimensions</source>
-      <translation type="unfinished">Snap Dimensions</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/init_tools.py" line="184"/>
-      <source>Toggle Draft Grid</source>
-      <translation>Concept raster in-/uitschakelen</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/gui_utils.py" line="81"/>
-      <source>No graphical interface</source>
-      <translation type="unfinished">No graphical interface</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/gui_utils.py" line="158"/>
-      <source>Unable to insert new object into a scaled part</source>
-      <translation>Kan geen nieuw object in een verschaald deel plaatsen</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/gui_utils.py" line="267"/>
-      <source>Symbol not implemented. Using a default symbol.</source>
-      <translation type="unfinished">Symbol not implemented. Using a default symbol.</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/gui_utils.py" line="333"/>
-      <source>Visibility off; removed from list: </source>
-      <translation type="unfinished">Visibility off; removed from list: </translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/gui_utils.py" line="603"/>
-      <source>image is Null</source>
-      <translation type="unfinished">image is Null</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/gui_utils.py" line="606"/>
-      <source>filename does not exist on the system or in the resource file</source>
-      <translation type="unfinished">filename does not exist on the system or in the resource file</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/gui_utils.py" line="668"/>
-      <source>unable to load texture</source>
-      <translation type="unfinished">unable to load texture</translation>
-    </message>
-    <message>
-      <location filename="../../draftutils/gui_utils.py" line="738"/>
-      <source>Does not have 'ViewObject.RootNode'.</source>
-      <translation type="unfinished">Does not have 'ViewObject.RootNode'.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="83"/>
-      <source>Task panel:</source>
-      <translation>Taakpaneel:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="201"/>
-      <source>At least one element must be selected.</source>
-      <translation>Ten minste één element moet worden geselecteerd.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="212"/>
-      <source>Selection is not suitable for array.</source>
-      <translation>Selectie is niet geschikt voor reeks.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="375"/>
-      <source>Object:</source>
-      <translation>Object:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="199"/>
-      <source>Number of elements must be at least 2.</source>
-      <translation>Aantal elementen moet ten minste 2 zijn.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="203"/>
-      <source>The angle is above 360 degrees. It is set to this value to proceed.</source>
-      <translation>De hoek is hoger dan 360 graden. Het is ingesteld op deze waarde om door te gaan.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="206"/>
-      <source>The angle is below -360 degrees. It is set to this value to proceed.</source>
-      <translation>De hoek is lager dan -360 graden. Het is ingesteld op deze waarde om door te gaan.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="330"/>
-      <source>Center reset:</source>
-      <translation>Middelpunt reset:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="344"/>
-      <source>Fuse:</source>
-      <translation>Samenvoegen:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="358"/>
-      <source>Create Link array:</source>
-      <translation>Link reeks aanmaken:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="328"/>
-      <source>Number of elements:</source>
-      <translation>Aantal elementen:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="329"/>
-      <source>Polar angle:</source>
-      <translation>Polair-hoek:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="377"/>
-      <source>Center of rotation:</source>
-      <translation>Midden van rotatie:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="396"/>
-      <source>Aborted:</source>
-      <translation>Afgebroken:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="212"/>
-      <source>Number of layers must be at least 2.</source>
-      <translation>Aantal lagen moet minimaal 2 zijn.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="224"/>
-      <source>Radial distance is zero. Resulting array may not look correct.</source>
-      <translation>Radiale afstand is nul. Resulterende reeks ziet er mogelijk niet correct uit.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="226"/>
-      <source>Radial distance is negative. It is made positive to proceed.</source>
-      <translation>Radiale afstand is negatief, het is positief gemaakt om verder te kunnen gaan.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="230"/>
-      <source>Tangential distance cannot be zero.</source>
-      <translation>Tangentiële afstand kan niet nul zijn.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="233"/>
-      <source>Tangential distance is negative. It is made positive to proceed.</source>
-      <translation>Tangential distance is negatief, het is positief gemaakt om verder te gaan.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="373"/>
-      <source>Radial distance:</source>
-      <translation>Radiale afstand:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="374"/>
-      <source>Tangential distance:</source>
-      <translation>Tangentiële afstand:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="375"/>
-      <source>Number of circular layers:</source>
-      <translation>Aantal circulaire lagen:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="376"/>
-      <source>Symmetry parameter:</source>
-      <translation>Symmetrie parameter:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="205"/>
-      <source>Number of elements must be at least 1.</source>
-      <translation>Aantal elementen moet minimaal 1 zijn.</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="315"/>
-      <source>Interval X reset:</source>
-      <translation>Interval X opnieuw instellen:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="324"/>
-      <source>Interval Y reset:</source>
-      <translation>Interval Y opnieuw instellen:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="333"/>
-      <source>Interval Z reset:</source>
-      <translation>Interval Z opnieuw instellen:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="376"/>
-      <source>Number of X elements:</source>
-      <translation>Aantal X-elementen:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="377"/>
-      <source>Interval X:</source>
-      <translation>X-interval:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="381"/>
-      <source>Number of Y elements:</source>
-      <translation>Aantal Y-elementen:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="382"/>
-      <source>Interval Y:</source>
-      <translation>Y-interval:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="386"/>
-      <source>Number of Z elements:</source>
-      <translation>Aantal Z-elementen:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="387"/>
-      <source>Interval Z:</source>
-      <translation>Z-interval:</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="56"/>
-      <source>ShapeString</source>
-      <translation>Tekenreeksvorm</translation>
-    </message>
-    <message>
-      <location filename="../../drafttaskpanels/task_shapestring.py" line="69"/>
-      <source>Default</source>
-      <translation>Standaard</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_shapestrings.py" line="133"/>
-      <source>Create ShapeString</source>
-      <translation>ShapeString aanmaken</translation>
-    </message>
-    <message>
-      <location filename="../../importDXF.py" line="138"/>
-      <source>The DXF import/export libraries needed by FreeCAD to handle
-the DXF format were not found on this system.
-Please either enable FreeCAD to download these libraries:
-  1 - Load Draft workbench
-  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
-Or download these libraries manually, as explained on
-https://github.com/yorikvanhavre/Draft-dxf-importer
-To enabled FreeCAD to download these libraries, answer Yes.</source>
-      <translation>De DXF-import-/exportbibliotheken die FreeCAD nodig heeft om
-het DXF-formaat te verwerken, zijn niet gevonden op dit systeem.
-Gelieve FreeCAD in te schakelen om deze bibliotheken te downloaden:
-  1 - Laad de ontwerpwerkbank op
-  2 - Menu Edit &gt; Voorkeuren &gt; Import-Export &gt; DXF &gt; Downloads inschakelen
-Of installeer de bibliotheken handmatig zoals uitgelegd op 
-https://github.com/yorikvanhavre/Draft-dxf-importer
-Om FreeCAD in staat te stellen om deze bibliotheken te downloaden, antwoord Ja.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_upgrade.py" line="67"/>
-      <source>Select an object to upgrade</source>
-      <translation>Selecteer een object om te upgraden</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_downgrade.py" line="85"/>
-      <source>Downgrade</source>
-      <translation>Downgraden</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_clone.py" line="79"/>
-      <source>Select an object to clone</source>
-      <translation>Selecteer een object om te klonen</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_rectangles.py" line="69"/>
-      <source>Pick first point</source>
-      <translation>Kies het eerste punt</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_ellipses.py" line="138"/>
-      <source>Create Ellipse</source>
-      <translation>Ellips aanmaken</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_rectangles.py" line="202"/>
-      <source>Pick opposite point</source>
-      <translation>Kies het tegenovergestelde punt</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_lines.py" line="163"/>
-      <source>Create Line</source>
-      <translation>Lijn aanmaken</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_lines.py" line="185"/>
-      <source>Create Wire</source>
-      <translation>Draad aanmaken</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_splines.py" line="140"/>
-      <source>Pick next point</source>
-      <translation>Kies het volgende punt</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_lines.py" line="328"/>
-      <source>Unable to create a Wire from selected objects</source>
-      <translation>Kan geen draad van de geselecteerde objecten maken</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_lines.py" line="351"/>
-      <source>Convert to Wire</source>
-      <translation>Converteren naar draad</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="567"/>
-      <source>This object does not support possible coincident points, please try again.</source>
-      <translation>Dit object ondersteunt geen mogelijke samenvallende punten, probeer het opnieuw.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="607"/>
-      <source>Active object must have more than two points/nodes</source>
-      <translation>Het actieve object moet meer dan twee punten/knooppunten bevatten</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="720"/>
-      <source>Selection is not a Knot</source>
-      <translation>Selectie is geen Knoop</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_edit_draft_objects.py" line="747"/>
-      <source>Endpoint of BezCurve can't be smoothed</source>
-      <translation>Het eindpunt van de BezCurve kan niet geëffend worden</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_edit_sketcher_objects.py" line="61"/>
-      <source>Sketch is too complex to edit: it is suggested to use sketcher default editor</source>
-      <translation>Sketch is te ingewikkeld om te bewerken: het wordt aanbevolen om de standaard schets editor te gebruiken</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_facebinders.py" line="71"/>
-      <source>Select faces from existing objects</source>
-      <translation>Selecteer vlakken van bestaande objecten</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_lineslope.py" line="64"/>
-      <source>Change slope</source>
-      <translation>Helling wijzigen</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="108"/>
-      <source>Select an object to edit</source>
-      <translation>Selecteer een object om te bewerken</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="294"/>
-      <source>Create Dimension</source>
-      <translation>Dimensie maken</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="309"/>
-      <source>Create Dimension (radial)</source>
-      <translation>Maak dimensie (radiaal)</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="508"/>
-      <source>Edge too short!</source>
-      <translation>Rand te kort!</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="518"/>
-      <source>Edges don't intersect!</source>
-      <translation>Randen doorsnijden elkaar niet!</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_drawing.py" line="77"/>
-      <source>The Drawing Workbench is obsolete since 0.17, consider using the TechDraw Workbench instead.</source>
-      <translation>De Drawing Workbench is verouderd sinds 0,17, overweeg in plaats daarvan de TechDraw Werkbank te gebruiken.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="68"/>
-      <source>Select an object to project</source>
-      <translation>Selecteer een object om te projecteren</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="68"/>
-      <source>Annotation style editor</source>
-      <translation>Stijleditor voor aantekeningen</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="288"/>
-      <source>Open styles file</source>
-      <translation>Stijlbestand openen</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="310"/>
-      <source>JSON file (*.json)</source>
-      <translation>JSON-bestand (*.json)</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="310"/>
-      <source>Save styles file</source>
-      <translation>Stijlbestand opslaan</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_upgrade.py" line="85"/>
-      <source>Upgrade</source>
-      <translation>Upgraden</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_move.py" line="81"/>
-      <source>Select an object to move</source>
-      <translation>Selecteer een object om te verplaatsen</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_move.py" line="103"/>
-      <source>Pick start point</source>
-      <translation>Kies startpunt</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_move.py" line="308"/>
-      <source>Pick end point</source>
-      <translation>Kies eindpunt</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_move.py" line="210"/>
-      <source>Move</source>
-      <translation>Verplaatsen</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="289"/>
-      <source>Some subelements could not be moved.</source>
-      <translation>Sommige subelementen konden niet verplaatst worden.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_pointarray.py" line="104"/>
-      <source>Please select exactly two objects, the base object and the point object, before calling this command.</source>
-      <translation>Selecteer precies twee objecten, het basisobject en het punt object, voordat u deze opdracht aanroept.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_pointarray.py" line="122"/>
-      <source>Point array</source>
-      <translation>Punt reeks</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_togglemodes.py" line="73"/>
-      <source>No active Draft Toolbar.</source>
-      <translation>Geen actieve schetswerkbalk.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_togglemodes.py" line="93"/>
-      <source>Construction mode</source>
-      <translation>Constructiemodus</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_togglemodes.py" line="125"/>
-      <source>Continue mode</source>
-      <translation>Continue modus</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_togglemodes.py" line="159"/>
-      <source>Toggle display mode</source>
-      <translation>Toggle weergavemodus</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="126"/>
-      <source>Main toggle snap</source>
-      <translation>Hoofd toggle klik</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="157"/>
-      <source>Midpoint snap</source>
-      <translation>Midpoint klik</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="187"/>
-      <source>Perpendicular snap</source>
-      <translation>Loodrechte uitlijning</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="217"/>
-      <source>Grid snap</source>
-      <translation>Raster plakken</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="247"/>
-      <source>Intersection snap</source>
-      <translation>Intersectie uitlijning</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="277"/>
-      <source>Parallel snap</source>
-      <translation>Parallelle uitlijning</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="307"/>
-      <source>Endpoint snap</source>
-      <translation>Eindpunt uitlijning</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="338"/>
-      <source>Angle snap (30 and 45 degrees)</source>
-      <translation>Hoek uitlijning (30 en 45 graden)</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="368"/>
-      <source>Arc center snap</source>
-      <translation>Boog midden uitlijning</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="398"/>
-      <source>Edge extension snap</source>
-      <translation>Rand verlenging uitlijning</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="428"/>
-      <source>Near snap</source>
-      <translation>Dichtbij uitlijning</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="459"/>
-      <source>Orthogonal snap</source>
-      <translation>Orthogonale uitlijning</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="489"/>
-      <source>Special point snap</source>
-      <translation>Speciale punt uitlijning</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="520"/>
-      <source>Dimension display</source>
-      <translation>Maat weergeven</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="553"/>
-      <source>Working plane snap</source>
-      <translation>Werkvlak uitlijning</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snaps.py" line="583"/>
-      <source>Show snap toolbar</source>
-      <translation>Toon uitlijn werkbalk</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="77"/>
-      <source>Select an object to array</source>
-      <translation>Selecteer een object voor de reeks</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_array_simple.py" line="101"/>
-      <source>Array</source>
-      <translation>Reeks</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="88"/>
-      <source>Pick center point</source>
-      <translation>Kies middelpunt</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="410"/>
-      <source>Pick radius</source>
-      <translation>Kies straal</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_polygons.py" line="224"/>
-      <source>Create Polygon (Part)</source>
-      <translation>Maak Veelhoek (Onderdeel)</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_polygons.py" line="243"/>
-      <source>Create Polygon</source>
-      <translation>Polygoon maken</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="73"/>
-      <source>Select an object to mirror</source>
-      <translation>Selecteer een object om te spiegelen</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="92"/>
-      <source>Pick start point of mirror line</source>
-      <translation>Kies het beginpunt van de spiegellijn</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="122"/>
-      <source>Mirror</source>
-      <translation>Spiegelen</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_mirror.py" line="203"/>
-      <source>Pick end point of mirror line</source>
-      <translation>Kies het eindpunt van de spiegellijn</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_points.py" line="147"/>
-      <source>Create Point</source>
-      <translation>Punt maken</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_scale.py" line="87"/>
-      <source>Select an object to scale</source>
-      <translation>Selecteer een object om te schalen</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_scale.py" line="108"/>
-      <source>Pick base point</source>
-      <translation>Kies basispunt</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_scale.py" line="135"/>
-      <source>Pick reference distance from base point</source>
-      <translation>Kies een referentieafstand vanaf het basispunt</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_scale.py" line="357"/>
-      <source>Scale</source>
-      <translation>Schalen</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_scale.py" line="209"/>
-      <source>Some subelements could not be scaled.</source>
-      <translation>Sommige subelementen konden niet worden geschaald.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_scale.py" line="338"/>
-      <source>Unable to scale object:</source>
-      <translation type="unfinished">Unable to scale object:</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_scale.py" line="342"/>
-      <source>Unable to scale objects:</source>
-      <translation type="unfinished">Unable to scale objects:</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_scale.py" line="345"/>
-      <source>This object type cannot be scaled directly. Please use the clone method.</source>
-      <translation>Dit objecttype kan niet direct worden geschaald. Gebruik de kloon methode.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_scale.py" line="407"/>
-      <source>Pick new distance from base point</source>
-      <translation>Kies een nieuwe afstand van het basispunt</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snapper.py" line="1543"/>
-      <source>(ON)</source>
-      <translation>(AAN)</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_snapper.py" line="1546"/>
-      <source>(OFF)</source>
-      <translation>(UIT)</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_shape2dview.py" line="109"/>
-      <source>Create 2D view</source>
-      <translation>2D-weergave maken</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="331"/>
-      <source>Bézier curve has been closed</source>
-      <translation type="unfinished">Bézier curve has been closed</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_splines.py" line="131"/>
-      <source>Last point has been removed</source>
-      <translation>Laatste punt is verwijderd</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_splines.py" line="145"/>
-      <source>Pick next point, or finish (A) or close (O)</source>
-      <translation>Kies het volgende punt, of beëindig (A) of sluit (O)</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="451"/>
-      <source>Create BezCurve</source>
-      <translation>BezCurve maken</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="376"/>
-      <source>Click and drag to define next knot</source>
-      <translation>Klik en sleep om de volgende knoop te definiëren</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_beziers.py" line="380"/>
-      <source>Click and drag to define next knot, or finish (A) or close (O)</source>
-      <translation>Klik en sleep om volgende knop, of eindig (A) of sluit (O)</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_dimension_ops.py" line="55"/>
-      <source>Flip dimension</source>
-      <translation>Afmeting spiegelen</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_stretch.py" line="75"/>
-      <source>Select an object to stretch</source>
-      <translation>Selecteer een object om uit te rekken</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_stretch.py" line="127"/>
-      <source>Pick first point of selection rectangle</source>
-      <translation>Kies het eerste punt van de selectierechthoek</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_stretch.py" line="163"/>
-      <source>Pick opposite point of selection rectangle</source>
-      <translation>Kies het tegenovergestelde punt van de selectierechthoek</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_stretch.py" line="173"/>
-      <source>Pick start point of displacement</source>
-      <translation>Kies het startpunt van verplaatsing</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_stretch.py" line="236"/>
-      <source>Pick end point of displacement</source>
-      <translation>Kies het eindpunt van verplaatsing</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_stretch.py" line="448"/>
-      <source>Turning one Rectangle into a Wire</source>
-      <translation>Een rechthoek in een draad veranderen</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_stretch.py" line="477"/>
-      <source>Stretch</source>
-      <translation>Uitrekken</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_grid.py" line="51"/>
-      <source>Toggle grid</source>
-      <translation>Wijzig raster status</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_rectangles.py" line="125"/>
-      <source>Create Plane</source>
-      <translation>Vlak maken</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_rectangles.py" line="142"/>
-      <source>Create Rectangle</source>
-      <translation>Rechthoek maken</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_draft2sketch.py" line="66"/>
-      <source>Select an object to convert.</source>
-      <translation>Selecteer een object om te converteren.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_draft2sketch.py" line="99"/>
-      <source>Convert to Sketch</source>
-      <translation>Converteren naar schets</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_draft2sketch.py" line="114"/>
-      <source>Convert to Draft</source>
-      <translation>Converteren naar ontwerp</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_draft2sketch.py" line="143"/>
-      <source>Convert Draft/Sketch</source>
-      <translation>Converteer Draft/Schets</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_heal.py" line="51"/>
-      <source>Heal</source>
-      <translation>Repareren</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_labels.py" line="80"/>
-      <source>Pick target point</source>
-      <translation>Kies doelpunt</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_labels.py" line="157"/>
-      <source>Create Label</source>
-      <translation>Label maken</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_labels.py" line="218"/>
-      <source>Pick endpoint of leader line</source>
-      <translation>Kies het eindpunt van de leiderslijn</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_labels.py" line="228"/>
-      <source>Pick text position</source>
-      <translation>Kies tekstpositie</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_edit.py" line="303"/>
-      <source>Select a Draft object to edit</source>
-      <translation>Selecteer een Draftt object om te bewerken</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_edit.py" line="557"/>
-      <source>No edit point found for selected object</source>
-      <translation>Geen bewerkingspunt gevonden voor het geselecteerde object</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_edit.py" line="810"/>
-      <source>Too many objects selected, max number set to:</source>
-      <translation type="unfinished">Too many objects selected, max number set to:</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_edit.py" line="818"/>
-      <source>: this object is not editable</source>
-      <translation>: dit object is niet bewerkbaar</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_pathtwistedarray.py" line="79"/>
-      <source>Please select exactly two objects, the base object and the path object, before calling this command.</source>
-      <translation>Selecteer precies twee objecten, het basis object en het pad object, voordat u deze opdracht aanroept.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_patharray.py" line="143"/>
-      <source>Path array</source>
-      <translation>Pad reeks</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_pathtwistedarray.py" line="101"/>
-      <source>Path twisted array</source>
-      <translation>Pad getoreerde reeks</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="94"/>
-      <source>Select objects to trim or extend</source>
-      <translation>Selecteer objecten om te trimmen of uit te breiden</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_offset.py" line="143"/>
-      <source>Pick distance</source>
-      <translation>Kies afstand</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="221"/>
-      <source>Offset angle</source>
-      <translation type="unfinished">Offset angle</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="481"/>
-      <source>Unable to trim these objects, only Draft wires and arcs are supported.</source>
-      <translation>Kan deze objecten niet trimmen, alleen Draft draden en bogen worden ondersteund.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="486"/>
-      <source>Unable to trim these objects, too many wires</source>
-      <translation>Kan deze objecten niet trimmen, te veel draden</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="505"/>
-      <source>These objects don't intersect.</source>
-      <translation>Deze objecten doorsnijden elkaar niet.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_trimex.py" line="508"/>
-      <source>Too many intersection points.</source>
-      <translation>Te veel snijpunten.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_join.py" line="76"/>
-      <source>Select an object to join</source>
-      <translation>Selecteer een object om samen te voegen</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_join.py" line="99"/>
-      <source>Join lines</source>
-      <translation>Lijnen Samenvoegen</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_join.py" line="110"/>
-      <source>Selection:</source>
-      <translation>Selectie:</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_splines.py" line="119"/>
-      <source>Spline has been closed</source>
-      <translation>Spline is gesloten</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_splines.py" line="183"/>
-      <source>Create B-spline</source>
-      <translation>Maak B-spline aan</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="145"/>
-      <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
-      <translation>Kies een vlak, 3 hoekpunten of een WP-Proxy om het tekenvlak te definiëren</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="270"/>
-      <source>Working plane aligned to global placement of</source>
-      <translation>Werkvlak is afgestemd op de globale plaatsing van</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="520"/>
-      <source>Dir</source>
-      <translation>Richting</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_selectplane.py" line="536"/>
-      <source>Custom</source>
-      <translation>Eigen</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_split.py" line="64"/>
-      <source>Click anywhere on a line to split it.</source>
-      <translation>Klik ergens op een lijn om te splitsen.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_split.py" line="106"/>
-      <source>Split line</source>
-      <translation>Lijn splitsen</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="75"/>
-      <source>Fillet radius</source>
-      <translation>Afrondinds straal</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="76"/>
-      <source>Radius of fillet</source>
-      <translation>Straal van de afronding</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="112"/>
-      <source>Enter radius.</source>
-      <translation>Voer straal in.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="131"/>
-      <source>Delete original objects:</source>
-      <translation>Verwijder originele objecten:</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="136"/>
-      <source>Chamfer mode:</source>
-      <translation>Afschuining modus:</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="153"/>
-      <source>Two elements needed.</source>
-      <translation>Twee elementen nodig.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="159"/>
-      <source>Test object</source>
-      <translation>Testobject</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="160"/>
-      <source>Test object removed</source>
-      <translation>Test object verwijderd</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="161"/>
-      <source>Fillet cannot be created</source>
-      <translation>Afronding kan niet worden gemaakt</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_fillets.py" line="193"/>
-      <source>Create fillet</source>
-      <translation>Maak afronding</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_shapestrings.py" line="98"/>
-      <source>Pick ShapeString location point</source>
-      <translation>Kies ShapeString locatiepunt</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_styles.py" line="75"/>
-      <source>Change Style</source>
-      <translation>Stijl wijzigen</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="65"/>
-      <source>Add to group</source>
-      <translation>Toevoegen aan groep</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="66"/>
-      <source>Ungroup</source>
-      <translation>Degroeperen</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="68"/>
-      <source>Add new group</source>
-      <translation type="unfinished">Add new group</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="159"/>
-      <source>Select group</source>
-      <translation>Groep selecteren</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="192"/>
-      <source>No new selection. You must select non-empty groups or objects inside groups.</source>
-      <translation type="unfinished">No new selection. You must select non-empty groups or objects inside groups.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="203"/>
-      <source>Autogroup</source>
-      <translation>Autogroeperen</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="250"/>
-      <source>Add new Layer</source>
-      <translation>Nieuwe laag toevoegen</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="304"/>
-      <source>Add to construction group</source>
-      <translation>Voeg toe aan constructiegroep</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="355"/>
-      <source>Add a new group with a given name</source>
-      <translation type="unfinished">Add a new group with a given name</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="383"/>
-      <source>Add group</source>
-      <translation type="unfinished">Add group</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="385"/>
-      <source>Group name</source>
-      <translation type="unfinished">Group name</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_groups.py" line="392"/>
-      <source>Group</source>
-      <translation>Groep</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_offset.py" line="76"/>
-      <source>Select an object to offset</source>
-      <translation>Selecteer een object om te verschuiven</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_offset.py" line="81"/>
-      <source>Offset only works on one object at a time.</source>
-      <translation>Verschuiving werkt slechts op één object tegelijk.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_offset.py" line="92"/>
-      <source>Cannot offset this object type</source>
-      <translation>Kan dit objecttype niet verschuiven</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_offset.py" line="122"/>
-      <source>Offset of Bezier curves is currently not supported</source>
-      <translation>Offset van Bezier-curves wordt momenteel niet ondersteund</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="447"/>
-      <source>Start angle</source>
-      <translation>Starthoek</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="452"/>
-      <source>Pick start angle</source>
-      <translation>Kies starthoek</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="455"/>
-      <source>Aperture angle</source>
-      <translation>Openingshoek</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="291"/>
-      <source>Pick aperture</source>
-      <translation>Kies apertuur</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="317"/>
-      <source>Create Circle (Part)</source>
-      <translation>Maak cirkel (Onderdeel)</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="335"/>
-      <source>Create Circle</source>
-      <translation>Cirkel maken</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="369"/>
-      <source>Create Arc (Part)</source>
-      <translation>Maak boog (Onderdeel)</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="389"/>
-      <source>Create Arc</source>
-      <translation>Creëer boog</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="466"/>
-      <source>Pick aperture angle</source>
-      <translation>Kies apertuurhoek</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_arcs.py" line="551"/>
-      <source>Arc by 3 points</source>
-      <translation>Boog met 3 punten</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_texts.py" line="77"/>
-      <source>Pick location point</source>
-      <translation>Kies locatiepunt</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_texts.py" line="121"/>
-      <source>Create Text</source>
-      <translation>Tekst maken</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="79"/>
-      <source>Select an object to rotate</source>
-      <translation>Selecteer een object om te draaien</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="99"/>
-      <source>Pick rotation center</source>
-      <translation>Kies rotatiemiddelpunt</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="396"/>
-      <source>Base angle</source>
-      <translation>Basishoek</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="397"/>
-      <source>The base angle you wish to start the rotation from</source>
-      <translation>De basishoek waar u de rotatie van wilt starten</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="400"/>
-      <source>Pick base angle</source>
-      <translation>Kies basishoek</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="409"/>
-      <source>Rotation</source>
-      <translation>Rotatie</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="410"/>
-      <source>The amount of rotation you wish to perform.
-The final angle will be the base angle plus this amount.</source>
-      <translation>De hoeveelheid rotatie die u wilt uitvoeren.
-De eindhoek zal de basishoek plus dit getal zijn.</translation>
-    </message>
-    <message>
-      <location filename="../../draftguitools/gui_rotate.py" line="418"/>
-      <source>Pick rotation angle</source>
-      <translation>Kies rotatiehoek</translation>
-    </message>
   </context>
   <context>
     <name>importOCA</name>
     <message>
-      <location filename="../../importOCA.py" line="359"/>
+      <location filename="../../importOCA.py" line="360"/>
       <source>OCA error: couldn't determine character encoding</source>
       <translation>OCA fout: kon de tekencodering niet bepalen</translation>
     </message>

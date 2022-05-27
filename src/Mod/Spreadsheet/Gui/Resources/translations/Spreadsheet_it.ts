@@ -9,6 +9,7 @@
       <translation>Foglio di calcolo</translation>
     </message>
     <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
       <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
       <source>Cell</source>
       <translation>Cella</translation>
@@ -54,6 +55,7 @@
       <translation>Aggiungi controllore</translation>
     </message>
     <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
       <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
       <source>Add property controller</source>
       <translation>Aggiungi controllore di proprietà</translation>
@@ -67,7 +69,7 @@
       <translation>Aggiungi controllore</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="920"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
       <source>Adds a cell controller to a selected spreadsheet</source>
       <translation>Aggiunge un controllore di celle a un foglio di calcolo selezionato</translation>
     </message>
@@ -80,7 +82,7 @@
       <translation>Foglio di calcolo</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="903"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
       <source>Adds a spreadsheet object to the active document</source>
       <translation>Aggiunge un oggetto foglio di calcolo al documento attivo</translation>
     </message>
@@ -93,7 +95,7 @@
       <translation>Aggiungi controllore di proprietà</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="945"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
       <source>Adds a property controller to a selected spreadsheet</source>
       <translation>Aggiunge un controllore di proprietà a un foglio di calcolo selezionato</translation>
     </message>
@@ -493,7 +495,7 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="20"/>
       <source>From cells:</source>
-      <translation type="unfinished">From cells:</translation>
+      <translation>Dalle celle:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="27"/>
@@ -510,7 +512,7 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="42"/>
       <source>To cells:</source>
-      <translation type="unfinished">To cells:</translation>
+      <translation>Alle celle:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="49"/>
@@ -529,7 +531,7 @@ The expression must evaluates to a string of some cell address.</translation>
     <message>
       <location filename="../../DlgBindSheet.ui" line="65"/>
       <source>Sheet:</source>
-      <translation type="unfinished">Sheet:</translation>
+      <translation>Foglio:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="72"/>
@@ -544,12 +546,12 @@ The expression must evaluates to a string of some cell address.</translation>
     <message>
       <location filename="../../DlgBindSheet.ui" line="82"/>
       <source>Use hidden reference</source>
-      <translation type="unfinished">Use hidden reference</translation>
+      <translation>Usa riferimento nascosto</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="91"/>
       <source>Unbind</source>
-      <translation type="unfinished">Unbind</translation>
+      <translation>Scollega</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="98"/>
@@ -619,7 +621,7 @@ by that property.
     <message>
       <location filename="../../DlgSheetConf.ui" line="57"/>
       <source>Property:</source>
-      <translation type="unfinished">Property:</translation>
+      <translation>Proprietà:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="64"/>
@@ -631,7 +633,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../DlgSheetConf.ui" line="72"/>
       <source>Group:</source>
-      <translation type="unfinished">Group:</translation>
+      <translation>Gruppo:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
@@ -641,7 +643,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
       <source>Unsetup</source>
-      <translation type="unfinished">Unsetup</translation>
+      <translation>Disimposta</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="95"/>
@@ -962,12 +964,12 @@ Spreadsheet.my_alias_name invece di Spreadsheet.B1</translation>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="180"/>
       <source>Bind cells</source>
-      <translation type="unfinished">Bind cells</translation>
+      <translation>Collega celle</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="197"/>
       <source>Unbind cells</source>
-      <translation type="unfinished">Unbind cells</translation>
+      <translation>Scollega le celle</translation>
     </message>
   </context>
   <context>
@@ -1043,12 +1045,12 @@ Spreadsheet.my_alias_name invece di Spreadsheet.B1</translation>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="245"/>
       <source>Setup configuration table</source>
-      <translation type="unfinished">Setup configuration table</translation>
+      <translation>Imposta tabella di configurazione</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="292"/>
       <source>Unsetup configuration table</source>
-      <translation type="unfinished">Unsetup configuration table</translation>
+      <translation>Disimposta tabella di configurazione</translation>
     </message>
   </context>
   <context>
@@ -1133,17 +1135,17 @@ Spreadsheet.my_alias_name invece di Spreadsheet.B1</translation>
     <message>
       <location filename="../../SheetTableView.cpp" line="182"/>
       <source>Recompute</source>
-      <translation type="unfinished">Recompute</translation>
+      <translation>Ricalcola</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="186"/>
       <source>Bind...</source>
-      <translation type="unfinished">Bind...</translation>
+      <translation>Collega...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="190"/>
       <source>Configuration table...</source>
-      <translation type="unfinished">Configuration table...</translation>
+      <translation>Tabella di configurazione...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="198"/>
@@ -1153,7 +1155,7 @@ Spreadsheet.my_alias_name invece di Spreadsheet.B1</translation>
     <message>
       <location filename="../../SheetTableView.cpp" line="200"/>
       <source>Split cells</source>
-      <translation type="unfinished">Split cells</translation>
+      <translation>Dividi celle</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="204"/>

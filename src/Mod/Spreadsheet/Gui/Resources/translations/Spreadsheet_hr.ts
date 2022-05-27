@@ -9,6 +9,7 @@
       <translation>Proračunska tablica</translation>
     </message>
     <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="748"/>
       <location filename="../../../App/Spreadsheet_legacy.py" line="874"/>
       <source>Cell</source>
       <translation>Ćelija</translation>
@@ -54,6 +55,7 @@
       <translation>Dodaj regulator</translation>
     </message>
     <message>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="959"/>
       <location filename="../../../App/Spreadsheet_legacy.py" line="973"/>
       <source>Add property controller</source>
       <translation>Dodaj značajke regulator</translation>
@@ -67,7 +69,7 @@
       <translation>Dodaj regulator</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="920"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="922"/>
       <source>Adds a cell controller to a selected spreadsheet</source>
       <translation>Dodaje kontroler ćelije odabranoj proračunskoj tablici</translation>
     </message>
@@ -80,7 +82,7 @@
       <translation>Proračunska tablica</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="903"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="905"/>
       <source>Adds a spreadsheet object to the active document</source>
       <translation>Dodaje objekt proračunske tablice u aktivni dokument</translation>
     </message>
@@ -93,7 +95,7 @@
       <translation>Dodaj značajke regulator</translation>
     </message>
     <message>
-      <location filename="../../../App/Spreadsheet_legacy.py" line="945"/>
+      <location filename="../../../App/Spreadsheet_legacy.py" line="947"/>
       <source>Adds a property controller to a selected spreadsheet</source>
       <translation>Dodaje kontroler značajki odabranoj proračunskoj tablici</translation>
     </message>

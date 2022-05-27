@@ -754,20 +754,20 @@
       <translation>ინფორმაცია მრავალკუთხა ბადის შესახებ</translation>
     </message>
     <message>
-      <source>Number of points:</source>
-      <translation>წერტილების რიცხვი:</translation>
+      <source>Number of faces:</source>
+      <translation>ზედაპირების რაოდენობა:</translation>
     </message>
     <message>
       <source>No information</source>
       <translation>მონაცემები არაა</translation>
     </message>
     <message>
-      <source>Number of faces:</source>
-      <translation>ზედაპირების რაოდენობა:</translation>
-    </message>
-    <message>
       <source>Number of edges:</source>
       <translation>წიბოების რაოდენობა:</translation>
+    </message>
+    <message>
+      <source>Number of points:</source>
+      <translation>წერტილების რიცხვი:</translation>
     </message>
     <message>
       <source>Refresh</source>
@@ -985,22 +985,6 @@ Please run the command to repair folds first</source>
       <translation>სწორი გეომეტრიული სხეული</translation>
     </message>
     <message>
-      <source>&amp;Create</source>
-      <translation>&amp;შექმნა</translation>
-    </message>
-    <message>
-      <source>Alt+C</source>
-      <translation>Alt+C</translation>
-    </message>
-    <message>
-      <source>Cl&amp;ose</source>
-      <translation>და&amp;ხურვა</translation>
-    </message>
-    <message>
-      <source>Alt+O</source>
-      <translation>Alt+O</translation>
-    </message>
-    <message>
       <source>Solid:</source>
       <translation>მყარი სხეული:</translation>
     </message>
@@ -1029,10 +1013,6 @@ Please run the command to repair folds first</source>
       <translation>ტორი</translation>
     </message>
     <message>
-      <source>Height:</source>
-      <translation>სიმაღლე:</translation>
-    </message>
-    <message>
       <source>Length:</source>
       <translation type="unfinished">Length:</translation>
     </message>
@@ -1041,20 +1021,24 @@ Please run the command to repair folds first</source>
       <translation>სიგანე:</translation>
     </message>
     <message>
+      <source>Height:</source>
+      <translation>სიმაღლე:</translation>
+    </message>
+    <message>
       <source>Radius:</source>
       <translation>რადიუსი:</translation>
     </message>
     <message>
-      <source>Closed</source>
-      <translation>დახურულია</translation>
+      <source>Edge length:</source>
+      <translation>წიბოს სიგრძე:</translation>
     </message>
     <message>
       <source>Sampling:</source>
       <translation>დისკრეტიზაცია:</translation>
     </message>
     <message>
-      <source>Edge length:</source>
-      <translation>წიბოს სიგრძე:</translation>
+      <source>Closed</source>
+      <translation>დახურულია</translation>
     </message>
     <message>
       <source>Radius 1:</source>
@@ -1063,6 +1047,22 @@ Please run the command to repair folds first</source>
     <message>
       <source>Radius 2:</source>
       <translation>რადიუსი 2:</translation>
+    </message>
+    <message>
+      <source>&amp;Create</source>
+      <translation>&amp;შექმნა</translation>
+    </message>
+    <message>
+      <source>Alt+C</source>
+      <translation>Alt+C</translation>
+    </message>
+    <message>
+      <source>Cl&amp;ose</source>
+      <translation>და&amp;ხურვა</translation>
+    </message>
+    <message>
+      <source>Alt+O</source>
+      <translation>Alt+O</translation>
     </message>
   </context>
   <context>
@@ -1087,10 +1087,6 @@ Please run the command to repair folds first</source>
       <translation type="unfinished">Export</translation>
     </message>
     <message>
-      <source>Maximal deviation between mesh and object</source>
-      <translation>ბადესა და ობიექტს შორის მაქსიმალური გადახრა</translation>
-    </message>
-    <message>
       <source>Deviation of tessellation to the actual surface</source>
       <translation>ფაქტიურ ზედაპირზე ტესელაციის გადახრა</translation>
     </message>
@@ -1101,6 +1097,10 @@ Please run the command to repair folds first</source>
     <message>
       <source>Maximum mesh deviation</source>
       <translation>მრავალკუთხა ბადის მაქსიმალური გადახრა</translation>
+    </message>
+    <message>
+      <source>Maximal deviation between mesh and object</source>
+      <translation>ბადესა და ობიექტს შორის მაქსიმალური გადახრა</translation>
     </message>
     <message>
       <source>ZIP compression is used when writing a mesh file in AMF format</source>
@@ -1136,36 +1136,36 @@ ZIP კომპრესია AMF ფაილის ფორმატის 
       <translation>ახალი მრავალკუთხა ბადეების ნაგულისხმევი გარეგნობა</translation>
     </message>
     <message>
-      <source>Default line color</source>
-      <translation>ხაზის ნაგულისხმევი ფერი</translation>
-    </message>
-    <message>
-      <source>Mesh transparency</source>
-      <translation>მრავალკუთხა ბადის გამჭირვალობა</translation>
+      <source>Default mesh color</source>
+      <translation>მრავალკუთხა ბადის საწყისი ფერი</translation>
     </message>
     <message>
       <source>Default color for new meshes</source>
       <translation>ახალი მრავალკუთხა ბადის საწყისი ფერი</translation>
     </message>
     <message>
+      <source>Mesh transparency</source>
+      <translation>მრავალკუთხა ბადის გამჭირვალობა</translation>
+    </message>
+    <message>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <source>Default mesh color</source>
-      <translation>მრავალკუთხა ბადის საწყისი ფერი</translation>
-    </message>
-    <message>
-      <source>A bounding box will be displayed</source>
-      <translation>ზომების ჩვენება</translation>
-    </message>
-    <message>
-      <source>Show bounding-box for highlighted or selected meshes</source>
-      <translation>შემომსაზღვრელი მართკუთხედის ჩვენება მონიშნულ ან განათებულ მრავალკუთხა ველებზე</translation>
+      <source>Default line color</source>
+      <translation>ხაზის ნაგულისხმევი ფერი</translation>
     </message>
     <message>
       <source>Default line color for new meshes</source>
       <translation>ახალი ბადის ხაზების ნაგულისხმევი ფერი</translation>
+    </message>
+    <message>
+      <source>Line transparency</source>
+      <translation>ხაზის გამჭვირვალობა</translation>
+    </message>
+    <message>
+      <source>Backface color</source>
+      <translation>უკანა მხრის ფერი</translation>
     </message>
     <message>
       <source>The bottom side of surface will be rendered the same way than top side.
@@ -1182,24 +1182,16 @@ will be used or black.</source>
       <translation>ორმხრივი რენდერი</translation>
     </message>
     <message>
-      <source>Line transparency</source>
-      <translation>ხაზის გამჭვირვალობა</translation>
+      <source>A bounding box will be displayed</source>
+      <translation>ზომების ჩვენება</translation>
     </message>
     <message>
-      <source>Backface color</source>
-      <translation>უკანა მხრის ფერი</translation>
+      <source>Show bounding-box for highlighted or selected meshes</source>
+      <translation>შემომსაზღვრელი მართკუთხედის ჩვენება მონიშნულ ან განათებულ მრავალკუთხა ველებზე</translation>
     </message>
     <message>
       <source>Smoothing</source>
       <translation>მოგლუვება</translation>
-    </message>
-    <message>
-      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;ეს არის უმცირესი კუთხე ორ ზღვარს შუა სადაც ნორმალის გამოთვლა ხდება ზედაპირის მოსაგლუვებლად..&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;თუ ახლომდებარე ზღვრების ნორმალებს შორის კუთხე ნაკლებია, ვიდრე მოღუნვის კუთხე, მაშინ ზღვრები მოგლუვდება მათი საერთო ზღვრის გასწვრივ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <source>Crease angle</source>
-      <translation>ნაკეცის კუთხე</translation>
     </message>
     <message>
       <source>If this option is set Phong shading is used, otherwise flat shading.
@@ -1219,6 +1211,14 @@ to a smoother appearance.
     <message>
       <source>Define normal per vertex</source>
       <translation>თითოეულ პიკზე ნორმალის მინიჭება</translation>
+    </message>
+    <message>
+      <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;ეს არის უმცირესი კუთხე ორ ზღვარს შუა სადაც ნორმალის გამოთვლა ხდება ზედაპირის მოსაგლუვებლად..&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;თუ ახლომდებარე ზღვრების ნორმალებს შორის კუთხე ნაკლებია, ვიდრე მოღუნვის კუთხე, მაშინ ზღვრები მოგლუვდება მათი საერთო ზღვრის გასწვრივ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <source>Crease angle</source>
+      <translation>ნაკეცის კუთხე</translation>
     </message>
     <message>
       <source>Crease angle is a threshold angle between two faces.
@@ -1385,6 +1385,10 @@ to a smoother appearance.
   <context>
     <name>MeshGui::RemeshGmsh</name>
     <message>
+      <source>Remesh by Gmsh</source>
+      <translation>ბადის თავიდან დახატვა Gmsh-ით</translation>
+    </message>
+    <message>
       <source>Remeshing Parameter</source>
       <translation>ბადის გადაწყობის პარამეტრი</translation>
     </message>
@@ -1424,10 +1428,6 @@ to a smoother appearance.
       <source>Clear</source>
       <translation>გასუფთავება</translation>
     </message>
-    <message>
-      <source>Remesh by Gmsh</source>
-      <translation type="unfinished">Remesh by Gmsh</translation>
-    </message>
   </context>
   <context>
     <name>MeshGui::RemoveComponents</name>
@@ -1440,40 +1440,40 @@ to a smoother appearance.
       <translation>არჩევა</translation>
     </message>
     <message>
-      <source>Select whole component</source>
-      <translation>მთლიანი კომპონენტის მონიშვნა</translation>
-    </message>
-    <message>
-      <source>Pick triangle</source>
-      <translation>აირჩიეთ სამკუთხედი</translation>
-    </message>
-    <message>
-      <source>&lt; faces than</source>
-      <translation>&lt; ზედაპირი, ვიდრე</translation>
-    </message>
-    <message>
       <source>Region</source>
       <translation>რეგიონი</translation>
-    </message>
-    <message>
-      <source>Components</source>
-      <translation>კომპონენტები</translation>
     </message>
     <message>
       <source>All</source>
       <translation>ყველა</translation>
     </message>
     <message>
+      <source>Components</source>
+      <translation>კომპონენტები</translation>
+    </message>
+    <message>
+      <source>&lt; faces than</source>
+      <translation>&lt; ზედაპირი, ვიდრე</translation>
+    </message>
+    <message>
+      <source>Pick triangle</source>
+      <translation>აირჩიეთ სამკუთხედი</translation>
+    </message>
+    <message>
+      <source>Select whole component</source>
+      <translation>მთლიანი კომპონენტის მონიშვნა</translation>
+    </message>
+    <message>
       <source>Deselect</source>
       <translation>მონიშვნის მოხსნა</translation>
     </message>
     <message>
-      <source>Deselect whole component</source>
-      <translation>მონიშვნის მთელი კომპონენტიდან მოხსნა</translation>
-    </message>
-    <message>
       <source>&gt; faces than</source>
       <translation>&gt; ზედაპირი, ვიდრე</translation>
+    </message>
+    <message>
+      <source>Deselect whole component</source>
+      <translation>მონიშვნის მთელი კომპონენტიდან მოხსნა</translation>
     </message>
     <message>
       <source>Region options</source>
@@ -1550,8 +1550,12 @@ to a smoother appearance.
       <translation>მრავალკუთხა ბადის სეგმენტაცია</translation>
     </message>
     <message>
-      <source>Sphere</source>
-      <translation>სფერო</translation>
+      <source>Plane</source>
+      <translation>სიბრტყე</translation>
+    </message>
+    <message>
+      <source>Parameters...</source>
+      <translation>გამართვა...</translation>
     </message>
     <message>
       <source>Tolerance</source>
@@ -1562,16 +1566,12 @@ to a smoother appearance.
       <translation>ზედაპირების მინიმალური რაოდენობა</translation>
     </message>
     <message>
-      <source>Parameters...</source>
-      <translation>გამართვა...</translation>
-    </message>
-    <message>
-      <source>Plane</source>
-      <translation>სიბრტყე</translation>
-    </message>
-    <message>
       <source>Cylinder</source>
       <translation>ცილინდრი</translation>
+    </message>
+    <message>
+      <source>Sphere</source>
+      <translation>სფერო</translation>
     </message>
     <message>
       <source>Base</source>
@@ -1758,6 +1758,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>ასიმპტოტის ფორმატი</translation>
     </message>
     <message>
+      <source>3D Manufacturing Format</source>
+      <translation>3D დამზადების ფორმატი</translation>
+    </message>
+    <message>
       <source>Export mesh</source>
       <translation>მრავალკუთხა ბადის გატანა</translation>
     </message>
@@ -1814,6 +1818,10 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>სეგმენტების ჩვენება</translation>
     </message>
     <message>
+      <source>Display colors</source>
+      <translation>ფერების ჩვენება</translation>
+    </message>
+    <message>
       <source>Leave info mode</source>
       <translation>საინფორმაციო რეჟიმიდან გასვლა</translation>
     </message>
@@ -1841,10 +1849,6 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <source>Annotation</source>
       <translation>შენიშვნა</translation>
     </message>
-    <message>
-      <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
-    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -1861,12 +1865,32 @@ Please visit http://www.openscad.org/index.html to install it.</source>
       <translation>&amp;მრავალკუთხა ბადეები</translation>
     </message>
     <message>
+      <source>Cutting</source>
+      <translation>ამოჭრა</translation>
+    </message>
+    <message>
       <source>Mesh tools</source>
       <translation>მრავალკუთხა ბადის ხელსაწყოები</translation>
     </message>
     <message>
-      <source>Cutting</source>
-      <translation>ამოჭრა</translation>
+      <source>Mesh modify</source>
+      <translation>ბადის შეცვლა</translation>
+    </message>
+    <message>
+      <source>Mesh boolean</source>
+      <translation>ბადის ბულევა</translation>
+    </message>
+    <message>
+      <source>Mesh cutting</source>
+      <translation>ბადის ჭრა</translation>
+    </message>
+    <message>
+      <source>Mesh segmentation</source>
+      <translation>მრავალკუთხა ბადის სეგმენტაცია</translation>
+    </message>
+    <message>
+      <source>Mesh analyze</source>
+      <translation>ბადის ანალიზი</translation>
     </message>
   </context>
 </TS>

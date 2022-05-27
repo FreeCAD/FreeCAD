@@ -9,7 +9,8 @@
       <translation type="unfinished">Unwrap Mesh</translation>
     </message>
     <message>
-      <location filename="../../MeshFlatteningCommand.py" line="80"/>
+      <location filename="../../MeshFlatteningCommand.py" line="50"/>
+      <location filename="../../MeshFlatteningCommand.py" line="82"/>
       <source>Find a flat representation of a mesh.</source>
       <translation type="unfinished">Find a flat representation of a mesh.</translation>
     </message>
@@ -34,7 +35,7 @@
     <message>
       <location filename="../../Command.cpp" line="278"/>
       <source>Cross-sections</source>
-      <translation>Поперечні перерізи</translation>
+      <translation>Створює поперечні перерізи</translation>
     </message>
   </context>
   <context>
@@ -90,7 +91,7 @@ This command only works with a 'mesh' object.</translation>
     <message>
       <location filename="../../Command.cpp" line="194"/>
       <source>Section</source>
-      <translation>Секція</translation>
+      <translation>Розріз</translation>
     </message>
   </context>
   <context>
@@ -245,7 +246,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
       <source>Wire</source>
-      <translation>Каркас</translation>
+      <translation>Полілінія</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>
@@ -303,7 +304,7 @@ This command only works with a 'mesh' object, not a regular face or surface. To 
     <message>
       <location filename="../../Tessellation.ui" line="30"/>
       <source>Standard</source>
-      <translation>Стандартно</translation>
+      <translation>Стандартний</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="33"/>

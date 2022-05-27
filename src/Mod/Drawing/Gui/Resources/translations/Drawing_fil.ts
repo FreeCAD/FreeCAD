@@ -298,16 +298,60 @@ Gusto mong magpatuloy?</translation>
       <translation>Orthographic Projection</translation>
     </message>
     <message>
+      <source>Projection</source>
+      <translation>Projection</translation>
+    </message>
+    <message>
+      <source>Third Angle</source>
+      <translation>Pangatlong Angle</translation>
+    </message>
+    <message>
+      <source>First Angle</source>
+      <translation>Unang angle</translation>
+    </message>
+    <message>
+      <source>View from:</source>
+      <translation>Tanawin mula:</translation>
+    </message>
+    <message>
+      <source>X +ve</source>
+      <translation>X +ve</translation>
+    </message>
+    <message>
+      <source>Y +ve</source>
+      <translation>Y +ve</translation>
+    </message>
+    <message>
+      <source>Z +ve</source>
+      <translation>Z +ve</translation>
+    </message>
+    <message>
+      <source>X -ve</source>
+      <translation>X - ve</translation>
+    </message>
+    <message>
+      <source>Y -ve</source>
+      <translation>Y - ve</translation>
+    </message>
+    <message>
+      <source>Z -ve</source>
+      <translation>Z -ve</translation>
+    </message>
+    <message>
+      <source>Axis aligned right:</source>
+      <translation>Axis na naka-align sa kanan:</translation>
+    </message>
+    <message>
+      <source>Secondary Views</source>
+      <translation>Pangalawang mga View</translation>
+    </message>
+    <message>
       <source>Right click for axonometric settings</source>
       <translation>Right click para sa mga setting ng axonometric</translation>
     </message>
     <message>
       <source>Primary view</source>
       <translation>Pangunahing tanawin</translation>
-    </message>
-    <message>
-      <source>Secondary Views</source>
-      <translation>Pangalawang mga View</translation>
     </message>
     <message>
       <source>General</source>
@@ -342,36 +386,8 @@ Gusto mong magpatuloy?</translation>
       <translation>Axonometric</translation>
     </message>
     <message>
-      <source>Axis out and right</source>
-      <translation>Aksis labas at kanan</translation>
-    </message>
-    <message>
-      <source>Vertical tilt</source>
-      <translation>Patayong patagilid</translation>
-    </message>
-    <message>
-      <source>X +ve</source>
-      <translation>X +ve</translation>
-    </message>
-    <message>
-      <source>Y +ve</source>
-      <translation>Y +ve</translation>
-    </message>
-    <message>
-      <source>Z +ve</source>
-      <translation>Z +ve</translation>
-    </message>
-    <message>
-      <source>X -ve</source>
-      <translation>X - ve</translation>
-    </message>
-    <message>
-      <source>Y -ve</source>
-      <translation>Y - ve</translation>
-    </message>
-    <message>
-      <source>Z -ve</source>
-      <translation>Z -ve</translation>
+      <source>View projection</source>
+      <translation type="unfinished">View projection</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -386,44 +402,28 @@ Gusto mong magpatuloy?</translation>
       <translation>Trimetric</translation>
     </message>
     <message>
-      <source> Scale</source>
-      <translation> Scale</translation>
-    </message>
-    <message>
-      <source>View projection</source>
-      <translation type="unfinished">View projection</translation>
-    </message>
-    <message>
       <source> Axis aligned up</source>
       <translation> Axis na naka-align pataas</translation>
+    </message>
+    <message>
+      <source>Axis out and right</source>
+      <translation>Aksis labas at kanan</translation>
+    </message>
+    <message>
+      <source>Vertical tilt</source>
+      <translation>Patayong patagilid</translation>
     </message>
     <message>
       <source>Flip</source>
       <translation>Flip</translation>
     </message>
     <message>
+      <source> Scale</source>
+      <translation> Scale</translation>
+    </message>
+    <message>
       <source> Trimetric</source>
       <translation> Trimetric</translation>
-    </message>
-    <message>
-      <source>Projection</source>
-      <translation>Projection</translation>
-    </message>
-    <message>
-      <source>Third Angle</source>
-      <translation>Pangatlong Angle</translation>
-    </message>
-    <message>
-      <source>First Angle</source>
-      <translation>Unang angle</translation>
-    </message>
-    <message>
-      <source>View from:</source>
-      <translation>Tanawin mula:</translation>
-    </message>
-    <message>
-      <source>Axis aligned right:</source>
-      <translation>Axis na naka-align sa kanan:</translation>
     </message>
   </context>
   <context>

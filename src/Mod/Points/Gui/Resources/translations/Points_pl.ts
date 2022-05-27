@@ -140,14 +140,6 @@
       <translation>Wiersze specjalne</translation>
     </message>
     <message>
-      <source>Ignore lines starting with:</source>
-      <translation>Ignoruj ​​linie zaczynające się od:</translation>
-    </message>
-    <message>
-      <source>Cluster by lines starting with:</source>
-      <translation>Grupuj według wierszy zaczynających się od:</translation>
-    </message>
-    <message>
       <source>First line:</source>
       <translation>Pierwszy wiersz:</translation>
     </message>
@@ -160,8 +152,52 @@
       <translation>Liczba punktów</translation>
     </message>
     <message>
+      <source>Cluster by lines starting with:</source>
+      <translation>Grupuj według wierszy zaczynających się od:</translation>
+    </message>
+    <message>
+      <source>Ignore lines starting with:</source>
+      <translation>Ignoruj ​​linie zaczynające się od:</translation>
+    </message>
+    <message>
       <source>Point format</source>
       <translation>Format punktu</translation>
+    </message>
+    <message>
+      <source>Number separator:</source>
+      <translation>Separator dziesiętny:</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>\t</source>
+      <translation>\t</translation>
+    </message>
+    <message>
+      <source>\w</source>
+      <translation>\w</translation>
+    </message>
+    <message>
+      <source>Points format:</source>
+      <translation>Format punktów:</translation>
+    </message>
+    <message>
+      <source>X,Y,Z</source>
+      <translation>X, Y, Z</translation>
+    </message>
+    <message>
+      <source>X,Y</source>
+      <translation>X, Y</translation>
+    </message>
+    <message>
+      <source>Next block:</source>
+      <translation>Następny blok:</translation>
     </message>
     <message>
       <source>none</source>
@@ -182,42 +218,6 @@
     <message>
       <source>I (Gray value)</source>
       <translation>I (wartość w skali szarości)</translation>
-    </message>
-    <message>
-      <source>Number separator:</source>
-      <translation>Separator dziesiętny:</translation>
-    </message>
-    <message>
-      <source>Next block:</source>
-      <translation>Następny blok:</translation>
-    </message>
-    <message>
-      <source>,</source>
-      <translation>,</translation>
-    </message>
-    <message>
-      <source>;</source>
-      <translation>;</translation>
-    </message>
-    <message>
-      <source>\t</source>
-      <translation>\t</translation>
-    </message>
-    <message>
-      <source>\w</source>
-      <translation>\w</translation>
-    </message>
-    <message>
-      <source>X,Y,Z</source>
-      <translation>X, Y, Z</translation>
-    </message>
-    <message>
-      <source>X,Y</source>
-      <translation>X, Y</translation>
-    </message>
-    <message>
-      <source>Points format:</source>
-      <translation>Format punktów:</translation>
     </message>
     <message>
       <source>Preview</source>

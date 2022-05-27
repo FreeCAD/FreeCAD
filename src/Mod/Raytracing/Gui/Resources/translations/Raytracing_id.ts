@@ -270,22 +270,6 @@ Do you want to continue?</translation>
       <translation>Raytracing</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>Pengaturan ekspor Mesh</translation>
-    </message>
-    <message>
-      <source>Max mesh deviation:</source>
-      <translation>Max mesh deviasi :</translation>
-    </message>
-    <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>Jangan menghitung vertex  normals</translation>
-    </message>
-    <message>
-      <source>Write u,v coordinates</source>
-      <translation>Tulis koordinat u, v</translation>
-    </message>
-    <message>
       <source>Render</source>
       <translation>Memberikan</translation>
     </message>
@@ -334,28 +318,44 @@ Do you want to continue?</translation>
       <translation>Direktori</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation> Nama file bagian :</translation>
-    </message>
-    <message>
-      <source>Camera file name:</source>
-      <translation>Nama file kamera :</translation>
+      <source>Default Project dir:</source>
+      <translation>Default dir proyek:</translation>
     </message>
     <message>
       <source>Used by utility tools</source>
       <translation>Digunakan oleh alat utilitas</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>Default dir proyek:</translation>
+      <source>Camera file name:</source>
+      <translation>Nama file kamera :</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
       <translation>TempCamera.inc</translation>
     </message>
     <message>
+      <source>Part file name:</source>
+      <translation> Nama file bagian :</translation>
+    </message>
+    <message>
       <source>TempPart.inc</source>
       <translation>TempPart.inc</translation>
+    </message>
+    <message>
+      <source>Mesh export settings</source>
+      <translation>Pengaturan ekspor Mesh</translation>
+    </message>
+    <message>
+      <source>Max mesh deviation:</source>
+      <translation>Max mesh deviasi :</translation>
+    </message>
+    <message>
+      <source>Do not calculate vertex normals</source>
+      <translation>Jangan menghitung vertex  normals</translation>
+    </message>
+    <message>
+      <source>Write u,v coordinates</source>
+      <translation>Tulis koordinat u, v</translation>
     </message>
   </context>
   <context>

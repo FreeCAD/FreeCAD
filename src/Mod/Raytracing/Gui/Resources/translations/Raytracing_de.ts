@@ -270,22 +270,6 @@ Möchten Sie fortfahren?</translation>
       <translation>Raytracing</translation>
     </message>
     <message>
-      <source>Mesh export settings</source>
-      <translation>Mesh-Exporteinstellungen</translation>
-    </message>
-    <message>
-      <source>Max mesh deviation:</source>
-      <translation>Maximale Netz Abweichung:</translation>
-    </message>
-    <message>
-      <source>Do not calculate vertex normals</source>
-      <translation>Vertexnormalen nicht berechnen</translation>
-    </message>
-    <message>
-      <source>Write u,v coordinates</source>
-      <translation>U, V-Koordinaten schreiben</translation>
-    </message>
-    <message>
       <source>Render</source>
       <translation>Rendern</translation>
     </message>
@@ -334,28 +318,44 @@ Möchten Sie fortfahren?</translation>
       <translation>Verzeichnisse</translation>
     </message>
     <message>
-      <source>Part file name:</source>
-      <translation>Formteil-Dateiname:</translation>
-    </message>
-    <message>
-      <source>Camera file name:</source>
-      <translation>Kamera-Dateiname:</translation>
+      <source>Default Project dir:</source>
+      <translation>Standard-Projektverzeichnis:</translation>
     </message>
     <message>
       <source>Used by utility tools</source>
       <translation>Von Dienstprogramm-Tools verwendet</translation>
     </message>
     <message>
-      <source>Default Project dir:</source>
-      <translation>Standard-Projektverzeichnis:</translation>
+      <source>Camera file name:</source>
+      <translation>Kamera-Dateiname:</translation>
     </message>
     <message>
       <source>TempCamera.inc</source>
       <translation>TempCamera.inc</translation>
     </message>
     <message>
+      <source>Part file name:</source>
+      <translation>Formteil-Dateiname:</translation>
+    </message>
+    <message>
       <source>TempPart.inc</source>
       <translation>TempPart.inc</translation>
+    </message>
+    <message>
+      <source>Mesh export settings</source>
+      <translation>Mesh-Exporteinstellungen</translation>
+    </message>
+    <message>
+      <source>Max mesh deviation:</source>
+      <translation>Maximale Netz Abweichung:</translation>
+    </message>
+    <message>
+      <source>Do not calculate vertex normals</source>
+      <translation>Vertexnormalen nicht berechnen</translation>
+    </message>
+    <message>
+      <source>Write u,v coordinates</source>
+      <translation>U, V-Koordinaten schreiben</translation>
     </message>
   </context>
   <context>

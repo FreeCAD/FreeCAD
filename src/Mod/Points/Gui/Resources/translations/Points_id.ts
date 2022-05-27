@@ -140,14 +140,6 @@
       <translation>Special lines</translation>
     </message>
     <message>
-      <source>Ignore lines starting with:</source>
-      <translation>Abaikan garis yang dimulai dengan:</translation>
-    </message>
-    <message>
-      <source>Cluster by lines starting with:</source>
-      <translation>Cluster by lines starting with:</translation>
-    </message>
-    <message>
       <source>First line:</source>
       <translation>First line:</translation>
     </message>
@@ -160,8 +152,52 @@
       <translation>Jumlah poin</translation>
     </message>
     <message>
+      <source>Cluster by lines starting with:</source>
+      <translation>Cluster by lines starting with:</translation>
+    </message>
+    <message>
+      <source>Ignore lines starting with:</source>
+      <translation>Abaikan garis yang dimulai dengan:</translation>
+    </message>
+    <message>
       <source>Point format</source>
       <translation>Format titik</translation>
+    </message>
+    <message>
+      <source>Number separator:</source>
+      <translation>Pemisah nomor:</translation>
+    </message>
+    <message>
+      <source>,</source>
+      <translation>,</translation>
+    </message>
+    <message>
+      <source>;</source>
+      <translation>;</translation>
+    </message>
+    <message>
+      <source>\t</source>
+      <translation>\t</translation>
+    </message>
+    <message>
+      <source>\w</source>
+      <translation>\w</translation>
+    </message>
+    <message>
+      <source>Points format:</source>
+      <translation>Format poin:</translation>
+    </message>
+    <message>
+      <source>X,Y,Z</source>
+      <translation>X,Y,Z</translation>
+    </message>
+    <message>
+      <source>X,Y</source>
+      <translation>X,Y</translation>
+    </message>
+    <message>
+      <source>Next block:</source>
+      <translation>Blok berikutnya:</translation>
     </message>
     <message>
       <source>none</source>
@@ -182,42 +218,6 @@
     <message>
       <source>I (Gray value)</source>
       <translation>Saya (nilai abu-abu)</translation>
-    </message>
-    <message>
-      <source>Number separator:</source>
-      <translation>Pemisah nomor:</translation>
-    </message>
-    <message>
-      <source>Next block:</source>
-      <translation>Blok berikutnya:</translation>
-    </message>
-    <message>
-      <source>,</source>
-      <translation>,</translation>
-    </message>
-    <message>
-      <source>;</source>
-      <translation>;</translation>
-    </message>
-    <message>
-      <source>\t</source>
-      <translation>\t</translation>
-    </message>
-    <message>
-      <source>\w</source>
-      <translation>\w</translation>
-    </message>
-    <message>
-      <source>X,Y,Z</source>
-      <translation>X,Y,Z</translation>
-    </message>
-    <message>
-      <source>X,Y</source>
-      <translation>X,Y</translation>
-    </message>
-    <message>
-      <source>Points format:</source>
-      <translation>Format poin:</translation>
     </message>
     <message>
       <source>Preview</source>

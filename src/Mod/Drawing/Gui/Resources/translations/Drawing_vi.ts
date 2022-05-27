@@ -298,16 +298,60 @@ Bạn có muốn tiếp tục?</translation>
       <translation>Phép chiếu trực giao</translation>
     </message>
     <message>
+      <source>Projection</source>
+      <translation>Phép chiếu</translation>
+    </message>
+    <message>
+      <source>Third Angle</source>
+      <translation>Góc thứ ba</translation>
+    </message>
+    <message>
+      <source>First Angle</source>
+      <translation>Góc thứ nhất</translation>
+    </message>
+    <message>
+      <source>View from:</source>
+      <translation>Nhìn từ:</translation>
+    </message>
+    <message>
+      <source>X +ve</source>
+      <translation>X +ve</translation>
+    </message>
+    <message>
+      <source>Y +ve</source>
+      <translation>Y +ve</translation>
+    </message>
+    <message>
+      <source>Z +ve</source>
+      <translation>Z +ve</translation>
+    </message>
+    <message>
+      <source>X -ve</source>
+      <translation>X -ve</translation>
+    </message>
+    <message>
+      <source>Y -ve</source>
+      <translation>Y -ve</translation>
+    </message>
+    <message>
+      <source>Z -ve</source>
+      <translation>Z -ve</translation>
+    </message>
+    <message>
+      <source>Axis aligned right:</source>
+      <translation>Trục thẳng hàng bên phải:</translation>
+    </message>
+    <message>
+      <source>Secondary Views</source>
+      <translation>Chế độ xem phụ</translation>
+    </message>
+    <message>
       <source>Right click for axonometric settings</source>
       <translation>Nhấp chuột phải để thiết lập phép chiếu có trục đo</translation>
     </message>
     <message>
       <source>Primary view</source>
       <translation>Chế độ xem chính</translation>
-    </message>
-    <message>
-      <source>Secondary Views</source>
-      <translation>Chế độ xem phụ</translation>
     </message>
     <message>
       <source>General</source>
@@ -342,36 +386,8 @@ Bạn có muốn tiếp tục?</translation>
       <translation>Phép chiếu có trục đo</translation>
     </message>
     <message>
-      <source>Axis out and right</source>
-      <translation>Trục ngoài bên phải</translation>
-    </message>
-    <message>
-      <source>Vertical tilt</source>
-      <translation>Nghiêng theo chiều dọc</translation>
-    </message>
-    <message>
-      <source>X +ve</source>
-      <translation>X +ve</translation>
-    </message>
-    <message>
-      <source>Y +ve</source>
-      <translation>Y +ve</translation>
-    </message>
-    <message>
-      <source>Z +ve</source>
-      <translation>Z +ve</translation>
-    </message>
-    <message>
-      <source>X -ve</source>
-      <translation>X -ve</translation>
-    </message>
-    <message>
-      <source>Y -ve</source>
-      <translation>Y -ve</translation>
-    </message>
-    <message>
-      <source>Z -ve</source>
-      <translation>Z -ve</translation>
+      <source>View projection</source>
+      <translation>Chế độ xem các hình chiếu</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -386,44 +402,28 @@ Bạn có muốn tiếp tục?</translation>
       <translation>Trimetric</translation>
     </message>
     <message>
-      <source> Scale</source>
-      <translation> Tỷ lệ</translation>
-    </message>
-    <message>
-      <source>View projection</source>
-      <translation>Chế độ xem các hình chiếu</translation>
-    </message>
-    <message>
       <source> Axis aligned up</source>
       <translation> Trục thẳng hàng</translation>
+    </message>
+    <message>
+      <source>Axis out and right</source>
+      <translation>Trục ngoài bên phải</translation>
+    </message>
+    <message>
+      <source>Vertical tilt</source>
+      <translation>Nghiêng theo chiều dọc</translation>
     </message>
     <message>
       <source>Flip</source>
       <translation>Đảo ngược</translation>
     </message>
     <message>
+      <source> Scale</source>
+      <translation> Tỷ lệ</translation>
+    </message>
+    <message>
       <source> Trimetric</source>
       <translation> Trimetric</translation>
-    </message>
-    <message>
-      <source>Projection</source>
-      <translation>Phép chiếu</translation>
-    </message>
-    <message>
-      <source>Third Angle</source>
-      <translation>Góc thứ ba</translation>
-    </message>
-    <message>
-      <source>First Angle</source>
-      <translation>Góc thứ nhất</translation>
-    </message>
-    <message>
-      <source>View from:</source>
-      <translation>Nhìn từ:</translation>
-    </message>
-    <message>
-      <source>Axis aligned right:</source>
-      <translation>Trục thẳng hàng bên phải:</translation>
     </message>
   </context>
   <context>

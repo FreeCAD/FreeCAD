@@ -298,16 +298,60 @@ Jarraitu nahi duzu?</translation>
       <translation>Proiekzio ortografikoa</translation>
     </message>
     <message>
+      <source>Projection</source>
+      <translation>Proiekzioa</translation>
+    </message>
+    <message>
+      <source>Third Angle</source>
+      <translation>Hirugarren angelua</translation>
+    </message>
+    <message>
+      <source>First Angle</source>
+      <translation>Lehen angelua</translation>
+    </message>
+    <message>
+      <source>View from:</source>
+      <translation>Bista hemendik:</translation>
+    </message>
+    <message>
+      <source>X +ve</source>
+      <translation>X +ve</translation>
+    </message>
+    <message>
+      <source>Y +ve</source>
+      <translation>Y +ve</translation>
+    </message>
+    <message>
+      <source>Z +ve</source>
+      <translation>Z +ve</translation>
+    </message>
+    <message>
+      <source>X -ve</source>
+      <translation>X -ve</translation>
+    </message>
+    <message>
+      <source>Y -ve</source>
+      <translation>Y -ve</translation>
+    </message>
+    <message>
+      <source>Z -ve</source>
+      <translation>Z -ve</translation>
+    </message>
+    <message>
+      <source>Axis aligned right:</source>
+      <translation>Ardatza eskuinean lerrokatuta:</translation>
+    </message>
+    <message>
+      <source>Secondary Views</source>
+      <translation>Bigarren mailako ikuspegiak</translation>
+    </message>
+    <message>
       <source>Right click for axonometric settings</source>
       <translation>Eskuineko klik ezarpen axonometrikoetarako</translation>
     </message>
     <message>
       <source>Primary view</source>
       <translation>Bista nagusia</translation>
-    </message>
-    <message>
-      <source>Secondary Views</source>
-      <translation>Bigarren mailako ikuspegiak</translation>
     </message>
     <message>
       <source>General</source>
@@ -342,36 +386,8 @@ Jarraitu nahi duzu?</translation>
       <translation>Axonometrikoa</translation>
     </message>
     <message>
-      <source>Axis out and right</source>
-      <translation>Ardatza kanpora eta eskuinera</translation>
-    </message>
-    <message>
-      <source>Vertical tilt</source>
-      <translation>Inklinazio bertikala</translation>
-    </message>
-    <message>
-      <source>X +ve</source>
-      <translation>X +ve</translation>
-    </message>
-    <message>
-      <source>Y +ve</source>
-      <translation>Y +ve</translation>
-    </message>
-    <message>
-      <source>Z +ve</source>
-      <translation>Z +ve</translation>
-    </message>
-    <message>
-      <source>X -ve</source>
-      <translation>X -ve</translation>
-    </message>
-    <message>
-      <source>Y -ve</source>
-      <translation>Y -ve</translation>
-    </message>
-    <message>
-      <source>Z -ve</source>
-      <translation>Z -ve</translation>
+      <source>View projection</source>
+      <translation>Bistaratu proiekzioa</translation>
     </message>
     <message>
       <source>Isometric</source>
@@ -386,44 +402,28 @@ Jarraitu nahi duzu?</translation>
       <translation>Trimetrikoa</translation>
     </message>
     <message>
-      <source> Scale</source>
-      <translation> Eskala</translation>
-    </message>
-    <message>
-      <source>View projection</source>
-      <translation>Bistaratu proiekzioa</translation>
-    </message>
-    <message>
       <source> Axis aligned up</source>
       <translation> Ardatzak goian lerrokatuta</translation>
+    </message>
+    <message>
+      <source>Axis out and right</source>
+      <translation>Ardatza kanpora eta eskuinera</translation>
+    </message>
+    <message>
+      <source>Vertical tilt</source>
+      <translation>Inklinazio bertikala</translation>
     </message>
     <message>
       <source>Flip</source>
       <translation>Irauli</translation>
     </message>
     <message>
+      <source> Scale</source>
+      <translation> Eskala</translation>
+    </message>
+    <message>
       <source> Trimetric</source>
       <translation> Trimetrikoa</translation>
-    </message>
-    <message>
-      <source>Projection</source>
-      <translation>Proiekzioa</translation>
-    </message>
-    <message>
-      <source>Third Angle</source>
-      <translation>Hirugarren angelua</translation>
-    </message>
-    <message>
-      <source>First Angle</source>
-      <translation>Lehen angelua</translation>
-    </message>
-    <message>
-      <source>View from:</source>
-      <translation>Bista hemendik:</translation>
-    </message>
-    <message>
-      <source>Axis aligned right:</source>
-      <translation>Ardatza eskuinean lerrokatuta:</translation>
     </message>
   </context>
   <context>
