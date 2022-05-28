@@ -23,9 +23,11 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/actions/SoGLRenderAction.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoEventCallback.h>
+# include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoSwitch.h>
 # include <QApplication>
 # include <QMenu>
@@ -76,6 +78,32 @@ void SoFCColorBarBase::GLRenderBelowPath(SoGLRenderAction *  action)
         setViewportSize(size);
     }
     SoSeparator::GLRenderBelowPath(action);
+}
+
+float SoFCColorBarBase::getBoundingWidth(const SbVec2s& size)
+{
+    // These are the same camera settings for front nodes as defined in the 3d view
+    SoOrthographicCamera* cam = new SoOrthographicCamera;
+    cam->position = SbVec3f(0, 0, 5);
+    cam->height = 10;
+    cam->nearDistance = 0;
+    cam->farDistance = 10;
+
+    SoGroup* group = new SoGroup();
+    group->ref();
+    group->addChild(cam);
+    group->addChild(this);
+
+    SbViewportRegion vpr(size);
+    SoGetBoundingBoxAction bbact(vpr);
+    bbact.apply(group);
+    SbBox3f box = bbact.getBoundingBox();
+    SbVec3f minPt, maxPt;
+    box.getBounds(minPt, maxPt);
+    group->unref();
+
+    float boxWidth = maxPt[0] - minPt[0];
+    return boxWidth + 0.2f;
 }
 
 // --------------------------------------------------------------------------

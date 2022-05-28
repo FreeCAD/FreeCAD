@@ -110,18 +110,22 @@ void SoFCColorGradient::setMarkerLabel(const SoMFString& label)
 
 void SoFCColorGradient::setViewportSize(const SbVec2s& size)
 {
-    // don't know why the parameter range isn't between [-1,+1]
-    float fRatio = ((float)size[0]) / ((float)size[1]);
+    float fRatio = static_cast<float>(size[0]) / static_cast<float>(size[1]);
     float fMinX =  4.0f, fMaxX = 4.5f;
     float fMinY = -4.0f, fMaxY = 4.0f;
 
     if (fRatio > 1.0f) {
-        fMinX = 4.0f * fRatio;
+        fMinX = 5.0f * fRatio;
         fMaxX = fMinX + 0.5f;
     }
     else if (fRatio < 1.0f) {
         fMinY = -4.0f / fRatio;
         fMaxY =  4.0f / fRatio;
+    }
+
+    float boxWidth = getBoundingWidth(size);
+    if (fRatio < 1.0f) {
+        boxWidth *= fRatio;
     }
 
     // search for the labels
@@ -139,7 +143,7 @@ void SoFCColorGradient::setViewportSize(const SbVec2s& size)
             if (labels->getChild(j)->getTypeId() == SoTransform::getClassTypeId()) {
                 if (first) {
                     first = false;
-                    static_cast<SoTransform*>(labels->getChild(j))->translation.setValue(fMaxX + 0.1f, fMaxY - 0.05f + fStep, 0.0f);
+                    static_cast<SoTransform*>(labels->getChild(j))->translation.setValue(fMaxX + 0.1f - boxWidth, fMaxY - 0.05f + fStep, 0.0f);
                 }
                 else {
                     static_cast<SoTransform*>(labels->getChild(j))->translation.setValue(0, -fStep, 0.0f);
@@ -148,7 +152,7 @@ void SoFCColorGradient::setViewportSize(const SbVec2s& size)
         }
     }
 
-    _bbox.setBounds(fMinX, fMinY, fMaxX, fMaxY);
+    _bbox.setBounds(fMinX - boxWidth, fMinY, fMaxX - boxWidth, fMaxY);
     modifyPoints(_bbox);
 }
 

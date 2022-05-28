@@ -190,13 +190,12 @@ void SoFCColorLegend::setMarkerValue(const SoMFString& value)
 
 void SoFCColorLegend::setViewportSize(const SbVec2s& size)
 {
-    // don't know why the parameter range isn't between [-1,+1]
     float fRatio = static_cast<float>(size[0]) / static_cast<float>(size[1]);
     float fMinX =  4.0f, fMaxX = 4.5f;
     float fMinY = -4.0f, fMaxY = 4.0f;
 
     if (fRatio > 1.0f) {
-        fMinX = 4.0f * fRatio;
+        fMinX = 5.0f * fRatio;
         fMaxX = fMinX + 0.5f;
     }
     else if (fRatio < 1.0f) {
@@ -204,7 +203,12 @@ void SoFCColorLegend::setViewportSize(const SbVec2s& size)
         fMaxY =  4.0f / fRatio;
     }
 
-    _bbox.setBounds(fMinX, fMinY, fMaxX, fMaxY);
+    float boxWidth = getBoundingWidth(size);
+    if (fRatio < 1.0f) {
+        boxWidth *= fRatio;
+    }
+
+    _bbox.setBounds(fMinX - boxWidth, fMinY, fMaxX - boxWidth, fMaxY);
 
     arrangeLabels(_bbox);
     arrangeValues(_bbox);
