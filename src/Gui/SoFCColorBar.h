@@ -112,6 +112,12 @@ public:
   virtual const char* getColorBarName() const = 0;
 
 protected:
+  /** Returns the width of the color bar and labels
+   *
+   * Computes the occupied width of the color bar and its labels.
+   * It therefore determines the bounding box.
+   */
+  float getBoundingWidth(const SbVec2s& size);
   /**
    * Sets the current viewer size to recalculate the new position.
    *
