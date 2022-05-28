@@ -230,3 +230,46 @@ class PartTestCone(unittest.TestCase):
         self.assertAlmostEqual(v1.getAngle(w1), 0)
         self.assertAlmostEqual(v2.getAngle(w2), 0)
         self.assertAlmostEqual(v3.getAngle(w3), 0)
+
+class PartTestFilletAlgo(unittest.TestCase):
+    def testChFi2d_FilletAlgo(self):
+        v = FreeCAD.Vector
+        edge1 = Part.makeLine(v(0,0,0), v(0,10,0))
+        edge2 = Part.makeLine(v(0,10,0), v(10,10,0))
+        wire = Part.Wire([edge1, edge2])
+        pln = Part.Plane()
+
+        with self.assertRaises(TypeError):
+            alg = Part.ChFi2d_FilletAlgo(pln)
+
+        alg = Part.ChFi2d_FilletAlgo()
+        with self.assertRaises(TypeError):
+            alg.init()
+
+        print (alg)
+        # Test without shape
+        with self.assertRaises(Base.CADKernelError):
+            alg.perform(1)
+
+        with self.assertRaises(TypeError):
+            alg.perform()
+
+        alg = Part.ChFi2d_FilletAlgo(wire, pln)
+        alg.init(edge1, edge2, pln)
+        alg.init(wire, pln)
+
+        alg = Part.ChFi2d_FilletAlgo(edge1, edge2, pln)
+        alg.perform(1.0)
+
+        with self.assertRaises(TypeError):
+            alg.numberOfResults()
+
+        with self.assertRaises(TypeError):
+            alg.result(1)
+
+        self.assertEqual(alg.numberOfResults(Base.Vector(0,10,0)), 1)
+        result = alg.result(Base.Vector(0,10,0))
+        curve = result[0].Curve
+        self.assertEqual(type(curve), Part.Circle)
+        self.assertEqual(curve.Axis, pln.Axis)
+        self.assertEqual(curve.Radius, 1.0)
