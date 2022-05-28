@@ -240,9 +240,9 @@ class PartTestFilletAlgo(unittest.TestCase):
         pln = Part.Plane()
 
         with self.assertRaises(TypeError):
-            alg = Part.ChFi2d_FilletAlgo(pln)
+            alg = Part.ChFi2d.FilletAlgo(pln)
 
-        alg = Part.ChFi2d_FilletAlgo()
+        alg = Part.ChFi2d.FilletAlgo()
         with self.assertRaises(TypeError):
             alg.init()
 
@@ -254,11 +254,11 @@ class PartTestFilletAlgo(unittest.TestCase):
         with self.assertRaises(TypeError):
             alg.perform()
 
-        alg = Part.ChFi2d_FilletAlgo(wire, pln)
+        alg = Part.ChFi2d.FilletAlgo(wire, pln)
         alg.init(edge1, edge2, pln)
         alg.init(wire, pln)
 
-        alg = Part.ChFi2d_FilletAlgo(edge1, edge2, pln)
+        alg = Part.ChFi2d.FilletAlgo(edge1, edge2, pln)
         alg.perform(1.0)
 
         with self.assertRaises(TypeError):

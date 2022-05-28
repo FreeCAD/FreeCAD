@@ -52,6 +52,7 @@
 #include "Mod/Part/App/BSplineCurvePy.h"
 #include "Mod/Part/App/BSplineSurfacePy.h"
 #include <Mod/Part/App/ChFi2d_FilletAlgoPy.h>
+#include <Mod/Part/App/ChFi2d_FilletAPIPy.h>
 #include "Mod/Part/App/CirclePy.h"
 #include "Mod/Part/App/ConePy.h"
 #include "Mod/Part/App/ConicPy.h"
@@ -291,7 +292,6 @@ PyMOD_INIT_FUNC(Part)
     Base::Interpreter().addType(&Part::GeometryBoolExtensionPy ::Type,partModule,"GeometryBoolExtension");
     Base::Interpreter().addType(&Part::GeometryDoubleExtensionPy ::Type,partModule,"GeometryDoubleExtension");
     Base::Interpreter().addType(&Part::PrecisionPy ::Type,partModule,"Precision");
-    Base::Interpreter().addType(&Part::ChFi2d_FilletAlgoPy::Type,partModule,"ChFi2d_FilletAlgo");
 
     // BRepFeat package
     PyObject* brepfeatModule(module.getAttr("BRepFeat").ptr());
@@ -338,6 +338,11 @@ PyMOD_INIT_FUNC(Part)
     // ShapeUpgrade sub-module
     PyObject* shapeUpgrade(module.getAttr("ShapeUpgrade").ptr());
     Base::Interpreter().addType(&Part::UnifySameDomainPy::Type, shapeUpgrade, "UnifySameDomain");
+
+    // ChFi2d sub-module
+    PyObject* chFi2d(module.getAttr("ChFi2d").ptr());
+    Base::Interpreter().addType(&Part::ChFi2d_FilletAlgoPy::Type, chFi2d, "FilletAlgo");
+    Base::Interpreter().addType(&Part::ChFi2d_FilletAPIPy::Type, chFi2d, "FilletAPI");
 
     Part::TopoShape             ::init();
     Part::PropertyPartShape     ::init();

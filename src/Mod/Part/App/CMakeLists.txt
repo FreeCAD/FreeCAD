@@ -92,6 +92,7 @@ generate_from_xml(TopoShapeWirePy)
 generate_from_xml(BRepOffsetAPI_MakePipeShellPy)
 generate_from_xml(BRepOffsetAPI_MakeFillingPy)
 generate_from_xml(ChFi2d_FilletAlgoPy)
+generate_from_xml(ChFi2d_FilletAPIPy)
 generate_from_xml(PrecisionPy)
 
 # make sure to create the directory at configure time
@@ -321,6 +322,8 @@ SET(Python_SRCS
     BRepOffsetAPI_MakeFillingPyImp.cpp
     ChFi2d_FilletAlgoPy.xml
     ChFi2d_FilletAlgoPyImp.cpp
+    ChFi2d_FilletAPIPy.xml
+    ChFi2d_FilletAPIPyImp.cpp
     PrecisionPy.xml
     PrecisionPyImp.cpp
     PartPyCXX.cpp

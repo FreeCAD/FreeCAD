@@ -2,11 +2,11 @@
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
   <PythonExport 
       Father="PyObjectBase"
-      Name="ChFi2d_FilletAlgoPy"
-      PythonName="Part.ChFi2d.FilletAlgo"
-      Twin="ChFi2d_FilletAlgo"
-      TwinPointer="ChFi2d_FilletAlgo"
-      Include="ChFi2d_FilletAlgo.hxx"
+      Name="ChFi2d_FilletAPIPy"
+      PythonName="Part.ChFi2d.FilletAPI"
+      Twin="ChFi2d_FilletAPI"
+      TwinPointer="ChFi2d_FilletAPI"
+      Include="ChFi2d_FilletAPI.hxx"
       Namespace="Part" 
       FatherInclude="Base/PyObjectBase.h"
       FatherNamespace="Base"
