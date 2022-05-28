@@ -108,11 +108,6 @@ SoFCColorBar::SoFCColorBar()
 {
     SO_NODE_CONSTRUCTOR(SoFCColorBar);
 
-    _fMaxX = 0;
-    _fMinX = 0;
-    _fMaxY = 0;
-    _fMinY = 0;
-
 //  SoEventCallback * cb = new SoEventCallback;
 //  cb->addEventCallback(SoMouseButtonEvent::getClassTypeId(), eventCallback, this);
 //  insertChild(cb, 0);
@@ -155,18 +150,7 @@ SoFCColorBarBase* SoFCColorBar::getActiveBar() const
 
 void SoFCColorBar::setViewportSize( const SbVec2s& size )
 {
-    // don't know why the parameter range isn't between [-1,+1]
-    float fRatio = ((float)size[0])/((float)size[1]);
-    _fMinX=  4.0f, _fMaxX=4.5f;
-    _fMinY= -4.0f, _fMaxY=4.0f;
-    if (fRatio > 1.0f) {
-        _fMinX = 4.0f * fRatio;
-        _fMaxX = _fMinX+0.5f;
-    }
-    else if (fRatio < 1.0f) {
-        _fMinY =  -4.0f / fRatio;
-        _fMaxY =   4.0f / fRatio;
-    }
+    std::ignore = size;
 }
 
 void SoFCColorBar::setRange( float fMin, float fMax, int prec )
@@ -237,27 +221,8 @@ void SoFCColorBar::handleEvent (SoHandleEventAction *action)
     if (event->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
         const SoMouseButtonEvent*  e = static_cast<const SoMouseButtonEvent*>(event);
 
-        // calculate the mouse position relative to the colorbar
-        //
-        const SbViewportRegion&  vp = action->getViewportRegion();
-        float fRatio = vp.getViewportAspectRatio();
-        SbVec2f pos = event->getNormalizedPosition(vp);
-        float pX,pY; pos.getValue(pX,pY);
-
-        pX = pX*10.0f-5.0f;
-        pY = pY*10.0f-5.0f;
-
-        // now calculate the real points respecting aspect ratio information
-        //
-        if (fRatio > 1.0f) {
-            pX = pX * fRatio;
-        }
-        else if (fRatio < 1.0f) {
-            pY = pY / fRatio;
-        }
-
         // check if the cursor is near to the color bar
-        if (_fMinX > pX || pX > _fMaxX || _fMinY > pY || pY > _fMaxY)
+        if (!action->getPickedPoint())
             return; // not inside the rectangle
 
         // left mouse pressed
