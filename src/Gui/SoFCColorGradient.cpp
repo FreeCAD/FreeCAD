@@ -131,6 +131,13 @@ void SoFCColorGradient::setViewportSize(const SbVec2s& size)
             num++;
     }
 
+    // depending ion the number of decimals we need more space for the label
+    // the fMinX/fMin settings are optimized for 2 decimals
+    // for every decimal we need more space and thus shift the color bar to the left
+    float shiftToLeft = 0.0f;
+    if (_precision > 2)
+        shiftToLeft = (_precision - 2) * 0.4f / fRatio;
+
     if (num > 2) {
         bool first = true;
         float fStep = (fMaxY - fMinY) / ((float)num - 2);
@@ -139,7 +146,7 @@ void SoFCColorGradient::setViewportSize(const SbVec2s& size)
             if (labels->getChild(j)->getTypeId() == SoTransform::getClassTypeId()) {
                 if (first) {
                     first = false;
-                    static_cast<SoTransform*>(labels->getChild(j))->translation.setValue(fMaxX + 0.1f, fMaxY - 0.05f + fStep, 0.0f);
+                    static_cast<SoTransform*>(labels->getChild(j))->translation.setValue(fMaxX + 0.1f - shiftToLeft, fMaxY - 0.05f + fStep, 0.0f);
                 }
                 else {
                     static_cast<SoTransform*>(labels->getChild(j))->translation.setValue(0, -fStep, 0.0f);
@@ -148,7 +155,7 @@ void SoFCColorGradient::setViewportSize(const SbVec2s& size)
         }
     }
 
-    _bbox.setBounds(fMinX, fMinY, fMaxX, fMaxY);
+    _bbox.setBounds(fMinX - shiftToLeft, fMinY, fMaxX - shiftToLeft, fMaxY);
     modifyPoints(_bbox);
 }
 
@@ -251,6 +258,11 @@ void SoFCColorGradient::rebuildGradient()
     coords->point.setNum(2 * uCtColors);
     modifyPoints(_bbox);
 
+    // trigger recalculation of size since number of decimal might have been changed
+    SbVec2s size;
+    size.setValue(_bbox.getMax());
+    setViewportSize(size);
+
     // for uCtColors colors we need 2*(uCtColors-1) facets and therefore an array with
     // 8*(uCtColors-1) face indices
     SoIndexedFaceSet* faceset = new SoIndexedFaceSet;
@@ -337,4 +349,8 @@ void SoFCColorGradient::customize(SoFCColorBarBase* parentNode)
     else {
         _precision = dlg.numberOfDecimals();
     }
+
+    // we need the rebuild the gradient since a changed number of decimals
+    // must change the gradient position
+    rebuildGradient();
 }
