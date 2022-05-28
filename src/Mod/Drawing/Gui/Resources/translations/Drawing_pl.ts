@@ -390,7 +390,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Isometric</source>
-      <translation>Izometryczny</translation>
+      <translation>Widok izometryczny</translation>
     </message>
     <message>
       <source>Dimetric</source>
@@ -398,7 +398,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source>Trimetric</source>
-      <translation>Trymetryczny</translation>
+      <translation>Trimetryczny</translation>
     </message>
     <message>
       <source> Axis aligned up</source>
@@ -422,7 +422,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <source> Trimetric</source>
-      <translation> Trymetryczny</translation>
+      <translation> Trimetryczny</translation>
     </message>
   </context>
   <context>

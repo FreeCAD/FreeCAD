@@ -5159,7 +5159,7 @@ hautatutako objektuekin</translation>
     </message>
     <message>
       <source>Show output window on</source>
-      <translation type="unfinished">Show output window on</translation>
+      <translation>Erakutsi irteerako leihoa hemen:</translation>
     </message>
     <message>
       <source>Redirect Python output</source>
@@ -5614,7 +5614,7 @@ Aldaketak gorde nahi dituzu?</translation>
     </message>
     <message>
       <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
-      <translation type="unfinished">The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</translation>
+      <translation>%1(e)n laguntza-sistema "Laguntza" gehigarriaren bidez kudeatzen da. Gehigarrien kudeatzailearen bidez instalatu daiteke.</translation>
     </message>
     <message>
       <source>Open Addon Manager</source>

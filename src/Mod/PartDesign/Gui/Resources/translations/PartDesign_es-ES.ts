@@ -3356,7 +3356,7 @@ haga clic de nuevo para finalizar la selección</translation>
     <message>
       <location filename="../../ViewProviderFillet.h" line="41"/>
       <source>Fillet parrameters</source>
-      <translation type="unfinished">Fillet parrameters</translation>
+      <translation>Parámetros de filete</translation>
     </message>
   </context>
   <context>
@@ -3364,7 +3364,7 @@ haga clic de nuevo para finalizar la selección</translation>
     <message>
       <location filename="../../ViewProviderLinearPattern.h" line="38"/>
       <source>LinearPattern parameters</source>
-      <translation type="unfinished">LinearPattern parameters</translation>
+      <translation>Parámetros LinearPattern</translation>
     </message>
   </context>
   <context>
@@ -3380,7 +3380,7 @@ haga clic de nuevo para finalizar la selección</translation>
     <message>
       <location filename="../../ViewProviderPolarPattern.h" line="38"/>
       <source>PolarPattern parameters</source>
-      <translation type="unfinished">PolarPattern parameters</translation>
+      <translation>Parámetros PolarPattern</translation>
     </message>
   </context>
   <context>

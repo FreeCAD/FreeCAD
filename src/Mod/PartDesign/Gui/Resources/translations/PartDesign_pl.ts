@@ -3395,7 +3395,7 @@ kliknij ponownie, aby zakończyć wybór</translation>
     <message>
       <location filename="../../ViewProviderThickness.h" line="41"/>
       <source>Thickness parameters</source>
-      <translation>Parametry grubości</translation>
+      <translation>Parametry funkcji Grubość</translation>
     </message>
   </context>
   <context>

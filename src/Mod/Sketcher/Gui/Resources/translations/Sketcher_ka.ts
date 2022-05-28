@@ -565,8 +565,8 @@
       <location filename="../../CommandConstraints.cpp" line="1356"/>
       <source>Lock constraint: create both a horizontal and a vertical distance constraint
 on the selected vertex</source>
-      <translation type="unfinished">Lock constraint: create both a horizontal and a vertical distance constraint
-on the selected vertex</translation>
+      <translation>შეზღუდვის დაბლოკვა: ორივე, ჰორიზონტალური და ვერტიკალური შეზღუდვების შექმნა
+არჩეულ წვეროზე</translation>
     </message>
   </context>
   <context>
@@ -1253,7 +1253,7 @@ then call this command, then choose the desired sketch.</source>
     <message>
       <location filename="../../Command.cpp" line="563"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
-      <translation type="unfinished">Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</translation>
+      <translation>ზოგიერთი მონიშნული ობიექტი საჩვენებელ ესკიზს ეყრდნობა. წრიული დამოკიდებულებები მხარდაუჭერელია.</translation>
     </message>
   </context>
   <context>
@@ -1369,8 +1369,8 @@ as mirroring reference.</translation>
       <location filename="../../Command.cpp" line="384"/>
       <source>Place the selected sketch on one of the global coordinate planes.
 This will clear the 'Support' property, if any.</source>
-      <translation type="unfinished">Place the selected sketch on one of the global coordinate planes.
-This will clear the 'Support' property, if any.</translation>
+      <translation>მონიშნული ესკიზის ერთ-ერთ გლობალურ კოორდინატთა სიბრტყეზე მოთავსება.
+თუ არსებობს თვისება 'საყრდენი', ის გასუფთავდება.</translation>
     </message>
   </context>
   <context>
@@ -1617,8 +1617,8 @@ into driving or reference mode</translation>
       <location filename="../../Command.cpp" line="726"/>
       <source>Validate a sketch by looking at missing coincidences,
 invalid constraints, degenerated geometry, etc.</source>
-      <translation type="unfinished">Validate a sketch by looking at missing coincidences,
-invalid constraints, degenerated geometry, etc.</translation>
+      <translation>ესკიზის შემოწმება ნაკლული დამთხვევების, არასწორი შეზღუდვების, 
+დეგენერირებული გეომეტრიის და ა. შ. შემოწმებით.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="740"/>
@@ -2680,7 +2680,7 @@ invalid constraints, degenerated geometry, etc.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1623"/>
       <source>A Block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</source>
-      <translation type="unfinished">A Block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</translation>
+      <translation>დაბლოკვის შეზღუდვას ვერ დაამატებთ, თუ ესკიზი ამოუხსნელია ან არსებობს დამატებითი, ან ურთიერთგამომრიცხავი შეზღუდვები.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1641"/>
@@ -2958,7 +2958,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <location filename="../../CommandConstraints.cpp" line="4821"/>
       <location filename="../../CommandConstraints.cpp" line="5389"/>
       <source>Select either only one or more B-Spline poles or only one or more arcs or circles from the sketch, but not mixed.</source>
-      <translation type="unfinished">Select either only one or more B-Spline poles or only one or more arcs or circles from the sketch, but not mixed.</translation>
+      <translation>ესკიზიდან მონიშნეთ მხოლოდ ერთი ან მეტი B-სპლაინი, რკალები ან წრეწირები, მაგრამ ტიპებს ნუ შეურევთ.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4940"/>
@@ -4440,8 +4440,8 @@ Works only when "Restore camera position after editing" is enabled.</source>
       <location filename="../../SketcherSettingsDisplay.ui" line="408"/>
       <source>Open a sketch in Section View mode by default.
 Then objects are only visible behind the sketch plane.</source>
-      <translation type="unfinished">Open a sketch in Section View mode by default.
-Then objects are only visible behind the sketch plane.</translation>
+      <translation>ნაგულიხმებად ესკიზის კვეთის რეჟიმში გახსნა.
+ამ შემთხვევაში ობიექტები მხოლოდ ესკიზის სიბრტყის მიღმა ჩანან.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="412"/>
@@ -6073,7 +6073,7 @@ Eigen Sparse QR ალგორითმი ოპტიმიზებული
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="451"/>
       <source>If selected, the Maximum iterations value for the redundant algorithm is multiplied by the sketch size</source>
-      <translation type="unfinished">If selected, the Maximum iterations value for the redundant algorithm is multiplied by the sketch size</translation>
+      <translation>თუ მონიშნულია, დამატებითი ალგორითმის მაქსიმალური იტერაციების მნიშვნელობა ესკიზის ზომაზე გამრავლდება</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="454"/>

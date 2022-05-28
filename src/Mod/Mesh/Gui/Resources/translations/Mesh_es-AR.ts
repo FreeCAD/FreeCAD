@@ -1871,11 +1871,11 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
       <source>Mesh modify</source>
-      <translation type="unfinished">Mesh modify</translation>
+      <translation>Modificar malla</translation>
     </message>
     <message>
       <source>Mesh boolean</source>
-      <translation type="unfinished">Mesh boolean</translation>
+      <translation>Malla booleana</translation>
     </message>
     <message>
       <source>Mesh cutting</source>

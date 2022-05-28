@@ -113,7 +113,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="170"/>
       <source>Creates a FEM constant vacuum permittivity to overwrite standard value</source>
-      <translation type="unfinished">Creates a FEM constant vacuum permittivity to overwrite standard value</translation>
+      <translation>Erzeuge eine konstante FEM-Vakuumpermittivität, um den Standardwert zu überschreiben</translation>
     </message>
   </context>
   <context>
@@ -121,12 +121,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="185"/>
       <source>Constraint body heat source</source>
-      <translation type="unfinished">Constraint body heat source</translation>
+      <translation>Eingeschränkte Körperwärmequelle</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="189"/>
       <source>Creates a FEM constraint body heat source</source>
-      <translation type="unfinished">Creates a FEM constraint body heat source</translation>
+      <translation>Erzeuge eine beschränkte FEM-Körperwärmequelle</translation>
     </message>
   </context>
   <context>
@@ -147,12 +147,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="219"/>
       <source>Constraint electrostatic potential</source>
-      <translation type="unfinished">Constraint electrostatic potential</translation>
+      <translation>Beschränkung elektrostatisches Potential</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="223"/>
       <source>Creates a FEM constraint electrostatic potential</source>
-      <translation type="unfinished">Creates a FEM constraint electrostatic potential</translation>
+      <translation>Erzeuge ein elektrostatisches FEM-Zwangspotential</translation>
     </message>
   </context>
   <context>
@@ -160,12 +160,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="236"/>
       <source>Constraint flow velocity</source>
-      <translation type="unfinished">Constraint flow velocity</translation>
+      <translation>Beschränkung Fließgeschwindigkeit</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="240"/>
       <source>Creates a FEM constraint flow velocity</source>
-      <translation type="unfinished">Creates a FEM constraint flow velocity</translation>
+      <translation>Erzeuge eine FEM-Zwangsströmungsgeschwindigkeit</translation>
     </message>
   </context>
   <context>
@@ -173,12 +173,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="253"/>
       <source>Constraint initial flow velocity</source>
-      <translation type="unfinished">Constraint initial flow velocity</translation>
+      <translation>Beschränkung anfängliche Fließgeschwindigkeit</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="257"/>
       <source>Creates a FEM constraint initial flow velocity</source>
-      <translation type="unfinished">Creates a FEM constraint initial flow velocity</translation>
+      <translation>Erzeuge eine FEM-Zwangsbedingung für die Strömungsanfangsgeschwindigkeit</translation>
     </message>
   </context>
   <context>
@@ -199,12 +199,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="287"/>
       <source>Constraint self weight</source>
-      <translation type="unfinished">Constraint self weight</translation>
+      <translation>Beschränkung Eigengewicht</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="291"/>
       <source>Creates a FEM constraint self weight</source>
-      <translation type="unfinished">Creates a FEM constraint self weight</translation>
+      <translation>Erzeuge eine FEM-Zwangsbedingung des Eigengewichts</translation>
     </message>
   </context>
   <context>
@@ -212,12 +212,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="304"/>
       <source>Constraint tie</source>
-      <translation type="unfinished">Constraint tie</translation>
+      <translation>Zwangsbeschränkung</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="308"/>
       <source>Creates a FEM constraint tie</source>
-      <translation type="unfinished">Creates a FEM constraint tie</translation>
+      <translation>Erzeugt eine FEM-Zwangsbeschränkung</translation>
     </message>
   </context>
   <context>
@@ -225,12 +225,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="321"/>
       <source>Fluid section for 1D flow</source>
-      <translation type="unfinished">Fluid section for 1D flow</translation>
+      <translation>Strömungsquerschnitt für 1D-Strömung</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="325"/>
       <source>Creates a FEM fluid section for 1D flow</source>
-      <translation type="unfinished">Creates a FEM fluid section for 1D flow</translation>
+      <translation>Erzeuge einen FEM-Flüssigkeitsabschnitt für 1D-Strömung</translation>
     </message>
   </context>
   <context>
@@ -238,12 +238,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="338"/>
       <source>Beam cross section</source>
-      <translation type="unfinished">Beam cross section</translation>
+      <translation>Balkenquerschnitt</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="342"/>
       <source>Creates a FEM beam cross section</source>
-      <translation type="unfinished">Creates a FEM beam cross section</translation>
+      <translation>Erzeugt einen FEM-Trägerquerschnitt</translation>
     </message>
   </context>
   <context>
@@ -251,12 +251,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="355"/>
       <source>Shell plate thickness</source>
-      <translation type="unfinished">Shell plate thickness</translation>
+      <translation>Dicke der Schalenplatte</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="359"/>
       <source>Creates a FEM shell plate thickness</source>
-      <translation type="unfinished">Creates a FEM shell plate thickness</translation>
+      <translation>Erzeuge eine FEM-Schalenplattendicke</translation>
     </message>
   </context>
   <context>
@@ -269,7 +269,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="376"/>
       <source>Creates a FEM beam rotation</source>
-      <translation type="unfinished">Creates a FEM beam rotation</translation>
+      <translation>Erzeuge eine FEM-Balkendrehung</translation>
     </message>
   </context>
   <context>
@@ -277,12 +277,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="406"/>
       <source>Elasticity equation</source>
-      <translation type="unfinished">Elasticity equation</translation>
+      <translation>Elastizitätsgleichung</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="410"/>
       <source>Creates a FEM equation for elasticity</source>
-      <translation type="unfinished">Creates a FEM equation for elasticity</translation>
+      <translation>Erzeuge eine FEM-Gleichung für Elastizität</translation>
     </message>
   </context>
   <context>
@@ -295,7 +295,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="461"/>
       <source>Creates a FEM equation for electric forces</source>
-      <translation type="unfinished">Creates a FEM equation for electric forces</translation>
+      <translation>Erzeuge eine FEM-Gleichung für elektrische Kräfte</translation>
     </message>
   </context>
   <context>
@@ -303,12 +303,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="389"/>
       <source>Electrostatic equation</source>
-      <translation type="unfinished">Electrostatic equation</translation>
+      <translation>Elektrostatische Gleichung</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="393"/>
       <source>Creates a FEM equation for electrostatic</source>
-      <translation type="unfinished">Creates a FEM equation for electrostatic</translation>
+      <translation>Erzeuge eine FEM-Gleichung für die Elektrostatik</translation>
     </message>
   </context>
   <context>
@@ -316,12 +316,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="423"/>
       <source>Flow equation</source>
-      <translation type="unfinished">Flow equation</translation>
+      <translation>Strömungsgleichung</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="427"/>
       <source>Creates a FEM equation for flow</source>
-      <translation type="unfinished">Creates a FEM equation for flow</translation>
+      <translation>Erzeuge eine FEM-Gleichung für die Strömung</translation>
     </message>
   </context>
   <context>
@@ -329,12 +329,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="440"/>
       <source>Flux equation</source>
-      <translation type="unfinished">Flux equation</translation>
+      <translation>Flussgleichung</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="444"/>
       <source>Creates a FEM equation for flux</source>
-      <translation type="unfinished">Creates a FEM equation for flux</translation>
+      <translation>Erzeuge eine FEM-Gleichung für den Fluss</translation>
     </message>
   </context>
   <context>
@@ -342,12 +342,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="474"/>
       <source>Heat equation</source>
-      <translation type="unfinished">Heat equation</translation>
+      <translation>Wärmegleichung</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="478"/>
       <source>Creates a FEM equation for heat</source>
-      <translation type="unfinished">Creates a FEM equation for heat</translation>
+      <translation>Erzeuge eine FEM-Gleichung für Wärme</translation>
     </message>
   </context>
   <context>
@@ -356,7 +356,7 @@
       <location filename="../../../femcommands/commands.py" line="492"/>
       <location filename="../../../femcommands/commands.py" line="496"/>
       <source>Open FEM examples</source>
-      <translation type="unfinished">Open FEM examples</translation>
+      <translation>Freie FEM-Beispiele</translation>
     </message>
   </context>
   <context>
@@ -364,12 +364,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="655"/>
       <source>FEM mesh to mesh</source>
-      <translation type="unfinished">FEM mesh to mesh</translation>
+      <translation>FEM-Netz auf Netz</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="659"/>
       <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation type="unfinished">Convert the surface of a FEM mesh to a mesh</translation>
+      <translation>Wandle die Oberfläche eines FEM-Netzes in ein Netz um</translation>
     </message>
   </context>
   <context>
@@ -377,12 +377,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="513"/>
       <source>Material editor</source>
-      <translation type="unfinished">Material editor</translation>
+      <translation>Material-Editor</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="517"/>
       <source>Opens the FreeCAD material editor</source>
-      <translation type="unfinished">Opens the FreeCAD material editor</translation>
+      <translation>Öffne den FreeCAD Material-Editor</translation>
     </message>
   </context>
   <context>
@@ -390,12 +390,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="533"/>
       <source>Material for fluid</source>
-      <translation type="unfinished">Material for fluid</translation>
+      <translation>Material für Flüssigkeit</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="537"/>
       <source>Creates a FEM material for fluid</source>
-      <translation type="unfinished">Creates a FEM material for fluid</translation>
+      <translation>Erzeuge ein FEM-Material für Flüssigkeiten</translation>
     </message>
   </context>
   <context>
@@ -403,12 +403,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="550"/>
       <source>Nonlinear mechanical material</source>
-      <translation type="unfinished">Nonlinear mechanical material</translation>
+      <translation>Nichtlineares mechanisches Material</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="554"/>
       <source>Creates a nonlinear mechanical material</source>
-      <translation type="unfinished">Creates a nonlinear mechanical material</translation>
+      <translation>Erzeuge einen nichtlinearen mechanisches Werkstoff</translation>
     </message>
   </context>
   <context>
@@ -416,12 +416,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="620"/>
       <source>Reinforced material (concrete)</source>
-      <translation type="unfinished">Reinforced material (concrete)</translation>
+      <translation>Verstärkter Werkstoff (Beton)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="624"/>
       <source>Creates a material for reinforced matrix material such as concrete</source>
-      <translation type="unfinished">Creates a material for reinforced matrix material such as concrete</translation>
+      <translation>Erzeuge ein Material für verstärkte Verbundwerkstoffe wie z.B. Beton</translation>
     </message>
   </context>
   <context>
@@ -429,12 +429,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="637"/>
       <source>Material for solid</source>
-      <translation type="unfinished">Material for solid</translation>
+      <translation>Material für Feststoffe</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="642"/>
       <source>Creates a FEM material for solid</source>
-      <translation type="unfinished">Creates a FEM material for solid</translation>
+      <translation>Erzeuge ein FEM-Material für Festkörper</translation>
     </message>
   </context>
   <context>
@@ -442,12 +442,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="702"/>
       <source>FEM mesh boundary layer</source>
-      <translation type="unfinished">FEM mesh boundary layer</translation>
+      <translation>FEM-Netz-Begrenzungsschicht</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="706"/>
       <source>Creates a FEM mesh boundary layer</source>
-      <translation type="unfinished">Creates a FEM mesh boundary layer</translation>
+      <translation>Erstelle eine FEM-Netz-Begrenzungsschicht</translation>
     </message>
   </context>
   <context>
@@ -455,12 +455,12 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="719"/>
       <source>Clear FEM mesh</source>
-      <translation type="unfinished">Clear FEM mesh</translation>
+      <translation>Lösche FEM Netz</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="723"/>
       <source>Clear the Mesh of a FEM mesh object</source>
-      <translation type="unfinished">Clear the Mesh of a FEM mesh object</translation>
+      <translation>Lösche das Netzes eines FEM-Objekts</translation>
     </message>
   </context>
   <context>

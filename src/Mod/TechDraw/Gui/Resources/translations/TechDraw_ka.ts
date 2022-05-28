@@ -1109,7 +1109,7 @@
       <location filename="../../CommandExtensionDims.cpp" line="159"/>
       <location filename="../../CommandExtensionDims.cpp" line="329"/>
       <source>Insert &apos;□&apos; Prefix</source>
-      <translation type="unfinished">Insert &apos;□&apos; Prefix</translation>
+      <translation>პრეფიქსის &apos;□&apos; ჩასმა</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="160"/>
@@ -2736,7 +2736,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1028"/>
       <source>There are no 3D Edges or Vertices in your selection</source>
-      <translation type="unfinished">There are no 3D Edges or Vertices in your selection</translation>
+      <translation>მონიშნულში 3D წიბოები და წვეროები ნაპოვნი არაა</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1194"/>
@@ -3680,7 +3680,7 @@ can be a performance penalty in complex models.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="86"/>
       <source>Highlights border of section cut in section views</source>
-      <translation type="unfinished">Highlights border of section cut in section views</translation>
+      <translation>კვეთებში საზღვრების გამოკვეთა</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="89"/>
@@ -3735,7 +3735,7 @@ can be a performance penalty in complex models.</source>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="232"/>
       <source>Show Loose 2D Geom</source>
-      <translation type="unfinished">Show Loose 2D Geom</translation>
+      <translation>2D გეომეტრიის კარგვების ჩვენება</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="260"/>
@@ -4034,22 +4034,22 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="661"/>
       <source>Style for balloon leader line ends</source>
-      <translation type="unfinished">Style for balloon leader line ends</translation>
+      <translation>ოვალური სქოლოს ხაზის დასრულების სტილი</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="679"/>
       <source>Length of horizontal portion of Balloon leader</source>
-      <translation type="unfinished">Length of horizontal portion of Balloon leader</translation>
+      <translation>ოვალური სქოლიოს ჰორიზონტალური ნაწილის სიგრძე</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="682"/>
       <source>Ballon Leader Kink Length</source>
-      <translation type="unfinished">Ballon Leader Kink Length</translation>
+      <translation>ოვალური სქოლიოს მოღუნვის სიგრძე</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="701"/>
       <source>Length of balloon leader line kink</source>
-      <translation type="unfinished">Length of balloon leader line kink</translation>
+      <translation>ოვალური სქოლიოს მოღუნვის სიგრძე</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="732"/>
@@ -4064,7 +4064,7 @@ when hatching a face with a PAT pattern</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="763"/>
       <source>Forces last leader line segment to be horizontal</source>
-      <translation type="unfinished">Forces last leader line segment to be horizontal</translation>
+      <translation>სქოლიოს უკანასკნელი სეგმენტის ჰორიზონტალურად გავლება</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="766"/>
@@ -5139,7 +5139,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="343"/>
       <source>Length of balloon leader line kink</source>
-      <translation type="unfinished">Length of balloon leader line kink</translation>
+      <translation>ოვალური სქოლიოს მოღუნვის სიგრძე</translation>
     </message>
   </context>
   <context>
@@ -7182,7 +7182,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../TaskSectionView.ui" line="318"/>
       <source>Position from the 3D origin of the object in the view</source>
-      <translation type="unfinished">Position from the 3D origin of the object in the view</translation>
+      <translation>მდებარეობა ხედში მოქცეული ობიექტის 3D წერტილის მიმართ</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="321"/>
@@ -7474,7 +7474,7 @@ using the given X/Y Spacing</source>
       <location filename="../../Workbench.cpp" line="39"/>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>Extensions: Centerlines/Threading</source>
-      <translation type="unfinished">Extensions: Centerlines/Threading</translation>
+      <translation>გაფართოებები: ცენტრის ხაზები/კუთხვილები</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>

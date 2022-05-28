@@ -26,27 +26,27 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="471"/>
       <source>git fetch failed for {}</source>
-      <translation type="unfinished">git fetch failed for {}</translation>
+      <translation>git fetch falhou para {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="512"/>
       <source>Failed to read metadata from {name}</source>
-      <translation type="unfinished">Failed to read metadata from {name}</translation>
+      <translation>Falha ao ler metadados de {name}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="535"/>
       <source>Failed to fetch code for macro &apos;{name}&apos;</source>
-      <translation type="unfinished">Failed to fetch code for macro &apos;{name}&apos;</translation>
+      <translation>Falha ao buscar código para macro &apos;{name}&apos;</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="593"/>
       <source>Retrieving macros from FreeCAD/FreeCAD-Macros Git repository</source>
-      <translation type="unfinished">Retrieving macros from FreeCAD/FreeCAD-Macros Git repository</translation>
+      <translation>Recuperando macros do repositório Git do FreeCAD/FreeCAD-Macros</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="602"/>
       <source>Retrieving macros from FreeCAD wiki</source>
-      <translation type="unfinished">Retrieving macros from FreeCAD wiki</translation>
+      <translation>Recuperando macros da wiki do FreeCAD</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="610"/>
@@ -56,12 +56,12 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="624"/>
       <source>Failed to execute Git Python command: check installation of GitPython and/or git</source>
-      <translation type="unfinished">Failed to execute Git Python command: check installation of GitPython and/or git</translation>
+      <translation>Falha ao executar o comando Git Python: verifique a instalação do GitPython e/ou git</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="645"/>
       <source>An error occurred updating macros from GitHub</source>
-      <translation type="unfinished">An error occurred updating macros from GitHub</translation>
+      <translation>Ocorreu um erro ao atualizar as macros a partir do GitHub</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="686"/>
@@ -76,7 +76,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="756"/>
       <source>Addon Manager: a worker process failed to halt ({name})</source>
-      <translation type="unfinished">Addon Manager: a worker process failed to halt ({name})</translation>
+      <translation>Addon Manager: um processo de trabalho falhou em parar ({name})</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="775"/>
@@ -86,12 +86,12 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="790"/>
       <source>Out of {num_macros} macros, {num_failed} timed out while processing</source>
-      <translation type="unfinished">Out of {num_macros} macros, {num_failed} timed out while processing</translation>
+      <translation>Sem {num_macros} macros, {num_failed} expiraram durante o processamento</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="821"/>
       <source>Getting metadata from macro {}</source>
-      <translation type="unfinished">Getting metadata from macro {}</translation>
+      <translation>Obtendo metadados da macro {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="834"/>
@@ -102,7 +102,7 @@
       <location filename="../../addonmanager_workers.py" line="845"/>
       <source>Failed to kill process for macro {}!
 </source>
-      <translation type="unfinished">Failed to kill process for macro {}!
+      <translation>Falha ao matar o processo para macro {}!
 </translation>
     </message>
     <message>
@@ -154,7 +154,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="1012"/>
       <source>Error updating module</source>
-      <translation type="unfinished">Error updating module</translation>
+      <translation>Erro ao atualizar módulo</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="1016"/>
@@ -174,7 +174,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="1114"/>
       <source>A macro has been installed and is available under Macro -&gt; Macros menu</source>
-      <translation type="unfinished">A macro has been installed and is available under Macro -&gt; Macros menu</translation>
+      <translation>Uma macro foi instalada e está disponível sob o menu Macro -&gt; Macros</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="1133"/>
@@ -210,7 +210,7 @@
       <location filename="../../addonmanager_workers.py" line="1348"/>
       <location filename="../../addonmanager_workers.py" line="1367"/>
       <source>Installation of Python package {} failed</source>
-      <translation type="unfinished">Installation of Python package {} failed</translation>
+      <translation>Falha na instalação do pacote Python {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="1484"/>
@@ -286,7 +286,7 @@
     <message>
       <location filename="../../change_branch.py" line="102"/>
       <source>DANGER: Developer feature</source>
-      <translation type="unfinished">DANGER: Developer feature</translation>
+      <translation>PERIGO: Recurso de desenvolvedor</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="106"/>

@@ -955,7 +955,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="426"/>
       <source>Migrate legacy part design features to Bodies</source>
-      <translation>Migrer les fonctionnalités de conception de pièces anciennes vers les corps</translation>
+      <translation>Migrer les fonctions de conception de pièces existantes vers les corps</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="571"/>
@@ -4784,12 +4784,12 @@ plus de 90 : rayon du trou plus grand à la base</translation>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
       <source>Part Design Helper</source>
-      <translation>Assistant Conception de Pièces</translation>
+      <translation>Assistant de Part Design</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Part Design Modeling</source>
-      <translation>Modélisation Conception de Pièces</translation>
+      <translation>Modélisation de Part Design</translation>
     </message>
   </context>
 </TS>

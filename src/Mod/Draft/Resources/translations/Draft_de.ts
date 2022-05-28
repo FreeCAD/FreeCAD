@@ -7831,7 +7831,7 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="338"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the outline of a human figure is displayed at the bottom left corner of the grid. This option is only effective if the BIM workbench is installed and if &amp;quot;Show grid border&amp;quot; option is enabled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the outline of a human figure is displayed at the bottom left corner of the grid. This option is only effective if the BIM workbench is installed and if &amp;quot;Show grid border&amp;quot; option is enabled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Wenn diese Option aktiviert ist, wird der Umriss einer menschlichen Figur in der unteren linken Ecke des Rasters angezeigt. Diese Option ist nur wirksam, wenn die BIM-Workbench installiert ist und die Option &amp;quot;Gitterrand anzeigen&amp;quot; aktiviert ist.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="341"/>
@@ -7946,7 +7946,7 @@ This might fail for post DXF R12 templates.</source>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="41"/>
       <source>This is the method FreeCAD will use to convert DWG files to DXF. If "Automatic" is chosen, FreeCAD will try to find one of the following converters in the same order as they are shown here. If FreeCAD is unable to find any, you might need to choose a specific converter and indicate its path here under. Choose the "dwg2dxf" utility if using LibreDWG, "ODAFileConverter" if using the ODA file converter, or the "dwg2dwg" utility if using the pro version of QCAD.</source>
-      <translation type="unfinished">This is the method FreeCAD will use to convert DWG files to DXF. If "Automatic" is chosen, FreeCAD will try to find one of the following converters in the same order as they are shown here. If FreeCAD is unable to find any, you might need to choose a specific converter and indicate its path here under. Choose the "dwg2dxf" utility if using LibreDWG, "ODAFileConverter" if using the ODA file converter, or the "dwg2dwg" utility if using the pro version of QCAD.</translation>
+      <translation>Dies ist die Methode, die FreeCAD für die Konvertierung von DWG-Dateien in DXF verwendet. Wenn Sie "Automatisch" wählen, wird FreeCAD versuchen, einen der folgenden Konverter in der Reihenfolge zu finden, in der sie hier angezeigt werden. Wenn FreeCAD keinen Konverter findet, müssen Sie einen bestimmten Konverter auswählen und dessen Pfad hier unten angeben. Wählen Sie "dwg2dxf", wenn Sie LibreDWG verwenden, "ODAFileConverter", wenn Sie den ODA-Dateikonverter verwenden, oder "dwg2dwg", wenn Sie die Pro-Version von QCAD verwenden.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="51"/>

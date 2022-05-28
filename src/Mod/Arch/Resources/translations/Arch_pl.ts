@@ -109,7 +109,7 @@
     <message>
       <location filename="../../ArchSectionPlane.py" line="1266"/>
       <source>The rendering mode to use</source>
-      <translation>Tryb renderowania</translation>
+      <translation>Tryb renderowania do użycia</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1270"/>
@@ -3661,7 +3661,7 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="../../ArchSchedule.py" line="504"/>
       <source>Import CSV File</source>
-      <translation>Zaimportuj plik CSV</translation>
+      <translation>Import pliku CSV</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="539"/>
@@ -3794,12 +3794,12 @@ Tworzenie piętra zostało przerwane.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="2005"/>
       <source>Add property...</source>
-      <translation>Dodaj właściwość...</translation>
+      <translation>Dodaj właściwość ...</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2006"/>
       <source>Add property set...</source>
-      <translation>Dodaj zestaw właściwości...</translation>
+      <translation>Dodaj zestaw właściwości ...</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2007"/>

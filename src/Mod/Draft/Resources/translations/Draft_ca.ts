@@ -48,9 +48,7 @@
       <source>End angle of the elliptical arc 
 
                 (for a full circle, give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the elliptical arc 
-
-                (for a full circle, give it same value as First Angle)</translation>
+      <translation>Angle final de l'arc el·líptic (per a una circumferència sencera, introduïu el mateix valor que el primer angle)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="52"/>
@@ -164,8 +162,7 @@
       <location filename="../../draftobjects/circle.py" line="50"/>
       <source>End angle of the arc (for a full circle, 
                 give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the arc (for a full circle, 
-                give it same value as First Angle)</translation>
+      <translation>Angle final de l'arc (per a una circumferència sencera, introduïu el mateix valor que el primer angle)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="54"/>
@@ -369,37 +366,37 @@ set True for fusion or False for compound</source>
     <message>
       <location filename="../../draftobjects/hatch.py" line="46"/>
       <source>The base object used by this object</source>
-      <translation type="unfinished">The base object used by this object</translation>
+      <translation>L'objecte base utilitzat per aquest objecte</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="49"/>
       <source>The PAT file used by this object</source>
-      <translation type="unfinished">The PAT file used by this object</translation>
+      <translation>L'arxiu PAT utilitzat per a aquest objecte</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="52"/>
       <source>The pattern name used by this object</source>
-      <translation type="unfinished">The pattern name used by this object</translation>
+      <translation>El nom del patró utilitzat per a aquest objecte</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="55"/>
       <source>The pattern scale used by this object</source>
-      <translation type="unfinished">The pattern scale used by this object</translation>
+      <translation>L'escala del patró utilitzat per a aquest objecte</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="58"/>
       <source>The pattern rotation used by this object</source>
-      <translation type="unfinished">The pattern rotation used by this object</translation>
+      <translation>La rotació del patró utilitzat per a aquest objecte</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="61"/>
       <source>If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</source>
-      <translation type="unfinished">If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)</translation>
+      <translation>Si s'estableix a Fals, s'aplica l'eclosió com a les cares, sense traducció (això podria donar resultats erronis per a cares no XY)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draftlink.py" line="99"/>
       <source>Force sync pattern placements even when array elements are expanded</source>
-      <translation type="unfinished">Force sync pattern placements even when array elements are expanded</translation>
+      <translation>Força la sincronització de les col·locacions de patrons fins i tot quan s'expandeixen els elements de la matriu</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draftlink.py" line="112"/>
@@ -512,7 +509,7 @@ Deixa aquesta propietat buida per poder especificar 'Eix' i 'Centre' manualment.
     <message>
       <location filename="../../draftobjects/array.py" line="291"/>
       <source>A parameter that determines how many symmetry planes the circular array will have.</source>
-      <translation type="unfinished">A parameter that determines how many symmetry planes the circular array will have.</translation>
+      <translation>Un paràmetre que determina quants plans de simetria tindrà la matriu circular.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="309"/>
@@ -552,7 +549,7 @@ Aquesta propietat és de només lectura, ja que el nombre depèn dels paràmetre
     <message>
       <location filename="../../draftobjects/shapestring.py" line="58"/>
       <source>Fill letters with faces</source>
-      <translation type="unfinished">Fill letters with faces</translation>
+      <translation>Emplena les lletres amb cares</translation>
     </message>
     <message>
       <location filename="../../draftobjects/fillet.py" line="47"/>
@@ -635,7 +632,7 @@ Quan s'utilitzi un estil gravat algunes de les propietats de la vista es tornar�
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="107"/>
       <source>Rotation factor of the twisted array.</source>
-      <translation type="unfinished">Rotation factor of the twisted array.</translation>
+      <translation>Factor de rotació de la matriu retorçada.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="192"/>
@@ -790,30 +787,28 @@ Consisteix en una llista de cadenes de text; cada element de la llista es mostra
       <location filename="../../draftobjects/shape2dview.py" line="98"/>
       <source>For Cutlines and Cutfaces modes, 
                     this leaves the faces at the cut location</source>
-      <translation type="unfinished">For Cutlines and Cutfaces modes, 
-                    this leaves the faces at the cut location</translation>
+      <translation>Per als modes Tallalínies i Tallacares, això deixa les cares al lloc de tall</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="105"/>
       <source>Length of line segments if tessellating Ellipses or B-splines 
                     into line segments</source>
-      <translation type="unfinished">Length of line segments if tessellating Ellipses or B-splines 
-                    into line segments</translation>
+      <translation>Longitud dels segments de línia si es fragmenten El·lipses o B-splines en segments de línia</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="111"/>
       <source>If this is True, this object will include only visible objects</source>
-      <translation type="unfinished">If this is True, this object will include only visible objects</translation>
+      <translation>Si això està activat, aquest objecte només inclou objectes visibles</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="117"/>
       <source>A list of exclusion points. Any edge touching any of those points will not be drawn.</source>
-      <translation type="unfinished">A list of exclusion points. Any edge touching any of those points will not be drawn.</translation>
+      <translation>Una llista dels punts exclosos. Qualsevol vora que toqui qualsevol d'aquests punts no serà dibuixada.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="122"/>
       <source>If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</source>
-      <translation type="unfinished">If this is True, only solid geometry is handled. This overrides the base object's Only Solids property</translation>
+      <translation>Si això està activat, només la geometria sòlida serà tractada. Això anul·la la propietat «Sòlids» de l'objecte base</translation>
     </message>
     <message>
       <location filename="../../draftobjects/shape2dview.py" line="127"/>

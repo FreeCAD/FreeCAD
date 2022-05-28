@@ -48,9 +48,9 @@
       <source>End angle of the elliptical arc 
 
                 (for a full circle, give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the elliptical arc 
+      <translation>Конечный угол эллиптической дуги 
 
-                (for a full circle, give it same value as First Angle)</translation>
+                (для полной окружности, задайте такое же значение, как и первый угол)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/ellipse.py" line="52"/>
@@ -164,8 +164,8 @@
       <location filename="../../draftobjects/circle.py" line="50"/>
       <source>End angle of the arc (for a full circle, 
                 give it same value as First Angle)</source>
-      <translation type="unfinished">End angle of the arc (for a full circle, 
-                give it same value as First Angle)</translation>
+      <translation>Конечный угол дуги (для окружности 
+                равен начальному углу)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="54"/>

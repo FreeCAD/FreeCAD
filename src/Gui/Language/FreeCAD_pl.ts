@@ -3972,7 +3972,7 @@ Obracanie przy pomocy myszki nie jest blokowane.</translation>
     </message>
     <message>
       <source>Isometric</source>
-      <translation>Izometryczny</translation>
+      <translation>Widok izometryczny</translation>
     </message>
     <message>
       <source>Dimetric</source>
@@ -3980,7 +3980,7 @@ Obracanie przy pomocy myszki nie jest blokowane.</translation>
     </message>
     <message>
       <source>Trimetric</source>
-      <translation>Trymetryczny</translation>
+      <translation>Trimetryczny</translation>
     </message>
     <message>
       <source>Top</source>
@@ -9040,7 +9040,7 @@ bieżącej kopii zostaną utracone.
     <name>StdCmdViewIsometric</name>
     <message>
       <source>Isometric</source>
-      <translation>Izometryczny</translation>
+      <translation>Widok izometryczny</translation>
     </message>
     <message>
       <source>Set to isometric view</source>
@@ -9205,11 +9205,11 @@ bieżącej kopii zostaną utracone.
     <name>StdCmdViewTrimetric</name>
     <message>
       <source>Trimetric</source>
-      <translation>Trymetryczny</translation>
+      <translation>Trimetryczny</translation>
     </message>
     <message>
       <source>Set to trimetric view</source>
-      <translation>Ustaw widok trójwymiarowy</translation>
+      <translation>Ustaw widok trimetrii</translation>
     </message>
   </context>
   <context>
@@ -9621,11 +9621,11 @@ Czy nadal chcesz kontynuować?</translation>
     <name>ViewIsometricCmd</name>
     <message>
       <source>Isometric</source>
-      <translation>Izometryczny</translation>
+      <translation>Widok izometryczny</translation>
     </message>
     <message>
       <source>Set NaviCube to Isometric mode</source>
-      <translation>Ustaw kostkę nawigacyjną w trybie Izometrycznym</translation>
+      <translation>Ustaw kostkę nawigacyjną na Widok izometryczny</translation>
     </message>
   </context>
   <context>

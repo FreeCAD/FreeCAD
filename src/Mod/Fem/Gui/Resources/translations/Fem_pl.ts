@@ -282,7 +282,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="410"/>
       <source>Creates a FEM equation for elasticity</source>
-      <translation>Dodaje równanie sprężystości dla MES</translation>
+      <translation>Dodaje równanie MES dla sprężystości</translation>
     </message>
   </context>
   <context>
@@ -434,7 +434,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="642"/>
       <source>Creates a FEM material for solid</source>
-      <translation>Dodaje materiał dla ciała stałego w MES</translation>
+      <translation>Dodaje materiał dla bryły w MES</translation>
     </message>
   </context>
   <context>

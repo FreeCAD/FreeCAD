@@ -6,7 +6,7 @@
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="132"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation type="unfinished">Select Faces/Edges/Vertexes</translation>
+      <translation>Selecionar Faces/Arestas/Vértices</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="136"/>
@@ -277,7 +277,7 @@
     <message>
       <location filename="../../../femcommands/commands.py" line="406"/>
       <source>Elasticity equation</source>
-      <translation type="unfinished">Elasticity equation</translation>
+      <translation>Equação de elasticidade</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="410"/>

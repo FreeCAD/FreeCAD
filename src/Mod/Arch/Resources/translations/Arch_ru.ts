@@ -3027,22 +3027,22 @@ Building object is not allowed to accept Site and Building objects.
 Site and Building objects will be removed from the selection.
 
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but Site and Building objects in a Building object.
+      <translation>Выможете поместить в объект Здания всё что угодно, кроме объекта Местности и Здания.
 
-Building object is not allowed to accept Site and Building objects.
+Объекту Здания не разрешается принимать эти объекты.
 
-Site and Building objects will be removed from the selection.
+Объекты Местности и Здания будут удалены из выделения.
 
-You can change that in the preferences.</translation>
+Вы можете изменить это в настройках.</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="246"/>
       <source>There is no valid object in the selection.
 
 Building creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>Недопустимые объекты в выделении.
 
-Building creation aborted.</translation>
+Построение здания прервано.</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="253"/>
@@ -3252,22 +3252,22 @@ Floor object is not allowed to accept Site, Building, or Floor objects.
 Site, Building, and Floor objects will be removed from the selection.
 
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
+      <translation>Вы можете поместить всё что угодно, кроме следующих объектов: Местность, Здание и Этаж - в объект Этаж.
 
-Floor object is not allowed to accept Site, Building, or Floor objects.
+Объект Этаж не может принимать объекты Местность, Здание или Этаж.
 
-Site, Building, and Floor objects will be removed from the selection.
+Объекты Местность, Здание и Этаж будут удалены из выбора.
 
-You can change that in the preferences.</translation>
+Вы можете изменить это в настройках.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="154"/>
       <source>There is no valid object in the selection.
 
 Floor creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>Нет допустимых объектов в выделении.
 
-Floor creation aborted.</translation>
+Построение Этажа прервано.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="161"/>
@@ -4008,13 +4008,13 @@ Site is not allowed to accept any other object besides Building.
 Other objects will be removed from the selection.
 
 Note: You can change that in the preferences.</source>
-      <translation type="unfinished">Please either select only Building objects or nothing at all!
+      <translation>Пожалуйста, выберите только строительные объекты или ничего!
 
-Site is not allowed to accept any other object besides Building.
+Местность не может принимать другие объекты, кроме строений.
 
-Other objects will be removed from the selection.
+Другие объекты будут удалены из выделения.
 
-Note: You can change that in the preferences.</translation>
+Примечание: Вы можете изменить это в настройках.</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="535"/>

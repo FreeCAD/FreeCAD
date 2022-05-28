@@ -306,7 +306,7 @@ Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translatio
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="171"/>
       <source>Boolean fragments</source>
-      <translation type="unfinished">Boolean fragments</translation>
+      <translation>Fragmentos booleanos</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="180"/>
@@ -362,7 +362,7 @@ It will create a 'Compound Filter' for each slice.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="512"/>
       <source>Boolean XOR</source>
-      <translation type="unfinished">Boolean XOR</translation>
+      <translation>Booleano XOR</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="520"/>
@@ -381,12 +381,12 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="44"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>Crear tubo</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="50"/>
       <source>Creates a tube</source>
-      <translation type="unfinished">Creates a tube</translation>
+      <translation>Crea un tubo</translation>
     </message>
   </context>
   <context>
@@ -400,7 +400,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</translation>
     <message>
       <location filename="../../../BasicShapes/CommandShapes.py" line="52"/>
       <source>Create tube</source>
-      <translation type="unfinished">Create tube</translation>
+      <translation>Crear tubo</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="211"/>
@@ -792,7 +792,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDimension.cpp" line="1398"/>
       <source>Selection </source>
-      <translation type="unfinished">Selection </translation>
+      <translation>Selección </translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1482"/>

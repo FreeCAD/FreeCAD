@@ -71,7 +71,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="732"/>
       <source>Caching macro code...</source>
-      <translation>Pamięć podręczna makra...</translation>
+      <translation>Buforowanie kodu makrodefinicji ...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="756"/>

@@ -11,7 +11,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="205"/>
       <source>Failed to connect to GitHub. Check your connection and proxy settings.</source>
-      <translation type="unfinished">Failed to connect to GitHub. Check your connection and proxy settings.</translation>
+      <translation>Error al conectar a GitHub. Compruebe su conexión y configuración de proxy.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="305"/>
@@ -41,12 +41,12 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="593"/>
       <source>Retrieving macros from FreeCAD/FreeCAD-Macros Git repository</source>
-      <translation type="unfinished">Retrieving macros from FreeCAD/FreeCAD-Macros Git repository</translation>
+      <translation>Recuperando macros del repositorio Git de FreeCAD/FreeCAD-Macros</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="602"/>
       <source>Retrieving macros from FreeCAD wiki</source>
-      <translation type="unfinished">Retrieving macros from FreeCAD wiki</translation>
+      <translation>Recuperando macros de la wiki de FreeCAD</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="610"/>
@@ -169,7 +169,7 @@
     <message>
       <location filename="../../addonmanager_workers.py" line="1090"/>
       <source>Addon successfully installed.</source>
-      <translation type="unfinished">Addon successfully installed.</translation>
+      <translation>Complemento instalado correctamente.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers.py" line="1114"/>
@@ -256,7 +256,7 @@
       <location filename="../../addonmanager_macro.py" line="203"/>
       <location filename="../../addonmanager_macro.py" line="220"/>
       <source>Syntax error while reading {} from macro {}</source>
-      <translation type="unfinished">Syntax error while reading {} from macro {}</translation>
+      <translation>Error de sintaxis al leer {} de la macro {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="247"/>
@@ -301,7 +301,7 @@
     <message>
       <location filename="../../change_branch.py" line="119"/>
       <source>WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?</source>
-      <translation type="unfinished">WARNING: This repo has uncommitted local changes. Are you sure you want to change branches (bringing the changes with you)?</translation>
+      <translation>ATENCIÓN: Este repositorio tiene cambios locales no confirmados. ¿Está seguro que desea cambiar las ramas (trayendo los cambios contigo)?</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="171"/>
@@ -339,13 +339,13 @@
       <location filename="../../change_branch.py" line="278"/>
       <source>Local updated</source>
       <comment>Table header for git update time of local branch</comment>
-      <translation type="unfinished">Local updated</translation>
+      <translation>Local actualizado</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="284"/>
       <source>Remote updated</source>
       <comment>Table header for git update time of remote branch</comment>
-      <translation type="unfinished">Remote updated</translation>
+      <translation>Remoto actualizado</translation>
     </message>
     <message>
       <location filename="../../addonmanager_utilities.py" line="236"/>
@@ -433,7 +433,7 @@
     <message>
       <location filename="../../package_details.py" line="226"/>
       <source>An update is available</source>
-      <translation type="unfinished">An update is available</translation>
+      <translation>Una actualización está disponible</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="244"/>
@@ -443,7 +443,7 @@
     <message>
       <location filename="../../package_details.py" line="252"/>
       <source>This is the latest version available for branch {}</source>
-      <translation type="unfinished">This is the latest version available for branch {}</translation>
+      <translation>Esta es la última versión disponible para la rama {}</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="260"/>
@@ -650,7 +650,7 @@
     <message>
       <location filename="../../AddonManager.py" line="520"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
-      <translation type="unfinished">You must restart FreeCAD for changes to take effect.</translation>
+      <translation>Debe reiniciar FreeCAD para que los cambios surtan efecto.</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="526"/>
@@ -828,7 +828,7 @@
     <message>
       <location filename="../../AddonManager.py" line="1417"/>
       <source>Some packages updates failed.</source>
-      <translation type="unfinished">Some packages updates failed.</translation>
+      <translation>Fallo en algunas actualizaciones de paquetes.</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="1447"/>

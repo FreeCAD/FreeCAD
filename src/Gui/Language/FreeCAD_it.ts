@@ -180,7 +180,7 @@
     </message>
     <message>
       <source>Toggle array elements</source>
-      <translation type="unfinished">Toggle array elements</translation>
+      <translation>Attiva/Disattiva elementi array</translation>
     </message>
     <message>
       <source>Link Transform</source>
@@ -373,7 +373,7 @@
     </message>
     <message>
       <source>Press a keyboard shortcut</source>
-      <translation type="unfinished">Press a keyboard shortcut</translation>
+      <translation>Inserisci una scorciatoria da tastiera</translation>
     </message>
   </context>
   <context>
@@ -597,15 +597,15 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::ApplicationCache</name>
     <message>
       <source>Cache directory</source>
-      <translation type="unfinished">Cache directory</translation>
+      <translation>Cartella della cache</translation>
     </message>
     <message>
       <source>The cache directory %1 exceeds the size of %2.</source>
-      <translation type="unfinished">The cache directory %1 exceeds the size of %2.</translation>
+      <translation>La directory di cache %1 supera la dimensione di %2.</translation>
     </message>
     <message>
       <source>Do you want to clear it now?</source>
-      <translation type="unfinished">Do you want to clear it now?</translation>
+      <translation>Vuoi svuotarla adesso?</translation>
     </message>
     <message>
       <source>Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</source>
@@ -1466,7 +1466,7 @@ Se questo non è spuntato, la proprietà deve avere un nome univoco e vi si acce
     </message>
     <message>
       <source>Enable block cursor</source>
-      <translation type="unfinished">Enable block cursor</translation>
+      <translation>Abilita il cursore a blocco</translation>
     </message>
     <message>
       <source>Enable folding</source>
@@ -1565,7 +1565,7 @@ Se questo non è spuntato, la proprietà deve avere un nome univoco e vi si acce
     </message>
     <message>
       <source>Number format:</source>
-      <translation type="unfinished">Number format:</translation>
+      <translation>Formato numerico:</translation>
     </message>
     <message>
       <source>Operating system</source>
@@ -1589,7 +1589,7 @@ Se questo non è spuntato, la proprietà deve avere un nome univoco e vi si acce
     </message>
     <message>
       <source>Preference packs</source>
-      <translation type="unfinished">Preference packs</translation>
+      <translation>Pacchetti preferenze</translation>
     </message>
     <message>
       <source>Name</source>
@@ -1609,7 +1609,7 @@ Se questo non è spuntato, la proprietà deve avere un nome univoco e vi si acce
     </message>
     <message>
       <source>Manage...</source>
-      <translation type="unfinished">Manage...</translation>
+      <translation>Gestisci...</translation>
     </message>
     <message>
       <source>Revert...</source>
@@ -2697,7 +2697,7 @@ lower right corner within opened files</source>
     </message>
     <message>
       <source>Relative size :   </source>
-      <translation type="unfinished">Relative size :   </translation>
+      <translation>Dimensione relativa:   </translation>
     </message>
     <message>
       <source>Size of main coordinate system representation
@@ -2966,23 +2966,23 @@ del riquadro di delimitazione dell'oggetto 3D che è attualmente visualizzato.</
     <name>Gui::Dialog::DlgSettingsCacheDirectory</name>
     <message>
       <source>Cache</source>
-      <translation type="unfinished">Cache</translation>
+      <translation>Cache</translation>
     </message>
     <message>
       <source>Cache directory</source>
-      <translation type="unfinished">Cache directory</translation>
+      <translation>Cartella della cache</translation>
     </message>
     <message>
       <source>Location:</source>
-      <translation type="unfinished">Location:</translation>
+      <translation>Posizione:</translation>
     </message>
     <message>
       <source>Check periodically at program start:</source>
-      <translation type="unfinished">Check periodically at program start:</translation>
+      <translation>Controlla periodicamente all'avvio del programma:</translation>
     </message>
     <message>
       <source>Always</source>
-      <translation type="unfinished">Always</translation>
+      <translation>Sempre</translation>
     </message>
     <message>
       <source>Daily</source>
@@ -2994,11 +2994,11 @@ del riquadro di delimitazione dell'oggetto 3D che è attualmente visualizzato.</
     </message>
     <message>
       <source>Monthly</source>
-      <translation type="unfinished">Monthly</translation>
+      <translation>Mensilmente</translation>
     </message>
     <message>
       <source>Yearly</source>
-      <translation type="unfinished">Yearly</translation>
+      <translation>Annualmente</translation>
     </message>
     <message>
       <source>Never</source>
@@ -3006,7 +3006,7 @@ del riquadro di delimitazione dell'oggetto 3D che è attualmente visualizzato.</
     </message>
     <message>
       <source>Cache size limit:</source>
-      <translation type="unfinished">Cache size limit:</translation>
+      <translation>Limite dimensione della cache:</translation>
     </message>
     <message>
       <source>Check now...</source>
@@ -3014,7 +3014,7 @@ del riquadro di delimitazione dell'oggetto 3D che è attualmente visualizzato.</
     </message>
     <message>
       <source>Notify the user if the cache size exceeds the specified limit</source>
-      <translation type="unfinished">Notify the user if the cache size exceeds the specified limit</translation>
+      <translation>Notifica l'utente se la dimensione della cache supera il limite specificato</translation>
     </message>
     <message>
       <source>Unknown</source>
@@ -3022,7 +3022,7 @@ del riquadro di delimitazione dell'oggetto 3D che è attualmente visualizzato.</
     </message>
     <message>
       <source>Current cache size: %1</source>
-      <translation type="unfinished">Current cache size: %1</translation>
+      <translation>Dimensione attuale cache: %1</translation>
     </message>
   </context>
   <context>
@@ -4038,7 +4038,7 @@ orizzontale nella console di Python</translation>
     </message>
     <message>
       <source>Enable block cursor</source>
-      <translation type="unfinished">Enable block cursor</translation>
+      <translation>Abilita il cursore a blocco</translation>
     </message>
     <message>
       <source>Saves Python history across sessions</source>
@@ -7567,7 +7567,7 @@ the current copy will be lost.
     </message>
     <message>
       <source>Toggle array elements</source>
-      <translation type="unfinished">Toggle array elements</translation>
+      <translation>Attiva/Disattiva elementi array</translation>
     </message>
     <message>
       <source>Change whether show each link array element as individual objects</source>

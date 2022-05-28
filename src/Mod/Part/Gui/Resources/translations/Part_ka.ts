@@ -1492,7 +1492,7 @@ Do you want to continue?</source>
       <location filename="../../AttacherTexts.cpp" line="158"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</translation>
+      <translation>სიბრტყის წიბოს შემხებ წრეწირთან სწორება. საწყისი წერტილი მრუდის წერტილთან გასწორდება. არასავალდებულო წვერო მუთითებს, სად.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="160"/>
@@ -6359,7 +6359,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="339"/>
       <source>Part Extrude facemaker</source>
-      <translation type="unfinished">Part Extrude facemaker</translation>
+      <translation>ნაწილის გამოწნეხვის ზედაპირი</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="344"/>

@@ -279,7 +279,7 @@
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="396"/>
       <source>Convert co-planar arcs to G2/G3 gcode commands for `Circular` and `CircularZigZag` cut patterns.</source>
-      <translation>Convertir les arcs coplanaires en commandes gcode G2/G3 pour les modèles de coupe "Circular" et "CircularZigZag".</translation>
+      <translation>Convertir les arcs coplanaires en commandes gcode G2/G3 pour les modèles de coupe "Circulaire" et "Circulaire en zigzag".</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="405"/>
@@ -348,7 +348,7 @@
       <location filename="../../../PathScripts/PathOp.py" line="174"/>
       <location filename="../../../PathScripts/PathFixture.py" line="64"/>
       <source>Make False, to prevent operation from generating code</source>
-      <translation>Marquer « false », pour empêcher l'opération ne génére du code</translation>
+      <translation>Mettre à faux, pour empêcher l'opération de générer du code</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundary.py" line="65"/>
@@ -502,7 +502,7 @@
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="271"/>
       <source>Incremental Step Down of Tool</source>
-      <translation>Incrément de pas de l'outil vers le bas</translation>
+      <translation>Pas incrémentale vers le bas de l'outil</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathOp.py" line="281"/>
@@ -663,7 +663,7 @@
     <message>
       <location filename="../../../PathScripts/PathPocketBase.py" line="156"/>
       <source>Angle of the zigzag pattern</source>
-      <translation>Angle de la fonction ZigZag</translation>
+      <translation>Angle du motif en zigzag</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketBase.py" line="162"/>
@@ -1163,7 +1163,7 @@
     <message>
       <location filename="../../../PathScripts/PathFixture.py" line="38"/>
       <source>Fixture Offset Number</source>
-      <translation>Nombre de déports de l'outillage</translation>
+      <translation>Nombre de déports de point de fixation</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="959"/>
@@ -1199,7 +1199,7 @@
       <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="989"/>
       <location filename="../../../PathScripts/PathDressupTag.py" line="161"/>
       <source>IDs of disabled holding tags</source>
-      <translation>IDs des attaches désactivées</translation>
+      <translation>Identifiants des attaches désactivées</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="998"/>
@@ -1260,7 +1260,7 @@
     <message>
       <location filename="../../../PathScripts/PathMillFace.py" line="105"/>
       <source>Clear edges of surface (Only applicable to BoundBox)</source>
-      <translation>Nettoyer les bords de la surface (applicable uniquement à la boîte englobante)</translation>
+      <translation>Nettoyer les bords de la surface (applicable uniquement à la boîte de délimitation)</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathMillFace.py" line="114"/>
@@ -1336,17 +1336,17 @@
     <message>
       <location filename="../../../PathScripts/PathAdaptive.py" line="1088"/>
       <source>Helix ramp entry angle (degrees)</source>
-      <translation>Angle d'entrée de la rampe de l'hélice (degrés)</translation>
+      <translation>Angle d'entrée de la rampe hélicoïdale (degrés)</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathAdaptive.py" line="1097"/>
       <source>Helix cone angle (degrees)</source>
-      <translation>Angle du cône de l'hélice (degrés)</translation>
+      <translation>Angle du cône hélicoïdale (degrés)</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathAdaptive.py" line="1106"/>
       <source>Limit helix entry diameter, if limit larger than tool diameter or 0, tool diameter is used</source>
-      <translation>Limite du diamètre d'entrée de l'hélice, si la limite est supérieure au diamètre de l'outil ou égale à 0, le diamètre de l'outil est utilisé</translation>
+      <translation>Limite du diamètre hélicoïdale d'entrée, si la limite est supérieure au diamètre de l'outil ou égale à 0, le diamètre de l'outil est utilisé</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathStock.py" line="110"/>
@@ -1866,7 +1866,7 @@ Abandon de la création</translation>
       <location filename="../../../PathScripts/PathArray.py" line="142"/>
       <location filename="../../../PathScripts/PathArray.py" line="205"/>
       <source>Make False, to prevent operation from generating code</source>
-      <translation>Marquer « false », pour empêcher l'opération ne génére du code</translation>
+      <translation>Mettre à faux, pour empêcher l'opération de générer du code</translation>
     </message>
   </context>
   <context>
@@ -2429,7 +2429,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../../../PathScripts/PathDressupDragknife.py" line="608"/>
       <source>Modifies a path to add dragknife corner actions</source>
-      <translation type="unfinished">Modifies a path to add dragknife corner actions</translation>
+      <translation>Modifie une trajectoire pour ajouter des dégagements aux angles pour la lame rotative</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupDragknife.py" line="625"/>
@@ -2487,7 +2487,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="713"/>
       <source>Creates a Cutter Radius Compensation G41/G42 Entry Dressup object from a selected path</source>
-      <translation type="unfinished">Creates a Cutter Radius Compensation G41/G42 Entry Dressup object from a selected path</translation>
+      <translation>Crée une compensation de rayon de coupe G41/G42 d'une trajectoire additionnelle d'entrée à partir d'une trajectoire sélectionnée</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupLeadInOut.py" line="728"/>
@@ -2517,17 +2517,17 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="97"/>
       <source>Enable LeadIn</source>
-      <translation type="unfinished">Enable LeadIn</translation>
+      <translation>Activer l'entrée</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="106"/>
       <source>Extend In:</source>
-      <translation type="unfinished">Extend In:</translation>
+      <translation>Étendre dans :</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="127"/>
       <source>Style In:</source>
-      <translation type="unfinished">Style In:</translation>
+      <translation>Style dans :</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="162"/>
@@ -2537,17 +2537,17 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="177"/>
       <source>Enable LeadOut</source>
-      <translation type="unfinished">Enable LeadOut</translation>
+      <translation>Activer la sortie</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="186"/>
       <source>Extend Out:</source>
-      <translation type="unfinished">Extend Out:</translation>
+      <translation>Étendre :</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="207"/>
       <source>Style Out:</source>
-      <translation type="unfinished">Style Out:</translation>
+      <translation>Style :</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="242"/>
@@ -2572,7 +2572,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="314"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apply Lead In/Out on all layers&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apply Lead In/Out on all layers&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Appliquer l'entrée/sortie à toutes les couches&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="317"/>
@@ -2582,7 +2582,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="324"/>
       <source>Use Machine CRC</source>
-      <translation type="unfinished">Use Machine CRC</translation>
+      <translation>Utilisez la compensation du rayon de la tête du couteau de la machine</translation>
     </message>
   </context>
   <context>
@@ -2600,7 +2600,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundaryGui.py" line="269"/>
       <source>Creates a Path Boundary Dress-up object from a selected path</source>
-      <translation type="unfinished">Creates a Path Boundary Dress-up object from a selected path</translation>
+      <translation>Crée une limitation de zones à partir d'une trajectoire sélectionnée</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupPathBoundaryGui.py" line="285"/>
@@ -2658,7 +2658,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../../../PathScripts/PathDressupRampEntry.py" line="906"/>
       <source>Creates a Ramp Entry Dress-up object from a selected path</source>
-      <translation type="unfinished">Creates a Ramp Entry Dress-up object from a selected path</translation>
+      <translation>Crée un habillage de rampe d'entrée à partir d'une trajectoire sélectionnée</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupRampEntry.py" line="922"/>
@@ -2701,7 +2701,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="1324"/>
       <source>Cannot insert holding tags for this path - please select a Profile path</source>
-      <translation type="unfinished">Cannot insert holding tags for this path - please select a Profile path</translation>
+      <translation>Impossible d'ajouter des attaches à cette trajectoire - Veuillez sélectionner une trajectoire Profil</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDressupHoldingTags.py" line="1378"/>
@@ -2759,7 +2759,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../../../PathScripts/PathDrillingGui.py" line="162"/>
       <source>Creates a Path Drilling object from a features of a base object</source>
-      <translation type="unfinished">Creates a Path Drilling object from a features of a base object</translation>
+      <translation>Crée un objet Perçage à partir d'une fonction de l'objet de base</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDrilling.py" line="71"/>
@@ -2779,12 +2779,12 @@ Abandon de la création</translation>
     <message>
       <location filename="../../../PathScripts/PathDrilling.py" line="76"/>
       <source>Drill Tip</source>
-      <translation type="unfinished">Drill Tip</translation>
+      <translation>Pointe de foret</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathDrilling.py" line="77"/>
       <source>2x Drill Tip</source>
-      <translation type="unfinished">2x Drill Tip</translation>
+      <translation>2x Pointe de foret</translation>
     </message>
   </context>
   <context>
@@ -2819,7 +2819,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../../../PathScripts/PathJobCmd.py" line="107"/>
       <source>Exports Path Job as a template to be used for other jobs</source>
-      <translation type="unfinished">Exports Path Job as a template to be used for other jobs</translation>
+      <translation>Exporte la tâche comme un modèle à utiliser pour d'autres tâches</translation>
     </message>
   </context>
   <context>
@@ -2855,7 +2855,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../../../PathScripts/PathHelixGui.py" line="115"/>
       <source>Creates a Path Helix object from a features of a base object</source>
-      <translation>Crée un objet percours Helix à partir d'une fonction de l'objet de base</translation>
+      <translation>Crée un objet Path Hélice à partir d'une fonction de l'objet de base</translation>
     </message>
   </context>
   <context>
@@ -2887,8 +2887,8 @@ Abandon de la création</translation>
       <location filename="../../../PathScripts/PathInspect.py" line="137"/>
       <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
  Values will be converted to the desired unit during post-processing.</source>
-      <translation type="unfinished">&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
- Values will be converted to the desired unit during post-processing.</translation>
+      <translation>&lt;b&gt;Remarque &lt;/b&gt;: cette boîte de dialogue montre les commandes de Path dans les unités de base de FreeCAD (mm/s). 
+ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitement.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathInspect.py" line="260"/>
@@ -3023,7 +3023,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../../../PathScripts/PathJobGui.py" line="1596"/>
       <source>Please add one.</source>
-      <translation type="unfinished">Please add one.</translation>
+      <translation>Veuillez en ajouter un.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathJobGui.py" line="1597"/>
@@ -3128,7 +3128,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../../../PathScripts/PathPocketBase.py" line="68"/>
       <source>ZigZag</source>
-      <translation>ZigZag</translation>
+      <translation>Zigzag</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketBase.py" line="69"/>
@@ -3138,7 +3138,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../../../PathScripts/PathPocketBase.py" line="70"/>
       <source>ZigZagOffset</source>
-      <translation type="unfinished">ZigZagOffset</translation>
+      <translation>Décalage du zigzag</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathPocketBase.py" line="71"/>
@@ -3168,7 +3168,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../../../PathScripts/PathMillFace.py" line="70"/>
       <source>Face Region</source>
-      <translation type="unfinished">Face Region</translation>
+      <translation>Région de la face</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathMillFace.py" line="71"/>
@@ -3284,7 +3284,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../../../PathScripts/PathPropertyBagGui.py" line="438"/>
       <source>Creates an object which can be used to store reference properties.</source>
-      <translation type="unfinished">Creates an object which can be used to store reference properties.</translation>
+      <translation>Crée un objet qui peut être utilisé pour enregistrer des propriétés de référence.</translation>
     </message>
   </context>
   <context>
@@ -3592,7 +3592,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="259"/>
       <source>ZigZag</source>
-      <translation>ZigZag</translation>
+      <translation>Zigzag</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="262"/>
@@ -3607,7 +3607,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="266"/>
       <source>Start to End</source>
-      <translation type="unfinished">Start to End</translation>
+      <translation>Du début à la fin</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="267"/>
@@ -3618,7 +3618,7 @@ Abandon de la création</translation>
       <location filename="../../../PathScripts/PathSlot.py" line="270"/>
       <location filename="../../../PathScripts/PathSlot.py" line="282"/>
       <source>Center of Mass</source>
-      <translation type="unfinished">Center of Mass</translation>
+      <translation>Centre d'inertie</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="272"/>
@@ -3672,7 +3672,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="682"/>
       <source>Current Extend Radius value produces negative arc radius.</source>
-      <translation type="unfinished">Current Extend Radius value produces negative arc radius.</translation>
+      <translation>La valeur courante de l'extension du rayon produit un rayon d'arc négatif.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="700"/>
@@ -3699,7 +3699,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="992"/>
       <source>Only a vertex selected. Add another feature to the Base Geometry.</source>
-      <translation type="unfinished">Only a vertex selected. Add another feature to the Base Geometry.</translation>
+      <translation>Un seul sommet sélectionné. Ajoutez une autre fonction à Base Geometry.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="1018"/>
@@ -3724,7 +3724,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="1248"/>
       <source>Failed, slot from edge only accepts lines, arcs and circles.</source>
-      <translation type="unfinished">Failed, slot from edge only accepts lines, arcs and circles.</translation>
+      <translation>Échec, l'emplacement à partir du bord n'accepte que les lignes, les arcs et les cercles.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSlot.py" line="1267"/>
@@ -3796,7 +3796,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="454"/>
       <source>CenterOfBoundBox</source>
-      <translation>Centre de la boîte liée</translation>
+      <translation>Centre de la boîte de délimitation</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="455"/>
@@ -3826,7 +3826,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="464"/>
       <source>CircularZigZag</source>
-      <translation type="unfinished">CircularZigZag</translation>
+      <translation>Circulaire en zigzag</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="465"/>
@@ -3846,7 +3846,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="468"/>
       <source>ZigZag</source>
-      <translation>ZigZag</translation>
+      <translation>Zigzag</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathSurface.py" line="471"/>
@@ -3996,7 +3996,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../../../PathScripts/PathThreadMillingGui.py" line="263"/>
       <source>Creates a Path Thread Milling operation from features of a base object</source>
-      <translation type="unfinished">Creates a Path Thread Milling operation from features of a base object</translation>
+      <translation>Crée une opération de fraisage de filetage à partir des caractéristiques d'un objet de base</translation>
     </message>
   </context>
   <context>
@@ -4174,7 +4174,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../../../PathScripts/PathVcarve.py" line="340"/>
       <source>VCarve requires an engraving cutter with CuttingEdgeAngle</source>
-      <translation type="unfinished">VCarve requires an engraving cutter with CuttingEdgeAngle</translation>
+      <translation>Gravure en V nécessite une fraise à graver avec un angle de coupe</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathVcarve.py" line="347"/>
@@ -4301,7 +4301,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="106"/>
       <source>CenterOfBoundBox</source>
-      <translation>Centre de la boîte liée</translation>
+      <translation>Centre de la boîte de délimitation</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="107"/>
@@ -4328,7 +4328,7 @@ Abandon de la création</translation>
       <location filename="../../../PathScripts/PathWaterline.py" line="113"/>
       <location filename="../../../PathScripts/PathWaterline.py" line="126"/>
       <source>CircularZigZag</source>
-      <translation type="unfinished">CircularZigZag</translation>
+      <translation>Circulaire en zigzag</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="114"/>
@@ -4352,7 +4352,7 @@ Abandon de la création</translation>
       <location filename="../../../PathScripts/PathWaterline.py" line="117"/>
       <location filename="../../../PathScripts/PathWaterline.py" line="130"/>
       <source>ZigZag</source>
-      <translation>ZigZag</translation>
+      <translation>Zigzag</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathWaterline.py" line="120"/>
@@ -4640,12 +4640,12 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="172"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hint about the current stock extent setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hint about the current stock extent setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Indication sur le paramétrage en cours de la marge du brut.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="179"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled the current placement of the stock solid is stored in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If enabled the current placement of the stock solid is stored in the template.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si l'option est activée, le placement courant du solide du brut est stocké dans le modèle.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="182"/>
@@ -4655,7 +4655,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="198"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hint about the current stock placement.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hint about the current stock placement.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Indication sur le placement actuel du brut.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="236"/>
@@ -4815,7 +4815,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="52"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add existing Tool Bit to this library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add existing Tool Bit to this library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ajouter un outil existant à cette bibliothèque.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="55"/>
@@ -4825,7 +4825,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="72"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete selected Tool Bit(s) from the library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete selected Tool Bit(s) from the library.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Supprimer un ou des outil(s) sélectionné(s) de la bibliothèque.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="75"/>
@@ -4835,7 +4835,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="99"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a working path for the tool library editor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a working path for the tool library editor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sélectionnez un chemin de travail pour l'éditeur de la bibliothèque d'outils.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="119"/>
@@ -4850,12 +4850,12 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="190"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table of Tool Bits of the library.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table of Tool Bits of the library.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table des outils de la bibliothèque.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="269"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the current Library&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the current Library&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enregistrer la bibliothèque actuelle&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="272"/>
@@ -4948,7 +4948,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="38"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select what type of shape to use to constrain the underlying Path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select what type of shape to use to constrain the underlying Path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sélectionnez le type de forme à utiliser pour contraindre la trajectoire sous-jacente.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="45"/>
@@ -4963,7 +4963,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="55"/>
       <source>Extend Model's Bound Box</source>
-      <translation type="unfinished">Extend Model's Bound Box</translation>
+      <translation>Prolonger la boite liée du modèle</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="60"/>
@@ -4973,7 +4973,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="87"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the body to be used to constrain the underlying Path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select the body to be used to constrain the underlying Path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sélectionnez le corps à utiliser pour contraindre la trajectoire sous-jacente.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="100"/>
@@ -4983,12 +4983,12 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="107"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MinX.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MinX.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension MinX de la boîte de délimitation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="120"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MaxX.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MaxX.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension MaxX de la boîte de délimitation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="127"/>
@@ -4998,12 +4998,12 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="134"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MinY.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MinY.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension MinY de la boîte de délimitation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="141"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MaxY.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MaxY.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension MaxY de la boîte de délimitation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="148"/>
@@ -5013,12 +5013,12 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="155"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MinZ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MinZ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension MinZ de la boîte de délimitation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="162"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MaxZ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension of BoundBox's MaxZ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extension MaxZ de la boîte de délimitation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="175"/>
@@ -5028,7 +5028,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="182"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the Cylinder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Radius of the Cylinder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rayon du cylindre.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="189"/>
@@ -5039,7 +5039,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="196"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of the Cylinder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of the Cylinder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hauteur du cylindre.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="209"/>
@@ -5049,7 +5049,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="216"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Length of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Length of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Longueur de la boite.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="223"/>
@@ -5059,17 +5059,17 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="230"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Width of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Width of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Largeur de la boite.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="244"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Height of the Box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hauteur de la boite.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="257"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;I checked the path is constrained by the solid. Otherwise the the volume of the solid describes a &amp;quot;keep out&amp;quot; zone.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;I checked the path is constrained by the solid. Otherwise the the volume of the solid describes a &amp;quot;keep out&amp;quot; zone.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si cette case est cochée, la trajectoire est contrainte par le solide. Sinon, le volume du solide décrit une &amp;quot;zone interdite&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="260"/>
@@ -5079,7 +5079,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="36"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of operations with Base Geometry in current Job.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of operations with Base Geometry in current Job.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Liste des opérations avec la géométrie de base dans la tâche courante.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="43"/>
@@ -5089,12 +5089,12 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="59"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select one or more features in the 3d view and press 'Add' to add them as the base items for this operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Selected features can be deleted entirely.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select one or more features in the 3d view and press 'Add' to add them as the base items for this operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Selected features can be deleted entirely.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sélectionnez une ou plusieurs fonctions dans la vue 3D et appuyez sur "Ajouter" pour les ajouter comme éléments de base à cette opération.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Les fonctions sélectionnées peuvent être supprimées entièrement.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="69"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add selected features to the list of base geometries for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add selected features to the list of base geometries for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ajoutez les fonctions sélectionnées à la liste des géométries de base à cette opération.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="72"/>
@@ -5106,7 +5106,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="79"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove the selected list items from the list of base geometries. The operation will not be applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove the selected list items from the list of base geometries. The operation will not be applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Supprimez les éléments sélectionnés de la liste des géométries de base. L'opération ne leur sera pas appliquée.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="82"/>
@@ -5119,7 +5119,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="89"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clears list of base geometries.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clears list of base geometries.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Efface la liste des géométries de base.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="92"/>
@@ -5135,7 +5135,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="22"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table of hole features and the determined radius of the associated hole.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;You can add feature for processing by selecting them and then pressing Add. If a feature is accidentally added to the list it can be removed through Remove and will no longer be processed.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Reset deletes all current items from the list and fills the list with all circular holes eligible for the operation from the model. You can again refine the list afterwards by enabling/disabling, removing and adding features.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table of hole features and the determined radius of the associated hole.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;You can add feature for processing by selecting them and then pressing Add. If a feature is accidentally added to the list it can be removed through Remove and will no longer be processed.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Reset deletes all current items from the list and fills the list with all circular holes eligible for the operation from the model. You can again refine the list afterwards by enabling/disabling, removing and adding features.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Table des caractéristiques de trous et du rayon calculé des trous associé.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Vous pouvez ajouter une fonctionnalité de traitement en les sélectionnant puis en appuyant sur Ajouter. Si une fonctionnalité est ajoutée accidentellement à la liste, elle peut être supprimée par Supprimer et ne sera plus traitée.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Réinitialiser supprime tous les éléments en cours de la liste et remplit la liste avec tous les trous circulaires éligibles pour l'opération du modèle. Vous pouvez à nouveau affiner la liste par la suite en activer/désactiver, supprimer et ajouter des fonctionnalités.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="29"/>
@@ -5151,17 +5151,17 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="42"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add selected items from 3d view to the list of base geometries.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add selected items from 3d view to the list of base geometries.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ajoutez les éléments sélectionnés de la vue 3D à la liste des géométries de base.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="52"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected list items from the list of base geometries. The operation is no longer applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected list items from the list of base geometries. The operation is no longer applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Supprimez les éléments sélectionnés de la liste des géométries de base. L'opération ne leur est plus appliquée.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="62"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove all list items and fill list with all eligible features from the job's base object.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove all list items and fill list with all eligible features from the job's base object.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Supprimez tous les éléments de la liste et complétez la liste avec tous les éléments admissibles de l'objet de base de la tâche.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="65"/>
@@ -5191,12 +5191,12 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="40"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a dialog to add arbitrary locations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Opens a dialog to add arbitrary locations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ouvrez une boîte de dialogue pour ajouter des emplacements arbitraires.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="50"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected location from the list. The operation is no longer applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove selected location from the list. The operation is no longer applied to them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Retirez l'emplacement sélectionné de la liste. L'opération ne lui est plus appliquée.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="60"/>
@@ -5223,13 +5223,13 @@ Abandon de la création</translation>
       <location filename="../panels/PageDepthsEdit.ui" line="46"/>
       <location filename="../panels/PageDiametersEdit.ui" line="27"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Start Depth of the operation. The highest point in Z-axis the operation needs to process.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Start Depth of the operation. The highest point in Z-axis the operation needs to process.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Profondeur de départ de l'opération. Le point le plus élevé de l'axe Z que l'opération doit traiter.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="59"/>
       <location filename="../panels/PageDiametersEdit.ui" line="43"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transfer the Z value of the selected feature as the Start Depth for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transfer the Z value of the selected feature as the Start Depth for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Utilisez la valeur Z de l'élément sélectionné comme profondeur de départ pour l'opération.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="62"/>
@@ -5250,34 +5250,34 @@ Abandon de la création</translation>
       <location filename="../panels/PageDepthsEdit.ui" line="92"/>
       <location filename="../panels/PageDiametersEdit.ui" line="64"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The depth of the operation which corresponds to the lowest value in Z-axis the operation needs to process.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The depth of the operation which corresponds to the lowest value in Z-axis the operation needs to process.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;La profondeur de l'opération qui correspond à la valeur la plus basse selon l'axe Z que l'opération doit traiter.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="105"/>
       <location filename="../panels/PageDiametersEdit.ui" line="80"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transfer the Z value of the selected feature as the Final Depth for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transfer the Z value of the selected feature as the Final Depth for the operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Utilisez la valeur Z de l'élément sélectionné comme profondeur de fin pour l'opération.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="131"/>
       <location filename="../panels/SetupGlobal.ui" line="64"/>
       <source>Step Down</source>
-      <translation>Descendre</translation>
+      <translation>Pas vers le bas</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="138"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The depth in Z-axis the operation moves downwards between layers.&lt;/p&gt;&lt;p&gt;This value depends on the tool being used, the material to be cut, available cooling and many other factors. Please consult the tool manufacturers data sheets for the proper value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The depth in Z-axis the operation moves downwards between layers.&lt;/p&gt;&lt;p&gt;This value depends on the tool being used, the material to be cut, available cooling and many other factors. Please consult the tool manufacturers data sheets for the proper value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;La profondeur selon l'axe Z, l'opération se déplace vers le bas entre les couches.&lt;/p&gt;&lt;p&gt;Cette valeur dépend de l'outil utilisé, du matériau à couper, du refroidissement disponible et de nombreux autres facteurs. Veuillez consulter les fiches techniques des fabricants d'outils pour connaître la valeur appropriée.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="163"/>
       <source>Finish Step Down</source>
-      <translation type="unfinished">Finish Step Down</translation>
+      <translation>Terminez le pas vers le bas</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="170"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Depth of the final cut of the operation. Can be used to produce a cleaner finish.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Depth of the final cut of the operation. Can be used to produce a cleaner finish.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Profondeur de la dernière coupe de l'opération. Peut être utilisé pour produire une finition plus propre.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="20"/>
@@ -5297,7 +5297,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="31"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The height above which it is safe to move the tool bit with rapid movements. Below this height all lateral and downward movements are performed with feed rate speeds.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The height above which it is safe to move the tool bit with rapid movements. Below this height all lateral and downward movements are performed with feed rate speeds.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;La hauteur au-dessus de laquelle il est sans danger de déplacer l'outil avec des mouvements rapides. En dessous de cette hauteur, tous les mouvements latéraux et descendants sont effectués avec des vitesses de vitesse d'avance.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="47"/>
@@ -5307,7 +5307,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="54"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The height where lateral movement of the toolbit is not obstructed by any fixtures or the part / stock material itself.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The height where lateral movement of the toolbit is not obstructed by any fixtures or the part / stock material itself.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;La hauteur où le mouvement latéral de l'outil de travail n'est pas entravé par aucun point de fixation ou la pièce/matériau du brut lui-même.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="35"/>
@@ -5343,7 +5343,7 @@ Abandon de la création</translation>
       <location filename="../panels/PageOpVcarveEdit.ui" line="50"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="36"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;L'outil et ses paramètres à utiliser pour cette opération.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="49"/>
@@ -5387,28 +5387,28 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="55"/>
       <source>Cut Region</source>
-      <translation type="unfinished">Cut Region</translation>
+      <translation>Région de la découpe</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="62"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cut inside or outside of the selected shapes&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cut inside or outside of the selected shapes&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Coupez à l'intérieur ou à l'extérieur des formes sélectionnées&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="69"/>
       <source>Operation Type</source>
-      <translation type="unfinished">Operation Type</translation>
+      <translation>Type d'opération</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="76"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Type of adaptive operation&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Type of adaptive operation&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Type d'opération adaptative&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="83"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="176"/>
       <source>Step Over Percent</source>
-      <translation type="unfinished">Step Over Percent</translation>
+      <translation>Pourcentage du dépassement</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="90"/>
@@ -5418,88 +5418,88 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="112"/>
       <source>Accuracy vs Performance</source>
-      <translation type="unfinished">Accuracy vs Performance</translation>
+      <translation>Précision vs Performance</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="119"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Influences calculation performance vs stability and accuracy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Influences calculation performance vs stability and accuracy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Influence les performances de calcul par rapport à la stabilité et à la précision&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="147"/>
       <source>Helix Ramp Angle</source>
-      <translation type="unfinished">Helix Ramp Angle</translation>
+      <translation>Angle de la rampe hélicoïdale</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="154"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle of the helix ramp entry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle of the helix ramp entry&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle d'entrée de la rampe hélicoïdale&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="161"/>
       <source>Helix Cone Angle</source>
-      <translation type="unfinished">Helix Cone Angle</translation>
+      <translation>Angle du cône hélicoïdal</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="168"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle of the helix entry cone&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle of the helix entry cone&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle d'entrée du cône hélicoïdal&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="175"/>
       <source>Helix Max Diameter</source>
-      <translation type="unfinished">Helix Max Diameter</translation>
+      <translation>Diamètre hélicoïdal maximal</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="182"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If &amp;gt;0 it limits the helix ramp diameter&lt;/p&gt;&lt;p&gt;otherwise the 75 percent of tool diameter is used&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If &amp;gt;0 it limits the helix ramp diameter&lt;/p&gt;&lt;p&gt;otherwise the 75 percent of tool diameter is used&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si &amp;gt;0 cela limite le diamètre de la rampe hélicoïdale&lt;/p&gt;&lt;p&gt;sinon, les 75 % du diamètre de l'outil sont utilisés&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="189"/>
       <source>Lift Distance</source>
-      <translation type="unfinished">Lift Distance</translation>
+      <translation>Distance de levage</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="196"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How much to lift the tool up during the rapid linking moves over cleared regions.&lt;/p&gt;&lt;p&gt;If linking path is not clear tool is raised to clearence height.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How much to lift the tool up during the rapid linking moves over cleared regions.&lt;/p&gt;&lt;p&gt;If linking path is not clear tool is raised to clearence height.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Combien il faut lever l'outil pendant les déplacements de liaison rapide sur les régions dégagées.&lt;/p&gt;&lt;p&gt;Si la trajectoire de liaison n'est pas dégagée, l'outil est relevé à la hauteur de dégagement.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="203"/>
       <source>Keep Tool Down Ratio</source>
-      <translation type="unfinished">Keep Tool Down Ratio</translation>
+      <translation>Garder le rapport de l'outil vers le bas</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="210"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Max length of keep-tool-down linking path compared to direct distance between points.&lt;/p&gt;&lt;p&gt;If exceeded link will be done by raising the tool to clearence height.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Max length of keep-tool-down linking path compared to direct distance between points.&lt;/p&gt;&lt;p&gt;If exceeded link will be done by raising the tool to clearence height.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Longueur maximale de la descente de l'outil par rapport à la distance directe entre les points.&lt;/p&gt;&lt;p&gt;En cas de dépassement, la liaison sera effectuée en relevant l'outil à la hauteur de dégagement.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="217"/>
       <source>Stock to Leave</source>
-      <translation type="unfinished">Stock to Leave</translation>
+      <translation>Brut à laisser</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="224"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How much material to leave (i.e. for finishing operation)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How much material to leave (i.e. for finishing operation)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Quantité de matériau à laisser (par exemple, pour l'opération de finition)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="231"/>
       <source>Force Clearing Inside-out</source>
-      <translation type="unfinished">Force Clearing Inside-out</translation>
+      <translation>Forcer le nettoyage entrée-sortie</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="238"/>
       <source>Finishing Profile</source>
-      <translation type="unfinished">Finishing Profile</translation>
+      <translation>Profil de finition</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="245"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="235"/>
       <source>Use Outline</source>
-      <translation type="unfinished">Use Outline</translation>
+      <translation>Utiliser le contour</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="255"/>
@@ -5517,7 +5517,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="138"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The direction in which the profile is performed, clockwise or counter clockwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The direction in which the profile is performed, clockwise or counter clockwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Le sens dans lequel le profil est effectué, dans le sens des aiguilles d'une montre ou dans le sens inverse.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="141"/>
@@ -5540,7 +5540,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="195"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Width of chamfer cut.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Width of chamfer cut.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Largeur de la coupe du chanfrein.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="198"/>
@@ -5565,22 +5565,22 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="222"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extra depth of tool immersion.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extra depth of tool immersion.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Profondeur supplémentaire d'immersion dans l'outil.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="282"/>
       <source>Join:</source>
-      <translation type="unfinished">Join:</translation>
+      <translation>Joindre :</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="289"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Round joint&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Round joint&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Joint circulaire&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="308"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Miter joint&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Miter joint&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Onglet&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="381"/>
@@ -5590,7 +5590,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="69"/>
       <source>Peck</source>
-      <translation type="unfinished">Peck</translation>
+      <translation>Rétraction</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="79"/>
@@ -5600,22 +5600,22 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="96"/>
       <source>Retract</source>
-      <translation type="unfinished">Retract</translation>
+      <translation>Rétracter</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="110"/>
       <source>Dwell</source>
-      <translation type="unfinished">Dwell</translation>
+      <translation>Temps d'arrêt</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="120"/>
       <source>Time</source>
-      <translation type="unfinished">Time</translation>
+      <translation>Temps</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="134"/>
       <source>Extend Depth</source>
-      <translation type="unfinished">Extend Depth</translation>
+      <translation>Étendre la profondeur</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="142"/>
@@ -5625,22 +5625,22 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="147"/>
       <source>Drill Tip</source>
-      <translation type="unfinished">Drill Tip</translation>
+      <translation>Pointe de foret</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="152"/>
       <source>2x Drill Tip</source>
-      <translation type="unfinished">2x Drill Tip</translation>
+      <translation>2x Pointe de foret</translation>
     </message>
     <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="63"/>
       <source>Start at Vertex</source>
-      <translation type="unfinished">Start at Vertex</translation>
+      <translation>Commencer au sommet</translation>
     </message>
     <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="70"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify the vertex number of the underlying shape string at which engraving should start.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify the vertex number of the underlying shape string at which engraving should start.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Spécifiez le numéro du sommet de la chaîne de forme sous-jacente à laquelle la gravure doit commencer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="63"/>
@@ -5650,7 +5650,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="70"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if the helix operation should start at the inside and work its way outwards, or start at the outside and work its way to the center.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if the helix operation should start at the inside and work its way outwards, or start at the outside and work its way to the center.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Spécifiez si l'opération hélicoïdale doit commencer à l'intérieur et se poursuivre vers l'extérieur, ou commencer à l'extérieur et se poursuivre vers le centre.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="74"/>
@@ -5665,17 +5665,17 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="94"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The direction for the helix, clockwise or counter clockwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The direction for the helix, clockwise or counter clockwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Le sens de l'hélice, sens des aiguilles d'une montre ou sens inverse.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="111"/>
       <source>Step over percent</source>
-      <translation type="unfinished">Step over percent</translation>
+      <translation>Pourcentage du dépassement</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="118"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify the percent of the tool diameter each helix will be offset to the previous one.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;A step over of 100% means no overlap of the individual cuts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify the percent of the tool diameter each helix will be offset to the previous one.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;A step over of 100% means no overlap of the individual cuts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Spécifiez le pourcentage du diamètre de l'outil que chaque hélice sera décalée par rapport à la précédente.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Un dépassement de 100 % signifie que les coupes individuelles ne se chevauchent pas.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="137"/>
@@ -5686,12 +5686,12 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="22"/>
       <source>Enable Extensions</source>
-      <translation type="unfinished">Enable Extensions</translation>
+      <translation>Activer les extensions</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="55"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected all potential extensions are visualised. Enabled extensions in purple and not enabled extensions in yellow.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected all potential extensions are visualised. Enabled extensions in purple and not enabled extensions in yellow.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si cette option est sélectionnée, toutes les extensions disponibles seront affichées. Les extensions activées seront en violet et les extensions non activées en jaune.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="58"/>
@@ -5701,32 +5701,32 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="65"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extend the corner between two edges of a pocket. If selected adjacent edges are combined.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extend the corner between two edges of a pocket. If selected adjacent edges are combined.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Prolonger l'angle entre deux bords d'une poche. Si les bords adjacents sélectionnés sont combinés.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="68"/>
       <source>Extend Corners</source>
-      <translation type="unfinished">Extend Corners</translation>
+      <translation>Prolonger les angles</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="78"/>
       <source>Default Length</source>
-      <translation type="unfinished">Default Length</translation>
+      <translation>Longueur par défaut</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="85"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the extent of the dimension -the default value is half the tool diameter.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the extent of the dimension -the default value is half the tool diameter.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Définissez l'extension de la dimension - la valeur par défaut est la moitié du diamètre de l'outil.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="101"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tree of existing edges and their potential extensions.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tree of existing edges and their potential extensions.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Arbre des bords existants et leurs extensions possibles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="126"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable the currently selected pocket extension.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable the currently selected pocket extension.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Activer l'extension de la poche actuellement sélectionnée.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="129"/>
@@ -5736,7 +5736,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="136"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Disable the currently selected pocket extension.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Disable the currently selected pocket extension.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Désactiver l'extension de la poche actuellement sélectionnée.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="139"/>
@@ -5746,27 +5746,27 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="146"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove all currently enabled extensions - leaving the plain pocket operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove all currently enabled extensions - leaving the plain pocket operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Supprimez toutes les extensions actuellement activées - laissant la poche normale.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="63"/>
       <source>Boundary Shape</source>
-      <translation type="unfinished">Boundary Shape</translation>
+      <translation>Forme de la limitation de la zone</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="70"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.&lt;/p&gt;&lt;p&gt;The latter can be used to face of the entire stock area to ensure uniform heights for the following operations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.&lt;/p&gt;&lt;p&gt;The latter can be used to face of the entire stock area to ensure uniform heights for the following operations.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Spécifiez si le parement doit être limité par la forme réelle de la face sélectionnée (ou de la pièce si aucune face n'est sélectionnée), ou si le parement doit être décalé par rapport à la boîte de délimitation&lt;/p&gt;&lt;p&gt;Ce dernier peut être utilisé pour surfacer l'ensemble de la zone du brut afin de garantir des hauteurs uniformes pour les opérations suivantes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="86"/>
       <source>Cut Mode</source>
-      <translation type="unfinished">Cut Mode</translation>
+      <translation>Mode de coupe</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="93"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on.&lt;/p&gt;&lt;p&gt;Keeping that in mind climb mode is called when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bits rotation and the tools lateral movement are in the same direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on.&lt;/p&gt;&lt;p&gt;Keeping that in mind climb mode is called when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bits rotation and the tools lateral movement are in the same direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Le mode de coupe suppose que la coupe d'un côté de l'outil représente la pièce résultante et que l'autre côté est soit déjà fraisé, soit sera supprimé plus tard.&lt;/p&gt;&lt;p&gt;En gardant cela à l'esprit, le mode de montée est appelé lorsque l'outil est déplacée dans la coupe à chaque rotation, alors que dans le mode conventionnel, la rotation des outils et le mouvement latéral des outils sont dans la même direction.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="97"/>
@@ -5786,12 +5786,12 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="117"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pattern the tool bit is moved in to clear the material.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pattern the tool bit is moved in to clear the material.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Modèle avec lequel l'outil progresse pour retirer de la matière.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="124"/>
       <source>ZigZag</source>
-      <translation>ZigZag</translation>
+      <translation>Zigzag</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="134"/>
@@ -5801,7 +5801,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="139"/>
       <source>ZigZagOffset</source>
-      <translation type="unfinished">ZigZagOffset</translation>
+      <translation>Décalage du zigzag</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="144"/>
@@ -5826,46 +5826,46 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="169"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle in which the pattern is applied.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle in which the pattern is applied.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Angle selon lequel le motif est appliqué.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="183"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="222"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="172"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.&lt;/p&gt;&lt;p&gt;A step over of 100% results in no overlap between two different cycles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.&lt;/p&gt;&lt;p&gt;A step over of 100% results in no overlap between two different cycles.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;La quantité par laquelle l'outil est déplacé latéralement sur chaque cycle du motif, spécifiée en pourcentage du diamètre de l'outil.&lt;/p&gt;&lt;p&gt;Un dépassement de 100% n'entraîne aucun chevauchement entre deux cycles différents.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="202"/>
       <source>Material Allowance</source>
-      <translation type="unfinished">Material Allowance</translation>
+      <translation>Allocation de matériau</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="209"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of material that should be left by this operation in relation to the target shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of material that should be left by this operation in relation to the target shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;La quantité de matériau qui devrait être laissée par cette opération par rapport à la forme cible..&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="222"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if this operation uses a starting point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Specify if this operation uses a starting point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Indiquez si cette opération utilise un point de départ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="225"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="130"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="255"/>
       <source>Use Start Point</source>
-      <translation type="unfinished">Use Start Point</translation>
+      <translation>Utiliser le point de départ</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="232"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected the operation uses the outline of the selected base geometry and ignores all holes and islands.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If selected the operation uses the outline of the selected base geometry and ignores all holes and islands.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si cette option est sélectionnée, l'opération utilise le contour de la géométrie de base sélectionnée et ignore tous les trous et îlots.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="242"/>
       <source>Clear Edges</source>
-      <translation type="unfinished">Clear Edges</translation>
+      <translation>Nettoyer les bords</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="249"/>
@@ -5875,7 +5875,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="52"/>
       <source>Probe Grid Points</source>
-      <translation type="unfinished">Probe Grid Points</translation>
+      <translation>Points de la grille de la sonde</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="58"/>
@@ -5915,33 +5915,33 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="145"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the filename where the probe points should be written.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the filename where the probe points should be written.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Entrez le nom du fichier où les points de sonde doivent être écrits.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProbeEdit.ui" line="148"/>
       <source>ProbePoints.txt</source>
-      <translation type="unfinished">ProbePoints.txt</translation>
+      <translation>ProbePoints.txt</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="63"/>
       <source>Cut Side</source>
-      <translation type="unfinished">Cut Side</translation>
+      <translation>Côté coupé</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="74"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="93"/>
       <source>PLACEHOLDER</source>
-      <translation type="unfinished">PLACEHOLDER</translation>
+      <translation>EMPLACEMENT</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="114"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of extra material left by this operation in relation to the target shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The amount of extra material left by this operation in relation to the target shape.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;La quantité de matière supplémentaire laissée par cette opération par rapport à la forme cible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="127"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if this operation should use a starting point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if this operation should use a starting point.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vérifiez si cette opération doit utiliser un point de départ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="137"/>
@@ -5951,53 +5951,53 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="140"/>
       <source>Process Holes</source>
-      <translation type="unfinished">Process Holes</translation>
+      <translation>Traiter les trous</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="147"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked the profile operation is offset by the tool radius. The offset direction is determined by the Cut Side.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked the profile operation is offset by the tool radius. The offset direction is determined by the Cut Side.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si cette case est cochée, l'opération de profilage est décalée du rayon de l'outil. La direction du décalage est déterminée par le côté de la coupe.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="150"/>
       <source>Use Compensation</source>
-      <translation type="unfinished">Use Compensation</translation>
+      <translation>Utilisez la compensation</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="157"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;This can be useful if no drill of adequate size is available or the number of holes don't warrant a tool change.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that the cut side and direction is reversed in respect to the specified values.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;This can be useful if no drill of adequate size is available or the number of holes don't warrant a tool change.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that the cut side and direction is reversed in respect to the specified values.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vérifiez si vous voulez que cette opération de profil soit également appliquée aux trous cylindriques, qui sont normalement percés.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Cela peut être utile si aucun foret de taille adéquate n'est disponible ou si le nombre de trous ne justifie pas un changement d'outil.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Remarquez que le côté et la direction de la coupe sont inversés par rapport aux valeurs spécifiées.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="160"/>
       <source>Process Circles</source>
-      <translation type="unfinished">Process Circles</translation>
+      <translation>Traiter les cercles</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="167"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if this profile operation should also process the outside perimeter of the base geometry shapes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check if this profile operation should also process the outside perimeter of the base geometry shapes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vérifiez si cette opération de profil doit également traiter le périmètre extérieur des formes de géométrie de base.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="170"/>
       <source>Process Perimeter</source>
-      <translation type="unfinished">Process Perimeter</translation>
+      <translation>Traiter le périmètre</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="71"/>
       <source>Start Feature Reference</source>
-      <translation type="unfinished">Start Feature Reference</translation>
+      <translation>Référence de la fonction de démarrage</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="90"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose what point to use on the first selected feature.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose what point to use on the first selected feature.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choisissez le point à utiliser sur la première fonction sélectionnée.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="97"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="169"/>
       <source>Center of Mass</source>
-      <translation type="unfinished">Center of Mass</translation>
+      <translation>Centre d'inertie</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="102"/>
@@ -6036,66 +6036,66 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="141"/>
       <source>End Feature Reference</source>
-      <translation type="unfinished">End Feature Reference</translation>
+      <translation>Référence de la fonction de fin</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="162"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose what point to use on the second selected feature.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose what point to use on the second selected feature.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choisir le point à utiliser sur la deuxième fonction sélectionnée.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="222"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;No Base Geometry selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;No Base Geometry selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aucune géométrie de base sélectionnée.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="228"/>
       <source>No Base Geometry selected.</source>
-      <translation type="unfinished">No Base Geometry selected.</translation>
+      <translation>Aucune géométrie de base sélectionnée.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="241"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Currently using custom point inputs in the Property View of the Data tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Currently using custom point inputs in the Property View of the Data tab.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Actuellement, utilisation des points d'entrée personnalisés dans la vue des propriétés de l'onglet des données.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="244"/>
       <source>Currently using custom point inputs available in the Property View of the Data tab.</source>
-      <translation type="unfinished">Currently using custom point inputs available in the Property View of the Data tab.</translation>
+      <translation>Actuellement, utilisation des points d'entrée personnalisés dans la vue des propriétés de l'onglet des données.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="275"/>
       <source>Extend Path Start</source>
-      <translation type="unfinished">Extend Path Start</translation>
+      <translation>Prolonger le début de la trajectoire</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="291"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Positive extends the beginning of the path, negative shortens.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Positive extends the beginning of the path, negative shortens.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Positif prolonge le début de la trajectoire, négatif la raccourcit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="301"/>
       <source>Extend Path End</source>
-      <translation type="unfinished">Extend Path End</translation>
+      <translation>Prolonger la fin de la trajectoire</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="317"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Positive extends the end of the path, negative shortens.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Positive extends the end of the path, negative shortens.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Positif prolonge la fin de la trajectoire, négatif la raccourcit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="345"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="91"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="98"/>
       <source>Layer Mode</source>
-      <translation type="unfinished">Layer Mode</translation>
+      <translation>Mode couche</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="357"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="98"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="110"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Complete the operation in a single pass at depth, or mulitiple passes to final depth.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Complete the operation in a single pass at depth, or mulitiple passes to final depth.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Effectuer l'opération en une seule passe à la profondeur, ou en plusieurs passes jusquà la profondeur finale.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="361"/>
@@ -6110,17 +6110,17 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="374"/>
       <source>Path Orientation</source>
-      <translation type="unfinished">Path Orientation</translation>
+      <translation>Orientation de la trajectoire</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="381"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose the path orientation with regard to the feature(s) selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose the path orientation with regard to the feature(s) selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choisissez l'orientation de la trajectoire par rapport à la ou les fonctions sélectionnées.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="385"/>
       <source>Start to End</source>
-      <translation type="unfinished">Start to End</translation>
+      <translation>Du début à la fin</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="390"/>
@@ -6130,7 +6130,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="398"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to reverse the cut direction of the slot path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable to reverse the cut direction of the slot path.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Permettre d'inverser le sens de coupe de la trajectoire de la rainure.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="401"/>
@@ -6141,7 +6141,7 @@ Abandon de la création</translation>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="63"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="79"/>
       <source>BoundBox</source>
-      <translation type="unfinished">BoundBox</translation>
+      <translation>Boîte de délimitation</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="70"/>
@@ -6194,7 +6194,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="147"/>
       <source>BoundBox extra offset X, Y</source>
-      <translation type="unfinished">BoundBox extra offset X, Y</translation>
+      <translation>Décalage supplémentaire X, Y de la boîte de délimitation</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="162"/>
@@ -6219,7 +6219,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="198"/>
       <source>Depth offset</source>
-      <translation type="unfinished">Depth offset</translation>
+      <translation>Déport de profondeur</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="205"/>
@@ -6305,7 +6305,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="71"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StepDown of a newly created operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: OpToolDiameter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StepDown of a newly created operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: OpToolDiameter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression définie comme le StepDown d'une opération venant d'être créée.&lt;/p&gt;&lt;p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Par défaut : OpToolDiameter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="81"/>
@@ -6503,12 +6503,12 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/PropertyBag.ui" line="55"/>
       <source>Modify...</source>
-      <translation type="unfinished">Modify...</translation>
+      <translation>Modifier...</translation>
     </message>
     <message>
       <location filename="../panels/PropertyBag.ui" line="62"/>
       <source>Add...</source>
-      <translation type="unfinished">Add...</translation>
+      <translation>Ajouter...</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="20"/>
@@ -6533,7 +6533,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../panels/ToolEditor.ui" line="67"/>
       <source>Length Offset</source>
-      <translation type="unfinished">Length Offset</translation>
+      <translation>Déport de longueur</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="74"/>
@@ -6552,7 +6552,7 @@ Abandon de la création</translation>
       <location filename="../panels/ToolEditor.ui" line="87"/>
       <location filename="../panels/ToolEditor.ui" line="184"/>
       <source>Tool Parameter</source>
-      <translation type="unfinished">Tool Parameter</translation>
+      <translation>Paramètre d'outil</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="103"/>
@@ -6624,7 +6624,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="26"/>
       <source>Default Width</source>
-      <translation type="unfinished">Default Width</translation>
+      <translation>Largeur par défaut</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="33"/>
@@ -6634,7 +6634,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="40"/>
       <source>Default Height</source>
-      <translation type="unfinished">Default Height</translation>
+      <translation>Hauteur par défaut</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="47"/>
@@ -6644,7 +6644,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="54"/>
       <source>Default Angle</source>
-      <translation type="unfinished">Default Angle</translation>
+      <translation>Angle par défaut</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="61"/>
@@ -6855,7 +6855,7 @@ Abandon de la création</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="391"/>
       <source>Extend Model's Bound Box</source>
-      <translation type="unfinished">Extend Model's Bound Box</translation>
+      <translation>Prolonger la boite liée du modèle</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="415"/>
@@ -7440,12 +7440,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="126"/>
       <source>Edit...</source>
-      <translation type="unfinished">Edit...</translation>
+      <translation>Éditer...</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="133"/>
       <source>Add...</source>
-      <translation type="unfinished">Add...</translation>
+      <translation>Ajouter...</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="143"/>
@@ -7486,7 +7486,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="70"/>
       <source>add</source>
-      <translation type="unfinished">add</translation>
+      <translation>ajouter</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="77"/>
@@ -7531,12 +7531,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="164"/>
       <source>Step Down</source>
-      <translation>Descendre</translation>
+      <translation>Pas vers le bas</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="178"/>
       <source>Finish Step Down</source>
-      <translation type="unfinished">Finish Step Down</translation>
+      <translation>Terminez le pas vers le bas</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="198"/>
@@ -7571,7 +7571,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="280"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;L'outil et ses paramètres à utiliser pour cette opération.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="299"/>
@@ -7679,7 +7679,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="209"/>
       <source>G/s</source>
-      <translation type="unfinished">G/s</translation>
+      <translation>G/s</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="229"/>
@@ -7694,12 +7694,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="278"/>
       <source>Job:</source>
-      <translation type="unfinished">Job:</translation>
+      <translation>Tâche:</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="300"/>
       <source>* Note: Volumetric simulation, inaccuracies are inherent.</source>
-      <translation type="unfinished">* Note: Volumetric simulation, inaccuracies are inherent.</translation>
+      <translation>* Note : Simulation volumétrique, les inexactitudes sont inhérentes.</translation>
     </message>
   </context>
   <context>
@@ -7985,7 +7985,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="193"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ordering by Fixture, will cause all operations to be performed in the first coordinate system before switching to the second. Then all operations will be performed there in the same order.&lt;/p&gt;&lt;p&gt;This is useful if the operator can safely load work into one coordinate system while the machine is doing work in another.&lt;/p&gt;&lt;p&gt;Ordering by Tool, will minimize the Tool Changes. A tool change will be done, then all operations in all coordinate systems before changing tools.&lt;/p&gt;&lt;p&gt;Ordering by operation will do each operation in all coordinate systems before moving to the next operation. This is especially useful in conjunction with the 'split output' even with only a single work coordinate system since it will put each operation into a separate file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ordering by Fixture, will cause all operations to be performed in the first coordinate system before switching to the second. Then all operations will be performed there in the same order.&lt;/p&gt;&lt;p&gt;This is useful if the operator can safely load work into one coordinate system while the machine is doing work in another.&lt;/p&gt;&lt;p&gt;Ordering by Tool, will minimize the Tool Changes. A tool change will be done, then all operations in all coordinate systems before changing tools.&lt;/p&gt;&lt;p&gt;Ordering by operation will do each operation in all coordinate systems before moving to the next operation. This is especially useful in conjunction with the 'split output' even with only a single work coordinate system since it will put each operation into a separate file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ordonner par point de fixation provoquera l'exécution de toutes les opérations dans le premier système de coordonnées avant de passer à la seconde. Ensuite, toutes les opérations seront effectuées dans le même ordre.&lt;/p&gt;&lt;p&gt;Ceci est utile si l'opérateur peut charger en toute sécurité le travail dans un système de coordonnées pendant que la machine fonctionne dans un autre.&lt;/p&gt;&lt;p&gt;Ordonner par outil minimisera les changements d'outils. Un changement d'outil sera effectué, puis toutes les opérations dans tous les systèmes de coordonnées avant de changer d'outil.&lt;/p&gt;&lt;p&gt;Ordonner par opération effectuera chaque opération dans tous les systèmes de coordonnées avant de passer à la prochaine opération. Cette fonction est particulièrement utile en conjonction avec la fonction "sortie fractionnée", même avec un seul système de coordonnées de travail, car elle place chaque opération dans un fichier distinct.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="200"/>
@@ -8000,7 +8000,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="226"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-style:italic;"&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=" font-style:italic;"&gt;Work Offsets&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.&lt;/p&gt;&lt;p&gt;FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your gcode output. The exact way in which the output is affected is controlled by the 'order by' setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-style:italic;"&gt;Work Coordinate Systems&lt;/span&gt; also called &lt;span style=" font-style:italic;"&gt;Work Offsets&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;Fixture Offsets&lt;/span&gt;, or &lt;span style=" font-style:italic;"&gt;Fixtures &lt;/span&gt;are useful for building efficient production jobs where the same part is done many times on the machine.&lt;/p&gt;&lt;p&gt;FreeCAD has no knowledge of where a particular coordinate system exists within the machine coordinate system so adding additional coordinate systems to your job will have no visual change within your job. It will, however, change your gcode output. The exact way in which the output is affected is controlled by the 'order by' setting.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-style:italic;"&gt;Systèmes de coordonnées de travail&lt;/span&gt; également appelés &lt;span style=" font-style:italic;"&gt;Décalages de travail&lt;/span&gt;, &lt;span style=" font-style:italic;"&gt;Décalages de point de fixation&lt;/span&gt;, ou &lt;span style=" font-style:italic;"&gt;Les points de fixation &lt;/span&gt;sont utiles pour construire des tâches de production efficaces où la même pièce est faite plusieurs fois sur la machine.&lt;/p&gt;&lt;p&gt;FreeCAD n'a aucune connaissance de l'endroit où un système de coordonnées particulier existe dans le système de coordonnées de la machine, donc l'ajout de systèmes de coordonnées supplémentaires à votre travail n'aura aucun changement visuel dans votre travail. Cela changera toutefois la sortie de votre gcode. La façon exacte dont la sortie est affectée est contrôlée par le paramètre "ordre par".&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="245"/>
@@ -8085,7 +8085,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="376"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If multiple coordinate systems are in use, setting this to TRUE will cause the gcode to be written to multiple output files as controlled by the 'order by' property.  For example, if ordering by Fixture, the first output file will be for the first fixture and separate file for the second.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Si plusieurs systèmes de coordonnées sont utilisés, la mise à VRAI de ce paramètre entraînera l'écriture du gcode dans plusieurs fichiers de sortie contrôlés par la propriété "ordre par".  Par exemple, si l'ordre est basé sur le point de fixation, le premier fichier de sortie sera pour le premier point de fixation et un fichier séparé pour le second.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="379"/>
@@ -8125,7 +8125,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="462"/>
       <source>Extend Model's Bound Box</source>
-      <translation type="unfinished">Extend Model's Bound Box</translation>
+      <translation>Prolonger la boite liée du modèle</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="467"/>
@@ -8287,12 +8287,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../panels/PathEdit.ui" line="1035"/>
       <source>Step Down</source>
-      <translation>Descendre</translation>
+      <translation>Pas vers le bas</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1042"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StepDown of a newly created operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: OpToolDiameter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression set as the StepDown of a newly created operation.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Default: OpToolDiameter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Expression définie comme le StepDown d'une opération venant d'être créée.&lt;/p&gt;&lt;p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Par défaut : OpToolDiameter&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1052"/>

@@ -1199,7 +1199,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>&amp;Spreadsheet</source>
-      <translation>&amp;Feuille de calcul</translation>
+      <translation>&amp;Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
