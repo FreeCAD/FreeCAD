@@ -174,7 +174,7 @@ class CommandBooleanFragments:
                                                     "or from the shapes inside a compound.\n"
                                                     "This is a boolean union which is then sliced at the intersections\n"
                                                     "of the original shapes.\n"
-                                                    "A 'Compound Filter' can be used to extract the individual slices."), None}
+                                                    "A 'Compound Filter' can be used to extract the individual slices.",None)}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) >= 1:
