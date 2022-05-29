@@ -23,6 +23,8 @@
 #ifndef DRAWINGGUI_QGRAPHICSITEMVIEW_H
 #define DRAWINGGUI_QGRAPHICSITEMVIEW_H
 
+#include <Mod/TechDraw/TechDrawGlobal.h>
+
 #include <QColor>
 #include <QFont>
 #include <QGraphicsItemGroup>
@@ -154,7 +156,7 @@ protected:
 
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
     // Mouse handling
-/*    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;*/
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     // Preselection events:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
@@ -191,8 +193,8 @@ protected:
     QPen m_decorPen;
     double m_lockWidth;
     double m_lockHeight;
+    int m_dragState;
 
-//    std::vector<QGraphicsItem*> m_randomItems;
 };
 
 } // namespace

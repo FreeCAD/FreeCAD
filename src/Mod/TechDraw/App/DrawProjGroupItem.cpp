@@ -98,6 +98,13 @@ short DrawProjGroupItem::mustExecute() const
 
 void DrawProjGroupItem::onChanged(const App::Property *prop)
 {
+    if ((prop == &X) ||
+        (prop == &Y)) {
+        DrawProjGroup* parent = getPGroup();
+        if (parent != nullptr) {
+            parent->touch(false);
+        }
+    }
     TechDraw::DrawViewPart::onChanged(prop);
 }
 

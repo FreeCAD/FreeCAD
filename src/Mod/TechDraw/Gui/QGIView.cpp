@@ -81,13 +81,18 @@
 using namespace TechDrawGui;
 using namespace TechDraw;
 
+#define NODRAG 0
+#define DRAGSTARTED 1
+#define DRAGGING 2
+
 const float labelCaptionFudge = 0.2f;   // temp fiddle for devel
 
 QGIView::QGIView()
     :QGraphicsItemGroup(),
      viewObj(nullptr),
      m_locked(false),
-     m_innerView(false)
+     m_innerView(false),
+     m_dragState(NODRAG)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setHandlesChildEvents(false);
@@ -200,22 +205,6 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
                         newPos.setX(item->pos().x());
                     } else if(alignMode == QString::fromLatin1("Horizontal")) {
                         newPos.setY(item->pos().y());
-                    } else if(alignMode == QString::fromLatin1("45slash")) {
-                         //this logic is wrong since the constrained movement direction is not necessarily 45*
-//                         Base::Console().Message("QGIV::itemChange - oblique BL-TR\n");
-//                        double dist = ( (newPos.x() - item->pos().x()) +
-//                                        (item->pos().y() - newPos.y()) ) / 2.0;
-
-//                        newPos.setX( item->pos().x() + dist);
-//                        newPos.setY( item->pos().y() - dist );
-                    } else if(alignMode == QString::fromLatin1("45backslash")) {
-                         //this logic is wrong since the constrained movement direction is not necessarily 45*
-//                         Base::Console().Message("QGIV::itemChange - oblique TL-BR\n");
-//                        double dist = ( (newPos.x() - item->pos().x()) +
-//                                        (newPos.y() - item->pos().y()) ) / 2.0;
-
-//                        newPos.setX( item->pos().x() + dist);
-//                        newPos.setY( item->pos().y() + dist );
                     }
                 }
             }
@@ -244,30 +233,39 @@ void QGIView::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 //    Base::Console().Message("QGIV::mousePressEvent() - %s\n",getViewName());
     signalSelectPoint(this, event->pos());
+    if (m_dragState == NODRAG) {
+        m_dragState = DRAGSTARTED;
+    }
 
     QGraphicsItem::mousePressEvent(event);
 }
 
-//void QGIView::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
-//{
-//    QGraphicsItem::mouseMoveEvent(event);
-//}
+void QGIView::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
+{
+    if (m_dragState == DRAGSTARTED) {
+        m_dragState = DRAGGING;
+    }
+    QGraphicsItem::mouseMoveEvent(event);
+}
 
 void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
     //TODO: this should be done in itemChange - item position has changed
-    //TODO: and should check for dragging
 //    Base::Console().Message("QGIV::mouseReleaseEvent() - %s\n",getViewName());
 //    if(scene() && this == scene()->mouseGrabberItem()) {
-    if(!m_locked) {
-        if (!isInnerView()) {
-            double tempX = x(),
-                   tempY = getY();
-            getViewObject()->setPosition(Rez::appX(tempX),Rez::appX(tempY));
-        } else {
-            getViewObject()->setPosition(Rez::appX(x()),Rez::appX(getYInClip(y())));
+    if (m_dragState == DRAGGING) {
+        if(!m_locked) {
+            if (!isInnerView()) {
+                double tempX = x(),
+                       tempY = getY();
+                getViewObject()->setPosition(Rez::appX(tempX),Rez::appX(tempY));
+            } else {
+                getViewObject()->setPosition(Rez::appX(x()),Rez::appX(getYInClip(y())));
+            }
         }
     }
+    m_dragState = NODRAG;
+
     QGraphicsItem::mouseReleaseEvent(event);
 }
 
