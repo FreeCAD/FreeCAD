@@ -103,6 +103,7 @@ file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/ShapeUpgrade)
 
 generate_from_xml(BRepFeat/MakePrismPy)
 
+generate_from_xml(ChFi2d/ChFi2d_AnaFilletAlgoPy)
 generate_from_xml(ChFi2d/ChFi2d_FilletAlgoPy)
 generate_from_xml(ChFi2d/ChFi2d_FilletAPIPy)
 
@@ -338,6 +339,8 @@ SOURCE_GROUP("BRepFeat" FILES ${BRepFeatPy_SRCS})
 
 # ChFi2d wrappers
 SET(ChFi2dPy_SRCS
+    ChFi2d/ChFi2d_AnaFilletAlgoPy.xml
+    ChFi2d/ChFi2d_AnaFilletAlgoPyImp.cpp
     ChFi2d/ChFi2d_FilletAlgoPy.xml
     ChFi2d/ChFi2d_FilletAlgoPyImp.cpp
     ChFi2d/ChFi2d_FilletAPIPy.xml
