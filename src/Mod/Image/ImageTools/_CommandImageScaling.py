@@ -37,31 +37,14 @@ if FreeCAD.GuiUp:
 
     import FreeCADGui
 
-# Translation-related code
-# See forum thread "A new Part tool is being born... JoinFeatures!"
-# http://forum.freecadweb.org/viewtopic.php?f=22&t=11112&start=30#p90239
-    try:
-        _fromUtf8 = QtCore.QString.fromUtf8
-    except (Exception):
-        def _fromUtf8(s):
-            return s
-    try:
-        _encoding = QtGui.QApplication.UnicodeUTF8
-        def _translate(context, text, disambig):
-            return QtGui.QApplication.translate(context, text, disambig, _encoding)
-    except (AttributeError):
-        def _translate(context, text, disambig):
-            return QtGui.QApplication.translate(context, text, disambig)
-
-
 # command class
 class _CommandImageScaling:
     "Command to Scale an Image to an Image Plane"
     def GetResources(self):
         return {'Pixmap': "Image_Scaling",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Image_Scaling", "Scale image plane"),
+                'MenuText': QtGui.QApplication.translate("Image_Scaling", "Scale image plane", None),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Image_Scaling", "Scales an image plane by defining a distance between two points")}
+                'ToolTip': QtGui.QApplication.translate("Image_Scaling", "Scales an image plane by defining a distance between two points", None)}
 
     def Activated(self):
         import draftguitools.gui_trackers as trackers
@@ -141,9 +124,9 @@ def cmdCreateImageScaling(name, trackers):
             self.dialog.show()
     
         def retranslateUi(self, Dialog):
-            Dialog.setWindowTitle(_translate("Dialog", "Scale image plane", None))
-            self.label.setText(_translate("Dialog", "Distance [mm]", None))
-            self.label1.setText(_translate("Dialog", "Select first point", None))
+            Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "Scale image plane", None))
+            self.label.setText(QtGui.QApplication.translate("Dialog", "Distance [mm]", None))
+            self.label1.setText(QtGui.QApplication.translate("Dialog", "Select first point", None))
             
         def accept(self):
             sel = FreeCADGui.Selection.getSelection()
@@ -168,10 +151,10 @@ def cmdCreateImageScaling(name, trackers):
                 self.dialog.hide()
                 FreeCADGui.SendMsgToActiveView("ViewFit")
             except (ValueError, ZeroDivisionError):
-                self.label1.setText(_translate("Dialog", "<font color='red'>Enter distance</font>", None))
+                self.label1.setText(QtGui.QApplication.translate("Dialog", "<font color='red'>Enter distance</font>", None))
                 return
             except (IndexError, AttributeError):
-                self.label1.setText(_translate("Dialog", "<font color='red'>Select ImagePlane</font>", None))
+                self.label1.setText(QtGui.QApplication.translate("Dialog", "<font color='red'>Select ImagePlane</font>", None))
                 return
             
         def reject(self):
@@ -196,7 +179,7 @@ def cmdCreateImageScaling(name, trackers):
                 pos = event.getPosition()
                 point = self.view.getPoint(pos[0],pos[1])
                 self.stack.append(point)
-                self.label1.setText(_translate("Dialog", "Select second point", None))
+                self.label1.setText(QtGui.QApplication.translate("Dialog", "Select second point", None))
                 if len(self.stack)==1:
                     self.tracker.p1(point)
                 elif len(self.stack) == 2:
@@ -205,7 +188,7 @@ def cmdCreateImageScaling(name, trackers):
                     self.view.removeEventCallbackPivy(pvy.SoMouseButtonEvent.getClassTypeId(),self.callback)
                     self.view.removeEventCallbackPivy(pvy.SoLocation2Event.getClassTypeId(),self.callmouse)
                     self.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(True)
-                    self.label1.setText(_translate("Dialog", "Select Image Plane and type distance", None))
+                    self.label1.setText(QtGui.QApplication.translate("Dialog", "Select Image Plane and type distance", None))
     
     #Init        
     if FreeCADGui.ActiveDocument is not None:

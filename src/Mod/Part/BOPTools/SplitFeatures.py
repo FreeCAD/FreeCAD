@@ -33,24 +33,6 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
 
-# -------------------------- translation-related code -------------------------
-# See forum thread "A new Part tool is being born... JoinFeatures!"
-# http://forum.freecadweb.org/viewtopic.php?f=22&t=11112&start=30#p90239
-    try:
-        _fromUtf8 = QtCore.QString.fromUtf8
-    except Exception:
-        def _fromUtf8(s):
-            return s
-    try:
-        _encoding = QtGui.QApplication.UnicodeUTF8
-        def _translate(context, text, disambig):
-            return QtGui.QApplication.translate(context, text, disambig, _encoding)
-    except AttributeError:
-        def _translate(context, text, disambig):
-            return QtGui.QApplication.translate(context, text, disambig)
-#--------------------------/translation-related code --------------------------
-
-
 def getIconPath(icon_dot_svg):
     return icon_dot_svg
 
@@ -157,14 +139,14 @@ def cmdCreateBooleanFragmentsFeature(name, mode):
     except Exception as err:
         mb = QtGui.QMessageBox()
         mb.setIcon(mb.Icon.Warning)
-        mb.setText(_translate("Part_SplitFeatures",
+        mb.setText(QtGui.QApplication.translate("Part_SplitFeatures",
                               "Computing the result failed with an error:\n\n"
                               "{err}\n\n"
                               "Click 'Continue' to create the feature anyway, or 'Abort' to cancel.", None)
                    .format(err=str(err)))
-        mb.setWindowTitle(_translate("Part_SplitFeatures","Bad selection", None))
+        mb.setWindowTitle(QtGui.QApplication.translate("Part_SplitFeatures","Bad selection", None))
         btnAbort = mb.addButton(QtGui.QMessageBox.StandardButton.Abort)
-        btnOK = mb.addButton(_translate("Part_SplitFeatures","Continue",None),
+        btnOK = mb.addButton(QtGui.QApplication.translate("Part_SplitFeatures","Continue",None),
                              QtGui.QMessageBox.ButtonRole.ActionRole)
         mb.setDefaultButton(btnOK)
 
@@ -185,14 +167,14 @@ class CommandBooleanFragments:
 
     def GetResources(self):
         return {'Pixmap': getIconPath("Part_BooleanFragments.svg"),
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Boolean fragments"),
+                'MenuText': QtGui.QApplication.translate("Part_SplitFeatures","Boolean fragments", None),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures",
+                'ToolTip': QtGui.QApplication.translate("Part_SplitFeatures",
                                                     "Create a 'Boolean Fragments' object from two or more selected objects,\n"
                                                     "or from the shapes inside a compound.\n"
                                                     "This is a boolean union which is then sliced at the intersections\n"
                                                     "of the original shapes.\n"
-                                                    "A 'Compound Filter' can be used to extract the individual slices.")}
+                                                    "A 'Compound Filter' can be used to extract the individual slices."), None}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) >= 1:
@@ -200,11 +182,11 @@ class CommandBooleanFragments:
         else:
             mb = QtGui.QMessageBox()
             mb.setIcon(mb.Icon.Warning)
-            mb.setText(_translate("Part_SplitFeatures",
+            mb.setText(QtGui.QApplication.translate("Part_SplitFeatures",
                                   "Select at least two objects, or one or more compounds. "
                                   "If only one compound is selected, the compounded shapes will be intersected between each other "
                                   "(otherwise, compounds with self-intersections are invalid).", None))
-            mb.setWindowTitle(_translate("Part_SplitFeatures","Bad selection", None))
+            mb.setWindowTitle(QtGui.QApplication.translate("Part_SplitFeatures","Bad selection", None))
             mb.exec_()
 
     def IsActive(self):
@@ -302,14 +284,14 @@ def cmdCreateSliceFeature(name, mode, transaction=True):
     except Exception as err:
         mb = QtGui.QMessageBox()
         mb.setIcon(mb.Icon.Warning)
-        mb.setText(_translate("Part_SplitFeatures",
+        mb.setText(QtGui.QApplication.translate("Part_SplitFeatures",
                               "Computing the result failed with an error:\n\n"
                               "{err}\n\n"
                               "Click 'Continue' to create the feature anyway, or 'Abort' to cancel.", None)
                    .format(err=str(err)))
-        mb.setWindowTitle(_translate("Part_SplitFeatures","Bad selection", None))
+        mb.setWindowTitle(QtGui.QApplication.translate("Part_SplitFeatures","Bad selection", None))
         btnAbort = mb.addButton(QtGui.QMessageBox.StandardButton.Abort)
-        btnOK = mb.addButton(_translate("Part_SplitFeatures","Continue",None),
+        btnOK = mb.addButton(QtGui.QApplication.translate("Part_SplitFeatures","Continue",None),
                              QtGui.QMessageBox.ButtonRole.ActionRole)
         mb.setDefaultButton(btnOK)
 
@@ -344,12 +326,12 @@ class CommandSlice:
 
     def GetResources(self):
         return {'Pixmap': getIconPath("Part_Slice.svg"),
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Slice to compound"),
+                'MenuText': QtGui.QApplication.translate("Part_SplitFeatures","Slice to compound", None),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures",
+                'ToolTip': QtGui.QApplication.translate("Part_SplitFeatures",
                                                     "Slice a selected object by using other objects as cutting tools.\n"
                                                     "The resulting pieces will be stored in a compound.\n"
-                                                    "A 'Compound Filter' can be used to extract the individual slices.")}
+                                                    "A 'Compound Filter' can be used to extract the individual slices.", None)}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) > 1:
@@ -357,11 +339,11 @@ class CommandSlice:
         else:
             mb = QtGui.QMessageBox()
             mb.setIcon(mb.Icon.Warning)
-            mb.setText(_translate("Part_SplitFeatures",
+            mb.setText(QtGui.QApplication.translate("Part_SplitFeatures",
                                   "Select at least two objects. "
                                   "The first one is the object to be sliced; "
                                   "the rest are objects to slice with.", None))
-            mb.setWindowTitle(_translate("Part_SplitFeatures","Bad selection", None))
+            mb.setWindowTitle(QtGui.QApplication.translate("Part_SplitFeatures","Bad selection", None))
             mb.exec_()
 
     def IsActive(self):
@@ -376,11 +358,11 @@ class CommandSliceApart:
 
     def GetResources(self):
         return {'Pixmap': getIconPath("Part_SliceApart.svg"),
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Slice apart"),
+                'MenuText': QtGui.QApplication.translate("Part_SplitFeatures","Slice apart", None),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures",
+                'ToolTip': QtGui.QApplication.translate("Part_SplitFeatures",
                                                     "Slice a selected object by other objects, and split it apart.\n"
-                                                    "It will create a 'Compound Filter' for each slice.")}
+                                                    "It will create a 'Compound Filter' for each slice.", None)}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) > 1:
@@ -388,11 +370,11 @@ class CommandSliceApart:
         else:
             mb = QtGui.QMessageBox()
             mb.setIcon(mb.Icon.Warning)
-            mb.setText(_translate("Part_SplitFeatures",
+            mb.setText(QtGui.QApplication.translate("Part_SplitFeatures",
                                   "Select at least two objects. "
                                   "The first one is the object to be sliced; "
                                   "the rest are objects to slice with.", None))
-            mb.setWindowTitle(_translate("Part_SplitFeatures","Bad selection", None))
+            mb.setWindowTitle(QtGui.QApplication.translate("Part_SplitFeatures","Bad selection", None))
             mb.exec_()
 
     def IsActive(self):
@@ -498,14 +480,14 @@ def cmdCreateXORFeature(name):
     except Exception as err:
         mb = QtGui.QMessageBox()
         mb.setIcon(mb.Icon.Warning)
-        mb.setText(_translate("Part_SplitFeatures",
+        mb.setText(QtGui.QApplication.translate("Part_SplitFeatures",
                               "Computing the result failed with an error:\n\n"
                               "{err}\n\n"
                               "Click 'Continue' to create the feature anyway, or 'Abort' to cancel.", None)
                    .format(err=str(err)))
-        mb.setWindowTitle(_translate("Part_SplitFeatures","Bad selection", None))
+        mb.setWindowTitle(QtGui.QApplication.translate("Part_SplitFeatures","Bad selection", None))
         btnAbort = mb.addButton(QtGui.QMessageBox.StandardButton.Abort)
-        btnOK = mb.addButton(_translate("Part_SplitFeatures","Continue",None),
+        btnOK = mb.addButton(QtGui.QApplication.translate("Part_SplitFeatures","Continue",None),
                              QtGui.QMessageBox.ButtonRole.ActionRole)
         mb.setDefaultButton(btnOK)
 
@@ -526,13 +508,13 @@ class CommandXOR:
 
     def GetResources(self):
         return {'Pixmap': getIconPath("Part_XOR.svg"),
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures","Boolean XOR"),
+                'MenuText': QtGui.QApplication.translate("Part_SplitFeatures","Boolean XOR", None),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_SplitFeatures",
+                'ToolTip': QtGui.QApplication.translate("Part_SplitFeatures",
                                                     "Perform an 'exclusive OR' boolean operation with two or more selected objects,\n"
                                                     "or with the shapes inside a compound.\n"
                                                     "This means the overlapping volumes of the shapes will be removed.\n"
-                                                    "A 'Compound Filter' can be used to extract the remaining pieces.")}
+                                                    "A 'Compound Filter' can be used to extract the remaining pieces.", None)}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelectionEx()) >= 1:
@@ -540,11 +522,11 @@ class CommandXOR:
         else:
             mb = QtGui.QMessageBox()
             mb.setIcon(mb.Icon.Warning)
-            mb.setText(_translate("Part_SplitFeatures",
+            mb.setText(QtGui.QApplication.translate("Part_SplitFeatures",
                                   "Select at least two objects, or one or more compounds. "
                                   "If only one compound is selected, the compounded shapes will be intersected between each other "
                                   "(otherwise, compounds with self-intersections are invalid).", None))
-            mb.setWindowTitle(_translate("Part_SplitFeatures","Bad selection", None))
+            mb.setWindowTitle(QtGui.QApplication.translate("Part_SplitFeatures","Bad selection", None))
             mb.exec_()
 
     def IsActive(self):

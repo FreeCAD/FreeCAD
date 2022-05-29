@@ -32,32 +32,16 @@ if FreeCAD.GuiUp:
     from PySide import QtGui
     from PySide import QtCore
 
-
-# translation-related code
-    try:
-        _fromUtf8 = QtCore.QString.fromUtf8
-    except Exception:
-        def _fromUtf8(s):
-            return s
-    try:
-        _encoding = QtGui.QApplication.UnicodeUTF8
-        def _translate(context, text, disambig):
-            return QtGui.QApplication.translate(context, text, disambig, _encoding)
-    except AttributeError:
-        def _translate(context, text, disambig):
-            return QtGui.QApplication.translate(context, text, disambig)
-
-
 # command class
 class _CommandExplodeCompound:
     "Command to explode a compound"
     def GetResources(self):
         return {'Pixmap': "Part_ExplodeCompound",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Part_ExplodeCompound", "Explode compound"),
+                'MenuText': QtGui.QApplication.translate("Part_ExplodeCompound", "Explode compound", None),
                 'Accel': "",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Part_ExplodeCompound",
+                'ToolTip': QtGui.QApplication.translate("Part_ExplodeCompound",
                                                     "Split up a compound of shapes into separate objects.\n"
-                                                    "It will create a 'Compound Filter' for each shape.")}
+                                                    "It will create a 'Compound Filter' for each shape.", None)}
 
     def Activated(self):
         if len(FreeCADGui.Selection.getSelection()) == 1:
@@ -65,8 +49,8 @@ class _CommandExplodeCompound:
         else:
             mb = QtGui.QMessageBox()
             mb.setIcon(mb.Icon.Warning)
-            mb.setText(_translate("Part_ExplodeCompound", "First select a shape that is a compound.", None))
-            mb.setWindowTitle(_translate("Part_ExplodeCompound", "Bad selection", None))
+            mb.setText(QtGui.QApplication.translate("Part_ExplodeCompound", "First select a shape that is a compound.", None))
+            mb.setWindowTitle(QtGui.QApplication.translate("Part_ExplodeCompound", "Bad selection", None))
             mb.exec_()
 
     def IsActive(self):
