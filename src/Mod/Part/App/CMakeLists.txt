@@ -91,18 +91,20 @@ generate_from_xml(TopoShapeVertexPy)
 generate_from_xml(TopoShapeWirePy)
 generate_from_xml(BRepOffsetAPI_MakePipeShellPy)
 generate_from_xml(BRepOffsetAPI_MakeFillingPy)
-generate_from_xml(ChFi2d_FilletAlgoPy)
-generate_from_xml(ChFi2d_FilletAPIPy)
 generate_from_xml(PrecisionPy)
 
 # make sure to create the directory at configure time
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/BRepFeat)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/ChFi2d)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Geom2d)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/GeomPlate)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/HLRBRep)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/ShapeUpgrade)
 
 generate_from_xml(BRepFeat/MakePrismPy)
+
+generate_from_xml(ChFi2d/ChFi2d_FilletAlgoPy)
+generate_from_xml(ChFi2d/ChFi2d_FilletAPIPy)
 
 generate_from_xml(Geom2d/ArcOfCircle2dPy)
 generate_from_xml(Geom2d/ArcOfConic2dPy)
@@ -320,10 +322,6 @@ SET(Python_SRCS
     BRepOffsetAPI_MakePipeShellPyImp.cpp
     BRepOffsetAPI_MakeFillingPy.xml
     BRepOffsetAPI_MakeFillingPyImp.cpp
-    ChFi2d_FilletAlgoPy.xml
-    ChFi2d_FilletAlgoPyImp.cpp
-    ChFi2d_FilletAPIPy.xml
-    ChFi2d_FilletAPIPyImp.cpp
     PrecisionPy.xml
     PrecisionPyImp.cpp
     PartPyCXX.cpp
@@ -337,6 +335,15 @@ SET(BRepFeatPy_SRCS
     BRepFeat/MakePrismPyImp.cpp
 )
 SOURCE_GROUP("BRepFeat" FILES ${BRepFeatPy_SRCS})
+
+# ChFi2d wrappers
+SET(ChFi2dPy_SRCS
+    ChFi2d/ChFi2d_FilletAlgoPy.xml
+    ChFi2d/ChFi2d_FilletAlgoPyImp.cpp
+    ChFi2d/ChFi2d_FilletAPIPy.xml
+    ChFi2d/ChFi2d_FilletAPIPyImp.cpp
+)
+SOURCE_GROUP("ChFi2d" FILES ${ChFi2dPy_SRCS})
 
 # Geom2d wrappers
 SET(Geom2dPy_SRCS
@@ -417,6 +424,7 @@ SET(Part_SRCS
     ${Properties_SRCS}
     ${Python_SRCS}
     ${BRepFeatPy_SRCS}
+    ${ChFi2dPy_SRCS}
     ${Geom2dPy_SRCS}
     ${GeomPlatePy_SRCS}
     ${HLRBRepPy_SRCS}

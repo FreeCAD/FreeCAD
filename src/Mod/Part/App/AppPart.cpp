@@ -51,8 +51,8 @@
 #include "Mod/Part/App/BRepOffsetAPI_MakePipeShellPy.h"
 #include "Mod/Part/App/BSplineCurvePy.h"
 #include "Mod/Part/App/BSplineSurfacePy.h"
-#include <Mod/Part/App/ChFi2d_FilletAlgoPy.h>
-#include <Mod/Part/App/ChFi2d_FilletAPIPy.h>
+#include <Mod/Part/App/ChFi2d/ChFi2d_FilletAlgoPy.h>
+#include <Mod/Part/App/ChFi2d/ChFi2d_FilletAPIPy.h>
 #include "Mod/Part/App/CirclePy.h"
 #include "Mod/Part/App/ConePy.h"
 #include "Mod/Part/App/ConicPy.h"

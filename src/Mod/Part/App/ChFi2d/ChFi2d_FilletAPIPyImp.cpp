@@ -30,8 +30,8 @@
 # include <TopoDS_Wire.hxx>
 #endif
 
-#include <Mod/Part/App/ChFi2d_FilletAlgoPy.h>
-#include <Mod/Part/App/ChFi2d_FilletAlgoPy.cpp>
+#include <Mod/Part/App/ChFi2d/ChFi2d_FilletAPIPy.h>
+#include <Mod/Part/App/ChFi2d/ChFi2d_FilletAPIPy.cpp>
 #include <Mod/Part/App/TopoShapeEdgePy.h>
 #include <Mod/Part/App/TopoShapeWirePy.h>
 #include <Mod/Part/App/Geometry.h>
@@ -42,14 +42,14 @@
 using namespace Part;
 
 
-PyObject *ChFi2d_FilletAlgoPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject *ChFi2d_FilletAPIPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of ChFi2d_FilletAlgoPy and the Twin object
-    return new ChFi2d_FilletAlgoPy(new ChFi2d_FilletAlgo);
+    // create a new instance of ChFi2d_FilletAPIPy and the Twin object
+    return new ChFi2d_FilletAPIPy(new ChFi2d_FilletAPI);
 }
 
 // constructor method
-int ChFi2d_FilletAlgoPy::PyInit(PyObject* args, PyObject* /*kwd*/)
+int ChFi2d_FilletAPIPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     if (PyArg_ParseTuple(args, ""))
         return 0;
@@ -60,7 +60,7 @@ int ChFi2d_FilletAlgoPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     if (PyArg_ParseTuple(args, "O!O!", &TopoShapeWirePy::Type, &wire, &PlanePy::Type, &plane)) {
         TopoDS_Shape shape = static_cast<TopoShapeWirePy*>(wire)->getTopoShapePtr()->getShape();
         Handle(Geom_Plane) hPlane = Handle(Geom_Plane)::DownCast(static_cast<PlanePy*>(plane)->getGeomPlanePtr()->handle());
-        getChFi2d_FilletAlgoPtr()->Init(TopoDS::Wire(shape), hPlane->Pln());
+        getChFi2d_FilletAPIPtr()->Init(TopoDS::Wire(shape), hPlane->Pln());
         return 0;
     }
 
@@ -73,31 +73,31 @@ int ChFi2d_FilletAlgoPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         TopoDS_Shape shape1 = static_cast<TopoShapeEdgePy*>(edge1)->getTopoShapePtr()->getShape();
         TopoDS_Shape shape2 = static_cast<TopoShapeEdgePy*>(edge2)->getTopoShapePtr()->getShape();
         Handle(Geom_Plane) hPlane = Handle(Geom_Plane)::DownCast(static_cast<PlanePy*>(plane)->getGeomPlanePtr()->handle());
-        getChFi2d_FilletAlgoPtr()->Init(TopoDS::Edge(shape1), TopoDS::Edge(shape2), hPlane->Pln());
+        getChFi2d_FilletAPIPtr()->Init(TopoDS::Edge(shape1), TopoDS::Edge(shape2), hPlane->Pln());
         return 0;
     }
 
     PyErr_SetString(PyExc_TypeError, "Wrong arguments:\n"
-                                     "-- FilletAlgo()\n"
-                                     "-- FilletAlgo(wire, plane)"
-                                     "-- FilletAlgo(edge, edge, plane)\n");
+                                     "-- FilletAPI()\n"
+                                     "-- FilletAPI(wire, plane)"
+                                     "-- FilletAPI(edge, edge, plane)\n");
     return -1;
 }
 
 // returns a string which represents the object e.g. when printed in python
-std::string ChFi2d_FilletAlgoPy::representation() const
+std::string ChFi2d_FilletAPIPy::representation() const
 {
-    return std::string("<FilletAlgo object>");
+    return std::string("<FilletAPI object>");
 }
 
-PyObject* ChFi2d_FilletAlgoPy::init(PyObject *args)
+PyObject* ChFi2d_FilletAPIPy::init(PyObject *args)
 {
     PyObject* wire;
     PyObject* plane;
     if (PyArg_ParseTuple(args, "O!O!", &TopoShapeWirePy::Type, &wire, &PlanePy::Type, &plane)) {
         TopoDS_Shape shape = static_cast<TopoShapeWirePy*>(wire)->getTopoShapePtr()->getShape();
         Handle(Geom_Plane) hPlane = Handle(Geom_Plane)::DownCast(static_cast<PlanePy*>(plane)->getGeomPlanePtr()->handle());
-        getChFi2d_FilletAlgoPtr()->Init(TopoDS::Wire(shape), hPlane->Pln());
+        getChFi2d_FilletAPIPtr()->Init(TopoDS::Wire(shape), hPlane->Pln());
         Py_Return;
     }
 
@@ -110,7 +110,7 @@ PyObject* ChFi2d_FilletAlgoPy::init(PyObject *args)
         TopoDS_Shape shape1 = static_cast<TopoShapeEdgePy*>(edge1)->getTopoShapePtr()->getShape();
         TopoDS_Shape shape2 = static_cast<TopoShapeEdgePy*>(edge2)->getTopoShapePtr()->getShape();
         Handle(Geom_Plane) hPlane = Handle(Geom_Plane)::DownCast(static_cast<PlanePy*>(plane)->getGeomPlanePtr()->handle());
-        getChFi2d_FilletAlgoPtr()->Init(TopoDS::Edge(shape1), TopoDS::Edge(shape2), hPlane->Pln());
+        getChFi2d_FilletAPIPtr()->Init(TopoDS::Edge(shape1), TopoDS::Edge(shape2), hPlane->Pln());
         Py_Return;
     }
 
@@ -120,14 +120,14 @@ PyObject* ChFi2d_FilletAlgoPy::init(PyObject *args)
     return nullptr;
 }
 
-PyObject* ChFi2d_FilletAlgoPy::perform(PyObject *args)
+PyObject* ChFi2d_FilletAPIPy::perform(PyObject *args)
 {
     double radius;
     if (!PyArg_ParseTuple(args, "d", &radius))
         return nullptr;
 
     try {
-        bool ok = getChFi2d_FilletAlgoPtr()->Perform(radius);
+        bool ok = getChFi2d_FilletAPIPtr()->Perform(radius);
         return Py::new_reference_to(Py::Boolean(ok));
     }
     catch (Standard_Failure& e) {
@@ -136,7 +136,7 @@ PyObject* ChFi2d_FilletAlgoPy::perform(PyObject *args)
     }
 }
 
-PyObject* ChFi2d_FilletAlgoPy::numberOfResults(PyObject *args)
+PyObject* ChFi2d_FilletAPIPy::numberOfResults(PyObject *args)
 {
     PyObject* pnt;
     if (!PyArg_ParseTuple(args, "O!", &Base::VectorPy::Type, &pnt))
@@ -144,7 +144,7 @@ PyObject* ChFi2d_FilletAlgoPy::numberOfResults(PyObject *args)
 
     try {
         Base::Vector3d* vec = static_cast<Base::VectorPy*>(pnt)->getVectorPtr();
-        Standard_Integer num = getChFi2d_FilletAlgoPtr()->NbResults(gp_Pnt(vec->x, vec->y, vec->z));
+        Standard_Integer num = getChFi2d_FilletAPIPtr()->NbResults(gp_Pnt(vec->x, vec->y, vec->z));
         return Py::new_reference_to(Py::Long(num));
     }
     catch (Standard_Failure& e) {
@@ -153,7 +153,7 @@ PyObject* ChFi2d_FilletAlgoPy::numberOfResults(PyObject *args)
     }
 }
 
-PyObject* ChFi2d_FilletAlgoPy::result(PyObject *args)
+PyObject* ChFi2d_FilletAPIPy::result(PyObject *args)
 {
     PyObject* pnt;
     int solution = -1;
@@ -164,7 +164,7 @@ PyObject* ChFi2d_FilletAlgoPy::result(PyObject *args)
 
     try {
         TopoDS_Edge theEdge1, theEdge2;
-        TopoDS_Shape res_edge = getChFi2d_FilletAlgoPtr()->Result(Base::convertTo<gp_Pnt>(*vec), theEdge1, theEdge2, solution);
+        TopoDS_Shape res_edge = getChFi2d_FilletAPIPtr()->Result(Base::convertTo<gp_Pnt>(*vec), theEdge1, theEdge2, solution);
 
         Py::TupleN tuple(Py::asObject(TopoShape(res_edge).getPyObject()),
                          Py::asObject(TopoShape(theEdge1).getPyObject()),
@@ -177,12 +177,12 @@ PyObject* ChFi2d_FilletAlgoPy::result(PyObject *args)
     }
 }
 
-PyObject *ChFi2d_FilletAlgoPy::getCustomAttributes(const char* /*attr*/) const
+PyObject *ChFi2d_FilletAPIPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
 
-int ChFi2d_FilletAlgoPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+int ChFi2d_FilletAPIPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }
