@@ -26,7 +26,6 @@ __url__ = "https://www.freecadweb.org"
 __version__ = "00.01"
 __date__ = "2022/01/11"
 
-from PySide import QtCore
 import PySide.QtGui as QtGui
 
 import FreeCAD as App
