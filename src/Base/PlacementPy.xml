@@ -15,7 +15,7 @@
 		FatherNamespace="Base">
 	<Documentation>
 		<Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
-		<UserDocu>Base.Placement class\n
+		<UserDocu>Base.Placement class.\n
 A Placement defines an orientation (rotation) and a position (base) in 3D space.
 It is used when no scaling or other distortion is needed.\n
 The following constructors are supported:\n
