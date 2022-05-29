@@ -77,8 +77,8 @@ DrawView::DrawView(void):
     mouseMove(false)
 {
     static const char *group = "Base";
-    ADD_PROPERTY_TYPE(X, (0.0), group, (App::PropertyType)(App::Prop_None), "X position");
-    ADD_PROPERTY_TYPE(Y, (0.0), group, (App::PropertyType)(App::Prop_None), "Y position");
+    ADD_PROPERTY_TYPE(X, (0.0), group, (App::PropertyType)(App::Prop_None | App::Prop_NoRecompute), "X position");
+    ADD_PROPERTY_TYPE(Y, (0.0), group, (App::PropertyType)(App::Prop_None | App::Prop_NoRecompute), "Y position");
     ADD_PROPERTY_TYPE(LockPosition, (false), group, App::Prop_Output, "Lock View position to parent Page or Group");
     ADD_PROPERTY_TYPE(Rotation, (0.0), group, App::Prop_Output, "Rotation in degrees counterclockwise");
 
@@ -159,6 +159,7 @@ void DrawView::onChanged(const App::Property* prop)
             requestPaint();
         } else if ((prop == &X) ||
             (prop == &Y)) {
+//            Base::Console().Message("DV::onChanged(X or Y)\n");
             DrawView::execute();
             X.purgeTouched();
             Y.purgeTouched();
