@@ -105,6 +105,7 @@ generate_from_xml(BRepFeat/MakePrismPy)
 
 generate_from_xml(ChFi2d/ChFi2d_AnaFilletAlgoPy)
 generate_from_xml(ChFi2d/ChFi2d_FilletAlgoPy)
+generate_from_xml(ChFi2d/ChFi2d_ChamferAPIPy)
 generate_from_xml(ChFi2d/ChFi2d_FilletAPIPy)
 
 generate_from_xml(Geom2d/ArcOfCircle2dPy)
@@ -343,6 +344,8 @@ SET(ChFi2dPy_SRCS
     ChFi2d/ChFi2d_AnaFilletAlgoPyImp.cpp
     ChFi2d/ChFi2d_FilletAlgoPy.xml
     ChFi2d/ChFi2d_FilletAlgoPyImp.cpp
+    ChFi2d/ChFi2d_ChamferAPIPy.xml
+    ChFi2d/ChFi2d_ChamferAPIPyImp.cpp
     ChFi2d/ChFi2d_FilletAPIPy.xml
     ChFi2d/ChFi2d_FilletAPIPyImp.cpp
 )

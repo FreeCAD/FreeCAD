@@ -53,6 +53,7 @@
 #include "Mod/Part/App/BSplineSurfacePy.h"
 #include <Mod/Part/App/ChFi2d/ChFi2d_AnaFilletAlgoPy.h>
 #include <Mod/Part/App/ChFi2d/ChFi2d_FilletAlgoPy.h>
+#include <Mod/Part/App/ChFi2d/ChFi2d_ChamferAPIPy.h>
 #include <Mod/Part/App/ChFi2d/ChFi2d_FilletAPIPy.h>
 #include "Mod/Part/App/CirclePy.h"
 #include "Mod/Part/App/ConePy.h"
@@ -344,6 +345,7 @@ PyMOD_INIT_FUNC(Part)
     PyObject* chFi2d(module.getAttr("ChFi2d").ptr());
     Base::Interpreter().addType(&Part::ChFi2d_AnaFilletAlgoPy::Type, chFi2d, "AnaFilletAlgo");
     Base::Interpreter().addType(&Part::ChFi2d_FilletAlgoPy::Type, chFi2d, "FilletAlgo");
+    Base::Interpreter().addType(&Part::ChFi2d_ChamferAPIPy::Type, chFi2d, "ChamferAPI");
     Base::Interpreter().addType(&Part::ChFi2d_FilletAPIPy::Type, chFi2d, "FilletAPI");
 
     Part::TopoShape             ::init();
