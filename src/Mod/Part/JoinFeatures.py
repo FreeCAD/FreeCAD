@@ -21,9 +21,9 @@
 
 import FreeCAD, Part
 
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore, QtGui
+#if FreeCAD.GuiUp:
+#    import FreeCADGui
+#    from PySide import QtCore, QtGui
 
 __title__="JoinFeatures module (legacy)"
 __author__ = "DeepSOIC"
